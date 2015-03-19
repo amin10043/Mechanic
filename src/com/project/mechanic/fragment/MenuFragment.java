@@ -1,4 +1,8 @@
-package com.project.mechanic;
+package com.project.mechanic.fragment;
+
+import com.project.mechanic.R;
+import com.project.mechanic.R.id;
+import com.project.mechanic.R.layout;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

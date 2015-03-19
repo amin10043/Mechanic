@@ -7,7 +7,9 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.project.mechanic.R.color;
+import com.project.mechanic.fragment.HomeFragment;
+import com.project.mechanic.fragment.MenuFragment;
 
 public class MainActivity extends FragmentActivity {
 
@@ -30,6 +34,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
 		title = getActionBar().getTitle();
 		mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
 
@@ -59,6 +64,18 @@ public class MainActivity extends FragmentActivity {
 			public void onDrawerOpened(View drawerView) {
 				getActionBar().setTitle(R.string.strMenu);
 			}
+
+			@Override
+			public boolean onOptionsItemSelected(MenuItem item) {
+				if (item != null && item.getItemId() == android.R.id.home) {
+					if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+						mDrawerLayout.closeDrawer(Gravity.RIGHT);
+					} else {
+						mDrawerLayout.openDrawer(Gravity.RIGHT);
+					}
+				}
+				return false;
+			}
 		};
 
 		// Set the drawer toggle as the DrawerListener
@@ -67,6 +84,11 @@ public class MainActivity extends FragmentActivity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setIcon(color.transparent);
+
+		FragmentTransaction trans = getSupportFragmentManager()
+				.beginTransaction();
+		trans.replace(R.id.content_frame, new HomeFragment());
+		trans.commit();
 
 	}
 
