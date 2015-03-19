@@ -8,7 +8,7 @@ import android.view.Menu;
 
 public class SplashActivity extends Activity {
 
-	int SPLASH_DISPLAY_TIME = 3;
+	int SPLASH_DISPLAY_TIME = 3000;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
