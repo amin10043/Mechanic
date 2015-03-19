@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Mechanic</string>
+    <string name="app_name">مکانیکال</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="title_activity_splash">مکانیکال</string>
+    <string name="strMenu">منو</string>
 
+    <string-array name="MenuItems">
+        <item name="home">خانه</item>
+        <item name="home1">کاربری</item>
+        <item name="home2">صفحه شخصی</item>
+        <item name="home3">برای تست</item>
+        <item name="home4">درباره ما</item>
+        <item name="home5">تماس با ما</item>
+    </string-array>
 </resources>
