@@ -68,12 +68,12 @@
     
     >
     
-    
     <ListView
-        android:id="@+id/list01"
+        android:id="@+id/lstMain"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:divider="@null"
-android:dividerHeight="0dp"
-        android:layout_height="match_parent" />
+        android:dividerHeight="0dp" />
+
 </LinearLayout>      
 </LinearLayout>
