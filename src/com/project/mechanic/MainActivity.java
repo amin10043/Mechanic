@@ -28,6 +28,8 @@ public class MainActivity extends FragmentActivity {
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private CharSequence title;
+	
+	
 	//test
 
 	@SuppressLint("NewApi")
