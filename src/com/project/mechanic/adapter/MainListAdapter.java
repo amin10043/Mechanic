@@ -44,7 +44,7 @@ public class MainListAdapter extends ArrayAdapter<RowMain> {
 
 		RowMain person1 = list.get(position);
 		RowMain person2 = list.get(position);
-		RowMain person3 = list.get(position);
+		
 
 		tx1.setText(person1.getName());
 		tx2.setText(person2.getNoti());

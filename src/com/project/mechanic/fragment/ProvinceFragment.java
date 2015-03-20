@@ -15,6 +15,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.MainListAdapter;
+import com.project.mechanic.adapter.ProvinceListAdapter;
 import com.project.mechanic.row_items.RowMain;
 
 public class ProvinceFragment extends Fragment {
@@ -55,9 +56,8 @@ public class ProvinceFragment extends Fragment {
 		mylist.add(p7);
 		mylist.add(p8);
 
-		ListView lst = (ListView) view.findViewById(R.id.listv_ostan);
-		MainListAdapter ListAdapter = new MainListAdapter(getActivity(),
-				R.layout.fragment_ostan, mylist);
+		ListView lst = (ListView) view.findViewById(R.id.listvOstan);
+		ProvinceListAdapter  ListAdapter = new  ProvinceListAdapter(getActivity(),R.layout.row_ostan, mylist);
 
 		lst.setAdapter(ListAdapter);
 
@@ -69,7 +69,7 @@ public class ProvinceFragment extends Fragment {
 
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new ProvinceFragment());
+				trans.replace(R.id.content_frame, new CityFragment());
 				trans.commit();
 			}
 		});

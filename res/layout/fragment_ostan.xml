@@ -27,7 +27,7 @@
         </RelativeLayout>
 
     <ListView
-        android:id="@+id/listv_ostan"
+        android:id="@+id/listvOstan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="40dp" >
