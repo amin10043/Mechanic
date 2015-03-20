@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ public class HomeFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View view = inflater.inflate(R.layout.main, null);
+		View view = inflater.inflate(R.layout.fragment_main, null);
 
 		List<RowMain> mylist = new ArrayList<RowMain>();
 
@@ -72,9 +73,10 @@ public class HomeFragment extends Fragment {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 
-				// Intent i = new Intent(Main.this, Moshaveran.class);
-				// startActivity(i);
-
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new ProvinceFragment());
+				trans.commit();
 			}
 		});
 
