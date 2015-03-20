@@ -28,7 +28,7 @@ public class HomeFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_main, null);
 		
-		 GotoIntroductionactivitybtn = (Button)view.findViewById(R.id.btnTest);
+		
 		 GotoIntroductionactivitybtn.setOnClickListener(new OnClickListener(){
 
 			@Override
