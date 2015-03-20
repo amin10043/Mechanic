@@ -1,6 +1,6 @@
-package com.project.mechanic.model;
+package com.project.mechanic.entity;
 
-public class PaperType {
+public class WorkmanType {
 
 	int Id;
 	String Name;
@@ -21,7 +21,7 @@ public class PaperType {
 		Name = name;
 	}
 
-	public PaperType(int id, String name) {
+	public WorkmanType(int id, String name) {
 		super();
 		Id = id;
 		Name = name;

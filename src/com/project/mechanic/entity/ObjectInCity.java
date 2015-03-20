@@ -1,10 +1,10 @@
-package com.project.mechanic.model;
+package com.project.mechanic.entity;
 
-public class ObjectInProvince {
+public class ObjectInCity {
 
 	int Id;
 	int ObjectId;
-	int ProvinceId;
+	int CityId;
 
 	public int getId() {
 		return Id;
@@ -22,19 +22,19 @@ public class ObjectInProvince {
 		ObjectId = objectId;
 	}
 
-	public int getProvinceId() {
-		return ProvinceId;
+	public int getCityId() {
+		return CityId;
 	}
 
-	public void setProvinceId(int provinceId) {
-		ProvinceId = provinceId;
+	public void setCityId(int cityId) {
+		CityId = cityId;
 	}
 
-	public ObjectInProvince(int id, int objectId, int provinceId) {
+	public ObjectInCity(int id, int objectId, int cityId) {
 		super();
 		Id = id;
 		ObjectId = objectId;
-		ProvinceId = provinceId;
+		CityId = cityId;
 	}
 
 }

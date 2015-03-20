@@ -1,6 +1,6 @@
-package com.project.mechanic.model;
+package com.project.mechanic.entity;
 
-public class Executertype {
+public class ObjectType {
 
 	int Id;
 	String Name;
@@ -21,7 +21,7 @@ public class Executertype {
 		Name = name;
 	}
 
-	public Executertype(int id, String name) {
+	public ObjectType(int id, String name) {
 		super();
 		Id = id;
 		Name = name;

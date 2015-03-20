@@ -1,6 +1,6 @@
-package com.project.mechanic.model;
+package com.project.mechanic.entity;
 
-public class Province {
+public class PaperType {
 
 	int Id;
 	String Name;
@@ -21,7 +21,7 @@ public class Province {
 		Name = name;
 	}
 
-	public Province(int id, String name) {
+	public PaperType(int id, String name) {
 		super();
 		Id = id;
 		Name = name;

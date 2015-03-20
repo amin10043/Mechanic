@@ -1,6 +1,6 @@
-package com.project.mechanic.model;
+package com.project.mechanic.entity;
 
-public class AdvisorType {
+public class City {
 
 	int Id;
 	String Name;
@@ -21,7 +21,7 @@ public class AdvisorType {
 		Name = name;
 	}
 
-	public AdvisorType(int id, String name) {
+	public City(int id, String name) {
 		super();
 		Id = id;
 		Name = name;

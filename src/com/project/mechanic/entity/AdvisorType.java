@@ -1,9 +1,8 @@
-package com.project.mechanic.model;
+package com.project.mechanic.entity;
 
-public class ListItem {
+public class AdvisorType {
 
 	int Id;
-	int ListId;
 	String Name;
 
 	public int getId() {
@@ -14,14 +13,6 @@ public class ListItem {
 		Id = id;
 	}
 
-	public int getListId() {
-		return ListId;
-	}
-
-	public void setListId(int listId) {
-		ListId = listId;
-	}
-
 	public String getName() {
 		return Name;
 	}
@@ -30,10 +21,9 @@ public class ListItem {
 		Name = name;
 	}
 
-	public ListItem(int id, int listId, String name) {
+	public AdvisorType(int id, String name) {
 		super();
 		Id = id;
-		ListId = listId;
 		Name = name;
 	}
 

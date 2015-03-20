@@ -1,4 +1,4 @@
-package com.project.mechanic.model;
+package com.project.mechanic.entity;
 
 public class Object {
 

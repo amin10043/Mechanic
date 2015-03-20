@@ -1,10 +1,10 @@
-package com.project.mechanic.model;
+package com.project.mechanic.entity;
 
-public class Froum {
+public class Comment {
 
 	int Id;
 	int UserId;
-	String Title;
+	int paperId;
 	String Description;
 
 	public int getId() {
@@ -23,12 +23,12 @@ public class Froum {
 		UserId = userId;
 	}
 
-	public String getTitle() {
-		return Title;
+	public int getPaperId() {
+		return paperId;
 	}
 
-	public void setTitle(String title) {
-		Title = title;
+	public void setPaperId(int paperId) {
+		this.paperId = paperId;
 	}
 
 	public String getDescription() {
@@ -39,11 +39,11 @@ public class Froum {
 		Description = description;
 	}
 
-	public Froum(int id, int userId, String title, String description) {
+	public Comment(int id, int userId, int paperId, String description) {
 		super();
 		Id = id;
 		UserId = userId;
-		Title = title;
+		this.paperId = paperId;
 		Description = description;
 	}
 

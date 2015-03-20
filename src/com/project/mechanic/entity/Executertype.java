@@ -1,6 +1,6 @@
-package com.project.mechanic.model;
+package com.project.mechanic.entity;
 
-public class City {
+public class Executertype {
 
 	int Id;
 	String Name;
@@ -21,7 +21,7 @@ public class City {
 		Name = name;
 	}
 
-	public City(int id, String name) {
+	public Executertype(int id, String name) {
 		super();
 		Id = id;
 		Name = name;
