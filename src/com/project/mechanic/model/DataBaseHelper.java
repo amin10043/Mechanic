@@ -17,7 +17,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 													// window
 	// destination path (location) of our database on device
 	private static String DB_PATH = "";
-	private static String DB_NAME = "ordering";// Database name
+	private static String DB_NAME = "Mechanical";// Database name
 	private SQLiteDatabase mDataBase;
 	private final Context mContext;
 
