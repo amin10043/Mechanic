@@ -15,4 +15,5 @@
         <item name="home4">درباره ما</item>
         <item name="home5">تماس با ما</item>
     </string-array>
+        <string name="ostantxt1">انتخاب استان</string>
 </resources>

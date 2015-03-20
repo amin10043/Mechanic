@@ -57,7 +57,7 @@ public class ProvinceFragment extends Fragment {
 
 		ListView lst = (ListView) view.findViewById(R.id.listv_ostan);
 		MainListAdapter ListAdapter = new MainListAdapter(getActivity(),
-				R.layout.row_ostan, mylist);
+				R.layout.fragment_ostan, mylist);
 
 		lst.setAdapter(ListAdapter);
 
