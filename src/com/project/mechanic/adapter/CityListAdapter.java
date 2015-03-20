@@ -13,12 +13,12 @@ import android.widget.TextView;
 import com.project.mechanic.R;
 import com.project.mechanic.row_items.RowMain;
 
-public class ProvinceListAdapter extends ArrayAdapter<RowMain> {
+public class CityListAdapter extends ArrayAdapter<RowMain> {
 
 	Context context;
 	List<RowMain> list;
 	
-	public ProvinceListAdapter(Context context, int resource, List<RowMain> objact) {
+	public CityListAdapter(Context context, int resource, List<RowMain> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -34,14 +34,16 @@ public class ProvinceListAdapter extends ArrayAdapter<RowMain> {
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_ostan, parent, false);
+		convertView = myInflater.inflate(R.layout.row_city, parent, false);
 
-		TextView tx1 = (TextView) convertView.findViewById(R.id.RowOstantxt);
+		TextView txt1 = (TextView) convertView.findViewById(R.id.RowCitytxt);
 	
 		RowMain person1 = list.get(position);
 		
-		tx1.setText(person1.getName());
+		txt1.setText(person1.getName());
 	
+		
+
 		return convertView;
 	}
-	}
+}
