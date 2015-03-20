@@ -2,7 +2,6 @@ package com.project.mechanic.adapter;
 
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project.mechanic.R;
-import com.project.mechanic.row_items.RowMain;
+import com.project.mechanic.entity.ListItem;
 
-public class MainListAdapter extends ArrayAdapter<RowMain> {
+public class MainListAdapter extends ArrayAdapter<ListItem> {
 
 	Context context;
-	List<RowMain> list;
+	List<ListItem> list;
 	int[] imageId;
+	ListItem tempItem;
 
-	public MainListAdapter(Context context, int resource, List<RowMain> objact) {
+	public MainListAdapter(Context context, int resource, List<ListItem> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -28,26 +28,23 @@ public class MainListAdapter extends ArrayAdapter<RowMain> {
 
 	}
 
-	@SuppressLint("ViewHolder")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_lstv, parent, false);
+		convertView = myInflater
+				.inflate(R.layout.main_item_list, parent, false);
 
-		TextView tx1 = (TextView) convertView.findViewById(R.id.txt2);
-		TextView tx2 = (TextView) convertView.findViewById(R.id.txt3);
+		TextView txtName = (TextView) convertView.findViewById(R.id.txtName);
+		TextView txtNoti = (TextView) convertView.findViewById(R.id.txtNoti);
 		@SuppressWarnings("unused")
-		ImageView img = (ImageView) convertView.findViewById(R.id.imgV3);
+		ImageView img = (ImageView) convertView.findViewById(R.id.imgItem);
 
-		RowMain person1 = list.get(position);
-		RowMain person2 = list.get(position);
-		RowMain person3 = list.get(position);
-
-		tx1.setText(person1.getName());
-		tx2.setText(person2.getNoti());
+		tempItem = list.get(position);
+		txtName.setText(tempItem.getName());
+		txtNoti.setText("1");
 
 		return convertView;
 

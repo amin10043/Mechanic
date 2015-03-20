@@ -6,7 +6,8 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_splash">مکانیکال</string>
     <string name="strMenu">منو</string>
-
+	<string name="strMain">تالار تاسیسات مکانیکی ایران</string>
+    
     <string-array name="MenuItems">
         <item name="home">خانه</item>
         <item name="home1">کاربری</item>

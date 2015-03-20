@@ -2,4 +2,5 @@
 <resources>
    <color name="light_grey">#cccccc</color>
    <color name="transparent">#00000000</color>
+    <color name="red">#F71411</color>
 </resources>

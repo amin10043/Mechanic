@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.project.mechanic.R;
 
@@ -29,9 +28,8 @@ public class ProvinceListAdapter extends ArrayAdapter<String> {
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_lstv, parent, false);
-
-		TextView tx1 = (TextView) convertView.findViewById(R.id.txt2);
+		convertView = myInflater
+				.inflate(R.layout.main_item_list, parent, false);
 
 		return convertView;
 

@@ -30,7 +30,7 @@ public class ListItem {
 		Name = name;
 	}
 
-	public ListItem(int id, int listId, String name) {
+	public ListItem(int id, String name, int listId) {
 		super();
 		Id = id;
 		ListId = listId;

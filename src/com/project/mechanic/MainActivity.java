@@ -1,6 +1,6 @@
 package com.project.mechanic;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -10,15 +10,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.project.mechanic.R.color;
-import com.project.mechanic.fragment.HomeFragment;
+import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.fragment.MenuFragment;
 
 public class MainActivity extends FragmentActivity {
@@ -27,24 +28,24 @@ public class MainActivity extends FragmentActivity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private CharSequence title;
-	
-	@SuppressLint("NewApi")
+	// private CharSequence title;
+	private Fragment lastFragment;
+	private boolean isFavorite = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		title = getActionBar().getTitle();
+		// title = getActionBar().getTitle();
 		mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-		// Set the adapter for the list view
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_item, R.id.content, mPlanetTitles));
-		// Set the list's click listener
+
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
@@ -53,16 +54,12 @@ public class MainActivity extends FragmentActivity {
 		R.string.hello_world, /* "open drawer" description */
 		R.string.app_name /* "close drawer" description */) {
 
-			/** Called when a drawer has settled in a completely closed state. */
-
 			public void onDrawerClosed(View view) {
-				getActionBar().setTitle(title);
+				// getActionBar().setTitle(title);
 			}
 
-			/** Called when a drawer has settled in a completely open state. */
-
 			public void onDrawerOpened(View drawerView) {
-				getActionBar().setTitle(R.string.strMenu);
+				// getActionBar().setTitle(R.string.strMenu);
 			}
 
 			@Override
@@ -78,16 +75,85 @@ public class MainActivity extends FragmentActivity {
 			}
 		};
 
-		// Set the drawer toggle as the DrawerListener
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
-		getActionBar().setIcon(color.transparent);
+		// getActionBar().setDisplayHomeAsUpEnabled(true);
+		// getActionBar().setHomeButtonEnabled(true);
+		// getActionBar().setIcon(color.transparent);
+
+		ImageButton iBtnMenu = (ImageButton) findViewById(R.id.iBtnMenu);
+		ImageButton iBtnShare = (ImageButton) findViewById(R.id.iBtnShare);
+		ImageButton iBtnBack = (ImageButton) findViewById(R.id.iBtnBack);
+		final ImageButton iBtnFavorite = (ImageButton) findViewById(R.id.iBtnFavorite);
+
+		iBtnMenu.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if (!mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+					mDrawerLayout.openDrawer(Gravity.RIGHT);
+				}
+			}
+		});
+
+		iBtnShare.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent sharingIntent = new Intent(
+						android.content.Intent.ACTION_SEND);
+				sharingIntent.setType("text/plain");
+				String shareBody = "Here is the share content body";
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+						"Subject Here");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+						shareBody);
+				startActivity(Intent.createChooser(sharingIntent,
+						"اشتراک از طریق"));
+
+			}
+		});
+
+		iBtnBack.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if (lastFragment != null) {
+					FragmentTransaction trans = getSupportFragmentManager()
+							.beginTransaction();
+					trans.replace(R.id.content_frame, lastFragment);
+					trans.commit();
+				} else {
+					Intent intent = new Intent(MainActivity.this,
+							SplashActivity.class);
+					startActivity(intent);
+				}
+
+			}
+		});
+
+		iBtnFavorite.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if (isFavorite) {
+					iBtnFavorite
+							.setImageResource(android.R.drawable.btn_star_big_off);
+				} else {
+
+					iBtnFavorite
+							.setImageResource(android.R.drawable.btn_star_big_on);
+				}
+				isFavorite = !isFavorite;
+			}
+		});
+
+		TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
+		txtTitle.setText(R.string.strMain);
 
 		FragmentTransaction trans = getSupportFragmentManager()
 				.beginTransaction();
-		trans.replace(R.id.content_frame, new HomeFragment());
+		trans.replace(R.id.content_frame, new MainFragment());
 		trans.commit();
 
 	}
@@ -114,50 +180,23 @@ public class MainActivity extends FragmentActivity {
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Pass the event to ActionBarDrawerToggle, if it returns
-		// true, then it has handled the app icon touch event
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
-		}
-		// Handle your other action bar items...
-		// switch (item.getItemId()) {
-		// case R.id.action_settings:
-		// Toast.makeText(this, "Settings selected", Toast.LENGTH_LONG).show();
-		// break;
-		//
-		// default:
-		// break;
-		// }
-		return super.onOptionsItemSelected(item);
-	}
-
-	/** Swaps fragments in the main content view */
-
 	private void selectItem(int position) {
-		// create a new fragment and specify the planet to show based on
-		// position
+
 		Fragment fragment = new MenuFragment();
 		Bundle args = new Bundle();
 		args.putInt(MenuFragment.ARG_OS, position);
 		fragment.setArguments(args);
 
-		// Insert the fragment by replacing any existing fragment
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.beginTransaction()
 				.replace(R.id.content_frame, fragment).commit();
 
-		// Highlight the selected item, update the title, and close the drawer
 		mDrawerList.setItemChecked(position, true);
 		getActionBar().setTitle((mPlanetTitles[position]));
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 
+	public void setLastFragment(Fragment fragment) {
+		this.lastFragment = fragment;
+	}
 }
