@@ -37,8 +37,8 @@ public class MainListAdapter extends ArrayAdapter<RowMain> {
 
 		convertView = myInflater.inflate(R.layout.row_lstv, parent, false);
 
-		TextView tx1 = (TextView) convertView.findViewById(R.id.txt2);
-		TextView tx2 = (TextView) convertView.findViewById(R.id.txt3);
+		TextView tx1 = (TextView) convertView.findViewById(R.id.row_lstv_txt2);
+		TextView tx2 = (TextView) convertView.findViewById(R.id.row_lstv_txt1);
 		@SuppressWarnings("unused")
 		ImageView img = (ImageView) convertView.findViewById(R.id.imgV3);
 

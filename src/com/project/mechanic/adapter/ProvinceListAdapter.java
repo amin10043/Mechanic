@@ -29,9 +29,9 @@ public class ProvinceListAdapter extends ArrayAdapter<String> {
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_lstv, parent, false);
+		convertView = myInflater.inflate(R.layout.fragment_ostan, parent, false);
 
-		TextView tx1 = (TextView) convertView.findViewById(R.id.txt2);
+		TextView tx1 = (TextView) convertView.findViewById(R.id.row_lstv_txt2);
 
 		return convertView;
 

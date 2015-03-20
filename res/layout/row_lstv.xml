@@ -31,7 +31,7 @@
         android:layout_marginTop="50dp" >
 
         <TextView
-            android:id="@+id/txt3"
+            android:id="@+id/row_lstv_txt1"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
@@ -44,7 +44,7 @@
             android:layout_height="match_parent" >
 
             <TextView
-                android:id="@+id/txt2"
+                android:id="@+id/row_lstv_txt2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
