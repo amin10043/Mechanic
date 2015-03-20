@@ -13,8 +13,26 @@ public class DataBaseAdapter {
 
 	protected static final String TAG = "DataAdapter";
 
-	private String[] allFoods = { "ID", "Name", "PriceUnit", "Parent",
-			"IsExist", "Desc" };
+	private String[] ACL = { "ID", "UserId", "ListItemId" };
+	private String[] AdvisorType = { "ID", "Name" };
+	private String[] City = { "ID", "Name" };
+	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
+	private String[] Executertype = { "ID", "Name" };
+	private String[] Favorite = { "ID", "ObjectId", "UserId" };
+	private String[] Froum = { "ID", "Title", "Description", "UserId" };
+	private String[] Like = { "ID", "UserId", "PaperId" };
+	private String[] List = { "ID", "Name", "ParentId" };
+	private String[] ListItem = { "ID", "Name", "ListId" };
+	private String[] Object = { "ID", "Name", "Phone", "Email", "Fax", "Description", "Image1", "Image2", "Image3", "Image4" };
+	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
+	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
+	private String[] ObjectType = { "ID", "Name" };
+	private String[] Paper = { "ID", "Title", "Context" };
+	private String[] PaperType = { "ID", "Name" };
+	private String[] Province = { "ID", "Name" };
+	private String[] Users = { "ID", "Name", "Email", "Password" };
+	private String[] WorkmanType = { "ID", "Name" };
+	
 
 	private final Context mContext;
 	private SQLiteDatabase mDb;
