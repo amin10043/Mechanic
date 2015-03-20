@@ -40,7 +40,7 @@ public class MainListAdapter extends ArrayAdapter<RowMain> {
 		TextView tx1 = (TextView) convertView.findViewById(R.id.row_lstv_txt2);
 		TextView tx2 = (TextView) convertView.findViewById(R.id.row_lstv_txt1);
 		@SuppressWarnings("unused")
-		ImageView img = (ImageView) convertView.findViewById(R.id.imgV3);
+		ImageView img = (ImageView) convertView.findViewById(R.id.row_lstv_imgv1);
 
 		RowMain person1 = list.get(position);
 		RowMain person2 = list.get(position);

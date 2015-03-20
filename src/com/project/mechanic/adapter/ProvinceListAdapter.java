@@ -1,14 +1,12 @@
 package com.project.mechanic.adapter;
 
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
-
 import com.project.mechanic.R;
 
 public class ProvinceListAdapter extends ArrayAdapter<String> {
@@ -23,6 +21,7 @@ public class ProvinceListAdapter extends ArrayAdapter<String> {
 		this.context = context;
 	}
 
+	@SuppressLint("ViewHolder")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -30,8 +29,6 @@ public class ProvinceListAdapter extends ArrayAdapter<String> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.fragment_ostan, parent, false);
-
-		TextView tx1 = (TextView) convertView.findViewById(R.id.row_lstv_txt2);
 
 		return convertView;
 
