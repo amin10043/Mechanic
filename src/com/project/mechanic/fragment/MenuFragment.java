@@ -20,7 +20,7 @@ public class MenuFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_layout, null);
-		textView = (TextView) view.findViewById(R.id.RowOstantxt1);
+		textView = (TextView) view.findViewById(R.id.RowOstantxt);
 		return view;
 	}
 
