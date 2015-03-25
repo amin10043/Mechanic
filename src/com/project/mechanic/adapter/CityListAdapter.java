@@ -38,11 +38,10 @@ public class CityListAdapter extends ArrayAdapter<RowMain> {
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.RowCitytxt);
 	
-		RowMain person1 = list.get(position);
+		RowMain person = list.get(position);
 		
-		txt1.setText(person1.getName());
+		txt1.setText(person.getName());
 	
-		
 
 		return convertView;
 	}

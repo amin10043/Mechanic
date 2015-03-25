@@ -59,6 +59,16 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#002230"
         android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btnTest"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="14dp"
+        android:layout_toRightOf="@+id/linearLayout1"
+        android:text="Go to introduction" />
 </RelativeLayout>
 
 <LinearLayout 
