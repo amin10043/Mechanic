@@ -1,5 +1,7 @@
 package com.project.mechanic;
 
+import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -18,11 +20,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.project.mechanic.R.color;
+import com.project.mechanic.entity.City;
 import com.project.mechanic.fragment.HomeFragment;
 import com.project.mechanic.fragment.MenuFragment;
+import com.project.mechanic.model.DataBaseAdapter;
+
 
 public class MainActivity extends FragmentActivity {
 
+	DataBaseAdapter adapter;
 	private String[] mPlanetTitles;
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -35,6 +41,19 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		//
+		
+		adapter= new DataBaseAdapter(this);
+		
+		//
+		
+		
+		//
+		adapter.open();
+		ArrayList<City> allCity =  adapter.getAllCity();
+		adapter.close();
+		//
+		
 		title = getActionBar().getTitle();
 		mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
 

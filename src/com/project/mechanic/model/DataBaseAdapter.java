@@ -1,21 +1,28 @@
 package com.project.mechanic.model;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.project.mechanic.entity.*;
 
 public class DataBaseAdapter {
 
 	// //////////////////////////////////// Fields ////////////////
 
 	protected static final String TAG = "DataAdapter";
+	
+	private String TableCity = "City";
+	private String TableFroum = "Froum";
 
 	private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
-	private String[] City = { "ID", "Name" };
+	private String[] CityColumn = { "ID", "Name" };
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId" };
@@ -55,15 +62,15 @@ public class DataBaseAdapter {
 		return this;
 	}
 
-	public DataBaseAdapter open() throws SQLException, IOException {
+	public DataBaseAdapter open() {
 		try {
 
 			mDbHelper.openDataBase();
 			mDbHelper.close();
 			mDb = mDbHelper.getReadableDatabase();
-		} catch (SQLException mSQLException) {
+		} catch (Exception mSQLException) {
 			Log.e(TAG, "open >>" + mSQLException.toString());
-			throw mSQLException;
+			
 		}
 		return this;
 	}
@@ -73,5 +80,33 @@ public class DataBaseAdapter {
 	}
 
 	// --------------------------------------------------------
+public ArrayList<City> getAllCity(){
+	ArrayList<City> result = new ArrayList<City>();
+	Cursor cursor = mDb.query(TableCity, CityColumn, null, null, null, null, null);
+	City tempCity;
+	while(cursor.moveToNext()){
+		tempCity = new City(cursor.getInt(0), cursor.getString(1));
+		result.add(tempCity);
+	}
+	
+	
+	return result;
+	
+}
+
+public ArrayList<Froum> getAllFroum(){
+	ArrayList<Froum> result = new ArrayList<Froum>();
+	Cursor cursor = mDb.query(TableFroum, Froum , null, null, null, null, null);
+	Froum tempFroum;
+	while(cursor.moveToNext()){
+		tempFroum = new Froum(cursor.getInt(0), cursor.getInt(3), cursor.getString(2),cursor.getString(1)  );
+		result.add(tempFroum);
+	}
+	
+	
+	return result;
+	
+}
+
 
 }
