@@ -2,7 +2,7 @@ package com.project.mechanic.fragment;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -12,14 +12,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
-
 import com.project.mechanic.R;
-import com.project.mechanic.adapter.MainListAdapter;
 import com.project.mechanic.adapter.ProvinceListAdapter;
 import com.project.mechanic.row_items.RowMain;
 
 public class ProvinceFragment extends Fragment {
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

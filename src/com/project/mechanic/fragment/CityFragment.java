@@ -47,7 +47,6 @@ public class CityFragment extends Fragment {
 		p8.setName("مراغه");
 
 	
-		
 		mylist.add(p1);
 		mylist.add(p2);
 		mylist.add(p3);
@@ -57,12 +56,11 @@ public class CityFragment extends Fragment {
 		mylist.add(p7);
 		mylist.add(p8);
 
-		ListView lst = (ListView) view.findViewById(R.id.ListvCity);
+		ListView lst1 = (ListView) view.findViewById(R.id.ListvCity);
 		CityListAdapter ListAdapter = new CityListAdapter(getActivity(),R.layout.row_city, mylist);
 
-		lst.setAdapter(ListAdapter);
-
-		lst.setOnItemClickListener(new OnItemClickListener() {
+		lst1.setAdapter(ListAdapter);
+		lst1.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
