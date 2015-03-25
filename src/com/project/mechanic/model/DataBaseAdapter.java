@@ -18,8 +18,27 @@ public class DataBaseAdapter {
 	protected static final String TAG = "DataAdapter";
 	
 	private String TableCity = "City";
+	private String TableACL = "ACL";
+	private String TableAdvisorType = "AdvisorType";
+	private String TableCityColumn = "CityColumn";
+	private String TableComment = "Comment";
+	private String TableExecutertype = "Executertype";
+	private String TableFavorite = "Favorite";
 	private String TableFroum = "Froum";
+	private String TableLike = "Like";
+	private String TableList = "List";
+	private String TableListItem = "ListItem";
+	private String TableObject = "Object";
+	private String TableObjectInCity = "ObjectInCity";
+	private String TableObjectInProvince = "ObjectInProvince";
+	private String TableObjectType = "ObjectType";
+	private String TablePaper = "Paper";
+	private String TablePaperType = "PaperType";
+	private String TableProvince = "Province";
+	private String TableUsers = "Users";
+	private String TableWorkmanType = "WorkmanType";
 
+	
 	private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] CityColumn = { "ID", "Name" };
@@ -80,6 +99,21 @@ public class DataBaseAdapter {
 	}
 
 	// --------------------------------------------------------
+	
+	public ArrayList<Province> getAllProvince(){
+		ArrayList<Province> result = new ArrayList<Province>();
+		Cursor cursor = mDb.query(TableProvince, Province, null, null, null, null, null);
+		Province tempProvince;
+		while(cursor.moveToNext()){
+			tempProvince = new Province(cursor.getInt(0), cursor.getString(1));
+			result.add(tempProvince);
+		}
+		
+		
+		return result;
+		
+	}
+	
 public ArrayList<City> getAllCity(){
 	ArrayList<City> result = new ArrayList<City>();
 	Cursor cursor = mDb.query(TableCity, CityColumn, null, null, null, null, null);
