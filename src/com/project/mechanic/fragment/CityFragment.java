@@ -48,6 +48,7 @@ public class CityFragment extends Fragment {
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new IntroductionFragment());
+				trans.addToBackStack(null);
 				trans.commit();
 			}
 		});
