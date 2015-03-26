@@ -29,4 +29,13 @@
         <item name="android:layout_marginTop">6dip</item>
         <item name="android:layout_marginBottom">6dip</item>
 </style>
+
+    <style name="MyTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/red</item>
+    </style>
+
 </resources>
