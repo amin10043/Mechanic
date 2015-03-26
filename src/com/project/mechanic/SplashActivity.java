@@ -23,7 +23,6 @@ public class SplashActivity extends Activity {
 				startActivity(intent);
 				finish();
 
-				// transition from splash to main menu
 				overridePendingTransition(R.layout.splash_out,
 						R.layout.splash_in);
 
@@ -34,7 +33,6 @@ public class SplashActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_splash, menu);
 		return true;
 	}
