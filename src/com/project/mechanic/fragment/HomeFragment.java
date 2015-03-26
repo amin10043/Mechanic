@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -30,20 +29,22 @@ public class HomeFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_main, null);
 
-		GotoIntroductionactivitybtn = (Button) view.findViewById(R.id.btnTest);
-		GotoIntroductionactivitybtn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new IntroductionFragment());
-				trans.commit();
-			}
-
-		});
+		// GotoIntroductionactivitybtn = (Button)
+		// view.findViewById(R.id.btnTest);
+		// GotoIntroductionactivitybtn.setOnClickListener(new OnClickListener()
+		// {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// // TODO Auto-generated method stub
+		//
+		// FragmentTransaction trans = getActivity()
+		// .getSupportFragmentManager().beginTransaction();
+		// trans.replace(R.id.content_frame, new IntroductionFragment());
+		// trans.commit();
+		// }
+		//
+		// });
 
 		List<ListItem> mylist = new ArrayList<ListItem>();
 
