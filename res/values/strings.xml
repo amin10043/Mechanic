@@ -8,6 +8,9 @@
     <string name="text01">تاسیسات مکانیکی</string>
     <string name="strMenu">منو</string>
 	<string name="strMain">تالار تاسیسات مکانیکی ایران</string>
+    <string name="ostan">انتخاب استان</string>
+     <string name="city">انتخاب شهر</string>
+    
     
     <string-array name="MenuItems">
         <item name="home">خانه</item>

@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.ProvinceListAdapter;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -26,6 +27,8 @@ public class ProvinceFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		((MainActivity) getActivity()).setTitle(R.string.ostan);
+		
 		View view = inflater.inflate(R.layout.fragment_ostan, null);
 
 		adapter = new DataBaseAdapter(getActivity());
@@ -38,6 +41,7 @@ public class ProvinceFragment extends Fragment {
 		ProvinceListAdapter ListAdapter = new ProvinceListAdapter(
 				getActivity(), R.layout.row_ostan, mylist);
 
+		
 		lst.setAdapter(ListAdapter);
 
 		lst.setOnItemClickListener(new OnItemClickListener() {

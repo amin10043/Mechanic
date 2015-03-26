@@ -39,7 +39,7 @@ public class CityFragment extends Fragment {
 		CityListAdapter ListAdapter = new CityListAdapter(getActivity(),
 				R.layout.row_city, mylist);
 
-		((MainActivity) getActivity()).setTitle("");
+		((MainActivity) getActivity()).setTitle(R.string.city);
 
 		lst1.setAdapter(ListAdapter);
 		lst1.setOnItemClickListener(new OnItemClickListener() {
