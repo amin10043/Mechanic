@@ -137,7 +137,36 @@ public class DataBaseAdapter {
 		}
 
 
+	public ArrayList<Province> getAllProvince(){
+		ArrayList<Province> result = new ArrayList<Province>();
+		Cursor cursor = mDb.query(TableProvince, Province , null, null, null, null, null);
+		Province tempProvince;
+		while(cursor.moveToNext()){
+			tempProvince = new Province(cursor.getInt(0),cursor.getString(1)  );
+			result.add(tempProvince);
+		}
+		
+			return result;
 
+		}
+
+
+	public ArrayList<City> getAllCity(){
+		ArrayList<City> result = new ArrayList<City>();
+		Cursor cursor = mDb.query(TableCity, CityColumn , null, null, null, null, null);
+		City tempCity;
+		while(cursor.moveToNext()){
+			tempCity = new City(cursor.getInt(0),cursor.getString(1)  );
+			result.add(tempCity);
+		}
+		
+			return result;
+
+		}
+	
+	
+	
+	
 public ArrayList<Froum> getAllFroum(){
 	ArrayList<Froum> result = new ArrayList<Froum>();
 	Cursor cursor = mDb.query(TableFroum, Froum , null, null, null, null, null);
