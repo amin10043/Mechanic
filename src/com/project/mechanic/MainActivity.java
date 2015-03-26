@@ -1,9 +1,6 @@
 package com.project.mechanic;
 
 
-
-import java.util.ArrayList;
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -22,12 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-
-
-
-import com.project.mechanic.R.color;
-import com.project.mechanic.fragment.HomeFragment;
-import com.project.mechanic.entity.City;
 import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.fragment.MenuFragment;
 import com.project.mechanic.model.DataBaseAdapter;
