@@ -156,6 +156,8 @@ public class MainActivity extends FragmentActivity {
 		trans.addToBackStack(null);
 		trans.commit();
 
+		setActivityTitle(R.string.strMain);
+
 	}
 
 	public void setActivityTitle(int title) {
