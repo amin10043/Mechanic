@@ -190,7 +190,6 @@ public class MainActivity extends FragmentActivity {
 				.replace(R.id.content_frame, fragment).commit();
 
 		mDrawerList.setItemChecked(position, true);
-		getActionBar().setTitle((mPlanetTitles[position]));
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 
