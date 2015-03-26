@@ -19,6 +19,7 @@ public class DataBaseAdapter {
 	
 	private String TableCity = "City";
 	private String TableFroum = "Froum";
+	private String TableComment = "Comment";
 
 	private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
@@ -101,6 +102,20 @@ public ArrayList<Froum> getAllFroum(){
 	while(cursor.moveToNext()){
 		tempFroum = new Froum(cursor.getInt(0), cursor.getInt(3), cursor.getString(2),cursor.getString(1)  );
 		result.add(tempFroum);
+	}
+	
+	
+	return result;
+	
+}
+
+public ArrayList<Comment> getAllComment(){
+	ArrayList<Comment> result = new ArrayList<Comment>();
+	Cursor cursor = mDb.query(TableComment, Comment , null, null, null, null, null);
+	Comment tempComment;
+	while(cursor.moveToNext()){
+		tempComment = new Comment(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2),cursor.getString(3)  );
+		result.add(tempComment);
 	}
 	
 	
