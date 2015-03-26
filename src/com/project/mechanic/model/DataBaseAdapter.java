@@ -207,4 +207,21 @@ public class DataBaseAdapter {
 		return s;
 	}
 
+public Integer City_count(String table){
+	
+	Cursor cu=mDb.rawQuery("select * from "+table+" group by Name", null);
+	int s=cu.getCount();
+	return s;
+}
+
+public String City_display(String table,int row,int field){
+	
+	Cursor cu=mDb.rawQuery("select * from "+table+" group by Name order by ID", null);
+	cu.moveToPosition(row);
+	String s=cu.getString(field);
+	return s;
+}
+
+
+
 }
