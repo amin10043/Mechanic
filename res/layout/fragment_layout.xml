@@ -8,7 +8,7 @@
         android:id="@+id/RowOstantxt1"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="Placeholder Text"
+        android:text="Placeholder Text 123"
         android:layout_gravity="center"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

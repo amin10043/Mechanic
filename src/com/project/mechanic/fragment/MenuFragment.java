@@ -24,7 +24,7 @@ public class MenuFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		textView.setText(String.valueOf(value));
+		// textView.setText(String.valueOf(value));
 
 	}
 

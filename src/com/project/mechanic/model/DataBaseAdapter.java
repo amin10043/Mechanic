@@ -118,6 +118,7 @@ public class DataBaseAdapter {
 	private ListItem CursorToListItem(Cursor mCur) {
 		ListItem item = new ListItem(mCur.getInt(0), mCur.getString(1),
 				mCur.getInt(2));
+
 		return item;
 	}
 
@@ -207,21 +208,21 @@ public class DataBaseAdapter {
 		return s;
 	}
 
-public Integer City_count(String table){
-	
-	Cursor cu=mDb.rawQuery("select * from "+table+" group by Name", null);
-	int s=cu.getCount();
-	return s;
-}
+	public Integer City_count(String table) {
 
-public String City_display(String table,int row,int field){
-	
-	Cursor cu=mDb.rawQuery("select * from "+table+" group by Name order by ID", null);
-	cu.moveToPosition(row);
-	String s=cu.getString(field);
-	return s;
-}
+		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
+				null);
+		int s = cu.getCount();
+		return s;
+	}
 
+	public String City_display(String table, int row, int field) {
 
+		Cursor cu = mDb.rawQuery("select * from " + table
+				+ " group by Name order by ID", null);
+		cu.moveToPosition(row);
+		String s = cu.getString(field);
+		return s;
+	}
 
 }
