@@ -13,7 +13,6 @@ import com.project.mechanic.entity.*;
 
 public class DataBaseAdapter {
 
-	// //////////////////////////////////// Fields ////////////////
 
 	protected static final String TAG = "DataAdapter";
 	
