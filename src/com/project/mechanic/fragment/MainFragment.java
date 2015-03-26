@@ -51,6 +51,7 @@ public class MainFragment extends Fragment {
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new ProvinceFragment());
+				trans.addToBackStack(null);
 				trans.commit();
 			}
 		});

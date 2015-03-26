@@ -120,6 +120,7 @@ public class MainActivity extends FragmentActivity {
 					FragmentTransaction trans = getSupportFragmentManager()
 							.beginTransaction();
 					trans.replace(R.id.content_frame, lastFragment);
+					trans.addToBackStack(null);
 					trans.commit();
 				} else {
 					Intent intent = new Intent(MainActivity.this,
@@ -152,7 +153,14 @@ public class MainActivity extends FragmentActivity {
 		FragmentTransaction trans = getSupportFragmentManager()
 				.beginTransaction();
 		trans.replace(R.id.content_frame, new MainFragment());
+		trans.addToBackStack(null);
 		trans.commit();
+
+	}
+
+	public void setTitle(String title) {
+		TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
+		txtTitle.setText(title);
 
 	}
 

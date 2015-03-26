@@ -38,4 +38,9 @@
         <item name="android:background">@color/red</item>
     </style>
 
+    <style name="boldText">
+        <item name="android:textStyle">bold|italic</item>
+        <item name="android:textColor">#141417</item>
+    </style>
+    
 </resources>

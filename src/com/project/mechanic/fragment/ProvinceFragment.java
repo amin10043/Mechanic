@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.ProvinceListAdapter;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -48,6 +49,7 @@ public class ProvinceFragment extends Fragment {
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new CityFragment());
+				trans.addToBackStack(null);
 				trans.commit();
 			}
 		});
