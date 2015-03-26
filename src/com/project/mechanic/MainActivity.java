@@ -156,9 +156,11 @@ public class MainActivity extends FragmentActivity {
 		trans.addToBackStack(null);
 		trans.commit();
 
+		setActivityTitle(R.string.strMain);
+
 	}
 
-	public void setTitle(String title) {
+	public void setActivityTitle(int title) {
 		TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
 		txtTitle.setText(title);
 

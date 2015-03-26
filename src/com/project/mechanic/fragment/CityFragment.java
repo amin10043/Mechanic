@@ -27,6 +27,8 @@ public class CityFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
+		((MainActivity) getActivity()).setActivityTitle(R.string.city);
 		View view = inflater.inflate(R.layout.fragment_city, null);
 
 		adapter = new DataBaseAdapter(getActivity());
@@ -35,26 +37,14 @@ public class CityFragment extends Fragment {
 		ArrayList<RowMain> mylist = adapter.getAllCityName();
 		adapter.close();
 
-		ListView lst1 = (ListView) view.findViewById(R.id.lstCity);
+		ListView lstCity = (ListView) view.findViewById(R.id.lstCity);
 		CityListAdapter ListAdapter = new CityListAdapter(getActivity(),
 				R.layout.row_city, mylist);
 
-		((MainActivity) getActivity()).setTitle(R.string.city);
+		
 
-		lst1.setAdapter(ListAdapter);
-		lst1.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new ObjectFragment());
-				trans.addToBackStack(null);
-				trans.commit();
-			}
-		});
+		lstCity.setAdapter(ListAdapter);
+		
 
 		return view;
 	}
