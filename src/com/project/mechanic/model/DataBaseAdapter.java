@@ -9,13 +9,15 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.project.mechanic.entity.*;
+import com.project.mechanic.entity.City;
+import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.ListItem;
+import com.project.mechanic.entity.Province;
 
 public class DataBaseAdapter {
 
-
 	protected static final String TAG = "DataAdapter";
-	
+
 	private String TableCity = "City";
 	private String TableACL = "ACL";
 	private String TableAdvisorType = "AdvisorType";
@@ -37,7 +39,6 @@ public class DataBaseAdapter {
 	private String TableUsers = "Users";
 	private String TableWorkmanType = "WorkmanType";
 
-	
 	private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] CityColumn = { "ID", "Name" };
@@ -47,8 +48,9 @@ public class DataBaseAdapter {
 	private String[] Froum = { "ID", "Title", "Description", "UserId" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] List = { "ID", "Name", "ParentId" };
-	private String[] ListItem = { "ID", "Name", "ListId" };
-	private String[] Object = { "ID", "Name", "Phone", "Email", "Fax", "Description", "Image1", "Image2", "Image3", "Image4" };
+	private String[] ListItem = { "Id", "Name", "ListId" };
+	private String[] Object = { "ID", "Name", "Phone", "Email", "Fax",
+			"Description", "Image1", "Image2", "Image3", "Image4" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
@@ -57,7 +59,6 @@ public class DataBaseAdapter {
 	private String[] Province = { "ID", "Name" };
 	private String[] Users = { "ID", "Name", "Email", "Password" };
 	private String[] WorkmanType = { "ID", "Name" };
-	
 
 	private final Context mContext;
 	private SQLiteDatabase mDb;
@@ -88,7 +89,7 @@ public class DataBaseAdapter {
 			mDb = mDbHelper.getReadableDatabase();
 		} catch (Exception mSQLException) {
 			Log.e(TAG, "open >>" + mSQLException.toString());
-			
+
 		}
 		return this;
 	}
@@ -97,13 +98,37 @@ public class DataBaseAdapter {
 		mDbHelper.close();
 	}
 
-	// --------------------------------------------------------
+	// /////////////// ListItems ////////////////
+	public ArrayList<ListItem> getListItemsById(int ListId) {
+
+		ArrayList<ListItem> result = new ArrayList<ListItem>();
+		ListItem item = null;
+		Cursor mCur = mDb.query("ListItem", ListItem, "ListId=?",
+				new String[] { String.valueOf(ListId) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToListItem(mCur);
+			result.add(item);
+		}
+
+		return result;
+	}
+
+	private ListItem CursorToListItem(Cursor mCur) {
+		ListItem item = new ListItem(mCur.getInt(0), mCur.getString(1),
+				mCur.getInt(2));
+		return item;
+	}
+
+
+
 	
 	@SuppressWarnings("unused")
 	private Province CursorToProvince(Cursor cursor){
 		Province tempProvince = new Province(cursor.getInt(0),cursor.getString(1)  );
 		 return tempProvince;
-		}
+
+	}
 	
 	@SuppressWarnings("unused")
 	private City CursorToCity(Cursor cursor){
@@ -122,10 +147,15 @@ public ArrayList<Froum> getAllFroum(){
 		result.add(tempFroum);
 	}
 	
+
+
+
+		return result;
+
+	}
+
 	
-	return result;
-	
-}
 
 
 }
+
