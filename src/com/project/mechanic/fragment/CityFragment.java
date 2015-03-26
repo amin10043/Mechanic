@@ -1,6 +1,7 @@
 package com.project.mechanic.fragment;
 
 import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,8 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.CityListAdapter;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -19,7 +21,7 @@ import com.project.mechanic.row_items.RowMain;
 public class CityFragment extends Fragment {
 
 	DataBaseAdapter adapter;
-	
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,8 +34,9 @@ public class CityFragment extends Fragment {
 		ArrayList<RowMain> mylist = adapter.getAllCityName();
 		adapter.close();
 
-		ListView lst1 = (ListView) view.findViewById(R.id.ListvCity);
-		CityListAdapter ListAdapter = new CityListAdapter(getActivity(),R.layout.row_city, mylist);
+		ListView lst1 = (ListView) view.findViewById(R.id.lstCity);
+		CityListAdapter ListAdapter = new CityListAdapter(getActivity(),
+				R.layout.row_city, mylist);
 
 		lst1.setAdapter(ListAdapter);
 		lst1.setOnItemClickListener(new OnItemClickListener() {
@@ -43,7 +46,7 @@ public class CityFragment extends Fragment {
 					long arg3) {
 
 				FragmentTransaction trans = getActivity()
-					.getSupportFragmentManager().beginTransaction();
+						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new IntroductionFragment());
 				trans.commit();
 			}
@@ -52,6 +55,3 @@ public class CityFragment extends Fragment {
 		return view;
 	}
 }
-
-
-
