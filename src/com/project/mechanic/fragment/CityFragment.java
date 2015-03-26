@@ -16,45 +16,24 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.CityListAdapter;
+import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.RowMain;
 
 public class CityFragment extends Fragment {
 
+	DataBaseAdapter adapter;
+	
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_city, null);
 
-		List<RowMain> mylist = new ArrayList<RowMain>();
+		adapter = new DataBaseAdapter(getActivity());
 
-		RowMain p1 = new RowMain();
-		RowMain p2 = new RowMain();
-		RowMain p3 = new RowMain();
-		RowMain p4 = new RowMain();
-		RowMain p5 = new RowMain();
-		RowMain p6 = new RowMain();
-		RowMain p7 = new RowMain();
-		RowMain p8 = new RowMain();
-
-		p1.setName("سبزوار");
-		p2.setName("بجنورد");
-		p3.setName("بابل");
-		p4.setName("رشت");
-		p5.setName("لاهیجان");
-		p6.setName("سنندج");
-		p7.setName("خرم آباد");
-		p8.setName("مراغه");
-
-	
-		mylist.add(p1);
-		mylist.add(p2);
-		mylist.add(p3);
-		mylist.add(p4);
-		mylist.add(p5);
-		mylist.add(p6);
-		mylist.add(p7);
-		mylist.add(p8);
+		adapter.open();
+		ArrayList<RowMain> mylist = adapter.getAllCityName();
+		adapter.close();
 
 		ListView lst1 = (ListView) view.findViewById(R.id.ListvCity);
 		CityListAdapter ListAdapter = new CityListAdapter(getActivity(),R.layout.row_city, mylist);

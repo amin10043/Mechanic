@@ -1,7 +1,5 @@
 package com.project.mechanic;
 
-import java.util.ArrayList;
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -21,7 +19,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.project.mechanic.entity.City;
 import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.fragment.MenuFragment;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -44,11 +41,6 @@ public class MainActivity extends FragmentActivity {
 
 		adapter = new DataBaseAdapter(this);
 
-		adapter.open();
-		ArrayList<City> allCity = adapter.getAllCity();
-		adapter.close();
-		//
-
 		mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -66,11 +58,10 @@ public class MainActivity extends FragmentActivity {
 		R.string.app_name /* "close drawer" description */) {
 
 			public void onDrawerClosed(View view) {
-				// getActionBar().setTitle(title);
 			}
 
 			public void onDrawerOpened(View drawerView) {
-				// getActionBar().setTitle(R.string.strMenu);
+
 			}
 
 			@Override
@@ -87,10 +78,6 @@ public class MainActivity extends FragmentActivity {
 		};
 
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-		// getActionBar().setDisplayHomeAsUpEnabled(true);
-		// getActionBar().setHomeButtonEnabled(true);
-		// getActionBar().setIcon(color.transparent);
 
 		ImageButton iBtnMenu = (ImageButton) findViewById(R.id.iBtnMenu);
 		ImageButton iBtnShare = (ImageButton) findViewById(R.id.iBtnShare);
@@ -171,6 +158,7 @@ public class MainActivity extends FragmentActivity {
 
 	private class DrawerItemClickListener implements
 			ListView.OnItemClickListener {
+		@SuppressWarnings("rawtypes")
 		@Override
 		public void onItemClick(AdapterView parent, View view, int position,
 				long id) {
@@ -181,7 +169,6 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		// Sync the toggle state after onRestoreInstanceState has occurred.
 		mDrawerToggle.syncState();
 	}
 
