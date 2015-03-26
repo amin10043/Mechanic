@@ -13,14 +13,14 @@
         android:layout_weight="10" >
 
         <ImageButton
-            android:id="@+id/btnAddcmt"
+            android:id="@+id/imgBtnAddtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:background="#EAEAEA"
-            android:src="@drawable/pl2" />
+            android:src="@drawable/add" />
 
     </RelativeLayout>
 
@@ -32,7 +32,7 @@
         android:fillViewport="true" >
 
         <ListView
-            android:id="@+id/lstCmt"
+            android:id="@+id/lstTitle"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
         </ListView>
@@ -40,7 +40,7 @@
     </ScrollView>
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imgViewadvertise"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="20"

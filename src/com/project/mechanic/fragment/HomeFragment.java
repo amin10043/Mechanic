@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment {
 
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new ProvinceFragment());
+				trans.replace(R.id.content_frame, new FroumtitleFragment());
 				trans.commit();
 			}
 		});
