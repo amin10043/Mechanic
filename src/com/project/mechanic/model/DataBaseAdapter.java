@@ -99,33 +99,19 @@ public class DataBaseAdapter {
 
 	// --------------------------------------------------------
 	
-	public ArrayList<Province> getAllProvince(){
-		ArrayList<Province> result = new ArrayList<Province>();
-		Cursor cursor = mDb.query(TableProvince, Province, null, null, null, null, null);
-		Province tempProvince;
-		while(cursor.moveToNext()){
-			tempProvince = new Province(cursor.getInt(0), cursor.getString(1));
-			result.add(tempProvince);
+	@SuppressWarnings("unused")
+	private Province CursorToProvince(Cursor cursor){
+		Province tempProvince = new Province(cursor.getInt(0),cursor.getString(1)  );
+		 return tempProvince;
 		}
-		
-		
-		return result;
-		
-	}
 	
-public ArrayList<City> getAllCity(){
-	ArrayList<City> result = new ArrayList<City>();
-	Cursor cursor = mDb.query(TableCity, CityColumn, null, null, null, null, null);
-	City tempCity;
-	while(cursor.moveToNext()){
-		tempCity = new City(cursor.getInt(0), cursor.getString(1));
-		result.add(tempCity);
-	}
-	
-	
-	return result;
-	
-}
+	@SuppressWarnings("unused")
+	private City CursorToCity(Cursor cursor){
+		City tempCity = new City(cursor.getInt(0),cursor.getString(1)  );
+		 return tempCity;
+		}
+
+
 
 public ArrayList<Froum> getAllFroum(){
 	ArrayList<Froum> result = new ArrayList<Froum>();
