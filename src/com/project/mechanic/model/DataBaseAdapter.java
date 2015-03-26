@@ -2,13 +2,11 @@ package com.project.mechanic.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.ListItem;
@@ -148,8 +146,10 @@ public ArrayList<City> getAllCity(){
 	}
 
 	private ListItem CursorToListItem(Cursor mCur) {
-		ListItem item = new ListItem(mCur.getInt(0), mCur.getString(1),
-				mCur.getInt(2));
+
+		ListItem item = new ListItem(mCur.getInt(0), mCur.getString(1),mCur.getInt(2));
+
+	
 
 		return item;
 	}
@@ -173,7 +173,8 @@ public ArrayList<City> getAllCity(){
 		return tempCity;
 	}
 
-	
+
+
 	public ArrayList<RowMain> getAllProvinceName() {
 		ArrayList<RowMain> result = new ArrayList<RowMain>();
 		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
