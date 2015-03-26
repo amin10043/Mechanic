@@ -1,0 +1,144 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/strange_bullseyes" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/i7"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/u3"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                </LinearLayout>
+            </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:layout_gravity="center"
+                 android:layout_marginTop="40dp"
+                 android:layout_weight="1"
+                 android:orientation="vertical" >
+
+                 <TextView
+                     android:id="@+id/textView1"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginLeft="20dp"
+                     android:enabled="true"
+                     android:text="آدرس ایمیل"
+                     android:textSize="15dp" />
+
+                 <EditText
+                     android:id="@+id/editText1"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center"
+                     android:layout_weight="1"
+                     android:ems="10"
+                     android:inputType="textEmailAddress"
+                     >
+
+                     <requestFocus />
+                 </EditText>
+
+             </LinearLayout>
+
+             <TextView
+                 android:id="@+id/textView2"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginLeft="20dp"
+                 android:layout_weight="1"
+                 android:text="رمز عبور"
+                 android:textSize="15dp" />
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:layout_marginTop="10dp"
+                 android:layout_weight="1"
+                 android:orientation="vertical" >
+
+                 <EditText
+                     android:id="@+id/editText2"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center"
+                     android:layout_weight="1"
+                     android:ems="10"
+                     android:enabled="true"
+                     android:inputType="textPassword"
+                />
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:layout_marginBottom="10dp"
+                 android:layout_marginTop="100dp"
+                 android:layout_weight="1"
+                 android:orientation="horizontal" >
+
+                 <Button
+                     android:id="@+id/button2"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:background="@drawable/i7"
+                     android:text="ورود" />
+
+                 <Button
+                     android:id="@+id/button1"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginLeft="20dp"
+                     android:layout_weight="1"
+                     android:background="@drawable/i7"
+                     android:text="انصراف" />
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="right"
+                 android:layout_weight="1" >
+
+                 <TextView
+                     android:id="@+id/textView3"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="right"
+                     android:layout_marginRight="20dp"
+                     android:enabled="true"
+                     android:text="رمز عبور را فراموش کرده ام..."
+                />
+
+             </LinearLayout>
+
+        </LinearLayout>
+
+       
+    </ScrollView>
