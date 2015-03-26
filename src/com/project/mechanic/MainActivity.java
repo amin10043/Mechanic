@@ -158,6 +158,12 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
+	public void setTitle(String title) {
+		TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
+		txtTitle.setText(title);
+
+	}
+
 	private class DrawerItemClickListener implements
 			ListView.OnItemClickListener {
 		@SuppressWarnings("rawtypes")

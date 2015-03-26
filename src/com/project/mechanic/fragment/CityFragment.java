@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.CityListAdapter;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -37,6 +38,8 @@ public class CityFragment extends Fragment {
 		ListView lst1 = (ListView) view.findViewById(R.id.lstCity);
 		CityListAdapter ListAdapter = new CityListAdapter(getActivity(),
 				R.layout.row_city, mylist);
+
+		((MainActivity) getActivity()).setTitle("");
 
 		lst1.setAdapter(ListAdapter);
 		lst1.setOnItemClickListener(new OnItemClickListener() {
