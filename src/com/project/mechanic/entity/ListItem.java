@@ -37,4 +37,8 @@ public class ListItem {
 		Name = name;
 	}
 
+	public ListItem() {
+
+	}
+
 }

@@ -13,19 +13,19 @@ import android.widget.TextView;
 import com.project.mechanic.R;
 import com.project.mechanic.row_items.RowMain;
 
-public class ProvinceListAdapter extends ArrayAdapter<RowMain> {
+public class CityListAdapter extends ArrayAdapter<RowMain> {
 
 	Context context;
 	List<RowMain> list;
-
-	public ProvinceListAdapter(Context context, int resource,
-			List<RowMain> objact) {
+	
+	public CityListAdapter(Context context, int resource, List<RowMain> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
 
 	}
+
 
 	@SuppressLint("ViewHolder")
 	@Override
@@ -34,16 +34,14 @@ public class ProvinceListAdapter extends ArrayAdapter<RowMain> {
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater
-				.inflate(R.layout.main_item_list, parent, false);
+		convertView = myInflater.inflate(R.layout.row_city, parent, false);
 
-		convertView = myInflater.inflate(R.layout.row_ostan, parent, false);
-
-		TextView tx1 = (TextView) convertView.findViewById(R.id.RowOstantxt);
-
-		RowMain person1 = list.get(position);
-
-		tx1.setText(person1.getName());
+		TextView txt1 = (TextView) convertView.findViewById(R.id.RowCitytxt);
+	
+		RowMain person = list.get(position);
+		
+		txt1.setText(person.getName());
+	
 
 		return convertView;
 	}

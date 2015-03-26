@@ -39,7 +39,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 
 		TextView txtName = (TextView) convertView.findViewById(R.id.txtName);
 		TextView txtNoti = (TextView) convertView.findViewById(R.id.txtNoti);
-		@SuppressWarnings("unused")
+
 		ImageView img = (ImageView) convertView.findViewById(R.id.imgItem);
 
 		tempItem = list.get(position);
