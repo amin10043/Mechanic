@@ -10,6 +10,7 @@
 	<string name="strMain">تالار تاسیسات مکانیکی ایران</string>
     <string name="ostan">انتخاب استان</string>
      <string name="city">انتخاب شهر</string>
+      <string name="brand">معرفی برند</string>
     
     
     <string-array name="MenuItems">

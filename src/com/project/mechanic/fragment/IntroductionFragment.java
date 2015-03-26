@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 
 public class IntroductionFragment extends Fragment {
@@ -14,8 +15,10 @@ public class IntroductionFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_introduction, null);
+
+		((MainActivity) getActivity()).setActivityTitle(R.string.brand);
+
 		return view;
 
 	}
-
 }
