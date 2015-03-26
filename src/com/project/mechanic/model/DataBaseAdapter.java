@@ -161,13 +161,13 @@ public class DataBaseAdapter {
 		return result;
 	}
 
-	public ArrayList<City> getAllCity() {
-		ArrayList<City> result = new ArrayList<City>();
+	public ArrayList<RowMain> getAllCityName() {
+		ArrayList<RowMain> result = new ArrayList<RowMain>();
 		Cursor cursor = mDb.query(TableCity, CityColumn, null, null, null,
 				null, null);
-		City tempCity;
+		RowMain tempCity;
 		while (cursor.moveToNext()) {
-			tempCity = new City(cursor.getInt(0), cursor.getString(1));
+			tempCity = new RowMain(cursor.getString(1));
 			result.add(tempCity);
 		}
 

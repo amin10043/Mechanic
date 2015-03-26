@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.ProvinceListAdapter;
 import com.project.mechanic.model.DataBaseAdapter;
