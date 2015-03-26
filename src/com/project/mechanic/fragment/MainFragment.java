@@ -47,6 +47,7 @@ public class MainFragment extends Fragment {
 
 				((MainActivity) getActivity())
 						.setLastFragment(MainFragment.this);
+
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new ProvinceFragment());
