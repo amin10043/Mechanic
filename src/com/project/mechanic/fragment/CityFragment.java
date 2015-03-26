@@ -1,8 +1,6 @@
 package com.project.mechanic.fragment;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
-
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.CityListAdapter;
 import com.project.mechanic.model.DataBaseAdapter;
