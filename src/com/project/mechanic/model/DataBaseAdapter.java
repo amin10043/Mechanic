@@ -137,7 +137,36 @@ public class DataBaseAdapter {
 		}
 
 
+	public ArrayList<Province> getAllProvince(){
+		ArrayList<Province> result = new ArrayList<Province>();
+		Cursor cursor = mDb.query(TableProvince, Province , null, null, null, null, null);
+		Province tempProvince;
+		while(cursor.moveToNext()){
+			tempProvince = new Province(cursor.getInt(0),cursor.getString(1)  );
+			result.add(tempProvince);
+		}
+		
+			return result;
 
+		}
+
+
+	public ArrayList<City> getAllCity(){
+		ArrayList<City> result = new ArrayList<City>();
+		Cursor cursor = mDb.query(TableCity, CityColumn , null, null, null, null, null);
+		City tempCity;
+		while(cursor.moveToNext()){
+			tempCity = new City(cursor.getInt(0),cursor.getString(1)  );
+			result.add(tempCity);
+		}
+		
+			return result;
+
+		}
+	
+	
+	
+	
 public ArrayList<Froum> getAllFroum(){
 	ArrayList<Froum> result = new ArrayList<Froum>();
 	Cursor cursor = mDb.query(TableFroum, Froum , null, null, null, null, null);
@@ -155,7 +184,20 @@ public ArrayList<Froum> getAllFroum(){
 	}
 
 	
+public Integer province_count(String table){
+	
+	Cursor cu=mDb.rawQuery("select * from "+table+" group by Name", null);
+	int s=cu.getCount();
+	return s;
+}
 
+public String province_display(String table,int row,int field){
+	
+	Cursor cu=mDb.rawQuery("select * from "+table+" group by Name order by ID", null);
+	cu.moveToPosition(row);
+	String s=cu.getString(field);
+	return s;
+}
 
 }
 

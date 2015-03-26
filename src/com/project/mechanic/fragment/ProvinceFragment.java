@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -29,6 +30,7 @@ public class ProvinceFragment extends Fragment {
 
 		List<RowMain> mylist = new ArrayList<RowMain>();
 
+		
 		
 		
 		
