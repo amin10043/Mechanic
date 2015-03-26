@@ -1,9 +1,26 @@
 package com.project.mechanic.row_items;
 
 public class RowMain {
+
 	String Name;
 	String noti;
 	byte[] image;
+
+	public RowMain(String name, String noti, byte[] image) {
+		super();
+		Name = name;
+		this.noti = noti;
+		this.image = image;
+	}
+
+	public RowMain(String name) {
+		super();
+		Name = name;
+	}
+
+	public RowMain() {
+
+	}
 
 	public String getName() {
 		return this.Name;

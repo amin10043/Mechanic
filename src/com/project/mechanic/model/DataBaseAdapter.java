@@ -13,6 +13,7 @@ import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Province;
+import com.project.mechanic.row_items.RowMain;
 
 public class DataBaseAdapter {
 
@@ -120,84 +121,90 @@ public class DataBaseAdapter {
 		return item;
 	}
 
-
-
-	
 	@SuppressWarnings("unused")
-	private Province CursorToProvince(Cursor cursor){
-		Province tempProvince = new Province(cursor.getInt(0),cursor.getString(1)  );
-		 return tempProvince;
+	private Province CursorToProvince(Cursor cursor) {
+		Province tempProvince = new Province(cursor.getInt(0),
+				cursor.getString(1));
+		return tempProvince;
 
 	}
-	
+
 	@SuppressWarnings("unused")
-	private City CursorToCity(Cursor cursor){
-		City tempCity = new City(cursor.getInt(0),cursor.getString(1)  );
-		 return tempCity;
-		}
+	private City CursorToCity(Cursor cursor) {
+		City tempCity = new City(cursor.getInt(0), cursor.getString(1));
+		return tempCity;
+	}
 
-
-	public ArrayList<Province> getAllProvince(){
+	public ArrayList<Province> getAllProvince() {
 		ArrayList<Province> result = new ArrayList<Province>();
-		Cursor cursor = mDb.query(TableProvince, Province , null, null, null, null, null);
+		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
+				null, null);
 		Province tempProvince;
-		while(cursor.moveToNext()){
-			tempProvince = new Province(cursor.getInt(0),cursor.getString(1)  );
+		while (cursor.moveToNext()) {
+			tempProvince = new Province(cursor.getInt(0), cursor.getString(1));
 			result.add(tempProvince);
 		}
-		
-			return result;
-
-		}
-
-
-	public ArrayList<City> getAllCity(){
-		ArrayList<City> result = new ArrayList<City>();
-		Cursor cursor = mDb.query(TableCity, CityColumn , null, null, null, null, null);
-		City tempCity;
-		while(cursor.moveToNext()){
-			tempCity = new City(cursor.getInt(0),cursor.getString(1)  );
-			result.add(tempCity);
-		}
-		
-			return result;
-
-		}
-	
-	
-	
-	
-public ArrayList<Froum> getAllFroum(){
-	ArrayList<Froum> result = new ArrayList<Froum>();
-	Cursor cursor = mDb.query(TableFroum, Froum , null, null, null, null, null);
-	Froum tempFroum;
-	while(cursor.moveToNext()){
-		tempFroum = new Froum(cursor.getInt(0), cursor.getInt(3), cursor.getString(2),cursor.getString(1)  );
-		result.add(tempFroum);
-	}
-	
-
-
 
 		return result;
 
 	}
 
-	
-public Integer province_count(String table){
-	
-	Cursor cu=mDb.rawQuery("select * from "+table+" group by Name", null);
-	int s=cu.getCount();
-	return s;
-}
+	public ArrayList<RowMain> getAllProvinceName() {
+		ArrayList<RowMain> result = new ArrayList<RowMain>();
+		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
+				null, null);
+		RowMain tempProvince;
+		while (cursor.moveToNext()) {
+			tempProvince = new RowMain(cursor.getString(1));
+			result.add(tempProvince);
+		}
+		return result;
+	}
 
-public String province_display(String table,int row,int field){
-	
-	Cursor cu=mDb.rawQuery("select * from "+table+" group by Name order by ID", null);
-	cu.moveToPosition(row);
-	String s=cu.getString(field);
-	return s;
-}
+	public ArrayList<City> getAllCity() {
+		ArrayList<City> result = new ArrayList<City>();
+		Cursor cursor = mDb.query(TableCity, CityColumn, null, null, null,
+				null, null);
+		City tempCity;
+		while (cursor.moveToNext()) {
+			tempCity = new City(cursor.getInt(0), cursor.getString(1));
+			result.add(tempCity);
+		}
+
+		return result;
+
+	}
+
+	public ArrayList<Froum> getAllFroum() {
+		ArrayList<Froum> result = new ArrayList<Froum>();
+		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
+				null);
+		Froum tempFroum;
+		while (cursor.moveToNext()) {
+			tempFroum = new Froum(cursor.getInt(0), cursor.getInt(3),
+					cursor.getString(2), cursor.getString(1));
+			result.add(tempFroum);
+		}
+
+		return result;
+
+	}
+
+	public Integer province_count(String table) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
+				null);
+		int s = cu.getCount();
+		return s;
+	}
+
+	public String province_display(String table, int row, int field) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table
+				+ " group by Name order by ID", null);
+		cu.moveToPosition(row);
+		String s = cu.getString(field);
+		return s;
+	}
 
 }
-
