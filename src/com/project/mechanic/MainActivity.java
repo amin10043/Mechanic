@@ -1,5 +1,7 @@
 package com.project.mechanic;
 
+
+
 import java.util.ArrayList;
 
 import android.content.Intent;
@@ -21,6 +23,10 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
+
+import com.project.mechanic.R.color;
+import com.project.mechanic.fragment.HomeFragment;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.fragment.MenuFragment;
@@ -42,12 +48,16 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+
+		
+		adapter= new DataBaseAdapter(this);
+		
+		//
+	
+
 		adapter = new DataBaseAdapter(this);
 
-		adapter.open();
-		ArrayList<City> allCity = adapter.getAllCity();
-		adapter.close();
-		//
+		
 
 		mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
 
@@ -171,6 +181,7 @@ public class MainActivity extends FragmentActivity {
 
 	private class DrawerItemClickListener implements
 			ListView.OnItemClickListener {
+		@SuppressWarnings("rawtypes")
 		@Override
 		public void onItemClick(AdapterView parent, View view, int position,
 				long id) {
