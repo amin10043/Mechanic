@@ -14,7 +14,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:layout_weight="1"
-    android:background="@drawable/Register" >
+    android:background="@drawable/register2" >
 
         </LinearLayout>
 
@@ -100,7 +100,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:layout_marginBottom="10dp"
-    android:layout_marginLeft="50dp"
+    android:layout_marginLeft="20dp"
     android:layout_marginTop="100dp"
     android:layout_weight="1"
     android:addStatesFromChildren="false"
@@ -113,14 +113,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="انصراف" />
+        android:background="@drawable/cancle2" />
 
     <Button
         android:id="@+id/btnreg2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="ثبت نام" />
+        android:background="@drawable/register" />
 
 </LinearLayout>
             

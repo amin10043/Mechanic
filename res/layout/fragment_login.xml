@@ -84,7 +84,7 @@
                  android:layout_height="wrap_content"
                  android:layout_gravity="center"
                  android:layout_marginBottom="10dp"
-                 android:layout_marginTop="50dp"
+                 android:layout_marginTop="80dp"
                  android:layout_weight="1"
                  android:orientation="horizontal" >
 
@@ -93,7 +93,7 @@
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_weight="1"
-                     android:text="ورود" />
+                     android:background="@drawable/register" />
 
                  <Button
                      android:id="@+id/btncancle"
@@ -101,24 +101,24 @@
                      android:layout_height="wrap_content"
                      android:layout_marginLeft="20dp"
                      android:layout_weight="1"
-                     android:text="انصراف" />
+                     android:background="@drawable/cancle2" />
 
              </LinearLayout>
 
              <LinearLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:layout_gravity="center"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="right"
                  android:layout_marginBottom="10dp"
-                 android:layout_weight="1"
-                 >
+                 android:layout_weight="1" >
 
                  <Button
                      android:id="@+id/btnforgot"
                      style="?android:attr/buttonStyleSmall"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:layout_gravity="left"
+                     android:layout_marginRight="25dp"
+                     android:background="@color/transparent"
                      android:text="فراموشی کلمه عبور" />
 
                  <Button
@@ -126,6 +126,9 @@
                      style="?android:attr/buttonStyleSmall"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
+                     android:layout_gravity="right"
+                     android:layout_marginRight="20dp"
+                     android:background="@color/transparent"
                      android:text="ثبت نام" />
 
              </LinearLayout>

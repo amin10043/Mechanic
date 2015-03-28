@@ -1,20 +1,17 @@
 package com.project.mechanic.fragment;
 
 import com.project.mechanic.R;
-import com.project.mechanic.R.layout;
-import com.project.mechanic.R.menu;
 
 import android.os.Bundle;
-import android.app.Activity;
-import android.content.Context;
+
 import android.support.v4.app.Fragment;
-import android.util.AttributeSet;
+import android.support.v4.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
-import android.view.Menu;
+
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
-import android.widget.AutoCompleteTextView.Validator;
+
 import android.widget.Button;
 
 public class LoginFragment extends Fragment {
@@ -64,6 +61,13 @@ public class LoginFragment extends Fragment {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
+		
+			
+			FragmentTransaction trans = getActivity()
+					.getSupportFragmentManager().beginTransaction();
+			trans.replace(R.id.content_frame, new RegisterFragment());
+			trans.commit();
+			
 			
 		}
 	});
