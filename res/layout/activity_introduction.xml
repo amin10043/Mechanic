@@ -167,7 +167,7 @@
                             android:src="@drawable/facebook" />
 
                         <ImageButton
-                            android:id="@+id/imgBtnAddtitle"
+                            android:id="@+id/imgBtnAddcmt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -488,7 +488,7 @@
                         android:layout_weight="1" >
 
                         <Button
-                            android:id="@+id/button1"
+                            android:id="@+id/btnCmt"
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

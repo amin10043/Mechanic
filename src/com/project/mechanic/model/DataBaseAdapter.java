@@ -2,11 +2,14 @@ package com.project.mechanic.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.ListItem;
@@ -101,6 +104,16 @@ public class DataBaseAdapter {
 		mDbHelper.close();
 	}
 
+	
+	
+public void insertCommenttoDb(String Comment){
+		
+		ContentValues cv=new ContentValues();
+		cv.put("Description", Comment);
+		mDb.insert(TableComment, null, cv);
+	
+		
+	}
 
 	
 	
@@ -304,7 +317,7 @@ public ArrayList<Integer>  getUSeridComment(){
 
 
 
-public ArrayList<Users> getUserOfcomment(String froumId){
+public ArrayList<Users> getUserOfcomment(int froumId){
 	ArrayList<Users> result = new ArrayList<Users>();
 	Cursor cursor = mDb.rawQuery("Select "+ Users[0] +","+ Users[1] +","+Users[2] +"," + Users[3] + "  From Users inner join Comment on User.id=Comment.UserId where Comment.PaperId =" + froumId, null);
 	while(cursor.moveToNext()){
