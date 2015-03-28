@@ -1,9 +1,5 @@
 package com.project.mechanic.fragment;
 
-import com.project.mechanic.R;
-import com.project.mechanic.R.layout;
-import com.project.mechanic.R.menu;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
