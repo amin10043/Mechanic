@@ -46,7 +46,7 @@ public class DataBaseAdapter {
 
 	private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
-	private String[] CityColumn = { "ID", "Name" };
+	private String[] CityColumn = { "ID", "Name", "ProvinceId" };
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId" };
@@ -144,7 +144,8 @@ public class DataBaseAdapter {
 				null, null);
 		City tempCity;
 		while (cursor.moveToNext()) {
-			tempCity = new City(cursor.getInt(0), cursor.getString(1));
+			tempCity = new City(cursor.getInt(0), cursor.getString(1),
+					cursor.getInt(2));
 			result.add(tempCity);
 		}
 		return result;
@@ -182,6 +183,22 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<City> getCitysById(int ProvinceId) {
+
+		ArrayList<City> result = new ArrayList<City>();
+		City item = null;
+		Cursor mCur = mDb.query("City", CityColumn, "ProvinceId=?",
+				new String[] { String.valueOf(ProvinceId) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCity(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
 	private ListItem CursorToListItem(Cursor mCur) {
 
 		ListItem item = new ListItem(mCur.getInt(0), mCur.getString(1),
@@ -200,7 +217,8 @@ public class DataBaseAdapter {
 
 	@SuppressWarnings("unused")
 	private City CursorToCity(Cursor cursor) {
-		City tempCity = new City(cursor.getInt(0), cursor.getString(1));
+		City tempCity = new City(cursor.getInt(0), cursor.getString(1),
+				cursor.getInt(2));
 		return tempCity;
 	}
 
