@@ -66,6 +66,7 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public boolean onOptionsItemSelected(MenuItem item) {
+
 				if (item != null && item.getItemId() == android.R.id.home) {
 					if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
 						mDrawerLayout.closeDrawer(Gravity.RIGHT);
