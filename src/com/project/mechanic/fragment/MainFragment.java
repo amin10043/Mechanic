@@ -4,15 +4,11 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.MainListAdapter;
 import com.project.mechanic.entity.ListItem;
@@ -38,23 +34,6 @@ public class MainFragment extends Fragment {
 				R.layout.main_item_list, mylist);
 
 		lstMain.setAdapter(ListAdapter);
-
-		lstMain.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-
-				((MainActivity) getActivity())
-						.setLastFragment(MainFragment.this);
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new ProvinceFragment());
-				trans.addToBackStack(null);
-				trans.commit();
-			}
-		});
 
 		return view;
 	}

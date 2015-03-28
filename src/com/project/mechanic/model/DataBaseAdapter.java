@@ -2,14 +2,17 @@ package com.project.mechanic.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.ListItem;
+import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.row_items.RowMain;
 import com.project.mechanic.entity.*;
@@ -24,7 +27,6 @@ public class DataBaseAdapter {
 	private String TableComment = "Comment";
 	private String TableExecutertype = "Executertype";
 	private String TableFavorite = "Favorite";
-
 	private String TableFroum = "Froum";
 	private String TableLike = "Like";
 	private String TableList = "List";
@@ -128,6 +130,19 @@ public ArrayList<City> getAllCity(){
 	}
 	return result;
 }
+
+public ArrayList<Object> getAllObject(){
+	ArrayList<Object> result = new ArrayList<Object>();
+	Cursor cursor = mDb.query(TableObject, Object, null, null, null, null, null);
+	Object tempObject;
+	while(cursor.moveToNext()){
+		tempObject = new Object(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), null, null, null, null);
+		result.add(tempObject);
+	}
+	return result;
+}
+
+
 	// /////////////// ListItems ////////////////
 	public ArrayList<ListItem> getListItemsById(int ListId) {
 
@@ -145,6 +160,8 @@ public ArrayList<City> getAllCity(){
 
 	}
 
+	
+	
 	private ListItem CursorToListItem(Cursor mCur) {
 
 		ListItem item = new ListItem(mCur.getInt(0), mCur.getString(1),mCur.getInt(2));
@@ -163,17 +180,17 @@ public ArrayList<City> getAllCity(){
 
 	}
 	
-	
-
-
-
 	@SuppressWarnings("unused")
 	private City CursorToCity(Cursor cursor) {
 		City tempCity = new City(cursor.getInt(0), cursor.getString(1));
 		return tempCity;
 	}
 
-
+	@SuppressWarnings("unused")
+	private Object CursorToObject(Cursor cursor) {
+		Object tempObject = new Object(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), null, null, null, null);
+		return tempObject;
+	}
 
 	public ArrayList<RowMain> getAllProvinceName() {
 		ArrayList<RowMain> result = new ArrayList<RowMain>();
@@ -201,6 +218,22 @@ public ArrayList<City> getAllCity(){
 
 	}
 
+	public ArrayList<RowMain> getAllObjectName(){
+		ArrayList<RowMain> result = new ArrayList<RowMain>();
+		Cursor cursor = mDb.query(TableObject, Object, null, null, null, null, null);
+		RowMain tempObject;
+		while(cursor.moveToNext()){
+			tempObject = new RowMain(cursor.getString(1));
+			result.add(tempObject);
+		}
+		
+		
+		return result;
+		
+	}
+	
+	
+	
 	public ArrayList<Froum> getAllFroum() {
 		ArrayList<Froum> result = new ArrayList<Froum>();
 		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
@@ -250,6 +283,20 @@ public ArrayList<City> getAllCity(){
 		return s;
 	}
 
+	public Integer Object_count(String table) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",null);
+		int s = cu.getCount();
+		return s;
+	}
+
+	public String Object_display(String table, int row, int field) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name order by ID", null);
+		cu.moveToPosition(row);
+		String s = cu.getString(field);
+		return s;
+	}
 
 
 

@@ -7,7 +7,16 @@
     <string name="title_activity_splash">مکانیکال</string>
     <string name="text01">تاسیسات مکانیکی</string>
     <string name="strMenu">منو</string>
+
     <string name="strMain">تالار تاسیسات مکانیکی ایران</string>
+	<string name="strMain">تالار تاسیسات مکانیکی ایران</string>
+    <string name="ostan">انتخاب استان</string>
+    <string name="object">انتخاب برند</string>
+    <string name="city">انتخاب شهر</string>
+    <string name="brand">معرفی برند</string>
+
+    
+    
 
     <string-array name="MenuItems">
         <item name="home">خانه</item>
