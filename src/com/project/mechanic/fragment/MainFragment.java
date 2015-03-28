@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.project.mechanic.R;
@@ -35,6 +36,8 @@ public class MainFragment extends Fragment {
 
 		lstMain.setAdapter(ListAdapter);
 
+
+		
 		return view;
 	}
 }

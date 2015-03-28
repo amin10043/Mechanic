@@ -1,5 +1,6 @@
 package com.project.mechanic.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -10,12 +11,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
+import com.project.mechanic.fragment.FroumtitleFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
+import com.project.mechanic.model.DataBaseAdapter;
 
 public class MainListAdapter extends ArrayAdapter<ListItem> {
 
@@ -23,12 +27,14 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 	List<ListItem> list;
 	int[] imageId;
 	ListItem tempItem;
+	DataBaseAdapter adapter;
 
 	public MainListAdapter(Context context, int resource, List<ListItem> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
+		adapter = new DataBaseAdapter(context);
 
 	}
 
@@ -53,13 +59,41 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new ProvinceFragment());
-				trans.addToBackStack(null);
-				trans.commit();
+				LinearLayout parentlayout = (LinearLayout) v;
+				TextView txtName = (TextView) parentlayout
+						.findViewById(R.id.txtName);
+				String item = txtName.getText().toString();
+
+				adapter.open();
+				ArrayList<ListItem> allItems = adapter.getListItemsById(1);
+				int id = 0;
+				for (ListItem listItem : allItems) {
+					if (item.equals(listItem.getName())) {
+						// check authentication and authorization
+						id = listItem.getId();
+					}
+				}
+				adapter.close();
+
+				if (id == 1 || id == 2) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+				} else if (id == 3 || id == 4 || id == 5 || id == 6) {
+
+				}
+
+				else if (id == 7) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new FroumtitleFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+				}
 			}
 		});
 

@@ -9,6 +9,10 @@ import java.util.List;
 
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FroumListAdapter;
+import com.project.mechanic.entity.Comment;
+import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.Dialogcmt.OnMyDialogResult;
+import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.FroumItem;
 
 import android.annotation.SuppressLint;
@@ -21,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -29,8 +34,18 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class FroumFragment extends Fragment{
 	
-	ImageButton btn ;
-	final private int Dialog_Reset=0;
+	
+	DataBaseAdapter adapter;
+	private int frmid;
+	private ImageButton btnAddcmt;
+	private Button btncmt;
+	List<FroumItem> cmtlist1;
+	
+	 Dialogcmt  dialog;
+	
+	
+	ListView lst;
+	
 	@SuppressLint("InflateParams")
 	
 	
@@ -38,33 +53,36 @@ public class FroumFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceStdataate) {
 		 View view = inflater.inflate(R.layout.fragment_froum, null);
-		 btn = (ImageButton)view.findViewById(R.id.imgBtnAddtitle);
-			btn.setOnClickListener(new View.OnClickListener() {
-				
-				public void onClick(View arg0) {
-					Dialog dialog = new Dialog(getActivity());
-				//	dialog.show(R.layout.dialog_addcomment);
-					
-					
-				}
-			});
-					
-		
 		 
-	List<FroumItem> cmtlist1 = new ArrayList<FroumItem>();
-
-		FroumItem p1 = new FroumItem();
+		 btnAddcmt = (ImageButton)view.findViewById(R.id.imgBtnAddcmt);
+		 btncmt = (Button)view.findViewById(R.id.btnCmt);
+		 
+		   /* adapter= new DataBaseAdapter(getActivity());
+			adapter.open();
+			ArrayList<Users> allFroum =  adapter.getUserOfcomment( frmid);
+			adapter.close();*/
+			
+			
+		 
+	    cmtlist1 = new ArrayList<FroumItem>();
+	
+	
+	
+	
+		final FroumItem p1 = new FroumItem();
 		FroumItem p2 = new FroumItem();
 		FroumItem p3 = new FroumItem();
 		FroumItem p4 = new FroumItem();
 		
-		p1.setComment("��� 1");
-		p2.setComment("��� 2");
-		p3.setComment("��� 3");
-		p4.setComment("��� 4");
 		
-
-	
+		/*p1.setComment();
+		p2.setComment("نظر 2");
+		p3.setComment("نظر 3");
+		p4.setComment("نظر 4");*/
+		p1.setUsername("شقایق کلالی");
+		p2.setUsername("شقایق کلالی");
+		p3.setUsername("شقایق کلالی");
+		p4.setUsername("شقایق کلالی");
 		
 		cmtlist1.add(p1);
 		cmtlist1.add(p2);
@@ -72,14 +90,64 @@ public class FroumFragment extends Fragment{
 		cmtlist1.add(p4);
 		
 
-		ListView lst = (ListView) view.findViewById(R.id.lstTitle);
-		FroumListAdapter ListAdapter = new FroumListAdapter(getActivity(),R.layout.froumcmtitem, cmtlist1);
+		 lst = (ListView) view.findViewById(R.id.lstTitle);
+		
+		
+		btnAddcmt.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
 
-		lst.setAdapter(ListAdapter);
+				
+			  dialog = new Dialogcmt(getActivity());
+			  dialog.setContentView(R.layout.dialog_addcomment);
+			  dialog.show();
+
+				
+				 
+				
+			}
+	});
 		return view;
 	}
 
 	 
+	
+	
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		 
+		/*dialog.setDialogResult(new OnMyDialogResult(){
+		    public void finish(String result){
+		        // now you can use the 'result' on your activity
+		     
+		     p1.setComment(result);
+		    }
+		});*/
+		lst.deferNotifyDataSetChanged();
 		
+		
+	}
+	
+	public void refresh(){
+        adapter.open();
+        int count=adapter.Tablecommentcount();
+        String[] cmt=new String[count];
+        for(int i=0;i<count;i++){
+        cmt[i]=adapter.DisplayComment(i,3);
+        }
+        adapter.close();
+       // list1.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,cmt));
+        FroumListAdapter ListAdapter = new FroumListAdapter(getActivity(),R.layout.froumcmtitem, cmtlist1);
+       // cmtlist1 = cmt
+		lst.setAdapter(ListAdapter);
+        }
+	
+	
 
 }
