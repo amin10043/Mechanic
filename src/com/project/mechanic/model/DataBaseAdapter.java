@@ -10,12 +10,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.project.mechanic.entity.City;
+import com.project.mechanic.entity.Comment;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Province;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.row_items.RowMain;
-import com.project.mechanic.entity.*;
+
 public class DataBaseAdapter {
 
 	protected static final String TAG = "DataAdapter";
@@ -41,9 +43,6 @@ public class DataBaseAdapter {
 	private String TableUsers = "Users";
 	private String TableWorkmanType = "WorkmanType";
 
-
-
-	
 	private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] CityColumn = { "ID", "Name" };
@@ -103,45 +102,46 @@ public class DataBaseAdapter {
 		mDbHelper.close();
 	}
 
-
-	
-	
-	public ArrayList<Province> getAllProvince(){
+	public ArrayList<Province> getAllProvince() {
 		ArrayList<Province> result = new ArrayList<Province>();
-		Cursor cursor = mDb.query(TableProvince, Province, null, null, null, null, null);
+		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
+				null, null);
 		Province tempProvince;
-		while(cursor.moveToNext()){
+		while (cursor.moveToNext()) {
 			tempProvince = new Province(cursor.getInt(0), cursor.getString(1));
 			result.add(tempProvince);
 		}
-		
-		
+
 		return result;
-		
-	}
-	
-public ArrayList<City> getAllCity(){
-	ArrayList<City> result = new ArrayList<City>();
-	Cursor cursor = mDb.query(TableCity, CityColumn, null, null, null, null, null);
-	City tempCity;
-	while(cursor.moveToNext()){
-		tempCity = new City(cursor.getInt(0), cursor.getString(1));
-		result.add(tempCity);
-	}
-	return result;
-}
 
-public ArrayList<Object> getAllObject(){
-	ArrayList<Object> result = new ArrayList<Object>();
-	Cursor cursor = mDb.query(TableObject, Object, null, null, null, null, null);
-	Object tempObject;
-	while(cursor.moveToNext()){
-		tempObject = new Object(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), null, null, null, null);
-		result.add(tempObject);
 	}
-	return result;
-}
 
+	public ArrayList<City> getAllCity() {
+		ArrayList<City> result = new ArrayList<City>();
+		Cursor cursor = mDb.query(TableCity, CityColumn, null, null, null,
+				null, null);
+		City tempCity;
+		while (cursor.moveToNext()) {
+			tempCity = new City(cursor.getInt(0), cursor.getString(1));
+			result.add(tempCity);
+		}
+		return result;
+	}
+
+	public ArrayList<Object> getAllObject() {
+		ArrayList<Object> result = new ArrayList<Object>();
+		Cursor cursor = mDb.query(TableObject, Object, null, null, null, null,
+				null);
+		Object tempObject;
+		while (cursor.moveToNext()) {
+			tempObject = new Object(cursor.getInt(0), cursor.getString(1),
+					cursor.getString(2), cursor.getString(3),
+					cursor.getString(4), cursor.getString(5), null, null, null,
+					null);
+			result.add(tempObject);
+		}
+		return result;
+	}
 
 	// /////////////// ListItems ////////////////
 	public ArrayList<ListItem> getListItemsById(int ListId) {
@@ -160,13 +160,10 @@ public ArrayList<Object> getAllObject(){
 
 	}
 
-	
-	
 	private ListItem CursorToListItem(Cursor mCur) {
 
-		ListItem item = new ListItem(mCur.getInt(0), mCur.getString(1),mCur.getInt(2));
-
-	
+		ListItem item = new ListItem(mCur.getInt(0), mCur.getString(1),
+				mCur.getInt(2));
 
 		return item;
 	}
@@ -177,9 +174,8 @@ public ArrayList<Object> getAllObject(){
 				cursor.getString(1));
 		return tempProvince;
 
-
 	}
-	
+
 	@SuppressWarnings("unused")
 	private City CursorToCity(Cursor cursor) {
 		City tempCity = new City(cursor.getInt(0), cursor.getString(1));
@@ -188,7 +184,9 @@ public ArrayList<Object> getAllObject(){
 
 	@SuppressWarnings("unused")
 	private Object CursorToObject(Cursor cursor) {
-		Object tempObject = new Object(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), null, null, null, null);
+		Object tempObject = new Object(cursor.getInt(0), cursor.getString(1),
+				cursor.getString(2), cursor.getString(3), cursor.getString(4),
+				cursor.getString(5), null, null, null, null);
 		return tempObject;
 	}
 
@@ -218,22 +216,20 @@ public ArrayList<Object> getAllObject(){
 
 	}
 
-	public ArrayList<RowMain> getAllObjectName(){
+	public ArrayList<RowMain> getAllObjectName() {
 		ArrayList<RowMain> result = new ArrayList<RowMain>();
-		Cursor cursor = mDb.query(TableObject, Object, null, null, null, null, null);
+		Cursor cursor = mDb.query(TableObject, Object, null, null, null, null,
+				null);
 		RowMain tempObject;
-		while(cursor.moveToNext()){
+		while (cursor.moveToNext()) {
 			tempObject = new RowMain(cursor.getString(1));
 			result.add(tempObject);
 		}
-		
-		
+
 		return result;
-		
+
 	}
-	
-	
-	
+
 	public ArrayList<Froum> getAllFroum() {
 		ArrayList<Froum> result = new ArrayList<Froum>();
 		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
@@ -285,95 +281,98 @@ public ArrayList<Object> getAllObject(){
 
 	public Integer Object_count(String table) {
 
-		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",null);
+		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
+				null);
 		int s = cu.getCount();
 		return s;
 	}
 
 	public String Object_display(String table, int row, int field) {
 
-		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name order by ID", null);
+		Cursor cu = mDb.rawQuery("select * from " + table
+				+ " group by Name order by ID", null);
 		cu.moveToPosition(row);
 		String s = cu.getString(field);
 		return s;
 	}
 
+	/*
+	 * public String getUseridFroum(){ ArrayList<Froum> result = new
+	 * ArrayList<Froum>(); String[] s = new String[1]; s[0] = "UserId"; Cursor
+	 * cursor = mDb.query(TableFroum,s , null,null , null, null, null); Froum
+	 * tempFroum; if(cursor.moveToNext()){ tempFroum = new
+	 * Froum(cursor.getInt(0), cursor.getInt(3),
+	 * cursor.getString(2),cursor.getString(1) ); result.add(tempFroum); }
+	 * 
+	 * 
+	 * return result;
+	 * 
+	 * }
+	 */
 
+	public ArrayList<Comment> getAllComment() {
+		ArrayList<Comment> result = new ArrayList<Comment>();
+		Cursor cursor = mDb.query(TableComment, Comment, null, null, null,
+				null, null);
+		Comment tempComment;
+		while (cursor.moveToNext()) {
+			result.add(CursorToComment(cursor));
+		}
 
+		return result;
 
-/*public String getUseridFroum(){
-	ArrayList<Froum> result = new ArrayList<Froum>();
-	String[] s = new String[1];
-	s[0] = "UserId";
-	Cursor cursor = mDb.query(TableFroum,s , null,null , null, null, null);
-	Froum tempFroum;
-	if(cursor.moveToNext()){
-		tempFroum = new Froum(cursor.getInt(0), cursor.getInt(3), cursor.getString(2),cursor.getString(1)  );
-		result.add(tempFroum);
 	}
-	
-	
-	return result;
-	
-}*/
 
-public ArrayList<Comment> getAllComment(){
-	ArrayList<Comment> result = new ArrayList<Comment>();
-	Cursor cursor = mDb.query(TableComment, Comment , null, null, null, null, null);
-	Comment tempComment;
-	while(cursor.moveToNext()){
-		result.add(CursorToComment(cursor));
+	public ArrayList<Integer> getUSeridComment() {
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		String[] s = new String[1];
+		s[0] = "UserId";
+		Cursor cursor = mDb
+				.query(TableComment, s, null, null, null, null, null);
+
+		while (cursor.moveToNext()) {
+			Integer x = cursor.getInt(0);
+			result.add(x);
+		}
+
+		return result;
+
 	}
-	
-	
-	return result;
-	
-}
 
+	public ArrayList<Users> getUserOfcomment(String froumId) {
+		ArrayList<Users> result = new ArrayList<Users>();
+		Cursor cursor = mDb
+				.rawQuery(
+						"Select "
+								+ Users[0]
+								+ ","
+								+ Users[1]
+								+ ","
+								+ Users[2]
+								+ ","
+								+ Users[3]
+								+ "  From Users inner join Comment on User.id=Comment.UserId where Comment.PaperId ="
+								+ froumId, null);
+		while (cursor.moveToNext()) {
+			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
+					cursor.getString(2), cursor.getString(3));
+			result.add(tempusers);
+		}
+		return result;
 
-public ArrayList<Integer>  getUSeridComment(){
-	ArrayList<Integer> result = new ArrayList<Integer>();
-	String[] s = new String[1];
-	s[0]="UserId";
-	Cursor cursor = mDb.query(TableComment, s , null, null, null, null, null);
-	
-	while(cursor.moveToNext()){
-		Integer x = cursor.getInt(0);
-		result.add(x);
 	}
-	
-	
-	return result;
-	
-}
 
-
-
-
-
-public ArrayList<Users> getUserOfcomment(String froumId){
-	ArrayList<Users> result = new ArrayList<Users>();
-	Cursor cursor = mDb.rawQuery("Select "+ Users[0] +","+ Users[1] +","+Users[2] +"," + Users[3] + "  From Users inner join Comment on User.id=Comment.UserId where Comment.PaperId =" + froumId, null);
-	while(cursor.moveToNext()){
-		Users tempusers = new Users(cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getString(3));
-		result.add(tempusers);
+	private Comment CursorToComment(Cursor cursor) {
+		Comment tempComment = new Comment(cursor.getInt(0), cursor.getInt(1),
+				cursor.getInt(2), cursor.getString(3));
+		return tempComment;
 	}
-	return result;
-	
-}
 
+	private Froum CursorToFroum(Cursor cursor) {
+		Froum tempFroum = new Froum(cursor.getInt(0), cursor.getInt(3),
+				cursor.getString(2), cursor.getString(1));
 
-private Comment CursorToComment(Cursor cursor){
-	Comment tempComment = new Comment(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2),cursor.getString(3)  );
-	return tempComment;
-}
-
-private Froum CursorToFroum(Cursor cursor){
-	Froum tempFroum = new Froum(cursor.getInt(0), cursor.getInt(3), cursor.getString(2),cursor.getString(1)  );
-	
-	return tempFroum;
-}
-
+		return tempFroum;
+	}
 
 }
-
