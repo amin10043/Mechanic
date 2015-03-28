@@ -1,5 +1,6 @@
 package com.project.mechanic.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -14,14 +15,19 @@ import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.entity.City;
+import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.CityFragment;
+import com.project.mechanic.fragment.ProvinceFragment;
+import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.RowMain;
 
 public class ProvinceListAdapter extends ArrayAdapter<RowMain> {
 
 	Context context;
 	List<RowMain> list;
-
+	DataBaseAdapter adapter;
+	
 	public ProvinceListAdapter(Context context, int resource,List<RowMain> objact) {
 		super(context, resource, objact);
 
@@ -53,11 +59,28 @@ public class ProvinceListAdapter extends ArrayAdapter<RowMain> {
 			@Override
 			public void onClick(View arg0) {
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new CityFragment());
-				trans.addToBackStack(null);
-				trans.commit();
+				adapter.open();
+				ArrayList<City> allItems = adapter.getCitysByProvinceId(1);
+				int id = 0;
+				for (City City : allItems) {
+					if (City.equals(City.getName())) {
+						// check authentication and authorization
+						id = City.getId();
+					}
+				}
+				adapter.close();
+
+				if (id == 1 || id == 2) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new CityFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+				} else if (id == 3 || id == 4 || id == 5 || id == 6) {
+				
+				}
+				
+				
 			}
 		});
 		return convertView;

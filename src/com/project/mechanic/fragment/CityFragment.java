@@ -1,6 +1,7 @@
 package com.project.mechanic.fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.widget.ListView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.CityListAdapter;
+import com.project.mechanic.entity.City;
+import com.project.mechanic.entity.Province;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.RowMain;
 
@@ -34,6 +37,7 @@ public class CityFragment extends Fragment {
 		adapter = new DataBaseAdapter(getActivity());
 
 		adapter.open();
+		List<City> mylist1 = adapter.getCitysByProvinceId(1);
 		ArrayList<RowMain> mylist = adapter.getAllCityName();
 		adapter.close();
 
