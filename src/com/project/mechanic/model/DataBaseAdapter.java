@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-import android.content.ContentValues;
 
+
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -116,6 +117,19 @@ public void insertCommenttoDb(String Comment){
 	
 		
 	}
+
+public Integer Tablecommentcount(){
+	Cursor cu= mDb.query(TableComment,null, null, null, null, null, null);
+	int s=cu.getCount();
+	return s;
+}
+
+public String DisplayComment(int row,int fild){
+	Cursor cu= mDb.query(TableComment, null, null, null, null, null, null);
+	cu.moveToPosition(row);
+	String name=cu.getString(fild);
+	return name;
+}
 
 	
 	
