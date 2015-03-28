@@ -7,30 +7,28 @@ import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.entity.City;
 import com.project.mechanic.fragment.ObjectFragment;
-import com.project.mechanic.fragment.ProvinceFragment;
-import com.project.mechanic.row_items.RowMain;
 
-public class CityListAdapter extends ArrayAdapter<RowMain> {
+public class CityListAdapter extends ArrayAdapter<City> {
 
 	Context context;
-	List<RowMain> list;
-	
-	public CityListAdapter(Context context, int resource, List<RowMain> objact) {
+	List<City> list;
+
+	public CityListAdapter(Context context, int resource, List<City> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
 
 	}
-
 
 	@SuppressLint("ViewHolder")
 	@Override
@@ -42,11 +40,11 @@ public class CityListAdapter extends ArrayAdapter<RowMain> {
 		convertView = myInflater.inflate(R.layout.row_city, parent, false);
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.RowCitytxt);
-	
-		RowMain person = list.get(position);
-		
+
+		City person = list.get(position);
+
 		txt1.setText(person.getName());
-	
+
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
