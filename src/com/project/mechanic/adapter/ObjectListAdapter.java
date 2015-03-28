@@ -14,16 +14,15 @@ import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.fragment.ObjectFragment;
-import com.project.mechanic.fragment.ProvinceFragment;
+import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.row_items.RowMain;
 
-public class CityListAdapter extends ArrayAdapter<RowMain> {
+public class ObjectListAdapter extends ArrayAdapter<RowMain> {
 
 	Context context;
 	List<RowMain> list;
 	
-	public CityListAdapter(Context context, int resource, List<RowMain> objact) {
+	public ObjectListAdapter(Context context, int resource, List<RowMain> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -39,9 +38,9 @@ public class CityListAdapter extends ArrayAdapter<RowMain> {
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_city, parent, false);
+		convertView = myInflater.inflate(R.layout.row_object, parent, false);
 
-		TextView txt1 = (TextView) convertView.findViewById(R.id.RowCitytxt);
+		TextView txt1 = (TextView) convertView.findViewById(R.id.RowObjecttxt);
 	
 		RowMain person = list.get(position);
 		
@@ -54,7 +53,7 @@ public class CityListAdapter extends ArrayAdapter<RowMain> {
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new ObjectFragment());
+				trans.replace(R.id.content_frame, new IntroductionFragment());
 				trans.addToBackStack(null);
 				trans.commit();
 			}

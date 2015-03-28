@@ -37,25 +37,12 @@ public class ProvinceFragment extends Fragment {
 		ArrayList<RowMain> mylist = adapter.getAllProvinceName();
 		adapter.close();
 
-		ListView lst = (ListView) view.findViewById(R.id.listvOstan);
+		ListView lstProvince = (ListView) view.findViewById(R.id.listvOstan);
 		ProvinceListAdapter ListAdapter = new ProvinceListAdapter(
 				getActivity(), R.layout.row_ostan, mylist);
 
-		lst.setAdapter(ListAdapter);
+		lstProvince.setAdapter(ListAdapter);
 
-		lst.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new CityFragment());
-				trans.addToBackStack(null);
-				trans.commit();
-			}
-		});
 
 		return view;
 	}
