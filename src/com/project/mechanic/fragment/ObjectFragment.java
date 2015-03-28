@@ -5,21 +5,18 @@ import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.adapter.CityListAdapter;
+import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.RowMain;
 
-public class CityFragment extends Fragment {
+public class ObjectFragment extends Fragment {
 
 	DataBaseAdapter adapter;
 
@@ -27,24 +24,21 @@ public class CityFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
-		((MainActivity) getActivity()).setActivityTitle(R.string.city);
-		View view = inflater.inflate(R.layout.fragment_city, null);
+		((MainActivity) getActivity()).setTitle(R.string.object);
+
+		View view = inflater.inflate(R.layout.fragment_object, null);
 
 		adapter = new DataBaseAdapter(getActivity());
 
 		adapter.open();
-		ArrayList<RowMain> mylist = adapter.getAllCityName();
+		ArrayList<RowMain> mylist = adapter.getAllObjectName();
 		adapter.close();
 
-		ListView lstCity = (ListView) view.findViewById(R.id.lstCity);
-		CityListAdapter ListAdapter = new CityListAdapter(getActivity(),
-				R.layout.row_city, mylist);
+		ListView lstObject = (ListView) view.findViewById(R.id.listvObject);
+		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(),
+				R.layout.row_object, mylist);
 
-		
-
-		lstCity.setAdapter(ListAdapter);
-		
+		lstObject.setAdapter(ListAdapter);
 
 		return view;
 	}

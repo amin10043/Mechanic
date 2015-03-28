@@ -4,5 +4,9 @@
 eclipse.preferences.version=1
 encoding//src/com/project/mechanic/MainActivity.java=UTF-8
 encoding//src/com/project/mechanic/fragment/CityFragment.java=UTF-8
+<<<<<<< HEAD
 encoding//src/com/project/mechanic/fragment/FroumFragment.java=UTF-8
+=======
+encoding//src/com/project/mechanic/fragment/ObjectFragment.java=UTF-8
+>>>>>>> branch 'master' of https://github.com/amin10043/Mechanic.git
 encoding//src/com/project/mechanic/fragment/ProvinceFragment.java=UTF-8

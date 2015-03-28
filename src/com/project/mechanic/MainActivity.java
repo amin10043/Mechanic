@@ -66,6 +66,7 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public boolean onOptionsItemSelected(MenuItem item) {
+
 				if (item != null && item.getItemId() == android.R.id.home) {
 					if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
 						mDrawerLayout.closeDrawer(Gravity.RIGHT);
@@ -120,6 +121,7 @@ public class MainActivity extends FragmentActivity {
 					FragmentTransaction trans = getSupportFragmentManager()
 							.beginTransaction();
 					trans.replace(R.id.content_frame, lastFragment);
+					trans.addToBackStack(null);
 					trans.commit();
 				} else {
 					Intent intent = new Intent(MainActivity.this,
@@ -152,7 +154,16 @@ public class MainActivity extends FragmentActivity {
 		FragmentTransaction trans = getSupportFragmentManager()
 				.beginTransaction();
 		trans.replace(R.id.content_frame, new MainFragment());
+		trans.addToBackStack(null);
 		trans.commit();
+
+		setActivityTitle(R.string.strMain);
+
+	}
+
+	public void setActivityTitle(int title) {
+		TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
+		txtTitle.setText(title);
 
 	}
 
