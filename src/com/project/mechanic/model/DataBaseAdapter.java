@@ -183,7 +183,7 @@ public class DataBaseAdapter {
 
 	}
 
-	public ArrayList<City> getCitysById(int ProvinceId) {
+	public ArrayList<City> getCitysByProvinceId(int ProvinceId) {
 
 		ArrayList<City> result = new ArrayList<City>();
 		City item = null;
