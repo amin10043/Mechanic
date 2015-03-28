@@ -3,6 +3,7 @@ package com.project.mechanic.model;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -100,6 +101,27 @@ public class DataBaseAdapter {
 
 	public void close() {
 		mDbHelper.close();
+	}
+
+	public void insertCommenttoDb(String Comment) {
+
+		ContentValues cv = new ContentValues();
+		cv.put("Description", Comment);
+		mDb.insert(TableComment, null, cv);
+
+	}
+
+	public Integer Tablecommentcount() {
+		Cursor cu = mDb.query(TableComment, null, null, null, null, null, null);
+		int s = cu.getCount();
+		return s;
+	}
+
+	public String DisplayComment(int row, int fild) {
+		Cursor cu = mDb.query(TableComment, null, null, null, null, null, null);
+		cu.moveToPosition(row);
+		String name = cu.getString(fild);
+		return name;
 	}
 
 	public ArrayList<Province> getAllProvince() {
@@ -366,6 +388,29 @@ public class DataBaseAdapter {
 		Comment tempComment = new Comment(cursor.getInt(0), cursor.getInt(1),
 				cursor.getInt(2), cursor.getString(3));
 		return tempComment;
+
+	}
+
+	public ArrayList<Users> getUserOfcomment(int froumId) {
+		ArrayList<Users> result = new ArrayList<Users>();
+		Cursor cursor = mDb
+				.rawQuery(
+						"Select "
+								+ Users[0]
+								+ ","
+								+ Users[1]
+								+ ","
+								+ Users[2]
+								+ ","
+								+ Users[3]
+								+ "  From Users inner join Comment on User.id=Comment.UserId where Comment.PaperId ="
+								+ froumId, null);
+		while (cursor.moveToNext()) {
+			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
+					cursor.getString(2), cursor.getString(3));
+			result.add(tempusers);
+		}
+		return result;
 	}
 
 	private Froum CursorToFroum(Cursor cursor) {

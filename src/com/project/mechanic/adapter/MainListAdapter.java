@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
-import com.project.mechanic.fragment.FroumFragment;
+import com.project.mechanic.fragment.FroumtitleFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -90,7 +90,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 				else if (id == 7) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new FroumFragment());
+					trans.replace(R.id.content_frame, new FroumtitleFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 				}

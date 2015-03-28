@@ -42,10 +42,13 @@ public class FroumListAdapter  extends ArrayAdapter<FroumItem>{
 		convertView = myInflater.inflate(R.layout.froumcmtitem, parent, false);
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.rawCmttxt);
+		TextView txt2 = (TextView) convertView.findViewById(R.id.rawUsernamecmttxt);
+		
 	
-	FroumItem person1 = list.get(position);
+	    FroumItem person1 = list.get(position);
 		
 		txt1.setText(person1.getComment());
+		txt2.setText(person1.getUsername());
 	
 		
 
