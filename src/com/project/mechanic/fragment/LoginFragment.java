@@ -13,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.AutoCompleteTextView.Validator;
+import android.widget.Button;
 
 public class LoginFragment extends Fragment {
 
@@ -23,7 +25,55 @@ public class LoginFragment extends Fragment {
 		
 		View view = inflater.inflate(R.layout.fragment_login, null);
 		
-		return view;
+		
+		
+	Button btnlog	=(Button)view.findViewById(R.id.btnlogin);
+	Button btncancle = (Button) view.findViewById(R.id.btncancle);
+		
+	Button btnreg= (Button) view.findViewById(R.id.btnreg1)	;
+	Button btnforgot =(Button) view.findViewById(R.id.btnforgot);
+		
+ btnlog.setOnClickListener(new View.OnClickListener() {
+	
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	}
+});
+	
+		
+ btnforgot.setOnClickListener(new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+	});
+ btncancle.setOnClickListener(new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+	});
+ btnreg.setOnClickListener(new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+	});
+		
+	return view;
+		
+		
+		
+		
+		
 		
 	}
 

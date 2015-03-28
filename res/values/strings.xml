@@ -21,5 +21,6 @@
     <string name="ostantxt1">انتخاب استان</string>
     <string name="citytxt1">انتخاب شهر</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_register">Register</string>
 
 </resources>
