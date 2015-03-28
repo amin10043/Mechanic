@@ -34,9 +34,9 @@ public class ObjectFragment extends Fragment {
 		ArrayList<RowMain> mylist = adapter.getAllObjectName();
 		adapter.close();
 
-		ListView lstObject = (ListView) view.findViewById(R.id.listvOstan);
+		ListView lstObject = (ListView) view.findViewById(R.id.listvObject);
 		ProvinceListAdapter ListAdapter = new ProvinceListAdapter(
-				getActivity(), R.layout.row_ostan, mylist);
+				getActivity(), R.layout.row_object, mylist);
 
 		
 		lstObject.setAdapter(ListAdapter);

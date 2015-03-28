@@ -6,13 +6,14 @@
     android:background="@drawable/list_item"
     style="@style/List_Item_Style"
     android:orientation="horizontal" >
-            <TextView
-                android:id="@+id/RowOstantxt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                style="@style/boldText"
-                android:layout_gravity="right" />
 
+    <TextView
+        android:id="@+id/RowOstantxt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
     
     </LinearLayout>
        

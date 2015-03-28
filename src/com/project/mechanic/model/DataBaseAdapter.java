@@ -27,7 +27,6 @@ public class DataBaseAdapter {
 	private String TableComment = "Comment";
 	private String TableExecutertype = "Executertype";
 	private String TableFavorite = "Favorite";
-
 	private String TableFroum = "Froum";
 	private String TableLike = "Like";
 	private String TableList = "List";
@@ -131,6 +130,19 @@ public ArrayList<City> getAllCity(){
 	}
 	return result;
 }
+
+public ArrayList<Object> getAllObject(){
+	ArrayList<Object> result = new ArrayList<Object>();
+	Cursor cursor = mDb.query(TableObject, Object, null, null, null, null, null);
+	Object tempObject;
+	while(cursor.moveToNext()){
+		tempObject = new Object(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), null, null, null, null);
+		result.add(tempObject);
+	}
+	return result;
+}
+
+
 	// /////////////// ListItems ////////////////
 	public ArrayList<ListItem> getListItemsById(int ListId) {
 

@@ -23,8 +23,7 @@ public class ProvinceListAdapter extends ArrayAdapter<RowMain> {
 	Context context;
 	List<RowMain> list;
 
-	public ProvinceListAdapter(Context context, int resource,
-			List<RowMain> objact) {
+	public ProvinceListAdapter(Context context, int resource,List<RowMain> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
