@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.fragment.CityFragment;
-import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.row_items.RowMain;
 
 public class ProvinceListAdapter extends ArrayAdapter<RowMain> {
