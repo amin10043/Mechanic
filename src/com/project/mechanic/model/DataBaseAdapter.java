@@ -230,13 +230,13 @@ public class DataBaseAdapter {
 		return tempObject;
 	}
 
-	public ArrayList<RowMain> getAllProvinceName() {
-		ArrayList<RowMain> result = new ArrayList<RowMain>();
+	public ArrayList<Province> getAllProvinceName() {
+		ArrayList<Province> result = new ArrayList<Province>();
 		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
 				null, null);
-		RowMain tempProvince;
+		Province tempProvince;
 		while (cursor.moveToNext()) {
-			tempProvince = new RowMain(cursor.getString(1));
+			tempProvince = new Province(cursor.getInt(0), cursor.getString(1));
 			result.add(tempProvince);
 		}
 		return result;

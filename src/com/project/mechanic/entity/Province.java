@@ -5,19 +5,19 @@ public class Province {
 	int Id;
 	String Name;
 
-	protected int getId() {
+	public int getId() {
 		return Id;
 	}
 
-	protected void setId(int id) {
+	public void setId(int id) {
 		Id = id;
 	}
 
-	protected String getName() {
+	public String getName() {
 		return Name;
 	}
 
-	protected void setName(String name) {
+	public void setName(String name) {
 		Name = name;
 	}
 
