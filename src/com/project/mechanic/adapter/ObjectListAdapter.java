@@ -7,8 +7,8 @@ import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -21,7 +21,7 @@ public class ObjectListAdapter extends ArrayAdapter<RowMain> {
 
 	Context context;
 	List<RowMain> list;
-	
+
 	public ObjectListAdapter(Context context, int resource, List<RowMain> objact) {
 		super(context, resource, objact);
 
@@ -29,7 +29,6 @@ public class ObjectListAdapter extends ArrayAdapter<RowMain> {
 		this.list = objact;
 
 	}
-
 
 	@SuppressLint("ViewHolder")
 	@Override
@@ -40,12 +39,12 @@ public class ObjectListAdapter extends ArrayAdapter<RowMain> {
 
 		convertView = myInflater.inflate(R.layout.row_object, parent, false);
 
-		TextView txt1 = (TextView) convertView.findViewById(R.id.RowObjecttxt);
-	
+		TextView txt1 = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
+
 		RowMain person = list.get(position);
-		
+
 		txt1.setText(person.getName());
-	
+
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
