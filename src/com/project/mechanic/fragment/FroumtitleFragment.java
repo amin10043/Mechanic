@@ -65,7 +65,7 @@ public class FroumtitleFragment extends Fragment {
             titlelist1.add(p4);
 			
 
-			ListView lst = (ListView) view.findViewById(R.id.lstTitle);
+			ListView lst = (ListView) view.findViewById(R.id.lstComment);
 			FroumtitleListadapter ListAdapter = new FroumtitleListadapter(getActivity(),R.layout.froumtitleitem, titlelist1);
 
 			lst.setAdapter(ListAdapter);

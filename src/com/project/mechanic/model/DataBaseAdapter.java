@@ -118,18 +118,34 @@ public void insertCommenttoDb(String Comment){
 		
 	}
 
+
+
+
+public void insertFroumtitletoDb(String Title){
+	
+	ContentValues cv=new ContentValues();
+	cv.put("Title", Title);
+	mDb.insert(TableFroum, null, cv);
+
+	
+}
+
+public void insertFroumdescriptiontoDb(String Description){
+	
+	ContentValues cv=new ContentValues();
+	cv.put("Description", Description);
+	mDb.insert(TableFroum, null, cv);
+
+	
+}
+
 public Integer Tablecommentcount(){
 	Cursor cu= mDb.query(TableComment,null, null, null, null, null, null);
 	int s=cu.getCount();
 	return s;
 }
 
-public String DisplayComment(int row,int fild){
-	Cursor cu= mDb.query(TableComment, null, null, null, null, null, null);
-	cu.moveToPosition(row);
-	String name=cu.getString(fild);
-	return name;
-}
+
 
 	
 	
@@ -344,17 +360,14 @@ public ArrayList<Object> getAllObject(){
 	
 }*/
 
-public ArrayList<Comment> getAllComment(){
+public ArrayList<Comment> getAllCommentByPapaerId(int paperId){
 	ArrayList<Comment> result = new ArrayList<Comment>();
 	Cursor cursor = mDb.query(TableComment, Comment , null, null, null, null, null);
 	Comment tempComment;
 	while(cursor.moveToNext()){
 		result.add(CursorToComment(cursor));
 	}
-	
-	
 	return result;
-	
 }
 
 

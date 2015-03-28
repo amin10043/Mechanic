@@ -44,7 +44,8 @@ public class FroumtitleListadapter  extends ArrayAdapter<FroumtitleItem>{
 		convertView = myInflater.inflate(R.layout.froumtitleitem, parent, false);
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.rawTitletxt);
-		TextView txt2 = (TextView) convertView.findViewById(R.id.rawTitletxt);
+		TextView txt2 = (TextView) convertView.findViewById(R.id.rawtxtDescription);
+		TextView txt3 = (TextView) convertView.findViewById(R.id.rawtxtUsername);
 	
 	    FroumtitleItem person1 = mylist.get(position);
 		
