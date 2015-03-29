@@ -3,6 +3,7 @@ package com.project.mechanic.model;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import android.R.string;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -105,11 +106,25 @@ public class DataBaseAdapter {
 		mDbHelper.close();
 	}
 
+	
+	
+	public void inserUserToDb(String name ,String email , String password ){
+		
+		ContentValues uc =new ContentValues();
+		
+		
+		uc.put("Name", name);
+		uc.put("Email", email);	
+		uc.put("Password",password);
+		long res =mDb.insert(TableUsers,null, uc);
+		long res2 = res;
+		
+	}
 	public void insertCommenttoDb(String Comment) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Description", Comment);
-		mDb.insert(TableComment, null, cv);
+		mDb.insert(TableComment,null, cv);
 
 	}
 
