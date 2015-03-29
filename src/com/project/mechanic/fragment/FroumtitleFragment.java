@@ -39,12 +39,12 @@ public class FroumtitleFragment extends Fragment {
 		 View view = inflater.inflate(R.layout.fragment_titlefrm, null);
 		 addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt);
 		 
-		 
+		    mdb= new DataBaseAdapter(getActivity());
 		    mdb.open();
 			ArrayList<Froum> mylist = mdb.getAllFroum();
 			mdb.close();
 		 
-		  addtitle.setOnClickListener(new OnClickListener(){
+		    addtitle.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {

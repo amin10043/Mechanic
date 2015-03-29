@@ -42,8 +42,10 @@ public class DialogfroumTitle extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 				if( mDialogResult != null ){
+					
+					dbadapter.insertFroumtitletoDb(titletxt.getText().toString(),titleDestxt.getText().toString(),1);
 	                mDialogResult.finish(String.valueOf(titletxt.getText()));
-	                dbadapter.insertFroumtitletoDb(titletxt.getText().toString(),titleDestxt.getText().toString(),1);
+	                
 	                
 	                
 	            }
