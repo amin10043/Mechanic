@@ -35,6 +35,9 @@ public class MainActivity extends FragmentActivity {
 	// private CharSequence title;
 	private Fragment lastFragment;
 	private boolean isFavorite = false;
+	
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
