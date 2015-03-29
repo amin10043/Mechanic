@@ -1,6 +1,8 @@
 package com.project.mechanic;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +13,7 @@ import android.widget.ImageButton;
 
 public class SplashActivity extends Activity {
 
-	int SPLASH_DISPLAY_TIME = 3000;
+	int SPLASH_DISPLAY_TIME = 15000;
 	Handler handler;
 	Runnable runnable;
 
@@ -26,6 +28,46 @@ public class SplashActivity extends Activity {
 		ImageButton btnlink1 = (ImageButton) findViewById(R.id.btnlinking);
 		ImageButton btnyout1 = (ImageButton) findViewById(R.id.btnytube);
 		ImageButton btntw1 = (ImageButton) findViewById(R.id.btntwitter);
+
+		ImageButton btnNext = (ImageButton) findViewById(R.id.btnnext);
+		ImageButton btnExit = (ImageButton) findViewById(R.id.btnprev);
+
+		btnExit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				new AlertDialog.Builder(SplashActivity.this)
+						.setTitle("خروج از برنامه")
+						.setMessage("آیا از خروج اطمینان دارید؟")
+						.setNegativeButton("خیر", null)
+						.setPositiveButton("بله",
+								new DialogInterface.OnClickListener() {
+
+									public void onClick(DialogInterface arg0,
+											int arg1) {
+										finish();
+										System.exit(0);
+									}
+								}).create().show();
+
+			}
+		});
+
+		btnNext.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent();
+				intent.setClass(SplashActivity.this, MainActivity.class);
+
+				startActivity(intent);
+				finish();
+
+				overridePendingTransition(R.layout.splash_out,
+						R.layout.splash_in);
+
+			}
+		});
 
 		btnfb1.setOnClickListener(new OnClickListener() {
 

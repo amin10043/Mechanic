@@ -16,11 +16,11 @@ import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.AdvisorTypeFragment;
 import com.project.mechanic.fragment.FroumtitleFragment;
 import com.project.mechanic.fragment.LoginFragment;
+import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -93,8 +93,16 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.replace(R.id.content_frame, new AdvisorTypeFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-				} else if (id == 4 ||  id == 5) {
-					
+				} else if (id == 4) {
+
+				} else if (id == 5) {
+
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new PaperFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+
 				} else if (id == 6) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
