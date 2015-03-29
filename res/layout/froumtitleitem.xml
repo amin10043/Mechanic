@@ -3,7 +3,9 @@
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/list_item"
+    style="@style/List_Item_Style" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,15 +14,19 @@
 
         <TextView
             android:id="@+id/rawTitletxt"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-           
-            android:hint=" " />
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:hint=" "
+            android:textColor="@color/red" />
+
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_weight="8" >
 
         <TextView
@@ -29,15 +35,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="22dp"
-            android:layout_marginTop="14dp"
-            android:text="Description" />
+            android:layout_marginRight="20dp"
+            android:textColor="@color/red" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="1" >
 
         <TextView
@@ -48,7 +54,8 @@
             android:layout_alignBottom="@+id/rawtxtUsername"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            android:text="توسط" />
+            android:text="توسط"
+            android:textColor="@color/red" />
 
         <TextView
             android:id="@+id/rawtxtUsername"
@@ -56,7 +63,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginRight="18dp"
-            android:layout_toLeftOf="@+id/textView1" />
+            android:layout_toLeftOf="@+id/textView1"
+            android:textColor="@color/red" />
 
     </RelativeLayout>
 

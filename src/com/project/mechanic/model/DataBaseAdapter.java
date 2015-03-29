@@ -51,7 +51,7 @@ public class DataBaseAdapter {
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId" };
-	private String[] Froum = { "ID", "Title", "Description", "UserId" };
+	private String[] Froum = { "ID","UserId", "Title", "Description"  };
 	private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] List = { "ID", "Name", "ParentId" };
 	private String[] ListItem = { "Id", "Name", "ListId" };

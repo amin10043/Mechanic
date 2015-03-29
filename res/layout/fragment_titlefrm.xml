@@ -33,8 +33,12 @@
 
         <ListView
             android:id="@+id/lstComment"
+            style="@style/ListView"
             android:layout_width="match_parent"
-            android:layout_height="401dp" >
+            android:layout_height="401dp"
+            android:divider="@null"
+            android:dividerHeight="0dp" >
+
         </ListView>
 
     </ScrollView>
