@@ -19,6 +19,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.AdvisorTypeFragment;
+import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.FroumtitleFragment;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
@@ -93,7 +94,13 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.replace(R.id.content_frame, new AdvisorTypeFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-				} else if (id == 4 ||  id == 5) {
+				
+				} else if (id == 4) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ExecutertypeFragment());
+					trans.addToBackStack(null);
+					trans.commit();
 					
 				} else if (id == 6) {
 					FragmentTransaction trans = ((MainActivity) context)

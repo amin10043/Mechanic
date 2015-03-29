@@ -16,6 +16,7 @@ import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.AdvisorType;
+import com.project.mechanic.entity.Executertype;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.row_items.RowMain;
@@ -181,7 +182,19 @@ public class DataBaseAdapter {
 
 	}
 	
-	
+	public ArrayList<Executertype> getAllExecutertype() {
+		ArrayList<Executertype> result = new ArrayList<Executertype>();
+		Cursor cursor = mDb.query(TableExecutertype, Executertype, null, null, null,
+				null, null);
+		Executertype tempExecutertype;
+		while (cursor.moveToNext()) {
+			tempExecutertype = new Executertype(cursor.getInt(0), cursor.getString(1));
+			result.add(tempExecutertype);
+		}
+
+		return result;
+
+	}
 	
 	// /////////////// ListItems ////////////////
 	public ArrayList<ListItem> getListItemsById(int ListId) {
@@ -216,6 +229,23 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<AdvisorType> getAdvisorTypes() {
+
+		ArrayList<AdvisorType> result = new ArrayList<AdvisorType>();
+		AdvisorType item = null;
+		Cursor mCur = mDb.query("AdvisorType", AdvisorType, null,null, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToAdvisorType(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+	
+	
+	
 	private ListItem CursorToListItem(Cursor mCur) {
 
 		ListItem item = new ListItem(mCur.getInt(0), mCur.getString(1),
@@ -255,7 +285,13 @@ public class DataBaseAdapter {
 
 	}
 	
-	
+	@SuppressWarnings("unused")
+	private Executertype CursorToExecutertype(Cursor cursor) {
+		Executertype tempExecutertype = new Executertype(cursor.getInt(0),
+				cursor.getString(1));
+		return tempExecutertype;
+
+	}
 	
 	
 	public ArrayList<Province> getAllProvinceName() {
@@ -306,6 +342,18 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			tempAdvisorType = new AdvisorType(cursor.getInt(0), cursor.getString(1));
 			result.add(tempAdvisorType);
+		}
+		return result;
+	}
+	
+	public ArrayList<Executertype> getAllExecutertypeName() {
+		ArrayList<Executertype> result = new ArrayList<Executertype>();
+		Cursor cursor = mDb.query(TableExecutertype, Executertype, null, null, null,
+				null, null);
+		Executertype tempExecutertype;
+		while (cursor.moveToNext()) {
+			tempExecutertype = new Executertype(cursor.getInt(0), cursor.getString(1));
+			result.add(tempExecutertype);
 		}
 		return result;
 	}
@@ -398,7 +446,22 @@ public class DataBaseAdapter {
 		return s;
 	}
 
-	
+	public Integer Executertype_count(String table) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
+				null);
+		int s = cu.getCount();
+		return s;
+	}
+
+	public String Executertype_display(String table, int row, int field) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table
+				+ " group by Name order by ID", null);
+		cu.moveToPosition(row);
+		String s = cu.getString(field);
+		return s;
+	}
 	
 	
 	/*
