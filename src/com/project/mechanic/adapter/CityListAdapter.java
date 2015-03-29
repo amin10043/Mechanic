@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ public class CityListAdapter extends ArrayAdapter<City> {
 
 	Context context;
 	List<City> list;
+	int lastPosition = 0;
 
 	public CityListAdapter(Context context, int resource, List<City> objact) {
 		super(context, resource, objact);
@@ -38,6 +41,12 @@ public class CityListAdapter extends ArrayAdapter<City> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_city, parent, false);
+
+		Animation animation = AnimationUtils.loadAnimation(getContext(),
+				(position > lastPosition) ? R.anim.up_from_bottom
+						: R.anim.down_from_top);
+		convertView.startAnimation(animation);
+		lastPosition = position;
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.RowCitytxt);
 

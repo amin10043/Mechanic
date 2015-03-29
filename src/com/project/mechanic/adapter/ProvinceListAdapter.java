@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -24,6 +26,7 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 	Context context;
 	List<Province> list;
 	DataBaseAdapter adapter;
+	int lastPosition = 0;
 
 	public ProvinceListAdapter(Context context, int resource,
 			List<Province> objact) {
@@ -45,6 +48,12 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 				.inflate(R.layout.main_item_list, parent, false);
 
 		convertView = myInflater.inflate(R.layout.row_ostan, parent, false);
+
+		Animation animation = AnimationUtils.loadAnimation(getContext(),
+				(position > lastPosition) ? R.anim.up_from_bottom
+						: R.anim.down_from_top);
+		convertView.startAnimation(animation);
+		lastPosition = position;
 
 		TextView tx1 = (TextView) convertView.findViewById(R.id.RowOstantxt);
 
