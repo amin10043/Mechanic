@@ -23,10 +23,12 @@ public class DialogfroumTitle extends Dialog {
 	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
 	int resourceId ; 
+	Context context;
 	public DialogfroumTitle(Context context,int resourceId) {
 			super(context);
 			// TODO Auto-generated constructor stub
 			this.resourceId= resourceId; 
+			this.context=context;
 		}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +43,11 @@ public class DialogfroumTitle extends Dialog {
 
 			@Override
 			public void onClick(View arg0) {
-				if( mDialogResult != null ){
-					
+				    dbadapter = new DataBaseAdapter(context);
+					dbadapter.open();
 					dbadapter.insertFroumtitletoDb(titletxt.getText().toString(),titleDestxt.getText().toString(),1);
-	                mDialogResult.finish(String.valueOf(titletxt.getText()));
-	                
-	                
-	                
-	            }
-				 DialogfroumTitle.this.dismiss();
+					dbadapter.close();
+				    DialogfroumTitle.this.dismiss();
 				 
 			}
 		 });
