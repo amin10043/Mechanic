@@ -18,6 +18,7 @@ import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.fragment.CityFragment;
+import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
@@ -64,7 +65,7 @@ public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new CityFragment(allItems));
+				trans.replace(R.id.content_frame, new ProvinceFragment());
 				trans.addToBackStack(null);
 				trans.commit();
 			}
