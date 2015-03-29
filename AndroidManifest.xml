@@ -21,20 +21,13 @@
         <activity
             android:name="com.project.mechanic.SplashActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="com.project.mechanic.LoginActivity"
-            android:label="@string/title_activity_login" >
-        </activity>
-        <activity
-            android:name="com.project.mechanic.Register"
-            android:label="@string/title_activity_register" >
         </activity>
     </application>
 
