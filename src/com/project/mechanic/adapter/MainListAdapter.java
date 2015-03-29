@@ -20,7 +20,6 @@ import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.AdvisorTypeFragment;
 import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.FroumtitleFragment;
-import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -95,11 +94,11 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.addToBackStack(null);
 					trans.commit();
 
-				
 				} else if (id == 4) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ExecutertypeFragment());
+					trans.replace(R.id.content_frame,
+							new ExecutertypeFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
@@ -111,16 +110,9 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.addToBackStack(null);
 					trans.commit();
 
-
 				} else if (id == 6) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new LoginFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-				}
 
-				else if (id == 7) {
+				} else if (id == 7) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FroumtitleFragment());
