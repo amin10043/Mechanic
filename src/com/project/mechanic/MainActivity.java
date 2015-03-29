@@ -1,7 +1,5 @@
 package com.project.mechanic;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -21,8 +19,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
-import com.project.mechanic.fragment.MenuFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class MainActivity extends FragmentActivity {
@@ -193,14 +191,30 @@ public class MainActivity extends FragmentActivity {
 
 	private void selectItem(int position) {
 
-		Fragment fragment = new MenuFragment();
-		Bundle args = new Bundle();
-		args.putInt(MenuFragment.ARG_OS, position);
-		fragment.setArguments(args);
+		Fragment fragment;
+		FragmentManager fragmentManager;
+		switch (position) {
+		case 0:
 
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, fragment).commit();
+			fragment = new MainFragment();
+			fragmentManager = getSupportFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.content_frame, fragment).commit();
+			break;
+
+		case 1:
+			fragment = new LoginFragment();
+			fragmentManager = getSupportFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.content_frame, fragment).commit();
+			break;
+
+		case 2:
+
+		case 3:
+		case 4:
+		case 5:
+		}
 
 		mDrawerList.setItemChecked(position, true);
 		mDrawerLayout.closeDrawer(mDrawerList);
@@ -208,23 +222,6 @@ public class MainActivity extends FragmentActivity {
 
 	public void setLastFragment(Fragment fragment) {
 		this.lastFragment = fragment;
-	}
-
-	@Override
-	public void onBackPressed() {
-		new AlertDialog.Builder(this)
-				.setTitle("خروج از برنامه")
-				.setMessage("آیا از خروج اطمینان دارید؟")
-				.setNegativeButton("خیر", null)
-				.setPositiveButton("بله",
-						new DialogInterface.OnClickListener() {
-
-							public void onClick(DialogInterface arg0, int arg1) {
-								finish();
-								System.exit(0);
-							}
-						}).create().show();
-
 	}
 
 }

@@ -17,16 +17,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class FroumtitleListadapter  extends ArrayAdapter<FroumtitleItem>{
+public class FroumtitleListadapter  extends ArrayAdapter<Froum>{
 
 	Context context;
-	List<FroumtitleItem>  mylist;
+	List<Froum>  mylist;
 	DataBaseAdapter adapter;
 	public FroumtitleListadapter(Context context, int resource,
-			List<FroumtitleItem> objects) {
+			List<Froum> objects) {
 		super(context, resource, objects);
 		this.context= context;
 		this.mylist= objects;
+		adapter = new DataBaseAdapter(context);
 		
 	}
 	
@@ -37,19 +38,19 @@ public class FroumtitleListadapter  extends ArrayAdapter<FroumtitleItem>{
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		adapter= new DataBaseAdapter(context);
-		adapter.open();
-		ArrayList<Froum> allFroum =  adapter.getAllFroum();
-		adapter.close();
+		
 
 		convertView = myInflater.inflate(R.layout.froumtitleitem, parent, false);
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.rawTitletxt);
-		TextView txt2 = (TextView) convertView.findViewById(R.id.rawTitletxt);
+		TextView txt2 = (TextView) convertView.findViewById(R.id.rawtxtDescription);
+		TextView txt3 = (TextView) convertView.findViewById(R.id.rawtxtUsername);
 	
-	    FroumtitleItem person1 = mylist.get(position);
+	    Froum person1 = mylist.get(position);
 		
 		txt1.setText(person1.getTitle());
-		//txt2.setText(allFroum);
+		txt2.setText(person1.getDescription());
+		txt3.setText("shaghayegh");
 	
 		
 

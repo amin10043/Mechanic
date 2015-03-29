@@ -23,10 +23,6 @@ public class FroumItem {
 	public void setUsername(String username)
 	   {this.Username=username;}
 	
-	/*adapter= new DataBaseAdapter(this);
-	adapter.open();
-	ArrayList<Froum> allFroum =  adapter.getAllFroum();
-	adapter.close();*/
-
+	
 	
 }

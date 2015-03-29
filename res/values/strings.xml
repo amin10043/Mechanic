@@ -13,13 +13,13 @@
     <string name="object">انتخاب برند</string>
     <string name="city">انتخاب شهر</string>
     <string name="brand">معرفی برند</string>
-
+   <string name="advisor">مشاوران-ناظران</string>
     
     
 
     <string-array name="MenuItems">
         <item name="home">خانه</item>
-        <item name="home1">کاربری</item>
+        <item name="users">کاربری</item>
         <item name="home2">صفحه شخصی</item>
         <item name="home3">برای تست</item>
         <item name="home4">درباره ما</item>
