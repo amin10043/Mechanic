@@ -15,6 +15,7 @@ import com.project.mechanic.entity.Comment;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Object;
+import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.row_items.RowMain;
@@ -166,6 +167,22 @@ public class DataBaseAdapter {
 		return result;
 	}
 
+	public ArrayList<AdvisorType> getAllAdvisorType() {
+		ArrayList<AdvisorType> result = new ArrayList<AdvisorType>();
+		Cursor cursor = mDb.query(TableAdvisorType, AdvisorType, null, null, null,
+				null, null);
+		AdvisorType tempAdvisorType;
+		while (cursor.moveToNext()) {
+			tempAdvisorType = new AdvisorType(cursor.getInt(0), cursor.getString(1));
+			result.add(tempAdvisorType);
+		}
+
+		return result;
+
+	}
+	
+	
+	
 	// /////////////// ListItems ////////////////
 	public ArrayList<ListItem> getListItemsById(int ListId) {
 
@@ -230,6 +247,17 @@ public class DataBaseAdapter {
 		return tempObject;
 	}
 
+	@SuppressWarnings("unused")
+	private AdvisorType CursorToAdvisorType(Cursor cursor) {
+		AdvisorType tempAdvisorType = new AdvisorType(cursor.getInt(0),
+				cursor.getString(1));
+		return tempAdvisorType;
+
+	}
+	
+	
+	
+	
 	public ArrayList<Province> getAllProvinceName() {
 		ArrayList<Province> result = new ArrayList<Province>();
 		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
@@ -270,6 +298,18 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<AdvisorType> getAllAdvisorTypeName() {
+		ArrayList<AdvisorType> result = new ArrayList<AdvisorType>();
+		Cursor cursor = mDb.query(TableAdvisorType, AdvisorType, null, null, null,
+				null, null);
+		AdvisorType tempAdvisorType;
+		while (cursor.moveToNext()) {
+			tempAdvisorType = new AdvisorType(cursor.getInt(0), cursor.getString(1));
+			result.add(tempAdvisorType);
+		}
+		return result;
+	}
+	
 	public ArrayList<Froum> getAllFroum() {
 		ArrayList<Froum> result = new ArrayList<Froum>();
 		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
@@ -285,6 +325,10 @@ public class DataBaseAdapter {
 
 	}
 
+	
+	
+	
+	
 	public Integer province_count(String table) {
 
 		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
@@ -336,6 +380,27 @@ public class DataBaseAdapter {
 		return s;
 	}
 
+
+	public Integer AdvisorType_count(String table) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
+				null);
+		int s = cu.getCount();
+		return s;
+	}
+
+	public String AdvisorType_display(String table, int row, int field) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table
+				+ " group by Name order by ID", null);
+		cu.moveToPosition(row);
+		String s = cu.getString(field);
+		return s;
+	}
+
+	
+	
+	
 	/*
 	 * public String getUseridFroum(){ ArrayList<Froum> result = new
 	 * ArrayList<Froum>(); String[] s = new String[1]; s[0] = "UserId"; Cursor
