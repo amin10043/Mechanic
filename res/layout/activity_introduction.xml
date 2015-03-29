@@ -281,7 +281,7 @@
                         android:paddingTop="5dp" >
 
                         <TextView
-                            android:id="@+id/textView2"
+                            android:id="@+id/rawtxtDescription"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
@@ -488,7 +488,7 @@
                         android:layout_weight="1" >
 
                         <Button
-                            android:id="@+id/btnCmt"
+                            android:id="@+id/btnComment"
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

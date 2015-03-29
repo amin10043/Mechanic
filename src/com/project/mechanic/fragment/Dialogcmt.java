@@ -19,7 +19,7 @@ import android.widget.EditText;
 
 
 public class Dialogcmt extends Dialog {
-	public Dialogcmt(Context context) {
+	public Dialogcmt(Context context,int resourceId) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
@@ -34,7 +34,7 @@ public class Dialogcmt extends Dialog {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		 setContentView(R.layout.dialog_addcomment);
-		 btncmt= (Button) findViewById(R.id.btnCmt);
+		 btncmt= (Button) findViewById(R.id.btnComment);
 		 Cmttxt=(EditText)findViewById(R.id.txtCmt);
 		 btncmt.setOnClickListener(new android.view.View.OnClickListener(){
 

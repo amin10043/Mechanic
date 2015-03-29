@@ -32,7 +32,7 @@
         android:fillViewport="true" >
 
         <ListView
-            android:id="@+id/lstTitle"
+            android:id="@+id/lstComment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
         </ListView>
