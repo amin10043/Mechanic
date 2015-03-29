@@ -112,20 +112,35 @@ public class DataBaseAdapter {
 
 	}
 
+
+
+
+public void insertFroumtitletoDb(String Title,String description,int userId){
+	
+	ContentValues cv=new ContentValues();
+	cv.put("Title", Title);
+	cv.put("Description", description);
+	cv.put("UserId", userId);
+	
+	mDb.insert(TableFroum, null, cv);
+
+	
+}
+
+
 	public Integer Tablecommentcount() {
 		Cursor cu = mDb.query(TableComment, null, null, null, null, null, null);
 		int s = cu.getCount();
 		return s;
 	}
 
-	public String DisplayComment(int row, int fild) {
-		Cursor cu = mDb.query(TableComment, null, null, null, null, null, null);
-		cu.moveToPosition(row);
-		String name = cu.getString(fild);
-		return name;
-	}
+
+
+	
+	
 
 	public ArrayList<Province> getAllProvince() {
+
 		ArrayList<Province> result = new ArrayList<Province>();
 		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
 				null, null);
@@ -256,7 +271,13 @@ public class DataBaseAdapter {
 	}
 	
 	
-	
+
+	@SuppressWarnings("unused")
+	    private Froum CursorToFroum(Cursor cursor) {
+		Froum tempForum = new Froum(cursor.getInt(0), cursor.getInt(1), cursor.getString(2), cursor.getString(3));
+		return tempForum;
+
+	}
 	
 	public ArrayList<Province> getAllProvinceName() {
 		ArrayList<Province> result = new ArrayList<Province>();
@@ -269,6 +290,9 @@ public class DataBaseAdapter {
 		}
 		return result;
 	}
+	
+	
+	
 
 	public ArrayList<RowMain> getAllCityName() {
 		ArrayList<RowMain> result = new ArrayList<RowMain>();
@@ -316,15 +340,14 @@ public class DataBaseAdapter {
 				null);
 		Froum tempFroum;
 		while (cursor.moveToNext()) {
-			tempFroum = new Froum(cursor.getInt(0), cursor.getInt(3),
-					cursor.getString(2), cursor.getString(1));
-			result.add(tempFroum);
+			result.add(CursorToFroum(cursor));
 		}
 
 		return result;
 
 	}
-
+	
+	
 	
 	
 	
@@ -428,6 +451,16 @@ public class DataBaseAdapter {
 
 	}
 
+
+public ArrayList<Comment> getAllCommentByPapaerId(int paperId){
+	ArrayList<Comment> result = new ArrayList<Comment>();
+	Cursor cursor = mDb.query(TableComment, Comment , null, null, null, null, null);
+	Comment tempComment;
+	while(cursor.moveToNext()){
+		result.add(CursorToComment(cursor));
+	}
+		return result;
+}
 	public ArrayList<Integer> getUSeridComment() {
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		String[] s = new String[1];
@@ -442,7 +475,11 @@ public class DataBaseAdapter {
 
 		return result;
 
+
 	}
+
+	
+
 
 	public ArrayList<Users> getUserOfcomment(String froumId) {
 		ArrayList<Users> result = new ArrayList<Users>();
@@ -496,11 +533,6 @@ public class DataBaseAdapter {
 		return result;
 	}
 
-	private Froum CursorToFroum(Cursor cursor) {
-		Froum tempFroum = new Froum(cursor.getInt(0), cursor.getInt(3),
-				cursor.getString(2), cursor.getString(1));
-
-		return tempFroum;
-	}
+	
 
 }
