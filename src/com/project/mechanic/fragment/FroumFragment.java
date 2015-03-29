@@ -7,6 +7,7 @@ com.project.mechanic.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FroumListAdapter;
 import com.project.mechanic.entity.Comment;
@@ -51,6 +52,8 @@ public class FroumFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceStdataate) {
+		
+		((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
 		 View view = inflater.inflate(R.layout.fragment_froum, null);
 		 
 		 btnAddcmt = (ImageButton)view.findViewById(R.id.imgBtnAddcmt);
