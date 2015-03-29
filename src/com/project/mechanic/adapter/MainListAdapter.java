@@ -102,9 +102,6 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.replace(R.id.content_frame, new ExecutertypeFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-					
-
-				} else if (id == 4) {
 
 				} else if (id == 5) {
 
