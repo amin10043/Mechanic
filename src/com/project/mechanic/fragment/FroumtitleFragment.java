@@ -3,6 +3,7 @@ package com.project.mechanic.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FroumtitleListadapter;
 import com.project.mechanic.entity.Froum;
@@ -36,6 +37,7 @@ public class FroumtitleFragment extends Fragment {
 	
 	public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, Bundle savedInstanceState) {
 		
+		((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
 		 View view = inflater.inflate(R.layout.fragment_titlefrm, null);
 		 addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt);
 		 

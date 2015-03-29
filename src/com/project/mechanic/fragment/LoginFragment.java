@@ -1,17 +1,14 @@
 package com.project.mechanic.fragment;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 
 import android.os.Bundle;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
-
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.Button;
 
 public class LoginFragment extends Fragment {
@@ -20,9 +17,8 @@ public class LoginFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
+		((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
 		View view = inflater.inflate(R.layout.fragment_login, null);
-		
-		
 		
 	Button btnlog	=(Button)view.findViewById(R.id.btnlogin);
 	Button btncancle = (Button) view.findViewById(R.id.btncancle);
