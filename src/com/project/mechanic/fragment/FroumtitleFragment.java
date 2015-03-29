@@ -5,11 +5,15 @@ import java.util.List;
 
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FroumtitleListadapter;
+import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.Province;
+import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.FroumtitleItem;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -25,6 +29,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class FroumtitleFragment extends Fragment {
 	private ImageButton addtitle;
+	private DialogfroumTitle dialog;
+	DataBaseAdapter mdb;
 	@SuppressLint("InflateParams")
 	@Override
 	
@@ -33,42 +39,29 @@ public class FroumtitleFragment extends Fragment {
 		 View view = inflater.inflate(R.layout.fragment_titlefrm, null);
 		 addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt);
 		 
-		 addtitle.setOnClickListener(new OnClickListener(){
+		 
+		    mdb.open();
+			ArrayList<Froum> mylist = mdb.getAllFroum();
+			mdb.close();
+		 
+		  addtitle.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Dialog dialog = new Dialog(getActivity());
-				 dialog.setContentView(R.layout.dialog_addtitle);
-				 dialog.show();
+				
+				  dialog = new  DialogfroumTitle(getActivity(),R.layout.dialog_addtitle);
+				  dialog.show();
 			}
-			 
-			 
-			 
 		 });
 		
-		 List<FroumtitleItem> titlelist1 = new ArrayList<FroumtitleItem>();
-
-			FroumtitleItem p1 = new FroumtitleItem();
-			FroumtitleItem p2 = new FroumtitleItem();
-			FroumtitleItem p3 = new FroumtitleItem();
-			FroumtitleItem p4 = new FroumtitleItem();
-			
-			p1.setTitle("ÚäæÇä 1");
-			p2.setTitle("ÚäæÇä 1");
-			p3.setTitle("ÚäæÇä 1");
-			p4.setTitle("ÚäæÇä 1");
-			
-			titlelist1.add(p1);
-            titlelist1.add(p2);
-            titlelist1.add(p3);
-            titlelist1.add(p4);
+		
 			
 
 			ListView lst = (ListView) view.findViewById(R.id.lstComment);
-			FroumtitleListadapter ListAdapter = new FroumtitleListadapter(getActivity(),R.layout.froumtitleitem, titlelist1);
-
+			FroumtitleListadapter ListAdapter = new FroumtitleListadapter(getActivity(),R.layout.froumtitleitem, mylist);
 			lst.setAdapter(ListAdapter);
+			
+		
 			lst.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
@@ -82,6 +75,8 @@ public class FroumtitleFragment extends Fragment {
 		});
 			return view;
 	}
+	
+	
 	
 	
 	

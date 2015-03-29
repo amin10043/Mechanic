@@ -47,12 +47,11 @@
         android:orientation="vertical" >
 
         <Button
-            android:id="@+id/btnTitle"
+            android:id="@+id/Btntitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="23dp"
             android:text="ثبت عنوان" />
 
     </RelativeLayout>

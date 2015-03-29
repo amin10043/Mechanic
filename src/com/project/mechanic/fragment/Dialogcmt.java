@@ -19,7 +19,7 @@ import android.widget.EditText;
 
 
 public class Dialogcmt extends Dialog {
-	public Dialogcmt(Context context) {
+	public Dialogcmt(Context context,int resourceId) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}

@@ -1,31 +1,31 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollView1"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/m22"
     android:scrollbars="horizontal" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="380dp"
-        android:orientation="vertical" >
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+     
+        android:orientation="vertical"
+        android:weightSum="6" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1" >
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" 
+               android:gravity="center">
 
             <TextView
-
-              
-
                 android:id="@+id/RowObjecttxt"
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
                 android:layout_weight="1"
                 android:text="تالار تاسیسات مکانیکی ایران"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -35,11 +35,12 @@
         <RelativeLayout
             android:id="@+id/RelativeLayout1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:layout_weight="4" >
 
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/btnprev"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -50,27 +51,23 @@
                 android:src="@drawable/prev" />
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/btnnext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="10dp"
                 android:src="@drawable/next" />
-
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="60dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:baselineAligned="false" >
+             >
 
             <ImageButton
-                android:id="@+id/imageButton1"
+                android:id="@+id/btninstegram"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -78,7 +75,7 @@
                 android:src="@drawable/i1" />
 
             <ImageButton
-                android:id="@+id/imageButton4"
+                android:id="@+id/btnytube"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -86,7 +83,7 @@
                 android:src="@drawable/i2" />
 
             <ImageButton
-                android:id="@+id/imageButton8"
+                android:id="@+id/btngplas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -94,7 +91,7 @@
                 android:src="@drawable/i3" />
 
             <ImageButton
-                android:id="@+id/imageButton9"
+                android:id="@+id/btnfb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -102,7 +99,7 @@
                 android:src="@drawable/i4" />
 
             <ImageButton
-                android:id="@+id/imageButton5"
+                android:id="@+id/btntwitter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -110,7 +107,7 @@
                 android:src="@drawable/i5" />
 
             <ImageButton
-                android:id="@+id/imageButton6"
+                android:id="@+id/btnlinking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

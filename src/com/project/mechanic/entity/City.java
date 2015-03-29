@@ -3,6 +3,7 @@ package com.project.mechanic.entity;
 public class City {
 
 	int Id;
+	int ProvinceId;
 	String Name;
 
 	public int getId() {
@@ -13,6 +14,14 @@ public class City {
 		Id = id;
 	}
 
+	public int getProvinceId() {
+		return ProvinceId;
+	}
+
+	public void setProvinceId(int ProvinceId) {
+		ProvinceId = ProvinceId;
+	}
+	
 	public String getName() {
 		return Name;
 	}
@@ -21,10 +30,11 @@ public class City {
 		Name = name;
 	}
 
-	public City(int id, String name) {
+	public City(int id,  String name, int provinceId) {
 		super();
 		Id = id;
-		Name = name;
+	 ProvinceId = ProvinceId;
+	 Name = name;
 	}
 
 }

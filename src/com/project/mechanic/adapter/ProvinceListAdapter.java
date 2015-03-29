@@ -7,32 +7,36 @@ import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.entity.City;
+import com.project.mechanic.entity.Province;
 import com.project.mechanic.fragment.CityFragment;
-import com.project.mechanic.row_items.RowMain;
+import com.project.mechanic.model.DataBaseAdapter;
 
-public class ProvinceListAdapter extends ArrayAdapter<RowMain> {
+public class ProvinceListAdapter extends ArrayAdapter<Province> {
 
 	Context context;
-	List<RowMain> list;
+	List<Province> list;
+	DataBaseAdapter adapter;
 
-	public ProvinceListAdapter(Context context, int resource,List<RowMain> objact) {
+	public ProvinceListAdapter(Context context, int resource,
+			List<Province> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
-
+		adapter = new DataBaseAdapter(context);
 	}
 
 	@SuppressLint("ViewHolder")
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -44,18 +48,24 @@ public class ProvinceListAdapter extends ArrayAdapter<RowMain> {
 
 		TextView tx1 = (TextView) convertView.findViewById(R.id.RowOstantxt);
 
-		RowMain person1 = list.get(position);
+		Province province = list.get(position);
 
-		tx1.setText(person1.getName());
+		tx1.setText(province.getName());
 
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
+				Province province = list.get(position);
+				adapter.open();
+				List<City> allItems = adapter.getCitysByProvinceId(province
+						.getId());
+				adapter.close();
+
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new CityFragment());
+				trans.replace(R.id.content_frame, new CityFragment(allItems));
 				trans.addToBackStack(null);
 				trans.commit();
 			}

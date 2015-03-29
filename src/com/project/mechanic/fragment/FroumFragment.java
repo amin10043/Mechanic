@@ -103,8 +103,7 @@ public class FroumFragment extends Fragment{
 				
 
 				
-			  dialog = new Dialogcmt(getActivity());
-			  dialog.setContentView(R.layout.dialog_addcomment);
+			  dialog = new Dialogcmt(getActivity(),R.layout.dialog_addcomment);
 			  dialog.show();
 
 				

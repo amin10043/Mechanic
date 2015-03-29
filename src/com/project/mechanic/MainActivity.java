@@ -1,5 +1,7 @@
 package com.project.mechanic;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -207,4 +209,22 @@ public class MainActivity extends FragmentActivity {
 	public void setLastFragment(Fragment fragment) {
 		this.lastFragment = fragment;
 	}
+
+	@Override
+	public void onBackPressed() {
+		new AlertDialog.Builder(this)
+				.setTitle("خروج از برنامه")
+				.setMessage("آیا از خروج اطمینان دارید؟")
+				.setNegativeButton("خیر", null)
+				.setPositiveButton("بله",
+						new DialogInterface.OnClickListener() {
+
+							public void onClick(DialogInterface arg0, int arg1) {
+								finish();
+								System.exit(0);
+							}
+						}).create().show();
+
+	}
+
 }

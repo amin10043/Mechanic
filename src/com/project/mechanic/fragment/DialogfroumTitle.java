@@ -15,23 +15,26 @@ import android.widget.EditText;
 
 public class DialogfroumTitle extends Dialog {
 
-	public DialogfroumTitle(Context context) {
-		super(context);
-		// TODO Auto-generated constructor stub
-	}
+	
 	
 	private Button btntitle;
 	private EditText titletxt;
 	private EditText titleDestxt;
-	 OnMyDialogResult mDialogResult;
-	 private DataBaseAdapter dbadapter;
-	
+	OnMyDialogResult mDialogResult;
+	private DataBaseAdapter dbadapter;
+	int resourceId ; 
+	public DialogfroumTitle(Context context,int resourceId) {
+			super(context);
+			// TODO Auto-generated constructor stub
+			this.resourceId= resourceId; 
+		}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		 setContentView(R.layout.dialog_addcomment);
-		 btntitle= (Button) findViewById(R.id.btnTitle);
+		 //setContentView(R.layout.dialog_addcomment);
+		setContentView(resourceId);
+		 btntitle= (Button) findViewById(R.id.Btntitle);
 		 titletxt=(EditText)findViewById(R.id.txtTitle);
 		 titleDestxt=(EditText)findViewById(R.id.txttitleDes);
 		 btntitle.setOnClickListener(new android.view.View.OnClickListener(){
@@ -40,8 +43,8 @@ public class DialogfroumTitle extends Dialog {
 			public void onClick(View arg0) {
 				if( mDialogResult != null ){
 	                mDialogResult.finish(String.valueOf(titletxt.getText()));
-	                dbadapter.insertFroumtitletoDb(titletxt.getText().toString());
-	                dbadapter.insertFroumdescriptiontoDb(titleDestxt.getText().toString());
+	                dbadapter.insertFroumtitletoDb(titletxt.getText().toString(),titleDestxt.getText().toString(),1);
+	                
 	                
 	            }
 				 DialogfroumTitle.this.dismiss();
@@ -51,5 +54,13 @@ public class DialogfroumTitle extends Dialog {
 		 
 		 
 	}
+	
+	public interface OnMyDialogResult{
+	       void finish(String result);
+	    }
+
+    public void setDialogResult(OnMyDialogResult dialogResult){
+     mDialogResult = dialogResult;
+ }
 
 }
