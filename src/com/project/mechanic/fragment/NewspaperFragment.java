@@ -7,11 +7,8 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,23 +30,25 @@ public class NewspaperFragment extends Fragment {
 		((MainActivity) getActivity()).setActivityTitle(R.string.News);
 		View view = inflater.inflate(R.layout.fragment_newspaper, null);
 
-/*
+
 		 //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         ImageButton btnim01=(ImageButton) view.findViewById(R.id.imageButton01);
 			btnim01.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
 					
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
-					trans.addToBackStack(null);
-					trans.commit();
+				//	FragmentTransaction trans = ((MainActivity) context)
+				//			.getSupportFragmentManager().beginTransaction();
+				//	trans.replace(R.id.content_frame, new ProvinceFragment());
+				//	trans.addToBackStack(null);
+				//	trans.commit();
 					
-					next.putExtra("btn", 101);
-					startActivity(next);	
+				//	next.putExtra("btn", 101);
+			//		startActivity(next);	
 			}
 		});	
+			
+		/*	
 	      //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
           ImageButton btnim02=(ImageButton) view.findViewById(R.id.imageButton02);
   			btnim02.setOnClickListener(new OnClickListener() {
@@ -79,11 +78,11 @@ public class NewspaperFragment extends Fragment {
           					next.putExtra("btn", 104);
           					startActivity(next);	
           			}
-          		});	
+		});	
 
 
+		        */ 
 		
-		*/
 		return view;
 	
 		}
