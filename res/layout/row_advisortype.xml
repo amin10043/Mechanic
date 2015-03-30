@@ -14,7 +14,7 @@
         android:layout_gravity="right"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/blue" />
+        android:textColor="@color/red" />
     
     </LinearLayout>
        

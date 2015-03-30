@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.AdvisorType;
@@ -23,6 +24,7 @@ import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.fragment.AdvisorTypeFragment;
 import com.project.mechanic.fragment.CityFragment;
+import com.project.mechanic.fragment.ExecutertypeFragment;
 //import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -96,7 +98,7 @@ public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 				} else if (id == 3) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					//trans.replace(R.id.content_frame, new ExecutertypeFragment());
+					trans.replace(R.id.content_frame, new ExecutertypeFragment());
 				trans.addToBackStack(null);
 					trans.commit();
 				} 
