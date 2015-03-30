@@ -20,6 +20,7 @@ import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.AdvisorTypeFragment;
 import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.FroumtitleFragment;
+import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -110,7 +111,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new PaperFragment());
+					trans.replace(R.id.content_frame, new NewsFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
