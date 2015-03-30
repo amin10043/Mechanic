@@ -85,21 +85,4 @@ public class FroumtitleFragment extends Fragment {
 
 	}
 
-	// @Override
-	// public void onActivityResult(int requestCode, int resultCode, Intent
-	// data) {
-	// switch(requestCode) {
-	// case DIALOG_FRAGMENT:
-	//
-	// if (resultCode == Activity.RESULT_OK) {
-	// // After Ok code.
-	// } else if (resultCode == Activity.RESULT_CANCELED){
-	// // After Cancel code.
-	// }
-	//
-	// break;
-	// }
-	// }
-	// }
-
 }

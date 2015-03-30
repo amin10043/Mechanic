@@ -33,5 +33,6 @@
     <string name="citytxt1">انتخاب شهر</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">Register</string>
+    <string name="searchHint">متن جستجو را وارد کنید...</string>
 
 </resources>

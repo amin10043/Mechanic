@@ -17,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.SearchView.OnCloseListener;
 import android.widget.TextView;
 
 import com.project.mechanic.fragment.LoginFragment;
@@ -84,6 +86,26 @@ public class MainActivity extends FragmentActivity {
 		ImageButton iBtnShare = (ImageButton) findViewById(R.id.iBtnShare);
 		ImageButton iBtnBack = (ImageButton) findViewById(R.id.iBtnBack);
 		final ImageButton iBtnFavorite = (ImageButton) findViewById(R.id.iBtnFavorite);
+		final TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
+		SearchView searchV = (SearchView) findViewById(R.id.searchV);
+
+		searchV.setOnSearchClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				txtTitle.setVisibility(View.GONE);
+
+			}
+		});
+
+		searchV.setOnCloseListener(new OnCloseListener() {
+
+			@Override
+			public boolean onClose() {
+				txtTitle.setVisibility(View.VISIBLE);
+				return false;
+			}
+		});
 
 		iBtnMenu.setOnClickListener(new OnClickListener() {
 
@@ -148,7 +170,6 @@ public class MainActivity extends FragmentActivity {
 			}
 		});
 
-		TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
 		txtTitle.setText(R.string.strMain);
 
 		FragmentTransaction trans = getSupportFragmentManager()
