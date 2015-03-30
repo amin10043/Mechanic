@@ -9,14 +9,12 @@ import com.project.mechanic.R;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-
-
-
 
 
 public class NewspaperFragment extends Fragment {
@@ -31,20 +29,21 @@ public class NewspaperFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_newspaper, null);
 
 
-		 //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         ImageButton btnim01=(ImageButton) view.findViewById(R.id.imageButton01);
 			btnim01.setOnClickListener(new OnClickListener() {
+				private MainActivity context;
+
 				@Override
 				public void onClick(View arg0) {
 					
-				//	FragmentTransaction trans = ((MainActivity) context)
-				//			.getSupportFragmentManager().beginTransaction();
-				//	trans.replace(R.id.content_frame, new ProvinceFragment());
-				//	trans.addToBackStack(null);
-				//	trans.commit();
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new Newsp1Fragment());
+					trans.addToBackStack(null);
+					trans.commit();
 					
-				//	next.putExtra("btn", 101);
-			//		startActivity(next);	
+					//next.putExtra("btn", 101);
+				//	startActivity(next);	
 			}
 		});	
 			

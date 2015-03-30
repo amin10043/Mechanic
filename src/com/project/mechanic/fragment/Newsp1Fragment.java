@@ -7,8 +7,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -23,11 +25,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 
 
 public class Newsp1Fragment extends Fragment {
 
+	public static final String URL =  "http://takgoal.com/newspaper_pic/01.jpg";
+    ImageView imageView;
+	
 	
 	@SuppressLint("InflateParams")
 	@Override
@@ -37,11 +43,12 @@ public class Newsp1Fragment extends Fragment {
 		((MainActivity) getActivity()).setActivityTitle(R.string.News);
 		View view = inflater.inflate(R.layout.fragment_newspaper, null);
 
-/*
+
 		  // Create an object for subclass of AsyncTask
         GetXMLTask task = new GetXMLTask();
         // Execute the task
- /////       task.execute(new String[] { URL });
+       task.execute(new String[] { URL });
+	return view;
     }
  
     private class GetXMLTask extends AsyncTask<String, Void, Bitmap> {
@@ -57,7 +64,7 @@ public class Newsp1Fragment extends Fragment {
         // Sets the Bitmap returned by doInBackground
         @Override
         protected void onPostExecute(Bitmap result) {
-      /////      imageView.setImageBitmap(result);
+            imageView.setImageBitmap(result);
         }
  
         // Creates Bitmap from InputStream and returns it
@@ -99,9 +106,9 @@ public class Newsp1Fragment extends Fragment {
             return stream;
         }
 
-		*/
 		
-		return view;
+		
+		
 	
 		}
 
