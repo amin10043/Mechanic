@@ -27,7 +27,7 @@ public class MainFragment extends Fragment {
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
-		List<ListItem> mylist = dbAdapter.getListItemsById(1);
+		List<ListItem> mylist = dbAdapter.getListItemsById(0);
 		dbAdapter.close();
 
 		ListView lstMain = (ListView) view.findViewById(R.id.lstMain);
