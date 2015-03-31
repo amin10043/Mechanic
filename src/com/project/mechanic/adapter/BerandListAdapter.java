@@ -2,7 +2,7 @@ package com.project.mechanic.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -10,32 +10,26 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.AdvisorTypeFragment;
-import com.project.mechanic.fragment.BerandFragment;
 import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.FroumtitleFragment;
-import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.fragment.NewspaperFragment;
-import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class MainListAdapter extends ArrayAdapter<ListItem> {
+public class BerandListAdapter extends ArrayAdapter<ListItem> {
 
 	Context context;
 	List<ListItem> list;
-	int[] imageId;
 	ListItem tempItem;
 	DataBaseAdapter adapter;
 
-	public MainListAdapter(Context context, int resource, List<ListItem> objact) {
+	public BerandListAdapter(Context context, int resource, List<ListItem> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -44,23 +38,19 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 
 	}
 
+	@SuppressLint("ViewHolder")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater
-				.inflate(R.layout.main_item_list, parent, false);
+		convertView = myInflater.inflate(R.layout.row_berand, parent, false);
 
 		TextView txtName = (TextView) convertView.findViewById(R.id.txtName);
-		TextView txtNoti = (TextView) convertView.findViewById(R.id.txtNoti);
-
-		ImageView img = (ImageView) convertView.findViewById(R.id.imgItem);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
-		txtNoti.setText("1");
+
 
 		convertView.setOnClickListener(new OnClickListener() {
 
@@ -73,7 +63,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 				String item = txtName.getText().toString();
 
 				adapter.open();
-				ArrayList<ListItem> allItems = adapter.getListItemsById(0);
+				ArrayList<ListItem> allItems = adapter.getListItemsById(1);
 				int id = 0;
 				for (ListItem listItem : allItems) {
 					if (item.equals(listItem.getName())) {
@@ -83,22 +73,14 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 				}
 				adapter.close();
 
-				if (id == 1) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new BerandFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-
-				} else if (id == 2) {
+				if (id == 9) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-					
-					
-				} else if (id == 3) {
+
+				} else if (id == 10) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new AdvisorTypeFragment());
@@ -106,7 +88,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.commit();
 
 
-				} else if (id == 4) {
+				} else if (id == 11) {
 
 
 					FragmentTransaction trans = ((MainActivity) context)
@@ -117,7 +99,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.commit();
 
 
-				} else if (id == 5) {
+				} else if (id == 12) {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
@@ -125,9 +107,17 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.addToBackStack(null);
 					trans.commit();
 
-				} else if (id == 6) {
+				} else if (id == 13) {
 
-				} else if (id == 7) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new NewspaperFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+					
+					
+				} else if (id == 14) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FroumtitleFragment());
