@@ -64,7 +64,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginRight="18dp"
 
-            android:layout_toLeftOf="@+id/textView1"
+            android:layout_toLeftOf="@+id/row_berand_txt"
             android:textColor="@color/red" />
 
             android:layout_toLeftOf="@+id/fragmentnewstxt" />

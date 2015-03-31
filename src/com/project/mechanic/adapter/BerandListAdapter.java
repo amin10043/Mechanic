@@ -46,7 +46,7 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 
 		convertView = myInflater.inflate(R.layout.row_berand, parent, false);
 
-		TextView txtName = (TextView) convertView.findViewById(R.id.txtName);
+		TextView txtName = (TextView) convertView.findViewById(R.id.row_berand_txt);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
@@ -79,7 +79,7 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-
+     /*
 				} else if (id == 10) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
@@ -123,7 +123,7 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 					trans.replace(R.id.content_frame, new FroumtitleFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-				}
+			*/	}
 			}
 		});
 
