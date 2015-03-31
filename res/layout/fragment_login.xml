@@ -1,8 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/strange_bullseyes" >
+    android:id="@+id/scrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,38 +24,21 @@
                  android:layout_weight="1"
                  android:orientation="vertical" >
 
-                 <TextView
-                     android:id="@+id/RowAdvisortypetxt"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_marginLeft="20dp"
-                     android:enabled="true"
-                     android:text="آدرس ایمیل"
-                     android:textSize="15dp" />
-
                  <EditText
-                     android:id="@+id/editText1"
+                     android:id="@+id/editTextuser"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_gravity="center"
                      android:layout_weight="1"
                      android:ems="10"
+                     android:hint="Enter Username"
                      android:inputType="textEmailAddress"
-                     >
+                     android:paddingTop="50dp" >
 
                      <requestFocus />
                  </EditText>
 
              </LinearLayout>
-
-             <TextView
-                 android:id="@+id/textView2"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginLeft="20dp"
-                 android:layout_weight="1"
-                 android:text="رمز عبور"
-                 android:textSize="15dp" />
 
              <LinearLayout
                  android:layout_width="match_parent"
@@ -64,18 +46,19 @@
                  android:layout_gravity="center"
                  android:layout_marginTop="10dp"
                  android:layout_weight="1"
-                 android:orientation="vertical" >
+                 android:orientation="vertical"
+                 android:paddingTop="50dp" >
 
                  <EditText
-                     android:id="@+id/editText2"
+                     android:id="@+id/editTextpass"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_gravity="center"
                      android:layout_weight="1"
                      android:ems="10"
                      android:enabled="true"
-                     android:inputType="textPassword"
-                />
+                     android:hint="Enter Password"
+                     android:inputType="textPassword" />
 
              </LinearLayout>
 
@@ -93,7 +76,8 @@
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_weight="1"
-                     android:background="@drawable/register" />
+                     android:background="@drawable/buttonshape"
+                     android:text="ورود" />
 
                  <Button
                      android:id="@+id/btncancle"
@@ -101,7 +85,8 @@
                      android:layout_height="wrap_content"
                      android:layout_marginLeft="20dp"
                      android:layout_weight="1"
-                     android:background="@drawable/cancle2" />
+                     android:background="@drawable/buttonshape"
+                     android:text="انصراف" />
 
              </LinearLayout>
 
@@ -119,7 +104,8 @@
                      android:layout_height="wrap_content"
                      android:layout_marginRight="25dp"
                      android:background="@color/transparent"
-                     android:text="فراموشی کلمه عبور" />
+                     android:text="فراموشی کلمه عبور"
+                     android:textColor="@color/light_grey" />
 
                  <Button
                      android:id="@+id/btnreg1"
@@ -129,7 +115,8 @@
                      android:layout_gravity="right"
                      android:layout_marginRight="20dp"
                      android:background="@color/transparent"
-                     android:text="ثبت نام" />
+                     android:text="ثبت نام"
+                     android:textColor="@color/light_grey" />
 
              </LinearLayout>
 
