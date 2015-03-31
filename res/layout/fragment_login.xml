@@ -1,7 +1,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollView1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#FFFFFF" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,7 +22,6 @@
                  android:layout_height="match_parent"
                  android:layout_gravity="center"
                  android:layout_marginTop="40dp"
-                 android:layout_weight="1"
                  android:orientation="vertical" >
 
                  <EditText
@@ -29,11 +29,11 @@
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:layout_gravity="center"
-                     android:layout_weight="1"
                      android:ems="10"
+                     android:enabled="true"
                      android:hint="Enter Username"
                      android:inputType="textEmailAddress"
-                     android:paddingTop="50dp" >
+                     android:textSize="15dp" >
 
                      <requestFocus />
                  </EditText>
@@ -58,7 +58,8 @@
                      android:ems="10"
                      android:enabled="true"
                      android:hint="Enter Password"
-                     android:inputType="textPassword" />
+                     android:inputType="textPassword"
+                     android:textSize="15dp" />
 
              </LinearLayout>
 
@@ -72,30 +73,31 @@
                  android:orientation="horizontal" >
 
                  <Button
-                     android:id="@+id/btnlogin"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_weight="1"
-                     android:background="@drawable/buttonshape"
-                     android:text="ورود" />
-
-                 <Button
                      android:id="@+id/btncancle"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_marginLeft="20dp"
+                     android:layout_width="100dp"
+                     android:layout_height="45dp"
                      android:layout_weight="1"
                      android:background="@drawable/buttonshape"
                      android:text="انصراف" />
+
+                 <Button
+                     android:id="@+id/btnlogin"
+                     android:layout_width="100dp"
+                     android:layout_height="45dp"
+                     android:layout_marginLeft="20dp"
+                     android:layout_weight="1"
+                     android:background="@drawable/buttonshape"
+                     android:text="ورود" />
 
              </LinearLayout>
 
              <LinearLayout
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:layout_gravity="right"
-                 android:layout_marginBottom="10dp"
-                 android:layout_weight="1" >
+                 android:layout_gravity="bottom|right"
+                 android:layout_weight="1"
+                 android:paddingRight="20dp"
+                 android:paddingTop="50dp" >
 
                  <Button
                      android:id="@+id/btnforgot"
@@ -105,18 +107,19 @@
                      android:layout_marginRight="25dp"
                      android:background="@color/transparent"
                      android:text="فراموشی کلمه عبور"
-                     android:textColor="@color/light_grey" />
+                     android:textColor="@color/light_grey"
+                     android:textSize="15dp" />
 
                  <Button
                      android:id="@+id/btnreg1"
                      style="?android:attr/buttonStyleSmall"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:layout_gravity="right"
                      android:layout_marginRight="20dp"
                      android:background="@color/transparent"
                      android:text="ثبت نام"
-                     android:textColor="@color/light_grey" />
+                     android:textColor="@color/light_grey"
+                     android:textSize="15dp" />
 
              </LinearLayout>
 
