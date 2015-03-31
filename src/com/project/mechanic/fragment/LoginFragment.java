@@ -55,7 +55,10 @@ public class LoginFragment extends Fragment {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			
+			FragmentTransaction trans = getActivity()
+					.getSupportFragmentManager().beginTransaction();
+			trans.replace(R.id.content_frame, new MainFragment());
+			trans.commit();
 		}
 	});
  btnreg.setOnClickListener(new View.OnClickListener() {
