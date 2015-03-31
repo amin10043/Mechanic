@@ -15,7 +15,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:layout_weight="1"
-    android:background="@drawable/Register3" >
+    android:background="@drawable/register3" >
 
         </LinearLayout>
 
@@ -84,7 +84,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="bottom|center"
     android:layout_marginBottom="20dp"
-    android:layout_marginTop="20dp"
+    android:layout_marginTop="50dp"
     android:layout_weight="1" >
 
     <Button
@@ -92,12 +92,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="@drawable/buttonshape"
         android:text="انصراف" />
 
     <Button
         android:id="@+id/btnreg2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/buttonshape"
         android:enabled="true"
         android:scrollHorizontally="false"
         android:text="ثبت نام" />

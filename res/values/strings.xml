@@ -13,10 +13,13 @@
     <string name="object">انتخاب برند</string>
     <string name="city">انتخاب شهر</string>
     <string name="brand">معرفی برند</string>
-   <string name="advisor">مشاوران-ناظران</string>
+    <string name="advisor">مشاوران-ناظران</string>
     <string name="Executertyper">شرکتهای مجری</string>
-    
-
+    <string name="News">نشریات-مقالات واخبار</string>
+    <string name="Propaganda">آگهی وتبلیغات</string>
+   <string name="Forums">تالار گفتگو</string>
+   
+ 
     <string-array name="MenuItems">
         <item name="home">خانه</item>
         <item name="users">کاربری</item>
@@ -25,7 +28,13 @@
         <item name="home4">درباره ما</item>
         <item name="home5">تماس با ما</item>
     </string-array>
-
+    
+  <string-array name="news">
+        <item name="Publications">نشریات</item>
+        <item name="Articles">مقالات</item>
+        <item name="Thenews">اخبار</item>
+    </string-array>
+  
     <string name="ostantxt1">انتخاب استان</string>
     <string name="citytxt1">انتخاب شهر</string>
     <string name="title_activity_login">LoginActivity</string>
