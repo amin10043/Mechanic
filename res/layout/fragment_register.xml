@@ -15,7 +15,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:layout_weight="1"
-    android:background="@drawable/register2" >
+    android:background="@drawable/Register3" >
 
         </LinearLayout>
 
@@ -26,20 +26,14 @@
     android:layout_marginTop="20dp"
     android:layout_weight="1" >
 
-    <TextView
-        android:id="@+id/RowAdvisortypetxt"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginLeft="10dp"
-        android:layout_weight="1"
-        android:text="نام نام خانوادگی" />
-
     <EditText
         android:id="@+id/editTextname"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" >
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:hint="Enter Name and Family"
+        android:textSize="14dp" >
 
         <requestFocus />
     </EditText>
@@ -53,15 +47,6 @@
     android:layout_marginTop="20dp"
     android:layout_weight="1" >
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:text="نام کاربری(ایمیل)"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="12sp" />
-
     <EditText
         android:id="@+id/editTextuser"
         android:layout_width="wrap_content"
@@ -69,7 +54,9 @@
         android:layout_gravity="center"
         android:layout_weight="1"
         android:ems="10"
-        android:inputType="textEmailAddress" />
+        android:hint="Enter Username(Email)"
+        android:inputType="textEmailAddress"
+        android:textSize="14sp" />
 
 </LinearLayout>
 
@@ -80,22 +67,15 @@
     android:layout_marginTop="20dp"
     android:layout_weight="1" >
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:text="کلمه عبور"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="12dp" />
-
     <EditText
         android:id="@+id/editTextpass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:inputType="textPassword" />
+        android:hint="Enter Password"
+        android:inputType="textPassword"
+        android:textSize="14sp" />
 
 </LinearLayout>
 
@@ -103,6 +83,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_gravity="bottom|center"
+    android:layout_marginBottom="20dp"
     android:layout_marginTop="20dp"
     android:layout_weight="1" >
 
@@ -111,15 +92,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/cancle2" />
+        android:text="انصراف" />
 
     <Button
         android:id="@+id/btnreg2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/register"
         android:enabled="true"
-        android:scrollHorizontally="false" />
+        android:scrollHorizontally="false"
+        android:text="ثبت نام" />
 
 </LinearLayout>
             
