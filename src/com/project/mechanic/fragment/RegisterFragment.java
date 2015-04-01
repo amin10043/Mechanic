@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,23 +31,23 @@ public class RegisterFragment extends Fragment {
 			
 			
 	Button   btncan    = (Button) view.findViewById(R.id.btncancle2);
-	Button  btnreg    =(Button) view.findViewById(R.id.btnreg2);
-	EditText editname  = (EditText)view.findViewById(R.id.editTextname);		 
-    EditText edituser  = (EditText)view.findViewById(R.id.editTextuser);		 
-	EditText editpass  = (EditText)view.findViewById(R.id.editTextpass);
+	Button   btnreg    =(Button) view.findViewById(R.id.btnreg2);
+	final EditText editname  = (EditText)view.findViewById(R.id.editTextname);		 
+    final EditText edituser  = (EditText)view.findViewById(R.id.editTextuser);		 
+	final EditText editpass  = (EditText)view.findViewById(R.id.editTextpass);
 		 
-	 final String Name = editname.getText().toString(); 
-	 final String user = edituser.getText().toString();  
-	 final String pass = editpass.getText().toString(); 
-	 
+	
 	 
 	btnreg.setOnClickListener(new OnClickListener(){
 
-		@Override
+	
 		public void onClick(View arg0) {
 			
-			dbAdapter.open();
 			
+			 final String Name = editname.getText().toString(); 
+			 final String user = edituser.getText().toString();  
+			 final String pass = editpass.getText().toString(); 
+			dbAdapter.open();
 			dbAdapter.inserUserToDb( Name,user, pass);
 			dbAdapter.close();
 		}
@@ -62,7 +63,11 @@ public class RegisterFragment extends Fragment {
 		@Override
 		public void onClick(View arg0) {
 			
-			 
+			
+			FragmentTransaction trans = getActivity()
+					.getSupportFragmentManager().beginTransaction();
+			trans.replace(R.id.content_frame, new LoginFragment());
+			trans.commit();
 		}
 	 });
 		 	 

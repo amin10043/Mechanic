@@ -32,7 +32,7 @@
         android:textColor="@color/red" />
 
   <ListView
-      android:id="@+id/listView1"
+      android:id="@+id/lstVberand"
       android:layout_width="match_parent"
       android:layout_height="wrap_content" >
   </ListView>
