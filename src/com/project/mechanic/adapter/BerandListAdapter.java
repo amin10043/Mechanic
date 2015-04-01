@@ -86,7 +86,7 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 				} else if (id == 10) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new AdvisorTypeFragment());
+					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
