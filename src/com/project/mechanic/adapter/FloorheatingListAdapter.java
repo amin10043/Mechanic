@@ -2,7 +2,6 @@ package com.project.mechanic.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
@@ -13,27 +12,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
-import com.project.mechanic.fragment.AdvisorTypeFragment;
-import com.project.mechanic.fragment.ExecutertypeFragment;
-import com.project.mechanic.fragment.FloorheatingFragment;
-import com.project.mechanic.fragment.FroumtitleFragment;
-import com.project.mechanic.fragment.NewspaperFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
-import com.project.mechanic.fragment.TubeFragment;
 import com.project.mechanic.model.DataBaseAdapter;
-
-public class BerandListAdapter extends ArrayAdapter<ListItem> {
+public class FloorheatingListAdapter extends ArrayAdapter<ListItem> {
 
 	Context context;
 	List<ListItem> list;
 	ListItem tempItem;
 	DataBaseAdapter adapter;
 
-	public BerandListAdapter(Context context, int resource, List<ListItem> objact) {
+	public FloorheatingListAdapter(Context context, int resource, List<ListItem> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -48,9 +39,9 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 
 		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_berand, parent, false);
+		convertView = myInflater.inflate(R.layout.row_floorheating, parent, false);
 
-		TextView txtName = (TextView) convertView.findViewById(R.id.row_berand_txt);
+		TextView txtName = (TextView) convertView.findViewById(R.id.row_floorheating_txt);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
@@ -62,12 +53,11 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 			public void onClick(View v) {
 
 				LinearLayout parentlayout = (LinearLayout) v;
-				TextView txtName = (TextView) parentlayout
-						.findViewById(R.id.row_berand_txt);
+				TextView txtName = (TextView) parentlayout.findViewById(R.id.row_floorheating_txt);
 				String item = txtName.getText().toString();
 
 				adapter.open();
-				ArrayList<ListItem> allItems = adapter.getListItemsById(1);
+				ArrayList<ListItem> allItems = adapter.getListItemsById(10);
 				int id = 0;
 				for (ListItem listItem : allItems) {
 					if (item.equals(listItem.getName())) {
@@ -77,54 +67,53 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 				}
 				adapter.close();
 
-				if (id == 9) {
+				if (id == 50) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new TubeFragment());
+					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
     
-				} else if (id == 10) {
+				} else if (id == 51) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new FloorheatingFragment());
+					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
 
-				} else if (id == 11) {
+				} else if (id == 52) {
 
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame,
-							new ExecutertypeFragment());
+					trans.replace(R.id.content_frame,new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
 
-				} else if (id == 12) {
+				} else if (id == 53) {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new NewspaperFragment());
+					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
-				} else if (id == 13) {
+				} else if (id == 54) {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new NewspaperFragment());
+					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 					
 					
 					
-				} else if (id == 14) {
+				} else if (id == 55) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new FroumtitleFragment());
+					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 				}
