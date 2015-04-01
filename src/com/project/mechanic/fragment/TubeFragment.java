@@ -1,5 +1,6 @@
 package com.project.mechanic.fragment;
 
+
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -11,12 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.project.mechanic.R;
-import com.project.mechanic.adapter.BerandListAdapter;
-import com.project.mechanic.adapter.MainListAdapter;
+import com.project.mechanic.adapter.TubeListAdapter;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class BerandFragment extends Fragment {
+public class TubeFragment extends Fragment {
+
 
 	DataBaseAdapter dbAdapter;
 
@@ -25,21 +26,22 @@ public class BerandFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View view = inflater.inflate(R.layout.fragment_berand, null);
+		View view = inflater.inflate(R.layout.fragment_tube, null);
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
-		List<ListItem> mylist = dbAdapter.getListItemsById(1);
+		List<ListItem> mylist = dbAdapter.getListItemsById(9);
 		dbAdapter.close();
 
-		ListView lstBerand = (ListView) view.findViewById(R.id.lstVberand);
-		BerandListAdapter ListAdapter = new BerandListAdapter(getActivity(),
-				R.layout.row_berand, mylist);
+		ListView lstTube = (ListView) view.findViewById(R.id.lstVtube);
+		TubeListAdapter ListAdapter = new TubeListAdapter(getActivity(),
+				R.layout.row_tube, mylist);
 
-		lstBerand.setAdapter(ListAdapter);
+		lstTube.setAdapter(ListAdapter);
 
 
 		
 		return view;
 	}
 }
+

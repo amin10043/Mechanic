@@ -1,5 +1,6 @@
 package com.project.mechanic.fragment;
 
+
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -9,14 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
 import com.project.mechanic.R;
-import com.project.mechanic.adapter.BerandListAdapter;
-import com.project.mechanic.adapter.MainListAdapter;
+import com.project.mechanic.adapter.SmartTubeListAdapter;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class BerandFragment extends Fragment {
+public class SmartTubeFragment extends Fragment {
+
 
 	DataBaseAdapter dbAdapter;
 
@@ -25,21 +25,22 @@ public class BerandFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View view = inflater.inflate(R.layout.fragment_berand, null);
+		View view = inflater.inflate(R.layout.fragment_smarttube, null);
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
-		List<ListItem> mylist = dbAdapter.getListItemsById(1);
+		List<ListItem> mylist = dbAdapter.getListItemsById(15);
 		dbAdapter.close();
 
-		ListView lstBerand = (ListView) view.findViewById(R.id.lstVberand);
-		BerandListAdapter ListAdapter = new BerandListAdapter(getActivity(),
-				R.layout.row_berand, mylist);
+		ListView lstSmartTube = (ListView) view.findViewById(R.id.lstVsmarttube);
+		SmartTubeListAdapter ListAdapter = new SmartTubeListAdapter(getActivity(),
+				R.layout.row_smarttube, mylist);
 
-		lstBerand.setAdapter(ListAdapter);
+		lstSmartTube.setAdapter(ListAdapter);
 
 
 		
 		return view;
 	}
 }
+

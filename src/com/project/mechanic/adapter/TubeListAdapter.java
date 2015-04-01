@@ -22,17 +22,17 @@ import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.FroumtitleFragment;
 import com.project.mechanic.fragment.NewspaperFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
-import com.project.mechanic.fragment.TubeFragment;
+import com.project.mechanic.fragment.SmartTubeFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class BerandListAdapter extends ArrayAdapter<ListItem> {
+public class TubeListAdapter extends ArrayAdapter<ListItem> {
 
 	Context context;
 	List<ListItem> list;
 	ListItem tempItem;
 	DataBaseAdapter adapter;
 
-	public BerandListAdapter(Context context, int resource, List<ListItem> objact) {
+	public TubeListAdapter(Context context, int resource, List<ListItem> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -47,9 +47,9 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 
 		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_berand, parent, false);
+		convertView = myInflater.inflate(R.layout.row_tube, parent, false);
 
-		TextView txtName = (TextView) convertView.findViewById(R.id.row_berand_txt);
+		TextView txtName = (TextView) convertView.findViewById(R.id.row_tube_txt);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
@@ -61,12 +61,11 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 			public void onClick(View v) {
 
 				LinearLayout parentlayout = (LinearLayout) v;
-				TextView txtName = (TextView) parentlayout
-						.findViewById(R.id.row_berand_txt);
+				TextView txtName = (TextView) parentlayout.findViewById(R.id.row_tube_txt);
 				String item = txtName.getText().toString();
 
 				adapter.open();
-				ArrayList<ListItem> allItems = adapter.getListItemsById(1);
+				ArrayList<ListItem> allItems = adapter.getListItemsById(9);
 				int id = 0;
 				for (ListItem listItem : allItems) {
 					if (item.equals(listItem.getName())) {
@@ -76,14 +75,14 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 				}
 				adapter.close();
 
-				if (id == 9) {
+				if (id == 15) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new TubeFragment());
+					trans.replace(R.id.content_frame, new SmartTubeFragment());
 					trans.addToBackStack(null);
 					trans.commit();
     
-				} else if (id == 10) {
+				} else if (id == 16) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new AdvisorTypeFragment());
@@ -91,7 +90,7 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 					trans.commit();
 
 
-				} else if (id == 11) {
+				} else if (id == 17) {
 
 
 					FragmentTransaction trans = ((MainActivity) context)
@@ -102,7 +101,7 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 					trans.commit();
 
 
-				} else if (id == 12) {
+				} else if (id == 18) {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
@@ -110,7 +109,7 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 					trans.addToBackStack(null);
 					trans.commit();
 
-				} else if (id == 13) {
+				} else if (id == 19) {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
@@ -120,7 +119,7 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 					
 					
 					
-				} else if (id == 14) {
+				} else if (id == 20) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FroumtitleFragment());
