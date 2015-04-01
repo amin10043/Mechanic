@@ -33,7 +33,6 @@
                      android:enabled="true"
                      android:hint="Enter Username"
                      android:inputType="textEmailAddress"
-                     android:textColorHint="@color/red"
                      android:textSize="15dp" >
 
                      <requestFocus />
@@ -60,7 +59,6 @@
                      android:enabled="true"
                      android:hint="Enter Password"
                      android:inputType="textPassword"
-                     android:textColorHint="@color/red"
                      android:textSize="15dp" />
 
              </LinearLayout>
@@ -109,7 +107,7 @@
                      android:layout_marginRight="25dp"
                      android:background="@color/transparent"
                      android:text="فراموشی کلمه عبور"
-                     android:textColor="@color/red"
+                     android:textColor="@color/light_grey"
                      android:textSize="15dp" />
 
                  <Button
@@ -120,7 +118,7 @@
                      android:layout_marginRight="20dp"
                      android:background="@color/transparent"
                      android:text="ثبت نام"
-                     android:textColor="@color/red"
+                     android:textColor="@color/light_grey"
                      android:textSize="15dp" />
 
              </LinearLayout>
