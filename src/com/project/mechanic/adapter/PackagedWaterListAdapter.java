@@ -2,7 +2,6 @@ package com.project.mechanic.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
@@ -13,16 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
-import com.project.mechanic.fragment.ExecutertypeFragment;
-import com.project.mechanic.fragment.FivelayerTubeFragment;
-import com.project.mechanic.fragment.FroumtitleFragment;
-import com.project.mechanic.fragment.NewspaperFragment;
-import com.project.mechanic.fragment.ProvinceFragment;
-import com.project.mechanic.fragment.SmartTubeFragment;
+import com.project.mechanic.fragment.PackageFragment;
+import com.project.mechanic.fragment.WaterFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class PackagedWaterListAdapter extends ArrayAdapter<ListItem> {
@@ -78,14 +72,14 @@ public class PackagedWaterListAdapter extends ArrayAdapter<ListItem> {
 				if (id == 60) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.replace(R.id.content_frame, new PackageFragment());
 					trans.addToBackStack(null);
 					trans.commit();
     
 				} else if (id == 61) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.replace(R.id.content_frame, new WaterFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 

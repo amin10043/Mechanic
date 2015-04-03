@@ -2,6 +2,7 @@ package com.project.mechanic.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
@@ -12,20 +13,26 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
+import com.project.mechanic.fragment.ExecutertypeFragment;
+import com.project.mechanic.fragment.FivelayerTubeFragment;
+import com.project.mechanic.fragment.FroumtitleFragment;
+import com.project.mechanic.fragment.NewspaperFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
+import com.project.mechanic.fragment.SmartTubeFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class AluminumRadiatorListAdapter extends ArrayAdapter<ListItem> {
+public class PackagedWaterListAdapter extends ArrayAdapter<ListItem> {
 
 	Context context;
 	List<ListItem> list;
 	ListItem tempItem;
 	DataBaseAdapter adapter;
 
-	public AluminumRadiatorListAdapter(Context context, int resource, List<ListItem> objact) {
+	public PackagedWaterListAdapter(Context context, int resource, List<ListItem> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -40,9 +47,9 @@ public class AluminumRadiatorListAdapter extends ArrayAdapter<ListItem> {
 
 		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_aluminumradiator, parent, false);
+		convertView = myInflater.inflate(R.layout.row_packagedwater, parent, false);
 
-		TextView txtName = (TextView) convertView.findViewById(R.id.row_aluminumradiator_txt);
+		TextView txtName = (TextView) convertView.findViewById(R.id.row_packagedwater_txt);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
@@ -54,11 +61,11 @@ public class AluminumRadiatorListAdapter extends ArrayAdapter<ListItem> {
 			public void onClick(View v) {
 
 				LinearLayout parentlayout = (LinearLayout) v;
-				TextView txtName = (TextView) parentlayout.findViewById(R.id.row_aluminumradiator_txt);
+				TextView txtName = (TextView) parentlayout.findViewById(R.id.row_packagedwater_txt);
 				String item = txtName.getText().toString();
 
 				adapter.open();
-				ArrayList<ListItem> allItems = adapter.getListItemsById(76);
+				ArrayList<ListItem> allItems = adapter.getListItemsById(13);
 				int id = 0;
 				for (ListItem listItem : allItems) {
 					if (item.equals(listItem.getName())) {
@@ -68,56 +75,14 @@ public class AluminumRadiatorListAdapter extends ArrayAdapter<ListItem> {
 				}
 				adapter.close();
 
-				if (id == 80) {
+				if (id == 60) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-					
-				} else if (id == 81) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-					
-				} else if (id == 82) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-					
-				} else if (id == 83) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-					
-				} else if (id == 84) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-					
-				} else if (id == 85) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-					
-				} else if (id == 86) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-					
-				} else if (id == 87) {
+    
+				} else if (id == 61) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new ProvinceFragment());

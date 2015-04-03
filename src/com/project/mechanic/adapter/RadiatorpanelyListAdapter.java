@@ -2,6 +2,7 @@ package com.project.mechanic.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
@@ -12,9 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
+import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.fragment.SmartTubeFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -68,13 +71,27 @@ public class RadiatorpanelyListAdapter extends ArrayAdapter<ListItem> {
 				}
 				adapter.close();
 
-				if (id == 15) {
+				if (id == 88) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new SmartTubeFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-    
+					
+				} else if (id == 89) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 90) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+
 				}
 			}
 		});

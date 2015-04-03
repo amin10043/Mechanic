@@ -18,14 +18,14 @@ import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class AluminumRadiatorListAdapter extends ArrayAdapter<ListItem> {
+public class WaterListAdapter extends ArrayAdapter<ListItem> {
 
 	Context context;
 	List<ListItem> list;
 	ListItem tempItem;
 	DataBaseAdapter adapter;
 
-	public AluminumRadiatorListAdapter(Context context, int resource, List<ListItem> objact) {
+	public WaterListAdapter(Context context, int resource, List<ListItem> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -40,9 +40,9 @@ public class AluminumRadiatorListAdapter extends ArrayAdapter<ListItem> {
 
 		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_aluminumradiator, parent, false);
+		convertView = myInflater.inflate(R.layout.row_water, parent, false);
 
-		TextView txtName = (TextView) convertView.findViewById(R.id.row_aluminumradiator_txt);
+		TextView txtName = (TextView) convertView.findViewById(R.id.row_water_txt);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
@@ -54,11 +54,11 @@ public class AluminumRadiatorListAdapter extends ArrayAdapter<ListItem> {
 			public void onClick(View v) {
 
 				LinearLayout parentlayout = (LinearLayout) v;
-				TextView txtName = (TextView) parentlayout.findViewById(R.id.row_aluminumradiator_txt);
+				TextView txtName = (TextView) parentlayout.findViewById(R.id.row_water_txt);
 				String item = txtName.getText().toString();
 
 				adapter.open();
-				ArrayList<ListItem> allItems = adapter.getListItemsById(76);
+				ArrayList<ListItem> allItems = adapter.getListItemsById(61);
 				int id = 0;
 				for (ListItem listItem : allItems) {
 					if (item.equals(listItem.getName())) {
@@ -68,59 +68,27 @@ public class AluminumRadiatorListAdapter extends ArrayAdapter<ListItem> {
 				}
 				adapter.close();
 
-				if (id == 80) {
+				if (id == 73) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-					
-				} else if (id == 81) {
+    
+				} else if (id == 74) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-					
-				} else if (id == 82) {
+
+
+				} else if (id == 75) {
+
+
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-					
-				} else if (id == 83) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-					
-				} else if (id == 84) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-					
-				} else if (id == 85) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-					
-				} else if (id == 86) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-					
-				} else if (id == 87) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.replace(R.id.content_frame,new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
