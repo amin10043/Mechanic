@@ -111,8 +111,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame,
-							new ExecutertypeFragment());
+					trans.replace(R.id.content_frame,new ExecutertypeFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 

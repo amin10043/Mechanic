@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FivelayerTubeListAdapter;
 import com.project.mechanic.entity.ListItem;
@@ -24,7 +26,7 @@ public class FivelayerTubeFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		((MainActivity) getActivity()).setActivityTitle(R.string.FivelayerTube);
 		View view = inflater.inflate(R.layout.fragment_fivelayertube, null);
 		dbAdapter = new DataBaseAdapter(getActivity());
 

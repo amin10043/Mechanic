@@ -108,9 +108,35 @@ public class FloorheatingListAdapter extends ArrayAdapter<ListItem> {
 					trans.addToBackStack(null);
 					trans.commit();
 					
-					
-					
 				} else if (id == 55) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 56) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 57) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 58) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 59) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new ProvinceFragment());

@@ -12,13 +12,31 @@
     <string name="ostan">انتخاب استان</string>
     <string name="object">انتخاب برند</string>
     <string name="city">انتخاب شهر</string>
-    <string name="brand">معرفی برند</string>
+    <string name="brand">معرفی برندها</string>
     <string name="advisor">مشاوران-ناظران</string>
     <string name="Executertyper">شرکتهای مجری</string>
     <string name="News">نشریات-مقالات واخبار</string>
     <string name="Propaganda">آگهی وتبلیغات</string>
-   <string name="Forums">تالار گفتگو</string>
-   
+    <string name="Forums">تالار گفتگو</string>
+    <string name="Tube">لوله واتصالات</string>
+    <string name="SmartTube">لوله واتصالات هوشمند</string>
+    <string name="FivelayerTube">لوله واتصالات پنج لایه</string>
+    <string name="SullagePVC">لوله واتصالات فاضلابیPVC </string>
+    <string name="PushFit">لوله واتصالات پوش فیت</string>
+    <string name="Floorheating">گرمایش وسرمایش از کف</string>
+    <string name="Heatingandcooling">سیستمهای سرمایشی وگرمایشی</string>
+    <string name="Airconditioning">سیستمهای تهویه مطبوع</string>
+    <string name="PackagedWater">پکیج-آبگرمکن</string>
+    <string name="Radiator">رادیاتورها</string>
+    <string name="Package">پکیج ها</string>
+    <string name="Water">آبگرمکن ها</string>
+    <string name="AluminumRadiator">رادیاتورهای آلمینیومی</string>
+    <string name="Radiatorpanely">رادیاتور های پنلی</string>
+    <string name="RadiatorSteel">رادیاتورهای فولادی</string>
+    <string name="RadiatorElectric">رادیاتور های برقی</string>
+    
+    
+    
  
     <string-array name="MenuItems">
         <item name="home">خانه</item>
