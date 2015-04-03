@@ -110,9 +110,119 @@ public class FivelayerTubeListAdapter extends ArrayAdapter<ListItem> {
 					trans.addToBackStack(null);
 					trans.commit();
 					
-					
-					
 				} else if (id == 32) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 33) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 34) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 35) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 36) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 37) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 38) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 39) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 40) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 41) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 42) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 43) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 44) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 45) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 46) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 47) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 48) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new ProvinceFragment());

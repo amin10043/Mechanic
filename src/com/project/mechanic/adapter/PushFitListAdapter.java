@@ -19,18 +19,17 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.FivelayerTubeFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
-import com.project.mechanic.fragment.PushFitFragment;
 import com.project.mechanic.fragment.SmartTubeFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class TubeListAdapter extends ArrayAdapter<ListItem> {
+public class PushFitListAdapter extends ArrayAdapter<ListItem> {
 
 	Context context;
 	List<ListItem> list;
 	ListItem tempItem;
 	DataBaseAdapter adapter;
 
-	public TubeListAdapter(Context context, int resource, List<ListItem> objact) {
+	public PushFitListAdapter(Context context, int resource, List<ListItem> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -45,9 +44,9 @@ public class TubeListAdapter extends ArrayAdapter<ListItem> {
 
 		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_tube, parent, false);
+		convertView = myInflater.inflate(R.layout.row_pushfit, parent, false);
 
-		TextView txtName = (TextView) convertView.findViewById(R.id.row_tube_txt);
+		TextView txtName = (TextView) convertView.findViewById(R.id.row_pushfit_txt);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
@@ -59,11 +58,11 @@ public class TubeListAdapter extends ArrayAdapter<ListItem> {
 			public void onClick(View v) {
 
 				LinearLayout parentlayout = (LinearLayout) v;
-				TextView txtName = (TextView) parentlayout.findViewById(R.id.row_tube_txt);
+				TextView txtName = (TextView) parentlayout.findViewById(R.id.row_pushfit_txt);
 				String item = txtName.getText().toString();
 
 				adapter.open();
-				ArrayList<ListItem> allItems = adapter.getListItemsById(9);
+				ArrayList<ListItem> allItems = adapter.getListItemsById(19);
 				int id = 0;
 				for (ListItem listItem : allItems) {
 					if (item.equals(listItem.getName())) {
@@ -73,22 +72,22 @@ public class TubeListAdapter extends ArrayAdapter<ListItem> {
 				}
 				adapter.close();
 
-				if (id == 15) {
+				if (id == 115) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new SmartTubeFragment());
+					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
     
-				} else if (id == 16) {
+				} else if (id == 116) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new FivelayerTubeFragment());
+					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
 
-				} else if (id == 17) {
+				} else if (id == 117) {
 
 
 					FragmentTransaction trans = ((MainActivity) context)
@@ -98,7 +97,7 @@ public class TubeListAdapter extends ArrayAdapter<ListItem> {
 					trans.commit();
 
 
-				} else if (id == 18) {
+				} else if (id == 118) {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
@@ -106,17 +105,57 @@ public class TubeListAdapter extends ArrayAdapter<ListItem> {
 					trans.addToBackStack(null);
 					trans.commit();
 
-				} else if (id == 19) {
+				} else if (id == 119) {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new PushFitFragment());
+					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 					
+				} else if (id == 120) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
 					
+				} else if (id == 121) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
 					
-				} else if (id == 20) {
+				} else if (id == 122) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 123) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 124) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 125) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				} else if (id == 126) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new ProvinceFragment());
