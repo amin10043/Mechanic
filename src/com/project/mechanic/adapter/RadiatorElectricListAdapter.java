@@ -15,22 +15,17 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
-import com.project.mechanic.fragment.AirconditioningFragment;
-import com.project.mechanic.fragment.FloorheatingFragment;
-import com.project.mechanic.fragment.HeatingandcoolingFragment;
-import com.project.mechanic.fragment.PackagedWaterFragment;
-import com.project.mechanic.fragment.RadiatorFragment;
-import com.project.mechanic.fragment.TubeFragment;
+import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class BerandListAdapter extends ArrayAdapter<ListItem> {
+public class RadiatorElectricListAdapter extends ArrayAdapter<ListItem> {
 
 	Context context;
 	List<ListItem> list;
 	ListItem tempItem;
 	DataBaseAdapter adapter;
 
-	public BerandListAdapter(Context context, int resource, List<ListItem> objact) {
+	public RadiatorElectricListAdapter(Context context, int resource, List<ListItem> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -45,9 +40,9 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 
 		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_berand, parent, false);
+		convertView = myInflater.inflate(R.layout.row_radiatorelectric, parent, false);
 
-		TextView txtName = (TextView) convertView.findViewById(R.id.row_berand_txt);
+		TextView txtName = (TextView) convertView.findViewById(R.id.row_radiatorelectric_txt);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
@@ -59,12 +54,11 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 			public void onClick(View v) {
 
 				LinearLayout parentlayout = (LinearLayout) v;
-				TextView txtName = (TextView) parentlayout
-						.findViewById(R.id.row_berand_txt);
+				TextView txtName = (TextView) parentlayout.findViewById(R.id.row_radiatorelectric_txt);
 				String item = txtName.getText().toString();
 
 				adapter.open();
-				ArrayList<ListItem> allItems = adapter.getListItemsById(1);
+				ArrayList<ListItem> allItems = adapter.getListItemsById(79);
 				int id = 0;
 				for (ListItem listItem : allItems) {
 					if (item.equals(listItem.getName())) {
@@ -74,55 +68,30 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 				}
 				adapter.close();
 
-				if (id == 9) {
+				if (id == 94) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new TubeFragment());
+					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
     
-				} else if (id == 10) {
+				} else if (id == 95) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new FloorheatingFragment());
+					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
 
-				} else if (id == 11) {
+				} else if (id == 96) {
 
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame,new HeatingandcoolingFragment());
+					trans.replace(R.id.content_frame,new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
-
-				} else if (id == 12) {
-
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new AirconditioningFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-
-				} else if (id == 13) {
-
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new PackagedWaterFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-					
-					
-					
-				} else if (id == 14) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new RadiatorFragment());
-					trans.addToBackStack(null);
-					trans.commit();
 				}
 			}
 		});
