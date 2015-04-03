@@ -21,6 +21,7 @@ import com.project.mechanic.fragment.FivelayerTubeFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.fragment.PushFitFragment;
 import com.project.mechanic.fragment.SmartTubeFragment;
+import com.project.mechanic.fragment.SullagePVCFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class TubeListAdapter extends ArrayAdapter<ListItem> {
@@ -102,7 +103,7 @@ public class TubeListAdapter extends ArrayAdapter<ListItem> {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.replace(R.id.content_frame, new SullagePVCFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
