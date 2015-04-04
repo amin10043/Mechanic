@@ -1,9 +1,5 @@
 package com.project.mechanic.fragment;
 
-
-
-import com.project.mechanic.R;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,13 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+
+import com.project.mechanic.R;
 
 
 
-public class NewsFragment extends ListFragment implements OnItemClickListener {
+
+public class PublicationFragment extends ListFragment implements OnItemClickListener {
 
 
 	
@@ -35,7 +33,7 @@ public class NewsFragment extends ListFragment implements OnItemClickListener {
     
         super.onActivityCreated(savedInstanceState);
 
-ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.news, android.R.layout.simple_list_item_1);
+ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.Publication, android.R.layout.simple_list_item_1);
       
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
@@ -60,25 +58,25 @@ ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity
 		FragmentManager fragmentManager;
 		switch (position) {
 		case 0:
-
-			fragment = new PublicationFragment();
-			fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
+//
+//			fragment = new NewspaperFragment();
+//			fragmentManager = getFragmentManager();
+//			fragmentManager.beginTransaction()
+//					.replace(R.id.content_frame, fragment).commit();
 			break;
 
 		case 1:
-			fragment = new PaperFragment();
-			fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
+//			fragment = new PaperFragment();
+//			fragmentManager = getFragmentManager();
+//			fragmentManager.beginTransaction()
+//					.replace(R.id.content_frame, fragment).commit();
 			break;
 
 		case 2:
-			fragment = new NewspaperFragment();
-			fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
+//			fragment = new NewspaperFragment();
+//			fragmentManager = getFragmentManager();
+//			fragmentManager.beginTransaction()
+//					.replace(R.id.content_frame, fragment).commit();
 			break;
 		
 		}
@@ -89,11 +87,6 @@ ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity
 		
 	
 	}
-
-    	
-
-
-
 
 
 

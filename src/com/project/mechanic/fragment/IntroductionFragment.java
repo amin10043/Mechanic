@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 
@@ -31,15 +32,13 @@ public class IntroductionFragment extends Fragment {
 		peykan6.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 				
-		
-				
-				FragmentTransaction trans = ((MainActivity) context)
+				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new ProvinceFragment());
-				trans.addToBackStack(null);
 				trans.commit();
+				
 				
 				
 				
