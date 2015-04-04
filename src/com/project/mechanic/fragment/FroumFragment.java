@@ -11,6 +11,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FroumListAdapter;
 import com.project.mechanic.entity.Comment;
+import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.Dialogcmt.OnMyDialogResult;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -40,11 +41,12 @@ public class FroumFragment extends Fragment{
 	private int frmid;
 	private ImageButton btnAddcmt;
 	private Button btncmt;
-	
-	 Dialogcmt  dialog;
-	
+	ArrayList<Comment> mylist;
+	Dialogcmt  dialog;
+	ImageButton Replytocm;
 	
 	ListView lst;
+	ListView lstReply;
 	
 	@SuppressLint("InflateParams")
 	
@@ -61,42 +63,33 @@ public class FroumFragment extends Fragment{
 		 
 		    adapter= new DataBaseAdapter(getActivity());
 			adapter.open();
-			//ArrayList<Comment> allFroum =  adapter.getAllCommentByPapaerId(paperId);
+			//mylist = adapter.getAllCommentByPapaerId();
 			adapter.close();
 			
 			
-		 
-	List<FroumItem> cmtlist1 = new ArrayList<FroumItem>();
-	
-	
-	
-	
-		final FroumItem p1 = new FroumItem();
-		FroumItem p2 = new FroumItem();
-		FroumItem p3 = new FroumItem();
-		FroumItem p4 = new FroumItem();
-		
-		
-		/*p1.setComment();
-		p2.setComment("نظر 2");
-		p3.setComment("نظر 3");
-		p4.setComment("نظر 4");*/
-		p1.setUsername("شقایق کلالی");
-		p2.setUsername("شقایق کلالی");
-		p3.setUsername("شقایق کلالی");
-		p4.setUsername("شقایق کلالی");
-		
-		cmtlist1.add(p1);
-		cmtlist1.add(p2);
-		cmtlist1.add(p3);
-		cmtlist1.add(p4);
+	;
 		
 
 		 lst = (ListView) view.findViewById(R.id.lstComment);
-		 FroumListAdapter ListAdapter = new FroumListAdapter(getActivity(),R.layout.froumcmtitem, cmtlist1);
-
+		 lstReply=(ListView) view.findViewById(R.id.lstReplytoCm);
+		 FroumListAdapter ListAdapter = new FroumListAdapter(getActivity(),R.layout.froumcmtitem, mylist);
+         
 			lst.setAdapter(ListAdapter);
-		
+
+			Replytocm= (ImageButton)view.findViewById(R.id.imgvReplytoCm);
+			Replytocm.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View arg0) {
+					
+					  dialog = new Dialogcmt(getActivity(),R.layout.dialog_addcomment);
+					  dialog.show();
+					
+				}
+				
+				
+				
+			});
 		
 		btnAddcmt.setOnClickListener(new View.OnClickListener() {
 			
@@ -125,14 +118,6 @@ public class FroumFragment extends Fragment{
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		 
-		/*dialog.setDialogResult(new OnMyDialogResult(){
-		    public void finish(String result){
-		        // now you can use the 'result' on your activity
-		     
-		     p1.setComment(result);
-		    }
-		});*/
 		lst.deferNotifyDataSetChanged();
 		
 		

@@ -3,6 +3,7 @@ package com.project.mechanic.adapter;
 import java.util.List;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Comment;
 import com.project.mechanic.row_items.FroumItem;
 
 import android.annotation.SuppressLint;
@@ -15,14 +16,14 @@ import android.widget.TextView;
 
 
 
-public class FroumListAdapter  extends ArrayAdapter<FroumItem>{
+public class FroumListAdapter  extends ArrayAdapter<Comment>{
 	
 
 	Context context;
-	List<FroumItem> list;
+	List<Comment> list;
 
 	public FroumListAdapter(Context context, int resource,
-			List<FroumItem> objects) {
+			List<Comment> objects) {
 		super(context, resource, objects);
 
 		this.context = context;
@@ -45,13 +46,10 @@ public class FroumListAdapter  extends ArrayAdapter<FroumItem>{
 		TextView txt2 = (TextView) convertView.findViewById(R.id.rawUsernamecmttxt);
 		
 	
-	    FroumItem person1 = list.get(position);
+	    Comment person1 = list.get(position);
 		
-		txt1.setText(person1.getComment());
-		txt2.setText(person1.getUsername());
-	
-		
-
+		txt1.setText(person1.getDescription());
+		txt2.setText("zahra bidi");
 		return convertView;
 	}
 

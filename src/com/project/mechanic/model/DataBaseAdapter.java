@@ -120,10 +120,11 @@ public class DataBaseAdapter {
 		long res2 = res;
 		
 	}
-	public void insertCommenttoDb(String Comment) {
+	public void insertCommenttoDb(String description,int userId) {
 
 		ContentValues cv = new ContentValues();
-		cv.put("Description", Comment);
+		cv.put("Description", description);
+		cv.put("UserId", userId);
 		mDb.insert(TableComment,null, cv);
 
 	}
@@ -543,6 +544,42 @@ public ArrayList<Comment> getAllCommentByPapaerId(int paperId){
 		result.add(CursorToComment(cursor));
 	}
 		return result;
+}
+
+
+
+
+public ArrayList<Comment> getCommentbyPaperid(int  paperId) {
+
+	ArrayList<Comment> result = new ArrayList<Comment>();
+	Comment item = null;
+	Cursor mCur = mDb.query("Comment", Comment, " paperId=?",
+			new String[] { String.valueOf( paperId) }, null, null, null);
+
+	while (mCur.moveToNext()) {
+		item = CursorToComment(mCur);
+		result.add(item);
+	}
+
+	return result;
+
+}
+
+
+public ArrayList<Froum> getFroumItembyid(int Id) {
+
+	ArrayList<Froum> result = new ArrayList<Froum>();
+	Froum item = null;
+	Cursor mCur = mDb.query("Froum", Froum, " Id=?",
+			new String[] { String.valueOf( Id) }, null, null, null);
+
+	while (mCur.moveToNext()) {
+		item = CursorToFroum(mCur);
+		result.add(item);
+	}
+
+	return result;
+
 }
 	public ArrayList<Integer> getUSeridComment() {
 		ArrayList<Integer> result = new ArrayList<Integer>();
