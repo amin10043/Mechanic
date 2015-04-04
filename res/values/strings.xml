@@ -34,7 +34,8 @@
     <string name="Radiatorpanely">رادیاتور های پنلی</string>
     <string name="RadiatorSteel">رادیاتورهای فولادی</string>
     <string name="RadiatorElectric">رادیاتور های برقی</string>
-    
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_register">Register</string>
     
     
  
@@ -47,15 +48,10 @@
         <item name="home5">تماس با ما</item>
     </string-array>
     
-  <string-array name="news">
-        <item name="Publications">نشریات</item>
-        <item name="Articles">مقالات</item>
-        <item name="Thenews">اخبار</item>
-    </string-array>
-  
-    <string name="ostantxt1">انتخاب استان</string>
-    <string name="citytxt1">انتخاب شهر</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_register">Register</string>
-
+    <string-array name="news">
+        <item name="news_1">نشریات</item>
+        <item name="news_2">مقالات</item>
+        <item name="news_3">اخبار</item>
+        
+    </string-array> 
 </resources>

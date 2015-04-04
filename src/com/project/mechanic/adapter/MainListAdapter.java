@@ -120,7 +120,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new NewspaperFragment());
+					trans.replace(R.id.content_frame, new NewsFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 

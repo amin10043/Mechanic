@@ -17,10 +17,7 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
-import com.project.mechanic.fragment.AdvisorTypeFragment;
-import com.project.mechanic.fragment.ExecutertypeFragment;
-import com.project.mechanic.fragment.FroumtitleFragment;
-import com.project.mechanic.fragment.NewspaperFragment;
+import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -77,14 +74,14 @@ public class SmartTubeListAdapter extends ArrayAdapter<ListItem> {
 				if (id == 109) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.replace(R.id.content_frame, new IntroductionFragment());
 					trans.addToBackStack(null);
 					trans.commit();
     
 				} else if (id == 110) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.replace(R.id.content_frame, new IntroductionFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
@@ -94,7 +91,7 @@ public class SmartTubeListAdapter extends ArrayAdapter<ListItem> {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame,new ProvinceFragment());
+					trans.replace(R.id.content_frame,new IntroductionFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
@@ -103,7 +100,7 @@ public class SmartTubeListAdapter extends ArrayAdapter<ListItem> {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.replace(R.id.content_frame, new IntroductionFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
@@ -111,7 +108,7 @@ public class SmartTubeListAdapter extends ArrayAdapter<ListItem> {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.replace(R.id.content_frame, new IntroductionFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 					
@@ -120,7 +117,7 @@ public class SmartTubeListAdapter extends ArrayAdapter<ListItem> {
 				} else if (id == 114) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.replace(R.id.content_frame, new IntroductionFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 				}
