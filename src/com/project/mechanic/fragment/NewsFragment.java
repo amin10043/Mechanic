@@ -2,91 +2,55 @@ package com.project.mechanic.fragment;
 
 
 
-import com.project.mechanic.R;
+import java.util.List;
 
+import com.project.mechanic.MainActivity;
+import com.project.mechanic.R;
+import com.project.mechanic.adapter.NewsListAdapter;
+import com.project.mechanic.entity.ListItem;
+import com.project.mechanic.model.DataBaseAdapter;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 
+public class NewsFragment extends Fragment {
 
-public class NewsFragment extends ListFragment implements OnItemClickListener {
+	DataBaseAdapter dbAdapter;
+	int id;
 
+	@SuppressLint("InflateParams")
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
-	
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_news, container, false);
+		id = Integer.valueOf(getArguments().getString("Id"));
 
-        return view;
-    }
+		((MainActivity) getActivity()).setActivityTitle(R.string.News);
+		View view = inflater.inflate(R.layout.fragment_news, null);
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-    
-        super.onActivityCreated(savedInstanceState);
+		dbAdapter = new DataBaseAdapter(getActivity());
 
-ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.news, android.R.layout.simple_list_item_1);
-      
-        setListAdapter(adapter);
-        getListView().setOnItemClickListener(this);
+		dbAdapter.open();
+		List<ListItem> mylist = dbAdapter.getListItemsById(id);
+		dbAdapter.close();
 
-    }
+		ListView lstNews = (ListView) view.findViewById(R.id.lstVnews);
+		NewsListAdapter ListAdapter = new NewsListAdapter(getActivity(),
+				R.layout.row_news, mylist, id);
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+		lstNews.setAdapter(ListAdapter);
 
-       // Toast.makeText(getActivity(), "Item: " + position, Toast.LENGTH_SHORT)
-       //         .show();
-
-        selectItem(position);
-	
-		}
-
-	private void selectItem(int position) {
-		
-		
-		Fragment fragment;
-		FragmentManager fragmentManager;
-		switch (position) {
-		case 0:
-
-			fragment = new PublicationFragment();
-			fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
-			break;
-
-		case 1:
-			fragment = new PaperFragment();
-			fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
-			break;
-
-		case 2:
-			fragment = new NewspaperFragment();
-			fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
-			break;
-		
-		}
-		
-		
-		
-	} 
-		
-	
+		return view;
 	}
+}
+
+	
 
     	
 
