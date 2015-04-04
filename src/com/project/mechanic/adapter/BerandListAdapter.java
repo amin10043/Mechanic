@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -28,7 +30,8 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 	ListItem tempItem;
 	DataBaseAdapter adapter;
 	int itemId;
-
+	int lastPosition = 0;
+	
 	public BerandListAdapter(Context context, int resource,
 			List<ListItem> objact, int id) {
 		super(context, resource, objact);
@@ -49,6 +52,10 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 
 		convertView = myInflater.inflate(R.layout.row_berand, parent, false);
 
+		Animation animation = AnimationUtils.loadAnimation(getContext(),
+				(position > lastPosition) ? R.anim.up_from_bottom
+						: R.anim.down_from_top);
+		convertView.startAnimation(animation);
 		TextView txtName = (TextView) convertView
 				.findViewById(R.id.row_berand_txt);
 

@@ -33,6 +33,8 @@ public class IntroductionFragment extends Fragment {
 			@Override
 			public void onClick(View arg0) {
 				
+		
+				
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new ProvinceFragment());
