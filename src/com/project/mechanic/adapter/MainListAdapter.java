@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +18,11 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
+import com.project.mechanic.fragment.AdvisorTypeFragment;
+import com.project.mechanic.fragment.BerandFragment;
+import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.FroumtitleFragment;
-import com.project.mechanic.fragment.LoginFragment;
+import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -68,7 +72,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 				String item = txtName.getText().toString();
 
 				adapter.open();
-				ArrayList<ListItem> allItems = adapter.getListItemsById(1);
+				ArrayList<ListItem> allItems = adapter.getListItemsById(0);
 				int id = 0;
 				for (ListItem listItem : allItems) {
 					if (item.equals(listItem.getName())) {
@@ -78,23 +82,51 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 				}
 				adapter.close();
 
-				if (id == 1 || id == 2) {
+				if (id == 1) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					BerandFragment fragment = new BerandFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(id));
+					fragment.setArguments(bundle);
+					trans.replace(R.id.content_frame, fragment);
+					trans.addToBackStack(null);
+					trans.commit();
+
+				} else if (id == 2) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-				} else if (id == 3 || id == 4 || id == 5) {
 
-				} else if (id == 6) {
+				} else if (id == 3) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new LoginFragment());
+					trans.replace(R.id.content_frame, new AdvisorTypeFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-				}
 
-				else if (id == 7) {
+				} else if (id == 4) {
+
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame,
+							new ExecutertypeFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+
+				} else if (id == 5) {
+
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new NewsFragment());
+					trans.addToBackStack(null);
+					trans.commit();
+
+				} else if (id == 6) {
+
+				} else if (id == 7) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FroumtitleFragment());

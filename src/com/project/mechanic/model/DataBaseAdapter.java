@@ -10,8 +10,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Comment;
+import com.project.mechanic.entity.Executertype;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Object;
@@ -50,7 +52,7 @@ public class DataBaseAdapter {
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId" };
-	private String[] Froum = { "ID", "Title", "Description", "UserId" };
+	private String[] Froum = { "ID", "UserId", "Title", "Description" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] List = { "ID", "Name", "ParentId" };
 	private String[] ListItem = { "Id", "Name", "ListId" };
@@ -103,11 +105,35 @@ public class DataBaseAdapter {
 		mDbHelper.close();
 	}
 
+	public void inserUserToDb(String name, String email, String password) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("Name", name);
+		uc.put("Email", email);
+		uc.put("Password", password);
+		long res = mDb.insert(TableUsers, null, uc);
+		long res2 = res;
+
+	}
+
 	public void insertCommenttoDb(String Comment) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Description", Comment);
 		mDb.insert(TableComment, null, cv);
+
+	}
+
+	public void insertFroumtitletoDb(String Title, String description,
+			int userId) {
+
+		ContentValues cv = new ContentValues();
+		cv.put("Title", Title);
+		cv.put("Description", description);
+		cv.put("UserId", userId);
+
+		mDb.insert(TableFroum, null, cv);
 
 	}
 
@@ -117,14 +143,8 @@ public class DataBaseAdapter {
 		return s;
 	}
 
-	public String DisplayComment(int row, int fild) {
-		Cursor cu = mDb.query(TableComment, null, null, null, null, null, null);
-		cu.moveToPosition(row);
-		String name = cu.getString(fild);
-		return name;
-	}
-
 	public ArrayList<Province> getAllProvince() {
+
 		ArrayList<Province> result = new ArrayList<Province>();
 		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
 				null, null);
@@ -166,6 +186,36 @@ public class DataBaseAdapter {
 		return result;
 	}
 
+	public ArrayList<AdvisorType> getAllAdvisorType() {
+		ArrayList<AdvisorType> result = new ArrayList<AdvisorType>();
+		Cursor cursor = mDb.query(TableAdvisorType, AdvisorType, null, null,
+				null, null, null);
+		AdvisorType tempAdvisorType;
+		while (cursor.moveToNext()) {
+			tempAdvisorType = new AdvisorType(cursor.getInt(0),
+					cursor.getString(1));
+			result.add(tempAdvisorType);
+		}
+
+		return result;
+
+	}
+
+	public ArrayList<Executertype> getAllExecutertype() {
+		ArrayList<Executertype> result = new ArrayList<Executertype>();
+		Cursor cursor = mDb.query(TableExecutertype, Executertype, null, null,
+				null, null, null);
+		Executertype tempExecutertype;
+		while (cursor.moveToNext()) {
+			tempExecutertype = new Executertype(cursor.getInt(0),
+					cursor.getString(1));
+			result.add(tempExecutertype);
+		}
+
+		return result;
+
+	}
+
 	// /////////////// ListItems ////////////////
 	public ArrayList<ListItem> getListItemsById(int ListId) {
 
@@ -192,6 +242,22 @@ public class DataBaseAdapter {
 
 		while (mCur.moveToNext()) {
 			item = CursorToCity(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	public ArrayList<AdvisorType> getAdvisorTypes() {
+
+		ArrayList<AdvisorType> result = new ArrayList<AdvisorType>();
+		AdvisorType item = null;
+		Cursor mCur = mDb.query("AdvisorType", AdvisorType, null, null, null,
+				null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToAdvisorType(mCur);
 			result.add(item);
 		}
 
@@ -228,6 +294,30 @@ public class DataBaseAdapter {
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
 				cursor.getString(5), null, null, null, null);
 		return tempObject;
+	}
+
+	@SuppressWarnings("unused")
+	private AdvisorType CursorToAdvisorType(Cursor cursor) {
+		AdvisorType tempAdvisorType = new AdvisorType(cursor.getInt(0),
+				cursor.getString(1));
+		return tempAdvisorType;
+
+	}
+
+	@SuppressWarnings("unused")
+	private Executertype CursorToExecutertype(Cursor cursor) {
+		Executertype tempExecutertype = new Executertype(cursor.getInt(0),
+				cursor.getString(1));
+		return tempExecutertype;
+
+	}
+
+	@SuppressWarnings("unused")
+	private Froum CursorToFroum(Cursor cursor) {
+		Froum tempForum = new Froum(cursor.getInt(0), cursor.getInt(1),
+				cursor.getString(2), cursor.getString(3));
+		return tempForum;
+
 	}
 
 	public ArrayList<Province> getAllProvinceName() {
@@ -270,15 +360,39 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<AdvisorType> getAllAdvisorTypeName() {
+		ArrayList<AdvisorType> result = new ArrayList<AdvisorType>();
+		Cursor cursor = mDb.query(TableAdvisorType, AdvisorType, null, null,
+				null, null, null);
+		AdvisorType tempAdvisorType;
+		while (cursor.moveToNext()) {
+			tempAdvisorType = new AdvisorType(cursor.getInt(0),
+					cursor.getString(1));
+			result.add(tempAdvisorType);
+		}
+		return result;
+	}
+
+	public ArrayList<Executertype> getAllExecutertypeName() {
+		ArrayList<Executertype> result = new ArrayList<Executertype>();
+		Cursor cursor = mDb.query(TableExecutertype, Executertype, null, null,
+				null, null, null);
+		Executertype tempExecutertype;
+		while (cursor.moveToNext()) {
+			tempExecutertype = new Executertype(cursor.getInt(0),
+					cursor.getString(1));
+			result.add(tempExecutertype);
+		}
+		return result;
+	}
+
 	public ArrayList<Froum> getAllFroum() {
 		ArrayList<Froum> result = new ArrayList<Froum>();
 		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
 				null);
 		Froum tempFroum;
 		while (cursor.moveToNext()) {
-			tempFroum = new Froum(cursor.getInt(0), cursor.getInt(3),
-					cursor.getString(2), cursor.getString(1));
-			result.add(tempFroum);
+			result.add(CursorToFroum(cursor));
 		}
 
 		return result;
@@ -336,6 +450,40 @@ public class DataBaseAdapter {
 		return s;
 	}
 
+	public Integer AdvisorType_count(String table) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
+				null);
+		int s = cu.getCount();
+		return s;
+	}
+
+	public String AdvisorType_display(String table, int row, int field) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table
+				+ " group by Name order by ID", null);
+		cu.moveToPosition(row);
+		String s = cu.getString(field);
+		return s;
+	}
+
+	public Integer Executertype_count(String table) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
+				null);
+		int s = cu.getCount();
+		return s;
+	}
+
+	public String Executertype_display(String table, int row, int field) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table
+				+ " group by Name order by ID", null);
+		cu.moveToPosition(row);
+		String s = cu.getString(field);
+		return s;
+	}
+
 	/*
 	 * public String getUseridFroum(){ ArrayList<Froum> result = new
 	 * ArrayList<Froum>(); String[] s = new String[1]; s[0] = "UserId"; Cursor
@@ -361,6 +509,17 @@ public class DataBaseAdapter {
 
 		return result;
 
+	}
+
+	public ArrayList<Comment> getAllCommentByPapaerId(int paperId) {
+		ArrayList<Comment> result = new ArrayList<Comment>();
+		Cursor cursor = mDb.query(TableComment, Comment, null, null, null,
+				null, null);
+		Comment tempComment;
+		while (cursor.moveToNext()) {
+			result.add(CursorToComment(cursor));
+		}
+		return result;
 	}
 
 	public ArrayList<Integer> getUSeridComment() {
@@ -431,11 +590,15 @@ public class DataBaseAdapter {
 		return result;
 	}
 
-	private Froum CursorToFroum(Cursor cursor) {
-		Froum tempFroum = new Froum(cursor.getInt(0), cursor.getInt(3),
-				cursor.getString(2), cursor.getString(1));
+	public int getNumberOfListItemChilds(int parentId) {
+		int res = 0;
+		Cursor cursor = mDb.rawQuery("Select Count(*) From " + TableListItem
+				+ " Where ListId= " + parentId, null);
+		if (cursor.moveToNext()) {
+			res = cursor.getInt(0);
+		}
 
-		return tempFroum;
+		return res;
 	}
 
 }
