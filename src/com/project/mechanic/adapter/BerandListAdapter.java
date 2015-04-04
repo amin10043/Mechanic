@@ -1,10 +1,10 @@
 package com.project.mechanic.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +17,8 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
-import com.project.mechanic.fragment.AirconditioningFragment;
-import com.project.mechanic.fragment.FloorheatingFragment;
-import com.project.mechanic.fragment.HeatingandcoolingFragment;
-import com.project.mechanic.fragment.PackagedWaterFragment;
-import com.project.mechanic.fragment.ProvinceFragment;
-import com.project.mechanic.fragment.TubeFragment;
+import com.project.mechanic.fragment.BerandFragment;
+import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class BerandListAdapter extends ArrayAdapter<ListItem> {
@@ -31,13 +27,16 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 	List<ListItem> list;
 	ListItem tempItem;
 	DataBaseAdapter adapter;
+	int itemId;
 
-	public BerandListAdapter(Context context, int resource, List<ListItem> objact) {
+	public BerandListAdapter(Context context, int resource,
+			List<ListItem> objact, int id) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
+		this.itemId = id;
 
 	}
 
@@ -45,15 +44,16 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_berand, parent, false);
 
-		TextView txtName = (TextView) convertView.findViewById(R.id.row_berand_txt);
+		TextView txtName = (TextView) convertView
+				.findViewById(R.id.row_berand_txt);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
-
 
 		convertView.setOnClickListener(new OnClickListener() {
 
@@ -65,64 +65,36 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 						.findViewById(R.id.row_berand_txt);
 				String item = txtName.getText().toString();
 
-				adapter.open();
-				ArrayList<ListItem> allItems = adapter.getListItemsById(1);
 				int id = 0;
-				for (ListItem listItem : allItems) {
+				for (ListItem listItem : list) {
 					if (item.equals(listItem.getName())) {
 						// check authentication and authorization
 						id = listItem.getId();
 					}
 				}
+
+				adapter.open();
+				int res = adapter.getNumberOfListItemChilds(id);
 				adapter.close();
 
-				if (id == 9) {
+				if (res > 0) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new TubeFragment());
+					BerandFragment fragment = new BerandFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(id));
+					fragment.setArguments(bundle);
+					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack(null);
 					trans.commit();
-    
-				} else if (id == 10) {
+				} else {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new FloorheatingFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-
-
-				} else if (id == 11) {
-
-
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame,new HeatingandcoolingFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-
-
-				} else if (id == 12) {
-
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new AirconditioningFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-
-				} else if (id == 13) {
-
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new PackagedWaterFragment());
-					trans.addToBackStack(null);
-					trans.commit();
-					
-					
-					
-				} else if (id == 14) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
+					IntroductionFragment fragment = new IntroductionFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(id));
+					fragment.setArguments(bundle);
+					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack(null);
 					trans.commit();
 				}

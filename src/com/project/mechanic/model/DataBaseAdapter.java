@@ -3,7 +3,6 @@ package com.project.mechanic.model;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import android.R.string;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,13 +10,13 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Comment;
+import com.project.mechanic.entity.Executertype;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Object;
-import com.project.mechanic.entity.AdvisorType;
-import com.project.mechanic.entity.Executertype;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.row_items.RowMain;
@@ -53,7 +52,7 @@ public class DataBaseAdapter {
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId" };
-	private String[] Froum = { "ID","UserId", "Title", "Description"  };
+	private String[] Froum = { "ID", "UserId", "Title", "Description" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] List = { "ID", "Name", "ParentId" };
 	private String[] ListItem = { "Id", "Name", "ListId" };
@@ -106,54 +105,43 @@ public class DataBaseAdapter {
 		mDbHelper.close();
 	}
 
-	
-	
-	public void inserUserToDb(String name ,String email , String password ){
-		
-		ContentValues uc =new ContentValues();
-		
-		
+	public void inserUserToDb(String name, String email, String password) {
+
+		ContentValues uc = new ContentValues();
+
 		uc.put("Name", name);
-		uc.put("Email", email);	
-		uc.put("Password",password);
-		long res =mDb.insert(TableUsers,null, uc);
+		uc.put("Email", email);
+		uc.put("Password", password);
+		long res = mDb.insert(TableUsers, null, uc);
 		long res2 = res;
-		
+
 	}
+
 	public void insertCommenttoDb(String Comment) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Description", Comment);
-		mDb.insert(TableComment,null, cv);
+		mDb.insert(TableComment, null, cv);
 
 	}
 
+	public void insertFroumtitletoDb(String Title, String description,
+			int userId) {
 
+		ContentValues cv = new ContentValues();
+		cv.put("Title", Title);
+		cv.put("Description", description);
+		cv.put("UserId", userId);
 
+		mDb.insert(TableFroum, null, cv);
 
-public void insertFroumtitletoDb(String Title,String description,int userId){
-	
-	ContentValues cv=new ContentValues();
-	cv.put("Title", Title);
-	cv.put("Description", description);
-	cv.put("UserId", userId);
-	
-	mDb.insert(TableFroum, null, cv);
-
-	
-}
-
+	}
 
 	public Integer Tablecommentcount() {
 		Cursor cu = mDb.query(TableComment, null, null, null, null, null, null);
 		int s = cu.getCount();
 		return s;
 	}
-
-
-
-	
-	
 
 	public ArrayList<Province> getAllProvince() {
 
@@ -200,32 +188,34 @@ public void insertFroumtitletoDb(String Title,String description,int userId){
 
 	public ArrayList<AdvisorType> getAllAdvisorType() {
 		ArrayList<AdvisorType> result = new ArrayList<AdvisorType>();
-		Cursor cursor = mDb.query(TableAdvisorType, AdvisorType, null, null, null,
-				null, null);
+		Cursor cursor = mDb.query(TableAdvisorType, AdvisorType, null, null,
+				null, null, null);
 		AdvisorType tempAdvisorType;
 		while (cursor.moveToNext()) {
-			tempAdvisorType = new AdvisorType(cursor.getInt(0), cursor.getString(1));
+			tempAdvisorType = new AdvisorType(cursor.getInt(0),
+					cursor.getString(1));
 			result.add(tempAdvisorType);
 		}
 
 		return result;
 
 	}
-	
+
 	public ArrayList<Executertype> getAllExecutertype() {
 		ArrayList<Executertype> result = new ArrayList<Executertype>();
-		Cursor cursor = mDb.query(TableExecutertype, Executertype, null, null, null,
-				null, null);
+		Cursor cursor = mDb.query(TableExecutertype, Executertype, null, null,
+				null, null, null);
 		Executertype tempExecutertype;
 		while (cursor.moveToNext()) {
-			tempExecutertype = new Executertype(cursor.getInt(0), cursor.getString(1));
+			tempExecutertype = new Executertype(cursor.getInt(0),
+					cursor.getString(1));
 			result.add(tempExecutertype);
 		}
 
 		return result;
 
 	}
-	
+
 	// /////////////// ListItems ////////////////
 	public ArrayList<ListItem> getListItemsById(int ListId) {
 
@@ -263,7 +253,8 @@ public void insertFroumtitletoDb(String Title,String description,int userId){
 
 		ArrayList<AdvisorType> result = new ArrayList<AdvisorType>();
 		AdvisorType item = null;
-		Cursor mCur = mDb.query("AdvisorType", AdvisorType, null,null, null, null, null);
+		Cursor mCur = mDb.query("AdvisorType", AdvisorType, null, null, null,
+				null, null);
 
 		while (mCur.moveToNext()) {
 			item = CursorToAdvisorType(mCur);
@@ -273,9 +264,7 @@ public void insertFroumtitletoDb(String Title,String description,int userId){
 		return result;
 
 	}
-	
-	
-	
+
 	private ListItem CursorToListItem(Cursor mCur) {
 
 		ListItem item = new ListItem(mCur.getInt(0), mCur.getString(1),
@@ -314,7 +303,6 @@ public void insertFroumtitletoDb(String Title,String description,int userId){
 		return tempAdvisorType;
 
 	}
-	
 
 	@SuppressWarnings("unused")
 	private Executertype CursorToExecutertype(Cursor cursor) {
@@ -323,18 +311,15 @@ public void insertFroumtitletoDb(String Title,String description,int userId){
 		return tempExecutertype;
 
 	}
-	
-
-	
 
 	@SuppressWarnings("unused")
-	    private Froum CursorToFroum(Cursor cursor) {
-		Froum tempForum = new Froum(cursor.getInt(0), cursor.getInt(1), cursor.getString(2), cursor.getString(3));
+	private Froum CursorToFroum(Cursor cursor) {
+		Froum tempForum = new Froum(cursor.getInt(0), cursor.getInt(1),
+				cursor.getString(2), cursor.getString(3));
 		return tempForum;
 
 	}
 
-	
 	public ArrayList<Province> getAllProvinceName() {
 		ArrayList<Province> result = new ArrayList<Province>();
 		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
@@ -346,9 +331,6 @@ public void insertFroumtitletoDb(String Title,String description,int userId){
 		}
 		return result;
 	}
-	
-	
-	
 
 	public ArrayList<RowMain> getAllCityName() {
 		ArrayList<RowMain> result = new ArrayList<RowMain>();
@@ -380,28 +362,30 @@ public void insertFroumtitletoDb(String Title,String description,int userId){
 
 	public ArrayList<AdvisorType> getAllAdvisorTypeName() {
 		ArrayList<AdvisorType> result = new ArrayList<AdvisorType>();
-		Cursor cursor = mDb.query(TableAdvisorType, AdvisorType, null, null, null,
-				null, null);
+		Cursor cursor = mDb.query(TableAdvisorType, AdvisorType, null, null,
+				null, null, null);
 		AdvisorType tempAdvisorType;
 		while (cursor.moveToNext()) {
-			tempAdvisorType = new AdvisorType(cursor.getInt(0), cursor.getString(1));
+			tempAdvisorType = new AdvisorType(cursor.getInt(0),
+					cursor.getString(1));
 			result.add(tempAdvisorType);
 		}
 		return result;
 	}
-	
+
 	public ArrayList<Executertype> getAllExecutertypeName() {
 		ArrayList<Executertype> result = new ArrayList<Executertype>();
-		Cursor cursor = mDb.query(TableExecutertype, Executertype, null, null, null,
-				null, null);
+		Cursor cursor = mDb.query(TableExecutertype, Executertype, null, null,
+				null, null, null);
 		Executertype tempExecutertype;
 		while (cursor.moveToNext()) {
-			tempExecutertype = new Executertype(cursor.getInt(0), cursor.getString(1));
+			tempExecutertype = new Executertype(cursor.getInt(0),
+					cursor.getString(1));
 			result.add(tempExecutertype);
 		}
 		return result;
 	}
-	
+
 	public ArrayList<Froum> getAllFroum() {
 		ArrayList<Froum> result = new ArrayList<Froum>();
 		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
@@ -414,12 +398,7 @@ public void insertFroumtitletoDb(String Title,String description,int userId){
 		return result;
 
 	}
-	
-	
-	
-	
-	
-	
+
 	public Integer province_count(String table) {
 
 		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
@@ -471,7 +450,6 @@ public void insertFroumtitletoDb(String Title,String description,int userId){
 		return s;
 	}
 
-
 	public Integer AdvisorType_count(String table) {
 
 		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
@@ -505,8 +483,7 @@ public void insertFroumtitletoDb(String Title,String description,int userId){
 		String s = cu.getString(field);
 		return s;
 	}
-	
-	
+
 	/*
 	 * public String getUseridFroum(){ ArrayList<Froum> result = new
 	 * ArrayList<Froum>(); String[] s = new String[1]; s[0] = "UserId"; Cursor
@@ -534,16 +511,17 @@ public void insertFroumtitletoDb(String Title,String description,int userId){
 
 	}
 
-
-public ArrayList<Comment> getAllCommentByPapaerId(int paperId){
-	ArrayList<Comment> result = new ArrayList<Comment>();
-	Cursor cursor = mDb.query(TableComment, Comment , null, null, null, null, null);
-	Comment tempComment;
-	while(cursor.moveToNext()){
-		result.add(CursorToComment(cursor));
-	}
+	public ArrayList<Comment> getAllCommentByPapaerId(int paperId) {
+		ArrayList<Comment> result = new ArrayList<Comment>();
+		Cursor cursor = mDb.query(TableComment, Comment, null, null, null,
+				null, null);
+		Comment tempComment;
+		while (cursor.moveToNext()) {
+			result.add(CursorToComment(cursor));
+		}
 		return result;
-}
+	}
+
 	public ArrayList<Integer> getUSeridComment() {
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		String[] s = new String[1];
@@ -558,11 +536,7 @@ public ArrayList<Comment> getAllCommentByPapaerId(int paperId){
 
 		return result;
 
-
 	}
-
-	
-
 
 	public ArrayList<Users> getUserOfcomment(String froumId) {
 		ArrayList<Users> result = new ArrayList<Users>();
@@ -616,6 +590,15 @@ public ArrayList<Comment> getAllCommentByPapaerId(int paperId){
 		return result;
 	}
 
-	
+	public int getNumberOfListItemChilds(int parentId) {
+		int res = 0;
+		Cursor cursor = mDb.rawQuery("Select Count(*) From " + TableListItem
+				+ " Where ListId= " + parentId, null);
+		if (cursor.moveToNext()) {
+			res = cursor.getInt(0);
+		}
+
+		return res;
+	}
 
 }
