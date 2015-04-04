@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 
 
@@ -43,8 +42,7 @@ ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,
-            long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 
        // Toast.makeText(getActivity(), "Item: " + position, Toast.LENGTH_SHORT)
        //         .show();
