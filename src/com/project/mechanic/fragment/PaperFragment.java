@@ -20,7 +20,7 @@ public class PaperFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_paper, null);	
-		Button btncomment=(Button) view.findViewById(R.id.btnCmt);
+		Button btncomment=(Button) view.findViewById(R.id.btnComment);
 		btncomment.setOnClickListener(new OnClickListener() {
 			
 			@Override

@@ -10,28 +10,23 @@
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:background="#eb523e"
         android:orientation="horizontal" >
 
         <TextView
-<<<<<<< HEAD
             android:id="@+id/textView1"
             android:layout_width="match_parent"
-            android:layout_height="376dp"
+            android:layout_height="match_parent"
             android:layout_marginBottom="2dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_marginTop="2dp"
-=======
-            android:id="@+id/row_berand_txt"
-            android:layout_width="319dp"
-            android:layout_height="362dp"
-            android:background="#b4f5f0"
->>>>>>> branch 'master' of https://github.com/amin10043/Mechanic.git
+            android:layout_weight="0.98"
             android:text="TextView" />
-        
     </LinearLayout>
  
     <LinearLayout
@@ -79,8 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/linearLayout3"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/linearLayout1"
-         android:background="#fb3217"
+        android:background="#fb3217"
         android:orientation="horizontal" >
 
         <TextView
