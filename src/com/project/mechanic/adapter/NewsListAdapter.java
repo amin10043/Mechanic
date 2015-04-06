@@ -20,6 +20,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.NewsFragment;
+import com.project.mechanic.fragment.NewspaperFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class NewsListAdapter extends ArrayAdapter<ListItem> {
@@ -91,16 +92,16 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack(null);
 					trans.commit();
-//				} else {
-//					FragmentTransaction trans = ((MainActivity) context)
-//							.getSupportFragmentManager().beginTransaction();
-//					IntroductionFragment fragment = new IntroductionFragment();
-//					Bundle bundle = new Bundle();
-//					bundle.putString("Id", String.valueOf(id));
-//					fragment.setArguments(bundle);
-//					trans.replace(R.id.content_frame, fragment);
-//					trans.addToBackStack(null);
-//					trans.commit();
+				} else {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					NewspaperFragment fragment = new NewspaperFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(id));
+					fragment.setArguments(bundle);
+					trans.replace(R.id.content_frame, fragment);
+					trans.addToBackStack(null);
+					trans.commit();
 				}
 			}
 		});

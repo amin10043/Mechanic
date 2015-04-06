@@ -36,7 +36,7 @@
     <string name="RadiatorElectric">رادیاتور های برقی</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">Register</string>
-    
+    <string name="news">اخبار</string>
     
  
     <string-array name="MenuItems">
@@ -56,13 +56,6 @@
         <item name="news_1">نشریات</item>
         <item name="news_2">مقالات</item>
         <item name="news_3">اخبار</item>
-        
-    </string-array> 
-    
-     <string-array name="Publication">
-        <item name="Publication_1">نشریات ساختمانی- تاسیسات</item>
-        <item name="Publication_2">نشریات خارجی</item>
-        <item name="Publication_3">روزنامه های داخلی</item>
         
     </string-array> 
 </resources>
