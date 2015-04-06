@@ -50,7 +50,7 @@ public class AdvertisementListAdapter extends ArrayAdapter<ListItem> {
 
 		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_news, parent, false);
+		convertView = myInflater.inflate(R.layout.row_shop, parent, false);
 
 		Animation animation = AnimationUtils.loadAnimation(getContext(),
 				(position > lastPosition) ? R.anim.up_from_bottom
