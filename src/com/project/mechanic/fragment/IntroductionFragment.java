@@ -16,7 +16,7 @@ import com.project.mechanic.R;
 public class IntroductionFragment extends Fragment {
 
 	Context context;
-	private ImageView peykan6;
+	private ImageView peykan6,peykan5;
 	
 
 	@Override
@@ -27,7 +27,7 @@ public class IntroductionFragment extends Fragment {
 		((MainActivity) getActivity()).setActivityTitle(R.string.brand);
 
 	 peykan6 = (ImageView) view.findViewById(R.id.imageButton6);
-		
+	 peykan5 = (ImageView) view.findViewById(R.id.imageButton7);
 		
 		peykan6.setOnClickListener(new OnClickListener() {
 			
@@ -45,7 +45,21 @@ public class IntroductionFragment extends Fragment {
 			}
 		});
 		
-		
+peykan5.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new ProvinceFragment());
+				trans.commit();
+				
+				
+				
+				
+			}
+		});
 		
 		
 		

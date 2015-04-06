@@ -170,7 +170,8 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:text="نمایندگی ها و همکاران مرتبط" />
+                            android:text="نمایندگی ها و همکاران مرتبط"
+                            android:textColor="@color/red" />
 
                         <ImageButton
                             android:id="@+id/imageButton6"
