@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 
-public class NewsFragment extends Fragment {
+public class AdvertisementFragment extends Fragment {
 
 	DataBaseAdapter dbAdapter;
 	int id;
@@ -31,7 +31,7 @@ public class NewsFragment extends Fragment {
 
 		id = Integer.valueOf(getArguments().getString("Id"));
 
-		((MainActivity) getActivity()).setActivityTitle(R.string.News);
+		((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
 		View view = inflater.inflate(R.layout.fragment_news, null);
 
 		dbAdapter = new DataBaseAdapter(getActivity());

@@ -170,7 +170,8 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:text="نمایندگی ها و همکاران مرتبط" />
+                            android:text="نمایندگی ها و همکاران مرتبط"
+                            android:textColor="@color/red" />
 
                         <ImageButton
                             android:id="@+id/imageButton6"
@@ -210,7 +211,9 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:text="خدمات" />
+                            android:text="خدمات"
+                            android:textColor="@color/red" />
+
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -232,7 +235,8 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="15dp"
-                            android:text="تلفن" />
+                            android:text="تلفن" 
+                            android:textColor="@color/red"/>
 
                         <ImageView
                             android:id="@+id/imageView2"
@@ -250,7 +254,8 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:text=" 5138443239" />
+                            android:text=" 5138443239" 
+                            android:textColor="@color/red"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -272,7 +277,8 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="17dp"
-                            android:text="نمابر" />
+                            android:text="نمابر" 
+                            android:textColor="@color/red"/>
 
                         <ImageView
                             android:id="@+id/imageView3"
@@ -288,7 +294,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true" />
+                            android:layout_centerHorizontal="true"
+                            android:textColor="@color/red" />
 
                         <TextView
                             android:id="@+id/textView11"
@@ -297,7 +304,8 @@
                             android:layout_alignBottom="@+id/imageView3"
                             android:layout_centerHorizontal="true"
                             android:layout_centerInParent="true"
-                            android:text="+1-212-9876543" />
+                            android:text="+1-212-9876543" 
+                            android:textColor="@color/red"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -319,7 +327,8 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="14dp"
-                            android:text="همراه" />
+                            android:text="همراه" 
+                            android:textColor="@color/red"/>
 
                         <TextView
                             android:id="@+id/textView7"
@@ -329,7 +338,8 @@
                             android:layout_alignBottom="@+id/textView4"
                             android:layout_centerHorizontal="true"
                             android:layout_centerInParent="true"
-                            android:text="09390494239" />
+                            android:text="09390494239"
+                            android:textColor="@color/red" />
 
                         <ImageView
                             android:id="@+id/imageView4"
@@ -338,7 +348,8 @@
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
                             android:layout_marginLeft="18dp"
-                            android:src="@drawable/cphone" />
+                            android:src="@drawable/cphone"
+                            android:textColor="@color/red" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -361,7 +372,8 @@
                             android:layout_alignTop="@+id/textView8"
                             android:layout_centerInParent="true"
                             android:layout_marginLeft="20dp"
-                            android:src="@drawable/email" />
+                            android:src="@drawable/email" 
+                            android:textColor="@color/red"/>
 
                         <TextView
                             android:id="@+id/textView5"
@@ -370,7 +382,8 @@
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"
                             android:layout_centerInParent="true"
-                            android:text="پست الکترونیک" />
+                            android:text="پست الکترونیک" 
+                            android:textColor="@color/red"/>
 
                         <TextView
                             android:id="@+id/textView8"
@@ -379,7 +392,8 @@
                             android:layout_alignBaseline="@+id/textView5"
                             android:layout_alignBottom="@+id/textView5"
                             android:layout_centerHorizontal="true"
-                            android:text="shaghayegh@email.com" />
+                            android:text="shaghayegh@email.com"
+                            android:textColor="@color/red" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -402,7 +416,8 @@
                             android:layout_alignParentTop="true"
                             android:layout_centerInParent="true"
                             android:layout_marginRight="18dp"
-                            android:text="آدرس" />
+                            android:text="آدرس" 
+                            android:textColor="@color/red"/>
 
                         <ImageButton
                             android:id="@+id/imageButton8"
@@ -420,7 +435,8 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:text="راهنمایی 14 پلاک 24" />
+                            android:text="راهنمایی 14 پلاک 24" 
+                            android:textColor="@color/red"/>
 
                     </RelativeLayout>
 
@@ -507,7 +523,8 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerInParent="true"
                         android:layout_centerVertical="true"
-                        android:text="توضیحات بیشتر" />
+                        android:text="توضیحات بیشتر"
+                        android:textColor="@color/red" />
 
                 </RelativeLayout>
 

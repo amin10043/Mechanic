@@ -4,6 +4,7 @@
 eclipse.preferences.version=1
 encoding//src/com/project/mechanic/MainActivity.java=UTF-8
 encoding//src/com/project/mechanic/SplashActivity.java=UTF-8
+encoding//src/com/project/mechanic/fragment/AdvertisementFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/AdvisorTypeFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/CityFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/FroumFragment.java=UTF-8
@@ -12,4 +13,4 @@ encoding//src/com/project/mechanic/fragment/NewsFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/NewspaperFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ObjectFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ProvinceFragment.java=UTF-8
-encoding//src/com/project/mechanic/fragment/PublicationFragment.java=UTF-8
+encoding//src/com/project/mechanic/fragment/PublicationsFragment.java=UTF-8
