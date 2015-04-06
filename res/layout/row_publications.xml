@@ -21,8 +21,6 @@
             android:layout_height="fill_parent"
             android:layout_weight="1"        
             android:orientation="vertical" >
-
-            
           <LinearLayout    
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -52,9 +50,7 @@
                android:layout_height="fill_parent"
                android:scaleType="fitXY"
                android:src="@drawable/news1" /> 
-               
-              
-
+       
              </LinearLayout>
              
                <LinearLayout
@@ -80,9 +76,6 @@
                android:layout_height="fill_parent"
                android:scaleType="fitXY"
                android:src="@drawable/news2" /> 
-               
-              
-
              </LinearLayout>
                </LinearLayout>
             <LinearLayout    
@@ -114,9 +107,7 @@
                android:layout_height="fill_parent"
                android:scaleType="fitXY"
                android:src="@drawable/news3" /> 
-               
-              
-
+             
              </LinearLayout>
              
                <LinearLayout
@@ -142,9 +133,7 @@
                android:layout_height="fill_parent"
                android:scaleType="fitXY"
                android:src="@drawable/news4" /> 
-               
-              
-
+       
              </LinearLayout>
                </LinearLayout>         
             
