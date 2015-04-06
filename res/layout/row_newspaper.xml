@@ -16,7 +16,7 @@
             android:id="@+id/rownews_Titletxt"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginRight="20dp"
             android:hint=" "
             android:textColor="@color/red" />
