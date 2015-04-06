@@ -26,9 +26,11 @@ public class Dialogcmt extends Dialog {
 	 OnMyDialogResult mDialogResult;
 	 private DataBaseAdapter dbadapter;
 	 Context context;
-	public Dialogcmt(Context context,int resourceId) {
+	 Fragment f;
+	public Dialogcmt(Fragment f, Context context,int resourceId) {
 		super(context);
 		this.context=context;
+		this.f = f;
 	}
 
 	
@@ -46,7 +48,8 @@ public class Dialogcmt extends Dialog {
 			public void onClick(View arg0) {
 				    dbadapter = new DataBaseAdapter(context);
 				    dbadapter.open();
-	                dbadapter.insertCommenttoDb(Cmttxt.getText().toString(),1);
+				    int	id = Integer.valueOf(f. getArguments().getString("Id"));
+	                dbadapter.insertCommenttoDb(1,id,Cmttxt.getText().toString());
 	                dbadapter.close();
 					//((FroumFragment) fragment).updateView();
 				    Dialogcmt.this.dismiss();

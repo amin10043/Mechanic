@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 
 
 public class FroumFragment extends Fragment{
@@ -41,6 +42,8 @@ public class FroumFragment extends Fragment{
 	private int frmid;
 	private ImageButton btnAddcmt;
 	private Button btncmt;
+	private TextView txttitle;
+	private TextView txttitleDes;
 	ArrayList<Comment> mylist;
 	Dialogcmt  dialog;
 	ImageButton Replytocm;
@@ -60,11 +63,23 @@ public class FroumFragment extends Fragment{
 		 
 		 btnAddcmt = (ImageButton)view.findViewById(R.id.imgBtnAddcmt);
 		 btncmt = (Button)view.findViewById(R.id.btnComment);
+		 txttitle=(TextView)view.findViewById(R.id.rawTitletxt);
+		 txttitleDes =(TextView)view.findViewById(R.id.rawtxtDescription);
 		 
 		    adapter= new DataBaseAdapter(getActivity());
 			adapter.open();
-			//mylist = adapter.getAllCommentByPapaerId();
-			adapter.close();
+			
+			//Bundle bundle = new Bundle();
+			//bundle.getString("Id", String.valueOf(id));
+		    int	id = Integer.valueOf(getArguments().getString("Id"));
+			//mylist = adapter.getAllCommentByPapaerId(id);
+		    mylist = adapter.getCommentbyPaperid(id);
+			Froum x =adapter.getFroumItembyid(id);
+			 
+				
+				txttitle.setText(x.getTitle());
+				txttitleDes.setText(x.getDescription());
+			    adapter.close();
 			
 			
 	;
@@ -72,12 +87,12 @@ public class FroumFragment extends Fragment{
 
 		 lst = (ListView) view.findViewById(R.id.lstComment);
 		 lstReply=(ListView) view.findViewById(R.id.lstReplytoCm);
-		 FroumListAdapter ListAdapter = new FroumListAdapter(getActivity(),R.layout.froumcmtitem, mylist);
+		 FroumListAdapter ListAdapter = new FroumListAdapter(getActivity(),R.layout.raw_froumcmt, mylist);
          
 			lst.setAdapter(ListAdapter);
 
 			Replytocm= (ImageButton)view.findViewById(R.id.imgvReplytoCm);
-			Replytocm.setOnClickListener(new OnClickListener(){
+			/*Replytocm.setOnClickListener(new OnClickListener(){
 
 				@Override
 				public void onClick(View arg0) {
@@ -89,7 +104,7 @@ public class FroumFragment extends Fragment{
 				
 				
 				
-			});
+			});*/
 		
 		btnAddcmt.setOnClickListener(new View.OnClickListener() {
 			
@@ -99,7 +114,7 @@ public class FroumFragment extends Fragment{
 				
 
 				
-			  dialog = new Dialogcmt(getActivity(),R.layout.dialog_addcomment);
+			  dialog = new Dialogcmt(FroumFragment.this,getActivity(),R.layout.dialog_addcomment);
 			  dialog.show();
 
 				
@@ -122,6 +137,8 @@ public class FroumFragment extends Fragment{
 		
 		
 	}
+	
+	
 	
 	/*public void refresh(){
         adapter.open();

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Comment;
+import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.FroumItem;
 
 import android.annotation.SuppressLint;
@@ -21,6 +22,7 @@ public class FroumListAdapter  extends ArrayAdapter<Comment>{
 
 	Context context;
 	List<Comment> list;
+	DataBaseAdapter adapter;
 
 	public FroumListAdapter(Context context, int resource,
 			List<Comment> objects) {
@@ -28,6 +30,7 @@ public class FroumListAdapter  extends ArrayAdapter<Comment>{
 
 		this.context = context;
 		this.list = objects;
+		adapter = new DataBaseAdapter(context);
 		
 	}
 	
@@ -40,12 +43,15 @@ public class FroumListAdapter  extends ArrayAdapter<Comment>{
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.froumcmtitem, parent, false);
+		convertView = myInflater.inflate(R.layout.raw_froumcmt, parent, false);
+		adapter= new DataBaseAdapter(context);
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.rawCmttxt);
 		TextView txt2 = (TextView) convertView.findViewById(R.id.rawUsernamecmttxt);
-		
-	
+		adapter.open();
+		//Users x = adapter.getUsernamebyid(id);
+		adapter.close();
+	    
 	    Comment person1 = list.get(position);
 		
 		txt1.setText(person1.getDescription());

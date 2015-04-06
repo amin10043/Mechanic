@@ -9,12 +9,14 @@ import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.BerandFragment;
+import com.project.mechanic.fragment.Dialogcmt;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.FroumtitleItem;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -50,14 +52,13 @@ public class FroumtitleListadapter  extends ArrayAdapter<Froum>{
 		adapter= new DataBaseAdapter(context);
 		
 
-		convertView = myInflater.inflate(R.layout.froumtitleitem, parent, false);
+		convertView = myInflater.inflate(R.layout.raw_froumtitle, parent, false);
 
-		TextView txt1 = (TextView) convertView.findViewById(R.id.rawTitletxt);
+		final TextView txt1 = (TextView) convertView.findViewById(R.id.rawTitletxt);
 		TextView txt2 = (TextView) convertView.findViewById(R.id.rawtxtDescription);
 		TextView txt3 = (TextView) convertView.findViewById(R.id.rawtxtUsername);
 	
 	    Froum person1 = mylist.get(position);
-		
 		txt1.setText(person1.getTitle());
 		txt2.setText(person1.getDescription());
 		txt3.setText("shaghayegh");
@@ -70,9 +71,7 @@ public class FroumtitleListadapter  extends ArrayAdapter<Froum>{
 				LinearLayout parentlayout = (LinearLayout) v;
 				TextView Txttitle = (TextView) parentlayout
 						.findViewById(R.id.txtTitle);
-				String item = Txttitle.getText().toString();
-
-				
+				String item = txt1.getText().toString();
 				int id = 0;
 				for (Froum listItem : mylist) {
 					if (item.equals(listItem.getTitle())) {
@@ -83,9 +82,18 @@ public class FroumtitleListadapter  extends ArrayAdapter<Froum>{
 				
 				FragmentTransaction trans =  ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				Fragment fragment = new BerandFragment();
-				fragment.getArguments().putString("paper", "id");
-				trans.replace(R.id.content_frame, new FroumFragment());
+				FroumFragment fragment = new FroumFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString("Id", String.valueOf(id));
+ 				fragment.setArguments(bundle);
+ 				
+ 				
+ 				Dialogcmt dialog = new Dialogcmt(null,context,R.layout.dialog_addcomment);
+				Bundle bundle2 = new Bundle();
+				bundle.putString("Id", String.valueOf(id));
+ 				fragment.setArguments(bundle);
+ 				
+				trans.replace(R.id.content_frame,  fragment);
 				trans.commit();
 		
 			}

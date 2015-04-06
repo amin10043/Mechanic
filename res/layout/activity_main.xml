@@ -69,6 +69,16 @@
         android:background="@color/transparent"
         android:src="@android:drawable/btn_star_big_off" />
 
+    <SearchView
+        android:id="@+id/searchV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/iBtnFavorite"
+        android:queryHint="@string/searchHint" >
+
+    </SearchView>
+
 </RelativeLayout>
         
 <android.support.v4.widget.DrawerLayout

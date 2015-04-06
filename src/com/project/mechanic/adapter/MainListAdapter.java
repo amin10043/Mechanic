@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+
 import android.support.v4.app.Fragment;
+
+import android.os.Bundle;
+
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +27,6 @@ import com.project.mechanic.fragment.BerandFragment;
 import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.FroumtitleFragment;
 import com.project.mechanic.fragment.NewsFragment;
-import com.project.mechanic.fragment.NewspaperFragment;
-import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -87,8 +89,14 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 				if (id == 1) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					Fragment fragment = new BerandFragment();
-					//fragment.getArguments().putString(key, value);
+
+					
+
+					BerandFragment fragment = new BerandFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(id));
+					fragment.setArguments(bundle);
+
 					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack(null);
 					trans.commit();
@@ -99,8 +107,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-					
-					
+
 				} else if (id == 3) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
@@ -108,9 +115,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.addToBackStack(null);
 					trans.commit();
 
-
 				} else if (id == 4) {
-
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
@@ -119,12 +124,11 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.addToBackStack(null);
 					trans.commit();
 
-
 				} else if (id == 5) {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new NewspaperFragment());
+					trans.replace(R.id.content_frame, new NewsFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 

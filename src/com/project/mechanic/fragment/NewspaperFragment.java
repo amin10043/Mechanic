@@ -38,7 +38,7 @@ public class NewspaperFragment extends Fragment {
 					
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new Newsp1Fragment());
+					trans.replace(R.id.content_frame, new PublicationFragment());
 					trans.addToBackStack(null);
 					trans.commit();
 					

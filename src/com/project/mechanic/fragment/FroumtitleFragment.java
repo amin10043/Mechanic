@@ -60,7 +60,7 @@ public class FroumtitleFragment extends Fragment {
 
 		lst = (ListView) view.findViewById(R.id.lstComment);
 		ListAdapter = new FroumtitleListadapter(getActivity(),
-				R.layout.froumtitleitem, mylist);
+				R.layout.raw_froumtitle, mylist);
 		lst.setAdapter(ListAdapter);
 
 		/*lst.setOnItemClickListener(new OnItemClickListener() {
@@ -94,27 +94,10 @@ public class FroumtitleFragment extends Fragment {
 		mdb.close();
 
 		ListAdapter = new FroumtitleListadapter(getActivity(),
-				R.layout.froumtitleitem, mylist);
+				R.layout.raw_froumtitle, mylist);
 		ListAdapter.notifyDataSetChanged();
 		lst.setAdapter(ListAdapter);
 
 	}
-
-	// @Override
-	// public void onActivityResult(int requestCode, int resultCode, Intent
-	// data) {
-	// switch(requestCode) {
-	// case DIALOG_FRAGMENT:
-	//
-	// if (resultCode == Activity.RESULT_OK) {
-	// // After Ok code.
-	// } else if (resultCode == Activity.RESULT_CANCELED){
-	// // After Cancel code.
-	// }
-	//
-	// break;
-	// }
-	// }
-	// }
 
 }
