@@ -10,6 +10,7 @@ import java.util.List;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FroumListAdapter;
+import com.project.mechanic.adapter.FroumtitleListadapter;
 import com.project.mechanic.entity.Comment;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
@@ -47,6 +48,8 @@ public class FroumFragment extends Fragment{
 	ArrayList<Comment> mylist;
 	Dialogcmt  dialog;
 	ImageButton Replytocm;
+	FroumListAdapter froumListadapter;
+	 int	id;
 	
 	ListView lst;
 	ListView lstReply;
@@ -71,7 +74,7 @@ public class FroumFragment extends Fragment{
 			
 			//Bundle bundle = new Bundle();
 			//bundle.getString("Id", String.valueOf(id));
-		    int	id = Integer.valueOf(getArguments().getString("Id"));
+		    id = Integer.valueOf(getArguments().getString("Id"));
 			//mylist = adapter.getAllCommentByPapaerId(id);
 		    mylist = adapter.getCommentbyPaperid(id);
 			Froum x =adapter.getFroumItembyid(id);
@@ -139,7 +142,17 @@ public class FroumFragment extends Fragment{
 	}
 	
 	
-	
+	public void updateView2() {
+		adapter.open();
+		mylist = adapter.getCommentbyPaperid(id);
+		adapter.close();
+
+		froumListadapter = new FroumListAdapter(getActivity(),
+				R.layout.raw_froumtitle, mylist);
+		froumListadapter.notifyDataSetChanged();
+		lst.setAdapter(froumListadapter);
+
+	}
 	/*public void refresh(){
         adapter.open();
         int count=adapter.Tablecommentcount();

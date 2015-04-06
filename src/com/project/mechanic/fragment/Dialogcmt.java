@@ -51,7 +51,7 @@ public class Dialogcmt extends Dialog {
 				    int	id = Integer.valueOf(f. getArguments().getString("Id"));
 	                dbadapter.insertCommenttoDb(1,id,Cmttxt.getText().toString());
 	                dbadapter.close();
-					//((FroumFragment) fragment).updateView();
+					((FroumFragment) f).updateView2();
 				    Dialogcmt.this.dismiss();
 				 
 			}
