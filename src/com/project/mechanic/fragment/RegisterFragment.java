@@ -1,6 +1,8 @@
 package com.project.mechanic.fragment;
 
 
+import java.util.jar.Attributes.Name;
+
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class RegisterFragment extends Fragment {
@@ -42,14 +45,29 @@ public class RegisterFragment extends Fragment {
 
 	
 		public void onClick(View arg0) {
-			
-			
-			 final String Name = editname.getText().toString(); 
+			final String Name = editname.getText().toString(); 
 			 final String user = edituser.getText().toString();  
 			 final String pass = editpass.getText().toString(); 
+			if (Name==""  && user==""&& pass=="") {
+				
+				
+				Toast.makeText(getActivity(), "«ÿ·«⁄«  „Ê—œ ‰Ÿ— À»  ‘œ", Toast.LENGTH_SHORT).show();
+				
+				
+			} else {
+
+			}
+			 
 			dbAdapter.open();
 			dbAdapter.inserUserToDb( Name,user, pass);
 			dbAdapter.close();
+			
+Toast.makeText(getActivity(), "«ÿ·«⁄«  „Ê—œ ‰Ÿ— À»  ‘œ", Toast.LENGTH_SHORT).show();
+			
+			
+			
+			
+			
 		}
 	 });
 		 
