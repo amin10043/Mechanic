@@ -44,25 +44,35 @@ public class LoginFragment extends Fragment {
 		
  btnforgot.setOnClickListener(new View.OnClickListener() {
 		
-		@Override
+	
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
+		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 		}
 	});
  btncancle.setOnClickListener(new View.OnClickListener() {
-		
-		@Override
+	
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
+			
 			
 		}
 	});
  btnreg.setOnClickListener(new View.OnClickListener() {
 		
-		@Override
+	
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
+			
 		
 			
 			FragmentTransaction trans = getActivity()

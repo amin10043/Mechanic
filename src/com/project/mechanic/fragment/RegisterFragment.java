@@ -48,13 +48,15 @@ public class RegisterFragment extends Fragment {
 			final String Name = editname.getText().toString(); 
 			 final String user = edituser.getText().toString();  
 			 final String pass = editpass.getText().toString(); 
-			if (Name==""  && user==""&& pass=="") {
+			if (Name.equals("")&& user.equals("")&& pass.equals("")) {
 				
 				
-				Toast.makeText(getActivity(), "«ÿ·«⁄«  „Ê—œ ‰Ÿ— À»  ‘œ", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "«ÿ·«⁄«  ò«„· ‰‘œ  ", Toast.LENGTH_SHORT).show();
 				
 				
-			} else {
+			} 
+			
+			else {
 
 			}
 			 
