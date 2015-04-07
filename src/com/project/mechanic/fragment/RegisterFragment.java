@@ -51,23 +51,23 @@ public class RegisterFragment extends Fragment {
 			if (Name.equals("")&& user.equals("")&& pass.equals("")) {
 				
 				
-				Toast.makeText(getActivity(), "ÇØáÇÚÇÊ ˜Çãá äÔÏ  ", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Ù„Ø·ÙØ§ ÙÛŒÙ„Ø¯Ù‡Ø§ÛŒ Ù…ÙˆØ±Ø¯ Ù†Ø¸Ø± Ø±Ø§ Ù¾Ø± Ú©Ù†ÛŒØ¯  ", Toast.LENGTH_SHORT).show();
 				
 				
 			} 
 			
 			else {
 
-			}
+			
 			 
 			dbAdapter.open();
 			dbAdapter.inserUserToDb( Name,user, pass);
 			dbAdapter.close();
 			
-Toast.makeText(getActivity(), "ÇØáÇÚÇÊ ãæÑÏ äÙÑ ËÈÊ ÔÏ", Toast.LENGTH_SHORT).show();
+Toast.makeText(getActivity(), "Ø§Ø·Ù„Ø§Ø¹Ø§Øª Ù…ÙˆØ±Ø¯ Ù†Ø¸Ø± Ø«Ø¨Øª Ø´Ø¯", Toast.LENGTH_SHORT).show();
 			
 			
-			
+			}
 			
 			
 		}

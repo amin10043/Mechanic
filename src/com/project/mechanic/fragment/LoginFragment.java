@@ -3,6 +3,7 @@ package com.project.mechanic.fragment;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,7 +15,12 @@ import android.widget.EditText;
 
 public class LoginFragment extends Fragment {
 
-	@Override
+	
+	Dialogeml  dialog;
+	
+	
+	
+	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
@@ -49,10 +55,11 @@ public class LoginFragment extends Fragment {
 		
 			
 			
+	
 			
 			
-			
-			
+			  dialog = new Dialogeml(LoginFragment.this,getActivity(),R.layout.dialog_addemail);
+			  dialog.show();
 			
 			
 			
