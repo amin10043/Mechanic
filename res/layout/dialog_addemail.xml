@@ -13,9 +13,11 @@
         android:layout_gravity="center"
         android:layout_margin="50dp"
         android:ems="10"
+        android:enabled="true"
         android:hint="لطفا ایمیل خود راوارد نمایید"
         android:inputType="textEmailAddress"
-        android:textColor="@color/transparent" >
+        android:textColor="@color/transparent"
+        android:textColorHint="@color/transparent" >
 
         <requestFocus />
     </EditText>
