@@ -15,15 +15,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
-import com.project.mechanic.fragment.BerandFragment;
-import com.project.mechanic.fragment.IntroductionFragment;
+import com.project.mechanic.fragment.AdvertisementFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class BerandListAdapter extends ArrayAdapter<ListItem> {
+public class AdvertisementListAdapter extends ArrayAdapter<ListItem> {
 
 	Context context;
 	List<ListItem> list;
@@ -32,7 +30,7 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 	int itemId;
 	int lastPosition = 0;
 	
-	public BerandListAdapter(Context context, int resource,
+	public AdvertisementListAdapter(Context context, int resource,
 			List<ListItem> objact, int id) {
 		super(context, resource, objact);
 
@@ -47,17 +45,15 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_berand, parent, false);
+		convertView = myInflater.inflate(R.layout.row_news, parent, false);
 
 		Animation animation = AnimationUtils.loadAnimation(getContext(),
 				(position > lastPosition) ? R.anim.up_from_bottom
 						: R.anim.down_from_top);
 		convertView.startAnimation(animation);
-		TextView txtName = (TextView) convertView
-				.findViewById(R.id.row_berand_txt);
+		TextView txtName = (TextView) convertView.findViewById(R.id.row_news_txt);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
@@ -69,7 +65,7 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 
 				LinearLayout parentlayout = (LinearLayout) v;
 				TextView txtName = (TextView) parentlayout
-						.findViewById(R.id.row_berand_txt);
+						.findViewById(R.id.row_news_txt);
 				String item = txtName.getText().toString();
 
 				int id = 0;
@@ -87,23 +83,23 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 				if (res > 0) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					BerandFragment fragment = new BerandFragment();
+					AdvertisementFragment fragment = new AdvertisementFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
 					fragment.setArguments(bundle);
 					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack(null);
 					trans.commit();
-				} else {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					IntroductionFragment fragment = new IntroductionFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
+//				} else {
+//					FragmentTransaction trans = ((MainActivity) context)
+//							.getSupportFragmentManager().beginTransaction();
+//					IntroductionFragment fragment = new IntroductionFragment();
+//					Bundle bundle = new Bundle();
+//					bundle.putString("Id", String.valueOf(id));
+//					fragment.setArguments(bundle);
+//					trans.replace(R.id.content_frame, fragment);
+//					trans.addToBackStack(null);
+//					trans.commit();
 				}
 			}
 		});

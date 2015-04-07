@@ -13,10 +13,10 @@
         android:layout_weight="1" >
 
         <TextView
-            android:id="@+id/rawTitletxt"
+            android:id="@+id/rownews_Titletxt"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginRight="20dp"
             android:hint=" "
             android:textColor="@color/red" />
@@ -30,46 +30,15 @@
         android:layout_weight="8" >
 
         <TextView
-            android:id="@+id/rawtxtDescription"
+            android:id="@+id/rownews_txtDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="20dp"
             android:textColor="@color/red" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1" >
-
-        <TextView
-            android:id="@+id/fragmentnewstxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/rawtxtUsername"
-            android:layout_alignBottom="@+id/rawtxtUsername"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:text="توسط"
-            android:textColor="@color/red" />
-
-        <TextView
-            android:id="@+id/rawtxtUsername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="18dp"
-
-            android:layout_toLeftOf="@+id/row_berand_txt"
-            android:textColor="@color/red" />
-
-            android:layout_toLeftOf="@+id/fragmentnewstxt" />
-
-
     </RelativeLayout>
 
 </LinearLayout>
+
+

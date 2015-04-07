@@ -7,15 +7,12 @@
             android:layout_height="match_parent" >
 
             <TextView
-                android:id="@+id/row_smarttube_txt"
+                android:id="@+id/row_news_txt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="right"
                 android:text="Large Text"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/red" />
 
         </LinearLayout>
  
-
-

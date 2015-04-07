@@ -3,6 +3,7 @@ package com.project.mechanic.fragment;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
+import android.app.LauncherActivity.ListItem;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,11 +23,13 @@ import com.project.mechanic.model.DataBaseAdapter;
 public class FroumtitleFragment extends Fragment {
 	private ImageButton addtitle;
 	private DialogfroumTitle dialog;
+	Dialogcmt dialog2;
 	DataBaseAdapter mdb;
 	View view;
 	ArrayList<Froum> mylist;
 	ListView lst;
 	FroumtitleListadapter ListAdapter;
+	ImageButton Replytocm;
 	public static final int DIALOG_FRAGMENT = 1;
 
 	@SuppressLint("InflateParams")
@@ -42,6 +45,7 @@ public class FroumtitleFragment extends Fragment {
 		mdb.open();
 		mylist = mdb.getAllFroum();
 		mdb.close();
+		
 
 		addtitle.setOnClickListener(new OnClickListener() {
 
@@ -56,10 +60,10 @@ public class FroumtitleFragment extends Fragment {
 
 		lst = (ListView) view.findViewById(R.id.lstComment);
 		ListAdapter = new FroumtitleListadapter(getActivity(),
-				R.layout.froumtitleitem, mylist);
+				R.layout.raw_froumtitle, mylist);
 		lst.setAdapter(ListAdapter);
 
-		lst.setOnItemClickListener(new OnItemClickListener() {
+		/*lst.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
@@ -68,8 +72,19 @@ public class FroumtitleFragment extends Fragment {
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new FroumFragment());
 				trans.commit();
+				mdb.open();
+				ArrayList<ListItem> allItems = adapter.getListItemsById(1);
+				int id = 0;
+				for (ListItem listItem : allItems) {
+					if (item.equals(listItem.getName())) {
+						// check authentication and authorization
+						id = listItem.getId();
+					}
+				}
+				mdb.close();
+				
 			}
-		});
+		});*/
 		return view;
 	}
 
@@ -79,27 +94,10 @@ public class FroumtitleFragment extends Fragment {
 		mdb.close();
 
 		ListAdapter = new FroumtitleListadapter(getActivity(),
-				R.layout.froumtitleitem, mylist);
+				R.layout.raw_froumtitle, mylist);
 		ListAdapter.notifyDataSetChanged();
 		lst.setAdapter(ListAdapter);
 
 	}
-
-	// @Override
-	// public void onActivityResult(int requestCode, int resultCode, Intent
-	// data) {
-	// switch(requestCode) {
-	// case DIALOG_FRAGMENT:
-	//
-	// if (resultCode == Activity.RESULT_OK) {
-	// // After Ok code.
-	// } else if (resultCode == Activity.RESULT_CANCELED){
-	// // After Cancel code.
-	// }
-	//
-	// break;
-	// }
-	// }
-	// }
 
 }
