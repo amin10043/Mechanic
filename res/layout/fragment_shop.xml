@@ -6,26 +6,11 @@
             android:background="@drawable/list_item"
             android:orientation="vertical" >
 
-            <LinearLayout
+            <ListView
+                android:id="@+id/listVshop"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical" >
-
-                <ListView
-                    android:id="@+id/listVshop"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/lstVnews" >
-
-                </ListView>
-            </LinearLayout>
+                android:layout_height="match_parent" >
+            </ListView>
 
         </LinearLayout>
  
