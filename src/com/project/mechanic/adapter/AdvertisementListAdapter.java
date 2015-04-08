@@ -20,7 +20,10 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.AdvertisementFragment;
+import com.project.mechanic.fragment.AnadFragment;
 import com.project.mechanic.fragment.IntroductionFragment;
+import com.project.mechanic.fragment.NewsFragment;
+import com.project.mechanic.fragment.ShopFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class AdvertisementListAdapter extends ArrayAdapter<ListItem> {
@@ -82,28 +85,129 @@ public class AdvertisementListAdapter extends ArrayAdapter<ListItem> {
 				int res = adapter.getNumberOfListItemChilds(id);
 				adapter.close();
 
-				if (res > 0) {
-		               FragmentTransaction trans = ((MainActivity) context)
+//				if (res > 0) {
+//		               FragmentTransaction trans = ((MainActivity) context)
+//							.getSupportFragmentManager().beginTransaction();
+//              		AdvertisementFragment fragment = new AdvertisementFragment();
+//					Bundle bundle = new Bundle();
+//					bundle.putString("Id", String.valueOf(id));
+//					fragment.setArguments(bundle);
+//					trans.replace(R.id.content_frame, fragment);
+//					trans.addToBackStack(null);
+//					trans.commit();
+//			}
+				if (id==172) {
+					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-              		AdvertisementFragment fragment = new AdvertisementFragment();
+					NewsFragment fragment = new NewsFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
 					fragment.setArguments(bundle);
 					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack(null);
 					trans.commit();
-			}
-		//			else {
-		//		FragmentTransaction trans = ((MainActivity) context)
-		//					.getSupportFragmentManager().beginTransaction();
-		//			IntroductionFragment fragment = new IntroductionFragment();
-		//			Bundle bundle = new Bundle();
-		//			bundle.putString("Id", String.valueOf(id));
-		//			fragment.setArguments(bundle);
-		//			trans.replace(R.id.content_frame, fragment);
-		//			trans.addToBackStack(null);
-		//			trans.commit();
-		//		}
+					
+					
+				}
+					else if (id==173) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+					
+						
+						AnadFragment fragment = new AnadFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+					}
+					else if (id==174) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						
+						
+						AnadFragment fragment = new AnadFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+					}
+					else if (id==175) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						
+						
+						AnadFragment fragment = new AnadFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+					}
+					else if (id==176) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						
+						
+						AnadFragment fragment = new AnadFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+					}
+					else if (id==177) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						
+						
+						AnadFragment fragment = new AnadFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+					}
+					else if (id==178) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					
+					
+					AnadFragment fragment = new AnadFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(id));
+					fragment.setArguments(bundle);
+					trans.replace(R.id.content_frame, fragment);
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				}
+				else if(id==179){
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					
+					
+					ShopFragment fragment = new ShopFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(id));
+					fragment.setArguments(bundle);
+					trans.replace(R.id.content_frame, fragment);
+					trans.addToBackStack(null);
+					trans.commit();
+					
+					
+				}
 			}
 		});
 

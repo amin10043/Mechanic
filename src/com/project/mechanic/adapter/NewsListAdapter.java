@@ -24,6 +24,7 @@ import com.project.mechanic.fragment.AnadFragment;
 import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.fragment.NewspaperFragment;
+import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.ShopFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -163,7 +164,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 //				   
 //				}
 
-					if (id==172) {
+					if (id==166) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					NewsFragment fragment = new NewsFragment();
@@ -176,11 +177,9 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 					
 					
 				}
-					else if (id==173) {
+					else if (id==167) {
 						FragmentTransaction trans = ((MainActivity) context)
 								.getSupportFragmentManager().beginTransaction();
-					
-						
 						AnadFragment fragment = new AnadFragment();
 						Bundle bundle = new Bundle();
 						bundle.putString("Id", String.valueOf(id));
@@ -190,12 +189,10 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 						trans.commit();
 						
 					}
-					else if (id==174) {
+					else if (id==168) {
 						FragmentTransaction trans = ((MainActivity) context)
 								.getSupportFragmentManager().beginTransaction();
-						
-						
-						AnadFragment fragment = new AnadFragment();
+						NewspaperFragment fragment = new NewspaperFragment();
 						Bundle bundle = new Bundle();
 						bundle.putString("Id", String.valueOf(id));
 						fragment.setArguments(bundle);
@@ -204,77 +201,6 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 						trans.commit();
 						
 					}
-					else if (id==175) {
-						FragmentTransaction trans = ((MainActivity) context)
-								.getSupportFragmentManager().beginTransaction();
-						
-						
-						AnadFragment fragment = new AnadFragment();
-						Bundle bundle = new Bundle();
-						bundle.putString("Id", String.valueOf(id));
-						fragment.setArguments(bundle);
-						trans.replace(R.id.content_frame, fragment);
-						trans.addToBackStack(null);
-						trans.commit();
-						
-					}
-					else if (id==176) {
-						FragmentTransaction trans = ((MainActivity) context)
-								.getSupportFragmentManager().beginTransaction();
-						
-						
-						AnadFragment fragment = new AnadFragment();
-						Bundle bundle = new Bundle();
-						bundle.putString("Id", String.valueOf(id));
-						fragment.setArguments(bundle);
-						trans.replace(R.id.content_frame, fragment);
-						trans.addToBackStack(null);
-						trans.commit();
-						
-					}
-					else if (id==177) {
-						FragmentTransaction trans = ((MainActivity) context)
-								.getSupportFragmentManager().beginTransaction();
-						
-						
-						AnadFragment fragment = new AnadFragment();
-						Bundle bundle = new Bundle();
-						bundle.putString("Id", String.valueOf(id));
-						fragment.setArguments(bundle);
-						trans.replace(R.id.content_frame, fragment);
-						trans.addToBackStack(null);
-						trans.commit();
-						
-					}
-					else if (id==178) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					
-					
-					AnadFragment fragment = new AnadFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
-					
-				}
-				else if(id==179){
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					
-					
-					ShopFragment fragment = new ShopFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
-					
-					
-				}
 			}
 		});
 
