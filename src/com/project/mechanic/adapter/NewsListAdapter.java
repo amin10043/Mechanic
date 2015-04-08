@@ -85,8 +85,85 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 				adapter.open();
 				int res = adapter.getNumberOfListItemChilds(id);
 				adapter.close();
+//				 switch (id) {
+//				 case 172:
+//						FragmentTransaction trans = ((MainActivity) context)
+//						.getSupportFragmentManager().beginTransaction();
+//				NewsFragment fragment = new NewsFragment();
+//				Bundle bundle = new Bundle();
+//				bundle.putString("Id", String.valueOf(id));
+//				fragment.setArguments(bundle);
+//				trans.replace(R.id.content_frame, fragment);
+//				trans.addToBackStack(null);
+//				trans.commit();
+//				   break;
+//				 case 173:
+//					 FragmentTransaction trans = ((MainActivity) context)
+//						.getSupportFragmentManager().beginTransaction();
+//				
+//				
+//				AnadFragment fragment = new AnadFragment();
+//				Bundle bundle = new Bundle();
+//				bundle.putString("Id", String.valueOf(id));
+//				fragment.setArguments(bundle);
+//				trans.replace(R.id.content_frame, fragment);
+//				trans.addToBackStack(null);
+//				trans.commit();
+//				break;
+//				 case 174:
+//						FragmentTransaction trans = ((MainActivity) context)
+//						.getSupportFragmentManager().beginTransaction();
+//				
+//				
+//				AnadFragment fragment = new AnadFragment();
+//				Bundle bundle = new Bundle();
+//				bundle.putString("Id", String.valueOf(id));
+//				fragment.setArguments(bundle);
+//				trans.replace(R.id.content_frame, fragment);
+//				trans.addToBackStack(null);
+//				trans.commit();				   break;  
+//				break;
+//				 case 175:
+//						FragmentTransaction trans = ((MainActivity) context)
+//						.getSupportFragmentManager().beginTransaction();
+//				
+//				
+//				AnadFragment fragment = new AnadFragment();
+//				Bundle bundle = new Bundle();
+//				bundle.putString("Id", String.valueOf(id));
+//				fragment.setArguments(bundle);
+//				trans.replace(R.id.content_frame, fragment);
+//				trans.addToBackStack(null);
+//				trans.commit();				   break;  
+//				break;
+//				 case 176:
+//						FragmentTransaction trans = ((MainActivity) context)
+//						.getSupportFragmentManager().beginTransaction();
+//				AnadFragment fragment = new AnadFragment();
+//				Bundle bundle = new Bundle();
+//				bundle.putString("Id", String.valueOf(id));
+//				fragment.setArguments(bundle);
+//				trans.replace(R.id.content_frame, fragment);
+//				trans.addToBackStack(null);
+//				trans.commit();				    
+//				break;
+//				 case 177:
+//						FragmentTransaction trans = ((MainActivity) context)
+//						.getSupportFragmentManager().beginTransaction();
+//				
+//				
+//				AnadFragment fragment = new AnadFragment();
+//				Bundle bundle = new Bundle();
+//				bundle.putString("Id", String.valueOf(id));
+//				fragment.setArguments(bundle);
+//				trans.replace(R.id.content_frame, fragment);
+//				trans.addToBackStack(null);
+//				trans.commit();				   
+//				break;
+//				   
+//				}
 
-					if (res > 0) {
+					if (id==172) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					NewsFragment fragment = new NewsFragment();
@@ -98,7 +175,78 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 					trans.commit();
 					
 					
-				} else if (id==178) {
+				}
+					else if (id==173) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+					
+						
+						AnadFragment fragment = new AnadFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+					}
+					else if (id==174) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						
+						
+						AnadFragment fragment = new AnadFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+					}
+					else if (id==175) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						
+						
+						AnadFragment fragment = new AnadFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+					}
+					else if (id==176) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						
+						
+						AnadFragment fragment = new AnadFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+					}
+					else if (id==177) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						
+						
+						AnadFragment fragment = new AnadFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+					}
+					else if (id==178) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					
