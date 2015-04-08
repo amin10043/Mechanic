@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
+import com.project.mechanic.fragment.AnadFragment;
 import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.fragment.NewspaperFragment;
@@ -102,7 +103,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 							.getSupportFragmentManager().beginTransaction();
 					
 					
-					CityFragment fragment = new CityFragment();
+					AnadFragment fragment = new AnadFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
 					fragment.setArguments(bundle);
