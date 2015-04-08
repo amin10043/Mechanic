@@ -46,6 +46,8 @@ public class MainActivity extends FragmentActivity {
 		mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		
+		
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
