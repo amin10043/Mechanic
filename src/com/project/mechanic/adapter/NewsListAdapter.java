@@ -54,7 +54,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 
 		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_news, parent, false);
+		convertView = myInflater.inflate(R.layout.row_shop, parent, false);
 
 		Animation animation = AnimationUtils.loadAnimation(getContext(),
 				(position > lastPosition) ? R.anim.up_from_bottom
@@ -200,6 +200,29 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 						trans.addToBackStack(null);
 						trans.commit();
 						
+					}
+					else if (id==178) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						AnadFragment fragment = new AnadFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+					}
+					else if(id==179){
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						ShopFragment fragment = new ShopFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
 					}
 			}
 		});
