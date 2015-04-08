@@ -18,6 +18,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Province;
+import com.project.mechanic.fragment.AnadFragment;
 import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -74,7 +75,7 @@ public class ShopListAdapter extends ArrayAdapter<Province> {
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new CityFragment(allItems));
+				trans.replace(R.id.content_frame, new AnadFragment());
 				trans.addToBackStack(null);
 				trans.commit();
 			}
