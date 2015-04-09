@@ -42,16 +42,19 @@ public class PapertitleListAdapter  extends ArrayAdapter<Paper>{
 		
 
 		convertView = myInflater.inflate(R.layout.froumtitleitem, parent, false);
+		
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.rawTitletxt);
 		TextView txt2 = (TextView) convertView.findViewById(R.id.rawtxtDescription);
 		TextView txt3 = (TextView) convertView.findViewById(R.id.rawtxtUsername);
+		
 	
 	    Paper person1 = mylist.get(position);
 		
 		txt1.setText(person1.getTitle());
 		txt2.setText(person1.getContext());
 		txt3.setText("Maryam");
+		
 	
 		
 
