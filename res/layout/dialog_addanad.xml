@@ -16,64 +16,9 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:hint="نام ونام خانوادگی"
+            android:hint="عنوان"
+            android:minEms="10"
             android:textColorHint="@color/red" />
-
-    </RelativeLayout>
-<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-    <EditText
-        android:id="@+id/dialog_anad_et2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="تلفن"
-        android:textColorHint="@color/red" />
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <EditText
-            android:id="@+id/dialog_anad_et3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:hint="ایمیل"
-            android:textColorHint="@color/red" />
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <EditText
-            android:id="@+id/dialog_anad_et4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:hint="آدرس"
-            android:textColorHint="@color/red" >
-
-            <requestFocus />
-        </EditText>
 
     </RelativeLayout>
     
@@ -101,14 +46,29 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/dialog_btn"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="15dp"
-            android:text="ارسال"
-            android:textColor="@color/red" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp" >
+
+            <Button
+                android:id="@+id/dialog_btn1"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="آپلود عکس"
+                android:textColor="@color/red" />
+
+            <Button
+                android:id="@+id/dialog_btn"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="ثبت آگهی"
+                android:textColor="@color/red" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 
