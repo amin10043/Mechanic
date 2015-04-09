@@ -88,12 +88,22 @@
         android:layout_weight="1" >
 
         <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="24dp"
+            android:layout_toLeftOf="@+id/imgBtnAddcmt"
+            android:background="@color/light_grey"
+            android:src="@drawable/like" />
+
+        <ImageButton
             android:id="@+id/imgBtnAddcmt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageButton1"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="17dp"
+            android:layout_marginRight="16dp"
             android:background="#EAEAEA"
             android:src="@drawable/add" />
 

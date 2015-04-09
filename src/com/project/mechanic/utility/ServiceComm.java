@@ -11,7 +11,7 @@ import android.os.AsyncTask;
 
 import com.project.mechanic.inter.AsyncInterface;
 
-public class ServiceComm extends AsyncTask<String, Void, String> {
+public class ServiceComm extends AsyncTask<String, Integer, String> {
 
 	public String SOAP_ACTION = "http://tempuri.org/";
 
@@ -19,7 +19,7 @@ public class ServiceComm extends AsyncTask<String, Void, String> {
 
 	public final String WSDL_TARGET_NAMESPACE = "http://tempuri.org/";
 
-	public final String SOAP_ADDRESS = "http://192.168.1.105/Service/Service1.asmx";
+	public final String SOAP_ADDRESS = "http://192.168.1.4/FirstService/MyService.asmx";
 
 	public String response = "";
 
@@ -78,4 +78,17 @@ public class ServiceComm extends AsyncTask<String, Void, String> {
 		// Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
 		delegate.processFinish(res);
 	}
+
+	@Override
+	protected void onPreExecute() {
+		// TODO Auto-generated method stub
+		super.onPreExecute();
+	}
+
+	@Override
+	protected void onProgressUpdate(Integer... values) {
+		// TODO Auto-generated method stub
+		super.onProgressUpdate(values);
+	}
+
 }

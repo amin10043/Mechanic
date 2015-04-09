@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -17,7 +18,7 @@ public class IntroductionFragment extends Fragment {
 
 	Context context;
 	private ImageView peykan6,peykan5;
-	
+	public RelativeLayout link1,link2;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,8 +29,9 @@ public class IntroductionFragment extends Fragment {
 
 	 peykan6 = (ImageView) view.findViewById(R.id.imageButton6);
 	 peykan5 = (ImageView) view.findViewById(R.id.imageButton7);
-		
-		peykan6.setOnClickListener(new OnClickListener() {
+	 link1=(RelativeLayout) view.findViewById(R.id.Layoutlink1);
+	 link2=(RelativeLayout) view.findViewById(R.id.Layoutlink2);
+	 link1.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -45,7 +47,7 @@ public class IntroductionFragment extends Fragment {
 			}
 		});
 		
-peykan5.setOnClickListener(new OnClickListener() {
+	 link2.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
