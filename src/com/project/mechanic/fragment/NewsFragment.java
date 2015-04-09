@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.adapter.ShopListAdapter;
 import com.project.mechanic.adapter.NewsListAdapter;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -33,6 +34,7 @@ public class NewsFragment extends Fragment {
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.News);
 		View view = inflater.inflate(R.layout.fragment_news, null);
+		
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 
@@ -41,11 +43,10 @@ public class NewsFragment extends Fragment {
 		dbAdapter.close();
 
 		ListView lstNews = (ListView) view.findViewById(R.id.lstVnews);
+		
 		NewsListAdapter ListAdapter = new NewsListAdapter(getActivity(),
 				R.layout.row_news, mylist, id);
-
 		lstNews.setAdapter(ListAdapter);
-
 		return view;
 	}
 }

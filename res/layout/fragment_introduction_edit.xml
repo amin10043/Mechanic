@@ -31,6 +31,22 @@
                     android:layout_weight="3"
                     android:scaleType="fitXY"
                     android:src="@drawable/gf2" />
+
+                <ImageButton
+                    android:id="@+id/imageButton12"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="right"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/edit_pic" />
+
+                <ImageButton
+                    android:id="@+id/imageButton11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:src="@android:drawable/btn_star" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -96,7 +112,7 @@
                     android:weightSum="7" >
 
                     <LinearLayout
-                        android:id="@+id/LinearLayout14"
+                        android:id="@+id/LinearLayout1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="25dp"
@@ -219,49 +235,7 @@
 
                     </RelativeLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="#CCCCCC"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp" >
-
-                        <TextView
-                            android:id="@+id/rawtxtDescription"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="15dp"
-                            android:text="تلفن" 
-                            android:textColor="@color/red"/>
-
-                        <ImageView
-                            android:id="@+id/imageView2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerInParent="true"
-                            android:layout_marginLeft="14dp"
-                            android:src="@drawable/phone" />
-
-                        <TextView
-                            android:id="@+id/rawtxtUsername"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:text=" 5138443239" 
-                            android:textColor="@color/red"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -270,18 +244,62 @@
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:background="#CCCCCC"
+                        android:gravity="right"
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp" >
 
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="0.1"
+                            android:src="@drawable/phone" />
+
+                        <EditText
+                            android:id="@+id/editTextphone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="50dp"
+                            android:layout_weight="0.2"
+                            android:ems="10"
+                            android:hint="تلفن"
+                            android:inputType="number"
+                            android:textColorHint="@color/red" >
+
+                            <requestFocus />
+                        </EditText>
+
                         <TextView
-                            android:id="@+id/textView3"
+                            android:id="@+id/rawtxtDescription"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="17dp"
-                            android:text="نمابر" 
-                            android:textColor="@color/red"/>
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="0.1"
+                            android:gravity="center"
+                            android:text="تلفن"
+                            android:textColor="@color/red" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="#CCCCCC"
+                        android:gravity="right"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp" >
 
                         <ImageView
                             android:id="@+id/imageView3"
@@ -289,7 +307,10 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
-                            android:layout_marginLeft="18dp"
+                            android:layout_gravity="left"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="0.1"
                             android:src="@drawable/fax" />
 
                         <TextView
@@ -300,18 +321,34 @@
                             android:layout_centerHorizontal="true"
                             android:textColor="@color/red" />
 
-                        <TextView
-                            android:id="@+id/textView11"
+                        <EditText
+                            android:id="@+id/editTextfax"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/imageView3"
                             android:layout_centerHorizontal="true"
-                            android:layout_centerInParent="true"
-                            android:text="+1-212-9876543" 
-                            android:textColor="@color/red"/>
-                    </RelativeLayout>
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="50dp"
+                            android:layout_weight="0.2"
+                            android:ems="10"
+                            android:hint="نمابر"
+                            android:inputType="number"
+                            android:textColorHint="@color/red" />
 
-                    <RelativeLayout
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="0.1"
+                            android:gravity="center"
+                            android:text="نمابر"
+                            android:textColor="@color/red" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -322,27 +359,6 @@
                         android:background="#CCCCCC"
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp" >
-
-                        <TextView
-                            android:id="@+id/textView4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="14dp"
-                            android:text="همراه" 
-                            android:textColor="@color/red"/>
-
-                        <TextView
-                            android:id="@+id/textView7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBaseline="@+id/textView4"
-                            android:layout_alignBottom="@+id/textView4"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerInParent="true"
-                            android:text="09390494239"
-                            android:textColor="@color/red" />
 
                         <ImageView
                             android:id="@+id/imageView4"
@@ -350,56 +366,40 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
-                            android:layout_marginLeft="18dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="0.1"
                             android:src="@drawable/cphone"
                             android:textColor="@color/red" />
-                    </RelativeLayout>
 
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="#CCCCCC"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp" >
-
-                        <ImageView
-                            android:id="@+id/imageView5"
+                        <EditText
+                            android:id="@+id/editTextmob"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignTop="@+id/textView8"
-                            android:layout_centerInParent="true"
-                            android:layout_marginLeft="20dp"
-                            android:src="@drawable/email" 
-                            android:textColor="@color/red"/>
-
-                        <TextView
-                            android:id="@+id/textView5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerInParent="true"
-                            android:text="پست الکترونیک" 
-                            android:textColor="@color/red"/>
-
-                        <TextView
-                            android:id="@+id/textView8"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBaseline="@+id/textView5"
-                            android:layout_alignBottom="@+id/textView5"
+                            android:layout_alignParentTop="true"
                             android:layout_centerHorizontal="true"
-                            android:text="shaghayegh@email.com"
-                            android:textColor="@color/red" />
-                    </RelativeLayout>
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="50dp"
+                            android:layout_weight="0.2"
+                            android:ems="10"
+                            android:hint="همراه"
+                            android:inputType="number"
+                            android:textColorHint="@color/red" />
 
-                    <RelativeLayout
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="0.1"
+                            android:gravity="center"
+                            android:text="همراه"
+                            android:textColor="@color/red" />
+
+                    </LinearLayout>
+
+                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -411,16 +411,54 @@
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp" >
 
-                        <TextView
-                            android:id="@+id/textView6"
+                        <ImageView
+                            android:id="@+id/imageView5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
+                            android:layout_alignBaseline="@+id/textView5"
+                            android:layout_alignParentLeft="true"
                             android:layout_centerInParent="true"
-                            android:layout_marginRight="18dp"
-                            android:text="آدرس" 
-                            android:textColor="@color/red"/>
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="0.1"
+                            android:src="@drawable/email"
+                            android:textColor="@color/red" />
+
+                        <EditText
+                            android:id="@+id/editTextemail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="30dp"
+                            android:layout_weight="0.2"
+                            android:ems="10"
+                            android:hint="پست الکترونیک"
+                            android:textColorHint="@color/red" />
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.02"
+                            android:gravity="center"
+                            android:text="پست الکترونیک"
+                            android:textColor="@color/red" />
+
+                    </LinearLayout>
+
+                   <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="#CCCCCC"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp" >
 
                         <ImageButton
                             android:id="@+id/imageButton8"
@@ -428,20 +466,37 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
-                            android:layout_marginLeft="14dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="0.1"
                             android:background="#0000"
                             android:src="@drawable/map" />
 
-                        <TextView
-                            android:id="@+id/textView9"
+                        <EditText
+                            android:id="@+id/editTextaddres"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
                             android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:text="راهنمایی 14 پلاک 24" 
-                            android:textColor="@color/red"/>
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="50dp"
+                            android:layout_weight="0.2"
+                            android:ems="10"
+                            android:hint="آدرس"
+                            android:textColorHint="@color/red" />
 
-                    </RelativeLayout>
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="0.1"
+                            android:gravity="center"
+                            android:text="آدرس"
+                            android:textColor="@color/red" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
