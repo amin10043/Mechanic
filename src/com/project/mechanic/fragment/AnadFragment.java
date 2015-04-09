@@ -1,7 +1,6 @@
 package com.project.mechanic.fragment;
 
 import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,10 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.AnadListAdapter;
@@ -54,7 +51,7 @@ public class AnadFragment extends Fragment {
 				@Override
 				public void onClick(View arg0) {
 
-					dialog = new DialogfroumTitle(getActivity(),R.layout.dialog_addtitle, AnadFragment.this);
+					dialog = new DialogfroumTitle(getActivity(),R.layout.dialog_addanad, AnadFragment.this);
 					dialog.show();
 				}
 			});
