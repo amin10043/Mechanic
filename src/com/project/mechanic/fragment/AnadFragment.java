@@ -22,7 +22,7 @@ public class AnadFragment extends Fragment {
 
 	DataBaseAdapter dbAdapter;
 	private ImageButton addtitle;
-	private DialogfroumTitle dialog;
+	private DialogAnad dialog;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -51,8 +51,8 @@ public class AnadFragment extends Fragment {
 			@Override
 			public void onClick(View arg0) {
 
-				dialog = new DialogfroumTitle(getActivity(),
-						R.layout.dialog_addanad, AnadFragment.this);
+				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,
+						AnadFragment.this);
 				dialog.show();
 			}
 		});

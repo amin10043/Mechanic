@@ -42,19 +42,19 @@ public class DialogAnad extends Dialog {
 		dialog_anad_et4 = (EditText) findViewById(R.id.dialog_anad_et4);
 		dialog_anad_et5 = (EditText) findViewById(R.id.dialog_anad_et5);
 		
-		dialog_btn.setOnClickListener(new android.view.View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				dbadapter = new DataBaseAdapter(context);
-				dbadapter.open();
-				dbadapter.insertFroumtitletoDb(dialog_anad_et1.getText().toString(),dialog_anad_et2.getText().toString(), 1);
-				dbadapter.close();
-				((FroumtitleFragment) fragment).updateView();
-				DialogAnad.this.dismiss();
-
-			}
-		});
+//		dialog_btn.setOnClickListener(new android.view.View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				dbadapter = new DataBaseAdapter(context);
+//				dbadapter.open();
+//				dbadapter.insertFroumtitletoDb(dialog_anad_et1.getText().toString(),dialog_anad_et2.getText().toString(),1);
+//				dbadapter.close();
+//				((FroumtitleFragment) fragment).updateView();
+//				DialogAnad.this.dismiss();
+//
+//			}
+//		});
 
 	}
 

@@ -19,7 +19,7 @@
             android:layout_marginTop="20dp"
             android:ems="10"
             android:hint="نام ونام خانوادگی"
-            android:inputType="textPersonName" />
+            android:textColorHint="@color/red" />
 
     </RelativeLayout>
 <RelativeLayout
@@ -36,7 +36,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="تلفن"
-        android:inputType="phone" />
+        android:textColorHint="@color/red" />
 
     </RelativeLayout>
     <RelativeLayout
@@ -53,7 +53,7 @@
             android:layout_marginTop="20dp"
             android:ems="10"
             android:hint="ایمیل"
-            android:inputType="textEmailAddress" />
+            android:textColorHint="@color/red" />
 
     </RelativeLayout>
     <RelativeLayout
@@ -70,7 +70,7 @@
             android:layout_marginTop="20dp"
             android:ems="10"
             android:hint="آدرس"
-            android:inputType="textPostalAddress" >
+            android:textColorHint="@color/red" >
 
             <requestFocus />
         </EditText>
@@ -86,8 +86,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="20dp"
             android:ems="10"
-            android:hint="توضیحات " />
+            android:hint="توضیحات "
+            android:textColorHint="@color/red" />
 
     </RelativeLayout>
 
@@ -103,7 +107,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginTop="15dp"
-            android:text="ارسال" />
+            android:text="ارسال"
+            android:textColor="@color/red" />
 
     </RelativeLayout>
 
