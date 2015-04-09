@@ -119,12 +119,17 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertCommenttoDb(String Comment) {
+	public void insertCommenttoDb( int userId, int paperId, String description) {
+
+
 
 		ContentValues cv = new ContentValues();
-		cv.put("Description", Comment);
-		mDb.insert(TableComment, null, cv);
 
+		cv.put("Description", description);
+		cv.put("UserId", userId);
+		
+		cv.put("paperId", paperId);
+		mDb.insert(TableComment,null, cv);
 	}
 
 	public void insertFroumtitletoDb(String Title, String description,
@@ -300,6 +305,14 @@ public class DataBaseAdapter {
 		return tempProvince;
 
 	}
+	
+	@SuppressWarnings("unused")
+	private Users CursorToUsers(Cursor cursor) {
+		Users tempProvince = new Users(cursor.getInt(0),
+				cursor.getString(1),cursor.getString(2),cursor.getString(3));
+		return tempProvince;
+
+	}
 
 	@SuppressWarnings("unused")
 	private City CursorToCity(Cursor cursor) {
@@ -413,18 +426,7 @@ public class DataBaseAdapter {
 		return result;
 	}
 
-	public ArrayList<Froum> getAllFroum() {
-		ArrayList<Froum> result = new ArrayList<Froum>();
-		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
-				null);
-		Froum tempFroum;
-		while (cursor.moveToNext()) {
-			result.add(CursorToFroum(cursor));
-		}
-
-		return result;
-
-	}
+	
 
 	public ArrayList<News> getAllNewsName() {
 		ArrayList<News> result = new ArrayList<News>();
@@ -526,6 +528,9 @@ public class DataBaseAdapter {
 	}
 	public Integer News_count(String table) {
 
+
+	
+
 		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
 				null);
 		int s = cu.getCount();
@@ -557,6 +562,7 @@ public class DataBaseAdapter {
 	 * }
 	 */
 
+
 	public ArrayList<Comment> getAllComment() {
 		ArrayList<Comment> result = new ArrayList<Comment>();
 		Cursor cursor = mDb.query(TableComment, Comment, null, null, null,
@@ -579,7 +585,110 @@ public class DataBaseAdapter {
 			result.add(CursorToComment(cursor));
 		}
 		return result;
+
+}
+
+
+
+
+public ArrayList<Comment> getCommentbyPaperid(int  PaperId) {
+
+	ArrayList<Comment> result = new ArrayList<Comment>();
+	Comment item =null;
+	Cursor mCur = mDb.query(TableComment, Comment, " paperId=?",
+			new String[] { String.valueOf( PaperId) }, null, null, null);
+
+	while (mCur.moveToNext()) {
+		item = CursorToComment(mCur);
+		result.add(item);
 	}
+
+	return result;
+
+}
+
+
+
+public ArrayList<Users> getUsernamebyid(int id ) {
+
+	ArrayList<Users> result = new ArrayList<Users>();
+	Users item =null;
+	Cursor mCur = mDb.query(TableUsers, Users, " ID=?",
+			new String[] { String.valueOf( id) }, null, null, null);
+
+	while (mCur.moveToNext()) {
+		item = CursorToUsers(mCur);
+		result.add(item);
+	}
+
+	return result;
+
+}
+
+
+public Froum getFroumItembyid(int Id) {
+
+	
+	Froum item = null;
+	Cursor mCur = mDb.query("Froum", Froum, " Id=?",
+			new String[] { String.valueOf( Id) }, null, null, null);
+
+	if (mCur.moveToNext()) {
+		item = CursorToFroum(mCur);
+		
+	}
+
+	return item;
+
+}
+
+
+public Froum getFroumTitlebyid(int Id) {
+
+	
+	Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
+			null);
+	Froum tempFroum=null;
+	if (cursor.moveToNext()) {
+		tempFroum=CursorToFroum(cursor);
+	}
+
+	return tempFroum;
+	
+	
+}
+public ArrayList<Froum> getAllFroum() {
+	ArrayList<Froum> result = new ArrayList<Froum>();
+	Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
+			null);
+	Froum tempFroum;
+	while (cursor.moveToNext()) {
+		result.add(CursorToFroum(cursor));
+	}
+
+	return result;
+
+}
+
+/*
+ * public String getUseridFroum(){ ArrayList<Froum> result = new
+ * ArrayList<Froum>(); 
+ * String[] s = new String[1];
+ *  s[0] = "UserId";
+ *  Cursor cursor = mDb.query(TableFroum,s , null,null , null, null, null);
+ *  Froum tempFroum; 
+ * if(cursor.moveToNext()){ tempFroum = new
+ * Froum(cursor.getInt(0), cursor.getInt(3),
+ * cursor.getString(2),cursor.getString(1) ); result.add(tempFroum); }
+ * 
+ * 
+ * return result;
+ * 
+ * }
+ */
+
+	
+
 
 	public ArrayList<Integer> getUSeridComment() {
 		ArrayList<Integer> result = new ArrayList<Integer>();

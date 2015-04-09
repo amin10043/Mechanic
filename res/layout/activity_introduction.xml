@@ -150,7 +150,7 @@
                     android:weightSum="7" >
 
                     <LinearLayout
-                        android:id="@+id/LinearLayout1"
+                        android:id="@+id/LinearLayout14"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="25dp"

@@ -19,15 +19,21 @@ import android.widget.EditText;
 
 
 public class Dialogcmt extends Dialog {
-	public Dialogcmt(Context context,int resourceId) {
-		super(context);
-		// TODO Auto-generated constructor stub
-	}
-
+	
+	
 	private Button btncmt;
 	private EditText Cmttxt;
 	 OnMyDialogResult mDialogResult;
 	 private DataBaseAdapter dbadapter;
+	 Context context;
+	 Fragment f;
+	public Dialogcmt(Fragment f, Context context,int resourceId) {
+		super(context);
+		this.context=context;
+		this.f = f;
+	}
+
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +46,13 @@ public class Dialogcmt extends Dialog {
 
 			@Override
 			public void onClick(View arg0) {
-				if( mDialogResult != null ){
-	                mDialogResult.finish(String.valueOf(Cmttxt.getText()));
-	                dbadapter.insertCommenttoDb(Cmttxt.getText().toString());
-	                
-	            }
-				 Dialogcmt.this.dismiss();
+				    dbadapter = new DataBaseAdapter(context);
+				    dbadapter.open();
+				    int	id = Integer.valueOf(f. getArguments().getString("Id"));
+	                dbadapter.insertCommenttoDb(1,id,Cmttxt.getText().toString());
+	                dbadapter.close();
+					((FroumFragment) f).updateView2();
+				    Dialogcmt.this.dismiss();
 				 
 			}
 		 });
