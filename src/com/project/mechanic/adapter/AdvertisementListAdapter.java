@@ -92,6 +92,7 @@ public class AdvertisementListAdapter extends ArrayAdapter<ListItem> {
 					trans.addToBackStack(null);
 					trans.commit();
 			}
+				
 				if (id==172) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
