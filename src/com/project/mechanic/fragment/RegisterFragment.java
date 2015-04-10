@@ -1,6 +1,8 @@
 package com.project.mechanic.fragment;
 
 
+import java.util.jar.Attributes.Name;
+
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class RegisterFragment extends Fragment {
@@ -42,14 +45,31 @@ public class RegisterFragment extends Fragment {
 
 	
 		public void onClick(View arg0) {
-			
-			
-			 final String Name = editname.getText().toString(); 
+			final String Name = editname.getText().toString(); 
 			 final String user = edituser.getText().toString();  
 			 final String pass = editpass.getText().toString(); 
+			if (Name.equals("")&& user.equals("")&& pass.equals("")) {
+				
+				
+				Toast.makeText(getActivity(), "لطفا فیلدهای مورد نظر را پر کنید  ", Toast.LENGTH_SHORT).show();
+				
+				
+			} 
+			
+			else {
+
+			
+			 
 			dbAdapter.open();
 			dbAdapter.inserUserToDb( Name,user, pass);
 			dbAdapter.close();
+			
+Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد", Toast.LENGTH_SHORT).show();
+			
+			
+			}
+			
+			
 		}
 	 });
 		 

@@ -1,6 +1,13 @@
 package com.project.mechanic.fragment;
 
+
+import com.project.mechanic.MainActivity;
+import com.project.mechanic.R;
+
+import android.app.Dialog;
+
 import android.content.SharedPreferences;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,7 +29,12 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 	ServiceComm service;
 	Utility util;
 
-	@Override
+	
+	Dialogeml  dialog;
+	
+	
+	
+	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
@@ -67,22 +79,8 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 			}
 		});
 
-		btnforgot.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-		btncancle.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
-			}
-		});
+		
+		
 		btnreg.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -96,10 +94,33 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 			}
 		});
+		
+		 btnforgot.setOnClickListener(new View.OnClickListener() {
+				
+				
+				public void onClick(View v) {
+				
+					
+					
+			
+					
+					
+					  dialog = new Dialogeml(LoginFragment.this,getActivity(),R.layout.dialog_addemail);
+					  dialog.show();
+					
+					
+					
+					
+					
+					
+				}
+			});
 
 		return view;
 
 	}
+
+
 
 	@Override
 	public void processFinish(String output) {
@@ -114,6 +135,7 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 			editor.putBoolean("isLogin", true);
 
 			// ثبت اطلاعات کاربر در دیتا بیس هم حتما انجام گیرد. فراموش نشود!!!!
+
 
 			FragmentTransaction trans = getActivity()
 					.getSupportFragmentManager().beginTransaction();

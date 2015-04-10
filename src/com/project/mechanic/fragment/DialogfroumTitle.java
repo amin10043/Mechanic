@@ -39,6 +39,9 @@ public class DialogfroumTitle extends Dialog {
 		btntitle = (Button) findViewById(R.id.Btntitle);
 		titletxt = (EditText) findViewById(R.id.txtTitle);
 		titleDestxt = (EditText) findViewById(R.id.txttitleDes);
+		
+		
+		
 		btntitle.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
