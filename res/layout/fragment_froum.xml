@@ -105,7 +105,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
             android:background="#EAEAEA"
-            android:src="@drawable/add" />
+            android:src="@drawable/cmt" />
 
     </RelativeLayout>
     

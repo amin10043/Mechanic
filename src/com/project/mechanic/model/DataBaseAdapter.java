@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
 import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Comment;
@@ -20,6 +21,7 @@ import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.row_items.RowMain;
 import com.project.mechanic.entity.News;
+import com.project.mechanic.entity.CommentInObject;;
 
 public class DataBaseAdapter {
 
@@ -46,11 +48,14 @@ public class DataBaseAdapter {
 	private String TableProvince = "Province";
 	private String TableUsers = "Users";
 	private String TableWorkmanType = "WorkmanType";
+	private String TableCommentInObject= "CommentInObject";
+	
 
 	private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] CityColumn = { "ID", "Name", "ProvinceId" };
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
+	private String[] CommentInObject = {  "id", "description",  "Objectid",  "userid", "datetime",  "commentid" };
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description" };
@@ -130,6 +135,22 @@ public class DataBaseAdapter {
 		
 		cv.put("paperId", paperId);
 		mDb.insert(TableComment,null, cv);
+	}
+	
+	
+	public void insertCommentObjecttoDb(  String description, int Objectid, int userid,
+			String datetime, int commentid) {
+
+
+
+		ContentValues cv = new ContentValues();
+
+		cv.put("Description", description);
+		cv.put("UserId", userid);
+		cv.put("froumid",Objectid);
+		cv.put("datetime", datetime);
+		cv.put("commentid", commentid);
+		mDb.insert(TableCommentInObject,null, cv);
 	}
 
 	public void insertFroumtitletoDb(String Title, String description,
@@ -360,6 +381,14 @@ public class DataBaseAdapter {
 	
 	}
 	
+	@SuppressWarnings("unused")
+	private CommentInObject  CursorToCommentInObject(Cursor cursor) {
+		CommentInObject tempNews = new CommentInObject(cursor.getInt(0), cursor.getString(1), cursor.getInt(2),cursor.getInt(3),cursor.getString(4),cursor.getInt(5));
+		return tempNews;
+	
+	}
+	
+	
 	public ArrayList<Province> getAllProvinceName() {
 		ArrayList<Province> result = new ArrayList<Province>();
 		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
@@ -585,8 +614,19 @@ public class DataBaseAdapter {
 			result.add(CursorToComment(cursor));
 		}
 		return result;
-
-}
+    }
+	
+	
+	public ArrayList<CommentInObject> getAllCommentInObjectById(int Id) {
+		ArrayList<CommentInObject> result = new ArrayList<CommentInObject>();
+		Cursor cursor = mDb.query(TableCommentInObject, CommentInObject, null, null, null,
+				null, null);
+		CommentInObject tempComment;
+		while (cursor.moveToNext()) {
+			result.add(CursorToCommentInObject(cursor));
+		}
+		return result;
+    }
 
 
 

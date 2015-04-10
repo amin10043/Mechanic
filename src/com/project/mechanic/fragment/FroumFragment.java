@@ -14,7 +14,7 @@ import com.project.mechanic.adapter.FroumtitleListadapter;
 import com.project.mechanic.entity.Comment;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.Dialogcmt.OnMyDialogResult;
+import com.project.mechanic.fragment.DialogcmtInfroum.OnMyDialogResult;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.FroumItem;
 
@@ -46,7 +46,7 @@ public class FroumFragment extends Fragment{
 	private TextView txttitle;
 	private TextView txttitleDes;
 	ArrayList<Comment> mylist;
-	Dialogcmt  dialog;
+	DialogcmtInfroum  dialog;
 	ImageButton Replytocm;
 	FroumListAdapter froumListadapter;
 	 int	id;
@@ -78,7 +78,7 @@ public class FroumFragment extends Fragment{
 			//mylist = adapter.getAllCommentByPapaerId(id);
 		    mylist = adapter.getCommentbyPaperid(id);
 			Froum x =adapter.getFroumItembyid(id);
-			 
+			
 				
 				txttitle.setText(x.getTitle());
 				txttitleDes.setText(x.getDescription());
@@ -117,7 +117,7 @@ public class FroumFragment extends Fragment{
 				
 
 				
-			  dialog = new Dialogcmt(FroumFragment.this,getActivity(),R.layout.dialog_addcomment);
+			  dialog = new DialogcmtInfroum(FroumFragment.this,getActivity(),R.layout.dialog_addcomment);
 			  dialog.show();
 
 				

@@ -30,54 +30,13 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_launcher" />
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="5" >
-
-        <ImageButton
-            android:id="@+id/imageButton3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="#ffffff"
-            android:src="@drawable/phone2" />
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageButton3"
-            android:layout_marginRight="16dp"
-            android:layout_toLeftOf="@+id/imageButton3"
-            android:text="09390494239"
-            android:textColor="@color/red" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_weight="35" >
-
-        <TextView
-            android:id="@+id/rawCmttxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint=" "
-            android:text="نظر"
-            android:textColor="@color/red" />
-
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
+            android:layout_alignTop="@+id/rawUsernamecmttxt"
+            android:gravity="top"
             android:orientation="horizontal" >
 
             <ImageButton
@@ -96,11 +55,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_alignTop="@+id/linearLayout1"
             android:layout_toRightOf="@+id/linearLayout1"
-            android:background="@color/light_grey" >
+            android:gravity="top" >
 
             <ImageButton
                 android:id="@+id/imageButton2"
@@ -117,6 +77,31 @@
                 android:textColor="@color/red" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/rawUsernamecmttxt"
+            
+            android:layout_toLeftOf="@+id/rawUsernamecmttxt"
+            android:text="09390494239"
+            android:textColor="@color/red" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_weight="40" >
+
+        <TextView
+            android:id="@+id/rawCmttxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint=" "
+            android:text="نظر"
+            android:textColor="@color/red" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -134,7 +119,6 @@
             android:layout_marginLeft="14dp"
             android:background="@color/light_grey"
             android:src="@drawable/cmt2" />
-
     </RelativeLayout>
 
     <ScrollView
@@ -148,7 +132,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
         </ListView>
-
     </ScrollView>
 
 </LinearLayout>

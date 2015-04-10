@@ -103,7 +103,7 @@
                     android:layout_weight="1" >
 
                     <ImageButton
-                        android:id="@+id/imageButton10"
+                        android:id="@+id/imgbtnCmt_introduction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -117,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginRight="23dp"
-                        android:layout_toLeftOf="@+id/imageButton10"
+                        android:layout_toLeftOf="@+id/imgbtnCmt_introduction"
                         android:background="@color/light_grey"
                         android:src="@drawable/like" />
 
@@ -136,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/textView15"
                         android:layout_alignBottom="@+id/textView15"
-                        android:layout_alignLeft="@+id/imageButton10"
+                        android:layout_alignLeft="@+id/imgbtnCmt_introduction"
                         android:text="44"
                         android:textSize="@dimen/txtsize10" />
 

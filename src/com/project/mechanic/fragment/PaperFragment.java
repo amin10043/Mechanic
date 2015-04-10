@@ -26,7 +26,7 @@ public class PaperFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				  Dialogcmt dialog = new Dialogcmt(PaperFragment.this,getActivity(),R.layout.dialog_addcomment);
+				  DialogcmtInfroum dialog = new DialogcmtInfroum(PaperFragment.this,getActivity(),R.layout.dialog_addcomment);
 				  dialog.show();
 				
 			}

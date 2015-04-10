@@ -34,7 +34,7 @@ public class ObjectFragment extends Fragment {
 		ArrayList<RowMain> mylist = adapter.getAllObjectName();
 		adapter.close();
 
-		ListView lstObject = (ListView) view.findViewById(R.id.listvObject);
+		ListView lstObject = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(),
 				R.layout.row_object, mylist);
 
