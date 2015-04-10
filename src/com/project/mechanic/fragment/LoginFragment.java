@@ -15,16 +15,19 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.utility.ServiceComm;
+import com.project.mechanic.utility.Utility;
 
 public class LoginFragment extends Fragment implements AsyncInterface {
 
 	ServiceComm service;
+	Utility util;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
 		service = new ServiceComm(getActivity());
+		util = new Utility(getActivity());
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
 		View view = inflater.inflate(R.layout.fragment_login, null);
@@ -43,9 +46,21 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 			@Override
 			public void onClick(View v) {
-				String[] params = new String[] { "login",
-						edituser.getText().toString(),
-						editpass.getText().toString() };
+
+				if (!util.isNetworkConnected()) {
+					util.showOkDialog(getActivity(), "خطا در ارتباط",
+							"شما به اینترنت متصل نیستید.");
+				}
+
+				String user = edituser.getText().toString();
+				String pass = editpass.getText().toString();
+				if ("".equals(user) || "".equals(pass)) {
+					Toast.makeText(getActivity(),
+							"نام کاربری و یا کلمه عبور نمی تواند خالی باشد.",
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
+				String[] params = new String[] { "login", user, pass };
 				service.delegate = LoginFragment.this;
 				service.execute(params);
 
