@@ -34,11 +34,12 @@
 
     <EditText
         android:id="@+id/editTextname"
-        android:layout_width="wrap_content"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
         android:hint="Enter Name and Family"
+        android:textColorHint="@color/red"
         android:textSize="15dp" >
 
         <requestFocus />
@@ -55,13 +56,14 @@
 
     <EditText
         android:id="@+id/editTextuser"
-        android:layout_width="wrap_content"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
         android:ems="10"
         android:hint="Enter Username(Email)"
         android:inputType="textEmailAddress"
+        android:textColorHint="@color/red"
         android:textSize="15dp" />
 
 </LinearLayout>
@@ -75,12 +77,13 @@
 
     <EditText
         android:id="@+id/editTextpass"
-        android:layout_width="wrap_content"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
         android:hint="Enter Password"
         android:inputType="textPassword"
+        android:textColorHint="@color/red"
         android:textSize="15dp" />
 
 </LinearLayout>

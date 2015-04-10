@@ -13,8 +13,8 @@ import com.project.mechanic.model.DataBaseAdapter;
 
 public class DialogAnad extends Dialog {
 
-	private Button dialog_btn;
-	private EditText dialog_anad_et1,dialog_anad_et2,dialog_anad_et3,dialog_anad_et4,dialog_anad_et5;
+	private Button dialog_btn,dialog_btn1;
+	private EditText dialog_anad_et1,dialog_anad_et5;
 	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
 	int resourceId;
@@ -35,11 +35,9 @@ public class DialogAnad extends Dialog {
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.dialog_addcomment);
 		setContentView(resourceId);
-		dialog_btn = (Button) findViewById(R.id.Btntitle);
+		dialog_btn = (Button) findViewById(R.id.dialog_btn);
+		dialog_btn1 = (Button) findViewById(R.id.dialog_btn1);
 		dialog_anad_et1 = (EditText) findViewById(R.id.dialog_anad_et1);
-		dialog_anad_et2 = (EditText) findViewById(R.id.dialog_anad_et2);
-		dialog_anad_et3 = (EditText) findViewById(R.id.dialog_anad_et3);
-		dialog_anad_et4 = (EditText) findViewById(R.id.dialog_anad_et4);
 		dialog_anad_et5 = (EditText) findViewById(R.id.dialog_anad_et5);
 		
 //		dialog_btn.setOnClickListener(new android.view.View.OnClickListener() {
