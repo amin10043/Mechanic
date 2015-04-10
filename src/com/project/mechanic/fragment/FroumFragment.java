@@ -85,7 +85,7 @@ public class FroumFragment extends Fragment{
 			    adapter.close();
 			
 			
-	;
+	
 		
 
 		 lst = (ListView) view.findViewById(R.id.lstComment);
@@ -148,7 +148,7 @@ public class FroumFragment extends Fragment{
 		adapter.close();
 
 		froumListadapter = new FroumListAdapter(getActivity(),
-				R.layout.raw_froumtitle, mylist);
+				R.layout.raw_froumcmt, mylist);
 		froumListadapter.notifyDataSetChanged();
 		lst.setAdapter(froumListadapter);
 
