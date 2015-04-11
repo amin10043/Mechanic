@@ -15,6 +15,7 @@ import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Comment;
 import com.project.mechanic.entity.Executertype;
 import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Province;
@@ -180,6 +181,17 @@ public class DataBaseAdapter {
 		cv.put("UserId", userId);
 
 		mDb.insert(TableFroum, null, cv);
+
+	}
+	
+	public void insertPapertitletoDb(String Title, String Context) {
+
+		ContentValues cv = new ContentValues();
+		cv.put("Title", Title);
+		cv.put("Context", Context);
+		
+
+		mDb.insert(TablePaper, null, cv);
 
 	}
 
@@ -494,9 +506,22 @@ public class DataBaseAdapter {
 		}
 		return result;
 	}
-	
-	
-	
+
+	public ArrayList<Paper> getAllPaper() {
+		ArrayList<Paper> result = new ArrayList<Paper>();
+		Cursor cursor = mDb.query(TablePaper, Paper, null, null, null, null,
+				null);
+		Paper tempObject;
+		while (cursor.moveToNext()) {
+			tempObject = new Paper(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
+			result.add(tempObject);
+		}
+
+		return result;
+
+	}
+
+
 	public Integer province_count(String table) {
 
 		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",

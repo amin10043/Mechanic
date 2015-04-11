@@ -8,69 +8,99 @@
 
     <LinearLayout
         android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout2"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="#eb523e"
         android:orientation="vertical" >
-
+       
         <TextView
-            android:id="@+id/row_berand_txt"
-            android:layout_width="319dp"
-            android:layout_height="362dp"
-            android:background="#b4f5f0"
+            android:id="@+id/txtTitleP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="0.98"
             android:text="TextView" />
-    </LinearLayout>
+       
+        <TextView
+            android:id="@+id/txtContext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="0.98"
+            android:text="TextView" />
 
+       
+    </LinearLayout>
+ 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayout3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/linearLayout3"
+        android:layout_alignParentRight="true" 
         android:gravity="center_horizontal"
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/dialog_btn"
+            android:id="@+id/btnLike"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:background="#5473e5"
+            android:background="@drawable/button_selector"
             android:text="Like" />
 
         <Button
-            android:id="@+id/btnCmt"
+            android:id="@+id/btncomment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#50f1e4"
+            android:background="@drawable/button_selector"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="4dp"
             android:text="Comment" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="fill_parent"
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout3"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/linearLayout1"
-        android:background="#a465d0" >
+        android:background="#fb3217"
+        android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/textView2"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginBottom="28dp"
-            android:layout_marginLeft="28dp"
-            android:text="2" />
+            android:id="@+id/txtComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="100" />
 
         <TextView
-            android:id="@+id/txtFax_Introduction"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:text="1" />
+            android:id="@+id/txtLike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="200" />
+
 
     </LinearLayout>
 

@@ -88,7 +88,7 @@ public class MainActivity extends FragmentActivity {
 		ImageButton iBtnShare = (ImageButton) findViewById(R.id.iBtnShare);
 		ImageButton iBtnBack = (ImageButton) findViewById(R.id.iBtnBack);
 		final ImageButton iBtnFavorite = (ImageButton) findViewById(R.id.iBtnFavorite);
-		final TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
+		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
 		SearchView searchV = (SearchView) findViewById(R.id.searchV);
 
 		searchV.setOnSearchClickListener(new OnClickListener() {
@@ -185,7 +185,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void setActivityTitle(int title) {
-		TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
+		TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
 		txtTitle.setText(title);
 
 	}

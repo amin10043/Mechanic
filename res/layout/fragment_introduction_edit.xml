@@ -371,7 +371,8 @@
                             android:textColorHint="@color/red" />
 
                         <TextView
-                            android:id="@+id/txtFax_Introduction"
+
+                           android:id="@+id/txtFax_Introduction"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
