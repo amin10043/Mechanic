@@ -3,7 +3,8 @@ package com.project.mechanic.entity;
 public class ObjectType {
 
 	int Id;
-	String Name;
+	String Type;
+	String Desc;
 
 	public int getId() {
 		return Id;
@@ -13,18 +14,26 @@ public class ObjectType {
 		Id = id;
 	}
 
-	public String getName() {
-		return Name;
+	public String getType() {
+		return Type;
 	}
 
-	public void setName(String name) {
-		Name = name;
+	public void setType(String type) {
+	    Type = type;
+	}
+	public String getDesc() {
+		return Desc;
 	}
 
-	public ObjectType(int id, String name) {
+	public void setDesc(String desc) {
+		Desc = desc;
+	}
+
+	public ObjectType(int id, String type, String desc) {
 		super();
 		Id = id;
-		Name = name;
+		Type = type;
+		Desc=desc;
 	}
 
 }
