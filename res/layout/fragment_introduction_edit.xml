@@ -32,13 +32,48 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/gf2" />
 
-                <ImageButton
-                    android:id="@+id/imageButton12"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="right"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/edit_pic" />
+                <RelativeLayout
+                    android:id="@+id/RelativeLayout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1" >
+
+                    <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/txtsize10" />
+
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/textView15"
+                        android:layout_alignBottom="@+id/textView15"
+                        android:textSize="@dimen/txtsize10" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:scaleType="fitEnd"
+                        android:src="@drawable/edit_pic" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/textView15"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/save" />
+
+                </RelativeLayout>
 
                 <ImageButton
                     android:id="@+id/imageButton11"
