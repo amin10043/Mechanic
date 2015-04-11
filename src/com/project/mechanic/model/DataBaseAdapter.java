@@ -21,7 +21,8 @@ import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.row_items.RowMain;
 import com.project.mechanic.entity.News;
-import com.project.mechanic.entity.CommentInObject;;
+import com.project.mechanic.entity.CommentInObject;
+import com.project.mechanic.entity.LikeInObject;
 
 public class DataBaseAdapter {
 
@@ -36,6 +37,7 @@ public class DataBaseAdapter {
 	private String TableFavorite = "Favorite";
 	private String TableFroum = "Froum";
 	private String TableLike = "Like";
+	private String TableLikeInObject = "LikeInObject";
 	private String TableList = "List";
 	private String TableListItem = "ListItem";
 	private String TableNews = "News";
@@ -55,11 +57,12 @@ public class DataBaseAdapter {
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] CityColumn = { "ID", "Name", "ProvinceId" };
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
-	private String[] CommentInObject = {  "id", "description",  "Objectid",  "userid", "datetime",  "commentid" };
+	private String[] CommentInObject = {  "Id", "Desk",  "ObjectId",  "UserId", "Date",  "CommentId" };
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
+	private String[] LikeInObject = { "Id", "UserId", "PaperId","Date","CommentId" };
 	private String[] List = { "ID", "Name", "ParentId" };
 	private String[] ListItem = { "Id", "Name", "ListId" };
 	private String[] News = { "ID", "Title", "Description" };
@@ -123,6 +126,21 @@ public class DataBaseAdapter {
 		long res2 = res;
 
 	}
+	
+	
+	public void insertLikeInObjectToDb(int  UserId, int PaperId,String Date,int CommentId) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("UserId", UserId);
+		uc.put("PaperId", PaperId);
+		uc.put("CommentId", CommentId);
+		uc.put("Date", Date);
+		
+		long res = mDb.insert(TableLikeInObject, null, uc);
+		long res2 = res;
+
+	}
 
 	public void insertCommenttoDb( int userId, int paperId, String description) {
 
@@ -145,11 +163,11 @@ public class DataBaseAdapter {
 
 		ContentValues cv = new ContentValues();
 
-		cv.put("Description", description);
+		cv.put("Desk", description);
 		cv.put("UserId", userid);
-		cv.put("froumid",Objectid);
-		cv.put("datetime", datetime);
-		cv.put("commentid", commentid);
+		cv.put("ObjectID",Objectid);
+		cv.put("Date", datetime);
+		cv.put("CommentId", commentid);
 		mDb.insert(TableCommentInObject,null, cv);
 	}
 
@@ -334,6 +352,14 @@ public class DataBaseAdapter {
 		return tempProvince;
 
 	}
+	
+	@SuppressWarnings("unused")
+	private LikeInObject CursorToLikeInObject(Cursor cursor) {
+		LikeInObject tempProvince = new LikeInObject(cursor.getInt(0),cursor.getInt(1),cursor.getInt(2),
+				cursor.getString(3),cursor.getInt(4));
+		return tempProvince;
+
+	}
 
 	@SuppressWarnings("unused")
 	private City CursorToCity(Cursor cursor) {
@@ -478,6 +504,23 @@ public class DataBaseAdapter {
 		int s = cu.getCount();
 		return s;
 	}
+	
+	public Integer LikeInObject_count(String table) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
+				null);
+		int s = cu.getCount();
+		return s;
+	}
+	
+	public Integer CommentInObject_count(String table) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
+				null);
+		int s = cu.getCount();
+		return s;
+	}
+
 
 	public String province_display(String table, int row, int field) {
 
@@ -617,13 +660,24 @@ public class DataBaseAdapter {
     }
 	
 	
-	public ArrayList<CommentInObject> getAllCommentInObjectById(int Id) {
+	public ArrayList<CommentInObject> getAllCommentInObjectById(int ObjectID) {
 		ArrayList<CommentInObject> result = new ArrayList<CommentInObject>();
-		Cursor cursor = mDb.query(TableCommentInObject, CommentInObject, null, null, null,
-				null, null);
+		Cursor cursor = mDb.query(TableCommentInObject, CommentInObject, " ObjectId=?",
+				new String[] { String.valueOf( ObjectID) }, null, null, null);
 		CommentInObject tempComment;
 		while (cursor.moveToNext()) {
 			result.add(CursorToCommentInObject(cursor));
+		}
+		return result;
+    }
+	
+	public ArrayList<LikeInObject> getAllLikeInObjectById(int ObjectID) {
+		ArrayList<LikeInObject> result = new ArrayList<LikeInObject>();
+		Cursor cursor = mDb.query(TableLikeInObject, LikeInObject, " ObjectId=?",
+				new String[] { String.valueOf( ObjectID) }, null, null, null);
+		 
+		while (cursor.moveToNext()) {
+			result.add(CursorToLikeInObject(cursor));
 		}
 		return result;
     }
@@ -707,6 +761,21 @@ public ArrayList<Froum> getAllFroum() {
 	}
 
 	return result;
+
+}
+
+public Object getAllObjectbyid(int id) {
+	
+	Object item = null;
+	Cursor mCur = mDb.query("Object", Object, " Id=?",
+			new String[] { String.valueOf(id) }, null, null, null);
+
+	if (mCur.moveToNext()) {
+		item = CursorToObject(mCur);
+		
+	}
+
+	return item;
 
 }
 

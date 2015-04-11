@@ -25,20 +25,55 @@
                 android:orientation="vertical" >
 
                 <ImageView
-                    android:id="@+id/imgViewadvertise"
+                    android:id="@+id/imgvadvertise_Object"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
                     android:layout_weight="3"
                     android:scaleType="fitXY"
                     android:src="@drawable/gf2" />
 
-                <ImageButton
-                    android:id="@+id/imageButton12"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="right"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/edit_pic" />
+                <RelativeLayout
+                    android:id="@+id/RelativeLayout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1" >
+
+                    <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/txtsize10" />
+
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/textView15"
+                        android:layout_alignBottom="@+id/textView15"
+                        android:textSize="@dimen/txtsize10" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:scaleType="fitEnd"
+                        android:src="@drawable/edit_pic" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/textView15"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/save" />
+
+                </RelativeLayout>
 
                 <ImageButton
                     android:id="@+id/imageButton11"
@@ -74,7 +109,7 @@
                         android:src="@drawable/cmt" />
 
                     <ImageButton
-                        android:id="@+id/ImageButton1"
+                        android:id="@+id/ImgbtnLike_Object"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -87,8 +122,8 @@
                         android:id="@+id/textView15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignLeft="@+id/ImageButton1"
-                        android:layout_below="@+id/ImageButton1"
+                        android:layout_alignLeft="@+id/ImgbtnLike_Object"
+                        android:layout_below="@+id/ImgbtnLike_Object"
                         android:text="23"
                         android:textSize="@dimen/txtsize10" />
 
@@ -336,7 +371,7 @@
                             android:textColorHint="@color/red" />
 
                         <TextView
-                            android:id="@+id/textView3"
+                            android:id="@+id/txtFax_Introduction"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
@@ -387,7 +422,7 @@
                             android:textColorHint="@color/red" />
 
                         <TextView
-                            android:id="@+id/textView4"
+                            android:id="@+id/txtCellphone_Introduction"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
@@ -551,7 +586,7 @@
                 android:orientation="vertical" >
 
                 <ImageView
-                    android:id="@+id/img1"
+                    android:id="@+id/imgvadvertise2_Object"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
                     android:scaleType="fitXY"
@@ -575,7 +610,7 @@
                     android:background="#CCCCCC" >
 
                     <TextView
-                        android:id="@+id/textView14"
+                        android:id="@+id/txtDesc_Object"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"

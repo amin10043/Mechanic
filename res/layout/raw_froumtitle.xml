@@ -50,15 +50,15 @@
             android:id="@+id/fragmentnewstxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/rawtxtUsername"
-            android:layout_alignBottom="@+id/rawtxtUsername"
+            android:layout_alignBaseline="@+id/txtPhone_Object"
+            android:layout_alignBottom="@+id/txtPhone_Object"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:text="توسط"
             android:textColor="@color/red" />
 
         <TextView
-            android:id="@+id/rawtxtUsername"
+            android:id="@+id/txtPhone_Object"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
