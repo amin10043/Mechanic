@@ -23,7 +23,7 @@ import com.project.mechanic.model.DataBaseAdapter;
 public class FroumtitleFragment extends Fragment {
 	private ImageButton addtitle;
 	private DialogfroumTitle dialog;
-	Dialogcmt dialog2;
+	DialogcmtInfroum dialog2;
 	DataBaseAdapter mdb;
 	View view;
 	ArrayList<Froum> mylist;

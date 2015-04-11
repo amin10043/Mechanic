@@ -11,7 +11,7 @@ import android.widget.EditText;
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class DialogfroumTitle extends Dialog {
+public class DialogPaperTitle extends Dialog {
 
 	private Button btntitle;
 	private EditText titletxt;
@@ -22,7 +22,7 @@ public class DialogfroumTitle extends Dialog {
 	Context context;
 	Fragment fragment;
 
-	public DialogfroumTitle(Context context, int resourceId, Fragment fragment) {
+	public DialogPaperTitle(Context context, int resourceId, Fragment fragment) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		this.resourceId = resourceId;
@@ -39,20 +39,17 @@ public class DialogfroumTitle extends Dialog {
 		btntitle = (Button) findViewById(R.id.Btntitle);
 		titletxt = (EditText) findViewById(R.id.txtTitleP);
 		titleDestxt = (EditText) findViewById(R.id.txttitleDes);
-		
-		
-		
 		btntitle.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				dbadapter = new DataBaseAdapter(context);
 				dbadapter.open();
-				dbadapter.insertFroumtitletoDb(titletxt.getText().toString(),
-						titleDestxt.getText().toString(), 1);
+				dbadapter.insertPapertitletoDb(titletxt.getText().toString(),
+						titleDestxt.getText().toString());
 				dbadapter.close();
-				((FroumtitleFragment) fragment).updateView();
-				DialogfroumTitle.this.dismiss();
+				((TitlepaperFragment) fragment).updateView();
+				DialogPaperTitle.this.dismiss();
 
 			}
 		});

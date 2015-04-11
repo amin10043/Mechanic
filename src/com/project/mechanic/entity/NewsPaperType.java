@@ -1,10 +1,10 @@
 package com.project.mechanic.entity;
 
-public class ObjectType {
-
+public class NewsPaperType {
 	int Id;
-	String Type;
 	String Desc;
+	int Type;
+	
 
 	public int getId() {
 		return Id;
@@ -12,14 +12,6 @@ public class ObjectType {
 
 	public void setId(int id) {
 		Id = id;
-	}
-
-	public String getType() {
-		return Type;
-	}
-
-	public void setType(String type) {
-	    Type = type;
 	}
 	public String getDesc() {
 		return Desc;
@@ -29,11 +21,21 @@ public class ObjectType {
 		Desc = desc;
 	}
 
-	public ObjectType(int id, String type, String desc) {
+	public int getType() {
+		return Type;
+	}
+
+	public void setType(int type) {
+	    Type = type;
+	}
+
+
+	public NewsPaperType(int id, String desc, int type) {
 		super();
 		Id = id;
-		Type = type;
 		Desc=desc;
+		Type = type;
+		
 	}
 
 }

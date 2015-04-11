@@ -12,16 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="10" >
 
-        <TextView
-            android:id="@+id/rawUsernamecmttxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/imgvCmtoTilte"
-            android:text="shaghayegh"
-            android:textColor="@color/red" />
-
         <ImageView
             android:id="@+id/imgvCmtoTilte"
             android:layout_width="wrap_content"
@@ -30,54 +20,14 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_launcher" />
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="5" >
-
-        <ImageButton
-            android:id="@+id/imageButton3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="#ffffff"
-            android:src="@drawable/phone2" />
-
-        <TextView
-            android:id="@+id/txtContext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageButton3"
-            android:layout_marginRight="16dp"
-            android:layout_toLeftOf="@+id/imageButton3"
-            android:text="09390494239"
-            android:textColor="@color/red" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_weight="35" >
-
-        <TextView
-            android:id="@+id/rawCmttxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint=" "
-            android:text="نظر"
-            android:textColor="@color/red" />
 
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
+            android:layout_alignTop="@+id/linearLayout2"
+            android:gravity="top"
             android:orientation="horizontal" >
 
             <ImageButton
@@ -88,7 +38,8 @@
                 android:src="@drawable/negative" />
 
             <TextView
-                android:id="@+id/txtLike"
+
+                android:id="@+id/txtFax_Introduction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="23"
@@ -96,11 +47,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_alignBottom="@+id/fragment_showad_txt3"
             android:layout_toRightOf="@+id/linearLayout1"
-            android:background="@color/light_grey" >
+            android:gravity="top" >
 
             <ImageButton
                 android:id="@+id/imageButton2"
@@ -116,6 +68,52 @@
                 android:text="12"
                 android:textColor="@color/red" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/rawUsernamecmttxt_cmt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/rawUsernamecmttxt_cmt"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/imgvCmtoTilte"
+            android:text="bghgfhfhf"
+            android:textColor="@color/red" />
+
+        <TextView
+            android:id="@+id/fragment_showad_txt3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+            android:layout_marginRight="12dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/rawUsernamecmttxt_cmt"
+            android:text="09390494239"
+            android:textColor="@color/red" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="5" >
+
+        <TextView
+            android:id="@+id/rawCmttxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:hint=" "
+            android:text="نظر"
+            android:textColor="@color/red" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_weight="40" >
 
     </RelativeLayout>
 
@@ -134,7 +132,6 @@
             android:layout_marginLeft="14dp"
             android:background="@color/light_grey"
             android:src="@drawable/cmt2" />
-
     </RelativeLayout>
 
     <ScrollView
@@ -148,7 +145,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
         </ListView>
-
     </ScrollView>
 
 </LinearLayout>

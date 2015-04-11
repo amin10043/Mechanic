@@ -25,7 +25,7 @@
                 android:orientation="vertical" >
 
                 <ImageView
-                    android:id="@+id/imgViewadvertise"
+                    android:id="@+id/imgvadvertise_Object"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
                     android:layout_weight="3"
@@ -49,7 +49,7 @@
                     android:layout_weight="1" >
 
                     <ImageButton
-                        android:id="@+id/imageButton10"
+                        android:id="@+id/imgbtnCmt_introduction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -58,12 +58,12 @@
                         android:src="@drawable/cmt" />
 
                     <ImageButton
-                        android:id="@+id/ImageButton1"
+                        android:id="@+id/ImgbtnLike_Object"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginRight="23dp"
-                        android:layout_toLeftOf="@+id/imageButton10"
+                        android:layout_toLeftOf="@+id/imgbtnCmt_introduction"
                         android:background="@color/light_grey"
                         android:src="@drawable/like" />
 
@@ -71,8 +71,8 @@
                         android:id="@+id/textView15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignLeft="@+id/ImageButton1"
-                        android:layout_below="@+id/ImageButton1"
+                        android:layout_alignLeft="@+id/ImgbtnLike_Object"
+                        android:layout_below="@+id/ImgbtnLike_Object"
                         android:text="23"
                         android:textSize="@dimen/txtsize10" />
 
@@ -82,7 +82,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/textView15"
                         android:layout_alignBottom="@+id/textView15"
-                        android:layout_alignLeft="@+id/imageButton10"
+                        android:layout_alignLeft="@+id/imgbtnCmt_introduction"
                         android:text="44"
                         android:textSize="@dimen/txtsize10" />
 
@@ -252,13 +252,14 @@
                             android:src="@drawable/phone" />
 
                         <TextView
-                            android:id="@+id/rawtxtUsername"
+                            android:id="@+id/txtPhone_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:text=" 5138443239" 
-                            android:textColor="@color/red"/>
+                            android:text=" 5138443239"
+                            android:textColor="@color/red" />
+
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -274,14 +275,15 @@
                         android:paddingTop="5dp" >
 
                         <TextView
-                            android:id="@+id/txtLike"
+
+                            android:id="@+id/txtFax_Introduction"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="17dp"
-                            android:text="نمابر" 
-                            android:textColor="@color/red"/>
+                            android:text="نمابر"
+                            android:textColor="@color/red" />
 
                         <ImageView
                             android:id="@+id/imageView3"
@@ -301,14 +303,14 @@
                             android:textColor="@color/red" />
 
                         <TextView
-                            android:id="@+id/textView11"
+                            android:id="@+id/txtFax_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignBottom="@+id/imageView3"
                             android:layout_centerHorizontal="true"
                             android:layout_centerInParent="true"
-                            android:text="+1-212-9876543" 
-                            android:textColor="@color/red"/>
+                            android:textColor="@color/red" />
+
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -324,21 +326,21 @@
                         android:paddingTop="5dp" >
 
                         <TextView
-                            android:id="@+id/textView4"
+                            android:id="@+id/txtCellphone_Introduction"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="14dp"
-                            android:text="همراه" 
-                            android:textColor="@color/red"/>
+                            android:text="همراه"
+                            android:textColor="@color/red" />
 
                         <TextView
-                            android:id="@+id/textView7"
+                            android:id="@+id/txtCellphone_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignBaseline="@+id/textView4"
-                            android:layout_alignBottom="@+id/textView4"
+                            android:layout_alignBaseline="@+id/txtCellphone_Introduction"
+                            android:layout_alignBottom="@+id/txtCellphone_Introduction"
                             android:layout_centerHorizontal="true"
                             android:layout_centerInParent="true"
                             android:text="09390494239"
@@ -372,7 +374,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
-                            android:layout_alignTop="@+id/textView8"
+                            android:layout_alignTop="@+id/txtEmail_Object"
                             android:layout_centerInParent="true"
                             android:layout_marginLeft="20dp"
                             android:src="@drawable/email" 
@@ -389,7 +391,7 @@
                             android:textColor="@color/red"/>
 
                         <TextView
-                            android:id="@+id/textView8"
+                            android:id="@+id/txtEmail_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignBaseline="@+id/textView5"
@@ -433,13 +435,13 @@
                             android:src="@drawable/map" />
 
                         <TextView
-                            android:id="@+id/textView9"
+                            android:id="@+id/txtAddress_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:text="راهنمایی 14 پلاک 24" 
-                            android:textColor="@color/red"/>
+                            android:text="راهنمایی 14 پلاک 24"
+                            android:textColor="@color/red" />
 
                     </RelativeLayout>
 
@@ -496,7 +498,7 @@
                 android:orientation="vertical" >
 
                 <ImageView
-                    android:id="@+id/img1"
+                    android:id="@+id/imgvadvertise2_Object"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
                     android:scaleType="fitXY"
@@ -520,7 +522,7 @@
                     android:background="#CCCCCC" >
 
                     <TextView
-                        android:id="@+id/textView14"
+                        android:id="@+id/txtDesc_Object"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -539,24 +541,15 @@
                 android:layout_weight="1"
                 android:orientation="vertical" >
 
-                <ScrollView
-                    android:id="@+id/scrollView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                  
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical" >
 
                         <ListView
-                            android:id="@+id/listvObject"
+                            android:id="@+id/listvCmt_Introduction"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" >
                         </ListView>
 
-                    </LinearLayout>
-                </ScrollView>
 
             </LinearLayout>
 

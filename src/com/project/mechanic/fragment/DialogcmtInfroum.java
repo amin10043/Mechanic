@@ -18,7 +18,7 @@ import android.widget.EditText;
 
 
 
-public class Dialogcmt extends Dialog {
+public class DialogcmtInfroum extends Dialog {
 	
 	
 	private Button btncmt;
@@ -27,7 +27,7 @@ public class Dialogcmt extends Dialog {
 	 private DataBaseAdapter dbadapter;
 	 Context context;
 	 Fragment f;
-	public Dialogcmt(Fragment f, Context context,int resourceId) {
+	public DialogcmtInfroum(Fragment f, Context context,int resourceId) {
 		super(context);
 		this.context=context;
 		this.f = f;
@@ -52,7 +52,7 @@ public class Dialogcmt extends Dialog {
 	                dbadapter.insertCommenttoDb(1,id,Cmttxt.getText().toString());
 	                dbadapter.close();
 					((FroumFragment) f).updateView2();
-				    Dialogcmt.this.dismiss();
+				    DialogcmtInfroum.this.dismiss();
 				 
 			}
 		 });

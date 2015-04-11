@@ -9,7 +9,7 @@ import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.BerandFragment;
-import com.project.mechanic.fragment.Dialogcmt;
+import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.FroumtitleItem;
@@ -56,7 +56,7 @@ public class FroumtitleListadapter  extends ArrayAdapter<Froum>{
 
 		final TextView txt1 = (TextView) convertView.findViewById(R.id.rawTitletxt);
 		TextView txt2 = (TextView) convertView.findViewById(R.id.rawtxtDescription);
-		TextView txt3 = (TextView) convertView.findViewById(R.id.rawtxtUsername);
+		TextView txt3 = (TextView) convertView.findViewById(R.id.txtPhone_Object);
 	
 	    Froum person1 = mylist.get(position);
 		txt1.setText(person1.getTitle());
@@ -87,7 +87,7 @@ public class FroumtitleListadapter  extends ArrayAdapter<Froum>{
  				fragment.setArguments(bundle);
  				
  				
- 				Dialogcmt dialog = new Dialogcmt(null,context,R.layout.dialog_addcomment);
+ 				DialogcmtInfroum dialog = new DialogcmtInfroum(null,context,R.layout.dialog_addcomment);
 				Bundle bundle2 = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
  				fragment.setArguments(bundle);

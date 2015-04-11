@@ -26,13 +26,14 @@
 
                  <EditText
                      android:id="@+id/editTextuser"
-                     android:layout_width="wrap_content"
+                     android:layout_width="280dp"
                      android:layout_height="wrap_content"
                      android:layout_gravity="center"
                      android:ems="10"
                      android:enabled="true"
                      android:hint="Enter Username"
                      android:inputType="textEmailAddress"
+                     android:textColorHint="@color/red"
                      android:textSize="15dp" >
 
                      <requestFocus />
@@ -51,7 +52,7 @@
 
                  <EditText
                      android:id="@+id/editTextpass"
-                     android:layout_width="wrap_content"
+                     android:layout_width="280dp"
                      android:layout_height="wrap_content"
                      android:layout_gravity="center"
                      android:layout_weight="1"
@@ -59,6 +60,7 @@
                      android:enabled="true"
                      android:hint="Enter Password"
                      android:inputType="textPassword"
+                     android:textColorHint="@color/red"
                      android:textSize="15dp" />
 
              </LinearLayout>
@@ -107,7 +109,7 @@
                      android:layout_marginRight="25dp"
                      android:background="@color/transparent"
                      android:text="فراموشی کلمه عبور"
-                     android:textColor="@color/light_grey"
+                     android:textColor="@color/red"
                      android:textSize="15dp" />
 
                  <Button
@@ -118,7 +120,7 @@
                      android:layout_marginRight="20dp"
                      android:background="@color/transparent"
                      android:text="ثبت نام"
-                     android:textColor="@color/light_grey"
+                     android:textColor="@color/red"
                      android:textSize="15dp" />
 
              </LinearLayout>

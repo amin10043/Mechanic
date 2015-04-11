@@ -6,7 +6,7 @@
     tools:context="com.arabian.constitution_mechanic.City$PlaceholderFragment" >
 
     <ListView
-        android:id="@+id/listvObject"
+        android:id="@+id/listvCmt_Introduction"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
