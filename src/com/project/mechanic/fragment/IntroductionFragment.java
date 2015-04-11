@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -16,8 +17,8 @@ import com.project.mechanic.R;
 public class IntroductionFragment extends Fragment {
 
 	Context context;
-	private ImageView peykan6;
-	
+	private ImageView peykan6,peykan5;
+	public RelativeLayout link1,link2;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,9 +28,10 @@ public class IntroductionFragment extends Fragment {
 		((MainActivity) getActivity()).setActivityTitle(R.string.brand);
 
 	 peykan6 = (ImageView) view.findViewById(R.id.imageButton6);
-		
-		
-		peykan6.setOnClickListener(new OnClickListener() {
+	 peykan5 = (ImageView) view.findViewById(R.id.imageButton7);
+	 link1=(RelativeLayout) view.findViewById(R.id.Layoutlink1);
+	 link2=(RelativeLayout) view.findViewById(R.id.Layoutlink2);
+	 link1.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -45,7 +47,21 @@ public class IntroductionFragment extends Fragment {
 			}
 		});
 		
-		
+	 link2.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new ProvinceFragment());
+				trans.commit();
+				
+				
+				
+				
+			}
+		});
 		
 		
 		

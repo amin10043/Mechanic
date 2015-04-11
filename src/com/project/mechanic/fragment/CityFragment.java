@@ -18,7 +18,7 @@ import com.project.mechanic.entity.City;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.RowMain;
 
-public class CityFragment extends Fragment {
+@SuppressLint("ValidFragment") public class CityFragment extends Fragment {
 
 	DataBaseAdapter adapter;
 	List<City> cityList = null;

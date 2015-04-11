@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
 import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Comment;
@@ -21,6 +20,7 @@ import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.row_items.RowMain;
+import com.project.mechanic.entity.News;
 
 public class DataBaseAdapter {
 
@@ -37,6 +37,7 @@ public class DataBaseAdapter {
 	private String TableLike = "Like";
 	private String TableList = "List";
 	private String TableListItem = "ListItem";
+	private String TableNews = "News";
 	private String TableObject = "Object";
 	private String TableObjectInCity = "ObjectInCity";
 	private String TableObjectInProvince = "ObjectInProvince";
@@ -57,6 +58,7 @@ public class DataBaseAdapter {
 	private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] List = { "ID", "Name", "ParentId" };
 	private String[] ListItem = { "Id", "Name", "ListId" };
+	private String[] News = { "ID", "Title", "Description" };
 	private String[] Object = { "ID", "Name", "Phone", "Email", "Fax",
 			"Description", "Image1", "Image2", "Image3", "Image4" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
@@ -118,12 +120,17 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertCommenttoDb(String Comment) {
+	public void insertCommenttoDb( int userId, int paperId, String description) {
+
+
 
 		ContentValues cv = new ContentValues();
-		cv.put("Description", Comment);
-		mDb.insert(TableComment, null, cv);
 
+		cv.put("Description", description);
+		cv.put("UserId", userId);
+		
+		cv.put("paperId", paperId);
+		mDb.insert(TableComment,null, cv);
 	}
 
 	public void insertFroumtitletoDb(String Title, String description,
@@ -135,6 +142,17 @@ public class DataBaseAdapter {
 		cv.put("UserId", userId);
 
 		mDb.insert(TableFroum, null, cv);
+
+	}
+	
+	public void insertPapertitletoDb(String Title, String Context) {
+
+		ContentValues cv = new ContentValues();
+		cv.put("Title", Title);
+		cv.put("Context", Context);
+		
+
+		mDb.insert(TablePaper, null, cv);
 
 	}
 
@@ -217,6 +235,24 @@ public class DataBaseAdapter {
 
 	}
 
+	
+	public ArrayList<News> getAllNews() {
+
+		ArrayList<News> result = new ArrayList<News>();
+		Cursor cursor = mDb.query(TableNews, News, null, null, null,
+				null, null);
+		News tempNews;
+		while (cursor.moveToNext()) {
+			tempNews = new News(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
+			result.add(tempNews);
+		}
+
+		return result;
+
+	}
+	
+	
+	
 	// /////////////// ListItems ////////////////
 	public ArrayList<ListItem> getListItemsById(int ListId) {
 
@@ -281,6 +317,14 @@ public class DataBaseAdapter {
 		return tempProvince;
 
 	}
+	
+	@SuppressWarnings("unused")
+	private Users CursorToUsers(Cursor cursor) {
+		Users tempProvince = new Users(cursor.getInt(0),
+				cursor.getString(1),cursor.getString(2),cursor.getString(3));
+		return tempProvince;
+
+	}
 
 	@SuppressWarnings("unused")
 	private City CursorToCity(Cursor cursor) {
@@ -321,6 +365,13 @@ public class DataBaseAdapter {
 
 	}
 
+	@SuppressWarnings("unused")
+	private News CursorToNews(Cursor cursor) {
+		News tempNews = new News(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
+		return tempNews;
+	
+	}
+	
 	public ArrayList<Province> getAllProvinceName() {
 		ArrayList<Province> result = new ArrayList<Province>();
 		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
@@ -387,18 +438,20 @@ public class DataBaseAdapter {
 		return result;
 	}
 
-	public ArrayList<Froum> getAllFroum() {
-		ArrayList<Froum> result = new ArrayList<Froum>();
-		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
-				null);
-		Froum tempFroum;
+	
+
+	public ArrayList<News> getAllNewsName() {
+		ArrayList<News> result = new ArrayList<News>();
+		Cursor cursor = mDb.query(TableNews, News, null, null, null,
+				null, null);
+		News tempNews;
 		while (cursor.moveToNext()) {
-			result.add(CursorToFroum(cursor));
+			tempNews = new News(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
+			result.add(tempNews);
 		}
-
 		return result;
-
 	}
+
 	public ArrayList<Paper> getAllPaper() {
 		ArrayList<Paper> result = new ArrayList<Paper>();
 		Cursor cursor = mDb.query(TablePaper, Paper, null, null, null, null,
@@ -412,6 +465,7 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+
 
 	public Integer province_count(String table) {
 
@@ -497,7 +551,28 @@ public class DataBaseAdapter {
 		String s = cu.getString(field);
 		return s;
 	}
+	public Integer News_count(String table) {
 
+
+	
+
+		Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
+				null);
+		int s = cu.getCount();
+		return s;
+	}
+
+	public String News_display(String table, int row, int field) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table+ " group by Name order by ID", null);
+		cu.moveToPosition(row);
+		String s = cu.getString(field);
+		return s;
+	}
+	
+	
+	
+	
 	/*
 	 * public String getUseridFroum(){ ArrayList<Froum> result = new
 	 * ArrayList<Froum>(); String[] s = new String[1]; s[0] = "UserId"; Cursor
@@ -511,6 +586,7 @@ public class DataBaseAdapter {
 	 * 
 	 * }
 	 */
+
 
 	public ArrayList<Comment> getAllComment() {
 		ArrayList<Comment> result = new ArrayList<Comment>();
@@ -534,7 +610,110 @@ public class DataBaseAdapter {
 			result.add(CursorToComment(cursor));
 		}
 		return result;
+
+}
+
+
+
+
+public ArrayList<Comment> getCommentbyPaperid(int  PaperId) {
+
+	ArrayList<Comment> result = new ArrayList<Comment>();
+	Comment item =null;
+	Cursor mCur = mDb.query(TableComment, Comment, " paperId=?",
+			new String[] { String.valueOf( PaperId) }, null, null, null);
+
+	while (mCur.moveToNext()) {
+		item = CursorToComment(mCur);
+		result.add(item);
 	}
+
+	return result;
+
+}
+
+
+
+public ArrayList<Users> getUsernamebyid(int id ) {
+
+	ArrayList<Users> result = new ArrayList<Users>();
+	Users item =null;
+	Cursor mCur = mDb.query(TableUsers, Users, " ID=?",
+			new String[] { String.valueOf( id) }, null, null, null);
+
+	while (mCur.moveToNext()) {
+		item = CursorToUsers(mCur);
+		result.add(item);
+	}
+
+	return result;
+
+}
+
+
+public Froum getFroumItembyid(int Id) {
+
+	
+	Froum item = null;
+	Cursor mCur = mDb.query("Froum", Froum, " Id=?",
+			new String[] { String.valueOf( Id) }, null, null, null);
+
+	if (mCur.moveToNext()) {
+		item = CursorToFroum(mCur);
+		
+	}
+
+	return item;
+
+}
+
+
+public Froum getFroumTitlebyid(int Id) {
+
+	
+	Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
+			null);
+	Froum tempFroum=null;
+	if (cursor.moveToNext()) {
+		tempFroum=CursorToFroum(cursor);
+	}
+
+	return tempFroum;
+	
+	
+}
+public ArrayList<Froum> getAllFroum() {
+	ArrayList<Froum> result = new ArrayList<Froum>();
+	Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
+			null);
+	Froum tempFroum;
+	while (cursor.moveToNext()) {
+		result.add(CursorToFroum(cursor));
+	}
+
+	return result;
+
+}
+
+/*
+ * public String getUseridFroum(){ ArrayList<Froum> result = new
+ * ArrayList<Froum>(); 
+ * String[] s = new String[1];
+ *  s[0] = "UserId";
+ *  Cursor cursor = mDb.query(TableFroum,s , null,null , null, null, null);
+ *  Froum tempFroum; 
+ * if(cursor.moveToNext()){ tempFroum = new
+ * Froum(cursor.getInt(0), cursor.getInt(3),
+ * cursor.getString(2),cursor.getString(1) ); result.add(tempFroum); }
+ * 
+ * 
+ * return result;
+ * 
+ * }
+ */
+
+	
+
 
 	public ArrayList<Integer> getUSeridComment() {
 		ArrayList<Integer> result = new ArrayList<Integer>();

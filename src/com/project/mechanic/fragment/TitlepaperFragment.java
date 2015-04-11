@@ -23,7 +23,7 @@ import com.project.mechanic.model.DataBaseAdapter;
 
 public class TitlepaperFragment extends Fragment {
 	private ImageButton addtitle;
-	private DialogfroumTitle dialog;
+	private DialogPaperTitle dialog;
 	DataBaseAdapter mdb;
 	View view;
 	ArrayList<Paper> mylist;
@@ -50,18 +50,17 @@ public class TitlepaperFragment extends Fragment {
 			@Override
 			public void onClick(View arg0) {
 
-				dialog = new DialogfroumTitle(getActivity(),
-						R.layout.dialog_addtitle, TitlepaperFragment.this);
+				dialog = new DialogPaperTitle(getActivity(),R.layout.dialog_addtitle, TitlepaperFragment.this);
 				dialog.show();
 			}
 		});
 
 		lst = (ListView) view.findViewById(R.id.lstComment);
 		ListAdapter = new PapertitleListAdapter(getActivity(),
-				R.layout.froumtitleitem, mylist);
+				R.layout.raw_froumtitle, mylist);
 		lst.setAdapter(ListAdapter);
 
-		lst.setOnItemClickListener(new OnItemClickListener() {
+		/*lst.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
@@ -71,7 +70,7 @@ public class TitlepaperFragment extends Fragment {
 				trans.replace(R.id.content_frame, new PaperFragment());
 				trans.commit();
 			}
-		});
+		});*/
 		return view;
 	}
 
@@ -81,7 +80,7 @@ public class TitlepaperFragment extends Fragment {
 		mdb.close();
 
 		ListAdapter = new PapertitleListAdapter(getActivity(),
-				R.layout.froumtitleitem, mylist);
+				R.layout.raw_froumtitle, mylist);
 		ListAdapter.notifyDataSetChanged();
 		lst.setAdapter(ListAdapter);
 
