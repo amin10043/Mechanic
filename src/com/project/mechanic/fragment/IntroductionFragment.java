@@ -46,9 +46,6 @@ public class IntroductionFragment extends Fragment {
 		peykan5 = (ImageView) view.findViewById(R.id.imageButton7);
 		btnCmt = (ImageButton) view.findViewById(R.id.imgbtnCmt_introduction);
 		link1 = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
-
-		link2 = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
-
 		lst = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 		// id = Integer.valueOf(getArguments().getString("Id"));
 		adapter.open();
@@ -57,6 +54,14 @@ public class IntroductionFragment extends Fragment {
 		IntroductionListAdapter listAdapter = new IntroductionListAdapter(
 				getActivity(), R.layout.raw_froumcmt, mylist);
 		lst.setAdapter(listAdapter);
+
+		peykan6 = (ImageView) view.findViewById(R.id.imageButton6);
+		peykan5 = (ImageView) view.findViewById(R.id.imageButton7);
+		link1 = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
+
+		link2 = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
+
+		link2 = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
 
 		link1.setOnClickListener(new OnClickListener() {
 
