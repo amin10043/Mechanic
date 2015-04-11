@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+
+import android.support.v4.app.Fragment;
+
 import android.os.Bundle;
+
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,10 +90,14 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 				if (id == 1) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
+
+					
+
 					BerandFragment fragment = new BerandFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
 					fragment.setArguments(bundle);
+
 					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack(null);
 					trans.commit();
