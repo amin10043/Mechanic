@@ -47,7 +47,7 @@ public class FroumListAdapter  extends ArrayAdapter<Comment>{
 		adapter= new DataBaseAdapter(context);
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.rawCmttxt);
-		TextView txt2 = (TextView) convertView.findViewById(R.id.rawUsernamecmttxt);
+		TextView txt2 = (TextView) convertView.findViewById(R.id.rawUsernamecmttxt_cmt);
 		adapter.open();
 		//Users x = adapter.getUsernamebyid(id);
 		adapter.close();

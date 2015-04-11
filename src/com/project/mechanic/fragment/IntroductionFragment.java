@@ -1,8 +1,12 @@
 package com.project.mechanic.fragment;
 
+
 import java.util.ArrayList;
 
 import android.app.Dialog;
+
+import android.annotation.SuppressLint;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,9 +17,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+
+import android.widget.RelativeLayout;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -50,6 +58,7 @@ public class IntroductionFragment extends Fragment {
 	
 	
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -72,7 +81,9 @@ public class IntroductionFragment extends Fragment {
 	 btnCmt  = ( ImageButton) view.findViewById(R.id.imgbtnCmt_introduction);
 	 like  = ( ImageButton) view.findViewById(R.id.ImgbtnLike_Object);
 	 link1=(RelativeLayout) view.findViewById(R.id.Layoutlink1);
+
 	 link2=(RelativeLayout) view.findViewById(R.id.Layoutlink2);
+
 	 lst = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 	// id = Integer.valueOf(getArguments().getString("Id"));
 	 adapter.open();
@@ -91,6 +102,12 @@ public class IntroductionFragment extends Fragment {
 	 adapter.close();
 	 IntroductionListAdapter listAdapter = new IntroductionListAdapter(getActivity(),R.layout.raw_froumcmt, mylist);
 	 lst.setAdapter(listAdapter);
+
+
+	 
+	 
+	 link2=(RelativeLayout) view.findViewById(R.id.Layoutlink2);
+	 
 	 link1.setOnClickListener(new OnClickListener() {
 		 
 			
@@ -164,7 +181,37 @@ public class IntroductionFragment extends Fragment {
 			}
 		});
 		
-		
+	 peykan6.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new ProvinceFragment());
+				trans.commit();
+				
+				
+				
+				
+			}
+		});
+	 
+	 peykan5.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new ProvinceFragment());
+				trans.commit();
+				
+				
+				
+				
+			}
+		});
 		
 		return view;
 

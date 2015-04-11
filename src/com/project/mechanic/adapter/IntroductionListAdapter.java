@@ -38,14 +38,16 @@ public class IntroductionListAdapter extends ArrayAdapter<CommentInObject> {
 		@Override
 		public View getView(int position,View convertView, ViewGroup parent){
 			
+			if(convertView == null){
 			LayoutInflater myInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 			convertView = myInflater.inflate(R.layout.raw_froumcmt, parent, false);
+			}
 			adapter= new DataBaseAdapter(context);
 
 			TextView txt1 = (TextView) convertView.findViewById(R.id.rawCmttxt);
-			TextView txt2 = (TextView) convertView.findViewById(R.id.rawUsernamecmttxt);
+			TextView txt2 = (TextView) convertView.findViewById(R.id.rawUsernamecmttxt_cmt);
 			adapter.open();
 			//Users x = adapter.getUsernamebyid(id);
 			adapter.close();
@@ -54,10 +56,26 @@ public class IntroductionListAdapter extends ArrayAdapter<CommentInObject> {
 			
 			txt1.setText(person1.getDescription());
 			txt2.setText("zahra bidi");
+			
 			return convertView;
 			
 			
 		}
+
+		@Override
+		public int getCount() {
+			
+			return list.size();
+		}
+
+		@Override
+		public CommentInObject getItem(int position) {
+			
+			return list.get(position);
+		}
+		
+		
+		
 		
 	}
 
