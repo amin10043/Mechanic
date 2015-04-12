@@ -22,10 +22,12 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.AnadFragment;
 import com.project.mechanic.fragment.CityFragment;
+import com.project.mechanic.fragment.NewsBuildingFragment;
 import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.fragment.NewspaperFragment;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.ShopFragment;
+import com.project.mechanic.fragment.TitlepaperFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class NewsListAdapter extends ArrayAdapter<ListItem> {
@@ -180,7 +182,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 					else if (id==167) {
 						FragmentTransaction trans = ((MainActivity) context)
 								.getSupportFragmentManager().beginTransaction();
-						AnadFragment fragment = new AnadFragment();
+						TitlepaperFragment fragment = new TitlepaperFragment();
 						Bundle bundle = new Bundle();
 						bundle.putString("Id", String.valueOf(id));
 						fragment.setArguments(bundle);
@@ -223,6 +225,45 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 						trans.replace(R.id.content_frame, fragment);
 						trans.addToBackStack(null);
 						trans.commit();
+					}
+					if (id==169) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						NewsBuildingFragment fragment = new NewsBuildingFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+						
+					}
+					if (id==170) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						NewsBuildingFragment fragment = new NewsBuildingFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+						
+					}
+					if (id==171) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						NewsBuildingFragment fragment = new NewsBuildingFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+						
 					}
 			}
 		});

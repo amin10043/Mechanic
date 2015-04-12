@@ -160,7 +160,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 			} else if (id == 8) {
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new TitlepaperFragment());
+				//trans.replace(R.id.content_frame, new TitlepaperFragment());
 				trans.addToBackStack(null);
 				trans.commit();
 			}
