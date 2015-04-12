@@ -27,6 +27,7 @@ import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.fragment.NewspaperFragment;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.ShopFragment;
+import com.project.mechanic.fragment.TitlepaperFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class NewsListAdapter extends ArrayAdapter<ListItem> {
@@ -181,7 +182,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 					else if (id==167) {
 						FragmentTransaction trans = ((MainActivity) context)
 								.getSupportFragmentManager().beginTransaction();
-						AnadFragment fragment = new AnadFragment();
+						TitlepaperFragment fragment = new TitlepaperFragment();
 						Bundle bundle = new Bundle();
 						bundle.putString("Id", String.valueOf(id));
 						fragment.setArguments(bundle);
