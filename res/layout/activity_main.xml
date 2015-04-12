@@ -7,7 +7,7 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FF4000" >
+    android:background="@drawable/header" >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -18,8 +18,10 @@
             android:id="@+id/iBtnMenu"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginRight="5dp"
             android:background="@color/transparent"
             android:src="@drawable/imeg_menu" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -32,7 +34,7 @@
             android:id="@+id/iBtnShare"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="20dp"
             android:background="@color/transparent"
             android:src="@drawable/ic_share" />
     </LinearLayout>
