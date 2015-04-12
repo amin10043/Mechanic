@@ -27,10 +27,10 @@
     <item name="android:listSelector">@drawable/list_item</item>
 </style>
 <style name="List_Item_Style">
-    <item name="android:layout_marginLeft">8dip</item>
-        <item name="android:layout_marginRight">8dip</item>
-        <item name="android:layout_marginTop">6dip</item>
-        <item name="android:layout_marginBottom">6dip</item>
+    <item name="android:layout_marginLeft">12dip</item>
+        <item name="android:layout_marginRight">12dip</item>
+        <item name="android:layout_marginTop">10dip</item>
+        <item name="android:layout_marginBottom">10dip</item>
 </style>
 
     <style name="MyTheme" parent="@android:style/Theme.Holo.Light">
