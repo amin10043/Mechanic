@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 public class NewspaperFragment extends Fragment {
@@ -37,7 +38,7 @@ public class NewspaperFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_newspaper, null);
 
-
+//	TextView textmore = (TextView) view.findViewById(R.id.newsmoretxt);
 		mdb = new DataBaseAdapter(getActivity());
 		mdb.open();
 		mylist = mdb.getAllNews();
@@ -50,6 +51,25 @@ public class NewspaperFragment extends Fragment {
 
 		lstNews.setAdapter(ListAdapter);
 
+		
+		
+		  //   textmore.setOnClickListener(new OnClickListener() {
+//		
+//		@Override
+//		public void onClick(View arg0) {
+//			FragmentTransaction trans = getActivity()
+//				.getSupportFragmentManager().beginTransaction();
+//			trans.replace(R.id.content_frame, new NewsmoreFragment());
+//			trans.commit();
+//
+//			
+//		}
+//	});
+//
+		
+		
+		
+		
 		return view;
 	
 	}
