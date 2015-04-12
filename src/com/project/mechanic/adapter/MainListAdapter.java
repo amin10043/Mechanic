@@ -29,6 +29,7 @@ import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.FroumtitleFragment;
 import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
+import com.project.mechanic.fragment.TitlepaperFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class MainListAdapter extends ArrayAdapter<ListItem> {
@@ -155,8 +156,17 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.replace(R.id.content_frame, new FroumtitleFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-				}
+				
+			} else if (id == 8) {
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new TitlepaperFragment());
+				trans.addToBackStack(null);
+				trans.commit();
 			}
+				}
+			
+			
 		});
 
 		return convertView;
