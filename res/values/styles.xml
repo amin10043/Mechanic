@@ -35,6 +35,7 @@
         <item name="android:shadowColor">#000000</item>
     </style>
 
+
     <style name="MyTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
     </style>

@@ -50,8 +50,7 @@
             android:text="ادامه خبر"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/red" />
-        
-        
+
     </RelativeLayout>
 
 </LinearLayout>
