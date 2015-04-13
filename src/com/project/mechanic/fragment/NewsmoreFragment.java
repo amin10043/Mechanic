@@ -20,29 +20,29 @@ import android.widget.TextView;
 public class NewsmoreFragment extends Fragment {
 
 	
-	ArrayList<News> mylist;
-	DataBaseAdapter mdb;
+	//ArrayList<News> mylist;
+	//DataBaseAdapter mdb;
 	
 
-	@SuppressLint("InflateParams")
+	//@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		((MainActivity) getActivity()).setActivityTitle(R.string.news);
 
-		View view = inflater.inflate(R.layout.fragment_newspaper, null);
+		View view = inflater.inflate(R.layout.fragment_newsmore, null);
 
-		mdb = new DataBaseAdapter(getActivity());
-		mdb.open();
-		mylist = mdb.getAllNews();
-		mdb.close();
+		//mdb = new DataBaseAdapter(getActivity());
+		//mdb.open();
+	//	mylist = mdb.getAllNews();
+	//	mdb.close();
 
 
-		ListView lstNews = (ListView) view.findViewById(R.id.listvnewspaper);
-		NewspaperListAdapter ListAdapter = new NewspaperListAdapter(
-				getActivity(), R.layout.row_newspaper, mylist);
+	//	ListView lstNews = (ListView) view.findViewById(R.id.listvnewspaper);
+	//	NewspaperListAdapter ListAdapter = new NewspaperListAdapter(
+	//			getActivity(), R.layout.row_newspaper, mylist);
 	
-		lstNews.setAdapter(ListAdapter);
+	//	lstNews.setAdapter(ListAdapter);
 		return view;
 		
 

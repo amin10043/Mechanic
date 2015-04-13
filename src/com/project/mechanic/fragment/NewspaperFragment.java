@@ -18,8 +18,10 @@ import com.project.mechanic.model.DataBaseAdapter;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -46,26 +48,14 @@ public class NewspaperFragment extends Fragment {
 		
 
 		ListView lstNews = (ListView) view.findViewById(R.id.listvnewspaper);
-		NewspaperListAdapter ListAdapter = new NewspaperListAdapter(
+	NewspaperListAdapter ListAdapter = new NewspaperListAdapter(
 				getActivity(), R.layout.row_newspaper, mylist);
 
-		lstNews.setAdapter(ListAdapter);
+	lstNews.setAdapter(ListAdapter);
 
-		
-		
-		  //   textmore.setOnClickListener(new OnClickListener() {
-//		
-//		@Override
-//		public void onClick(View arg0) {
-//			FragmentTransaction trans = getActivity()
-//				.getSupportFragmentManager().beginTransaction();
-//			trans.replace(R.id.content_frame, new NewsmoreFragment());
-//			trans.commit();
-//
-//			
-//		}
-//	});
-//
+	
+
+
 		
 		
 		
