@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -22,7 +23,8 @@ import com.project.mechanic.model.DataBaseAdapter;
 public class AnadFragment extends Fragment {
 
 	DataBaseAdapter dbAdapter;
-	private ImageView addtitle;
+	private ImageView imgadd;
+	private TextView txt1;
 	private DialogAnad dialog;
 
 	@SuppressLint("InflateParams")
@@ -33,8 +35,9 @@ public class AnadFragment extends Fragment {
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.anad);
 
-		addtitle = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
-
+		imgadd = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
+		txt1 = (TextView) view.findViewById(R.id.fragment_anad_txt1);
+		
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
@@ -47,7 +50,7 @@ public class AnadFragment extends Fragment {
 
 		lstAnad.setAdapter(ListAdapter);
 
-		addtitle.setOnClickListener(new OnClickListener() {
+		imgadd.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -57,6 +60,17 @@ public class AnadFragment extends Fragment {
 			}
 		});
 
+		txt1.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,AnadFragment.this);
+				dialog.show();
+			}
+		});
+		
+		
 		return view;
 
 	}
