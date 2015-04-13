@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -35,7 +37,7 @@ public class IntroductionFragment extends Fragment {
 
 	public DialogcmtInobject dialog;
 	DialogcmtInfroum dialog2;
-	public int id = 0;
+	public int id = 1;
 
 	public ImageButton like;
 
@@ -51,6 +53,13 @@ public class IntroductionFragment extends Fragment {
 	TextView txtDesc;
 	ImageView advertise;
 	ImageView advertise2;
+	ImageButton Facebook;
+	ImageButton Instagram;
+	ImageButton LinkedIn;
+	ImageButton Google;
+	ImageButton Site;
+	ImageButton Twitter;
+	Object object;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -62,7 +71,9 @@ public class IntroductionFragment extends Fragment {
 		adapter = new DataBaseAdapter(getActivity());
 		peykan6 = (ImageView) view.findViewById(R.id.imageButton6);
 		peykan5 = (ImageView) view.findViewById(R.id.imageButton7);
-		btnCmt = (ImageButton) view.findViewById(R.id.imgbtnCmt_introduction);
+		advertise = (ImageView) view.findViewById(R.id.imgvadvertise_Object);
+		advertise2 = (ImageView) view.findViewById(R.id.imgvadvertise2_Object);
+		
 		link1 = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
 		link2 = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
 
@@ -72,30 +83,108 @@ public class IntroductionFragment extends Fragment {
 		txtPhone = (TextView) view.findViewById(R.id.txtPhone_Object);
 		txtCellphone = (TextView) view.findViewById(R.id.txtCellphone_Object);
 		txtDesc = (TextView) view.findViewById(R.id.txtDesc_Object);
-
 		txtEmail = (TextView) view.findViewById(R.id.txtEmail_Object);
-		peykan6 = (ImageView) view.findViewById(R.id.imageButton6);
-		peykan5 = (ImageView) view.findViewById(R.id.imageButton7);
-		advertise = (ImageView) view.findViewById(R.id.imgvadvertise_Object);
-		advertise2 = (ImageView) view.findViewById(R.id.imgvadvertise2_Object);
-		btnCmt = (ImageButton) view.findViewById(R.id.imgbtnCmt_introduction);
+		
+		
+		
 		like = (ImageButton) view.findViewById(R.id.ImgbtnLike_Object);
-		link1 = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
-
-		link2 = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
+		btnCmt = (ImageButton) view.findViewById(R.id.imgbtnCmt_introduction);
+		Facebook = (ImageButton) view.findViewById(R.id.imgbtnFacebook_Object);
+		Instagram = (ImageButton) view.findViewById(R.id.imgbtnInsta_Object);
+		LinkedIn = (ImageButton) view.findViewById(R.id.imgbtnLinkedin_Object);
+		Google = (ImageButton) view.findViewById(R.id.imgbtnGoogle_Object);
+		Site = (ImageButton) view.findViewById(R.id.imgbtnSite_Object);
+		Twitter= (ImageButton) view.findViewById(R.id.imgbtnTwitter_Object);
+		
+		
 
 		lst = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 		// id = Integer.valueOf(getArguments().getString("Id"));
 		adapter.open();
 		mylist = adapter.getAllCommentInObjectById(id);
-		Object object = adapter.getAllObjectbyid(id);
-		// txtFax.setText(object.getFax());
-		// txtPhone.setText(object.getPhone());
-		// txtCellphone.setText(object.get);
-		// txtEmail.setText(object.getEmail());
-		// txtAddress.setText(object.get);
-		// txtDesc.setText(object.getDescription());
+		 object = adapter.getAllObjectbyid(id);
+		if(object == null){
+			return view;
+		}
+		 txtFax.setText(object.getFax());
+		 txtPhone.setText(object.getPhone());
+		 txtCellphone.setText(object.getCellphone());
+		 txtEmail.setText(object.getEmail());
+		 txtAddress.setText(object.getAddress());
+		 txtDesc.setText(object.getDescription());
+		 
 		// advertise.setimage
+		 Facebook.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getFacebook()));
+				        startActivity(browserIntent);
+
+				}
+			});
+		 Instagram.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getInstagram()));
+				        startActivity(browserIntent);
+
+				}
+			});
+		 
+		 LinkedIn.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getLinkedIn()));
+				        startActivity(browserIntent);
+
+				}
+			});
+		 
+		 
+		 Google.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getGoogle()));
+				        startActivity(browserIntent);
+
+				}
+			});
+		 
+		 
+		 Site.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getSite()));
+				        startActivity(browserIntent);
+
+				}
+			});
+		 
+		 
+		 Twitter.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getTwitter()));
+				     startActivity(browserIntent);
+
+				}
+			});
+		 
+		 
+		 
+	
 
 		adapter.close();
 		IntroductionListAdapter listAdapter = new IntroductionListAdapter(

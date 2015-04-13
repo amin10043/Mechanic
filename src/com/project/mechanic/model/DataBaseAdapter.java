@@ -68,7 +68,7 @@ public class DataBaseAdapter {
 	private String[] ListItem = { "Id", "Name", "ListId" };
 	private String[] News = { "ID", "Title", "Description" };
 	private String[] Object = { "ID", "Name", "Phone", "Email", "Fax",
-			"Description", "Image1", "Image2", "Image3", "Image4" };
+			"Description", "Image1", "Image2", "Image3", "Image4","Pdf1","Pdf2","Pdf3","Pdf4","Address","CellPhone","ObjectTypeId","ObjectBrandTypeId","Facebook","Instagram","LinkedIn","Google","Site","Twitter" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
@@ -238,7 +238,7 @@ public class DataBaseAdapter {
 			tempObject = new Object(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
 					cursor.getString(4), cursor.getString(5), null, null, null,
-					null);
+					null,cursor.getString(6),cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getString(10),cursor.getString(11),cursor.getInt(12),cursor.getInt(13),cursor.getString(14),cursor.getString(15),cursor.getString(16),cursor.getString(17),cursor.getString(18),cursor.getString(19));
 			result.add(tempObject);
 		}
 		return result;
@@ -384,7 +384,7 @@ public class DataBaseAdapter {
 	private Object CursorToObject(Cursor cursor) {
 		Object tempObject = new Object(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
-				cursor.getString(5), null, null, null, null);
+				cursor.getString(5), null, null, null, null,cursor.getString(10),cursor.getString(11),cursor.getString(12),cursor.getString(13),cursor.getString(14),cursor.getString(15),cursor.getInt(16),cursor.getInt(17),cursor.getString(18),cursor.getString(19),cursor.getString(20),cursor.getString(21),cursor.getString(22),cursor.getString(23));
 		return tempObject;
 	}
 
