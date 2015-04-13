@@ -2,60 +2,144 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#A9DCF9"
+    android:background="@color/shiri"
     android:baselineAligned="true"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:weightSum="9" >
 
-    <RelativeLayout
+    <EditText
+        android:id="@+id/dialog_anad_et1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp" >
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="3dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="عنوان آگهی"
+        android:inputType="textMultiLine"
+        android:lines="1" />
+         
+    <EditText
+        android:id="@+id/dialog_anad_et2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_weight="5"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="شرح آگهی"
+        android:inputType="textMultiLine"
+        android:lines="10" >
 
-        <EditText
-            android:id="@+id/dialog_anad_et1"
-            android:layout_width="match_parent"
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView6"
+        style="@style/row_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="5dp"
+        android:text="نمایش اطلاعات تماس" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="20dp"
+        android:gravity="right" >
+
+        <CheckBox
+            android:id="@+id/checkBox1"
+            style="@style/row_dialog"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:hint="عنوان آگهی :"
-            android:minEms="10"
-            android:textColorHint="@color/red" />
+            android:layout_gravity="right"
+            android:layout_marginLeft="5dp" />
 
-    </RelativeLayout>
-    
-    <RelativeLayout
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/row_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:text="ایمیل" />
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            style="@style/row_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right" />
+
+        <TextView
+            android:id="@+id/textView2"
+            style="@style/row_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="نام ونام خانوادگی" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp" >
+        android:layout_gravity="right"
+        android:layout_marginTop="10dp"
+        android:gravity="right" >
 
-        <EditText
-            android:id="@+id/dialog_anad_et2"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:ems="10"
-            android:hint="شرح آگهی :"
-            android:textColorHint="@color/red" />
+        <CheckBox
+            android:id="@+id/checkBox3"
+            style="@style/row_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/row_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="فکس" />
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="20dp" >
+        <CheckBox
+            android:id="@+id/checkBox4"
+            style="@style/row_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:gravity="right" />
 
-        <EditText
-            android:id="@+id/dialog_anad_et3"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:ems="10"
-            android:hint="توضیحات بیشتر :"
-            android:textColorHint="@color/red" />
+        <TextView
+            android:id="@+id/textView4"
+            style="@style/row_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="تلفن" />
 
-    </RelativeLayout>
+        <CheckBox
+            android:id="@+id/checkBox5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right" />
+
+        <TextView
+            android:id="@+id/textView5"
+            style="@style/row_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="موبایل" />
+
+    </LinearLayout>
+    
     <RelativeLayout
         android:id="@+id/RelativeLayout11"
         android:layout_width="match_parent"
@@ -68,23 +152,31 @@
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
-    android:gravity="center" >
+    android:layout_marginRight="10dp"
+    android:gravity="right"
+    android:orientation="vertical" >
 
-            <Button
-                android:id="@+id/dialog_btn1"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:text="آپلود عکس"
-                android:textColor="#000000" />
+    <ImageView
+        android:id="@+id/dialog_img1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/aplodanad" />
 
-            <Button
-                android:id="@+id/dialog_btn"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:text="ثبت آگهی"
-                android:textColor="#000000" />
+    <ImageView
+        android:id="@+id/dialog_img2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/sabtanad" />
 
         </LinearLayout>
+
+<ImageView
+    android:id="@+id/imageView1"
+    android:layout_width="150dp"
+    android:layout_height="80dp"
+    android:layout_marginLeft="10dp"
+    android:src="@drawable/imgt" />
 
     </RelativeLayout>
 
