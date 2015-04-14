@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,7 +73,9 @@ txt3.setOnClickListener(new OnClickListener() {
 	
 	@Override
 	public void onClick(View v) {
-		Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show();
+		
+	
+//		Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show();
 	FragmentTransaction trans = ((MainActivity) context)
 				.getSupportFragmentManager().beginTransaction();
 		trans.replace(R.id.content_frame, new NewsmoreFragment());
