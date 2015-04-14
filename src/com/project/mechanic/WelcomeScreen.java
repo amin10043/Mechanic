@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.view.Menu;
 
 public class WelcomeScreen extends Activity {
-	int SPLASH_DISPLAY_TIME = 1000;
+	int SPLASH_DISPLAY_TIME = 10000;
 	Handler handler;
 	Runnable runnable;
 
