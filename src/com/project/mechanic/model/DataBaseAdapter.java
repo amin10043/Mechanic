@@ -15,6 +15,7 @@ import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Comment;
 import com.project.mechanic.entity.Executertype;
 import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.NewsPaper;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Object;
@@ -77,6 +78,7 @@ public class DataBaseAdapter {
 	private String[] Province = { "ID", "Name" };
 	private String[] Users = { "ID", "Name", "Email", "Password" };
 	private String[] WorkmanType = { "ID", "Name" };
+	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url"};
 
 	private final Context mContext;
 	private SQLiteDatabase mDb;
@@ -386,6 +388,12 @@ public class DataBaseAdapter {
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
 				cursor.getString(5), null, null, null, null,cursor.getString(10),cursor.getString(11),cursor.getString(12),cursor.getString(13),cursor.getString(14),cursor.getString(15),cursor.getInt(16),cursor.getInt(17),cursor.getString(18),cursor.getString(19),cursor.getString(20),cursor.getString(21),cursor.getString(22),cursor.getString(23));
 		return tempObject;
+	}
+	@SuppressWarnings("unused")
+	private NewsPaper CursorToNewsPaper(Cursor cursor) {
+		NewsPaper tempNewsPaper = new NewsPaper(cursor.getInt(0), cursor.getString(1),
+				cursor.getInt(2), cursor.getString(3));
+		return tempNewsPaper;
 	}
 
 	@SuppressWarnings("unused")
@@ -797,6 +805,20 @@ public Object getAllObjectbyid(int id) {
 
 	if (mCur.moveToNext()) {
 		item = CursorToObject(mCur);
+		
+	}
+
+	return item;
+
+}
+public NewsPaper getAllNewsPaperid(int id) {
+	
+	NewsPaper item = null;
+	Cursor mCur = mDb.query("NewsPaper", NewsPaper, " Id=?",
+			new String[] { String.valueOf(id) }, null, null, null);
+
+	if (mCur.moveToNext()) {
+		item = CursorToNewsPaper(mCur);
 		
 	}
 
