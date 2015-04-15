@@ -56,7 +56,7 @@ public class IntroductionListAdapter extends ArrayAdapter<CommentInObject> {
 
 		txt1.setText(Comment.getDescription());
 		txt2.setText(x.getName());
-		//txt3.setText(x.set);
+		txt3.setText(x.getPhonennumber());
 
 		return convertView;
 

@@ -3,6 +3,19 @@ package com.project.mechanic.entity;
 public class Users {
 
 	int Id;
+	String Phonenumber;
+	public String getPhonennumber() {
+		return Phonenumber;
+	}
+
+
+
+	public void setPhonennumber(String phonennumber) {
+		this.Phonenumber = phonennumber;
+	}
+
+
+
 	String Name;
 	String Email;
 	String Password;
@@ -57,12 +70,13 @@ public class Users {
 
 
 
-	public Users(int id, String name, String email, String password) {
+	public Users(int id, String name, String email, String password,String phonenumber) {
 		super();
 		Id = id;
 		Name = name;
 		Email = email;
 		Password = password;
+		Phonenumber= phonenumber;
 	}
 
 }

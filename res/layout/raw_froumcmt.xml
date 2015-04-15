@@ -86,7 +86,6 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
             android:layout_toLeftOf="@+id/rawUsernamecmttxt_cmt"
-            android:text="09390494239"
             android:textColor="@color/red" />
 
     </RelativeLayout>

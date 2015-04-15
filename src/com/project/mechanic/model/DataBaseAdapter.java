@@ -76,7 +76,7 @@ public class DataBaseAdapter {
 	private String[] Paper = { "ID", "Title", "Context" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name" };
-	private String[] Users = { "ID", "Name", "Email", "Password" };
+	private String[] Users = { "ID", "Name", "Email", "Password" ,"Phonenumber"};
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url"};
 
@@ -362,7 +362,7 @@ public class DataBaseAdapter {
 	@SuppressWarnings("unused")
 	private Users CursorToUsers(Cursor cursor) {
 		Users tempProvince = new Users(cursor.getInt(0),
-				cursor.getString(1),cursor.getString(2),cursor.getString(3));
+				cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4));
 		return tempProvince;
 
 	}
@@ -885,7 +885,7 @@ public NewsPaper getAllNewsPaperid(int id) {
 								+ froumId, null);
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
-					cursor.getString(2), cursor.getString(3));
+					cursor.getString(2), cursor.getString(3),cursor.getString(4));
 			result.add(tempusers);
 		}
 		return result;
@@ -915,7 +915,7 @@ public NewsPaper getAllNewsPaperid(int id) {
 								+ froumId, null);
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
-					cursor.getString(2), cursor.getString(3));
+					cursor.getString(2), cursor.getString(3),cursor.getString(4));
 			result.add(tempusers);
 		}
 		return result;

@@ -277,8 +277,8 @@ public class IntroductionFragment extends Fragment {
 			}
 		});
 
-		/*
-		 * like.setOnClickListener(new View.OnClickListener() {
+		
+		 /* like.setOnClickListener(new View.OnClickListener() {
 		 * 
 		 * @Override public void onClick(View arg0) { adapter.open();
 		 * adapter.insertLikeInObjectToDb( 1, 0,"",1); ArrayList<LikeInObject> y
