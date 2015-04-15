@@ -36,7 +36,9 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="20dp"
-            android:textColor="@color/red" />
+            android:maxLines="1"
+            android:textColor="@color/red"
+            android:textSize="13dp" />
         
          <TextView
              android:id="@+id/newsmoretxt"

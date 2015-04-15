@@ -22,7 +22,7 @@
             android:src="@drawable/add" />
 
         <TextView
-            android:id="@+id/showad_txt1"
+            android:id="@+id/fragment_anad_txt1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -32,14 +32,13 @@
             android:textColor="#000000" />
 
         <TextView
-            android:id="@+id/showad_txt2"
+            android:id="@+id/fragment_anad_txt2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:text="تبلیغات شما"
             android:textColor="#000000" />
-
     </RelativeLayout>
 
     <ScrollView
@@ -47,17 +46,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true" >
+
         <ListView
             android:id="@+id/listVanad"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="right" >
+            android:layout_gravity="right" 
+            android:divider="@null"
+        android:dividerHeight="0dp" >
+           
         </ListView>
     </ScrollView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
+
         <TextView
             android:id="@+id/fragment_showad_txt3"
             android:layout_width="match_parent"

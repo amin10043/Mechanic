@@ -45,7 +45,7 @@ public class DialogcmtInobject extends Dialog {
 					    dbadapter = new DataBaseAdapter(context);
 					    dbadapter.open();
 					    int	id = Integer.valueOf(f. getArguments().getString("Id"));
-		               dbadapter.insertCommentObjecttoDb(Cmttxt.getText().toString(),0, 1,
+		               dbadapter.insertCommentObjecttoDb(Cmttxt.getText().toString(),1, 1,
 		            			"",  1);
 		                dbadapter.close();
 					//	((IntroductionFragment) f).updateView3();

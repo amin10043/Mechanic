@@ -6,45 +6,6 @@
     android:background="#EAEAEA"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="#A9DCF9" >
-
-        <TextView
-            android:id="@+id/showad_txt1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:text="اشتراک گذاری"
-            android:textColor="#000000" />
-
-        <ImageView
-            android:id="@+id/showad_img1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="90dp"
-            android:src="@drawable/ic_share" />
-
-        <TextView
-            android:id="@+id/showad_txt2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="130dp"
-            android:text="نشان کردن"
-            android:textColor="#000000" />
-
-        <ImageView
-            android:id="@+id/showad_img2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="200dp"
-            android:src="@drawable/add" />
-
-    </RelativeLayout>
-
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
