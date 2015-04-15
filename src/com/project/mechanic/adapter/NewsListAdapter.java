@@ -28,6 +28,7 @@ import com.project.mechanic.fragment.NewspaperFragment;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.ShopFragment;
 import com.project.mechanic.fragment.TitlepaperFragment;
+import com.project.mechanic.fragment.UrlNewsPaperFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class NewsListAdapter extends ArrayAdapter<ListItem> {
@@ -230,6 +231,19 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 						FragmentTransaction trans = ((MainActivity) context)
 								.getSupportFragmentManager().beginTransaction();
 						NewsBuildingFragment fragment = new NewsBuildingFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+						
+					}
+					if (id==290) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						UrlNewsPaperFragment fragment = new UrlNewsPaperFragment();
 						Bundle bundle = new Bundle();
 						bundle.putString("Id", String.valueOf(id));
 						fragment.setArguments(bundle);
