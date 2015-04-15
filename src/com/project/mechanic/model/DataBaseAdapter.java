@@ -411,6 +411,13 @@ public class DataBaseAdapter {
 		return tempForum;
 
 	}
+	@SuppressWarnings("unused")
+	private Paper CursorToPaper(Cursor cursor) {
+		Paper tempPaper = new Paper(cursor.getInt(0), cursor.getString(1),
+				cursor.getString(2));
+		return tempPaper;
+
+	}
 
 	@SuppressWarnings("unused")
 	private News CursorToNews(Cursor cursor) {
@@ -754,6 +761,21 @@ public Froum getFroumItembyid(int Id) {
 
 	if (mCur.moveToNext()) {
 		item = CursorToFroum(mCur);
+		
+	}
+
+	return item;
+
+}
+public Paper getPaperItembyid(int Id) {
+
+	
+	Paper item = null;
+	Cursor mCur = mDb.query(TablePaper, Paper, " Id=?",
+			new String[] { String.valueOf( Id) }, null, null, null);
+
+	if (mCur.moveToNext()) {
+		item = CursorToPaper(mCur);
 		
 	}
 
