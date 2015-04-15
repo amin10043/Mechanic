@@ -2,7 +2,7 @@
     android:id="@+id/scrollView1"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/m22"
+    android:background="@drawable/m23"
     android:scrollbars="horizontal" >
 
     <LinearLayout
@@ -33,7 +33,7 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/RelativeLayout1"
+            android:id="@+id/RelativeLayout11"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"

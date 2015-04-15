@@ -94,7 +94,7 @@
                 android:orientation="vertical" >
 
                 <RelativeLayout
-                    android:id="@+id/RelativeLayout1"
+                    android:id="@+id/RelativeLayout11"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
@@ -159,7 +159,7 @@
                         android:layout_weight="1" >
 
                         <ImageButton
-                            android:id="@+id/imageButton2"
+                            android:id="@+id/imgbtnFacebook_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -175,7 +175,7 @@
                             android:src="@drawable/insta" />
 
                         <ImageButton
-                            android:id="@+id/imageButton9"
+                            android:id="@+id/imgbtnLinkedin_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -183,7 +183,7 @@
                             android:src="@drawable/lnkin" />
 
                         <ImageButton
-                            android:id="@+id/imageButton5"
+                            android:id="@+id/imgbtnGoogle_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -191,7 +191,7 @@
                             android:src="@drawable/google" />
 
                         <ImageButton
-                            android:id="@+id/imageButton4"
+                            android:id="@+id/imgbtnSite_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -199,7 +199,7 @@
                             android:src="@drawable/lnkin" />
 
                         <ImageButton
-                            android:id="@+id/imageButton3"
+                            android:id="@+id/imgbtnTwitter_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -290,7 +290,7 @@
                             android:text="تلفن" />
 
                         <ImageView
-                            android:id="@+id/imageView2"
+                            android:id="@+id/showad_img2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
@@ -498,7 +498,7 @@
                             android:text="دانلود PDF کاتالوگ" />
 
                         <Button
-                            android:id="@+id/button3"
+                            android:id="@+id/btnPdf2_Object"
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -506,7 +506,7 @@
                             android:text="دانلود PDF  کاتالوگ" />
 
                         <Button
-                            android:id="@+id/button4"
+                            android:id="@+id/btnPdf3_Object"
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -514,7 +514,7 @@
                             android:text="دانلود PDF  کاتالوگ" />
 
                         <Button
-                            android:id="@+id/button2"
+                            android:id="@+id/btnPdf4_Object"
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

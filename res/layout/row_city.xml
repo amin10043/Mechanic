@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/List_Item_Style"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_item"
-    style="@style/List_Item_Style"
     android:orientation="horizontal" >
 
     <TextView
         android:id="@+id/RowCitytxt"
+        style="@style/row_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/red" />
-    
-    </LinearLayout>
-       
+        android:text="Large Text" />
 
+</LinearLayout>

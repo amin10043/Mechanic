@@ -5,6 +5,7 @@ public class NewsPaper {
 	int Id;
 	String Name;
 	int TypeId;
+	String Url;
 	
 
 	public int getId() {
@@ -29,13 +30,21 @@ public class NewsPaper {
 	public void setTypeId(int typeid) {
 	    TypeId = typeid;
 	}
+	public String getUrl() {
+		return Url;
+	}
+
+	public void setUrl(String url) {
+		Url = url;
+	}
 
 
-	public NewsPaper(int id, String name, int typeid) {
+	public NewsPaper(int id, String name, int typeid,String url) {
 		super();
 		Id = id;
 		Name=name;
 		TypeId = typeid;
+		Url=url;
 		
 	}
 

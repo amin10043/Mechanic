@@ -18,10 +18,13 @@ import com.project.mechanic.model.DataBaseAdapter;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 public class NewspaperFragment extends Fragment {
@@ -37,7 +40,7 @@ public class NewspaperFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_newspaper, null);
 
-
+//	TextView textmore = (TextView) view.findViewById(R.id.newsmoretxt);
 		mdb = new DataBaseAdapter(getActivity());
 		mdb.open();
 		mylist = mdb.getAllNews();
@@ -45,11 +48,18 @@ public class NewspaperFragment extends Fragment {
 		
 
 		ListView lstNews = (ListView) view.findViewById(R.id.listvnewspaper);
-		NewspaperListAdapter ListAdapter = new NewspaperListAdapter(
+	NewspaperListAdapter ListAdapter = new NewspaperListAdapter(
 				getActivity(), R.layout.row_newspaper, mylist);
 
-		lstNews.setAdapter(ListAdapter);
+	lstNews.setAdapter(ListAdapter);
 
+	
+
+
+		
+		
+		
+		
 		return view;
 	
 	}

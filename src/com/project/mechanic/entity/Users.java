@@ -3,48 +3,80 @@ package com.project.mechanic.entity;
 public class Users {
 
 	int Id;
+	String Phonenumber;
+	public String getPhonennumber() {
+		return Phonenumber;
+	}
+
+
+
+	public void setPhonennumber(String phonennumber) {
+		this.Phonenumber = phonennumber;
+	}
+
+
+
 	String Name;
 	String Email;
 	String Password;
 
-	protected int getId() {
+	
+
+	public int getId() {
 		return Id;
 	}
 
-	protected void setId(int id) {
+
+
+	public void setId(int id) {
 		Id = id;
 	}
 
-	protected String getName() {
+
+
+	public String getName() {
 		return Name;
 	}
 
-	protected void setName(String name) {
+
+
+	public void setName(String name) {
 		Name = name;
 	}
 
-	protected String getEmail() {
+
+
+	public String getEmail() {
 		return Email;
 	}
 
-	protected void setEmail(String email) {
+
+
+	public void setEmail(String email) {
 		Email = email;
 	}
 
-	protected String getPassword() {
+
+
+	public String getPassword() {
 		return Password;
 	}
 
-	protected void setPassword(String password) {
+
+
+	public void setPassword(String password) {
 		Password = password;
 	}
 
-	public Users(int id, String name, String email, String password) {
+
+
+	public Users(int id, String name, String email, String password,String phonenumber) {
 		super();
 		Id = id;
 		Name = name;
 		Email = email;
 		Password = password;
+		Phonenumber= phonenumber;
 	}
 
 }

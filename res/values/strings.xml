@@ -36,15 +36,8 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">Register</string>
     <string name="news">اخبار</string>
-
-
-
-
     <string name="anad">تالار </string>
-
     <string name="showad">آگهی</string>
-    
-
 
     <string-array name="MenuItems">
         <item name="home">خانه</item>
@@ -66,5 +59,7 @@
     </string-array>
 
     <string name="title_activity_dialogeml">Dialogeml</string>
+    <string name="title_activity_newsmore_fragment">NewsmoreFragment</string>
+    <string name="title_activity_welcome_screen">WelcomeScreen</string>
 
 </resources>
