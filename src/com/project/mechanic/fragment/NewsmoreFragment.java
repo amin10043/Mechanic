@@ -40,7 +40,7 @@ public class NewsmoreFragment extends Fragment {
 	adapter = new DataBaseAdapter(getActivity());
 	adapter.open();
 
-	//	 int id = Integer.valueOf(getArguments().getString("Id"));
+	// int id = Integer.valueOf(getArguments().getString("Id"));
 	
 		News x =adapter.getNewsById(2);
 		adapter.close();
