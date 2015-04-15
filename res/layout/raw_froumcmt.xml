@@ -50,7 +50,7 @@
             android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/fragment_showad_txt3"
+            android:layout_alignBottom="@+id/txtPhonenumber_CmtFroum"
             android:layout_toRightOf="@+id/linearLayout1"
             android:gravity="top" >
 
@@ -80,14 +80,12 @@
             android:textColor="@color/red" />
 
         <TextView
-            android:id="@+id/fragment_showad_txt3"
+            android:id="@+id/txtPhonenumber_CmtFroum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            
-            android:layout_marginRight="12dp"
             android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
             android:layout_toLeftOf="@+id/rawUsernamecmttxt_cmt"
-            android:text="09390494239"
             android:textColor="@color/red" />
 
     </RelativeLayout>

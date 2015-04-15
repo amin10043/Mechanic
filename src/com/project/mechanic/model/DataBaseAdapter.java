@@ -77,7 +77,7 @@ public class DataBaseAdapter {
 	private String[] Paper = { "ID", "Title", "Context" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name" };
-	private String[] Users = { "ID", "Name", "Email", "Password" };
+	private String[] Users = { "ID", "Name", "Email", "Password" ,"Phonenumber"};
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url"};
 	private String[] ObjectBrandType = {"ID","Description"};
@@ -364,7 +364,7 @@ public class DataBaseAdapter {
 	@SuppressWarnings("unused")
 	private Users CursorToUsers(Cursor cursor) {
 		Users tempProvince = new Users(cursor.getInt(0),
-				cursor.getString(1),cursor.getString(2),cursor.getString(3));
+				cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4));
 		return tempProvince;
 
 	}
@@ -419,6 +419,13 @@ public class DataBaseAdapter {
 		Froum tempForum = new Froum(cursor.getInt(0), cursor.getInt(1),
 				cursor.getString(2), cursor.getString(3));
 		return tempForum;
+
+	}
+	@SuppressWarnings("unused")
+	private Paper CursorToPaper(Cursor cursor) {
+		Paper tempPaper = new Paper(cursor.getInt(0), cursor.getString(1),
+				cursor.getString(2));
+		return tempPaper;
 
 	}
 
@@ -738,16 +745,16 @@ public ArrayList<Comment> getCommentbyPaperid(int  PaperId) {
 
 
 
-public ArrayList<Users> getUsernamebyid(int id ) {
+public Users getUsernamebyid(int id ) {
 
-	ArrayList<Users> result = new ArrayList<Users>();
-	Users item =null;
+	Users result = null;
+	
 	Cursor mCur = mDb.query(TableUsers, Users, " ID=?",
 			new String[] { String.valueOf( id) }, null, null, null);
 
-	while (mCur.moveToNext()) {
-		item = CursorToUsers(mCur);
-		result.add(item);
+	if (mCur.moveToNext()) {
+		result= CursorToUsers(mCur);
+		
 	}
 
 	return result;
@@ -764,6 +771,21 @@ public Froum getFroumItembyid(int Id) {
 
 	if (mCur.moveToNext()) {
 		item = CursorToFroum(mCur);
+		
+	}
+
+	return item;
+
+}
+public Paper getPaperItembyid(int Id) {
+
+	
+	Paper item = null;
+	Cursor mCur = mDb.query(TablePaper, Paper, " Id=?",
+			new String[] { String.valueOf( Id) }, null, null, null);
+
+	if (mCur.moveToNext()) {
+		item = CursorToPaper(mCur);
 		
 	}
 
@@ -828,6 +850,13 @@ public NewsPaper getAllNewsPaperid(int id) {
 
 }
 
+
+
+
+
+
+
+
 /*
  * public String getUseridFroum(){ ArrayList<Froum> result = new
  * ArrayList<Froum>(); 
@@ -880,7 +909,7 @@ public NewsPaper getAllNewsPaperid(int id) {
 								+ froumId, null);
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
-					cursor.getString(2), cursor.getString(3));
+					cursor.getString(2), cursor.getString(3),cursor.getString(4));
 			result.add(tempusers);
 		}
 		return result;
@@ -910,7 +939,7 @@ public NewsPaper getAllNewsPaperid(int id) {
 								+ froumId, null);
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
-					cursor.getString(2), cursor.getString(3));
+					cursor.getString(2), cursor.getString(3),cursor.getString(4));
 			result.add(tempusers);
 		}
 		return result;
