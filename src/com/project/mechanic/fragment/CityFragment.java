@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -53,6 +54,11 @@ import com.project.mechanic.row_items.RowMain;
 				R.layout.row_city, cityList);
 
 		lstCity.setAdapter(ListAdapter);
+		
+//		SharedPreferences sendData = getActivity().getSharedPreferences(
+//				"Id", 0);
+//		int id = sendData.getInt("main_Id", -1);
+
 
 		return view;
 	}

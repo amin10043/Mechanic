@@ -13,19 +13,22 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.row_items.RowMain;
+import com.project.mechanic.entity.*;
+import com.project.mechanic.entity.Object;
 
-public class ObjectListAdapter extends ArrayAdapter<RowMain> {
+public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 	Context context;
-	List<RowMain> list;
+	List<Object> list;
 	int lastPosition = 0;
 
-	public ObjectListAdapter(Context context, int resource, List<RowMain> objact) {
+	public ObjectListAdapter(Context context, int resource, List<Object> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -50,9 +53,11 @@ public class ObjectListAdapter extends ArrayAdapter<RowMain> {
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
 
-		RowMain person = list.get(position);
+		Object person = list.get(position);
 
 		txt1.setText(person.getName());
+		
+
 
 		convertView.setOnClickListener(new OnClickListener() {
 
