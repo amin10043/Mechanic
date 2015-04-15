@@ -728,16 +728,16 @@ public ArrayList<Comment> getCommentbyPaperid(int  PaperId) {
 
 
 
-public ArrayList<Users> getUsernamebyid(int id ) {
+public Users getUsernamebyid(int id ) {
 
-	ArrayList<Users> result = new ArrayList<Users>();
-	Users item =null;
+	Users result = null;
+	
 	Cursor mCur = mDb.query(TableUsers, Users, " ID=?",
 			new String[] { String.valueOf( id) }, null, null, null);
 
-	while (mCur.moveToNext()) {
-		item = CursorToUsers(mCur);
-		result.add(item);
+	if (mCur.moveToNext()) {
+		result= CursorToUsers(mCur);
+		
 	}
 
 	return result;
@@ -803,6 +803,13 @@ public Object getAllObjectbyid(int id) {
 	return item;
 
 }
+
+
+
+
+
+
+
 
 /*
  * public String getUseridFroum(){ ArrayList<Froum> result = new
