@@ -43,6 +43,7 @@ public class DataBaseAdapter {
 	private String TableList = "List";
 	private String TableListItem = "ListItem";
 	private String TableNews = "News";
+	private String TableNewsPaper = "NewsPaper";
 	private String TableObject = "Object";
 	private String TableObjectInCity = "ObjectInCity";
 	private String TableObjectInProvince = "ObjectInProvince";
@@ -291,6 +292,20 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+	public ArrayList<NewsPaper> getAllNewsPaper() {
+
+		ArrayList<NewsPaper> result = new ArrayList<NewsPaper>();
+		Cursor cursor = mDb.query(TableNewsPaper, NewsPaper, null, null, null,
+				null, null);
+		NewsPaper tempNewsPaper;
+		while (cursor.moveToNext()) {
+			tempNewsPaper = new NewsPaper(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getString(3));
+			result.add(tempNewsPaper);
+		}
+
+		return result;
+
+	}
 	
 	
 	
@@ -310,6 +325,36 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+	public ArrayList<NewsPaper> getNewsPaperTypeId(int TypeId) {
+
+		ArrayList<NewsPaper> result = new ArrayList<NewsPaper>();
+		NewsPaper item = null;
+		Cursor mCur = mDb.query("NewsPaper", NewsPaper, "TypeId=?",
+				new String[] { String.valueOf(TypeId) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToNewsPaper(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+	public NewsPaper getNewsPaperId(int Id) {
+
+		NewsPaper item = null;
+		Cursor mCur = mDb.query("NewsPaper", NewsPaper, "Id=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToNewsPaper(mCur);
+		}
+
+		return item;
+
+	}
+
+
 
 	public ArrayList<City> getCitysByProvinceId(int ProvinceId) {
 
@@ -326,6 +371,7 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+	
 
 	public ArrayList<AdvisorType> getAdvisorTypes() {
 
