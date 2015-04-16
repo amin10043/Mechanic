@@ -23,6 +23,7 @@ public class DialogAnad extends Dialog {
 	Context context;
 	Fragment fragment;
 	int ticketTypeID;
+	
 
 	public DialogAnad(Context context, int resourceId, Fragment fragment,int ticketTypeID) {
 		super(context);
