@@ -1,5 +1,7 @@
 package com.project.mechanic.entity;
 
+
+
 public class Ticket {
 
 	int Id;
@@ -8,7 +10,7 @@ public class Ticket {
 	String Title;
 	String Desc;
 	String Date;
-	Byte[] Image;
+	byte[] Image;
 
 	
 	public int getId() {
@@ -60,25 +62,24 @@ public class Ticket {
 		Date = date;
 	}
 
-	public Byte[]  getImage() {
+	public byte[]  getImage() {
 		return Image;
 	}
 
-	public void setImage(Byte[] image) {
+	public void setImage(byte[] image) {
 		Image = image;
 	}
 
-	public Ticket(int id, String title, String desc, int Userid, Byte[] image, String date ) {
+	public Ticket(int id, String title, String desc, int Userid, byte[] imge, String date,int Typeid ) {
 		super();
 		Id = id;
 		Title = title;
 		Desc = desc;
 		UserId = Userid;
 		Date = date;
-		Image = image;
+		TypeId = Typeid;
+		Image = imge;
 		
-
+		}
 }
 
-}
-	

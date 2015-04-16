@@ -20,6 +20,7 @@ import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Province;
+import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.row_items.RowMain;
 import com.project.mechanic.entity.News;
@@ -50,6 +51,8 @@ public class DataBaseAdapter {
 	private String TablePaper = "Paper";
 	private String TablePaperType = "PaperType";
 	private String TableProvince = "Province";
+	private String TableTicket = "Ticket";
+	private String TableTicketType = "TicketType";
 	private String TableUsers = "Users";
 	private String TableWorkmanType = "WorkmanType";
 	private String TableCommentInObject= "CommentInObject";
@@ -77,6 +80,8 @@ public class DataBaseAdapter {
 	private String[] Paper = { "ID", "Title", "Context" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name" };
+	private String[] Ticket = { "ID", "Title", "Desc", "UserId" ,"Image", "date","TypeId"};
+	private String[] TicketType = { "ID", "desc" };
 	private String[] Users = { "ID", "Name", "Email", "Password" ,"Phonenumber"};
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url"};
@@ -188,6 +193,16 @@ public class DataBaseAdapter {
 
 	}
 	
+	public void insertTickettoDb(String Title, String desc,int userId) {
+
+		ContentValues cv = new ContentValues();
+		cv.put("Title", Title);
+		cv.put("Desc", desc);
+		cv.put("UserId", userId);
+
+		mDb.insert(TableTicket, null, cv);
+
+	}
 	public void insertPapertitletoDb(String Title, String Context) {
 
 		ContentValues cv = new ContentValues();
@@ -312,7 +327,24 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+	public ArrayList<Ticket> getTicketById(int TypeId) {
 
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Ticket item = null;
+		Cursor mCur = mDb.query("Ticket", Ticket, "TypeId=?",
+				new String[] { String.valueOf(TypeId) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToTicket(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+	
+	
+	
 	public ArrayList<City> getCitysByProvinceId(int ProvinceId) {
 
 		ArrayList<City> result = new ArrayList<City>();
@@ -443,7 +475,12 @@ public class DataBaseAdapter {
 	
 	}
 	
-	
+	@SuppressWarnings("unused")
+	private Ticket CursorToTicket(Cursor cursor) {
+		Ticket tempTicket = new Ticket(cursor.getInt(0),cursor.getString(1), cursor.getString(2), cursor.getInt(3),cursor.getBlob(4), cursor.getString(5),cursor.getInt(6));
+		return tempTicket;
+
+	}
 	public ArrayList<Province> getAllProvinceName() {
 		ArrayList<Province> result = new ArrayList<Province>();
 		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
@@ -850,8 +887,18 @@ public NewsPaper getAllNewsPaperid(int id) {
 
 }
 
+public ArrayList<Ticket> getAllTicket() {
+	ArrayList<Ticket> result = new ArrayList<Ticket>();
+	Cursor cursor = mDb.query(TableTicket, Ticket, null, null, null, null,
+			null);
+	Ticket tempTicket;
+	while (cursor.moveToNext()) {
+		result.add(CursorToTicket(cursor));
+	}
 
+	return result;
 
+}
 
 
 
@@ -974,5 +1021,20 @@ public NewsPaper getAllNewsPaperid(int id) {
 		}
 		return result;
 	}
+	public Ticket getTicketbyid(int Id) {
 
+		
+		Cursor cursor = mDb.query(TableTicket, Ticket, null, null, null, null,
+				null);
+		Ticket tempTicket=null;
+		if (cursor.moveToNext()) {
+			tempTicket=CursorToTicket(cursor);
+		}
+
+		return tempTicket;
+		
+		
+	}
+	
+	
 }
