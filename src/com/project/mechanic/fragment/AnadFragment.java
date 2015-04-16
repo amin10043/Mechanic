@@ -30,6 +30,7 @@ public class AnadFragment extends Fragment {
 	View view ;
 	List<Ticket> mylist;
 	private DialogAnad dialog;
+	int ticketTypeid =0;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -38,6 +39,7 @@ public class AnadFragment extends Fragment {
 		view= inflater.inflate(R.layout.fragment_anad, null);
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.anad);
+		ticketTypeid= Integer.valueOf(getArguments().getString("Id"));
 
 		imgadd = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
 		txt1 = (TextView) view.findViewById(R.id.fragment_anad_txt1);
@@ -45,7 +47,7 @@ public class AnadFragment extends Fragment {
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
-		mylist = dbAdapter.getTicketById(0);
+		mylist = dbAdapter.getTicketByTypeId(ticketTypeid);
 		dbAdapter.close();
 
 		imgadd.setOnClickListener(new OnClickListener() {
@@ -53,7 +55,7 @@ public class AnadFragment extends Fragment {
 			@Override
 			public void onClick(View arg0) {
 
-				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,AnadFragment.this);
+				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,AnadFragment.this,ticketTypeid);
 				dialog.setTitle(R.string.txtanad);
 				
 				dialog.show();
@@ -69,13 +71,11 @@ public class AnadFragment extends Fragment {
 		
 		txt1.setOnClickListener(new OnClickListener() {
 
+			@SuppressLint("NewApi")
 			@Override
 			public void onClick(View arg0) {
 
-				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,AnadFragment.this);
-				dialog.setTitle(R.string.txtanad);
-				
-				dialog.show();
+				imgadd.callOnClick();
 			}
 		});
 		
@@ -86,7 +86,7 @@ public class AnadFragment extends Fragment {
 	
 	public void updateView() {
 		dbAdapter.open();
-		mylist = dbAdapter.getAllTicket();
+		mylist = dbAdapter.getTicketByTypeId(ticketTypeid);
 		dbAdapter.close();
 
 		ListView lstAnad = (ListView) view.findViewById(R.id.listVanad);
