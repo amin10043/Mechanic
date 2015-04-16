@@ -22,13 +22,15 @@ public class DialogAnad extends Dialog {
 	int resourceId;
 	Context context;
 	Fragment fragment;
+	int ticketTypeID;
 
-	public DialogAnad(Context context, int resourceId, Fragment fragment) {
+	public DialogAnad(Context context, int resourceId, Fragment fragment,int ticketTypeID) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		this.resourceId = resourceId;
 		this.context = context;
 		this.fragment = fragment;
+		this.ticketTypeID = ticketTypeID;
 	}
 
 	@Override
@@ -50,7 +52,7 @@ public class DialogAnad extends Dialog {
 				dbadapter.open();
 		//		  int	id = Integer.valueOf(fragment. getArguments().getString("Id"));
 				dbadapter.insertTickettoDb(dialog_anad_et1.getText().toString(),
-						dialog_anad_et2.getText().toString(), 1);
+						dialog_anad_et2.getText().toString(), 1,ticketTypeID);
 				dbadapter.close();
 				((AnadFragment) fragment).updateView();
 				DialogAnad.this.dismiss();

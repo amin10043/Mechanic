@@ -64,7 +64,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 			public void onClick(View v) {
 				
 				adapter.open();
-				ArrayList<Ticket> allItems = adapter.getTicketById(0);
+				ArrayList<Ticket> allItems = adapter.getTicketByTypeId(0);
 				int id = 0;
 				for (Ticket Ticket : allItems) {
 					if (tempItem.equals(Ticket.getTitle())) {
@@ -74,13 +74,6 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				}
 				adapter.close();
 
-				
-//				SharedPreferences sendData = context.getSharedPreferences(
-//						"Id", 0);
-//				SharedPreferences.Editor editor = sendData.edit();
-//				editor.putInt("main_Id", id);
-//				editor.commit();
-				
 					FragmentTransaction trans = ((MainActivity) context)
 					.getSupportFragmentManager().beginTransaction();
 					ShowAdFragment fragment = new ShowAdFragment();
@@ -91,12 +84,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 					trans.addToBackStack(null);
 					trans.commit();
 				
-//			
-//				FragmentTransaction trans = ((MainActivity) context)
-//						.getSupportFragmentManager().beginTransaction();
-//				trans.replace(R.id.content_frame, new ShowAdFragment());
-//				trans.addToBackStack(null);
-//				trans.commit();
+		
 					}
 		});
 
