@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Comment;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.FroumItem;
 
@@ -48,14 +49,17 @@ public class FroumListAdapter  extends ArrayAdapter<Comment>{
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.rawCmttxt);
 		TextView txt2 = (TextView) convertView.findViewById(R.id.rawUsernamecmttxt_cmt);
+		TextView txt3 = (TextView) convertView.findViewById(R.id.txtPhonenumber_CmtFroum);
+		Comment comment = list.get(position);
 		adapter.open();
-		//Users x = adapter.getUsernamebyid(id);
+		Users x = adapter.getUsernamebyid(comment.getUserId());
 		adapter.close();
 	    
-	    Comment person1 = list.get(position);
+	   
 		
-		txt1.setText(person1.getDescription());
-		txt2.setText("zahra bidi");
+		txt1.setText(comment.getDescription());
+		txt2.setText(x.getName());
+		txt3.setText(x.getPhonennumber());
 		return convertView;
 	}
 

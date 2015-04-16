@@ -7,14 +7,16 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.project.mechanic.R;
+import com.project.mechanic.fragment.DialogfroumTitle.OnMyDialogResult;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class DialogAnad extends Dialog {
 
-	private Button dialog_btn,dialog_btn1;
-	private EditText dialog_anad_et1,dialog_anad_et2,dialog_anad_et3;
+	private ImageView dialog_img1,dialog_img2;
+	private EditText dialog_anad_et1,dialog_anad_et2;
 	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
 	int resourceId;
@@ -35,25 +37,25 @@ public class DialogAnad extends Dialog {
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.dialog_addcomment);
 		setContentView(resourceId);
-		dialog_btn = (Button) findViewById(R.id.dialog_btn);
-		dialog_btn1 = (Button) findViewById(R.id.dialog_btn1);
+		dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
+		dialog_img2 = (ImageView) findViewById(R.id.dialog_img2);
 		dialog_anad_et1 = (EditText) findViewById(R.id.dialog_anad_et1);
 		dialog_anad_et2 = (EditText) findViewById(R.id.dialog_anad_et2);
-		dialog_anad_et3 = (EditText) findViewById(R.id.dialog_anad_et3);
 		
-//		dialog_btn.setOnClickListener(new android.view.View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View arg0) {
-//				dbadapter = new DataBaseAdapter(context);
-//				dbadapter.open();
-//				dbadapter.insertFroumtitletoDb(dialog_anad_et1.getText().toString(),dialog_anad_et2.getText().toString(),1);
-//				dbadapter.close();
-//				((FroumtitleFragment) fragment).updateView();
-//				DialogAnad.this.dismiss();
-//
-//			}
-//		});
+		dialog_img2.setOnClickListener(new android.view.View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				dbadapter = new DataBaseAdapter(context);
+				dbadapter.open();
+				dbadapter.insertTickettoDb(dialog_anad_et1.getText().toString(),
+						dialog_anad_et2.getText().toString(), 1);
+				dbadapter.close();
+				((AnadFragment) fragment).updateView();
+				DialogAnad.this.dismiss();
+
+			}
+		});
 
 	}
 
@@ -64,5 +66,7 @@ public class DialogAnad extends Dialog {
 	public void setDialogResult(OnMyDialogResult dialogResult) {
 		mDialogResult = dialogResult;
 	}
+
+
 
 }

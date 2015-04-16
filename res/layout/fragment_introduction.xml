@@ -450,7 +450,7 @@
                         android:layout_weight="1" >
 
                         <Button
-                            android:id="@+id/Btntitle"
+                            android:id="@+id/btnPdf1_Object"
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -458,7 +458,7 @@
                             android:text="دانلود PDF کاتالوگ" />
 
                         <Button
-                            android:id="@+id/button3"
+                            android:id="@+id/btnPdf2_Object"
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -466,7 +466,7 @@
                             android:text="دانلود PDF  کاتالوگ" />
 
                         <Button
-                            android:id="@+id/button4"
+                            android:id="@+id/btnPdf3_Object"
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -474,7 +474,7 @@
                             android:text="دانلود PDF  کاتالوگ" />
 
                         <Button
-                            android:id="@+id/button2"
+                            android:id="@+id/btnPdf4_Object"
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -533,16 +533,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:orientation="vertical" >
-
-                  
-
 
                         <ListView
                             android:id="@+id/listvCmt_Introduction"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" >
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp" >
+
                         </ListView>
 
 
