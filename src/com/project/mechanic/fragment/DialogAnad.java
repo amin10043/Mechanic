@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.project.mechanic.R;
+import com.project.mechanic.fragment.DialogfroumTitle.OnMyDialogResult;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class DialogAnad extends Dialog {
@@ -41,19 +42,20 @@ public class DialogAnad extends Dialog {
 		dialog_anad_et1 = (EditText) findViewById(R.id.dialog_anad_et1);
 		dialog_anad_et2 = (EditText) findViewById(R.id.dialog_anad_et2);
 		
-//		dialog_btn.setOnClickListener(new android.view.View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View arg0) {
-//				dbadapter = new DataBaseAdapter(context);
-//				dbadapter.open();
-//				dbadapter.insertFroumtitletoDb(dialog_anad_et1.getText().toString(),dialog_anad_et2.getText().toString(),1);
-//				dbadapter.close();
-//				((FroumtitleFragment) fragment).updateView();
-//				DialogAnad.this.dismiss();
-//
-//			}
-//		});
+		dialog_img2.setOnClickListener(new android.view.View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				dbadapter = new DataBaseAdapter(context);
+				dbadapter.open();
+				dbadapter.insertTickettoDb(dialog_anad_et1.getText().toString(),
+						dialog_anad_et2.getText().toString(), 1);
+				dbadapter.close();
+				((AnadFragment) fragment).updateView();
+				DialogAnad.this.dismiss();
+
+			}
+		});
 
 	}
 
@@ -64,5 +66,7 @@ public class DialogAnad extends Dialog {
 	public void setDialogResult(OnMyDialogResult dialogResult) {
 		mDialogResult = dialogResult;
 	}
+
+
 
 }
