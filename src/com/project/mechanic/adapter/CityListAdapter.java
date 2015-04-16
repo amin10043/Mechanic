@@ -4,6 +4,8 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.fragment.ObjectFragment;
+import com.project.mechanic.fragment.ProvinceFragment;
 
 public class CityListAdapter extends ArrayAdapter<City> {
 
@@ -50,9 +53,9 @@ public class CityListAdapter extends ArrayAdapter<City> {
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.RowCitytxt);
 
-		City person = list.get(position);
+		final City city = list.get(position);
 
-		txt1.setText(person.getName());
+		txt1.setText(city.getName());
 
 		convertView.setOnClickListener(new OnClickListener() {
 
@@ -61,8 +64,19 @@ public class CityListAdapter extends ArrayAdapter<City> {
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new ObjectFragment());
 				trans.addToBackStack(null);
+				
+
+				
+				Fragment move = new ObjectFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString("cityId", String.valueOf(city.getId()));
+				move.setArguments(bundle);
+				trans.replace(R.id.content_frame, move);
+
+				
+				
+				
 				trans.commit();
 			}
 		});

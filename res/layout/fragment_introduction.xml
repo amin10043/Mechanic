@@ -105,7 +105,7 @@
                         android:layout_weight="1" >
 
                         <ImageButton
-                            android:id="@+id/imageButton2"
+                            android:id="@+id/imgbtnFacebook_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -113,7 +113,7 @@
                             android:src="@drawable/facebook" />
 
                         <ImageButton
-                            android:id="@+id/imgBtnAddtitle"
+                            android:id="@+id/imgbtnInsta_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -121,7 +121,7 @@
                             android:src="@drawable/insta" />
 
                         <ImageButton
-                            android:id="@+id/imageButton9"
+                            android:id="@+id/imgbtnLinkedin_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -129,7 +129,7 @@
                             android:src="@drawable/lnkin" />
 
                         <ImageButton
-                            android:id="@+id/imageButton5"
+                            android:id="@+id/imgbtnGoogle_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -137,7 +137,7 @@
                             android:src="@drawable/google" />
 
                         <ImageButton
-                            android:id="@+id/imageButton4"
+                            android:id="@+id/imgbtnSite_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -145,7 +145,7 @@
                             android:src="@drawable/lnkin" />
 
                         <ImageButton
-                            android:id="@+id/imageButton3"
+                            android:id="@+id/imgbtnTwitter_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -257,7 +257,6 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:text=" 5138443239"
                             android:textColor="@color/red" />
 
                     </RelativeLayout>
@@ -343,7 +342,6 @@
                             android:layout_alignBottom="@+id/txtCellphone_Introduction"
                             android:layout_centerHorizontal="true"
                             android:layout_centerInParent="true"
-                            android:text="09390494239"
                             android:textColor="@color/red" />
 
                         <ImageView
@@ -397,7 +395,6 @@
                             android:layout_alignBaseline="@+id/textView5"
                             android:layout_alignBottom="@+id/textView5"
                             android:layout_centerHorizontal="true"
-                            android:text="shaghayegh@email.com"
                             android:textColor="@color/red" />
                     </RelativeLayout>
 
@@ -440,7 +437,6 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
-                            android:text="راهنمایی 14 پلاک 24"
                             android:textColor="@color/red" />
 
                     </RelativeLayout>
@@ -454,7 +450,7 @@
                         android:layout_weight="1" >
 
                         <Button
-                            android:id="@+id/Btntitle"
+                            android:id="@+id/btnPdf1_Object"
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -462,7 +458,7 @@
                             android:text="دانلود PDF کاتالوگ" />
 
                         <Button
-                            android:id="@+id/button3"
+                            android:id="@+id/btnPdf2_Object"
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -470,7 +466,7 @@
                             android:text="دانلود PDF  کاتالوگ" />
 
                         <Button
-                            android:id="@+id/button4"
+                            android:id="@+id/btnPdf3_Object"
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -478,7 +474,7 @@
                             android:text="دانلود PDF  کاتالوگ" />
 
                         <Button
-                            android:id="@+id/button2"
+                            android:id="@+id/btnPdf4_Object"
                             style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -528,7 +524,6 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerInParent="true"
                         android:layout_centerVertical="true"
-                        android:text="توضیحات بیشتر"
                         android:textColor="@color/red" />
 
                 </RelativeLayout>
@@ -538,16 +533,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:orientation="vertical" >
-
-                  
-
 
                         <ListView
                             android:id="@+id/listvCmt_Introduction"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" >
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp" >
+
                         </ListView>
 
 

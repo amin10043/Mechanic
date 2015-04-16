@@ -1,6 +1,8 @@
 package com.project.mechanic.fragment;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.Paper;
 import com.project.mechanic.model.DataBaseAdapter;
 
 import android.support.v4.*;
@@ -18,7 +20,11 @@ import android.widget.TextView;
 import android.os.Build;
 
 public class PaperFragment extends Fragment {
+	
 	DataBaseAdapter adapter;
+	 int	id;
+	 private Button btncomment1;
+	 DialogcmtInfroum  dialog;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -27,19 +33,36 @@ public class PaperFragment extends Fragment {
 		TextView txtcontext=(TextView) view.findViewById(R.id.txtContext);
 		TextView txtcomment=(TextView) view.findViewById(R.id.txtComment);
 		TextView txtlike=(TextView) view.findViewById(R.id.txtLike);
-		Button btncomment1=(Button) view.findViewById(R.id.btnComment);
+		btncomment1=(Button) view.findViewById(R.id.btnComment);
 		Button btnlike=(Button) view.findViewById(R.id.btnLike);
-		btncomment1.setOnClickListener(new OnClickListener() {
+		
+		 adapter= new DataBaseAdapter(getActivity());
+			adapter.open();
+			
+			//Bundle bundle = new Bundle();
+			//bundle.getString("Id", String.valueOf(id));
+		    id = Integer.valueOf(getArguments().getString("Id"));
+		    Paper p =adapter.getPaperItembyid(id);
+
+			txttitle.setText(p.getTitle());
+			txtcontext.setText(p.getContext());
+		    adapter.close();
+		    
+		
+		
+				
+
+		/*btncomment1.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				  DialogcmtInfroum dialog = new DialogcmtInfroum(PaperFragment.this,getActivity(),R.layout.dialog_addcomment);
-				  dialog.show();
+				dialog = new DialogcmtInfroum(PaperFragment.this,getActivity(),R.layout.dialog_addcomment);
+				dialog.show();
 				  
 				
 			}
-		});
+		});*/
 		return view;
 		
 		
