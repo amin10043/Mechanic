@@ -193,13 +193,16 @@ public class DataBaseAdapter {
 
 	}
 	
-	public void insertTickettoDb(String Title, String desc,int userId) {
+	public void insertTickettoDb(String title, String desc,int userId) {
 
 		ContentValues cv = new ContentValues();
-		cv.put("Title", Title);
+		cv.put("Title", title);
 		cv.put("Desc", desc);
 		cv.put("UserId", userId);
-
+//		cv.put("Image", image);
+//		cv.put("Date", date);
+//		cv.put("TypeId", typeid);
+		
 		mDb.insert(TableTicket, null, cv);
 
 	}
