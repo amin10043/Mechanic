@@ -58,8 +58,4 @@
         <item name="news_3">اخبار</item>
     </string-array>
 
-    <string name="title_activity_dialogeml">Dialogeml</string>
-    <string name="title_activity_newsmore_fragment">NewsmoreFragment</string>
-    <string name="title_activity_welcome_screen">WelcomeScreen</string>
-
 </resources>
