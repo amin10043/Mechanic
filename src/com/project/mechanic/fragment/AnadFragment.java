@@ -25,6 +25,7 @@ public class AnadFragment extends Fragment {
 	DataBaseAdapter dbAdapter;
 	private ImageView imgadd;
 	private TextView txt1;
+
 	private DialogAnad dialog;
 
 	@SuppressLint("InflateParams")
@@ -52,10 +53,14 @@ public class AnadFragment extends Fragment {
 
 		imgadd.setOnClickListener(new OnClickListener() {
 
+			
+
 			@Override
 			public void onClick(View arg0) {
 
 				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,AnadFragment.this);
+				dialog.setTitle(R.string.txtanad);
+				
 				dialog.show();
 			}
 		});
@@ -66,6 +71,8 @@ public class AnadFragment extends Fragment {
 			public void onClick(View arg0) {
 
 				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,AnadFragment.this);
+				dialog.setTitle(R.string.txtanad);
+				
 				dialog.show();
 			}
 		});

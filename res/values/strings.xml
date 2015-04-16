@@ -38,7 +38,8 @@
     <string name="news">اخبار</string>
     <string name="anad">تالار </string>
     <string name="showad">آگهی</string>
-
+    <string name="txtanad">ثبت آگهی شما </string>
+ 
     <string-array name="MenuItems">
         <item name="home">خانه</item>
         <item name="users">کاربری</item>
