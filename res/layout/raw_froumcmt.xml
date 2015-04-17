@@ -31,7 +31,7 @@
             android:orientation="horizontal" >
 
             <ImageButton
-                android:id="@+id/imageButton1"
+                android:id="@+id/imgbtnLike_CmtFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"

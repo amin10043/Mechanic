@@ -26,6 +26,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.IntroductionListAdapter;
 import com.project.mechanic.entity.CommentInObject;
+import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -41,6 +42,7 @@ public class IntroductionFragment extends Fragment {
 	public int id = 1;
 
 	public ImageButton like;
+	public ImageButton Comment;
 
 	ArrayList<CommentInObject> mylist;
 	DataBaseAdapter adapter;
@@ -52,6 +54,8 @@ public class IntroductionFragment extends Fragment {
 	TextView txtCellphone;
 	TextView txtEmail;
 	TextView txtDesc;
+	TextView txtNumofLike;
+	TextView txtNumofComment;
 	ImageView advertise;
 	ImageView advertise2;
 	ImageButton Facebook;
@@ -89,6 +93,8 @@ public class IntroductionFragment extends Fragment {
 		txtCellphone = (TextView) view.findViewById(R.id.txtCellphone_Object);
 		txtDesc = (TextView) view.findViewById(R.id.txtDesc_Object);
 		txtEmail = (TextView) view.findViewById(R.id.txtEmail_Object);
+		txtNumofLike = (TextView) view.findViewById(R.id.txtNumofLike_Object);
+		txtNumofComment = (TextView) view.findViewById(R.id.txtNumofComment_Object);
 		
 		
 		
@@ -114,6 +120,8 @@ public class IntroductionFragment extends Fragment {
 		// id = Integer.valueOf(getArguments().getString("Id"));
 		adapter.open();
 		mylist = adapter.getAllCommentInObjectById(id);
+		txtNumofComment.setText(adapter.CommentInObject_count().toString());
+		txtNumofLike.setText(adapter.LikeInObject_count().toString());
 		 object = adapter.getAllObjectbyid(id);
 		if(object == null){
 			return view;
@@ -278,16 +286,16 @@ public class IntroductionFragment extends Fragment {
 		});
 
 		
-		 /* like.setOnClickListener(new View.OnClickListener() {
-		 * 
-		 * @Override public void onClick(View arg0) { adapter.open();
-		 * adapter.insertLikeInObjectToDb( 1, 0,"",1); ArrayList<LikeInObject> y
-		 * = adapter.getAllLikeInObjectById(id);
-		 * 
-		 * int x= adapter.LikeInObject_count(y);
-		 * 
-		 * } });
-		 */
+		  like.setOnClickListener(new View.OnClickListener() {
+		  
+		  @Override public void onClick(View arg0) {
+		  adapter.open();
+		  adapter.insertLikeInObjectToDb( 1, 0,"",1);
+		  txtNumofLike.setText(adapter.LikeInObject_count().toString());
+		 
+		  
+		  } });
+		 
 
 		
 
@@ -366,6 +374,7 @@ public class IntroductionFragment extends Fragment {
 	  public void updateView3() { 
 		  adapter.open(); 
 		  mylist = adapter.getAllCommentInObjectById(id);
+		  txtNumofComment.setText(adapter.CommentInObject_count().toString());
           adapter.close();
 	      IntroductionListAdapter x= new IntroductionListAdapter(getActivity(), R.layout.raw_froumcmt, mylist);
 	      x.notifyDataSetChanged();

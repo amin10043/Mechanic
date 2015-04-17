@@ -12,6 +12,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.adapter.FroumListAdapter;
 import com.project.mechanic.adapter.FroumtitleListadapter;
 import com.project.mechanic.entity.Comment;
+import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogcmtInfroum.OnMyDialogResult;
@@ -42,10 +43,13 @@ public class FroumFragment extends Fragment{
 	DataBaseAdapter adapter;
 	private int frmid;
 	private ImageButton btnAddcmt;
+	private ImageButton Like;
 	private Button btncmt;
 	private TextView txttitle;
 	private TextView txttitleDes;
-	ArrayList<Comment> mylist;
+	private TextView NumofLike;
+	private TextView NumofComment;
+	ArrayList<CommentInFroum> mylist;
 	DialogcmtInfroum  dialog;
 	ImageButton Replytocm;
 	FroumListAdapter froumListadapter;
@@ -64,28 +68,27 @@ public class FroumFragment extends Fragment{
 		((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
 		 View view = inflater.inflate(R.layout.fragment_froum, null);
 		 
-		 btnAddcmt = (ImageButton)view.findViewById(R.id.imgBtnAddcmt);
+		 btnAddcmt = (ImageButton)view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
+		 Like = (ImageButton)view.findViewById(R.id.imgbtnLike_CmtFroum);
 		 btncmt = (Button)view.findViewById(R.id.btnComment);
 		 txttitle=(TextView)view.findViewById(R.id.rawTitletxt);
 		 txttitleDes =(TextView)view.findViewById(R.id.rawtxtDescription);
+		 NumofComment =(TextView)view.findViewById(R.id.txtNumofCmt_CmtFroum);
+		 NumofLike =(TextView)view.findViewById(R.id.txtNumofLike_CmtFroum);
 		 
 		    adapter= new DataBaseAdapter(getActivity());
 			adapter.open();
-			
-			//Bundle bundle = new Bundle();
-			//bundle.getString("Id", String.valueOf(id));
 		    id = Integer.valueOf(getArguments().getString("Id"));
-			//mylist = adapter.getAllCommentByPapaerId(id);
-		    mylist = adapter.getCommentbyPaperid(id);
+		    NumofComment.setText(adapter.CommentInFroum_count().toString());
+			NumofLike.setText(adapter.LikeInFroum_count().toString());
+		    mylist = adapter.getCommentInFroumbyPaperid(id);
 			Froum x =adapter.getFroumItembyid(id);
-			
-				
-				txttitle.setText(x.getTitle());
-				txttitleDes.setText(x.getDescription());
-			    adapter.close();
+		    txttitle.setText(x.getTitle());
+			txttitleDes.setText(x.getDescription());
+			adapter.close();
 			
 			
-	
+			
 		
 
 		 lst = (ListView) view.findViewById(R.id.lstComment);
@@ -93,6 +96,17 @@ public class FroumFragment extends Fragment{
 		 FroumListAdapter ListAdapter = new FroumListAdapter(getActivity(),R.layout.raw_froumcmt, mylist);
          
 			lst.setAdapter(ListAdapter);
+			
+			Like.setOnClickListener(new View.OnClickListener() {
+				  
+				  @Override public void onClick(View arg0) {
+				  adapter.open();
+				  adapter.insertLikeInFroumToDb( 1, 0,"",1);
+				  NumofLike.setText(adapter.LikeInFroum_count().toString());
+				  adapter.close();
+				 
+				  
+				  } });
 
 			Replytocm= (ImageButton)view.findViewById(R.id.imgvReplytoCm);
 			/*Replytocm.setOnClickListener(new OnClickListener(){
@@ -144,7 +158,8 @@ public class FroumFragment extends Fragment{
 	
 	public void updateView2() {
 		adapter.open();
-		mylist = adapter.getCommentbyPaperid(id);
+		mylist =  adapter.getCommentInFroumbyPaperid(id);
+		NumofComment.setText(adapter.CommentInFroum_count().toString());
 		adapter.close();
 
 		froumListadapter = new FroumListAdapter(getActivity(),
