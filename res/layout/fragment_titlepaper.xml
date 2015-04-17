@@ -13,7 +13,7 @@
         android:layout_weight="10" >
 
         <ImageButton
-            android:id="@+id/imgBtnAddcmt"
+            android:id="@+id/imgBtnAddcmt_CmtFroum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

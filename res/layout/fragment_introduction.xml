@@ -68,7 +68,7 @@
                         android:src="@drawable/like" />
 
                     <TextView
-                        android:id="@+id/textView15"
+                        android:id="@+id/txtNumofLike_Object"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignLeft="@+id/ImgbtnLike_Object"
@@ -77,11 +77,11 @@
                         android:textSize="@dimen/txtsize10" />
 
                     <TextView
-                        android:id="@+id/textView16"
+                        android:id="@+id/txtNumofComment_Object"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/textView15"
-                        android:layout_alignBottom="@+id/textView15"
+                        android:layout_alignBaseline="@+id/txtNumofLike_Object"
+                        android:layout_alignBottom="@+id/txtNumofLike_Object"
                         android:layout_alignLeft="@+id/imgbtnCmt_introduction"
                         android:text="44"
                         android:textSize="@dimen/txtsize10" />

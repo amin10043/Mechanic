@@ -1,7 +1,7 @@
 package com.project.mechanic.entity;
 
 public class CommentInFroum {
-	int Id;
+	int ID;
 	String Description;
 	int Froumid;
 	int UserId;
@@ -9,11 +9,11 @@ public class CommentInFroum {
 	int CommentId;
 
 	public int getId() {
-		return Id;
+		return ID;
 	}
 
 	public void setId(int id) {
-		Id = id;
+		ID = id;
 	}
 
 	public String getDescription() {
@@ -58,7 +58,7 @@ public class CommentInFroum {
 
 	public CommentInFroum(int id, String description, int froumId, int userId,
 			String datetime, int commentId) {
-		Id = id;
+		ID = id;
 		Description = description;
 		Froumid = froumId;
 		UserId = userId;

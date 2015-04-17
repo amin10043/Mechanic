@@ -41,7 +41,7 @@
                     android:layout_weight="1" >
 
                     <TextView
-                        android:id="@+id/textView15"
+                        android:id="@+id/txtNumofLike_Object"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/txtsize10" />
@@ -50,8 +50,8 @@
                         android:id="@+id/textView16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/textView15"
-                        android:layout_alignBottom="@+id/textView15"
+                        android:layout_alignBaseline="@+id/txtNumofLike_Object"
+                        android:layout_alignBottom="@+id/txtNumofLike_Object"
                         android:textSize="@dimen/txtsize10" />
 
                     <ImageButton
@@ -68,7 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:layout_toRightOf="@+id/textView15"
+                        android:layout_toRightOf="@+id/txtNumofLike_Object"
                         android:scaleType="fitXY"
                         android:src="@drawable/save" />
 
@@ -119,7 +119,7 @@
                         android:src="@drawable/like" />
 
                     <TextView
-                        android:id="@+id/textView15"
+                        android:id="@+id/txtNumofLike_Object"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignLeft="@+id/ImgbtnLike_Object"
@@ -131,8 +131,8 @@
                         android:id="@+id/textView16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/textView15"
-                        android:layout_alignBottom="@+id/textView15"
+                        android:layout_alignBaseline="@+id/txtNumofLike_Object"
+                        android:layout_alignBottom="@+id/txtNumofLike_Object"
                         android:layout_alignLeft="@+id/imgbtnCmt_introduction"
                         android:text="44"
                         android:textSize="@dimen/txtsize10" />
