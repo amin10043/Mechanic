@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,17 +14,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.ListItem;
-import com.project.mechanic.entity.Province;
 import com.project.mechanic.fragment.AdvertisementFragment;
-import com.project.mechanic.fragment.AdvisorTypeFragment;
-import com.project.mechanic.fragment.BerandFragment;
-import com.project.mechanic.fragment.CityFragment;
-import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.fragment.ShopFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
