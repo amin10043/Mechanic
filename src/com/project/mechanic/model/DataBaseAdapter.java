@@ -311,7 +311,7 @@ public class DataBaseAdapter {
 		return result;
 
 	}
-<<<<<<< HEAD
+
 	//////////////////////////////////////////////
 	
 	public  News  getNewsById(int Id){
@@ -330,7 +330,6 @@ public class DataBaseAdapter {
 	}
 	
 
-=======
 	public ArrayList<NewsPaper> getAllNewsPaper() {
 
 		ArrayList<NewsPaper> result = new ArrayList<NewsPaper>();
@@ -345,7 +344,7 @@ public class DataBaseAdapter {
 		return result;
 
 	}
->>>>>>> branch 'master' of https://github.com/amin10043/Mechanic
+
 	
 	
 	
