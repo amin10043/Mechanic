@@ -20,12 +20,14 @@ import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Province;
+import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.row_items.RowMain;
 import com.project.mechanic.entity.News;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.LikeInObject;
+import com.project.mechanic.entity.TicketType;;
 
 public class DataBaseAdapter {
 
@@ -45,6 +47,7 @@ public class DataBaseAdapter {
 	private String TableList = "List";
 	private String TableListItem = "ListItem";
 	private String TableNews = "News";
+	private String TableNewsPaper = "NewsPaper";
 	private String TableObject = "Object";
 	private String TableObjectInCity = "ObjectInCity";
 	private String TableObjectInProvince = "ObjectInProvince";
@@ -52,10 +55,14 @@ public class DataBaseAdapter {
 	private String TablePaper = "Paper";
 	private String TablePaperType = "PaperType";
 	private String TableProvince = "Province";
+	private String TableTicket = "Ticket";
+	private String TableTicketType = "TicketType";
 	private String TableUsers = "Users";
 	private String TableWorkmanType = "WorkmanType";
 	private String TableCommentInObject= "CommentInObject";
 	private String TableCommentInFroum= "CommentInFroum";
+	private String TableObjectBrandType = "ObjectBrandType";
+
 	
  
 	private String[] ACL = { "ID", "UserId", "ListItemId" };
@@ -81,9 +88,12 @@ public class DataBaseAdapter {
 	private String[] Paper = { "ID", "Title", "Context" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name" };
+	private String[] Ticket = { "ID", "Title", "Desc", "UserId" ,"Image", "date","TypeId"};
+	private String[] TicketType = { "ID", "desc" };
 	private String[] Users = { "ID", "Name", "Email", "Password" ,"Phonenumber"};
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url"};
+	private String[] ObjectBrandType = {"ID","Description"};
 
 	private final Context mContext;
 	private SQLiteDatabase mDb;
@@ -220,6 +230,21 @@ public class DataBaseAdapter {
 
 	}
 	
+
+	public void insertTickettoDb(String Title, String desc,int userId,int typeId) {
+
+
+		ContentValues cv = new ContentValues();
+		cv.put("Title", Title);
+		cv.put("Desc", desc);
+		cv.put("UserId", userId);
+
+		cv.put("TypeId", typeId);
+
+
+		mDb.insert(TableTicket, null, cv);
+
+	}
 	public void insertPapertitletoDb(String Title, String Context) {
 
 		ContentValues cv = new ContentValues();
@@ -325,9 +350,49 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+
+	
+	
+	public  News  getNewsById(int Id){
+		News item = null;
+		Cursor mnew = mDb.query("News", News, " Id=?",
+				new String[] { String.valueOf( Id) }, null, null, null);
+
+		if (mnew.moveToNext()) {
+			item = CursorToNews(mnew);
+			
+		}
+
+		return item;
+		
+		
+	}
+	
+
+	public ArrayList<NewsPaper> getAllNewsPaper() {
+
+		ArrayList<NewsPaper> result = new ArrayList<NewsPaper>();
+		Cursor cursor = mDb.query(TableNewsPaper, NewsPaper, null, null, null,
+				null, null);
+		NewsPaper tempNewsPaper;
+		while (cursor.moveToNext()) {
+			tempNewsPaper = new NewsPaper(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getString(3));
+			result.add(tempNewsPaper);
+		}
+
+		return result;
+
+	}
+
 	
 	
 	
+	
+	private SQLiteDatabase getReadableDatabase() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	// /////////////// ListItems ////////////////
 	public ArrayList<ListItem> getListItemsById(int ListId) {
 
@@ -345,6 +410,55 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<NewsPaper> getNewsPaperTypeId(int TypeId) {
+
+		ArrayList<NewsPaper> result = new ArrayList<NewsPaper>();
+		NewsPaper item = null;
+		Cursor mCur = mDb.query("NewsPaper", NewsPaper, "TypeId=?",
+				new String[] { String.valueOf(TypeId) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToNewsPaper(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+	public NewsPaper getNewsPaperId(int Id) {
+
+		NewsPaper item = null;
+		Cursor mCur = mDb.query("NewsPaper", NewsPaper, "Id=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToNewsPaper(mCur);
+		}
+
+		return item;
+
+	}
+
+
+	public ArrayList<Ticket> getTicketByTypeId(int TypeId) {
+
+
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Ticket item = null;
+		Cursor mCur = mDb.query("Ticket", Ticket, "TypeId=?",
+				new String[] { String.valueOf(TypeId) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToTicket(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+	
+	
+	
 	public ArrayList<City> getCitysByProvinceId(int ProvinceId) {
 
 		ArrayList<City> result = new ArrayList<City>();
@@ -360,6 +474,7 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+	
 
 	public ArrayList<AdvisorType> getAdvisorTypes() {
 
@@ -453,6 +568,13 @@ public class DataBaseAdapter {
 		return tempForum;
 
 	}
+	@SuppressWarnings("unused")
+	private Paper CursorToPaper(Cursor cursor) {
+		Paper tempPaper = new Paper(cursor.getInt(0), cursor.getString(1),
+				cursor.getString(2));
+		return tempPaper;
+
+	}
 
 	@SuppressWarnings("unused")
 	private News CursorToNews(Cursor cursor) {
@@ -468,6 +590,19 @@ public class DataBaseAdapter {
 	
 	}
 	
+	@SuppressWarnings("unused")
+	private Ticket CursorToTicket(Cursor cursor) {
+		Ticket tempTicket = new Ticket(cursor.getInt(0),cursor.getString(1), cursor.getString(2), cursor.getInt(3),cursor.getBlob(4), cursor.getString(5),cursor.getInt(6));
+		return tempTicket;
+
+	}
+	
+	@SuppressWarnings("unused")
+	private TicketType CursorToTicketType(Cursor cursor) {
+		TicketType tempTicket = new TicketType(cursor.getInt(0),cursor.getString(1));
+		return tempTicket;
+
+	}
 	
 	public ArrayList<Province> getAllProvinceName() {
 		ArrayList<Province> result = new ArrayList<Province>();
@@ -830,6 +965,21 @@ public Froum getFroumItembyid(int Id) {
 	return item;
 
 }
+public Paper getPaperItembyid(int Id) {
+
+	
+	Paper item = null;
+	Cursor mCur = mDb.query(TablePaper, Paper, " Id=?",
+			new String[] { String.valueOf( Id) }, null, null, null);
+
+	if (mCur.moveToNext()) {
+		item = CursorToPaper(mCur);
+		
+	}
+
+	return item;
+
+}
 
 
 public Froum getFroumTitlebyid(int Id) {
@@ -888,8 +1038,30 @@ public NewsPaper getAllNewsPaperid(int id) {
 
 }
 
+public ArrayList<Ticket> getAllTicket() {
+	ArrayList<Ticket> result = new ArrayList<Ticket>();
+	Cursor cursor = mDb.query(TableTicket, Ticket, null, null, null, null,
+			null);
+	Ticket tempTicket;
+	while (cursor.moveToNext()) {
+		result.add(CursorToTicket(cursor));
+	}
 
+	return result;
 
+}
+
+public ArrayList<TicketType> getAllTicketType() {
+	ArrayList<TicketType> result = new ArrayList<TicketType>();
+	Cursor cursor = mDb.query(TableTicketType, TicketType, null, null, null, null,
+			null);
+	while (cursor.moveToNext()) {
+		result.add(CursorToTicketType(cursor));
+	}
+
+	return result;
+
+}
 
 
 
@@ -991,6 +1163,25 @@ public NewsPaper getAllNewsPaperid(int id) {
 		}
 
 		return res;
+		
+		
+		
 	}
-
+	
+	public ArrayList<Object> getObjectBy_BTId_CityId(int Object_id , int City_id) {
+		ArrayList<Object> result = new ArrayList<Object>();
+		Cursor cursor = mDb.rawQuery("Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter From " + TableObject + " as O inner join "
+				+ TableObjectInCity + " as C On O.Id = C.ObjectId Where O.ObjectBrandTypeId = " + Object_id +
+				" and C.CityId =" + City_id , null);
+		Object tempObject;
+		while (cursor.moveToNext()) {
+			tempObject = new Object(cursor.getInt(0), cursor.getString(1),
+					cursor.getString(2), cursor.getString(3),
+					cursor.getString(4), cursor.getString(5), null, null, null,
+					null,cursor.getString(6),cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getString(10),cursor.getString(11),cursor.getInt(12),cursor.getInt(13),cursor.getString(14),cursor.getString(15),cursor.getString(16),cursor.getString(17),cursor.getString(18),cursor.getString(19));
+			result.add(tempObject);
+		}
+		return result;
+	}
+	
 }

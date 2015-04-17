@@ -2,13 +2,16 @@ package com.project.mechanic.fragment;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.adapter.NewspaperAdapter;
 import com.project.mechanic.adapter.ShopListAdapter;
 import com.project.mechanic.adapter.NewsListAdapter;
 import com.project.mechanic.entity.ListItem;
+import com.project.mechanic.entity.NewsPaper;
 import com.project.mechanic.model.DataBaseAdapter;
 
 import android.annotation.SuppressLint;
@@ -39,14 +42,14 @@ public class NewsBuildingFragment extends Fragment {
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
-		List<ListItem> mylist = dbAdapter.getListItemsById(id);
+		List<NewsPaper> mylist = dbAdapter.getNewsPaperTypeId(id);
 		dbAdapter.close();
 
-		ListView lstNews = (ListView) view.findViewById(R.id.lstVnews);
+		ListView lstNewsPaper = (ListView) view.findViewById(R.id.lstVnews);
 		
-		NewsListAdapter ListAdapter = new NewsListAdapter(getActivity(),
-				R.layout.row_news, mylist, id);
-		lstNews.setAdapter(ListAdapter);
+		NewspaperAdapter ListAdapter = new NewspaperAdapter(getActivity(),
+				R.layout.row_news, mylist,id);
+		lstNewsPaper.setAdapter(ListAdapter);
 		return view;
 	}
 }

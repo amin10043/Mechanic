@@ -18,6 +18,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Province;
+import com.project.mechanic.fragment.AdvertisementFragment;
 import com.project.mechanic.fragment.AnadFragment;
 import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -69,13 +70,12 @@ public class ShopListAdapter extends ArrayAdapter<Province> {
 
 				Province province = list.get(position);
 				adapter.open();
-				List<City> allItems = adapter.getCitysByProvinceId(province
-						.getId());
+				List<City> allItems = adapter.getCitysByProvinceId(province.getId());
 				adapter.close();
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new AnadFragment());
+				trans.replace(R.id.content_frame, new AdvertisementFragment());
 				trans.addToBackStack(null);
 				trans.commit();
 			}

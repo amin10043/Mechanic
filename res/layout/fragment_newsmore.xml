@@ -2,62 +2,62 @@
    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       android:background="#ffffff" >
- 
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:background="@color/light_grey" >
+       android:background="@color/light_grey" >
+       
+     <LinearLayout
+       
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:orientation="vertical" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="376dp"
-            android:orientation="vertical" >
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_gravity="top"
+             android:layout_margin="15dp"
+             android:layout_weight="7"
+             android:background="@drawable/list_item"
+             android:orientation="vertical" >
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="right"
-    android:layout_marginTop="20dp"
-    android:layout_weight="1" >
+             <TextView
+                 android:id="@+id/titletxt"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="right"
+                 android:layout_marginRight="10dp"
+                 android:textAppearance="?android:attr/textAppearanceSmall"
+                 android:textColor="@color/red" />
 
-    <TextView
-        android:id="@+id/editTextname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_weight="1"
-        android:hint="Enter Name and Family"
-        android:text="عنوان:"
-        android:textColorHint="@color/red"
-        android:textSize="15dp" />
-    
-</LinearLayout>
+         </LinearLayout>
+         
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_margin="15dp"
+              android:layout_weight="1"
+              android:background="@drawable/list_item"
+              android:orientation="vertical" >
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginTop="20dp"
-    android:layout_weight="1" >
+              <TextView
+                  android:id="@+id/describtiontxt"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="right"
+                  android:layout_marginRight="10dp"
+                  android:gravity="right"
+                  android:textAppearance="?android:attr/textAppearanceLarge"
+                  android:textColor="@color/red"
+                  android:textSize="12dp" />
 
-    <TextView
-        android:id="@+id/TextView01"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:hint="content"
-        android:textColorHint="@color/red"
-        android:textSize="15dp" />
+         </LinearLayout>
 
-</LinearLayout>
-            
-        </LinearLayout>
-
-        
-    </ScrollView>
+</LinearLayout>  
+       
+           
+       
+       
+       
+       
 </RelativeLayout>
 
        
