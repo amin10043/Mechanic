@@ -39,7 +39,7 @@ public class FroumtitleFragment extends Fragment {
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
 		view = inflater.inflate(R.layout.fragment_titlefrm, null);
-		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt);
+		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 
 		mdb = new DataBaseAdapter(getActivity());
 		mdb.open();
