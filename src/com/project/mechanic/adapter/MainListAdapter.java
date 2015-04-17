@@ -24,6 +24,7 @@ import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.AdvertisementFragment;
 import com.project.mechanic.fragment.AdvisorTypeFragment;
 import com.project.mechanic.fragment.BerandFragment;
+import com.project.mechanic.fragment.CountryFragment;
 import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.FroumtitleFragment;
 import com.project.mechanic.fragment.NewsFragment;
@@ -149,7 +150,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 
 					FragmentTransaction trans = ((MainActivity) context)
 					.getSupportFragmentManager().beginTransaction();
-					ShopFragment fragment = new ShopFragment();
+					CountryFragment fragment = new CountryFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
 					fragment.setArguments(bundle);
