@@ -5,12 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import com.project.mechanic.R;
-import com.project.mechanic.fragment.DialogfroumTitle.OnMyDialogResult;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class DialogAnad extends Dialog {
@@ -61,6 +58,16 @@ public class DialogAnad extends Dialog {
 			}
 		});
 
+		dialog_img1.setOnClickListener(new android.view.View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				
+
+			
+			}
+		});
+		
 	}
 
 	public interface OnMyDialogResult {
