@@ -65,7 +65,7 @@ public class NewspaperListAdapter extends ArrayAdapter<News> {
 
 		TextView tx1 = (TextView) convertView.findViewById(R.id.rownews_Titletxt);
 		TextView tx2 = (TextView) convertView.findViewById(R.id.rownews_txtDescription);
-    	TextView txt3 = (TextView) convertView.findViewById(R.id.newsmoretxt);
+    
       
 		final News News = list.get(position);
 
