@@ -36,20 +36,11 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="20dp"
-            android:textColor="@color/red" />
+            android:maxLines="1"
+            android:textColor="@color/red"
+            android:textSize="13dp" />
         
-        
-         <TextView
-            android:id="@+id/newsmoretxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="false"
-            android:clickable="true"
-            android:text="ادامه خبر"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/red" />
+       
 
     </RelativeLayout>
 

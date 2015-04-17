@@ -315,6 +315,25 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+
+	//////////////////////////////////////////////
+	
+	public  News  getNewsById(int Id){
+		News item = null;
+		Cursor mnew = mDb.query("News", News, " Id=?",
+				new String[] { String.valueOf( Id) }, null, null, null);
+
+		if (mnew.moveToNext()) {
+			item = CursorToNews(mnew);
+			
+		}
+
+		return item;
+		
+		
+	}
+	
+
 	public ArrayList<NewsPaper> getAllNewsPaper() {
 
 		ArrayList<NewsPaper> result = new ArrayList<NewsPaper>();
@@ -329,9 +348,16 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+
 	
 	
 	
+	
+	private SQLiteDatabase getReadableDatabase() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	// /////////////// ListItems ////////////////
 	public ArrayList<ListItem> getListItemsById(int ListId) {
 
