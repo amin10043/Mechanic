@@ -9,6 +9,8 @@ import com.project.mechanic.R;
 import com.project.mechanic.adapter.AdvertisementListAdapter;
 import com.project.mechanic.adapter.NewsListAdapter;
 import com.project.mechanic.entity.ListItem;
+import com.project.mechanic.entity.Ticket;
+import com.project.mechanic.entity.TicketType;
 import com.project.mechanic.model.DataBaseAdapter;
 
 import android.annotation.SuppressLint;
@@ -23,14 +25,14 @@ import android.widget.ListView;
 public class AdvertisementFragment extends Fragment {
 
 	DataBaseAdapter dbAdapter;
-	int id;
+	//int id;
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		id = Integer.valueOf(getArguments().getString("Id"));
+		//id = Integer.valueOf(getArguments().getString("Id"));
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
 		View view = inflater.inflate(R.layout.fragment_shop, null);
@@ -38,12 +40,12 @@ public class AdvertisementFragment extends Fragment {
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
-		List<ListItem> mylist = dbAdapter.getListItemsById(id);
+		List<TicketType> mylist = dbAdapter.getAllTicketType();
 		dbAdapter.close();
 
 		ListView lstAdvertisement = (ListView) view.findViewById(R.id.listVshop);
 		AdvertisementListAdapter ListAdapter = new AdvertisementListAdapter(getActivity(),
-				R.layout.row_shop, mylist, id);
+				R.layout.row_shop, mylist);
 
 		lstAdvertisement.setAdapter(ListAdapter);
 

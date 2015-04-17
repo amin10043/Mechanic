@@ -26,6 +26,7 @@ import com.project.mechanic.row_items.RowMain;
 import com.project.mechanic.entity.News;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.LikeInObject;
+import com.project.mechanic.entity.TicketType;;
 
 public class DataBaseAdapter {
 
@@ -194,12 +195,13 @@ public class DataBaseAdapter {
 
 	}
 	
-	public void insertTickettoDb(String Title, String desc,int userId) {
+	public void insertTickettoDb(String Title, String desc,int userId,int typeId) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Title", Title);
 		cv.put("Desc", desc);
 		cv.put("UserId", userId);
+		cv.put("TypeId", typeId);
 
 		mDb.insert(TableTicket, null, cv);
 
@@ -309,6 +311,26 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+
+	//////////////////////////////////////////////
+	
+	public  News  getNewsById(int Id){
+		News item = null;
+		Cursor mnew = mDb.query("News", News, " Id=?",
+				new String[] { String.valueOf( Id) }, null, null, null);
+
+		if (mnew.moveToNext()) {
+			item = CursorToNews(mnew);
+			
+		}
+
+		return item;
+		
+		
+	}
+	
+
+
 	public ArrayList<NewsPaper> getAllNewsPaper() {
 
 		ArrayList<NewsPaper> result = new ArrayList<NewsPaper>();
@@ -323,9 +345,16 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+
 	
 	
 	
+	
+	private SQLiteDatabase getReadableDatabase() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	// /////////////// ListItems ////////////////
 	public ArrayList<ListItem> getListItemsById(int ListId) {
 
@@ -373,7 +402,7 @@ public class DataBaseAdapter {
 	}
 
 
-	public ArrayList<Ticket> getTicketById(int TypeId) {
+	public ArrayList<Ticket> getTicketByTypeId(int TypeId) {
 
 
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
@@ -529,6 +558,14 @@ public class DataBaseAdapter {
 		return tempTicket;
 
 	}
+	
+	@SuppressWarnings("unused")
+	private TicketType CursorToTicketType(Cursor cursor) {
+		TicketType tempTicket = new TicketType(cursor.getInt(0),cursor.getString(1));
+		return tempTicket;
+
+	}
+	
 	public ArrayList<Province> getAllProvinceName() {
 		ArrayList<Province> result = new ArrayList<Province>();
 		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
@@ -948,6 +985,18 @@ public ArrayList<Ticket> getAllTicket() {
 
 }
 
+public ArrayList<TicketType> getAllTicketType() {
+	ArrayList<TicketType> result = new ArrayList<TicketType>();
+	Cursor cursor = mDb.query(TableTicketType, TicketType, null, null, null, null,
+			null);
+	while (cursor.moveToNext()) {
+		result.add(CursorToTicketType(cursor));
+	}
+
+	return result;
+
+}
+
 
 
 
@@ -1069,20 +1118,5 @@ public ArrayList<Ticket> getAllTicket() {
 		}
 		return result;
 	}
-	public Ticket getTicketbyid(int Id) {
-
-		
-		Cursor cursor = mDb.query(TableTicket, Ticket, null, null, null, null,
-				null);
-		Ticket tempTicket=null;
-		if (cursor.moveToNext()) {
-			tempTicket=CursorToTicket(cursor);
-		}
-
-		return tempTicket;
-		
-		
-	}
-	
 	
 }
