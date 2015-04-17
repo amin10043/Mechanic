@@ -43,17 +43,17 @@ public class UrlNewsPaperFragment extends Fragment {
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
+
 		NewsPaper newsPaper=dbAdapter.getNewsPaperId(id);
-		
-	
+
 		dbAdapter.close();
 
-		
 		if(newsPaper != null){
 			WebView webview = (WebView) view.findViewById(R.id.webView1);
 			
 			webview.loadUrl(newsPaper.getUrl());
 		}
+
 		
 		
 		return view;

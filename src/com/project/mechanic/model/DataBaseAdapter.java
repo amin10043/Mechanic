@@ -195,13 +195,17 @@ public class DataBaseAdapter {
 
 	}
 	
+
 	public void insertTickettoDb(String Title, String desc,int userId,int typeId) {
+
 
 		ContentValues cv = new ContentValues();
 		cv.put("Title", Title);
 		cv.put("Desc", desc);
 		cv.put("UserId", userId);
+
 		cv.put("TypeId", typeId);
+
 
 		mDb.insert(TableTicket, null, cv);
 
@@ -329,7 +333,6 @@ public class DataBaseAdapter {
 		
 	}
 	
-
 
 	public ArrayList<NewsPaper> getAllNewsPaper() {
 
