@@ -316,7 +316,7 @@ public class DataBaseAdapter {
 
 	}
 
-	//////////////////////////////////////////////
+	
 	
 	public  News  getNewsById(int Id){
 		News item = null;
