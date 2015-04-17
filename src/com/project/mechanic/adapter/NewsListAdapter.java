@@ -278,6 +278,32 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 						
 						
 					}
+					if (id==291) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						NewsBuildingFragment fragment = new NewsBuildingFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+						
+					}
+					if (id==292) {
+						FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						NewsBuildingFragment fragment = new NewsBuildingFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(id));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+						
+						
+					}
 			}
 		});
 

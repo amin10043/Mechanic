@@ -134,6 +134,32 @@ public class NewspaperAdapter extends ArrayAdapter<NewsPaper> {
 					
 					
 				}
+				if (typeId==291) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					UrlNewsPaperFragment fragment = new UrlNewsPaperFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(id));
+					fragment.setArguments(bundle);
+					trans.replace(R.id.content_frame, fragment);
+					trans.addToBackStack(null);
+					trans.commit();
+					
+					
+				}
+				if (typeId==292) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					UrlNewsPaperFragment fragment = new UrlNewsPaperFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(id));
+					fragment.setArguments(bundle);
+					trans.replace(R.id.content_frame, fragment);
+					trans.addToBackStack(null);
+					trans.commit();
+					
+					
+				}
 				
 				
 			
