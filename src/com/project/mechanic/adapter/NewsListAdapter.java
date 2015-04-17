@@ -40,8 +40,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 	int itemId;
 	int lastPosition = 0;
 	
-	public NewsListAdapter(Context context, int resource,
-			List<ListItem> objact, int id) {
+	public NewsListAdapter(Context context, int resource,List<ListItem> objact, int id) {
 		super(context, resource, objact);
 
 		this.context = context;

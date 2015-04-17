@@ -48,7 +48,7 @@ public class DialogcmtInobject extends Dialog {
 		               dbadapter.insertCommentObjecttoDb(Cmttxt.getText().toString(),1, 1,
 		            			"",  1);
 		                dbadapter.close();
-					//	((IntroductionFragment) f).updateView3();
+						((IntroductionFragment) f).updateView3();
 						DialogcmtInobject.this.dismiss();
 					 
 				}

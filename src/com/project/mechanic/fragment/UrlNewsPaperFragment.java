@@ -9,6 +9,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.adapter.ShopListAdapter;
 import com.project.mechanic.adapter.NewsListAdapter;
 import com.project.mechanic.entity.ListItem;
+import com.project.mechanic.entity.NewsPaper;
 import com.project.mechanic.model.DataBaseAdapter;
 
 import android.annotation.SuppressLint;
@@ -25,7 +26,9 @@ public class UrlNewsPaperFragment extends Fragment {
 
 	DataBaseAdapter dbAdapter;
 	int id;
+	String a;
 
+    
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,19 +40,22 @@ public class UrlNewsPaperFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_urlnewspaper, null);
 		
 
-		//dbAdapter = new DataBaseAdapter(getActivity());
+		dbAdapter = new DataBaseAdapter(getActivity());
 
-		//dbAdapter.open();
-		//List<ListItem> mylist = dbAdapter.getListItemsById(id);
-		//	dbAdapter.close();
-
-		//ListView lstNews = (ListView) view.findViewById(R.id.lstVnews);
-		WebView webview = (WebView) view.findViewById(R.id.webView1);
+		dbAdapter.open();
+		NewsPaper newsPaper=dbAdapter.getNewsPaperId(id);
 		
-		webview.loadUrl("http://www.google.com");
-		//NewsListAdapter ListAdapter = new NewsListAdapter(getActivity(),
-		//		R.layout.row_news, mylist, id);
-	//	lstNews.setAdapter(ListAdapter);
+	
+		dbAdapter.close();
+
+		
+		if(newsPaper != null){
+			WebView webview = (WebView) view.findViewById(R.id.webView1);
+			
+			webview.loadUrl(newsPaper.getUrl());
+		}
+		
+		
 		return view;
 	}
 	

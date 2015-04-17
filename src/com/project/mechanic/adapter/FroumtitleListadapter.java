@@ -8,6 +8,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.ListItem;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.BerandFragment;
 import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.FroumFragment;
@@ -59,9 +60,13 @@ public class FroumtitleListadapter  extends ArrayAdapter<Froum>{
 		TextView txt3 = (TextView) convertView.findViewById(R.id.txtPhone_Object);
 	
 	    Froum person1 = mylist.get(position);
+	    
+	    adapter.open();
+		Users x = adapter.getUsernamebyid(person1.getUserId());
+		adapter.close();
 		txt1.setText(person1.getTitle());
 		txt2.setText(person1.getDescription());
-		txt3.setText("shaghayegh");
+		txt3.setText(x.getName());
 
 		convertView.setOnClickListener(new OnClickListener() {
 

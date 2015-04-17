@@ -36,7 +36,7 @@ public class DialogPaperTitle extends Dialog {
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.dialog_addcomment);
 		setContentView(resourceId);
-		btntitle = (Button) findViewById(R.id.Btntitle);
+		btntitle = (Button) findViewById(R.id.btnPdf1_Object);
 		titletxt = (EditText) findViewById(R.id.txtTitleP);
 		titleDestxt = (EditText) findViewById(R.id.txttitleDes);
 		btntitle.setOnClickListener(new android.view.View.OnClickListener() {

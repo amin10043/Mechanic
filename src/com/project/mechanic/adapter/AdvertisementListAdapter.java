@@ -19,29 +19,30 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
+import com.project.mechanic.entity.TicketType;
 import com.project.mechanic.fragment.AdvertisementFragment;
 import com.project.mechanic.fragment.AnadFragment;
 import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class AdvertisementListAdapter extends ArrayAdapter<ListItem> {
+public class AdvertisementListAdapter extends ArrayAdapter<TicketType> {
 
 	Context context;
-	List<ListItem> list;
-	ListItem tempItem;
+	List<TicketType> list;
+	TicketType tempItem;
 	DataBaseAdapter adapter;
 	int itemId;
 	int lastPosition = 0;
+	int typeID=0;
 
 	public AdvertisementListAdapter(Context context, int resource,
-			List<ListItem> objact, int id) {
+			List<TicketType> objact) {
 
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
-		adapter = new DataBaseAdapter(context);
-		this.itemId = id;
+		adapter = new DataBaseAdapter(context);		
 
 	}
 
@@ -62,7 +63,7 @@ public class AdvertisementListAdapter extends ArrayAdapter<ListItem> {
 				.findViewById(R.id.row_news_txt);
 
 		tempItem = list.get(position);
-		txtName.setText(tempItem.getName());
+		txtName.setText(tempItem.getDesc());
 
 		convertView.setOnClickListener(new OnClickListener() {
 
@@ -75,41 +76,13 @@ public class AdvertisementListAdapter extends ArrayAdapter<ListItem> {
 				String item = txtName.getText().toString();
 
 				int id = 0;
-				for (ListItem listItem : list) {
-					if (item.equals(listItem.getName())) {
+				for (TicketType listItem : list) {
+					if (item.equals(listItem.getDesc())) {
 						// check authentication and authorization
 						id = listItem.getId();
 					}
 				}
 
-				adapter.open();
-				int res = adapter.getNumberOfListItemChilds(id);
-				adapter.close();
-
-				if (res > 0) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					AdvertisementFragment fragment = new AdvertisementFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
-				}
-
-				if (id == 172) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					NewsFragment fragment = new NewsFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
-
-				} else if (id == 173) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					AnadFragment fragment = new AnadFragment();
@@ -120,50 +93,7 @@ public class AdvertisementListAdapter extends ArrayAdapter<ListItem> {
 					trans.addToBackStack(null);
 					trans.commit();
 
-				} else if (id == 174) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					AnadFragment fragment = new AnadFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
-
-				} else if (id == 175) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					AnadFragment fragment = new AnadFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
-
-				} else if (id == 176) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					AnadFragment fragment = new AnadFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
-
-				} else if (id == 177) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					AnadFragment fragment = new AnadFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
-				}
+				
 			}
 		});
 

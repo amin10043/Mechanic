@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -59,6 +60,10 @@ public class IntroductionFragment extends Fragment {
 	ImageButton Google;
 	ImageButton Site;
 	ImageButton Twitter;
+	Button Pdf1;
+	Button Pdf2;
+	Button Pdf3;
+	Button Pdf4;
 	Object object;
 
 	@SuppressLint("InflateParams")
@@ -95,6 +100,13 @@ public class IntroductionFragment extends Fragment {
 		Google = (ImageButton) view.findViewById(R.id.imgbtnGoogle_Object);
 		Site = (ImageButton) view.findViewById(R.id.imgbtnSite_Object);
 		Twitter= (ImageButton) view.findViewById(R.id.imgbtnTwitter_Object);
+		
+		Pdf1= (Button) view.findViewById(R.id.btnPdf1_Object);
+		Pdf2= (Button) view.findViewById(R.id.btnPdf2_Object);
+		Pdf3= (Button) view.findViewById(R.id.btnPdf3_Object);
+		Pdf4= (Button) view.findViewById(R.id.btnPdf4_Object);
+		
+		
 		
 		
 
@@ -183,6 +195,52 @@ public class IntroductionFragment extends Fragment {
 			});
 		 
 		 
+		 Pdf1.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getPdf1()));
+				        startActivity(browserIntent);
+
+				}
+			});
+		 
+		 
+		 Pdf2.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getPdf2()));
+				        startActivity(browserIntent);
+
+				}
+			});
+		 
+		 
+		 Pdf3.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getPdf3()));
+				        startActivity(browserIntent);
+
+				}
+			});
+		 
+		 
+		 Pdf4.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getPdf4()));
+				        startActivity(browserIntent);
+
+				}
+			});
 		 
 	
 
@@ -219,8 +277,8 @@ public class IntroductionFragment extends Fragment {
 			}
 		});
 
-		/*
-		 * like.setOnClickListener(new View.OnClickListener() {
+		
+		 /* like.setOnClickListener(new View.OnClickListener() {
 		 * 
 		 * @Override public void onClick(View arg0) { adapter.open();
 		 * adapter.insertLikeInObjectToDb( 1, 0,"",1); ArrayList<LikeInObject> y
@@ -231,16 +289,7 @@ public class IntroductionFragment extends Fragment {
 		 * } });
 		 */
 
-		/*
-		 * public void updateView3() { adapter.open(); mylist =
-		 * adapter.getAllCommentInObjectById(id); adapter.close();
-		 * 
-		 * IntroductionListAdapter x= new IntroductionListAdapter(getActivity(),
-		 * R.layout.raw_froumcmt, mylist); x.notifyDataSetChanged();
-		 * lst.setAdapter(x);
-		 * 
-		 * }
-		 */
+		
 
 		link2.setOnClickListener(new OnClickListener() {
 
@@ -285,8 +334,7 @@ public class IntroductionFragment extends Fragment {
 
 	}
 
-	private void updateView3() {
-	}
+	
 
 	private void resizeListView(ListView listView) {
 		ListAdapter listAdapter = listView.getAdapter();
@@ -313,4 +361,15 @@ public class IntroductionFragment extends Fragment {
 				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);
 	}
+	
+
+	  public void updateView3() { 
+		  adapter.open(); 
+		  mylist = adapter.getAllCommentInObjectById(id);
+          adapter.close();
+	      IntroductionListAdapter x= new IntroductionListAdapter(getActivity(), R.layout.raw_froumcmt, mylist);
+	      x.notifyDataSetChanged();
+	      lst.setAdapter(x);
+	   }
+	
 }

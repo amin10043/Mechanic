@@ -28,7 +28,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="50dp"
-            android:text="ثبت آگهی شما"
+            android:text="@string/txtanad"
             android:textColor="#000000" />
 
         <TextView
@@ -64,7 +64,7 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/fragment_showad_txt3"
+            android:id="@+id/txtPhonenumber_CmtFroum"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="right"

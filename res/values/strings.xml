@@ -38,7 +38,8 @@
     <string name="news">اخبار</string>
     <string name="anad">تالار </string>
     <string name="showad">آگهی</string>
-
+    <string name="txtanad">ثبت آگهی شما </string>
+ 
     <string-array name="MenuItems">
         <item name="home">خانه</item>
         <item name="users">کاربری</item>
@@ -57,9 +58,5 @@
         <item name="news_2">مقالات</item>
         <item name="news_3">اخبار</item>
     </string-array>
-
-    <string name="title_activity_dialogeml">Dialogeml</string>
-    <string name="title_activity_newsmore_fragment">NewsmoreFragment</string>
-    <string name="title_activity_welcome_screen">WelcomeScreen</string>
 
 </resources>
