@@ -7,9 +7,15 @@ public class Ticket {
 	int Id;
 	int TypeId;
 	int UserId;
+	int ProvinceId;
 	String Title;
 	String Desc;
 	String Date;
+	short Name;
+	short Email;
+	short Mobile;
+	short Phone;
+	short Fax;
 	byte[] Image;
 
 	
@@ -70,7 +76,7 @@ public class Ticket {
 		Image = image;
 	}
 
-	public Ticket(int id, String title, String desc, int Userid, byte[] imge, String date,int Typeid ) {
+	public Ticket(int id, String title, String desc, int Userid, byte[] imge, String date,int Typeid, short name,short email,short mobile,short phone,short fax,int provinceid) {
 		super();
 		Id = id;
 		Title = title;
@@ -79,6 +85,13 @@ public class Ticket {
 		Date = date;
 		TypeId = Typeid;
 		Image = imge;
+		Name = name;
+		Email = email;
+		Mobile = mobile;
+		Phone = phone;
+		Fax = fax;
+		ProvinceId=provinceid;
+		
 		
 		}
 }

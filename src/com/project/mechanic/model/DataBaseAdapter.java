@@ -88,7 +88,7 @@ public class DataBaseAdapter {
 	private String[] Paper = { "ID", "Title", "Context" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name" };
-	private String[] Ticket = { "ID", "Title", "Desc", "UserId" ,"Image", "date","TypeId"};
+	private String[] Ticket = { "ID", "Title", "Desc", "UserId" ,"Image", "date","TypeId","ProvinceId"};
 	private String[] TicketType = { "ID", "desc" };
 	private String[] Users = { "ID", "Name", "Email", "Password" ,"Phonenumber"};
 	private String[] WorkmanType = { "ID", "Name" };
@@ -595,7 +595,7 @@ public class DataBaseAdapter {
 	
 	@SuppressWarnings("unused")
 	private Ticket CursorToTicket(Cursor cursor) {
-		Ticket tempTicket = new Ticket(cursor.getInt(0),cursor.getString(1), cursor.getString(2), cursor.getInt(3),cursor.getBlob(4), cursor.getString(5),cursor.getInt(6));
+		Ticket tempTicket = new Ticket(cursor.getInt(0),cursor.getString(1), cursor.getString(2), cursor.getInt(3),cursor.getBlob(4), cursor.getString(5),cursor.getInt(6), cursor.getShort(7),cursor.getShort(8), cursor.getShort(9), cursor.getShort(10), cursor.getShort(11), cursor.getInt(12));
 		return tempTicket;
 
 	}
