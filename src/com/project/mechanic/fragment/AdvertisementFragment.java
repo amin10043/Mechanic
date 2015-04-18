@@ -35,7 +35,7 @@ public class AdvertisementFragment extends Fragment {
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
-		TicketList = dbAdapter.getTicketByProvinceId(0);
+		TicketList = dbAdapter.getTicketByProvinceId(1);
 		List<TicketType> mylist = dbAdapter.getAllTicketType();
 
 		dbAdapter.close();
