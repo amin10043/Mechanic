@@ -7,6 +7,12 @@ public class Ticket {
 	int Id;
 	int TypeId;
 	int UserId;
+	int ProvinceId;
+	int Name;
+	int Email;
+	int Mobile;
+	int Phone;
+	int Fax;
 	String Title;
 	String Desc;
 	String Date;
@@ -62,6 +68,44 @@ public class Ticket {
 		Date = date;
 	}
 
+	public int getName() {
+		return Name;
+	}
+
+	public void setName(int name) {
+		Name = name;
+	}
+	
+	public int getEmail() {
+		return Email;
+	}
+
+	public void setEmail(int email) {
+		Email = email;
+	}
+	public int getMobile() {
+		return Mobile;
+	}
+
+	public void setMobile(int mobile) {
+		Mobile = mobile;
+	}
+	
+	public int getPhone() {
+		return Phone;
+	}
+
+	public void setPhone(int phone) {
+		Phone = phone;
+	}
+	public int getFax() {
+		return Fax;
+	}
+
+	public void setFax(int fax) {
+		Fax = fax;
+	}
+	
 	public byte[]  getImage() {
 		return Image;
 	}
@@ -70,7 +114,7 @@ public class Ticket {
 		Image = image;
 	}
 
-	public Ticket(int id, String title, String desc, int Userid, byte[] imge, String date,int Typeid ) {
+	public Ticket(int id, String title, String desc, int Userid, byte[] imge, String date,int Typeid, int name,int email,int mobile,int phone,int fax,int provinceid) {
 		super();
 		Id = id;
 		Title = title;
@@ -79,6 +123,13 @@ public class Ticket {
 		Date = date;
 		TypeId = Typeid;
 		Image = imge;
+		Name = name;
+		Email = email;
+		Mobile = mobile;
+		Phone = phone;
+		Fax = fax;
+		ProvinceId=provinceid;
+		
 		
 		}
 }

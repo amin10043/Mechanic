@@ -5,24 +5,38 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class DialogAnad extends Dialog {
 
-	private ImageView dialog_img1,dialog_img2;
-	private EditText dialog_anad_et1,dialog_anad_et2;
+	protected static final Context Contaxt = null;
+
+	protected static final EditText number = null;
+	private static int RESULT_LOAD_IMAGE = 1;
+
+	private ImageView dialog_img1, dialog_img2;
+	private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5;
+	private EditText dialog_anad_et1, dialog_anad_et2;
 	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
 	int resourceId;
 	Context context;
 	Fragment fragment;
 	int ticketTypeID;
-	
+	int emailCheck = 0;
+	int nameCheck = 0;
+	int faxCheck = 0;
+	int phoneCheck = 0;
+	int mobileCheck = 0;
+	String titel;
 
-	public DialogAnad(Context context, int resourceId, Fragment fragment,int ticketTypeID) {
+	public DialogAnad(Context context, int resourceId, Fragment fragment,
+			int ticketTypeID) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		this.resourceId = resourceId;
@@ -39,35 +53,93 @@ public class DialogAnad extends Dialog {
 		setContentView(resourceId);
 		dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
 		dialog_img2 = (ImageView) findViewById(R.id.dialog_img2);
+		checkBox1 = (CheckBox) findViewById(R.id.checkBox1);
+		checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
+		checkBox3 = (CheckBox) findViewById(R.id.checkBox3);
+		checkBox4 = (CheckBox) findViewById(R.id.checkBox4);
+		checkBox5 = (CheckBox) findViewById(R.id.checkBox5);
 		dialog_anad_et1 = (EditText) findViewById(R.id.dialog_anad_et1);
 		dialog_anad_et2 = (EditText) findViewById(R.id.dialog_anad_et2);
-		
+
 		dialog_img2.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				dbadapter = new DataBaseAdapter(context);
+				if (checkBox1.isChecked()) {
+					emailCheck = 1;
+				} else {
+					emailCheck = 0;
+				}
+				if (checkBox2.isChecked()) {
+					nameCheck = 1;
+				} else {
+					nameCheck = 0;
+				}
+				if (checkBox3.isChecked()) {
+					faxCheck = 1;
+				} else {
+					faxCheck = 0;
+				}
+				if (checkBox4.isChecked()) {
+					phoneCheck = 1;
+				} else {
+					phoneCheck = 0;
+				}
+				if (checkBox5.isChecked()) {
+					mobileCheck = 1;
+				} else {
+					mobileCheck = 0;
+				}
 				dbadapter.open();
-		//		  int	id = Integer.valueOf(fragment. getArguments().getString("Id"));
-				dbadapter.insertTickettoDb(dialog_anad_et1.getText().toString(),
-						dialog_anad_et2.getText().toString(), 1,ticketTypeID);
+
+				dbadapter.insertTickettoDb(
+						dialog_anad_et1.getText().toString(), dialog_anad_et2
+								.getText().toString(), 1, ticketTypeID,
+						emailCheck, nameCheck, faxCheck, phoneCheck,
+						mobileCheck);
+
 				dbadapter.close();
 				((AnadFragment) fragment).updateView();
 				DialogAnad.this.dismiss();
 
 			}
 		});
+		// checkBox1.setOnClickListener(new android.view.View.OnClickListener()
+		// {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// // is chkIos checked?
+		// if (((CheckBox) v).isChecked()) {
+		//
+		// }
+
+		// StringBuffer result = new StringBuffer();
+		// result.append("checkBox1 : ").append(checkBox1.isChecked());
+		// result.append("checkBox2 : ").append(checkBox2.isChecked());
+		// result.append("checkBox3 :").append(checkBox3.isChecked());
+		// result.append("checkBox4 :").append(checkBox4.isChecked());
+		//
+		// Toast.makeText(context, R.string.hello_world,
+		// Toast.LENGTH_SHORT).show();
+		// }
+		// });
 
 		dialog_img1.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				
+				// Intent intent = new Intent();
+				// intent.setType("image/*");
+				// intent.setAction(Intent.ACTION_GET_CONTENT);
+				// startActivityForResult(
+				// Intent.createChooser(intent, "Select Picture");
+				// SELECT_PICTURE);
 
-			
 			}
 		});
-		
+
 	}
 
 	public interface OnMyDialogResult {
@@ -77,6 +149,5 @@ public class DialogAnad extends Dialog {
 	public void setDialogResult(OnMyDialogResult dialogResult) {
 		mDialogResult = dialogResult;
 	}
-	
-  
+
 }
