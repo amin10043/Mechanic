@@ -1,8 +1,12 @@
 package com.project.mechanic.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,22 +15,24 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
-
+import com.project.mechanic.entity.Ticket;
+import com.project.mechanic.fragment.BerandFragment;
 import com.project.mechanic.fragment.ShowAdFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class AnadListAdapter extends ArrayAdapter<ListItem> {
+public class AnadListAdapter extends ArrayAdapter<Ticket> {
 
 	Context context;
-	List<ListItem> list;
+	List<Ticket> list;
 	int[] imageId;
-	ListItem tempItem;
+	Ticket tempItem;
 	DataBaseAdapter adapter;
 
-	public AnadListAdapter(Context context, int resource, List<ListItem> objact) {
+	public AnadListAdapter(Context context, int resource, List<Ticket> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -49,19 +55,36 @@ public class AnadListAdapter extends ArrayAdapter<ListItem> {
 		ImageView img = (ImageView) convertView.findViewById(R.id.row_anad_img);
 
 		tempItem = list.get(position);
-		txtName.setText(tempItem.getName());
+		txtName.setText(tempItem.getTitle());
 		
 
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				
+				adapter.open();
+				ArrayList<Ticket> allItems = adapter.getTicketByTypeId(0);
+				int id = 0;
+				for (Ticket Ticket : allItems) {
+					if (tempItem.equals(Ticket.getTitle())) {
+						// check authentication and authorization
+						id = Ticket.getId();
+					}
+				}
+				adapter.close();
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new ShowAdFragment());
-				trans.addToBackStack(null);
-				trans.commit();
+					FragmentTransaction trans = ((MainActivity) context)
+					.getSupportFragmentManager().beginTransaction();
+					ShowAdFragment fragment = new ShowAdFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(id));
+					fragment.setArguments(bundle);
+					trans.replace(R.id.content_frame, fragment);
+					trans.addToBackStack(null);
+					trans.commit();
+				
+		
 					}
 		});
 

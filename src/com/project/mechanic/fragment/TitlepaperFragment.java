@@ -38,7 +38,7 @@ public class TitlepaperFragment extends Fragment {
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.News);
 		view = inflater.inflate(R.layout.fragment_titlepaper, null);
-		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt);
+		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 
 		mdb = new DataBaseAdapter(getActivity());
 		mdb.open();

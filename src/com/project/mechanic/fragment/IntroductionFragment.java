@@ -21,11 +21,13 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.IntroductionListAdapter;
 import com.project.mechanic.entity.CommentInObject;
+import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -41,6 +43,7 @@ public class IntroductionFragment extends Fragment {
 	public int id = 1;
 
 	public ImageButton like;
+	public ImageButton Comment;
 
 	ArrayList<CommentInObject> mylist;
 	DataBaseAdapter adapter;
@@ -52,6 +55,8 @@ public class IntroductionFragment extends Fragment {
 	TextView txtCellphone;
 	TextView txtEmail;
 	TextView txtDesc;
+	TextView txtNumofLike;
+	TextView txtNumofComment;
 	ImageView advertise;
 	ImageView advertise2;
 	ImageButton Facebook;
@@ -65,6 +70,11 @@ public class IntroductionFragment extends Fragment {
 	Button Pdf3;
 	Button Pdf4;
 	Object object;
+     ImageButton phone;
+	 ImageButton cphone;
+	 ImageButton map;
+	 ImageButton email;
+	
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -89,6 +99,8 @@ public class IntroductionFragment extends Fragment {
 		txtCellphone = (TextView) view.findViewById(R.id.txtCellphone_Object);
 		txtDesc = (TextView) view.findViewById(R.id.txtDesc_Object);
 		txtEmail = (TextView) view.findViewById(R.id.txtEmail_Object);
+		txtNumofLike = (TextView) view.findViewById(R.id.txtNumofLike_Object);
+		txtNumofComment = (TextView) view.findViewById(R.id.txtNumofComment_Object);
 		
 		
 		
@@ -101,19 +113,28 @@ public class IntroductionFragment extends Fragment {
 		Site = (ImageButton) view.findViewById(R.id.imgbtnSite_Object);
 		Twitter= (ImageButton) view.findViewById(R.id.imgbtnTwitter_Object);
 		
+	
+	 phone = (ImageButton) view.findViewById(R.id.phonebtn);
+	 cphone = (ImageButton) view.findViewById(R.id.cphonebtn);
+		 map = (ImageButton) view.findViewById(R.id.mapbtn);
+		email = (ImageButton) view.findViewById(R.id.emailbtn);
+		
+		
+		
+		
 		Pdf1= (Button) view.findViewById(R.id.btnPdf1_Object);
 		Pdf2= (Button) view.findViewById(R.id.btnPdf2_Object);
 		Pdf3= (Button) view.findViewById(R.id.btnPdf3_Object);
 		Pdf4= (Button) view.findViewById(R.id.btnPdf4_Object);
-		
-		
-		
-		
 
+		
+		
 		lst = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 		// id = Integer.valueOf(getArguments().getString("Id"));
 		adapter.open();
 		mylist = adapter.getAllCommentInObjectById(id);
+		txtNumofComment.setText(adapter.CommentInObject_count().toString());
+		txtNumofLike.setText(adapter.LikeInObject_count().toString());
 		 object = adapter.getAllObjectbyid(id);
 		if(object == null){
 			return view;
@@ -278,16 +299,16 @@ public class IntroductionFragment extends Fragment {
 		});
 
 		
-		 /* like.setOnClickListener(new View.OnClickListener() {
-		 * 
-		 * @Override public void onClick(View arg0) { adapter.open();
-		 * adapter.insertLikeInObjectToDb( 1, 0,"",1); ArrayList<LikeInObject> y
-		 * = adapter.getAllLikeInObjectById(id);
-		 * 
-		 * int x= adapter.LikeInObject_count(y);
-		 * 
-		 * } });
-		 */
+		  like.setOnClickListener(new View.OnClickListener() {
+		  
+		  @Override public void onClick(View arg0) {
+		  adapter.open();
+		  adapter.insertLikeInObjectToDb( 1, 0,"",1);
+		  txtNumofLike.setText(adapter.LikeInObject_count().toString());
+		 
+		  
+		  } });
+		 
 
 		
 
@@ -329,6 +350,91 @@ public class IntroductionFragment extends Fragment {
 
 			}
 		});
+		
+		
+	
+		
+		
+		phone.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+			//	Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
+				
+		//	startActivityForResult(new Intent("android.intent.action.call",Uri.parse("tel:"+ txtCellphone.getText().toString())), 1);
+				
+	
+			Intent intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:"+txtCellphone.getText().toString()));
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+		
+
+			}
+		});
+		
+		
+	cphone.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
+				//startActivityForResult(new Intent("android.intent.action.call",Uri.parse("tel:"+ txtPhone.getText().toString())), 1);
+
+
+				Intent intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:"+txtPhone.getText().toString()));
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
+				
+				
+				
+			}
+		});
+		
+		email.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+			
+	            String b_email =  txtEmail.getText().toString();
+	           Intent email = new Intent(Intent.ACTION_SEND);
+	            email.putExtra(Intent.EXTRA_EMAIL, new String[]{ "b_email"});
+	            email.setType("message/rfc822");
+	            
+	            startActivity(Intent.createChooser(email, "Choose an Email client :"));
+	            
+	            
+	            
+	            
+	           
+	            
+			}
+			
+			
+			
+		});
+		
+	map.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+			Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(android.content.Intent.ACTION_VIEW, 
+				    Uri.parse("https://www.google.com/maps/dir/36.2476613,59.4998502/Mashhad,+Khorasan+Razavi/Khorasan+Razavi,+Mashhad,+Kolahdooz+Blvd,+No.+47/@36.2934197,59.5606058,15z/data=!4m15!4m14!1m0!1m5!1m1!1s0x3f6c911abe4131d7:0xc9c57e3a9318753b!2m2!1d59.6167549!2d36.2604623!1m5!1m1!1s0x3f6c91798c9d172b:0xaf638c4e2e2ac720!2m2!1d59.5749626!2d36.2999667!3e2"));
+				startActivity(intent);
+			}
+		});
+		
+		
+		
+		
+		
+		
+		
+		
 
 		return view;
 
@@ -366,6 +472,7 @@ public class IntroductionFragment extends Fragment {
 	  public void updateView3() { 
 		  adapter.open(); 
 		  mylist = adapter.getAllCommentInObjectById(id);
+		  txtNumofComment.setText(adapter.CommentInObject_count().toString());
           adapter.close();
 	      IntroductionListAdapter x= new IntroductionListAdapter(getActivity(), R.layout.raw_froumcmt, mylist);
 	      x.notifyDataSetChanged();

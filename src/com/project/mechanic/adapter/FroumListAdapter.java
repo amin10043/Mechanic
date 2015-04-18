@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Comment;
+import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.FroumItem;
@@ -18,15 +19,15 @@ import android.widget.TextView;
 
 
 
-public class FroumListAdapter  extends ArrayAdapter<Comment>{
+public class FroumListAdapter  extends ArrayAdapter<CommentInFroum>{
 	
 
 	Context context;
-	List<Comment> list;
+	List<CommentInFroum> list;
 	DataBaseAdapter adapter;
 
 	public FroumListAdapter(Context context, int resource,
-			List<Comment> objects) {
+			List<CommentInFroum> objects) {
 		super(context, resource, objects);
 
 		this.context = context;
@@ -50,9 +51,9 @@ public class FroumListAdapter  extends ArrayAdapter<Comment>{
 		TextView txt1 = (TextView) convertView.findViewById(R.id.rawCmttxt);
 		TextView txt2 = (TextView) convertView.findViewById(R.id.rawUsernamecmttxt_cmt);
 		TextView txt3 = (TextView) convertView.findViewById(R.id.txtPhonenumber_CmtFroum);
-		Comment comment = list.get(position);
+		CommentInFroum comment = list.get(position);
 		adapter.open();
-		Users x = adapter.getUsernamebyid(comment.getUserId());
+		Users x = adapter.getUsernamebyid(comment.getUserid());
 		adapter.close();
 	    
 	   
