@@ -595,7 +595,7 @@ public class DataBaseAdapter {
 	
 	@SuppressWarnings("unused")
 	private Ticket CursorToTicket(Cursor cursor) {
-		Ticket tempTicket = new Ticket(cursor.getInt(0),cursor.getString(1), cursor.getString(2), cursor.getInt(3),cursor.getBlob(4), cursor.getString(5),cursor.getInt(6), cursor.getShort(7),cursor.getShort(8), cursor.getShort(9), cursor.getShort(10), cursor.getShort(11), cursor.getInt(12));
+		Ticket tempTicket = new Ticket(cursor.getInt(0),cursor.getString(1), cursor.getString(2), cursor.getInt(3),cursor.getBlob(4), cursor.getString(5),cursor.getInt(6), cursor.getInt(7),cursor.getInt(8), cursor.getInt(9), cursor.getInt(10), cursor.getInt(11), cursor.getInt(12));
 		return tempTicket;
 
 	}
