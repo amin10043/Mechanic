@@ -62,6 +62,8 @@ public class ShopListAdapter extends ArrayAdapter<Province> {
 
 		convertView.setOnClickListener(new OnClickListener() {
 
+			private char[] id;
+
 			@Override
 			public void onClick(View arg0) {
 
@@ -72,6 +74,15 @@ public class ShopListAdapter extends ArrayAdapter<Province> {
 
 				adapter.close();
 
+				// FragmentTransaction trans = ((MainActivity) context)
+				// .getSupportFragmentManager().beginTransaction();
+				// AdvertisementFragment fragment = new AdvertisementFragment();
+				// Bundle bundle = new Bundle();
+				// bundle.putString("Id", String.valueOf(id));
+				// fragment.setArguments(bundle);
+				// trans.replace(R.id.content_frame, fragment);
+				// trans.addToBackStack(null);
+				// trans.commit();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new AdvertisementFragment());
