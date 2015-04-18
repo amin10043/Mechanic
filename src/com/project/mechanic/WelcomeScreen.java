@@ -16,14 +16,13 @@ import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ListAdapter;
 
 import com.project.mechanic.adapter.WelcomeScreenAdapter;
 
 public class WelcomeScreen extends Activity {
-	int SPLASH_DISPLAY_TIME = 30000;
+	int SPLASH_DISPLAY_TIME = 1000;
 	Handler handler;
 	Runnable runnable;
 
@@ -118,9 +117,7 @@ public class WelcomeScreen extends Activity {
 		return columnWidth;
 
 	}
-	
-	
-	
+
 	private void resizeGridView(final GridView gridview) {
 		ListAdapter listAdapter = gridview.getAdapter();
 		if (listAdapter == null) {

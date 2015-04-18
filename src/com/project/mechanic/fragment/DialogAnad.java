@@ -40,13 +40,14 @@ public class DialogAnad extends Dialog {
 	int ProvinceId;
 
 	public DialogAnad(Context context, int resourceId, Fragment fragment,
-			int ticketTypeID) {
+			int ticketTypeID, int ProvinceId) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		this.resourceId = resourceId;
 		this.context = context;
 		this.fragment = fragment;
 		this.ticketTypeID = ticketTypeID;
+		this.ProvinceId = ProvinceId;
 	}
 
 	@Override

@@ -44,6 +44,7 @@ public class AnadFragment extends Fragment {
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.anad);
 		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
+		final int proID = Integer.valueOf(getArguments().getString("ProID"));
 
 		imgadd = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
 		txt1 = (TextView) view.findViewById(R.id.fragment_anad_txt1);
@@ -61,7 +62,7 @@ public class AnadFragment extends Fragment {
 			public void onClick(View arg0) {
 
 				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,
-						AnadFragment.this, ticketTypeid);
+						AnadFragment.this, ticketTypeid, proID);
 				dialog.setTitle(R.string.txtanad);
 
 				dialog.show();

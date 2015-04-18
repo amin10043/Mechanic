@@ -20,7 +20,6 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.fragment.ObjectFragment;
-import com.project.mechanic.fragment.ProvinceFragment;
 
 public class CityListAdapter extends ArrayAdapter<City> {
 
@@ -65,18 +64,11 @@ public class CityListAdapter extends ArrayAdapter<City> {
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				trans.addToBackStack(null);
-				
-
-				
 				Fragment move = new ObjectFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("cityId", String.valueOf(city.getId()));
 				move.setArguments(bundle);
 				trans.replace(R.id.content_frame, move);
-
-				
-				
-				
 				trans.commit();
 			}
 		});

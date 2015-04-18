@@ -27,7 +27,7 @@ public class AdvertisementFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		// Integer id = Integer.valueOf(getArguments().getString("Id"));
+		int id = Integer.valueOf(getArguments().getString("provinceId"));
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
 		View view = inflater.inflate(R.layout.fragment_shop, null);
@@ -43,7 +43,7 @@ public class AdvertisementFragment extends Fragment {
 		ListView lstAdvertisement = (ListView) view
 				.findViewById(R.id.listVshop);
 		AdvertisementListAdapter ListAdapter = new AdvertisementListAdapter(
-				getActivity(), R.layout.row_shop, mylist);
+				getActivity(), R.layout.row_shop, mylist, id);
 
 		lstAdvertisement.setAdapter(ListAdapter);
 
