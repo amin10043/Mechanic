@@ -88,7 +88,7 @@ public class DataBaseAdapter {
 	private String[] Paper = { "ID", "Title", "Context" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name" };
-	private String[] Ticket = { "ID", "Title", "Desc", "UserId" ,"Image", "date","TypeId","ProvinceId"};
+	private String[] Ticket = { "ID", "Title", "Desc", "UserId" ,"Image", "date","TypeId","Name","Email","Mobile","Phone","Fax","ProvinceId"};
 	private String[] TicketType = { "ID", "desc" };
 	private String[] Users = { "ID", "Name", "Email", "Password" ,"Phonenumber"};
 	private String[] WorkmanType = { "ID", "Name" };
@@ -448,7 +448,7 @@ public class DataBaseAdapter {
 
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
 		Ticket item = null;
-		Cursor mCur = mDb.query("Ticket", Ticket, "TypeId=?",
+		Cursor mCur = mDb.query(TableTicket, Ticket, "TypeId=?",
 				new String[] { String.valueOf(TypeId) }, null, null, null);
 
 		while (mCur.moveToNext()) {
