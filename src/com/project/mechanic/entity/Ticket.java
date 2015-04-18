@@ -8,14 +8,14 @@ public class Ticket {
 	int TypeId;
 	int UserId;
 	int ProvinceId;
-	String Title;
-	String Desc;
-	String Date;
 	int Name;
 	int Email;
 	int Mobile;
 	int Phone;
 	int Fax;
+	String Title;
+	String Desc;
+	String Date;
 	byte[] Image;
 
 	
@@ -68,6 +68,44 @@ public class Ticket {
 		Date = date;
 	}
 
+	public int getName() {
+		return Name;
+	}
+
+	public void setName(int name) {
+		Name = name;
+	}
+	
+	public int getEmail() {
+		return Email;
+	}
+
+	public void setEmail(int email) {
+		Email = email;
+	}
+	public int getMobile() {
+		return Mobile;
+	}
+
+	public void setMobile(int mobile) {
+		Mobile = mobile;
+	}
+	
+	public int getPhone() {
+		return Phone;
+	}
+
+	public void setPhone(int phone) {
+		Phone = phone;
+	}
+	public int getFax() {
+		return Fax;
+	}
+
+	public void setFax(int fax) {
+		Fax = fax;
+	}
+	
 	public byte[]  getImage() {
 		return Image;
 	}
