@@ -59,7 +59,7 @@ public class RegisterFragment extends Fragment {
 			else {
 
 			
-			 
+			 //first Insert user to WS then insert to local
 			dbAdapter.open();
 			dbAdapter.inserUserToDb( Name,user, pass);
 			dbAdapter.close();

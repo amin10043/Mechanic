@@ -78,5 +78,9 @@ public class Users {
 		Password = password;
 		Phonenumber= phonenumber;
 	}
+	
+	public Users(){
+		
+	}
 
 }
