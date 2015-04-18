@@ -14,7 +14,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:background="#eb523e"
+        
         android:orientation="vertical" >
        
         <TextView
@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/linearLayout3"
         android:layout_alignParentLeft="true"
-        android:background="#fb3217"
+        
         android:orientation="horizontal" >
 
         <TextView

@@ -33,7 +33,7 @@ public class PaperFragment extends Fragment {
 		TextView txtcontext=(TextView) view.findViewById(R.id.txtContext);
 		TextView txtcomment=(TextView) view.findViewById(R.id.txtComment);
 		TextView txtlike=(TextView) view.findViewById(R.id.txtLike);
-		btncomment1=(Button) view.findViewById(R.id.btnComment);
+		btncomment1=(Button) view.findViewById(R.id.btncomment);
 		Button btnlike=(Button) view.findViewById(R.id.btnLike);
 		
 		 adapter= new DataBaseAdapter(getActivity());
@@ -52,7 +52,7 @@ public class PaperFragment extends Fragment {
 		
 				
 
-		/*btncomment1.setOnClickListener(new View.OnClickListener() {
+		btncomment1.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -62,7 +62,7 @@ public class PaperFragment extends Fragment {
 				  
 				
 			}
-		});*/
+		});
 		return view;
 		
 		
