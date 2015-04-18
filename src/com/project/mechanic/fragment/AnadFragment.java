@@ -3,7 +3,13 @@ package com.project.mechanic.fragment;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +34,7 @@ public class AnadFragment extends Fragment {
 	List<Ticket> mylist;
 	private DialogAnad dialog;
 	int ticketTypeid = 0;
+	private static int RESULT_LOAD_IMAGE = 1;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -93,4 +100,30 @@ public class AnadFragment extends Fragment {
 		lstAnad.setAdapter(ListAdapter);
 
 	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == RESULT_LOAD_IMAGE
+				&& resultCode == Activity.RESULT_OK && null != data) {
+			Uri selectedImage = data.getData();
+			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+			Cursor cursor = getActivity().getContentResolver().query(
+					selectedImage, filePathColumn, null, null, null);
+			cursor.moveToFirst();
+
+			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+			String picturePath = cursor.getString(columnIndex);
+			cursor.close();
+
+			ImageView imageView = (ImageView) dialog.getView().findViewById(
+					R.id.imageView1);
+			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+		}
+
+	}
+
 }
