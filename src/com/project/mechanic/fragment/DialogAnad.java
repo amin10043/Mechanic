@@ -2,16 +2,22 @@ package com.project.mechanic.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class DialogAnad extends Dialog {
 
+	protected static final EditText number = null;
+	private static int RESULT_LOAD_IMAGE = 1;
 	private ImageView dialog_img1,dialog_img2;
 	private EditText dialog_anad_et1,dialog_anad_et2;
 	OnMyDialogResult mDialogResult;
@@ -62,13 +68,20 @@ public class DialogAnad extends Dialog {
 
 			@Override
 			public void onClick(View arg0) {
-				
-
 			
-			}
-		});
+				
+         }
+	      });
 		
 	}
+
+
+	
+
+
+
+
+
 
 	public interface OnMyDialogResult {
 		void finish(String result);
