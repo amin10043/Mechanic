@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.model.DataBaseAdapter;
 
 public class ShowAdFragment extends Fragment {
 
-
+	
 
 	@SuppressLint("InflateParams")
 	@Override
