@@ -27,7 +27,7 @@ public class AdvertisementFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		// id = Integer.valueOf(getArguments().getString("Id"));
+		// Integer id = Integer.valueOf(getArguments().getString("Id"));
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
 		View view = inflater.inflate(R.layout.fragment_shop, null);
