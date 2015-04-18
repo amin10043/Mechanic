@@ -18,6 +18,7 @@ public class DialogAnad extends Dialog {
 	protected static final Context Contaxt = null;
 
 	protected static final EditText number = null;
+
 	private static int RESULT_LOAD_IMAGE = 1;
 	private static final int SELECT_PICTURE = 1;
 
@@ -36,6 +37,7 @@ public class DialogAnad extends Dialog {
 	int phoneCheck = 0;
 	int mobileCheck = 0;
 	String titel;
+	int ProvinceId;
 
 	public DialogAnad(Context context, int resourceId, Fragment fragment,
 			int ticketTypeID) {
@@ -52,6 +54,9 @@ public class DialogAnad extends Dialog {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.dialog_addcomment);
+
+		// id = Integer.valueOf(getArguments().getString("Id"));
+
 		setContentView(resourceId);
 		dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
 		dialog_img2 = (ImageView) findViewById(R.id.dialog_img2);
@@ -99,7 +104,7 @@ public class DialogAnad extends Dialog {
 						dialog_anad_et1.getText().toString(), dialog_anad_et2
 								.getText().toString(), 1, ticketTypeID,
 						emailCheck, nameCheck, faxCheck, phoneCheck,
-						mobileCheck);
+						mobileCheck, ProvinceId);
 
 				dbadapter.close();
 				((AnadFragment) fragment).updateView();

@@ -27,7 +27,7 @@ public class AdvertisementFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		// id = Integer.valueOf(getArguments().getString("Id"));
+		// Integer id = Integer.valueOf(getArguments().getString("Id"));
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
 		View view = inflater.inflate(R.layout.fragment_shop, null);
@@ -35,7 +35,7 @@ public class AdvertisementFragment extends Fragment {
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
-		TicketList = dbAdapter.getTicketByProvinceId(0);
+		TicketList = dbAdapter.getTicketByProvinceId(1);
 		List<TicketType> mylist = dbAdapter.getAllTicketType();
 
 		dbAdapter.close();
