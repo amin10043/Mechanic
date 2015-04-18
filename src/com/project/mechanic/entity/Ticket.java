@@ -11,11 +11,11 @@ public class Ticket {
 	String Title;
 	String Desc;
 	String Date;
-	short Name;
-	short Email;
-	short Mobile;
-	short Phone;
-	short Fax;
+	int Name;
+	int Email;
+	int Mobile;
+	int Phone;
+	int Fax;
 	byte[] Image;
 
 	
@@ -76,7 +76,7 @@ public class Ticket {
 		Image = image;
 	}
 
-	public Ticket(int id, String title, String desc, int Userid, byte[] imge, String date,int Typeid, short name,short email,short mobile,short phone,short fax,int provinceid) {
+	public Ticket(int id, String title, String desc, int Userid, byte[] imge, String date,int Typeid, int name,int email,int mobile,int phone,int fax,int provinceid) {
 		super();
 		Id = id;
 		Title = title;
