@@ -67,8 +67,8 @@ public class DialogAnad extends Dialog {
 				dbadapter.open();
 		//		  int	id = Integer.valueOf(fragment. getArguments().getString("Id"));
 				
-				dbadapter.insertTickettoDb(dialog_anad_et1.getText().toString(),
-						dialog_anad_et2.getText().toString(), 1,ticketTypeID);
+			dbadapter.insertTickettoDb(dialog_anad_et1.getText().toString(),
+					dialog_anad_et2.getText().toString(), 1,ticketTypeID);
 				
 				dbadapter.close();
 				((AnadFragment) fragment).updateView();
