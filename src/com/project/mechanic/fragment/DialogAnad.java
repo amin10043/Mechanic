@@ -2,6 +2,7 @@ package com.project.mechanic.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -17,7 +18,9 @@ public class DialogAnad extends Dialog {
 	protected static final Context Contaxt = null;
 
 	protected static final EditText number = null;
+
 	private static int RESULT_LOAD_IMAGE = 1;
+	private static final int SELECT_PICTURE = 1;
 
 	private ImageView dialog_img1, dialog_img2;
 	private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5;
@@ -34,6 +37,7 @@ public class DialogAnad extends Dialog {
 	int phoneCheck = 0;
 	int mobileCheck = 0;
 	String titel;
+	int ProvinceId;
 
 	public DialogAnad(Context context, int resourceId, Fragment fragment,
 			int ticketTypeID) {
@@ -50,6 +54,9 @@ public class DialogAnad extends Dialog {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.dialog_addcomment);
+
+		// id = Integer.valueOf(getArguments().getString("Id"));
+
 		setContentView(resourceId);
 		dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
 		dialog_img2 = (ImageView) findViewById(R.id.dialog_img2);
@@ -97,7 +104,7 @@ public class DialogAnad extends Dialog {
 						dialog_anad_et1.getText().toString(), dialog_anad_et2
 								.getText().toString(), 1, ticketTypeID,
 						emailCheck, nameCheck, faxCheck, phoneCheck,
-						mobileCheck);
+						mobileCheck, ProvinceId);
 
 				dbadapter.close();
 				((AnadFragment) fragment).updateView();
@@ -130,12 +137,12 @@ public class DialogAnad extends Dialog {
 
 			@Override
 			public void onClick(View arg0) {
-				// Intent intent = new Intent();
-				// intent.setType("image/*");
-				// intent.setAction(Intent.ACTION_GET_CONTENT);
-				// startActivityForResult(
-				// Intent.createChooser(intent, "Select Picture");
-				// SELECT_PICTURE);
+				Intent i = new Intent(
+						Intent.ACTION_PICK,
+						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+				fragment.getActivity().startActivityFromFragment(fragment, i,
+						RESULT_LOAD_IMAGE);
 
 			}
 		});
@@ -148,6 +155,10 @@ public class DialogAnad extends Dialog {
 
 	public void setDialogResult(OnMyDialogResult dialogResult) {
 		mDialogResult = dialogResult;
+	}
+
+	public View getView() {
+		return this.getLayoutInflater().inflate(resourceId, null);
 	}
 
 }

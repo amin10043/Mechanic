@@ -231,7 +231,9 @@ public class DataBaseAdapter {
 	}
 
 	public void insertTickettoDb(String Title, String desc, int userId,
-			int typeId, int email, int name, int fax, int phone, int mobile) {
+
+	int typeId, int email, int name, int fax, int phone, int mobile,
+			int provinceId) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Title", Title);
@@ -243,6 +245,7 @@ public class DataBaseAdapter {
 		cv.put("Fax", fax);
 		cv.put("Phone", phone);
 		cv.put("Mobile", mobile);
+		cv.put("ProvinceId", provinceId);
 
 		mDb.insert(TableTicket, null, cv);
 
