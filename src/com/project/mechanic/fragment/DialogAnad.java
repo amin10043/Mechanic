@@ -66,23 +66,33 @@ public class DialogAnad extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 				dbadapter = new DataBaseAdapter(context);
-				dbadapter.open();
-
 				if (checkBox1.isChecked()) {
 					emailCheck = 1;
+				} else {
+					emailCheck = 0;
 				}
-				if (checkBox1.isChecked()) {
+				if (checkBox2.isChecked()) {
 					nameCheck = 1;
+				} else {
+					nameCheck = 0;
 				}
-				if (checkBox1.isChecked()) {
+				if (checkBox3.isChecked()) {
 					faxCheck = 1;
+				} else {
+					faxCheck = 0;
 				}
-				if (checkBox1.isChecked()) {
+				if (checkBox4.isChecked()) {
 					phoneCheck = 1;
+				} else {
+					phoneCheck = 0;
 				}
-				if (checkBox1.isChecked()) {
+				if (checkBox5.isChecked()) {
 					mobileCheck = 1;
+				} else {
+					mobileCheck = 0;
 				}
+				dbadapter.open();
+
 				dbadapter.insertTickettoDb(
 						dialog_anad_et1.getText().toString(), dialog_anad_et2
 								.getText().toString(), 1, ticketTypeID,
@@ -120,6 +130,12 @@ public class DialogAnad extends Dialog {
 
 			@Override
 			public void onClick(View arg0) {
+				// Intent intent = new Intent();
+				// intent.setType("image/*");
+				// intent.setAction(Intent.ACTION_GET_CONTENT);
+				// startActivityForResult(
+				// Intent.createChooser(intent, "Select Picture");
+				// SELECT_PICTURE);
 
 			}
 		});
