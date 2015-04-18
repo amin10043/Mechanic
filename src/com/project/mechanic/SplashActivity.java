@@ -75,7 +75,7 @@ public class SplashActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.facebook.google.com"));
+				 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.facebook.com"));
 			        startActivity(browserIntent);
 							
 

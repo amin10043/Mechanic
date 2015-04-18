@@ -93,7 +93,9 @@ public class DataBaseAdapter {
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name" };
 	private String[] Ticket = { "ID", "Title", "Desc", "UserId", "Image",
-			"date", "TypeId", "ProvinceId" };
+			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
+			"ProvinceId" };
+
 	private String[] TicketType = { "ID", "desc" };
 	private String[] Users = { "ID", "Name", "Email", "Password", "Phonenumber" };
 	private String[] WorkmanType = { "ID", "Name" };
@@ -229,14 +231,18 @@ public class DataBaseAdapter {
 	}
 
 	public void insertTickettoDb(String Title, String desc, int userId,
-			int typeId) {
+			int typeId, int email, int name, int fax, int phone, int mobile) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Title", Title);
 		cv.put("Desc", desc);
 		cv.put("UserId", userId);
-
 		cv.put("TypeId", typeId);
+		cv.put("Email", email);
+		cv.put("Name", name);
+		cv.put("Fax", fax);
+		cv.put("Phone", phone);
+		cv.put("Mobile", mobile);
 
 		mDb.insert(TableTicket, null, cv);
 
@@ -441,8 +447,24 @@ public class DataBaseAdapter {
 
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
 		Ticket item = null;
-		Cursor mCur = mDb.query("Ticket", Ticket, "TypeId=?",
+		Cursor mCur = mDb.query(TableTicket, Ticket, "TypeId=?",
 				new String[] { String.valueOf(TypeId) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToTicket(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	public ArrayList<Ticket> getTicketByProvinceId(int ProvinceId) {
+
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Ticket item = null;
+		Cursor mCur = mDb.query(TableTicket, Ticket, "ProvinceId=?",
+				new String[] { String.valueOf(ProvinceId) }, null, null, null);
 
 		while (mCur.moveToNext()) {
 			item = CursorToTicket(mCur);
