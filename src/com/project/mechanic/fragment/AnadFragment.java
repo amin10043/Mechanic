@@ -120,8 +120,8 @@ public class AnadFragment extends Fragment {
 			String picturePath = cursor.getString(columnIndex);
 			cursor.close();
 
-			ImageView imageView = (ImageView) dialog.getView().findViewById(
-					R.id.imageView1);
+			ImageView imageView = (ImageView) dialog
+					.findViewById(R.id.imageView1);
 			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 		}
 

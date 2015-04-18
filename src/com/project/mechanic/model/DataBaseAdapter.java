@@ -95,6 +95,7 @@ public class DataBaseAdapter {
 	private String[] Ticket = { "ID", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
 			"ProvinceId" };
+
 	private String[] TicketType = { "ID", "desc" };
 	private String[] Users = { "ID", "Name", "Email", "Password", "Phonenumber" };
 	private String[] WorkmanType = { "ID", "Name" };
@@ -1206,4 +1207,16 @@ public class DataBaseAdapter {
 		return result;
 	}
 
+	public Users getUserById(int id) {
+		Users item = null;
+		Cursor mCur = mDb.query(TableUsers, Users, " Id=?",
+				new String[] { String.valueOf(id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToUsers(mCur);
+
+		}
+
+		return item;
+	}
 }
