@@ -1,40 +1,91 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:fillViewport="true" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_weight="1"
+        android:fillViewport="true" >
 
         <GridView
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/grid_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="#fff"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:columnWidth="60dp"
             android:gravity="center"
-            android:isScrollContainer="false"
+            android:horizontalSpacing="10dp"
             android:numColumns="3"
-            android:stretchMode="columnWidth" >
-        </GridView>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/like" />
-
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/like" />
-
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/like" />
+            android:padding="10dp"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp" />
     </LinearLayout>
 
-</ScrollView>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:fillViewport="true"
+        android:gravity="center"
+        android:weightSum="8" >
+
+        <ImageButton
+            android:id="@+id/btnprev"
+            android:layout_width="80dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:background="@drawable/prev" />
+
+        <ImageButton
+            android:id="@+id/btnfb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/i4" />
+
+        <ImageButton
+            android:id="@+id/btnlinking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/i6" />
+
+        <ImageButton
+            android:id="@+id/btntwitter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/i5" />
+
+        <ImageButton
+            android:id="@+id/btn_internet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/i2" />
+
+        <ImageButton
+            android:id="@+id/btninstegram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/i1" />
+
+        <ImageButton
+            android:id="@+id/btngplas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/i3" />
+
+        <ImageButton
+            android:id="@+id/btnnext"
+            android:layout_width="80dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:background="@drawable/next" />
+    </LinearLayout>
+
+</LinearLayout>
