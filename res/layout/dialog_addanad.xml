@@ -167,7 +167,7 @@
 
             <ImageView
                 android:id="@+id/dialog_img1"
-                android:layout_width="150dp"
+                android:layout_width="130dp"
                 android:layout_height="60dp"
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/mosbat" />
