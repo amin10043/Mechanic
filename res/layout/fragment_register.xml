@@ -33,7 +33,7 @@
                 android:text="ایجاد حساب کاربری"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/gray"
-                android:textSize="@dimen/txtsize30" />
+                android:textSize="@dimen/activity_horizontal_margin" />
         </LinearLayout>
 
         <LinearLayout
