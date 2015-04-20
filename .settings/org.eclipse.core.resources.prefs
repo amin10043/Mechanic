@@ -4,6 +4,7 @@
 eclipse.preferences.version=1
 encoding//src/com/project/mechanic/MainActivity.java=UTF-8
 encoding//src/com/project/mechanic/SplashActivity.java=UTF-8
+encoding//src/com/project/mechanic/WelcomeScreen.java=UTF-8
 encoding//src/com/project/mechanic/fragment/AdvertisementFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/AdvisorTypeFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/CityFragment.java=UTF-8
