@@ -125,7 +125,7 @@ public class AnadFragment extends Fragment {
 			cursor.close();
 
 			ImageView imageView = (ImageView) dialog
-					.findViewById(R.id.imageView1);
+					.findViewById(R.id.dialog_img1);
 			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 		}
 
