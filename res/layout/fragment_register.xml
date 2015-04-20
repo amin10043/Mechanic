@@ -100,26 +100,9 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:gravity="right"
-                    android:hint="رمز عبورخودراواردنمایید"
+                    android:hint="رمزعبورخودراواردنمایید"
                     android:inputType="textPassword"
                     android:textSize="@dimen/activity_horizontal_margin" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" >
-
-                <EditText
-                    android:id="@+id/editTextAdreess"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:gravity="right"
-                    android:hint="آدرس خود را وارد نمایید"
-                    android:inputType="textPostalAddress" />
             </LinearLayout>
 
             <LinearLayout
