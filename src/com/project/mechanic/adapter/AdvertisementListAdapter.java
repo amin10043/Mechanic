@@ -86,7 +86,8 @@ public class AdvertisementListAdapter extends ArrayAdapter<TicketType> {
 				AnadFragment fragment = new AnadFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
-				bundle.putString("ProID", String.valueOf(proId));
+				if (proId >= 0)
+					bundle.putString("ProID", String.valueOf(proId));
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.addToBackStack(null);

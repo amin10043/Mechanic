@@ -462,6 +462,27 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<Ticket> getTicketByTypeIdProId(int TypeId, int provinceID) {
+
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Ticket item = null;
+
+		Cursor mCur = mDb.query(
+				TableTicket,
+				Ticket,
+				"TypeId=? AND ProvinceId=?",
+				new String[] { String.valueOf(TypeId),
+						String.valueOf(provinceID) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToTicket(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
 	public ArrayList<Ticket> getTicketByProvinceId(int ProvinceId) {
 
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
@@ -518,7 +539,6 @@ public class DataBaseAdapter {
 		return item;
 	}
 
-	@SuppressWarnings("unused")
 	private Province CursorToProvince(Cursor cursor) {
 		Province tempProvince = new Province(cursor.getInt(0),
 				cursor.getString(1));
@@ -526,7 +546,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private Users CursorToUsers(Cursor cursor) {
 		Users tempProvince = new Users(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4));
@@ -534,7 +553,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private LikeInObject CursorToLikeInObject(Cursor cursor) {
 		LikeInObject tempProvince = new LikeInObject(cursor.getInt(0),
 				cursor.getInt(1), cursor.getInt(2), cursor.getString(3),
@@ -543,14 +561,12 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private City CursorToCity(Cursor cursor) {
 		City tempCity = new City(cursor.getInt(0), cursor.getString(1),
 				cursor.getInt(2));
 		return tempCity;
 	}
 
-	@SuppressWarnings("unused")
 	private Object CursorToObject(Cursor cursor) {
 		Object tempObject = new Object(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
@@ -564,14 +580,12 @@ public class DataBaseAdapter {
 		return tempObject;
 	}
 
-	@SuppressWarnings("unused")
 	private NewsPaper CursorToNewsPaper(Cursor cursor) {
 		NewsPaper tempNewsPaper = new NewsPaper(cursor.getInt(0),
 				cursor.getString(1), cursor.getInt(2), cursor.getString(3));
 		return tempNewsPaper;
 	}
 
-	@SuppressWarnings("unused")
 	private AdvisorType CursorToAdvisorType(Cursor cursor) {
 		AdvisorType tempAdvisorType = new AdvisorType(cursor.getInt(0),
 				cursor.getString(1));
@@ -579,7 +593,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private Executertype CursorToExecutertype(Cursor cursor) {
 		Executertype tempExecutertype = new Executertype(cursor.getInt(0),
 				cursor.getString(1));
@@ -587,7 +600,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private Froum CursorToFroum(Cursor cursor) {
 		Froum tempForum = new Froum(cursor.getInt(0), cursor.getInt(1),
 				cursor.getString(2), cursor.getString(3));
@@ -595,7 +607,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private Paper CursorToPaper(Cursor cursor) {
 		Paper tempPaper = new Paper(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2));
@@ -603,7 +614,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private News CursorToNews(Cursor cursor) {
 		News tempNews = new News(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2));
@@ -611,7 +621,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private CommentInObject CursorToCommentInObject(Cursor cursor) {
 		CommentInObject tempNews = new CommentInObject(cursor.getInt(0),
 				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
@@ -620,7 +629,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private Ticket CursorToTicket(Cursor cursor) {
 		Ticket tempTicket = new Ticket(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getInt(3), cursor.getBlob(4),
@@ -631,7 +639,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private TicketType CursorToTicketType(Cursor cursor) {
 		TicketType tempTicket = new TicketType(cursor.getInt(0),
 				cursor.getString(1));
