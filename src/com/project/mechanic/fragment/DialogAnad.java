@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
 
+
+
+
 public class DialogAnad extends Dialog {
 
 	protected static final Context Contaxt = null;
