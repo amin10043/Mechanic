@@ -85,7 +85,6 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/txtsize80"
             android:layout_marginRight="@dimen/txtsize80"
-            android:layout_marginTop="@dimen/txtsize10"
             android:layout_weight="1.2"
             android:background="@color/transparent"
             android:orientation="horizontal"

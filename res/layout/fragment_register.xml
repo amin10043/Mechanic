@@ -9,22 +9,38 @@
         android:layout_height="match_parent"
         android:background="@color/light_grey"
         android:gravity="center"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:weightSum="7.2" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_margin="15dp"
+            android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginRight="@dimen/txtsize10"
+            android:layout_marginTop="@dimen/txtsize10"
             android:layout_weight="3"
-            android:background="@drawable/aplodanad" >
+            android:background="@drawable/list_item" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/txtsize10"
+                android:enabled="false"
+                android:gravity="right"
+                android:text="ایجاد حساب کاربری"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/light_grey"
+                android:textSize="@dimen/txtsize30" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_margin="15dp"
+            android:layout_margin="@dimen/txtsize10"
             android:layout_weight="1"
             android:background="@drawable/list_item1"
             android:orientation="vertical" >
@@ -54,15 +70,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="0.30"
+                android:layout_weight="0.5"
                 android:orientation="vertical" >
 
                 <EditText
                     android:id="@+id/editTextuser"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
                     android:ems="10"
                     android:gravity="right"
                     android:hint="ایمیل خودرا وارد نمایید"
@@ -74,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:orientation="horizontal" >
 
                 <EditText
@@ -105,6 +119,13 @@
                     android:gravity="right"
                     android:hint="آدرس خود را وارد نمایید"
                     android:inputType="textPostalAddress" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical" >
             </LinearLayout>
         </LinearLayout>
 
