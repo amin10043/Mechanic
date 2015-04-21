@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -60,13 +59,13 @@ public class WelcomeScreen extends Activity {
 
 		gridView = (GridView) findViewById(R.id.grid_view);
 		int[] image = { R.drawable.up2, R.drawable.on2, R.drawable.or2,
-				R.drawable.g1, R.drawable.g2, R.drawable.g3,
+				R.drawable.g1, R.drawable.g2, R.drawable.g3, R.drawable.tayan,
 				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
 				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
 				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
 				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
 				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
-				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan, };
+				R.drawable.tayan, R.drawable.tayan, };
 
 		Resources r = getResources();
 		float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,

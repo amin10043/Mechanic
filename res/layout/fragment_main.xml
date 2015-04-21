@@ -10,9 +10,9 @@
 
         <ListView
             android:id="@+id/lstMain"
+            style="@style/ListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            style="@style/ListView" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 </LinearLayout>
