@@ -3,6 +3,7 @@ package com.project.mechanic.fragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -22,7 +23,7 @@ public class DialogAnad extends Dialog {
 	private static int RESULT_LOAD_IMAGE = 1;
 	private static final int SELECT_PICTURE = 1;
 
-	private ImageView dialog_img1, dialog_img2;
+	private ImageView dialog_img1, dialog_img2, dialog_img3;
 	private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5;
 	private EditText dialog_anad_et1, dialog_anad_et2;
 	OnMyDialogResult mDialogResult;
@@ -37,7 +38,10 @@ public class DialogAnad extends Dialog {
 	int phoneCheck = 0;
 	int mobileCheck = 0;
 	String titel;
+	String Bytimage;
 	int ProvinceId;
+
+	protected byte[] img;
 
 	public DialogAnad(Context context, int resourceId, Fragment fragment,
 			int ticketTypeID) {
@@ -60,6 +64,7 @@ public class DialogAnad extends Dialog {
 		setContentView(resourceId);
 		dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
 		dialog_img2 = (ImageView) findViewById(R.id.dialog_img2);
+		dialog_img3 = (ImageView) findViewById(R.id.imageView1);
 		checkBox1 = (CheckBox) findViewById(R.id.checkBox1);
 		checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
 		checkBox3 = (CheckBox) findViewById(R.id.checkBox3);
@@ -98,11 +103,12 @@ public class DialogAnad extends Dialog {
 				} else {
 					mobileCheck = 0;
 				}
+
 				dbadapter.open();
 
 				dbadapter.insertTickettoDb(
 						dialog_anad_et1.getText().toString(), dialog_anad_et2
-								.getText().toString(), 1, ticketTypeID,
+								.getText().toString(), 1, ticketTypeID, null,
 						emailCheck, nameCheck, faxCheck, phoneCheck,
 						mobileCheck, ProvinceId);
 
@@ -147,6 +153,16 @@ public class DialogAnad extends Dialog {
 			}
 		});
 
+	}
+
+	protected Resources getResources() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Intent getIntent() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public interface OnMyDialogResult {
