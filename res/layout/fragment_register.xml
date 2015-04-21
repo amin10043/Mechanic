@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/i8"
     tools:context=".MainActivity" >
 
     <LinearLayout
@@ -26,14 +27,13 @@
                 android:id="@+id/textView1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:layout_marginRight="@dimen/txtsize10"
+                android:layout_gravity="center"
                 android:enabled="false"
-                android:gravity="right"
+                android:gravity="center"
                 android:text="ایجاد حساب کاربری"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/light_grey"
-                android:textSize="@dimen/txtsize30" />
+                android:textColor="@color/gray"
+                android:textSize="@dimen/activity_horizontal_margin" />
         </LinearLayout>
 
         <LinearLayout
@@ -43,7 +43,8 @@
             android:layout_margin="@dimen/txtsize10"
             android:layout_weight="1"
             android:background="@drawable/list_item1"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:weightSum="5" >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,7 +100,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:gravity="right"
-                    android:hint="رمز عبورخودراواردنمایید"
+                    android:hint="رمزعبورخودراواردنمایید"
                     android:inputType="textPassword"
                     android:textSize="@dimen/activity_horizontal_margin" />
             </LinearLayout>
@@ -107,25 +108,43 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" >
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:weightSum="3" >
 
-                <EditText
-                    android:id="@+id/editTextAdreess"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:layout_weight="2"
+                    android:background="@drawable/item2"
+                    android:orientation="horizontal"
+                    android:weightSum="2" >
+
+                    <ImageButton
+                        android:id="@+id/btnaddpic"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent"
+                        android:src="@drawable/i11" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:gravity="right"
-                    android:hint="آدرس خود را وارد نمایید"
-                    android:inputType="textPostalAddress" />
-            </LinearLayout>
+                    android:orientation="horizontal" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="right|center"
+                        android:text="عکس مورد نظر را انتخاب کنید"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/activity_horizontal_margin" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
