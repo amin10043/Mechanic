@@ -1,12 +1,17 @@
 package com.project.mechanic.fragment;
 
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.jar.Attributes.Name;
 
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -39,8 +44,10 @@ public class RegisterFragment extends Fragment {
 	 int ProvinceId;
 	 
 	 
-	 
-	 
+	 String picturePath;
+
+//		byte[] byteImage1 = null;
+//		ContentValues newValues = new ContentValues();
 //	public RegisterFragment(Context context, int resourceId, Fragment fragment,
 //			int ticketTypeID, int ProvinceId) {
 //		
@@ -54,6 +61,7 @@ public class RegisterFragment extends Fragment {
 
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
+	private Activity view;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,10 +97,28 @@ public class RegisterFragment extends Fragment {
 			
 			else {
 
-			
+				
+				
+				
+//				
+////			        String name = "CoderzHeaven";
+////			        newValues.put("name", name);
+//			        try {
+//			            FileInputStream instream = new FileInputStream(picturePath);
+//			            BufferedInputStream bif = new BufferedInputStream(instream);
+//		            byteImage1 = new byte[bif.available()];
+//			            bif.read(byteImage1);
+//			            newValues.put("image", byteImage1);
+////			            long ret = dbAdapter.insert(TABLE_NAME, null, newValues);
+//			           
+//		        } catch (IOException e) {
+////			            textView.append("Error Exception : " + e.getMessage());
+//		        }
+//			        dbAdapter.close();
 			 //first Insert user to WS then insert to local
-			dbAdapter.open();
-			dbAdapter.inserUserToDb( Name,user, pass);
+			        dbAdapter.open();
+					dbAdapter.inserUserToDb( Name,user, pass);
+			
 			dbAdapter.close();
 			
 Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد", Toast.LENGTH_SHORT).show();
@@ -164,16 +190,20 @@ Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد", Toas
 			cursor.moveToFirst();
 
 			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
+			 picturePath = cursor.getString(columnIndex);
 			cursor.close();
 
-//			ImageView imageView = (ImageView) dialog
-//					.findViewById(R.id.imageView1);
-//			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+			ImageView imageView = (ImageView) view.findViewById(R.id.btnaddpic);
+		imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 		}
 
 	}
 
+	
+	
+	
+	
+	
 	private EditText findViewById(int edittextuser) {
 		// TODO Auto-generated method stub
 		return null;
