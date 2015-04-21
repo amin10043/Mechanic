@@ -18,11 +18,8 @@ import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.TicketType;
-import com.project.mechanic.fragment.AdvertisementFragment;
 import com.project.mechanic.fragment.AnadFragment;
-import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class AdvertisementListAdapter extends ArrayAdapter<TicketType> {
@@ -33,17 +30,18 @@ public class AdvertisementListAdapter extends ArrayAdapter<TicketType> {
 	DataBaseAdapter adapter;
 	int itemId;
 	int lastPosition = 0;
-	int typeID=0;
+	int typeID = 0;
+	int proId;
 
 	public AdvertisementListAdapter(Context context, int resource,
-			List<TicketType> objact) {
+			List<TicketType> objact, int proID) {
 
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
-		adapter = new DataBaseAdapter(context);		
-
+		adapter = new DataBaseAdapter(context);
+		this.proId = proID;
 	}
 
 	@SuppressLint("ViewHolder")
@@ -83,17 +81,18 @@ public class AdvertisementListAdapter extends ArrayAdapter<TicketType> {
 					}
 				}
 
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					AnadFragment fragment = new AnadFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				AnadFragment fragment = new AnadFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString("Id", String.valueOf(id));
+				if (proId >= 0)
+					bundle.putString("ProID", String.valueOf(proId));
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
 
-				
 			}
 		});
 

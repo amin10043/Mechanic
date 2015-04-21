@@ -2,32 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/dialog"
+    android:background="@color/light_grey"
     android:gravity="center|top"
     android:orientation="vertical" >
 
     <EditText
         android:id="@+id/emlText1"
-        android:layout_width="280dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="50dp"
+        android:layout_margin="@dimen/activity_horizontal_margin"
         android:ems="10"
         android:enabled="true"
+        android:gravity="right"
         android:hint="لطفا ایمیل خود راوارد نمایید"
         android:inputType="textEmailAddress"
         android:textColor="@color/transparent"
-        android:textColorHint="@color/transparent" >
+        android:textSize="@dimen/txtsize10" >
 
         <requestFocus />
     </EditText>
 
     <Button
         android:id="@+id/btneml"
-        android:layout_width="100dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="@dimen/txtsize10"
+        android:layout_marginLeft="@dimen/txtsize80"
+        android:layout_marginRight="@dimen/txtsize80"
+        android:background="@drawable/buttonshape"
         android:text="ثبت" />
 
 </LinearLayout>

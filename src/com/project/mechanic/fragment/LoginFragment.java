@@ -7,9 +7,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -80,6 +82,19 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 			}
 		});
+		
+		
+		btncancle.setOnClickListener(new OnClickListener() {
+			
+			
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			}
+		});
 
 		btnforgot.setOnClickListener(new View.OnClickListener() {
 
@@ -87,6 +102,7 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 				dialog = new Dialogeml(LoginFragment.this, getActivity(),
 						R.layout.dialog_addemail);
+				dialog.setTitle("پیام");
 				dialog.show();
 			}
 		});

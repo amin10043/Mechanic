@@ -35,6 +35,7 @@ public class AnadFragment extends Fragment {
 	private DialogAnad dialog;
 	int ticketTypeid = 0;
 	private static int RESULT_LOAD_IMAGE = 1;
+	int proID = -1;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -50,9 +51,13 @@ public class AnadFragment extends Fragment {
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 
-		dbAdapter.open();
-		mylist = dbAdapter.getTicketByTypeId(ticketTypeid);
+		if (getArguments().getString("ProID") != null) {
+			proID = Integer.valueOf(getArguments().getString("ProID"));
+		}
 
+		dbAdapter.open();
+
+		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
 		dbAdapter.close();
 
 		imgadd.setOnClickListener(new OnClickListener() {
@@ -61,7 +66,7 @@ public class AnadFragment extends Fragment {
 			public void onClick(View arg0) {
 
 				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,
-						AnadFragment.this, ticketTypeid);
+						AnadFragment.this, ticketTypeid, proID);
 				dialog.setTitle(R.string.txtanad);
 
 				dialog.show();
@@ -90,7 +95,7 @@ public class AnadFragment extends Fragment {
 
 	public void updateView() {
 		dbAdapter.open();
-		mylist = dbAdapter.getTicketByTypeId(ticketTypeid);
+		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
 		dbAdapter.close();
 
 		ListView lstAnad = (ListView) view.findViewById(R.id.listVanad);
@@ -120,7 +125,7 @@ public class AnadFragment extends Fragment {
 			cursor.close();
 
 			ImageView imageView = (ImageView) dialog
-					.findViewById(R.id.imageView1);
+					.findViewById(R.id.dialog_img1);
 			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 		}
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,9 +73,13 @@ public class ShopListAdapter extends ArrayAdapter<Province> {
 
 				adapter.close();
 
+				Bundle bundle = new Bundle();
+				bundle.putString("provinceId", String.valueOf(province.getId()));
+				AdvertisementFragment f = new AdvertisementFragment();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new AdvertisementFragment());
+				f.setArguments(bundle);
+				trans.replace(R.id.content_frame, f);
 				trans.addToBackStack(null);
 				trans.commit();
 			}
