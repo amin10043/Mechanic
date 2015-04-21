@@ -14,9 +14,6 @@ import android.widget.ImageView;
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
 
-
-
-
 public class DialogAnad extends Dialog {
 
 	protected static final Context Contaxt = null;
@@ -43,8 +40,8 @@ public class DialogAnad extends Dialog {
 	String titel;
 	String Bytimage;
 	int ProvinceId;
-
 	protected byte[] img;
+	String TABLE_NAME = "Ticket";
 
 	public DialogAnad(Context context, int resourceId, Fragment fragment,
 			int ticketTypeID, int ProvinceId) {
@@ -68,7 +65,7 @@ public class DialogAnad extends Dialog {
 		setContentView(resourceId);
 		dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
 		dialog_img2 = (ImageView) findViewById(R.id.dialog_img2);
-		dialog_img3 = (ImageView) findViewById(R.id.imageView1);
+
 		checkBox1 = (CheckBox) findViewById(R.id.checkBox1);
 		checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
 		checkBox3 = (CheckBox) findViewById(R.id.checkBox3);
@@ -109,13 +106,24 @@ public class DialogAnad extends Dialog {
 				}
 
 				dbadapter.open();
+				// byte[] byteImage1 = null;
+				// try {
+				// ContentValues newValues = new ContentValues();
+				// FileInputStream instream = new
+				// FileInputStream(AnadFragment.picturePath);
+				// BufferedInputStream bif = new BufferedInputStream(instream);
+				// byteImage1 = new byte[bif.available()];
+				// bif.read(byteImage1);
+				// newValues.put("Image", byteImage1);
 
 				dbadapter.insertTickettoDb(
 						dialog_anad_et1.getText().toString(), dialog_anad_et2
 								.getText().toString(), 1, ticketTypeID, null,
 						emailCheck, nameCheck, faxCheck, phoneCheck,
 						mobileCheck, ProvinceId);
-
+				// } catch (IOException e) {
+				// textView.append("Error Exception : " + e.getMessage());
+				// }
 				dbadapter.close();
 				((AnadFragment) fragment).updateView();
 				DialogAnad.this.dismiss();
