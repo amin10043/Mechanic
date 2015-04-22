@@ -237,7 +237,7 @@ public class DataBaseAdapter {
 
 	public void insertTickettoDb(String Title, String desc, int userId,
 
-	int typeId, byte[] byteImage1, int email, int name, int fax, int phone,
+	int typeId, byte[] bytes, int email, int name, int fax, int phone,
 			int mobile, int provinceId) {
 
 		ContentValues cv = new ContentValues();
@@ -245,7 +245,7 @@ public class DataBaseAdapter {
 		cv.put("Desc", desc);
 		cv.put("UserId", userId);
 		cv.put("TypeId", typeId);
-		cv.put("Image", byteImage1);
+		cv.put("Image", bytes);
 		cv.put("Email", email);
 		cv.put("Name", name);
 		cv.put("Fax", fax);

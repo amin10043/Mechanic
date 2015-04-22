@@ -56,6 +56,7 @@ public class RegisterFragment extends Fragment {
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
 	private Activity view;
+
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap)
 	{
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
