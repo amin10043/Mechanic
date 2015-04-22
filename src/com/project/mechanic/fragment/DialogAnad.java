@@ -1,8 +1,13 @@
 package com.project.mechanic.fragment;
 
+import java.nio.ByteBuffer;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -13,9 +18,6 @@ import android.widget.ImageView;
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
 
-
-
-
 public class DialogAnad extends Dialog {
 
 	protected static final Context Contaxt = null;
@@ -25,7 +27,7 @@ public class DialogAnad extends Dialog {
 	private static int RESULT_LOAD_IMAGE = 1;
 	private static final int SELECT_PICTURE = 1;
 
-	private ImageView dialog_img1, dialog_img2;
+	private ImageView dialog_img1, dialog_img2, dialog_img3;
 	private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5;
 	private EditText dialog_anad_et1, dialog_anad_et2;
 	OnMyDialogResult mDialogResult;
@@ -40,7 +42,10 @@ public class DialogAnad extends Dialog {
 	int phoneCheck = 0;
 	int mobileCheck = 0;
 	String titel;
+	String Bytimage;
 	int ProvinceId;
+	protected byte[] img;
+	String TABLE_NAME = "Ticket";
 
 	public DialogAnad(Context context, int resourceId, Fragment fragment,
 			int ticketTypeID, int ProvinceId) {
@@ -64,6 +69,7 @@ public class DialogAnad extends Dialog {
 		setContentView(resourceId);
 		dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
 		dialog_img2 = (ImageView) findViewById(R.id.dialog_img2);
+
 		checkBox1 = (CheckBox) findViewById(R.id.checkBox1);
 		checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
 		checkBox3 = (CheckBox) findViewById(R.id.checkBox3);
@@ -102,14 +108,29 @@ public class DialogAnad extends Dialog {
 				} else {
 					mobileCheck = 0;
 				}
+
 				dbadapter.open();
+				byte[] byteImage1 = null;
+				try {
+					dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
+					// Bitmap bitmap = Bitmap.createBitmap(dialog_img1
+					// .getDrawingCache());
+					Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
+							.getBitmap();
 
-				dbadapter.insertTickettoDb(
-						dialog_anad_et1.getText().toString(), dialog_anad_et2
-								.getText().toString(), 1, ticketTypeID,
-						emailCheck, nameCheck, faxCheck, phoneCheck,
-						mobileCheck, ProvinceId);
+					int bytes = bitmap.getByteCount();
+					ByteBuffer buffer = ByteBuffer.allocate(bytes);
+					bitmap.copyPixelsToBuffer(buffer);
+					byteImage1 = buffer.array();
 
+					dbadapter.insertTickettoDb(dialog_anad_et1.getText()
+							.toString(), dialog_anad_et2.getText().toString(),
+							1, ticketTypeID, byteImage1, emailCheck, nameCheck,
+							faxCheck, phoneCheck, mobileCheck, ProvinceId);
+				} catch (Exception e) {
+					e.printStackTrace();
+					// textView.append("Error Exception : " + e.getMessage());
+				}
 				dbadapter.close();
 				((AnadFragment) fragment).updateView();
 				DialogAnad.this.dismiss();
@@ -151,6 +172,16 @@ public class DialogAnad extends Dialog {
 			}
 		});
 
+	}
+
+	protected Resources getResources() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Intent getIntent() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public interface OnMyDialogResult {
