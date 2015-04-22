@@ -3,15 +3,20 @@ package com.project.mechanic.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,11 +42,17 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 	ListItem tempItem;
 	DataBaseAdapter adapter;
 
+	int[] icon = { R.drawable.ic_main_item1, R.drawable.ic_main_item2,
+			R.drawable.ic_main_item3, R.drawable.ic_main_item4,
+			R.drawable.ic_main_item5, R.drawable.ic_main_item6,
+			R.drawable.ic_main_item7 };
+
 	public MainListAdapter(Context context, int resource, List<ListItem> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
+		// icon = ic;
 		adapter = new DataBaseAdapter(context);
 
 	}
@@ -49,16 +60,42 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		if (convertView == null) {
 
-		convertView = myInflater
-				.inflate(R.layout.main_item_list, parent, false);
+			LayoutInflater myInflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+			convertView = myInflater.inflate(R.layout.main_item_list, parent,
+					false);
+
+			LinearLayout li = (LinearLayout) convertView;
+
+			android.widget.AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
+
+			AbsListView.LayoutParams.MATCH_PARENT,
+					AbsListView.LayoutParams.MATCH_PARENT);
+
+			lp.height = (int) ((getScreenHeight()) / 9);
+
+			// Utility u = new Utility(context);
+			// u.getScreenWidth();
+
+			li.setLayoutParams(lp);
+
+		}
 
 		TextView txtName = (TextView) convertView.findViewById(R.id.txtName);
 		TextView txtNoti = (TextView) convertView.findViewById(R.id.txtNoti);
 
 		ImageView img = (ImageView) convertView.findViewById(R.id.imgItem);
+
+		img.setBackgroundResource(icon[position]);
+
+		img.getLayoutParams().width = ((View) img.getParent())
+				.getLayoutParams().height - 20;
+		img.getLayoutParams().height = ((View) img.getParent())
+				.getLayoutParams().height - 20;
+		img.requestLayout();
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
@@ -176,4 +213,24 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 		return convertView;
 
 	}
+
+	@SuppressLint("NewApi")
+	public int getScreenHeight() {
+		int columnWidth;
+		WindowManager wm = (WindowManager) context
+				.getSystemService(Context.WINDOW_SERVICE);
+		Display display = wm.getDefaultDisplay();
+
+		final Point point = new Point();
+		try {
+			display.getSize(point);
+		} catch (java.lang.NoSuchMethodError ignore) { // Older device
+			point.x = display.getWidth();
+			point.y = display.getHeight();
+		}
+		columnWidth = point.y;
+		return columnWidth;
+
+	}
+
 }

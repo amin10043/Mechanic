@@ -2,17 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/shiri"
     android:orientation="vertical" >
 
     <LinearLayout
+        android:id="@+id/main_linear_item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:fillViewport="true" >
 
         <ListView
             android:id="@+id/lstMain"
-            style="@style/ListView"
+            style="@style/second_item_style"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
+
+    <ImageButton
+        style="@style/second_item_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/list_item"
+        android:scaleType="centerCrop"
+        android:src="@drawable/propaganda" />
 
 </LinearLayout>
