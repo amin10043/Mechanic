@@ -76,7 +76,7 @@ public class RegisterFragment extends Fragment {
 				if (Name.equals("") && user.equals("") && pass.equals("")) {
 
 					Toast.makeText(getActivity(),
-							"لطفا فیلدهای مورد نظر را پر کنید  ",
+							"لطفا فيلدهاي مورد نظر را پر کنيد  ",
 							Toast.LENGTH_SHORT).show();
 
 				}
