@@ -1,12 +1,13 @@
 package com.project.mechanic.fragment;
 
-import java.nio.ByteBuffer;
+import java.io.ByteArrayOutputStream;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -58,6 +59,12 @@ public class DialogAnad extends Dialog {
 		this.ProvinceId = ProvinceId;
 	}
 
+	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.PNG, 0, outputStream);
+		return outputStream.toByteArray();
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -69,7 +76,6 @@ public class DialogAnad extends Dialog {
 		setContentView(resourceId);
 		dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
 		dialog_img2 = (ImageView) findViewById(R.id.dialog_img2);
-
 		checkBox1 = (CheckBox) findViewById(R.id.checkBox1);
 		checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
 		checkBox3 = (CheckBox) findViewById(R.id.checkBox3);
@@ -110,27 +116,30 @@ public class DialogAnad extends Dialog {
 				}
 
 				dbadapter.open();
-				byte[] byteImage1 = null;
-				try {
-					dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
-					// Bitmap bitmap = Bitmap.createBitmap(dialog_img1
-					// .getDrawingCache());
-					Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
-							.getBitmap();
+				// byte[] byteimage;
+				// try {
+				// dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
+				// Bitmap bitmap = Bitmap.createBitmap(dialog_img1
+				// .getDrawingCache());
 
-					int bytes = bitmap.getByteCount();
-					ByteBuffer buffer = ByteBuffer.allocate(bytes);
-					bitmap.copyPixelsToBuffer(buffer);
-					byteImage1 = buffer.array();
+				Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
+						.getBitmap();
+				byte[] bytes = getBitmapAsByteArray(bitmap);
+				// int bytes = bitmap.getByteCount();
+				// ByteBuffer buffer = ByteBuffer.allocate(bytes);
+				// bitmap.copyPixelsToBuffer(buffer);
+				// byteImage1 = buffer.array();
+				//
+				dbadapter.insertTickettoDb(
+						dialog_anad_et1.getText().toString(), dialog_anad_et2
+								.getText().toString(), 1, ticketTypeID, bytes,
+						emailCheck, nameCheck, faxCheck, phoneCheck,
+						mobileCheck, ProvinceId);
+				// } catch (Exception e) {
+				// e.printStackTrace();
+				// // textView.append("Error Exception : " + e.getMessage());
+				// }
 
-					dbadapter.insertTickettoDb(dialog_anad_et1.getText()
-							.toString(), dialog_anad_et2.getText().toString(),
-							1, ticketTypeID, byteImage1, emailCheck, nameCheck,
-							faxCheck, phoneCheck, mobileCheck, ProvinceId);
-				} catch (Exception e) {
-					e.printStackTrace();
-					// textView.append("Error Exception : " + e.getMessage());
-				}
 				dbadapter.close();
 				((AnadFragment) fragment).updateView();
 				DialogAnad.this.dismiss();
