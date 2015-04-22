@@ -3,15 +3,21 @@ package com.project.mechanic.utility;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
+import com.project.mechanic.entity.Users;
+import com.project.mechanic.model.DataBaseAdapter;
 
 public class Utility {
 
 	private Context context;
+	private DataBaseAdapter adapter;
 
 	public Utility(Context context) {
 		this.context = context;
+		adapter = new DataBaseAdapter(context);
 	}
 
 	public boolean isNetworkConnected() {
@@ -56,5 +62,23 @@ public class Utility {
 								dialog.dismiss();
 							}
 						}).setIcon(android.R.drawable.ic_dialog_alert).show();
+	}
+
+	public Users getCurrentUser() {
+
+		Users u = null;
+		SharedPreferences settings = context.getSharedPreferences("user", 0);
+
+		boolean isLogin = settings.getBoolean("isLogin", false);
+		if (isLogin) {
+
+			adapter.open();
+			u = adapter.getUserById(0); // FOR TESTING !!!!
+			adapter.close();
+			return u;
+		} else {
+			return null;
+		}
+
 	}
 }

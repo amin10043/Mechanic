@@ -30,6 +30,7 @@ public class MainActivity extends FragmentActivity {
 	DataBaseAdapter adapter;
 	private String[] mPlanetTitles;
 	private DrawerLayout mDrawerLayout;
+
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 	// private CharSequence title;
@@ -46,8 +47,7 @@ public class MainActivity extends FragmentActivity {
 		mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		
-		
+
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,

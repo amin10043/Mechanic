@@ -5,7 +5,8 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -18,9 +19,7 @@ import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Ticket;
-import com.project.mechanic.fragment.BerandFragment;
 import com.project.mechanic.fragment.ShowAdFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -50,19 +49,28 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 
 		convertView = myInflater.inflate(R.layout.row_anad, parent, false);
 
-		TextView txtName = (TextView) convertView.findViewById(R.id.row_anad_txt);
+		TextView txtName = (TextView) convertView
+				.findViewById(R.id.row_anad_txt);
 
 		ImageView img = (ImageView) convertView.findViewById(R.id.row_anad_img);
+		ImageView img2 = (ImageView) convertView
+				.findViewById(R.id.row_anad_img2);
+		ImageView img3 = (ImageView) convertView
+				.findViewById(R.id.fragment_anad_imgadd);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getTitle());
-		
+
+		byte[] bitmapbyte = tempItem.getImage();
+		Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
+				bitmapbyte.length);
+		img2.setImageBitmap(bmp);
 
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				
+
 				adapter.open();
 				ArrayList<Ticket> allItems = adapter.getTicketByTypeId(0);
 				int id = 0;
@@ -74,18 +82,17 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				}
 				adapter.close();
 
-					FragmentTransaction trans = ((MainActivity) context)
-					.getSupportFragmentManager().beginTransaction();
-					ShowAdFragment fragment = new ShowAdFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
-				
-		
-					}
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				ShowAdFragment fragment = new ShowAdFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString("Id", String.valueOf(id));
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+
+			}
 		});
 
 		return convertView;

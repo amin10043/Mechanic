@@ -4,6 +4,13 @@ public class Users {
 
 	int Id;
 	String Phonenumber;
+	String Name;
+	String Email;
+	String Password;
+    int ServiceId;  
+    byte[] Image;  
+    
+    
 	public String getPhonennumber() {
 		return Phonenumber;
 	}
@@ -15,10 +22,6 @@ public class Users {
 	}
 
 
-
-	String Name;
-	String Email;
-	String Password;
 
 	
 
@@ -68,15 +71,28 @@ public class Users {
 		Password = password;
 	}
 
+	public byte[]  getImage() {
+		return Image;
+	}
+
+	public void setImage(byte[] image) {
+		Image = image;
+	}
 
 
-	public Users(int id, String name, String email, String password,String phonenumber) {
+	public Users(int id, String name, String email, String password,String phonenumber,byte[] image,int serviceid) {
 		super();
 		Id = id;
 		Name = name;
 		Email = email;
 		Password = password;
 		Phonenumber= phonenumber;
+		Image= image;
+		ServiceId=serviceid;
+	}
+	
+	public Users(){
+		
 	}
 
 }

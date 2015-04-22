@@ -1,22 +1,17 @@
 package com.project.mechanic.fragment;
 
-
-import com.project.mechanic.MainActivity;
-import com.project.mechanic.R;
-
-import android.app.Dialog;
-
 import android.content.SharedPreferences;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -28,13 +23,8 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 	ServiceComm service;
 	Utility util;
+	Dialogeml dialog;
 
-	
-	Dialogeml  dialog;
-	
-	
-	
-	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
@@ -79,8 +69,6 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 			}
 		});
 
-		
-		
 		btnreg.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -95,38 +83,39 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 			}
 		});
 		
-		 btnforgot.setOnClickListener(new View.OnClickListener() {
-				
-				
-				public void onClick(View v) {
-				
-					
-					
+		
+		btncancle.setOnClickListener(new OnClickListener() {
 			
-					
-					
-					  dialog = new Dialogeml(LoginFragment.this,getActivity(),R.layout.dialog_addemail);
-					  dialog.show();
-					
-					
-					
-					
-					
-					
-				}
-			});
+			
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			}
+		});
+
+		btnforgot.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+
+				dialog = new Dialogeml(LoginFragment.this, getActivity(),
+						R.layout.dialog_addemail);
+				dialog.setTitle("پیام");
+				dialog.show();
+			}
+		});
 
 		return view;
 
 	}
 
-
-
 	@Override
 	public void processFinish(String output) {
 
-		SharedPreferences settings = getActivity().getSharedPreferences(
-				"UserLogin", 0);
+		SharedPreferences settings = getActivity().getSharedPreferences("User",
+				0);
 		SharedPreferences.Editor editor = settings.edit();
 		if ("true".equals(output)) {
 			Toast.makeText(getActivity(), "شما وارد شده اید.",
@@ -136,7 +125,6 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 			// ثبت اطلاعات کاربر در دیتا بیس هم حتما انجام گیرد. فراموش نشود!!!!
 
-
 			FragmentTransaction trans = getActivity()
 					.getSupportFragmentManager().beginTransaction();
 			trans.replace(R.id.content_frame, new MainFragment());
@@ -145,7 +133,7 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 		} else {
 			Toast.makeText(getActivity(),
 					"نام کاربری و یا کلمه عبور به درستی وارد نشده است.",
-				 	Toast.LENGTH_SHORT).show();
+					Toast.LENGTH_SHORT).show();
 			editor.putBoolean("isLogin", false);
 
 		}
