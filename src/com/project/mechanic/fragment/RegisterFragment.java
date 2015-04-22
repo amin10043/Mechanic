@@ -63,7 +63,7 @@ public class RegisterFragment extends Fragment {
 	private static final int PICK_IMAGE = 0;
 	DataBaseAdapter dbAdapter;
 	private Activity view;
-	
+	ImageView   btnaddpic1;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class RegisterFragment extends Fragment {
 			
 	Button   btncan    = (Button) view.findViewById(R.id.btncancle2);
 	Button   btnreg    =(Button) view.findViewById(R.id.btnreg2);
-	ImageButton   btnaddpic = (ImageButton) view.findViewById(R.id.btnaddpic);
+     btnaddpic1 = (ImageView) view.findViewById(R.id.btnaddpic);
 	final EditText editname  = (EditText)view.findViewById(R.id.editTextname);		 
     final EditText edituser  = (EditText)view.findViewById(R.id.editTextuser);		 
 	final EditText editpass  = (EditText)view.findViewById(R.id.editTextpass);
@@ -151,7 +151,7 @@ Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد", Toas
 		 	 
 		 
 		 
-	btnaddpic.setOnClickListener(new OnClickListener() {
+	btnaddpic1.setOnClickListener(new OnClickListener() {
 		
 		
 
@@ -159,7 +159,7 @@ Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد", Toas
 
 		@Override
 		public void onClick(View arg0) {
-		Toast.makeText(getActivity(), "ok", Toast.LENGTH_LONG).show();
+	//	Toast.makeText(getActivity(), "ok", Toast.LENGTH_LONG).show();
 		Intent i = new Intent(
 				Intent.ACTION_PICK,
 				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -193,8 +193,8 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		 picturePath = cursor.getString(columnIndex);
 		cursor.close();
 
-		ImageView imageView = (ImageView) view.findViewById(R.id.btnaddpic);
-	imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+		ImageView btnaddpic1 = (ImageView) view.findViewById(R.id.btnaddpic);
+		btnaddpic1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 		}
 
 	}
