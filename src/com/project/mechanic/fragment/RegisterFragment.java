@@ -1,10 +1,16 @@
 package com.project.mechanic.fragment;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -31,7 +37,8 @@ public class RegisterFragment extends Fragment {
 	int ticketTypeID;
 	int ProvinceId;
 	ImageView btnaddpic1;
-
+	
+	
 	// byte[] byteImage1 = null;
 	// ContentValues newValues = new ContentValues();
 	// public RegisterFragment(Context context, int resourceId, Fragment
@@ -49,6 +56,12 @@ public class RegisterFragment extends Fragment {
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
 	private Activity view;
+	public static byte[] getBitmapAsByteArray(Bitmap bitmap)
+	{
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.PNG, 0, outputStream);
+		return outputStream.toByteArray();
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,9 +84,13 @@ public class RegisterFragment extends Fragment {
 
 			public void onClick(View arg0) {
 				final String Name = editname.getText().toString();
-				final String user = edituser.getText().toString();
-				final String pass = editpass.getText().toString();
-				if (Name.equals("") && user.equals("") && pass.equals("")) {
+				final String Email = edituser.getText().toString();
+				final String Pass = editpass.getText().toString();
+				
+				
+				
+				if (Name.equals("") && Email.equals("") && Pass.equals(""))
+				{
 
 					Toast.makeText(getActivity(),
 							"لطفا فيلدهاي مورد نظر را پر کنيد  ",
@@ -83,33 +100,19 @@ public class RegisterFragment extends Fragment {
 
 				else {
 
-					//
-					// // String name = "CoderzHeaven";
-					// // newValues.put("name", name);
-					// try {
-					// FileInputStream instream = new
-					// FileInputStream(picturePath);
-					// BufferedInputStream bif = new
-					// BufferedInputStream(instream);
-					// byteImage1 = new byte[bif.available()];
-					// bif.read(byteImage1);
-					// newValues.put("image", byteImage1);
-					// // long ret = dbAdapter.insert(TABLE_NAME, null,
-					// newValues);
-					//
-					// } catch (IOException e) {
-					// // textView.append("Error Exception : " +
-					// e.getMessage());
-					// }
-					// dbAdapter.close();
-					// first Insert user to WS then insert to local
-					dbAdapter.open();
-					dbAdapter.inserUserToDb(Name, user, pass);
-
+					
+				
+				dbAdapter.open();
+					
+					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
+							.getBitmap();
+					byte[] Image = getBitmapAsByteArray(bitmap);
+					Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد",Toast.LENGTH_SHORT).show();
+					
+					dbAdapter.inserUserToDb(Name, Email,Pass,null ,Image ,0);
+				
+					
 					dbAdapter.close();
-
-					Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد",
-							Toast.LENGTH_SHORT).show();
 
 				}
 
@@ -134,6 +137,7 @@ public class RegisterFragment extends Fragment {
 			public void onClick(View arg0) {
 				// Toast.makeText(getActivity(), "ok",
 				// Toast.LENGTH_LONG).show();
+				
 				Intent i = new Intent(
 						Intent.ACTION_PICK,
 						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

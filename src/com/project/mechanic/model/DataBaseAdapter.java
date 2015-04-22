@@ -10,6 +10,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.project.mechanic.R.string;
 import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.CommentInFroum;
@@ -97,7 +98,7 @@ public class DataBaseAdapter {
 			"ProvinceId" };
 
 	private String[] TicketType = { "ID", "desc" };
-	private String[] Users = { "ID", "Name", "Email", "Password", "Phonenumber" };
+	private String[] Users = { "ID", "Name", "Email", "Password", "Phonenumber" ,"Image","ServiceId"};
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url" };
 	private String[] ObjectBrandType = { "ID", "Description" };
@@ -140,13 +141,17 @@ public class DataBaseAdapter {
 		mDbHelper.close();
 	}
 
-	public void inserUserToDb(String name, String email, String password) {
+	public void inserUserToDb(String name, String email, String password,String phonenumber,byte[] image,int serviceid) {
 
 		ContentValues uc = new ContentValues();
 
 		uc.put("Name", name);
 		uc.put("Email", email);
 		uc.put("Password", password);
+		uc.put("Phonenumber", phonenumber);
+		uc.put("Image", image);
+		uc.put("ServiceId",serviceid );
+		
 		long res = mDb.insert(TableUsers, null, uc);
 		long res2 = res;
 
@@ -549,7 +554,7 @@ public class DataBaseAdapter {
 
 	private Users CursorToUsers(Cursor cursor) {
 		Users tempProvince = new Users(cursor.getInt(0), cursor.getString(1),
-				cursor.getString(2), cursor.getString(3), cursor.getString(4));
+				cursor.getString(2), cursor.getString(3), cursor.getString(4),cursor.getBlob(5),cursor.getInt(6));
 		return tempProvince;
 
 	}
@@ -1138,7 +1143,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4));
+					cursor.getString(4),cursor.getBlob(5),cursor.getInt(6));
 			result.add(tempusers);
 		}
 		return result;
@@ -1170,7 +1175,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4));
+					cursor.getString(4),cursor.getBlob(5),cursor.getInt(4));
 			result.add(tempusers);
 		}
 		return result;
