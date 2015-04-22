@@ -60,6 +60,7 @@ public class RegisterFragment extends Fragment {
 //	}
 
 	protected static final int RESULT_LOAD_IMAGE = 1;
+	private static final int PICK_IMAGE = 0;
 	DataBaseAdapter dbAdapter;
 	private Activity view;
 	
@@ -176,35 +177,32 @@ Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد", Toas
 	
 	
 	
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-		super.onActivityResult(requestCode, resultCode, data);
+	super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == RESULT_LOAD_IMAGE
+	if (requestCode == RESULT_LOAD_IMAGE
 				&& resultCode == Activity.RESULT_OK && null != data) {
 			Uri selectedImage = data.getData();
 			String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
 			Cursor cursor = getActivity().getContentResolver().query(
 					selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
+	cursor.moveToFirst();
+		int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+		 picturePath = cursor.getString(columnIndex);
+		cursor.close();
 
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			 picturePath = cursor.getString(columnIndex);
-			cursor.close();
-
-			ImageView imageView = (ImageView) view.findViewById(R.id.btnaddpic);
-		imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+		ImageView imageView = (ImageView) view.findViewById(R.id.btnaddpic);
+	imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 		}
 
 	}
 
 	
 	
-	
-	
-	
 	private EditText findViewById(int edittextuser) {
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
