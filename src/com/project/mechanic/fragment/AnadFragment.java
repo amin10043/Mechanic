@@ -35,6 +35,7 @@ public class AnadFragment extends Fragment {
 	private DialogAnad dialog;
 	int ticketTypeid = 0;
 	private static int RESULT_LOAD_IMAGE = 1;
+	public static String picturePath;
 	int proID = -1;
 
 	@SuppressLint("InflateParams")
