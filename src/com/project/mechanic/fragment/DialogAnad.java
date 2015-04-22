@@ -1,9 +1,13 @@
 package com.project.mechanic.fragment;
 
+import java.nio.ByteBuffer;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -106,24 +110,27 @@ public class DialogAnad extends Dialog {
 				}
 
 				dbadapter.open();
-				// byte[] byteImage1 = null;
-				// try {
-				// ContentValues newValues = new ContentValues();
-				// FileInputStream instream = new
-				// FileInputStream(AnadFragment.picturePath);
-				// BufferedInputStream bif = new BufferedInputStream(instream);
-				// byteImage1 = new byte[bif.available()];
-				// bif.read(byteImage1);
-				// newValues.put("Image", byteImage1);
+				byte[] byteImage1 = null;
+				try {
+					dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
+					// Bitmap bitmap = Bitmap.createBitmap(dialog_img1
+					// .getDrawingCache());
+					Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
+							.getBitmap();
 
-				dbadapter.insertTickettoDb(
-						dialog_anad_et1.getText().toString(), dialog_anad_et2
-								.getText().toString(), 1, ticketTypeID, null,
-						emailCheck, nameCheck, faxCheck, phoneCheck,
-						mobileCheck, ProvinceId);
-				// } catch (IOException e) {
-				// textView.append("Error Exception : " + e.getMessage());
-				// }
+					int bytes = bitmap.getByteCount();
+					ByteBuffer buffer = ByteBuffer.allocate(bytes);
+					bitmap.copyPixelsToBuffer(buffer);
+					byteImage1 = buffer.array();
+
+					dbadapter.insertTickettoDb(dialog_anad_et1.getText()
+							.toString(), dialog_anad_et2.getText().toString(),
+							1, ticketTypeID, byteImage1, emailCheck, nameCheck,
+							faxCheck, phoneCheck, mobileCheck, ProvinceId);
+				} catch (Exception e) {
+					e.printStackTrace();
+					// textView.append("Error Exception : " + e.getMessage());
+				}
 				dbadapter.close();
 				((AnadFragment) fragment).updateView();
 				DialogAnad.this.dismiss();
