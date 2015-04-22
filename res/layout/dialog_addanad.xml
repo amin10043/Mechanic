@@ -61,7 +61,7 @@
             android:layout_marginLeft="5dp" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/rawcmttext"
             style="@style/row_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
