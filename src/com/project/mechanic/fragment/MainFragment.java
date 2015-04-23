@@ -28,10 +28,6 @@ public class MainFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		// int [] icon = {R.drawable.ic_main_item1 , R.drawable.add ,
-		// R.drawable.like , R.drawable.news3 , R.drawable.login_icon ,
-		// R.drawable.cancle2 , R.drawable.google};
-
 		util = new Utility(getActivity());
 		View view = inflater.inflate(R.layout.fragment_main, null);
 		dbAdapter = new DataBaseAdapter(getActivity());
