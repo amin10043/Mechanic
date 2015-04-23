@@ -3,19 +3,15 @@ package com.project.mechanic.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -33,6 +29,7 @@ import com.project.mechanic.fragment.FroumtitleFragment;
 import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class MainListAdapter extends ArrayAdapter<ListItem> {
 
@@ -41,6 +38,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 	int[] imageId;
 	ListItem tempItem;
 	DataBaseAdapter adapter;
+	Utility util;
 
 	int[] icon = { R.drawable.ic_main_item1, R.drawable.ic_main_item2,
 			R.drawable.ic_main_item3, R.drawable.ic_main_item4,
@@ -54,6 +52,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 		this.list = objact;
 		// icon = ic;
 		adapter = new DataBaseAdapter(context);
+		util = new Utility(context);
 
 	}
 
@@ -75,22 +74,19 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 			AbsListView.LayoutParams.MATCH_PARENT,
 					AbsListView.LayoutParams.MATCH_PARENT);
 
-			lp.height = (int) ((getScreenHeight()) / 9);
-
-			// Utility u = new Utility(context);
-			// u.getScreenWidth();
+			lp.height = (int) ((util.getScreenHeightWithPadding()) / 9);
 
 			li.setLayoutParams(lp);
 
 		}
 
 		TextView txtName = (TextView) convertView.findViewById(R.id.txtName);
-		TextView txtNoti = (TextView) convertView.findViewById(R.id.txtNoti);
 
 		ImageView img = (ImageView) convertView.findViewById(R.id.imgItem);
 
-		img.setBackgroundResource(icon[position]);
-
+		if (position < 7) {
+			img.setBackgroundResource(icon[position]);
+		}
 		img.getLayoutParams().width = ((View) img.getParent())
 				.getLayoutParams().height - 20;
 		img.getLayoutParams().height = ((View) img.getParent())
@@ -99,7 +95,6 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
-		txtNoti.setText("1");
 
 		convertView.setOnClickListener(new OnClickListener() {
 
@@ -211,25 +206,6 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 		});
 
 		return convertView;
-
-	}
-
-	@SuppressLint("NewApi")
-	public int getScreenHeight() {
-		int columnWidth;
-		WindowManager wm = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
-		Display display = wm.getDefaultDisplay();
-
-		final Point point = new Point();
-		try {
-			display.getSize(point);
-		} catch (java.lang.NoSuchMethodError ignore) { // Older device
-			point.x = display.getWidth();
-			point.y = display.getHeight();
-		}
-		columnWidth = point.y;
-		return columnWidth;
 
 	}
 

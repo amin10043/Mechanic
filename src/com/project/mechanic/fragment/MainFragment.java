@@ -2,30 +2,27 @@ package com.project.mechanic.fragment;
 
 import java.util.List;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.MainListAdapter;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class MainFragment extends Fragment {
 
 	DataBaseAdapter dbAdapter;
 	MainListAdapter ListAdapter;
 	LinearLayout footer_layLayout;
+	Utility util;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +32,7 @@ public class MainFragment extends Fragment {
 		// R.drawable.like , R.drawable.news3 , R.drawable.login_icon ,
 		// R.drawable.cancle2 , R.drawable.google};
 
+		util = new Utility(getActivity());
 		View view = inflater.inflate(R.layout.fragment_main, null);
 		dbAdapter = new DataBaseAdapter(getActivity());
 
@@ -46,48 +44,12 @@ public class MainFragment extends Fragment {
 		ListAdapter = new MainListAdapter(getActivity(),
 				R.layout.main_item_list, mylist);
 
-		Toast.makeText(getActivity(), String.valueOf(getScreenWidth()),
-				Toast.LENGTH_SHORT).show();
 		lstMain.setAdapter(ListAdapter);
-
-		// footer_layLayout = (LinearLayout) getView()
-		// .findViewById(R.id.tablighat);
-		//
-		// footer_layLayout.setBackgroundResource(R.drawable.propaganda);
-
-		// lstMain.setOnTouchListener(new OnTouchListener() {
-		//
-		// @Override
-		// public boolean onTouch(View arg0, MotionEvent ev) {
-		//
-		// return(ev.getAction()== MotionEvent.ACTION_MOVE);
-		//
-		//
-		// }
-		// });
-
-		// lstMain.setla
+		ImageView v = (ImageView) view.findViewById(R.id.imgAdverst);
+		v.getLayoutParams().height = util.getScreenHeightWithPadding() / 9;
+		v.requestLayout();
 
 		return view;
-	}
-
-	@SuppressLint("NewApi")
-	public int getScreenWidth() {
-		int columnWidth;
-		WindowManager wm = (WindowManager) getActivity().getSystemService(
-				Context.WINDOW_SERVICE);
-		Display display = wm.getDefaultDisplay();
-
-		final Point point = new Point();
-		try {
-			display.getSize(point);
-		} catch (java.lang.NoSuchMethodError ignore) { // Older device
-			point.x = display.getWidth();
-			point.y = display.getHeight();
-		}
-		columnWidth = point.y;
-		return columnWidth;
-
 	}
 
 }

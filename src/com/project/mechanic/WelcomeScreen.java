@@ -9,12 +9,11 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -47,6 +46,35 @@ public class WelcomeScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_welcome_screen);
+
+		initialize();
+		clickItem();
+		//
+		// handler = new Handler();
+		// runnable = new Runnable() {
+		// public void run() {
+		//
+		// Intent intent = new Intent();
+		// intent.setClass(WelcomeScreen.this, MainActivity.class);
+		//
+		// startActivity(intent);
+		// finish();
+		//
+		// overridePendingTransition(R.layout.splash_out,
+		// R.layout.splash_in);
+		//
+		// }
+		// };
+		// handler.postDelayed(runnable, SPLASH_DISPLAY_TIME);
+
+		int[] image = { R.drawable.up2, R.drawable.on2, R.drawable.or2,
+				R.drawable.g1, R.drawable.g2, R.drawable.g3, R.drawable.tayan,
+				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
+				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
+				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
+				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
+				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
+				R.drawable.tayan, R.drawable.tayan, };
 
 		Resources r = getResources();
 		float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
@@ -372,7 +400,6 @@ public class WelcomeScreen extends Activity {
 		ip.height = columnWidth / 2;
 		ip.setMargins(3, 0, 1, 0);
 
-
 		row_Displacement.setLayoutParams(ip);
 		row_network.setLayoutParams(ip);
 
@@ -387,7 +414,7 @@ public class WelcomeScreen extends Activity {
 		LinearLayout.LayoutParams np = new LinearLayout.LayoutParams(
 				row1.getLayoutParams());
 		np.height = columnWidth / 2;
-		np.width = 3 * (columnWidth -2) / 6;
+		np.width = 3 * (columnWidth - 2) / 6;
 
 		i1.setLayoutParams(np);
 		i2.setLayoutParams(np);
@@ -395,7 +422,6 @@ public class WelcomeScreen extends Activity {
 		i4.setLayoutParams(np);
 		i5.setLayoutParams(np);
 		i6.setLayoutParams(np);
-		
 
 	}
 

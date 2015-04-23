@@ -7,22 +7,16 @@
     <ImageView
         android:id="@+id/imgItem"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/txtNoti"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:textSize="15sp" />
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal" />
 
     <TextView
         android:id="@+id/txtName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_vertical|center_horizontal"
-        android:padding="5dp"
+        android:padding="2dp"
         android:textColor="#000"
-        android:textSize="12sp" />
+        android:textSize="10sp" />
 
 </LinearLayout>
