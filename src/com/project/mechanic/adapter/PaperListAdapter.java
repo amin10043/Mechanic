@@ -42,14 +42,14 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 		convertView = myInflater.inflate(R.layout.raw_papercmt, parent, false);
 		adapter = new DataBaseAdapter(context);
 
-		TextView txt1 = (TextView) convertView.findViewById(R.id.rawCmttxt);
-		TextView txt2 = (TextView) convertView.findViewById(R.id.txtUser);
-		TextView txt3 = (TextView) convertView.findViewById(R.id.txtDate);
+		TextView txtcmt = (TextView) convertView.findViewById(R.id.rawCmttxt);
+		TextView txtuser = (TextView) convertView.findViewById(R.id.txtUser);
+		TextView txtdate = (TextView) convertView.findViewById(R.id.txtDate);
 		CommentInPaper comment = list.get(position);
 
-		txt1.setText(comment.getCommentid());
-		txt2.setText(comment.getUserid());
-		txt3.setText(comment.getDatetime());
+		txtcmt.setText(comment.getCommentid());
+		txtuser.setText(comment.getUserid());
+		txtdate.setText(comment.getDatetime());
 		return convertView;
 	}
 }

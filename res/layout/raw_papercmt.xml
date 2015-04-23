@@ -9,16 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="60" >
-
-        <TextView
-            android:id="@+id/rawCmttxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="56dp"
-            android:text="TextView" />
+        android:layout_weight="10" >
 
         <TextView
             android:id="@+id/txtUser"
@@ -28,21 +19,29 @@
             android:layout_marginTop="14dp"
             android:layout_toRightOf="@+id/rawCmttxt"
             android:text="TextView" />
+
+        <TextView
+            android:id="@+id/rawCmttxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="TextView" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="40" >
+        android:layout_weight="90" >
 
         <TextView
             android:id="@+id/txtDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="54dp"
-            android:layout_marginTop="26dp"
+            android:layout_marginBottom="25dp"
+            android:layout_marginLeft="30dp"
             android:text="TextView" />
     </RelativeLayout>
 

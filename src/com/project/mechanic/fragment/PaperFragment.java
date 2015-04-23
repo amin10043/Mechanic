@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -31,14 +32,12 @@ public class PaperFragment extends Fragment {
 	ListView lst;
 	ArrayList<CommentInPaper> mylist;
 	PaperListAdapter PaperListadapter;
+	int like = 0;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_paper, null);
-		TextView txttitle = (TextView) view.findViewById(R.id.txtTitleP);
-
-		TextView txtcomment = (TextView) view.findViewById(R.id.txtComment);
 
 		btnAddcmt = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 		Like = (ImageButton) view.findViewById(R.id.imgbtnLike_CmtFroum);
@@ -60,6 +59,18 @@ public class PaperFragment extends Fragment {
 		txttitleDes.setText(p.getContext());
 		adapter.close();
 
+		Like.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View arg0) {
+				like++;
+				String likeText = Integer.toString(like);
+				NumofLike.setText(likeText);
+
+				return true;
+			}
+		});
+
 		btnAddcmt.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -79,6 +90,7 @@ public class PaperFragment extends Fragment {
 	public void updateView2() {
 		adapter.open();
 		mylist = adapter.getCommentInPaperbyPaperid(id);
+		NumofComment.setText(adapter.CommentInPaper_count().toString());
 
 		adapter.close();
 

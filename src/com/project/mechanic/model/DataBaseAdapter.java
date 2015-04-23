@@ -75,7 +75,7 @@ public class DataBaseAdapter {
 	private String[] CommentInFroum = { "ID", "Desk", "FroumId", "UserId",
 			"Date", "CommentId" };
 
-	private String[] CommentInPaper = { "Id", "Desk", "PaperId", "UserId",
+	private String[] CommentInPaper = { "_Id", "Desk", "PaperId", "UserId",
 			"Date", "CommentId" };
 
 	private String[] Executertype = { "ID", "Name" };
@@ -829,6 +829,14 @@ public class DataBaseAdapter {
 			res = cu.getInt(0);
 		}
 		return res;
+	}
+
+	public Integer CommentInPaper_count() {
+
+		Cursor mCur = mDb.query(TableCommentInPaper, CommentInPaper, null,
+				null, null, null, null);
+		int s = mCur.getCount();
+		return s;
 	}
 
 	public String province_display(String table, int row, int field) {
