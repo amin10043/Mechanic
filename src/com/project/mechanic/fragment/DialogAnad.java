@@ -116,31 +116,45 @@ public class DialogAnad extends Dialog {
 				}
 
 				dbadapter.open();
-				// byte[] byteimage;
-				// try {
-				// dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
-				// Bitmap bitmap = Bitmap.createBitmap(dialog_img1
-				// .getDrawingCache());
 
-				Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
-						.getBitmap();
-				byte[] bytes = getBitmapAsByteArray(bitmap);
-				// int bytes = bitmap.getByteCount();
-				// ByteBuffer buffer = ByteBuffer.allocate(bytes);
-				// bitmap.copyPixelsToBuffer(buffer);
-				// byteImage1 = buffer.array();
-				//
-				dbadapter.insertTickettoDb(
-						dialog_anad_et1.getText().toString(), dialog_anad_et2
-								.getText().toString(), 1, ticketTypeID, bytes,
-						emailCheck, nameCheck, faxCheck, phoneCheck,
-						mobileCheck, ProvinceId);
+				if ((dialog_img1.getDrawable() == null)) {
+
+					dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
+							.getText().toString(), dialog_anad_et2.getText()
+							.toString(), 1, ticketTypeID, emailCheck,
+							nameCheck, faxCheck, phoneCheck, mobileCheck,
+							ProvinceId);
+
+				} else {
+
+					Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
+							.getBitmap();
+
+					Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+							bitmap.getHeight(), bitmap.getConfig());
+					if (bitmap.sameAs(emptyBitmap)) {
+						dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
+								.getText().toString(), dialog_anad_et2
+								.getText().toString(), 1, ticketTypeID,
+								emailCheck, nameCheck, faxCheck, phoneCheck,
+								mobileCheck, ProvinceId);
+					} else {
+						byte[] bytes = getBitmapAsByteArray(bitmap);
+
+						dbadapter.insertTickettoDb(dialog_anad_et1.getText()
+								.toString(), dialog_anad_et2.getText()
+								.toString(), 1, ticketTypeID, bytes,
+								emailCheck, nameCheck, faxCheck, phoneCheck,
+								mobileCheck, ProvinceId);
+					}
+
+				}
+				dbadapter.close();
 				// } catch (Exception e) {
 				// e.printStackTrace();
 				// // textView.append("Error Exception : " + e.getMessage());
 				// }
 
-				dbadapter.close();
 				((AnadFragment) fragment).updateView();
 				DialogAnad.this.dismiss();
 
