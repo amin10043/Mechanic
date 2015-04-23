@@ -92,12 +92,13 @@ public class DataBaseAdapter {
 	private String[] Paper = { "ID", "Title", "Context" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name" };
-	private String[] Ticket = { "ID", "Title", "Desc", "UserId", "Image",
+	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
 			"ProvinceId" };
 
 	private String[] TicketType = { "ID", "desc" };
-	private String[] Users = { "ID", "Name", "Email", "Password", "Phonenumber" };
+	private String[] Users = { "ID", "Name", "Email", "Password",
+			"Phonenumber", "Image" };
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url" };
 	private String[] ObjectBrandType = { "ID", "Description" };
@@ -140,13 +141,15 @@ public class DataBaseAdapter {
 		mDbHelper.close();
 	}
 
-	public void inserUserToDb(String name, String email, String password) {
+	public void inserUserToDb(String name, String email, String password,
+			String phonenumber) {
 
 		ContentValues uc = new ContentValues();
 
 		uc.put("Name", name);
 		uc.put("Email", email);
 		uc.put("Password", password);
+		uc.put("Phonenumber", phonenumber);
 		long res = mDb.insert(TableUsers, null, uc);
 		long res2 = res;
 
@@ -241,6 +244,28 @@ public class DataBaseAdapter {
 		cv.put("UserId", userId);
 		cv.put("TypeId", typeId);
 		cv.put("Image", bytes);
+		cv.put("Email", email);
+		cv.put("Name", name);
+		cv.put("Fax", fax);
+		cv.put("Phone", phone);
+		cv.put("Mobile", mobile);
+		cv.put("ProvinceId", provinceId);
+
+		mDb.insert(TableTicket, null, cv);
+
+	}
+
+	public void insertTickettoDbemptyImage(String Title, String desc,
+			int userId,
+
+			int typeId, int email, int name, int fax, int phone, int mobile,
+			int provinceId) {
+
+		ContentValues cv = new ContentValues();
+		cv.put("Title", Title);
+		cv.put("Desc", desc);
+		cv.put("UserId", userId);
+		cv.put("TypeId", typeId);
 		cv.put("Email", email);
 		cv.put("Name", name);
 		cv.put("Fax", fax);
@@ -363,8 +388,6 @@ public class DataBaseAdapter {
 
 	}
 
-	// ////////////////////////////////////////////
-
 	public News getNewsById(int Id) {
 		News item = null;
 		Cursor mnew = mDb.query("News", News, " Id=?",
@@ -463,6 +486,20 @@ public class DataBaseAdapter {
 
 	}
 
+	public Ticket getTicketById(int Id) {
+
+		Ticket item = null;
+		Cursor mCur = mDb.query(TableTicket, Ticket, "Id=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToTicket(mCur);
+		}
+
+		return item;
+
+	}
+
 	public ArrayList<Ticket> getTicketByTypeIdProId(int TypeId, int provinceID) {
 
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
@@ -548,9 +585,10 @@ public class DataBaseAdapter {
 	}
 
 	private Users CursorToUsers(Cursor cursor) {
-		Users tempProvince = new Users(cursor.getInt(0), cursor.getString(1),
-				cursor.getString(2), cursor.getString(3), cursor.getString(4));
-		return tempProvince;
+		Users Users = new Users(cursor.getInt(0), cursor.getString(1),
+				cursor.getString(2), cursor.getString(3), cursor.getString(4),
+				cursor.getBlob(5));
+		return Users;
 
 	}
 
@@ -1138,7 +1176,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4));
+					cursor.getString(4), cursor.getBlob(5));
 			result.add(tempusers);
 		}
 		return result;
@@ -1170,7 +1208,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4));
+					cursor.getString(4), cursor.getBlob(5));
 			result.add(tempusers);
 		}
 		return result;

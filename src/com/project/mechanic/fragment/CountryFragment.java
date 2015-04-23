@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.CountryListAdapter;
@@ -25,7 +26,7 @@ public class CountryFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		//id = Integer.valueOf(getArguments().getString("Id"));
+		// id = Integer.valueOf(getArguments().getString("Id"));
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.brand);
 		View view = inflater.inflate(R.layout.fragment_city, null);

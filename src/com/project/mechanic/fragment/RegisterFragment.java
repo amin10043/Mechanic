@@ -1,10 +1,15 @@
 package com.project.mechanic.fragment;
 
+import java.io.ByteArrayOutputStream;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -50,12 +55,18 @@ public class RegisterFragment extends Fragment {
 	DataBaseAdapter dbAdapter;
 	private Activity view;
 
+	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.PNG, 0, outputStream);
+		return outputStream.toByteArray();
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_register, null);
 
-		dbAdapter = new DataBaseAdapter(getActivity());
+		// dbAdapter = new DataBaseAdapter(getActivity());
 		btnaddpic1 = (ImageView) view.findViewById(R.id.btnaddpic);
 		Button btncan = (Button) view.findViewById(R.id.btncancle2);
 		Button btnreg = (Button) view.findViewById(R.id.btnreg2);
@@ -103,8 +114,12 @@ public class RegisterFragment extends Fragment {
 					// }
 					// dbAdapter.close();
 					// first Insert user to WS then insert to local
+					dbAdapter = new DataBaseAdapter(getActivity());
 					dbAdapter.open();
-					dbAdapter.inserUserToDb(Name, user, pass);
+					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
+							.getBitmap();
+					byte[] bytes1 = getBitmapAsByteArray(bitmap);
+					dbAdapter.inserUserToDb(Name, user, pass, null);
 
 					dbAdapter.close();
 
