@@ -1,10 +1,9 @@
 package com.project.mechanic.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -50,7 +49,6 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 
 		this.context = context;
 		this.list = objact;
-		// icon = ic;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
 
@@ -81,17 +79,20 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 		}
 
 		TextView txtName = (TextView) convertView.findViewById(R.id.txtName);
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
+				"fonts/BROYA.TTF");
+		txtName.setTypeface(typeFace);
 
 		ImageView img = (ImageView) convertView.findViewById(R.id.imgItem);
 
 		if (position < 7) {
 			img.setBackgroundResource(icon[position]);
+			img.getLayoutParams().width = ((View) img.getParent())
+					.getLayoutParams().height - 20;
+			img.getLayoutParams().height = ((View) img.getParent())
+					.getLayoutParams().height - 20;
+			img.requestLayout();
 		}
-		img.getLayoutParams().width = ((View) img.getParent())
-				.getLayoutParams().height - 20;
-		img.getLayoutParams().height = ((View) img.getParent())
-				.getLayoutParams().height - 20;
-		img.requestLayout();
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
@@ -106,22 +107,15 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 						.findViewById(R.id.txtName);
 				String item = txtName.getText().toString();
 
-				adapter.open();
-				ArrayList<ListItem> allItems = adapter.getListItemsById(0);
 				int id = 0;
-				for (ListItem listItem : allItems) {
+				for (ListItem listItem : list) {
 					if (item.equals(listItem.getName())) {
 						// check authentication and authorization
 						id = listItem.getId();
+						break;
 					}
 				}
 				adapter.close();
-
-				SharedPreferences sendData = context.getSharedPreferences("Id",
-						0);
-				SharedPreferences.Editor editor = sendData.edit();
-				editor.putInt("main_Id", id);
-				editor.commit();
 
 				if (id == 1) {
 					FragmentTransaction trans = ((MainActivity) context)
@@ -138,9 +132,6 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					Fragment ostan = new ProvinceFragment();
-					// Bundle bundle = new Bundle();
-					// bundle.putString("Id", String.valueOf(id));
-					// ostan.setArguments(bundle);
 					trans.addToBackStack(null);
 					trans.replace(R.id.content_frame, ostan);
 
@@ -167,9 +158,9 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					NewsFragment fragment = new NewsFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
+					// Bundle bundle = new Bundle();
+					// bundle.putString("Id", String.valueOf(id));
+					// fragment.setArguments(bundle);
 					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack(null);
 					trans.commit();
@@ -179,9 +170,9 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					CountryFragment fragment = new CountryFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
+					// Bundle bundle = new Bundle();
+					// bundle.putString("Id", String.valueOf(id));
+					// fragment.setArguments(bundle);
 					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack(null);
 					trans.commit();
@@ -192,14 +183,6 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.replace(R.id.content_frame, new FroumtitleFragment());
 					trans.addToBackStack(null);
 					trans.commit();
-
-				} else if (id == 8) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					// trans.replace(R.id.content_frame, new
-					// TitlepaperFragment());
-					trans.addToBackStack(null);
-					trans.commit();
 				}
 			}
 
@@ -208,5 +191,4 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 		return convertView;
 
 	}
-
 }
