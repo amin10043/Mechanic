@@ -3,11 +3,13 @@ package com.project.mechanic.fragment;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,8 +18,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -56,6 +60,9 @@ public class RegisterFragment extends Fragment {
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
 	private Activity view;
+	private int column = 3;
+	
+	private int columnWidth;
 
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap)
 	{
@@ -80,7 +87,7 @@ public class RegisterFragment extends Fragment {
 				.findViewById(R.id.editTextuser);
 		final EditText editpass = (EditText) view
 				.findViewById(R.id.editTextpass);
-
+//		columnWidth = (int) (getScreenWidth() / column);
 		btnreg.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View arg0) {
@@ -145,6 +152,9 @@ public class RegisterFragment extends Fragment {
 
 				getActivity().startActivityFromFragment(RegisterFragment.this,
 						i, RESULT_LOAD_IMAGE);
+				
+				
+				
 			}
 		});
 
@@ -179,5 +189,50 @@ public class RegisterFragment extends Fragment {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	
+	
+	
+	
+	
+//	@SuppressLint("NewApi")
+//	public int getScreenWidth() {
+//		int columnWidth;
+//		WindowManager wm = (WindowManager) this
+//				.getSystemService(Context.WINDOW_SERVICE);
+//		Display display = wm.getDefaultDisplay();
+//
+//		final Point point = new Point();
+//		try {
+//			display.getSize(point);
+//		} catch (java.lang.NoSuchMethodError ignore) { // Older device
+//			point.x = display.getWidth();
+//			point.y = display.getHeight();
+//		}
+//		columnWidth = point.x;
+//		return columnWidth;
+//
+//	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
