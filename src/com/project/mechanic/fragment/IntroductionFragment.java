@@ -27,7 +27,6 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.IntroductionListAdapter;
 import com.project.mechanic.entity.CommentInObject;
-import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -70,11 +69,10 @@ public class IntroductionFragment extends Fragment {
 	Button Pdf3;
 	Button Pdf4;
 	Object object;
-     ImageButton phone;
-	 ImageButton cphone;
-	 ImageButton map;
-	 ImageButton email;
-	
+	ImageButton phone;
+	ImageButton cphone;
+	ImageButton map;
+	ImageButton email;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -88,7 +86,7 @@ public class IntroductionFragment extends Fragment {
 		peykan5 = (ImageView) view.findViewById(R.id.imageButton7);
 		advertise = (ImageView) view.findViewById(R.id.imgvadvertise_Object);
 		advertise2 = (ImageView) view.findViewById(R.id.imgvadvertise2_Object);
-		
+
 		link1 = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
 		link2 = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
 
@@ -100,10 +98,9 @@ public class IntroductionFragment extends Fragment {
 		txtDesc = (TextView) view.findViewById(R.id.txtDesc_Object);
 		txtEmail = (TextView) view.findViewById(R.id.txtEmail_Object);
 		txtNumofLike = (TextView) view.findViewById(R.id.txtNumofLike_Object);
-		txtNumofComment = (TextView) view.findViewById(R.id.txtNumofComment_Object);
-		
-		
-		
+		txtNumofComment = (TextView) view
+				.findViewById(R.id.txtNumofComment_Object);
+
 		like = (ImageButton) view.findViewById(R.id.ImgbtnLike_Object);
 		btnCmt = (ImageButton) view.findViewById(R.id.imgbtnCmt_introduction);
 		Facebook = (ImageButton) view.findViewById(R.id.imgbtnFacebook_Object);
@@ -111,159 +108,156 @@ public class IntroductionFragment extends Fragment {
 		LinkedIn = (ImageButton) view.findViewById(R.id.imgbtnLinkedin_Object);
 		Google = (ImageButton) view.findViewById(R.id.imgbtnGoogle_Object);
 		Site = (ImageButton) view.findViewById(R.id.imgbtnSite_Object);
-		Twitter= (ImageButton) view.findViewById(R.id.imgbtnTwitter_Object);
-		
-	
-	 phone = (ImageButton) view.findViewById(R.id.phonebtn);
-	 cphone = (ImageButton) view.findViewById(R.id.cphonebtn);
-		 map = (ImageButton) view.findViewById(R.id.mapbtn);
-		email = (ImageButton) view.findViewById(R.id.emailbtn);
-		
-		
-		
-		
-		Pdf1= (Button) view.findViewById(R.id.btnPdf1_Object);
-		Pdf2= (Button) view.findViewById(R.id.btnPdf2_Object);
-		Pdf3= (Button) view.findViewById(R.id.btnPdf3_Object);
-		Pdf4= (Button) view.findViewById(R.id.btnPdf4_Object);
+		Twitter = (ImageButton) view.findViewById(R.id.imgbtnTwitter_Object);
 
-		
-		
+		phone = (ImageButton) view.findViewById(R.id.phonebtn);
+		cphone = (ImageButton) view.findViewById(R.id.cphonebtn);
+		map = (ImageButton) view.findViewById(R.id.mapbtn);
+		email = (ImageButton) view.findViewById(R.id.emailbtn);
+
+		Pdf1 = (Button) view.findViewById(R.id.btnPdf1_Object);
+		Pdf2 = (Button) view.findViewById(R.id.btnPdf2_Object);
+		Pdf3 = (Button) view.findViewById(R.id.btnPdf3_Object);
+		Pdf4 = (Button) view.findViewById(R.id.btnPdf4_Object);
+
 		lst = (ListView) view.findViewById(R.id.listvCmt_Introduction);
-		// id = Integer.valueOf(getArguments().getString("Id"));
+
+		if (getArguments() != null && getArguments().getString("Id") != null)
+			id = Integer.valueOf(getArguments().getString("Id"));
 		adapter.open();
 		mylist = adapter.getAllCommentInObjectById(id);
 		txtNumofComment.setText(adapter.CommentInObject_count().toString());
 		txtNumofLike.setText(adapter.LikeInObject_count().toString());
-		 object = adapter.getAllObjectbyid(id);
-		if(object == null){
+		object = adapter.getAllObjectbyid(id);
+		if (object == null) {
 			return view;
 		}
-		 txtFax.setText(object.getFax());
-		 txtPhone.setText(object.getPhone());
-		 txtCellphone.setText(object.getCellphone());
-		 txtEmail.setText(object.getEmail());
-		 txtAddress.setText(object.getAddress());
-		 txtDesc.setText(object.getDescription());
-		 
+		txtFax.setText(object.getFax());
+		txtPhone.setText(object.getPhone());
+		txtCellphone.setText(object.getCellphone());
+		txtEmail.setText(object.getEmail());
+		txtAddress.setText(object.getAddress());
+		txtDesc.setText(object.getDescription());
+
 		// advertise.setimage
-		 Facebook.setOnClickListener(new OnClickListener() {
+		Facebook.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
+			@Override
+			public void onClick(View v) {
 
-					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getFacebook()));
-				        startActivity(browserIntent);
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse(object.getFacebook()));
+				startActivity(browserIntent);
 
-				}
-			});
-		 Instagram.setOnClickListener(new OnClickListener() {
+			}
+		});
+		Instagram.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
+			@Override
+			public void onClick(View v) {
 
-					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getInstagram()));
-				        startActivity(browserIntent);
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse(object.getInstagram()));
+				startActivity(browserIntent);
 
-				}
-			});
-		 
-		 LinkedIn.setOnClickListener(new OnClickListener() {
+			}
+		});
 
-				@Override
-				public void onClick(View v) {
+		LinkedIn.setOnClickListener(new OnClickListener() {
 
-					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getLinkedIn()));
-				        startActivity(browserIntent);
+			@Override
+			public void onClick(View v) {
 
-				}
-			});
-		 
-		 
-		 Google.setOnClickListener(new OnClickListener() {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse(object.getLinkedIn()));
+				startActivity(browserIntent);
 
-				@Override
-				public void onClick(View v) {
+			}
+		});
 
-					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getGoogle()));
-				        startActivity(browserIntent);
+		Google.setOnClickListener(new OnClickListener() {
 
-				}
-			});
-		 
-		 
-		 Site.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
 
-				@Override
-				public void onClick(View v) {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse(object.getGoogle()));
+				startActivity(browserIntent);
 
-					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getSite()));
-				        startActivity(browserIntent);
+			}
+		});
 
-				}
-			});
-		 
-		 
-		 Twitter.setOnClickListener(new OnClickListener() {
+		Site.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
+			@Override
+			public void onClick(View v) {
 
-					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getTwitter()));
-				     startActivity(browserIntent);
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse(object.getSite()));
+				startActivity(browserIntent);
 
-				}
-			});
-		 
-		 
-		 Pdf1.setOnClickListener(new OnClickListener() {
+			}
+		});
 
-				@Override
-				public void onClick(View v) {
+		Twitter.setOnClickListener(new OnClickListener() {
 
-					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getPdf1()));
-				        startActivity(browserIntent);
+			@Override
+			public void onClick(View v) {
 
-				}
-			});
-		 
-		 
-		 Pdf2.setOnClickListener(new OnClickListener() {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse(object.getTwitter()));
+				startActivity(browserIntent);
 
-				@Override
-				public void onClick(View v) {
+			}
+		});
 
-					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getPdf2()));
-				        startActivity(browserIntent);
+		Pdf1.setOnClickListener(new OnClickListener() {
 
-				}
-			});
-		 
-		 
-		 Pdf3.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
 
-				@Override
-				public void onClick(View v) {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse(object.getPdf1()));
+				startActivity(browserIntent);
 
-					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getPdf3()));
-				        startActivity(browserIntent);
+			}
+		});
 
-				}
-			});
-		 
-		 
-		 Pdf4.setOnClickListener(new OnClickListener() {
+		Pdf2.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
+			@Override
+			public void onClick(View v) {
 
-					 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(object.getPdf4()));
-				        startActivity(browserIntent);
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse(object.getPdf2()));
+				startActivity(browserIntent);
 
-				}
-			});
-		 
-	
+			}
+		});
+
+		Pdf3.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse(object.getPdf3()));
+				startActivity(browserIntent);
+
+			}
+		});
+
+		Pdf4.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse(object.getPdf4()));
+				startActivity(browserIntent);
+
+			}
+		});
 
 		adapter.close();
 		IntroductionListAdapter listAdapter = new IntroductionListAdapter(
@@ -298,19 +292,16 @@ public class IntroductionFragment extends Fragment {
 			}
 		});
 
-		
-		  like.setOnClickListener(new View.OnClickListener() {
-		  
-		  @Override public void onClick(View arg0) {
-		  adapter.open();
-		  adapter.insertLikeInObjectToDb( 1, 0,"",1);
-		  txtNumofLike.setText(adapter.LikeInObject_count().toString());
-		 
-		  
-		  } });
-		 
+		like.setOnClickListener(new View.OnClickListener() {
 
-		
+			@Override
+			public void onClick(View arg0) {
+				adapter.open();
+				adapter.insertLikeInObjectToDb(1, 0, "", 1);
+				txtNumofLike.setText(adapter.LikeInObject_count().toString());
+
+			}
+		});
 
 		link2.setOnClickListener(new OnClickListener() {
 
@@ -350,97 +341,78 @@ public class IntroductionFragment extends Fragment {
 
 			}
 		});
-		
-		
-	
-		
-		
+
 		phone.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
-			//	Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
-				
-		//	startActivityForResult(new Intent("android.intent.action.call",Uri.parse("tel:"+ txtCellphone.getText().toString())), 1);
-				
-	
-			Intent intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:"+txtCellphone.getText().toString()));
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-		
+				// Toast.makeText(getActivity(), "ok",
+				// Toast.LENGTH_SHORT).show();
+
+				// startActivityForResult(new
+				// Intent("android.intent.action.call",Uri.parse("tel:"+
+				// txtCellphone.getText().toString())), 1);
+
+				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
+						+ txtCellphone.getText().toString()));
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
 
 			}
 		});
-		
-		
-	cphone.setOnClickListener(new OnClickListener() {
+
+		cphone.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
 				Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
-				//startActivityForResult(new Intent("android.intent.action.call",Uri.parse("tel:"+ txtPhone.getText().toString())), 1);
+				// startActivityForResult(new
+				// Intent("android.intent.action.call",Uri.parse("tel:"+
+				// txtPhone.getText().toString())), 1);
 
-
-				Intent intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:"+txtPhone.getText().toString()));
+				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
+						+ txtPhone.getText().toString()));
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(intent);
-				
-				
-				
+
 			}
 		});
-		
+
 		email.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
-			
-	            String b_email =  txtEmail.getText().toString();
-	           Intent email = new Intent(Intent.ACTION_SEND);
-	            email.putExtra(Intent.EXTRA_EMAIL, new String[]{ "b_email"});
-	            email.setType("message/rfc822");
-	            
-	            startActivity(Intent.createChooser(email, "Choose an Email client :"));
-	            
-	            
-	            
-	            
-	           
-	            
+				String b_email = txtEmail.getText().toString();
+				Intent email = new Intent(Intent.ACTION_SEND);
+				email.putExtra(Intent.EXTRA_EMAIL, new String[] { "b_email" });
+				email.setType("message/rfc822");
+
+				startActivity(Intent.createChooser(email,
+						"Choose an Email client :"));
+
 			}
-			
-			
-			
+
 		});
-		
-	map.setOnClickListener(new OnClickListener() {
+
+		map.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
-			Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
-			Intent intent = new Intent(android.content.Intent.ACTION_VIEW, 
-				    Uri.parse("https://www.google.com/maps/dir/36.2476613,59.4998502/Mashhad,+Khorasan+Razavi/Khorasan+Razavi,+Mashhad,+Kolahdooz+Blvd,+No.+47/@36.2934197,59.5606058,15z/data=!4m15!4m14!1m0!1m5!1m1!1s0x3f6c911abe4131d7:0xc9c57e3a9318753b!2m2!1d59.6167549!2d36.2604623!1m5!1m1!1s0x3f6c91798c9d172b:0xaf638c4e2e2ac720!2m2!1d59.5749626!2d36.2999667!3e2"));
+				Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(
+						android.content.Intent.ACTION_VIEW,
+						Uri.parse("https://www.google.com/maps/dir/36.2476613,59.4998502/Mashhad,+Khorasan+Razavi/Khorasan+Razavi,+Mashhad,+Kolahdooz+Blvd,+No.+47/@36.2934197,59.5606058,15z/data=!4m15!4m14!1m0!1m5!1m1!1s0x3f6c911abe4131d7:0xc9c57e3a9318753b!2m2!1d59.6167549!2d36.2604623!1m5!1m1!1s0x3f6c91798c9d172b:0xaf638c4e2e2ac720!2m2!1d59.5749626!2d36.2999667!3e2"));
 				startActivity(intent);
 			}
 		});
-		
-		
-		
-		
-		
-		
-		
-		
 
 		return view;
 
 	}
-
-	
 
 	private void resizeListView(ListView listView) {
 		ListAdapter listAdapter = listView.getAdapter();
@@ -467,16 +439,16 @@ public class IntroductionFragment extends Fragment {
 				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);
 	}
-	
 
-	  public void updateView3() { 
-		  adapter.open(); 
-		  mylist = adapter.getAllCommentInObjectById(id);
-		  txtNumofComment.setText(adapter.CommentInObject_count().toString());
-          adapter.close();
-	      IntroductionListAdapter x= new IntroductionListAdapter(getActivity(), R.layout.raw_froumcmt, mylist);
-	      x.notifyDataSetChanged();
-	      lst.setAdapter(x);
-	   }
-	
+	public void updateView3() {
+		adapter.open();
+		mylist = adapter.getAllCommentInObjectById(id);
+		txtNumofComment.setText(adapter.CommentInObject_count().toString());
+		adapter.close();
+		IntroductionListAdapter x = new IntroductionListAdapter(getActivity(),
+				R.layout.raw_froumcmt, mylist);
+		x.notifyDataSetChanged();
+		lst.setAdapter(x);
+	}
+
 }

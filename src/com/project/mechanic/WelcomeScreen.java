@@ -1,5 +1,8 @@
 package com.project.mechanic;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,25 +12,28 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.GridView;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-
-import com.project.mechanic.adapter.WelcomeScreenAdapter;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 public class WelcomeScreen extends Activity {
-	// int SPLASH_DISPLAY_TIME = 30000;
-	// Handler handler;
-	// Runnable runnable;
 
-	private WelcomeScreenAdapter adapter;
-	private GridView gridView;
+	private LinearLayout verticalOuterLayout;
 	private ImageButton btnNext, btnExit, btnins1, btnint1, btngp1, btnfb1,
 			btntw1, btnlink1;
 
@@ -40,6 +46,18 @@ public class WelcomeScreen extends Activity {
 	private int column = 3;
 	int gridePadding = 1;
 	private int columnWidth;
+	private ScrollView verticalScrollview;
+	private TextView verticalTextView;
+	private int verticalScrollMax;
+	private Timer scrollTimer = null;
+	private TimerTask clickSchedule;
+	private TimerTask scrollerSchedule;
+	private TimerTask faceAnimationSchedule;
+	private int scrollPos = 0;
+	private Boolean isFaceDown = true;
+	private Timer clickTimer = null;
+	private Timer faceTimer = null;
+	private Button clickedButton = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,24 +67,6 @@ public class WelcomeScreen extends Activity {
 
 		initialize();
 		clickItem();
-		//
-		// handler = new Handler();
-		// runnable = new Runnable() {
-		// public void run() {
-		//
-		// Intent intent = new Intent();
-		// intent.setClass(WelcomeScreen.this, MainActivity.class);
-		//
-		// startActivity(intent);
-		// finish();
-		//
-		// overridePendingTransition(R.layout.splash_out,
-		// R.layout.splash_in);
-		//
-		// }
-		// };
-		// handler.postDelayed(runnable, SPLASH_DISPLAY_TIME);
-
 		int[] image = { R.drawable.up2, R.drawable.on2, R.drawable.or2,
 				R.drawable.g1, R.drawable.g2, R.drawable.g3, R.drawable.tayan,
 				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
@@ -88,7 +88,18 @@ public class WelcomeScreen extends Activity {
 		setParams();
 		clickItem();
 
-		// padding((int) padding);
+		verticalOuterLayout = (LinearLayout) findViewById(R.id.vertical_outer_layout_id);
+		verticalScrollview = (ScrollView) findViewById(R.id.vertical_scrollview_id);
+		ViewTreeObserver vto = verticalOuterLayout.getViewTreeObserver();
+		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+				verticalOuterLayout.getViewTreeObserver()
+						.removeGlobalOnLayoutListener(this);
+				getScrollMaxAmount();
+				startAutoScrolling();
+			}
+		});
 
 	}
 
@@ -466,129 +477,181 @@ public class WelcomeScreen extends Activity {
 
 	}
 
-}
+	public void getScrollMaxAmount() {
+		// int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 *
+		// 3));
+		int actualWidth = (verticalOuterLayout.getMeasuredHeight());
+		verticalScrollMax = actualWidth;
+		// verticalScrollMax = verticalScrollview.getHeight();
+		// verticalScrollMax = new Utility(this).getScreenHeight();
+	}
 
-//
-// initialize();
-// cliclItem();
-// //
-// // handler = new Handler();
-// // runnable = new Runnable() {
-// // public void run() {
-// //
-// // Intent intent = new Intent();
-// // intent.setClass(WelcomeScreen.this, MainActivity.class);
-// //
-// // startActivity(intent);
-// // finish();
-// //
-// // overridePendingTransition(R.layout.splash_out,
-// // R.layout.splash_in);
-// //
-// // }
-// // };
-// // handler.postDelayed(runnable, SPLASH_DISPLAY_TIME);
-//
-// gridView = (GridView) findViewById(R.id.grid_view);
-// int[] image = { R.drawable.up2, R.drawable.on2, R.drawable.or2,
-// R.drawable.g1, R.drawable.g2, R.drawable.g3, R.drawable.tayan,
-// R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
-// R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
-// R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
-// R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
-// R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
-// R.drawable.tayan, R.drawable.tayan, };
-//
-// Resources r = getResources();
-// float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-// gridePadding, r.getDisplayMetrics());
-//
-// columnWidth = (int) ((getScreenWidth() - ((column + 1) * padding)) / column);
-//
-// gridView.setNumColumns(column);
-// gridView.setColumnWidth(columnWidth);
-// gridView.setStretchMode(GridView.NO_STRETCH);
-// gridView.setPadding((int) padding, (int) padding, (int) padding,
-// (int) padding);
-// gridView.setHorizontalSpacing((int) 0);
-// gridView.setVerticalSpacing((int) 0);
-//
-// gridView.setAdapter(new WelcomeScreenAdapter(this, image, columnWidth));
-//
-// }
-//
-// @SuppressLint("NewApi")
-// public int getScreenWidth() {
-// int columnWidth;
-// WindowManager wm = (WindowManager) this
-// .getSystemService(Context.WINDOW_SERVICE);
-// Display display = wm.getDefaultDisplay();
-//
-// final Point point = new Point();
-// try {
-// display.getSize(point);
-// } catch (java.lang.NoSuchMethodError ignore) { // Older device
-// point.x = display.getWidth();
-// point.y = display.getHeight();
-// }
-// columnWidth = point.x;
-// return columnWidth;
-//
-// }
-//
-// private void initialize() {
-//
-// btnNext = (ImageButton) findViewById(R.id.btnnext);
-// btnExit = (ImageButton) findViewById(R.id.btnprev);
-//
-// btnins1 = (ImageButton) findViewById(R.id.btninstegram);
-// btnint1 = (ImageButton) findViewById(R.id.btn_internet);
-// btngp1 = (ImageButton) findViewById(R.id.btngplas);
-// btnfb1 = (ImageButton) findViewById(R.id.btnfb);
-// btntw1 = (ImageButton) findViewById(R.id.btntwitter);
-// btnlink1 = (ImageButton) findViewById(R.id.btnlinking);
-//
-// } // end initialize
-//
-// private void cliclItem() {
-//
-// btnNext.setOnClickListener(new OnClickListener() {
-//
-// @Override
-// public void onClick(View arg0) {
-// Intent intent = new Intent();
-// intent.setClass(WelcomeScreen.this, MainActivity.class);
-//
-// startActivity(intent);
-// finish();
-//
-// overridePendingTransition(R.layout.splash_out,
-// R.layout.splash_in);
-//
-// }
-// });
-//
-// btnExit.setOnClickListener(new OnClickListener() {
-//
-// @Override
-// public void onClick(View arg0) {
-// new AlertDialog.Builder(WelcomeScreen.this)
-// .setTitle("خروج از برنامه")
-// .setMessage("آیا از خروج اطمینان دارید؟")
-// .setNegativeButton("خیر", null)
-// .setPositiveButton("بله",
-// new DialogInterface.OnClickListener() {
-//
-// public void onClick(DialogInterface arg0,
-// int arg1) {
-// finish();
-// System.exit(0);
-// }
-// }).create().show();
-//
-// }
-// });
-//
-// } // end cliclItem
-//
-// }
+	public void startAutoScrolling() {
+		if (scrollTimer == null) {
+			scrollTimer = new Timer();
+			final Runnable Timer_Tick = new Runnable() {
+				public void run() {
+					moveScrollView();
+				}
+			};
+
+			if (scrollerSchedule != null) {
+				scrollerSchedule.cancel();
+				scrollerSchedule = null;
+			}
+			scrollerSchedule = new TimerTask() {
+				@Override
+				public void run() {
+					runOnUiThread(Timer_Tick);
+				}
+			};
+
+			scrollTimer.schedule(scrollerSchedule, 30, 30);
+		}
+	}
+
+	public void moveScrollView() {
+		scrollPos = (int) (verticalScrollview.getScrollY() + 1.0);
+		if (scrollPos >= verticalScrollMax) {
+			scrollPos = 0;
+		} else {
+			verticalScrollview.scrollTo(0, scrollPos);
+			// Log.e("moveScrollView", "moveScrollView");
+		}
+	}
+
+	public void stopAutoScrolling() {
+		if (scrollTimer != null) {
+			scrollTimer.cancel();
+			scrollTimer = null;
+		}
+	}
+
+	public Animation scaleFaceUpAnimation() {
+		Animation scaleFace = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f);
+		scaleFace.setDuration(500);
+		scaleFace.setFillAfter(true);
+		scaleFace.setInterpolator(new AccelerateInterpolator());
+		Animation.AnimationListener scaleFaceAnimationListener = new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation arg0) {
+				// verticalTextView.setText(nameArray[(Integer) clickedButton
+				// .getTag()]);
+				isFaceDown = false;
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation arg0) {
+				if (faceTimer != null) {
+					faceTimer.cancel();
+					faceTimer = null;
+				}
+			}
+
+			@Override
+			public void onAnimationEnd(Animation arg0) {
+				if (faceTimer != null) {
+					faceTimer.cancel();
+					faceTimer = null;
+				}
+
+				faceTimer = new Timer();
+				if (faceAnimationSchedule != null) {
+					faceAnimationSchedule.cancel();
+					faceAnimationSchedule = null;
+				}
+				faceAnimationSchedule = new TimerTask() {
+					@Override
+					public void run() {
+						faceScaleHandler.sendEmptyMessage(0);
+					}
+				};
+
+				faceTimer.schedule(faceAnimationSchedule, 750);
+			}
+		};
+		scaleFace.setAnimationListener(scaleFaceAnimationListener);
+		return scaleFace;
+	}
+
+	private Handler faceScaleHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (clickedButton.isSelected() == true)
+				clickedButton.startAnimation(scaleFaceDownAnimation(500));
+		}
+	};
+
+	public Animation scaleFaceDownAnimation(int duration) {
+		Animation scaleFace = new ScaleAnimation(1.2f, 1.0f, 1.2f, 1.0f,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f);
+		scaleFace.setDuration(duration);
+		scaleFace.setFillAfter(true);
+		scaleFace.setInterpolator(new AccelerateInterpolator());
+		Animation.AnimationListener scaleFaceAnimationListener = new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation arg0) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation arg0) {
+				verticalTextView.setText("");
+				isFaceDown = true;
+			}
+
+			@Override
+			public void onAnimationEnd(Animation arg0) {
+				verticalTextView.setText("");
+				isFaceDown = true;
+			}
+		};
+		scaleFace.setAnimationListener(scaleFaceAnimationListener);
+		return scaleFace;
+	}
+
+	public void onBackPressed() {
+		super.onBackPressed();
+		finish();
+	}
+
+	public void onPause() {
+		super.onPause();
+		finish();
+	}
+
+	public void onDestroy() {
+		clearTimerTaks(clickSchedule);
+		clearTimerTaks(scrollerSchedule);
+		clearTimerTaks(faceAnimationSchedule);
+		clearTimers(scrollTimer);
+		clearTimers(clickTimer);
+		clearTimers(faceTimer);
+
+		clickSchedule = null;
+		scrollerSchedule = null;
+		faceAnimationSchedule = null;
+		scrollTimer = null;
+		clickTimer = null;
+		faceTimer = null;
+
+		super.onDestroy();
+	}
+
+	private void clearTimers(Timer timer) {
+		if (timer != null) {
+			timer.cancel();
+			timer = null;
+		}
+	}
+
+	private void clearTimerTaks(TimerTask timerTask) {
+		if (timerTask != null) {
+			timerTask.cancel();
+			timerTask = null;
+		}
+	}
+
+}
