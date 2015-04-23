@@ -1,11 +1,15 @@
 package com.project.mechanic.utility;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.Display;
+import android.view.WindowManager;
 
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -81,4 +85,43 @@ public class Utility {
 		}
 
 	}
+
+	@SuppressLint("NewApi")
+	public int getScreenWidth() {
+		int columnWidth;
+		WindowManager wm = (WindowManager) context
+				.getSystemService(Context.WINDOW_SERVICE);
+		Display display = wm.getDefaultDisplay();
+
+		final Point point = new Point();
+		try {
+			display.getSize(point);
+		} catch (java.lang.NoSuchMethodError ignore) { // Older device
+			point.x = display.getWidth();
+			point.y = display.getHeight();
+		}
+		columnWidth = point.y;
+		return columnWidth;
+
+	}
+
+	@SuppressLint("NewApi")
+	public int getScreenHeightWithPadding() {
+		int columnWidth;
+		WindowManager wm = (WindowManager) context
+				.getSystemService(Context.WINDOW_SERVICE);
+		Display display = wm.getDefaultDisplay();
+
+		final Point point = new Point();
+		try {
+			display.getSize(point);
+		} catch (java.lang.NoSuchMethodError ignore) { // Older device
+			point.x = display.getWidth();
+			point.y = display.getHeight();
+		}
+		columnWidth = point.y - 70;
+		return columnWidth;
+
+	}
+
 }
