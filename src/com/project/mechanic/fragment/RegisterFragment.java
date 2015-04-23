@@ -82,9 +82,10 @@ public class RegisterFragment extends Fragment {
 
 			public void onClick(View arg0) {
 				final String Name = editname.getText().toString();
-				final String user = edituser.getText().toString();
-				final String pass = editpass.getText().toString();
-				if (Name.equals("") && user.equals("") && pass.equals("")) {
+				final String Email = edituser.getText().toString();
+				final String Pass = editpass.getText().toString();
+
+				if (Name.equals("") && Email.equals("") && Pass.equals("")) {
 
 					Toast.makeText(getActivity(),
 							"لطفا فيلدهاي مورد نظر را پر کنيد  ",
@@ -118,13 +119,13 @@ public class RegisterFragment extends Fragment {
 					dbAdapter.open();
 					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
 							.getBitmap();
-					byte[] bytes1 = getBitmapAsByteArray(bitmap);
-					dbAdapter.inserUserToDb(Name, user, pass, null);
-
-					dbAdapter.close();
-
+					byte[] Image = getBitmapAsByteArray(bitmap);
 					Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد",
 							Toast.LENGTH_SHORT).show();
+
+					dbAdapter.inserUserToDb(Name, Email, Pass, null, Image, 0);
+
+					dbAdapter.close();
 
 				}
 
@@ -149,6 +150,7 @@ public class RegisterFragment extends Fragment {
 			public void onClick(View arg0) {
 				// Toast.makeText(getActivity(), "ok",
 				// Toast.LENGTH_LONG).show();
+
 				Intent i = new Intent(
 						Intent.ACTION_PICK,
 						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

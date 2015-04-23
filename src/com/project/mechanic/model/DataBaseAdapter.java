@@ -94,9 +94,11 @@ public class DataBaseAdapter {
 	private String[] Province = { "ID", "Name" };
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
-			"ProvinceId" };
+			"ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress",
+			"UImage" };
 
 	private String[] TicketType = { "ID", "desc" };
+
 	private String[] Users = { "ID", "Name", "Email", "Password",
 			"Phonenumber", "Image" };
 	private String[] WorkmanType = { "ID", "Name" };
@@ -142,7 +144,7 @@ public class DataBaseAdapter {
 	}
 
 	public void inserUserToDb(String name, String email, String password,
-			String phonenumber) {
+			String phonenumber, byte[] image, int serviceid) {
 
 		ContentValues uc = new ContentValues();
 
@@ -150,6 +152,7 @@ public class DataBaseAdapter {
 		uc.put("Email", email);
 		uc.put("Password", password);
 		uc.put("Phonenumber", phonenumber);
+		uc.put("Image", image);
 		long res = mDb.insert(TableUsers, null, uc);
 		long res2 = res;
 
@@ -673,7 +676,9 @@ public class DataBaseAdapter {
 				cursor.getString(2), cursor.getInt(3), cursor.getBlob(4),
 				cursor.getString(5), cursor.getInt(6), cursor.getInt(7),
 				cursor.getInt(8), cursor.getInt(9), cursor.getInt(10),
-				cursor.getInt(11), cursor.getInt(12));
+				cursor.getInt(11), cursor.getInt(12), cursor.getString(13),
+				cursor.getString(14), cursor.getString(15),
+				cursor.getString(16), cursor.getString(17), cursor.getBlob(18));
 		return tempTicket;
 
 	}
@@ -1176,7 +1181,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4), cursor.getBlob(5));
+					cursor.getString(4), cursor.getBlob(5), cursor.getInt(6));
 			result.add(tempusers);
 		}
 		return result;
@@ -1209,6 +1214,7 @@ public class DataBaseAdapter {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
 					cursor.getString(4), cursor.getBlob(5));
+
 			result.add(tempusers);
 		}
 		return result;

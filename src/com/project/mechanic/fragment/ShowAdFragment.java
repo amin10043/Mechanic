@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Ticket;
-import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class ShowAdFragment extends Fragment {
@@ -54,12 +53,10 @@ public class ShowAdFragment extends Fragment {
 			img.setImageBitmap(bmp);
 		}
 
-		Users u = dbAdapter.getUserById(t.getUserId());
-
 		desc.setText(t.getDesc());
-		name.setText(u.getName());
-		email.setText(u.getEmail());
-		phone.setText(u.getPhonennumber());
+		// name.setText(t.getName());
+		// email.setText(t.getEmail());
+		// phone.setText(t.getPhone());
 		// mobile.setText(t.getMobile());
 		// fax.setText(t.getFax());
 
