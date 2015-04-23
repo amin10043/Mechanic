@@ -8,9 +8,11 @@ import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -119,9 +121,33 @@ public class Utility {
 			point.x = display.getWidth();
 			point.y = display.getHeight();
 		}
-		columnWidth = point.y - 70;
-		return columnWidth;
 
+		DisplayMetrics outMetrics = new DisplayMetrics();
+		display.getMetrics(outMetrics);
+
+		float density = context.getResources().getDisplayMetrics().density;
+		float dpHeight = outMetrics.heightPixels / density;
+		float dpWidth = outMetrics.widthPixels / density;
+
+		columnWidth = (int) dpHeight;
+
+		int padding = (int) (70 * density);
+		return point.y - padding;
+
+	}
+
+	public int iconPadding() {
+		WindowManager wm = (WindowManager) context
+				.getSystemService(Context.WINDOW_SERVICE);
+		Display display = wm.getDefaultDisplay();
+		DisplayMetrics outMetrics = new DisplayMetrics();
+		display.getMetrics(outMetrics);
+
+		float density = context.getResources().getDisplayMetrics().density;
+		int paddingIcon = (int) ((int) context.getResources().getDimension(
+				R.dimen.iconPadding) * density);
+
+		return paddingIcon;
 	}
 
 }

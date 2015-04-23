@@ -88,9 +88,9 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 			img.setBackgroundResource(icon[position]);
 		}
 		img.getLayoutParams().width = ((View) img.getParent())
-				.getLayoutParams().height - 20;
+				.getLayoutParams().height - util.iconPadding();
 		img.getLayoutParams().height = ((View) img.getParent())
-				.getLayoutParams().height - 20;
+				.getLayoutParams().height - util.iconPadding();
 		img.requestLayout();
 
 		tempItem = list.get(position);
