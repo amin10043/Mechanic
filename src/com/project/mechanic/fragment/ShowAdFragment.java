@@ -54,11 +54,11 @@ public class ShowAdFragment extends Fragment {
 		}
 
 		desc.setText(t.getDesc());
-		// name.setText(t.getName());
-		// email.setText(t.getEmail());
-		// phone.setText(t.getPhone());
-		// mobile.setText(t.getMobile());
-		// fax.setText(t.getFax());
+		name.setText(t.getUName());
+		email.setText(t.getUEmail());
+		phone.setText(t.getUPhone());
+		// mobile.setText(t.getu);
+		fax.setText(t.getUFax());
 
 		dbAdapter.close();
 
