@@ -64,8 +64,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_marginRight="23dp"
                         android:layout_toLeftOf="@+id/imgbtnCmt_introduction"
-                        android:background="@color/light_grey"
-                        android:src="@drawable/like" />
+                        android:background="@drawable/like" />
 
                     <TextView
                         android:id="@+id/txtNumofLike_Object"
