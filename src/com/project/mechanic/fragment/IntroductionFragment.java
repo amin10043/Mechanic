@@ -100,7 +100,7 @@ public class IntroductionFragment extends Fragment {
 		
 		like = (ImageButton) view.findViewById(R.id.ImgbtnLike_Object);
 		btnCmt = (ImageButton) view.findViewById(R.id.imgbtnCmt_introduction);
-		Facebook = (ImageButton) view.findViewById(R.id.imgbtnFacebook_Object);
+		Facebook = (ImageButton) view.findViewById(R.id.imgbtnLike_RawCmtFroum);
 		Instagram = (ImageButton) view.findViewById(R.id.imgbtnInsta_Object);
 		LinkedIn = (ImageButton) view.findViewById(R.id.imgbtnLinkedin_Object);
 		Google = (ImageButton) view.findViewById(R.id.imgbtnGoogle_Object);

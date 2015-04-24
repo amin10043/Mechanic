@@ -7,6 +7,24 @@ public class CommentInFroum {
 	int UserId;
 	String Datetime;
 	int CommentId;
+	String NumofLike;
+	String NumofDisLike;
+
+	public String getNumofLike() {
+		return NumofLike;
+	}
+
+	public void setNumofLike(String numofLike) {
+		NumofLike = numofLike;
+	}
+
+	public String getNumofDisLike() {
+		return NumofDisLike;
+	}
+
+	public void setNumofDisLike(String numofDisLike) {
+		NumofDisLike = numofDisLike;
+	}
 
 	public int getId() {
 		return ID;
@@ -57,13 +75,15 @@ public class CommentInFroum {
 	}
 
 	public CommentInFroum(int id, String description, int froumId, int userId,
-			String datetime, int commentId) {
+			String datetime, int commentId,String numofLike,String numofDisLike) {
 		ID = id;
 		Description = description;
 		Froumid = froumId;
 		UserId = userId;
 		Datetime = datetime;
 		CommentId = commentId;
+		NumofLike=numofDisLike;
+		NumofDisLike=numofDisLike;
 
 	}
 

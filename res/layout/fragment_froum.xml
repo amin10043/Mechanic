@@ -91,14 +91,14 @@
             android:id="@+id/imgBtnAddcmt_CmtFroum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imgbtnLike_CmtFroum"
+            android:layout_alignBottom="@+id/imgbtnDisLike_RawCmtFroum"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
             android:background="#EAEAEA"
             android:src="@drawable/cmt" />
 
         <ImageButton
-            android:id="@+id/imgbtnLike_CmtFroum"
+            android:id="@+id/imgbtnLike_Cmt_Froum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -111,8 +111,8 @@
             android:id="@+id/txtNumofLike_CmtFroum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/imgbtnLike_CmtFroum"
-            android:layout_below="@+id/imgbtnLike_CmtFroum" />
+            android:layout_alignLeft="@+id/imgbtnDisLike_RawCmtFroum"
+            android:layout_below="@+id/imgbtnDisLike_RawCmtFroum" />
 
         <TextView
             android:id="@+id/txtNumofCmt_CmtFroum"

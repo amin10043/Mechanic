@@ -31,7 +31,7 @@ public class PaperFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_paper, null);
 		TextView txttitle=(TextView) view.findViewById(R.id.txtTitleP);
 		TextView txtcontext=(TextView) view.findViewById(R.id.txtContext);
-		TextView txtcomment=(TextView) view.findViewById(R.id.txtComment);
+		TextView txtcomment=(TextView) view.findViewById(R.id.txtNumofDislike_RawCmtFroum);
 		TextView txtlike=(TextView) view.findViewById(R.id.txtLike);
 		btncomment1=(Button) view.findViewById(R.id.btnComment);
 		Button btnlike=(Button) view.findViewById(R.id.btnLike);

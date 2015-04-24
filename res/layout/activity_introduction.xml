@@ -159,7 +159,7 @@
                         android:layout_weight="1" >
 
                         <ImageButton
-                            android:id="@+id/imgbtnFacebook_Object"
+                            android:id="@+id/imgbtnLike_RawCmtFroum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -323,7 +323,7 @@
                         <TextView
 
                            
-                            android:id="@+id/txtFax_Introduction"
+                            android:id="@+id/txtNumofLike_RawCmtFroum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
