@@ -95,7 +95,7 @@ public class DataBaseAdapter {
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
 			"ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress",
-			"UImage" };
+			"UImage", "UMobile" };
 
 	private String[] TicketType = { "ID", "desc" };
 
@@ -242,43 +242,60 @@ public class DataBaseAdapter {
 
 	public void insertTickettoDb(String Title, String desc, int userId,
 
-	int typeId, byte[] bytes, int email, int name, int fax, int phone,
-			int mobile, int provinceId) {
+	byte[] bytes, String date, int typeId, int name, int email, int mobile,
+			int phone, int fax, int provinceId, String uname, String uemail,
+			String uphonnumber, String ufax, String uadress, byte[] uimage,
+			String umobile) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Title", Title);
 		cv.put("Desc", desc);
 		cv.put("UserId", userId);
-		cv.put("TypeId", typeId);
 		cv.put("Image", bytes);
-		cv.put("Email", email);
+		cv.put("Date", date);
+		cv.put("TypeId", typeId);
 		cv.put("Name", name);
-		cv.put("Fax", fax);
-		cv.put("Phone", phone);
+		cv.put("Email", email);
 		cv.put("Mobile", mobile);
+		cv.put("Phone", phone);
+		cv.put("Fax", fax);
 		cv.put("ProvinceId", provinceId);
-
+		cv.put("UName", uname);
+		cv.put("UEmail", uemail);
+		cv.put("UPhonnumber", uphonnumber);
+		cv.put("UFax", ufax);
+		cv.put("UAdress", uadress);
+		cv.put("UImage", uimage);
+		cv.put("UMobile", umobile);
 		mDb.insert(TableTicket, null, cv);
 
 	}
 
 	public void insertTickettoDbemptyImage(String Title, String desc,
-			int userId,
-
-			int typeId, int email, int name, int fax, int phone, int mobile,
-			int provinceId) {
+			int userId, String date, int typeId, int name, int email,
+			int mobile, int phone, int fax, int provinceId, String uname,
+			String uemail, String uphonnumber, String ufax, String uadress,
+			String umobile) {
 
 		ContentValues cv = new ContentValues();
+
 		cv.put("Title", Title);
 		cv.put("Desc", desc);
 		cv.put("UserId", userId);
+		cv.put("Date", date);
 		cv.put("TypeId", typeId);
-		cv.put("Email", email);
 		cv.put("Name", name);
-		cv.put("Fax", fax);
-		cv.put("Phone", phone);
+		cv.put("Email", email);
 		cv.put("Mobile", mobile);
+		cv.put("Phone", phone);
+		cv.put("Fax", fax);
 		cv.put("ProvinceId", provinceId);
+		cv.put("UName", uname);
+		cv.put("UEmail", uemail);
+		cv.put("UPhonnumber", uphonnumber);
+		cv.put("UFax", ufax);
+		cv.put("UAdress", uadress);
+		cv.put("UMobile", umobile);
 
 		mDb.insert(TableTicket, null, cv);
 
@@ -683,7 +700,8 @@ public class DataBaseAdapter {
 				cursor.getInt(8), cursor.getInt(9), cursor.getInt(10),
 				cursor.getInt(11), cursor.getInt(12), cursor.getString(13),
 				cursor.getString(14), cursor.getString(15),
-				cursor.getString(16), cursor.getString(17), cursor.getBlob(18));
+				cursor.getString(16), cursor.getString(17), cursor.getBlob(18),
+				cursor.getString(19));
 		return tempTicket;
 
 	}
