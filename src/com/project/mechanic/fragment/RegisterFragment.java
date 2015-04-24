@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
@@ -91,7 +92,7 @@ public class RegisterFragment extends Fragment {
 
 		Button btncan = (Button) view.findViewById(R.id.btncancle2);
 		Button btnreg = (Button) view.findViewById(R.id.btnreg2);
-		
+        TextView comregtxt =(TextView) view.findViewById(R.id.compeletereg);
 		final EditText editname = (EditText) view
 				.findViewById(R.id.editTextname);
 		final EditText edituser = (EditText) view
@@ -204,6 +205,34 @@ public class RegisterFragment extends Fragment {
 			}
 		});
 
+		
+		comregtxt.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				Toast.makeText(getActivity(), "compeleteregisterfragment",
+						Toast.LENGTH_SHORT).show();
+
+//				FragmentTransaction trans = getActivity()
+//						.getSupportFragmentManager().beginTransaction();
+//				trans.replace(R.id.content_frame, new CompeleteRegisterFragment());
+//				trans.commit();
+				
+				
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new CompeleteRegisterFragment());
+				trans.commit();
+				
+				
+			}
+		});
+		
+		
+		
 		return view;
 	}
 
