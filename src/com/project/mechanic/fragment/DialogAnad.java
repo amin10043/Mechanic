@@ -12,7 +12,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -29,8 +28,8 @@ public class DialogAnad extends Dialog {
 	private static final int SELECT_PICTURE = 1;
 
 	private ImageView dialog_img1, dialog_img2, dialog_img3;
-	private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5;
-	private EditText dialog_anad_et1, dialog_anad_et2;
+	private EditText dialog_anad_et1, dialog_anad_et2, UName, UMobile,
+			UPhonnumber, UFax, UEmail;
 	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
 	int resourceId;
@@ -76,71 +75,68 @@ public class DialogAnad extends Dialog {
 		setContentView(resourceId);
 		dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
 		dialog_img2 = (ImageView) findViewById(R.id.dialog_img2);
-		checkBox1 = (CheckBox) findViewById(R.id.checkBox1);
-		checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
-		checkBox3 = (CheckBox) findViewById(R.id.checkBox3);
-		checkBox4 = (CheckBox) findViewById(R.id.checkBox4);
-		checkBox5 = (CheckBox) findViewById(R.id.checkBox5);
 		dialog_anad_et1 = (EditText) findViewById(R.id.dialog_anad_et1);
 		dialog_anad_et2 = (EditText) findViewById(R.id.dialog_anad_et2);
+		UName = (EditText) findViewById(R.id.name);
+		UMobile = (EditText) findViewById(R.id.mobile);
+		UEmail = (EditText) findViewById(R.id.email);
+		UFax = (EditText) findViewById(R.id.fax);
+		UPhonnumber = (EditText) findViewById(R.id.phone);
 
 		dialog_img2.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				dbadapter = new DataBaseAdapter(context);
-				if (checkBox1.isChecked()) {
-					emailCheck = 1;
-				} else {
-					emailCheck = 0;
-				}
-				if (checkBox2.isChecked()) {
-					nameCheck = 1;
-				} else {
-					nameCheck = 0;
-				}
-				if (checkBox3.isChecked()) {
-					faxCheck = 1;
-				} else {
-					faxCheck = 0;
-				}
-				if (checkBox4.isChecked()) {
-					phoneCheck = 1;
-				} else {
-					phoneCheck = 0;
-				}
-				if (checkBox5.isChecked()) {
-					mobileCheck = 1;
-				} else {
-					mobileCheck = 0;
-				}
 
 				dbadapter.open();
-				// byte[] byteimage;
-				// try {
-				// dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
-				// Bitmap bitmap = Bitmap.createBitmap(dialog_img1
-				// .getDrawingCache());
 
-				Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
-						.getBitmap();
-				byte[] bytes = getBitmapAsByteArray(bitmap);
-				// int bytes = bitmap.getByteCount();
-				// ByteBuffer buffer = ByteBuffer.allocate(bytes);
-				// bitmap.copyPixelsToBuffer(buffer);
-				// byteImage1 = buffer.array();
-				//
-				dbadapter.insertTickettoDb(
-						dialog_anad_et1.getText().toString(), dialog_anad_et2
-								.getText().toString(), 1, ticketTypeID, bytes,
-						emailCheck, nameCheck, faxCheck, phoneCheck,
-						mobileCheck, ProvinceId);
+				if ((dialog_img1.getDrawable() == null)) {
+
+					dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
+							.getText().toString(), dialog_anad_et2.getText()
+							.toString(), 1, null, ticketTypeID, 0, 0, 0, 0, 0,
+							ProvinceId, UName.getText().toString(), UEmail
+									.getText().toString(), UPhonnumber
+									.getText().toString(), UFax.getText()
+									.toString(), null, null);
+
+				} else {
+
+					Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
+							.getBitmap();
+
+					Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+							bitmap.getHeight(), bitmap.getConfig());
+					if (bitmap.sameAs(emptyBitmap)) {
+						dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
+								.getText().toString(), dialog_anad_et2
+								.getText().toString(), 1, null, ticketTypeID,
+								0, 0, 0, 0, 0, ProvinceId, UName.getText()
+										.toString(), UEmail.getText()
+										.toString(), UPhonnumber.getText()
+										.toString(), UFax.getText().toString(),
+								null, null);
+					} else {
+						byte[] bytes = getBitmapAsByteArray(bitmap);
+
+						dbadapter.insertTickettoDb(dialog_anad_et1.getText()
+								.toString(), dialog_anad_et2.getText()
+								.toString(), 1, bytes, null, ticketTypeID, 0,
+								0, 0, 0, 0, ProvinceId, UName.getText()
+										.toString(), UEmail.getText()
+										.toString(), UPhonnumber.getText()
+										.toString(), UFax.getText().toString(),
+								null, null, null);
+					}
+
+				}
+				dbadapter.close();
 				// } catch (Exception e) {
 				// e.printStackTrace();
 				// // textView.append("Error Exception : " + e.getMessage());
 				// }
 
-				dbadapter.close();
 				((AnadFragment) fragment).updateView();
 				DialogAnad.this.dismiss();
 
