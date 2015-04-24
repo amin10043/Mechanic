@@ -3,6 +3,7 @@ package com.project.mechanic.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -116,6 +117,10 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					}
 				}
 				adapter.close();
+
+				SharedPreferences sendData = context.getSharedPreferences("Id",
+						0);
+				sendData.edit().putInt("main_Id", id).commit();
 
 				if (id == 1) {
 					FragmentTransaction trans = ((MainActivity) context)

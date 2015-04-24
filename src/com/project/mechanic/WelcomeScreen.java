@@ -506,7 +506,7 @@ public class WelcomeScreen extends Activity {
 				}
 			};
 
-			scrollTimer.schedule(scrollerSchedule, 30, 30);
+			scrollTimer.schedule(scrollerSchedule, 30, 15);
 		}
 	}
 

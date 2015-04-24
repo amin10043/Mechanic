@@ -10,7 +10,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.project.mechanic.R.string;
 import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.CommentInFroum;
@@ -98,7 +97,8 @@ public class DataBaseAdapter {
 			"ProvinceId" };
 
 	private String[] TicketType = { "ID", "desc" };
-	private String[] Users = { "ID", "Name", "Email", "Password", "Phonenumber" ,"Image","ServiceId"};
+	private String[] Users = { "ID", "Name", "Email", "Password",
+			"Phonenumber", "Image", "ServiceId" };
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url" };
 	private String[] ObjectBrandType = { "ID", "Description" };
@@ -141,7 +141,8 @@ public class DataBaseAdapter {
 		mDbHelper.close();
 	}
 
-	public void inserUserToDb(String name, String email, String password,String phonenumber,byte[] image,int serviceid) {
+	public void inserUserToDb(String name, String email, String password,
+			String phonenumber, byte[] image, int serviceid) {
 
 		ContentValues uc = new ContentValues();
 
@@ -150,8 +151,8 @@ public class DataBaseAdapter {
 		uc.put("Password", password);
 		uc.put("Phonenumber", phonenumber);
 		uc.put("Image", image);
-		uc.put("ServiceId",serviceid );
-		
+		uc.put("ServiceId", serviceid);
+
 		long res = mDb.insert(TableUsers, null, uc);
 		long res2 = res;
 
@@ -554,7 +555,8 @@ public class DataBaseAdapter {
 
 	private Users CursorToUsers(Cursor cursor) {
 		Users tempProvince = new Users(cursor.getInt(0), cursor.getString(1),
-				cursor.getString(2), cursor.getString(3), cursor.getString(4),cursor.getBlob(5),cursor.getInt(6));
+				cursor.getString(2), cursor.getString(3), cursor.getString(4),
+				cursor.getBlob(5), cursor.getInt(6));
 		return tempProvince;
 
 	}
@@ -1143,7 +1145,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4),cursor.getBlob(5),cursor.getInt(6));
+					cursor.getString(4), cursor.getBlob(5), cursor.getInt(6));
 			result.add(tempusers);
 		}
 		return result;
@@ -1175,7 +1177,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4),cursor.getBlob(5),cursor.getInt(4));
+					cursor.getString(4), cursor.getBlob(5), cursor.getInt(4));
 			result.add(tempusers);
 		}
 		return result;
@@ -1197,6 +1199,7 @@ public class DataBaseAdapter {
 		ArrayList<Object> result = new ArrayList<Object>();
 		Cursor cursor = mDb
 				.rawQuery(
+
 						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter From "
 								+ TableObject
 								+ " as O inner join "
