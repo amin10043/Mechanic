@@ -115,6 +115,7 @@ public class AnadFragment extends Fragment {
 		if (requestCode == RESULT_LOAD_IMAGE
 				&& resultCode == Activity.RESULT_OK && null != data) {
 			Uri selectedImage = data.getData();
+
 			String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
 			Cursor cursor = getActivity().getContentResolver().query(
@@ -128,6 +129,7 @@ public class AnadFragment extends Fragment {
 			ImageView imageView = (ImageView) dialog
 					.findViewById(R.id.dialog_img1);
 			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+
 		}
 
 	}

@@ -7,7 +7,7 @@
 
     <ListView
         android:id="@+id/listvCmt_Introduction"
-        style="@style/ListView"
+      style="@style/second_item_style"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </ListView>

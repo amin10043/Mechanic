@@ -89,7 +89,7 @@ public class Utility {
 	}
 
 	@SuppressLint("NewApi")
-	public int getScreenWidth() {
+	public int getScreenHeight() {
 		int columnWidth;
 		WindowManager wm = (WindowManager) context
 				.getSystemService(Context.WINDOW_SERVICE);

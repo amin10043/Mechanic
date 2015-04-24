@@ -1,9 +1,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/vertical_scrollview_id"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:fadingEdge="none"
+    android:scrollbars="none" >
 
     <LinearLayout
+        android:id="@+id/vertical_outer_layout_id"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >

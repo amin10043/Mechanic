@@ -1,6 +1,5 @@
 package com.project.mechanic.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -15,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
@@ -51,36 +51,35 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 
 		TextView txtName = (TextView) convertView
 				.findViewById(R.id.row_anad_txt);
-
 		ImageView img = (ImageView) convertView.findViewById(R.id.row_anad_img);
 		ImageView img2 = (ImageView) convertView
 				.findViewById(R.id.row_anad_img2);
-		ImageView img3 = (ImageView) convertView
-				.findViewById(R.id.fragment_anad_imgadd);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getTitle());
-
 		byte[] bitmapbyte = tempItem.getImage();
-		Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-				bitmapbyte.length);
-		img2.setImageBitmap(bmp);
-
+		if (bitmapbyte != null) {
+			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
+					bitmapbyte.length);
+			img2.setImageBitmap(bmp);
+		}
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
-				adapter.open();
-				ArrayList<Ticket> allItems = adapter.getTicketByTypeId(0);
+				RelativeLayout parentlayout = (RelativeLayout) v;
+				TextView txtName = (TextView) parentlayout
+						.findViewById(R.id.row_anad_txt);
+				String item = txtName.getText().toString();
 				int id = 0;
-				for (Ticket Ticket : allItems) {
-					if (tempItem.equals(Ticket.getTitle())) {
+				for (Ticket Ticket : list) {
+
+					if (item.equals(Ticket.getTitle())) {
 						// check authentication and authorization
 						id = Ticket.getId();
 					}
 				}
-				adapter.close();
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();

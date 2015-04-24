@@ -373,17 +373,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
-                            android:layout_alignTop="@+id/txtEmail_Object"
                             android:layout_centerInParent="true"
                             android:layout_marginLeft="5dp"
-                            android:background="@drawable/email"
-                            android:textColor="@color/red" />
+                            android:background="@drawable/email" />
 
                         <TextView
                             android:id="@+id/textView5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"
                             android:layout_centerInParent="true"
                             android:text="پست الکترونیک"
@@ -394,8 +391,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignBaseline="@+id/textView5"
-                            android:layout_alignBottom="@+id/textView5"
                             android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
                             android:textColor="@color/transparent" />
                     </RelativeLayout>
 
@@ -483,46 +480,52 @@
                             android:textColor="@color/transparent" />
                     </RelativeLayout>
 
-                    <LinearLayout
+                    <RelativeLayout
+                        android:id="@+id/downloadLinear"
+                        style="@style/brandStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="25dp"
                         android:layout_marginRight="25dp"
                         android:layout_marginTop="10dp"
-                        android:layout_weight="1" >
+                        android:layout_weight="1"
+                        android:background="@drawable/brand_list_item_shape"
+                        android:gravity="center"
+                        android:orientation="horizontal" >
 
                         <Button
                             android:id="@+id/btnPdf1_Object"
-                            style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="دانلود  کاتالوگ" />
+                            android:layout_alignParentRight="true"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/ic_catalog" />
 
                         <Button
                             android:id="@+id/btnPdf2_Object"
-                            style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="دانلود لیست قیمت" />
+                            android:layout_marginLeft="5dp"
+                            android:layout_toLeftOf="@+id/btnPdf1_Object"
+                            android:background="@drawable/ic_price" />
 
                         <Button
                             android:id="@+id/btnPdf3_Object"
-                            style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="دانلود PDF فنی" />
+                            android:layout_marginLeft="5dp"
+                            android:layout_toLeftOf="@+id/btnPdf2_Object"
+                            android:background="@drawable/ic_pdf" />
 
                         <Button
                             android:id="@+id/btnPdf4_Object"
-                            style="?android:attr/buttonStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="دانلود فیلم" />
-                    </LinearLayout>
+                            android:layout_marginLeft="5dp"
+                            android:layout_toLeftOf="@+id/btnPdf3_Object"
+                            android:background="@drawable/ic_video" />
+                    </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
 
