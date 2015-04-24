@@ -92,13 +92,16 @@ public class DataBaseAdapter {
 	private String[] Paper = { "ID", "Title", "Context" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name" };
-	private String[] Ticket = { "ID", "Title", "Desc", "UserId", "Image",
+	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
-			"ProvinceId" };
+			"ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress",
+			"UImage" };
 
 	private String[] TicketType = { "ID", "desc" };
+
 	private String[] Users = { "ID", "Name", "Email", "Password",
 			"Phonenumber", "Image", "ServiceId" };
+
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url" };
 	private String[] ObjectBrandType = { "ID", "Description" };
@@ -151,6 +154,7 @@ public class DataBaseAdapter {
 		uc.put("Password", password);
 		uc.put("Phonenumber", phonenumber);
 		uc.put("Image", image);
+
 		uc.put("ServiceId", serviceid);
 
 		long res = mDb.insert(TableUsers, null, uc);
@@ -247,6 +251,28 @@ public class DataBaseAdapter {
 		cv.put("UserId", userId);
 		cv.put("TypeId", typeId);
 		cv.put("Image", bytes);
+		cv.put("Email", email);
+		cv.put("Name", name);
+		cv.put("Fax", fax);
+		cv.put("Phone", phone);
+		cv.put("Mobile", mobile);
+		cv.put("ProvinceId", provinceId);
+
+		mDb.insert(TableTicket, null, cv);
+
+	}
+
+	public void insertTickettoDbemptyImage(String Title, String desc,
+			int userId,
+
+			int typeId, int email, int name, int fax, int phone, int mobile,
+			int provinceId) {
+
+		ContentValues cv = new ContentValues();
+		cv.put("Title", Title);
+		cv.put("Desc", desc);
+		cv.put("UserId", userId);
+		cv.put("TypeId", typeId);
 		cv.put("Email", email);
 		cv.put("Name", name);
 		cv.put("Fax", fax);
@@ -369,8 +395,6 @@ public class DataBaseAdapter {
 
 	}
 
-	// ////////////////////////////////////////////
-
 	public News getNewsById(int Id) {
 		News item = null;
 		Cursor mnew = mDb.query("News", News, " Id=?",
@@ -469,6 +493,20 @@ public class DataBaseAdapter {
 
 	}
 
+	public Ticket getTicketById(int Id) {
+
+		Ticket item = null;
+		Cursor mCur = mDb.query(TableTicket, Ticket, "Id=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToTicket(mCur);
+		}
+
+		return item;
+
+	}
+
 	public ArrayList<Ticket> getTicketByTypeIdProId(int TypeId, int provinceID) {
 
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
@@ -554,10 +592,11 @@ public class DataBaseAdapter {
 	}
 
 	private Users CursorToUsers(Cursor cursor) {
-		Users tempProvince = new Users(cursor.getInt(0), cursor.getString(1),
+
+		Users Users = new Users(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
-				cursor.getBlob(5), cursor.getInt(6));
-		return tempProvince;
+				cursor.getBlob(5));
+		return Users;
 
 	}
 
@@ -642,7 +681,9 @@ public class DataBaseAdapter {
 				cursor.getString(2), cursor.getInt(3), cursor.getBlob(4),
 				cursor.getString(5), cursor.getInt(6), cursor.getInt(7),
 				cursor.getInt(8), cursor.getInt(9), cursor.getInt(10),
-				cursor.getInt(11), cursor.getInt(12));
+				cursor.getInt(11), cursor.getInt(12), cursor.getString(13),
+				cursor.getString(14), cursor.getString(15),
+				cursor.getString(16), cursor.getString(17), cursor.getBlob(18));
 		return tempTicket;
 
 	}
@@ -1177,7 +1218,9 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
+
 					cursor.getString(4), cursor.getBlob(5), cursor.getInt(4));
+
 			result.add(tempusers);
 		}
 		return result;

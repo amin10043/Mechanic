@@ -6,59 +6,59 @@
     android:orientation="vertical" >
 
     <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:background="#FF4000" >
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#FF4000" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true" >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" >
 
-        <ImageView
-            android:id="@+id/imgV1"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/imeg_menu" />
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/imgV1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/imeg_menu" />
+        </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="25dp" >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="25dp" >
 
-        <ImageView
-            android:id="@+id/imgV2"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/ic_share" />
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/imgV2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/ic_share" />
+        </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
 
-        <ImageView
-            android:id="@+id/img01"
-            android:layout_width="40dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_back" />
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/img01"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_back" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/txt1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="test"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#002230"
-        android:textSize="14sp" />
-</RelativeLayout>
+        <TextView
+            android:id="@+id/txt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="test"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#002230"
+            android:textSize="14sp" />
+    </RelativeLayout>
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -139,7 +139,6 @@
                         android:layout_alignLeft="@+id/imgbtnCmt_introduction"
                         android:text="44"
                         android:textSize="@dimen/txtsize10" />
-
                 </RelativeLayout>
 
                 <LinearLayout
@@ -167,31 +166,7 @@
                             android:src="@drawable/facebook" />
 
                         <ImageButton
-                            android:id="@+id/imgBtnAddcmt_CmtFroum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#0000"
-                            android:src="@drawable/insta" />
-
-                        <ImageButton
                             android:id="@+id/imgbtnLinkedin_Object"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#0000"
-                            android:src="@drawable/lnkin" />
-
-                        <ImageButton
-                            android:id="@+id/imgbtnGoogle_Object"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#0000"
-                            android:src="@drawable/google" />
-
-                        <ImageButton
-                            android:id="@+id/imgbtnSite_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -205,6 +180,30 @@
                             android:layout_weight="1"
                             android:background="#0000"
                             android:src="@drawable/twtr" />
+
+                        <ImageButton
+                            android:id="@+id/imgbtnSite_Object"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="#0000"
+                            android:src="@drawable/internet" />
+
+                        <ImageButton
+                            android:id="@+id/imgbtnGoogle_Object"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="#0000"
+                            android:src="@drawable/google" />
+
+                        <ImageButton
+                            android:id="@+id/imgBtnAddcmt_CmtFroum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="#0000"
+                            android:src="@drawable/insta" />
                     </LinearLayout>
 
                     <RelativeLayout
@@ -305,7 +304,6 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true" />
-
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -321,8 +319,6 @@
                         android:paddingTop="5dp" >
 
                         <TextView
-
-                           
                             android:id="@+id/txtFax_Introduction"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -387,23 +383,16 @@
                             android:layout_centerHorizontal="true"
                             android:layout_centerInParent="true" />
 
-                        
-
-                 
-                            <ImageButton
-                        android:id="@+id/cphonebtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-            
-                          android:layout_alignParentLeft="true"
+                        <ImageButton
+                            android:id="@+id/cphonebtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
                             android:layout_marginLeft="18dp"
-                        android:src="@drawable/cphone" />      
-                        
-
+                            android:src="@drawable/cphone" />
                     </RelativeLayout>
 
-                
                     <RelativeLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -484,7 +473,6 @@
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
                             android:text="راهنمایی 14 پلاک 24" />
-
                     </RelativeLayout>
 
                     <LinearLayout
@@ -526,9 +514,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="دانلود PDF کاتالوگ" />
-
                     </LinearLayout>
-
                 </LinearLayout>
             </LinearLayout>
 
@@ -571,9 +557,7 @@
                         android:layout_centerInParent="true"
                         android:layout_centerVertical="true"
                         android:text="توضیحات بیشتر" />
-
                 </RelativeLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -597,12 +581,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" >
                         </ListView>
-
                     </LinearLayout>
                 </ScrollView>
-
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 

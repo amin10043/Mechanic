@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -61,6 +62,10 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
+
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
+				"fonts/BROYA.TTF");
+		txtName.setTypeface(typeFace);
 
 		convertView.setOnClickListener(new OnClickListener() {
 
