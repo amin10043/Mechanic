@@ -100,7 +100,8 @@ public class DataBaseAdapter {
 	private String[] TicketType = { "ID", "desc" };
 
 	private String[] Users = { "ID", "Name", "Email", "Password",
-			"Phonenumber", "Image" };
+			"Phonenumber", "Image", "ServiceId" };
+
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url" };
 	private String[] ObjectBrandType = { "ID", "Description" };
@@ -153,6 +154,9 @@ public class DataBaseAdapter {
 		uc.put("Password", password);
 		uc.put("Phonenumber", phonenumber);
 		uc.put("Image", image);
+
+		uc.put("ServiceId", serviceid);
+
 		long res = mDb.insert(TableUsers, null, uc);
 		long res2 = res;
 
@@ -605,6 +609,7 @@ public class DataBaseAdapter {
 	}
 
 	private Users CursorToUsers(Cursor cursor) {
+
 		Users Users = new Users(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
 				cursor.getBlob(5));
@@ -1231,7 +1236,8 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4), cursor.getBlob(5));
+
+					cursor.getString(4), cursor.getBlob(5), cursor.getInt(4));
 
 			result.add(tempusers);
 		}
@@ -1254,6 +1260,7 @@ public class DataBaseAdapter {
 		ArrayList<Object> result = new ArrayList<Object>();
 		Cursor cursor = mDb
 				.rawQuery(
+
 						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter From "
 								+ TableObject
 								+ " as O inner join "
