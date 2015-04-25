@@ -86,7 +86,7 @@
             android:layout_marginLeft="@dimen/txtsize80"
             android:layout_marginRight="@dimen/txtsize80"
             android:layout_weight="1.2"
-            android:background="@color/light_grey"
+            android:background="@color/transparent"
             android:orientation="horizontal"
             android:weightSum="2" >
 
@@ -127,7 +127,7 @@
                 android:layout_marginBottom="@dimen/txtsize10"
                 android:layout_marginRight="@dimen/txtsize30"
                 android:layout_weight="0.5"
-                android:background="@color/light_grey"
+                android:background="@color/transparent"
                 android:text="فراموشی کلمه عبور"
                 android:textSize="@dimen/activity_horizontal_margin" />
 
@@ -140,7 +140,7 @@
                 android:layout_marginBottom="@dimen/txtsize10"
                 android:layout_marginRight="@dimen/txtsize10"
                 android:layout_weight="1"
-                android:background="@color/light_grey"
+                android:background="@color/transparent"
                 android:text="ثبت نام"
                 android:textSize="@dimen/activity_horizontal_margin" />
         </LinearLayout>
