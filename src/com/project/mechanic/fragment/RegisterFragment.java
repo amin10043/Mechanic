@@ -83,7 +83,7 @@ public class RegisterFragment extends Fragment {
 		
 		
 		
-			
+	
 		 btnaddpic1.setBackgroundResource(R.drawable.i13);
 //		      columnWidth = (int) (getScreenWidth() /3);
 //			   LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(l1.getLayoutParams());		
@@ -95,22 +95,30 @@ public class RegisterFragment extends Fragment {
 				    btnaddpic1.getLayoutParams().width = 150;
 				    btnaddpic1.requestLayout();
 				
-		
-		if(editname.getText().toString()!=null && editpass.getText().toString()!=null)
-		{
-			comregtxt.setVisibility(View.VISIBLE);
-			Toast.makeText(getActivity(),
-					"لینک فعال شود ",
-					Toast.LENGTH_SHORT).show();
-		}
-		else
-		{
-			
-			comregtxt.setVisibility(View.GONE);
-			
-			
-		}
-				    
+	/////////////////////////////////////	
+//				    if (editname.getText().toString().equals("") && editpass.getText().toString().equals(""))
+//				    {
+//
+//						
+//
+//						comregtxt.setVisibility(View.GONE);
+//				    }
+//						
+//						else {
+//							
+//							
+//							
+//							
+//							comregtxt.setVisibility(View.VISIBLE); 	
+//							Toast.makeText(getActivity(),
+//									"link faal shavad ",
+//									Toast.LENGTH_SHORT).show();
+//						
+//						
+//						
+//					}
+	
+	/////////////////////////////////////////////////////			    
 				    
 		
 		btnreg.setOnClickListener(new OnClickListener() {
@@ -121,7 +129,7 @@ public class RegisterFragment extends Fragment {
 				final String Pass = editpass.getText().toString();
 
 				
-				
+			
 				
 				if (Name.equals("") && Email.equals("") && Pass.equals("")) {
 
@@ -133,7 +141,7 @@ public class RegisterFragment extends Fragment {
 
 				else {
 
-					
+					comregtxt.setVisibility(View.VISIBLE); 
 					dbAdapter = new DataBaseAdapter(getActivity());
 					dbAdapter.open();
 					
@@ -143,7 +151,7 @@ public class RegisterFragment extends Fragment {
 						
 						Toast.makeText(getActivity(), "اطلاعات مورد نظر بدون عکس ثبت شد",
 								Toast.LENGTH_SHORT).show();
-						comregtxt.setVisibility(View.GONE); 
+						
 					}
 					else {	
 					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
@@ -154,7 +162,7 @@ public class RegisterFragment extends Fragment {
 					
 					if (bitmap.sameAs(emptyBitmap)) {
 						dbAdapter.inserUsernonpicToDb(Name, Email, Pass,  null,null,null,null,0);
-						comregtxt.setVisibility(View.GONE); 
+					 
 					} 
 					else
 					{	
@@ -166,7 +174,7 @@ public class RegisterFragment extends Fragment {
 				
 									dbAdapter.close();
 									
-									comregtxt.setVisibility(View.GONE); 
+								
 									Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد",
 											Toast.LENGTH_SHORT).show();
 				

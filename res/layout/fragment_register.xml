@@ -165,7 +165,8 @@
                     android:gravity="center"
                     android:text="اطلاعات تکمیلی جهت استفاده شما از تالار های خرید و فروش"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="@dimen/txtsize10" />
+                    android:textSize="@dimen/txtsize10"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
 

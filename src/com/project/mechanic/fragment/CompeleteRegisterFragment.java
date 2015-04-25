@@ -1,5 +1,7 @@
 package com.project.mechanic.fragment;
 
+import java.io.ByteArrayOutputStream;
+
 import com.project.mechanic.R;
 import android.R.color;
 import android.annotation.SuppressLint;
@@ -43,11 +45,21 @@ public class CompeleteRegisterFragment extends Fragment {
 
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
-
+	
+	
+	
+	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.PNG, 0, outputStream);
+		return outputStream.toByteArray();
+	}
+	
+	
+	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_compeleteregister, null);
+		final View view = inflater.inflate(R.layout.fragment_compeleteregister, null);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 		
@@ -97,7 +109,7 @@ public class CompeleteRegisterFragment extends Fragment {
 			final String Phone = Phonetxt.getText().toString();
 			final String Mobile =Mobiletxt.getText().toString();
 			final String Fax = Faxtxt.getText().toString();
-			
+			ImageView btnaddpic1 = (ImageView) view.findViewById(R.id.btnaddpic);
 			StringBuffer result = new StringBuffer();
 			result.append("checkbox click shod:").append(Rulescheck.isChecked());
 
@@ -111,20 +123,10 @@ public class CompeleteRegisterFragment extends Fragment {
 			}
 				else {
 					
+				
+				
 					
-//					dbAdapter = new DataBaseAdapter(getActivity());
-//					dbAdapter.open();
-//					
-//			dbAdapter.UpdateUserToDb(id, Name,Email, Pass, Phone, Mobile, Fax, Address, null, 0);
-////
-//					dbAdapter.close();
-//					Toast.makeText(getActivity(), "«ÿ·«⁄«  „Ê—œ ‰Ÿ— À»  ‘œ",
-//							Toast.LENGTH_SHORT).show();
-//					
-//					Addresstxt.setText("");
-//					Phonetxt.setText("");
-//					Mobiletxt.setText("");
-//					Faxtxt.setText("");
+
 					
 				}
 		
