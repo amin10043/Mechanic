@@ -71,7 +71,7 @@ public class RegisterFragment extends Fragment {
 		btnaddpic1 = (ImageView) view.findViewById(R.id.btnaddpic);
 		Button btncan = (Button) view.findViewById(R.id.btncancle2);
 		Button btnreg = (Button) view.findViewById(R.id.btnreg2);
-		 TextView comregtxt =(TextView) view.findViewById(R.id.compeletereg);
+		 final TextView comregtxt =(TextView) view.findViewById(R.id.compeletereg);
 		final EditText editname = (EditText) view
 				.findViewById(R.id.editTextname);
 		final EditText edituser = (EditText) view
@@ -95,7 +95,23 @@ public class RegisterFragment extends Fragment {
 				    btnaddpic1.getLayoutParams().width = 150;
 				    btnaddpic1.requestLayout();
 				
-				
+		
+		if(editname.getText().toString()!=null && editpass.getText().toString()!=null)
+		{
+			comregtxt.setVisibility(View.VISIBLE);
+			Toast.makeText(getActivity(),
+					"لینک فعال شود ",
+					Toast.LENGTH_SHORT).show();
+		}
+		else
+		{
+			
+			comregtxt.setVisibility(View.GONE);
+			
+			
+		}
+				    
+				    
 		
 		btnreg.setOnClickListener(new OnClickListener() {
 
@@ -104,6 +120,9 @@ public class RegisterFragment extends Fragment {
 				final String Email = edituser.getText().toString();
 				final String Pass = editpass.getText().toString();
 
+				
+				
+				
 				if (Name.equals("") && Email.equals("") && Pass.equals("")) {
 
 					Toast.makeText(getActivity(),
@@ -124,6 +143,7 @@ public class RegisterFragment extends Fragment {
 						
 						Toast.makeText(getActivity(), "اطلاعات مورد نظر بدون عکس ثبت شد",
 								Toast.LENGTH_SHORT).show();
+						comregtxt.setVisibility(View.GONE); 
 					}
 					else {	
 					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
@@ -134,7 +154,7 @@ public class RegisterFragment extends Fragment {
 					
 					if (bitmap.sameAs(emptyBitmap)) {
 						dbAdapter.inserUsernonpicToDb(Name, Email, Pass,  null,null,null,null,0);
-						
+						comregtxt.setVisibility(View.GONE); 
 					} 
 					else
 					{	
@@ -145,13 +165,15 @@ public class RegisterFragment extends Fragment {
 									dbAdapter.inserUserToDb(Name, Email, Pass, null,null,null,null, Image, 0);
 				
 									dbAdapter.close();
+									
+									comregtxt.setVisibility(View.GONE); 
 									Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد",
 											Toast.LENGTH_SHORT).show();
 				
-									editname.setText("");
-									edituser.setText("");
-							editpass.setText("");
-								 
+//									editname.setText("");
+//									edituser.setText("");
+//							editpass.setText("");
+//								 
 							}
 					
 					

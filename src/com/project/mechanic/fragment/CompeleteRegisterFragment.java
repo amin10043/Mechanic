@@ -60,7 +60,13 @@ public class CompeleteRegisterFragment extends Fragment {
 	Button Compeletebtn = (Button) view.findViewById(R.id.compeleteregisterbtn);
 	Button Backbtn = (Button) view.findViewById(R.id.backbtn);
 		
-	
+	final EditText editname = (EditText) view
+			.findViewById(R.id.editTextname);
+	final EditText edituser = (EditText) view
+			.findViewById(R.id.editTextuser);
+	final EditText editpass = (EditText) view
+			.findViewById(R.id.editTextpass);
+
 		
 	
 	Backbtn.setOnClickListener(new OnClickListener() {
@@ -81,10 +87,17 @@ public class CompeleteRegisterFragment extends Fragment {
 	Compeletebtn.setOnClickListener(new OnClickListener() {
 
 		public void onClick(View arg0) {
+			
+			
+			final String Name = editname.getText().toString();
+			final String Email = edituser.getText().toString();
+			final String Pass = editpass.getText().toString();
+			
 			final String Address = Addresstxt.getText().toString();
 			final String Phone = Phonetxt.getText().toString();
 			final String Mobile =Mobiletxt.getText().toString();
 			final String Fax = Faxtxt.getText().toString();
+			
 			StringBuffer result = new StringBuffer();
 			result.append("checkbox click shod:").append(Rulescheck.isChecked());
 
@@ -102,8 +115,8 @@ public class CompeleteRegisterFragment extends Fragment {
 //					dbAdapter = new DataBaseAdapter(getActivity());
 //					dbAdapter.open();
 //					
-//					dbAdapter.inserUserToDb(Name, Email, Pass, null, Image, 0);
-//
+//			dbAdapter.UpdateUserToDb(id, Name,Email, Pass, Phone, Mobile, Fax, Address, null, 0);
+////
 //					dbAdapter.close();
 //					Toast.makeText(getActivity(), "«ÿ·«⁄«  „Ê—œ ‰Ÿ— À»  ‘œ",
 //							Toast.LENGTH_SHORT).show();

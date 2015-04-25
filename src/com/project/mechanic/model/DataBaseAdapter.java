@@ -165,7 +165,7 @@ public class DataBaseAdapter {
 
 	}
 
-	
+	   
 	
 
 		public void inserUsernonpicToDb(String name, String email, String password,
@@ -189,8 +189,27 @@ public class DataBaseAdapter {
 
 		}
 	
+		
+		
+		
+		
 	
-	
+//		public void UpdateUserToDb(int id,String name, String email, String password,
+//				String phonenumber,String mobailenumber,String faxnumber,String address, int serviceid) {
+//
+//			ContentValues uc = new ContentValues();
+//			uc.put("Name", name);
+//			uc.put("Email", email);
+//			uc.put("Password", password);
+//			uc.put("Phonenumber", phonenumber);
+//
+//			uc.put("Mobailenumber", mobailenumber);
+//			uc.put("Faxnumber", faxnumber);
+//			uc.put("Address", address);
+//		
+//			uc.put("ServiceId", serviceid);
+//			mDb.update(TableUsers, uc, "ID=" + id, null);
+//		}
 	
 	
 	public void insertLikeInObjectToDb(int UserId, int PaperId, String Date,
