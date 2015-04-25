@@ -74,6 +74,7 @@ public class IntroductionFragment extends Fragment {
 	ImageButton map;
 	ImageButton email;
 	ImageButton EditPage;
+	IntroductionEditFragment EditFragment;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -413,17 +414,18 @@ public class IntroductionFragment extends Fragment {
 			}
 		});
 
-		EditPage.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new IntroductionFragment());
-				trans.commit();
-
-			}
-		});
+		// EditPage.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// FragmentTransaction trans = getActivity()
+		// .getSupportFragmentManager().beginTransaction();
+		// EditFragment = new IntroductionEditFragment();
+		// trans.replace(R.id.content_frame, EditFragment);
+		// trans.commit();
+		//
+		// }
+		// });
 		return view;
 
 	}
