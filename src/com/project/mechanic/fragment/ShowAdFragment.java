@@ -57,7 +57,7 @@ public class ShowAdFragment extends Fragment {
 		name.setText(t.getUName());
 		email.setText(t.getUEmail());
 		phone.setText(t.getUPhone());
-		// mobile.setText(t.getu);
+		mobile.setText(t.getUMobile());
 		fax.setText(t.getUFax());
 
 		dbAdapter.close();

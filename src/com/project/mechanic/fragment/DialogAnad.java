@@ -99,7 +99,8 @@ public class DialogAnad extends Dialog {
 							ProvinceId, UName.getText().toString(), UEmail
 									.getText().toString(), UPhonnumber
 									.getText().toString(), UFax.getText()
-									.toString(), null, null);
+									.toString(), null, UMobile.getText()
+									.toString());
 
 				} else {
 
@@ -116,7 +117,7 @@ public class DialogAnad extends Dialog {
 										.toString(), UEmail.getText()
 										.toString(), UPhonnumber.getText()
 										.toString(), UFax.getText().toString(),
-								null, null);
+								null, UMobile.getText().toString());
 					} else {
 						byte[] bytes = getBitmapAsByteArray(bitmap);
 
@@ -127,7 +128,7 @@ public class DialogAnad extends Dialog {
 										.toString(), UEmail.getText()
 										.toString(), UPhonnumber.getText()
 										.toString(), UFax.getText().toString(),
-								null, null, null);
+								null, null, UMobile.getText().toString());
 					}
 
 				}
