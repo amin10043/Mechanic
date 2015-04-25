@@ -162,6 +162,29 @@ public class DataBaseAdapter {
 
 	}
 
+	
+	public void inserUsernonpicToDb(String name, String email, String password,
+			String phonenumber, int serviceid) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("Name", name);
+		uc.put("Email", email);
+		uc.put("Password", password);
+		uc.put("Phonenumber", phonenumber);
+
+
+		uc.put("ServiceId", serviceid);
+
+		long res = mDb.insert(TableUsers, null, uc);
+		long res2 = res;
+
+	}
+	
+	
+	
+	
+	
 	public void insertLikeInObjectToDb(int UserId, int PaperId, String Date,
 			int CommentId) {
 
@@ -612,7 +635,7 @@ public class DataBaseAdapter {
 
 		Users Users = new Users(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
-				cursor.getBlob(5));
+				cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getBlob(8),cursor.getInt(9));
 		return Users;
 
 	}
@@ -1204,7 +1227,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4), cursor.getBlob(5), cursor.getInt(6));
+					cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7), cursor.getBlob(8), cursor.getInt(9));
 			result.add(tempusers);
 		}
 		return result;
@@ -1237,7 +1260,8 @@ public class DataBaseAdapter {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
 
-					cursor.getString(4), cursor.getBlob(5), cursor.getInt(4));
+					cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),
+					cursor.getBlob(8), cursor.getInt(9));
 
 			result.add(tempusers);
 		}

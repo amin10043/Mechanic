@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
@@ -70,7 +71,7 @@ public class RegisterFragment extends Fragment {
 		btnaddpic1 = (ImageView) view.findViewById(R.id.btnaddpic);
 		Button btncan = (Button) view.findViewById(R.id.btncancle2);
 		Button btnreg = (Button) view.findViewById(R.id.btnreg2);
-
+		 TextView comregtxt =(TextView) view.findViewById(R.id.compeletereg);
 		final EditText editname = (EditText) view
 				.findViewById(R.id.editTextname);
 		final EditText edituser = (EditText) view
@@ -78,6 +79,24 @@ public class RegisterFragment extends Fragment {
 		final EditText editpass = (EditText) view
 				.findViewById(R.id.editTextpass);
 
+		
+		
+		
+		
+			
+		 btnaddpic1.setBackgroundResource(R.drawable.i13);
+//		      columnWidth = (int) (getScreenWidth() /3);
+//			   LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(l1.getLayoutParams());		
+//			   lp.width=columnWidth;
+//		      lp.height=columnWidth;
+//		      btnaddpic1.setLayoutParams(lp);
+		//   l1.addView(btnaddpic1);
+				    btnaddpic1.getLayoutParams().height = 150;
+				    btnaddpic1.getLayoutParams().width = 150;
+				    btnaddpic1.requestLayout();
+				
+				
+		
 		btnreg.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View arg0) {
@@ -95,42 +114,84 @@ public class RegisterFragment extends Fragment {
 
 				else {
 
-					//
-					// // String name = "CoderzHeaven";
-					// // newValues.put("name", name);
-					// try {
-					// FileInputStream instream = new
-					// FileInputStream(picturePath);
-					// BufferedInputStream bif = new
-					// BufferedInputStream(instream);
-					// byteImage1 = new byte[bif.available()];
-					// bif.read(byteImage1);
-					// newValues.put("image", byteImage1);
-					// // long ret = dbAdapter.insert(TABLE_NAME, null,
-					// newValues);
-					//
-					// } catch (IOException e) {
-					// // textView.append("Error Exception : " +
-					// e.getMessage());
-					// }
-					// dbAdapter.close();
-					// first Insert user to WS then insert to local
+					
 					dbAdapter = new DataBaseAdapter(getActivity());
 					dbAdapter.open();
+					
+					if ((btnaddpic1.getDrawable() == null)) {
+
+						dbAdapter.inserUsernonpicToDb(Name, Email, Pass, null,0);
+						
+						Toast.makeText(getActivity(), "اطلاعات مورد نظر بدون عکس ثبت شد",
+								Toast.LENGTH_SHORT).show();
+					}
+					else {	
 					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
 							.getBitmap();
-					byte[] Image = getBitmapAsByteArray(bitmap);
-					Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد",
-							Toast.LENGTH_SHORT).show();
 
-					dbAdapter.inserUserToDb(Name, Email, Pass, null, Image, 0);
-
-					dbAdapter.close();
+					Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+							bitmap.getHeight(), bitmap.getConfig());
+					
+					if (bitmap.sameAs(emptyBitmap)) {
+						dbAdapter.inserUsernonpicToDb(Name, Email, Pass, null,0);
+						
+					} 
+					else
+					{	
+										
+									byte[] Image = getBitmapAsByteArray(bitmap);
+							
+									
+									dbAdapter.inserUserToDb(Name, Email, Pass, null, Image, 0);
+				
+									dbAdapter.close();
+									Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد",
+											Toast.LENGTH_SHORT).show();
+				
+									editname.setText("");
+									edituser.setText("");
+							editpass.setText("");
+								 
+							}
+					
+					
+					
+					
+					
+					}
 
 				}
 
 			}
 		});
+		
+		
+		
+comregtxt.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				Toast.makeText(getActivity(), "compeleteregisterfragment",
+						Toast.LENGTH_SHORT).show();
+
+//				FragmentTransaction trans = getActivity()
+//						.getSupportFragmentManager().beginTransaction();
+//				trans.replace(R.id.content_frame, new CompeleteRegisterFragment());
+//				trans.commit();
+				
+				
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new CompeleteRegisterFragment());
+				trans.commit();
+				
+				
+			}
+		});
+		
 
 		btncan.setOnClickListener(new OnClickListener() {
 
