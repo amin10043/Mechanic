@@ -2,15 +2,11 @@ package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
 
-import android.R.color;
-import android.annotation.SuppressLint;
-import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -19,17 +15,13 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
@@ -63,15 +55,7 @@ public class RegisterFragment extends Fragment {
 	DataBaseAdapter dbAdapter;
 	private Activity view;
 
-	
-	
-	private int columnWidth;
- LinearLayout l1,l2;
-
-	
-
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
-
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		bitmap.compress(CompressFormat.PNG, 0, outputStream);
 		return outputStream.toByteArray();
@@ -82,40 +66,18 @@ public class RegisterFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_register, null);
 
-		
-		dbAdapter = new DataBaseAdapter(getActivity());
-		 btnaddpic1=(ImageView) view.findViewById(R.id.btnaddpic);
-
-
 		// dbAdapter = new DataBaseAdapter(getActivity());
 		btnaddpic1 = (ImageView) view.findViewById(R.id.btnaddpic);
-
 		Button btncan = (Button) view.findViewById(R.id.btncancle2);
 		Button btnreg = (Button) view.findViewById(R.id.btnreg2);
-        TextView comregtxt =(TextView) view.findViewById(R.id.compeletereg);
+
 		final EditText editname = (EditText) view
 				.findViewById(R.id.editTextname);
 		final EditText edituser = (EditText) view
 				.findViewById(R.id.editTextuser);
 		final EditText editpass = (EditText) view
 				.findViewById(R.id.editTextpass);
-		
-		
-//		 l1 = (LinearLayout) view.findViewById(R.id.l1);
-	
- btnaddpic1.setBackgroundResource(R.drawable.i13);
-//      columnWidth = (int) (getScreenWidth() /3);
-//	   LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(l1.getLayoutParams());		
-//	   lp.width=columnWidth;
-//      lp.height=columnWidth;
-//      btnaddpic1.setLayoutParams(lp);
-//   l1.addView(btnaddpic1);
-		    btnaddpic1.getLayoutParams().height = 150;
-		    btnaddpic1.getLayoutParams().width = 150;
-		    btnaddpic1.requestLayout();
-		
-		
-		
+
 		btnreg.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View arg0) {
@@ -164,11 +126,7 @@ public class RegisterFragment extends Fragment {
 					dbAdapter.inserUserToDb(Name, Email, Pass, null, Image, 0);
 
 					dbAdapter.close();
-					
-					editname.setText("");
-					edituser.setText("");
-				editpass.setText("");
-				 
+
 				}
 
 			}
@@ -199,40 +157,9 @@ public class RegisterFragment extends Fragment {
 
 				getActivity().startActivityFromFragment(RegisterFragment.this,
 						i, RESULT_LOAD_IMAGE);
-				
-				
-				
 			}
 		});
 
-		
-		comregtxt.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				
-				
-				Toast.makeText(getActivity(), "compeleteregisterfragment",
-						Toast.LENGTH_SHORT).show();
-
-//				FragmentTransaction trans = getActivity()
-//						.getSupportFragmentManager().beginTransaction();
-//				trans.replace(R.id.content_frame, new CompeleteRegisterFragment());
-//				trans.commit();
-				
-				
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new CompeleteRegisterFragment());
-				trans.commit();
-				
-				
-			}
-		});
-		
-		
-		
 		return view;
 	}
 
@@ -264,46 +191,5 @@ public class RegisterFragment extends Fragment {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
-	
-	
-	
-	
-	@SuppressLint("NewApi")
-	public int getScreenWidth() {
-		int columnWidth;
-	WindowManager wm = (WindowManager) getActivity()
-				.getSystemService(Context.WINDOW_SERVICE);
-	Display display = wm.getDefaultDisplay();
-
-		final Point point = new Point();
-	try {
-			display.getSize(point);
-		} catch (java.lang.NoSuchMethodError ignore) { // Older device
-		point.x = display.getWidth();
-			point.y = display.getHeight();
-		}
-		columnWidth = point.x;
-		return columnWidth;
-}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }
