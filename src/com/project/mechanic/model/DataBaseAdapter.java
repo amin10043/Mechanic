@@ -95,12 +95,13 @@ public class DataBaseAdapter {
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
 			"ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress",
-			"UImage" };
+			"UImage", "UMobile" };
 
 	private String[] TicketType = { "ID", "desc" };
 
 	private String[] Users = { "ID", "Name", "Email", "Password",
-			"Phonenumber", "Image" };
+			"Phonenumber","Mobailenumber","Faxnumber","Address" ,"Image", "ServiceId" };
+
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url" };
 	private String[] ObjectBrandType = { "ID", "Description" };
@@ -144,7 +145,7 @@ public class DataBaseAdapter {
 	}
 
 	public void inserUserToDb(String name, String email, String password,
-			String phonenumber, byte[] image, int serviceid) {
+			String phonenumber,String mobailenumber,String faxnumber,String address,  byte[] image, int serviceid) {
 
 		ContentValues uc = new ContentValues();
 
@@ -152,12 +153,46 @@ public class DataBaseAdapter {
 		uc.put("Email", email);
 		uc.put("Password", password);
 		uc.put("Phonenumber", phonenumber);
+
+		uc.put("Mobailenumber", mobailenumber);
+		uc.put("Faxnumber", faxnumber);
+		uc.put("Address", address);
 		uc.put("Image", image);
+		uc.put("ServiceId", serviceid);
+
 		long res = mDb.insert(TableUsers, null, uc);
 		long res2 = res;
 
 	}
 
+	
+	
+
+		public void inserUsernonpicToDb(String name, String email, String password,
+				String phonenumber,String mobailenumber,String faxnumber,String address, int serviceid) {
+
+			ContentValues uc = new ContentValues();
+
+			uc.put("Name", name);
+			uc.put("Email", email);
+			uc.put("Password", password);
+			uc.put("Phonenumber", phonenumber);
+
+			uc.put("Mobailenumber", mobailenumber);
+			uc.put("Faxnumber", faxnumber);
+			uc.put("Address", address);
+		
+			uc.put("ServiceId", serviceid);
+
+			long res = mDb.insert(TableUsers, null, uc);
+			long res2 = res;
+
+		}
+	
+	
+	
+	
+	
 	public void insertLikeInObjectToDb(int UserId, int PaperId, String Date,
 			int CommentId) {
 
@@ -238,43 +273,60 @@ public class DataBaseAdapter {
 
 	public void insertTickettoDb(String Title, String desc, int userId,
 
-	int typeId, byte[] bytes, int email, int name, int fax, int phone,
-			int mobile, int provinceId) {
+	byte[] bytes, String date, int typeId, int name, int email, int mobile,
+			int phone, int fax, int provinceId, String uname, String uemail,
+			String uphonnumber, String ufax, String uadress, byte[] uimage,
+			String umobile) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Title", Title);
 		cv.put("Desc", desc);
 		cv.put("UserId", userId);
-		cv.put("TypeId", typeId);
 		cv.put("Image", bytes);
-		cv.put("Email", email);
+		cv.put("Date", date);
+		cv.put("TypeId", typeId);
 		cv.put("Name", name);
-		cv.put("Fax", fax);
-		cv.put("Phone", phone);
+		cv.put("Email", email);
 		cv.put("Mobile", mobile);
+		cv.put("Phone", phone);
+		cv.put("Fax", fax);
 		cv.put("ProvinceId", provinceId);
-
+		cv.put("UName", uname);
+		cv.put("UEmail", uemail);
+		cv.put("UPhonnumber", uphonnumber);
+		cv.put("UFax", ufax);
+		cv.put("UAdress", uadress);
+		cv.put("UImage", uimage);
+		cv.put("UMobile", umobile);
 		mDb.insert(TableTicket, null, cv);
 
 	}
 
 	public void insertTickettoDbemptyImage(String Title, String desc,
-			int userId,
-
-			int typeId, int email, int name, int fax, int phone, int mobile,
-			int provinceId) {
+			int userId, String date, int typeId, int name, int email,
+			int mobile, int phone, int fax, int provinceId, String uname,
+			String uemail, String uphonnumber, String ufax, String uadress,
+			String umobile) {
 
 		ContentValues cv = new ContentValues();
+
 		cv.put("Title", Title);
 		cv.put("Desc", desc);
 		cv.put("UserId", userId);
+		cv.put("Date", date);
 		cv.put("TypeId", typeId);
-		cv.put("Email", email);
 		cv.put("Name", name);
-		cv.put("Fax", fax);
-		cv.put("Phone", phone);
+		cv.put("Email", email);
 		cv.put("Mobile", mobile);
+		cv.put("Phone", phone);
+		cv.put("Fax", fax);
 		cv.put("ProvinceId", provinceId);
+		cv.put("UName", uname);
+		cv.put("UEmail", uemail);
+		cv.put("UPhonnumber", uphonnumber);
+		cv.put("UFax", ufax);
+		cv.put("UAdress", uadress);
+		cv.put("UMobile", umobile);
 
 		mDb.insert(TableTicket, null, cv);
 
@@ -588,9 +640,10 @@ public class DataBaseAdapter {
 	}
 
 	private Users CursorToUsers(Cursor cursor) {
+
 		Users Users = new Users(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
-				cursor.getBlob(5));
+				cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getBlob(8),cursor.getInt(9));
 		return Users;
 
 	}
@@ -678,7 +731,8 @@ public class DataBaseAdapter {
 				cursor.getInt(8), cursor.getInt(9), cursor.getInt(10),
 				cursor.getInt(11), cursor.getInt(12), cursor.getString(13),
 				cursor.getString(14), cursor.getString(15),
-				cursor.getString(16), cursor.getString(17), cursor.getBlob(18));
+				cursor.getString(16), cursor.getString(17), cursor.getBlob(18),
+				cursor.getString(19));
 		return tempTicket;
 
 	}
@@ -1181,7 +1235,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4), cursor.getBlob(5), cursor.getInt(6));
+					cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7), cursor.getBlob(8), cursor.getInt(9));
 			result.add(tempusers);
 		}
 		return result;
@@ -1213,7 +1267,9 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4), cursor.getBlob(5));
+
+					cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),
+					cursor.getBlob(8), cursor.getInt(9));
 
 			result.add(tempusers);
 		}
@@ -1236,6 +1292,7 @@ public class DataBaseAdapter {
 		ArrayList<Object> result = new ArrayList<Object>();
 		Cursor cursor = mDb
 				.rawQuery(
+
 						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter From "
 								+ TableObject
 								+ " as O inner join "

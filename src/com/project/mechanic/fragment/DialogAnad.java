@@ -12,9 +12,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -29,8 +29,8 @@ public class DialogAnad extends Dialog {
 	private static final int SELECT_PICTURE = 1;
 
 	private ImageView dialog_img1, dialog_img2, dialog_img3;
-	private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5;
-	private EditText dialog_anad_et1, dialog_anad_et2;
+	private EditText dialog_anad_et1, dialog_anad_et2, UName, UMobile,
+			UPhonnumber, UFax, UEmail;
 	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
 	int resourceId;
@@ -76,44 +76,19 @@ public class DialogAnad extends Dialog {
 		setContentView(resourceId);
 		dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
 		dialog_img2 = (ImageView) findViewById(R.id.dialog_img2);
-		checkBox1 = (CheckBox) findViewById(R.id.checkBox1);
-		checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
-		checkBox3 = (CheckBox) findViewById(R.id.checkBox3);
-		checkBox4 = (CheckBox) findViewById(R.id.checkBox4);
-		checkBox5 = (CheckBox) findViewById(R.id.checkBox5);
 		dialog_anad_et1 = (EditText) findViewById(R.id.dialog_anad_et1);
 		dialog_anad_et2 = (EditText) findViewById(R.id.dialog_anad_et2);
+		UName = (EditText) findViewById(R.id.name);
+		UMobile = (EditText) findViewById(R.id.mobile);
+		UEmail = (EditText) findViewById(R.id.email);
+		UFax = (EditText) findViewById(R.id.fax);
+		UPhonnumber = (EditText) findViewById(R.id.phone);
 
 		dialog_img2.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				dbadapter = new DataBaseAdapter(context);
-				if (checkBox1.isChecked()) {
-					emailCheck = 1;
-				} else {
-					emailCheck = 0;
-				}
-				if (checkBox2.isChecked()) {
-					nameCheck = 1;
-				} else {
-					nameCheck = 0;
-				}
-				if (checkBox3.isChecked()) {
-					faxCheck = 1;
-				} else {
-					faxCheck = 0;
-				}
-				if (checkBox4.isChecked()) {
-					phoneCheck = 1;
-				} else {
-					phoneCheck = 0;
-				}
-				if (checkBox5.isChecked()) {
-					mobileCheck = 1;
-				} else {
-					mobileCheck = 0;
-				}
 
 				dbadapter.open();
 
@@ -121,9 +96,12 @@ public class DialogAnad extends Dialog {
 
 					dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
 							.getText().toString(), dialog_anad_et2.getText()
-							.toString(), 1, ticketTypeID, emailCheck,
-							nameCheck, faxCheck, phoneCheck, mobileCheck,
-							ProvinceId);
+							.toString(), 1, null, ticketTypeID, 0, 0, 0, 0, 0,
+							ProvinceId, UName.getText().toString(), UEmail
+									.getText().toString(), UPhonnumber
+									.getText().toString(), UFax.getText()
+									.toString(), null, UMobile.getText()
+									.toString());
 
 				} else {
 
@@ -135,51 +113,35 @@ public class DialogAnad extends Dialog {
 					if (bitmap.sameAs(emptyBitmap)) {
 						dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
 								.getText().toString(), dialog_anad_et2
-								.getText().toString(), 1, ticketTypeID,
-								emailCheck, nameCheck, faxCheck, phoneCheck,
-								mobileCheck, ProvinceId);
+								.getText().toString(), 1, null, ticketTypeID,
+								0, 0, 0, 0, 0, ProvinceId, UName.getText()
+										.toString(), UEmail.getText()
+										.toString(), UPhonnumber.getText()
+										.toString(), UFax.getText().toString(),
+								null, UMobile.getText().toString());
 					} else {
 						byte[] bytes = getBitmapAsByteArray(bitmap);
 
 						dbadapter.insertTickettoDb(dialog_anad_et1.getText()
 								.toString(), dialog_anad_et2.getText()
-								.toString(), 1, ticketTypeID, bytes,
-								emailCheck, nameCheck, faxCheck, phoneCheck,
-								mobileCheck, ProvinceId);
+								.toString(), 1, bytes, null, ticketTypeID, 0,
+								0, 0, 0, 0, ProvinceId, UName.getText()
+										.toString(), UEmail.getText()
+										.toString(), UPhonnumber.getText()
+										.toString(), UFax.getText().toString(),
+								null, null, UMobile.getText().toString());
+
 					}
 
 				}
+				Toast.makeText(context, "آگهی شما با موفقیت ثبت شد",
+						Toast.LENGTH_SHORT).show();
 				dbadapter.close();
-				// } catch (Exception e) {
-				// e.printStackTrace();
-				// // textView.append("Error Exception : " + e.getMessage());
-				// }
-
 				((AnadFragment) fragment).updateView();
 				DialogAnad.this.dismiss();
 
 			}
 		});
-		// checkBox1.setOnClickListener(new android.view.View.OnClickListener()
-		// {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// // is chkIos checked?
-		// if (((CheckBox) v).isChecked()) {
-		//
-		// }
-
-		// StringBuffer result = new StringBuffer();
-		// result.append("checkBox1 : ").append(checkBox1.isChecked());
-		// result.append("checkBox2 : ").append(checkBox2.isChecked());
-		// result.append("checkBox3 :").append(checkBox3.isChecked());
-		// result.append("checkBox4 :").append(checkBox4.isChecked());
-		//
-		// Toast.makeText(context, R.string.hello_world,
-		// Toast.LENGTH_SHORT).show();
-		// }
-		// });
 
 		dialog_img1.setOnClickListener(new android.view.View.OnClickListener() {
 

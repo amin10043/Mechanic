@@ -60,7 +60,7 @@ public class FroumListAdapter  extends ArrayAdapter<CommentInFroum>{
 		
 		txt1.setText(comment.getDescription());
 		txt2.setText(x.getName());
-		txt3.setText(x.getPhonennumber());
+		txt3.setText(x.getPhonenumber());
 		return convertView;
 	}
 

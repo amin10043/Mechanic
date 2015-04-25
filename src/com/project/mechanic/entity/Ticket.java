@@ -21,6 +21,7 @@ public class Ticket {
 	String UFax;
 	String UAdress;
 	byte[] UImage;
+	String UMobile;
 
 	public int getId() {
 		return Id;
@@ -176,10 +177,19 @@ public class Ticket {
 		UImage = uimage;
 	}
 
+	public String getUMobile() {
+		return UMobile;
+	}
+
+	public void setUMobile(String umobile) {
+		UMobile = umobile;
+	}
+
 	public Ticket(int id, String title, String desc, int Userid, byte[] imge,
 			String date, int Typeid, int name, int email, int mobile,
 			int phone, int fax, int provinceid, String uname, String uemail,
-			String uphone, String ufax, String uadress, byte[] uimage) {
+			String uphone, String ufax, String uadress, byte[] uimage,
+			String umobile) {
 		super();
 		Id = id;
 		Title = title;
@@ -200,6 +210,7 @@ public class Ticket {
 		UFax = ufax;
 		UAdress = uadress;
 		UImage = uimage;
+		UMobile = umobile;
 
 	}
 }

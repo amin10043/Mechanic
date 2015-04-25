@@ -410,6 +410,15 @@ public class IntroductionFragment extends Fragment {
 			}
 		});
 
+		// LinearLayout downloadLinear = (LinearLayout)
+		// view.findViewById(R.id.downloadLinear);
+		// LayoutParams lp = new LayoutParams(
+		// android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+		// android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
+		// lp.height = 100;
+		// Pdf1.setLayoutParams(lp);
+		// Pdf1.requestLayout();
+
 		return view;
 
 	}
