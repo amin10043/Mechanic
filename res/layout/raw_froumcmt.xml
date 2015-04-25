@@ -20,7 +20,6 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_launcher" />
 
-
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="wrap_content"
@@ -35,15 +34,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
-                android:src="@drawable/negative" />
+                android:src="@drawable/positive" />
 
             <TextView
                 android:id="@+id/txtNumofLike_RawCmtFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="23"
                 android:textColor="@color/red" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -59,13 +56,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
-                android:src="@drawable/positive" />
+                android:src="@drawable/negative" />
 
             <TextView
                 android:id="@+id/txtNumofDislike_RawCmtFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12"
                 android:textColor="@color/red" />
         </LinearLayout>
 
@@ -87,13 +83,12 @@
             android:layout_marginRight="12dp"
             android:layout_toLeftOf="@+id/rawUsernamecmttxt_cmt"
             android:textColor="@color/red" />
-
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="5" >
+        android:layout_weight="45" >
 
         <TextView
             android:id="@+id/rawCmttxt"
@@ -102,17 +97,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:hint=" "
-            android:text="نظر"
             android:textColor="@color/red" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_weight="40" >
-
     </RelativeLayout>
 
     <RelativeLayout

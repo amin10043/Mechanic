@@ -1,123 +1,187 @@
-<?xml version="1.0" encoding="utf-8"?>
-   <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:background="#ffffff" >
- 
-    <ScrollView 
-        android:id="@+id/scrollView1"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@drawable/i8"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center" >
+        android:background="@color/light_grey"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:weightSum="7.2" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginRight="@dimen/txtsize10"
+            android:layout_marginTop="@dimen/txtsize10"
+            android:layout_weight="3"
+            android:background="@drawable/list_item" >
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:layout_marginTop="10dp"
-    android:layout_weight="1"
-    android:background="@drawable/register3" >
-
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="ایجاد حساب کاربری"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/activity_horizontal_margin" />
         </LinearLayout>
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:layout_marginTop="20dp"
-    android:layout_weight="1" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/txtsize10"
+            android:layout_weight="1"
+            android:background="@drawable/list_item1"
+            android:orientation="vertical"
+            android:weightSum="2.5" >
 
-    <EditText
-        android:id="@+id/editTextname"
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:hint="Enter Name and Family"
-        android:textColorHint="@color/red"
-        android:textSize="15dp" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:orientation="horizontal" >
 
-        <requestFocus />
-    </EditText>
+                <EditText
+                    android:id="@+id/editTextname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:hint="نام و نام خانوادگی را وارد نمایید"
+                    android:textSize="@dimen/activity_horizontal_margin" >
 
-</LinearLayout>
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginTop="20dp"
-    android:layout_weight="1" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.2"
+                android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/editTextuser"
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:ems="10"
-        android:hint="Enter Username(Email)"
-        android:inputType="textEmailAddress"
-        android:textColorHint="@color/red"
-        android:textSize="15dp" />
+                <EditText
+                    android:id="@+id/editTextuser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="right"
+                    android:hint="ایمیل خودرا وارد نمایید"
+                    android:inputType="textEmailAddress"
+                    android:textSize="@dimen/activity_horizontal_margin" />
+            </LinearLayout>
 
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:orientation="horizontal" >
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginTop="20dp"
-    android:layout_weight="1" >
+                <EditText
+                    android:id="@+id/editTextpass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:gravity="right"
+                    android:hint="رمزعبورخودراواردنمایید"
+                    android:inputType="textPassword"
+                    android:textSize="@dimen/activity_horizontal_margin" />
+            </LinearLayout>
 
-    <EditText
-        android:id="@+id/editTextpass"
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:ems="10"
-        android:hint="Enter Password"
-        android:inputType="textPassword"
-        android:textColorHint="@color/red"
-        android:textSize="15dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/txtsize30"
+                android:layout_weight="0.29"
+                android:orientation="horizontal"
+                android:weightSum="3" >
 
-</LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:layout_weight="2"
+                    android:background="@drawable/item2"
+                    android:orientation="horizontal"
+                    android:weightSum="2" >
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="bottom|center"
-    android:layout_marginBottom="20dp"
-    android:layout_marginTop="50dp"
-    android:layout_weight="1" >
+                    <ImageView
+                        android:id="@+id/btnaddpic"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@drawable/i12" />
+                </LinearLayout>
 
-    <Button
-        android:id="@+id/btncancle2"
-        android:layout_width="100dp"
-        android:layout_height="45dp"
-        android:layout_gravity="center"
-        android:background="@drawable/buttonshape"
-        android:text="انصراف" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/btnreg2"
-        android:layout_width="100dp"
-        android:layout_height="45dp"
-        android:layout_marginLeft="20dp"
-        android:background="@drawable/buttonshape"
-        android:enabled="true"
-        android:scrollHorizontally="false"
-        android:text="ثبت نام" />
-
-</LinearLayout>
-            
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right|center"
+                        android:text="عکس مورد نظر را انتخاب کنید"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/activity_horizontal_margin" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
-        
-    </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/txtsize10"
+            android:layout_marginLeft="@dimen/txtsize80"
+            android:layout_marginRight="@dimen/txtsize80"
+            android:layout_weight="3.2"
+            android:background="@color/transparent"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btncancle2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/buttonshape"
+                android:text="انصراف" />
+
+            <Button
+                android:id="@+id/btnreg2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/txtsize10"
+                android:layout_weight="1"
+                android:background="@drawable/buttonshape"
+                android:enabled="true"
+                android:scrollHorizontally="false"
+                android:text="ثبت نام" />
+        </LinearLayout>
+    </LinearLayout>
+
 </RelativeLayout>

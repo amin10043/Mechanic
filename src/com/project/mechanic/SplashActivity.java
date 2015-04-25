@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 
 public class SplashActivity extends Activity {
 
-	int SPLASH_DISPLAY_TIME = 15000;
+	int SPLASH_DISPLAY_TIME = 10000;
 	Handler handler;
 	Runnable runnable;
 
@@ -75,9 +75,9 @@ public class SplashActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.facebook.google.com"));
-			        startActivity(browserIntent);
-							
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse("http://www.facebook.com"));
+				startActivity(browserIntent);
 
 			}
 		});
@@ -86,11 +86,10 @@ public class SplashActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-			
-				
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.plus.google.com"));
-        startActivity(browserIntent);
-				
+
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse("http://www.plus.google.com"));
+				startActivity(browserIntent);
 
 			}
 		});
@@ -98,9 +97,9 @@ public class SplashActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				  Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.instagram.com"));
-			        startActivity(browserIntent);
-							
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse("http://www.instagram.com"));
+				startActivity(browserIntent);
 
 			}
 		});
@@ -108,9 +107,9 @@ public class SplashActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				  Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.linkedin.com"));
-			        startActivity(browserIntent);
-							
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse("http://www.linkedin.com"));
+				startActivity(browserIntent);
 
 			}
 		});
@@ -118,25 +117,20 @@ public class SplashActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				  Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com"));
-			        startActivity(browserIntent);
-							
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse("http://www.youtube.com"));
+				startActivity(browserIntent);
+
 			}
 		});
 		btntw1.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				
-				
-				
-				  Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.twitter.com"));
-			        startActivity(browserIntent);
-							
-				
-				
-				
-				
+
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse("http://www.twitter.com"));
+				startActivity(browserIntent);
 
 			}
 		});

@@ -6,7 +6,7 @@
     android:gravity="start"
     android:orientation="vertical"
     android:weightSum="100" >
-    
+
     <LinearLayout
         android:id="@+id/LinearLayout1"
         style="@style/List_Item_Style"
@@ -17,70 +17,62 @@
         android:orientation="vertical"
         android:weightSum="10" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3" >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3" >
 
-        <TextView
-            android:id="@+id/rawTitletxt"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:hint=" "
-            android:textColor="@color/red" />
+            <TextView
+                android:id="@+id/rawTitletxt"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:hint=" "
+                android:textColor="@color/red" />
+        </RelativeLayout>
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="4" >
-
-        <TextView
-            android:id="@+id/rawtxtDescription"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="20dp"
-            android:textColor="@color/red" />
+            android:layout_weight="4" >
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/rawtxtDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="20dp"
+                android:textColor="@color/red" />
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4" >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4" >
 
-        <TextView
-            android:id="@+id/txtPhone_Object"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="18dp"
+            <TextView
+                android:id="@+id/txtPhone_Object"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="18dp"
+                android:layout_toLeftOf="@+id/row_berand_txt"
+                android:textColor="@color/red" />
 
-            android:layout_toLeftOf="@+id/row_berand_txt"
-            android:textColor="@color/red" />
-
-        <TextView
-            android:id="@+id/fragmentnewstxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="18dp"
-            android:text="توسط"
-            android:textColor="@color/red" />
-
-            android:layout_toLeftOf="@+id/fragmentnewstxt" />
-
-
-    </RelativeLayout>
-
-</LinearLayout>
+            <TextView
+                android:id="@+id/fragmentnewstxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="18dp"
+                android:text="توسط"
+                android:textColor="@color/red" />
+        </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -122,9 +114,8 @@
             android:layout_alignBottom="@+id/txtNumofLike_CmtFroum"
             android:layout_alignLeft="@+id/imgBtnAddcmt_CmtFroum"
             android:hint="10" />
-
     </RelativeLayout>
-    
+
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
@@ -134,13 +125,11 @@
 
         <ListView
             android:id="@+id/lstComment"
+            style="@style/second_item_style"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-             android:divider="@null"
-            android:dividerHeight="0dp"
-             style="@style/ListView" >
+            android:dividerHeight="0dp" >
         </ListView>
-
     </ScrollView>
 
     <ImageView

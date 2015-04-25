@@ -79,9 +79,10 @@ public class FroumFragment extends Fragment {
 		NumofLike.setText(adapter.LikeInFroum_count().toString());
 		mylist = adapter.getCommentInFroumbyPaperid(id);
 
-		CommentInFroum d = null;
-		NumofCmtLike.setText(d.getNumofLike());
-		NumofCmtDisLike.setText(d.getNumofDisLike());
+		/*
+		 * CommentInFroum d = null; NumofCmtLike.setText(d.getNumofLike());
+		 * NumofCmtDisLike.setText(d.getNumofDisLike());
+		 */
 
 		mylist = adapter.getCommentInFroumbyPaperid(id);
 		Froum x = adapter.getFroumItembyid(id);
@@ -97,34 +98,6 @@ public class FroumFragment extends Fragment {
 		lst.setAdapter(ListAdapter);
 
 		Like.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				adapter.open();
-				adapter.insertLikeInFroumToDb(1, 0, "", 1);
-				NumofLike.setText(adapter.LikeInFroum_count().toString());
-				adapter.close();
-
-			}
-		});
-
-		CmtLike.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				adapter.open();
-				id2 = Integer.valueOf(getArguments().getString("Id2"));
-				CommentInFroum a = null;
-				String c = a.getNumofLike();
-				String k = c + 1;
-				adapter.insertCmtLikebyid(id2, k);
-				NumofCmtLike.setText(a.getNumofLike());
-				adapter.close();
-
-			}
-		});
-
-		CmtDisLike.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {

@@ -71,7 +71,6 @@
                         android:layout_toRightOf="@+id/txtNumofLike_Object"
                         android:scaleType="fitXY"
                         android:src="@drawable/save" />
-
                 </RelativeLayout>
 
                 <ImageButton
@@ -81,7 +80,6 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="3"
                     android:src="@android:drawable/btn_star" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -89,55 +87,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="5"
                 android:orientation="vertical" >
-
-                <RelativeLayout
-                    android:id="@+id/RelativeLayout11"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="25dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1" >
-
-                    <ImageButton
-                        android:id="@+id/imgbtnCmt_introduction"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:background="@color/light_grey"
-                        android:src="@drawable/cmt" />
-
-                    <ImageButton
-                        android:id="@+id/ImgbtnLike_Object"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginRight="23dp"
-                        android:layout_toLeftOf="@+id/imgbtnCmt_introduction"
-                        android:background="@color/light_grey"
-                        android:src="@drawable/like" />
-
-                    <TextView
-                        android:id="@+id/txtNumofLike_Object"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignLeft="@+id/ImgbtnLike_Object"
-                        android:layout_below="@+id/ImgbtnLike_Object"
-                        android:text="23"
-                        android:textSize="@dimen/txtsize10" />
-
-                    <TextView
-                        android:id="@+id/textView16"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/txtNumofLike_Object"
-                        android:layout_alignBottom="@+id/txtNumofLike_Object"
-                        android:layout_alignLeft="@+id/imgbtnCmt_introduction"
-                        android:text="44"
-                        android:textSize="@dimen/txtsize10" />
-
-                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -267,7 +216,6 @@
                             android:layout_centerVertical="true"
                             android:text="خدمات"
                             android:textColor="@color/red" />
-
                     </RelativeLayout>
 
                     <LinearLayout
@@ -320,7 +268,6 @@
                             android:gravity="center"
                             android:text="تلفن"
                             android:textColor="@color/red" />
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -371,8 +318,7 @@
                             android:textColorHint="@color/red" />
 
                         <TextView
-
-                           android:id="@+id/txtNumofLike_RawCmtFroum"
+                            android:id="@+id/txtNumofLike_RawCmtFroum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
@@ -381,7 +327,6 @@
                             android:gravity="center"
                             android:text="نمابر"
                             android:textColor="@color/red" />
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -432,10 +377,9 @@
                             android:gravity="center"
                             android:text="همراه"
                             android:textColor="@color/red" />
-
                     </LinearLayout>
 
-                     <LinearLayout
+                    <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -481,10 +425,9 @@
                             android:gravity="center"
                             android:text="پست الکترونیک"
                             android:textColor="@color/red" />
-
                     </LinearLayout>
 
-                   <LinearLayout
+                    <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -531,7 +474,6 @@
                             android:gravity="center"
                             android:text="آدرس"
                             android:textColor="@color/red" />
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -573,9 +515,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="دانلود PDF کاتالوگ" />
-
                     </LinearLayout>
-
                 </LinearLayout>
             </LinearLayout>
 
@@ -619,9 +559,7 @@
                         android:layout_centerVertical="true"
                         android:text="توضیحات بیشتر"
                         android:textColor="@color/red" />
-
                 </RelativeLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -645,12 +583,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" >
                         </ListView>
-
                     </LinearLayout>
                 </ScrollView>
-
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 

@@ -26,7 +26,6 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 	private ImageButton CmtDisLike;
 	private TextView NumofCmtLike;
 	private TextView NumofCmtDisLike;
-	int id = 0;
 
 	public FroumListAdapter(Context context, int resource,
 			List<CommentInFroum> objects) {
@@ -40,7 +39,7 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 
 	@SuppressLint("ViewHolder")
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -54,9 +53,9 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				.findViewById(R.id.rawUsernamecmttxt_cmt);
 		TextView txt3 = (TextView) convertView
 				.findViewById(R.id.txtPhonenumber_CmtFroum);
-		CmtLike = (ImageButton) convertView
-				.findViewById(R.id.imgbtnLike_RawCmtFroum);
 		CmtDisLike = (ImageButton) convertView
+				.findViewById(R.id.imgbtnLike_RawCmtFroum);
+		CmtLike = (ImageButton) convertView
 				.findViewById(R.id.imgbtnDisLike_RawCmtFroum);
 		NumofCmtLike = (TextView) convertView
 				.findViewById(R.id.txtNumofLike_RawCmtFroum);
@@ -67,9 +66,12 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 		Users x = adapter.getUsernamebyid(comment.getUserid());
 		adapter.close();
 
-		txt1.setText(comment.getDescription());
+		txt1.setText(comment.getDesk());
 		txt2.setText(x.getName());
 		txt3.setText(x.getPhonennumber());
+		CommentInFroum d = list.get(position);
+		NumofCmtLike.setText(d.getNumOfLike());
+		NumofCmtDisLike.setText(d.getNumOfDislike());
 
 		CmtLike.setOnClickListener(new View.OnClickListener() {
 
@@ -77,21 +79,25 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 			public void onClick(View v) {
 				LinearLayout parentlayout = (LinearLayout) v.getParent()
 						.getParent().getParent();
-				View item = parentlayout.findViewById(R.id.rawCmttxt);
+				View view = parentlayout.findViewById(R.id.rawCmttxt);
+				TextView x = (TextView) view;
+				String item = x.getText().toString();
+				int id = 0;
 				for (CommentInFroum listItem : list) {
-					if (item.equals(listItem.getDescription())) {
+					if (item.equals(listItem.getDesk())) {
 
 						id = listItem.getId();
 					}
 				}
 
 				adapter.open();
-
-				CommentInFroum a = null;
-				String c = a.getNumofLike();
-				String k = c + 1;
-				adapter.insertCmtLikebyid(id, k);
-				NumofCmtLike.setText(a.getNumofLike());
+				CommentInFroum a = list.get(position);
+				String s = a.getNumOfLike();
+				int c = Integer.valueOf(a.getNumOfLike());
+				int k = c + 1;
+				String f = String.valueOf(k);
+				adapter.insertCmtLikebyid(id, f);
+				NumofCmtLike.setText(a.getNumOfLike());
 				adapter.close();
 
 			}
@@ -103,19 +109,24 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 			public void onClick(View v) {
 				LinearLayout parentlayout = (LinearLayout) v.getParent()
 						.getParent().getParent();
-				View item = parentlayout.findViewById(R.id.rawCmttxt);
+				View view = parentlayout.findViewById(R.id.rawCmttxt);
+				TextView x = (TextView) view;
+				String item = x.getText().toString();
+				int id = 0;
 				for (CommentInFroum listItem : list) {
-					if (item.equals(listItem.getDescription())) {
+					if (item.equals(listItem.getDesk())) {
 
 						id = listItem.getId();
 					}
 				}
 				adapter.open();
-				CommentInFroum a = null;
-				String c = a.getNumofDisLike();
-				String k = c + 1;
-				adapter.insertCmtDisLikebyid(id, k);
-				NumofCmtDisLike.setText(a.getNumofDisLike());
+				CommentInFroum a = list.get(position);
+				String c = a.getNumOfDislike();
+				int h = Integer.valueOf(a.getNumOfDislike());
+				int k = h + 1;
+				String f = String.valueOf(k);
+				adapter.insertCmtDisLikebyid(id, f);
+				NumofCmtDisLike.setText(a.getNumOfDislike());
 				adapter.close();
 
 			}

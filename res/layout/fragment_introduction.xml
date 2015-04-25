@@ -241,14 +241,14 @@
                             android:text="تلفن" 
                             android:textColor="@color/red"/>
 
-                        <ImageView
-                            android:id="@+id/showad_img2"
+                        <ImageButton
+                            android:id="@+id/phonebtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
                             android:layout_centerInParent="true"
-                            android:layout_marginLeft="14dp"
+                            android:layout_marginLeft="5dp"
                             android:src="@drawable/phone" />
 
                         <TextView
@@ -284,13 +284,13 @@
                             android:text="نمابر"
                             android:textColor="@color/red" />
 
-                        <ImageView
-                            android:id="@+id/imageView3"
+                        <ImageButton
+                            android:id="@+id/faxbtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
-                            android:layout_marginLeft="18dp"
+                            android:layout_marginLeft="5dp"
                             android:src="@drawable/fax" />
 
                         <TextView
@@ -344,13 +344,13 @@
                             android:layout_centerInParent="true"
                             android:textColor="@color/red" />
 
-                        <ImageView
-                            android:id="@+id/imageView4"
+                        <ImageButton
+                            android:id="@+id/cphonebtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
-                            android:layout_marginLeft="18dp"
+                            android:layout_marginLeft="10dp"
                             android:src="@drawable/cphone"
                             android:textColor="@color/red" />
                     </RelativeLayout>
@@ -367,14 +367,14 @@
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp" >
 
-                        <ImageView
-                            android:id="@+id/imageView5"
+                        <ImageButton
+                            android:id="@+id/emailbtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_alignTop="@+id/txtEmail_Object"
                             android:layout_centerInParent="true"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginLeft="5dp"
                             android:src="@drawable/email" 
                             android:textColor="@color/red"/>
 
@@ -422,7 +422,7 @@
                             android:textColor="@color/red"/>
 
                         <ImageButton
-                            android:id="@+id/imageButton8"
+                            android:id="@+id/mapbtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"

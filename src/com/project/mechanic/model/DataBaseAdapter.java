@@ -69,7 +69,9 @@ public class DataBaseAdapter {
 	private String[] CommentInObject = { "Id", "Desk", "ObjectId", "UserId",
 			"Date", "CommentId" };
 	private String[] CommentInFroum = { "ID", "Desk", "FroumId", "UserId",
-			"Date", "CommentId", "NumOfLike", "NumofDisLike" };
+
+	"Date", "CommentId", "NumOfDislike", "NumOfLike" };
+
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description" };
@@ -92,10 +94,19 @@ public class DataBaseAdapter {
 	private String[] Paper = { "ID", "Title", "Context" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name" };
-	private String[] Ticket = { "ID", "Title", "Desc", "UserId", "Image",
-			"date", "TypeId" };
+
+	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
+			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
+			"ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress",
+			"UImage" };
+
 	private String[] TicketType = { "ID", "desc" };
+
 	private String[] Users = { "ID", "Name", "Email", "Password", "Phonenumber" };
+
+	// private String[] Users = { "ID", "Name", "Email", "Password",
+	// "Phonenumber", "Image" };
+
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url" };
 	private String[] ObjectBrandType = { "ID", "Description" };
@@ -138,13 +149,16 @@ public class DataBaseAdapter {
 		mDbHelper.close();
 	}
 
-	public void inserUserToDb(String name, String email, String password) {
+	public void inserUserToDb(String name, String email, String password,
+			String phonenumber, byte[] image, int serviceid) {
 
 		ContentValues uc = new ContentValues();
 
 		uc.put("Name", name);
 		uc.put("Email", email);
 		uc.put("Password", password);
+		uc.put("Phonenumber", phonenumber);
+		uc.put("Image", image);
 		long res = mDb.insert(TableUsers, null, uc);
 		long res2 = res;
 
@@ -192,7 +206,8 @@ public class DataBaseAdapter {
 	}
 
 	public void insertCommentInFroumtoDb(String description, int Froumid,
-			int userid, String datetime, int commentid) {
+			int userid, String datetime, int commentid, String numofDisLike,
+			String numoflike) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Desk", description);
@@ -200,6 +215,8 @@ public class DataBaseAdapter {
 		cv.put("FroumID", Froumid);
 		cv.put("Date", datetime);
 		cv.put("CommentId", commentid);
+		cv.put("NumOfDislike", numofDisLike);
+		cv.put("NumOfLike", numoflike);
 		mDb.insert(TableCommentInFroum, null, cv);
 	}
 
@@ -229,14 +246,44 @@ public class DataBaseAdapter {
 	}
 
 	public void insertTickettoDb(String Title, String desc, int userId,
-			int typeId) {
+
+	int typeId, byte[] bytes, int email, int name, int fax, int phone,
+			int mobile, int provinceId) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Title", Title);
 		cv.put("Desc", desc);
 		cv.put("UserId", userId);
-
 		cv.put("TypeId", typeId);
+		cv.put("Image", bytes);
+		cv.put("Email", email);
+		cv.put("Name", name);
+		cv.put("Fax", fax);
+		cv.put("Phone", phone);
+		cv.put("Mobile", mobile);
+		cv.put("ProvinceId", provinceId);
+
+		mDb.insert(TableTicket, null, cv);
+
+	}
+
+	public void insertTickettoDbemptyImage(String Title, String desc,
+			int userId,
+
+			int typeId, int email, int name, int fax, int phone, int mobile,
+			int provinceId) {
+
+		ContentValues cv = new ContentValues();
+		cv.put("Title", Title);
+		cv.put("Desc", desc);
+		cv.put("UserId", userId);
+		cv.put("TypeId", typeId);
+		cv.put("Email", email);
+		cv.put("Name", name);
+		cv.put("Fax", fax);
+		cv.put("Phone", phone);
+		cv.put("Mobile", mobile);
+		cv.put("ProvinceId", provinceId);
 
 		mDb.insert(TableTicket, null, cv);
 
@@ -439,8 +486,59 @@ public class DataBaseAdapter {
 
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
 		Ticket item = null;
-		Cursor mCur = mDb.query("Ticket", Ticket, "TypeId=?",
+		Cursor mCur = mDb.query(TableTicket, Ticket, "TypeId=?",
 				new String[] { String.valueOf(TypeId) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToTicket(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	public Ticket getTicketById(int Id) {
+
+		Ticket item = null;
+		Cursor mCur = mDb.query(TableTicket, Ticket, "Id=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToTicket(mCur);
+		}
+
+		return item;
+
+	}
+
+	public ArrayList<Ticket> getTicketByTypeIdProId(int TypeId, int provinceID) {
+
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Ticket item = null;
+
+		Cursor mCur = mDb.query(
+				TableTicket,
+				Ticket,
+				"TypeId=? AND ProvinceId=?",
+				new String[] { String.valueOf(TypeId),
+						String.valueOf(provinceID) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToTicket(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	public ArrayList<Ticket> getTicketByProvinceId(int ProvinceId) {
+
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Ticket item = null;
+		Cursor mCur = mDb.query(TableTicket, Ticket, "ProvinceId=?",
+				new String[] { String.valueOf(ProvinceId) }, null, null, null);
 
 		while (mCur.moveToNext()) {
 			item = CursorToTicket(mCur);
@@ -491,7 +589,6 @@ public class DataBaseAdapter {
 		return item;
 	}
 
-	@SuppressWarnings("unused")
 	private Province CursorToProvince(Cursor cursor) {
 		Province tempProvince = new Province(cursor.getInt(0),
 				cursor.getString(1));
@@ -501,9 +598,16 @@ public class DataBaseAdapter {
 
 	@SuppressWarnings("unused")
 	private Users CursorToUsers(Cursor cursor) {
+
 		Users tempProvince = new Users(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4));
 		return tempProvince;
+
+		/*
+		 * Users Users = new Users(cursor.getInt(0), cursor.getString(1),
+		 * cursor.getString(2), cursor.getString(3), cursor.getString(4),
+		 * cursor.getBlob(5)); return Users;
+		 */
 
 	}
 
@@ -516,14 +620,12 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private City CursorToCity(Cursor cursor) {
 		City tempCity = new City(cursor.getInt(0), cursor.getString(1),
 				cursor.getInt(2));
 		return tempCity;
 	}
 
-	@SuppressWarnings("unused")
 	private Object CursorToObject(Cursor cursor) {
 		Object tempObject = new Object(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
@@ -544,7 +646,6 @@ public class DataBaseAdapter {
 		return tempNewsPaper;
 	}
 
-	@SuppressWarnings("unused")
 	private AdvisorType CursorToAdvisorType(Cursor cursor) {
 		AdvisorType tempAdvisorType = new AdvisorType(cursor.getInt(0),
 				cursor.getString(1));
@@ -552,7 +653,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private Executertype CursorToExecutertype(Cursor cursor) {
 		Executertype tempExecutertype = new Executertype(cursor.getInt(0),
 				cursor.getString(1));
@@ -560,7 +660,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private Froum CursorToFroum(Cursor cursor) {
 		Froum tempForum = new Froum(cursor.getInt(0), cursor.getInt(1),
 				cursor.getString(2), cursor.getString(3));
@@ -576,7 +675,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private News CursorToNews(Cursor cursor) {
 		News tempNews = new News(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2));
@@ -597,7 +695,12 @@ public class DataBaseAdapter {
 	private Ticket CursorToTicket(Cursor cursor) {
 		Ticket tempTicket = new Ticket(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getInt(3), cursor.getBlob(4),
-				cursor.getString(5), cursor.getInt(6));
+				cursor.getString(5), cursor.getInt(6), cursor.getInt(7),
+				cursor.getInt(8), cursor.getInt(9), cursor.getInt(10),
+				cursor.getInt(11), cursor.getInt(12), cursor.getString(13),
+				cursor.getString(14), cursor.getString(15),
+				cursor.getString(16), cursor.getString(17), cursor.getBlob(18));
+
 		return tempTicket;
 
 	}
@@ -911,6 +1014,11 @@ public class DataBaseAdapter {
 
 		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
 		CommentInFroum item = null;
+
+		// Cursor tCur = mDb.rawQuery("Select FroumId From " +
+		// TableCommentInFroum + " Where FroumId=" +String.valueOf(Froumid),null
+		// );
+
 		Cursor mCur = mDb.query(TableCommentInFroum, CommentInFroum,
 				"FroumId=?", new String[] { String.valueOf(Froumid) }, null,
 				null, null);
@@ -927,17 +1035,15 @@ public class DataBaseAdapter {
 	public void insertCmtLikebyid(int id, String numofLike) {
 
 		ContentValues uc = new ContentValues();
-		uc.put("NumofLike", numofLike);
-		mDb.update(TableCommentInFroum, uc, "Id=" + id, null);
-
+		uc.put("NumOfLike", numofLike);
+		mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
 	}
 
 	public void insertCmtDisLikebyid(int id, String numofDisLike) {
 
 		ContentValues uc = new ContentValues();
-		uc.put("NumofDisLike", numofDisLike);
-		mDb.update(TableCommentInFroum, uc, "Id=" + id, null);
-
+		uc.put("NumOfDislike", numofDisLike);
+		mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
 	}
 
 	public Users getUsernamebyid(int id) {
@@ -946,14 +1052,10 @@ public class DataBaseAdapter {
 
 		Cursor mCur = mDb.query(TableUsers, Users, " ID=?",
 				new String[] { String.valueOf(id) }, null, null, null);
-
 		if (mCur.moveToNext()) {
 			result = CursorToUsers(mCur);
-
 		}
-
 		return result;
-
 	}
 
 	public Froum getFroumItembyid(int Id) {
@@ -968,6 +1070,18 @@ public class DataBaseAdapter {
 		}
 
 		return item;
+	}
+
+	public Froum getFroumTitlebyid(int Id) {
+
+		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
+				null);
+		Froum tempFroum = null;
+		if (cursor.moveToNext()) {
+			tempFroum = CursorToFroum(cursor);
+		}
+
+		return tempFroum;
 
 	}
 
@@ -986,32 +1100,6 @@ public class DataBaseAdapter {
 
 	}
 
-	public Froum getFroumTitlebyid(int Id) {
-
-		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
-				null);
-		Froum tempFroum = null;
-		if (cursor.moveToNext()) {
-			tempFroum = CursorToFroum(cursor);
-		}
-
-		return tempFroum;
-
-	}
-
-	public ArrayList<Froum> getAllFroum() {
-		ArrayList<Froum> result = new ArrayList<Froum>();
-		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
-				null);
-		Froum tempFroum;
-		while (cursor.moveToNext()) {
-			result.add(CursorToFroum(cursor));
-		}
-
-		return result;
-
-	}
-
 	public Object getAllObjectbyid(int id) {
 
 		Object item = null;
@@ -1025,6 +1113,17 @@ public class DataBaseAdapter {
 
 		return item;
 
+	}
+
+	public ArrayList<Froum> getAllFroum() {
+		ArrayList<Froum> result = new ArrayList<Froum>();
+		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
+				null);
+		Froum tempFroum;
+		while (cursor.moveToNext()) {
+			result.add(CursorToFroum(cursor));
+		}
+		return result;
 	}
 
 	public NewsPaper getAllNewsPaperid(int id) {
@@ -1114,8 +1213,11 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
+
 					cursor.getString(4));
-			result.add(tempusers);
+
+			// cursor.getString(4), cursor.getBlob(5), cursor.getInt(6));
+
 		}
 		return result;
 
@@ -1126,31 +1228,9 @@ public class DataBaseAdapter {
 				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
 				cursor.getString(4), cursor.getInt(5), cursor.getString(6),
 				cursor.getString(7));
+
 		return tempComment;
 
-	}
-
-	public ArrayList<Users> getUserOfcomment(int froumId) {
-		ArrayList<Users> result = new ArrayList<Users>();
-		Cursor cursor = mDb
-				.rawQuery(
-						"Select "
-								+ Users[0]
-								+ ","
-								+ Users[1]
-								+ ","
-								+ Users[2]
-								+ ","
-								+ Users[3]
-								+ "  From Users inner join Comment on User.id=Comment.UserId where Comment.PaperId ="
-								+ froumId, null);
-		while (cursor.moveToNext()) {
-			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
-					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4));
-			result.add(tempusers);
-		}
-		return result;
 	}
 
 	public int getNumberOfListItemChilds(int parentId) {
@@ -1190,6 +1270,19 @@ public class DataBaseAdapter {
 			result.add(tempObject);
 		}
 		return result;
+	}
+
+	public Users getUserById(int id) {
+		Users item = null;
+		Cursor mCur = mDb.query(TableUsers, Users, " Id=?",
+				new String[] { String.valueOf(id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToUsers(mCur);
+
+		}
+
+		return item;
 	}
 
 }

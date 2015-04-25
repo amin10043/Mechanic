@@ -1,17 +1,27 @@
 package com.project.mechanic.utility;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.Display;
+import android.view.WindowManager;
+
+import com.project.mechanic.entity.Users;
+import com.project.mechanic.model.DataBaseAdapter;
 
 public class Utility {
 
 	private Context context;
+	private DataBaseAdapter adapter;
 
 	public Utility(Context context) {
 		this.context = context;
+		adapter = new DataBaseAdapter(context);
 	}
 
 	public boolean isNetworkConnected() {
@@ -57,4 +67,61 @@ public class Utility {
 							}
 						}).setIcon(android.R.drawable.ic_dialog_alert).show();
 	}
+
+	public Users getCurrentUser() {
+
+		Users u = null;
+		SharedPreferences settings = context.getSharedPreferences("user", 0);
+
+		boolean isLogin = settings.getBoolean("isLogin", false);
+		if (isLogin) {
+
+			adapter.open();
+			u = adapter.getUserById(0); // FOR TESTING !!!!
+			adapter.close();
+			return u;
+		} else {
+			return null;
+		}
+
+	}
+
+	@SuppressLint("NewApi")
+	public int getScreenHeight() {
+		int columnWidth;
+		WindowManager wm = (WindowManager) context
+				.getSystemService(Context.WINDOW_SERVICE);
+		Display display = wm.getDefaultDisplay();
+
+		final Point point = new Point();
+		try {
+			display.getSize(point);
+		} catch (java.lang.NoSuchMethodError ignore) { // Older device
+			point.x = display.getWidth();
+			point.y = display.getHeight();
+		}
+		columnWidth = point.y;
+		return columnWidth;
+
+	}
+
+	@SuppressLint("NewApi")
+	public int getScreenHeightWithPadding() {
+		int columnWidth;
+		WindowManager wm = (WindowManager) context
+				.getSystemService(Context.WINDOW_SERVICE);
+		Display display = wm.getDefaultDisplay();
+
+		final Point point = new Point();
+		try {
+			display.getSize(point);
+		} catch (java.lang.NoSuchMethodError ignore) { // Older device
+			point.x = display.getWidth();
+			point.y = display.getHeight();
+		}
+		columnWidth = point.y - 70;
+		return columnWidth;
+
+	}
+
 }

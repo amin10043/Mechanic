@@ -10,26 +10,24 @@
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
-     
         android:orientation="vertical"
         android:weightSum="6" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" 
-               android:gravity="center">
+            android:layout_weight="1"
+            android:gravity="center" >
 
             <TextView
                 android:id="@+id/RowObjecttxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginBottom="@dimen/activity_horizontal_margin"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="تالار تاسیسات مکانیکی ایران"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-
         </LinearLayout>
 
         <RelativeLayout
@@ -41,30 +39,29 @@
 
             <ImageButton
                 android:id="@+id/btnprev"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="32dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_gravity="left"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/prev" />
+                android:background="@drawable/prev" />
 
             <ImageButton
                 android:id="@+id/btnnext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="32dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/next" />
+                android:background="@drawable/next" />
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-             >
+            android:layout_weight="1" >
 
             <ImageButton
                 android:id="@+id/btninstegram"
@@ -113,7 +110,6 @@
                 android:layout_weight="1"
                 android:background="@color/transparent"
                 android:src="@drawable/i6" />
-
         </LinearLayout>
     </LinearLayout>
 

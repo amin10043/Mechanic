@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +17,9 @@ import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Province;
+import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.fragment.AdvertisementFragment;
-import com.project.mechanic.fragment.AnadFragment;
-import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class ShopListAdapter extends ArrayAdapter<Province> {
@@ -30,8 +29,7 @@ public class ShopListAdapter extends ArrayAdapter<Province> {
 	DataBaseAdapter adapter;
 	int lastPosition = 0;
 
-	public ShopListAdapter(Context context, int resource,
-			List<Province> objact) {
+	public ShopListAdapter(Context context, int resource, List<Province> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -70,12 +68,18 @@ public class ShopListAdapter extends ArrayAdapter<Province> {
 
 				Province province = list.get(position);
 				adapter.open();
-				List<City> allItems = adapter.getCitysByProvinceId(province.getId());
+				List<Ticket> allItems = adapter.getTicketByProvinceId(province
+						.getId());
+
 				adapter.close();
 
+				Bundle bundle = new Bundle();
+				bundle.putString("provinceId", String.valueOf(province.getId()));
+				AdvertisementFragment f = new AdvertisementFragment();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new AdvertisementFragment());
+				f.setArguments(bundle);
+				trans.replace(R.id.content_frame, f);
 				trans.addToBackStack(null);
 				trans.commit();
 			}
