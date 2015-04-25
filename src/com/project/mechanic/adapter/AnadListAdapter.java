@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -63,6 +64,9 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 					bitmapbyte.length);
 			img2.setImageBitmap(bmp);
 		}
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
+				"fonts/BROYA.TTF");
+		txtName.setTypeface(typeFace);
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
