@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnLongClickListener;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -16,7 +16,9 @@ import com.project.mechanic.R;
 import com.project.mechanic.adapter.PaperListAdapter;
 import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.Paper;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class PaperFragment extends Fragment {
 
@@ -33,12 +35,14 @@ public class PaperFragment extends Fragment {
 	ArrayList<CommentInPaper> mylist;
 	PaperListAdapter PaperListadapter;
 	int like = 0;
+	Utility util;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_paper, null);
-
+		util = new Utility(getActivity());
+		final Users user = util.getCurrentUser();
 		btnAddcmt = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 		Like = (ImageButton) view.findViewById(R.id.imgbtnLike_CmtFroum);
 		lst = (ListView) view.findViewById(R.id.lstComment);
@@ -53,21 +57,22 @@ public class PaperFragment extends Fragment {
 		// Bundle bundle = new Bundle();
 		// bundle.getString("Id", String.valueOf(id));
 		id = Integer.valueOf(getArguments().getString("Id"));
+
 		Paper p = adapter.getPaperItembyid(id);
 
 		txttitle.setText(p.getTitle());
 		txttitleDes.setText(p.getContext());
 		adapter.close();
 
-		Like.setOnLongClickListener(new OnLongClickListener() {
+		Like.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public boolean onLongClick(View arg0) {
-				like++;
-				String likeText = Integer.toString(like);
-				NumofLike.setText(likeText);
+			public void onClick(View arg0) {
+				adapter.open();
 
-				return true;
+				adapter.insertLikeInPaperToDb(user.getId(), id, "");
+				NumofLike.setText(adapter.LikeInPaper_count().toString());
+
 			}
 		});
 

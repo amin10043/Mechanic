@@ -103,8 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/txtNumofLike_CmtFroum"
             android:layout_alignBottom="@+id/txtNumofLike_CmtFroum"
-            android:layout_alignLeft="@+id/imgBtnAddcmt_CmtFroum"
-            android:hint="10" />
+            android:layout_alignLeft="@+id/imgBtnAddcmt_CmtFroum" />
     </RelativeLayout>
 
     <ScrollView

@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class DialogcmtInPaper extends Dialog {
 
@@ -20,12 +22,16 @@ public class DialogcmtInPaper extends Dialog {
 	Context context;
 	Fragment f;
 	int paperId;
+	Utility util;
 
 	public DialogcmtInPaper(Fragment f, Context context, int paperId) {
 		super(context);
 		this.context = context;
 		this.f = f;
 		this.paperId = paperId;
+		util = new Utility(context);
+		Users user = util.getCurrentUser();
+
 	}
 
 	@Override
