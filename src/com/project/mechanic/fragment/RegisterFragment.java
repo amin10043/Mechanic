@@ -120,7 +120,7 @@ public class RegisterFragment extends Fragment {
 					
 					if ((btnaddpic1.getDrawable() == null)) {
 
-						dbAdapter.inserUsernonpicToDb(Name, Email, Pass, null,0);
+						dbAdapter.inserUsernonpicToDb(Name, Email, Pass,  null,null,null,null,0);
 						
 						Toast.makeText(getActivity(), "اطلاعات مورد نظر بدون عکس ثبت شد",
 								Toast.LENGTH_SHORT).show();
@@ -133,7 +133,7 @@ public class RegisterFragment extends Fragment {
 							bitmap.getHeight(), bitmap.getConfig());
 					
 					if (bitmap.sameAs(emptyBitmap)) {
-						dbAdapter.inserUsernonpicToDb(Name, Email, Pass, null,0);
+						dbAdapter.inserUsernonpicToDb(Name, Email, Pass,  null,null,null,null,0);
 						
 					} 
 					else
@@ -142,7 +142,7 @@ public class RegisterFragment extends Fragment {
 									byte[] Image = getBitmapAsByteArray(bitmap);
 							
 									
-									dbAdapter.inserUserToDb(Name, Email, Pass, null, Image, 0);
+									dbAdapter.inserUserToDb(Name, Email, Pass, null,null,null,null, Image, 0);
 				
 									dbAdapter.close();
 									Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد",
