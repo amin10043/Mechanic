@@ -52,7 +52,8 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 
 		TextView txtName = (TextView) convertView
 				.findViewById(R.id.row_anad_txt);
-		ImageView img = (ImageView) convertView.findViewById(R.id.row_anad_img);
+		// ImageView img = (ImageView)
+		// convertView.findViewById(R.id.row_anad_img);
 		ImageView img2 = (ImageView) convertView
 				.findViewById(R.id.row_anad_img2);
 

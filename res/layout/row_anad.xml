@@ -8,8 +8,8 @@
         style="@style/List_Item_Style"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:layout_marginLeft="125dp"
-        android:layout_marginRight="1dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
         android:layout_marginTop="2dp"
         android:background="@drawable/list_item"
         android:orientation="horizontal" >
@@ -27,11 +27,5 @@
             android:layout_height="match_parent"
             android:text="Large Text" />
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/row_anad_img"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/screensh" />
 
 </RelativeLayout>
