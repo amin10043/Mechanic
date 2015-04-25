@@ -73,6 +73,7 @@ public class IntroductionFragment extends Fragment {
 	ImageButton cphone;
 	ImageButton map;
 	ImageButton email;
+	ImageButton EditPage;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -119,6 +120,8 @@ public class IntroductionFragment extends Fragment {
 		Pdf2 = (Button) view.findViewById(R.id.btnPdf2_Object);
 		Pdf3 = (Button) view.findViewById(R.id.btnPdf3_Object);
 		Pdf4 = (Button) view.findViewById(R.id.btnPdf4_Object);
+
+		EditPage = (ImageButton) view.findViewById(R.id.ImgbtnEdit);
 
 		lst = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 
@@ -410,15 +413,17 @@ public class IntroductionFragment extends Fragment {
 			}
 		});
 
-		// LinearLayout downloadLinear = (LinearLayout)
-		// view.findViewById(R.id.downloadLinear);
-		// LayoutParams lp = new LayoutParams(
-		// android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-		// android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
-		// lp.height = 100;
-		// Pdf1.setLayoutParams(lp);
-		// Pdf1.requestLayout();
+		EditPage.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View arg0) {
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new IntroductionFragment());
+				trans.commit();
+
+			}
+		});
 		return view;
 
 	}
