@@ -1,5 +1,7 @@
 package com.project.mechanic.entity;
 
+import java.sql.Blob;
+
 public class Users {
 
 	int Id;
@@ -7,7 +9,11 @@ public class Users {
 	String Email;
 	String Password;
 	String Phonenumber;
-
+     String Mobailenumber;
+     String Faxnumber;
+     String Address;
+ 	byte[] Image;
+ int	Serviceid;
 	public int getId() {
 		return Id;
 	}
@@ -23,7 +29,7 @@ public class Users {
 	public void setName(String name) {
 		Name = name;
 	}
-
+////////////////////////////////////////////
 	public String getEmail() {
 		return Email;
 	}
@@ -31,7 +37,7 @@ public class Users {
 	public void setEmail(String email) {
 		Email = email;
 	}
-
+//////////////////////////////////////////////////
 	public String getPassword() {
 		return Password;
 	}
@@ -39,23 +45,57 @@ public class Users {
 	public void setPassword(String password) {
 		Password = password;
 	}
-
-	public String getPhonennumber() {
+//////////////////////////////////////////////////////////////phonnumber
+	public String getPhonenumber() {
 		return Phonenumber;
 
 	}
 
-	public void setPhonennumber(String phonennumber) {
+	public void setPhonenumber(String phonennumber) {
 		this.Phonenumber = phonennumber;
 	}
-
-	public Users(int id, String name, String email, String password,
-			String phonenumber, byte[] image) {
+	////////////////////////////////////////////////////mobilenumber
+	
+	public String getMobailenumber() {
+		return Mobailenumber;
 
 	}
 
+	public void setMobailenumber(String mobailenumber) {
+		this.Mobailenumber = mobailenumber;
+	}
+	
+	///////////////////////////////////////////////////faxenumber
+	public String getFaxnumber() {
+		return Faxnumber;
+
+	}
+
+	public void setFaxnumber(String faxnumber) {
+		this.Faxnumber = faxnumber;
+	}
+	////////////////////////////////////////////////////////////address
+	public String getAddress() {
+		return Address;
+
+	}
+
+	public void setAddress(String address) {
+		this.Address = address;
+	}
+//////////////////////////////////////////////////////////////
+	public byte[] getImage() {
+		return Image;
+	}
+
+	public void setImage(byte[] image) {
+		Image = image;
+	}
+///////////////////////////////////////////////////////////////////////////////////
 	public Users(int id, String name, String email, String password,
-			String phonenumber, byte[] image, int serviceid) {
+			String phonenumber, String mobailenumber,String faxnumber,
+		     String address, byte[] image, int serviceid)
+	{
 
 		super();
 		Id = id;
@@ -63,11 +103,13 @@ public class Users {
 		Email = email;
 		Password = password;
 		Phonenumber = phonenumber;
-
+		Mobailenumber=mobailenumber;
+		Faxnumber=faxnumber;
+		Address=address;
+		Image=image;
+		Serviceid=serviceid;
 	}
 
-	public Users() {
-
-	}
+	
 
 }
