@@ -4,14 +4,15 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,7 +32,7 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 	DataBaseAdapter adapter;
 	int itemId;
 	int lastPosition = 0;
-	
+
 	public BerandListAdapter(Context context, int resource,
 			List<ListItem> objact, int id) {
 		super(context, resource, objact);
@@ -61,6 +62,10 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
+
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
+				"fonts/BROYA.TTF");
+		txtName.setTypeface(typeFace);
 
 		convertView.setOnClickListener(new OnClickListener() {
 

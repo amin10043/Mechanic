@@ -18,7 +18,7 @@
             android:id="@+id/row_anad_img2"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/i7" />
+            android:src="@drawable/no_image" />
 
         <TextView
             android:id="@+id/row_anad_txt"
