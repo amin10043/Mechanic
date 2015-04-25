@@ -79,6 +79,24 @@ public class RegisterFragment extends Fragment {
 		final EditText editpass = (EditText) view
 				.findViewById(R.id.editTextpass);
 
+		
+		
+		
+		
+			
+		 btnaddpic1.setBackgroundResource(R.drawable.i13);
+//		      columnWidth = (int) (getScreenWidth() /3);
+//			   LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(l1.getLayoutParams());		
+//			   lp.width=columnWidth;
+//		      lp.height=columnWidth;
+//		      btnaddpic1.setLayoutParams(lp);
+		//   l1.addView(btnaddpic1);
+				    btnaddpic1.getLayoutParams().height = 150;
+				    btnaddpic1.getLayoutParams().width = 150;
+				    btnaddpic1.requestLayout();
+				
+				
+		
 		btnreg.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View arg0) {
