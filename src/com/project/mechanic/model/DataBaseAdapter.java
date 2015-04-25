@@ -100,7 +100,7 @@ public class DataBaseAdapter {
 	private String[] TicketType = { "ID", "desc" };
 
 	private String[] Users = { "ID", "Name", "Email", "Password",
-			"Phonenumber", "Image", "ServiceId" };
+			"Phonenumber","Mobailenumber","Faxnumber","Address" ,"Image", "ServiceId" };
 
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url" };
@@ -145,7 +145,7 @@ public class DataBaseAdapter {
 	}
 
 	public void inserUserToDb(String name, String email, String password,
-			String phonenumber, byte[] image, int serviceid) {
+			String phonenumber,String mobailenumber,String faxnumber,String address,  byte[] image, int serviceid) {
 
 		ContentValues uc = new ContentValues();
 
@@ -153,8 +153,11 @@ public class DataBaseAdapter {
 		uc.put("Email", email);
 		uc.put("Password", password);
 		uc.put("Phonenumber", phonenumber);
-		uc.put("Image", image);
 
+		uc.put("Mobailenumber", mobailenumber);
+		uc.put("Faxnumber", faxnumber);
+		uc.put("Address", address);
+		uc.put("Image", image);
 		uc.put("ServiceId", serviceid);
 
 		long res = mDb.insert(TableUsers, null, uc);
@@ -163,23 +166,28 @@ public class DataBaseAdapter {
 	}
 
 	
-	public void inserUsernonpicToDb(String name, String email, String password,
-			String phonenumber, int serviceid) {
+	
 
-		ContentValues uc = new ContentValues();
+		public void inserUsernonpicToDb(String name, String email, String password,
+				String phonenumber,String mobailenumber,String faxnumber,String address, int serviceid) {
 
-		uc.put("Name", name);
-		uc.put("Email", email);
-		uc.put("Password", password);
-		uc.put("Phonenumber", phonenumber);
+			ContentValues uc = new ContentValues();
 
+			uc.put("Name", name);
+			uc.put("Email", email);
+			uc.put("Password", password);
+			uc.put("Phonenumber", phonenumber);
 
-		uc.put("ServiceId", serviceid);
+			uc.put("Mobailenumber", mobailenumber);
+			uc.put("Faxnumber", faxnumber);
+			uc.put("Address", address);
+		
+			uc.put("ServiceId", serviceid);
 
-		long res = mDb.insert(TableUsers, null, uc);
-		long res2 = res;
+			long res = mDb.insert(TableUsers, null, uc);
+			long res2 = res;
 
-	}
+		}
 	
 	
 	
