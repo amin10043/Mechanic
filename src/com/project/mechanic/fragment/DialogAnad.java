@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -129,40 +130,18 @@ public class DialogAnad extends Dialog {
 										.toString(), UPhonnumber.getText()
 										.toString(), UFax.getText().toString(),
 								null, null, UMobile.getText().toString());
+
 					}
 
 				}
+				Toast.makeText(context, "آگهی شما با موفقیت ثبت شد",
+						Toast.LENGTH_SHORT).show();
 				dbadapter.close();
-				// } catch (Exception e) {
-				// e.printStackTrace();
-				// // textView.append("Error Exception : " + e.getMessage());
-				// }
-
 				((AnadFragment) fragment).updateView();
 				DialogAnad.this.dismiss();
 
 			}
 		});
-		// checkBox1.setOnClickListener(new android.view.View.OnClickListener()
-		// {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// // is chkIos checked?
-		// if (((CheckBox) v).isChecked()) {
-		//
-		// }
-
-		// StringBuffer result = new StringBuffer();
-		// result.append("checkBox1 : ").append(checkBox1.isChecked());
-		// result.append("checkBox2 : ").append(checkBox2.isChecked());
-		// result.append("checkBox3 :").append(checkBox3.isChecked());
-		// result.append("checkBox4 :").append(checkBox4.isChecked());
-		//
-		// Toast.makeText(context, R.string.hello_world,
-		// Toast.LENGTH_SHORT).show();
-		// }
-		// });
 
 		dialog_img1.setOnClickListener(new android.view.View.OnClickListener() {
 
