@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +14,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.fragment.IntroductionFragment;
-import com.project.mechanic.row_items.RowMain;
-import com.project.mechanic.entity.*;
 import com.project.mechanic.entity.Object;
+import com.project.mechanic.fragment.IntroductionFragment;
 
 public class ObjectListAdapter extends ArrayAdapter<Object> {
 
@@ -56,8 +54,9 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		Object person = list.get(position);
 
 		txt1.setText(person.getName());
-		
-
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
+				"fonts/BROYA.TTF");
+		txt1.setTypeface(typeFace);
 
 		convertView.setOnClickListener(new OnClickListener() {
 
