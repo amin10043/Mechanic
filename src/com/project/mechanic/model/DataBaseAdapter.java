@@ -162,6 +162,29 @@ public class DataBaseAdapter {
 
 	}
 
+	
+	public void inserUsernonpicToDb(String name, String email, String password,
+			String phonenumber, int serviceid) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("Name", name);
+		uc.put("Email", email);
+		uc.put("Password", password);
+		uc.put("Phonenumber", phonenumber);
+
+
+		uc.put("ServiceId", serviceid);
+
+		long res = mDb.insert(TableUsers, null, uc);
+		long res2 = res;
+
+	}
+	
+	
+	
+	
+	
 	public void insertLikeInObjectToDb(int UserId, int PaperId, String Date,
 			int CommentId) {
 
