@@ -1379,4 +1379,25 @@ public class DataBaseAdapter {
 		mDb.update(TableObject, uc, "ID=" + id, null);
 	}
 
+	// /////////////////////////////////////ÈÏÓÊ ÂæÑÏä ÊÚÏÇÏ ÓØÑåÇ
+	// ///////////////
+	public int getcount() {
+		int item = 0;
+
+		// return item=mDb.rawQuery("Select Count(*) From " + TableUsers,
+		// null).getCount();
+
+		Cursor cursor = mDb
+				.rawQuery("select count(*) from " + TableUsers, null);
+
+		// ensure there is at least one row and one column
+		cursor.moveToFirst();
+		if (cursor.getCount() > 0 && cursor.getColumnCount() > 0) {
+			return cursor.getInt(0);
+		} else {
+			return 0;
+		}
+
+	}
+
 }

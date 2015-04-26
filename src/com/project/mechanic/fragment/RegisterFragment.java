@@ -1,6 +1,7 @@
 package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.News;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -39,7 +41,7 @@ public class RegisterFragment extends Fragment {
 	int ticketTypeID;
 	int ProvinceId;
 	ImageView btnaddpic1;
-
+	List<Users> list;
 	// byte[] byteImage1 = null;
 	// ContentValues newValues = new ContentValues();
 	// public RegisterFragment(Context context, int resourceId, Fragment
@@ -190,47 +192,55 @@ public class RegisterFragment extends Fragment {
 //							editpass.setText("");
 //								 
 							}
-					
-					
-					
-					
-					
 					}
 
-					
-					
-					
-					
-					
 					
 				}
 
 			}
-			
-			
-			
-			
-			
 		});
 		
 		
-		
+			
 comregtxt.setOnClickListener(new OnClickListener() {
 			
+		
+
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				
+				final String Name = editname.getText().toString();
 				
-//				FragmentTransaction trans = getActivity()
-//						.getSupportFragmentManager().beginTransaction();
-//				trans.replace(R.id.content_frame, new CompeleteRegisterFragment());
-//				trans.commit();
+			
+			
+			
+			dbAdapter = new DataBaseAdapter(getActivity());
+			dbAdapter.open();
+			
+			int id  =dbAdapter.getcount();					
+    	
+//			Toast.makeText(getActivity(),
+//					id+"",
+//			Toast.LENGTH_SHORT).show();
+			dbAdapter.close();
+//				for (Users u: list) {
+//					if (Name.equals(u.getName())) {
+//						// check authentication and authorization
+//						id = u.getId();
+//				}
+//				}
+
 				
 				
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new CompeleteRegisterFragment());
+				CompeleteRegisterFragment fragment = new CompeleteRegisterFragment();
+				
+				Bundle bundle = new Bundle();
+		
+				bundle.putString("Id", String.valueOf(id));
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
 				
 				
@@ -294,6 +304,11 @@ comregtxt.setOnClickListener(new OnClickListener() {
 
 	}
 
+	
+	
+	
+	/////////////////////////////////////////////
+	
 	private EditText findViewById(int edittextuser) {
 		// TODO Auto-generated method stub
 		return null;
