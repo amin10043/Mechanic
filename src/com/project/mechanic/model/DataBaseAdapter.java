@@ -103,7 +103,8 @@ public class DataBaseAdapter {
 	private String[] TicketType = { "ID", "desc" };
 
 	private String[] Users = { "ID", "Name", "Email", "Password",
-			"Phonenumber","Mobailenumber","Faxnumber","Address" ,"Image", "ServiceId" };
+			"Phonenumber", "Mobailenumber", "Faxnumber", "Address", "Image",
+			"ServiceId" };
 
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url" };
@@ -148,7 +149,8 @@ public class DataBaseAdapter {
 	}
 
 	public void inserUserToDb(String name, String email, String password,
-			String phonenumber,String mobailenumber,String faxnumber,String address,  byte[] image, int serviceid) {
+			String phonenumber, String mobailenumber, String faxnumber,
+			String address, byte[] image, int serviceid) {
 
 		ContentValues uc = new ContentValues();
 
@@ -168,67 +170,62 @@ public class DataBaseAdapter {
 
 	}
 
-	   
-	
+	public void inserUsernonpicToDb(String name, String email, String password,
+			String phonenumber, String mobailenumber, String faxnumber,
+			String address, int serviceid) {
 
-		public void inserUsernonpicToDb(String name, String email, String password,
-				String phonenumber,String mobailenumber,String faxnumber,String address, int serviceid) {
+		ContentValues uc = new ContentValues();
 
-			ContentValues uc = new ContentValues();
+		uc.put("Name", name);
+		uc.put("Email", email);
+		uc.put("Password", password);
+		uc.put("Phonenumber", phonenumber);
 
-			uc.put("Name", name);
-			uc.put("Email", email);
-			uc.put("Password", password);
-			uc.put("Phonenumber", phonenumber);
+		uc.put("Mobailenumber", mobailenumber);
+		uc.put("Faxnumber", faxnumber);
+		uc.put("Address", address);
 
-			uc.put("Mobailenumber", mobailenumber);
-			uc.put("Faxnumber", faxnumber);
-			uc.put("Address", address);
-		
-			uc.put("ServiceId", serviceid);
+		uc.put("ServiceId", serviceid);
 
-			long res = mDb.insert(TableUsers, null, uc);
-			long res2 = res;
+		long res = mDb.insert(TableUsers, null, uc);
+		long res2 = res;
 
-		}
-	
-		
-		
-		/////////////
-//		public Cursor getAllUsers() {
-//		    return mDb.query(TableUsers, new String[] { KEY_ROWID, KEY_NAME,
-//		        KEY_EMAIL }, null, null, null, null, null);
-//		  }
-//
-//		  public Cursor getUsers(long ID) throws SQLException {
-//		    Cursor mCursor = mDb.query(true, TableUsers, new String[] {
-//		        KEY_ROWID, KEY_NAME, KEY_EMAIL }, id + "=" + ID,
-//		        null, null, null, null, null);
-//		    if (mCursor != null) {
-//		      mCursor.moveToFirst();
-//		    }
-//		    return mCursor;
-//		  }
-	/////////////////
+	}
 
-		public void UpdateUserToDb(int id,
-			String phonenumber,String mobailenumber,String faxnumber,String address) {
+	// ///////////
+	// public Cursor getAllUsers() {
+	// return mDb.query(TableUsers, new String[] { KEY_ROWID, KEY_NAME,
+	// KEY_EMAIL }, null, null, null, null, null);
+	// }
+	//
+	// public Cursor getUsers(long ID) throws SQLException {
+	// Cursor mCursor = mDb.query(true, TableUsers, new String[] {
+	// KEY_ROWID, KEY_NAME, KEY_EMAIL }, id + "=" + ID,
+	// null, null, null, null, null);
+	// if (mCursor != null) {
+	// mCursor.moveToFirst();
+	// }
+	// return mCursor;
+	// }
+	// ///////////////
 
-			ContentValues uc = new ContentValues();
-//			uc.put("Name", name);
-//		uc.put("Email", email);
-//		uc.put("Password", password);
-			uc.put("Phonenumber", phonenumber);
+	public void UpdateUserToDb(int id, String phonenumber,
+			String mobailenumber, String faxnumber, String address) {
 
-			uc.put("Mobailenumber", mobailenumber);
-			uc.put("Faxnumber", faxnumber);
-			uc.put("Address", address);
-	
-//			uc.put("ServiceId", serviceid);
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		// uc.put("Email", email);
+		// uc.put("Password", password);
+		uc.put("Phonenumber", phonenumber);
+
+		uc.put("Mobailenumber", mobailenumber);
+		uc.put("Faxnumber", faxnumber);
+		uc.put("Address", address);
+
+		// uc.put("ServiceId", serviceid);
 		mDb.update(TableUsers, uc, "ID=" + id, null);
-		}
-	
-	
+	}
+
 	public void insertLikeInObjectToDb(int UserId, int PaperId, String Date,
 			int CommentId) {
 
@@ -679,7 +676,8 @@ public class DataBaseAdapter {
 
 		Users Users = new Users(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
-				cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getBlob(8),cursor.getInt(9));
+				cursor.getString(5), cursor.getString(6), cursor.getString(7),
+				cursor.getBlob(8), cursor.getInt(9));
 		return Users;
 
 	}
@@ -1271,7 +1269,9 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7), cursor.getBlob(8), cursor.getInt(9));
+					cursor.getString(4), cursor.getString(5),
+					cursor.getString(6), cursor.getString(7),
+					cursor.getBlob(8), cursor.getInt(9));
 			result.add(tempusers);
 		}
 		return result;
@@ -1304,7 +1304,8 @@ public class DataBaseAdapter {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
 
-					cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),
+					cursor.getString(4), cursor.getString(5),
+					cursor.getString(6), cursor.getString(7),
 					cursor.getBlob(8), cursor.getInt(9));
 
 			result.add(tempusers);
@@ -1364,4 +1365,28 @@ public class DataBaseAdapter {
 
 		return item;
 	}
+///////////////////////////////////////ÈÏÓÊ ÂæÑÏä ÊÚÏÇÏ ÓØÑåÇ ///////////////
+	public int getcount() {
+		int item=0;
+				
+//	return item=mDb.rawQuery("Select Count(*) From " + TableUsers,
+//				null).getCount();
+
+		Cursor cursor = mDb.rawQuery("select count(*) from " + TableUsers, null);
+
+		// ensure there is at least one row and one column
+		cursor.moveToFirst();
+		if (cursor.getCount() > 0 && cursor.getColumnCount() > 0) {
+		    return cursor.getInt(0);
+		} else {
+		    return 0;
+		}
+			
+		
+	
+
+	}
+	
+	
+	
 }

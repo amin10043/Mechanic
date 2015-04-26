@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 
 
@@ -139,20 +140,28 @@ public class CompeleteRegisterFragment extends Fragment {
 			
 			else{
 				
+				dbAdapter = new DataBaseAdapter(getActivity());
+				dbAdapter.open();
+
+				int id = Integer.valueOf(getArguments().getString("Id"));
 				
-//				Integer ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
-				
-			dbAdapter = new DataBaseAdapter(getActivity());
-			dbAdapter.open();
-			
-			dbAdapter.UpdateUserToDb(3, Phonetxt.getText().toString(), Mobiletxt.getText().toString(),Faxtxt.getText().toString(), Addresstxt.getText().toString());
-			dbAdapter.close();
-			
-			Toast.makeText(getActivity(),
+					Users x =dbAdapter.getUserById(id);					
+		     	int item = x.getId();
+//				Toast.makeText(getActivity(),
+//						item+"",
+//				Toast.LENGTH_SHORT).show();
+			        dbAdapter.UpdateUserToDb(item, Phonetxt.getText().toString(), 
+			        		Mobiletxt.getText().toString(),Faxtxt.getText().toString(),
+			        		Addresstxt.getText().toString());
+			        dbAdapter.close();			
+			        Toast.makeText(getActivity(),
 					"À»  «‰Ã«„ ‘œ  ",
 					Toast.LENGTH_SHORT).show();
-			
-			
+			       
+			        Addresstxt.setText("");
+			        Phonetxt.setText("");
+             		Mobiletxt.setText("");
+             		Faxtxt.setText("");
 			}
 	
 		
