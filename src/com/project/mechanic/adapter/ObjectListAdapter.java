@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -36,7 +38,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 	@SuppressLint("ViewHolder")
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -49,7 +51,8 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		convertView.startAnimation(animation);
 		lastPosition = position;
 
-		TextView txt1 = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
+		final TextView txt1 = (TextView) convertView
+				.findViewById(R.id.Rowobjecttxt);
 
 		Object person = list.get(position);
 
@@ -63,13 +66,33 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 			@Override
 			public void onClick(View arg0) {
 
+				SharedPreferences sendDataID = context.getSharedPreferences(
+						"Id", 0);
+
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new IntroductionFragment());
 				trans.addToBackStack(null);
 				trans.commit();
+
+				String item = txt1.getText().toString();
+
+				int id = 0;
+				for (Object object : list) {
+					if (item.equals(object.getName())) {
+						// check authentication and authorization
+						id = object.getId();
+						sendDataID.edit().putInt("main_Id", id).commit();
+						Toast.makeText(context, id + "", Toast.LENGTH_SHORT)
+								.show();
+					}
+
+				}
+
 			}
+
 		});
 		return convertView;
 	}
+
 }

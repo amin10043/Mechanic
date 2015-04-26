@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -125,16 +126,23 @@ public class IntroductionFragment extends Fragment {
 
 		lst = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 
-		if (getArguments() != null && getArguments().getString("Id") != null)
+		if (getArguments() != null && getArguments().getString("Id") != null) {
 			id = Integer.valueOf(getArguments().getString("Id"));
+			Toast.makeText(context, id, Toast.LENGTH_SHORT).show();
+		}
+		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id",
+				0);
+		final int cid = sendDataID.getInt("main_Id", -1);
+
 		adapter.open();
 		mylist = adapter.getAllCommentInObjectById(id);
 		txtNumofComment.setText(adapter.CommentInObject_count().toString());
 		txtNumofLike.setText(adapter.LikeInObject_count().toString());
-		object = adapter.getAllObjectbyid(id);
+		object = adapter.getAllObjectbyid(cid);
 		if (object == null) {
 			return view;
 		}
+
 		txtFax.setText(object.getFax());
 		txtPhone.setText(object.getPhone());
 		txtCellphone.setText(object.getCellphone());
