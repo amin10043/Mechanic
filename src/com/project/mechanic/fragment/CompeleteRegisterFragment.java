@@ -25,6 +25,7 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,12 +45,56 @@ public class CompeleteRegisterFragment extends Fragment {
 		
 		
 		
+	EditText Addresstxt = (EditText) view.findViewById(R.id.Addresstxt);
+	EditText Phonetxt = (EditText) view.findViewById(R.id.phonetxt);
+	EditText Mobiletxt = (EditText) view.findViewById(R.id.mobiletxt);
+	EditText Faxtxt = (EditText) view.findViewById(R.id.faxtxt);
+	CheckBox Rulescheck = (CheckBox) view.findViewById(R.id.rulescheck);
+	Button Compeletebtn = (Button) view.findViewById(R.id.compeleteregisterbtn);
+	Button Backbtn = (Button) view.findViewById(R.id.backbtn);
+		
+		
 	
+	Backbtn.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
 			
+			FragmentTransaction trans = getActivity()
+					.getSupportFragmentManager().beginTransaction();
+			trans.replace(R.id.content_frame, new RegisterFragment());
+			trans.commit();
+			
+			
+			
+			
+			
+			
+			
+			
+		}
+	});
 	
-		
-		
-		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 		return view;
 	}
 
@@ -58,8 +103,7 @@ public class CompeleteRegisterFragment extends Fragment {
 	
 	
 	
-	
-	
+
 	
 	
 	
