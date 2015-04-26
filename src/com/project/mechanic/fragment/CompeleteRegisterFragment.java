@@ -1,5 +1,7 @@
 package com.project.mechanic.fragment;
 
+import java.io.ByteArrayOutputStream;
+
 import com.project.mechanic.R;
 import android.R.color;
 import android.annotation.SuppressLint;
@@ -43,11 +45,21 @@ public class CompeleteRegisterFragment extends Fragment {
 
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
-
+	
+	
+	
+	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.PNG, 0, outputStream);
+		return outputStream.toByteArray();
+	}
+	
+	
+	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_compeleteregister, null);
+		final View view = inflater.inflate(R.layout.fragment_compeleteregister, null);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 		
@@ -57,11 +69,17 @@ public class CompeleteRegisterFragment extends Fragment {
 		final   EditText Mobiletxt = (EditText) view.findViewById(R.id.mobiletxt);
 		final   EditText Faxtxt = (EditText) view.findViewById(R.id.faxtxt);
 	final CheckBox Rulescheck = (CheckBox) view.findViewById(R.id.rulescheck);
-	Button Compeletebtn = (Button) view.findViewById(R.id.compeleteregisterbtn);
+	final Button Compeletebtn = (Button) view.findViewById(R.id.compeleteregisterbtn);
 	Button Backbtn = (Button) view.findViewById(R.id.backbtn);
 		
-	
-		
+	final EditText editname = (EditText) view
+			.findViewById(R.id.editTextname);
+	final EditText edituser = (EditText) view
+			.findViewById(R.id.editTextuser);
+	final EditText editpass = (EditText) view
+			.findViewById(R.id.editTextpass);
+
+	 Compeletebtn.setVisibility(View.INVISIBLE);
 	
 	Backbtn.setOnClickListener(new OnClickListener() {
 		
@@ -78,46 +96,64 @@ public class CompeleteRegisterFragment extends Fragment {
 		}
 	});
 	
+	
+	
+	Rulescheck.setOnClickListener(new OnClickListener()
+	 {
+	
+	 @Override
+	 public void onClick(View v) {
+	// is chkIos checked?
+	 if (((CheckBox) v).isChecked()) {
+		 Compeletebtn.setVisibility(View.VISIBLE);
+	 }
+	 else {
+		 
+		 Compeletebtn.setVisibility(View.INVISIBLE);
+		 
+		 
+	 }
+	 StringBuffer result = new StringBuffer();
+	 result.append("Linux check : ").append(Rulescheck.isChecked());
+	
+	
+	 Context context;
+	
+	 }
+	 });
+	
+	
 	Compeletebtn.setOnClickListener(new OnClickListener() {
 
 		public void onClick(View arg0) {
-			final String Address = Addresstxt.getText().toString();
-			final String Phone = Phonetxt.getText().toString();
-			final String Mobile =Mobiletxt.getText().toString();
-			final String Fax = Faxtxt.getText().toString();
-			StringBuffer result = new StringBuffer();
-			result.append("checkbox click shod:").append(Rulescheck.isChecked());
-
 			
-			if (Address.equals("") && Phone.equals("") && Mobile.equals("")&& Fax.equals("")) {
+			if (Addresstxt.getText().toString().equals("") && Phonetxt.getText().toString().equals("") && Mobiletxt.getText().toString().equals("") && Faxtxt.getText().toString().equals(""))
+			{
 
 				Toast.makeText(getActivity(),
 						"·ÿ›« ›Ì·œÂ«Ì „Ê—œ ‰Ÿ— —« Å— ò‰Ìœ  ",
 						Toast.LENGTH_SHORT).show();
+
+			}
+			
+			
+			else{
+				
+				
+//				Integer ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
+				
+			dbAdapter = new DataBaseAdapter(getActivity());
+			dbAdapter.open();
+			
+			dbAdapter.UpdateUserToDb(3, Phonetxt.getText().toString(), Mobiletxt.getText().toString(),Faxtxt.getText().toString(), Addresstxt.getText().toString());
+			dbAdapter.close();
+			
+			Toast.makeText(getActivity(),
+					"À»  «‰Ã«„ ‘œ  ",
+					Toast.LENGTH_SHORT).show();
+			
 			
 			}
-				else {
-					
-					
-//					dbAdapter = new DataBaseAdapter(getActivity());
-//					dbAdapter.open();
-//					
-//					dbAdapter.inserUserToDb(Name, Email, Pass, null, Image, 0);
-//
-//					dbAdapter.close();
-//					Toast.makeText(getActivity(), "«ÿ·«⁄«  „Ê—œ ‰Ÿ— À»  ‘œ",
-//							Toast.LENGTH_SHORT).show();
-//					
-//					Addresstxt.setText("");
-//					Phonetxt.setText("");
-//					Mobiletxt.setText("");
-//					Faxtxt.setText("");
-					
-				}
-		
-	
-	
-		
 	
 		
 		}

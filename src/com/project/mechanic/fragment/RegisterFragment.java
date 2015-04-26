@@ -26,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Ticket;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class RegisterFragment extends Fragment {
@@ -71,7 +73,7 @@ public class RegisterFragment extends Fragment {
 		btnaddpic1 = (ImageView) view.findViewById(R.id.btnaddpic);
 		Button btncan = (Button) view.findViewById(R.id.btncancle2);
 		Button btnreg = (Button) view.findViewById(R.id.btnreg2);
-		 TextView comregtxt =(TextView) view.findViewById(R.id.compeletereg);
+		 final TextView comregtxt =(TextView) view.findViewById(R.id.compeletereg);
 		final EditText editname = (EditText) view
 				.findViewById(R.id.editTextname);
 		final EditText edituser = (EditText) view
@@ -83,7 +85,7 @@ public class RegisterFragment extends Fragment {
 		
 		
 		
-			
+	
 		 btnaddpic1.setBackgroundResource(R.drawable.i13);
 //		      columnWidth = (int) (getScreenWidth() /3);
 //			   LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(l1.getLayoutParams());		
@@ -95,7 +97,31 @@ public class RegisterFragment extends Fragment {
 				    btnaddpic1.getLayoutParams().width = 150;
 				    btnaddpic1.requestLayout();
 				
-				
+	/////////////////////////////////////	
+//				    if (editname.getText().toString().equals("") && editpass.getText().toString().equals(""))
+//				    {
+//
+//						
+//
+//						comregtxt.setVisibility(View.GONE);
+//				    }
+//						
+//						else {
+//							
+//							
+//							
+//							
+//							comregtxt.setVisibility(View.VISIBLE); 	
+//							Toast.makeText(getActivity(),
+//									"link faal shavad ",
+//									Toast.LENGTH_SHORT).show();
+//						
+//						
+//						
+//					}
+	
+	/////////////////////////////////////////////////////			    
+				    
 		
 		btnreg.setOnClickListener(new OnClickListener() {
 
@@ -104,17 +130,23 @@ public class RegisterFragment extends Fragment {
 				final String Email = edituser.getText().toString();
 				final String Pass = editpass.getText().toString();
 
-				if (Name.equals("") && Email.equals("") && Pass.equals("")) {
+				
+			
+
+				
+			
+				
+				if (Name.equals("") || Pass.equals("")) {
 
 					Toast.makeText(getActivity(),
-							"لطفا فيلدهاي مورد نظر را پر کنيد  ",
+							"لطفا فيلدهاي اجباری را پر کنيد  ",
 							Toast.LENGTH_SHORT).show();
 
 				}
 
 				else {
 
-					
+					comregtxt.setVisibility(View.VISIBLE); 
 					dbAdapter = new DataBaseAdapter(getActivity());
 					dbAdapter.open();
 					
@@ -124,6 +156,7 @@ public class RegisterFragment extends Fragment {
 						
 						Toast.makeText(getActivity(), "اطلاعات مورد نظر بدون عکس ثبت شد",
 								Toast.LENGTH_SHORT).show();
+						
 					}
 					else {	
 					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
@@ -134,7 +167,7 @@ public class RegisterFragment extends Fragment {
 					
 					if (bitmap.sameAs(emptyBitmap)) {
 						dbAdapter.inserUsernonpicToDb(Name, Email, Pass,  null,null,null,null,0);
-						
+					 
 					} 
 					else
 					{	
@@ -144,14 +177,18 @@ public class RegisterFragment extends Fragment {
 									
 									dbAdapter.inserUserToDb(Name, Email, Pass, null,null,null,null, Image, 0);
 				
+																		
+									
 									dbAdapter.close();
+									
+								
 									Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد",
 											Toast.LENGTH_SHORT).show();
 				
-									editname.setText("");
-									edituser.setText("");
-							editpass.setText("");
-								 
+//									editname.setText("");
+//									edituser.setText("");
+//							editpass.setText("");
+//								 
 							}
 					
 					
@@ -160,9 +197,20 @@ public class RegisterFragment extends Fragment {
 					
 					}
 
+					
+					
+					
+					
+					
+					
 				}
 
 			}
+			
+			
+			
+			
+			
 		});
 		
 		
@@ -174,9 +222,6 @@ comregtxt.setOnClickListener(new OnClickListener() {
 				// TODO Auto-generated method stub
 				
 				
-				Toast.makeText(getActivity(), "compeleteregisterfragment",
-						Toast.LENGTH_SHORT).show();
-
 //				FragmentTransaction trans = getActivity()
 //						.getSupportFragmentManager().beginTransaction();
 //				trans.replace(R.id.content_frame, new CompeleteRegisterFragment());
@@ -244,6 +289,7 @@ comregtxt.setOnClickListener(new OnClickListener() {
 			// ImageView btnaddpic1 = (ImageView) view
 			// .findViewById(R.id.btnaddpic);
 			btnaddpic1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+			btnaddpic1.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 		}
 
 	}

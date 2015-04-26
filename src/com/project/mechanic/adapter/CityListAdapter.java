@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -55,6 +56,9 @@ public class CityListAdapter extends ArrayAdapter<City> {
 		final City city = list.get(position);
 
 		txt1.setText(city.getName());
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
+				"fonts/BROYA.TTF");
+		txt1.setTypeface(typeFace);
 
 		convertView.setOnClickListener(new OnClickListener() {
 
