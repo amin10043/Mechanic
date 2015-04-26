@@ -26,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Ticket;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class RegisterFragment extends Fragment {
@@ -130,11 +132,14 @@ public class RegisterFragment extends Fragment {
 
 				
 			
+
 				
-				if (Name.equals("") && Email.equals("") && Pass.equals("")) {
+			
+				
+				if (Name.equals("") || Pass.equals("")) {
 
 					Toast.makeText(getActivity(),
-							"لطفا فيلدهاي مورد نظر را پر کنيد  ",
+							"لطفا فيلدهاي اجباری را پر کنيد  ",
 							Toast.LENGTH_SHORT).show();
 
 				}
@@ -172,6 +177,8 @@ public class RegisterFragment extends Fragment {
 									
 									dbAdapter.inserUserToDb(Name, Email, Pass, null,null,null,null, Image, 0);
 				
+																		
+									
 									dbAdapter.close();
 									
 								
@@ -190,9 +197,20 @@ public class RegisterFragment extends Fragment {
 					
 					}
 
+					
+					
+					
+					
+					
+					
 				}
 
 			}
+			
+			
+			
+			
+			
 		});
 		
 		
@@ -204,9 +222,6 @@ comregtxt.setOnClickListener(new OnClickListener() {
 				// TODO Auto-generated method stub
 				
 				
-				Toast.makeText(getActivity(), "compeleteregisterfragment",
-						Toast.LENGTH_SHORT).show();
-
 //				FragmentTransaction trans = getActivity()
 //						.getSupportFragmentManager().beginTransaction();
 //				trans.replace(R.id.content_frame, new CompeleteRegisterFragment());
@@ -274,6 +289,7 @@ comregtxt.setOnClickListener(new OnClickListener() {
 			// ImageView btnaddpic1 = (ImageView) view
 			// .findViewById(R.id.btnaddpic);
 			btnaddpic1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+			btnaddpic1.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 		}
 
 	}

@@ -69,7 +69,7 @@ public class CompeleteRegisterFragment extends Fragment {
 		final   EditText Mobiletxt = (EditText) view.findViewById(R.id.mobiletxt);
 		final   EditText Faxtxt = (EditText) view.findViewById(R.id.faxtxt);
 	final CheckBox Rulescheck = (CheckBox) view.findViewById(R.id.rulescheck);
-	Button Compeletebtn = (Button) view.findViewById(R.id.compeleteregisterbtn);
+	final Button Compeletebtn = (Button) view.findViewById(R.id.compeleteregisterbtn);
 	Button Backbtn = (Button) view.findViewById(R.id.backbtn);
 		
 	final EditText editname = (EditText) view
@@ -79,7 +79,7 @@ public class CompeleteRegisterFragment extends Fragment {
 	final EditText editpass = (EditText) view
 			.findViewById(R.id.editTextpass);
 
-		
+	 Compeletebtn.setVisibility(View.INVISIBLE);
 	
 	Backbtn.setOnClickListener(new OnClickListener() {
 		
@@ -96,43 +96,64 @@ public class CompeleteRegisterFragment extends Fragment {
 		}
 	});
 	
+	
+	
+	Rulescheck.setOnClickListener(new OnClickListener()
+	 {
+	
+	 @Override
+	 public void onClick(View v) {
+	// is chkIos checked?
+	 if (((CheckBox) v).isChecked()) {
+		 Compeletebtn.setVisibility(View.VISIBLE);
+	 }
+	 else {
+		 
+		 Compeletebtn.setVisibility(View.INVISIBLE);
+		 
+		 
+	 }
+	 StringBuffer result = new StringBuffer();
+	 result.append("Linux check : ").append(Rulescheck.isChecked());
+	
+	
+	 Context context;
+	
+	 }
+	 });
+	
+	
 	Compeletebtn.setOnClickListener(new OnClickListener() {
 
 		public void onClick(View arg0) {
 			
-			
-			final String Name = editname.getText().toString();
-			final String Email = edituser.getText().toString();
-			final String Pass = editpass.getText().toString();
-			
-			final String Address = Addresstxt.getText().toString();
-			final String Phone = Phonetxt.getText().toString();
-			final String Mobile =Mobiletxt.getText().toString();
-			final String Fax = Faxtxt.getText().toString();
-			ImageView btnaddpic1 = (ImageView) view.findViewById(R.id.btnaddpic);
-			StringBuffer result = new StringBuffer();
-			result.append("checkbox click shod:").append(Rulescheck.isChecked());
-
-			
-			if (Address.equals("") && Phone.equals("") && Mobile.equals("")&& Fax.equals("")) {
+			if (Addresstxt.getText().toString().equals("") && Phonetxt.getText().toString().equals("") && Mobiletxt.getText().toString().equals("") && Faxtxt.getText().toString().equals(""))
+			{
 
 				Toast.makeText(getActivity(),
 						"·ÿ›« ›Ì·œÂ«Ì „Ê—œ ‰Ÿ— —« Å— ò‰Ìœ  ",
 						Toast.LENGTH_SHORT).show();
+
+			}
+			
+			
+			else{
+				
+				
+//				Integer ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
+				
+			dbAdapter = new DataBaseAdapter(getActivity());
+			dbAdapter.open();
+			
+			dbAdapter.UpdateUserToDb(3, Phonetxt.getText().toString(), Mobiletxt.getText().toString(),Faxtxt.getText().toString(), Addresstxt.getText().toString());
+			dbAdapter.close();
+			
+			Toast.makeText(getActivity(),
+					"À»  «‰Ã«„ ‘œ  ",
+					Toast.LENGTH_SHORT).show();
+			
 			
 			}
-				else {
-					
-				
-				
-					
-
-					
-				}
-		
-	
-	
-		
 	
 		
 		}

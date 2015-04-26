@@ -10,6 +10,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.project.mechanic.R.id;
 import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.CommentInFroum;
@@ -31,6 +32,8 @@ import com.project.mechanic.row_items.RowMain;
 public class DataBaseAdapter {
 
 	protected static final String TAG = "DataAdapter";
+
+	private static final String id = null;
 
 	private String TableCity = "City";
 	private String TableACL = "ACL";
@@ -191,25 +194,39 @@ public class DataBaseAdapter {
 	
 		
 		
-		
-		
-	
-//		public void UpdateUserToDb(int id,String name, String email, String password,
-//				String phonenumber,String mobailenumber,String faxnumber,String address, int serviceid) {
+		/////////////
+//		public Cursor getAllUsers() {
+//		    return mDb.query(TableUsers, new String[] { KEY_ROWID, KEY_NAME,
+//		        KEY_EMAIL }, null, null, null, null, null);
+//		  }
 //
-//			ContentValues uc = new ContentValues();
+//		  public Cursor getUsers(long ID) throws SQLException {
+//		    Cursor mCursor = mDb.query(true, TableUsers, new String[] {
+//		        KEY_ROWID, KEY_NAME, KEY_EMAIL }, id + "=" + ID,
+//		        null, null, null, null, null);
+//		    if (mCursor != null) {
+//		      mCursor.moveToFirst();
+//		    }
+//		    return mCursor;
+//		  }
+	/////////////////
+
+		public void UpdateUserToDb(int id,
+			String phonenumber,String mobailenumber,String faxnumber,String address) {
+
+			ContentValues uc = new ContentValues();
 //			uc.put("Name", name);
-//			uc.put("Email", email);
-//			uc.put("Password", password);
-//			uc.put("Phonenumber", phonenumber);
-//
-//			uc.put("Mobailenumber", mobailenumber);
-//			uc.put("Faxnumber", faxnumber);
-//			uc.put("Address", address);
-//		
+//		uc.put("Email", email);
+//		uc.put("Password", password);
+			uc.put("Phonenumber", phonenumber);
+
+			uc.put("Mobailenumber", mobailenumber);
+			uc.put("Faxnumber", faxnumber);
+			uc.put("Address", address);
+	
 //			uc.put("ServiceId", serviceid);
-//			mDb.update(TableUsers, uc, "ID=" + id, null);
-//		}
+		mDb.update(TableUsers, uc, "ID=" + id, null);
+		}
 	
 	
 	public void insertLikeInObjectToDb(int UserId, int PaperId, String Date,

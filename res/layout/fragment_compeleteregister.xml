@@ -20,14 +20,13 @@
             android:orientation="horizontal" >
 
             <EditText
-                android:id="@+id/mobiletxt"
+                android:id="@+id/phonetxt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
                 android:gravity="right"
-                android:hint="شماره همراه"
-                android:inputType="phone" >
+                android:hint="شماره ثابت" >
 
                 <requestFocus />
             </EditText>
@@ -40,14 +39,14 @@
             android:orientation="horizontal" >
 
             <EditText
-                android:id="@+id/phonetxt"
+                android:id="@+id/mobiletxt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
                 android:gravity="right"
-                android:hint="شماره ثابت"
-                android:inputType="phone" />
+                android:hint="شماره همراه"
+                android:inputType="textPersonName" />
         </LinearLayout>
 
         <LinearLayout
@@ -60,11 +59,10 @@
                 android:id="@+id/faxtxt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
                 android:ems="10"
                 android:gravity="right"
-                android:hint="فکس"
-                android:inputType="numberDecimal" />
+                android:hint="فکس" />
         </LinearLayout>
 
         <LinearLayout
@@ -91,13 +89,14 @@
 
             <CheckBox
                 android:id="@+id/rulescheck"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_margin="@dimen/txtsize5"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="تمامی قوانیین را مطالعه کردم و پذرفته ام"
+                android:text="تمامی قوانین را مطالعه کردم و پذیرفته ام"
+                android:textColor="@color/transparent"
                 android:textSize="@dimen/activity_horizontal_margin" />
         </LinearLayout>
 
