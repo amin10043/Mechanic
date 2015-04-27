@@ -21,12 +21,12 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
-import com.project.mechanic.fragment.AdvisorTypeFragment;
 import com.project.mechanic.fragment.BerandFragment;
 import com.project.mechanic.fragment.CountryFragment;
-import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.FroumtitleFragment;
 import com.project.mechanic.fragment.NewsFragment;
+import com.project.mechanic.fragment.Province2Fragment;
+import com.project.mechanic.fragment.Province3Fragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
@@ -145,7 +145,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 				} else if (id == 3) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new AdvisorTypeFragment());
+					trans.replace(R.id.content_frame, new Province2Fragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
@@ -153,8 +153,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame,
-							new ExecutertypeFragment());
+					trans.replace(R.id.content_frame, new Province3Fragment());
 					trans.addToBackStack(null);
 					trans.commit();
 
