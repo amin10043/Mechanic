@@ -128,8 +128,8 @@ public class IntroductionFragment extends Fragment {
 
 		if (getArguments() != null && getArguments().getString("Id") != null) {
 			id = Integer.valueOf(getArguments().getString("Id"));
-			Toast.makeText(context, id, Toast.LENGTH_SHORT).show();
 		}
+
 		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id",
 				0);
 		final int cid = sendDataID.getInt("main_Id", -1);

@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/List_Item_Style"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_item"
     android:orientation="horizontal" >
+    <ImageView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_blank" />
 
     <TextView
         android:id="@+id/RowOstantxt"
+        style="@style/row_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerVertical="true"
         android:layout_gravity="right"
-        style="@style/row_text"
         android:text="Large Text" />
 
-</LinearLayout>
+</RelativeLayout>
