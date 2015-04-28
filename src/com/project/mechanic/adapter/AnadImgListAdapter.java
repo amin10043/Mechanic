@@ -51,6 +51,9 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 					bitmapbyte.length);
 			img.setImageBitmap(bmp);
 		}
+		// byte[] blob = ((Anad) anadlist).getImage();
+		// Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
+		// img.setImageBitmap(bmp);
 
 		convertView.setOnClickListener(new OnClickListener() {
 

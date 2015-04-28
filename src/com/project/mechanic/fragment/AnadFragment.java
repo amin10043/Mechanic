@@ -41,6 +41,11 @@ public class AnadFragment extends Fragment {
 	public static String picturePath;
 	int proID = -1;
 
+	List<Anad> list;
+	Anad tempItem;
+	int position;
+	private Anad x;
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +68,7 @@ public class AnadFragment extends Fragment {
 
 		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
 		anadlist = dbAdapter.getAnadtByTypeIdProId(ticketTypeid, proID);
+		List<Anad> anadlist = dbAdapter.getAnadById(1);
 		dbAdapter.close();
 
 		imgadd.setOnClickListener(new OnClickListener() {

@@ -8,7 +8,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ParseException;
 import android.util.Log;
 
 import com.project.mechanic.entity.AdvisorType;
@@ -532,6 +531,22 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<Anad> getAnadById(int ProvinceId) {
+
+		ArrayList<Anad> result = new ArrayList<Anad>();
+		Anad item = null;
+		Cursor mCur = mDb.query("Anad", Anad, "ProvinceId=?",
+				new String[] { String.valueOf(ProvinceId) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToAnad(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
 	public ArrayList<NewsPaper> getNewsPaperTypeId(int TypeId) {
 
 		ArrayList<NewsPaper> result = new ArrayList<NewsPaper>();
@@ -912,6 +927,24 @@ public class DataBaseAdapter {
 		return s;
 	}
 
+	// ///////////
+	// public Integer Image(String table) {
+	//
+	// Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
+	// null);
+	// int s = cu.getCount();
+	// return s;
+	// }
+	public byte[] Anad_Image(String table) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table + "", null);
+		cu.moveToFirst();
+		byte[] s;
+		s = cu.getBlob(1);
+		return s;
+
+	}
+
 	public Integer LikeInObject_count() {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
@@ -1254,6 +1287,19 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<Anad> getAllAnad() {
+		ArrayList<Anad> result = new ArrayList<Anad>();
+		Cursor cursor = mDb
+				.query(TableAnad, Anad, null, null, null, null, null);
+		Anad tempAnad;
+		while (cursor.moveToNext()) {
+			result.add(CursorToAnad(cursor));
+		}
+
+		return result;
+
+	}
+
 	/*
 	 * public String getUseridFroum(){ ArrayList<Froum> result = new
 	 * ArrayList<Froum>(); String[] s = new String[1]; s[0] = "UserId"; Cursor
@@ -1434,6 +1480,5 @@ public class DataBaseAdapter {
 	}
 
 }
-////////////////////////////
-
+// //////////////////////////
 
