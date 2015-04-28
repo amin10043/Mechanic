@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -84,7 +85,8 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 				"fonts/BROYA.TTF");
 		txtName.setTypeface(typeFace);
 
-		ImageView img = (ImageView) convertView.findViewById(R.id.imgItem);
+		final ImageView img = (ImageView) convertView
+				.findViewById(R.id.imgItem);
 
 		if (position < 7) {
 			img.setBackgroundResource(icon[position]);
@@ -123,6 +125,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 				sendData.edit().putInt("main_Id", id).commit();
 
 				if (id == 1) {
+
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					BerandFragment fragment = new BerandFragment();
@@ -132,6 +135,9 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack(null);
 					trans.commit();
+
+					Toast.makeText(context, "id = " + id, Toast.LENGTH_SHORT)
+							.show();
 
 				} else if (id == 2) {
 					FragmentTransaction trans = ((MainActivity) context)
