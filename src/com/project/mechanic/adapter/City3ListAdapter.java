@@ -20,38 +20,30 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
-import com.project.mechanic.entity.Executertype;
-import com.project.mechanic.fragment.ObjectFragment;
-import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.fragment.ExecutertypeFragment;
 
-public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
+public class City3ListAdapter extends ArrayAdapter<City> {
 
 	Context context;
-	List<Executertype> list;
-	DataBaseAdapter adapter;
+	List<City> list;
 	int lastPosition = 0;
 
-	public ExecutertypeListAdapter(Context context, int resource,
-			List<Executertype> objact) {
+	public City3ListAdapter(Context context, int resource, List<City> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
-		adapter = new DataBaseAdapter(context);
+
 	}
 
 	@SuppressLint("ViewHolder")
 	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent) {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater
-				.inflate(R.layout.main_item_list, parent, false);
-
-		convertView = myInflater.inflate(R.layout.row_executertype, parent,
-				false);
+		convertView = myInflater.inflate(R.layout.row_city, parent, false);
 
 		Animation animation = AnimationUtils.loadAnimation(getContext(),
 				(position > lastPosition) ? R.anim.up_from_bottom
@@ -59,33 +51,26 @@ public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
 		convertView.startAnimation(animation);
 		lastPosition = position;
 
-		TextView tx1 = (TextView) convertView
-				.findViewById(R.id.rowexecutertypetxt);
+		TextView txt1 = (TextView) convertView.findViewById(R.id.RowCitytxt);
 
-		Executertype Executertype = list.get(position);
+		final City city = list.get(position);
 
-		tx1.setText(Executertype.getName());
+		txt1.setText(city.getName());
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BROYA.TTF");
-		tx1.setTypeface(typeFace);
+		txt1.setTypeface(typeFace);
 
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				Executertype Executertype = list.get(position);
-				adapter.open();
-				List<City> allItems = adapter.getCitysByProvinceId(Executertype
-						.getId());
-				adapter.close();
-
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				trans.addToBackStack(null);
-				Fragment move = new ObjectFragment();
+				Fragment move = new ExecutertypeFragment();
 				Bundle bundle = new Bundle();
-				bundle.putString("cityId", String.valueOf(Executertype.getId()));
+				bundle.putString("cityId", String.valueOf(city.getId()));
 				move.setArguments(bundle);
 				trans.replace(R.id.content_frame, move);
 				trans.commit();
