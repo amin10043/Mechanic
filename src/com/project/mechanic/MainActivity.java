@@ -21,6 +21,7 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnCloseListener;
 import android.widget.TextView;
 
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -226,6 +227,70 @@ public class MainActivity extends FragmentActivity {
 			break;
 
 		case 1:
+			
+			
+			
+		//////////////////////////////////////////////////	
+			
+//			 Parse.initialize(mContext, PARSE_APP_ID, PARSE_CLIENT_KEY);
+//			    ParseObject.registerSubclass(MyClass.class);
+//			    Parse.enableLocalDatastore(mContext);
+//			    ParseFacebookUtils.initialize(FACEBOOK_APP_ID);
+//			    ParseACL.setDefaultACL(new ParseACL(), true);
+//	                         
+//	                                if (user != null) {
+//	                                    // If user exist and authenticated, send user to Welcome.class
+//
+//	                                    String username = user.getString("username");
+//	                                    String userId = user.getObjectId();
+//
+//	                                    Intent intent = new Intent(
+//	                                            LoginSignupActivity.this,
+//	                                            Welcome.class);
+//	                                    startActivity(intent);
+//	                                    Toast.makeText(getApplicationContext(),
+//	                                            "Successfully Logged in",
+//	                                            Toast.LENGTH_LONG).show();
+//	                                    finish();
+//	                                } else 
+//	                                {
+//	                                    Toast.makeText(
+//	                                            getApplicationContext(),
+//	                                            "No such user exist, please signup",
+//	                                            Toast.LENGTH_LONG).show();
+//	                           
+//			
+//			
+//	                                }
+//			
+	
+			
+//			Users user = UserServiceFactory.getUserService().getCurrentUser();
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			fragment = new LoginFragment();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
