@@ -6,6 +6,8 @@ public class Anad {
 	int ObjectId;
 	byte[] Image;
 	String Date;
+	int TypeId;
+	int ProvinceId;
 
 	public int getId() {
 		return Id;
@@ -39,12 +41,30 @@ public class Anad {
 		Image = image;
 	}
 
-	public Anad(int id, int Objectid, byte[] imge, String date) {
+	public int getTypeId() {
+		return TypeId;
+	}
+
+	public void setTypeid(int typeid) {
+		TypeId = typeid;
+	}
+
+	public int getProvinceid() {
+		return ProvinceId;
+	}
+
+	public void setProvinceId(int provinceid) {
+		ProvinceId = provinceid;
+	}
+
+	public Anad(int id, int Objectid, byte[] imge, String date, int typeid,
+			int provinceid) {
 		super();
 		Id = id;
 		ObjectId = Objectid;
 		Image = imge;
 		Date = date;
-
+		TypeId = typeid;
+		ProvinceId = provinceid;
 	}
 }

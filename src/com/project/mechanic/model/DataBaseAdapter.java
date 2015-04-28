@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.project.mechanic.entity.AdvisorType;
+import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.CommentInObject;
@@ -37,6 +38,7 @@ public class DataBaseAdapter {
 	private String TableCity = "City";
 	private String TableACL = "ACL";
 	private String TableAdvisorType = "AdvisorType";
+	private String TableAnad = "Anad";
 	private String TableCityColumn = "CityColumn";
 	private String TableComment = "Comment";
 	private String TableExecutertype = "Executertype";
@@ -66,6 +68,8 @@ public class DataBaseAdapter {
 
 	private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
+	private String[] Anad = { "Id", "Image", "ObjectId", "Date", "TypeId",
+			"ProvinceId" };
 	private String[] CityColumn = { "ID", "Name", "ProvinceId" };
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] CommentInObject = { "Id", "Desk", "ObjectId", "UserId",
@@ -608,6 +612,27 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<Anad> getAnadtByTypeIdProId(int TypeId, int provinceID) {
+
+		ArrayList<Anad> result = new ArrayList<Anad>();
+		Anad item = null;
+
+		Cursor mCur = mDb.query(
+				TableAnad,
+				Anad,
+				"TypeId=? AND ProvinceId=?",
+				new String[] { String.valueOf(TypeId),
+						String.valueOf(provinceID) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToAnad(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
 	public ArrayList<Ticket> getTicketByProvinceId(int ProvinceId) {
 
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
@@ -693,6 +718,13 @@ public class DataBaseAdapter {
 		City tempCity = new City(cursor.getInt(0), cursor.getString(1),
 				cursor.getInt(2));
 		return tempCity;
+	}
+
+	private Anad CursorToAnad(Cursor cursor) {
+		Anad tempAnad = new Anad(cursor.getInt(0), cursor.getInt(2),
+				cursor.getBlob(1), cursor.getString(3), cursor.getInt(4),
+				cursor.getInt(5));
+		return tempAnad;
 	}
 
 	private Object CursorToObject(Cursor cursor) {

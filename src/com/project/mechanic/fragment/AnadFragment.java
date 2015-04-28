@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.adapter.AnadImgListAdapter;
 import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.Ticket;
@@ -61,7 +62,7 @@ public class AnadFragment extends Fragment {
 		dbAdapter.open();
 
 		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
-		anadlist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
+		anadlist = dbAdapter.getAnadtByTypeIdProId(ticketTypeid, proID);
 		dbAdapter.close();
 
 		imgadd.setOnClickListener(new OnClickListener() {
@@ -82,6 +83,12 @@ public class AnadFragment extends Fragment {
 				R.layout.row_anad, mylist);
 
 		lstAnad.setAdapter(ListAdapter);
+
+		ListView lstimg = (ListView) view.findViewById(R.id.listVanad2);
+		AnadImgListAdapter ListAdapter2 = new AnadImgListAdapter(getActivity(),
+				R.layout.row_anad_img, anadlist);
+
+		lstimg.setAdapter(ListAdapter2);
 
 		txt1.setOnClickListener(new OnClickListener() {
 

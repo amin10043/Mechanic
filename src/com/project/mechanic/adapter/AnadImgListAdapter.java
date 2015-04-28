@@ -6,33 +6,25 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
-import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.entity.Ticket;
-import com.project.mechanic.fragment.ShowAdFragment;
+import com.project.mechanic.entity.Anad;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class AnadImgListAdapter extends ArrayAdapter<Ticket> {
+public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 
 	Context context;
-	List<Ticket> list;
-	int[] imageId;
-	Ticket tempItem;
+	List<Anad> list;
+	Anad tempItem;
 	DataBaseAdapter adapter;
 
-	public AnadImgListAdapter(Context context, int resource, List<Ticket> objact) {
+	public AnadImgListAdapter(Context context, int resource, List<Anad> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -48,53 +40,45 @@ public class AnadImgListAdapter extends ArrayAdapter<Ticket> {
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_anad, parent, false);
+		convertView = myInflater.inflate(R.layout.row_anad_img, parent, false);
 
-		TextView txtName = (TextView) convertView
-				.findViewById(R.id.row_anad_txt);
-		// ImageView img = (ImageView)
-		// convertView.findViewById(R.id.row_anad_img);
-		ImageView img2 = (ImageView) convertView
-				.findViewById(R.id.row_anad_img2);
+		ImageView img = (ImageView) convertView.findViewById(R.id.img_anad);
 
 		tempItem = list.get(position);
-		txtName.setText(tempItem.getTitle());
 		byte[] bitmapbyte = tempItem.getImage();
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 					bitmapbyte.length);
-			img2.setImageBitmap(bmp);
+			img.setImageBitmap(bmp);
 		}
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		txtName.setTypeface(typeFace);
+
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
-				RelativeLayout parentlayout = (RelativeLayout) v;
-				TextView txtName = (TextView) parentlayout
-						.findViewById(R.id.row_anad_txt);
-				String item = txtName.getText().toString();
-				int id = 0;
-				for (Ticket Ticket : list) {
+				// RelativeLayout parentlayout = (RelativeLayout) v;
+				// TextView txtName = (TextView) parentlayout
+				// .findViewById(R.id.row_anad_txt);
+				// String item = txtName.getText().toString();
+				// int id = 0;
+				// for (Ticket Ticket : list) {
+				//
+				// if (item.equals(Ticket.getTitle())) {
+				// // check authentication and authorization
+				// id = Ticket.getId();
+				// }
+				// }
 
-					if (item.equals(Ticket.getTitle())) {
-						// check authentication and authorization
-						id = Ticket.getId();
-					}
-				}
-
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
-				ShowAdFragment fragment = new ShowAdFragment();
-				Bundle bundle = new Bundle();
-				bundle.putString("Id", String.valueOf(id));
-				fragment.setArguments(bundle);
-				trans.replace(R.id.content_frame, fragment);
-				trans.addToBackStack(null);
-				trans.commit();
+				// FragmentTransaction trans = ((MainActivity) context)
+				// .getSupportFragmentManager().beginTransaction();
+				// ShowAdFragment fragment = new ShowAdFragment();
+				// Bundle bundle = new Bundle();
+				// bundle.putString("Id", String.valueOf(id));
+				// fragment.setArguments(bundle);
+				// trans.replace(R.id.content_frame, fragment);
+				// trans.addToBackStack(null);
+				// trans.commit();
 
 			}
 		});
