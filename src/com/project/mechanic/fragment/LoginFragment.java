@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -43,7 +44,8 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 				.findViewById(R.id.editTextuser);
 		final EditText editpass = (EditText) view
 				.findViewById(R.id.editTextpass);
-
+	 TextView test = (TextView) view
+				.findViewById(R.id.texttest);
 		btnlog.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -65,7 +67,7 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 				String[] params = new String[] { "login", user, pass };
 				service.delegate = LoginFragment.this;
 				service.execute(params);
-
+                
 			}
 		});
 
@@ -106,6 +108,20 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 				dialog.show();
 			}
 		});
+		
+		test.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new DisplayPersonalInformationFragment());
+				trans.commit();
+			}
+		});
+		
+		
 
 		return view;
 

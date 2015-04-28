@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ParseException;
 import android.util.Log;
 
 import com.project.mechanic.entity.AdvisorType;
@@ -1401,3 +1402,6 @@ public class DataBaseAdapter {
 	}
 
 }
+////////////////////////////
+
+
