@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.AnadListAdapter;
+import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -32,6 +33,7 @@ public class AnadFragment extends Fragment {
 	private TextView txt1;
 	View view;
 	List<Ticket> mylist;
+	List<Anad> anadlist;
 	private DialogAnad dialog;
 	int ticketTypeid = 0;
 	private static int RESULT_LOAD_IMAGE = 1;
@@ -59,6 +61,7 @@ public class AnadFragment extends Fragment {
 		dbAdapter.open();
 
 		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
+		anadlist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
 		dbAdapter.close();
 
 		imgadd.setOnClickListener(new OnClickListener() {
