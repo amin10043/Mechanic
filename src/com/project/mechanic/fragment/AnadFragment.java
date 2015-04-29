@@ -67,8 +67,8 @@ public class AnadFragment extends Fragment {
 		dbAdapter.open();
 
 		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
-		anadlist = dbAdapter.getAnadtByTypeIdProId(ticketTypeid, proID);
-		List<Anad> anadlist = dbAdapter.getAnadById(1);
+		anadlist = dbAdapter.getAnadtByTypeIdProId(proID);
+
 		dbAdapter.close();
 
 		imgadd.setOnClickListener(new OnClickListener() {

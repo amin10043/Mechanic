@@ -628,17 +628,13 @@ public class DataBaseAdapter {
 
 	}
 
-	public ArrayList<Anad> getAnadtByTypeIdProId(int TypeId, int provinceID) {
+	public ArrayList<Anad> getAnadtByTypeIdProId(int provinceID) {
 
 		ArrayList<Anad> result = new ArrayList<Anad>();
 		Anad item = null;
 
-		Cursor mCur = mDb.query(
-				TableAnad,
-				Anad,
-				"TypeId=? AND ProvinceId=?",
-				new String[] { String.valueOf(TypeId),
-						String.valueOf(provinceID) }, null, null, null);
+		Cursor mCur = mDb.query(TableAnad, Anad, " ProvinceId=?",
+				new String[] { String.valueOf(provinceID) }, null, null, null);
 
 		while (mCur.moveToNext()) {
 			item = CursorToAnad(mCur);

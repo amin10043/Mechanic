@@ -21,6 +21,7 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 
 	Context context;
 	List<Anad> list;
+	int[] imageId;
 	Anad tempItem;
 	DataBaseAdapter adapter;
 
