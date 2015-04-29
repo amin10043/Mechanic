@@ -5,8 +5,6 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,19 +18,19 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
-import com.project.mechanic.entity.Executertype;
-import com.project.mechanic.fragment.ObjectFragment;
+import com.project.mechanic.entity.Province;
+import com.project.mechanic.fragment.City2Fragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
+public class Province2ListAdapter extends ArrayAdapter<Province> {
 
 	Context context;
-	List<Executertype> list;
+	List<Province> list;
 	DataBaseAdapter adapter;
 	int lastPosition = 0;
 
-	public ExecutertypeListAdapter(Context context, int resource,
-			List<Executertype> objact) {
+	public Province2ListAdapter(Context context, int resource,
+			List<Province> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -50,8 +48,7 @@ public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
 		convertView = myInflater
 				.inflate(R.layout.main_item_list, parent, false);
 
-		convertView = myInflater.inflate(R.layout.row_executertype, parent,
-				false);
+		convertView = myInflater.inflate(R.layout.row_ostan, parent, false);
 
 		Animation animation = AnimationUtils.loadAnimation(getContext(),
 				(position > lastPosition) ? R.anim.up_from_bottom
@@ -59,12 +56,11 @@ public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
 		convertView.startAnimation(animation);
 		lastPosition = position;
 
-		TextView tx1 = (TextView) convertView
-				.findViewById(R.id.rowexecutertypetxt);
+		TextView tx1 = (TextView) convertView.findViewById(R.id.RowOstantxt);
 
-		Executertype Executertype = list.get(position);
+		Province province = list.get(position);
 
-		tx1.setText(Executertype.getName());
+		tx1.setText(province.getName());
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BROYA.TTF");
 		tx1.setTypeface(typeFace);
@@ -74,20 +70,16 @@ public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
 			@Override
 			public void onClick(View arg0) {
 
-				Executertype Executertype = list.get(position);
+				Province province = list.get(position);
 				adapter.open();
-				List<City> allItems = adapter.getCitysByProvinceId(Executertype
+				List<City> allItems = adapter.getCitysByProvinceId(province
 						.getId());
 				adapter.close();
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new City2Fragment(allItems));
 				trans.addToBackStack(null);
-				Fragment move = new ObjectFragment();
-				Bundle bundle = new Bundle();
-				bundle.putString("cityId", String.valueOf(Executertype.getId()));
-				move.setArguments(bundle);
-				trans.replace(R.id.content_frame, move);
 				trans.commit();
 			}
 		});

@@ -18,69 +18,37 @@
             android:orientation="vertical"
             android:weightSum="12" >
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="2"
                 android:orientation="vertical" >
 
-                <ImageView
-                    android:id="@+id/imgvadvertise_Object"
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:layout_weight="3"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/gf2" />
-
                 <RelativeLayout
-                    android:id="@+id/RelativeLayout11"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1" >
+                    android:layout_height="match_parent" >
 
-                    <TextView
-                        android:id="@+id/txtNumofLike_Object"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/txtsize10" />
-
-                    <TextView
-                        android:id="@+id/textView16"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/txtNumofLike_Object"
-                        android:layout_alignBottom="@+id/txtNumofLike_Object"
-                        android:textSize="@dimen/txtsize10" />
-
-                    <ImageButton
-                        android:id="@+id/imageButtonEditpic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:scaleType="fitEnd"
-                        android:src="@drawable/edit_pic" />
-
-                    <ImageButton
-                        android:id="@+id/imageButtonsave"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_toRightOf="@+id/txtNumofLike_Object"
+                    <ImageView
+                        android:id="@+id/imgvadvertise_Object"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:layout_weight="3"
+                        android:paddingBottom="15dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/save" />
-                </RelativeLayout>
+                        android:src="@drawable/gf2" />
 
-                <ImageButton
-                    android:id="@+id/imageButton11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="3"
-                    android:src="@android:drawable/btn_star" />
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/profile_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="25dp"
+                        android:background="@drawable/icon_header_shape"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/profile_account" />
+                </RelativeLayout>
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -88,503 +56,466 @@
                 android:layout_weight="5"
                 android:orientation="vertical" >
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:weightSum="7" >
-
-                    <LinearLayout
-                        android:id="@+id/LinearLayout1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1" >
-
-                        <ImageButton
-                            android:id="@+id/imgbtnFacebook_Object"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#0000"
-                            android:src="@drawable/facebook" />
-
-                        <ImageButton
-                            android:id="@+id/imgbtnInsta_Object"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#0000"
-                            android:src="@drawable/insta" />
-
-                        <ImageButton
-                            android:id="@+id/imgbtnLinkedin_Object"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#0000"
-                            android:src="@drawable/lnkin" />
-
-                        <ImageButton
-                            android:id="@+id/imgbtnGoogle_Object"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#0000"
-                            android:src="@drawable/google" />
-
-                        <ImageButton
-                            android:id="@+id/imgbtnSite_Object"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#0000"
-                            android:src="@drawable/lnkin" />
-
-                        <ImageButton
-                            android:id="@+id/imgbtnTwitter_Object"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#0000"
-                            android:src="@drawable/twtr" />
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/Layoutlink1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="#CCCCCC"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp" >
-
-                        <TextView
-                            android:id="@+id/textView12"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:text="نمایندگی ها و همکاران مرتبط"
-                            android:textColor="@color/red" />
-
-                        <ImageButton
-                            android:id="@+id/imageButton6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:background="#CCCCCC"
-                            android:scaleType="fitEnd"
-                            android:src="@drawable/peykan6" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/Layoutlink2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="#CCCCCC"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp" >
-
-                        <ImageButton
-                            android:id="@+id/imageButton7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:background="#CCCCCC"
-                            android:src="@drawable/peykan6" />
-
-                        <TextView
-                            android:id="@+id/textView13"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:text="خدمات"
-                            android:textColor="@color/red" />
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="#CCCCCC"
-                        android:gravity="right"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp" >
-
-                        <ImageView
-                            android:id="@+id/showad_img2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_weight="0.1"
-                            android:src="@drawable/phone" />
-
-                        <EditText
-                            android:id="@+id/editTextphone"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="50dp"
-                            android:layout_marginRight="50dp"
-                            android:layout_weight="0.2"
-                            android:ems="10"
-                            android:hint="تلفن"
-                            android:inputType="number"
-                            android:textColorHint="@color/red" >
-
-                            <requestFocus />
-                        </EditText>
-
-                        <TextView
-                            android:id="@+id/rawtxtDescription"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_weight="0.1"
-                            android:gravity="center"
-                            android:text="تلفن"
-                            android:textColor="@color/red" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="#CCCCCC"
-                        android:gravity="right"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp" >
-
-                        <ImageView
-                            android:id="@+id/imageView3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_gravity="left"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_weight="0.1"
-                            android:src="@drawable/fax" />
-
-                        <TextView
-                            android:id="@+id/textView10"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:textColor="@color/red" />
-
-                        <EditText
-                            android:id="@+id/editTextfax"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="50dp"
-                            android:layout_marginRight="50dp"
-                            android:layout_weight="0.2"
-                            android:ems="10"
-                            android:hint="نمابر"
-                            android:inputType="number"
-                            android:textColorHint="@color/red" />
-
-                        <TextView
-                            android:id="@+id/txtFax_Introduction"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_weight="0.1"
-                            android:gravity="center"
-                            android:text="نمابر"
-                            android:textColor="@color/red" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="#CCCCCC"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp" >
-
-                        <ImageView
-                            android:id="@+id/imageView4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_weight="0.1"
-                            android:src="@drawable/cphone"
-                            android:textColor="@color/red" />
-
-                        <EditText
-                            android:id="@+id/editTextmob"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginLeft="50dp"
-                            android:layout_marginRight="50dp"
-                            android:layout_weight="0.2"
-                            android:ems="10"
-                            android:hint="همراه"
-                            android:inputType="number"
-                            android:textColorHint="@color/red" />
-
-                        <TextView
-                            android:id="@+id/txtCellphone_Introduction"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_weight="0.1"
-                            android:gravity="center"
-                            android:text="همراه"
-                            android:textColor="@color/red" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="#CCCCCC"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp" >
-
-                        <ImageView
-                            android:id="@+id/imageView5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBaseline="@+id/textView5"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerInParent="true"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_weight="0.1"
-                            android:src="@drawable/email"
-                            android:textColor="@color/red" />
-
-                        <EditText
-                            android:id="@+id/editTextemail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginLeft="50dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_weight="0.2"
-                            android:ems="10"
-                            android:hint="پست الکترونیک"
-                            android:textColorHint="@color/red" />
-
-                        <TextView
-                            android:id="@+id/textView5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.1"
-                            android:gravity="center"
-                            android:text="پست الکترونیک"
-                            android:textColor="@color/red" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="#CCCCCC"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp" >
-
-                        <ImageButton
-                            android:id="@+id/imageButton8"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_weight="0.1"
-                            android:background="#0000"
-                            android:src="@drawable/map" />
-
-                        <EditText
-                            android:id="@+id/editTextaddres"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginLeft="50dp"
-                            android:layout_marginRight="50dp"
-                            android:layout_weight="0.2"
-                            android:ems="10"
-                            android:hint="آدرس"
-                            android:textColorHint="@color/red" />
-
-                        <TextView
-                            android:id="@+id/textView6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_weight="0.1"
-                            android:gravity="center"
-                            android:text="آدرس"
-                            android:textColor="@color/red" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1" >
-
-                        <Button
-                            android:id="@+id/btnPdf1_Object"
-                            style="?android:attr/buttonStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="دانلود PDF کاتالوگ" />
-
-                        <Button
-                            android:id="@+id/btnPdf2_Object"
-                            style="?android:attr/buttonStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="دانلود PDF  کاتالوگ" />
-
-                        <Button
-                            android:id="@+id/btnPdf3_Object"
-                            style="?android:attr/buttonStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="دانلود PDF  کاتالوگ" />
-
-                        <Button
-                            android:id="@+id/btnPdf4_Object"
-                            style="?android:attr/buttonStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="دانلود PDF کاتالوگ" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="3"
-                android:orientation="vertical" >
-
-                <ImageView
-                    android:id="@+id/imgvadvertise2_Object"
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/gf" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical" >
-
                 <RelativeLayout
+                    android:id="@+id/RelativeLayout11"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_marginLeft="25dp"
                     android:layout_marginRight="25dp"
                     android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:background="#CCCCCC" >
+                    android:layout_weight="1" >
 
-                    <TextView
-                        android:id="@+id/txtDesc_Object"
-                        android:layout_width="match_parent"
+                    <ImageButton
+                        android:id="@+id/btnsave"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerInParent="true"
-                        android:layout_centerVertical="true"
-                        android:text="توضیحات بیشتر"
-                        android:textColor="@color/red" />
+                        android:background="@drawable/save" />
                 </RelativeLayout>
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical" >
-
-                <ScrollView
-                    android:id="@+id/scrollView2"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="0dp"
+                    android:layout_weight="5"
+                    android:orientation="vertical" >
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical" >
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:weightSum="7" >
 
-                        <ListView
-                            android:id="@+id/listvCmt_Introduction"
+                        <LinearLayout
+                            android:id="@+id/LinearLayout1"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" >
-                        </ListView>
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginRight="25dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1" >
+
+                            <ImageButton
+                                android:id="@+id/imgbtnFacebook_Object"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="#0000"
+                                android:src="@drawable/facebook" />
+
+                            <ImageButton
+                                android:id="@+id/imgbtnInsta_Object"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="#0000"
+                                android:src="@drawable/lnkin" />
+
+                            <ImageButton
+                                android:id="@+id/imgbtnLinkedin_Object"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="#0000"
+                                android:src="@drawable/twtr" />
+
+                            <ImageButton
+                                android:id="@+id/imgbtnGoogle_Object"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="#0000"
+                                android:src="@drawable/internet" />
+
+                            <ImageButton
+                                android:id="@+id/imgbtnSite_Object"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="#0000"
+                                android:src="@drawable/google" />
+
+                            <ImageButton
+                                android:id="@+id/imgbtnTwitter_Object"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="#0000"
+                                android:src="@drawable/insta" />
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/Layoutlink1"
+                            style="@style/brandStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginRight="25dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/brand_list_item_shape"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="5dp" >
+
+                            <TextView
+                                android:id="@+id/textView12"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:text="نمایندگی ها و همکاران مرتبط"
+                                android:textColor="#000" />
+
+                            <ImageButton
+                                android:id="@+id/imageButton6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentTop="true"
+                                android:background="#CCCCCC"
+                                android:scaleType="fitEnd"
+                                android:src="@drawable/peykan6" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/Layoutlink2"
+                            style="@style/brandStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginRight="25dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/brand_list_item_shape"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="5dp" >
+
+                            <ImageButton
+                                android:id="@+id/imageButton7"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentTop="true"
+                                android:background="#CCCCCC"
+                                android:src="@drawable/peykan6" />
+
+                            <TextView
+                                android:id="@+id/textView13"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:text="خدمات"
+                                android:textColor="#000" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            style="@style/brandStyle"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginRight="25dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/brand_list_item_shape" >
+
+                            <ImageView
+                                android:id="@+id/showad_img2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerInParent="true"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:src="@drawable/phone"
+                                android:textColor="#000" />
+
+                            <EditText
+                                android:id="@+id/editTextphone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:ems="10"
+                                android:hint="تلفن"
+                                android:inputType="number"
+                                android:textColorHint="#000" >
+
+                                <requestFocus />
+                            </EditText>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            style="@style/brandStyle"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginRight="25dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/brand_list_item_shape"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="5dp" >
+
+                            <ImageView
+                                android:id="@+id/imageView3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="left"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_weight="0.1"
+                                android:src="@drawable/fax" />
+
+                            <TextView
+                                android:id="@+id/textView10"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:textColor="#000" />
+
+                            <EditText
+                                android:id="@+id/editTextfax"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:ems="10"
+                                android:hint="نمابر"
+                                android:inputType="number"
+                                android:textColorHint="#000" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            style="@style/brandStyle"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginRight="25dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/brand_list_item_shape"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="5dp" >
+
+                            <ImageView
+                                android:id="@+id/imageView4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_weight="0.1"
+                                android:background="@drawable/cphone"
+                                android:textColor="#000" />
+
+                            <EditText
+                                android:id="@+id/editTextmob"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:ems="10"
+                                android:hint="همراه"
+                                android:inputType="number"
+                                android:textColorHint="#000" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            style="@style/brandStyle"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginRight="25dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/brand_list_item_shape"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="5dp" >
+
+                            <ImageView
+                                android:id="@+id/imageView5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerInParent="true"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:src="@drawable/email"
+                                android:textColor="#000" />
+
+                            <EditText
+                                android:id="@+id/editTextemail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:ems="10"
+                                android:hint="پست الکترونیک"
+                                android:textColorHint="#000" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            style="@style/brandStyle"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginRight="25dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/brand_list_item_shape"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="5dp" >
+
+                            <ImageButton
+                                android:id="@+id/imageButton8"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_weight="0.1"
+                                android:background="#0000"
+                                android:src="@drawable/map" />
+
+                            <EditText
+                                android:id="@+id/editTextaddres"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="50dp"
+                                android:layout_marginRight="50dp"
+                                android:layout_weight="0.2"
+                                android:ems="10"
+                                android:hint="آدرس"
+                                android:textColorHint="#000" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/downloadLinear"
+                            style="@style/brandStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginRight="25dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/brand_list_item_shape"
+                            android:gravity="center" >
+
+                            <Button
+                                android:id="@+id/btnPdf1_Object"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginLeft="5dp"
+                                android:background="@drawable/ic_catalog" />
+
+                            <Button
+                                android:id="@+id/btnPdf2_Object"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_toLeftOf="@+id/btnPdf1_Object"
+                                android:background="@drawable/ic_price" />
+
+                            <Button
+                                android:id="@+id/btnPdf3_Object"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_toLeftOf="@+id/btnPdf2_Object"
+                                android:background="@drawable/ic_pdf" />
+
+                            <Button
+                                android:id="@+id/btnPdf4_Object"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_toLeftOf="@+id/btnPdf3_Object"
+                                android:background="@drawable/ic_video" />
+                        </RelativeLayout>
                     </LinearLayout>
-                </ScrollView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="3"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:id="@+id/imgvadvertise2_Object"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/gf" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical" >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="#CCCCCC" >
+
+                        <TextView
+                            android:id="@+id/txtDesc_Object"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:layout_centerVertical="true"
+                            android:text="توضیحات بیشتر"
+                            android:textColor="#000" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+
+                    <ScrollView
+                        android:id="@+id/scrollView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical" >
+
+                            <ListView
+                                android:id="@+id/listvCmt_Introduction"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" >
+                            </ListView>
+                        </LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

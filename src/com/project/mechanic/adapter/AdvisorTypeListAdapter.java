@@ -6,6 +6,8 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +21,10 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.fragment.ExecutertypeFragment;
-//import com.project.mechanic.fragment.ExecutertypeFragment;
-import com.project.mechanic.fragment.ProvinceFragment;
+import com.project.mechanic.fragment.ObjectFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+
+//import com.project.mechanic.fragment.ExecutertypeFragment;
 
 public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 
@@ -55,7 +58,7 @@ public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 		TextView tx1 = (TextView) convertView
 				.findViewById(R.id.RowAdvisortypetxt);
 
-		AdvisorType AdvisorType = list.get(position);
+		final AdvisorType AdvisorType = list.get(position);
 
 		tx1.setText(AdvisorType.getName());
 
@@ -90,8 +93,13 @@ public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 				if (id == 1 || id == 2) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
 					trans.addToBackStack(null);
+					Fragment move = new ObjectFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("cityId",
+							String.valueOf(AdvisorType.getId()));
+					move.setArguments(bundle);
+					trans.replace(R.id.content_frame, move);
 					trans.commit();
 
 				} else if (id == 3) {

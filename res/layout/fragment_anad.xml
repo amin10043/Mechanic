@@ -41,35 +41,27 @@
             android:textColor="#000000" />
     </RelativeLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView1"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true" >
+        android:layout_height="match_parent" >
+
+        <ListView
+            android:id="@+id/listVanad2"
+            style="@style/second_item_style"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:dividerHeight="0dp" >
+        </ListView>
 
         <ListView
             android:id="@+id/listVanad"
             style="@style/second_item_style"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="right"
+            android:layout_weight="1"
             android:dividerHeight="0dp" >
         </ListView>
-    </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/txtPhonenumber_CmtFroum"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/red" />
     </LinearLayout>
 
 </LinearLayout>

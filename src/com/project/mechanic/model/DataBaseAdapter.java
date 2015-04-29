@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.project.mechanic.entity.AdvisorType;
+import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.CommentInObject;
@@ -34,9 +35,12 @@ public class DataBaseAdapter {
 
 	protected static final String TAG = "DataAdapter";
 
+	private static final String id = null;
+
 	private String TableCity = "City";
 	private String TableACL = "ACL";
 	private String TableAdvisorType = "AdvisorType";
+	private String TableAnad = "Anad";
 	private String TableCityColumn = "CityColumn";
 	private String TableComment = "Comment";
 	private String TableExecutertype = "Executertype";
@@ -70,6 +74,8 @@ public class DataBaseAdapter {
 
 	private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
+	private String[] Anad = { "Id", "Image", "ObjectId", "Date", "TypeId",
+			"ProvinceId" };
 	private String[] CityColumn = { "ID", "Name", "ProvinceId" };
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] CommentInObject = { "Id", "Desk", "ObjectId", "UserId",
@@ -201,6 +207,40 @@ public class DataBaseAdapter {
 		long res = mDb.insert(TableUsers, null, uc);
 		long res2 = res;
 
+	}
+
+	// ///////////
+	// public Cursor getAllUsers() {
+	// return mDb.query(TableUsers, new String[] { KEY_ROWID, KEY_NAME,
+	// KEY_EMAIL }, null, null, null, null, null);
+	// }
+	//
+	// public Cursor getUsers(long ID) throws SQLException {
+	// Cursor mCursor = mDb.query(true, TableUsers, new String[] {
+	// KEY_ROWID, KEY_NAME, KEY_EMAIL }, id + "=" + ID,
+	// null, null, null, null, null);
+	// if (mCursor != null) {
+	// mCursor.moveToFirst();
+	// }
+	// return mCursor;
+	// }
+	// ///////////////
+
+	public void UpdateUserToDb(int id, String phonenumber,
+			String mobailenumber, String faxnumber, String address) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		// uc.put("Email", email);
+		// uc.put("Password", password);
+		uc.put("Phonenumber", phonenumber);
+
+		uc.put("Mobailenumber", mobailenumber);
+		uc.put("Faxnumber", faxnumber);
+		uc.put("Address", address);
+
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
 	public void insertLikeInObjectToDb(int UserId, int PaperId, String Date,
@@ -544,6 +584,22 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<Anad> getAnadById(int ProvinceId) {
+
+		ArrayList<Anad> result = new ArrayList<Anad>();
+		Anad item = null;
+		Cursor mCur = mDb.query("Anad", Anad, "ProvinceId=?",
+				new String[] { String.valueOf(ProvinceId) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToAnad(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
 	public ArrayList<NewsPaper> getNewsPaperTypeId(int TypeId) {
 
 		ArrayList<NewsPaper> result = new ArrayList<NewsPaper>();
@@ -618,6 +674,23 @@ public class DataBaseAdapter {
 
 		while (mCur.moveToNext()) {
 			item = CursorToTicket(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	public ArrayList<Anad> getAnadtByTypeIdProId(int provinceID) {
+
+		ArrayList<Anad> result = new ArrayList<Anad>();
+		Anad item = null;
+
+		Cursor mCur = mDb.query(TableAnad, Anad, " ProvinceId=?",
+				new String[] { String.valueOf(provinceID) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToAnad(mCur);
 			result.add(item);
 		}
 
@@ -720,6 +793,13 @@ public class DataBaseAdapter {
 		City tempCity = new City(cursor.getInt(0), cursor.getString(1),
 				cursor.getInt(2));
 		return tempCity;
+	}
+
+	private Anad CursorToAnad(Cursor cursor) {
+		Anad tempAnad = new Anad(cursor.getInt(0), cursor.getInt(2),
+				cursor.getBlob(1), cursor.getString(3), cursor.getInt(4),
+				cursor.getInt(5));
+		return tempAnad;
 	}
 
 	private Object CursorToObject(Cursor cursor) {
@@ -909,6 +989,24 @@ public class DataBaseAdapter {
 				null);
 		int s = cu.getCount();
 		return s;
+	}
+
+	// ///////////
+	// public Integer Image(String table) {
+	//
+	// Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
+	// null);
+	// int s = cu.getCount();
+	// return s;
+	// }
+	public byte[] Anad_Image(String table) {
+
+		Cursor cu = mDb.rawQuery("select * from " + table + "", null);
+		cu.moveToFirst();
+		byte[] s;
+		s = cu.getBlob(1);
+		return s;
+
 	}
 
 	public Integer LikeInObject_count() {
@@ -1301,6 +1399,19 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<Anad> getAllAnad() {
+		ArrayList<Anad> result = new ArrayList<Anad>();
+		Cursor cursor = mDb
+				.query(TableAnad, Anad, null, null, null, null, null);
+		Anad tempAnad;
+		while (cursor.moveToNext()) {
+			result.add(CursorToAnad(cursor));
+		}
+
+		return result;
+
+	}
+
 	/*
 	 * public String getUseridFroum(){ ArrayList<Froum> result = new
 	 * ArrayList<Froum>(); String[] s = new String[1]; s[0] = "UserId"; Cursor
@@ -1455,4 +1566,43 @@ public class DataBaseAdapter {
 		return item;
 	}
 
+	public void UpdateObjectProperties(int id, String phone, String fax,
+			String mobile, String Email, String address) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put(Object[2], phone);
+		uc.put(Object[4], fax);
+		uc.put(Object[15], mobile);
+		uc.put(Object[3], Email);
+		uc.put(Object[14], address);
+
+		mDb.update(TableObject, uc, "ID=" + id, null);
+	}
+
+	// /////////////////////////////////////ÈÏÓÊ ÂæÑÏä ÊÚÏÇÏ ÓØÑåÇ
+	// ///////////////
+	// /////////////////////////////////////ÈÏÓÊ ÂæÑÏä ÊÚÏÇÏ ÓØÑåÇ
+	// ///////////////
+	public int getcount() {
+		int item = 0;
+
+		// return item=mDb.rawQuery("Select Count(*) From " + TableUsers,
+		// null).getCount();
+
+		Cursor cursor = mDb
+				.rawQuery("select count(*) from " + TableUsers, null);
+
+		// ensure there is at least one row and one column
+		cursor.moveToFirst();
+		if (cursor.getCount() > 0 && cursor.getColumnCount() > 0) {
+			return cursor.getInt(0);
+		} else {
+			return 0;
+		}
+
+	}
+
 }
+// //////////////////////////
+
