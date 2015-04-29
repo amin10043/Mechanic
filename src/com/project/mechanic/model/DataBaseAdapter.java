@@ -68,7 +68,7 @@ public class DataBaseAdapter {
 	private String TableCommentInObject = "CommentInObject";
 	private String TableCommentInFroum = "CommentInFroum";
 
-	private String TableCommentInPaper = "CommentInPaper";
+	private String TableCommentInPaper = "CommentInPapers";
 
 	private String TableObjectBrandType = "ObjectBrandType";
 
@@ -85,8 +85,6 @@ public class DataBaseAdapter {
 
 	private String[] CommentInPaper = { "Id", "Desk", "PaperId", "UserId",
 			"Date", "CommentId" };
-	private String[] CommentInPapers = { "Id", "Desk", "PaperId", "UserId",
-			"Date" };
 
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId" };
