@@ -4,6 +4,9 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +21,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Executertype;
-import com.project.mechanic.entity.Province;
-import com.project.mechanic.fragment.CityFragment;
-import com.project.mechanic.fragment.ProvinceFragment;
+import com.project.mechanic.fragment.ObjectFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
@@ -49,7 +50,8 @@ public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
 		convertView = myInflater
 				.inflate(R.layout.main_item_list, parent, false);
 
-		convertView = myInflater.inflate(R.layout.row_executertype, parent, false);
+		convertView = myInflater.inflate(R.layout.row_executertype, parent,
+				false);
 
 		Animation animation = AnimationUtils.loadAnimation(getContext(),
 				(position > lastPosition) ? R.anim.up_from_bottom
@@ -57,11 +59,15 @@ public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
 		convertView.startAnimation(animation);
 		lastPosition = position;
 
-		TextView tx1 = (TextView) convertView.findViewById(R.id.rowexecutertypetxt);
+		TextView tx1 = (TextView) convertView
+				.findViewById(R.id.rowexecutertypetxt);
 
 		Executertype Executertype = list.get(position);
 
 		tx1.setText(Executertype.getName());
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
+				"fonts/BROYA.TTF");
+		tx1.setTypeface(typeFace);
 
 		convertView.setOnClickListener(new OnClickListener() {
 
@@ -70,13 +76,18 @@ public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
 
 				Executertype Executertype = list.get(position);
 				adapter.open();
-				List<City> allItems = adapter.getCitysByProvinceId(Executertype.getId());
+				List<City> allItems = adapter.getCitysByProvinceId(Executertype
+						.getId());
 				adapter.close();
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new ProvinceFragment());
 				trans.addToBackStack(null);
+				Fragment move = new ObjectFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString("cityId", String.valueOf(Executertype.getId()));
+				move.setArguments(bundle);
+				trans.replace(R.id.content_frame, move);
 				trans.commit();
 			}
 		});

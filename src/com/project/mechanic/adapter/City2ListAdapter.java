@@ -20,15 +20,15 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
-import com.project.mechanic.fragment.ObjectFragment;
+import com.project.mechanic.fragment.AdvisorTypeFragment;
 
-public class CityListAdapter extends ArrayAdapter<City> {
+public class City2ListAdapter extends ArrayAdapter<City> {
 
 	Context context;
 	List<City> list;
 	int lastPosition = 0;
 
-	public CityListAdapter(Context context, int resource, List<City> objact) {
+	public City2ListAdapter(Context context, int resource, List<City> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -68,7 +68,7 @@ public class CityListAdapter extends ArrayAdapter<City> {
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				trans.addToBackStack(null);
-				Fragment move = new ObjectFragment();
+				Fragment move = new AdvisorTypeFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("cityId", String.valueOf(city.getId()));
 				move.setArguments(bundle);

@@ -35,6 +35,7 @@ public class FroumFragment extends Fragment {
 	private TextView NumofComment;
 	private TextView NumofCmtLike;
 	private TextView NumofCmtDisLike;
+	FroumListAdapter ListAdapter;
 
 	ArrayList<CommentInFroum> mylist;
 	DialogcmtInfroum dialog;
@@ -92,8 +93,8 @@ public class FroumFragment extends Fragment {
 
 		lst = (ListView) view.findViewById(R.id.lstComment);
 		lstReply = (ListView) view.findViewById(R.id.lstReplytoCm);
-		FroumListAdapter ListAdapter = new FroumListAdapter(getActivity(),
-				R.layout.raw_froumcmt, mylist);
+		ListAdapter = new FroumListAdapter(getActivity(),
+				R.layout.raw_froumcmt, mylist, FroumFragment.this);
 
 		lst.setAdapter(ListAdapter);
 
@@ -140,22 +141,32 @@ public class FroumFragment extends Fragment {
 		return view;
 	}
 
-	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		lst.deferNotifyDataSetChanged();
-
-	}
+	/*
+	 * @Override public void onResume() { // TODO Auto-generated method stub
+	 * super.onResume(); froumListadapter = new FroumListAdapter(getActivity(),
+	 * R.layout.raw_froumcmt, mylist, FroumFragment.this);
+	 * froumListadapter.notifyDataSetChanged();
+	 * lst.setAdapter(froumListadapter);
+	 * 
+	 * }
+	 */
 
 	public void updateView2() {
 		adapter.open();
 		mylist = adapter.getCommentInFroumbyPaperid(id);
 		NumofComment.setText(adapter.CommentInFroum_count().toString());
 		adapter.close();
+		froumListadapter = new FroumListAdapter(getActivity(),
+				R.layout.raw_froumcmt, mylist, FroumFragment.this);
+		froumListadapter.notifyDataSetChanged();
+		lst.setAdapter(froumListadapter);
+
+	}
+
+	public void updateView3() {
 
 		froumListadapter = new FroumListAdapter(getActivity(),
-				R.layout.raw_froumcmt, mylist);
+				R.layout.raw_froumcmt, mylist, FroumFragment.this);
 		froumListadapter.notifyDataSetChanged();
 		lst.setAdapter(froumListadapter);
 

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
@@ -30,14 +31,16 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 	private TextView NumofCmtLike;
 	private TextView NumofCmtDisLike;
 	private ImageView Userimage;
+	FroumFragment froumfragment;
 
 	public FroumListAdapter(Context context, int resource,
-			List<CommentInFroum> objects) {
+			List<CommentInFroum> objects, FroumFragment f) {
 		super(context, resource, objects);
 
 		this.context = context;
 		this.list = objects;
 		adapter = new DataBaseAdapter(context);
+		this.froumfragment = f;
 
 	}
 
@@ -93,6 +96,9 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				LinearLayout parentlayout = (LinearLayout) v.getParent()
 						.getParent().getParent();
 				View view = parentlayout.findViewById(R.id.rawCmttxt);
+				View view2 = parentlayout
+						.findViewById(R.id.txtNumofLike_RawCmtFroum);
+				TextView txtlike = (TextView) view2;
 				TextView x = (TextView) view;
 				String item = x.getText().toString();
 				int id = 0;
@@ -110,7 +116,8 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				int k = c + 1;
 				String f = String.valueOf(k);
 				adapter.insertCmtLikebyid(id, f);
-				NumofCmtLike.setText(a.getNumOfLike());
+				a = adapter.getCommentInFroumbyID(id);
+				txtlike.setText(a.getNumOfLike());
 				adapter.close();
 
 			}
@@ -123,7 +130,10 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				LinearLayout parentlayout = (LinearLayout) v.getParent()
 						.getParent().getParent();
 				View view = parentlayout.findViewById(R.id.rawCmttxt);
+				View view2 = parentlayout
+						.findViewById(R.id.txtNumofDislike_RawCmtFroum);
 				TextView x = (TextView) view;
+				TextView disliketxt = (TextView) view2;
 				String item = x.getText().toString();
 				int id = 0;
 				for (CommentInFroum listItem : list) {
@@ -139,7 +149,8 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				int k = h + 1;
 				String f = String.valueOf(k);
 				adapter.insertCmtDisLikebyid(id, f);
-				NumofCmtDisLike.setText(a.getNumOfDislike());
+				a = adapter.getCommentInFroumbyID(id);
+				disliketxt.setText(a.getNumOfDislike());
 				adapter.close();
 
 			}

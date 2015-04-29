@@ -5,8 +5,6 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,30 +18,37 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
-import com.project.mechanic.fragment.ObjectFragment;
+import com.project.mechanic.entity.Province;
+import com.project.mechanic.fragment.City3Fragment;
+import com.project.mechanic.model.DataBaseAdapter;
 
-public class CityListAdapter extends ArrayAdapter<City> {
+public class Province3ListAdapter extends ArrayAdapter<Province> {
 
 	Context context;
-	List<City> list;
+	List<Province> list;
+	DataBaseAdapter adapter;
 	int lastPosition = 0;
 
-	public CityListAdapter(Context context, int resource, List<City> objact) {
+	public Province3ListAdapter(Context context, int resource,
+			List<Province> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
-
+		adapter = new DataBaseAdapter(context);
 	}
 
 	@SuppressLint("ViewHolder")
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_city, parent, false);
+		convertView = myInflater
+				.inflate(R.layout.main_item_list, parent, false);
+
+		convertView = myInflater.inflate(R.layout.row_ostan, parent, false);
 
 		Animation animation = AnimationUtils.loadAnimation(getContext(),
 				(position > lastPosition) ? R.anim.up_from_bottom
@@ -51,28 +56,30 @@ public class CityListAdapter extends ArrayAdapter<City> {
 		convertView.startAnimation(animation);
 		lastPosition = position;
 
-		TextView txt1 = (TextView) convertView.findViewById(R.id.RowCitytxt);
+		TextView tx1 = (TextView) convertView.findViewById(R.id.RowOstantxt);
 
-		final City city = list.get(position);
+		Province province = list.get(position);
 
-		txt1.setText(city.getName());
+		tx1.setText(province.getName());
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BROYA.TTF");
-		txt1.setTypeface(typeFace);
+		tx1.setTypeface(typeFace);
 
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
+				Province province = list.get(position);
+				adapter.open();
+				List<City> allItems = adapter.getCitysByProvinceId(province
+						.getId());
+				adapter.close();
+
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new City3Fragment(allItems));
 				trans.addToBackStack(null);
-				Fragment move = new ObjectFragment();
-				Bundle bundle = new Bundle();
-				bundle.putString("cityId", String.valueOf(city.getId()));
-				move.setArguments(bundle);
-				trans.replace(R.id.content_frame, move);
 				trans.commit();
 			}
 		});

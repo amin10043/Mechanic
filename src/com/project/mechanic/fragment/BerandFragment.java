@@ -38,6 +38,7 @@ public class BerandFragment extends Fragment {
 		dbAdapter.close();
 
 		ListView lstBerand = (ListView) view.findViewById(R.id.lstVberand);
+
 		BerandListAdapter ListAdapter = new BerandListAdapter(getActivity(),
 				R.layout.row_berand, mylist, id);
 
