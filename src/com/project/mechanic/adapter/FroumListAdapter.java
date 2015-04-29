@@ -4,11 +4,14 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,6 +29,7 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 	private ImageButton CmtDisLike;
 	private TextView NumofCmtLike;
 	private TextView NumofCmtDisLike;
+	private ImageView Userimage;
 
 	public FroumListAdapter(Context context, int resource,
 			List<CommentInFroum> objects) {
@@ -61,6 +65,8 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				.findViewById(R.id.txtNumofLike_RawCmtFroum);
 		NumofCmtDisLike = (TextView) convertView
 				.findViewById(R.id.txtNumofDislike_RawCmtFroum);
+		Userimage = (ImageView) convertView
+				.findViewById(R.id.imgvCmtuser_Froumfragment);
 		CommentInFroum comment = list.get(position);
 		adapter.open();
 		Users x = adapter.getUsernamebyid(comment.getUserid());
@@ -68,7 +74,14 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 
 		txt1.setText(comment.getDesk());
 		txt2.setText(x.getName());
-		txt3.setText(x.getPhonennumber());
+
+		txt3.setText(x.getPhonenumber());
+		byte[] blob = x.getImage();
+		Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
+		Userimage.getLayoutParams().height = 50;
+		Userimage.getLayoutParams().width = 50;
+		Userimage.requestLayout();
+		Userimage.setImageBitmap(bmp);
 		CommentInFroum d = list.get(position);
 		NumofCmtLike.setText(d.getNumOfLike());
 		NumofCmtDisLike.setText(d.getNumOfDislike());
@@ -131,6 +144,7 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 
 			}
 		});
+
 		return convertView;
 	}
 }

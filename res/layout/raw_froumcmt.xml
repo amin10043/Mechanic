@@ -13,7 +13,7 @@
         android:layout_weight="10" >
 
         <ImageView
-            android:id="@+id/imgvCmtoTilte"
+            android:id="@+id/imgvCmtuser_Froumfragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/rawUsernamecmttxt_cmt"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/imgvCmtoTilte"
+            android:layout_toLeftOf="@+id/imgvCmtuser_Froumfragment"
             android:text="bghgfhfhf"
             android:textColor="@color/red" />
 
