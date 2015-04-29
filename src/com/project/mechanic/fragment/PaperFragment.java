@@ -57,12 +57,16 @@ public class PaperFragment extends Fragment {
 		// Bundle bundle = new Bundle();
 		// bundle.getString("Id", String.valueOf(id));
 		id = Integer.valueOf(getArguments().getString("Id"));
-
+		mylist = adapter.getCommentInPaperbyPaperid(id);
 		Paper p = adapter.getPaperItembyid(id);
 
 		txttitle.setText(p.getTitle());
 		txttitleDes.setText(p.getContext());
 		adapter.close();
+		PaperListAdapter ListAdapter = new PaperListAdapter(getActivity(),
+				R.layout.raw_papercmt, mylist);
+
+		lst.setAdapter(ListAdapter);
 
 		Like.setOnClickListener(new OnClickListener() {
 
@@ -83,13 +87,20 @@ public class PaperFragment extends Fragment {
 
 				// TODO Auto-generated method stub
 				dialog = new DialogcmtInPaper(PaperFragment.this,
-						getActivity(), id);
+						getActivity(), R.layout.dialog_addcomment);
 				dialog.show();
 
 			}
 		});
 		return view;
 
+	}
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		lst.deferNotifyDataSetChanged();
 	}
 
 	public void updateView2() {

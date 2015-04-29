@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Paper;
+import com.project.mechanic.fragment.DialogcmtInPaper;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -77,6 +78,12 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 							.getSupportFragmentManager().beginTransaction();
 					PaperFragment fragment = new PaperFragment();
 					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(id));
+					fragment.setArguments(bundle);
+
+					DialogcmtInPaper dialog = new DialogcmtInPaper(null,
+							context, R.layout.dialog_addcomment);
+					Bundle bundle2 = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
 					fragment.setArguments(bundle);
 

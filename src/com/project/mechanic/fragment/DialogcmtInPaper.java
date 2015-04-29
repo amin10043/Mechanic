@@ -24,7 +24,7 @@ public class DialogcmtInPaper extends Dialog {
 	int paperId;
 	Utility util;
 
-	public DialogcmtInPaper(Fragment f, Context context, int paperId) {
+	public DialogcmtInPaper(Fragment f, Context context, int resourceId) {
 		super(context);
 		this.context = context;
 		this.f = f;
@@ -47,6 +47,7 @@ public class DialogcmtInPaper extends Dialog {
 			public void onClick(View arg0) {
 				dbadapter = new DataBaseAdapter(context);
 				dbadapter.open();
+
 				dbadapter.insertCommentInPapertoDb(Cmttxt.getText().toString(),
 						paperId, 1, "1");
 				dbadapter.close();
