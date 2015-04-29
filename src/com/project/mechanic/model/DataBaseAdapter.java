@@ -15,9 +15,11 @@ import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.CommentInObject;
+import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.Executertype;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.LikeInObject;
+import com.project.mechanic.entity.LikeInPaper;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.News;
 import com.project.mechanic.entity.NewsPaper;
@@ -47,6 +49,7 @@ public class DataBaseAdapter {
 	private String TableLike = "Like";
 	private String TableLikeInObject = "LikeInObject";
 	private String TableLikeInFroum = "LikeInFroum";
+	private String TableLikeInPaper = "LikeInPaper";
 	private String TableList = "List";
 	private String TableListItem = "ListItem";
 	private String TableNews = "News";
@@ -64,6 +67,9 @@ public class DataBaseAdapter {
 	private String TableWorkmanType = "WorkmanType";
 	private String TableCommentInObject = "CommentInObject";
 	private String TableCommentInFroum = "CommentInFroum";
+
+	private String TableCommentInPaper = "CommentInPapers";
+
 	private String TableObjectBrandType = "ObjectBrandType";
 
 	private String[] ACL = { "ID", "UserId", "ListItemId" };
@@ -78,6 +84,9 @@ public class DataBaseAdapter {
 
 	"Date", "CommentId", "NumOfDislike", "NumOfLike" };
 
+	private String[] CommentInPaper = { "Id", "Desk", "PaperId", "UserId",
+			"Date", "CommentId" };
+
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description" };
@@ -85,6 +94,8 @@ public class DataBaseAdapter {
 	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date",
 			"CommentId" };
 	private String[] LikeInFroum = { "Id", "UserId", "FroumId", "Date",
+			"CommentId" };
+	private String[] LikeInPaper = { "Id", "UserId", "PaperId", "Date",
 			"CommentId" };
 	private String[] List = { "ID", "Name", "ParentId" };
 	private String[] ListItem = { "Id", "Name", "ListId" };
@@ -276,6 +287,34 @@ public class DataBaseAdapter {
 		return false;
 	}
 
+	public void insertLikeInPaperToDb(int UserId, int PaperId, String Date) {
+
+		if (!isUserLikedPaper(UserId, PaperId)) {
+			ContentValues uc = new ContentValues();
+
+			uc.put("UserId", UserId);
+			uc.put("PaperId", PaperId);
+			uc.put("Date", Date);
+
+			long res = mDb.insert(TableLikeInPaper, null, uc);
+			long res2 = res;
+		}
+
+	}
+
+	public boolean isUserLikedPaper(int userId, int paperId) {
+
+		Cursor curs = mDb.rawQuery("SELECT COUNT(*) AS NUM FROM "
+				+ TableLikeInPaper + " WHERE UserId= " + String.valueOf(userId)
+				+ " AND PaperId=" + String.valueOf(paperId), null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
 	public void insertCommenttoDb(int userId, int paperId, String description) {
 
 		ContentValues cv = new ContentValues();
@@ -300,6 +339,17 @@ public class DataBaseAdapter {
 		cv.put("NumOfDislike", numofDisLike);
 		cv.put("NumOfLike", numoflike);
 		mDb.insert(TableCommentInFroum, null, cv);
+	}
+
+	public void insertCommentInPapertoDb(String description, int Paperid,
+			int userid, String datetime) {
+
+		ContentValues cv = new ContentValues();
+		cv.put("Desk", description);
+		cv.put("UserId", userid);
+		cv.put("PaperID", Paperid);
+		cv.put("Date", datetime);
+		mDb.insert(TableCommentInPaper, null, cv);
 	}
 
 	public void insertCommentObjecttoDb(String description, int Objectid,
@@ -748,6 +798,14 @@ public class DataBaseAdapter {
 
 	}
 
+	@SuppressWarnings("unused")
+	private LikeInPaper CursorToLikeInPaper(Cursor cursor) {
+		LikeInPaper temp = new LikeInPaper(cursor.getInt(0), cursor.getInt(1),
+				cursor.getInt(2), cursor.getString(3), cursor.getInt(4));
+		return temp;
+
+	}
+
 	private City CursorToCity(Cursor cursor) {
 		City tempCity = new City(cursor.getInt(0), cursor.getString(1),
 				cursor.getInt(2));
@@ -992,6 +1050,17 @@ public class DataBaseAdapter {
 		return res;
 	}
 
+	public Integer LikeInPaper_count() {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInPaper, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
 	public Integer CommentInObject_count() {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
@@ -1012,6 +1081,14 @@ public class DataBaseAdapter {
 			res = cu.getInt(0);
 		}
 		return res;
+	}
+
+	public Integer CommentInPaper_count() {
+
+		Cursor mCur = mDb.query(TableCommentInPaper, CommentInPaper, null,
+				null, null, null, null);
+		int s = mCur.getCount();
+		return s;
 	}
 
 	public String province_display(String table, int row, int field) {
@@ -1165,6 +1242,17 @@ public class DataBaseAdapter {
 		return result;
 	}
 
+	public ArrayList<LikeInPaper> getLikeInPaperByUserId(int UserID) {
+		ArrayList<LikeInPaper> result = new ArrayList<LikeInPaper>();
+		Cursor cursor = mDb.query(TableLikeInPaper, LikeInPaper, " UserId=?",
+				new String[] { String.valueOf(UserID) }, null, null, null);
+
+		while (cursor.moveToNext()) {
+			result.add(CursorToLikeInPaper(cursor));
+		}
+		return result;
+	}
+
 	public ArrayList<CommentInFroum> getCommentInFroumbyPaperid(int Froumid) {
 
 		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
@@ -1180,6 +1268,24 @@ public class DataBaseAdapter {
 
 		while (mCur.moveToNext()) {
 			item = CursorToCommentInFroum(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	public ArrayList<CommentInPaper> getCommentInPaperbyPaperid(int Paperid) {
+
+		ArrayList<CommentInPaper> result = new ArrayList<CommentInPaper>();
+		CommentInPaper item = null;
+
+		Cursor mCur = mDb.query(TableCommentInPaper, CommentInPaper,
+				"PaperId=?", new String[] { String.valueOf(Paperid) }, null,
+				null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInPaper(mCur);
 			result.add(item);
 		}
 
@@ -1415,8 +1521,18 @@ public class DataBaseAdapter {
 	private CommentInFroum CursorToCommentInFroum(Cursor cursor) {
 		CommentInFroum tempComment = new CommentInFroum(cursor.getInt(0),
 				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
+
 				cursor.getString(4), cursor.getInt(5), cursor.getString(6),
 				cursor.getString(7));
+
+		return tempComment;
+
+	}
+
+	private CommentInPaper CursorToCommentInPaper(Cursor cursor) {
+		CommentInPaper tempComment = new CommentInPaper(cursor.getInt(0),
+				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
+				cursor.getString(4), cursor.getInt(5));
 
 		return tempComment;
 
@@ -1517,6 +1633,8 @@ public class DataBaseAdapter {
 		mDb.update(TableObject, uc, "ID=" + id, null);
 	}
 
+	// /////////////////////////////////////»œ”  ¬Ê—œ‰  ⁄œ«œ ”ÿ—Â«
+	// ///////////////
 	// /////////////////////////////////////»œ”  ¬Ê—œ‰  ⁄œ«œ ”ÿ—Â«
 	// ///////////////
 	public int getcount() {

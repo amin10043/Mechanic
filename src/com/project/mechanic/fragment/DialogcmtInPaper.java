@@ -9,9 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
-public class DialogcmtInfroum extends Dialog {
+public class DialogcmtInPaper extends Dialog {
 
 	private Button btncmt;
 	private EditText Cmttxt;
@@ -19,11 +21,17 @@ public class DialogcmtInfroum extends Dialog {
 	private DataBaseAdapter dbadapter;
 	Context context;
 	Fragment f;
+	int paperId;
+	Utility util;
 
-	public DialogcmtInfroum(Fragment f, Context context, int resourceId) {
+	public DialogcmtInPaper(Fragment f, Context context, int resourceId) {
 		super(context);
 		this.context = context;
 		this.f = f;
+		this.paperId = paperId;
+		util = new Utility(context);
+		Users user = util.getCurrentUser();
+
 	}
 
 	@Override
@@ -39,14 +47,12 @@ public class DialogcmtInfroum extends Dialog {
 			public void onClick(View arg0) {
 				dbadapter = new DataBaseAdapter(context);
 				dbadapter.open();
-				int id = Integer.valueOf(f.getArguments().getString("Id"));
-				dbadapter.insertCommentInFroumtoDb(Cmttxt.getText().toString(),
 
-				id, 1, "1", 0, "0", "0");
-
+				dbadapter.insertCommentInPapertoDb(Cmttxt.getText().toString(),
+						paperId, 1, "1");
 				dbadapter.close();
-				((FroumFragment) f).updateView2();
-				DialogcmtInfroum.this.dismiss();
+				((PaperFragment) f).updateView2();
+				DialogcmtInPaper.this.dismiss();
 
 			}
 		});
