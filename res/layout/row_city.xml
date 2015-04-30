@@ -11,15 +11,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ic_blank" />
 
-    <ImageView
-        android:id="@+id/icon_lable_city"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="120dp"
-        android:background="@drawable/ic_lable" />
-
     <TextView
         android:id="@+id/RowCitytxt"
         style="@style/row_text"

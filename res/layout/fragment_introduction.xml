@@ -37,15 +37,24 @@
                         android:scaleType="fitXY"
                         android:src="@drawable/gf2" />
 
-                    <ImageView
-                        android:id="@+id/profile_img"
+                    <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="25dp"
-                        android:layout_weight="3"
-                        android:background="@drawable/profile_account" />
+                        android:layout_marginRight="25dp" >
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="3dp"
+                            android:src="@drawable/profile_account" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/profile_icon_shape" />
+                    </FrameLayout>
                 </RelativeLayout>
             </FrameLayout>
 
@@ -88,6 +97,14 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="23dp"
                         android:background="@drawable/ic_edit" />
+
+                    <ImageButton
+                        android:id="@+id/ImgbtnCreate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/ImgbtnEdit"
+                        android:background="@drawable/ic_create" />
 
                     <TextView
                         android:id="@+id/txtNumofLike_Object"
