@@ -12,9 +12,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Anad;
+import com.project.mechanic.fragment.DialogAnadimg;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class AnadImgListAdapter extends ArrayAdapter<Anad> {
@@ -22,6 +25,7 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 	Context context;
 	List<Anad> list;
 	int[] imageId;
+	private DialogAnadimg dialog;
 	Anad tempItem;
 	DataBaseAdapter adapter;
 
@@ -61,7 +65,16 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 			@Override
 			public void onClick(View v) {
 
-				// RelativeLayout parentlayout = (RelativeLayout) v;
+				RelativeLayout parentlayout = (RelativeLayout) v;
+
+				dialog = new DialogAnadimg(context, R.layout.dialog_imganad,
+						null, 0, 0);
+				dialog.setTitle(R.string.txtanad);
+				dialog.show();
+				int idImg = tempItem.getId();
+				String a = Integer.toString(idImg);
+				Toast.makeText(context, a, Toast.LENGTH_SHORT).show();
+
 				// TextView txtName = (TextView) parentlayout
 				// .findViewById(R.id.row_anad_txt);
 				// String item = txtName.getText().toString();
