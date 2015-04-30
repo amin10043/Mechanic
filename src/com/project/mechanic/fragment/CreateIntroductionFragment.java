@@ -1,10 +1,15 @@
 package com.project.mechanic.fragment;
 
+import java.io.ByteArrayOutputStream;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -161,6 +166,20 @@ public class CreateIntroductionFragment extends Fragment {
 						CreateIntroductionFragment.this, i, FooterCode);
 			}
 		});
+
+		Bitmap bitmapHeader = ((BitmapDrawable) btnHeader.getDrawable())
+				.getBitmap();
+
+		Bitmap bitmapProfil = ((BitmapDrawable) btnProfile.getDrawable())
+				.getBitmap();
+
+		Bitmap bitmapFooter = ((BitmapDrawable) btnFooter.getDrawable())
+				.getBitmap();
+
+		byte[] byteHeader = getBitmapAsByteArray(bitmapHeader);
+		byte[] byteProfil = getBitmapAsByteArray(bitmapProfil);
+		byte[] byteFooter = getBitmapAsByteArray(bitmapFooter);
+
 		// btnSave.setOnClickListener(new OnClickListener() {
 		//
 		// @Override
@@ -182,6 +201,12 @@ public class CreateIntroductionFragment extends Fragment {
 		// });
 
 		return view;
+	}
+
+	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.PNG, 0, outputStream);
+		return outputStream.toByteArray();
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
