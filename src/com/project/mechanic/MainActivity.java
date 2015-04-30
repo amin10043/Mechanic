@@ -1,6 +1,5 @@
 package com.project.mechanic;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -21,7 +20,6 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnCloseListener;
 import android.widget.TextView;
 
-import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -86,9 +84,10 @@ public class MainActivity extends FragmentActivity {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		ImageButton iBtnMenu = (ImageButton) findViewById(R.id.iBtnMenu);
-		ImageButton iBtnShare = (ImageButton) findViewById(R.id.iBtnShare);
-		ImageButton iBtnBack = (ImageButton) findViewById(R.id.iBtnBack);
-		final ImageButton iBtnFavorite = (ImageButton) findViewById(R.id.iBtnFavorite);
+		// ImageButton iBtnShare = (ImageButton) findViewById(R.id.iBtnShare);
+		// ImageButton iBtnBack = (ImageButton) findViewById(R.id.iBtnBack);
+		// final ImageButton iBtnFavorite = (ImageButton)
+		// findViewById(R.id.iBtnFavorite);
 		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
 		SearchView searchV = (SearchView) findViewById(R.id.searchV);
 
@@ -120,59 +119,59 @@ public class MainActivity extends FragmentActivity {
 			}
 		});
 
-		iBtnShare.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				Intent sharingIntent = new Intent(
-						android.content.Intent.ACTION_SEND);
-				sharingIntent.setType("text/plain");
-				String shareBody = "Here is the share content body";
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-						"Subject Here");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-						shareBody);
-				startActivity(Intent.createChooser(sharingIntent,
-						"اشتراک از طریق"));
-
-			}
-		});
-
-		iBtnBack.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				if (lastFragment != null) {
-					FragmentTransaction trans = getSupportFragmentManager()
-							.beginTransaction();
-					trans.replace(R.id.content_frame, lastFragment);
-					trans.addToBackStack(null);
-					trans.commit();
-				} else {
-					Intent intent = new Intent(MainActivity.this,
-							SplashActivity.class);
-					startActivity(intent);
-				}
-
-			}
-		});
-
-		iBtnFavorite.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				if (isFavorite) {
-					iBtnFavorite
-							.setImageResource(android.R.drawable.btn_star_big_off);
-				} else {
-
-					iBtnFavorite
-							.setImageResource(android.R.drawable.btn_star_big_on);
-				}
-				isFavorite = !isFavorite;
-			}
-		});
-
+		// iBtnShare.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// Intent sharingIntent = new Intent(
+		// android.content.Intent.ACTION_SEND);
+		// sharingIntent.setType("text/plain");
+		// String shareBody = "Here is the share content body";
+		// sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+		// "Subject Here");
+		// sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+		// shareBody);
+		// startActivity(Intent.createChooser(sharingIntent,
+		// "اشتراک از طریق"));
+		//
+		// }
+		// });
+		//
+		// iBtnBack.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// if (lastFragment != null) {
+		// FragmentTransaction trans = getSupportFragmentManager()
+		// .beginTransaction();
+		// trans.replace(R.id.content_frame, lastFragment);
+		// trans.addToBackStack(null);
+		// trans.commit();
+		// } else {
+		// Intent intent = new Intent(MainActivity.this,
+		// SplashActivity.class);
+		// startActivity(intent);
+		// }
+		//
+		// }
+		// });
+		//
+		// iBtnFavorite.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// if (isFavorite) {
+		// iBtnFavorite
+		// .setImageResource(android.R.drawable.btn_star_big_off);
+		// } else {
+		//
+		// iBtnFavorite
+		// .setImageResource(android.R.drawable.btn_star_big_on);
+		// }
+		// isFavorite = !isFavorite;
+		// }
+		// });
+		//
 		txtTitle.setText(R.string.strMain);
 
 		FragmentTransaction trans = getSupportFragmentManager()
@@ -227,70 +226,44 @@ public class MainActivity extends FragmentActivity {
 			break;
 
 		case 1:
-			
-			
-			
-		//////////////////////////////////////////////////	
-			
-//			 Parse.initialize(mContext, PARSE_APP_ID, PARSE_CLIENT_KEY);
-//			    ParseObject.registerSubclass(MyClass.class);
-//			    Parse.enableLocalDatastore(mContext);
-//			    ParseFacebookUtils.initialize(FACEBOOK_APP_ID);
-//			    ParseACL.setDefaultACL(new ParseACL(), true);
-//	                         
-//	                                if (user != null) {
-//	                                    // If user exist and authenticated, send user to Welcome.class
-//
-//	                                    String username = user.getString("username");
-//	                                    String userId = user.getObjectId();
-//
-//	                                    Intent intent = new Intent(
-//	                                            LoginSignupActivity.this,
-//	                                            Welcome.class);
-//	                                    startActivity(intent);
-//	                                    Toast.makeText(getApplicationContext(),
-//	                                            "Successfully Logged in",
-//	                                            Toast.LENGTH_LONG).show();
-//	                                    finish();
-//	                                } else 
-//	                                {
-//	                                    Toast.makeText(
-//	                                            getApplicationContext(),
-//	                                            "No such user exist, please signup",
-//	                                            Toast.LENGTH_LONG).show();
-//	                           
-//			
-//			
-//	                                }
-//			
-	
-			
-//			Users user = UserServiceFactory.getUserService().getCurrentUser();
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
+			// ////////////////////////////////////////////////
+
+			// Parse.initialize(mContext, PARSE_APP_ID, PARSE_CLIENT_KEY);
+			// ParseObject.registerSubclass(MyClass.class);
+			// Parse.enableLocalDatastore(mContext);
+			// ParseFacebookUtils.initialize(FACEBOOK_APP_ID);
+			// ParseACL.setDefaultACL(new ParseACL(), true);
+			//
+			// if (user != null) {
+			// // If user exist and authenticated, send user to Welcome.class
+			//
+			// String username = user.getString("username");
+			// String userId = user.getObjectId();
+			//
+			// Intent intent = new Intent(
+			// LoginSignupActivity.this,
+			// Welcome.class);
+			// startActivity(intent);
+			// Toast.makeText(getApplicationContext(),
+			// "Successfully Logged in",
+			// Toast.LENGTH_LONG).show();
+			// finish();
+			// } else
+			// {
+			// Toast.makeText(
+			// getApplicationContext(),
+			// "No such user exist, please signup",
+			// Toast.LENGTH_LONG).show();
+			//
+			//
+			//
+			// }
+			//
+
+			// Users user =
+			// UserServiceFactory.getUserService().getCurrentUser();
+
 			fragment = new LoginFragment();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()

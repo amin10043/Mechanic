@@ -150,4 +150,21 @@ public class Utility {
 		return paddingIcon;
 	}
 
+	public int getScreenwidth() {
+		int columnWidth;
+		WindowManager wm = (WindowManager) context
+				.getSystemService(Context.WINDOW_SERVICE);
+		Display display = wm.getDefaultDisplay();
+
+		final Point point = new Point();
+		try {
+			display.getSize(point);
+		} catch (java.lang.NoSuchMethodError ignore) { // Older device
+			point.x = display.getWidth();
+			point.y = display.getHeight();
+		}
+		columnWidth = point.x;
+		return columnWidth;
+
+	}
 }
