@@ -19,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -26,7 +28,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
@@ -56,11 +57,12 @@ public class AnadFragment extends Fragment {
 	Anad tempItem;
 	int position;
 	private Anad x;
+	private ListView lstimg;
 
 	private int column = 3;
 	int gridePadding = 1;
 	private int columnWidth;
-	private ScrollView verticalScrollview;
+	// private ListView verticalScrollview;
 	private TextView verticalTextView;
 	private int verticalScrollMax;
 	private Timer scrollTimer = null;
@@ -81,7 +83,6 @@ public class AnadFragment extends Fragment {
 
 		verticalOuterLayout = (LinearLayout) view
 				.findViewById(R.id.vertical_outer_layout_id);
-		verticalScrollview = (ScrollView) view.findViewById(R.id.scrollView1);
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.anad);
 		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
@@ -134,11 +135,24 @@ public class AnadFragment extends Fragment {
 
 		lstAnad.setAdapter(ListAdapter);
 
-		ListView lstimg = (ListView) view.findViewById(R.id.listVanad2);
+		lstimg = (ListView) view.findViewById(R.id.listVanad2);
 		AnadImgListAdapter ListAdapter2 = new AnadImgListAdapter(getActivity(),
 				R.layout.row_anad_img, anadlist);
 
 		lstimg.setAdapter(ListAdapter2);
+
+		verticalOuterLayout = (LinearLayout) view
+				.findViewById(R.id.vertical_outer_layout_id);
+		ViewTreeObserver vto = verticalOuterLayout.getViewTreeObserver();
+		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+				verticalOuterLayout.getViewTreeObserver()
+						.removeGlobalOnLayoutListener(this);
+				getScrollMaxAmount();
+				startAutoScrolling();
+			}
+		});
 
 		txt1.setOnClickListener(new OnClickListener() {
 
@@ -219,7 +233,7 @@ public class AnadFragment extends Fragment {
 			scrollerSchedule = new TimerTask() {
 				@Override
 				public void run() {
-					// runOnUiThread(Timer_Tick);
+					getActivity().runOnUiThread(Timer_Tick);
 				}
 			};
 
@@ -228,13 +242,11 @@ public class AnadFragment extends Fragment {
 	}
 
 	public void moveScrollView() {
-		scrollPos = (int) (verticalScrollview.getScrollY() + 1.0);
+		scrollPos = (int) (lstimg.getScrollY() + 1.0);
 		if (scrollPos >= verticalScrollMax) {
 			scrollPos = 0;
-		} else {
-			verticalScrollview.scrollTo(0, scrollPos);
-			// Log.e("moveScrollView", "moveScrollView");
 		}
+		lstimg.scrollTo(0, scrollPos);
 	}
 
 	public void stopAutoScrolling() {
