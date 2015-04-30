@@ -24,6 +24,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.BerandFragment;
 import com.project.mechanic.fragment.IntroductionFragment;
+import com.project.mechanic.fragment.PublicationsFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class BerandListAdapter extends ArrayAdapter<ListItem> {
@@ -168,6 +169,9 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 		});
 
 		return convertView;
-
+	}
+		
+		
+		Public get
 	}
 }
