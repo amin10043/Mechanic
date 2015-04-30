@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -167,18 +166,18 @@ public class CreateIntroductionFragment extends Fragment {
 			}
 		});
 
-		Bitmap bitmapHeader = ((BitmapDrawable) btnHeader.getDrawable())
-				.getBitmap();
-
-		Bitmap bitmapProfil = ((BitmapDrawable) btnProfile.getDrawable())
-				.getBitmap();
-
-		Bitmap bitmapFooter = ((BitmapDrawable) btnFooter.getDrawable())
-				.getBitmap();
-
-		byte[] byteHeader = getBitmapAsByteArray(bitmapHeader);
-		byte[] byteProfil = getBitmapAsByteArray(bitmapProfil);
-		byte[] byteFooter = getBitmapAsByteArray(bitmapFooter);
+		// Bitmap bitmapHeader = ((BitmapDrawable) btnHeader.getDrawable())
+		// .getBitmap();
+		//
+		// Bitmap bitmapProfil = ((BitmapDrawable) btnProfile.getDrawable())
+		// .getBitmap();
+		//
+		// Bitmap bitmapFooter = ((BitmapDrawable) btnFooter.getDrawable())
+		// .getBitmap();
+		//
+		// byte[] byteHeader = getBitmapAsByteArray(bitmapHeader);
+		// byte[] byteProfil = getBitmapAsByteArray(bitmapProfil);
+		// byte[] byteFooter = getBitmapAsByteArray(bitmapFooter);
 
 		// btnSave.setOnClickListener(new OnClickListener() {
 		//
