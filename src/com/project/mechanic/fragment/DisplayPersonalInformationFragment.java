@@ -41,7 +41,7 @@ public class DisplayPersonalInformationFragment  extends Fragment {
 	TextView	txtemail=(TextView) view.findViewById(R.id.txtemail);
 	TextView	txtname=(TextView) view.findViewById(R.id.txtname);
 	TextView	txtfax=(TextView) view.findViewById(R.id.txtfax);
-	ImageView   img=(ImageView) view.findViewById(R.id.imageView1)	;
+	ImageView   img=(ImageView) view.findViewById(R.id.imgDialoganad)	;
 		
 //	ParseUser currentUser = ParseUser.getCurrentUser();
 //	if (currentUser != null) {

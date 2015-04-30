@@ -41,7 +41,9 @@ public class DialogcmtInfroum extends Dialog {
 				dbadapter.open();
 				int id = Integer.valueOf(f.getArguments().getString("Id"));
 				dbadapter.insertCommentInFroumtoDb(Cmttxt.getText().toString(),
-						id, 1, "1", 0);
+
+				id, 1, "1", 0, "0", "0");
+
 				dbadapter.close();
 				((FroumFragment) f).updateView2();
 				DialogcmtInfroum.this.dismiss();

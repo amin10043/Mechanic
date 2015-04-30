@@ -1,6 +1,8 @@
 package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -91,12 +93,14 @@ public class DialogAnad extends Dialog {
 				dbadapter = new DataBaseAdapter(context);
 
 				dbadapter.open();
+				String date = new SimpleDateFormat("yyyy-MM-dd")
+						.format(new Date());
 
 				if ((dialog_img1.getDrawable() == null)) {
 
 					dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
 							.getText().toString(), dialog_anad_et2.getText()
-							.toString(), 1, null, ticketTypeID, 0, 0, 0, 0, 0,
+							.toString(), 1, date, ticketTypeID, 0, 0, 0, 0, 0,
 							ProvinceId, UName.getText().toString(), UEmail
 									.getText().toString(), UPhonnumber
 									.getText().toString(), UFax.getText()
@@ -113,7 +117,7 @@ public class DialogAnad extends Dialog {
 					if (bitmap.sameAs(emptyBitmap)) {
 						dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
 								.getText().toString(), dialog_anad_et2
-								.getText().toString(), 1, null, ticketTypeID,
+								.getText().toString(), 1, date, ticketTypeID,
 								0, 0, 0, 0, 0, ProvinceId, UName.getText()
 										.toString(), UEmail.getText()
 										.toString(), UPhonnumber.getText()
@@ -124,7 +128,7 @@ public class DialogAnad extends Dialog {
 
 						dbadapter.insertTickettoDb(dialog_anad_et1.getText()
 								.toString(), dialog_anad_et2.getText()
-								.toString(), 1, bytes, null, ticketTypeID, 0,
+								.toString(), 1, bytes, date, ticketTypeID, 0,
 								0, 0, 0, 0, ProvinceId, UName.getText()
 										.toString(), UEmail.getText()
 										.toString(), UPhonnumber.getText()

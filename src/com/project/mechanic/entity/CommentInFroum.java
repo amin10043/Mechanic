@@ -2,11 +2,29 @@ package com.project.mechanic.entity;
 
 public class CommentInFroum {
 	int ID;
-	String Description;
+	String Desk;
 	int Froumid;
 	int UserId;
 	String Datetime;
 	int CommentId;
+	String NumOfLike;
+	String NumOfDislike;
+
+	public String getNumOfLike() {
+		return NumOfLike;
+	}
+
+	public void setNumOfLike(String numOfLike) {
+		NumOfLike = numOfLike;
+	}
+
+	public String getNumOfDislike() {
+		return NumOfDislike;
+	}
+
+	public void setNumOfDislike(String numOfDislike) {
+		NumOfDislike = numOfDislike;
+	}
 
 	public int getId() {
 		return ID;
@@ -16,12 +34,12 @@ public class CommentInFroum {
 		ID = id;
 	}
 
-	public String getDescription() {
-		return Description;
+	public String getDesk() {
+		return Desk;
 	}
 
-	public void setDescription(String description) {
-		Description = description;
+	public void setDesk(String desk) {
+		Desk = desk;
 	}
 
 	public int getFroumid() {
@@ -56,15 +74,18 @@ public class CommentInFroum {
 		CommentId = commentid;
 	}
 
-	public CommentInFroum(int id, String description, int froumId, int userId,
-			String datetime, int commentId) {
-		ID = id;
-		Description = description;
-		Froumid = froumId;
+	public CommentInFroum(int iD, String desk, int froumid, int userId,
+			String datetime, int commentId, String numofDisLike,
+			String numofLike) {
+		super();
+		ID = iD;
+		Desk = desk;
+		Froumid = froumid;
 		UserId = userId;
 		Datetime = datetime;
 		CommentId = commentId;
-
+		NumOfLike = numofLike;
+		NumOfDislike = numofDisLike;
 	}
 
 }

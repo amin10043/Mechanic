@@ -477,6 +477,7 @@ public class WelcomeScreen extends Activity {
 
 	}
 
+	// ////////////////////////////////////////////////////////////////////////////////////
 	public void getScrollMaxAmount() {
 		// int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 *
 		// 3));

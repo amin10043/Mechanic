@@ -1,6 +1,5 @@
 package com.project.mechanic.entity;
 
-import java.sql.Blob;
 
 public class Users {
 
@@ -9,11 +8,12 @@ public class Users {
 	String Email;
 	String Password;
 	String Phonenumber;
-     String Mobailenumber;
-     String Faxnumber;
-     String Address;
- 	byte[] Image;
- int	Serviceid;
+	String Mobailenumber;
+	String Faxnumber;
+	String Address;
+	byte[] Image;
+	int Serviceid;
+
 	public int getId() {
 		return Id;
 	}
@@ -29,7 +29,8 @@ public class Users {
 	public void setName(String name) {
 		Name = name;
 	}
-////////////////////////////////////////////
+
+	// //////////////////////////////////////////
 	public String getEmail() {
 		return Email;
 	}
@@ -37,7 +38,8 @@ public class Users {
 	public void setEmail(String email) {
 		Email = email;
 	}
-//////////////////////////////////////////////////
+
+	// ////////////////////////////////////////////////
 	public String getPassword() {
 		return Password;
 	}
@@ -45,7 +47,8 @@ public class Users {
 	public void setPassword(String password) {
 		Password = password;
 	}
-//////////////////////////////////////////////////////////////phonnumber
+
+	// ////////////////////////////////////////////////////////////phonnumber
 	public String getPhonenumber() {
 		return Phonenumber;
 
@@ -54,8 +57,9 @@ public class Users {
 	public void setPhonenumber(String phonennumber) {
 		this.Phonenumber = phonennumber;
 	}
-	////////////////////////////////////////////////////mobilenumber
-	
+
+	// //////////////////////////////////////////////////mobilenumber
+
 	public String getMobailenumber() {
 		return Mobailenumber;
 
@@ -64,8 +68,8 @@ public class Users {
 	public void setMobailenumber(String mobailenumber) {
 		this.Mobailenumber = mobailenumber;
 	}
-	
-	///////////////////////////////////////////////////faxenumber
+
+	// /////////////////////////////////////////////////faxenumber
 	public String getFaxnumber() {
 		return Faxnumber;
 
@@ -74,7 +78,8 @@ public class Users {
 	public void setFaxnumber(String faxnumber) {
 		this.Faxnumber = faxnumber;
 	}
-	////////////////////////////////////////////////////////////address
+
+	// //////////////////////////////////////////////////////////address
 	public String getAddress() {
 		return Address;
 
@@ -83,7 +88,8 @@ public class Users {
 	public void setAddress(String address) {
 		this.Address = address;
 	}
-//////////////////////////////////////////////////////////////
+
+	// ////////////////////////////////////////////////////////////
 	public byte[] getImage() {
 		return Image;
 	}
@@ -91,25 +97,24 @@ public class Users {
 	public void setImage(byte[] image) {
 		Image = image;
 	}
-///////////////////////////////////////////////////////////////////////////////////
+
+	// /////////////////////////////////////////////////////////////////////////////////
 	public Users(int id, String name, String email, String password,
-			String phonenumber, String mobailenumber,String faxnumber,
-		     String address, byte[] image, int serviceid)
-	{
+			String phonenumber, String mobailenumber, String faxnumber,
+			String address, byte[] image, int serviceid) {
 
 		super();
+
 		Id = id;
 		Name = name;
 		Email = email;
 		Password = password;
 		Phonenumber = phonenumber;
-		Mobailenumber=mobailenumber;
-		Faxnumber=faxnumber;
-		Address=address;
-		Image=image;
-		Serviceid=serviceid;
+		Mobailenumber = mobailenumber;
+		Faxnumber = faxnumber;
+		Address = address;
+		Image = image;
+		Serviceid = serviceid;
 	}
-
-	
 
 }
