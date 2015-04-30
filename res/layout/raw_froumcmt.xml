@@ -13,13 +13,12 @@
         android:layout_weight="10" >
 
         <ImageView
-            android:id="@+id/imgvCmtoTilte"
+            android:id="@+id/imgvCmtuser_Froumfragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_launcher" />
-
 
         <LinearLayout
             android:id="@+id/linearLayout1"
@@ -31,18 +30,16 @@
             android:orientation="horizontal" >
 
             <ImageButton
-                android:id="@+id/imgbtnLike_CmtFroum"
+                android:id="@+id/imgbtnDisLike_RawCmtFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
-                android:src="@drawable/negative" />
+                android:src="@drawable/positive" />
 
             <TextView
-
-                android:id="@+id/txtFax_Introduction"
+                android:id="@+id/txtNumofLike_RawCmtFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="23"
                 android:textColor="@color/red" />
         </LinearLayout>
 
@@ -55,17 +52,16 @@
             android:gravity="top" >
 
             <ImageButton
-                android:id="@+id/imgbtnFacebook_Object"
+                android:id="@+id/imgbtnLike_RawCmtFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
-                android:src="@drawable/positive" />
+                android:src="@drawable/negative" />
 
             <TextView
-                android:id="@+id/txtComment"
+                android:id="@+id/txtNumofDislike_RawCmtFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12"
                 android:textColor="@color/red" />
         </LinearLayout>
 
@@ -75,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/rawUsernamecmttxt_cmt"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/imgvCmtoTilte"
+            android:layout_toLeftOf="@+id/imgvCmtuser_Froumfragment"
             android:text="bghgfhfhf"
             android:textColor="@color/red" />
 
@@ -87,13 +83,12 @@
             android:layout_marginRight="12dp"
             android:layout_toLeftOf="@+id/rawUsernamecmttxt_cmt"
             android:textColor="@color/red" />
-
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="5" >
+        android:layout_weight="45" >
 
         <TextView
             android:id="@+id/rawCmttxt"
@@ -102,17 +97,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:hint=" "
-            android:text="نظر"
             android:textColor="@color/red" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_weight="40" >
-
     </RelativeLayout>
 
     <RelativeLayout
