@@ -5,51 +5,24 @@
     android:layout_height="match_parent"
     android:background="@drawable/list_item" >
 
-    <ImageView
-        android:id="@+id/icon_item"
+    <FrameLayout
+        android:id="@+id/frame_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/google" />
-
-    <LinearLayout
-        android:id="@+id/linear_star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/icon_item"
-        android:layout_toRightOf="@+id/icon_item"
-        android:orientation="horizontal" >
+        android:layout_alignParentLeft="true" >
 
         <ImageView
-            android:id="@+id/star1"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/ic_star_off" />
+            android:id="@+id/icon_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="3dp"
+            android:src="@drawable/profile_account" />
 
         <ImageView
-            android:id="@+id/star2"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/ic_star_off" />
-
-        <ImageView
-            android:id="@+id/star3"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/ic_star_off" />
-
-        <ImageView
-            android:id="@+id/star4"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/ic_star_off" />
-
-        <ImageView
-            android:id="@+id/star5"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/ic_star_off" />
-    </LinearLayout>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/profile_icon_shape" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/Rowobjecttxt"
@@ -59,5 +32,11 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:text="Large Text" />
+
+    <RatingBar
+        android:id="@+id/ratingBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true" />
 
 </RelativeLayout>
