@@ -37,6 +37,7 @@ import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class AnadFragment extends Fragment {
 
@@ -209,12 +210,16 @@ public class AnadFragment extends Fragment {
 	}
 
 	public void getScrollMaxAmount() {
+		// int actualWidth = (verticalOuterLayout.getMeasuredHeight()-(256*3));
+		// verticalScrollMax = actualWidth;
+
 		// int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 *
 		// 3));
-		int actualWidth = (verticalOuterLayout.getMeasuredHeight());
-		verticalScrollMax = actualWidth;
+		// int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 *
+		// 3));
+		// verticalScrollMax = actualWidth;
 		// verticalScrollMax = verticalScrollview.getHeight();
-		// verticalScrollMax = new Utility(this).getScreenHeight();
+		verticalScrollMax = new Utility(getActivity()).getScreenHeight();
 	}
 
 	public void startAutoScrolling() {

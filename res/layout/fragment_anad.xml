@@ -44,39 +44,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="3" >
+        android:layout_weight="3"
+        android:weightSum="10" >
 
-        <ScrollView
-            android:id="@+id/vertical_scrollview_id"
+        <LinearLayout
+            android:id="@+id/vertical_outer_layout_id"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2" >
+            android:layout_weight="7"
+            android:orientation="vertical" >
 
-            <LinearLayout
-                android:id="@+id/vertical_outer_layout_id"
+            <ListView
+                android:id="@+id/listVanad2"
+                style="@style/second_item_style"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical" >
-
-                <ListView
-                    android:id="@+id/listVanad2"
-                    style="@style/second_item_style"
-                    android:layout_width="match_parent"
-                    android:layout_height="480dp"
-                    android:dividerHeight="0dp" >
-                </ListView>
-            </LinearLayout>
-        </ScrollView>
+                android:dividerHeight="0dp"
+                android:scrollbars="none" >
+            </ListView>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
+            android:layout_weight="3" >
 
             <ListView
                 android:id="@+id/listVanad"
                 style="@style/second_item_style"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:dividerHeight="0dp" >
