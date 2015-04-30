@@ -499,7 +499,7 @@ public class DataBaseAdapter {
 					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
-					cursor.getString(19), cursor.getInt(25));
+					cursor.getString(19), cursor.getInt(24));
 			result.add(tempObject);
 		}
 		return result;
