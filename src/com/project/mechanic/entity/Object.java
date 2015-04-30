@@ -5,7 +5,7 @@ public class Object {
 	int Id;
 	int ObjectTypeId;
 	int ObjectBrandTypeId;
-	int rate;
+
 	String Name;
 	String Phone;
 	String Email;
@@ -20,6 +20,7 @@ public class Object {
 	String Facebook;
 	String Instagram;
 	String LinkedIn;
+	int rate;
 
 	public String getFacebook() {
 		return Facebook;
@@ -222,12 +223,21 @@ public class Object {
 		Image4 = image4;
 	}
 
+	public int getRate() {
+		return rate;
+	}
+
+	public void setRate(int Rate) {
+		rate = Rate;
+	}
+
 	public Object(int id, String name, String phone, String email, String fax,
 			String description, Byte[] image1, Byte[] image2, Byte[] image3,
 			Byte[] image4, String pdf1, String pdf2, String pdf3, String pdf4,
 			String address, String cellphone, int objectTypeId,
 			int objectBrandTypeId, String facebook, String instagram,
-			String linkedIn, String google, String site, String twitter) {
+			String linkedIn, String google, String site, String twitter,
+			int rate) {
 		super();
 		Id = id;
 		Name = name;
@@ -253,6 +263,7 @@ public class Object {
 		Google = google;
 		Site = site;
 		Twitter = twitter;
+		this.rate = rate;
 
 	}
 
