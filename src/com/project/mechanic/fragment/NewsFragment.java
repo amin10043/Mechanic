@@ -3,8 +3,6 @@ package com.project.mechanic.fragment;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -28,11 +26,11 @@ public class NewsFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		// id = Integer.valueOf(getArguments().getString("Id"));
+		id = Integer.valueOf(getArguments().getString("Id"));
 
-		SharedPreferences getData = getActivity().getSharedPreferences("Id",
-				Context.MODE_PRIVATE);
-		id = getData.getInt("main_Id", 0);
+		// SharedPreferences getData = getActivity().getSharedPreferences("Id",
+		// Context.MODE_PRIVATE);
+		// id = getData.getInt("main_Id", 0);
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.News);
 		View view = inflater.inflate(R.layout.fragment_news, null);

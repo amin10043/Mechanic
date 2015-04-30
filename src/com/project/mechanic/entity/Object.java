@@ -5,6 +5,7 @@ public class Object {
 	int Id;
 	int ObjectTypeId;
 	int ObjectBrandTypeId;
+
 	String Name;
 	String Phone;
 	String Email;
@@ -19,7 +20,8 @@ public class Object {
 	String Facebook;
 	String Instagram;
 	String LinkedIn;
-	
+	int rate;
+
 	public String getFacebook() {
 		return Facebook;
 	}
@@ -71,7 +73,7 @@ public class Object {
 	String Google;
 	String Twitter;
 	String Site;
-	
+
 	public int getObjectTypeId() {
 		return ObjectTypeId;
 	}
@@ -140,7 +142,6 @@ public class Object {
 	Byte[] Image2;
 	Byte[] Image3;
 	Byte[] Image4;
-	
 
 	public int getId() {
 		return Id;
@@ -222,9 +223,21 @@ public class Object {
 		Image4 = image4;
 	}
 
+	public int getRate() {
+		return rate;
+	}
+
+	public void setRate(int Rate) {
+		rate = Rate;
+	}
+
 	public Object(int id, String name, String phone, String email, String fax,
 			String description, Byte[] image1, Byte[] image2, Byte[] image3,
-			Byte[] image4, String pdf1,String pdf2,String pdf3,String pdf4,String address,String cellphone,int objectTypeId,int objectBrandTypeId, String facebook,String instagram,String linkedIn, String google,String site , String twitter ) {
+			Byte[] image4, String pdf1, String pdf2, String pdf3, String pdf4,
+			String address, String cellphone, int objectTypeId,
+			int objectBrandTypeId, String facebook, String instagram,
+			String linkedIn, String google, String site, String twitter,
+			int rate) {
 		super();
 		Id = id;
 		Name = name;
@@ -236,21 +249,22 @@ public class Object {
 		Image2 = image2;
 		Image3 = image3;
 		Image4 = image4;
-		Pdf1   = pdf1;
-		Pdf2   = pdf2;
-		Pdf3   = pdf3;
-		Pdf4   = pdf4;
-		Address=address;
-		Cellphone= cellphone;
-		ObjectTypeId=objectTypeId;
-		ObjectBrandTypeId= objectBrandTypeId;
-		Facebook=facebook;
-		Instagram=instagram;
-		LinkedIn=linkedIn;
-		Google=google;
-		Site=site;
-		Twitter=twitter;
-		
+		Pdf1 = pdf1;
+		Pdf2 = pdf2;
+		Pdf3 = pdf3;
+		Pdf4 = pdf4;
+		Address = address;
+		Cellphone = cellphone;
+		ObjectTypeId = objectTypeId;
+		ObjectBrandTypeId = objectBrandTypeId;
+		Facebook = facebook;
+		Instagram = instagram;
+		LinkedIn = linkedIn;
+		Google = google;
+		Site = site;
+		Twitter = twitter;
+		this.rate = rate;
+
 	}
 
 }

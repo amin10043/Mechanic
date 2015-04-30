@@ -43,23 +43,41 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:weightSum="10" >
 
-        <ListView
-            android:id="@+id/listVanad2"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/vertical_outer_layout_id"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2" >
-        </ListView>
+            android:layout_weight="7"
+            android:orientation="vertical" >
 
-        <ListView
-            android:id="@+id/listVanad"
-            style="@style/second_item_style"
-            android:layout_width="wrap_content"
+            <ListView
+                android:id="@+id/listVanad2"
+                style="@style/second_item_style"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dividerHeight="0dp"
+                android:scrollbars="none" >
+            </ListView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:dividerHeight="0dp" >
-        </ListView>
+            android:layout_weight="3" >
+
+            <ListView
+                android:id="@+id/listVanad"
+                style="@style/second_item_style"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:dividerHeight="0dp" >
+            </ListView>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
