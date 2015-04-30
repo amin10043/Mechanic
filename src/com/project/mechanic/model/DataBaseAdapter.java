@@ -2,6 +2,7 @@ package com.project.mechanic.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -465,6 +466,7 @@ public class DataBaseAdapter {
 			result.add(tempProvince);
 		}
 
+		Arrays.sort(result.toArray());
 		return result;
 
 	}
@@ -828,7 +830,7 @@ public class DataBaseAdapter {
 				cursor.getString(14), cursor.getString(15), cursor.getInt(16),
 				cursor.getInt(17), cursor.getString(18), cursor.getString(19),
 				cursor.getString(20), cursor.getString(21),
-				cursor.getString(22), cursor.getString(23), cursor.getInt(25));
+				cursor.getString(22), cursor.getString(23), cursor.getInt(24));
 		return tempObject;
 	}
 
