@@ -11,5 +11,9 @@
     <color name="gray">#707171</color>
     <color name="light_blue2">#2eb7fc</color>
     <color name="white">#ffffff</color>
+    <color name="banafsh">#BF00FF</color>
+    <color name="narenji">#FF8000</color>
+    <color name="sabz">#01DF3A</color>
+    <color name="red2">#FF0000</color>
 
 </resources>

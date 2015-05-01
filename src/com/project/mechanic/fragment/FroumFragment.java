@@ -18,7 +18,9 @@ import com.project.mechanic.R;
 import com.project.mechanic.adapter.FroumListAdapter;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class FroumFragment extends Fragment {
 
@@ -102,8 +104,12 @@ public class FroumFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
+				Utility utility = new Utility(getActivity());
+				Users user = new Users();
+				user = utility.getCurrentUser();
+				int userid = user.getId();
 				adapter.open();
-				adapter.insertLikeInFroumToDb(1, 0, "", 1);
+				adapter.insertLikeInFroumToDb(userid, 0, "", 1);
 				NumofLike.setText(adapter.LikeInFroum_count().toString());
 				adapter.close();
 

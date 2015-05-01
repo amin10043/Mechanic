@@ -20,6 +20,7 @@ import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.Executertype;
 import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.LikeInComment;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.LikeInPaper;
 import com.project.mechanic.entity.ListItem;
@@ -69,6 +70,7 @@ public class DataBaseAdapter {
 	private String TableWorkmanType = "WorkmanType";
 	private String TableCommentInObject = "CommentInObject";
 	private String TableCommentInFroum = "CommentInFroum";
+	private String TableLikeInComment = "LikeInComment";
 
 	private String TableCommentInPaper = "CommentInPapers";
 
@@ -97,6 +99,7 @@ public class DataBaseAdapter {
 			"CommentId" };
 	private String[] LikeInFroum = { "Id", "UserId", "FroumId", "Date",
 			"CommentId" };
+	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike" };
 	private String[] LikeInPaper = { "Id", "UserId", "PaperId", "Date",
 			"CommentId" };
 	private String[] List = { "ID", "Name", "ParentId" };
@@ -106,7 +109,7 @@ public class DataBaseAdapter {
 			"Description", "Image1", "Image2", "Image3", "Image4", "Pdf1",
 			"Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId",
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
-			"Site", "Twitter", "rate" };
+			"Site", "Twitter", "ParentId", "rate" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
@@ -500,7 +503,9 @@ public class DataBaseAdapter {
 					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
-					cursor.getString(19), cursor.getInt(25));
+
+					cursor.getString(19), cursor.getInt(25), cursor.getInt(26));
+
 			result.add(tempObject);
 		}
 		return result;
@@ -809,6 +814,14 @@ public class DataBaseAdapter {
 
 	}
 
+	@SuppressWarnings("unused")
+	private LikeInComment CursorToLikeInComment(Cursor cursor) {
+		LikeInComment temp = new LikeInComment(cursor.getInt(0),
+				cursor.getInt(1), cursor.getInt(2), cursor.getInt(3));
+		return temp;
+
+	}
+
 	private City CursorToCity(Cursor cursor) {
 		City tempCity = new City(cursor.getInt(0), cursor.getString(1),
 				cursor.getInt(2));
@@ -831,7 +844,8 @@ public class DataBaseAdapter {
 				cursor.getString(14), cursor.getString(15), cursor.getInt(16),
 				cursor.getInt(17), cursor.getString(18), cursor.getString(19),
 				cursor.getString(20), cursor.getString(21),
-				cursor.getString(22), cursor.getString(23), cursor.getInt(24));
+				cursor.getString(22), cursor.getString(23), cursor.getInt(24),
+				cursor.getInt(25));
 		return tempObject;
 	}
 
@@ -1316,21 +1330,66 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertCmtLikebyid(int id, String numofLike) {
-
-		ContentValues uc = new ContentValues();
-		uc.put("NumOfLike", numofLike);
-		mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+	public void insertCmtLikebyid(int id, String numofLike, int UserId) {
+		if (!isUserLikedComment(UserId, id)) {
+			ContentValues uc = new ContentValues();
+			uc.put("NumOfLike", numofLike);
+			mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+		}
 	}
 
-	public void insertCmtDisLikebyid(int id, String numofDisLike) {
+	public void insertLikeInCommentToDb(int UserId, int ISLike, int CommentId) {
 
 		ContentValues uc = new ContentValues();
-		uc.put("NumOfDislike", numofDisLike);
-		mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+
+		uc.put("UserId", UserId);
+
+		uc.put("CommentId", CommentId);
+		uc.put("IsLike", ISLike);
+
+		long res = mDb.insert(TableLikeInComment, null, uc);
+		long res2 = res;
 	}
 
-	public Users getUsernamebyid(int id) {
+	public boolean isUserLikedComment(int userId, int CommentId) {
+
+		Cursor curs = mDb.rawQuery(
+				"SELECT COUNT(*) AS NUM FROM " + TableLikeInComment
+						+ " WHERE UserId= " + String.valueOf(userId)
+						+ " AND CommentId=" + String.valueOf(CommentId)
+						+ " AND IsLike=" + "1", null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
+	public boolean isUserDisLikedComment(int userId, int CommentId) {
+
+		Cursor curs = mDb.rawQuery(
+				"SELECT COUNT(*) AS NUM FROM " + TableLikeInComment
+						+ " WHERE UserId= " + String.valueOf(userId)
+						+ " AND CommentId=" + String.valueOf(CommentId)
+						+ " AND IsLike=" + "0", null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
+	public void insertCmtDisLikebyid(int id, String numofDisLike, int UserId) {
+		if (!isUserDisLikedComment(UserId, id)) {
+			ContentValues uc = new ContentValues();
+			uc.put("NumOfDislike", numofDisLike);
+			mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+		}
+	}
+
+	public Users getUserbyid(int id) {
 
 		Users result = null;
 
@@ -1581,12 +1640,29 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<Object> getObjectbyParentId(int parentid) {
+
+		ArrayList<Object> result = new ArrayList<Object>();
+		Object item = null;
+
+		Cursor mCur = mDb.query(TableObject, Object, "ParentId=?",
+				new String[] { String.valueOf(parentid) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToObject(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
 	public ArrayList<Object> getObjectBy_BTId_CityId(int Object_id, int City_id) {
 		ArrayList<Object> result = new ArrayList<Object>();
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter,O.rate From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
@@ -1603,7 +1679,9 @@ public class DataBaseAdapter {
 					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
-					cursor.getString(19), cursor.getInt(25));
+
+					cursor.getString(19), cursor.getInt(25), cursor.getInt(27));
+
 			result.add(tempObject);
 		}
 		return result;

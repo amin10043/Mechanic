@@ -79,7 +79,7 @@
                 android:textColor="@color/transparent" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/txttitledialog"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/txtsize10"

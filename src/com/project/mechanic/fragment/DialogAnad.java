@@ -48,7 +48,7 @@ public class DialogAnad extends Dialog {
 	String Bytimage;
 	int ProvinceId;
 	protected byte[] img;
-	String TABLE_NAME = "Ticket";
+	String TABLE_NAME = "Object";
 
 	public DialogAnad(Context context, int resourceId, Fragment fragment,
 			int ticketTypeID, int ProvinceId) {
