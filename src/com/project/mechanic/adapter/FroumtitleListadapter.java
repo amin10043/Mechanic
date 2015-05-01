@@ -62,7 +62,7 @@ public class FroumtitleListadapter  extends ArrayAdapter<Froum>{
 	    Froum person1 = mylist.get(position);
 	    
 	    adapter.open();
-		Users x = adapter.getUsernamebyid(person1.getUserId());
+		Users x = adapter.getUserbyid(person1.getUserId());
 		adapter.close();
 		txt1.setText(person1.getTitle());
 		txt2.setText(person1.getDescription());

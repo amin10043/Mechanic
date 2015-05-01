@@ -19,6 +19,7 @@ import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.Executertype;
 import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.LikeInComment;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.LikeInPaper;
 import com.project.mechanic.entity.ListItem;
@@ -68,6 +69,7 @@ public class DataBaseAdapter {
 	private String TableWorkmanType = "WorkmanType";
 	private String TableCommentInObject = "CommentInObject";
 	private String TableCommentInFroum = "CommentInFroum";
+	private String TableLikeInComment = "LikeInComment";
 
 	private String TableCommentInPaper = "CommentInPapers";
 
@@ -96,6 +98,7 @@ public class DataBaseAdapter {
 			"CommentId" };
 	private String[] LikeInFroum = { "Id", "UserId", "FroumId", "Date",
 			"CommentId" };
+	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike" };
 	private String[] LikeInPaper = { "Id", "UserId", "PaperId", "Date",
 			"CommentId" };
 	private String[] List = { "ID", "Name", "ParentId" };
@@ -808,6 +811,14 @@ public class DataBaseAdapter {
 
 	}
 
+	@SuppressWarnings("unused")
+	private LikeInComment CursorToLikeInComment(Cursor cursor) {
+		LikeInComment temp = new LikeInComment(cursor.getInt(0),
+				cursor.getInt(1), cursor.getInt(2), cursor.getInt(3));
+		return temp;
+
+	}
+
 	private City CursorToCity(Cursor cursor) {
 		City tempCity = new City(cursor.getInt(0), cursor.getString(1),
 				cursor.getInt(2));
@@ -1316,19 +1327,33 @@ public class DataBaseAdapter {
 	}
 
 	public void insertCmtLikebyid(int id, String numofLike, int UserId) {
-		if (!isUserLikedFroum(UserId, id)) {
+		if (!isUserLikedComment(UserId, id)) {
 			ContentValues uc = new ContentValues();
 			uc.put("NumOfLike", numofLike);
 			mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
 		}
 	}
 
-	public boolean isUserLikedCmt(int userId, int ID) {
+	public void insertLikeInCommentToDb(int UserId, int ISLike, int CommentId) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("UserId", UserId);
+
+		uc.put("CommentId", CommentId);
+		uc.put("IsLike", ISLike);
+
+		long res = mDb.insert(TableLikeInComment, null, uc);
+		long res2 = res;
+	}
+
+	public boolean isUserLikedComment(int userId, int CommentId) {
 
 		Cursor curs = mDb.rawQuery(
-				"SELECT COUNT(*) AS NUM FROM " + TableCommentInFroum
+				"SELECT COUNT(*) AS NUM FROM " + TableLikeInComment
 						+ " WHERE UserId= " + String.valueOf(userId)
-						+ " AND ID=" + String.valueOf(ID), null);
+						+ " AND CommentId=" + String.valueOf(CommentId)
+						+ " AND IsLike=" + "1", null);
 		if (curs.moveToNext()) {
 			int number = curs.getInt(0);
 			if (number > 0)
@@ -1337,14 +1362,30 @@ public class DataBaseAdapter {
 		return false;
 	}
 
-	public void insertCmtDisLikebyid(int id, String numofDisLike) {
+	public boolean isUserDisLikedComment(int userId, int CommentId) {
 
-		ContentValues uc = new ContentValues();
-		uc.put("NumOfDislike", numofDisLike);
-		mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+		Cursor curs = mDb.rawQuery(
+				"SELECT COUNT(*) AS NUM FROM " + TableLikeInComment
+						+ " WHERE UserId= " + String.valueOf(userId)
+						+ " AND CommentId=" + String.valueOf(CommentId)
+						+ " AND IsLike=" + "0", null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
 	}
 
-	public Users getUsernamebyid(int id) {
+	public void insertCmtDisLikebyid(int id, String numofDisLike, int UserId) {
+		if (!isUserDisLikedComment(UserId, id)) {
+			ContentValues uc = new ContentValues();
+			uc.put("NumOfDislike", numofDisLike);
+			mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+		}
+	}
+
+	public Users getUserbyid(int id) {
 
 		Users result = null;
 

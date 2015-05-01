@@ -1,6 +1,5 @@
 package com.project.mechanic.entity;
 
-
 public class Users {
 
 	int Id;
@@ -115,6 +114,10 @@ public class Users {
 		Address = address;
 		Image = image;
 		Serviceid = serviceid;
+	}
+
+	public Users() {
+		super();
 	}
 
 }
