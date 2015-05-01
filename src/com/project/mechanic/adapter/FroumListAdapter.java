@@ -115,7 +115,7 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				int c = Integer.valueOf(a.getNumOfLike());
 				int k = c + 1;
 				String f = String.valueOf(k);
-				adapter.insertCmtLikebyid(id, f);
+				adapter.insertCmtLikebyid(id, f, 1);
 				a = adapter.getCommentInFroumbyID(id);
 				txtlike.setText(a.getNumOfLike());
 				adapter.close();

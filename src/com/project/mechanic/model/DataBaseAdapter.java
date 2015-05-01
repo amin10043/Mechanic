@@ -1313,11 +1313,26 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertCmtLikebyid(int id, String numofLike) {
+	public void insertCmtLikebyid(int id, String numofLike, int UserId) {
+		if (!isUserLikedFroum(UserId, id)) {
+			ContentValues uc = new ContentValues();
+			uc.put("NumOfLike", numofLike);
+			mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+		}
+	}
 
-		ContentValues uc = new ContentValues();
-		uc.put("NumOfLike", numofLike);
-		mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+	public boolean isUserLikedCmt(int userId, int ID) {
+
+		Cursor curs = mDb.rawQuery(
+				"SELECT COUNT(*) AS NUM FROM " + TableCommentInFroum
+						+ " WHERE UserId= " + String.valueOf(userId)
+						+ " AND ID=" + String.valueOf(ID), null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
 	}
 
 	public void insertCmtDisLikebyid(int id, String numofDisLike) {
