@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Ticket;
+import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.fragment.ShowAdFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -49,15 +50,16 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_anad, parent, false);
-
+		TextView txtdate = (TextView) convertView.findViewById(R.id.textdate);
 		TextView txtName = (TextView) convertView
 				.findViewById(R.id.row_anad_txt);
 		// ImageView img = (ImageView)
 		// convertView.findViewById(R.id.row_anad_img);
 		ImageView img2 = (ImageView) convertView
 				.findViewById(R.id.row_anad_img2);
-
+		PersianDate date = new PersianDate();
 		tempItem = list.get(position);
+		txtdate.setText(date.todayShamsi());
 		txtName.setText(tempItem.getTitle());
 		byte[] bitmapbyte = tempItem.getImage();
 		if (bitmapbyte != null) {

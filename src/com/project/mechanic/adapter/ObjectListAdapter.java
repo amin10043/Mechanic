@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +23,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class ObjectListAdapter extends ArrayAdapter<Object> {
 
@@ -30,6 +31,8 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 	List<Object> list;
 	int lastPosition = 0;
 	DataBaseAdapter adapter;
+	RatingBar rating;
+	Utility util;
 
 	public ObjectListAdapter(Context context, int resource, List<Object> objact) {
 		super(context, resource, objact);
@@ -37,6 +40,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
+		util = new Utility(context);
 
 	}
 
@@ -64,46 +68,49 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BROYA.TTF");
 		txt1.setTypeface(typeFace);
+		rating = (RatingBar) convertView.findViewById(R.id.ratingBar1);
 
-		String item = txt1.getText().toString();
+		rating.setRating(person.getRate());
 
-		final ImageView img = (ImageView) convertView
-				.findViewById(R.id.icon_item);
-		final ImageView star1Img = (ImageView) convertView
-				.findViewById(R.id.star1);
-		final ImageView star2Img = (ImageView) convertView
-				.findViewById(R.id.star2);
-		final ImageView star3Img = (ImageView) convertView
-				.findViewById(R.id.star3);
-		final ImageView star4Img = (ImageView) convertView
-				.findViewById(R.id.star4);
-		final ImageView star5Img = (ImageView) convertView
-				.findViewById(R.id.star5);
+		// String item = txt1.getText().toString();
 
-		int id = 0;
-		for (Object listItem : list) {
-			if (item.equals(listItem.getName())) {
-				// check authentication and authorization
-				id = listItem.getId();
-			}
-		}
+		// final ImageView img = (ImageView) convertView
+		// .findViewById(R.id.icon_item);
+		// final ImageView star1Img = (ImageView) convertView
+		// .findViewById(R.id.star1);
+		// final ImageView star2Img = (ImageView) convertView
+		// .findViewById(R.id.star2);
+		// final ImageView star3Img = (ImageView) convertView
+		// .findViewById(R.id.star3);
+		// final ImageView star4Img = (ImageView) convertView
+		// .findViewById(R.id.star4);
+		// final ImageView star5Img = (ImageView) convertView
+		// .findViewById(R.id.star5);
 
-		adapter.open();
-		int res = adapter.getNumberOfListItemChilds(id);
-		if (res > 0) {
-			img.setBackgroundResource(R.drawable.profile_account);
-			star1Img.setBackgroundResource(R.drawable.ic_star_on);
-			star2Img.setBackgroundResource(R.drawable.ic_star_on);
-			star3Img.setBackgroundResource(R.drawable.ic_star_on);
-			star4Img.setBackgroundResource(R.drawable.ic_star_on);
-			star5Img.setBackgroundResource(R.drawable.ic_star_on);
+		// int id = 0;
+		// for (Object listItem : list) {
+		// if (item.equals(listItem.getName())) {
+		// // check authentication and authorization
+		// id = listItem.getId();
+		// }
+		// }
+		//
+		// adapter.open();
+		// int res = adapter.getNumberOfListItemChilds(id);
+		// if (res > 0) {
+		// img.setBackgroundResource(R.drawable.profile_account);
+		// star1Img.setBackgroundResource(R.drawable.ic_star_on);
+		// star2Img.setBackgroundResource(R.drawable.ic_star_on);
+		// star3Img.setBackgroundResource(R.drawable.ic_star_on);
+		// star4Img.setBackgroundResource(R.drawable.ic_star_on);
+		// star5Img.setBackgroundResource(R.drawable.ic_star_on);
+		//
+		// } else
+		//
+		// Toast.makeText(context, "object list adapter", Toast.LENGTH_SHORT)
+		// .show();
 
-		} else
-
-			Toast.makeText(context, "object list adapter", Toast.LENGTH_SHORT)
-					.show();
-
-		adapter.close();
+		// adapter.close();
 
 		convertView.setOnClickListener(new OnClickListener() {
 
@@ -138,5 +145,4 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		});
 		return convertView;
 	}
-
 }

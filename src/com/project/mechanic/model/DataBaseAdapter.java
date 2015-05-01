@@ -2,6 +2,7 @@ package com.project.mechanic.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -104,7 +105,7 @@ public class DataBaseAdapter {
 			"Description", "Image1", "Image2", "Image3", "Image4", "Pdf1",
 			"Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId",
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
-			"Site", "Twitter" };
+			"Site", "Twitter", "rate" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
@@ -465,6 +466,7 @@ public class DataBaseAdapter {
 			result.add(tempProvince);
 		}
 
+		Arrays.sort(result.toArray());
 		return result;
 
 	}
@@ -497,7 +499,7 @@ public class DataBaseAdapter {
 					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
-					cursor.getString(19));
+					cursor.getString(19), cursor.getInt(24));
 			result.add(tempObject);
 		}
 		return result;
@@ -828,7 +830,7 @@ public class DataBaseAdapter {
 				cursor.getString(14), cursor.getString(15), cursor.getInt(16),
 				cursor.getInt(17), cursor.getString(18), cursor.getString(19),
 				cursor.getString(20), cursor.getString(21),
-				cursor.getString(22), cursor.getString(23));
+				cursor.getString(22), cursor.getString(23), cursor.getInt(24));
 		return tempObject;
 	}
 
@@ -1598,7 +1600,7 @@ public class DataBaseAdapter {
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter,O.rate From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
@@ -1615,7 +1617,7 @@ public class DataBaseAdapter {
 					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
-					cursor.getString(19));
+					cursor.getString(19), cursor.getInt(24));
 			result.add(tempObject);
 		}
 		return result;
