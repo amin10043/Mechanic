@@ -68,6 +68,9 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BROYA.TTF");
 		txt1.setTypeface(typeFace);
+		rating = (RatingBar) convertView.findViewById(R.id.ratingBar1);
+
+		rating.setRating(person.getRate());
 
 		// String item = txt1.getText().toString();
 
@@ -142,5 +145,4 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		});
 		return convertView;
 	}
-
 }

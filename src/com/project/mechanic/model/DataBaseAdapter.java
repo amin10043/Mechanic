@@ -499,7 +499,9 @@ public class DataBaseAdapter {
 					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
+
 					cursor.getString(19), cursor.getInt(25), cursor.getInt(26));
+
 			result.add(tempObject);
 		}
 		return result;
@@ -1603,7 +1605,7 @@ public class DataBaseAdapter {
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter,O.rate From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
@@ -1620,7 +1622,9 @@ public class DataBaseAdapter {
 					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
+
 					cursor.getString(19), cursor.getInt(25), cursor.getInt(27));
+
 			result.add(tempObject);
 		}
 		return result;
