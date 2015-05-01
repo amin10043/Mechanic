@@ -23,7 +23,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.BerandFragment;
-import com.project.mechanic.fragment.IntroductionFragment;
+import com.project.mechanic.fragment.MainBrandFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class BerandListAdapter extends ArrayAdapter<ListItem> {
@@ -154,7 +154,7 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 				} else {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					IntroductionFragment fragment = new IntroductionFragment();
+					MainBrandFragment fragment = new MainBrandFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
 					fragment.setArguments(bundle);
