@@ -3,7 +3,6 @@ package com.project.mechanic.fragment;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,24 +19,23 @@ import com.project.mechanic.model.DataBaseAdapter;
 public class MainBrandFragment extends Fragment {
 
 	DataBaseAdapter adapter;
+	int id;
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+
+		id = Integer.valueOf(getArguments().getString("Id"));
+
 		((MainActivity) getActivity()).setTitle(R.string.object);
 
 		View view = inflater.inflate(R.layout.fragment_object, null);
 
-		SharedPreferences sendData = getActivity()
-				.getSharedPreferences("Id", 0);
-		// int id = sendData.getInt("main_Id", -1);
-		// int parentid = Integer.valueOf(getArguments().getString("ParentId"));
-
 		adapter = new DataBaseAdapter(getActivity());
 
 		adapter.open();
-		ArrayList<Object> mylist = adapter.getObjectbyParentId(15);
+		ArrayList<Object> mylist = adapter.getObjectbyParentId(id);
 		adapter.close();
 
 		ListView lstObject = (ListView) view
