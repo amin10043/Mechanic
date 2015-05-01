@@ -17,7 +17,6 @@ import com.project.mechanic.entity.Object;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class MainBrandFragment extends Fragment {
-
 	DataBaseAdapter adapter;
 	int id;
 
