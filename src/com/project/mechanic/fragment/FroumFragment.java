@@ -116,29 +116,13 @@ public class FroumFragment extends Fragment {
 			}
 		});
 
-		Replytocm = (ImageButton) view.findViewById(R.id.imgvReplytoCm);
-		/*
-		 * Replytocm.setOnClickListener(new OnClickListener(){
-		 * 
-		 * @Override public void onClick(View arg0) {
-		 * 
-		 * dialog = new Dialogcmt(getActivity(),R.layout.dialog_addcomment);
-		 * dialog.show();
-		 * 
-		 * }
-		 * 
-		 * 
-		 * 
-		 * });
-		 */
-
 		btnAddcmt.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 
-				dialog = new DialogcmtInfroum(FroumFragment.this,
+				dialog = new DialogcmtInfroum(FroumFragment.this, 1,
 						getActivity(), R.layout.dialog_addcomment);
 				dialog.show();
 

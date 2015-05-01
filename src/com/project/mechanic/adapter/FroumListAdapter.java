@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
@@ -29,6 +32,7 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 	DataBaseAdapter adapter;
 	private ImageButton CmtLike;
 	private ImageButton CmtDisLike;
+	private ImageButton Replytocm;
 	private TextView NumofCmtLike;
 	private TextView NumofCmtDisLike;
 	private ImageView Userimage;
@@ -169,6 +173,35 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 			}
 		});
 
+		Replytocm = (ImageButton) convertView.findViewById(R.id.imgvReplytoCm);
+		Replytocm.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				LinearLayout parentlayout = (LinearLayout) v.getParent()
+						.getParent().getParent();
+				View view = parentlayout.findViewById(R.id.rawCmttxt);
+				TextView x = (TextView) view;
+				String item = x.getText().toString();
+				int id = 0;
+				for (CommentInFroum listItem : list) {
+					if (item.equals(listItem.getDesk())) {
+
+						id = listItem.getId();
+					}
+				}
+
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				DialogcmtInfroum dialog = new DialogcmtInfroum(null, id,
+						context, R.layout.dialog_addcomment);
+				dialog.show();
+
+			}
+
+		});
+
 		return convertView;
 	}
+
 }

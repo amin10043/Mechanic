@@ -25,11 +25,14 @@ public class DialogcmtInfroum extends Dialog {
 	Context context;
 	Fragment f;
 	List<Users> list;
+	private int Commentid;
 
-	public DialogcmtInfroum(Fragment f, Context context, int resourceId) {
+	public DialogcmtInfroum(Fragment f, int Commentid, Context context,
+			int resourceId) {
 		super(context);
 		this.context = context;
 		this.f = f;
+		this.Commentid = Commentid;
 	}
 
 	@Override
@@ -51,8 +54,7 @@ public class DialogcmtInfroum extends Dialog {
 				dbadapter.open();
 				int id = Integer.valueOf(f.getArguments().getString("Id"));
 				dbadapter.insertCommentInFroumtoDb(Cmttxt.getText().toString(),
-
-				id, userid, "1", 0, "0", "0");
+						id, userid, "1", Commentid, "0", "0");
 
 				dbadapter.close();
 				((FroumFragment) f).updateView2();

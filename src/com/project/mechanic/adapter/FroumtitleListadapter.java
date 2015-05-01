@@ -1,67 +1,63 @@
 package com.project.mechanic.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import com.project.mechanic.MainActivity;
-import com.project.mechanic.R;
-import com.project.mechanic.entity.City;
-import com.project.mechanic.entity.Froum;
-import com.project.mechanic.entity.ListItem;
-import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.BerandFragment;
-import com.project.mechanic.fragment.DialogcmtInfroum;
-import com.project.mechanic.fragment.FroumFragment;
-import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.row_items.FroumtitleItem;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class FroumtitleListadapter  extends ArrayAdapter<Froum>{
+import com.project.mechanic.MainActivity;
+import com.project.mechanic.R;
+import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DialogcmtInfroum;
+import com.project.mechanic.fragment.FroumFragment;
+import com.project.mechanic.model.DataBaseAdapter;
+
+public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 
 	Context context;
-	List<Froum>  mylist;
+	List<Froum> mylist;
 	DataBaseAdapter adapter;
-	
+
 	public FroumtitleListadapter(Context context, int resource,
 			List<Froum> objects) {
 		super(context, resource, objects);
-		this.context= context;
-		this.mylist= objects;
+		this.context = context;
+		this.mylist = objects;
 		adapter = new DataBaseAdapter(context);
-		
+
 	}
-	
+
 	@SuppressLint("ViewHolder")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		adapter= new DataBaseAdapter(context);
-		
+		adapter = new DataBaseAdapter(context);
 
-		convertView = myInflater.inflate(R.layout.raw_froumtitle, parent, false);
+		convertView = myInflater
+				.inflate(R.layout.raw_froumtitle, parent, false);
 
-		final TextView txt1 = (TextView) convertView.findViewById(R.id.rawTitletxt);
-		TextView txt2 = (TextView) convertView.findViewById(R.id.rawtxtDescription);
-		TextView txt3 = (TextView) convertView.findViewById(R.id.txtPhone_Object);
-	
-	    Froum person1 = mylist.get(position);
-	    
-	    adapter.open();
+		final TextView txt1 = (TextView) convertView
+				.findViewById(R.id.rawTitletxt);
+		TextView txt2 = (TextView) convertView
+				.findViewById(R.id.rawtxtDescription);
+		TextView txt3 = (TextView) convertView
+				.findViewById(R.id.txtPhone_Object);
+
+		Froum person1 = mylist.get(position);
+
+		adapter.open();
 		Users x = adapter.getUserbyid(person1.getUserId());
 		adapter.close();
 		txt1.setText(person1.getTitle());
@@ -74,7 +70,7 @@ public class FroumtitleListadapter  extends ArrayAdapter<Froum>{
 			public void onClick(View v) {
 
 				LinearLayout parentlayout = (LinearLayout) v;
-				
+
 				String item = txt1.getText().toString();
 				int id = 0;
 				for (Froum listItem : mylist) {
@@ -83,30 +79,27 @@ public class FroumtitleListadapter  extends ArrayAdapter<Froum>{
 						id = listItem.getId();
 					}
 				}
-				
-				FragmentTransaction trans =  ((MainActivity) context)
+
+				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				FroumFragment fragment = new FroumFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
- 				fragment.setArguments(bundle);
- 				
- 				
- 				DialogcmtInfroum dialog = new DialogcmtInfroum(null,context,R.layout.dialog_addcomment);
+				fragment.setArguments(bundle);
+
+				DialogcmtInfroum dialog = new DialogcmtInfroum(null, id,
+						context, R.layout.dialog_addcomment);
 				Bundle bundle2 = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
- 				fragment.setArguments(bundle);
- 				
-				trans.replace(R.id.content_frame,  fragment);
+				fragment.setArguments(bundle);
+
+				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-		
+
 			}
-		
+
 		});
 		return convertView;
 	}
-
-	
-		
 
 }
