@@ -108,7 +108,7 @@ public class DataBaseAdapter {
 			"Description", "Image1", "Image2", "Image3", "Image4", "Pdf1",
 			"Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId",
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
-			"Site", "Twitter", "rate" };
+			"Site", "Twitter", "ParentId", "rate" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
@@ -502,7 +502,9 @@ public class DataBaseAdapter {
 					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
-					cursor.getString(19), cursor.getInt(24));
+
+					cursor.getString(19), cursor.getInt(25), cursor.getInt(26));
+
 			result.add(tempObject);
 		}
 		return result;
@@ -841,7 +843,8 @@ public class DataBaseAdapter {
 				cursor.getString(14), cursor.getString(15), cursor.getInt(16),
 				cursor.getInt(17), cursor.getString(18), cursor.getString(19),
 				cursor.getString(20), cursor.getString(21),
-				cursor.getString(22), cursor.getString(23), cursor.getInt(24));
+				cursor.getString(22), cursor.getString(23), cursor.getInt(24),
+				cursor.getInt(25));
 		return tempObject;
 	}
 
@@ -1636,6 +1639,23 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<Object> getObjectbyParentId(int parentid) {
+
+		ArrayList<Object> result = new ArrayList<Object>();
+		Object item = null;
+
+		Cursor mCur = mDb.query(TableObject, Object, "ParentId=?",
+				new String[] { String.valueOf(parentid) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToObject(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
 	public ArrayList<Object> getObjectBy_BTId_CityId(int Object_id, int City_id) {
 		ArrayList<Object> result = new ArrayList<Object>();
 		Cursor cursor = mDb
@@ -1658,7 +1678,9 @@ public class DataBaseAdapter {
 					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
-					cursor.getString(19), cursor.getInt(24));
+
+					cursor.getString(19), cursor.getInt(25), cursor.getInt(27));
+
 			result.add(tempObject);
 		}
 		return result;
