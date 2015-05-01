@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -14,9 +13,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -25,7 +24,7 @@ import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
-public class ObjectListAdapter extends ArrayAdapter<Object> {
+public class MainBrandListAdapter extends ArrayAdapter<Object> {
 
 	Context context;
 	List<Object> list;
@@ -34,7 +33,8 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 	RatingBar rating;
 	Utility util;
 
-	public ObjectListAdapter(Context context, int resource, List<Object> objact) {
+	public MainBrandListAdapter(Context context, int resource,
+			List<Object> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -68,57 +68,30 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BROYA.TTF");
 		txt1.setTypeface(typeFace);
-		rating = (RatingBar) convertView.findViewById(R.id.ratingBar1);
-
-		rating.setRating(person.getRate());
-
-		// String item = txt1.getText().toString();
-
-		// final ImageView img = (ImageView) convertView
-		// .findViewById(R.id.icon_item);
-		// final ImageView star1Img = (ImageView) convertView
-		// .findViewById(R.id.star1);
-		// final ImageView star2Img = (ImageView) convertView
-		// .findViewById(R.id.star2);
-		// final ImageView star3Img = (ImageView) convertView
-		// .findViewById(R.id.star3);
-		// final ImageView star4Img = (ImageView) convertView
-		// .findViewById(R.id.star4);
-		// final ImageView star5Img = (ImageView) convertView
-		// .findViewById(R.id.star5);
-
-		// int id = 0;
-		// for (Object listItem : list) {
-		// if (item.equals(listItem.getName())) {
-		// // check authentication and authorization
-		// id = listItem.getId();
-		// }
-		// }
-		//
-		// adapter.open();
-		// int res = adapter.getNumberOfListItemChilds(id);
-		// if (res > 0) {
-		// img.setBackgroundResource(R.drawable.profile_account);
-		// star1Img.setBackgroundResource(R.drawable.ic_star_on);
-		// star2Img.setBackgroundResource(R.drawable.ic_star_on);
-		// star3Img.setBackgroundResource(R.drawable.ic_star_on);
-		// star4Img.setBackgroundResource(R.drawable.ic_star_on);
-		// star5Img.setBackgroundResource(R.drawable.ic_star_on);
-		//
-		// } else
-		//
-		// Toast.makeText(context, "object list adapter", Toast.LENGTH_SHORT)
-		// .show();
-
-		// adapter.close();
 
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 
-				SharedPreferences sendDataID = context.getSharedPreferences(
-						"Id", 0);
+				LinearLayout parentlayout = (LinearLayout) v;
+				TextView txtName = (TextView) parentlayout
+						.findViewById(R.id.txtName);
+				String item = txtName.getText().toString();
+
+				int id = 0;
+				for (Object Object : list) {
+					if (item.equals(Object.getName())) {
+						// check authentication and authorization
+						id = Object.getId();
+						break;
+					}
+				}
+
+				adapter.close();
+
+				// SharedPreferences sendDataID = context.getSharedPreferences(
+				// "Id", 0);
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
@@ -126,23 +99,24 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 				trans.addToBackStack(null);
 				trans.commit();
 
-				String item = txt1.getText().toString();
+				// String item = txt1.getText().toString();
 
-				int id = 0;
-				for (Object object : list) {
-					if (item.equals(object.getName())) {
-						// check authentication and authorization
-						id = object.getId();
-						sendDataID.edit().putInt("main_Id", id).commit();
-						Toast.makeText(context, id + "", Toast.LENGTH_SHORT)
-								.show();
-					}
-
-				}
+				// int id = 0;
+				// for (Object object : list) {
+				// if (item.equals(object.getName())) {
+				// // check authentication and authorization
+				// id = object.getId();
+				// sendDataID.edit().putInt("main_Id", id).commit();
+				// Toast.makeText(context, id + "", Toast.LENGTH_SHORT)
+				// .show();
+				// }
+				//
+				// }
 
 			}
 
 		});
 		return convertView;
 	}
+
 }

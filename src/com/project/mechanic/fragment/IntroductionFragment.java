@@ -75,6 +75,7 @@ public class IntroductionFragment extends Fragment {
 	ImageButton map;
 	ImageButton email;
 	ImageButton EditPage;
+	ImageButton CreatePage;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -123,6 +124,7 @@ public class IntroductionFragment extends Fragment {
 		Pdf4 = (Button) view.findViewById(R.id.btnPdf4_Object);
 
 		EditPage = (ImageButton) view.findViewById(R.id.ImgbtnEdit);
+		CreatePage = (ImageButton) view.findViewById(R.id.ImgbtnCreate);
 
 		lst = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 
@@ -149,6 +151,15 @@ public class IntroductionFragment extends Fragment {
 		txtEmail.setText(object.getEmail());
 		txtAddress.setText(object.getAddress());
 		txtDesc.setText(object.getDescription());
+
+		if (object.getObjectBrandTypeId() == 2)
+			link2.setVisibility(View.GONE);
+		else if (object.getObjectBrandTypeId() == 3)
+			link1.setVisibility(View.GONE);
+		else if (object.getObjectBrandTypeId() == 1) {
+			link1.setVisibility(View.GONE);
+			link2.setVisibility(View.GONE);
+		}
 
 		// advertise.setimage
 		Facebook.setOnClickListener(new OnClickListener() {
@@ -430,6 +441,20 @@ public class IntroductionFragment extends Fragment {
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame,
 						new IntroductionEditFragment());
+				trans.commit();
+
+			}
+		});
+
+		CreatePage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame,
+						new CreateIntroductionFragment());
 				trans.commit();
 
 			}

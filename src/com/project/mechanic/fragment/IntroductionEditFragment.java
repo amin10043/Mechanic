@@ -15,8 +15,8 @@ import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class IntroductionEditFragment extends Fragment {
-	DataBaseAdapter DBAdapter;
 
+	DataBaseAdapter DBAdapter;
 	ImageButton btnSave;
 	String phoneValue, faxValue, mobileValue, emailValue, addressValue;
 	EditText phoneEnter, faxEnter, mobileEnter, emailEnter, addressEnter;
@@ -24,6 +24,7 @@ public class IntroductionEditFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+
 		View view = inflater.inflate(R.layout.fragment_introduction_edit, null);
 
 		DBAdapter = new DataBaseAdapter(getActivity());

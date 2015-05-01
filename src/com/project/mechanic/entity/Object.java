@@ -5,7 +5,7 @@ public class Object {
 	int Id;
 	int ObjectTypeId;
 	int ObjectBrandTypeId;
-	int rate;
+
 	String Name;
 	String Phone;
 	String Email;
@@ -20,6 +20,8 @@ public class Object {
 	String Facebook;
 	String Instagram;
 	String LinkedIn;
+	int rate;
+	int ParentId;
 
 	public String getFacebook() {
 		return Facebook;
@@ -137,10 +139,10 @@ public class Object {
 		Cellphone = cellphone;
 	}
 
-	Byte[] Image1;
-	Byte[] Image2;
-	Byte[] Image3;
-	Byte[] Image4;
+	byte[] Image1;
+	byte[] Image2;
+	byte[] Image3;
+	byte[] Image4;
 
 	public int getId() {
 		return Id;
@@ -190,44 +192,61 @@ public class Object {
 		Description = description;
 	}
 
-	public Byte[] getImage1() {
+	public byte[] getImage1() {
 		return Image1;
 	}
 
-	public void setImage1(Byte[] image1) {
+	public void setImage1(byte[] image1) {
 		Image1 = image1;
 	}
 
-	public Byte[] getImage2() {
+	public byte[] getImage2() {
 		return Image2;
 	}
 
-	public void setImage2(Byte[] image2) {
+	public void setImage2(byte[] image2) {
 		Image2 = image2;
 	}
 
-	public Byte[] getImage3() {
+	public byte[] getImage3() {
 		return Image3;
 	}
 
-	public void setImage3(Byte[] image3) {
+	public void setImage3(byte[] image3) {
 		Image3 = image3;
 	}
 
-	public Byte[] getImage4() {
+	public byte[] getImage4() {
 		return Image4;
 	}
 
-	public void setImage4(Byte[] image4) {
+	public void setImage4(byte[] image4) {
 		Image4 = image4;
 	}
 
+	public int getRate() {
+		return rate;
+	}
+
+	public void setRate(int Rate) {
+		rate = Rate;
+	}
+
+	public int getParentId() {
+		return ParentId;
+	}
+
+	public void setParentId(int parentid) {
+		ParentId = parentid;
+	}
+
 	public Object(int id, String name, String phone, String email, String fax,
-			String description, Byte[] image1, Byte[] image2, Byte[] image3,
-			Byte[] image4, String pdf1, String pdf2, String pdf3, String pdf4,
+			String description, byte[] image1, byte[] image2, byte[] image3,
+			byte[] image4, String pdf1, String pdf2, String pdf3, String pdf4,
 			String address, String cellphone, int objectTypeId,
 			int objectBrandTypeId, String facebook, String instagram,
-			String linkedIn, String google, String site, String twitter) {
+			String linkedIn, String google, String site, String twitter,
+			int rate, int parentid) {
 		super();
 		Id = id;
 		Name = name;
@@ -253,6 +272,8 @@ public class Object {
 		Google = google;
 		Site = site;
 		Twitter = twitter;
+		ParentId = parentid;
+		this.rate = rate;
 
 	}
 
