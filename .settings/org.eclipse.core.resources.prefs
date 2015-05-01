@@ -13,12 +13,9 @@ encoding//src/com/project/mechanic/fragment/CityFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/CountryFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/CreateIntroductionFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/DialogAnad.java=UTF-8
-<<<<<<< HEAD
+encoding//src/com/project/mechanic/fragment/DialogAnadimg.java=UTF-8
 encoding//src/com/project/mechanic/fragment/DialogLinkDownload.java=UTF-8
 encoding//src/com/project/mechanic/fragment/DialogNetworkSocial.java=UTF-8
-=======
-encoding//src/com/project/mechanic/fragment/DialogAnadimg.java=UTF-8
->>>>>>> branch 'master' of https://github.com/amin10043/Mechanic.git
 encoding//src/com/project/mechanic/fragment/FroumFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/FroumtitleFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/IntroductionEditFragment.java=UTF-8
@@ -33,4 +30,5 @@ encoding//src/com/project/mechanic/fragment/PublicationsFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/RegisterFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ShopFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ShowAdFragment.java=UTF-8
+encoding//src/com/project/mechanic/model/DataBaseAdapter.java=UTF-8
 encoding//src/com/project/mechanic/utility/Utility.java=UTF-8

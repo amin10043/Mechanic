@@ -20,7 +20,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:orientation="vertical" >
 
@@ -31,13 +31,15 @@
                     <LinearLayout
                         android:id="@+id/headerLinear"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
 
-                        <ImageButton
+                        <ImageView
                             android:id="@+id/imgvadvertise_Object"
                             android:layout_width="match_parent"
                             android:layout_height="160dp"
                             android:layout_weight="3"
+                            android:paddingBottom="20dp"
                             android:scaleType="fitXY"
                             android:src="@drawable/gf2" />
                     </LinearLayout>
@@ -50,12 +52,19 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="25dp" >
 
-                        <ImageButton
+                        <EditText
+                            android:id="@+id/nameInput"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/profile_img"
+                            android:hint="Name" />
+
+                        <ImageView
                             android:id="@+id/profile_img"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/profile_account"
-                            android:scaleType="fitXY" />
+                            android:scaleType="fitXY"
+                            android:src="@drawable/profile_account" />
                     </LinearLayout>
                 </RelativeLayout>
             </FrameLayout>
@@ -260,7 +269,7 @@
                                 android:textColor="#000" />
 
                             <EditText
-                                android:id="@+id/editTextphone"
+                                android:id="@+id/ephone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
@@ -310,7 +319,7 @@
                                 android:textColor="#000" />
 
                             <EditText
-                                android:id="@+id/editTextfax"
+                                android:id="@+id/efax"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
@@ -346,7 +355,7 @@
                                 android:textColor="#000" />
 
                             <EditText
-                                android:id="@+id/editTextmob"
+                                android:id="@+id/emobile"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
@@ -381,7 +390,7 @@
                                 android:textColor="#000" />
 
                             <EditText
-                                android:id="@+id/editTextemail"
+                                android:id="@+id/eemail"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
@@ -416,7 +425,7 @@
                                 android:src="@drawable/map" />
 
                             <EditText
-                                android:id="@+id/editTextaddres"
+                                android:id="@+id/eaddress"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
@@ -502,7 +511,7 @@
                     android:layout_weight="3"
                     android:orientation="vertical" >
 
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/imgvadvertise2_Object"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
@@ -526,15 +535,11 @@
                         android:layout_weight="1"
                         android:background="#CCCCCC" >
 
-                        <TextView
-                            android:id="@+id/txtDesc_Object"
+                        <EditText
+                            android:id="@+id/descriptionEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerInParent="true"
-                            android:layout_centerVertical="true"
-                            android:text="توضیحات بیشتر"
-                            android:textColor="#000" />
+                            android:hint="توضیحات بیشتر" />
                     </RelativeLayout>
                 </LinearLayout>
 
