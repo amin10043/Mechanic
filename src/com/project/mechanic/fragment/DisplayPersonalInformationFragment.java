@@ -5,10 +5,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +22,7 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.ServiceComm;
+import com.project.mechanic.utility.Utility;
 
 
 public class DisplayPersonalInformationFragment  extends Fragment {
@@ -26,13 +32,13 @@ public class DisplayPersonalInformationFragment  extends Fragment {
 
 	 DataBaseAdapter dbAdapter;
 		ServiceComm service;
-
+	Utility	utile1;
 	@Override
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_displaypersonalinformation, null);
-
+utile1=new Utility(getActivity());
 		service = new ServiceComm(getActivity());
 		
 	TextView	txtaddress	=(TextView) view.findViewById(R.id.txtaddress);
@@ -41,44 +47,23 @@ public class DisplayPersonalInformationFragment  extends Fragment {
 	TextView	txtemail=(TextView) view.findViewById(R.id.txtemail);
 	TextView	txtname=(TextView) view.findViewById(R.id.txtname);
 	TextView	txtfax=(TextView) view.findViewById(R.id.txtfax);
-	ImageView   img=(ImageView) view.findViewById(R.id.imgDialoganad)	;
-		
-//	ParseUser currentUser = ParseUser.getCurrentUser();
-//	if (currentUser != null) {
-//	  // do stuff with the user
-//	} else {
-//	  // show the signup or login screen
-//	}
-//	
-	img.getLayoutParams().height = 120;
-	img.getLayoutParams().width = 120;
-	img.requestLayout();
+	ImageView   img=(ImageView) view.findViewById(R.id.img1)	;
+Button  btnedit	=(Button) view.findViewById(R.id.btnedit);
+final LinearLayout lin2 = (LinearLayout) view.findViewById(R.id.lin2);
+
+LayoutParams lp1 = new LinearLayout.LayoutParams(lin2.getLayoutParams());		
+lp1.width=utile1.getScreenwidth()/4;
+   lp1.height=utile1.getScreenwidth()/4;
+   img.setLayoutParams(lp1);
+
+//	img.getLayoutParams().height = 120;
+//	img.getLayoutParams().width = 120;
+//	img.requestLayout();
 	dbAdapter = new DataBaseAdapter(getActivity());
 	dbAdapter.open();
 	
-//	
 	
-
-	
-//	ServiceComm currentUser = ServiceComm.getCurrentUser();
-//	if (currentUser != null) {
-//	  // do stuff with the user
-//	} else {
-//	  // show the signup or login screen
-//	}
-	
-	
-	
-	
-	
-	
-//	Users currentUser = Users.getCurrentUser();
-	
-	
-	
-	
-	
-	int id = 9;
+	int id = 5;
 	Users x =dbAdapter.getUserById(id);	
 	byte[] bitmapbyte = x.getImage();
 	if (bitmapbyte != null) {
@@ -107,6 +92,30 @@ public class DisplayPersonalInformationFragment  extends Fragment {
 	txtaddress.setText(address);
 //	picture.setImageURI(uri);
 
+	
+	
+	
+	
+	
+	btnedit.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View arg0) {
+			
+			FragmentTransaction trans = getActivity()
+					.getSupportFragmentManager().beginTransaction();
+			trans.replace(R.id.content_frame, new EditPersonalFragment());
+			trans.commit();
+			
+			
+			
+		}
+	});
+	
+	
+	
+	
+	
 		return view;
 	}
 

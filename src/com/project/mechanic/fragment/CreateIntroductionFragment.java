@@ -1,10 +1,15 @@
 package com.project.mechanic.fragment;
 
+import java.io.ByteArrayOutputStream;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -30,16 +36,22 @@ public class CreateIntroductionFragment extends Fragment {
 	private static int FooterCode = 3;
 
 	DataBaseAdapter DBAdapter;
-	ImageButton btnSave, btnProfile, btnHeader, btnFooter;
-	String phoneValue, faxValue, mobileValue, emailValue, addressValue;
-	EditText phoneEnter, faxEnter, mobileEnter, emailEnter, addressEnter;
+	ImageButton btnSave;
+	ImageView btnProfile, btnHeader, btnFooter;
+	String nameValue, phoneValue, faxValue, mobileValue, emailValue,
+			addressValue, descriptionValue;
+	EditText NameEnter, phoneEnter, faxEnter, mobileEnter, emailEnter,
+			addressEnter, DescriptionEnter;
 	Fragment fragment;
 	Utility util;
 	LinearLayout linearCreateProfil, headerLinear, footerLinear;
-	RelativeLayout NetworkSocial, DownloadLink;
-	LinearLayout.LayoutParams profilParams, headerParams, footerParams;
+	RelativeLayout NetworkSocial, DownloadLink, nameEditRelative;
+	LinearLayout.LayoutParams profilParams, headerParams, footerParams,
+			nameParams;
 	DialogNetworkSocial dialognetwork;
 	DialogLinkDownload dialogDownload;
+
+	Bitmap bitmapHeader, bitmapProfil, bitmapFooter;
 
 	public String Lfacebook, Llinkedin, Ltwitter, Lwebsite, Lgoogle,
 			Linstagram;
@@ -62,15 +74,18 @@ public class CreateIntroductionFragment extends Fragment {
 		DownloadLink = (RelativeLayout) view.findViewById(R.id.editdownload);
 
 		btnSave = (ImageButton) view.findViewById(R.id.btnsave);
-		btnProfile = (ImageButton) view.findViewById(R.id.profile_img);
-		btnHeader = (ImageButton) view.findViewById(R.id.imgvadvertise_Object);
-		btnFooter = (ImageButton) view.findViewById(R.id.imgvadvertise2_Object);
+		btnProfile = (ImageView) view.findViewById(R.id.profile_img);
+		btnHeader = (ImageView) view.findViewById(R.id.imgvadvertise_Object);
+		btnFooter = (ImageView) view.findViewById(R.id.imgvadvertise2_Object);
 
-		phoneEnter = (EditText) view.findViewById(R.id.editTextphone);
-		faxEnter = (EditText) view.findViewById(R.id.editTextfax);
-		mobileEnter = (EditText) view.findViewById(R.id.editTextmob);
-		emailEnter = (EditText) view.findViewById(R.id.editTextemail);
-		addressEnter = (EditText) view.findViewById(R.id.editTextaddres);
+		NameEnter = (EditText) view.findViewById(R.id.nameInput);
+		phoneEnter = (EditText) view.findViewById(R.id.ephone);
+		faxEnter = (EditText) view.findViewById(R.id.efax);
+		mobileEnter = (EditText) view.findViewById(R.id.emobile);
+		emailEnter = (EditText) view.findViewById(R.id.eemail);
+		addressEnter = (EditText) view.findViewById(R.id.eaddress);
+		DescriptionEnter = (EditText) view
+				.findViewById(R.id.descriptionEdittext);
 
 		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id",
 				0);
@@ -86,17 +101,23 @@ public class CreateIntroductionFragment extends Fragment {
 
 		profilParams = new LinearLayout.LayoutParams(
 				linearCreateProfil.getLayoutParams());
-		profilParams.width = util.getScreenwidth() / 5;
-		profilParams.height = util.getScreenwidth() / 5;
+		profilParams.width = (util.getScreenwidth() / 5);
+		profilParams.height = (util.getScreenwidth() / 5);
 
 		headerParams = new LinearLayout.LayoutParams(
 				headerLinear.getLayoutParams());
 		headerParams.height = util.getScreenHeight() / 3;
+		headerLinear.setPadding(0, 0, 0, 20);
 
 		footerParams = new LinearLayout.LayoutParams(
 				footerLinear.getLayoutParams());
 		footerParams.width = util.getScreenwidth();
 		footerParams.height = util.getScreenHeight() / 3;
+
+		nameParams = new LinearLayout.LayoutParams(
+				linearCreateProfil.getLayoutParams());
+		nameParams.width = util.getScreenwidth() / 3;
+		nameParams.height = util.getScreenwidth() / 10;
 
 		btnProfile.setOnClickListener(new OnClickListener() {
 
@@ -161,27 +182,68 @@ public class CreateIntroductionFragment extends Fragment {
 						CreateIntroductionFragment.this, i, FooterCode);
 			}
 		});
-		// btnSave.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// phoneValue = phoneEnter.getText().toString();
-		// faxValue = faxEnter.getText().toString();
-		// mobileValue = mobileEnter.getText().toString();
-		// emailValue = emailEnter.getText().toString();
-		// addressValue = addressEnter.getText().toString();
-		//
-		// DBAdapter.open();
-		// DBAdapter.UpdateObjectProperties(id, phoneValue, faxValue,
-		// mobileValue, emailValue, addressValue);
-		// DBAdapter.close();
-		// Toast.makeText(getActivity(), "تغییرات با موفقیت ذخیره شد",
-		// Toast.LENGTH_SHORT).show();
-		// getActivity().getSupportFragmentManager().popBackStack();
-		// }
-		// });
+
+		if (btnHeader.getDrawable() == null & btnProfile.getDrawable() == null
+				& btnFooter.getDrawable() == null)
+
+			Toast.makeText(getActivity(), "Empty Bitmap", Toast.LENGTH_SHORT)
+					.show();
+
+		bitmapHeader = ((BitmapDrawable) btnHeader.getDrawable()).getBitmap();
+		bitmapProfil = ((BitmapDrawable) btnProfile.getDrawable()).getBitmap();
+		bitmapFooter = ((BitmapDrawable) btnFooter.getDrawable()).getBitmap();
+
+		if (bitmapHeader == null & bitmapProfil == null & bitmapFooter == null)
+
+			Toast.makeText(getActivity(), "Empty ByteArray", Toast.LENGTH_SHORT)
+					.show();
+
+		final byte[] byteHeader = getBitmapAsByteArray(bitmapHeader);
+		final byte[] byteProfil = getBitmapAsByteArray(bitmapProfil);
+		final byte[] byteFooter = getBitmapAsByteArray(bitmapFooter);
+
+		btnSave.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				nameValue = NameEnter.getText().toString();
+				phoneValue = phoneEnter.getText().toString();
+				faxValue = faxEnter.getText().toString();
+				mobileValue = mobileEnter.getText().toString();
+				emailValue = emailEnter.getText().toString();
+				addressValue = addressEnter.getText().toString();
+				descriptionValue = DescriptionEnter.getText().toString();
+
+				if (nameValue.equals("") || mobileValue.equals("")) {
+					Toast.makeText(getActivity(),
+							"پر کردن فیلدهای نام وموبایل الزامی است",
+							Toast.LENGTH_SHORT).show();
+				}
+
+				else {
+
+					DBAdapter.open();
+					DBAdapter.InsertInformationNewObject(nameValue, phoneValue,
+							emailValue, faxValue, descriptionValue, byteHeader,
+							byteProfil, byteFooter, Lcatalog, Lprice, Lpdf,
+							Lvideo, addressValue, mobileValue, Lfacebook,
+							Linstagram, Llinkedin, Lgoogle, Lwebsite, Ltwitter);
+
+					DBAdapter.close();
+					getActivity().getSupportFragmentManager().popBackStack();
+
+				}
+
+			}
+		});
 
 		return view;
+	}
+
+	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.PNG, 0, outputStream);
+		return outputStream.toByteArray();
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -207,6 +269,7 @@ public class CreateIntroductionFragment extends Fragment {
 			btnProfile.setBackgroundColor(getResources().getColor(
 					android.R.color.transparent));
 			btnProfile.setLayoutParams(profilParams);
+			NameEnter.setLayoutParams(nameParams);
 
 		}
 		if (requestCode == HeaderCode && resultCode == Activity.RESULT_OK
@@ -229,6 +292,8 @@ public class CreateIntroductionFragment extends Fragment {
 			btnHeader.setBackgroundColor(getResources().getColor(
 					android.R.color.transparent));
 			btnHeader.setLayoutParams(headerParams);
+			NameEnter.setLayoutParams(nameParams);
+
 		}
 		if (requestCode == FooterCode && resultCode == Activity.RESULT_OK
 				&& null != data) {
@@ -250,6 +315,8 @@ public class CreateIntroductionFragment extends Fragment {
 			btnFooter.setBackgroundColor(getResources().getColor(
 					android.R.color.transparent));
 			btnFooter.setLayoutParams(headerParams);
+			NameEnter.setLayoutParams(nameParams);
+
 		}
 
 	}

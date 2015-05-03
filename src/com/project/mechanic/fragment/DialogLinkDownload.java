@@ -34,20 +34,20 @@ public class DialogLinkDownload extends Dialog {
 
 		saveBtn = (ImageButton) findViewById(R.id.saveDownload);
 
-		inCatalog = (EditText) findViewById(R.id.dialogCatalog);
-		inPrice = (EditText) findViewById(R.id.dialogPrice);
-		inPDF = (EditText) findViewById(R.id.dialogPdf);
-		inVideo = (EditText) findViewById(R.id.dialogVideoe);
-
-		l1 = inCatalog.getText().toString();
-		l2 = inPrice.getText().toString();
-		l3 = inPDF.getText().toString();
-		l4 = inVideo.getText().toString();
+		inCatalog = (EditText) findViewById(R.id.d1);
+		inPrice = (EditText) findViewById(R.id.d2);
+		inPDF = (EditText) findViewById(R.id.d3);
+		inVideo = (EditText) findViewById(R.id.d4);
 
 		saveBtn.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
+
+				l1 = inCatalog.getText().toString();
+				l2 = inPrice.getText().toString();
+				l3 = inPDF.getText().toString();
+				l4 = inVideo.getText().toString();
 
 				fragment.Lcatalog = l1;
 				fragment.Lprice = l2;
@@ -56,6 +56,8 @@ public class DialogLinkDownload extends Dialog {
 
 				Toast.makeText(context, "لینک ها با موفقیت اضافه شدند",
 						Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, fragment.Lcatalog, Toast.LENGTH_SHORT)
+						.show();
 
 				dismiss();
 

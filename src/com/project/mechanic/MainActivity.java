@@ -20,9 +20,11 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnCloseListener;
 import android.widget.TextView;
 
+import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class MainActivity extends FragmentActivity {
 
@@ -35,6 +37,7 @@ public class MainActivity extends FragmentActivity {
 	// private CharSequence title;
 	private Fragment lastFragment;
 	private boolean isFavorite = false;
+	Utility util;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 
 		adapter = new DataBaseAdapter(this);
-
+		util = new Utility(MainActivity.this);
 		mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -228,46 +231,29 @@ public class MainActivity extends FragmentActivity {
 		case 1:
 
 			// ////////////////////////////////////////////////
-
-			// Parse.initialize(mContext, PARSE_APP_ID, PARSE_CLIENT_KEY);
-			// ParseObject.registerSubclass(MyClass.class);
-			// Parse.enableLocalDatastore(mContext);
-			// ParseFacebookUtils.initialize(FACEBOOK_APP_ID);
-			// ParseACL.setDefaultACL(new ParseACL(), true);
-			//
-			// if (user != null) {
-			// // If user exist and authenticated, send user to Welcome.class
-			//
-			// String username = user.getString("username");
-			// String userId = user.getObjectId();
-			//
-			// Intent intent = new Intent(
-			// LoginSignupActivity.this,
-			// Welcome.class);
-			// startActivity(intent);
-			// Toast.makeText(getApplicationContext(),
-			// "Successfully Logged in",
-			// Toast.LENGTH_LONG).show();
-			// finish();
-			// } else
-			// {
-			// Toast.makeText(
-			// getApplicationContext(),
-			// "No such user exist, please signup",
-			// Toast.LENGTH_LONG).show();
-			//
-			//
-			//
-			// }
-			//
-
-			// Users user =
-			// UserServiceFactory.getUserService().getCurrentUser();
-
+            
+			
+			if ( util.getCurrentUser()!=null ) {
+				  
+//				SharedPreferences sendData = this.getSharedPreferences("Id",
+//						0);
+				//sendData.edit().putInt("main_Id",  Service).commit();
+				fragment = new DisplayPersonalInformationFragment();
+				fragmentManager = getSupportFragmentManager();
+				fragmentManager.beginTransaction()
+						.replace(R.id.content_frame, fragment).commit();
+				
+				
+				} 
+			else 
+			{
+			
+			
 			fragment = new LoginFragment();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
+			}
 			break;
 
 		case 2:
@@ -280,6 +266,7 @@ public class MainActivity extends FragmentActivity {
 		mDrawerList.setItemChecked(position, true);
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}
+	
 
 	public void setLastFragment(Fragment fragment) {
 		this.lastFragment = fragment;

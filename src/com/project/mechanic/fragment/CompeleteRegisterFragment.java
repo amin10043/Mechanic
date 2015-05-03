@@ -128,17 +128,6 @@ public class CompeleteRegisterFragment extends Fragment {
 
 		public void onClick(View arg0) {
 			
-			if (Addresstxt.getText().toString().equals("") && Phonetxt.getText().toString().equals("") && Mobiletxt.getText().toString().equals("") && Faxtxt.getText().toString().equals(""))
-			{
-
-				Toast.makeText(getActivity(),
-						"·ÿ›« ›Ì·œÂ«Ì „Ê—œ ‰Ÿ— —« Å— ò‰Ìœ  ",
-						Toast.LENGTH_SHORT).show();
-
-			}
-			
-			
-			else{
 				
 				dbAdapter = new DataBaseAdapter(getActivity());
 				dbAdapter.open();
@@ -165,7 +154,7 @@ public class CompeleteRegisterFragment extends Fragment {
 			}
 	
 		
-		}
+		
 
 	});
 			return view;
