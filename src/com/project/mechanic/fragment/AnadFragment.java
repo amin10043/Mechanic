@@ -222,7 +222,7 @@ public class AnadFragment extends Fragment {
 			cursor.close();
 
 			ImageView imageView = (ImageView) dialog1
-					.findViewById(R.id.imgDialoganad);
+					.findViewById(R.id.dialog_img1);
 			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
 		}

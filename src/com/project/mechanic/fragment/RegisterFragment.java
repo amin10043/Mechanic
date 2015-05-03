@@ -20,9 +20,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ import com.project.mechanic.entity.News;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class RegisterFragment extends Fragment {
 
@@ -42,6 +45,8 @@ public class RegisterFragment extends Fragment {
 	int ProvinceId;
 	ImageView btnaddpic1;
 	List<Users> list;
+	Utility utile;
+LinearLayout.LayoutParams lp;
 	// byte[] byteImage1 = null;
 	// ContentValues newValues = new ContentValues();
 	// public RegisterFragment(Context context, int resourceId, Fragment
@@ -70,7 +75,7 @@ public class RegisterFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_register, null);
-
+utile = new Utility(getActivity());
 		// dbAdapter = new DataBaseAdapter(getActivity());
 		btnaddpic1 = (ImageView) view.findViewById(R.id.btnaddpic);
 		Button btncan = (Button) view.findViewById(R.id.btncancle2);
@@ -84,20 +89,22 @@ public class RegisterFragment extends Fragment {
 				.findViewById(R.id.editTextpass);
 
 		
-		
+		final LinearLayout lin1 = (LinearLayout) view.findViewById(R.id.lin1);
 		
 		
 	
 		 btnaddpic1.setBackgroundResource(R.drawable.i13);
 //		      columnWidth = (int) (getScreenWidth() /3);
-//			   LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(l1.getLayoutParams());		
-//			   lp.width=columnWidth;
-//		      lp.height=columnWidth;
+		 
+			   lp = new LinearLayout.LayoutParams(lin1.getLayoutParams());		
+		   lp.width=utile.getScreenwidth()/3;
+		      lp.height=utile.getScreenwidth()/3;
+		      btnaddpic1.setLayoutParams(lp);
 //		      btnaddpic1.setLayoutParams(lp);
 		//   l1.addView(btnaddpic1);
-				    btnaddpic1.getLayoutParams().height = 150;
-				    btnaddpic1.getLayoutParams().width = 150;
-				    btnaddpic1.requestLayout();
+//				    btnaddpic1.getLayoutParams().height = 150;
+//				    btnaddpic1.getLayoutParams().width = 150;
+//				    btnaddpic1.requestLayout();
 				
 	/////////////////////////////////////	
 //				    if (editname.getText().toString().equals("") && editpass.getText().toString().equals(""))
@@ -300,6 +307,9 @@ comregtxt.setOnClickListener(new OnClickListener() {
 			// .findViewById(R.id.btnaddpic);
 			btnaddpic1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 			btnaddpic1.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+			
+			btnaddpic1.setLayoutParams(lp);
+			
 		}
 
 	}

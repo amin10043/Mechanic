@@ -16,6 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/txtsize10"
             android:layout_weight="0.8"
             android:background="@drawable/color1"
             android:gravity="center"
@@ -23,17 +24,16 @@
             android:weightSum="2" >
 
             <LinearLayout
-                android:id="@+id/lin2"
+                android:id="@+id/lin3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="fitXY" >
 
                 <ImageView
-                    android:id="@+id/img1"
+                    android:id="@+id/img2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_weight="1"
                     android:scaleType="fitXY"
                     android:src="@drawable/i13" />
             </LinearLayout>
@@ -45,10 +45,10 @@
                 android:background="@drawable/color1" >
 
                 <TextView
-                    android:id="@+id/txtname"
+                    android:id="@+id/etxtname"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_weight="1"
                     android:gravity="right|center"
                     android:textColor="@color/transparent"
@@ -59,17 +59,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/txtsize10"
             android:layout_weight="1"
             android:gravity="center" >
 
-            <TextView
-                android:id="@+id/txtemail"
+            <EditText
+                android:id="@+id/etxtemail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/txtsize10"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:textColor="@color/transparent" />
+                android:ems="10" >
+
+                <requestFocus />
+            </EditText>
 
             <TextView
                 android:id="@+id/txttitledialog"
@@ -85,17 +87,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/txtsize10"
             android:layout_weight="1"
             android:gravity="center" >
 
-            <TextView
-                android:id="@+id/txtphone"
+            <EditText
+                android:id="@+id/etxtphone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/txtsize10"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:textColor="@color/transparent" />
+                android:ems="10" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -112,17 +113,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/txtsize10"
             android:layout_weight="1"
             android:gravity="center" >
 
-            <TextView
-                android:id="@+id/txtcellphone"
+            <EditText
+                android:id="@+id/etxtcellphone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/txtsize10"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:textColor="@color/transparent" />
+                android:ems="10" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -140,17 +140,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginBottom="@dimen/txtsize10"
             android:layout_weight="1"
             android:gravity="center" >
 
-            <TextView
-                android:id="@+id/txtfax"
+            <EditText
+                android:id="@+id/etxtfax"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:textColor="@color/transparent" />
+                android:ems="10" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -167,26 +166,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/txtsize10"
             android:layout_weight="1"
             android:gravity="center" >
 
-            <TextView
-                android:id="@+id/txtaddress"
+            <EditText
+                android:id="@+id/etxtaddress"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/txtsize10"
-                android:layout_marginLeft="@dimen/txtsize10"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:textColor="@color/transparent" />
+                android:ems="10"
+                android:inputType="textPostalAddress" />
 
             <TextView
                 android:id="@+id/textView6"
-                android:layout_width="116dp"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/txtsize10"
+                android:layout_weight="1"
                 android:gravity="right"
                 android:text="آدرس :"
                 android:textColor="@color/transparent" />
@@ -199,15 +196,13 @@
             android:layout_weight="1" >
 
             <Button
-                android:id="@+id/btnedit"
+                android:id="@+id/btnregedit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|center_horizontal"
-                android:layout_marginLeft="@dimen/txtsize100"
-                android:layout_marginRight="@dimen/txtsize100"
+                android:layout_marginLeft="@dimen/txtsize80"
+                android:layout_marginRight="@dimen/txtsize80"
                 android:background="@drawable/buttonshape"
-                android:gravity="center|center_horizontal"
-                android:text=" ویرایش" />
+                android:text="ثبت ویرایش" />
         </LinearLayout>
     </LinearLayout>
 

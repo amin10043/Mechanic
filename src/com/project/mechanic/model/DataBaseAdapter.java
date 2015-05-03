@@ -244,6 +244,29 @@ public class DataBaseAdapter {
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
+	
+	///////////////////
+	
+	public void UpdateAllUserToDb(int id, String email, String password, String phonenumber,
+			String mobailenumber, String faxnumber, String address, byte[] image) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		 uc.put("Email", email);
+		 uc.put("Password", password);
+		uc.put("Phonenumber", phonenumber);
+
+		uc.put("Mobailenumber", mobailenumber);
+		uc.put("Faxnumber", faxnumber);
+		uc.put("Address", address);
+		uc.put("Image", image);
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableUsers, uc, "ID=" + id, null);
+	}
+	
+	/////////////////////////////////////
+	
+	
 	public void insertLikeInObjectToDb(int UserId, int PaperId, String Date,
 			int CommentId) {
 
