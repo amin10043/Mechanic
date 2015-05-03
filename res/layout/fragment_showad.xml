@@ -24,24 +24,34 @@
                 android:layout_weight="2"
                 android:orientation="vertical" >
 
-                <ImageButton
-                    android:id="@+id/imgLike_showAd"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_star_off" />
-
-                <ImageButton
-                    android:id="@+id/imgShare_showAd"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_share" />
-
                 <ImageView
                     android:id="@+id/fragment_anad_imgadd"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/noimageshow" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right" >
+
+                    <ImageButton
+                        android:id="@+id/imgLike_showAd"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/ic_star_off" />
+
+                    <ImageButton
+                        android:id="@+id/imgShare_showAd"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toLeftOf="@+id/imgLike_showAd"
+                        android:src="@drawable/ic_share" />
+                </RelativeLayout>
             </FrameLayout>
 
             <LinearLayout
