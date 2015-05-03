@@ -79,7 +79,7 @@ lp2=new LinearLayout.LayoutParams(lin3.getLayoutParams());
 	dbAdapter.open();
 	
 	
-	int id = 5;
+	int id =1;
 	Users x =dbAdapter.getUserById(id);	
 	byte[] bitmapbyte = x.getImage();
 	if (bitmapbyte != null) {
@@ -149,7 +149,7 @@ lp2=new LinearLayout.LayoutParams(lin3.getLayoutParams());
 		
 		
 		
-		dbAdapter.UpdateAllUserToDb(5, Email, null, Phone, Cellphone,  Fax, Address,Image);
+		dbAdapter.UpdateAllUserToDb(1, Email, null, Phone, Cellphone,  Fax, Address,Image);
 		
 		
 		dbAdapter.close();	

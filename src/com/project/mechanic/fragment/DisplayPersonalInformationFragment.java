@@ -63,7 +63,7 @@ lp1.width=utile1.getScreenwidth()/4;
 	dbAdapter.open();
 	
 	
-	int id = 5;
+	int id =1;
 	Users x =dbAdapter.getUserById(id);	
 	byte[] bitmapbyte = x.getImage();
 	if (bitmapbyte != null) {
