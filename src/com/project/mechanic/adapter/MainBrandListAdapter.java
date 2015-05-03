@@ -5,6 +5,7 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.fragment.IntroductionFragment;
+import com.project.mechanic.fragment.MainBrandFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -84,34 +86,33 @@ public class MainBrandListAdapter extends ArrayAdapter<Object> {
 					if (item.equals(Object.getName())) {
 						// check authentication and authorization
 						id = Object.getId();
-						break;
 					}
 				}
+				adapter.open();
+				int res = adapter.getNumberOfListItemChilds(id);
 
 				adapter.close();
 
-				// SharedPreferences sendDataID = context.getSharedPreferences(
-				// "Id", 0);
+				if (res > 0) {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					MainBrandFragment fragment = new MainBrandFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(id));
+					fragment.setArguments(bundle);
+					trans.replace(R.id.content_frame, fragment);
+					trans.addToBackStack(null);
+					trans.commit();
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new IntroductionFragment());
-				trans.addToBackStack(null);
-				trans.commit();
+				} else {
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame,
+							new IntroductionFragment());
+					trans.addToBackStack(null);
+					trans.commit();
 
-				// String item = txt1.getText().toString();
-
-				// int id = 0;
-				// for (Object object : list) {
-				// if (item.equals(object.getName())) {
-				// // check authentication and authorization
-				// id = object.getId();
-				// sendDataID.edit().putInt("main_Id", id).commit();
-				// Toast.makeText(context, id + "", Toast.LENGTH_SHORT)
-				// .show();
-				// }
-				//
-				// }
+				}
 
 			}
 

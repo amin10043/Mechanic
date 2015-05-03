@@ -20,6 +20,7 @@ import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 
@@ -72,12 +73,11 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				.findViewById(R.id.imgvCmtuser_Froumfragment);
 		CommentInFroum comment = list.get(position);
 		adapter.open();
-		Users x = adapter.getUsernamebyid(comment.getUserid());
+		Users x = adapter.getUserbyid(comment.getUserid());
 		adapter.close();
 
 		txt1.setText(comment.getDesk());
 		txt2.setText(x.getName());
-
 		txt3.setText(x.getPhonenumber());
 		byte[] blob = x.getImage();
 		Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
@@ -115,7 +115,14 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				int c = Integer.valueOf(a.getNumOfLike());
 				int k = c + 1;
 				String f = String.valueOf(k);
-				adapter.insertCmtLikebyid(id, f);
+				Utility utility = new Utility(context);
+				Users user = new Users();
+				user = utility.getCurrentUser();
+				int userid = user.getId();
+
+				adapter.insertCmtLikebyid(id, f, userid);
+				adapter.insertLikeInCommentToDb(userid, 1, id);
+
 				a = adapter.getCommentInFroumbyID(id);
 				txtlike.setText(a.getNumOfLike());
 				adapter.close();
@@ -148,7 +155,13 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				int h = Integer.valueOf(a.getNumOfDislike());
 				int k = h + 1;
 				String f = String.valueOf(k);
-				adapter.insertCmtDisLikebyid(id, f);
+				Utility utility = new Utility(context);
+				Users user = new Users();
+				user = utility.getCurrentUser();
+				int userid = user.getId();
+
+				adapter.insertCmtDisLikebyid(id, f, userid);
+				adapter.insertLikeInCommentToDb(userid, 0, id);
 				a = adapter.getCommentInFroumbyID(id);
 				disliketxt.setText(a.getNumOfDislike());
 				adapter.close();
