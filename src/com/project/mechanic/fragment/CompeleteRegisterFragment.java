@@ -79,8 +79,8 @@ public class CompeleteRegisterFragment extends Fragment {
 			.findViewById(R.id.editTextuser);
 	final EditText editpass = (EditText) view
 			.findViewById(R.id.editTextpass);
-
-	 Compeletebtn.setVisibility(View.INVISIBLE);
+	Compeletebtn.setEnabled(false);
+	 
 	
 	Backbtn.setOnClickListener(new OnClickListener() {
 		
@@ -106,11 +106,11 @@ public class CompeleteRegisterFragment extends Fragment {
 	 public void onClick(View v) {
 	// is chkIos checked?
 	 if (((CheckBox) v).isChecked()) {
-		 Compeletebtn.setVisibility(View.VISIBLE);
+		 Compeletebtn.setEnabled(true);
 	 }
 	 else {
 		 
-		 Compeletebtn.setVisibility(View.INVISIBLE);
+		 Compeletebtn.setEnabled(false);
 		 
 		 
 	 }

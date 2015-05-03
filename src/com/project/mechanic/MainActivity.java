@@ -235,17 +235,17 @@ public class MainActivity extends FragmentActivity {
 			
 //			if ( util.getCurrentUser()!=null ) {
 //				  
-////				SharedPreferences sendData = this.getSharedPreferences("Id",
-////						0);
-//				//sendData.edit().putInt("main_Id",  Service).commit();
+//			//	SharedPreferences sendData = this.getSharedPreferences("Id",
+//				//		0);
+//			//sendData.edit().putInt("main_Id",  Service).commit();
 //				fragment = new DisplayPersonalInformationFragment();
-//				fragmentManager = getSupportFragmentManager();
+//			fragmentManager = getSupportFragmentManager();
 //				fragmentManager.beginTransaction()
-//						.replace(R.id.content_frame, fragment).commit();
-//				
-//				
+//					.replace(R.id.content_frame, fragment).commit();
+//			
+//			
 //				} 
-//			else 
+//		else 
 //			{
 			
 			
