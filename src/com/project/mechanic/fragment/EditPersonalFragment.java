@@ -77,9 +77,26 @@ lp2=new LinearLayout.LayoutParams(lin3.getLayoutParams());
 	  img2.setLayoutParams(lp2);
 	dbAdapter = new DataBaseAdapter(getActivity());
 	dbAdapter.open();
+	///
 	
+//	Users u  =utile1.getCurrentUser();
+//	int id = u.getId();
+//	byte[] bitmapbyte = u.getImage();
+//	if (bitmapbyte != null) {
+//		Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
+//				bitmapbyte.length);
+//		img.setImageBitmap(bmp);
+//	}
+//	String name=u.getName();
+// 	String email=u.getEmail();
+// 	String address=u.getAddress();
+// 	String phone=u.getPhonenumber();
+// 	String cellphone=u.getMobailenumber();
+// 	String fax=u.getFaxnumber();
 	
-	int id =1;
+	////////////
+	
+	final int id =1;
 	Users x =dbAdapter.getUserById(id);	
 	byte[] bitmapbyte = x.getImage();
 	if (bitmapbyte != null) {
@@ -149,7 +166,7 @@ lp2=new LinearLayout.LayoutParams(lin3.getLayoutParams());
 		
 		
 		
-		dbAdapter.UpdateAllUserToDb(1, Email, null, Phone, Cellphone,  Fax, Address,Image);
+		dbAdapter.UpdateAllUserToDb(id, Email, null, Phone, Cellphone,  Fax, Address,Image);
 		
 		
 		dbAdapter.close();	
