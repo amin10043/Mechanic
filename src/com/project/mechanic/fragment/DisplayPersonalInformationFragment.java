@@ -48,7 +48,7 @@ utile1=new Utility(getActivity());
 	TextView	txtname=(TextView) view.findViewById(R.id.txtname);
 	TextView	txtfax=(TextView) view.findViewById(R.id.txtfax);
 	ImageView   img=(ImageView) view.findViewById(R.id.img1)	;
-Button  btnedit	=(Button) view.findViewById(R.id.btnedit);
+Button btnedit=(Button) view.findViewById(R.id.btnedit);
 final LinearLayout lin2 = (LinearLayout) view.findViewById(R.id.lin2);
 
 LayoutParams lp1 = new LinearLayout.LayoutParams(lin2.getLayoutParams());		
@@ -112,8 +112,8 @@ lp1.width=utile1.getScreenwidth()/4;
 	
 	btnedit.setOnClickListener(new OnClickListener() {
 		
-		@Override
-		public void onClick(View arg0) {
+	@Override
+			public void onClick(View arg0) {
 			
 			FragmentTransaction trans = getActivity()
 					.getSupportFragmentManager().beginTransaction();

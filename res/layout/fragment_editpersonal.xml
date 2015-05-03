@@ -8,199 +8,206 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/txtsize10"
-        android:background="@drawable/list_item1"
         android:orientation="vertical"
-        android:weightSum="6.8" >
+        android:weightSum="2" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/txtsize10"
-            android:layout_weight="0.8"
-            android:background="@drawable/color1"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="2" >
+            android:layout_margin="@dimen/txtsize10"
+            android:layout_weight="0.3"
+            android:background="@drawable/list_item1"
+            android:orientation="vertical"
+            android:weightSum="5.8" >
 
             <LinearLayout
-                android:id="@+id/lin3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY" >
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/txtsize10"
+                android:layout_weight="0.8"
+                android:background="@drawable/color1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="2" >
 
-                <ImageView
-                    android:id="@+id/img2"
+                <LinearLayout
+                    android:id="@+id/lin3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY" >
+
+                    <ImageView
+                        android:id="@+id/img2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/i13" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/i13" />
+                    android:layout_margin="@dimen/txtsize10"
+                    android:background="@drawable/color1" >
+
+                    <TextView
+                        android:id="@+id/etxtname"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_weight="1"
+                        android:gravity="right|center"
+                        android:textColor="@color/transparent"
+                        android:textSize="@dimen/txtsize30" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/txtsize10"
-                android:background="@drawable/color1" >
+                android:layout_marginBottom="@dimen/txtsize10"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+                <EditText
+                    android:id="@+id/etxtemail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10" >
+
+                    <requestFocus />
+                </EditText>
 
                 <TextView
-                    android:id="@+id/etxtname"
+                    android:id="@+id/txttitledialog"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/txtsize10"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="ایمیل:"
+                    android:textColor="@color/transparent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/txtsize10"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+                <EditText
+                    android:id="@+id/etxtphone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_weight="1"
-                    android:gravity="right|center"
-                    android:textColor="@color/transparent"
-                    android:textSize="@dimen/activity_vertical_margin" />
+                    android:ems="10" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/txtsize10"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="شماره ثابت :"
+                    android:textColor="@color/transparent" />
             </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/txtsize10"
-            android:layout_weight="1"
-            android:gravity="center" >
-
-            <EditText
-                android:id="@+id/etxtemail"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/txtsize10"
                 android:layout_weight="1"
-                android:ems="10" >
+                android:gravity="center" >
 
-                <requestFocus />
-            </EditText>
+                <EditText
+                    android:id="@+id/etxtcellphone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10" />
 
-            <TextView
-                android:id="@+id/txttitledialog"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/txtsize10"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="ایمیل:"
-                android:textColor="@color/transparent" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/txtsize10"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="شماره همراه:"
+                    android:textColor="@color/transparent" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/txtsize10"
-            android:layout_weight="1"
-            android:gravity="center" >
-
-            <EditText
-                android:id="@+id/etxtphone"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/txtsize10"
                 android:layout_weight="1"
-                android:ems="10" />
+                android:gravity="center" >
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/txtsize10"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text=":شماره ثابت"
-                android:textColor="@color/transparent" />
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/etxtfax"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/txtsize10"
-            android:layout_weight="1"
-            android:gravity="center" >
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/txtsize10"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="شماره فکس: "
+                    android:textColor="@color/transparent" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/etxtcellphone"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/txtsize10"
                 android:layout_weight="1"
-                android:ems="10" />
+                android:gravity="center" >
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/txtsize10"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="شماره همراه:"
-                android:textColor="@color/transparent" >
-            </TextView>
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/etxtaddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textPostalAddress" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/txtsize10"
-            android:layout_weight="1"
-            android:gravity="center" >
-
-            <EditText
-                android:id="@+id/etxtfax"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:ems="10" />
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/txtsize10"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="شماره فکس: "
-                android:textColor="@color/transparent" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/txtsize10"
-            android:layout_weight="1"
-            android:gravity="center" >
-
-            <EditText
-                android:id="@+id/etxtaddress"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPostalAddress" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/txtsize10"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="آدرس :"
-                android:textColor="@color/transparent" />
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/txtsize10"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="آدرس :"
+                    android:textColor="@color/transparent" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/btneditpersonal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
+            android:layout_weight="1.8" >
 
             <Button
                 android:id="@+id/btnregedit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/txtsize80"
-                android:layout_marginRight="@dimen/txtsize80"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/txtsize100"
+                android:layout_marginRight="@dimen/txtsize100"
                 android:background="@drawable/buttonshape"
                 android:text="ثبت ویرایش" />
         </LinearLayout>
