@@ -99,8 +99,10 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
-
-		Toast.makeText(context, "date ", 100).show();
+		//
+		// PersianDate date = new PersianDate();
+		// txtName.setText(date.todayShamsi());
+		// Toast.makeText(context, "date " + date, 50).show();
 
 		convertView.setOnClickListener(new OnClickListener() {
 
