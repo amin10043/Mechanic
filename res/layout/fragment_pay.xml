@@ -11,7 +11,7 @@
         android:src="@drawable/i13" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/row_anad_txt2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"

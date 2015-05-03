@@ -1,5 +1,7 @@
 package com.project.mechanic.utility;
 
+import java.util.Locale;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,6 +17,7 @@ import android.view.WindowManager;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Roozh.SolarCalendar;
 
 public class Utility {
 
@@ -166,5 +169,14 @@ public class Utility {
 		columnWidth = point.x;
 		return columnWidth;
 
+	}
+
+	public static String getCurrentShamsidate() {
+		Locale loc = new Locale("en_US");
+		Roozh util = new Roozh();
+		SolarCalendar sc = util.new SolarCalendar();
+		return String.valueOf(sc.year) + "/"
+				+ String.format(loc, "%02d", sc.month) + "/"
+				+ String.format(loc, "%02d", sc.date);
 	}
 }

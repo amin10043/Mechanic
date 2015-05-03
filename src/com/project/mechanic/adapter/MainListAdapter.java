@@ -100,6 +100,8 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
 
+		Toast.makeText(context, "date ", 100).show();
+
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -175,6 +177,9 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.addToBackStack(null);
 					trans.commit();
 
+					// String ShamsiDate =
+					// com.project.mechanic.utility.com.project.mechanic.adapter.ShamsiRoozh.getCurrentShamsidate();
+
 				} else if (id == 6) {
 
 					FragmentTransaction trans = ((MainActivity) context)
@@ -193,7 +198,9 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					trans.replace(R.id.content_frame, new FroumtitleFragment());
 					trans.addToBackStack(null);
 					trans.commit();
+
 				}
+
 			}
 
 		});
