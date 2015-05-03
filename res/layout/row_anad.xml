@@ -50,6 +50,7 @@
                 android:layout_width="225dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:maxLength="20"
                 android:text="Medium Text"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/transparent" />
