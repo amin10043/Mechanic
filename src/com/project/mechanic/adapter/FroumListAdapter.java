@@ -9,10 +9,13 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.project.mechanic.R;
@@ -90,6 +93,12 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 		CommentInFroum d = list.get(position);
 		NumofCmtLike.setText(d.getNumOfLike());
 		NumofCmtDisLike.setText(d.getNumOfDislike());
+		ListView lstReply = (ListView) convertView
+				.findViewById(R.id.lstReplytoCm);
+		FroumReplyetocmAdapter ReplyAdapter = new FroumReplyetocmAdapter(
+				context, R.layout.raw_froumcmt, list, null);
+		lstReply.setAdapter(ReplyAdapter);
+		resizeListView(lstReply);
 
 		CmtLike.setOnClickListener(new View.OnClickListener() {
 
@@ -198,6 +207,32 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 		});
 
 		return convertView;
+	}
+
+	private void resizeListView(ListView listView) {
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			// pre-condition
+			return;
+		}
+
+		int totalHeight = listView.getPaddingTop()
+				+ listView.getPaddingBottom();
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+
+			if (listItem instanceof ViewGroup) {
+				listItem.setLayoutParams(new LayoutParams(
+						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			}
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight
+				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
 	}
 
 }

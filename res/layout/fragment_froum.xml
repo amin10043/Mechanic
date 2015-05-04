@@ -7,140 +7,147 @@
     android:orientation="vertical"
     android:weightSum="100" >
 
-    <LinearLayout
-        android:id="@+id/LinearLayout1"
-        style="@style/List_Item_Style"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="34"
-        android:background="@drawable/list_item"
-        android:orientation="vertical"
-        android:weightSum="10" >
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3" >
-
-            <TextView
-                android:id="@+id/rawTitletxt"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
-                android:hint=" "
-                android:textColor="@color/red" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="4" >
-
-            <TextView
-                android:id="@+id/rawtxtDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="20dp"
-                android:textColor="@color/red" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4" >
-
-            <TextView
-                android:id="@+id/txtPhone_Object"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="18dp"
-                android:layout_toLeftOf="@+id/row_berand_txt"
-                android:textColor="@color/red" />
-
-            <TextView
-                android:id="@+id/fragmentnewstxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
-                android:layout_marginRight="18dp"
-                android:text="توسط"
-                android:textColor="@color/red" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
-
-        <ImageButton
-            android:id="@+id/imgBtnAddcmt_CmtFroum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/txtNumofLike_CmtFroum"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:background="#EAEAEA"
-            android:src="@drawable/cmt" />
-
-        <TextView
-            android:id="@+id/txtNumofCmt_CmtFroum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/imgBtnAddcmt_CmtFroum"
-            android:layout_below="@+id/imgBtnAddcmt_CmtFroum"
-            android:layout_marginRight="21dp"
-            android:hint="10"
-            android:text="hghgj" />
-
-        <ImageButton
-            android:id="@+id/imgbtnLike_Cmt_Froum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="14dp"
-            android:layout_toLeftOf="@+id/txtNumofCmt_CmtFroum"
-            android:background="@color/shiri"
-            android:src="@drawable/like" />
-
-        <TextView
-            android:id="@+id/txtNumofLike_CmtFroum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/imgbtnLike_Cmt_Froum"
-            android:layout_below="@+id/imgbtnLike_Cmt_Froum"
-            android:layout_marginRight="25dp"
-            android:text="ueuhruer" />
-    </RelativeLayout>
-
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="50"
-        android:fillViewport="true" >
+        android:layout_height="match_parent" >
 
-        <ListView
-            android:id="@+id/lstComment"
-            style="@style/second_item_style"
+        <LinearLayout
+            android:id="@+id/LinearLayout10"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="0dp" >
-        </ListView>
-    </ScrollView>
+            android:layout_height="wrap_content"
+            android:layout_weight="100"
+            android:orientation="vertical"
+            android:weightSum="100" >
 
-    <ImageView
-        android:id="@+id/imgvadvertise_Object"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="15"
-        android:scaleType="fitXY"
-        android:src="@drawable/a10" />
+            <LinearLayout
+                android:id="@+id/LinearLayout1"
+                style="@style/List_Item_Style"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="34"
+                android:background="@drawable/list_item"
+                android:orientation="vertical"
+                android:weightSum="10" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3" >
+
+                    <TextView
+                        android:id="@+id/rawTitletxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dp"
+                        android:hint=" "
+                        android:textColor="@color/red" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4" >
+
+                    <TextView
+                        android:id="@+id/rawtxtDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="20dp"
+                        android:textColor="@color/red" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="4" >
+
+                    <TextView
+                        android:id="@+id/txtPhone_Object"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="18dp"
+                        android:layout_toLeftOf="@+id/row_berand_txt"
+                        android:textColor="@color/red" />
+
+                    <TextView
+                        android:id="@+id/fragmentnewstxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="18dp"
+                        android:text="توسط"
+                        android:textColor="@color/red" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="16" >
+
+                <ImageButton
+                    android:id="@+id/imgBtnAddcmt_CmtFroum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/txtNumofLike_CmtFroum"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:background="#EAEAEA"
+                    android:src="@drawable/cmt" />
+
+                <TextView
+                    android:id="@+id/txtNumofCmt_CmtFroum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/imgBtnAddcmt_CmtFroum"
+                    android:layout_below="@+id/imgBtnAddcmt_CmtFroum"
+                    android:layout_marginRight="21dp"
+                    android:hint="10"
+                    android:text="hghgj" />
+
+                <ImageButton
+                    android:id="@+id/imgbtnLike_Cmt_Froum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="14dp"
+                    android:layout_toLeftOf="@+id/txtNumofCmt_CmtFroum"
+                    android:background="@color/shiri"
+                    android:src="@drawable/like" />
+
+                <TextView
+                    android:id="@+id/txtNumofLike_CmtFroum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/imgbtnLike_Cmt_Froum"
+                    android:layout_below="@+id/imgbtnLike_Cmt_Froum"
+                    android:layout_marginRight="25dp"
+                    android:text="ueuhruer" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/LinearLayout11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:orientation="vertical" >
+
+                <ListView
+                    android:id="@+id/lstComment"
+                    style="@style/second_item_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:dividerHeight="0dp" >
+                </ListView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

@@ -8,8 +8,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -48,6 +50,7 @@ public class FroumFragment extends Fragment {
 	FroumReplyetocmAdapter ReplyAdapter;
 	int id;
 	int id2;
+	int Commentid;
 
 	ListView lst;
 	ListView lstReply;
@@ -79,12 +82,13 @@ public class FroumFragment extends Fragment {
 		adapter = new DataBaseAdapter(getActivity());
 		adapter.open();
 		id = Integer.valueOf(getArguments().getString("Id"));
+		// Commentid = Integer.valueOf(getArguments().getString("CommentID"));
 
 		NumofComment.setText(adapter.CommentInFroum_count().toString());
 
 		NumofLike.setText(adapter.LikeInFroum_count().toString());
 		mylist = adapter.getCommentInFroumbyPaperid(id);
-		// ReplyeList = adapter.getReplyCommentbyCommentID(id);
+		ReplyeList = adapter.getReplyCommentbyCommentID(id, 1);
 		Froum x = adapter.getFroumItembyid(id);
 		txttitle.setText(x.getTitle());
 		txttitleDes.setText(x.getDescription());
@@ -95,11 +99,7 @@ public class FroumFragment extends Fragment {
 				R.layout.raw_froumcmt, mylist, FroumFragment.this);
 
 		lst.setAdapter(ListAdapter);
-
-		lstReply = (ListView) view.findViewById(R.id.lstReplytoCm);
-		ReplyAdapter = new FroumReplyetocmAdapter(getActivity(),
-				R.layout.raw_froumcmt, ReplyeList, FroumFragment.this);
-		lstReply.setAdapter(ReplyAdapter);
+		resizeListView(lst);
 
 		Like.setOnClickListener(new View.OnClickListener() {
 
@@ -161,6 +161,32 @@ public class FroumFragment extends Fragment {
 		froumListadapter.notifyDataSetChanged();
 		lst.setAdapter(froumListadapter);
 
+	}
+
+	private void resizeListView(ListView listView) {
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			// pre-condition
+			return;
+		}
+
+		int totalHeight = listView.getPaddingTop()
+				+ listView.getPaddingBottom();
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+
+			if (listItem instanceof ViewGroup) {
+				listItem.setLayoutParams(new LayoutParams(
+						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			}
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight
+				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
 	}
 	/*
 	 * public void refresh(){ adapter.open(); int

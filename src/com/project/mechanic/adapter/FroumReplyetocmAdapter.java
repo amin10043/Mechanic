@@ -6,9 +6,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -91,6 +93,34 @@ public class FroumReplyetocmAdapter extends ArrayAdapter<CommentInFroum> {
 		CommentInFroum d = list.get(position);
 		NumofCmtLike.setText(d.getNumOfLike());
 		NumofCmtDisLike.setText(d.getNumOfDislike());
+		convertView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				LinearLayout parentlayout = (LinearLayout) v;
+
+				String item = txt1.getText().toString();
+				int id = 0;
+				for (CommentInFroum listItem : list) {
+					if (item.equals(listItem.getDesk())) {
+						// check authentication and authorization
+						id = listItem.getId();
+					}
+				}
+
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				FroumFragment fragment = new FroumFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString("CommentID", String.valueOf(id));
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+
+			}
+
+		});
 
 		CmtLike.setOnClickListener(new View.OnClickListener() {
 
