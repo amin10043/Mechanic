@@ -18,7 +18,7 @@
             android:layout_weight="0.3"
             android:background="@drawable/list_item1"
             android:orientation="vertical"
-            android:weightSum="5.8" >
+            android:weightSum="5.7" >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -30,20 +30,42 @@
                 android:orientation="horizontal"
                 android:weightSum="2" >
 
-                <LinearLayout
-                    android:id="@+id/lin3"
+                <FrameLayout
+                    android:id="@+id/lin5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scaleType="fitXY" >
 
-                    <ImageView
-                        android:id="@+id/img2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/i13" />
-                </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/lin3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY" >
+
+                        <ImageView
+                            android:id="@+id/img2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/i13" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lin4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:gravity="bottom"
+                        android:scaleType="fitXY" >
+
+                        <ImageView
+                            android:id="@+id/imagcamera"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/i16" />
+                    </LinearLayout>
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -74,7 +96,7 @@
                     android:id="@+id/etxtemail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:ems="10" >
 
                     <requestFocus />
@@ -85,7 +107,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="right"
                     android:text="ایمیل:"
                     android:textColor="@color/transparent" />
@@ -102,7 +124,7 @@
                     android:id="@+id/etxtphone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:ems="10" />
 
                 <TextView
@@ -110,7 +132,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="right"
                     android:text="شماره ثابت :"
                     android:textColor="@color/transparent" />
@@ -128,7 +150,7 @@
                     android:id="@+id/etxtcellphone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:ems="10" />
 
                 <TextView
@@ -136,7 +158,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="right"
                     android:text="شماره همراه:"
                     android:textColor="@color/transparent" />
@@ -154,7 +176,7 @@
                     android:id="@+id/etxtfax"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:ems="10" />
 
                 <TextView
@@ -162,7 +184,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="right"
                     android:text="شماره فکس: "
                     android:textColor="@color/transparent" />
@@ -173,14 +195,14 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/txtsize10"
-                android:layout_weight="1"
+                android:layout_weight="0.9"
                 android:gravity="center" >
 
                 <EditText
                     android:id="@+id/etxtaddress"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:ems="10"
                     android:inputType="textPostalAddress" />
 
@@ -189,7 +211,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="right"
                     android:text="آدرس :"
                     android:textColor="@color/transparent" />

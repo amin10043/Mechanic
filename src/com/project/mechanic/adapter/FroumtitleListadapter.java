@@ -49,11 +49,11 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 				.inflate(R.layout.raw_froumtitle, parent, false);
 
 		final TextView txt1 = (TextView) convertView
-				.findViewById(R.id.rawTitletxt);
+
+		.findViewById(R.id.rowtitlefroum);
 		TextView txt2 = (TextView) convertView
-				.findViewById(R.id.rawtxtDescription);
-		TextView txt3 = (TextView) convertView
-				.findViewById(R.id.txtPhone_Object);
+				.findViewById(R.id.rowdescriptionfroum);
+		TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
 
 		Froum person1 = mylist.get(position);
 
@@ -89,6 +89,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 
 				DialogcmtInfroum dialog = new DialogcmtInfroum(null, id,
 						context, -1, R.layout.dialog_addcomment);
+
 				Bundle bundle2 = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
 				fragment.setArguments(bundle);
@@ -101,5 +102,4 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 		});
 		return convertView;
 	}
-
 }

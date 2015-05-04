@@ -10,9 +10,9 @@ import android.widget.Toast;
 
 import com.project.mechanic.R;
 
-public class DialogNetworkSocial extends Dialog {
+public class DialogEditNet extends Dialog {
 	Context context;
-	CreateIntroductionFragment fragment;
+	IntroductionEditFragment fragment;
 
 	String l1, l2, l3, l4, l5, l6;
 	EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle,
@@ -20,8 +20,8 @@ public class DialogNetworkSocial extends Dialog {
 
 	ImageButton saveBtn;
 
-	public DialogNetworkSocial(CreateIntroductionFragment fragment,
-			Context context, int xmlDesign) {
+	public DialogEditNet(IntroductionEditFragment fragment, Context context,
+			int xmlDesign) {
 		super(context);
 		this.context = context;
 		this.fragment = fragment;
@@ -31,23 +31,21 @@ public class DialogNetworkSocial extends Dialog {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.dialog_edit_link_net);
 
-		setContentView(R.layout.dialog_network_social);
+		inFacebook = (EditText) findViewById(R.id.dialogm1);
+		inLinkedin = (EditText) findViewById(R.id.dialogm2);
+		inTwiiter = (EditText) findViewById(R.id.dialogm3);
+		inWebsite = (EditText) findViewById(R.id.dialogm4);
+		inGoogle = (EditText) findViewById(R.id.dialogm5);
+		inInstagram = (EditText) findViewById(R.id.dialogm6);
 
-		saveBtn = (ImageButton) findViewById(R.id.savelink);
+		saveBtn = (ImageButton) findViewById(R.id.savenetlink);
 
-		inFacebook = (EditText) findViewById(R.id.dialogFacebook);
-		inLinkedin = (EditText) findViewById(R.id.dialogLinkedIn);
-		inTwiiter = (EditText) findViewById(R.id.dialogTwitter);
-		inWebsite = (EditText) findViewById(R.id.dialogWebsite);
-		inGoogle = (EditText) findViewById(R.id.dialogGoogle);
-		inInstagram = (EditText) findViewById(R.id.dialogInstagram);
-
-		saveBtn.setOnClickListener(new android.view.View.OnClickListener() {
+		saveBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-
 				l1 = inFacebook.getText().toString();
 				l2 = inLinkedin.getText().toString();
 				l3 = inTwiiter.getText().toString();
@@ -60,20 +58,22 @@ public class DialogNetworkSocial extends Dialog {
 					dismiss();
 				} else {
 
-					fragment.Lfacebook = l1;
-					fragment.Llinkedin = l2;
-					fragment.Ltwitter = l3;
-					fragment.Lwebsite = l4;
-					fragment.Lgoogle = l5;
-					fragment.Linstagram = l6;
+					fragment.Dface = l1;
+					fragment.Dlink = l2;
+					fragment.Dtwt = l3;
+					fragment.Dweb = l4;
+					fragment.Dgoogle = l5;
+					fragment.Dinstagram = l6;
 
 					Toast.makeText(context, "لینک ها با موفقیت اضافه شدند",
 							Toast.LENGTH_SHORT).show();
 
 					dismiss();
+
 				}
 			}
 		});
 
 	}
+
 }

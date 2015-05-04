@@ -17,8 +17,10 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnHoverListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -43,7 +45,7 @@ public class EditPersonalFragment  extends Fragment {
 	 protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
 		ServiceComm service;
-		ImageView   img2;
+		ImageView   img2, imagecamera;
 		LinearLayout.LayoutParams lp2;
 		Utility ut;
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
@@ -53,7 +55,7 @@ public class EditPersonalFragment  extends Fragment {
 	}
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_editpersonal, null);
+		final View view = inflater.inflate(R.layout.fragment_editpersonal, null);
 
 		service = new ServiceComm(getActivity());
 		ut=new Utility(getActivity());
@@ -64,6 +66,7 @@ public class EditPersonalFragment  extends Fragment {
 	final TextView	txtname=(TextView) view.findViewById(R.id.etxtname);
 	final TextView	txtfax=(TextView) view.findViewById(R.id.etxtfax);
 img2=(ImageView) view.findViewById(R.id.img2);
+imagecamera=(ImageView) view.findViewById(R.id.imagcamera);
  Button btnregedit=(Button) view.findViewById(R.id.btnregedit)	;
 
 LinearLayout lin3= (LinearLayout) view.findViewById(R.id.lin3);
@@ -179,6 +182,9 @@ lp2=new LinearLayout.LayoutParams(lin3.getLayoutParams());
 		
 		}
 	});
+	
+	
+
 	
 	
 	img2.setOnClickListener(new OnClickListener() {
