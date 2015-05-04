@@ -82,7 +82,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 					fragment.setArguments(bundle);
 
 					DialogcmtInPaper dialog = new DialogcmtInPaper(null,
-							context, R.layout.dialog_addcomment);
+							context, R.layout.dialog_addcomment,id);
 					Bundle bundle2 = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
 					fragment.setArguments(bundle);
