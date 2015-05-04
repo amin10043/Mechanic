@@ -143,7 +143,7 @@
                         android:layout_weight="1" >
 
                         <ImageButton
-                            android:id="@+id/imgbtnLike_RawCmtFroum"
+                            android:id="@+id/nfacebook"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -151,7 +151,7 @@
                             android:src="@drawable/facebook" />
 
                         <ImageButton
-                            android:id="@+id/imgbtnLinkedin_Object"
+                            android:id="@+id/nlinkedin"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -159,7 +159,7 @@
                             android:src="@drawable/lnkin" />
 
                         <ImageButton
-                            android:id="@+id/imgbtnTwitter_Object"
+                            android:id="@+id/ntwtert"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -167,7 +167,7 @@
                             android:src="@drawable/twtr" />
 
                         <ImageButton
-                            android:id="@+id/imgbtnSite_Object"
+                            android:id="@+id/nsite"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -175,7 +175,7 @@
                             android:src="@drawable/internet" />
 
                         <ImageButton
-                            android:id="@+id/imgbtnGoogle_Object"
+                            android:id="@+id/ngoogle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -183,7 +183,7 @@
                             android:src="@drawable/google" />
 
                         <ImageButton
-                            android:id="@+id/imgbtnInsta_Object"
+                            android:id="@+id/ninstagram"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -212,7 +212,8 @@
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
                             android:text="نمایندگی ها و همکاران مرتبط"
-                            android:textColor="@color/transparent" />
+                            android:textColor="@color/transparent"
+                            android:textSize="12sp" />
 
                         <ImageButton
                             android:id="@+id/imageButton6"
@@ -523,37 +524,41 @@
                         android:background="@drawable/brand_list_item_shape"
                         android:gravity="center" >
 
-                        <Button
+                        <ImageButton
                             android:id="@+id/btnPdf1_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_marginLeft="5dp"
-                            android:background="@drawable/ic_catalog" />
+                            android:background="#0000"
+                            android:src="@drawable/ic_catalog" />
 
-                        <Button
+                        <ImageButton
                             android:id="@+id/btnPdf2_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_toLeftOf="@+id/btnPdf1_Object"
-                            android:background="@drawable/ic_price" />
+                            android:background="#0000"
+                            android:src="@drawable/ic_price" />
 
-                        <Button
+                        <ImageButton
                             android:id="@+id/btnPdf3_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_toLeftOf="@+id/btnPdf2_Object"
-                            android:background="@drawable/ic_pdf" />
+                            android:background="#0000"
+                            android:src="@drawable/ic_pdf" />
 
-                        <Button
+                        <ImageButton
                             android:id="@+id/btnPdf4_Object"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_toLeftOf="@+id/btnPdf3_Object"
-                            android:background="@drawable/ic_video" />
+                            android:background="#0000"
+                            android:src="@drawable/ic_video" />
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>

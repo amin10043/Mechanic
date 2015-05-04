@@ -1725,18 +1725,60 @@ public class DataBaseAdapter {
 		return item;
 	}
 
-	public void UpdateObjectProperties(int id, String phone, String fax,
-			String mobile, String Email, String address) {
+	public void UpdateObjectProperties(int id, String name, String Phone,
+			String Email, String fax, String description, byte[] HeaderImage,
+			byte[] ProfileImage, byte[] FooterImage, String LinkCatalog,
+			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
+			String Mobile, String LinkFaceBook, String LinkInstagram,
+			String LinkLinkedin, String LinkGoogle, String LinkSite,
+			String LinkTweitter) {
 
 		ContentValues uc = new ContentValues();
 
-		uc.put(Object[2], phone);
-		uc.put(Object[4], fax);
-		uc.put(Object[15], mobile);
-		uc.put(Object[3], Email);
-		uc.put(Object[14], address);
+		if (!"".equals(name))
+			uc.put(Object[1], name);
+		if (!"".equals(Phone))
+			uc.put(Object[2], Phone);
+		if (!"".equals(Email))
+			uc.put(Object[3], Email);
+		if (!"".equals(fax))
+			uc.put(Object[4], fax);
+		if (!"".equals(description))
+			uc.put(Object[5], description);
+		if (HeaderImage != null)
+			uc.put(Object[6], HeaderImage);
+		if (ProfileImage != null)
+			uc.put(Object[7], ProfileImage);
+		if (FooterImage != null)
+			uc.put(Object[8], FooterImage);
+		if (!"".equals(LinkCatalog))
+			uc.put(Object[10], LinkCatalog);
+		if (!"".equals(LinkPrice))
+			uc.put(Object[11], LinkPrice);
+		if (!"".equals(LinkPDF))
+			uc.put(Object[12], LinkPDF);
+		if (!"".equals(LinkVideo))
+			uc.put(Object[13], LinkVideo);
+		if (!"".equals(Address))
+			uc.put(Object[14], Address);
+		if (!"".equals(Mobile))
+			uc.put(Object[15], Mobile);
+		if (!"".equals(LinkFaceBook))
+			uc.put(Object[18], LinkFaceBook);
+		if (!"".equals(LinkInstagram))
+			uc.put(Object[19], LinkInstagram);
+		if (!"".equals(LinkLinkedin))
+			uc.put(Object[20], LinkLinkedin);
+		if (!"".equals(LinkGoogle))
+			uc.put(Object[21], LinkGoogle);
+		if (!"".equals(LinkSite))
+			uc.put(Object[22], LinkSite);
+		if (!"".equals(LinkTweitter))
+			uc.put(Object[23], LinkTweitter);
 
 		mDb.update(TableObject, uc, "ID=" + id, null);
+		Toast.makeText(mContext, "اطلاعات با موفقیت ویرایش شد",
+				Toast.LENGTH_SHORT).show();
 	}
 
 	// /////////////////////////////////////ÈÏÓÊ ÂæÑÏä ÊÚÏÇÏ ÓØÑåÇ
@@ -1772,26 +1814,46 @@ public class DataBaseAdapter {
 
 		ContentValues cv = new ContentValues();
 
-		cv.put(Object[1], name);
-		cv.put(Object[2], Phone);
-		cv.put(Object[3], Email);
-		cv.put(Object[4], fax);
-		cv.put(Object[5], description);
-		cv.put(Object[6], HeaderImage);
-		cv.put(Object[7], ProfileImage);
-		cv.put(Object[8], FooterImage);
-		cv.put(Object[10], LinkCatalog);
-		cv.put(Object[11], LinkPrice);
-		cv.put(Object[12], LinkPDF);
-		cv.put(Object[13], LinkVideo);
-		cv.put(Object[14], Address);
-		cv.put(Object[15], Mobile);
-		cv.put(Object[18], LinkFaceBook);
-		cv.put(Object[19], LinkInstagram);
-		cv.put(Object[20], LinkLinkedin);
-		cv.put(Object[21], LinkGoogle);
-		cv.put(Object[22], LinkSite);
-		cv.put(Object[23], LinkTweitter);
+		if (name != null)
+			cv.put(Object[1], name);
+		if (Phone != null)
+			cv.put(Object[2], Phone);
+		if (Email != null)
+			cv.put(Object[3], Email);
+		if (fax != null)
+			cv.put(Object[4], fax);
+		if (description != null)
+			cv.put(Object[5], description);
+		if (HeaderImage != null)
+			cv.put(Object[6], HeaderImage);
+		if (ProfileImage != null)
+			cv.put(Object[7], ProfileImage);
+		if (FooterImage != null)
+			cv.put(Object[8], FooterImage);
+		if (LinkCatalog != null)
+			cv.put(Object[10], LinkCatalog);
+		if (LinkPrice != null)
+			cv.put(Object[11], LinkPrice);
+		if (LinkPDF != null)
+			cv.put(Object[12], LinkPDF);
+		if (LinkVideo != null)
+			cv.put(Object[13], LinkVideo);
+		if (Address != null)
+			cv.put(Object[14], Address);
+		if (Mobile != null)
+			cv.put(Object[15], Mobile);
+		if (LinkFaceBook != null)
+			cv.put(Object[18], LinkFaceBook);
+		if (LinkInstagram != null)
+			cv.put(Object[19], LinkInstagram);
+		if (LinkLinkedin != null)
+			cv.put(Object[20], LinkLinkedin);
+		if (LinkGoogle != null)
+			cv.put(Object[21], LinkGoogle);
+		if (LinkSite != null)
+			cv.put(Object[22], LinkSite);
+		if (LinkTweitter != null)
+			cv.put(Object[23], LinkTweitter);
 
 		mDb.insert(TableObject, null, cv);
 		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT)

@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="@drawable/google" />
+        android:background="@drawable/ic_blank" />
 
     <LinearLayout
         android:id="@+id/linear_star"
@@ -19,36 +19,6 @@
         android:layout_alignBottom="@+id/icon_item"
         android:layout_toRightOf="@+id/icon_item"
         android:orientation="horizontal" >
-
-        <ImageView
-            android:id="@+id/star1"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/ic_star_off" />
-
-        <ImageView
-            android:id="@+id/star2"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/ic_star_off" />
-
-        <ImageView
-            android:id="@+id/star3"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/ic_star_off" />
-
-        <ImageView
-            android:id="@+id/star4"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/ic_star_off" />
-
-        <ImageView
-            android:id="@+id/star5"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/ic_star_off" />
     </LinearLayout>
 
     <TextView
