@@ -96,7 +96,7 @@ public class DataBaseAdapter {
 	private String[] Froum = { "ID", "UserId", "Title", "Description" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date",
-			"CommentId" };
+			"CommentId","Seen" };
 	private String[] LikeInFroum = { "Id", "UserId", "FroumId", "Date",
 			"CommentId" };
 	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike" };
@@ -824,7 +824,7 @@ public class DataBaseAdapter {
 	private LikeInObject CursorToLikeInObject(Cursor cursor) {
 		LikeInObject tempProvince = new LikeInObject(cursor.getInt(0),
 				cursor.getInt(1), cursor.getInt(2), cursor.getString(3),
-				cursor.getInt(4));
+				cursor.getInt(4),cursor.getInt(5));
 		return tempProvince;
 
 	}
