@@ -22,21 +22,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/profile_icon_shape" />
+
+        <TextView
+            android:id="@+id/Rowobjecttxt"
+            style="@style/row_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="Large Text" />
+
+        <RatingBar
+            android:id="@+id/ratingBar1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true" />
     </FrameLayout>
-
-    <TextView
-        android:id="@+id/Rowobjecttxt"
-        style="@style/row_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:text="Large Text" />
-
-    <RatingBar
-        android:id="@+id/ratingBar1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true" />
 
 </RelativeLayout>
