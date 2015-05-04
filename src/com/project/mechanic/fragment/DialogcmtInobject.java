@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -41,6 +42,7 @@ public class DialogcmtInobject extends Dialog {
 				dbadapter = new DataBaseAdapter(context);
 				dbadapter.open();
 				int id = Integer.valueOf(f.getArguments().getString("Id"));
+				Toast.makeText(context, id + "", Toast.LENGTH_SHORT).show();
 				dbadapter.insertCommentObjecttoDb(Cmttxt.getText().toString(),
 						1, 1, "", 1);
 

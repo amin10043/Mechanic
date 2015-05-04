@@ -1,146 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAEAEA"
-    android:gravity="start"
-    android:orientation="vertical"
-    android:weightSum="100" >
+    android:layout_marginRight="30dp"
+    android:fillViewport="true" >
 
     <LinearLayout
-        android:id="@+id/LinearLayout1"
-        style="@style/List_Item_Style"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="34"
-        android:background="@drawable/list_item"
-        android:orientation="vertical"
-        android:weightSum="10" >
+        android:layout_height="match_parent"
+        android:background="#EAEAEA"
+        android:orientation="vertical" >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3" >
-
-            <TextView
-                android:id="@+id/rawTitletxt"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
-                android:hint=" "
-                android:textColor="@color/red" />
-        </RelativeLayout>
-
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/LinearLayout1"
+            style="@style/List_Item_Style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4" >
+            android:background="@drawable/list_item"
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/rawtxtDescription"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="20dp"
-                android:textColor="@color/red" />
-        </RelativeLayout>
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:orientation="vertical" >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4" >
+                <TextView
+                    android:id="@+id/rawTitletxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:text="title"
+                    android:textColor="@color/transparent" />
 
-            <TextView
-                android:id="@+id/txtPhone_Object"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/rawtxtDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="description"
+                    android:textColor="@color/transparent" />
+
+                <TextView
+                    android:id="@+id/txtPhone_Object"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:textColor="@color/transparent" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="18dp"
-                android:layout_toLeftOf="@+id/row_berand_txt"
-                android:textColor="@color/red" />
+                android:layout_margin="10dp"
+                android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/fragmentnewstxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
-                android:layout_marginRight="18dp"
-                android:text="توسط"
-                android:textColor="@color/red" />
-        </RelativeLayout>
-    </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/imgBtnAddcmt_CmtFroum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_cmt_froum"
+                    android:gravity="center" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
+                    <TextView
+                        android:id="@+id/txtNumofCmt_CmtFroum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:text="n"
+                        android:textColor="@color/transparent" />
+                </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/imgBtnAddcmt_CmtFroum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/txtNumofLike_CmtFroum"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:background="#EAEAEA"
-            android:src="@drawable/cmt" />
+                <LinearLayout
+                    android:id="@+id/imgbtnLike_Cmt_Froum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toRightOf="@+id/imgBtnAddcmt_CmtFroum"
+                    android:background="@drawable/like_froum"
+                    android:gravity="center" >
 
-        <TextView
-            android:id="@+id/txtNumofCmt_CmtFroum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/imgBtnAddcmt_CmtFroum"
-            android:layout_below="@+id/imgBtnAddcmt_CmtFroum"
-            android:layout_marginRight="21dp"
-            android:hint="10"
-            android:text="hghgj" />
+                    <TextView
+                        android:id="@+id/txtNumofLike_CmtFroum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:text="nlike"
+                        android:textColor="@color/transparent" />
+                </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/imgbtnLike_Cmt_Froum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="14dp"
-            android:layout_toLeftOf="@+id/txtNumofCmt_CmtFroum"
-            android:background="@color/shiri"
-            android:src="@drawable/like" />
+                <ImageButton
+                    android:id="@+id/sharefroumicon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/imgbtnLike_Cmt_Froum"
+                    android:background="@drawable/ic_share_froum" />
 
-        <TextView
-            android:id="@+id/txtNumofLike_CmtFroum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/imgbtnLike_Cmt_Froum"
-            android:layout_below="@+id/imgbtnLike_Cmt_Froum"
-            android:layout_marginRight="25dp"
-            android:text="ueuhruer" />
-    </RelativeLayout>
+                <ImageView
+                    android:id="@+id/iconfroumtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="right"
+                    android:background="@drawable/profile_account" />
 
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="50"
-        android:fillViewport="true" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="10dp"
+                    android:layout_toRightOf="@+id/sharefroumicon"
+                    android:text="Data"
+                    android:textColor="@color/transparent" />
+            </RelativeLayout>
+        </LinearLayout>
 
         <ListView
             android:id="@+id/lstComment"
             style="@style/second_item_style"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:dividerHeight="0dp" >
+            android:layout_marginRight="30dp"
+            android:dividerHeight="10dp" >
         </ListView>
-    </ScrollView>
+    </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imgvadvertise_Object"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="15"
-        android:scaleType="fitXY"
-        android:src="@drawable/a10" />
-
-</LinearLayout>
+</ScrollView>

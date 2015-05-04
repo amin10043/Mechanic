@@ -22,6 +22,13 @@ public class Object {
 	String LinkedIn;
 	int rate;
 	int ParentId;
+	String Google;
+	String Twitter;
+	String Site;
+	byte[] Image1;
+	byte[] Image2;
+	byte[] Image3;
+	byte[] Image4;
 
 	public String getFacebook() {
 		return Facebook;
@@ -70,10 +77,6 @@ public class Object {
 	public void setSite(String site) {
 		Site = site;
 	}
-
-	String Google;
-	String Twitter;
-	String Site;
 
 	public int getObjectTypeId() {
 		return ObjectTypeId;
@@ -138,11 +141,6 @@ public class Object {
 	public void setCellphone(String cellphone) {
 		Cellphone = cellphone;
 	}
-
-	byte[] Image1;
-	byte[] Image2;
-	byte[] Image3;
-	byte[] Image4;
 
 	public int getId() {
 		return Id;
