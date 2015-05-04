@@ -72,7 +72,7 @@ public class DataBaseAdapter {
 	private String TableCommentInFroum = "CommentInFroum";
 	private String TableLikeInComment = "LikeInComment";
 
-	private String TableCommentInPaper = "CommentInPapers";
+	private String TableCommentInPaper = "CmtInPaper";
 
 	private String TableObjectBrandType = "ObjectBrandType";
 
@@ -833,6 +833,8 @@ public class DataBaseAdapter {
 	private LikeInPaper CursorToLikeInPaper(Cursor cursor) {
 		LikeInPaper temp = new LikeInPaper(cursor.getInt(0), cursor.getInt(1),
 				cursor.getInt(2), cursor.getString(3), cursor.getInt(4));
+		
+		
 		return temp;
 
 	}
