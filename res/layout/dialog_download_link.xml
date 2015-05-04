@@ -22,7 +22,7 @@
                 android:background="@drawable/ic_catalog" />
 
             <EditText
-                android:id="@+id/dialogCatalog"
+                android:id="@+id/d1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/ff1"
@@ -42,7 +42,7 @@
                 android:background="@drawable/ic_price" />
 
             <EditText
-                android:id="@+id/dialogPrice"
+                android:id="@+id/d2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/ff2"
@@ -62,7 +62,7 @@
                 android:background="@drawable/ic_pdf" />
 
             <EditText
-                android:id="@+id/dialogPdf"
+                android:id="@+id/d3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/ff3"
@@ -82,7 +82,7 @@
                 android:background="@drawable/ic_video" />
 
             <EditText
-                android:id="@+id/dialogVideoe"
+                android:id="@+id/d4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/ff4"

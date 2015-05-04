@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.Anad;
@@ -95,7 +96,7 @@ public class DataBaseAdapter {
 	private String[] Froum = { "ID", "UserId", "Title", "Description" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date",
-			"CommentId" };
+			"CommentId","Seen" };
 	private String[] LikeInFroum = { "Id", "UserId", "FroumId", "Date",
 			"CommentId" };
 	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike" };
@@ -247,6 +248,29 @@ public class DataBaseAdapter {
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
+	
+	///////////////////
+	
+	public void UpdateAllUserToDb(int id, String email, String password, String phonenumber,
+			String mobailenumber, String faxnumber, String address, byte[] image) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		 uc.put("Email", email);
+		 uc.put("Password", password);
+		uc.put("Phonenumber", phonenumber);
+
+		uc.put("Mobailenumber", mobailenumber);
+		uc.put("Faxnumber", faxnumber);
+		uc.put("Address", address);
+		uc.put("Image", image);
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableUsers, uc, "ID=" + id, null);
+	}
+	
+	/////////////////////////////////////
+	
+	
 	public void insertLikeInObjectToDb(int UserId, int PaperId, String Date,
 			int CommentId) {
 
@@ -800,7 +824,7 @@ public class DataBaseAdapter {
 	private LikeInObject CursorToLikeInObject(Cursor cursor) {
 		LikeInObject tempProvince = new LikeInObject(cursor.getInt(0),
 				cursor.getInt(1), cursor.getInt(2), cursor.getString(3),
-				cursor.getInt(4));
+				cursor.getInt(4),cursor.getInt(5));
 		return tempProvince;
 
 	}
@@ -1749,9 +1773,9 @@ public class DataBaseAdapter {
 		mDb.update(TableObject, uc, "ID=" + id, null);
 	}
 
-	// /////////////////////////////////////»œ”  ¬Ê—œ‰  ⁄œ«œ ”ÿ—Â«
+	// /////////////////////////////////////√à√è√ì√ä √Ç√¶√ë√è√§ √ä√ö√è√á√è √ì√ò√ë√•√á
 	// ///////////////
-	// /////////////////////////////////////»œ”  ¬Ê—œ‰  ⁄œ«œ ”ÿ—Â«
+	// /////////////////////////////////////√à√è√ì√ä √Ç√¶√ë√è√§ √ä√ö√è√á√è √ì√ò√ë√•√á
 	// ///////////////
 	public int getcount() {
 		int item = 0;
@@ -1772,6 +1796,42 @@ public class DataBaseAdapter {
 
 	}
 
+	public void InsertInformationNewObject(String name, String Phone,
+			String Email, String fax, String description, byte[] HeaderImage,
+			byte[] ProfileImage, byte[] FooterImage, String LinkCatalog,
+			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
+			String Mobile, String LinkFaceBook, String LinkInstagram,
+			String LinkLinkedin, String LinkGoogle, String LinkSite,
+			String LinkTweitter) {
+
+		ContentValues cv = new ContentValues();
+
+		cv.put(Object[1], name);
+		cv.put(Object[2], Phone);
+		cv.put(Object[3], Email);
+		cv.put(Object[4], fax);
+		cv.put(Object[5], description);
+		cv.put(Object[6], HeaderImage);
+		cv.put(Object[7], ProfileImage);
+		cv.put(Object[8], FooterImage);
+		cv.put(Object[10], LinkCatalog);
+		cv.put(Object[11], LinkPrice);
+		cv.put(Object[12], LinkPDF);
+		cv.put(Object[13], LinkVideo);
+		cv.put(Object[14], Address);
+		cv.put(Object[15], Mobile);
+		cv.put(Object[18], LinkFaceBook);
+		cv.put(Object[19], LinkInstagram);
+		cv.put(Object[20], LinkLinkedin);
+		cv.put(Object[21], LinkGoogle);
+		cv.put(Object[22], LinkSite);
+		cv.put(Object[23], LinkTweitter);
+
+		mDb.insert(TableObject, null, cv);
+		Toast.makeText(mContext, "ÿßÿ∑ŸÑÿßÿπÿßÿ™ ÿ®ÿß ŸÖŸàŸÅŸÇ€åÿ™ ÿ´ÿ®ÿ™ ÿ¥ÿØ", Toast.LENGTH_SHORT)
+				.show();
+
+	}
 }
 // //////////////////////////
 

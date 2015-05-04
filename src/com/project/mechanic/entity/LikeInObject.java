@@ -6,16 +6,20 @@ public class LikeInObject {
 	int paperId;
 	String Datetime;
 	int Commentid;
+	int seen;
 	
 	
+	
+
 	public LikeInObject(int id, int userId, int paperId, String datetime,
-			int commentid) {
+			int commentid,int seen) {
 		super();
 		Id = id;
 		UserId = userId;
 		this.paperId = paperId;
 		Datetime = datetime;
 		Commentid = commentid;
+		this.seen = seen;
 	}
 	
 	
@@ -49,5 +53,15 @@ public class LikeInObject {
 	}
 	public void setCommentid(int commentid) {
 		Commentid = commentid;
+
 	}
+	
+	public int getSeen() {
+		return seen;
+	}
+
+	public void setSeen(int seen) {
+		this.seen = seen;
+	}
+
 }

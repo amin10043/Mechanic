@@ -37,23 +37,23 @@ public class DialogNetworkSocial extends Dialog {
 		saveBtn = (ImageButton) findViewById(R.id.savelink);
 
 		inFacebook = (EditText) findViewById(R.id.dialogFacebook);
-		inLinkedin = (EditText) findViewById(R.id.dialogFacebook);
-		inTwiiter = (EditText) findViewById(R.id.dialogFacebook);
-		inWebsite = (EditText) findViewById(R.id.dialogFacebook);
-		inGoogle = (EditText) findViewById(R.id.dialogFacebook);
-		inInstagram = (EditText) findViewById(R.id.dialogFacebook);
-
-		l1 = inFacebook.getText().toString();
-		l2 = inLinkedin.getText().toString();
-		l3 = inTwiiter.getText().toString();
-		l4 = inWebsite.getText().toString();
-		l5 = inGoogle.getText().toString();
-		l6 = inInstagram.getText().toString();
+		inLinkedin = (EditText) findViewById(R.id.dialogLinkedIn);
+		inTwiiter = (EditText) findViewById(R.id.dialogTwitter);
+		inWebsite = (EditText) findViewById(R.id.dialogWebsite);
+		inGoogle = (EditText) findViewById(R.id.dialogGoogle);
+		inInstagram = (EditText) findViewById(R.id.dialogInstagram);
 
 		saveBtn.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
+
+				l1 = inFacebook.getText().toString();
+				l2 = inLinkedin.getText().toString();
+				l3 = inTwiiter.getText().toString();
+				l4 = inWebsite.getText().toString();
+				l5 = inGoogle.getText().toString();
+				l6 = inInstagram.getText().toString();
 
 				fragment.Lfacebook = l1;
 				fragment.Llinkedin = l2;

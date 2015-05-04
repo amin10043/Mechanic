@@ -53,6 +53,8 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 		TextView txtdate = (TextView) convertView.findViewById(R.id.textdate);
 		TextView txtName = (TextView) convertView
 				.findViewById(R.id.row_anad_txt);
+		TextView txtDesc = (TextView) convertView
+				.findViewById(R.id.row_anad_txt2);
 		// ImageView img = (ImageView)
 		// convertView.findViewById(R.id.row_anad_img);
 		ImageView img2 = (ImageView) convertView
@@ -61,6 +63,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 		tempItem = list.get(position);
 		txtdate.setText(date.todayShamsi());
 		txtName.setText(tempItem.getTitle());
+		txtDesc.setText(tempItem.getDesc());
 		byte[] bitmapbyte = tempItem.getImage();
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
