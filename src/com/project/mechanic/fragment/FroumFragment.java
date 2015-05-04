@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FroumListAdapter;
+import com.project.mechanic.adapter.FroumReplyetocmAdapter;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
@@ -40,9 +41,11 @@ public class FroumFragment extends Fragment {
 	FroumListAdapter ListAdapter;
 
 	ArrayList<CommentInFroum> mylist;
+	ArrayList<CommentInFroum> ReplyeList;
 	DialogcmtInfroum dialog;
 	ImageButton Replytocm;
 	FroumListAdapter froumListadapter;
+	FroumReplyetocmAdapter ReplyAdapter;
 	int id;
 	int id2;
 
@@ -81,24 +84,22 @@ public class FroumFragment extends Fragment {
 
 		NumofLike.setText(adapter.LikeInFroum_count().toString());
 		mylist = adapter.getCommentInFroumbyPaperid(id);
-
-		/*
-		 * CommentInFroum d = null; NumofCmtLike.setText(d.getNumofLike());
-		 * NumofCmtDisLike.setText(d.getNumofDisLike());
-		 */
-
-		mylist = adapter.getCommentInFroumbyPaperid(id);
+		// ReplyeList = adapter.getReplyCommentbyCommentID(id);
 		Froum x = adapter.getFroumItembyid(id);
 		txttitle.setText(x.getTitle());
 		txttitleDes.setText(x.getDescription());
 		adapter.close();
 
 		lst = (ListView) view.findViewById(R.id.lstComment);
-		lstReply = (ListView) view.findViewById(R.id.lstReplytoCm);
 		ListAdapter = new FroumListAdapter(getActivity(),
 				R.layout.raw_froumcmt, mylist, FroumFragment.this);
 
 		lst.setAdapter(ListAdapter);
+
+		lstReply = (ListView) view.findViewById(R.id.lstReplytoCm);
+		ReplyAdapter = new FroumReplyetocmAdapter(getActivity(),
+				R.layout.raw_froumcmt, ReplyeList, FroumFragment.this);
+		lstReply.setAdapter(ReplyAdapter);
 
 		Like.setOnClickListener(new View.OnClickListener() {
 
@@ -122,8 +123,8 @@ public class FroumFragment extends Fragment {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 
-				dialog = new DialogcmtInfroum(FroumFragment.this, 1,
-						getActivity(), R.layout.dialog_addcomment);
+				dialog = new DialogcmtInfroum(FroumFragment.this, 0,
+						getActivity(), id, R.layout.dialog_addcomment);
 				dialog.show();
 
 			}

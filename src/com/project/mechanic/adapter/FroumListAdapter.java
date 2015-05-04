@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Users;
@@ -179,7 +177,7 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 			@Override
 			public void onClick(View v) {
 				LinearLayout parentlayout = (LinearLayout) v.getParent()
-						.getParent().getParent();
+						.getParent();
 				View view = parentlayout.findViewById(R.id.rawCmttxt);
 				TextView x = (TextView) view;
 				String item = x.getText().toString();
@@ -191,10 +189,8 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 					}
 				}
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
-				DialogcmtInfroum dialog = new DialogcmtInfroum(null, id,
-						context, R.layout.dialog_addcomment);
+				DialogcmtInfroum dialog = new DialogcmtInfroum(froumfragment,
+						id, context, -1, R.layout.dialog_addcomment);
 				dialog.show();
 
 			}

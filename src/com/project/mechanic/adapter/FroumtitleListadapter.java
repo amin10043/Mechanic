@@ -88,7 +88,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 				fragment.setArguments(bundle);
 
 				DialogcmtInfroum dialog = new DialogcmtInfroum(null, id,
-						context, R.layout.dialog_addcomment);
+						context, -1, R.layout.dialog_addcomment);
 				Bundle bundle2 = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
 				fragment.setArguments(bundle);

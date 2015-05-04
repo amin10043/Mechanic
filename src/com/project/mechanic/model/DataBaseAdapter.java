@@ -1291,6 +1291,42 @@ public class DataBaseAdapter {
 
 	}
 
+	/*
+	 * public ArrayList<CommentInFroum> getReplyCommentbyCommentID(int Froumid,
+	 * int Commentid) {
+	 * 
+	 * ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
+	 * CommentInFroum item = null;
+	 * 
+	 * /* Cursor tCur = mDb.rawQuery("Select FroumId From " +
+	 * TableCommentInFroum + " Where FroumId=" +String.valueOf(Froumid),null );
+	 */
+
+	/*
+	 * Cursor mCur = mDb.query(TableCommentInFroum, CommentInFroum, "FroumId=?",
+	 * new String[] { String.valueOf(Froumid) } "CommentId=?", new String[] {
+	 * String.valueOf(Commentid) }, null, null, null);
+	 */
+
+	/*
+	 * while (mCur.moveToNext()) { item = CursorToCommentInFroum(mCur);
+	 * result.add(item); }
+	 * 
+	 * return result;
+	 * 
+	 * }
+	 */
+
+	/*
+	 * public boolean isUserLikedComment(int userId, int CommentId) {
+	 * 
+	 * Cursor curs = mDb.rawQuery( "SELECT COUNT(*) AS NUM FROM " +
+	 * TableLikeInComment + " WHERE UserId= " + String.valueOf(userId) +
+	 * " AND CommentId=" + String.valueOf(CommentId) + " AND IsLike=" + "1",
+	 * null); if (curs.moveToNext()) { int number = curs.getInt(0); if (number >
+	 * 0) return true; } return false; }
+	 */
+
 	public ArrayList<CommentInPaper> getCommentInPaperbyPaperid(int Paperid) {
 
 		ArrayList<CommentInPaper> result = new ArrayList<CommentInPaper>();
