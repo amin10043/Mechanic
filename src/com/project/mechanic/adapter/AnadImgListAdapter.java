@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Anad;
@@ -25,7 +24,7 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 	Context context;
 	List<Anad> list;
 	int[] imageId;
-	private DialogAnadimg dialog;
+	private DialogAnadimg dialog1;
 	Anad tempItem;
 	DataBaseAdapter adapter;
 
@@ -67,13 +66,13 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 
 				RelativeLayout parentlayout = (RelativeLayout) v;
 
-				dialog = new DialogAnadimg(context, R.layout.dialog_imganad,
+				dialog1 = new DialogAnadimg(context, R.layout.dialog_imganad,
 						null, 0, 0);
-				dialog.setTitle(R.string.txtanad);
-				dialog.show();
-				int idImg = tempItem.getId();
-				String a = Integer.toString(idImg);
-				Toast.makeText(context, a, Toast.LENGTH_SHORT).show();
+				dialog1.setTitle(R.string.tabligh);
+				dialog1.show();
+				// int idImg = tempItem.getId();
+				// String a = Integer.toString(idImg);
+				// Toast.makeText(context, a, Toast.LENGTH_SHORT).show();
 
 				// TextView txtName = (TextView) parentlayout
 				// .findViewById(R.id.row_anad_txt);

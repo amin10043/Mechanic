@@ -1,6 +1,7 @@
 package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,10 +12,13 @@ import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -25,9 +29,8 @@ public class DialogAnadimg extends Dialog {
 
 	protected static final EditText number = null;
 
-	private static int RESULT_LOAD_IMAGE = 1;
+	private static int RESULT_LOAD_IMAGE2 = 2;
 	private static final int SELECT_PICTURE = 1;
-
 	private ImageView imgdialoganad;
 	private ImageButton sabt, enseraf;
 	private Spinner sp;
@@ -40,11 +43,14 @@ public class DialogAnadimg extends Dialog {
 	int emailCheck = 0;
 	int nameCheck = 0;
 	int faxCheck = 0;
+	List<Object> list;
+	Object tempItem;
 	int phoneCheck = 0;
 	int mobileCheck = 0;
 	String titel;
 	String Bytimage;
 	int ProvinceId;
+	int id;
 	protected byte[] img;
 	String TABLE_NAME = "Ticket";
 
@@ -57,6 +63,7 @@ public class DialogAnadimg extends Dialog {
 		this.fragment = fragment;
 		this.ticketTypeID = ticketTypeID;
 		this.ProvinceId = ProvinceId;
+
 	}
 
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
@@ -74,85 +81,35 @@ public class DialogAnadimg extends Dialog {
 		// id = Integer.valueOf(getArguments().getString("Id"));
 
 		setContentView(resourceId);
-		imgdialoganad = (ImageView) findViewById(R.id.imgDialoganad);
-		sabt = (ImageButton) findViewById(R.id.imgsabt);
-		enseraf = (ImageButton) findViewById(R.id.imghazf);
-		sp = (Spinner) findViewById(R.id.spinner1);
 
-		// dialog_img2.setOnClickListener(new
-		// android.view.View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// dbadapter = new DataBaseAdapter(context);
-		//
-		// dbadapter.open();
-		//
-		// if ((dialog_img1.getDrawable() == null)) {
-		//
-		// dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
-		// .getText().toString(), dialog_anad_et2.getText()
-		// .toString(), 1, null, ticketTypeID, 0, 0, 0, 0, 0,
-		// ProvinceId, UName.getText().toString(), UEmail
-		// .getText().toString(), UPhonnumber
-		// .getText().toString(), UFax.getText()
-		// .toString(), null, UMobile.getText()
-		// .toString());
-		//
-		// } else {
-		//
-		// Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
-		// .getBitmap();
-		//
-		// Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
-		// bitmap.getHeight(), bitmap.getConfig());
-		// if (bitmap.sameAs(emptyBitmap)) {
-		// dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
-		// .getText().toString(), dialog_anad_et2
-		// .getText().toString(), 1, null, ticketTypeID,
-		// 0, 0, 0, 0, 0, ProvinceId, UName.getText()
-		// .toString(), UEmail.getText()
-		// .toString(), UPhonnumber.getText()
-		// .toString(), UFax.getText().toString(),
-		// null, UMobile.getText().toString());
-		// } else {
-		// byte[] bytes = getBitmapAsByteArray(bitmap);
-		//
-		// dbadapter.insertTickettoDb(dialog_anad_et1.getText()
-		// .toString(), dialog_anad_et2.getText()
-		// .toString(), 1, bytes, null, ticketTypeID, 0,
-		// 0, 0, 0, 0, ProvinceId, UName.getText()
-		// .toString(), UEmail.getText()
-		// .toString(), UPhonnumber.getText()
-		// .toString(), UFax.getText().toString(),
-		// null, null, UMobile.getText().toString());
-		//
-		// }
-		//
-		// }
-		// Toast.makeText(context, "آگهی شما با موفقیت ثبت شد",
-		// Toast.LENGTH_SHORT).show();
-		// dbadapter.close();
-		// ((AnadFragment) fragment).updateView();
-		// DialogAnadimg.this.dismiss();
-		//
-		// }
-		// });
+		TextView txtdesc = (TextView) findViewById(R.id.txtdescdialog);
+		CheckBox checkshart = (CheckBox) findViewById(R.id.checkBoxshart);
+		final Button btndarj = (Button) findViewById(R.id.darjtabligh);
 
-		// dialog_img1.setOnClickListener(new
-		// android.view.View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// Intent i = new Intent(
-		// Intent.ACTION_PICK,
-		// android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-		//
-		// fragment.getActivity().startActivityFromFragment(fragment, i,
-		// RESULT_LOAD_IMAGE);
-		//
-		// }
-		// });
+		checkshart.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				btndarj.setVisibility(1);
+
+			}
+		});
+		btndarj.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// FragmentTransaction trans = ((MainActivity)
+				// context).getSupportFragmentManager().beginTransaction();
+				// ShowAdFragment fragment = new ShowAdFragment();
+				// Bundle bundle = new Bundle();
+				// bundle.putString("Id", String.valueOf(id));
+				// fragment.setArguments(bundle);
+				// trans.replace(R.id.content_frame, fragment);
+				// trans.addToBackStack(null);
+				// trans.commit();
+				//
+			}
+		});
 
 	}
 

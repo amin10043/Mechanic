@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.Anad;
@@ -19,6 +20,7 @@ import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.Executertype;
 import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.LikeInComment;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.LikeInPaper;
 import com.project.mechanic.entity.ListItem;
@@ -68,6 +70,7 @@ public class DataBaseAdapter {
 	private String TableWorkmanType = "WorkmanType";
 	private String TableCommentInObject = "CommentInObject";
 	private String TableCommentInFroum = "CommentInFroum";
+	private String TableLikeInComment = "LikeInComment";
 
 	private String TableCommentInPaper = "CommentInPapers";
 
@@ -93,9 +96,10 @@ public class DataBaseAdapter {
 	private String[] Froum = { "ID", "UserId", "Title", "Description" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date",
-			"CommentId" };
+			"CommentId","Seen" };
 	private String[] LikeInFroum = { "Id", "UserId", "FroumId", "Date",
 			"CommentId" };
+	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike" };
 	private String[] LikeInPaper = { "Id", "UserId", "PaperId", "Date",
 			"CommentId" };
 	private String[] List = { "ID", "Name", "ParentId" };
@@ -105,7 +109,7 @@ public class DataBaseAdapter {
 			"Description", "Image1", "Image2", "Image3", "Image4", "Pdf1",
 			"Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId",
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
-			"Site", "Twitter", "rate" };
+			"Site", "Twitter", "ParentId", "rate" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
@@ -244,6 +248,29 @@ public class DataBaseAdapter {
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
+	
+	///////////////////
+	
+	public void UpdateAllUserToDb(int id, String email, String password, String phonenumber,
+			String mobailenumber, String faxnumber, String address, byte[] image) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		 uc.put("Email", email);
+		 uc.put("Password", password);
+		uc.put("Phonenumber", phonenumber);
+
+		uc.put("Mobailenumber", mobailenumber);
+		uc.put("Faxnumber", faxnumber);
+		uc.put("Address", address);
+		uc.put("Image", image);
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableUsers, uc, "ID=" + id, null);
+	}
+	
+	/////////////////////////////////////
+	
+	
 	public void insertLikeInObjectToDb(int UserId, int PaperId, String Date,
 			int CommentId) {
 
@@ -499,7 +526,9 @@ public class DataBaseAdapter {
 					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
-					cursor.getString(19), cursor.getInt(24));
+
+					cursor.getString(19), cursor.getInt(25), cursor.getInt(26));
+
 			result.add(tempObject);
 		}
 		return result;
@@ -795,7 +824,7 @@ public class DataBaseAdapter {
 	private LikeInObject CursorToLikeInObject(Cursor cursor) {
 		LikeInObject tempProvince = new LikeInObject(cursor.getInt(0),
 				cursor.getInt(1), cursor.getInt(2), cursor.getString(3),
-				cursor.getInt(4));
+				cursor.getInt(4),cursor.getInt(5));
 		return tempProvince;
 
 	}
@@ -804,6 +833,14 @@ public class DataBaseAdapter {
 	private LikeInPaper CursorToLikeInPaper(Cursor cursor) {
 		LikeInPaper temp = new LikeInPaper(cursor.getInt(0), cursor.getInt(1),
 				cursor.getInt(2), cursor.getString(3), cursor.getInt(4));
+		return temp;
+
+	}
+
+	@SuppressWarnings("unused")
+	private LikeInComment CursorToLikeInComment(Cursor cursor) {
+		LikeInComment temp = new LikeInComment(cursor.getInt(0),
+				cursor.getInt(1), cursor.getInt(2), cursor.getInt(3));
 		return temp;
 
 	}
@@ -830,7 +867,8 @@ public class DataBaseAdapter {
 				cursor.getString(14), cursor.getString(15), cursor.getInt(16),
 				cursor.getInt(17), cursor.getString(18), cursor.getString(19),
 				cursor.getString(20), cursor.getString(21),
-				cursor.getString(22), cursor.getString(23), cursor.getInt(24));
+				cursor.getString(22), cursor.getString(23), cursor.getInt(24),
+				cursor.getInt(25));
 		return tempObject;
 	}
 
@@ -1315,21 +1353,66 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertCmtLikebyid(int id, String numofLike) {
-
-		ContentValues uc = new ContentValues();
-		uc.put("NumOfLike", numofLike);
-		mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+	public void insertCmtLikebyid(int id, String numofLike, int UserId) {
+		if (!isUserLikedComment(UserId, id)) {
+			ContentValues uc = new ContentValues();
+			uc.put("NumOfLike", numofLike);
+			mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+		}
 	}
 
-	public void insertCmtDisLikebyid(int id, String numofDisLike) {
+	public void insertLikeInCommentToDb(int UserId, int ISLike, int CommentId) {
 
 		ContentValues uc = new ContentValues();
-		uc.put("NumOfDislike", numofDisLike);
-		mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+
+		uc.put("UserId", UserId);
+
+		uc.put("CommentId", CommentId);
+		uc.put("IsLike", ISLike);
+
+		long res = mDb.insert(TableLikeInComment, null, uc);
+		long res2 = res;
 	}
 
-	public Users getUsernamebyid(int id) {
+	public boolean isUserLikedComment(int userId, int CommentId) {
+
+		Cursor curs = mDb.rawQuery(
+				"SELECT COUNT(*) AS NUM FROM " + TableLikeInComment
+						+ " WHERE UserId= " + String.valueOf(userId)
+						+ " AND CommentId=" + String.valueOf(CommentId)
+						+ " AND IsLike=" + "1", null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
+	public boolean isUserDisLikedComment(int userId, int CommentId) {
+
+		Cursor curs = mDb.rawQuery(
+				"SELECT COUNT(*) AS NUM FROM " + TableLikeInComment
+						+ " WHERE UserId= " + String.valueOf(userId)
+						+ " AND CommentId=" + String.valueOf(CommentId)
+						+ " AND IsLike=" + "0", null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
+	public void insertCmtDisLikebyid(int id, String numofDisLike, int UserId) {
+		if (!isUserDisLikedComment(UserId, id)) {
+			ContentValues uc = new ContentValues();
+			uc.put("NumOfDislike", numofDisLike);
+			mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+		}
+	}
+
+	public Users getUserbyid(int id) {
 
 		Users result = null;
 
@@ -1580,6 +1663,23 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<Object> getObjectbyParentId(int parentid) {
+
+		ArrayList<Object> result = new ArrayList<Object>();
+		Object item = null;
+
+		Cursor mCur = mDb.query(TableObject, Object, "ParentId=?",
+				new String[] { String.valueOf(parentid) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToObject(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
 	public ArrayList<Object> getObjectBy_BTId_CityId(int Object_id, int City_id) {
 		ArrayList<Object> result = new ArrayList<Object>();
 		Cursor cursor = mDb
@@ -1602,7 +1702,9 @@ public class DataBaseAdapter {
 					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
-					cursor.getString(19), cursor.getInt(24));
+
+					cursor.getString(19), cursor.getInt(25), cursor.getInt(27));
+
 			result.add(tempObject);
 		}
 		return result;
@@ -1635,9 +1737,9 @@ public class DataBaseAdapter {
 		mDb.update(TableObject, uc, "ID=" + id, null);
 	}
 
-	// /////////////////////////////////////»œ”  ¬Ê—œ‰  ⁄œ«œ ”ÿ—Â«
+	// /////////////////////////////////////√à√è√ì√ä √Ç√¶√ë√è√§ √ä√ö√è√á√è √ì√ò√ë√•√á
 	// ///////////////
-	// /////////////////////////////////////»œ”  ¬Ê—œ‰  ⁄œ«œ ”ÿ—Â«
+	// /////////////////////////////////////√à√è√ì√ä √Ç√¶√ë√è√§ √ä√ö√è√á√è √ì√ò√ë√•√á
 	// ///////////////
 	public int getcount() {
 		int item = 0;
@@ -1658,6 +1760,42 @@ public class DataBaseAdapter {
 
 	}
 
+	public void InsertInformationNewObject(String name, String Phone,
+			String Email, String fax, String description, byte[] HeaderImage,
+			byte[] ProfileImage, byte[] FooterImage, String LinkCatalog,
+			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
+			String Mobile, String LinkFaceBook, String LinkInstagram,
+			String LinkLinkedin, String LinkGoogle, String LinkSite,
+			String LinkTweitter) {
+
+		ContentValues cv = new ContentValues();
+
+		cv.put(Object[1], name);
+		cv.put(Object[2], Phone);
+		cv.put(Object[3], Email);
+		cv.put(Object[4], fax);
+		cv.put(Object[5], description);
+		cv.put(Object[6], HeaderImage);
+		cv.put(Object[7], ProfileImage);
+		cv.put(Object[8], FooterImage);
+		cv.put(Object[10], LinkCatalog);
+		cv.put(Object[11], LinkPrice);
+		cv.put(Object[12], LinkPDF);
+		cv.put(Object[13], LinkVideo);
+		cv.put(Object[14], Address);
+		cv.put(Object[15], Mobile);
+		cv.put(Object[18], LinkFaceBook);
+		cv.put(Object[19], LinkInstagram);
+		cv.put(Object[20], LinkLinkedin);
+		cv.put(Object[21], LinkGoogle);
+		cv.put(Object[22], LinkSite);
+		cv.put(Object[23], LinkTweitter);
+
+		mDb.insert(TableObject, null, cv);
+		Toast.makeText(mContext, "ÿßÿ∑ŸÑÿßÿπÿßÿ™ ÿ®ÿß ŸÖŸàŸÅŸÇ€åÿ™ ÿ´ÿ®ÿ™ ÿ¥ÿØ", Toast.LENGTH_SHORT)
+				.show();
+
+	}
 }
 // //////////////////////////
 

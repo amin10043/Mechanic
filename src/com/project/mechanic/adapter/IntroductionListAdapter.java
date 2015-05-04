@@ -49,7 +49,7 @@ public class IntroductionListAdapter extends ArrayAdapter<CommentInObject> {
 		
 		CommentInObject Comment = list.get(position);
 		adapter.open();
-		Users x = adapter.getUsernamebyid(Comment.getUserid());
+		Users x = adapter.getUserbyid(Comment.getUserid());
 		adapter.close();
 
 		
