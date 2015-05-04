@@ -5,6 +5,7 @@ public class Like {
 	int Id;
 	int UserId;
 	int paperId;
+	int Seen;
 
 	public int getId() {
 		return Id;
@@ -30,11 +31,20 @@ public class Like {
 		this.paperId = paperId;
 	}
 
-	public Like(int id, int userId, int paperId) {
+	public int getSeen() {
+		return Seen;
+	}
+
+	public void setSeen(int seen) {
+		Seen = seen;
+	}
+
+	public Like(int id, int userId, int paperId, int seen) {
 		super();
 		Id = id;
 		UserId = userId;
 		this.paperId = paperId;
+		Seen = seen;
 	}
 
 }
