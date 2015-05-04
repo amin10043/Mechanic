@@ -7,6 +7,7 @@ public class CommentInPaper {
 	int UserId;
 	String Datetime;
 	int CommentId;
+	int Seen;
 
 	public int getId() {
 		return Id;
@@ -56,8 +57,16 @@ public class CommentInPaper {
 		CommentId = commentid;
 	}
 
+	public int getSeen() {
+		return Seen;
+	}
+
+	public void setSeen(int seen) {
+		Seen = seen;
+	}
+
 	public CommentInPaper(int id, String description, int paperId, int userId,
-			String datetime, int commentId) {
+			String datetime, int commentId, int seen) {
 
 		Id = id;
 		Description = description;
@@ -65,7 +74,7 @@ public class CommentInPaper {
 		UserId = userId;
 		Datetime = datetime;
 		CommentId = commentId;
-
+		Seen = seen;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.project.mechanic.model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -80,23 +81,23 @@ public class DataBaseAdapter {
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] Anad = { "Id", "Image", "ObjectId", "Date", "TypeId",
 			"ProvinceId" };
-	private String[] CityColumn = { "ID", "Name", "ProvinceId" };
+	private String[] CityColumn = { "ID", "Name", "ProvinceId","Count" };
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] CommentInObject = { "Id", "Desk", "ObjectId", "UserId",
-			"Date", "CommentId" };
+			"Date", "CommentId", "Seen" };
 	private String[] CommentInFroum = { "ID", "Desk", "FroumId", "UserId",
 
-	"Date", "CommentId", "NumOfDislike", "NumOfLike" };
+	"Date", "CommentId", "NumOfDislike", "NumOfLike", "Seen" };
 
 	private String[] CommentInPaper = { "Id", "Desk", "PaperId", "UserId",
-			"Date", "CommentId" };
+			"Date", "CommentId", "Seen" };
 
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId" };
-	private String[] Froum = { "ID", "UserId", "Title", "Description" };
+	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date",
-			"CommentId","Seen" };
+			"CommentId", "Seen" };
 	private String[] LikeInFroum = { "Id", "UserId", "FroumId", "Date",
 			"CommentId" };
 	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike" };
@@ -109,18 +110,18 @@ public class DataBaseAdapter {
 			"Description", "Image1", "Image2", "Image3", "Image4", "Pdf1",
 			"Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId",
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
-			"Site", "Twitter", "ParentId", "rate" };
+			"Site", "Twitter", "ParentId", "rate", "Seen" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
-	private String[] Paper = { "ID", "Title", "Context" };
+	private String[] Paper = { "ID", "Title", "Context", "Seen" };
 	private String[] PaperType = { "ID", "Name" };
-	private String[] Province = { "ID", "Name" };
+	private String[] Province = { "ID", "Name","Count" };
 
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
 			"ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress",
-			"UImage", "UMobile" };
+			"UImage", "UMobile", "Seen" };
 
 	private String[] TicketType = { "ID", "desc" };
 
@@ -250,16 +251,16 @@ public class DataBaseAdapter {
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
-	
-	///////////////////
-	
-	public void UpdateAllUserToDb(int id, String email, String password, String phonenumber,
-			String mobailenumber, String faxnumber, String address, byte[] image) {
+	// /////////////////
+
+	public void UpdateAllUserToDb(int id, String email, String password,
+			String phonenumber, String mobailenumber, String faxnumber,
+			String address, byte[] image) {
 
 		ContentValues uc = new ContentValues();
 		// uc.put("Name", name);
-		 uc.put("Email", email);
-		 uc.put("Password", password);
+		uc.put("Email", email);
+		uc.put("Password", password);
 		uc.put("Phonenumber", phonenumber);
 
 		uc.put("Mobailenumber", mobailenumber);
@@ -269,10 +270,9 @@ public class DataBaseAdapter {
 		// uc.put("ServiceId", serviceid);
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
-	
-	/////////////////////////////////////
-	
-	
+
+	// ///////////////////////////////////
+
 	public void insertLikeInObjectToDb(int UserId, int PaperId, String Date,
 			int CommentId) {
 
@@ -491,11 +491,11 @@ public class DataBaseAdapter {
 				null, null);
 		Province tempProvince;
 		while (cursor.moveToNext()) {
-			tempProvince = new Province(cursor.getInt(0), cursor.getString(1));
+			tempProvince = new Province(cursor.getInt(0), cursor.getString(1),cursor.getInt(2));
 			result.add(tempProvince);
 		}
 
-		Arrays.sort(result.toArray());
+		Collections.sort(result);
 		return result;
 
 	}
@@ -507,7 +507,7 @@ public class DataBaseAdapter {
 		City tempCity;
 		while (cursor.moveToNext()) {
 			tempCity = new City(cursor.getInt(0), cursor.getString(1),
-					cursor.getInt(2));
+					cursor.getInt(2),cursor.getInt(3));
 			result.add(tempCity);
 		}
 		return result;
@@ -528,8 +528,8 @@ public class DataBaseAdapter {
 					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
-
-					cursor.getString(19), cursor.getInt(25), cursor.getInt(26));
+					cursor.getString(19), cursor.getInt(25), cursor.getInt(26),
+					cursor.getInt(27));
 
 			result.add(tempObject);
 		}
@@ -775,6 +775,7 @@ public class DataBaseAdapter {
 			item = CursorToCity(mCur);
 			result.add(item);
 		}
+		Collections.sort(result);
 
 		return result;
 
@@ -806,7 +807,7 @@ public class DataBaseAdapter {
 
 	private Province CursorToProvince(Cursor cursor) {
 		Province tempProvince = new Province(cursor.getInt(0),
-				cursor.getString(1));
+				cursor.getString(1),cursor.getInt(2));
 		return tempProvince;
 
 	}
@@ -826,7 +827,7 @@ public class DataBaseAdapter {
 	private LikeInObject CursorToLikeInObject(Cursor cursor) {
 		LikeInObject tempProvince = new LikeInObject(cursor.getInt(0),
 				cursor.getInt(1), cursor.getInt(2), cursor.getString(3),
-				cursor.getInt(4),cursor.getInt(5));
+				cursor.getInt(4), cursor.getInt(5));
 		return tempProvince;
 
 	}
@@ -835,8 +836,7 @@ public class DataBaseAdapter {
 	private LikeInPaper CursorToLikeInPaper(Cursor cursor) {
 		LikeInPaper temp = new LikeInPaper(cursor.getInt(0), cursor.getInt(1),
 				cursor.getInt(2), cursor.getString(3), cursor.getInt(4));
-		
-		
+
 		return temp;
 
 	}
@@ -851,14 +851,14 @@ public class DataBaseAdapter {
 
 	private City CursorToCity(Cursor cursor) {
 		City tempCity = new City(cursor.getInt(0), cursor.getString(1),
-				cursor.getInt(2));
+				cursor.getInt(2),cursor.getInt(3));
 		return tempCity;
 	}
 
 	private Anad CursorToAnad(Cursor cursor) {
 		Anad tempAnad = new Anad(cursor.getInt(0), cursor.getInt(2),
 				cursor.getBlob(1), cursor.getString(3), cursor.getInt(4),
-				cursor.getInt(5));
+				cursor.getInt(5), cursor.getInt(6));
 		return tempAnad;
 	}
 
@@ -872,7 +872,7 @@ public class DataBaseAdapter {
 				cursor.getInt(17), cursor.getString(18), cursor.getString(19),
 				cursor.getString(20), cursor.getString(21),
 				cursor.getString(22), cursor.getString(23), cursor.getInt(24),
-				cursor.getInt(25));
+				cursor.getInt(25), cursor.getInt(26));
 		return tempObject;
 	}
 
@@ -899,7 +899,7 @@ public class DataBaseAdapter {
 
 	private Froum CursorToFroum(Cursor cursor) {
 		Froum tempForum = new Froum(cursor.getInt(0), cursor.getInt(1),
-				cursor.getString(2), cursor.getString(3));
+				cursor.getString(2), cursor.getString(3), cursor.getInt(4));
 		return tempForum;
 
 	}
@@ -907,7 +907,7 @@ public class DataBaseAdapter {
 	@SuppressWarnings("unused")
 	private Paper CursorToPaper(Cursor cursor) {
 		Paper tempPaper = new Paper(cursor.getInt(0), cursor.getString(1),
-				cursor.getString(2));
+				cursor.getString(2), cursor.getInt(3));
 		return tempPaper;
 
 	}
@@ -923,7 +923,7 @@ public class DataBaseAdapter {
 	private CommentInObject CursorToCommentInObject(Cursor cursor) {
 		CommentInObject tempNews = new CommentInObject(cursor.getInt(0),
 				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
-				cursor.getString(4), cursor.getInt(5));
+				cursor.getString(4), cursor.getInt(5), cursor.getInt(6));
 		return tempNews;
 
 	}
@@ -938,7 +938,7 @@ public class DataBaseAdapter {
 				cursor.getString(14), cursor.getString(15),
 
 				cursor.getString(16), cursor.getString(17), cursor.getBlob(18),
-				cursor.getString(19));
+				cursor.getString(19), cursor.getInt(20));
 
 		return tempTicket;
 
@@ -958,9 +958,11 @@ public class DataBaseAdapter {
 				null, null);
 		Province tempProvince;
 		while (cursor.moveToNext()) {
-			tempProvince = new Province(cursor.getInt(0), cursor.getString(1));
+			tempProvince = new Province(cursor.getInt(0), cursor.getString(1),cursor.getInt(2));
 			result.add(tempProvince);
 		}
+		
+		Collections.sort(result);
 		return result;
 	}
 
@@ -1038,7 +1040,7 @@ public class DataBaseAdapter {
 		Paper tempObject;
 		while (cursor.moveToNext()) {
 			tempObject = new Paper(cursor.getInt(0), cursor.getString(1),
-					cursor.getString(2));
+					cursor.getString(2), cursor.getInt(3));
 			result.add(tempObject);
 		}
 
@@ -1318,6 +1320,44 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+
+	public ArrayList<CommentInFroum> getReplyCommentbyCommentID(int Froumid,
+			int Commentid) {
+
+		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
+		CommentInFroum item = null;
+
+		/*
+		 * Cursor tCur = mDb.rawQuery("Select FroumId From " +
+		 * TableCommentInFroum + " Where FroumId=" +String.valueOf(Froumid),null
+		 * );
+		 */
+
+		Cursor mCur = mDb.query(
+				TableCommentInFroum,
+				CommentInFroum,
+				"FroumId=? AND CommentId=?",
+				new String[] { String.valueOf(Froumid),
+						String.valueOf(Commentid) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInFroum(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	/*
+	 * public boolean isUserLikedComment(int userId, int CommentId) {
+	 * 
+	 * Cursor curs = mDb.rawQuery( "SELECT COUNT(*) AS NUM FROM " +
+	 * TableLikeInComment + " WHERE UserId= " + String.valueOf(userId) +
+	 * " AND CommentId=" + String.valueOf(CommentId) + " AND IsLike=" + "1",
+	 * null); if (curs.moveToNext()) { int number = curs.getInt(0); if (number >
+	 * 0) return true; } return false; }
+	 */
 
 	public ArrayList<CommentInPaper> getCommentInPaperbyPaperid(int Paperid) {
 
@@ -1612,7 +1652,7 @@ public class DataBaseAdapter {
 				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
 
 				cursor.getString(4), cursor.getInt(5), cursor.getString(6),
-				cursor.getString(7));
+				cursor.getString(7), cursor.getInt(8));
 
 		return tempComment;
 
@@ -1621,7 +1661,7 @@ public class DataBaseAdapter {
 	private CommentInPaper CursorToCommentInPaper(Cursor cursor) {
 		CommentInPaper tempComment = new CommentInPaper(cursor.getInt(0),
 				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
-				cursor.getString(4), cursor.getInt(5));
+				cursor.getString(4), cursor.getInt(5), cursor.getInt(6));
 
 		return tempComment;
 
@@ -1707,7 +1747,8 @@ public class DataBaseAdapter {
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
 
-					cursor.getString(19), cursor.getInt(25), cursor.getInt(27));
+					cursor.getString(19), cursor.getInt(25), cursor.getInt(27),
+					cursor.getInt(28));
 
 			result.add(tempObject);
 		}
@@ -1862,6 +1903,57 @@ public class DataBaseAdapter {
 				.show();
 
 	}
-}
-// //////////////////////////
 
+// //////////////////////////
+public void UpdateProvinceToDb(int id,
+		  int count) {
+
+	ContentValues uc = new ContentValues();
+	// uc.put("Name", name);
+	// uc.put("Email", email);
+	// uc.put("Password", password);
+	uc.put("Count", count);
+	
+	mDb.update(TableProvince, uc , "ID =" + id ,null);
+
+}
+/////////////////////////////////////////////////////////
+public City getCityById(int id) {
+	City item = null;
+	Cursor mCur = mDb.query(TableCity, CityColumn, " Id=?",
+			new String[] { String.valueOf(id) }, null, null, null);
+
+	if (mCur.moveToNext()) {
+		item = CursorToCity(mCur);
+
+	}
+
+	return item;
+}
+///////////////////////////////////////////////////////////////
+public void UpdateCityToDb(int id,
+		  int count) {
+
+	ContentValues uc = new ContentValues();
+	// uc.put("Name", name);
+	// uc.put("Email", email);
+	// uc.put("Password", password);
+	uc.put("Count", count);
+	
+	mDb.update(TableCity, uc , "ID =" + id ,null);
+}
+
+ 
+/////////////////////////////////////////////////////
+public Province getProvinceById(int id) {
+	Province item = null;
+	Cursor mCur = mDb.query(TableCity,Province , " Id=?",
+			new String[] { String.valueOf(id) }, null, null, null);
+
+	if (mCur.moveToNext()) {
+		item = CursorToProvince(mCur);
+
+	}
+
+	return item;
+}}
