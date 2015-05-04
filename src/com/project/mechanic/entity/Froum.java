@@ -6,6 +6,7 @@ public class Froum {
 	int UserId;
 	String Title;
 	String Description;
+	int Seen;
 
 	public int getId() {
 		return Id;
@@ -39,12 +40,21 @@ public class Froum {
 		Description = description;
 	}
 
-	public Froum(int id, int userId, String title, String description) {
+	public int getSeen() {
+		return Seen;
+	}
+
+	public void setSeen(int seen) {
+		Seen = seen;
+	}
+
+	public Froum(int id, int userId, String title, String description, int seen) {
 		super();
 		Id = id;
 		UserId = userId;
 		Title = title;
 		Description = description;
+		Seen = seen;
 	}
 
 }

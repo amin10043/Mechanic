@@ -22,6 +22,7 @@ public class Ticket {
 	String UAdress;
 	byte[] UImage;
 	String UMobile;
+	int Seen;
 
 	public int getId() {
 		return Id;
@@ -185,11 +186,19 @@ public class Ticket {
 		UMobile = umobile;
 	}
 
+	public int getSeen() {
+		return Seen;
+	}
+
+	public void setSeen(int seen) {
+		Seen = seen;
+	}
+
 	public Ticket(int id, String title, String desc, int Userid, byte[] imge,
 			String date, int Typeid, int name, int email, int mobile,
 			int phone, int fax, int provinceid, String uname, String uemail,
 			String uphone, String ufax, String uadress, byte[] uimage,
-			String umobile) {
+			String umobile, int seen) {
 		super();
 		Id = id;
 		Title = title;
@@ -211,6 +220,6 @@ public class Ticket {
 		UAdress = uadress;
 		UImage = uimage;
 		UMobile = umobile;
-
+		Seen = seen;
 	}
 }
