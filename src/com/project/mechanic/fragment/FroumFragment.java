@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,8 +27,8 @@ public class FroumFragment extends Fragment {
 
 	DataBaseAdapter adapter;
 	private int frmid;
-	private ImageButton btnAddcmt;
-	private ImageButton Like;
+	private LinearLayout btnAddcmt;
+	private LinearLayout Like;
 	private ImageButton CmtLike;
 	private ImageButton CmtDisLike;
 	private Button btncmt;
@@ -57,8 +58,9 @@ public class FroumFragment extends Fragment {
 		((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
 		View view = inflater.inflate(R.layout.fragment_froum, null);
 
-		btnAddcmt = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
-		Like = (ImageButton) view.findViewById(R.id.imgbtnLike_Cmt_Froum);
+		btnAddcmt = (LinearLayout) view
+				.findViewById(R.id.imgBtnAddcmt_CmtFroum);
+		Like = (LinearLayout) view.findViewById(R.id.imgbtnLike_Cmt_Froum);
 		CmtLike = (ImageButton) view.findViewById(R.id.imgbtnLike_RawCmtFroum);
 		CmtDisLike = (ImageButton) view
 				.findViewById(R.id.imgbtnDisLike_RawCmtFroum);

@@ -5,24 +5,12 @@
     android:layout_height="match_parent"
     android:background="@drawable/list_item" >
 
-    <FrameLayout
-        android:id="@+id/frame_profile"
+    <ImageView
+        android:id="@+id/icon_object"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true" >
-
-        <ImageView
-            android:id="@+id/icon_item"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="3dp"
-            android:src="@drawable/profile_account" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/profile_icon_shape" />
-    </FrameLayout>
+        android:padding="3dp"
+        android:src="@drawable/profile_account" />
 
     <TextView
         android:id="@+id/Rowobjecttxt"
@@ -35,8 +23,10 @@
 
     <RatingBar
         android:id="@+id/ratingBar1"
+        style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignBottom="@+id/icon_object"
+        android:layout_toRightOf="@+id/icon_object" />
 
 </RelativeLayout>
