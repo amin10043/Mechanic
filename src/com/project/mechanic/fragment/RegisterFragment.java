@@ -140,6 +140,9 @@ utile = new Utility(getActivity());
 				final String Email = edituser.getText().toString();
 				final String Pass = editpass.getText().toString();
 
+				PersianDate date = new PersianDate();
+				 String txtdate = date.todayShamsi();
+				Toast.makeText(getActivity(), txtdate,Toast.LENGTH_SHORT);
 				
 			
 
