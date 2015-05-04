@@ -64,7 +64,8 @@ LinearLayout.LayoutParams lp;
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
 	private Activity view;
-
+	
+	TextView txtclickpic;
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		bitmap.compress(CompressFormat.PNG, 0, outputStream);
@@ -79,7 +80,7 @@ utile = new Utility(getActivity());
 		// dbAdapter = new DataBaseAdapter(getActivity());
 		btnaddpic1 = (ImageView) view.findViewById(R.id.btnaddpic);
 		Button btncan = (Button) view.findViewById(R.id.btncancle2);
-		Button btnreg = (Button) view.findViewById(R.id.btnreg2);
+		final Button btnreg = (Button) view.findViewById(R.id.btnreg2);
 		 final TextView comregtxt =(TextView) view.findViewById(R.id.compeletereg);
 		final EditText editname = (EditText) view
 				.findViewById(R.id.editTextname);
@@ -87,7 +88,7 @@ utile = new Utility(getActivity());
 				.findViewById(R.id.editTextuser);
 		final EditText editpass = (EditText) view
 				.findViewById(R.id.editTextpass);
-
+   txtclickpic=(TextView) view.findViewById(R.id.txtclickpic);
 		
 		final LinearLayout lin1 = (LinearLayout) view.findViewById(R.id.lin1);
 		
@@ -155,7 +156,9 @@ utile = new Utility(getActivity());
 
 				else {
 
+					
 					comregtxt.setVisibility(View.VISIBLE); 
+					btnreg.setEnabled(false);
 					dbAdapter = new DataBaseAdapter(getActivity());
 					dbAdapter.open();
 					
@@ -219,7 +222,7 @@ comregtxt.setOnClickListener(new OnClickListener() {
 				final String Name = editname.getText().toString();
 				
 			
-			
+				
 			
 			dbAdapter = new DataBaseAdapter(getActivity());
 			dbAdapter.open();
@@ -309,7 +312,7 @@ comregtxt.setOnClickListener(new OnClickListener() {
 			btnaddpic1.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 			
 			btnaddpic1.setLayoutParams(lp);
-			
+		txtclickpic.setVisibility(View.INVISIBLE); 
 		}
 
 	}
