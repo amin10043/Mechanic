@@ -142,9 +142,9 @@ utile = new Utility(getActivity());
 
 				PersianDate date = new PersianDate();
 				 String txtdate = date.todayShamsi();
-				Toast.makeText(getActivity(), txtdate,Toast.LENGTH_SHORT);
+//				Toast.makeText(getActivity(), txtdate,Toast.LENGTH_SHORT);
 				
-			
+					
 
 				
 			
@@ -159,7 +159,7 @@ utile = new Utility(getActivity());
 
 				else {
 
-					
+					txtclickpic.setVisibility(View.INVISIBLE); 
 					comregtxt.setVisibility(View.VISIBLE); 
 					btnreg.setEnabled(false);
 					dbAdapter = new DataBaseAdapter(getActivity());
@@ -167,7 +167,7 @@ utile = new Utility(getActivity());
 					
 					if ((btnaddpic1.getDrawable() == null)) {
 
-						dbAdapter.inserUsernonpicToDb(Name, Email, Pass,  null,null,null,null,0);
+						dbAdapter.inserUsernonpicToDb(Name, Email, Pass,  null,null,null,null,0,txtdate);
 						
 						Toast.makeText(getActivity(), "اطلاعات مورد نظر بدون عکس ثبت شد",
 								Toast.LENGTH_SHORT).show();
@@ -181,7 +181,7 @@ utile = new Utility(getActivity());
 							bitmap.getHeight(), bitmap.getConfig());
 					
 					if (bitmap.sameAs(emptyBitmap)) {
-						dbAdapter.inserUsernonpicToDb(Name, Email, Pass,  null,null,null,null,0);
+						dbAdapter.inserUsernonpicToDb(Name, Email, Pass,  null,null,null,null,0,txtdate);
 					 
 					} 
 					else
@@ -190,7 +190,7 @@ utile = new Utility(getActivity());
 									byte[] Image = getBitmapAsByteArray(bitmap);
 							
 									
-									dbAdapter.inserUserToDb(Name, Email, Pass, null,null,null,null, Image, 0);
+									dbAdapter.inserUserToDb(Name, Email, Pass, null,null,null,null, Image, 0,txtdate);
 				
 																		
 									

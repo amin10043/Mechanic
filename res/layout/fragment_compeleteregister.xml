@@ -96,16 +96,18 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:textColor="@color/transparent"
-                android:textSize="@dimen/activity_horizontal_margin" />
+                android:textSize="@dimen/item_font_size" />
 
             <TextView
-                android:id="@+id/textrules"
+                android:id="@+id/txtrulles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/txtsize30"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:textColor="@color/transparent" />
+                android:text="تمامی قوانین را مطالعه کردم و پذیرفته ام "
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/item_font_size" />
         </LinearLayout>
 
         <LinearLayout

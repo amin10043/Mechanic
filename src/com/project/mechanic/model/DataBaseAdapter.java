@@ -126,7 +126,7 @@ public class DataBaseAdapter {
 
 	private String[] Users = { "ID", "Name", "Email", "Password",
 			"Phonenumber", "Mobailenumber", "Faxnumber", "Address", "Image",
-			"ServiceId" };
+			"ServiceId","Date" };
 
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url" };
@@ -172,7 +172,7 @@ public class DataBaseAdapter {
 
 	public void inserUserToDb(String name, String email, String password,
 			String phonenumber, String mobailenumber, String faxnumber,
-			String address, byte[] image, int serviceid) {
+			String address, byte[] image, int serviceid,String date) {
 
 		ContentValues uc = new ContentValues();
 
@@ -186,7 +186,8 @@ public class DataBaseAdapter {
 		uc.put("Address", address);
 		uc.put("Image", image);
 		uc.put("ServiceId", serviceid);
-
+		
+		uc.put("Date", date);
 		long res = mDb.insert(TableUsers, null, uc);
 		long res2 = res;
 
@@ -194,7 +195,7 @@ public class DataBaseAdapter {
 
 	public void inserUsernonpicToDb(String name, String email, String password,
 			String phonenumber, String mobailenumber, String faxnumber,
-			String address, int serviceid) {
+			String address, int serviceid,String  date) {
 
 		ContentValues uc = new ContentValues();
 
@@ -208,7 +209,8 @@ public class DataBaseAdapter {
 		uc.put("Address", address);
 
 		uc.put("ServiceId", serviceid);
-
+		
+		uc.put("Date", date);
 		long res = mDb.insert(TableUsers, null, uc);
 		long res2 = res;
 
@@ -815,7 +817,7 @@ public class DataBaseAdapter {
 		Users Users = new Users(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
 				cursor.getString(5), cursor.getString(6), cursor.getString(7),
-				cursor.getBlob(8), cursor.getInt(9));
+				cursor.getBlob(8), cursor.getInt(9),cursor.getString(10));
 		return Users;
 
 	}
@@ -1597,7 +1599,7 @@ public class DataBaseAdapter {
 
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
-					cursor.getBlob(8), cursor.getInt(9));
+					cursor.getBlob(8), cursor.getInt(9),cursor.getString(10));
 			result.add(tempusers);
 
 		}
@@ -1645,7 +1647,7 @@ public class DataBaseAdapter {
 
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
-					cursor.getBlob(8), cursor.getInt(9));
+					cursor.getBlob(8), cursor.getInt(9),cursor.getString(10));
 
 			result.add(tempusers);
 		}

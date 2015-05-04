@@ -176,7 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="0.5"
+                android:layout_weight="0.4"
                 android:background="@color/light_blue" >
 
                 <TextView
@@ -189,8 +189,8 @@
                     android:gravity="center"
                     android:text="اطلاعات تکمیلی جهت استفاده شما از تالار های خرید و فروش"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="@dimen/item_font_size"
-                    android:visibility="gone" />
+                    android:textSize="@dimen/txtsize10"
+                    android:visibility="invisible" />
             </LinearLayout>
         </LinearLayout>
 
