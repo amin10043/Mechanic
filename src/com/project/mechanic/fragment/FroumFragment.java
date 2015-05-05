@@ -87,8 +87,21 @@ public class FroumFragment extends Fragment {
 				.findViewById(R.id.txtNumofDislike_RawCmtFroum);
 
 		adapter = new DataBaseAdapter(getActivity());
-		adapter.open();
-		id = Integer.valueOf(getArguments().getString("Id"));
+
+		if (getArguments().getString("Id") != null) {
+			adapter.open();
+			id = Integer.valueOf(getArguments().getString("Id"));
+			NumofComment.setText(adapter.CommentInFroum_count().toString());
+
+			NumofLike.setText(adapter.LikeInFroum_count().toString());
+			mylist = adapter.getCommentInFroumbyPaperid(id);
+			ReplyeList = adapter.getReplyCommentbyCommentID(id, 1);
+			Froum x = adapter.getFroumItembyid(id);
+			txttitle.setText(x.getTitle());
+			txttitleDes.setText(x.getDescription());
+			adapter.close();
+		}
+
 		// Commentid = Integer.valueOf(getArguments().getString("CommentID"));
 
 		NumofComment.setText(adapter.CommentInFroum_count().toString());
@@ -110,11 +123,13 @@ public class FroumFragment extends Fragment {
 		adapter.close();
 
 		lst = (ListView) view.findViewById(R.id.lstComment);
-		ListAdapter = new FroumListAdapter(getActivity(),
-				R.layout.raw_froumcmt, mylist, FroumFragment.this);
 
-		lst.setAdapter(ListAdapter);
-		resizeListView(lst);
+		if (lst != null) {
+			ListAdapter = new FroumListAdapter(getActivity(),
+					R.layout.raw_froumcmt, mylist, FroumFragment.this);
+			lst.setAdapter(ListAdapter);
+			resizeListView(lst);
+		}
 
 		Like.setOnClickListener(new View.OnClickListener() {
 
