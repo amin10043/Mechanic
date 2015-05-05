@@ -34,8 +34,7 @@
                         android:layout_height="160dp"
                         android:layout_weight="3"
                         android:paddingBottom="15dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/gf2" />
+                        android:scaleType="fitXY" />
 
                     <FrameLayout
                         android:layout_width="wrap_content"
@@ -44,16 +43,17 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="25dp" >
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="3dp"
-                            android:src="@drawable/profile_account" />
+                        <LinearLayout
+                            android:id="@+id/linearpicture"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" >
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/profile_icon_shape" />
+                            <ImageView
+                                android:id="@+id/imagedisplay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="3dp" />
+                        </LinearLayout>
                     </FrameLayout>
                 </RelativeLayout>
             </FrameLayout>

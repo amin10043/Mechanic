@@ -84,7 +84,7 @@ lp1.width=utile1.getScreenwidth()/4;
 // 	String fax=u.getFaxnumber();
 // 	
 	///////////////
-	int id =4;
+	int id =1;
 	Users x =dbAdapter.getUserById(id);	
 	byte[] bitmapbyte = x.getImage();
 	if (bitmapbyte != null) {

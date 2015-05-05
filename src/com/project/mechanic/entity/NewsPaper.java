@@ -6,7 +6,7 @@ public class NewsPaper {
 	String Name;
 	int TypeId;
 	String Url;
-	
+	String ServerDate;
 
 	public int getId() {
 		return Id;
@@ -15,6 +15,7 @@ public class NewsPaper {
 	public void setId(int id) {
 		Id = id;
 	}
+
 	public String getName() {
 		return Name;
 	}
@@ -28,8 +29,9 @@ public class NewsPaper {
 	}
 
 	public void setTypeId(int typeid) {
-	    TypeId = typeid;
+		TypeId = typeid;
 	}
+
 	public String getUrl() {
 		return Url;
 	}
@@ -38,14 +40,22 @@ public class NewsPaper {
 		Url = url;
 	}
 
+	public String getServerDate() {
+		return ServerDate;
+	}
 
-	public NewsPaper(int id, String name, int typeid,String url) {
+	public void setServerDate(String serverdate) {
+		ServerDate = serverdate;
+	}
+
+	public NewsPaper(int id, String name, int typeid, String url,
+			String serverdate) {
 		super();
 		Id = id;
-		Name=name;
+		Name = name;
 		TypeId = typeid;
-		Url=url;
-		
+		Url = url;
+		ServerDate = serverdate;
 	}
 
 }
