@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/shiri"
     android:orientation="vertical" >
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/img_pay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/i13" />
@@ -18,16 +19,17 @@
         android:text="انتخاب لینک هدایت" />
 
     <Spinner
-        android:id="@+id/spinner1"
+        android:id="@+id/sp_pay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btn_pay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="@drawable/buttonshape"
         android:text="پرداخت" />
 
 </LinearLayout>

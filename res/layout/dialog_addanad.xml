@@ -80,7 +80,8 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="تلفن" />
+            android:hint="05100000000"
+            android:inputType="number" />
 
         <EditText
             android:id="@+id/mobile"
@@ -90,7 +91,8 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="موبایل" />
+            android:hint="09150000000"
+            android:inputType="number" />
 
         <EditText
             android:id="@+id/fax"
@@ -100,7 +102,8 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="فاکس" />
+            android:hint="051000000"
+            android:inputType="number" />
     </LinearLayout>
 
     <RelativeLayout
@@ -117,13 +120,15 @@
             android:layout_marginRight="10dp"
             android:orientation="vertical" >
 
-            <ImageView
+            <Button
                 android:id="@+id/dialog_img2"
-                android:layout_width="wrap_content"
+                android:layout_width="129dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/sabtanad" />
+                android:layout_weight="0.83"
+                android:background="@drawable/buttonshape"
+                android:text=" ثبت آگهی" />
         </LinearLayout>
 
         <LinearLayout
