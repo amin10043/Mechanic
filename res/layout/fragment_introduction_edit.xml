@@ -28,25 +28,48 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
 
-                    <ImageView
-                        android:id="@+id/imgvadvertise_Object"
+                    <LinearLayout
+                        android:id="@+id/headerLinearPage"
                         android:layout_width="match_parent"
-                        android:layout_height="160dp"
-                        android:layout_weight="3"
-                        android:paddingBottom="15dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/gf2" />
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
 
-                    <ImageView
-                        android:id="@+id/profile_img"
+                        <ImageView
+                            android:id="@+id/hh1"
+                            android:layout_width="match_parent"
+                            android:layout_height="160dp"
+                            android:layout_weight="3"
+                            android:paddingBottom="20dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/gf2" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearEditProfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="25dp"
-                        android:background="@drawable/icon_header_shape"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/profile_account" />
+                        android:layout_marginRight="25dp" >
+
+                        <EditText
+                            android:id="@+id/nameEdit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/profile_img"
+                            android:hint="Name" />
+
+                        <ImageView
+                            android:id="@+id/pp1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="25dp"
+                            android:background="@drawable/icon_header_shape"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/profile_account" />
+                    </LinearLayout>
                 </RelativeLayout>
             </FrameLayout>
 
@@ -144,6 +167,24 @@
                         </LinearLayout>
 
                         <RelativeLayout
+                            android:id="@+id/editpageNetwork"
+                            style="@style/brandStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/brand_list_item_shape" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="10dp"
+                                android:text="ویرایش لینک شبکه های اجتماعی"
+                                android:textColor="@color/transparent" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
                             android:id="@+id/Layoutlink1"
                             style="@style/brandStyle"
                             android:layout_width="match_parent"
@@ -214,7 +255,6 @@
                             style="@style/brandStyle"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
                             android:layout_marginLeft="25dp"
                             android:layout_marginRight="25dp"
                             android:layout_marginTop="10dp"
@@ -240,6 +280,7 @@
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
                                 android:ems="10"
+                                android:gravity="center"
                                 android:hint="تلفن"
                                 android:inputType="number"
                                 android:textColorHint="#000" >
@@ -288,6 +329,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:ems="10"
+                                android:gravity="center"
                                 android:hint="نمابر"
                                 android:inputType="number"
                                 android:textColorHint="#000" />
@@ -324,6 +366,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:ems="10"
+                                android:gravity="center"
                                 android:hint="همراه"
                                 android:inputType="number"
                                 android:textColorHint="#000" />
@@ -359,6 +402,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:ems="10"
+                                android:gravity="center"
                                 android:hint="پست الکترونیک"
                                 android:textColorHint="#000" />
                         </RelativeLayout>
@@ -398,6 +442,7 @@
                                 android:layout_marginRight="50dp"
                                 android:layout_weight="0.2"
                                 android:ems="10"
+                                android:gravity="center"
                                 android:hint="آدرس"
                                 android:textColorHint="#000" />
                         </RelativeLayout>
@@ -446,10 +491,29 @@
                                 android:layout_toLeftOf="@+id/btnPdf3_Object"
                                 android:background="@drawable/ic_video" />
                         </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/editpagedownload"
+                            style="@style/brandStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/brand_list_item_shape" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="10dp"
+                                android:text="ویرایش لینک های دانلود"
+                                android:textColor="@color/transparent" />
+                        </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearfooteredit"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginTop="20dp"
@@ -457,7 +521,7 @@
                     android:orientation="vertical" >
 
                     <ImageView
-                        android:id="@+id/imgvadvertise2_Object"
+                        android:id="@+id/ft1"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
                         android:scaleType="fitXY"
@@ -480,15 +544,12 @@
                         android:layout_weight="1"
                         android:background="#CCCCCC" >
 
-                        <TextView
-                            android:id="@+id/txtDesc_Object"
+                        <EditText
+                            android:id="@+id/descriptionpageedit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerInParent="true"
-                            android:layout_centerVertical="true"
-                            android:text="توضیحات بیشتر"
-                            android:textColor="#000" />
+                            android:gravity="center"
+                            android:hint="توضیحات بیشتر" />
                     </RelativeLayout>
                 </LinearLayout>
 

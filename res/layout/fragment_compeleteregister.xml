@@ -46,7 +46,7 @@
                 android:ems="10"
                 android:gravity="right"
                 android:hint="شماره همراه"
-                android:inputType="textPersonName" />
+                android:inputType="phone" />
         </LinearLayout>
 
         <LinearLayout
@@ -95,9 +95,17 @@
                 android:layout_margin="@dimen/txtsize5"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="تمامی قوانین را مطالعه کردم و پذیرفته ام"
                 android:textColor="@color/transparent"
                 android:textSize="@dimen/activity_horizontal_margin" />
+
+            <TextView
+                android:id="@+id/textrules"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/txtsize30"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/transparent" />
         </LinearLayout>
 
         <LinearLayout

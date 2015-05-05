@@ -55,18 +55,23 @@ public class DialogNetworkSocial extends Dialog {
 				l5 = inGoogle.getText().toString();
 				l6 = inInstagram.getText().toString();
 
-				fragment.Lfacebook = l1;
-				fragment.Llinkedin = l2;
-				fragment.Ltwitter = l3;
-				fragment.Lwebsite = l4;
-				fragment.Lgoogle = l5;
-				fragment.Linstagram = l6;
+				if (l1.equals("") & l2.equals("") & l3.equals("")
+						& l4.equals("") & l5.equals("") & l6.equals("")) {
+					dismiss();
+				} else {
 
-				Toast.makeText(context, "لینک ها با موفقیت اضافه شدند",
-						Toast.LENGTH_SHORT).show();
+					fragment.Lfacebook = l1;
+					fragment.Llinkedin = l2;
+					fragment.Ltwitter = l3;
+					fragment.Lwebsite = l4;
+					fragment.Lgoogle = l5;
+					fragment.Linstagram = l6;
 
-				dismiss();
+					Toast.makeText(context, "لینک ها با موفقیت اضافه شدند",
+							Toast.LENGTH_SHORT).show();
 
+					dismiss();
+				}
 			}
 		});
 

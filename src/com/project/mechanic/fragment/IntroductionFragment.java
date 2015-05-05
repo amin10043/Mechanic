@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -41,7 +40,7 @@ public class IntroductionFragment extends Fragment {
 	public DialogcmtInobject dialog;
 	DialogcmtInfroum dialog2;
 	public int id = 1;
-
+	Fragment fragment;
 	public ImageButton like;
 	public ImageButton Comment;
 
@@ -65,10 +64,10 @@ public class IntroductionFragment extends Fragment {
 	ImageButton Google;
 	ImageButton Site;
 	ImageButton Twitter;
-	Button Pdf1;
-	Button Pdf2;
-	Button Pdf3;
-	Button Pdf4;
+	ImageButton Pdf1;
+	ImageButton Pdf2;
+	ImageButton Pdf3;
+	ImageButton Pdf4;
 	Object object;
 	ImageButton phone;
 	ImageButton cphone;
@@ -93,7 +92,6 @@ public class IntroductionFragment extends Fragment {
 		link1 = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
 		link2 = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
 
-		adapter = new DataBaseAdapter(getActivity());
 		txtFax = (TextView) view.findViewById(R.id.txtFax_Object);
 		txtAddress = (TextView) view.findViewById(R.id.txtAddress_Object);
 		txtPhone = (TextView) view.findViewById(R.id.txtPhone_Object);
@@ -106,22 +104,22 @@ public class IntroductionFragment extends Fragment {
 
 		like = (ImageButton) view.findViewById(R.id.ImgbtnLike_Object);
 		btnCmt = (ImageButton) view.findViewById(R.id.imgbtnCmt_introduction);
-		Facebook = (ImageButton) view.findViewById(R.id.imgbtnLike_RawCmtFroum);
-		Instagram = (ImageButton) view.findViewById(R.id.imgbtnInsta_Object);
-		LinkedIn = (ImageButton) view.findViewById(R.id.imgbtnLinkedin_Object);
-		Google = (ImageButton) view.findViewById(R.id.imgbtnGoogle_Object);
-		Site = (ImageButton) view.findViewById(R.id.imgbtnSite_Object);
-		Twitter = (ImageButton) view.findViewById(R.id.imgbtnTwitter_Object);
+		Facebook = (ImageButton) view.findViewById(R.id.nfacebook);
+		Instagram = (ImageButton) view.findViewById(R.id.ninstagram);
+		LinkedIn = (ImageButton) view.findViewById(R.id.nlinkedin);
+		Google = (ImageButton) view.findViewById(R.id.ngoogle);
+		Site = (ImageButton) view.findViewById(R.id.nsite);
+		Twitter = (ImageButton) view.findViewById(R.id.ntwtert);
 
 		phone = (ImageButton) view.findViewById(R.id.phonebtn);
 		cphone = (ImageButton) view.findViewById(R.id.cphonebtn);
 		map = (ImageButton) view.findViewById(R.id.mapbtn);
 		email = (ImageButton) view.findViewById(R.id.emailbtn);
 
-		Pdf1 = (Button) view.findViewById(R.id.btnPdf1_Object);
-		Pdf2 = (Button) view.findViewById(R.id.btnPdf2_Object);
-		Pdf3 = (Button) view.findViewById(R.id.btnPdf3_Object);
-		Pdf4 = (Button) view.findViewById(R.id.btnPdf4_Object);
+		Pdf1 = (ImageButton) view.findViewById(R.id.btnPdf1_Object);
+		Pdf2 = (ImageButton) view.findViewById(R.id.btnPdf2_Object);
+		Pdf3 = (ImageButton) view.findViewById(R.id.btnPdf3_Object);
+		Pdf4 = (ImageButton) view.findViewById(R.id.btnPdf4_Object);
 
 		EditPage = (ImageButton) view.findViewById(R.id.ImgbtnEdit);
 		CreatePage = (ImageButton) view.findViewById(R.id.ImgbtnCreate);
@@ -161,26 +159,88 @@ public class IntroductionFragment extends Fragment {
 			link2.setVisibility(View.GONE);
 		}
 
+		if (object.getFacebook() != null)
+			Facebook.setImageResource(R.drawable.facebook);
+		else
+			Facebook.setImageResource(R.drawable.facebook_off);
+
+		if (object.getInstagram() != null)
+			Instagram.setImageResource(R.drawable.insta);
+		else
+			Instagram.setImageResource(R.drawable.insta_off);
+
+		if (object.getLinkedIn() != null)
+			LinkedIn.setImageResource(R.drawable.lnkin);
+		else
+			LinkedIn.setImageResource(R.drawable.lnkin_off);
+
+		if (object.getGoogle() != null)
+			Google.setImageResource(R.drawable.google);
+		else
+			Google.setImageResource(R.drawable.google_off);
+
+		if (object.getSite() != null)
+			Site.setImageResource(R.drawable.internet);
+		else
+			Site.setImageResource(R.drawable.internet_off);
+
+		if (object.getTwitter() != null)
+			Twitter.setImageResource(R.drawable.twtr);
+		else
+			Twitter.setImageResource(R.drawable.twtr_off);
+
+		if (object.getPdf1() != null)
+			Pdf1.setImageResource(R.drawable.ic_catalog);
+		else
+			Pdf1.setImageResource(R.drawable.ic_catalog_off);
+
+		if (object.getPdf2() != null)
+			Pdf2.setImageResource(R.drawable.ic_price);
+
+		else
+			Pdf2.setImageResource(R.drawable.ic_price_off);
+
+		if (object.getPdf3() != null)
+			Pdf3.setImageResource(R.drawable.ic_pdf);
+		else
+			Pdf3.setImageResource(R.drawable.ic_pdf_off);
+
+		if (object.getPdf4() != null)
+			Pdf4.setImageResource(R.drawable.ic_video);
+		else
+			Pdf4.setImageResource(R.drawable.ic_video_off);
+
 		// advertise.setimage
 		Facebook.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse(object.getFacebook()));
-				startActivity(browserIntent);
-
+				if (object.getFacebook() != null) {
+					String url = "http://" + object.getFacebook();
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.commit();
+				}
 			}
 		});
 		Instagram.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				if (object.getInstagram() != null) {
 
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse(object.getInstagram()));
-				startActivity(browserIntent);
+					String url = "http://" + object.getInstagram();
+
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.commit();
+				}
+
+				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+				// .parse(object.getInstagram()));
+				// startActivity(browserIntent);
 
 			}
 		});
@@ -189,10 +249,19 @@ public class IntroductionFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				if (object.getLinkedIn() != null) {
 
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse(object.getLinkedIn()));
-				startActivity(browserIntent);
+					String url = "http://" + object.getLinkedIn();
+
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.commit();
+				}
+				//
+				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+				// .parse(object.getLinkedIn()));
+				// startActivity(browserIntent);
 
 			}
 		});
@@ -201,10 +270,19 @@ public class IntroductionFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				if (object.getGoogle() != null) {
 
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse(object.getGoogle()));
-				startActivity(browserIntent);
+					String url = "http://" + object.getGoogle();
+
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.commit();
+				}
+
+				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+				// .parse(object.getGoogle()));
+				// startActivity(browserIntent);
 
 			}
 		});
@@ -213,10 +291,19 @@ public class IntroductionFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				if (object.getSite() != null) {
 
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse(object.getSite()));
-				startActivity(browserIntent);
+					String url = "http://" + object.getSite();
+
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.commit();
+				}
+
+				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+				// .parse(object.getSite()));
+				// startActivity(browserIntent);
 
 			}
 		});
@@ -225,10 +312,19 @@ public class IntroductionFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				if (object.getTwitter() != null) {
 
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse(object.getTwitter()));
-				startActivity(browserIntent);
+					String url = "http://" + object.getTwitter();
+
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.commit();
+				}
+
+				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+				// .parse(object.getTwitter()));
+				// startActivity(browserIntent);
 
 			}
 		});
@@ -237,10 +333,18 @@ public class IntroductionFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				if (object.getPdf1() != null) {
+					String url = "http://" + object.getPdf1();
 
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse(object.getPdf1()));
-				startActivity(browserIntent);
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.commit();
+				}
+
+				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+				// .parse(object.getPdf1()));
+				// startActivity(browserIntent);
 
 			}
 		});
@@ -249,10 +353,19 @@ public class IntroductionFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				if (object.getPdf2() != null) {
 
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse(object.getPdf2()));
-				startActivity(browserIntent);
+					String url = "http://" + object.getPdf2();
+
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.commit();
+				}
+
+				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+				// .parse(object.getPdf2()));
+				// startActivity(browserIntent);
 
 			}
 		});
@@ -261,10 +374,19 @@ public class IntroductionFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				if (object.getPdf3() != null) {
 
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse(object.getPdf3()));
-				startActivity(browserIntent);
+					String url = "http://" + object.getPdf3();
+
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.commit();
+				}
+
+				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+				// .parse(object.getPdf3()));
+				// startActivity(browserIntent);
 
 			}
 		});
@@ -274,9 +396,19 @@ public class IntroductionFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse(object.getPdf4()));
-				startActivity(browserIntent);
+				if (object.getPdf4() != null) {
+
+					String url = "http://" + object.getPdf4();
+
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.commit();
+				}
+
+				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+				// .parse(object.getPdf4()));
+				// startActivity(browserIntent);
 
 			}
 		});

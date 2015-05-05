@@ -33,6 +33,7 @@
                 android:id="@+id/imgbtnDisLike_RawCmtFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:background="#ffffff"
                 android:src="@drawable/positive" />
 
@@ -40,21 +41,15 @@
                 android:id="@+id/txtNumofLike_RawCmtFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="0"
                 android:textColor="@color/red" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/txtPhonenumber_CmtFroum"
-            android:layout_toRightOf="@+id/linearLayout1"
-            android:gravity="top" >
 
             <ImageButton
                 android:id="@+id/imgbtnLike_RawCmtFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:background="#ffffff"
                 android:src="@drawable/negative" />
 
@@ -62,6 +57,8 @@
                 android:id="@+id/txtNumofDislike_RawCmtFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="0"
                 android:textColor="@color/red" />
         </LinearLayout>
 
@@ -72,8 +69,8 @@
             android:layout_alignBaseline="@id/rawUsernamecmttxt_cmt"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/imgvCmtuser_Froumfragment"
-            android:text="bghgfhfhf"
-            android:textColor="@color/red" />
+            android:text="name"
+            android:textColor="@color/transparent" />
 
         <TextView
             android:id="@+id/txtPhonenumber_CmtFroum"
@@ -97,7 +94,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:hint=" "
-            android:textColor="@color/red" />
+            android:text="message"
+            android:textColor="@color/transparent" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -113,8 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="14dp"
-            android:background="@color/light_grey"
-            android:src="@drawable/cmt2" />
+            android:background="@drawable/cmt" />
     </RelativeLayout>
 
     <ScrollView

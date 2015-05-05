@@ -87,7 +87,7 @@ public class PaperFragment extends Fragment {
 
 				// TODO Auto-generated method stub
 				dialog = new DialogcmtInPaper(PaperFragment.this,
-						getActivity(), R.layout.dialog_addcomment);
+						getActivity(), R.layout.dialog_addcomment,id);
 				dialog.show();
 
 			}

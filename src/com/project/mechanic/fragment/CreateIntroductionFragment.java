@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -45,7 +46,8 @@ public class CreateIntroductionFragment extends Fragment {
 	Fragment fragment;
 	Utility util;
 	LinearLayout linearCreateProfil, headerLinear, footerLinear;
-	RelativeLayout NetworkSocial, DownloadLink, nameEditRelative;
+	RelativeLayout NetworkSocial, DownloadLink, nameEditRelative, namayendegi,
+			khadamat;
 	LinearLayout.LayoutParams profilParams, headerParams, footerParams,
 			nameParams;
 	DialogNetworkSocial dialognetwork;
@@ -87,6 +89,12 @@ public class CreateIntroductionFragment extends Fragment {
 		DescriptionEnter = (EditText) view
 				.findViewById(R.id.descriptionEdittext);
 
+		namayendegi = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
+		khadamat = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
+
+		namayendegi.setVisibility(View.GONE);
+		khadamat.setVisibility(View.GONE);
+
 		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id",
 				0);
 		final int id = sendDataID.getInt("main_Id", -1);
@@ -118,6 +126,16 @@ public class CreateIntroductionFragment extends Fragment {
 				linearCreateProfil.getLayoutParams());
 		nameParams.width = util.getScreenwidth() / 3;
 		nameParams.height = util.getScreenwidth() / 10;
+
+		RelativeLayout.LayoutParams edittextParams = new RelativeLayout.LayoutParams(
+				(int) (util.getScreenwidth() / 1.8), LayoutParams.WRAP_CONTENT);
+		edittextParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+		phoneEnter.setLayoutParams(edittextParams);
+		faxEnter.setLayoutParams(edittextParams);
+		mobileEnter.setLayoutParams(edittextParams);
+		emailEnter.setLayoutParams(edittextParams);
+		addressEnter.setLayoutParams(edittextParams);
 
 		btnProfile.setOnClickListener(new OnClickListener() {
 

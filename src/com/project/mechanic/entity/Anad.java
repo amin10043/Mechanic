@@ -8,6 +8,7 @@ public class Anad {
 	String Date;
 	int TypeId;
 	int ProvinceId;
+	int Seen;
 
 	public int getId() {
 		return Id;

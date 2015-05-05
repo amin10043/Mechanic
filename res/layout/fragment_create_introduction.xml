@@ -276,6 +276,7 @@
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
                                 android:ems="10"
+                                android:gravity="center"
                                 android:hint="تلفن"
                                 android:inputType="number"
                                 android:textColorHint="#000" >
@@ -324,6 +325,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:ems="10"
+                                android:gravity="center"
                                 android:hint="نمابر"
                                 android:inputType="number"
                                 android:textColorHint="#000" />
@@ -360,6 +362,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:ems="10"
+                                android:gravity="center"
                                 android:hint="همراه"
                                 android:inputType="number"
                                 android:textColorHint="#000" />
@@ -395,6 +398,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:ems="10"
+                                android:gravity="center"
                                 android:hint="پست الکترونیک"
                                 android:textColorHint="#000" />
                         </RelativeLayout>
@@ -434,6 +438,7 @@
                                 android:layout_marginRight="50dp"
                                 android:layout_weight="0.2"
                                 android:ems="10"
+                                android:gravity="center"
                                 android:hint="آدرس"
                                 android:textColorHint="#000" />
                         </RelativeLayout>
@@ -539,6 +544,7 @@
                             android:id="@+id/descriptionEdittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:hint="توضیحات بیشتر" />
                     </RelativeLayout>
                 </LinearLayout>

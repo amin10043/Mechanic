@@ -1,6 +1,6 @@
 =\=\=\=\=\=\=
 <<<<<<<=HEAD
->>>>>>>=branch 'master' of https\://github.com/amin10043/Mechanic.git
+>>>>>>>=branch 'master' of https\://github.com/amin10043/Mechanic
 eclipse.preferences.version=1
 encoding//src/com/project/mechanic/MainActivity.java=UTF-8
 encoding//src/com/project/mechanic/SplashActivity.java=UTF-8
@@ -10,10 +10,13 @@ encoding//src/com/project/mechanic/fragment/AdvisorTypeFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/City2Fragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/City3Fragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/CityFragment.java=UTF-8
+encoding//src/com/project/mechanic/fragment/CompeleteRegisterFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/CountryFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/CreateIntroductionFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/DialogAnad.java=UTF-8
 encoding//src/com/project/mechanic/fragment/DialogAnadimg.java=UTF-8
+encoding//src/com/project/mechanic/fragment/DialogEditDownloadIntroduction.java=UTF-8
+encoding//src/com/project/mechanic/fragment/DialogEditNet.java=UTF-8
 encoding//src/com/project/mechanic/fragment/DialogLinkDownload.java=UTF-8
 encoding//src/com/project/mechanic/fragment/DialogNetworkSocial.java=UTF-8
 encoding//src/com/project/mechanic/fragment/FroumFragment.java=UTF-8
@@ -31,9 +34,6 @@ encoding//src/com/project/mechanic/fragment/PublicationsFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/RegisterFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ShopFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ShowAdFragment.java=UTF-8
-<<<<<<< HEAD
-encoding//src/com/project/mechanic/utility/Roozh.java=UTF-8
-=======
 encoding//src/com/project/mechanic/model/DataBaseAdapter.java=UTF-8
->>>>>>> branch 'master' of https://github.com/amin10043/Mechanic
+encoding//src/com/project/mechanic/utility/Roozh.java=UTF-8
 encoding//src/com/project/mechanic/utility/Utility.java=UTF-8
