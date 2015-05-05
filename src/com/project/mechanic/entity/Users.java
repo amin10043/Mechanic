@@ -12,6 +12,7 @@ public class Users {
 	String Address;
 	byte[] Image;
 	String ServerDate;
+	String Date;
 	int Serviceid;
 	int Submit;
 
@@ -29,6 +30,16 @@ public class Users {
 
 	public void setName(String name) {
 		Name = name;
+	}
+
+	// /////////////
+
+	public String getDate() {
+		return Date;
+	}
+
+	public void setDate(String date) {
+		Date = date;
 	}
 
 	// //////////////////////////////////////////
@@ -119,7 +130,7 @@ public class Users {
 	public Users(int id, String name, String email, String password,
 			String phonenumber, String mobailenumber, String faxnumber,
 			String address, byte[] image, int serviceid, String serverdate,
-			int submit) {
+			String date, int submit) {
 
 		super();
 
@@ -135,6 +146,8 @@ public class Users {
 		Serviceid = serviceid;
 		ServerDate = serverdate;
 		Submit = submit;
+		Date = date;
+
 	}
 
 	public Users() {

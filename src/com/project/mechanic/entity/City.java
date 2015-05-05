@@ -1,11 +1,11 @@
 package com.project.mechanic.entity;
 
-public class City {
+public class City implements Comparable<City> {
 
 	int Id;
 	int ProvinceId;
 	String Name;
-
+    int Count;
 	public int getId() {
 		return Id;
 	}
@@ -18,8 +18,8 @@ public class City {
 		return ProvinceId;
 	}
 
-	public void setProvinceId(int ProvinceId) {
-		ProvinceId = ProvinceId;
+	public void setProvinceId(int provinceid) {
+		ProvinceId = provinceid;
 	}
 	
 	public String getName() {
@@ -29,12 +29,32 @@ public class City {
 	public void setName(String name) {
 		Name = name;
 	}
+	public int getCount(){
+		return Count;
+	}
+	public void setCount(int count){
+		Id = count;
+	}
 
-	public City(int id,  String name, int provinceId) {
+	public City(int id,  String name, int provinceid,int count) {
 		super();
 		Id = id;
-	 ProvinceId = ProvinceId;
+	 ProvinceId = provinceid;
 	 Name = name;
+	 Count = count;
+	}
+
+	@Override
+	public int compareTo(City comparecity) {
+		// TODO Auto-generated method stub
+int compareCount =  comparecity.getCount(); 
+		 
+		
+		//return this.Count - compareCount;
+
+		
+		return compareCount - this.Count;
+		
 	}
 
 }

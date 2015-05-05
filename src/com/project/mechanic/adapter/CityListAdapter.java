@@ -21,18 +21,21 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.fragment.ObjectFragment;
+import com.project.mechanic.model.DataBaseAdapter;
 
 public class CityListAdapter extends ArrayAdapter<City> {
 
 	Context context;
 	List<City> list;
 	int lastPosition = 0;
+	DataBaseAdapter adapter;
 
 	public CityListAdapter(Context context, int resource, List<City> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
+		adapter = new DataBaseAdapter(context);
 
 	}
 
@@ -64,6 +67,13 @@ public class CityListAdapter extends ArrayAdapter<City> {
 
 			@Override
 			public void onClick(View arg0) {
+				
+				int count = city.getCount();
+				int id = city.getId();
+				count = count + 1;
+				adapter.open();
+				adapter.UpdateCityToDb(id,count);
+				adapter.close();
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
