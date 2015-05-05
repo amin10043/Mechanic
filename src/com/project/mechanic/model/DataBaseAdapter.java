@@ -79,7 +79,7 @@ public class DataBaseAdapter {
 	private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] Anad = { "Id", "Image", "ObjectId", "Date", "TypeId",
-			"ProvinceId", "Seen" };
+			"ProvinceId", "Seen", "Submit" };
 	private String[] CityColumn = { "ID", "Name", "ProvinceId" };
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] CommentInObject = { "Id", "Desk", "ObjectId", "UserId",
@@ -93,7 +93,8 @@ public class DataBaseAdapter {
 
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId" };
-	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen" };
+	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen",
+			"ServerDate", "Submit" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date",
 			"CommentId", "Seen" };
@@ -104,32 +105,35 @@ public class DataBaseAdapter {
 			"CommentId" };
 	private String[] List = { "ID", "Name", "ParentId" };
 	private String[] ListItem = { "Id", "Name", "ListId" };
-	private String[] News = { "ID", "Title", "Description" };
+	private String[] News = { "ID", "Title", "Description", "ServerDate",
+			"Submit" };
 	private String[] Object = { "ID", "Name", "Phone", "Email", "Fax",
 			"Description", "Image1", "Image2", "Image3", "Image4", "Pdf1",
 			"Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId",
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
-			"Site", "Twitter", "ParentId", "rate", "Seen" };
+			"Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
+			"Submit" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
-	private String[] Paper = { "ID", "Title", "Context", "Seen" };
+	private String[] Paper = { "ID", "Title", "Context", "Seen", "ServerDate",
+			"Submit" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name" };
 
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
 			"ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress",
-			"UImage", "UMobile", "Seen" };
+			"UImage", "UMobile", "Seen", "Submit" };
 
 	private String[] TicketType = { "ID", "desc" };
 
 	private String[] Users = { "ID", "Name", "Email", "Password",
 			"Phonenumber", "Mobailenumber", "Faxnumber", "Address", "Image",
-			"ServiceId" };
+			"ServiceId", "ServerDate", "Submit" };
 
 	private String[] WorkmanType = { "ID", "Name" };
-	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url" };
+	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url", "ServerDate" };
 	private String[] ObjectBrandType = { "ID", "Description" };
 
 	private final Context mContext;
@@ -526,7 +530,7 @@ public class DataBaseAdapter {
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
 					cursor.getString(19), cursor.getInt(25), cursor.getInt(26),
-					cursor.getInt(27));
+					cursor.getInt(27), cursor.getString(28), cursor.getInt(29));
 
 			result.add(tempObject);
 		}
@@ -571,7 +575,7 @@ public class DataBaseAdapter {
 		News tempNews;
 		while (cursor.moveToNext()) {
 			tempNews = new News(cursor.getInt(0), cursor.getString(1),
-					cursor.getString(2));
+					cursor.getString(2), cursor.getString(3), cursor.getInt(4));
 			result.add(tempNews);
 		}
 
@@ -601,7 +605,8 @@ public class DataBaseAdapter {
 		NewsPaper tempNewsPaper;
 		while (cursor.moveToNext()) {
 			tempNewsPaper = new NewsPaper(cursor.getInt(0),
-					cursor.getString(1), cursor.getInt(2), cursor.getString(3));
+					cursor.getString(1), cursor.getInt(2), cursor.getString(3),
+					cursor.getString(4));
 			result.add(tempNewsPaper);
 		}
 
@@ -814,7 +819,8 @@ public class DataBaseAdapter {
 		Users Users = new Users(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
 				cursor.getString(5), cursor.getString(6), cursor.getString(7),
-				cursor.getBlob(8), cursor.getInt(9));
+				cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
+				cursor.getInt(11));
 		return Users;
 
 	}
@@ -854,7 +860,7 @@ public class DataBaseAdapter {
 	private Anad CursorToAnad(Cursor cursor) {
 		Anad tempAnad = new Anad(cursor.getInt(0), cursor.getInt(2),
 				cursor.getBlob(1), cursor.getString(3), cursor.getInt(4),
-				cursor.getInt(5), cursor.getInt(6));
+				cursor.getInt(5), cursor.getInt(6), cursor.getInt(7));
 		return tempAnad;
 	}
 
@@ -868,14 +874,16 @@ public class DataBaseAdapter {
 				cursor.getInt(17), cursor.getString(18), cursor.getString(19),
 				cursor.getString(20), cursor.getString(21),
 				cursor.getString(22), cursor.getString(23), cursor.getInt(24),
-				cursor.getInt(25), cursor.getInt(26));
+				cursor.getInt(25), cursor.getInt(26), cursor.getString(27),
+				cursor.getInt(28));
 		return tempObject;
 	}
 
 	@SuppressWarnings("unused")
 	private NewsPaper CursorToNewsPaper(Cursor cursor) {
 		NewsPaper tempNewsPaper = new NewsPaper(cursor.getInt(0),
-				cursor.getString(1), cursor.getInt(2), cursor.getString(3));
+				cursor.getString(1), cursor.getInt(2), cursor.getString(3),
+				cursor.getString(4));
 		return tempNewsPaper;
 	}
 
@@ -895,7 +903,8 @@ public class DataBaseAdapter {
 
 	private Froum CursorToFroum(Cursor cursor) {
 		Froum tempForum = new Froum(cursor.getInt(0), cursor.getInt(1),
-				cursor.getString(2), cursor.getString(3), cursor.getInt(4));
+				cursor.getString(2), cursor.getString(3), cursor.getInt(4),
+				cursor.getString(5), cursor.getInt(6));
 		return tempForum;
 
 	}
@@ -903,14 +912,15 @@ public class DataBaseAdapter {
 	@SuppressWarnings("unused")
 	private Paper CursorToPaper(Cursor cursor) {
 		Paper tempPaper = new Paper(cursor.getInt(0), cursor.getString(1),
-				cursor.getString(2), cursor.getInt(3));
+				cursor.getString(2), cursor.getInt(3), cursor.getString(4),
+				cursor.getInt(5));
 		return tempPaper;
 
 	}
 
 	private News CursorToNews(Cursor cursor) {
 		News tempNews = new News(cursor.getInt(0), cursor.getString(1),
-				cursor.getString(2));
+				cursor.getString(2), cursor.getString(3), cursor.getInt(4));
 		return tempNews;
 
 	}
@@ -934,7 +944,7 @@ public class DataBaseAdapter {
 				cursor.getString(14), cursor.getString(15),
 
 				cursor.getString(16), cursor.getString(17), cursor.getBlob(18),
-				cursor.getString(19), cursor.getInt(20));
+				cursor.getString(19), cursor.getInt(20), cursor.getInt(21));
 
 		return tempTicket;
 
@@ -1021,7 +1031,7 @@ public class DataBaseAdapter {
 		News tempNews;
 		while (cursor.moveToNext()) {
 			tempNews = new News(cursor.getInt(0), cursor.getString(1),
-					cursor.getString(2));
+					cursor.getString(2), cursor.getString(3), cursor.getInt(4));
 			result.add(tempNews);
 		}
 		return result;
@@ -1034,7 +1044,8 @@ public class DataBaseAdapter {
 		Paper tempObject;
 		while (cursor.moveToNext()) {
 			tempObject = new Paper(cursor.getInt(0), cursor.getString(1),
-					cursor.getString(2), cursor.getInt(3));
+					cursor.getString(2), cursor.getInt(3), cursor.getString(4),
+					cursor.getInt(5));
 			result.add(tempObject);
 		}
 
@@ -1595,7 +1606,8 @@ public class DataBaseAdapter {
 
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
-					cursor.getBlob(8), cursor.getInt(9));
+					cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
+					cursor.getInt(11));
 			result.add(tempusers);
 
 		}
@@ -1643,7 +1655,8 @@ public class DataBaseAdapter {
 
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
-					cursor.getBlob(8), cursor.getInt(9));
+					cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
+					cursor.getInt(11));
 
 			result.add(tempusers);
 		}
@@ -1702,9 +1715,8 @@ public class DataBaseAdapter {
 					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
-
 					cursor.getString(19), cursor.getInt(25), cursor.getInt(27),
-					cursor.getInt(28));
+					cursor.getInt(28), cursor.getString(29), cursor.getInt(30));
 
 			result.add(tempObject);
 		}
