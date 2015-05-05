@@ -24,7 +24,7 @@ public class DialogcmtInPaper extends Dialog {
 	int paperId;
 	Utility util;
 
-	public DialogcmtInPaper(Fragment f, Context context, int resourceId) {
+	public DialogcmtInPaper(Fragment f, Context context, int resourceId,int paperId) {
 		super(context);
 		this.context = context;
 		this.f = f;

@@ -22,6 +22,8 @@ import android.preference.CheckBoxPreference;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,8 +81,15 @@ public class CompeleteRegisterFragment extends Fragment {
 			.findViewById(R.id.editTextuser);
 	final EditText editpass = (EditText) view
 			.findViewById(R.id.editTextpass);
+	
+	TextView textrules=(TextView) view.findViewById(R.id.txtrulles);
 	Compeletebtn.setEnabled(false);
+	
 	 
+//	textrules.setText(Html.fromHtml("<html><a href=\"http://example.com/\">Ù‚ÙˆØ§Ù†ÛŒÙ†</a></html>"));
+//	textrules.setMovementMethod(LinkMovementMethod.getInstance());
+	
+	
 	
 	Backbtn.setOnClickListener(new OnClickListener() {
 		
@@ -97,6 +106,20 @@ public class CompeleteRegisterFragment extends Fragment {
 		}
 	});
 	
+	
+	textrules.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View arg0) {
+			
+			
+			FragmentTransaction trans = getActivity()
+					.getSupportFragmentManager().beginTransaction();
+			trans.replace(R.id.content_frame, new DisplayeRullseFragment());
+			trans.commit();
+			
+		}
+	});
 	
 	
 	Rulescheck.setOnClickListener(new OnClickListener()
@@ -144,7 +167,7 @@ public class CompeleteRegisterFragment extends Fragment {
 			        		Addresstxt.getText().toString());
 			        dbAdapter.close();			
 			        Toast.makeText(getActivity(),
-					"ËÈÊ ÇäÌÇã ÔÏ  ",
+					"Ø«Ø¨Øª Ø§Ù†Ø¬Ø§Ù… Ø´Ø¯  ",
 					Toast.LENGTH_SHORT).show();
 			       
 			        Addresstxt.setText("");

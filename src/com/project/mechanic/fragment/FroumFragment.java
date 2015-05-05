@@ -10,15 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FroumListAdapter;
+import com.project.mechanic.adapter.FroumReplyetocmAdapter;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
@@ -43,11 +46,14 @@ public class FroumFragment extends Fragment {
 	FroumListAdapter ListAdapter;
 
 	ArrayList<CommentInFroum> mylist;
+	ArrayList<CommentInFroum> ReplyeList;
 	DialogcmtInfroum dialog;
 	ImageButton Replytocm;
 	FroumListAdapter froumListadapter;
+	FroumReplyetocmAdapter ReplyAdapter;
 	int id;
 	int id2;
+	int Commentid;
 
 	ListView lst;
 	ListView lstReply;
@@ -83,6 +89,7 @@ public class FroumFragment extends Fragment {
 		adapter = new DataBaseAdapter(getActivity());
 		adapter.open();
 		id = Integer.valueOf(getArguments().getString("Id"));
+		// Commentid = Integer.valueOf(getArguments().getString("CommentID"));
 
 		NumofComment.setText(adapter.CommentInFroum_count().toString());
 
@@ -96,16 +103,18 @@ public class FroumFragment extends Fragment {
 
 		mylist = adapter.getCommentInFroumbyPaperid(id);
 		final Froum x = adapter.getFroumItembyid(id);
+		ReplyeList = adapter.getReplyCommentbyCommentID(id, 1);
+		// Froum x = adapter.getFroumItembyid(id);
 		txttitle.setText(x.getTitle());
 		txttitleDes.setText(x.getDescription());
 		adapter.close();
 
 		lst = (ListView) view.findViewById(R.id.lstComment);
-		lstReply = (ListView) view.findViewById(R.id.lstReplytoCm);
 		ListAdapter = new FroumListAdapter(getActivity(),
 				R.layout.raw_froumcmt, mylist, FroumFragment.this);
 
 		lst.setAdapter(ListAdapter);
+		resizeListView(lst);
 
 		Like.setOnClickListener(new View.OnClickListener() {
 
@@ -139,30 +148,14 @@ public class FroumFragment extends Fragment {
 			}
 		});
 
-		Replytocm = (ImageButton) view.findViewById(R.id.imgvReplytoCm);
-		/*
-		 * Replytocm.setOnClickListener(new OnClickListener(){
-		 * 
-		 * @Override public void onClick(View arg0) {
-		 * 
-		 * dialog = new Dialogcmt(getActivity(),R.layout.dialog_addcomment);
-		 * dialog.show();
-		 * 
-		 * }
-		 * 
-		 * 
-		 * 
-		 * });
-		 */
-
 		btnAddcmt.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 
-				dialog = new DialogcmtInfroum(FroumFragment.this,
-						getActivity(), R.layout.dialog_addcomment);
+				dialog = new DialogcmtInfroum(FroumFragment.this, 0,
+						getActivity(), id, R.layout.dialog_addcomment);
 				dialog.show();
 
 			}
@@ -199,6 +192,32 @@ public class FroumFragment extends Fragment {
 		froumListadapter.notifyDataSetChanged();
 		lst.setAdapter(froumListadapter);
 
+	}
+
+	private void resizeListView(ListView listView) {
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			// pre-condition
+			return;
+		}
+
+		int totalHeight = listView.getPaddingTop()
+				+ listView.getPaddingBottom();
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+
+			if (listItem instanceof ViewGroup) {
+				listItem.setLayoutParams(new LayoutParams(
+						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			}
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight
+				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
 	}
 	/*
 	 * public void refresh(){ adapter.open(); int

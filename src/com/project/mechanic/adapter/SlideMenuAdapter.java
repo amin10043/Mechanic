@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.project.mechanic.R;
 
@@ -19,11 +18,10 @@ public class SlideMenuAdapter extends BaseAdapter {
 
 	Context context;
 
-	String[] slideitem = { "خانه", "کاربری", "صفحه شخصی", "درباره ما",
+	String[] slideitem = { "صفحه اصلی", "کاربری", "صفحه شخصی", "درباره ما",
 			"تماس با ما" };
-	int[] icon = { R.drawable.ic_launcher, R.drawable.ic_launcher,
-			R.drawable.ic_launcher, R.drawable.ic_launcher,
-			R.drawable.ic_launcher };
+	int[] icon = { R.drawable.ic_home, R.drawable.ic_pro,
+			R.drawable.ic_personal, R.drawable.ic_about_us, R.drawable.phone };
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -42,7 +40,6 @@ public class SlideMenuAdapter extends BaseAdapter {
 
 		iconImg.setImageResource(icon[position]);
 		nametxt.setText(slideitem[position]);
-		Toast.makeText(context, "empty", Toast.LENGTH_SHORT).show();
 
 		return convertView;
 	}

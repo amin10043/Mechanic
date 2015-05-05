@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -33,6 +34,8 @@ public class DisplayPersonalInformationFragment  extends Fragment {
 	 DataBaseAdapter dbAdapter;
 		ServiceComm service;
 	Utility	utile1;
+	
+	Ticket tempItem;
 	@Override
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,13 +52,18 @@ utile1=new Utility(getActivity());
 	TextView	txtfax=(TextView) view.findViewById(R.id.txtfax);
 	ImageView   img=(ImageView) view.findViewById(R.id.img1)	;
 Button btnedit=(Button) view.findViewById(R.id.btnedit);
+TextView txtdate=(TextView)view.findViewById(R.id.txtdate);
 final LinearLayout lin2 = (LinearLayout) view.findViewById(R.id.lin2);
 
 LayoutParams lp1 = new LinearLayout.LayoutParams(lin2.getLayoutParams());		
 lp1.width=utile1.getScreenwidth()/4;
    lp1.height=utile1.getScreenwidth()/4;
    img.setLayoutParams(lp1);
+	PersianDate date = new PersianDate();
+	
+	
 
+	
 
 	dbAdapter = new DataBaseAdapter(getActivity());
 	dbAdapter.open();
@@ -84,7 +92,8 @@ lp1.width=utile1.getScreenwidth()/4;
 				bitmapbyte.length);
 		img.setImageBitmap(bmp);
 	}
-					
+		
+String d = x.getDate();
  	int item = x.getId();
  	String name=x.getName();
  	String email=x.getEmail();
@@ -96,7 +105,7 @@ lp1.width=utile1.getScreenwidth()/4;
  	
 		
 	dbAdapter.close();
-	
+	txtdate.setText(d);
 	txtname.setText(name);
 	txtemail.setText(email);
 	txtcellphone.setText(cellphone);

@@ -28,7 +28,7 @@
                 android:background="@drawable/color1"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:weightSum="2" >
+                android:weightSum="3" >
 
                 <LinearLayout
                     android:id="@+id/lin2"
@@ -48,15 +48,31 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/txtsize10"
-                    android:background="@drawable/color1" >
+                    android:layout_weight="1.5" >
+
+                    <TextView
+                        android:id="@+id/txtdate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:gravity="bottom"
+                        android:text="Large Text"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/transparent"
+                        android:textSize="@dimen/txtsize10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5" >
 
                     <TextView
                         android:id="@+id/txtname"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_weight="1"
                         android:gravity="right|center"
                         android:textColor="@color/transparent"
                         android:textSize="@dimen/txtsize30" />
@@ -74,7 +90,7 @@
                     android:id="@+id/txtemail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:ems="10"
                     android:textColor="@color/transparent" >
 
@@ -86,7 +102,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="right"
                     android:text="ایمیل:"
                     android:textColor="@color/transparent" />
@@ -103,7 +119,7 @@
                     android:id="@+id/txtphone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:ems="10"
                     android:textColor="@color/transparent" />
 
@@ -112,7 +128,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="right"
                     android:text="شماره ثابت:"
                     android:textColor="@color/transparent" />
@@ -130,7 +146,7 @@
                     android:id="@+id/txtcellphone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:ems="10"
                     android:textColor="@color/transparent" />
 
@@ -139,7 +155,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="right"
                     android:text="شماره همراه:"
                     android:textColor="@color/transparent" />
@@ -157,7 +173,7 @@
                     android:id="@+id/txtfax"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:ems="10"
                     android:textColor="@color/transparent" />
 
@@ -166,7 +182,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="right"
                     android:text="شماره فکس: "
                     android:textColor="@color/transparent" />
@@ -184,9 +200,10 @@
                     android:id="@+id/txtaddress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:ems="10"
                     android:inputType="textPostalAddress"
+                    android:minLines="10"
                     android:textColor="@color/transparent" />
 
                 <TextView
@@ -194,8 +211,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:gravity="right"
+                    android:minLines="10"
                     android:text="آدرس :"
                     android:textColor="@color/transparent" />
             </LinearLayout>
