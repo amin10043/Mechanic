@@ -5,6 +5,7 @@ public class Paper {
 	int Id;
 	String Title;
 	String Context;
+	int Seen;
 
 	public int getId() {
 		return Id;
@@ -30,11 +31,20 @@ public class Paper {
 		Context = context;
 	}
 
-	public Paper(int id, String title, String context) {
+	public int getSeen() {
+		return Seen;
+	}
+
+	public void setSeen(int seen) {
+		Seen = seen;
+	}
+
+	public Paper(int id, String title, String context, int seen) {
 		super();
 		Id = id;
 		Title = title;
 		Context = context;
+		Seen = seen;
 	}
 
 }

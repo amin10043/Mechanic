@@ -11,6 +11,7 @@ public class Users {
 	String Faxnumber;
 	String Address;
 	byte[] Image;
+	String Date;
 	int Serviceid;
 
 	public int getId() {
@@ -28,7 +29,16 @@ public class Users {
 	public void setName(String name) {
 		Name = name;
 	}
+///////////////
+	
+	
+	public String getDate() {
+		return Date;
+	}
 
+	public void setDate(String date) {
+		Date = date;
+	}
 	// //////////////////////////////////////////
 	public String getEmail() {
 		return Email;
@@ -100,7 +110,7 @@ public class Users {
 	// /////////////////////////////////////////////////////////////////////////////////
 	public Users(int id, String name, String email, String password,
 			String phonenumber, String mobailenumber, String faxnumber,
-			String address, byte[] image, int serviceid) {
+			String address, byte[] image, int serviceid,String date) {
 
 		super();
 
@@ -114,6 +124,7 @@ public class Users {
 		Address = address;
 		Image = image;
 		Serviceid = serviceid;
+		Date=date;
 	}
 
 	public Users() {
