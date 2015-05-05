@@ -3,6 +3,7 @@ package com.project.mechanic.model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -80,7 +81,7 @@ public class DataBaseAdapter {
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] Anad = { "Id", "Image", "ObjectId", "Date", "TypeId",
 			"ProvinceId" };
-	private String[] CityColumn = { "ID", "Name", "ProvinceId" };
+	private String[] CityColumn = { "ID", "Name", "ProvinceId","Count" };
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] CommentInObject = { "Id", "Desk", "ObjectId", "UserId",
 			"Date", "CommentId" };
@@ -115,7 +116,7 @@ public class DataBaseAdapter {
 	private String[] ObjectType = { "ID", "Name" };
 	private String[] Paper = { "ID", "Title", "Context" };
 	private String[] PaperType = { "ID", "Name" };
-	private String[] Province = { "ID", "Name" };
+	private String[] Province = { "ID", "Name","Count" };
 
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
@@ -489,11 +490,11 @@ public class DataBaseAdapter {
 				null, null);
 		Province tempProvince;
 		while (cursor.moveToNext()) {
-			tempProvince = new Province(cursor.getInt(0), cursor.getString(1));
+			tempProvince = new Province(cursor.getInt(0), cursor.getString(1),cursor.getInt(2));
 			result.add(tempProvince);
 		}
 
-		Arrays.sort(result.toArray());
+		Collections.sort(result);
 		return result;
 
 	}
@@ -505,7 +506,7 @@ public class DataBaseAdapter {
 		City tempCity;
 		while (cursor.moveToNext()) {
 			tempCity = new City(cursor.getInt(0), cursor.getString(1),
-					cursor.getInt(2));
+					cursor.getInt(2),cursor.getInt(3));
 			result.add(tempCity);
 		}
 		return result;
@@ -773,6 +774,7 @@ public class DataBaseAdapter {
 			item = CursorToCity(mCur);
 			result.add(item);
 		}
+		Collections.sort(result);
 
 		return result;
 
@@ -804,7 +806,7 @@ public class DataBaseAdapter {
 
 	private Province CursorToProvince(Cursor cursor) {
 		Province tempProvince = new Province(cursor.getInt(0),
-				cursor.getString(1));
+				cursor.getString(1),cursor.getInt(2));
 		return tempProvince;
 
 	}
@@ -849,7 +851,7 @@ public class DataBaseAdapter {
 
 	private City CursorToCity(Cursor cursor) {
 		City tempCity = new City(cursor.getInt(0), cursor.getString(1),
-				cursor.getInt(2));
+				cursor.getInt(2),cursor.getInt(3));
 		return tempCity;
 	}
 
@@ -956,9 +958,11 @@ public class DataBaseAdapter {
 				null, null);
 		Province tempProvince;
 		while (cursor.moveToNext()) {
-			tempProvince = new Province(cursor.getInt(0), cursor.getString(1));
+			tempProvince = new Province(cursor.getInt(0), cursor.getString(1),cursor.getInt(2));
 			result.add(tempProvince);
 		}
+		
+		Collections.sort(result);
 		return result;
 	}
 
@@ -1860,6 +1864,57 @@ public class DataBaseAdapter {
 				.show();
 
 	}
-}
-// //////////////////////////
 
+// //////////////////////////
+public void UpdateProvinceToDb(int id,
+		  int count) {
+
+	ContentValues uc = new ContentValues();
+	// uc.put("Name", name);
+	// uc.put("Email", email);
+	// uc.put("Password", password);
+	uc.put("Count", count);
+	
+	mDb.update(TableProvince, uc , "ID =" + id ,null);
+
+}
+/////////////////////////////////////////////////////////
+public City getCityById(int id) {
+	City item = null;
+	Cursor mCur = mDb.query(TableCity, CityColumn, " Id=?",
+			new String[] { String.valueOf(id) }, null, null, null);
+
+	if (mCur.moveToNext()) {
+		item = CursorToCity(mCur);
+
+	}
+
+	return item;
+}
+///////////////////////////////////////////////////////////////
+public void UpdateCityToDb(int id,
+		  int count) {
+
+	ContentValues uc = new ContentValues();
+	// uc.put("Name", name);
+	// uc.put("Email", email);
+	// uc.put("Password", password);
+	uc.put("Count", count);
+	
+	mDb.update(TableCity, uc , "ID =" + id ,null);
+}
+
+ 
+/////////////////////////////////////////////////////
+public Province getProvinceById(int id) {
+	Province item = null;
+	Cursor mCur = mDb.query(TableCity,Province , " Id=?",
+			new String[] { String.valueOf(id) }, null, null, null);
+
+	if (mCur.moveToNext()) {
+		item = CursorToProvince(mCur);
+
+	}
+
+	return item;
+}}
