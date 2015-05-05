@@ -11,6 +11,8 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -86,6 +89,9 @@ public class DialogAnadimg extends Dialog {
 		CheckBox checkshart = (CheckBox) findViewById(R.id.checkBoxshart);
 		final Button btndarj = (Button) findViewById(R.id.darjtabligh);
 
+		txtdesc.setText(Html
+				.fromHtml("<html>1-شرط اول <br>2-شرط دوم <br>3-شرط سوم <br>4-شرط چهارم  <br>5-شرط پنجم <br></html>"));
+
 		checkshart.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -98,16 +104,17 @@ public class DialogAnadimg extends Dialog {
 
 			@Override
 			public void onClick(View arg0) {
-				// FragmentTransaction trans = ((MainActivity)
-				// context).getSupportFragmentManager().beginTransaction();
-				// ShowAdFragment fragment = new ShowAdFragment();
-				// Bundle bundle = new Bundle();
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				show_pay_fragment fragment = new show_pay_fragment();
+				Bundle bundle = new Bundle();
 				// bundle.putString("Id", String.valueOf(id));
-				// fragment.setArguments(bundle);
-				// trans.replace(R.id.content_frame, fragment);
-				// trans.addToBackStack(null);
-				// trans.commit();
-				//
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+				DialogAnadimg.this.dismiss();
+
 			}
 		});
 
