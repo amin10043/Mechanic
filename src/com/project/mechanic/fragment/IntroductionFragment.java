@@ -6,6 +6,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -28,7 +31,9 @@ import com.project.mechanic.R;
 import com.project.mechanic.adapter.IntroductionListAdapter;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.Object;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class IntroductionFragment extends Fragment {
 
@@ -43,11 +48,12 @@ public class IntroductionFragment extends Fragment {
 	Fragment fragment;
 	public ImageButton like;
 	public ImageButton Comment;
-
+    ImageView imagedisplay;
+    LinearLayout.LayoutParams lp2;
 	ArrayList<CommentInObject> mylist;
 	DataBaseAdapter adapter;
 	ListView lst;
-
+	LinearLayout linpic;
 	TextView txtFax;
 	TextView txtAddress;
 	TextView txtPhone;
@@ -75,20 +81,20 @@ public class IntroductionFragment extends Fragment {
 	ImageButton email;
 	ImageButton EditPage;
 	ImageButton CreatePage;
-
+Utility ut;
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_introduction, null);
-
+		ut=new Utility(getActivity());
 		((MainActivity) getActivity()).setActivityTitle(R.string.brand);
 		adapter = new DataBaseAdapter(getActivity());
 		peykan6 = (ImageView) view.findViewById(R.id.imageButton6);
 		peykan5 = (ImageView) view.findViewById(R.id.imageButton7);
 		advertise = (ImageView) view.findViewById(R.id.imgvadvertise_Object);
 		advertise2 = (ImageView) view.findViewById(R.id.imgvadvertise2_Object);
-
+		imagedisplay=(ImageView) view.findViewById(R.id.imagedisplay);
 		link1 = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
 		link2 = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
 
@@ -120,12 +126,12 @@ public class IntroductionFragment extends Fragment {
 		Pdf2 = (ImageButton) view.findViewById(R.id.btnPdf2_Object);
 		Pdf3 = (ImageButton) view.findViewById(R.id.btnPdf3_Object);
 		Pdf4 = (ImageButton) view.findViewById(R.id.btnPdf4_Object);
-
+linpic    =(LinearLayout) view.findViewById(R.id.linearpicture);
 		EditPage = (ImageButton) view.findViewById(R.id.ImgbtnEdit);
 		CreatePage = (ImageButton) view.findViewById(R.id.ImgbtnCreate);
 
 		lst = (ListView) view.findViewById(R.id.listvCmt_Introduction);
-
+	
 		if (getArguments() != null && getArguments().getString("Id") != null) {
 			id = Integer.valueOf(getArguments().getString("Id"));
 		}
@@ -134,21 +140,68 @@ public class IntroductionFragment extends Fragment {
 				0);
 		final int cid = sendDataID.getInt("main_Id", -1);
 
+		
+		Toast.makeText(getActivity(),""+cid, Toast.LENGTH_LONG).show();
+		
+		Toast.makeText(getActivity(),""+id, Toast.LENGTH_LONG).show();
+		
+		
+		lp2=new LinearLayout.LayoutParams(linpic .getLayoutParams());
+
+		lp2.height = ut.getScreenwidth()/4;
+		lp2.width =   ut.getScreenwidth()/4;
+
+		imagedisplay.setLayoutParams(lp2);
+		
 		adapter.open();
 		mylist = adapter.getAllCommentInObjectById(id);
 		txtNumofComment.setText(adapter.CommentInObject_count().toString());
 		txtNumofLike.setText(adapter.LikeInObject_count().toString());
-		object = adapter.getAllObjectbyid(cid);
+		object = adapter.getObjectbyid(cid);
 		if (object == null) {
 			return view;
 		}
 
+		
+		
+		
+		
+		
+//		imagedisplay.setBackgroundResource(R.drawable.profile_account);
+		
+		
+		byte[] bitmapbyte = object.getImage1();
+		if (bitmapbyte != null) {
+			Bitmap bmp1 = BitmapFactory.decodeByteArray(bitmapbyte, 0,
+					bitmapbyte.length);
+			advertise.setImageBitmap(bmp1);
+		
+		}
+		
+		
+		byte[] bitmap = object.getImage2();
+		if (bitmap != null) {
+			Bitmap bmp2 = BitmapFactory.decodeByteArray(bitmap, 0,
+					bitmap.length);
+			imagedisplay.setImageBitmap(bmp2);
+		
+		}
+		byte[] bitm = object.getImage3();
+		if (bitm != null) {
+		Bitmap bmp3 = BitmapFactory.decodeByteArray(bitm, 0,
+					bitm.length);
+			advertise2.setImageBitmap(bmp3);
+	
+	}
+		
 		txtFax.setText(object.getFax());
 		txtPhone.setText(object.getPhone());
 		txtCellphone.setText(object.getCellphone());
 		txtEmail.setText(object.getEmail());
 		txtAddress.setText(object.getAddress());
 		txtDesc.setText(object.getDescription());
+	
+		
 
 		if (object.getObjectBrandTypeId() == 2)
 			link2.setVisibility(View.GONE);

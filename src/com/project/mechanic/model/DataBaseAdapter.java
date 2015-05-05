@@ -865,7 +865,7 @@ public class DataBaseAdapter {
 	private Object CursorToObject(Cursor cursor) {
 		Object tempObject = new Object(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
-				cursor.getString(5), null, null, null, null,
+				cursor.getString(5),cursor.getBlob(6), cursor.getBlob(7), cursor.getBlob(8), cursor.getBlob(9),
 				cursor.getString(10), cursor.getString(11),
 				cursor.getString(12), cursor.getString(13),
 				cursor.getString(14), cursor.getString(15), cursor.getInt(16),
@@ -1510,20 +1510,48 @@ public class DataBaseAdapter {
 
 	}
 
-	public Object getAllObjectbyid(int id) {
+	public Object getObjectbyid(int id) {
 
 		Object item = null;
-		Cursor mCur = mDb.query("Object", Object, " Id=?",
+		Cursor mCur = mDb.query(TableObject, Object, " Id=?",
 				new String[] { String.valueOf(id) }, null, null, null);
 
 		if (mCur.moveToNext()) {
 			item = CursorToObject(mCur);
 
-		}
-
-		return item;
-
 	}
+
+	return item;
+
+}
+	
+
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//////////
+//	public Object getobjectbyid(int id){
+//	
+//		Object it=null;
+//		
+//		Cursor mCur = mDb.query(TableObject, Object, "Id=?", new String[]{String.valueOf(id)}, null, null, null);
+//		if (mCur.moveToNext()) {
+//			it = CursorToObject(mCur);
+//		}
+//		
+//		return it;
+//		
+//		
+//	}
 
 	public ArrayList<Froum> getAllFroum() {
 		ArrayList<Froum> result = new ArrayList<Froum>();
