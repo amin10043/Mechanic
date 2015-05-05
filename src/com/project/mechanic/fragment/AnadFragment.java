@@ -51,7 +51,6 @@ public class AnadFragment extends Fragment {
 	private DialogAnadimg dialog1;
 	int ticketTypeid = 0;
 	private static int RESULT_LOAD_IMAGE = 1;
-	private static int RESULT_LOAD_IMAGE2 = 2;
 	public static String picturePath;
 	int proID = -1;
 	private LinearLayout verticalOuterLayout;
@@ -203,25 +202,6 @@ public class AnadFragment extends Fragment {
 			cursor.close();
 
 			ImageView imageView = (ImageView) dialog
-					.findViewById(R.id.dialog_img1);
-			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-
-		}
-		if (requestCode == RESULT_LOAD_IMAGE2
-				&& resultCode == Activity.RESULT_OK && null != data) {
-			Uri selectedImage = data.getData();
-
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-			Cursor cursor = getActivity().getContentResolver().query(
-					selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
-
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
-			cursor.close();
-
-			ImageView imageView = (ImageView) dialog1
 					.findViewById(R.id.dialog_img1);
 			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 

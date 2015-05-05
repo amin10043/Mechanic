@@ -193,6 +193,22 @@ public class DataBaseAdapter {
 
 	}
 
+	public void inserAnadToDb(byte[] image, int objectId, String date,
+			int tyoeId, int provinceId, int seen) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("Image", image);
+		uc.put("ObjectId", objectId);
+		uc.put("Date", date);
+		uc.put("TypeId", tyoeId);
+		uc.put("ProvinceId", provinceId);
+		uc.put("Seen", seen);
+		long res = mDb.insert(TableAnad, null, uc);
+		long res2 = res;
+
+	}
+
 	public void inserUsernonpicToDb(String name, String email, String password,
 			String phonenumber, String mobailenumber, String faxnumber,
 			String address, int serviceid, String date) {
