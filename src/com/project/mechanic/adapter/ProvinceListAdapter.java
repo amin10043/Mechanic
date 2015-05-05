@@ -70,10 +70,16 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 			@Override
 			public void onClick(View arg0) {
 
-				Province province = list.get(position);
+				Province p = list.get(position);
 				adapter.open();
-				List<City> allItems = adapter.getCitysByProvinceId(province
+				List<City> allItems = adapter.getCitysByProvinceId(p
 						.getId());
+				//Province P = adapter.getProvinceById(province.getId());
+
+				int count = p.getCount();
+				int id = p.getId();
+				count = count + 1;
+				adapter.UpdateProvinceToDb(id, count);
 				adapter.close();
 
 				FragmentTransaction trans = ((MainActivity) context)

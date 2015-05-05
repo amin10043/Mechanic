@@ -1,7 +1,5 @@
 package com.project.mechanic.fragment;
 
-import android.app.Fragment;
-
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
@@ -16,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,16 +35,10 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
+
+
 public class DisplayeRullseFragment extends Fragment{
 	
-
-	
-;
-
-
-
-
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -5,6 +5,7 @@ public class Object {
 	int Id;
 	int ObjectTypeId;
 	int ObjectBrandTypeId;
+	int Seen;
 
 	String Name;
 	String Phone;
@@ -238,13 +239,21 @@ public class Object {
 		ParentId = parentid;
 	}
 
+	public int getSeen() {
+		return Seen;
+	}
+
+	public void setSeen(int seen) {
+		Seen = seen;
+	}
+
 	public Object(int id, String name, String phone, String email, String fax,
 			String description, byte[] image1, byte[] image2, byte[] image3,
 			byte[] image4, String pdf1, String pdf2, String pdf3, String pdf4,
 			String address, String cellphone, int objectTypeId,
 			int objectBrandTypeId, String facebook, String instagram,
 			String linkedIn, String google, String site, String twitter,
-			int rate, int parentid) {
+			int rate, int parentid, int seen) {
 		super();
 		Id = id;
 		Name = name;
@@ -272,7 +281,7 @@ public class Object {
 		Twitter = twitter;
 		ParentId = parentid;
 		this.rate = rate;
-
+		Seen = seen;
 	}
 
 }

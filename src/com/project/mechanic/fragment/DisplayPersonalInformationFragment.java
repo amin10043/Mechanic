@@ -61,7 +61,8 @@ lp1.width=utile1.getScreenwidth()/4;
    img.setLayoutParams(lp1);
 	PersianDate date = new PersianDate();
 	
-	txtdate.setText(date.todayShamsi());
+	
+
 	
 
 	dbAdapter = new DataBaseAdapter(getActivity());
@@ -83,7 +84,7 @@ lp1.width=utile1.getScreenwidth()/4;
 // 	String fax=u.getFaxnumber();
 // 	
 	///////////////
-	int id =1;
+	int id =4;
 	Users x =dbAdapter.getUserById(id);	
 	byte[] bitmapbyte = x.getImage();
 	if (bitmapbyte != null) {
@@ -91,7 +92,8 @@ lp1.width=utile1.getScreenwidth()/4;
 				bitmapbyte.length);
 		img.setImageBitmap(bmp);
 	}
-					
+		
+String d = x.getDate();
  	int item = x.getId();
  	String name=x.getName();
  	String email=x.getEmail();
@@ -103,7 +105,7 @@ lp1.width=utile1.getScreenwidth()/4;
  	
 		
 	dbAdapter.close();
-	
+	txtdate.setText(d);
 	txtname.setText(name);
 	txtemail.setText(email);
 	txtcellphone.setText(cellphone);

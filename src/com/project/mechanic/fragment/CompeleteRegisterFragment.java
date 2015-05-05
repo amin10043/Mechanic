@@ -82,12 +82,12 @@ public class CompeleteRegisterFragment extends Fragment {
 	final EditText editpass = (EditText) view
 			.findViewById(R.id.editTextpass);
 	
-	TextView textrules=(TextView) view.findViewById(R.id.textrules);
+	TextView textrules=(TextView) view.findViewById(R.id.txtrulles);
 	Compeletebtn.setEnabled(false);
 	
 	 
-	textrules.setText(Html.fromHtml("<html><a href=\"http://example.com/\">قوانین</a></html>"));
-	textrules.setMovementMethod(LinkMovementMethod.getInstance());
+//	textrules.setText(Html.fromHtml("<html><a href=\"http://example.com/\">قوانین</a></html>"));
+//	textrules.setMovementMethod(LinkMovementMethod.getInstance());
 	
 	
 	
@@ -106,6 +106,20 @@ public class CompeleteRegisterFragment extends Fragment {
 		}
 	});
 	
+	
+	textrules.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View arg0) {
+			
+			
+			FragmentTransaction trans = getActivity()
+					.getSupportFragmentManager().beginTransaction();
+			trans.replace(R.id.content_frame, new DisplayeRullseFragment());
+			trans.commit();
+			
+		}
+	});
 	
 	
 	Rulescheck.setOnClickListener(new OnClickListener()
