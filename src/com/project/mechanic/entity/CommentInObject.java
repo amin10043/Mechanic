@@ -1,8 +1,6 @@
 package com.project.mechanic.entity;
 
 public class CommentInObject {
-	
-	
 
 	int Id;
 	String Description;
@@ -10,9 +8,10 @@ public class CommentInObject {
 	int Userid;
 	String Datetime;
 	int Commentid;
+	int Seen;
 
 	public CommentInObject(int id, String description, int froumid, int userid,
-			String datetime, int commentid) {
+			String datetime, int commentid, int seen) {
 		super();
 		Id = id;
 		Description = description;
@@ -20,6 +19,7 @@ public class CommentInObject {
 		Userid = userid;
 		Datetime = datetime;
 		Commentid = commentid;
+		Seen = seen;
 	}
 
 	public String getDescription() {
@@ -70,4 +70,11 @@ public class CommentInObject {
 		this.Id = Id;
 	}
 
+	public int getSeen() {
+		return Seen;
+	}
+
+	public void setSeen(int seen) {
+		Seen = seen;
+	}
 }

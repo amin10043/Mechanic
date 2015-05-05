@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.entity.*;
 
 public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 
@@ -45,10 +46,15 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 		TextView txtcmt = (TextView) convertView.findViewById(R.id.rawCmttxt);
 		TextView txtuser = (TextView) convertView.findViewById(R.id.txtUser);
 		TextView txtdate = (TextView) convertView.findViewById(R.id.txtDate);
+
 		CommentInPaper comment = list.get(position);
 
-		txtcmt.setText(comment.getCommentid());
-		txtuser.setText(comment.getUserid());
+		adapter.open();
+		 Users user = adapter.getUserbyid(comment.getUserid());
+		adapter.close();
+		
+		txtcmt.setText(comment.getDescription());
+		txtuser.setText(user.getName());
 		txtdate.setText(comment.getDatetime());
 		return convertView;
 	}
