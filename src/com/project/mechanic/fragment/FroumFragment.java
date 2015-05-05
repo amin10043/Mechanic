@@ -3,10 +3,12 @@ package com.project.mechanic.fragment;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -50,6 +52,8 @@ public class FroumFragment extends Fragment {
 	ListView lst;
 	ListView lstReply;
 
+	private ImageButton sharebtn;
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,6 +68,7 @@ public class FroumFragment extends Fragment {
 		CmtLike = (ImageButton) view.findViewById(R.id.imgbtnLike_RawCmtFroum);
 		CmtDisLike = (ImageButton) view
 				.findViewById(R.id.imgbtnDisLike_RawCmtFroum);
+		sharebtn = (ImageButton) view.findViewById(R.id.sharefroumicon);
 
 		btncmt = (Button) view.findViewById(R.id.btnComment);
 		txttitle = (TextView) view.findViewById(R.id.rawTitletxt);
@@ -90,7 +95,7 @@ public class FroumFragment extends Fragment {
 		 */
 
 		mylist = adapter.getCommentInFroumbyPaperid(id);
-		Froum x = adapter.getFroumItembyid(id);
+		final Froum x = adapter.getFroumItembyid(id);
 		txttitle.setText(x.getTitle());
 		txttitleDes.setText(x.getDescription());
 		adapter.close();
@@ -115,6 +120,22 @@ public class FroumFragment extends Fragment {
 				NumofLike.setText(adapter.LikeInFroum_count().toString());
 				adapter.close();
 
+			}
+		});
+		sharebtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent sharingIntent = new Intent(
+						android.content.Intent.ACTION_SEND);
+				sharingIntent.setType("text/plain");
+				String shareBody = x.getDescription();
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+						x.getTitle());
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+						shareBody);
+				startActivity(Intent.createChooser(sharingIntent,
+						"اشتراک از طریق"));
 			}
 		});
 

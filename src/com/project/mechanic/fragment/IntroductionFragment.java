@@ -6,6 +6,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -75,6 +77,8 @@ public class IntroductionFragment extends Fragment {
 	ImageButton email;
 	ImageButton EditPage;
 	ImageButton CreatePage;
+	byte[] headerbyte, profilebyte, footerbyte;
+	ImageView profileimage;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -88,6 +92,7 @@ public class IntroductionFragment extends Fragment {
 		peykan5 = (ImageView) view.findViewById(R.id.imageButton7);
 		advertise = (ImageView) view.findViewById(R.id.imgvadvertise_Object);
 		advertise2 = (ImageView) view.findViewById(R.id.imgvadvertise2_Object);
+		profileimage = (ImageView) view.findViewById(R.id.icon_pro);
 
 		link1 = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
 		link2 = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
@@ -210,6 +215,15 @@ public class IntroductionFragment extends Fragment {
 		else
 			Pdf4.setImageResource(R.drawable.ic_video_off);
 
+		headerbyte = object.getImage1();
+		profilebyte = object.getImage2();
+		footerbyte = object.getImage3();
+
+		if (profilebyte != null) {
+			Bitmap bmp = BitmapFactory.decodeByteArray(profilebyte, 0,
+					profilebyte.length);
+			profileimage.setImageBitmap(bmp);
+		}
 		// advertise.setimage
 		Facebook.setOnClickListener(new OnClickListener() {
 

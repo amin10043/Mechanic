@@ -45,15 +45,11 @@
                         android:layout_marginRight="25dp" >
 
                         <ImageView
+                            android:id="@+id/icon_pro"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="3dp"
                             android:src="@drawable/profile_account" />
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/profile_icon_shape" />
                     </FrameLayout>
                 </RelativeLayout>
             </FrameLayout>
