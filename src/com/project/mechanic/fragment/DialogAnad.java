@@ -17,10 +17,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class DialogAnad extends Dialog {
 
@@ -46,6 +48,9 @@ public class DialogAnad extends Dialog {
 	int faxCheck = 0;
 	int phoneCheck = 0;
 	int mobileCheck = 0;
+	Utility util;
+	LinearLayout.LayoutParams headerEditParams;
+	LinearLayout Lheader;
 	String titel;
 	String Bytimage;
 	int ProvinceId;
@@ -82,11 +87,19 @@ public class DialogAnad extends Dialog {
 		dialog_img2 = (Button) findViewById(R.id.dialog_img2);
 		dialog_anad_et1 = (EditText) findViewById(R.id.dialog_anad_et1);
 		dialog_anad_et2 = (EditText) findViewById(R.id.dialog_anad_et2);
+		Lheader = (LinearLayout) findViewById(R.id.linDialogImg);
 		UName = (EditText) findViewById(R.id.name);
 		UMobile = (EditText) findViewById(R.id.mobile);
 		UEmail = (EditText) findViewById(R.id.email);
 		UFax = (EditText) findViewById(R.id.fax);
 		UPhonnumber = (EditText) findViewById(R.id.phone);
+
+		util = new Utility(context);
+		headerEditParams = new LinearLayout.LayoutParams(
+				Lheader.getLayoutParams());
+		headerEditParams.height = util.getScreenHeight() / 5;
+		headerEditParams.width = util.getScreenHeight() / 5;
+		dialog_img1.setLayoutParams(headerEditParams);
 
 		dialog_img2.setOnClickListener(new android.view.View.OnClickListener() {
 

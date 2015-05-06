@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -72,11 +73,11 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 				LinearLayout parentlayout = (LinearLayout) v;
 
 				String item = txt1.getText().toString();
-				int id = 0;
+				int topicId = 0;
 				for (Froum listItem : mylist) {
 					if (item.equals(listItem.getTitle())) {
 						// check authentication and authorization
-						id = listItem.getId();
+						topicId = listItem.getId();
 					}
 				}
 
@@ -84,15 +85,17 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 						.getSupportFragmentManager().beginTransaction();
 				FroumFragment fragment = new FroumFragment();
 				Bundle bundle = new Bundle();
-				bundle.putString("Id", String.valueOf(id));
+				bundle.putString("Id", String.valueOf(topicId));
 				fragment.setArguments(bundle);
+				Toast.makeText(context, "froum topic = " + topicId,
+						Toast.LENGTH_SHORT).show();
 
-				DialogcmtInfroum dialog = new DialogcmtInfroum(null, id,
+				DialogcmtInfroum dialog = new DialogcmtInfroum(null, topicId,
 						context, -1, R.layout.dialog_addcomment);
-
-				Bundle bundle2 = new Bundle();
-				bundle.putString("Id", String.valueOf(id));
-				fragment.setArguments(bundle);
+				//
+				// Bundle bundle2 = new Bundle();
+				// bundle.putString("Id", String.valueOf(topicId));
+				// fragment.setArguments(bundle);
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();

@@ -27,12 +27,15 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 	private DialogAnadimg dialog1;
 	Anad tempItem;
 	DataBaseAdapter adapter;
+	int ProvinceId;
 
-	public AnadImgListAdapter(Context context, int resource, List<Anad> objact) {
+	public AnadImgListAdapter(Context context, int resource, List<Anad> objact,
+			int ProvinceId) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
+		this.ProvinceId = ProvinceId;
 		adapter = new DataBaseAdapter(context);
 
 	}
@@ -68,6 +71,7 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 
 				dialog1 = new DialogAnadimg(context, R.layout.dialog_imganad,
 						null, 0, 0);
+
 				dialog1.setTitle(R.string.tabligh);
 				dialog1.show();
 				// int idImg = tempItem.getId();
@@ -91,6 +95,8 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 				// ShowAdFragment fragment = new ShowAdFragment();
 				// Bundle bundle = new Bundle();
 				// bundle.putString("Id", String.valueOf(id));
+				// if (ProvinceId >= 0)
+				// bundle.putString("ProID", String.valueOf(ProvinceId));
 				// fragment.setArguments(bundle);
 				// trans.replace(R.id.content_frame, fragment);
 				// trans.addToBackStack(null);
