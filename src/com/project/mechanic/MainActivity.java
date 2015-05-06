@@ -279,8 +279,32 @@ public class MainActivity extends FragmentActivity {
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 
-	public void setLastFragment(Fragment fragment) {
-		this.lastFragment = fragment;
-	}
+	// public boolean onKeyDown(int keyCode, KeyEvent event) {
+	// if (keyCode == KeyEvent.KEYCODE_BACK) {
+	// exitByBackKey();
+	//
+	// // moveTaskToBack(false);
+	//
+	// return true;
+	// }
+	// return super.onKeyDown(keyCode, event);
+	// }
+	//
+	// protected void exitByBackKey() {
+	//
+	// new AlertDialog.Builder(MainActivity.this)
+	// .setTitle("خروج از برنامه")
+	// .setMessage("آیا از خروج اطمینان دارید؟")
+	// .setNegativeButton("خیر", null)
+	// .setPositiveButton("بله",
+	// new DialogInterface.OnClickListener() {
+	//
+	// public void onClick(DialogInterface arg0, int arg1) {
+	// finish();
+	// System.exit(0);
+	// }
+	// }).create().show();
+	//
+	// }
 
 }

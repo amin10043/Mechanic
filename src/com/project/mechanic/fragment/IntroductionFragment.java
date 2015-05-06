@@ -687,4 +687,28 @@ public class IntroductionFragment extends Fragment {
 		lst.setAdapter(x);
 	}
 
+	public interface BackPressedListener {
+		void onBackPressed();
+	}
+
+	public void onBackPressed() {
+		Fragment fragment = getFragmentManager().findFragmentByTag(
+				"MainFragment");
+		if (fragment != null && fragment instanceof BackPressedListener) {
+			((BackPressedListener) fragment).onBackPressed();
+		} else {
+			// super.onBackPressed();
+		}
+	}
+
 }
+
+// public void onBackPressed() {
+//
+// FragmentTransaction trans = getActivity().getSupportFragmentManager()
+// .beginTransaction();
+// trans.replace(R.id.content_frame, new MainFragment());
+// trans.addToBackStack(null);
+// trans.commit();
+// }
+// }

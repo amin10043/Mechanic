@@ -346,15 +346,15 @@ public class AnadFragment extends Fragment {
 		return scaleFace;
 	}
 
-	public void onBackPressed() {
-		// super.onBackPressed();
-		// finish();
-	}
+	// public void onBackPressed() {
+	// // super.onBackPressed();
+	// // finish();
+	// }
 
-	public void onPause() {
-		super.onPause();
-		// finish();
-	}
+	// public void onPause() {
+	// super.onPause();
+	// // finish();
+	// }
 
 	public void onDestroy() {
 		clearTimerTaks(clickSchedule);
@@ -389,3 +389,14 @@ public class AnadFragment extends Fragment {
 	}
 
 }
+
+// public void onBackPressed() {
+//
+// FragmentTransaction trans = getActivity().getSupportFragmentManager()
+// .beginTransaction();
+// trans.replace(R.id.content_frame, new BerandFragment());
+// trans.addToBackStack(null);
+// trans.commit();
+// }
+//
+// }
