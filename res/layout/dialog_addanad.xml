@@ -1,148 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/shiri"
-    android:baselineAligned="true"
-    android:orientation="vertical"
-    android:weightSum="9" >
-
-    <EditText
-        android:id="@+id/dialog_anad_et1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="3dp"
-        android:layout_weight="1"
-        android:ems="10"
-        android:hint="عنوان آگهی"
-        android:inputType="textMultiLine"
-        android:lines="1" />
-
-    <EditText
-        android:id="@+id/dialog_anad_et2"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:ems="10"
-        android:gravity="top"
-        android:hint="شرح آگهی"
-        android:inputType="textMultiLine"
-        android:lines="10" >
-
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:id="@+id/textView6"
-        style="@style/row_dialog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:text="درج اطلاعات تماس" />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical" >
+        android:background="@color/shiri"
+        android:baselineAligned="true"
+        android:orientation="vertical"
+        android:weightSum="9" >
 
         <EditText
-            android:id="@+id/name"
+            android:id="@+id/dialog_anad_et1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="3dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="نام و نام خانوادگی"
+            android:hint="عنوان آگهی"
+            android:inputType="textMultiLine"
             android:lines="1" />
 
         <EditText
-            android:id="@+id/email"
+            android:id="@+id/dialog_anad_et2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
+            android:layout_height="150dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
             android:ems="10"
-            android:hint="ایمیل" />
+            android:gravity="top"
+            android:hint="شرح آگهی"
+            android:inputType="textMultiLine"
+            android:lines="10" >
 
-        <EditText
-            android:id="@+id/phone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="05100000000"
-            android:inputType="number" />
+            <requestFocus />
+        </EditText>
 
-        <EditText
-            android:id="@+id/mobile"
+        <TextView
+            android:id="@+id/textView6"
+            style="@style/row_dialog"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="09150000000"
-            android:inputType="number" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:text="درج اطلاعات تماس" />
 
-        <EditText
-            android:id="@+id/fax"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ems="10"
-            android:hint="051000000"
-            android:inputType="number" />
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="نام و نام خانوادگی"
+                android:lines="1" />
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="ایمیل" />
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="05100000000"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/mobile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="09150000000"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/fax"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="051000000"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayout11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/dialog_img2"
+                    android:layout_width="129dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="0.83"
+                    android:background="@drawable/buttonshape"
+                    android:text=" ثبت آگهی" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linDialogImg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/dialog_img1"
+                    android:layout_width="130dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/i13" />
+            </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/RelativeLayout11"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical" >
-
-            <Button
-                android:id="@+id/dialog_img2"
-                android:layout_width="129dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="5dp"
-                android:layout_weight="0.83"
-                android:background="@drawable/buttonshape"
-                android:text=" ثبت آگهی" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <ImageView
-                android:id="@+id/dialog_img1"
-                android:layout_width="130dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/i13" />
-        </LinearLayout>
-    </RelativeLayout>
-
-</LinearLayout>
+</ScrollView>

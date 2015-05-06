@@ -13,14 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnCloseListener;
 import android.widget.TextView;
 
-import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
+import com.project.mechanic.adapter.SlideMenuAdapter;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -39,21 +38,27 @@ public class MainActivity extends FragmentActivity {
 	private boolean isFavorite = false;
 	Utility util;
 
+	SlideMenuAdapter slideadapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
 		adapter = new DataBaseAdapter(this);
+		slideadapter = new SlideMenuAdapter(this);
+
 		util = new Utility(MainActivity.this);
-		mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
+		// mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.drawer_item, R.id.content, mPlanetTitles));
+		// mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+		// R.layout.drawer_item, R.id.content, mPlanetTitles));
+
+		mDrawerList.setAdapter(slideadapter);
 
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -231,29 +236,27 @@ public class MainActivity extends FragmentActivity {
 		case 1:
 
 			// ////////////////////////////////////////////////
-            
-			
-//			if ( util.getCurrentUser()!=null ) {
-//				  
-//			//	SharedPreferences sendData = this.getSharedPreferences("Id",
-//				//		0);
-//			//sendData.edit().putInt("main_Id",  Service).commit();
-//				fragment = new DisplayPersonalInformationFragment();
-//			fragmentManager = getSupportFragmentManager();
-//				fragmentManager.beginTransaction()
-//					.replace(R.id.content_frame, fragment).commit();
-//			
-//			
-//				} 
-//		else 
-//			{
-			
-			
+
+			// if ( util.getCurrentUser()!=null ) {
+			//
+			// // SharedPreferences sendData = this.getSharedPreferences("Id",
+			// // 0);
+			// //sendData.edit().putInt("main_Id", Service).commit();
+			// fragment = new DisplayPersonalInformationFragment();
+			// fragmentManager = getSupportFragmentManager();
+			// fragmentManager.beginTransaction()
+			// .replace(R.id.content_frame, fragment).commit();
+			//
+			//
+			// }
+			// else
+			// {
+
 			fragment = new LoginFragment();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
-		//	}
+			// }
 			break;
 
 		case 2:
@@ -266,7 +269,6 @@ public class MainActivity extends FragmentActivity {
 		mDrawerList.setItemChecked(position, true);
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}
-	
 
 	public void setLastFragment(Fragment fragment) {
 		this.lastFragment = fragment;

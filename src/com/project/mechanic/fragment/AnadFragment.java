@@ -132,13 +132,13 @@ public class AnadFragment extends Fragment {
 
 		ListView lstAnad = (ListView) view.findViewById(R.id.listVanad);
 		AnadListAdapter ListAdapter = new AnadListAdapter(getActivity(),
-				R.layout.row_anad, mylist);
+				R.layout.row_anad, mylist, proID);
 
 		lstAnad.setAdapter(ListAdapter);
 
 		lstimg = (ListView) view.findViewById(R.id.listVanad2);
 		AnadImgListAdapter ListAdapter2 = new AnadImgListAdapter(getActivity(),
-				R.layout.row_anad_img, anadlist);
+				R.layout.row_anad_img, anadlist, proID);
 
 		lstimg.setAdapter(ListAdapter2);
 
@@ -176,7 +176,7 @@ public class AnadFragment extends Fragment {
 
 		ListView lstAnad = (ListView) view.findViewById(R.id.listVanad);
 		AnadListAdapter ListAdapter = new AnadListAdapter(getActivity(),
-				R.layout.row_anad, mylist);
+				R.layout.row_anad, mylist, proID);
 		ListAdapter.notifyDataSetChanged();
 		lstAnad.setAdapter(ListAdapter);
 
