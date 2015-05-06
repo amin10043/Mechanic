@@ -53,15 +53,15 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_anad, parent, false);
-		TextView txtdate = (TextView) convertView.findViewById(R.id.textdate);
+		TextView txtdate = (TextView) convertView.findViewById(R.id.text_favorite_desc);
 		TextView txtName = (TextView) convertView
-				.findViewById(R.id.row_anad_txt);
+				.findViewById(R.id.row_favorite_title);
 		TextView txtDesc = (TextView) convertView
 				.findViewById(R.id.row_anad_txt2);
 		// ImageView img = (ImageView)
 		// convertView.findViewById(R.id.row_anad_img);
 		ImageView img2 = (ImageView) convertView
-				.findViewById(R.id.row_anad_img2);
+				.findViewById(R.id.row_favorite_img);
 		PersianDate date = new PersianDate();
 		tempItem = list.get(position);
 		txtdate.setText(date.todayShamsi());
@@ -83,7 +83,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 
 				RelativeLayout parentlayout = (RelativeLayout) v;
 				TextView txtName = (TextView) parentlayout
-						.findViewById(R.id.row_anad_txt);
+						.findViewById(R.id.row_favorite_title);
 				String item = txtName.getText().toString();
 				int id = 0;
 				for (Ticket Ticket : list) {

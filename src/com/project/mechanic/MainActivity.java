@@ -20,6 +20,7 @@ import android.widget.SearchView.OnCloseListener;
 import android.widget.TextView;
 
 import com.project.mechanic.adapter.SlideMenuAdapter;
+import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -262,6 +263,14 @@ public class MainActivity extends FragmentActivity {
 		case 2:
 
 		case 3:
+
+			fragment = new Favorite_Fragment();
+			fragmentManager = getSupportFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.content_frame, fragment).commit();
+
+			break;
+
 		case 4:
 		case 5:
 		}

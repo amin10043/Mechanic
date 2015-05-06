@@ -93,7 +93,7 @@ public class DataBaseAdapter {
 			"Date", "CommentId", "Seen" };
 
 	private String[] Executertype = { "ID", "Name" };
-	private String[] Favorite = { "ID", "ObjectId", "UserId" };
+	private String[] Favorite = { "ID", "ObjectId", "UserId", "IdTickte" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen",
 			"ServerDate", "Submit" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
@@ -488,6 +488,18 @@ public class DataBaseAdapter {
 
 	}
 
+	public void insertFavoritetoDb(int ObjectId, int userId, int IdTickte) {
+
+		ContentValues cv = new ContentValues();
+
+		cv.put("ObjectId", ObjectId);
+		cv.put("UserId", userId);
+		cv.put("IdTickte", IdTickte);
+
+		mDb.insert(TableFavorite, null, cv);
+
+	}
+
 	public void insertPapertitletoDb(String Title, String Context) {
 
 		ContentValues cv = new ContentValues();
@@ -757,6 +769,24 @@ public class DataBaseAdapter {
 				"TypeId=? AND ProvinceId=?",
 				new String[] { String.valueOf(TypeId),
 						String.valueOf(provinceID) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToTicket(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	public ArrayList<Ticket> getTicketByusetId(int Id, int UserId) {
+
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Ticket item = null;
+
+		Cursor mCur = mDb.query(TableTicket, Ticket, "Id=? AND UserId=?",
+				new String[] { String.valueOf(Id), String.valueOf(UserId) },
+				null, null, null);
 
 		while (mCur.moveToNext()) {
 			item = CursorToTicket(mCur);
