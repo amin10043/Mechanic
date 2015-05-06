@@ -9,6 +9,7 @@ public class Anad {
 	int TypeId;
 	int ProvinceId;
 	int Seen;
+	int Submit;
 
 	public int getId() {
 		return Id;
@@ -66,8 +67,17 @@ public class Anad {
 		Seen = seen;
 	}
 
-	public Anad(int id, byte[] imge, int Objectid, String date, int typeid,
-			int provinceid, int seen) {
+	public int getSubmit() {
+		return Submit;
+	}
+
+	public void setSubmit(int submit) {
+		Submit = submit;
+	}
+
+	public Anad(int id, int Objectid, byte[] imge, String date, int typeid,
+			int provinceid, int seen, int submit) {
+
 		super();
 		Id = id;
 		Image = imge;
@@ -76,5 +86,6 @@ public class Anad {
 		TypeId = typeid;
 		ProvinceId = provinceid;
 		Seen = seen;
+		Submit = submit;
 	}
 }

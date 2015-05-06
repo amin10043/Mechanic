@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.project.mechanic.R;
@@ -38,6 +39,7 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 	private TextView NumofCmtDisLike;
 	private ImageView Userimage;
 	FroumFragment froumfragment;
+	Utility util;
 
 	public FroumListAdapter(Context context, int resource,
 			List<CommentInFroum> objects, FroumFragment f) {
@@ -46,6 +48,7 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 		this.context = context;
 		this.list = objects;
 		adapter = new DataBaseAdapter(context);
+		util = new Utility(context);
 		this.froumfragment = f;
 
 	}
@@ -86,10 +89,21 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 		txt3.setText(x.getPhonenumber());
 		byte[] blob = x.getImage();
 		Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
-		Userimage.getLayoutParams().height = 50;
-		Userimage.getLayoutParams().width = 50;
-		Userimage.requestLayout();
+
+		RelativeLayout rl = (RelativeLayout) convertView
+				.findViewById(R.id.rlfroumrl);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				rl.getLayoutParams());
+
+		lp.width = util.getScreenwidth() / 7;
+		lp.height = util.getScreenwidth() / 7;
+		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+		// Userimage.getLayoutParams().height = 100;
+		// Userimage.getLayoutParams().width = 100;
+		// Userimage.requestLayout();
 		Userimage.setImageBitmap(bmp);
+		Userimage.setLayoutParams(lp);
 		CommentInFroum d = list.get(position);
 		NumofCmtLike.setText(d.getNumOfLike());
 		NumofCmtDisLike.setText(d.getNumOfDislike());
