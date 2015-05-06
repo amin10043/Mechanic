@@ -632,4 +632,12 @@ public class IntroductionFragment extends Fragment {
 		lst.setAdapter(x);
 	}
 
+	public void onBackPressed() {
+
+		FragmentTransaction trans = getActivity().getSupportFragmentManager()
+				.beginTransaction();
+		trans.replace(R.id.content_frame, new MainFragment());
+		trans.addToBackStack(null);
+		trans.commit();
+	}
 }

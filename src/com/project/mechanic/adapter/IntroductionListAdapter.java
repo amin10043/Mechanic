@@ -1,4 +1,4 @@
- package com.project.mechanic.adapter;
+package com.project.mechanic.adapter;
 
 import java.util.List;
 
@@ -44,15 +44,15 @@ public class IntroductionListAdapter extends ArrayAdapter<CommentInObject> {
 		adapter = new DataBaseAdapter(context);
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.rawCmttxt);
-		TextView txt2 = (TextView) convertView.findViewById(R.id.rawUsernamecmttxt_cmt);
-		TextView txt3 = (TextView) convertView.findViewById(R.id.txtPhonenumber_CmtFroum);
-		
+		TextView txt2 = (TextView) convertView
+				.findViewById(R.id.rawUsernamecmttxt_cmt);
+		TextView txt3 = (TextView) convertView
+				.findViewById(R.id.txtPhonenumber_CmtFroum);
+
 		CommentInObject Comment = list.get(position);
 		adapter.open();
 		Users x = adapter.getUserbyid(Comment.getUserid());
 		adapter.close();
-
-		
 
 		txt1.setText(Comment.getDescription());
 		txt2.setText(x.getName());

@@ -316,4 +316,5 @@ public class IntroductionEditFragment extends Fragment {
 
 		}
 	}
+
 }

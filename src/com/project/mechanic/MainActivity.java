@@ -20,7 +20,6 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnCloseListener;
 import android.widget.TextView;
 
-import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -231,29 +230,27 @@ public class MainActivity extends FragmentActivity {
 		case 1:
 
 			// ////////////////////////////////////////////////
-            
-			
-//			if ( util.getCurrentUser()!=null ) {
-//				  
-//			//	SharedPreferences sendData = this.getSharedPreferences("Id",
-//				//		0);
-//			//sendData.edit().putInt("main_Id",  Service).commit();
-//				fragment = new DisplayPersonalInformationFragment();
-//			fragmentManager = getSupportFragmentManager();
-//				fragmentManager.beginTransaction()
-//					.replace(R.id.content_frame, fragment).commit();
-//			
-//			
-//				} 
-//		else 
-//			{
-			
-			
+
+			// if ( util.getCurrentUser()!=null ) {
+			//
+			// // SharedPreferences sendData = this.getSharedPreferences("Id",
+			// // 0);
+			// //sendData.edit().putInt("main_Id", Service).commit();
+			// fragment = new DisplayPersonalInformationFragment();
+			// fragmentManager = getSupportFragmentManager();
+			// fragmentManager.beginTransaction()
+			// .replace(R.id.content_frame, fragment).commit();
+			//
+			//
+			// }
+			// else
+			// {
+
 			fragment = new LoginFragment();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
-		//	}
+			// }
 			break;
 
 		case 2:
@@ -266,10 +263,33 @@ public class MainActivity extends FragmentActivity {
 		mDrawerList.setItemChecked(position, true);
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}
-	
 
-	public void setLastFragment(Fragment fragment) {
-		this.lastFragment = fragment;
-	}
+	// public boolean onKeyDown(int keyCode, KeyEvent event) {
+	// if (keyCode == KeyEvent.KEYCODE_BACK) {
+	// exitByBackKey();
+	//
+	// // moveTaskToBack(false);
+	//
+	// return true;
+	// }
+	// return super.onKeyDown(keyCode, event);
+	// }
+	//
+	// protected void exitByBackKey() {
+	//
+	// new AlertDialog.Builder(MainActivity.this)
+	// .setTitle("خروج از برنامه")
+	// .setMessage("آیا از خروج اطمینان دارید؟")
+	// .setNegativeButton("خیر", null)
+	// .setPositiveButton("بله",
+	// new DialogInterface.OnClickListener() {
+	//
+	// public void onClick(DialogInterface arg0, int arg1) {
+	// finish();
+	// System.exit(0);
+	// }
+	// }).create().show();
+	//
+	// }
 
 }

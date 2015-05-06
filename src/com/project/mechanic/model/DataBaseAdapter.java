@@ -131,7 +131,7 @@ public class DataBaseAdapter {
 
 	private String[] Users = { "ID", "Name", "Email", "Password",
 			"Phonenumber", "Mobailenumber", "Faxnumber", "Address", "Image",
-			"ServiceId", "ServerDate", "Date", "Submit" };
+			"ServiceId", "ServerDate", "Date", "Submit", "Admin" };
 
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url", "ServerDate" };
@@ -841,7 +841,7 @@ public class DataBaseAdapter {
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
 				cursor.getString(5), cursor.getString(6), cursor.getString(7),
 				cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-				cursor.getString(11), cursor.getInt(12));
+				cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
 
 		return Users;
 
@@ -1669,7 +1669,7 @@ public class DataBaseAdapter {
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
 					cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-					cursor.getString(11), cursor.getInt(12));
+					cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
 			result.add(tempusers);
 
 		}
@@ -1718,7 +1718,7 @@ public class DataBaseAdapter {
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
 					cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-					cursor.getString(11), cursor.getInt(12));
+					cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
 
 			result.add(tempusers);
 		}
