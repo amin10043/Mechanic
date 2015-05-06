@@ -57,6 +57,7 @@ public class FroumFragment extends Fragment {
 
 	ListView lst;
 	ListView lstReply;
+	Froum x;
 
 	private ImageButton sharebtn;
 
@@ -96,31 +97,29 @@ public class FroumFragment extends Fragment {
 			NumofLike.setText(adapter.LikeInFroum_count().toString());
 			mylist = adapter.getCommentInFroumbyPaperid(id);
 			ReplyeList = adapter.getReplyCommentbyCommentID(id, 1);
-			Froum x = adapter.getFroumItembyid(id);
+			x = adapter.getFroumItembyid(id);
+			txttitle.setText(x.getTitle());
+			txttitleDes.setText(x.getDescription());
+			NumofComment.setText(adapter.CommentInFroum_count().toString());
+
+			NumofLike.setText(adapter.LikeInFroum_count().toString());
+			mylist = adapter.getCommentInFroumbyPaperid(id);
+
+			/*
+			 * CommentInFroum d = null; NumofCmtLike.setText(d.getNumofLike());
+			 * NumofCmtDisLike.setText(d.getNumofDisLike());
+			 */
+
+			mylist = adapter.getCommentInFroumbyPaperid(id);
+			// final Froum x = adapter.getFroumItembyid(id);
+			ReplyeList = adapter.getReplyCommentbyCommentID(id, 1);
+			// Froum x = adapter.getFroumItembyid(id);
 			txttitle.setText(x.getTitle());
 			txttitleDes.setText(x.getDescription());
 			adapter.close();
 		}
 
 		// Commentid = Integer.valueOf(getArguments().getString("CommentID"));
-
-		NumofComment.setText(adapter.CommentInFroum_count().toString());
-
-		NumofLike.setText(adapter.LikeInFroum_count().toString());
-		mylist = adapter.getCommentInFroumbyPaperid(id);
-
-		/*
-		 * CommentInFroum d = null; NumofCmtLike.setText(d.getNumofLike());
-		 * NumofCmtDisLike.setText(d.getNumofDisLike());
-		 */
-
-		mylist = adapter.getCommentInFroumbyPaperid(id);
-		final Froum x = adapter.getFroumItembyid(id);
-		ReplyeList = adapter.getReplyCommentbyCommentID(id, 1);
-		// Froum x = adapter.getFroumItembyid(id);
-		txttitle.setText(x.getTitle());
-		txttitleDes.setText(x.getDescription());
-		adapter.close();
 
 		lst = (ListView) view.findViewById(R.id.lstComment);
 
