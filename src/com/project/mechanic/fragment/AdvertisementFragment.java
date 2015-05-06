@@ -3,12 +3,14 @@ package com.project.mechanic.fragment;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -33,6 +35,11 @@ public class AdvertisementFragment extends Fragment {
 					.valueOf(getArguments().getString("provinceId"));
 
 		}
+		SharedPreferences sendIDpro = getActivity().getSharedPreferences("Id",
+				0);
+		sendIDpro.edit().putInt("main_Id", provinceId).commit();
+		Toast.makeText(getActivity(), provinceId + "", Toast.LENGTH_SHORT)
+				.show();
 
 		dbAdapter.open();
 		List<TicketType> mylist = dbAdapter.getAllTicketType();

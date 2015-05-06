@@ -3,8 +3,8 @@ package com.project.mechanic.entity;
 public class Anad {
 
 	int Id;
-	int ObjectId;
 	byte[] Image;
+	int ObjectId;
 	String Date;
 	int TypeId;
 	int ProvinceId;
@@ -18,12 +18,12 @@ public class Anad {
 		Id = id;
 	}
 
-	public String getDate() {
-		return Date;
+	public byte[] getImage() {
+		return Image;
 	}
 
-	public void setDate(String date) {
-		Date = date;
+	public void setImage(byte[] image) {
+		Image = image;
 	}
 
 	public int getObjectId() {
@@ -34,12 +34,12 @@ public class Anad {
 		ObjectId = Objectid;
 	}
 
-	public byte[] getImage() {
-		return Image;
+	public String getDate() {
+		return Date;
 	}
 
-	public void setImage(byte[] image) {
-		Image = image;
+	public void setDate(String date) {
+		Date = date;
 	}
 
 	public int getTypeId() {
@@ -66,12 +66,12 @@ public class Anad {
 		Seen = seen;
 	}
 
-	public Anad(int id, int Objectid, byte[] imge, String date, int typeid,
+	public Anad(int id, byte[] imge, int Objectid, String date, int typeid,
 			int provinceid, int seen) {
 		super();
 		Id = id;
-		ObjectId = Objectid;
 		Image = imge;
+		ObjectId = Objectid;
 		Date = date;
 		TypeId = typeid;
 		ProvinceId = provinceid;

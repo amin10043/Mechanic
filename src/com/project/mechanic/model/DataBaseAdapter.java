@@ -193,7 +193,7 @@ public class DataBaseAdapter {
 
 	}
 
-	public void inserAnadToDb(byte[] image, int objectId, String date,
+	public void insertAnadToDb(byte[] image, int objectId, String date,
 			int tyoeId, int provinceId, int seen) {
 
 		ContentValues uc = new ContentValues();
@@ -552,6 +552,29 @@ public class DataBaseAdapter {
 		return result;
 	}
 
+	public ArrayList<Object> getAllObjectt(String name) {
+		ArrayList<Object> result = new ArrayList<Object>();
+		Cursor cursor = mDb.query(TableObject, Object, null, null, null, null,
+				null);
+		Object tempObject;
+		while (cursor.moveToNext()) {
+			tempObject = new Object(cursor.getInt(0), cursor.getString(1),
+					cursor.getString(2), cursor.getString(3),
+					cursor.getString(4), cursor.getString(5), null, null, null,
+					null, cursor.getString(6), cursor.getString(7),
+					cursor.getString(8), cursor.getString(9),
+					cursor.getString(10), cursor.getString(11),
+					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
+					cursor.getString(15), cursor.getString(16),
+					cursor.getString(17), cursor.getString(18),
+					cursor.getString(19), cursor.getInt(25), cursor.getInt(26),
+					cursor.getInt(27));
+
+			result.add(tempObject);
+		}
+		return result;
+	}
+
 	public ArrayList<AdvisorType> getAllAdvisorType() {
 		ArrayList<AdvisorType> result = new ArrayList<AdvisorType>();
 		Cursor cursor = mDb.query(TableAdvisorType, AdvisorType, null, null,
@@ -726,6 +749,20 @@ public class DataBaseAdapter {
 
 	}
 
+	public Object getObjectByname(String name) {
+
+		Object item = null;
+		Cursor mCur = mDb.query(TableObject, Object, "Id=?",
+				new String[] { String.valueOf(name) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToObject(mCur);
+		}
+
+		return item;
+
+	}
+
 	public ArrayList<Ticket> getTicketByTypeIdProId(int TypeId, int provinceID) {
 
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
@@ -872,8 +909,8 @@ public class DataBaseAdapter {
 	}
 
 	private Anad CursorToAnad(Cursor cursor) {
-		Anad tempAnad = new Anad(cursor.getInt(0), cursor.getInt(2),
-				cursor.getBlob(1), cursor.getString(3), cursor.getInt(4),
+		Anad tempAnad = new Anad(cursor.getInt(0), cursor.getBlob(1),
+				cursor.getInt(2), cursor.getString(3), cursor.getInt(4),
 				cursor.getInt(5), cursor.getInt(6));
 		return tempAnad;
 	}
@@ -1593,6 +1630,30 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<String> getAllObjectname() {
+		ArrayList<String> result = new ArrayList<String>();
+		Cursor cursor = mDb.query(TableObject, Object, null, null, null, null,
+				null);
+		while (cursor.moveToNext()) {
+			result.add(CursorToObject(cursor).getName());
+		}
+
+		return result;
+
+	}
+
+	public ArrayList<String> getAllObjectid() {
+		ArrayList<String> result = new ArrayList<String>();
+		Cursor cursor = mDb.query(TableObject, Object, null, null, null, null,
+				null);
+		while (cursor.moveToNext()) {
+			result.add(String.valueOf(CursorToObject(cursor).getId()));
+		}
+
+		return result;
+
+	}
+
 	public ArrayList<Anad> getAllAnad() {
 		ArrayList<Anad> result = new ArrayList<Anad>();
 		Cursor cursor = mDb
@@ -1972,5 +2033,18 @@ public class DataBaseAdapter {
 		}
 
 		return item;
+	}
+
+	public Object getObjectByName(String name) {
+		Object item = null;
+		Cursor mCur = mDb.query(TableObject, Object, " Name=?",
+				new String[] { String.valueOf(name) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToObject(mCur);
+
+		}
+		return item;
+
 	}
 }

@@ -32,12 +32,15 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 	int[] imageId;
 	Ticket tempItem;
 	DataBaseAdapter adapter;
+	int ProvinceId;
 
-	public AnadListAdapter(Context context, int resource, List<Ticket> objact) {
+	public AnadListAdapter(Context context, int resource, List<Ticket> objact,
+			int ProvinceId) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
+		this.ProvinceId = ProvinceId;
 		adapter = new DataBaseAdapter(context);
 
 	}
@@ -96,6 +99,8 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				ShowAdFragment fragment = new ShowAdFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
+				if (ProvinceId >= 0)
+					bundle.putString("ProID", String.valueOf(ProvinceId));
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.addToBackStack(null);
