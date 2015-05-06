@@ -24,6 +24,7 @@ public class Object {
 	String ServerDate;
 	int rate;
 	int ParentId;
+	int MainObjectId;
 	String Google;
 	String Twitter;
 	String Site;
@@ -264,13 +265,22 @@ public class Object {
 		return Submit;
 	}
 
+	public int getMainObjectId() {
+		return MainObjectId;
+	}
+
+	public void setMainObjectId(int mainObjectid) {
+		MainObjectId = mainObjectid;
+	}
+
 	public Object(int id, String name, String phone, String email, String fax,
 			String description, byte[] image1, byte[] image2, byte[] image3,
 			byte[] image4, String pdf1, String pdf2, String pdf3, String pdf4,
 			String address, String cellphone, int objectTypeId,
 			int objectBrandTypeId, String facebook, String instagram,
 			String linkedIn, String google, String site, String twitter,
-			int rate, int parentid, int seen, String serverdate, int submit) {
+			int rate, int parentid, int seen, String serverdate, int submit,
+			int mainObjectid) {
 		super();
 		Id = id;
 		Name = name;
@@ -301,6 +311,7 @@ public class Object {
 		Seen = seen;
 		ServerDate = serverdate;
 		Submit = submit;
+		MainObjectId = mainObjectid;
 	}
 
 }
