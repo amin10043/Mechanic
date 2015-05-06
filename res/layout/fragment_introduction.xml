@@ -43,6 +43,13 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="25dp" >
 
+                        <ImageView
+                            android:id="@+id/icon_pro"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="3dp"
+                            android:src="@drawable/profile_account" />
+
                         <LinearLayout
                             android:id="@+id/linearpicture"
                             android:layout_width="wrap_content"

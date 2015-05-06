@@ -5,6 +5,7 @@ eclipse.preferences.version=1
 encoding//src/com/project/mechanic/MainActivity.java=UTF-8
 encoding//src/com/project/mechanic/SplashActivity.java=UTF-8
 encoding//src/com/project/mechanic/WelcomeScreen.java=UTF-8
+encoding//src/com/project/mechanic/adapter/SlideMenuAdapter.java=UTF-8
 encoding//src/com/project/mechanic/fragment/AdvertisementFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/AdvisorTypeFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/City2Fragment.java=UTF-8
@@ -34,7 +35,10 @@ encoding//src/com/project/mechanic/fragment/PublicationsFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/RegisterFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ShopFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ShowAdFragment.java=UTF-8
+<<<<<<< HEAD
+=======
 encoding//src/com/project/mechanic/fragment/show_pay_fragment.java=UTF-8
+>>>>>>> branch 'master' of https://github.com/amin10043/Mechanic.git
 encoding//src/com/project/mechanic/model/DataBaseAdapter.java=UTF-8
 encoding//src/com/project/mechanic/utility/Roozh.java=UTF-8
 encoding//src/com/project/mechanic/utility/Utility.java=UTF-8

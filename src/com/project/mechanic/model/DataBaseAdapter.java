@@ -1915,15 +1915,15 @@ public class DataBaseAdapter {
 
 		ContentValues cv = new ContentValues();
 
-		if (name != null)
+		if (!"".equals(name))
 			cv.put(Object[1], name);
-		if (Phone != null)
+		if (!"".equals(Phone))
 			cv.put(Object[2], Phone);
-		if (Email != null)
+		if (!"".equals(Email))
 			cv.put(Object[3], Email);
-		if (fax != null)
+		if (!"".equals(fax))
 			cv.put(Object[4], fax);
-		if (description != null)
+		if (!"".equals(description))
 			cv.put(Object[5], description);
 		if (HeaderImage != null)
 			cv.put(Object[6], HeaderImage);
@@ -1931,29 +1931,29 @@ public class DataBaseAdapter {
 			cv.put(Object[7], ProfileImage);
 		if (FooterImage != null)
 			cv.put(Object[8], FooterImage);
-		if (LinkCatalog != null)
+		if (!"".equals(LinkCatalog))
 			cv.put(Object[10], LinkCatalog);
-		if (LinkPrice != null)
+		if (!"".equals(LinkPrice))
 			cv.put(Object[11], LinkPrice);
-		if (LinkPDF != null)
+		if (!"".equals(LinkPDF))
 			cv.put(Object[12], LinkPDF);
-		if (LinkVideo != null)
+		if (!"".equals(LinkVideo))
 			cv.put(Object[13], LinkVideo);
-		if (Address != null)
+		if (!"".equals(Address))
 			cv.put(Object[14], Address);
-		if (Mobile != null)
+		if (!"".equals(Mobile))
 			cv.put(Object[15], Mobile);
-		if (LinkFaceBook != null)
+		if (!"".equals(LinkFaceBook))
 			cv.put(Object[18], LinkFaceBook);
-		if (LinkInstagram != null)
+		if (!"".equals(LinkInstagram))
 			cv.put(Object[19], LinkInstagram);
-		if (LinkLinkedin != null)
+		if (!"".equals(LinkLinkedin))
 			cv.put(Object[20], LinkLinkedin);
-		if (LinkGoogle != null)
+		if (!"".equals(LinkGoogle))
 			cv.put(Object[21], LinkGoogle);
-		if (LinkSite != null)
+		if (!"".equals(LinkSite))
 			cv.put(Object[22], LinkSite);
-		if (LinkTweitter != null)
+		if (!"".equals(LinkTweitter))
 			cv.put(Object[23], LinkTweitter);
 
 		mDb.insert(TableObject, null, cv);
