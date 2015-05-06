@@ -51,9 +51,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 
 		final TextView txt1 = (TextView) convertView
 
-		.findViewById(R.id.rowtitlefroum);
+		.findViewById(R.id.rowtitlepaper);
 		TextView txt2 = (TextView) convertView
-				.findViewById(R.id.rowdescriptionfroum);
+				.findViewById(R.id.rowdescriptionpaper);
 		TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
 
 		Froum person1 = mylist.get(position);

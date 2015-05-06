@@ -38,19 +38,19 @@
 
                     <ImageButton
                         android:id="@+id/imgLike_showAd"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:src="@drawable/ic_star_off" />
+                        android:background="@drawable/ic_star_off" />
 
                     <ImageButton
                         android:id="@+id/imgShare_showAd"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentTop="true"
                         android:layout_toLeftOf="@+id/imgLike_showAd"
-                        android:src="@drawable/ic_share" />
+                        android:background="@drawable/ic_share" />
                 </RelativeLayout>
             </FrameLayout>
 

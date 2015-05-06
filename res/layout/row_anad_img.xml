@@ -15,7 +15,7 @@
             android:id="@+id/img_anad"
             android:layout_width="match_parent"
             android:layout_height="125dp"
-            android:background="@drawable/propagand" />
+            android:src="@drawable/propagand" />
     </LinearLayout>
 
 </RelativeLayout>

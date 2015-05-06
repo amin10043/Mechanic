@@ -93,7 +93,7 @@ public class DataBaseAdapter {
 			"Date", "CommentId", "Seen" };
 
 	private String[] Executertype = { "ID", "Name" };
-	private String[] Favorite = { "ID", "ObjectId", "UserId" };
+	private String[] Favorite = { "ID", "ObjectId", "UserId", "IdTickte" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen",
 			"ServerDate", "Submit" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
@@ -113,7 +113,7 @@ public class DataBaseAdapter {
 			"Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId",
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
 			"Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
-			"Submit" };
+			"Submit", "MainObjectId" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
@@ -131,7 +131,7 @@ public class DataBaseAdapter {
 
 	private String[] Users = { "ID", "Name", "Email", "Password",
 			"Phonenumber", "Mobailenumber", "Faxnumber", "Address", "Image",
-			"ServiceId", "ServerDate", "Date", "Submit" };
+			"ServiceId", "ServerDate", "Date", "Submit", "Admin" };
 
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url", "ServerDate" };
@@ -488,6 +488,18 @@ public class DataBaseAdapter {
 
 	}
 
+	public void insertFavoritetoDb(int ObjectId, int userId, int IdTickte) {
+
+		ContentValues cv = new ContentValues();
+
+		cv.put("ObjectId", ObjectId);
+		cv.put("UserId", userId);
+		cv.put("IdTickte", IdTickte);
+
+		mDb.insert(TableFavorite, null, cv);
+
+	}
+
 	public void insertPapertitletoDb(String Title, String Context) {
 
 		ContentValues cv = new ContentValues();
@@ -550,7 +562,8 @@ public class DataBaseAdapter {
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
 					cursor.getString(19), cursor.getInt(25), cursor.getInt(26),
-					cursor.getInt(27), cursor.getString(28), cursor.getInt(29));
+					cursor.getInt(27), cursor.getString(28), cursor.getInt(29),
+					cursor.getInt(30));
 
 			result.add(tempObject);
 		}
@@ -767,6 +780,24 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<Ticket> getTicketByusetId(int Id, int UserId) {
+
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Ticket item = null;
+
+		Cursor mCur = mDb.query(TableTicket, Ticket, "Id=? AND UserId=?",
+				new String[] { String.valueOf(Id), String.valueOf(UserId) },
+				null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToTicket(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
 	public ArrayList<Anad> getAnadtByTypeIdProId(int provinceID) {
 
 		ArrayList<Anad> result = new ArrayList<Anad>();
@@ -855,7 +886,7 @@ public class DataBaseAdapter {
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
 				cursor.getString(5), cursor.getString(6), cursor.getString(7),
 				cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-				cursor.getString(11), cursor.getInt(12));
+				cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
 
 		return Users;
 
@@ -913,7 +944,7 @@ public class DataBaseAdapter {
 				cursor.getString(20), cursor.getString(21),
 				cursor.getString(22), cursor.getString(23), cursor.getInt(24),
 				cursor.getInt(25), cursor.getInt(26), cursor.getString(27),
-				cursor.getInt(28));
+				cursor.getInt(28), cursor.getInt(30));
 		return tempObject;
 	}
 
@@ -1730,7 +1761,7 @@ public class DataBaseAdapter {
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
 					cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-					cursor.getString(11), cursor.getInt(12));
+					cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
 			result.add(tempusers);
 
 		}
@@ -1779,7 +1810,7 @@ public class DataBaseAdapter {
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
 					cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-					cursor.getString(11), cursor.getInt(12));
+					cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
 
 			result.add(tempusers);
 		}
@@ -1839,7 +1870,8 @@ public class DataBaseAdapter {
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
 					cursor.getString(19), cursor.getInt(25), cursor.getInt(27),
-					cursor.getInt(28), cursor.getString(29), cursor.getInt(30));
+					cursor.getInt(28), cursor.getString(29), cursor.getInt(30),
+					cursor.getInt(31));
 
 			result.add(tempObject);
 		}

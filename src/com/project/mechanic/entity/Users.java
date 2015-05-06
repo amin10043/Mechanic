@@ -15,6 +15,7 @@ public class Users {
 	String Date;
 	int Serviceid;
 	int Submit;
+	int Admin;
 
 	public int getId() {
 		return Id;
@@ -127,10 +128,18 @@ public class Users {
 		Submit = submit;
 	}
 
+	public int getAdmin() {
+		return Admin;
+	}
+
+	public void setAdmin(int admin) {
+		Admin = admin;
+	}
+
 	public Users(int id, String name, String email, String password,
 			String phonenumber, String mobailenumber, String faxnumber,
 			String address, byte[] image, int serviceid, String serverdate,
-			String date, int submit) {
+			String date, int submit, int admin) {
 
 		super();
 
@@ -147,7 +156,7 @@ public class Users {
 		ServerDate = serverdate;
 		Submit = submit;
 		Date = date;
-
+		Admin = admin;
 	}
 
 	public Users() {
