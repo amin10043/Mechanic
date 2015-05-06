@@ -117,7 +117,6 @@ public class FroumFragment extends Fragment {
 			txttitle.setText(x.getTitle());
 			txttitleDes.setText(x.getDescription());
 			adapter.close();
-			adapter.close();
 		}
 
 		// Commentid = Integer.valueOf(getArguments().getString("CommentID"));
