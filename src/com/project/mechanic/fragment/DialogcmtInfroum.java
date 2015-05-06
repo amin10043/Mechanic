@@ -7,8 +7,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
@@ -17,7 +18,7 @@ import com.project.mechanic.utility.Utility;
 
 public class DialogcmtInfroum extends Dialog {
 
-	private Button btncmt;
+	private ImageButton btncmt;
 	private EditText Cmttxt;
 	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
@@ -41,8 +42,9 @@ public class DialogcmtInfroum extends Dialog {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.dialog_addcomment);
-		btncmt = (Button) findViewById(R.id.btnComment);
+		btncmt = (ImageButton) findViewById(R.id.btnComment);
 		Cmttxt = (EditText) findViewById(R.id.txtCmt);
 		btncmt.setOnClickListener(new android.view.View.OnClickListener() {
 

@@ -109,6 +109,8 @@ public class DialogAnadimg extends Dialog {
 				show_pay_fragment fragment = new show_pay_fragment();
 				Bundle bundle = new Bundle();
 				// bundle.putString("Id", String.valueOf(id));
+				if (ProvinceId >= 0)
+					bundle.putString("ProID", String.valueOf(ProvinceId));
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.addToBackStack(null);

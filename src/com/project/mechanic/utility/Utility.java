@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
@@ -178,5 +179,11 @@ public class Utility {
 		return String.valueOf(sc.year) + "/"
 				+ String.format(loc, "%02d", sc.month) + "/"
 				+ String.format(loc, "%02d", sc.date);
+	}
+
+	public void setFont() {
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
+				"fonts/BROYA.TTF");
+
 	}
 }

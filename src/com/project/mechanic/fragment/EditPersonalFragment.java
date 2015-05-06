@@ -163,11 +163,11 @@ lp2=new LinearLayout.LayoutParams(lin3.getLayoutParams());
 		else
 		{
 			
-		}
+		
 		
 		Toast.makeText(getActivity(), "notnull", Toast.LENGTH_SHORT);
 		
-		
+		}
 		
 		dbAdapter.UpdateAllUserToDb(id, Email, null, Phone, Cellphone,  Fax, Address,Image);
 		

@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Object;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -37,7 +38,7 @@ public class IntroductionEditFragment extends Fragment {
 
 	DataBaseAdapter DBAdapter;
 	Utility util;
-
+	Object object;
 	DialogEditDownloadIntroduction diadown;
 	DialogEditNet dianet;
 	ImageButton btnSave;
@@ -48,7 +49,7 @@ public class IntroductionEditFragment extends Fragment {
 	ImageView headerEdit, profileEdit, footerEdit;
 	LinearLayout.LayoutParams headerEditParams, profileEditParams,
 			footerEditParams, editnameParams;
-
+	 LinearLayout.LayoutParams lp2;
 	RelativeLayout editnetLink, editDNlink, namayendegi, khadamat;
 
 	LinearLayout Lheader, Lpro, Lfooter;
@@ -89,7 +90,7 @@ public class IntroductionEditFragment extends Fragment {
 
 		namayendegi.setVisibility(View.GONE);
 		khadamat.setVisibility(View.GONE);
-
+	
 		Lheader = (LinearLayout) view.findViewById(R.id.headerLinearPage);
 		Lpro = (LinearLayout) view.findViewById(R.id.linearEditProfil);
 		Lfooter = (LinearLayout) view.findViewById(R.id.linearfooteredit);
@@ -127,6 +128,76 @@ public class IntroductionEditFragment extends Fragment {
 		final int id = sendDataID.getInt("main_Id", -1);
 
 		Toast.makeText(getActivity(), id + "", Toast.LENGTH_SHORT).show();
+		
+///////////display information///////////////////////
+		
+		
+		lp2=new LinearLayout.LayoutParams(Lpro .getLayoutParams());
+
+		lp2.height = util .getScreenwidth()/4;
+		lp2.width =   util .getScreenwidth()/4;
+
+		profileEdit.setLayoutParams(lp2);
+		SharedPreferences sendDataID1 = getActivity().getSharedPreferences("Id",
+				0);
+		final int cid = sendDataID1.getInt("main_Id", -1);
+		DBAdapter.open();
+		object = DBAdapter.getObjectbyid(cid);
+		
+		byte[] bitmapbyte = object.getImage2();
+		if (bitmapbyte != null) {
+			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
+					bitmapbyte.length);
+			profileEdit.setImageBitmap(bmp);
+		}
+		
+		byte[] bitmap = object.getImage1();
+		if (bitmap != null) {
+			Bitmap bmp = BitmapFactory.decodeByteArray(bitmap, 0,
+					bitmap.length);
+			headerEdit.setImageBitmap(bmp);
+		}
+		
+		byte[] bitm = object.getImage3();
+		if (bitm != null) {
+			Bitmap bmp = BitmapFactory.decodeByteArray(bitm, 0,
+					bitm.length);
+			footerEdit.setImageBitmap(bmp);
+		}
+		Toast.makeText(getActivity(),""+ cid  , Toast.LENGTH_SHORT).show();
+		
+		nameEnter.setText(object.getName());
+		phoneEnter.setText(object.getPhone());
+		faxEnter.setText(object.getFax());
+		mobileEnter.setText(object.getCellphone());
+		emailEnter.setText(object.getEmail());
+		addressEnter.setText(object.getAddress());
+		
+		DBAdapter.close();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		////////////////////////////////////////////////////
+		
+		
+		
+		
+		
 
 		headerEdit.setOnClickListener(new OnClickListener() {
 
@@ -191,24 +262,45 @@ public class IntroductionEditFragment extends Fragment {
 				dianet.show();
 			}
 		});
+		
+		
+		
+		
+		
 
-		bmpHeader = ((BitmapDrawable) headerEdit.getDrawable()).getBitmap();
-		bmpProfil = ((BitmapDrawable) profileEdit.getDrawable()).getBitmap();
-		bmpFooter = ((BitmapDrawable) footerEdit.getDrawable()).getBitmap();
-
-		if (bmpHeader == null & bmpProfil == null & bmpFooter == null)
-
-			Toast.makeText(getActivity(), "Empty ByteArray", Toast.LENGTH_SHORT)
-					.show();
-
-		final byte[] byteHeader = getBitmapAsByteArray(bmpHeader);
-		final byte[] byteProfil = getBitmapAsByteArray(bmpProfil);
-		final byte[] byteFooter = getBitmapAsByteArray(bmpFooter);
-
+		
+		
+		
 		btnSave.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
+				
+				bmpHeader = ((BitmapDrawable) headerEdit.getDrawable()).getBitmap();
+				bmpProfil = ((BitmapDrawable) profileEdit.getDrawable()).getBitmap();
+				bmpFooter = ((BitmapDrawable) footerEdit.getDrawable()).getBitmap();
+				
+				
+				Bitmap emptyBitmap1 = Bitmap.createBitmap(bmpHeader.getWidth(),
+						bmpHeader.getHeight(), bmpHeader.getConfig());
+				Bitmap emptyBitmap2 = Bitmap.createBitmap(bmpProfil.getWidth(),
+						bmpProfil.getHeight(),bmpProfil.getConfig());
+				Bitmap emptyBitmap3 = Bitmap.createBitmap(bmpFooter.getWidth(),
+						bmpFooter.getHeight(), bmpFooter.getConfig());
+				final byte[] byteHeader = getBitmapAsByteArray(bmpHeader);
+				final byte[] byteProfil = getBitmapAsByteArray(bmpProfil);
+				final byte[] byteFooter = getBitmapAsByteArray(bmpFooter);
+
+		if (headerEdit.getDrawable() == null && 
+		profileEdit.getDrawable() == null &&
+		footerEdit.getDrawable() == null){
+
+					Toast.makeText(getActivity(), "Empty ByteArray", Toast.LENGTH_SHORT)
+							.show();
+		}
+				
+				
+				
 				nameValue = nameEnter.getText().toString();
 				phoneValue = phoneEnter.getText().toString();
 				faxValue = faxEnter.getText().toString();

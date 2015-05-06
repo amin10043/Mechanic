@@ -21,6 +21,7 @@ import com.project.mechanic.model.DataBaseAdapter;
 public class ShowAdFragment extends Fragment {
 
 	int id;
+	int a;
 	DataBaseAdapter dbAdapter;
 	TextView desc, name, email, phone, mobile, fax, showname, showfax,
 			showemail, showphone, showmobile;
@@ -55,14 +56,26 @@ public class ShowAdFragment extends Fragment {
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
-		Ticket t = dbAdapter.getTicketById(id);
 
+		Ticket t = dbAdapter.getTicketById(id);
+		a = t.getId();
 		byte[] bitmapbyte = t.getImage();
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 					bitmapbyte.length);
 			img.setImageBitmap(bmp);
 		}
+		dbAdapter.close();
+		like.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				dbAdapter.open();
+				dbAdapter.insertFavoritetoDb(1, 1, a);
+				dbAdapter.close();
+			}
+		});
+		dbAdapter.open();
 		share.setOnClickListener(new View.OnClickListener() {
 
 			@Override
