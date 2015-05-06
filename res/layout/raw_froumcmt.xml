@@ -8,6 +8,7 @@
     android:orientation="vertical" >
 
     <RelativeLayout
+        android:id="@+id/rlfroumrl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="10" >
@@ -18,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_launcher" />
 
         <LinearLayout
@@ -34,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:background="#ffffff"
+                android:background="@android:color/transparent"
                 android:src="@drawable/positive" />
 
             <TextView
@@ -43,14 +45,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="0"
-                android:textColor="@color/red" />
+                android:textColor="@color/transparent" />
 
             <ImageButton
                 android:id="@+id/imgbtnLike_RawCmtFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:background="#ffffff"
+                android:background="@android:color/transparent"
                 android:src="@drawable/negative" />
 
             <TextView
@@ -59,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="0"
-                android:textColor="@color/red" />
+                android:textColor="@color/transparent" />
         </LinearLayout>
 
         <TextView

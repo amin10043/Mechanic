@@ -32,12 +32,15 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 	int[] imageId;
 	Ticket tempItem;
 	DataBaseAdapter adapter;
+	int ProvinceId;
 
-	public AnadListAdapter(Context context, int resource, List<Ticket> objact) {
+	public AnadListAdapter(Context context, int resource, List<Ticket> objact,
+			int ProvinceId) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
+		this.ProvinceId = ProvinceId;
 		adapter = new DataBaseAdapter(context);
 
 	}
@@ -50,15 +53,15 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_anad, parent, false);
-		TextView txtdate = (TextView) convertView.findViewById(R.id.textdate);
+		TextView txtdate = (TextView) convertView.findViewById(R.id.text_favorite_desc);
 		TextView txtName = (TextView) convertView
-				.findViewById(R.id.row_anad_txt);
+				.findViewById(R.id.row_favorite_title);
 		TextView txtDesc = (TextView) convertView
 				.findViewById(R.id.row_anad_txt2);
 		// ImageView img = (ImageView)
 		// convertView.findViewById(R.id.row_anad_img);
 		ImageView img2 = (ImageView) convertView
-				.findViewById(R.id.row_anad_img2);
+				.findViewById(R.id.row_favorite_img);
 		PersianDate date = new PersianDate();
 		tempItem = list.get(position);
 		txtdate.setText(date.todayShamsi());
@@ -80,7 +83,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 
 				RelativeLayout parentlayout = (RelativeLayout) v;
 				TextView txtName = (TextView) parentlayout
-						.findViewById(R.id.row_anad_txt);
+						.findViewById(R.id.row_favorite_title);
 				String item = txtName.getText().toString();
 				int id = 0;
 				for (Ticket Ticket : list) {
@@ -96,6 +99,8 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				ShowAdFragment fragment = new ShowAdFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
+				if (ProvinceId >= 0)
+					bundle.putString("ProID", String.valueOf(ProvinceId));
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.addToBackStack(null);

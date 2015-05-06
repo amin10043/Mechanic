@@ -21,8 +21,10 @@ import com.project.mechanic.model.DataBaseAdapter;
 public class ShowAdFragment extends Fragment {
 
 	int id;
+	int a;
 	DataBaseAdapter dbAdapter;
-	TextView desc, name, email, phone, mobile, fax;
+	TextView desc, name, email, phone, mobile, fax, showname, showfax,
+			showemail, showphone, showmobile;
 	ImageView img;
 	ImageButton share, like;
 
@@ -45,18 +47,35 @@ public class ShowAdFragment extends Fragment {
 		phone = (TextView) view.findViewById(R.id.fragment_showad_tx3);
 		mobile = (TextView) view.findViewById(R.id.fragment_showad_tx4);
 		fax = (TextView) view.findViewById(R.id.fragment_showad_tx5);
+		showname = (TextView) view.findViewById(R.id.fragment_showad_name);
+		showemail = (TextView) view.findViewById(R.id.fragment_showad_email);
+		showphone = (TextView) view.findViewById(R.id.fragment_showad_phone);
+		showmobile = (TextView) view.findViewById(R.id.fragment_showad_mobile);
+		showfax = (TextView) view.findViewById(R.id.fragment_showad_fax);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
-		Ticket t = dbAdapter.getTicketById(id);
 
+		Ticket t = dbAdapter.getTicketById(id);
+		a = t.getId();
 		byte[] bitmapbyte = t.getImage();
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 					bitmapbyte.length);
 			img.setImageBitmap(bmp);
 		}
+		dbAdapter.close();
+		like.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				dbAdapter.open();
+				dbAdapter.insertFavoritetoDb(1, 1, a);
+				dbAdapter.close();
+			}
+		});
+		dbAdapter.open();
 		share.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -74,13 +93,54 @@ public class ShowAdFragment extends Fragment {
 
 			}
 		});
-		desc.setText(t.getDesc());
-		name.setText(t.getUName());
-		email.setText(t.getUEmail());
-		phone.setText(t.getUPhone());
-		mobile.setText(t.getUMobile());
-		fax.setText(t.getUFax());
 
+		desc.setText(t.getDesc());
+
+		if ("".equals(t.getUName())) {
+			showname.setVisibility(View.GONE);
+			name.setVisibility(View.GONE);
+
+		} else {
+			showname.setVisibility(View.VISIBLE);
+			name.setVisibility(View.VISIBLE);
+			name.setText(t.getUName());
+		}
+		if ("".equals(t.getUEmail())) {
+			showemail.setVisibility(View.GONE);
+			email.setVisibility(View.GONE);
+
+		} else {
+			showemail.setVisibility(View.VISIBLE);
+			email.setVisibility(View.VISIBLE);
+			email.setText(t.getUEmail());
+		}
+		if ("".equals(t.getUPhone())) {
+			showphone.setVisibility(View.GONE);
+			phone.setVisibility(View.GONE);
+
+		} else {
+			showphone.setVisibility(View.VISIBLE);
+			phone.setVisibility(View.VISIBLE);
+			phone.setText(t.getUPhone());
+		}
+		if ("".equals(t.getUMobile())) {
+			showmobile.setVisibility(View.GONE);
+			mobile.setVisibility(View.GONE);
+
+		} else {
+			showmobile.setVisibility(View.VISIBLE);
+			mobile.setVisibility(View.VISIBLE);
+			mobile.setText(t.getUMobile());
+		}
+		if ("".equals(t.getUFax())) {
+			showfax.setVisibility(View.GONE);
+			fax.setVisibility(View.GONE);
+
+		} else {
+			showfax.setVisibility(View.VISIBLE);
+			fax.setVisibility(View.VISIBLE);
+			fax.setText(t.getUFax());
+		}
 		dbAdapter.close();
 
 		return view;

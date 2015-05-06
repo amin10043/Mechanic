@@ -35,8 +35,7 @@
             style="@style/second_item_style"
             android:layout_width="match_parent"
             android:layout_height="401dp"
-            android:divider="@null"
-            android:dividerHeight="0dp" >
+            android:dividerHeight="10dp" >
         </ListView>
     </ScrollView>
 

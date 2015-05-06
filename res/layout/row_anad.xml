@@ -8,9 +8,10 @@
         style="@style/List_Item_Style"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/list_item"
         android:orientation="horizontal" >
 
@@ -20,13 +21,13 @@
             android:orientation="vertical" >
 
             <ImageView
-                android:id="@+id/row_anad_img2"
+                android:id="@+id/row_favorite_img"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:src="@drawable/no_image" />
 
             <TextView
-                android:id="@+id/textdate"
+                android:id="@+id/text_favorite_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -39,7 +40,7 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/row_anad_txt"
+                android:id="@+id/row_favorite_title"
                 style="@style/row_text"
                 android:layout_width="match_parent"
                 android:layout_height="34dp"
