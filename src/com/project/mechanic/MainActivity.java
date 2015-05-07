@@ -39,7 +39,7 @@ public class MainActivity extends FragmentActivity {
 	private Fragment lastFragment;
 	private boolean isFavorite = false;
 	Utility util;
-	private int mInterval = 5000; // 5 seconds by default, can be changed later
+	private int mInterval = 50000; // 5 seconds by default, can be changed later
 
 	private Handler mHandler;
 	SlideMenuAdapter slideadapter;
@@ -201,7 +201,7 @@ public class MainActivity extends FragmentActivity {
 	Runnable mStatusChecker = new Runnable() {
 		@Override
 		public void run() {
-			util.showNotification();
+			util.Notification();
 			mHandler.postDelayed(mStatusChecker, mInterval);
 		}
 	};
