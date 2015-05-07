@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -54,6 +55,7 @@ public class DialogAnad extends Dialog {
 	String titel;
 	String Bytimage;
 	int ProvinceId;
+	Users u;
 	protected byte[] img;
 	String TABLE_NAME = "Object";
 
@@ -106,7 +108,7 @@ public class DialogAnad extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 				dbadapter = new DataBaseAdapter(context);
-
+				u = util.getCurrentUser();
 				dbadapter.open();
 				String date = new SimpleDateFormat("yyyy-MM-dd")
 						.format(new Date());
@@ -115,12 +117,11 @@ public class DialogAnad extends Dialog {
 
 					dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
 							.getText().toString(), dialog_anad_et2.getText()
-							.toString(), 1, date, ticketTypeID, 0, 0, 0, 0, 0,
-							ProvinceId, UName.getText().toString(), UEmail
-									.getText().toString(), UPhonnumber
-									.getText().toString(), UFax.getText()
-									.toString(), null, UMobile.getText()
-									.toString());
+							.toString(), u.getId(), date, ticketTypeID, 0, 0,
+							0, 0, 0, ProvinceId, UName.getText().toString(),
+							UEmail.getText().toString(), UPhonnumber.getText()
+									.toString(), UFax.getText().toString(),
+							null, UMobile.getText().toString());
 
 				} else {
 
@@ -132,9 +133,9 @@ public class DialogAnad extends Dialog {
 					if (bitmap.sameAs(emptyBitmap)) {
 						dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
 								.getText().toString(), dialog_anad_et2
-								.getText().toString(), 1, date, ticketTypeID,
-								0, 0, 0, 0, 0, ProvinceId, UName.getText()
-										.toString(), UEmail.getText()
+								.getText().toString(), u.getId(), date,
+								ticketTypeID, 0, 0, 0, 0, 0, ProvinceId, UName
+										.getText().toString(), UEmail.getText()
 										.toString(), UPhonnumber.getText()
 										.toString(), UFax.getText().toString(),
 								null, UMobile.getText().toString());
@@ -143,9 +144,9 @@ public class DialogAnad extends Dialog {
 
 						dbadapter.insertTickettoDb(dialog_anad_et1.getText()
 								.toString(), dialog_anad_et2.getText()
-								.toString(), 1, bytes, date, ticketTypeID, 0,
-								0, 0, 0, 0, ProvinceId, UName.getText()
-										.toString(), UEmail.getText()
+								.toString(), u.getId(), bytes, date,
+								ticketTypeID, 0, 0, 0, 0, 0, ProvinceId, UName
+										.getText().toString(), UEmail.getText()
 										.toString(), UPhonnumber.getText()
 										.toString(), UFax.getText().toString(),
 								null, null, UMobile.getText().toString());

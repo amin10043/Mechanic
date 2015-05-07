@@ -16,7 +16,9 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Ticket;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class ShowAdFragment extends Fragment {
 
@@ -27,6 +29,8 @@ public class ShowAdFragment extends Fragment {
 			showemail, showphone, showmobile;
 	ImageView img;
 	ImageButton share, like;
+	Utility util;
+	Users u;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -34,7 +38,7 @@ public class ShowAdFragment extends Fragment {
 			Bundle savedInstanceState) {
 		((MainActivity) getActivity()).setActivityTitle(R.string.showad);
 		id = Integer.valueOf(getArguments().getString("Id"));
-
+		util = new Utility(getActivity());
 		View view = inflater.inflate(R.layout.fragment_showad, null);
 
 		img = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
@@ -66,15 +70,29 @@ public class ShowAdFragment extends Fragment {
 			img.setImageBitmap(bmp);
 		}
 		dbAdapter.close();
+		u = util.getCurrentUser();
+
+		if (u == null) {
+			like.setEnabled(false);
+		}
+
 		like.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				dbAdapter.open();
-				dbAdapter.insertFavoritetoDb(1, 1, a);
-				dbAdapter.close();
+				if (u != null) {
+					dbAdapter.open();
+					dbAdapter.insertFavoritetoDb(0, u.getId(), a);
+					dbAdapter.close();
+				}
+
 			}
 		});
+		// fragment = new DisplayPersonalInformationFragment();
+		// fragmentManager = getSupportFragmentManager();
+		// fragmentManager.beginTransaction()
+		// .replace(R.id.content_frame, fragment).commit();
+
 		dbAdapter.open();
 		share.setOnClickListener(new View.OnClickListener() {
 
