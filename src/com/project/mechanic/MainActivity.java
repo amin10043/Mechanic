@@ -39,7 +39,8 @@ public class MainActivity extends FragmentActivity {
 	private Fragment lastFragment;
 	private boolean isFavorite = false;
 	Utility util;
-	private int mInterval = 5000; // 5 seconds by default, can be changed later
+	private int mInterval = 500000; // 5 seconds by default, can be changed
+									// later
 
 	private Handler mHandler;
 	SlideMenuAdapter slideadapter;
