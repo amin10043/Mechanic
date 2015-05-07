@@ -746,6 +746,20 @@ public class DataBaseAdapter {
 
 	}
 
+	public Favorite getFavoritebyId(int Id) {
+
+		Favorite item = null;
+		Cursor mCur = mDb.query(TableFavorite, Favorite, "Id=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorFavorite(mCur);
+		}
+
+		return item;
+
+	}
+
 	public ArrayList<Ticket> getFavoriteById(int TypeId, int provinceID) {
 
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
@@ -771,6 +785,20 @@ public class DataBaseAdapter {
 
 		Favorite item = null;
 		Cursor mCur = mDb.query(TableFavorite, Favorite, "Id=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorFavorite(mCur);
+		}
+
+		return item;
+
+	}
+
+	public Favorite getFavoriteByIdTicket(int Id) {
+
+		Favorite item = null;
+		Cursor mCur = mDb.query(TableFavorite, Favorite, "IdTicket=?",
 				new String[] { String.valueOf(Id) }, null, null, null);
 
 		if (mCur.moveToNext()) {
@@ -980,7 +1008,7 @@ public class DataBaseAdapter {
 				cursor.getString(20), cursor.getString(21),
 				cursor.getString(22), cursor.getString(23), cursor.getInt(24),
 				cursor.getInt(25), cursor.getInt(26), cursor.getString(27),
-				cursor.getInt(28), cursor.getInt(30));
+				cursor.getInt(28), cursor.getInt(29));
 		return tempObject;
 	}
 

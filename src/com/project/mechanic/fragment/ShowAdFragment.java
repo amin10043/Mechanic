@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Favorite;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -24,13 +26,19 @@ public class ShowAdFragment extends Fragment {
 
 	int id;
 	int a;
+	int F = 0;
+	int favorite = 0;
+	int userTicket;
 	DataBaseAdapter dbAdapter;
 	TextView desc, name, email, phone, mobile, fax, showname, showfax,
 			showemail, showphone, showmobile;
 	ImageView img;
-	ImageButton share, like;
+	ImageButton share, edite, like;
 	Utility util;
 	Users u;
+	private DialogAnad dialog;
+	int proID = -1;
+	Favorite f;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -45,6 +53,7 @@ public class ShowAdFragment extends Fragment {
 
 		share = (ImageButton) view.findViewById(R.id.imgShare_showAd);
 		like = (ImageButton) view.findViewById(R.id.imgLike_showAd);
+		edite = (ImageButton) view.findViewById(R.id.imgedite_showAd);
 		desc = (TextView) view.findViewById(R.id.fragment_showad_txt);
 		name = (TextView) view.findViewById(R.id.fragment_showad_tx1);
 		email = (TextView) view.findViewById(R.id.fragment_showad_tx2);
@@ -58,11 +67,15 @@ public class ShowAdFragment extends Fragment {
 		showfax = (TextView) view.findViewById(R.id.fragment_showad_fax);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
-
+		if (getArguments().getString("ProID") != null) {
+			proID = Integer.valueOf(getArguments().getString("ProID"));
+		}
 		dbAdapter.open();
 
 		Ticket t = dbAdapter.getTicketById(id);
 		a = t.getId();
+		userTicket = t.getUserId();
+
 		byte[] bitmapbyte = t.getImage();
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
@@ -74,20 +87,48 @@ public class ShowAdFragment extends Fragment {
 
 		if (u == null) {
 			like.setEnabled(false);
+		} else if (userTicket == u.getId()) {
+
+			edite.setVisibility(1);
 		}
 
 		like.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				if (u != null) {
+
+				if (u != null && F == 0) {
 					dbAdapter.open();
+
 					dbAdapter.insertFavoritetoDb(0, u.getId(), a);
+					F = 1;
+					Toast.makeText(getActivity(), F + "", Toast.LENGTH_LONG)
+							.show();
 					dbAdapter.close();
+					like.setImageResource(R.drawable.ic_star_on);
+				} else if (F != 0) {
+					like.setImageResource(R.drawable.ic_star_off);
+					F = 0;
+
+					Toast.makeText(getActivity(), F + "", Toast.LENGTH_LONG)
+							.show();
 				}
 
 			}
 		});
+		edite.setOnClickListener(new View.OnClickListener() {
+
+			// @Override
+			public void onClick(View arg0) {
+				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,
+						ShowAdFragment.this, id, proID);
+				dialog.setTitle(R.string.txtanadedite);
+
+				dialog.show();
+
+			}
+		});
+
 		// fragment = new DisplayPersonalInformationFragment();
 		// fragmentManager = getSupportFragmentManager();
 		// fragmentManager.beginTransaction()
