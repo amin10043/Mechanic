@@ -83,7 +83,7 @@ public class Utility {
 		// if (isLogin) {
 
 		adapter.open();
-		u = adapter.getUserbyid(2); // FOR TESTING !!!!
+		u = adapter.getUserbyid(11); // FOR TESTING !!!!
 		adapter.close();
 		return u;
 		// } else {
