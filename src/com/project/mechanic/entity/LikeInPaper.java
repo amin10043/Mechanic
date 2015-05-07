@@ -6,6 +6,7 @@ public class LikeInPaper {
 	int PaperId;
 	String Datetime;
 	int CommentId;
+	int Seen;
 
 	public int getId() {
 		return Id;
@@ -47,13 +48,22 @@ public class LikeInPaper {
 		CommentId = commentid;
 	}
 
+	public int getSeen() {
+		return Id;
+	}
+
+	public void setSeen(int seen) {
+		Seen = seen;
+	}
+
 	public LikeInPaper(int id, int userid, int paperid, String datetime,
-			int commentid) {
+			int commentid, int seen) {
 		Id = id;
 		UserId = userid;
 		PaperId = paperid;
 		Datetime = datetime;
 		CommentId = commentid;
+		Seen = seen;
 	}
 
 }

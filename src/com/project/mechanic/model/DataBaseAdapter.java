@@ -19,6 +19,7 @@ import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.Executertype;
+import com.project.mechanic.entity.Favorite;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.LikeInComment;
 import com.project.mechanic.entity.LikeInObject;
@@ -103,7 +104,7 @@ public class DataBaseAdapter {
 			"CommentId" };
 	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike" };
 	private String[] LikeInPaper = { "Id", "UserId", "PaperId", "Date",
-			"CommentId" };
+			"CommentId", "Seen" };
 	private String[] List = { "ID", "Name", "ParentId" };
 	private String[] ListItem = { "Id", "Name", "ListId" };
 	private String[] News = { "ID", "Title", "Description", "ServerDate",
@@ -488,13 +489,13 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertFavoritetoDb(int ObjectId, int userId, int IdTickte) {
+	public void insertFavoritetoDb(int ObjectId, int userId, int IdTicket) {
 
 		ContentValues cv = new ContentValues();
 
 		cv.put("ObjectId", ObjectId);
 		cv.put("UserId", userId);
-		cv.put("IdTickte", IdTickte);
+		cv.put("IdTicket", IdTicket);
 
 		mDb.insert(TableFavorite, null, cv);
 
@@ -745,6 +746,55 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<Ticket> getFavoriteById(int TypeId, int provinceID) {
+
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Ticket item = null;
+
+		Cursor mCur = mDb.query(
+				TableTicket,
+				Ticket,
+				"TypeId=? AND ProvinceId=?",
+				new String[] { String.valueOf(TypeId),
+						String.valueOf(provinceID) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToTicket(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	public Favorite getFavoriteById(int Id) {
+
+		Favorite item = null;
+		Cursor mCur = mDb.query(TableFavorite, Favorite, "Id=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorFavorite(mCur);
+		}
+
+		return item;
+
+	}
+
+	public Favorite getFavoriteByIdTicket(int Id) {
+
+		Favorite item = null;
+		Cursor mCur = mDb.query(TableFavorite, Favorite, "IdTicket=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorFavorite(mCur);
+		}
+
+		return item;
+
+	}
+
 	public Object getObjectByname(String name) {
 
 		Object item = null;
@@ -780,13 +830,13 @@ public class DataBaseAdapter {
 
 	}
 
-	public ArrayList<Ticket> getTicketByusetId(int Id, int UserId) {
+	public ArrayList<Ticket> getTicketByticketIduserId(int ticket, int user) {
 
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
 		Ticket item = null;
 
 		Cursor mCur = mDb.query(TableTicket, Ticket, "Id=? AND UserId=?",
-				new String[] { String.valueOf(Id), String.valueOf(UserId) },
+				new String[] { String.valueOf(ticket), String.valueOf(user) },
 				null, null, null);
 
 		while (mCur.moveToNext()) {
@@ -904,7 +954,8 @@ public class DataBaseAdapter {
 	@SuppressWarnings("unused")
 	private LikeInPaper CursorToLikeInPaper(Cursor cursor) {
 		LikeInPaper temp = new LikeInPaper(cursor.getInt(0), cursor.getInt(1),
-				cursor.getInt(2), cursor.getString(3), cursor.getInt(4));
+				cursor.getInt(2), cursor.getString(3), cursor.getInt(4),
+				cursor.getInt(5));
 
 		return temp;
 
@@ -1016,6 +1067,15 @@ public class DataBaseAdapter {
 				cursor.getString(19), cursor.getInt(20), cursor.getInt(21));
 
 		return tempTicket;
+
+	}
+
+	@SuppressWarnings("unused")
+	private Favorite CursorFavorite(Cursor cursor) {
+		Favorite tempFavorite = new Favorite(cursor.getInt(0),
+				cursor.getInt(1), cursor.getInt(2), cursor.getInt(3));
+
+		return tempFavorite;
 
 	}
 
@@ -1500,6 +1560,7 @@ public class DataBaseAdapter {
 		long res2 = res;
 	}
 
+	// ///////////////////////////////////////////////////////////////////
 	public boolean isUserLikedComment(int userId, int CommentId) {
 
 		Cursor curs = mDb.rawQuery(
@@ -1507,6 +1568,19 @@ public class DataBaseAdapter {
 						+ " WHERE UserId= " + String.valueOf(userId)
 						+ " AND CommentId=" + String.valueOf(CommentId)
 						+ " AND IsLike=" + "1", null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
+	public boolean isUserFavorite(int userId, int TicketId) {
+
+		Cursor curs = mDb.rawQuery("SELECT COUNT(*) AS NUM FROM "
+				+ TableFavorite + " WHERE UserId= " + String.valueOf(userId)
+				+ " AND IdTicket=" + String.valueOf(TicketId), null);
 		if (curs.moveToNext()) {
 			int number = curs.getInt(0);
 			if (number > 0)
@@ -1766,6 +1840,26 @@ public class DataBaseAdapter {
 
 		}
 		return result;
+
+	}
+
+	public ArrayList<Ticket> getTicketByusetId(int userId) {
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Cursor cursor = mDb
+				.rawQuery(
+						"select t.* from [Ticket] t inner join [Favorite] f on t.[Id] = f.[IdTicket] 	where f.[ObjectId] = 0 and f.[UserId] =	"
+								+ userId, null);
+		while (cursor.moveToNext()) {
+			result.add(CursorToTicket(cursor));
+
+		}
+		return result;
+
+	}
+
+	public void deletebyIdTicket(int id) {
+
+		mDb.execSQL("delete from [Favorite] where IdTicket = " + id);
 
 	}
 

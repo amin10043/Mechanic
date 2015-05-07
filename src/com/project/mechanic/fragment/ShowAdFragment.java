@@ -16,17 +16,28 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Ticket;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class ShowAdFragment extends Fragment {
 
 	int id;
 	int a;
+	int F = 0;
+	int favorite = 0;
+	int userTicket;
 	DataBaseAdapter dbAdapter;
 	TextView desc, name, email, phone, mobile, fax, showname, showfax,
 			showemail, showphone, showmobile;
 	ImageView img;
-	ImageButton share, like;
+	ImageButton share, edite, like;
+	Utility util;
+	Users u;
+	private DialogAnad dialog;
+	int proID = -1;
+	int f;
+	private boolean isFavorite = false;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -34,13 +45,14 @@ public class ShowAdFragment extends Fragment {
 			Bundle savedInstanceState) {
 		((MainActivity) getActivity()).setActivityTitle(R.string.showad);
 		id = Integer.valueOf(getArguments().getString("Id"));
-
+		util = new Utility(getActivity());
 		View view = inflater.inflate(R.layout.fragment_showad, null);
 
 		img = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
 
 		share = (ImageButton) view.findViewById(R.id.imgShare_showAd);
 		like = (ImageButton) view.findViewById(R.id.imgLike_showAd);
+		edite = (ImageButton) view.findViewById(R.id.imgedite_showAd);
 		desc = (TextView) view.findViewById(R.id.fragment_showad_txt);
 		name = (TextView) view.findViewById(R.id.fragment_showad_tx1);
 		email = (TextView) view.findViewById(R.id.fragment_showad_tx2);
@@ -55,10 +67,15 @@ public class ShowAdFragment extends Fragment {
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 
-		dbAdapter.open();
+		if (getArguments().getString("ProID") != null) {
+			proID = Integer.valueOf(getArguments().getString("ProID"));
+		}
 
+		dbAdapter.open();
 		Ticket t = dbAdapter.getTicketById(id);
 		a = t.getId();
+		userTicket = t.getUserId();
+
 		byte[] bitmapbyte = t.getImage();
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
@@ -66,15 +83,53 @@ public class ShowAdFragment extends Fragment {
 			img.setImageBitmap(bmp);
 		}
 		dbAdapter.close();
+		u = util.getCurrentUser();
+
+		if (u == null) {
+			like.setEnabled(false);
+		} else if (userTicket == u.getId()) {
+
+			edite.setVisibility(1);
+		}
+
 		like.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				dbAdapter.open();
-				dbAdapter.insertFavoritetoDb(1, 1, a);
-				dbAdapter.close();
+				if (u != null && isFavorite) {
+					dbAdapter.open();
+					dbAdapter.deletebyIdTicket(a);
+					dbAdapter.close();
+					like.setImageResource(R.drawable.ic_star_off);
+				} else {
+					dbAdapter.open();
+					dbAdapter.insertFavoritetoDb(0, u.getId(), a);
+					dbAdapter.close();
+					like.setImageResource(R.drawable.ic_star_on);
+
+				}
+				isFavorite = !isFavorite;
+
 			}
 		});
+		edite.setOnClickListener(new View.OnClickListener() {
+
+			// @Override
+			public void onClick(View arg0) {
+				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,
+						ShowAdFragment.this, id, proID);
+				dialog.setTitle(R.string.txtanadedite);
+
+				dialog.show();
+
+			}
+		});
+
+		// fragment = new DisplayPersonalInformationFragment();
+		// fragmentManager = getSupportFragmentManager();
+		// fragmentManager.beginTransaction()
+		// .replace(R.id.content_frame, fragment).commit();
+
 		dbAdapter.open();
 		share.setOnClickListener(new View.OnClickListener() {
 

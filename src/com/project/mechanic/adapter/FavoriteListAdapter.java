@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,7 +30,7 @@ public class FavoriteListAdapter extends ArrayAdapter<Ticket> {
 	int ProvinceId;
 
 	public FavoriteListAdapter(Context context, int resource,
-			List<Ticket> objact, int ProvinceId) {
+			List<Ticket> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -54,12 +55,12 @@ public class FavoriteListAdapter extends ArrayAdapter<Ticket> {
 				.findViewById(R.id.text_favorite_desc);
 		TextView txttitle = (TextView) convertView
 				.findViewById(R.id.row_favorite_title);
-		// ImageButton imgtamas = (ImageButton) convertView
-		// .findViewById(R.id.img_tamas_favorite);
-		// ImageButton imgdelete = (ImageButton) convertView
-		// .findViewById(R.id.img_delete_favorite);
-		// ImageButton imgshare = (ImageButton) convertView
-		// .findViewById(R.id.img_share_favorite);
+		ImageButton imgtamas = (ImageButton) convertView
+				.findViewById(R.id.img_tamas_favorite);
+		ImageButton imgdelete = (ImageButton) convertView
+				.findViewById(R.id.img_delete_favorite);
+		ImageButton imgshare = (ImageButton) convertView
+				.findViewById(R.id.img_share_favorite);
 
 		PersianDate date = new PersianDate();
 		tempItem = list.get(position);
@@ -94,9 +95,9 @@ public class FavoriteListAdapter extends ArrayAdapter<Ticket> {
 		// }
 
 		// FragmentTransaction trans = ((MainActivity) context)
-		// .getSupportFragmentManager().beginTransaction();
-		// ShowAdFragment fragment = new ShowAdFragment();
-		// Bundle bundle = new Bundle();
+		// / .getSupportFragmentManager().beginTransaction();
+		// / ShowAdFragment fragment = new ShowAdFragment();
+		// / Bundle bundle = new Bundle();
 		// bundle.putString("Id", String.valueOf(id));
 		// if (ProvinceId >= 0)
 		// bundle.putString("ProID", String.valueOf(ProvinceId));
@@ -104,10 +105,9 @@ public class FavoriteListAdapter extends ArrayAdapter<Ticket> {
 		// trans.replace(R.id.content_frame, fragment);
 		// trans.addToBackStack(null);
 		// trans.commit();
-		//
+
 		// }
 		// });
-
 		return convertView;
 
 	}

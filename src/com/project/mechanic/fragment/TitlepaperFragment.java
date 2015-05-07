@@ -5,14 +5,19 @@ import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.adapter.FroumtitleListadapter;
 import com.project.mechanic.adapter.PapertitleListAdapter;
+import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -45,28 +50,27 @@ public class TitlepaperFragment extends Fragment {
 			@Override
 			public void onClick(View arg0) {
 
-				dialog = new DialogPaperTitle(getActivity(),
-						R.layout.dialog_addtitle, TitlepaperFragment.this);
+				dialog = new DialogPaperTitle(getActivity(),R.layout.dialog_addtitle, TitlepaperFragment.this);
 				dialog.show();
 			}
 		});
 
 		lst = (ListView) view.findViewById(R.id.lstComment);
 		ListAdapter = new PapertitleListAdapter(getActivity(),
-				R.layout.raw_papertitle, mylist);
+				R.layout.raw_froumtitle, mylist);
 		lst.setAdapter(ListAdapter);
 
-		/*
-		 * lst.setOnItemClickListener(new OnItemClickListener() {
-		 * 
-		 * @Override public void onItemClick(AdapterView<?> arg0, View arg1, int
-		 * arg2, long arg3) {
-		 * 
-		 * FragmentTransaction trans = getActivity()
-		 * .getSupportFragmentManager().beginTransaction();
-		 * trans.replace(R.id.content_frame, new PaperFragment());
-		 * trans.commit(); } });
-		 */
+		/*lst.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new PaperFragment());
+				trans.commit();
+			}
+		});*/
 		return view;
 	}
 
@@ -76,7 +80,7 @@ public class TitlepaperFragment extends Fragment {
 		mdb.close();
 
 		ListAdapter = new PapertitleListAdapter(getActivity(),
-				R.layout.raw_papertitle, mylist);
+				R.layout.raw_froumtitle, mylist);
 		ListAdapter.notifyDataSetChanged();
 		lst.setAdapter(ListAdapter);
 

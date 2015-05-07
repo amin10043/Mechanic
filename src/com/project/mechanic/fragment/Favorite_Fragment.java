@@ -13,6 +13,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FavoriteListAdapter;
 import com.project.mechanic.entity.Ticket;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
@@ -25,8 +26,10 @@ public class Favorite_Fragment extends Fragment {
 	ListView listFavorite;
 	DataBaseAdapter dbAdapter;
 	List<Ticket> mylist;
-	int UserId = 1;
-	int TickteId = 1;
+	int id;
+	int user;
+	int ticket;
+	Users u;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -42,11 +45,12 @@ public class Favorite_Fragment extends Fragment {
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
+		u = util.getCurrentUser();
 
-		mylist = dbAdapter.getTicketByusetId(UserId, TickteId);
+		mylist = dbAdapter.getTicketByusetId(u.getId());
 
 		FavoriteListAdapter ListAdapter = new FavoriteListAdapter(
-				getActivity(), R.layout.row_favorite, mylist, UserId);
+				getActivity(), R.layout.row_favorite, mylist);
 
 		listFavorite.setAdapter(ListAdapter);
 
