@@ -2179,4 +2179,64 @@ public class DataBaseAdapter {
 		return item;
 
 	}
+
+	public int NumOfNewLikeInObject() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInObject + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewLikeInPaper() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInPaper + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewLikeInFroum() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInFroum + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewCmtInObject() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInObject + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewCmtInPaper() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInPaper + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewCmtInFroum() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInFroum + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
 }
