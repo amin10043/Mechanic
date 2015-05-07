@@ -45,14 +45,13 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 		adapter = new DataBaseAdapter(context);
 
 		convertView = myInflater
-				.inflate(R.layout.raw_froumtitle, parent, false);
+				.inflate(R.layout.raw_papertitle, parent, false);
 
 		final TextView txt1 = (TextView) convertView
-				.findViewById(R.id.rawTitletxt);
+				.findViewById(R.id.rowtitlepaper);
 		TextView txt2 = (TextView) convertView
-				.findViewById(R.id.rawtxtDescription);
-		TextView txt3 = (TextView) convertView
-				.findViewById(R.id.txtPhone_Object);
+				.findViewById(R.id.rowdescriptionpaper);
+		TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
 
 		Paper person1 = mylist.get(position);
 
@@ -67,7 +66,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 				LinearLayout parentlayout = (LinearLayout) v;
 
 				String item = ((TextView) parentlayout
-						.findViewById(R.id.rawTitletxt)).getText().toString();
+						.findViewById(R.id.rowtitlepaper)).getText().toString();
 				int id = 0;
 				for (Paper listItem : mylist) {
 					if (item.equals(listItem.getTitle())) {
@@ -82,7 +81,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 					fragment.setArguments(bundle);
 
 					DialogcmtInPaper dialog = new DialogcmtInPaper(null,
-							context, R.layout.dialog_addcomment,id);
+							context, R.layout.dialog_addcomment, id);
 					Bundle bundle2 = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
 					fragment.setArguments(bundle);

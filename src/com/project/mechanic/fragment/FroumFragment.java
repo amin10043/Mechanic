@@ -3,12 +3,10 @@ package com.project.mechanic.fragment;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -46,7 +44,7 @@ public class FroumFragment extends Fragment {
 	FroumListAdapter ListAdapter;
 
 	ArrayList<CommentInFroum> mylist;
-	ArrayList<CommentInFroum> ReplyeList;
+	// ArrayList<CommentInFroum> ReplyeList;
 	DialogcmtInfroum dialog;
 	ImageButton Replytocm;
 	FroumListAdapter froumListadapter;
@@ -92,27 +90,42 @@ public class FroumFragment extends Fragment {
 		if (getArguments().getString("Id") != null) {
 			adapter.open();
 			id = Integer.valueOf(getArguments().getString("Id"));
-			NumofComment.setText(adapter.CommentInFroum_count().toString());
+			NumofComment.setText(adapter.CommentInFroum_count(id).toString());
 
-			NumofLike.setText(adapter.LikeInFroum_count().toString());
-			mylist = adapter.getCommentInFroumbyPaperid(id);
-			ReplyeList = adapter.getReplyCommentbyCommentID(id, 1);
-			x = adapter.getFroumItembyid(id);
+			NumofLike.setText(adapter.LikeInFroum_count(id).toString());
+			mylist = adapter.getCommentInFroumbyPaperid(id, 0);
+			// ReplyeList = adapter.getReplyCommentbyCommentID(id, );
+			Froum x = adapter.getFroumItembyid(id);
 			txttitle.setText(x.getTitle());
 			txttitleDes.setText(x.getDescription());
-			NumofComment.setText(adapter.CommentInFroum_count().toString());
 
-			NumofLike.setText(adapter.LikeInFroum_count().toString());
-			mylist = adapter.getCommentInFroumbyPaperid(id);
+			// Commentid =
+			// Integer.valueOf(getArguments().getString("CommentID"));
+
+			NumofComment.setText(adapter.CommentInFroum_count(id).toString());
+
+			NumofLike.setText(adapter.LikeInFroum_count(id).toString());
+			mylist = adapter.getCommentInFroumbyPaperid(id, 0);
 
 			/*
 			 * CommentInFroum d = null; NumofCmtLike.setText(d.getNumofLike());
 			 * NumofCmtDisLike.setText(d.getNumofDisLike());
 			 */
 
-			mylist = adapter.getCommentInFroumbyPaperid(id);
+			x = adapter.getFroumItembyid(id);
+			txttitle.setText(x.getTitle());
+			txttitleDes.setText(x.getDescription());
+			NumofComment.setText(adapter.CommentInFroum_count(id).toString());
+
+			NumofLike.setText(adapter.LikeInFroum_count(id).toString());
+
+			/*
+			 * CommentInFroum d = null; NumofCmtLike.setText(d.getNumofLike());
+			 * NumofCmtDisLike.setText(d.getNumofDisLike());
+			 */
+
 			// final Froum x = adapter.getFroumItembyid(id);
-			ReplyeList = adapter.getReplyCommentbyCommentID(id, 1);
+			// ReplyeList = adapter.getReplyCommentbyCommentID(id, 1);
 			// Froum x = adapter.getFroumItembyid(id);
 			txttitle.setText(x.getTitle());
 			txttitleDes.setText(x.getDescription());
@@ -140,27 +153,27 @@ public class FroumFragment extends Fragment {
 				int userid = user.getId();
 				adapter.open();
 				adapter.insertLikeInFroumToDb(userid, 0, "", 1);
-				NumofLike.setText(adapter.LikeInFroum_count().toString());
+				NumofLike.setText(adapter.LikeInFroum_count(id).toString());
 				adapter.close();
 
 			}
 		});
-		sharebtn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				Intent sharingIntent = new Intent(
-						android.content.Intent.ACTION_SEND);
-				sharingIntent.setType("text/plain");
-				String shareBody = x.getDescription();
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-						x.getTitle());
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-						shareBody);
-				startActivity(Intent.createChooser(sharingIntent,
-						"اشتراک از طریق"));
-			}
-		});
+		// sharebtn.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// Intent sharingIntent = new Intent(
+		// android.content.Intent.ACTION_SEND);
+		// sharingIntent.setType("text/plain");
+		// // String shareBody = x.getDescription();
+		// sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+		// x.getTitle());
+		// sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+		// shareBody);
+		// startActivity(Intent.createChooser(sharingIntent,
+		// "اشتراک از طریق"));
+		// }
+		// });
 
 		btnAddcmt.setOnClickListener(new View.OnClickListener() {
 
@@ -187,10 +200,14 @@ public class FroumFragment extends Fragment {
 	 * }
 	 */
 
+	public int getFroumId() {
+		return id;
+	}
+
 	public void updateView2() {
 		adapter.open();
-		mylist = adapter.getCommentInFroumbyPaperid(id);
-		NumofComment.setText(adapter.CommentInFroum_count().toString());
+		mylist = adapter.getCommentInFroumbyPaperid(id, 0);
+		NumofComment.setText(adapter.CommentInFroum_count(id).toString());
 		adapter.close();
 		froumListadapter = new FroumListAdapter(getActivity(),
 				R.layout.raw_froumcmt, mylist, FroumFragment.this);

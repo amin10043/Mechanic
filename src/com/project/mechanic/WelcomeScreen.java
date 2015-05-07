@@ -613,15 +613,15 @@ public class WelcomeScreen extends Activity {
 		return scaleFace;
 	}
 
-	public void onBackPressed() {
-		super.onBackPressed();
-		finish();
-	}
-
-	public void onPause() {
-		super.onPause();
-		finish();
-	}
+	// public void onBackPressed() {
+	// super.onBackPressed();
+	// finish();
+	// }
+	//
+	// public void onPause() {
+	// super.onPause();
+	// finish();
+	// }
 
 	public void onDestroy() {
 		clearTimerTaks(clickSchedule);

@@ -114,7 +114,7 @@ public class DataBaseAdapter {
 			"Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId",
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
 			"Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
-			"Submit" };
+			"Submit", "MainObjectId" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
@@ -132,7 +132,7 @@ public class DataBaseAdapter {
 
 	private String[] Users = { "ID", "Name", "Email", "Password",
 			"Phonenumber", "Mobailenumber", "Faxnumber", "Address", "Image",
-			"ServiceId", "ServerDate", "Date", "Submit" };
+			"ServiceId", "ServerDate", "Date", "Submit", "Admin" };
 
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url", "ServerDate" };
@@ -489,13 +489,13 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertFavoritetoDb(int ObjectId, int userId, int IdTickte) {
+	public void insertFavoritetoDb(int ObjectId, int userId, int IdTicket) {
 
 		ContentValues cv = new ContentValues();
 
 		cv.put("ObjectId", ObjectId);
 		cv.put("UserId", userId);
-		cv.put("IdTickte", IdTickte);
+		cv.put("IdTicket", IdTicket);
 
 		mDb.insert(TableFavorite, null, cv);
 
@@ -563,7 +563,8 @@ public class DataBaseAdapter {
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
 					cursor.getString(19), cursor.getInt(25), cursor.getInt(26),
-					cursor.getInt(27), cursor.getString(28), cursor.getInt(29));
+					cursor.getInt(27), cursor.getString(28), cursor.getInt(29),
+					cursor.getInt(30));
 
 			result.add(tempObject);
 		}
@@ -921,7 +922,7 @@ public class DataBaseAdapter {
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
 				cursor.getString(5), cursor.getString(6), cursor.getString(7),
 				cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-				cursor.getString(11), cursor.getInt(12));
+				cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
 
 		return Users;
 
@@ -979,7 +980,7 @@ public class DataBaseAdapter {
 				cursor.getString(20), cursor.getString(21),
 				cursor.getString(22), cursor.getString(23), cursor.getInt(24),
 				cursor.getInt(25), cursor.getInt(26), cursor.getString(27),
-				cursor.getInt(28));
+				cursor.getInt(28), cursor.getInt(30));
 		return tempObject;
 	}
 
@@ -1206,10 +1207,10 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	public Integer LikeInFroum_count() {
+	public Integer LikeInFroum_count(int froumID) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableLikeInFroum, null);
+				+ TableLikeInFroum + " WHERE FroumId=" + froumID, null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -1239,10 +1240,11 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	public Integer CommentInFroum_count() {
+	public Integer CommentInFroum_count(int froumID) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableCommentInFroum, null);
+				+ TableCommentInFroum + " WHERE FroumId=" + froumID
+				+ " AND CommentID=0", null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -1420,7 +1422,8 @@ public class DataBaseAdapter {
 		return result;
 	}
 
-	public ArrayList<CommentInFroum> getCommentInFroumbyPaperid(int Froumid) {
+	public ArrayList<CommentInFroum> getCommentInFroumbyPaperid(int Froumid,
+			int commentID) {
 
 		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
 		CommentInFroum item = null;
@@ -1429,9 +1432,12 @@ public class DataBaseAdapter {
 		// TableCommentInFroum + " Where FroumId=" +String.valueOf(Froumid),null
 		// );
 
-		Cursor mCur = mDb.query(TableCommentInFroum, CommentInFroum,
-				"FroumId=?", new String[] { String.valueOf(Froumid) }, null,
-				null, null);
+		Cursor mCur = mDb.query(
+				TableCommentInFroum,
+				CommentInFroum,
+				"FroumId=? AND CommentID=?",
+				new String[] { String.valueOf(Froumid),
+						String.valueOf(commentID) }, null, null, null);
 
 		while (mCur.moveToNext()) {
 			item = CursorToCommentInFroum(mCur);
@@ -1800,7 +1806,7 @@ public class DataBaseAdapter {
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
 					cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-					cursor.getString(11), cursor.getInt(12));
+					cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
 			result.add(tempusers);
 
 		}
@@ -1812,7 +1818,7 @@ public class DataBaseAdapter {
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
 		Cursor cursor = mDb
 				.rawQuery(
-						"select t.* from [Ticket] t inner join [Favorite] f on t.[Id] = f.[IdTickte] 	where f.[ObjectId] = 0 and f.[UserId] =	"
+						"select t.* from [Ticket] t inner join [Favorite] f on t.[Id] = f.[IdTicket] 	where f.[ObjectId] = 0 and f.[UserId] =	"
 								+ userId, null);
 		while (cursor.moveToNext()) {
 			result.add(CursorToTicket(cursor));
@@ -1863,7 +1869,7 @@ public class DataBaseAdapter {
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
 					cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-					cursor.getString(11), cursor.getInt(12));
+					cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
 
 			result.add(tempusers);
 		}
@@ -1923,7 +1929,8 @@ public class DataBaseAdapter {
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
 					cursor.getString(19), cursor.getInt(25), cursor.getInt(27),
-					cursor.getInt(28), cursor.getString(29), cursor.getInt(30));
+					cursor.getInt(28), cursor.getString(29), cursor.getInt(30),
+					cursor.getInt(31));
 
 			result.add(tempObject);
 		}

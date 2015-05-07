@@ -16,7 +16,7 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/rowtitlefroum"
+            android:id="@+id/rowtitlepaper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
@@ -26,7 +26,7 @@
             android:textColor="@color/transparent" />
 
         <TextView
-            android:id="@+id/rowdescriptionfroum"
+            android:id="@+id/rowdescriptionpaper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
