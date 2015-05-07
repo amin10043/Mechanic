@@ -123,7 +123,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new IntroductionFragment());
-				trans.addToBackStack(null);
+				// trans.addToBackStack(null);
 				trans.commit();
 
 				String item = txt1.getText().toString();
@@ -145,4 +145,13 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		return convertView;
 	}
 
+	// public void onBackPressed() {
+	//
+	// FragmentTransaction trans = ((MainActivity) context)
+	// .getSupportFragmentManager().beginTransaction();
+	// trans.replace(R.id.content_frame, new MainFragment());
+	// // trans.addToBackStack(null);
+	// trans.commit();
+	//
+	// }
 }

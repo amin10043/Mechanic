@@ -72,9 +72,8 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 
 				Province p = list.get(position);
 				adapter.open();
-				List<City> allItems = adapter.getCitysByProvinceId(p
-						.getId());
-				//Province P = adapter.getProvinceById(province.getId());
+				List<City> allItems = adapter.getCitysByProvinceId(p.getId());
+				// Province P = adapter.getProvinceById(province.getId());
 
 				int count = p.getCount();
 				int id = p.getId();
@@ -85,7 +84,7 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new CityFragment(allItems));
-				trans.addToBackStack(null);
+				// trans.addToBackStack(null);
 				trans.commit();
 			}
 		});

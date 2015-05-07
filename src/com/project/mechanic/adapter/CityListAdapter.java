@@ -67,17 +67,17 @@ public class CityListAdapter extends ArrayAdapter<City> {
 
 			@Override
 			public void onClick(View arg0) {
-				
+
 				int count = city.getCount();
 				int id = city.getId();
 				count = count + 1;
 				adapter.open();
-				adapter.UpdateCityToDb(id,count);
+				adapter.UpdateCityToDb(id, count);
 				adapter.close();
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				trans.addToBackStack(null);
+				// trans.addToBackStack(null);
 				Fragment move = new ObjectFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("cityId", String.valueOf(city.getId()));
