@@ -75,10 +75,6 @@ public class ShowAdFragment extends Fragment {
 		Ticket t = dbAdapter.getTicketById(id);
 		a = t.getId();
 		userTicket = t.getUserId();
-		// dbAdapter.isUserFavorite(u.getId(), a);
-		// if (dbAdapter.isUserFavorite(userTicket, a)) {
-		// like.setImageResource(R.drawable.ic_star_on);
-		// }
 
 		byte[] bitmapbyte = t.getImage();
 		if (bitmapbyte != null) {
