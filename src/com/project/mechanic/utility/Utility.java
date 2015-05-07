@@ -4,7 +4,6 @@ import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -15,12 +14,13 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.SplashActivity;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Roozh.SolarCalendar;
@@ -29,6 +29,7 @@ public class Utility {
 
 	private Context context;
 	private DataBaseAdapter adapter;
+	int notificationID;
 
 	public Utility(Context context) {
 		this.context = context;
@@ -192,24 +193,44 @@ public class Utility {
 
 	}
 
-	public void showNotification() {
-		Intent intent = new Intent(context, SplashActivity.class);
-		PendingIntent pIntent = PendingIntent
-				.getActivity(context, 0, intent, 0);
+	public void Notification() {
+		// Set Notification Title
+		String strtitle = "t1";// getString(R.string.notificationtitle);
+		// Set Notification Text
+		String strtext = "test";// getString(R.string.notificationtext);
 
-		// build notification
-		// the addAction re-use the same intent to keep the example short
-		Notification n = new Notification.Builder(context)
-				.setContentTitle("New mail from " + "test@gmail.com")
-				.setContentText("Subject").setSmallIcon(R.drawable.addimage)
-				.setContentIntent(pIntent).setAutoCancel(true).build();
-		// .addAction(R.drawable.addimage, "تست 1", pIntent)
-		// .addAction(R.drawable.addimage, "تست 2", pIntent)
-		// .addAction(R.drawable.addimage, "تست 3", pIntent)
+		// Open NotificationView Class on Notification Click
+		Intent intent = new Intent(context, MainActivity.class);
+		// Send data to NotificationView Class
+		intent.putExtra("title", strtitle);
+		intent.putExtra("text", strtext);
+		// Open NotificationView.java Activity
+		PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 
-		NotificationManager notificationManager = (NotificationManager) context
+		// Create Notification using NotificationCompat.Builder
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(
+				context)
+		// Set Icon
+				.setSmallIcon(R.drawable.a10)
+				// Set Ticker Message
+				.setTicker("dfsdf")
+				// Set Title
+				.setContentTitle("hgjh")
+				// Set Text
+				.setContentText("fvdvdfvv")
+				// Add an Action Button below Notification
+				.addAction(R.drawable.ic_launcher, "Action Button", pIntent)
+				// Set PendingIntent into Notification
+				.setContentIntent(pIntent)
+				// Dismiss Notification
+				.setAutoCancel(true);
+
+		// Create Notification Manager
+		NotificationManager notificationmanager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
+		// Build Notification with Notification Manager
+		notificationmanager.notify(0, builder.build());
 
-		notificationManager.notify(0, n);
 	}
 }
