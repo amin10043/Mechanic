@@ -19,6 +19,7 @@ import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.Executertype;
+import com.project.mechanic.entity.Favorite;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.LikeInComment;
 import com.project.mechanic.entity.LikeInObject;
@@ -93,7 +94,7 @@ public class DataBaseAdapter {
 			"Date", "CommentId", "Seen" };
 
 	private String[] Executertype = { "ID", "Name" };
-	private String[] Favorite = { "ID", "ObjectId", "UserId" };
+	private String[] Favorite = { "ID", "ObjectId", "UserId", "IdTickte" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen",
 			"ServerDate", "Submit" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
@@ -113,7 +114,7 @@ public class DataBaseAdapter {
 			"Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId",
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
 			"Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
-			"Submit" };
+			"Submit", "MainObjectId" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
@@ -131,7 +132,7 @@ public class DataBaseAdapter {
 
 	private String[] Users = { "ID", "Name", "Email", "Password",
 			"Phonenumber", "Mobailenumber", "Faxnumber", "Address", "Image",
-			"ServiceId", "ServerDate", "Date", "Submit" };
+			"ServiceId", "ServerDate", "Date", "Submit", "Admin" };
 
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url", "ServerDate" };
@@ -488,6 +489,18 @@ public class DataBaseAdapter {
 
 	}
 
+	public void insertFavoritetoDb(int ObjectId, int userId, int IdTicket) {
+
+		ContentValues cv = new ContentValues();
+
+		cv.put("ObjectId", ObjectId);
+		cv.put("UserId", userId);
+		cv.put("IdTicket", IdTicket);
+
+		mDb.insert(TableFavorite, null, cv);
+
+	}
+
 	public void insertPapertitletoDb(String Title, String Context) {
 
 		ContentValues cv = new ContentValues();
@@ -550,7 +563,8 @@ public class DataBaseAdapter {
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
 					cursor.getString(19), cursor.getInt(25), cursor.getInt(26),
-					cursor.getInt(27), cursor.getString(28), cursor.getInt(29));
+					cursor.getInt(27), cursor.getString(28), cursor.getInt(29),
+					cursor.getInt(30));
 
 			result.add(tempObject);
 		}
@@ -732,6 +746,69 @@ public class DataBaseAdapter {
 
 	}
 
+	public Favorite getFavoritebyId(int Id) {
+
+		Favorite item = null;
+		Cursor mCur = mDb.query(TableFavorite, Favorite, "Id=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorFavorite(mCur);
+		}
+
+		return item;
+
+	}
+
+	public ArrayList<Ticket> getFavoriteById(int TypeId, int provinceID) {
+
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Ticket item = null;
+
+		Cursor mCur = mDb.query(
+				TableTicket,
+				Ticket,
+				"TypeId=? AND ProvinceId=?",
+				new String[] { String.valueOf(TypeId),
+						String.valueOf(provinceID) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToTicket(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	public Favorite getFavoriteById(int Id) {
+
+		Favorite item = null;
+		Cursor mCur = mDb.query(TableFavorite, Favorite, "Id=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorFavorite(mCur);
+		}
+
+		return item;
+
+	}
+
+	public Favorite getFavoriteByIdTicket(int Id) {
+
+		Favorite item = null;
+		Cursor mCur = mDb.query(TableFavorite, Favorite, "IdTicket=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorFavorite(mCur);
+		}
+
+		return item;
+
+	}
+
 	public Object getObjectByname(String name) {
 
 		Object item = null;
@@ -757,6 +834,24 @@ public class DataBaseAdapter {
 				"TypeId=? AND ProvinceId=?",
 				new String[] { String.valueOf(TypeId),
 						String.valueOf(provinceID) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToTicket(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	public ArrayList<Ticket> getTicketByticketIduserId(int ticket, int user) {
+
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Ticket item = null;
+
+		Cursor mCur = mDb.query(TableTicket, Ticket, "Id=? AND UserId=?",
+				new String[] { String.valueOf(ticket), String.valueOf(user) },
+				null, null, null);
 
 		while (mCur.moveToNext()) {
 			item = CursorToTicket(mCur);
@@ -855,7 +950,7 @@ public class DataBaseAdapter {
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
 				cursor.getString(5), cursor.getString(6), cursor.getString(7),
 				cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-				cursor.getString(11), cursor.getInt(12));
+				cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
 
 		return Users;
 
@@ -913,7 +1008,7 @@ public class DataBaseAdapter {
 				cursor.getString(20), cursor.getString(21),
 				cursor.getString(22), cursor.getString(23), cursor.getInt(24),
 				cursor.getInt(25), cursor.getInt(26), cursor.getString(27),
-				cursor.getInt(28));
+				cursor.getInt(28), cursor.getInt(29));
 		return tempObject;
 	}
 
@@ -985,6 +1080,15 @@ public class DataBaseAdapter {
 				cursor.getString(19), cursor.getInt(20), cursor.getInt(21));
 
 		return tempTicket;
+
+	}
+
+	@SuppressWarnings("unused")
+	private Favorite CursorFavorite(Cursor cursor) {
+		Favorite tempFavorite = new Favorite(cursor.getInt(0),
+				cursor.getInt(1), cursor.getInt(2), cursor.getInt(3));
+
+		return tempFavorite;
 
 	}
 
@@ -1131,10 +1235,10 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	public Integer LikeInFroum_count() {
+	public Integer LikeInFroum_count(int froumID) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableLikeInFroum, null);
+				+ TableLikeInFroum + " WHERE FroumId=" + froumID, null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -1164,10 +1268,11 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	public Integer CommentInFroum_count() {
+	public Integer CommentInFroum_count(int froumID) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableCommentInFroum, null);
+				+ TableCommentInFroum + " WHERE FroumId=" + froumID
+				+ " AND CommentID=0", null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -1345,7 +1450,8 @@ public class DataBaseAdapter {
 		return result;
 	}
 
-	public ArrayList<CommentInFroum> getCommentInFroumbyPaperid(int Froumid) {
+	public ArrayList<CommentInFroum> getCommentInFroumbyPaperid(int Froumid,
+			int commentID) {
 
 		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
 		CommentInFroum item = null;
@@ -1354,9 +1460,12 @@ public class DataBaseAdapter {
 		// TableCommentInFroum + " Where FroumId=" +String.valueOf(Froumid),null
 		// );
 
-		Cursor mCur = mDb.query(TableCommentInFroum, CommentInFroum,
-				"FroumId=?", new String[] { String.valueOf(Froumid) }, null,
-				null, null);
+		Cursor mCur = mDb.query(
+				TableCommentInFroum,
+				CommentInFroum,
+				"FroumId=? AND CommentID=?",
+				new String[] { String.valueOf(Froumid),
+						String.valueOf(commentID) }, null, null, null);
 
 		while (mCur.moveToNext()) {
 			item = CursorToCommentInFroum(mCur);
@@ -1725,8 +1834,22 @@ public class DataBaseAdapter {
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
 					cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-					cursor.getString(11), cursor.getInt(12));
+					cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
 			result.add(tempusers);
+
+		}
+		return result;
+
+	}
+
+	public ArrayList<Ticket> getTicketByusetId(int userId) {
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Cursor cursor = mDb
+				.rawQuery(
+						"select t.* from [Ticket] t inner join [Favorite] f on t.[Id] = f.[IdTicket] 	where f.[ObjectId] = 0 and f.[UserId] =	"
+								+ userId, null);
+		while (cursor.moveToNext()) {
+			result.add(CursorToTicket(cursor));
 
 		}
 		return result;
@@ -1774,7 +1897,7 @@ public class DataBaseAdapter {
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
 					cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-					cursor.getString(11), cursor.getInt(12));
+					cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
 
 			result.add(tempusers);
 		}
@@ -1834,7 +1957,8 @@ public class DataBaseAdapter {
 					cursor.getString(15), cursor.getString(16),
 					cursor.getString(17), cursor.getString(18),
 					cursor.getString(19), cursor.getInt(25), cursor.getInt(27),
-					cursor.getInt(28), cursor.getString(29), cursor.getInt(30));
+					cursor.getInt(28), cursor.getString(29), cursor.getInt(30),
+					cursor.getInt(31));
 
 			result.add(tempObject);
 		}

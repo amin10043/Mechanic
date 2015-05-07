@@ -5,8 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
@@ -15,7 +16,7 @@ import com.project.mechanic.utility.Utility;
 
 public class DialogcmtInPaper extends Dialog {
 
-	private Button btncmt;
+	private ImageButton btncmt;
 	private EditText Cmttxt;
 	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
@@ -23,15 +24,18 @@ public class DialogcmtInPaper extends Dialog {
 	Fragment f;
 	int paperId;
 	Utility util;
+	Users user;
+	PersianDate p;
 
-	public DialogcmtInPaper(Fragment f, Context context, int resourceId,int paperId) {
+	public DialogcmtInPaper(Fragment f, Context context, int resourceId,
+			int paperId) {
 		super(context);
 		this.context = context;
 		this.f = f;
 		this.paperId = paperId;
 		util = new Utility(context);
-		Users user = util.getCurrentUser();
-
+		user = util.getCurrentUser();
+		p = new PersianDate();
 	}
 
 	@Override
@@ -39,21 +43,27 @@ public class DialogcmtInPaper extends Dialog {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog_addcomment);
-		btncmt = (Button) findViewById(R.id.btnComment);
+		btncmt = (ImageButton) findViewById(R.id.btnComment);
 		Cmttxt = (EditText) findViewById(R.id.txtCmt);
+		dbadapter = new DataBaseAdapter(context);
+
 		btncmt.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				dbadapter = new DataBaseAdapter(context);
-				dbadapter.open();
+				if ("".equals(Cmttxt.getText().toString()))
+					(Toast.makeText(context, "لطفا نظر خود را وارد نمایید",
+							Toast.LENGTH_LONG)).show();
+				else {
 
-				dbadapter.insertCommentInPapertoDb(Cmttxt.getText().toString(),
-						paperId, 1, "1");
-				dbadapter.close();
-				((PaperFragment) f).updateView2();
-				DialogcmtInPaper.this.dismiss();
+					dbadapter.open();
 
+					dbadapter.insertCommentInPapertoDb(Cmttxt.getText()
+							.toString(), paperId, user.getId(), p.todayShamsi());
+					dbadapter.close();
+					((PaperFragment) f).updateView2();
+					DialogcmtInPaper.this.dismiss();
+				}
 			}
 		});
 
