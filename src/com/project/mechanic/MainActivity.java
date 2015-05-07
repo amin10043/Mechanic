@@ -1,5 +1,6 @@
 package com.project.mechanic;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,7 @@ import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.ChatHeadService;
 import com.project.mechanic.utility.Utility;
 
 public class MainActivity extends FragmentActivity {
@@ -40,7 +42,6 @@ public class MainActivity extends FragmentActivity {
 	private boolean isFavorite = false;
 	Utility util;
 	private int mInterval = 50000; // 5 seconds by default, can be changed later
-
 	private Handler mHandler;
 	SlideMenuAdapter slideadapter;
 
@@ -193,6 +194,8 @@ public class MainActivity extends FragmentActivity {
 		trans.commit();
 
 		setActivityTitle(R.string.strMain);
+
+		startService(new Intent(this, ChatHeadService.class));
 
 		mHandler = new Handler();
 		mHandler.postDelayed(mStatusChecker, mInterval);
