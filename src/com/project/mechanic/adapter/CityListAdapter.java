@@ -77,7 +77,7 @@ public class CityListAdapter extends ArrayAdapter<City> {
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				// trans.addToBackStack(null);
+				trans.addToBackStack(null);
 				Fragment move = new ObjectFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("cityId", String.valueOf(city.getId()));

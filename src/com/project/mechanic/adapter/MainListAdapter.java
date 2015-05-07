@@ -136,14 +136,14 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					bundle.putString("Id", String.valueOf(id));
 					fragment.setArguments(bundle);
 					trans.replace(R.id.content_frame, fragment);
-					// trans.addToBackStack(null);
+					trans.addToBackStack(null);
 					trans.commit();
 
 				} else if (id == 2) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					Fragment ostan = new ProvinceFragment();
-					// trans.addToBackStack(null);
+					trans.addToBackStack(null);
 					trans.replace(R.id.content_frame, ostan);
 
 					trans.commit();

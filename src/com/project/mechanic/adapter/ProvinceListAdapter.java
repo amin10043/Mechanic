@@ -84,7 +84,7 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new CityFragment(allItems));
-				// trans.addToBackStack(null);
+				trans.addToBackStack(null);
 				trans.commit();
 			}
 		});
