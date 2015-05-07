@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/img_delete_favorite"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -59,7 +59,7 @@
                     android:layout_marginRight="5dp"
                     android:src="@drawable/menubar" />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/img_share_favorite"
                     android:layout_width="25dp"
                     android:layout_height="25dp"

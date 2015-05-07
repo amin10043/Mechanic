@@ -3,16 +3,15 @@ package com.project.mechanic.fragment;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
-import android.app.LauncherActivity.ListItem;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -45,7 +44,6 @@ public class FroumtitleFragment extends Fragment {
 		mdb.open();
 		mylist = mdb.getAllFroum();
 		mdb.close();
-		
 
 		addtitle.setOnClickListener(new OnClickListener() {
 
@@ -63,28 +61,30 @@ public class FroumtitleFragment extends Fragment {
 				R.layout.raw_froumtitle, mylist);
 		lst.setAdapter(ListAdapter);
 
-		/*lst.setOnItemClickListener(new OnItemClickListener() {
+		lst.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
+				Toast.makeText(getActivity(), "masoudFroum", Toast.LENGTH_SHORT)
+						.show();
 
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new FroumFragment());
-				trans.commit();
-				mdb.open();
-				ArrayList<ListItem> allItems = adapter.getListItemsById(1);
-				int id = 0;
-				for (ListItem listItem : allItems) {
-					if (item.equals(listItem.getName())) {
-						// check authentication and authorization
-						id = listItem.getId();
-					}
-				}
-				mdb.close();
-				
+				// FragmentTransaction trans = getActivity()
+				// .getSupportFragmentManager().beginTransaction();
+				// trans.replace(R.id.content_frame, new FroumFragment());
+				// trans.commit();
+				// mdb.open();
+				// ArrayList<ListItem> allItems = adapter.getListItemsById(1);
+				// int id = 0;
+				// for (ListItem listItem : allItems) {
+				// if (item.equals(listItem.getName())) {
+				// // check authentication and authorization
+				// id = listItem.getId();
+				// }
+				// }
+				// mdb.close();
+
 			}
-		});*/
+		});
 		return view;
 	}
 

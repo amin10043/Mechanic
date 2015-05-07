@@ -51,6 +51,16 @@
                         android:layout_alignParentTop="true"
                         android:layout_toLeftOf="@+id/imgLike_showAd"
                         android:background="@drawable/ic_share" />
+
+                    <ImageButton
+                        android:id="@+id/imgedite_showAd"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="24dp"
+                        android:layout_toLeftOf="@+id/imgShare_showAd"
+                        android:background="@drawable/ic_video"
+                        android:visibility="invisible" />
                 </RelativeLayout>
             </FrameLayout>
 

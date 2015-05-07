@@ -63,10 +63,10 @@ public class PaperFragment extends Fragment {
 		txttitle.setText(p.getTitle());
 		txttitleDes.setText(p.getContext());
 		adapter.close();
-		PaperListAdapter ListAdapter = new PaperListAdapter(getActivity(),
+		PaperListadapter = new PaperListAdapter(getActivity(),
 				R.layout.raw_papercmt, mylist);
 
-		lst.setAdapter(ListAdapter);
+		lst.setAdapter(PaperListadapter);
 
 		Like.setOnClickListener(new OnClickListener() {
 
@@ -76,7 +76,7 @@ public class PaperFragment extends Fragment {
 
 				adapter.insertLikeInPaperToDb(user.getId(), id, "");
 				NumofLike.setText(adapter.LikeInPaper_count().toString());
-
+				adapter.close();
 			}
 		});
 
@@ -96,12 +96,10 @@ public class PaperFragment extends Fragment {
 
 	}
 
-	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		lst.deferNotifyDataSetChanged();
-	}
+	/*
+	 * @Override public void onResume() { // TODO Auto-generated method stub
+	 * super.onResume(); lst.deferNotifyDataSetChanged(); }
+	 */
 
 	public void updateView2() {
 		adapter.open();

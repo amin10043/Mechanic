@@ -40,6 +40,9 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 	private ImageView Userimage;
 	FroumFragment froumfragment;
 	Utility util;
+	List<CommentInFroum> replyList;
+
+	int id = 0;
 
 	public FroumListAdapter(Context context, int resource,
 			List<CommentInFroum> objects, FroumFragment f) {
@@ -107,10 +110,16 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 		CommentInFroum d = list.get(position);
 		NumofCmtLike.setText(d.getNumOfLike());
 		NumofCmtDisLike.setText(d.getNumOfDislike());
+		notifyDataSetChanged();
+
 		ListView lstReply = (ListView) convertView
 				.findViewById(R.id.lstReplytoCm);
+		adapter.open();
+		replyList = adapter.getCommentInFroumbyPaperid(d.getFroumid(),
+				d.getId());
+		adapter.close();
 		FroumReplyetocmAdapter ReplyAdapter = new FroumReplyetocmAdapter(
-				context, R.layout.raw_froumcmt, list, null);
+				context, R.layout.raw_froumcmt, replyList, null);
 		lstReply.setAdapter(ReplyAdapter);
 		resizeListView(lstReply);
 
@@ -167,7 +176,7 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				TextView x = (TextView) view;
 				TextView disliketxt = (TextView) view2;
 				String item = x.getText().toString();
-				int id = 0;
+
 				for (CommentInFroum listItem : list) {
 					if (item.equals(listItem.getDesk())) {
 
@@ -204,16 +213,17 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				View view = parentlayout.findViewById(R.id.rawCmttxt);
 				TextView x = (TextView) view;
 				String item = x.getText().toString();
-				int id = 0;
+				int commentid = 0;
 				for (CommentInFroum listItem : list) {
 					if (item.equals(listItem.getDesk())) {
 
-						id = listItem.getId();
+						commentid = listItem.getId();
 					}
 				}
 
 				DialogcmtInfroum dialog = new DialogcmtInfroum(froumfragment,
-						id, context, -1, R.layout.dialog_addcomment);
+						commentid, context, froumfragment.getFroumId(),
+						R.layout.dialog_addcomment);
 				dialog.show();
 
 			}

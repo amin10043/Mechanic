@@ -70,6 +70,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		rating = (RatingBar) convertView.findViewById(R.id.ratingBar1);
 
 		rating.setRating(person.getRate());
+		rating.setEnabled(false);
 
 		// String item = txt1.getText().toString();
 
