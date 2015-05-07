@@ -2,6 +2,7 @@ package com.project.mechanic;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -38,7 +39,10 @@ public class MainActivity extends FragmentActivity {
 	private Fragment lastFragment;
 	private boolean isFavorite = false;
 	Utility util;
+	private int mInterval = 500000; // 5 seconds by default, can be changed
+									// later
 
+	private Handler mHandler;
 	SlideMenuAdapter slideadapter;
 
 	@Override
@@ -191,6 +195,24 @@ public class MainActivity extends FragmentActivity {
 
 		setActivityTitle(R.string.strMain);
 
+		mHandler = new Handler();
+		mHandler.postDelayed(mStatusChecker, mInterval);
+	}
+
+	Runnable mStatusChecker = new Runnable() {
+		@Override
+		public void run() {
+			util.showNotification();
+			mHandler.postDelayed(mStatusChecker, mInterval);
+		}
+	};
+
+	void startRepeatingTask() {
+		mStatusChecker.run();
+	}
+
+	void stopRepeatingTask() {
+		mHandler.removeCallbacks(mStatusChecker);
 	}
 
 	public void setActivityTitle(int title) {

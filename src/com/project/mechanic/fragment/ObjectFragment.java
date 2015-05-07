@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,4 +54,30 @@ public class ObjectFragment extends Fragment {
 		return view;
 	}
 
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// Changes 'back' button action
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			FragmentTransaction trans = getActivity()
+					.getSupportFragmentManager().beginTransaction();
+			trans.replace(R.id.content_frame, new MainFragment());
+			trans.addToBackStack(null);
+			trans.commit();
+		}
+		return true;
+	}
+
+	// public void onBackPressed() {
+	//
+	// FragmentTransaction trans = ((MainActivity) context)
+	// .getSupportFragmentManager().beginTransaction();
+	// trans.replace(R.id.content_frame, new FroumtitleFragment());
+	// trans.addToBackStack(null);
+	// trans.commit();
+
+	// FragmentTransaction trans = getActivity().getSupportFragmentManager()
+	// .beginTransaction();
+	// trans.replace(R.id.content_frame, new MainFragment());
+	// trans.addToBackStack(null);
+	// trans.commit();
+	// }
 }
