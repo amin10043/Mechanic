@@ -746,20 +746,6 @@ public class DataBaseAdapter {
 
 	}
 
-	public Favorite getFavoritebyId(int Id) {
-
-		Favorite item = null;
-		Cursor mCur = mDb.query(TableFavorite, Favorite, "Id=?",
-				new String[] { String.valueOf(Id) }, null, null, null);
-
-		if (mCur.moveToNext()) {
-			item = CursorFavorite(mCur);
-		}
-
-		return item;
-
-	}
-
 	public ArrayList<Ticket> getFavoriteById(int TypeId, int provinceID) {
 
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
@@ -1573,6 +1559,7 @@ public class DataBaseAdapter {
 		long res2 = res;
 	}
 
+	// ///////////////////////////////////////////////////////////////////
 	public boolean isUserLikedComment(int userId, int CommentId) {
 
 		Cursor curs = mDb.rawQuery(
@@ -1580,6 +1567,19 @@ public class DataBaseAdapter {
 						+ " WHERE UserId= " + String.valueOf(userId)
 						+ " AND CommentId=" + String.valueOf(CommentId)
 						+ " AND IsLike=" + "1", null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
+	public boolean isUserFavorite(int userId, int TicketId) {
+
+		Cursor curs = mDb.rawQuery("SELECT COUNT(*) AS NUM FROM "
+				+ TableFavorite + " WHERE UserId= " + String.valueOf(userId)
+				+ " AND IdTicket=" + String.valueOf(TicketId), null);
 		if (curs.moveToNext()) {
 			int number = curs.getInt(0);
 			if (number > 0)
@@ -1853,6 +1853,12 @@ public class DataBaseAdapter {
 
 		}
 		return result;
+
+	}
+
+	public void deletebyIdTicket(int id) {
+
+		mDb.execSQL("delete from [Favorite] where IdTicket = " + id);
 
 	}
 
