@@ -687,12 +687,4 @@ public class IntroductionFragment extends Fragment {
 		lst.setAdapter(x);
 	}
 
-	// public void onBackPressed() {
-	// Fragment fragment = getFragmentManager().findFragmentByTag(
-	// "MainFragment");
-	// if (fragment != null && fragment instanceof BackPressedListener) {
-	// ((BackPressedListener) fragment).onBackPressed();
-	// } else {
-	// // super.onBackPressed();
-	// }
 }

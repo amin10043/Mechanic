@@ -104,7 +104,7 @@ public class DataBaseAdapter {
 			"CommentId" };
 	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike" };
 	private String[] LikeInPaper = { "Id", "UserId", "PaperId", "Date",
-			"CommentId" };
+			"CommentId", "Seen" };
 	private String[] List = { "ID", "Name", "ParentId" };
 	private String[] ListItem = { "Id", "Name", "ListId" };
 	private String[] News = { "ID", "Title", "Description", "ServerDate",
@@ -954,7 +954,8 @@ public class DataBaseAdapter {
 	@SuppressWarnings("unused")
 	private LikeInPaper CursorToLikeInPaper(Cursor cursor) {
 		LikeInPaper temp = new LikeInPaper(cursor.getInt(0), cursor.getInt(1),
-				cursor.getInt(2), cursor.getString(3), cursor.getInt(4));
+				cursor.getInt(2), cursor.getString(3), cursor.getInt(4),
+				cursor.getInt(5));
 
 		return temp;
 

@@ -20,6 +20,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.fragment.CityFragment;
+import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class ProvinceListAdapter extends ArrayAdapter<Province> {
@@ -89,5 +90,14 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 			}
 		});
 		return convertView;
+	}
+
+	public void onBackPressed() {
+
+		FragmentTransaction trans = ((MainActivity) context)
+				.getSupportFragmentManager().beginTransaction();
+		trans.replace(R.id.content_frame, new MainFragment());
+		trans.commit();
+
 	}
 }

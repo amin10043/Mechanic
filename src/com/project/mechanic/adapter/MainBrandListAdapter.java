@@ -101,7 +101,7 @@ public class MainBrandListAdapter extends ArrayAdapter<Object> {
 					bundle.putString("Id", String.valueOf(id));
 					fragment.setArguments(bundle);
 					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
+					// trans.addToBackStack(null);
 					trans.commit();
 
 				} else {
