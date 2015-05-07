@@ -4,8 +4,12 @@ import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -16,6 +20,7 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import com.project.mechanic.R;
+import com.project.mechanic.SplashActivity;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Roozh.SolarCalendar;
@@ -185,5 +190,26 @@ public class Utility {
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BROYA.TTF");
 
+	}
+
+	public void showNotification() {
+		Intent intent = new Intent(context, SplashActivity.class);
+		PendingIntent pIntent = PendingIntent
+				.getActivity(context, 0, intent, 0);
+
+		// build notification
+		// the addAction re-use the same intent to keep the example short
+		Notification n = new Notification.Builder(context)
+				.setContentTitle("New mail from " + "test@gmail.com")
+				.setContentText("Subject").setSmallIcon(R.drawable.addimage)
+				.setContentIntent(pIntent).setAutoCancel(true).build();
+		// .addAction(R.drawable.addimage, "تست 1", pIntent)
+		// .addAction(R.drawable.addimage, "تست 2", pIntent)
+		// .addAction(R.drawable.addimage, "تست 3", pIntent)
+
+		NotificationManager notificationManager = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		notificationManager.notify(0, n);
 	}
 }
