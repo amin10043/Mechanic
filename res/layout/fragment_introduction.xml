@@ -20,7 +20,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:orientation="vertical" >
 
@@ -28,15 +28,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
 
-                    <ImageView
-                        android:id="@+id/imgvadvertise_Object"
+                    <LinearLayout
+                        android:id="@+id/headerlinerpageintroduction"
                         android:layout_width="match_parent"
-                        android:layout_height="160dp"
-                        android:layout_weight="3"
-                        android:paddingBottom="15dp"
-                        android:scaleType="fitXY" />
+                        android:layout_height="wrap_content" >
 
-                    <FrameLayout
+                        <ImageView
+                            android:id="@+id/imgvadvertise_Object"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:paddingBottom="20dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/pre_header" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear_id_profile_introduction_page"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
@@ -45,23 +53,11 @@
 
                         <ImageView
                             android:id="@+id/icon_pro"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="3dp"
-                            android:src="@drawable/profile_account" />
-
-                        <LinearLayout
-                            android:id="@+id/linearpicture"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" >
-
-                            <ImageView
-                                android:id="@+id/imagedisplay"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:padding="3dp" />
-                        </LinearLayout>
-                    </FrameLayout>
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/profile_account" />
+                    </LinearLayout>
                 </RelativeLayout>
             </FrameLayout>
 

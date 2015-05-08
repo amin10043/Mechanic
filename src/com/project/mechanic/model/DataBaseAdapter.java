@@ -104,7 +104,7 @@ public class DataBaseAdapter {
 			"CommentId" };
 	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike" };
 	private String[] LikeInPaper = { "Id", "UserId", "PaperId", "Date",
-			"CommentId" };
+			"CommentId", "Seen" };
 	private String[] List = { "ID", "Name", "ParentId" };
 	private String[] ListItem = { "Id", "Name", "ListId" };
 	private String[] News = { "ID", "Title", "Description", "ServerDate",
@@ -954,7 +954,8 @@ public class DataBaseAdapter {
 	@SuppressWarnings("unused")
 	private LikeInPaper CursorToLikeInPaper(Cursor cursor) {
 		LikeInPaper temp = new LikeInPaper(cursor.getInt(0), cursor.getInt(1),
-				cursor.getInt(2), cursor.getString(3), cursor.getInt(4));
+				cursor.getInt(2), cursor.getString(3), cursor.getInt(4),
+				cursor.getInt(5));
 
 		return temp;
 
@@ -1994,15 +1995,15 @@ public class DataBaseAdapter {
 
 		ContentValues uc = new ContentValues();
 
-		if (!"".equals(name))
-			uc.put(Object[1], name);
-		if (!"".equals(Phone))
+		if (!"".equals(name) && name != null)
+			uc.put("Name", name);
+		if (!"".equals(Phone) && Phone != null)
 			uc.put(Object[2], Phone);
-		if (!"".equals(Email))
+		if (!"".equals(Email) && Email != null)
 			uc.put(Object[3], Email);
-		if (!"".equals(fax))
+		if (!"".equals(fax) && fax != null)
 			uc.put(Object[4], fax);
-		if (!"".equals(description))
+		if (!"".equals(description) && description != null)
 			uc.put(Object[5], description);
 		if (HeaderImage != null)
 			uc.put(Object[6], HeaderImage);
@@ -2010,29 +2011,29 @@ public class DataBaseAdapter {
 			uc.put(Object[7], ProfileImage);
 		if (FooterImage != null)
 			uc.put(Object[8], FooterImage);
-		if (!"".equals(LinkCatalog))
+		if (!"".equals(LinkCatalog) && LinkCatalog != null)
 			uc.put(Object[10], LinkCatalog);
-		if (!"".equals(LinkPrice))
+		if (!"".equals(LinkPrice) && LinkPrice != null)
 			uc.put(Object[11], LinkPrice);
-		if (!"".equals(LinkPDF))
+		if (!"".equals(LinkPDF) && LinkPDF != null)
 			uc.put(Object[12], LinkPDF);
-		if (!"".equals(LinkVideo))
+		if (!"".equals(LinkVideo) && LinkVideo != null)
 			uc.put(Object[13], LinkVideo);
-		if (!"".equals(Address))
+		if (!"".equals(Address) && Address != null)
 			uc.put(Object[14], Address);
-		if (!"".equals(Mobile))
+		if (!"".equals(Mobile) && Mobile != null)
 			uc.put(Object[15], Mobile);
-		if (!"".equals(LinkFaceBook))
+		if (!"".equals(LinkFaceBook) && LinkFaceBook != null)
 			uc.put(Object[18], LinkFaceBook);
-		if (!"".equals(LinkInstagram))
+		if (!"".equals(LinkInstagram) && LinkInstagram != null)
 			uc.put(Object[19], LinkInstagram);
-		if (!"".equals(LinkLinkedin))
+		if (!"".equals(LinkLinkedin) && LinkLinkedin != null)
 			uc.put(Object[20], LinkLinkedin);
-		if (!"".equals(LinkGoogle))
+		if (!"".equals(LinkGoogle) && LinkGoogle != null)
 			uc.put(Object[21], LinkGoogle);
-		if (!"".equals(LinkSite))
+		if (!"".equals(LinkSite) && LinkSite != null)
 			uc.put(Object[22], LinkSite);
-		if (!"".equals(LinkTweitter))
+		if (!"".equals(LinkTweitter) && LinkTweitter != null)
 			uc.put(Object[23], LinkTweitter);
 
 		mDb.update(TableObject, uc, "ID=" + id, null);

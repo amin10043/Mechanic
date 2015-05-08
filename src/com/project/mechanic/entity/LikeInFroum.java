@@ -6,6 +6,7 @@ public class LikeInFroum {
 	int Froumid;
 	String Datetime;
 	int CommentId;
+	int Seen;
 
 	public int getId() {
 		return Id;
@@ -47,13 +48,22 @@ public class LikeInFroum {
 		CommentId = commentid;
 	}
 
+	public int getSeen() {
+		return Seen;
+	}
+
+	public void setSeen(int seen) {
+		Seen = seen;
+	}
+
 	public LikeInFroum(int id, int userid, int froumid, String datetime,
-			int commentid) {
+			int commentid, int seen) {
 		Id = id;
 		UserId = userid;
 		Froumid = froumid;
 		Datetime = datetime;
 		CommentId = commentid;
+		Seen = seen;
 
 	}
 

@@ -31,6 +31,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.adapter.IntroductionListAdapter;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.Object;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -47,12 +48,15 @@ public class IntroductionFragment extends Fragment {
 	Fragment fragment;
 	public ImageButton like;
 	public ImageButton Comment;
-	ImageView imagedisplay;
-	LinearLayout.LayoutParams lp2;
+	ImageView profileImage;
+
+	LinearLayout.LayoutParams profileParams, headerParams;
+
 	ArrayList<CommentInObject> mylist;
 	DataBaseAdapter adapter;
 	ListView lst;
-	LinearLayout linpic;
+	LinearLayout headImageLinear, profileLinear;
+
 	TextView txtFax;
 	TextView txtAddress;
 	TextView txtPhone;
@@ -61,7 +65,7 @@ public class IntroductionFragment extends Fragment {
 	TextView txtDesc;
 	TextView txtNumofLike;
 	TextView txtNumofComment;
-	ImageView advertise;
+	ImageView headerImage;
 	ImageView advertise2;
 	ImageButton Facebook;
 	ImageButton Instagram;
@@ -81,9 +85,9 @@ public class IntroductionFragment extends Fragment {
 	ImageButton EditPage;
 	ImageButton CreatePage;
 	byte[] headerbyte, profilebyte, footerbyte;
-	ImageView profileimage;
 
 	Utility ut;
+	SharedPreferences sendDataID;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -95,11 +99,12 @@ public class IntroductionFragment extends Fragment {
 		adapter = new DataBaseAdapter(getActivity());
 		peykan6 = (ImageView) view.findViewById(R.id.imageButton6);
 		peykan5 = (ImageView) view.findViewById(R.id.imageButton7);
-		advertise = (ImageView) view.findViewById(R.id.imgvadvertise_Object);
+		headerImage = (ImageView) view.findViewById(R.id.imgvadvertise_Object);
 		advertise2 = (ImageView) view.findViewById(R.id.imgvadvertise2_Object);
-		profileimage = (ImageView) view.findViewById(R.id.icon_pro);
+		profileImage = (ImageView) view.findViewById(R.id.icon_pro);
 
-		imagedisplay = (ImageView) view.findViewById(R.id.imagedisplay);
+		headImageLinear = (LinearLayout) view
+				.findViewById(R.id.headerlinerpageintroduction);
 		link1 = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
 		link2 = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
 
@@ -131,7 +136,8 @@ public class IntroductionFragment extends Fragment {
 		Pdf2 = (ImageButton) view.findViewById(R.id.btnPdf2_Object);
 		Pdf3 = (ImageButton) view.findViewById(R.id.btnPdf3_Object);
 		Pdf4 = (ImageButton) view.findViewById(R.id.btnPdf4_Object);
-		linpic = (LinearLayout) view.findViewById(R.id.linearpicture);
+		profileLinear = (LinearLayout) view
+				.findViewById(R.id.linear_id_profile_introduction_page);
 		EditPage = (ImageButton) view.findViewById(R.id.ImgbtnEdit);
 		CreatePage = (ImageButton) view.findViewById(R.id.ImgbtnCreate);
 
@@ -141,20 +147,22 @@ public class IntroductionFragment extends Fragment {
 			id = Integer.valueOf(getArguments().getString("Id"));
 		}
 
-		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id",
-				0);
+		sendDataID = getActivity().getSharedPreferences("Id", 0);
 		final int cid = sendDataID.getInt("main_Id", -1);
 
-		Toast.makeText(getActivity(), "" + cid, Toast.LENGTH_LONG).show();
+		profileParams = new LinearLayout.LayoutParams(
+				profileLinear.getLayoutParams());
 
-		Toast.makeText(getActivity(), "" + id, Toast.LENGTH_LONG).show();
+		profileParams.height = ut.getScreenwidth() / 5;
+		profileParams.width = ut.getScreenwidth() / 5;
 
-		lp2 = new LinearLayout.LayoutParams(linpic.getLayoutParams());
+		profileImage.setLayoutParams(profileParams);
 
-		lp2.height = ut.getScreenwidth() / 4;
-		lp2.width = ut.getScreenwidth() / 4;
-
-		imagedisplay.setLayoutParams(lp2);
+		headerParams = new LinearLayout.LayoutParams(
+				headImageLinear.getLayoutParams());
+		headerParams.width = ut.getScreenwidth();
+		headerParams.height = (int) (ut.getScreenHeight() / 2.5);
+		headImageLinear.setPadding(0, 0, 0, 20);
 
 		adapter.open();
 		mylist = adapter.getAllCommentInObjectById(id);
@@ -165,13 +173,21 @@ public class IntroductionFragment extends Fragment {
 			return view;
 		}
 
+		headerImage.setLayoutParams(headerParams);
 		// imagedisplay.setBackgroundResource(R.drawable.profile_account);
+		Users user = ut.getCurrentUser();
+		if (cid == user.getId()) {
+			EditPage.setVisibility(View.VISIBLE);
+
+		} else
+			EditPage.setVisibility(View.INVISIBLE);
 
 		byte[] bitmapbyte = object.getImage1();
+
 		if (bitmapbyte != null) {
 			Bitmap bmp1 = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 					bitmapbyte.length);
-			advertise.setImageBitmap(bmp1);
+			headerImage.setImageBitmap(bmp1);
 
 		}
 
@@ -179,7 +195,7 @@ public class IntroductionFragment extends Fragment {
 		if (bitmap != null) {
 			Bitmap bmp2 = BitmapFactory.decodeByteArray(bitmap, 0,
 					bitmap.length);
-			imagedisplay.setImageBitmap(bmp2);
+			profileImage.setImageBitmap(bmp2);
 
 		}
 		byte[] bitm = object.getImage3();
@@ -263,7 +279,7 @@ public class IntroductionFragment extends Fragment {
 		if (profilebyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(profilebyte, 0,
 					profilebyte.length);
-			profileimage.setImageBitmap(bmp);
+			profileImage.setImageBitmap(bmp);
 		}
 		// advertise.setimage
 		Facebook.setOnClickListener(new OnClickListener() {
@@ -687,28 +703,4 @@ public class IntroductionFragment extends Fragment {
 		lst.setAdapter(x);
 	}
 
-	public interface BackPressedListener {
-		void onBackPressed();
-	}
-
-	public void onBackPressed() {
-		Fragment fragment = getFragmentManager().findFragmentByTag(
-				"MainFragment");
-		if (fragment != null && fragment instanceof BackPressedListener) {
-			((BackPressedListener) fragment).onBackPressed();
-		} else {
-			// super.onBackPressed();
-		}
-	}
-
 }
-
-// public void onBackPressed() {
-//
-// FragmentTransaction trans = getActivity().getSupportFragmentManager()
-// .beginTransaction();
-// trans.replace(R.id.content_frame, new MainFragment());
-// trans.addToBackStack(null);
-// trans.commit();
-// }
-// }
