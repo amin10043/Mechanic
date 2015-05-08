@@ -38,21 +38,29 @@ public class IntroductionEditFragment extends Fragment {
 
 	DataBaseAdapter DBAdapter;
 	Utility util;
+
 	Object object;
+
 	DialogEditDownloadIntroduction diadown;
+
 	DialogEditNet dianet;
+
 	ImageButton btnSave;
+
 	String nameValue, phoneValue, faxValue, mobileValue, emailValue,
 			addressValue, descriptionValue;
+
 	EditText nameEnter, phoneEnter, faxEnter, mobileEnter, emailEnter,
 			addressEnter, descriptionEnter;
-	ImageView headerEdit, profileEdit, footerEdit;
+
+	ImageView headerImageEdit, profileImageEdit, footerImageEdit;
+
 	LinearLayout.LayoutParams headerEditParams, profileEditParams,
 			footerEditParams, editnameParams;
-	 LinearLayout.LayoutParams lp2;
+
 	RelativeLayout editnetLink, editDNlink, namayendegi, khadamat;
 
-	LinearLayout Lheader, Lpro, Lfooter;
+	LinearLayout Linearheader, Linearprofile, Linearfooter;
 
 	public String Dcatalog, Dprice, Dpdf, Dvideo;
 	public String Dface, Dlink, Dtwt, Dweb, Dgoogle, Dinstagram;
@@ -69,9 +77,9 @@ public class IntroductionEditFragment extends Fragment {
 		util = new Utility(getActivity());
 
 		btnSave = (ImageButton) view.findViewById(R.id.btnsave);
-		headerEdit = (ImageView) view.findViewById(R.id.hh1);
-		profileEdit = (ImageView) view.findViewById(R.id.pp1);
-		footerEdit = (ImageView) view.findViewById(R.id.ft1);
+		headerImageEdit = (ImageView) view.findViewById(R.id.hh1);
+		profileImageEdit = (ImageView) view.findViewById(R.id.pp1);
+		footerImageEdit = (ImageView) view.findViewById(R.id.ft1);
 
 		nameEnter = (EditText) view.findViewById(R.id.nameEdit);
 		phoneEnter = (EditText) view.findViewById(R.id.editTextphone);
@@ -84,32 +92,34 @@ public class IntroductionEditFragment extends Fragment {
 
 		editnetLink = (RelativeLayout) view.findViewById(R.id.editpageNetwork);
 		editDNlink = (RelativeLayout) view.findViewById(R.id.editpagedownload);
-
 		namayendegi = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
 		khadamat = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
 
 		namayendegi.setVisibility(View.GONE);
 		khadamat.setVisibility(View.GONE);
-	
-		Lheader = (LinearLayout) view.findViewById(R.id.headerLinearPage);
-		Lpro = (LinearLayout) view.findViewById(R.id.linearEditProfil);
-		Lfooter = (LinearLayout) view.findViewById(R.id.linearfooteredit);
+
+		Linearheader = (LinearLayout) view.findViewById(R.id.headerLinearPage);
+		Linearprofile = (LinearLayout) view.findViewById(R.id.linearEditProfil);
+		Linearfooter = (LinearLayout) view.findViewById(R.id.linearfooteredit);
 
 		headerEditParams = new LinearLayout.LayoutParams(
-				Lheader.getLayoutParams());
-		headerEditParams.height = util.getScreenHeight() / 3;
-		Lheader.setPadding(0, 0, 0, 20);
+				Linearheader.getLayoutParams());
+		headerEditParams.width = util.getScreenwidth();
+		headerEditParams.height = (int) (util.getScreenHeight() / 2.5);
+		Linearheader.setPadding(0, 0, 0, 20);
 
 		profileEditParams = new LinearLayout.LayoutParams(
-				Lpro.getLayoutParams());
+				Linearprofile.getLayoutParams());
 		profileEditParams.width = util.getScreenwidth() / 5;
 		profileEditParams.height = util.getScreenwidth() / 5;
 
 		footerEditParams = new LinearLayout.LayoutParams(
-				Lfooter.getLayoutParams());
+				Linearfooter.getLayoutParams());
+		footerEditParams.width = util.getScreenwidth();
 		footerEditParams.height = util.getScreenHeight() / 3;
 
-		editnameParams = new LinearLayout.LayoutParams(Lpro.getLayoutParams());
+		editnameParams = new LinearLayout.LayoutParams(
+				Linearprofile.getLayoutParams());
 		editnameParams.width = util.getScreenwidth() / 3;
 		editnameParams.height = util.getScreenwidth() / 10;
 
@@ -123,83 +133,56 @@ public class IntroductionEditFragment extends Fragment {
 		emailEnter.setLayoutParams(edittextParams);
 		addressEnter.setLayoutParams(edittextParams);
 
+		headerImageEdit.setLayoutParams(headerEditParams);
+		profileImageEdit.setLayoutParams(profileEditParams);
+
 		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id",
 				0);
 		final int id = sendDataID.getInt("main_Id", -1);
 
-		Toast.makeText(getActivity(), id + "", Toast.LENGTH_SHORT).show();
-		
-///////////display information///////////////////////
-		
-		
-		lp2=new LinearLayout.LayoutParams(Lpro .getLayoutParams());
+		Toast.makeText(getActivity(), "introduction id =" + id,
+				Toast.LENGTH_SHORT).show();
 
-		lp2.height = util .getScreenwidth()/4;
-		lp2.width =   util .getScreenwidth()/4;
+		// /////////display information///////////////////////
 
-		profileEdit.setLayoutParams(lp2);
-		SharedPreferences sendDataID1 = getActivity().getSharedPreferences("Id",
-				0);
-		final int cid = sendDataID1.getInt("main_Id", -1);
+		// SharedPreferences sendDataID1 = getActivity().getSharedPreferences(
+		// "Id", 0);
+		// final int cid = sendDataID1.getInt("main_Id", -1);
 		DBAdapter.open();
-		object = DBAdapter.getObjectbyid(cid);
-		
+		object = DBAdapter.getObjectbyid(id);
+
 		byte[] bitmapbyte = object.getImage2();
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 					bitmapbyte.length);
-			profileEdit.setImageBitmap(bmp);
+			profileImageEdit.setImageBitmap(bmp);
 		}
-		
+
 		byte[] bitmap = object.getImage1();
 		if (bitmap != null) {
-			Bitmap bmp = BitmapFactory.decodeByteArray(bitmap, 0,
-					bitmap.length);
-			headerEdit.setImageBitmap(bmp);
+			Bitmap bmp = BitmapFactory
+					.decodeByteArray(bitmap, 0, bitmap.length);
+			headerImageEdit.setImageBitmap(bmp);
 		}
-		
+
 		byte[] bitm = object.getImage3();
 		if (bitm != null) {
-			Bitmap bmp = BitmapFactory.decodeByteArray(bitm, 0,
-					bitm.length);
-			footerEdit.setImageBitmap(bmp);
+			Bitmap bmp = BitmapFactory.decodeByteArray(bitm, 0, bitm.length);
+			footerImageEdit.setImageBitmap(bmp);
 		}
-		Toast.makeText(getActivity(),""+ cid  , Toast.LENGTH_SHORT).show();
-		
+
 		nameEnter.setText(object.getName());
 		phoneEnter.setText(object.getPhone());
 		faxEnter.setText(object.getFax());
 		mobileEnter.setText(object.getCellphone());
 		emailEnter.setText(object.getEmail());
 		addressEnter.setText(object.getAddress());
-		
-		DBAdapter.close();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		////////////////////////////////////////////////////
-		
-		
-		
-		
-		
 
-		headerEdit.setOnClickListener(new OnClickListener() {
+		DBAdapter.close();
+
+		// //////////////////////////////////////////////////
+
+		headerImageEdit.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -213,7 +196,7 @@ public class IntroductionEditFragment extends Fragment {
 			}
 		});
 
-		profileEdit.setOnClickListener(new OnClickListener() {
+		profileImageEdit.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -226,7 +209,7 @@ public class IntroductionEditFragment extends Fragment {
 
 			}
 		});
-		footerEdit.setOnClickListener(new OnClickListener() {
+		footerImageEdit.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -262,45 +245,37 @@ public class IntroductionEditFragment extends Fragment {
 				dianet.show();
 			}
 		});
-		
-		
-		
-		
-		
 
-		
-		
-		
 		btnSave.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				
-				bmpHeader = ((BitmapDrawable) headerEdit.getDrawable()).getBitmap();
-				bmpProfil = ((BitmapDrawable) profileEdit.getDrawable()).getBitmap();
-				bmpFooter = ((BitmapDrawable) footerEdit.getDrawable()).getBitmap();
-				
-				
+
+				bmpHeader = ((BitmapDrawable) headerImageEdit.getDrawable())
+						.getBitmap();
+				bmpProfil = ((BitmapDrawable) profileImageEdit.getDrawable())
+						.getBitmap();
+				bmpFooter = ((BitmapDrawable) footerImageEdit.getDrawable())
+						.getBitmap();
+
 				Bitmap emptyBitmap1 = Bitmap.createBitmap(bmpHeader.getWidth(),
 						bmpHeader.getHeight(), bmpHeader.getConfig());
 				Bitmap emptyBitmap2 = Bitmap.createBitmap(bmpProfil.getWidth(),
-						bmpProfil.getHeight(),bmpProfil.getConfig());
+						bmpProfil.getHeight(), bmpProfil.getConfig());
 				Bitmap emptyBitmap3 = Bitmap.createBitmap(bmpFooter.getWidth(),
 						bmpFooter.getHeight(), bmpFooter.getConfig());
 				final byte[] byteHeader = getBitmapAsByteArray(bmpHeader);
 				final byte[] byteProfil = getBitmapAsByteArray(bmpProfil);
 				final byte[] byteFooter = getBitmapAsByteArray(bmpFooter);
 
-		if (headerEdit.getDrawable() == null && 
-		profileEdit.getDrawable() == null &&
-		footerEdit.getDrawable() == null){
+				if (headerImageEdit.getDrawable() == null
+						&& profileImageEdit.getDrawable() == null
+						&& footerImageEdit.getDrawable() == null) {
 
-					Toast.makeText(getActivity(), "Empty ByteArray", Toast.LENGTH_SHORT)
-							.show();
-		}
-				
-				
-				
+					Toast.makeText(getActivity(), "Empty ByteArray",
+							Toast.LENGTH_SHORT).show();
+				}
+
 				nameValue = nameEnter.getText().toString();
 				phoneValue = phoneEnter.getText().toString();
 				faxValue = faxEnter.getText().toString();
@@ -322,9 +297,6 @@ public class IntroductionEditFragment extends Fragment {
 							Dvideo, addressValue, mobileValue, Dface,
 							Dinstagram, Dlink, Dgoogle, Dweb, Dtwt);
 					DBAdapter.close();
-
-					Toast.makeText(getActivity(), "تغییرات با موفقیت ذخیره شد",
-							Toast.LENGTH_SHORT).show();
 
 					getActivity().getSupportFragmentManager().popBackStack();
 				}
@@ -359,10 +331,11 @@ public class IntroductionEditFragment extends Fragment {
 
 			// ImageView btnaddpic1 = (ImageView) view
 			// .findViewById(R.id.btnaddpic);
-			headerEdit.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-			headerEdit.setBackgroundColor(getResources().getColor(
+			headerImageEdit.setImageBitmap(BitmapFactory
+					.decodeFile(picturePath));
+			headerImageEdit.setBackgroundColor(getResources().getColor(
 					android.R.color.transparent));
-			headerEdit.setLayoutParams(headerEditParams);
+			headerImageEdit.setLayoutParams(headerEditParams);
 
 		}
 		if (requestCode == profileLoadCode && resultCode == Activity.RESULT_OK
@@ -380,10 +353,11 @@ public class IntroductionEditFragment extends Fragment {
 
 			// ImageView btnaddpic1 = (ImageView) view
 			// .findViewById(R.id.btnaddpic);
-			profileEdit.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-			profileEdit.setBackgroundColor(getResources().getColor(
+			profileImageEdit.setImageBitmap(BitmapFactory
+					.decodeFile(picturePath));
+			profileImageEdit.setBackgroundColor(getResources().getColor(
 					android.R.color.transparent));
-			profileEdit.setLayoutParams(profileEditParams);
+			profileImageEdit.setLayoutParams(profileEditParams);
 
 		}
 		if (requestCode == footerLoadcode && resultCode == Activity.RESULT_OK
@@ -401,10 +375,11 @@ public class IntroductionEditFragment extends Fragment {
 
 			// ImageView btnaddpic1 = (ImageView) view
 			// .findViewById(R.id.btnaddpic);
-			footerEdit.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-			footerEdit.setBackgroundColor(getResources().getColor(
+			footerImageEdit.setImageBitmap(BitmapFactory
+					.decodeFile(picturePath));
+			footerImageEdit.setBackgroundColor(getResources().getColor(
 					android.R.color.transparent));
-			footerEdit.setLayoutParams(footerEditParams);
+			footerImageEdit.setLayoutParams(footerEditParams);
 
 		}
 	}

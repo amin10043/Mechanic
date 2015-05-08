@@ -12,11 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.entity.Favorite;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -38,7 +36,8 @@ public class ShowAdFragment extends Fragment {
 	Users u;
 	private DialogAnad dialog;
 	int proID = -1;
-	Favorite f;
+	int f;
+	private boolean isFavorite = false;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -67,11 +66,12 @@ public class ShowAdFragment extends Fragment {
 		showfax = (TextView) view.findViewById(R.id.fragment_showad_fax);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
+
 		if (getArguments().getString("ProID") != null) {
 			proID = Integer.valueOf(getArguments().getString("ProID"));
 		}
-		dbAdapter.open();
 
+		dbAdapter.open();
 		Ticket t = dbAdapter.getTicketById(id);
 		a = t.getId();
 		userTicket = t.getUserId();
@@ -96,23 +96,19 @@ public class ShowAdFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-
-				if (u != null && F == 0) {
+				if (u != null && isFavorite) {
 					dbAdapter.open();
-
+					dbAdapter.deletebyIdTicket(a);
+					dbAdapter.close();
+					like.setImageResource(R.drawable.ic_star_off);
+				} else {
+					dbAdapter.open();
 					dbAdapter.insertFavoritetoDb(0, u.getId(), a);
-					F = 1;
-					Toast.makeText(getActivity(), F + "", Toast.LENGTH_LONG)
-							.show();
 					dbAdapter.close();
 					like.setImageResource(R.drawable.ic_star_on);
-				} else if (F != 0) {
-					like.setImageResource(R.drawable.ic_star_off);
-					F = 0;
 
-					Toast.makeText(getActivity(), F + "", Toast.LENGTH_LONG)
-							.show();
 				}
+				isFavorite = !isFavorite;
 
 			}
 		});
