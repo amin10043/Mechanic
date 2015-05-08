@@ -9,54 +9,24 @@
         android:id="@+id/icon_object"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true" >
+        android:padding="3dp"
+        android:src="@drawable/profile_account" />
 
-        <ImageView
-            android:id="@+id/icon_item"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="3dp"
-            android:src="@drawable/profile_account" />
+    <TextView
+        android:id="@+id/Rowobjecttxt"
+        style="@style/row_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="Large Text" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/profile_icon_shape" />
-
-        <TextView
-            android:id="@+id/Rowobjecttxt"
-            style="@style/row_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="Large Text" />
-
-        <RatingBar
-            android:id="@+id/ratingBar1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true" />
-
-        <FrameLayout>
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/Rowobjecttxt"
-            style="@style/row_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="Large Text" />
-
-        <RatingBar
-            android:id="@+id/ratingBar1"
-            style="?android:attr/ratingBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/icon_object"
-            android:layout_toRightOf="@+id/icon_object" />
-    </ImageView>
+    <RatingBar
+        android:id="@+id/ratingBar1"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/icon_object"
+        android:layout_toRightOf="@+id/icon_object" />
 
 </RelativeLayout>

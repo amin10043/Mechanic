@@ -16,8 +16,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.SearchView.OnCloseListener;
 import android.widget.TextView;
 
 import com.project.mechanic.adapter.SlideMenuAdapter;
@@ -100,25 +98,25 @@ public class MainActivity extends FragmentActivity {
 		// final ImageButton iBtnFavorite = (ImageButton)
 		// findViewById(R.id.iBtnFavorite);
 		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
-		SearchView searchV = (SearchView) findViewById(R.id.searchV);
+		// SearchView searchV = (SearchView) findViewById(R.id.searchV);
 
-		searchV.setOnSearchClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				txtTitle.setVisibility(View.GONE);
-
-			}
-		});
-
-		searchV.setOnCloseListener(new OnCloseListener() {
-
-			@Override
-			public boolean onClose() {
-				txtTitle.setVisibility(View.VISIBLE);
-				return false;
-			}
-		});
+		// searchV.setOnSearchClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// txtTitle.setVisibility(View.GONE);
+		//
+		// }
+		// });
+		//
+		// searchV.setOnCloseListener(new OnCloseListener() {
+		//
+		// @Override
+		// public boolean onClose() {
+		// txtTitle.setVisibility(View.VISIBLE);
+		// return false;
+		// }
+		// });
 
 		iBtnMenu.setOnClickListener(new OnClickListener() {
 

@@ -128,7 +128,7 @@
                     android:ems="10" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/dialog_show_phone"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
@@ -154,7 +154,7 @@
                     android:ems="10" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/dialog_show_mobile"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
@@ -180,7 +180,7 @@
                     android:ems="10" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/dialog_show_fax"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
@@ -207,7 +207,7 @@
                     android:inputType="textPostalAddress" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/dialog_email"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"

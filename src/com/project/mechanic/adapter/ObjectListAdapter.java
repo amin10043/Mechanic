@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -135,6 +136,8 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 						// check authentication and authorization
 						id = object.getId();
 						sendDataID.edit().putInt("main_Id", id).commit();
+						Toast.makeText(context, "object list adapter  = " + id,
+								Toast.LENGTH_SHORT).show();
 
 					}
 
