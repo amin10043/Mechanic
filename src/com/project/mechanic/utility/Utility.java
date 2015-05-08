@@ -212,13 +212,13 @@ public class Utility {
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(
 				context)
 		// Set Icon
-				.setSmallIcon(R.drawable.a10)
+				.setSmallIcon(R.drawable.ic_notification)
 				// Set Ticker Message
-				.setTicker("dfsdf")
+				.setTicker("arabian")
 				// Set Title
-				.setContentTitle("hgjh")
+				.setContentTitle("پیام جدید")
 				// Set Text
-				.setContentText("fvdvdfvv")
+				.setContentText("مکانیکال")
 				// Add an Action Button below Notification
 				.addAction(R.drawable.ic_launcher, "Action Button", pIntent)
 				// Set PendingIntent into Notification

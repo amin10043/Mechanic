@@ -40,7 +40,8 @@
     <string name="anad">تالار </string>
     <string name="showad">آگهی</string>
     <string name="txtanad">درج آگهی شما </string>
-     <string name="txtanadedite">ویرایش آگهی </string>
+    <string name="txtanadedite">ویرایش آگهی </string>
+    <string name="search">ویرایش آگهی </string>
 
     <string-array name="MenuItems">
         <item name="home">خانه</item>

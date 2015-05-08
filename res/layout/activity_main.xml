@@ -6,6 +6,7 @@
     android:weightSum="1" >
 
     <RelativeLayout
+        android:id="@+id/searchV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/header" >
@@ -48,14 +49,12 @@
             android:textColor="#002230"
             android:textSize="14sp" />
 
-        <SearchView
-            android:id="@+id/searchV"
+        <ImageView
+            android:id="@+id/sedarch_v"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/linearLayout1"
-            android:queryHint="@string/searchHint" >
-        </SearchView>
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/ic_search" />
     </RelativeLayout>
 
     <android.support.v4.widget.DrawerLayout
@@ -69,13 +68,6 @@
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
-
-            <ImageButton
-                android:id="@+id/iBtnNotification"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/ic_notification" />
         </FrameLayout>
 
         <!-- The navigation drawer -->
