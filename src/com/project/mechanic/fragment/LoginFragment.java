@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
@@ -25,7 +27,7 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 	ServiceComm service;
 	Utility util;
 	Dialogeml dialog;
-
+	 DataBaseAdapter dbAdapter;
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
@@ -50,21 +52,49 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 			@Override
 			public void onClick(View v) {
-
+				dbAdapter = new DataBaseAdapter(getActivity());
+				dbAdapter.open();
+			
+				String user = edituser.getText().toString();
+				String pass = editpass.getText().toString();
+				Users u =dbAdapter.getUserbyusername(user);
+				
+if (u==null)
+{
+	Toast.makeText(getActivity(),
+			"not user",
+	Toast.LENGTH_SHORT).show();
+	
+	}
+else 
+{	
+	int id = u.getId();
+	
+	dbAdapter.UpdateAdminUserToDb(id, 1);
+	Toast.makeText(getActivity(),
+			id+"",
+	Toast.LENGTH_SHORT).show();
+	
+}			
+				
+				
+				
+				
+				
 				if (!util.isNetworkConnected()) {
 					util.showOkDialog(getActivity(), "خطا در ارتباط",
 							"شما به اینترنت متصل نیستید.");
 				}
 
-				String user = edituser.getText().toString();
-				String pass = editpass.getText().toString();
-				if ("".equals(user) || "".equals(pass)) {
+				String user1 = edituser.getText().toString();
+				String pass1 = editpass.getText().toString();
+				if ("".equals(user1) || "".equals(pass1)) {
 					Toast.makeText(getActivity(),
 							"نام کاربری و یا کلمه عبور نمی تواند خالی باشد.",
 							Toast.LENGTH_SHORT).show();
 					return;
 				}
-				String[] params = new String[] { "login", user, pass };
+				String[] params = new String[] { "login", user1, pass1 };
 				service.delegate = LoginFragment.this;
 				service.execute(params);
                 

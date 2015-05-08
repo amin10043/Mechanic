@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import android.R.string;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -255,6 +256,30 @@ public class DataBaseAdapter {
 	// }
 	// ///////////////
 
+	
+	
+	
+
+	
+	
+	public void UpdateAdminUserToDb(int id,int admin) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		// uc.put("Email", email);
+		// uc.put("Password", password);
+//		uc.put("Phonenumber", phonenumber);
+//
+//		uc.put("Mobailenumber", mobailenumber);
+//		uc.put("Faxnumber", faxnumber);
+		uc.put("Admin", admin);
+
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableUsers, uc, "ID=" + id, null);
+	}
+	
+	
+	
 	public void UpdateUserToDb(int id, String phonenumber,
 			String mobailenumber, String faxnumber, String address) {
 
@@ -1205,7 +1230,12 @@ public class DataBaseAdapter {
 		int s = cu.getCount();
 		return s;
 	}
-
+	
+	
+	
+	
+	
+	
 	// ///////////
 	// public Integer Image(String table) {
 	//
@@ -1611,6 +1641,25 @@ public class DataBaseAdapter {
 		}
 	}
 
+	
+	public Users getUserbyusername(String username)
+	
+	{
+		Users result = null;
+
+		Cursor mCur = mDb.query(TableUsers, Users, " Username=?",
+				new String[] { String.valueOf(id) }, null, null, null);
+		if (mCur.moveToNext()) {
+			result = CursorToUsers(mCur);
+		}
+		return result;
+	
+	}
+	
+	
+	
+	
+	
 	public Users getUserbyid(int id) {
 
 		Users result = null;

@@ -50,8 +50,10 @@ utile1=new Utility(getActivity());
 	TextView	txtemail=(TextView) view.findViewById(R.id.txtemail);
 	TextView	txtname=(TextView) view.findViewById(R.id.txtname);
 	TextView	txtfax=(TextView) view.findViewById(R.id.txtfax);
-	ImageView   img=(ImageView) view.findViewById(R.id.img1)	;
+	ImageView   logout=(ImageView) view.findViewById(R.id.img1)	;
+	ImageView   img=(ImageView) view.findViewById(R.id.imagelogout)	;
 Button btnedit=(Button) view.findViewById(R.id.btnedit);
+
 TextView txtdate=(TextView)view.findViewById(R.id.txtdate);
 final LinearLayout lin2 = (LinearLayout) view.findViewById(R.id.lin2);
 
@@ -116,7 +118,16 @@ String d = x.getDate();
 
 	
 	
-	
+	logout.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+	Users	u	=utile1.getCurrentUser();
+	u=null;
+			
+		}
+	});
 	
 	
 	btnedit.setOnClickListener(new OnClickListener() {

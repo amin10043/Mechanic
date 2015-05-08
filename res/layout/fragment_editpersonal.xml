@@ -82,6 +82,13 @@
                         android:gravity="right|center"
                         android:textColor="@color/transparent"
                         android:textSize="@dimen/txtsize30" />
+
+                    <ImageView
+                        android:id="@+id/imagelogout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_launcher" />
                 </LinearLayout>
             </LinearLayout>
 
