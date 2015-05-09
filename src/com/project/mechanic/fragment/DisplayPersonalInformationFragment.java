@@ -1,6 +1,7 @@
 package com.project.mechanic.fragment;
 
 import android.app.Service;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -44,14 +45,14 @@ public class DisplayPersonalInformationFragment  extends Fragment {
 utile1=new Utility(getActivity());
 		service = new ServiceComm(getActivity());
 		
-	TextView	txtaddress	=(TextView) view.findViewById(R.id.txtaddress);
-	TextView	txtcellphone=(TextView) view.findViewById(R.id.txtcellphone);
-	TextView	txtphone=(TextView) view.findViewById(R.id.txtphone);
-	TextView	txtemail=(TextView) view.findViewById(R.id.txtemail);
+	TextView	txtaddress	=(TextView) view.findViewById(R.id.address);
+	TextView	txtcellphone=(TextView) view.findViewById(R.id.cellphone);
+	TextView	txtphone=(TextView) view.findViewById(R.id.phone);
+	TextView	txtemail=(TextView) view.findViewById(R.id.email);
 	TextView	txtname=(TextView) view.findViewById(R.id.txtname);
-	TextView	txtfax=(TextView) view.findViewById(R.id.txtfax);
-	ImageView   logout=(ImageView) view.findViewById(R.id.img1)	;
-	ImageView   img=(ImageView) view.findViewById(R.id.imagelogout)	;
+	TextView	txtfax=(TextView) view.findViewById(R.id.fax);
+	ImageView    img=(ImageView) view.findViewById(R.id.img1)	;
+	ImageView logout =(ImageView) view.findViewById(R.id.imagelogout)	;
 Button btnedit=(Button) view.findViewById(R.id.btnedit);
 
 TextView txtdate=(TextView)view.findViewById(R.id.txtdate);
@@ -69,42 +70,41 @@ lp1.width=utile1.getScreenwidth()/4;
 
 	dbAdapter = new DataBaseAdapter(getActivity());
 	dbAdapter.open();
-////	
-//	Users u  =utile1.getCurrentUser();
-//	int id = u.getId();
-//	byte[] bitmapbyte = u.getImage();
-//	if (bitmapbyte != null) {
-//		Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-//				bitmapbyte.length);
-//		img.setImageBitmap(bmp);
-//	}
-//	String name=u.getName();
-// 	String email=u.getEmail();
-// 	String address=u.getAddress();
-// 	String phone=u.getPhonenumber();
-// 	String cellphone=u.getMobailenumber();
-// 	String fax=u.getFaxnumber();
-// 	
-	///////////////
-	int id =1;
-	Users x =dbAdapter.getUserById(id);	
-	byte[] bitmapbyte = x.getImage();
+	
+	Users u  =utile1.getCurrentUser();
+	int id = u.getId();
+	byte[] bitmapbyte = u.getImage();
 	if (bitmapbyte != null) {
 		Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 				bitmapbyte.length);
 		img.setImageBitmap(bmp);
 	}
-		
-String d = x.getDate();
- 	int item = x.getId();
- 	String name=x.getName();
- 	String email=x.getEmail();
- 	String address=x.getAddress();
- 	String phone=x.getPhonenumber();
- 	String cellphone=x.getMobailenumber();
- 	String fax=x.getFaxnumber();
+	String name=u.getName();
+ 	String email=u.getEmail();
+ 	String address=u.getAddress();
+	String phone=u.getPhonenumber();
+ 	String cellphone=u.getMobailenumber();
+ 	String fax=u.getFaxnumber();	
+////////////////////////////////////////////////	///////////////
+//	int id =1;
+//	Users x =dbAdapter.getUserById(id);	
+//	byte[] bitmapbyte = x.getImage();
+//	if (bitmapbyte != null) {
+//		Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
+//				bitmapbyte.length);
+//		img.setImageBitmap(bmp);
+//	}
+//		
+String d = u.getDate();
+// 	int item = x.getId();
+// 	String name=x.getName();
+// 	String email=x.getEmail();
+// 	String address=x.getAddress();
+// 	String phone=x.getPhonenumber();
+// 	String cellphone=x.getMobailenumber();
+// 	String fax=x.getFaxnumber();
  	
- 	
+ /////////////////////////	
 		
 	dbAdapter.close();
 	txtdate.setText(d);
@@ -119,16 +119,35 @@ String d = x.getDate();
 	
 	
 	logout.setOnClickListener(new OnClickListener() {
-		
-		@Override
+	
+	@Override
 		public void onClick(View arg0) {
-			// TODO Auto-generated method stub
-	Users	u	=utile1.getCurrentUser();
-	u=null;
+		
+		
+		////////////////////////null get current user//////////////////
+		
+		SharedPreferences settings = getActivity().getSharedPreferences("User",
+				0);
+		SharedPreferences.Editor editor = settings.edit();
+		
+
+			editor.putBoolean("isLogin", false);
+			
+			editor.commit();
+	//////////////////////////////////////////////////
+	dbAdapter = new DataBaseAdapter(getActivity());
+	dbAdapter.open();
+	int ad=0;
+	 dbAdapter.UpdateAdminAllUser(ad)	;
+	dbAdapter.close();
+	
+	FragmentTransaction trans = getActivity()
+			.getSupportFragmentManager().beginTransaction();
+	trans.replace(R.id.content_frame, new LoginFragment());
+	trans.commit();
 			
 		}
 	});
-	
 	
 	btnedit.setOnClickListener(new OnClickListener() {
 		

@@ -21,6 +21,7 @@ import android.widget.SearchView.OnCloseListener;
 import android.widget.TextView;
 
 import com.project.mechanic.adapter.SlideMenuAdapter;
+import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
@@ -260,26 +261,26 @@ public class MainActivity extends FragmentActivity {
 
 			// ////////////////////////////////////////////////
 
-			// if ( util.getCurrentUser()!=null ) {
-			//
+			 if ( util.getCurrentUser()!=null ) {
+			
 			// // SharedPreferences sendData = this.getSharedPreferences("Id",
 			// // 0);
 			// //sendData.edit().putInt("main_Id", Service).commit();
-			// fragment = new DisplayPersonalInformationFragment();
-			// fragmentManager = getSupportFragmentManager();
-			// fragmentManager.beginTransaction()
-			// .replace(R.id.content_frame, fragment).commit();
+		fragment = new DisplayPersonalInformationFragment();
+			fragmentManager = getSupportFragmentManager();
+		fragmentManager.beginTransaction()
+			 .replace(R.id.content_frame, fragment).commit();
+		
 			//
-			//
-			// }
-			// else
-			// {
+			 }
+			 else
+			 {
 
 			fragment = new LoginFragment();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
-			// }
+			}
 			break;
 
 		case 2:

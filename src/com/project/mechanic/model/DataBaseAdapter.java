@@ -256,7 +256,24 @@ public class DataBaseAdapter {
 	// }
 	// ///////////////
 
-	
+	public  void UpdateAdminAllUser(int admin) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		// uc.put("Email", email);
+		// uc.put("Password", password);
+//		uc.put("Phonenumber", phonenumber);
+//
+//		uc.put("Mobailenumber", mobailenumber);
+//		uc.put("Faxnumber", faxnumber);
+		uc.put("Admin", admin);
+
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableUsers, uc, null, null);
+		
+		
+		
+	}
 	
 	
 
@@ -1643,13 +1660,13 @@ public class DataBaseAdapter {
 	}
 
 	
-	public Users getUserbyusername(String username)
+	public Users getUserbymobailenumber(String mobailenumber)
 	
 	{
 		Users result = null;
 
-		Cursor mCur = mDb.query(TableUsers, Users, " Username=?",
-				new String[] { String.valueOf(id) }, null, null, null);
+		Cursor mCur = mDb.query(TableUsers, Users, "Mobailenumber=?",
+				new String[] { String.valueOf(mobailenumber) }, null, null, null);
 		if (mCur.moveToNext()) {
 			result = CursorToUsers(mCur);
 		}
@@ -1657,7 +1674,19 @@ public class DataBaseAdapter {
 	
 	}
 	
+	//////////////
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///////////////////////
 	
 	
 	

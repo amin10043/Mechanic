@@ -27,7 +27,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.7" >
+                android:layout_weight="0.5" >
 
                 <TextView
                     android:id="@+id/text_favorite_desc"
@@ -40,13 +40,13 @@
                     android:text="ایجاد حساب کاربری"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/transparent"
-                    android:textSize="@dimen/activity_horizontal_margin" />
+                    android:textSize="@dimen/item_font_size" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1.6"
+                android:layout_weight="1.5"
                 android:background="@drawable/buttonshape" >
             </LinearLayout>
         </LinearLayout>
@@ -59,7 +59,7 @@
             android:layout_weight="0.4"
             android:background="@drawable/list_item1"
             android:orientation="vertical"
-            android:weightSum="2.5" >
+            android:weightSum="2.6" >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -76,7 +76,8 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:hint="نام و نام خانوادگی را وارد نمایید(اجباری)"
-                    android:textSize="@dimen/activity_horizontal_margin" >
+                    android:textSize="@dimen/item_font_size"
+                    android:typeface="normal" >
 
                     <requestFocus />
                 </EditText>
@@ -97,7 +98,7 @@
                     android:gravity="right"
                     android:hint="ایمیل خودرا وارد نمایید(اختیاری)"
                     android:inputType="textEmailAddress"
-                    android:textSize="@dimen/activity_horizontal_margin" />
+                    android:textSize="@dimen/item_font_size" />
             </LinearLayout>
 
             <LinearLayout
@@ -115,7 +116,7 @@
                     android:ems="10"
                     android:gravity="right"
                     android:hint="رمز عبور را وارد کنید(اجباری)"
-                    android:textSize="@dimen/activity_horizontal_margin" />
+                    android:textSize="@dimen/item_font_size" />
             </LinearLayout>
 
             <LinearLayout
@@ -168,7 +169,7 @@
                         android:text="عکس مورد نظر را انتخاب کنید"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textColor="@color/transparent"
-                        android:textSize="@dimen/activity_horizontal_margin" />
+                        android:textSize="@dimen/item_font_size" />
                 </LinearLayout>
             </LinearLayout>
 
