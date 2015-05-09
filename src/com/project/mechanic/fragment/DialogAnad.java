@@ -112,25 +112,15 @@ public class DialogAnad extends Dialog {
 				dbadapter.open();
 				String date = new SimpleDateFormat("yyyy-MM-dd")
 						.format(new Date());
-
-				if ((dialog_img1.getDrawable() == null)) {
-
-					dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
-							.getText().toString(), dialog_anad_et2.getText()
-							.toString(), u.getId(), date, ticketTypeID, 0, 0,
-							0, 0, 0, ProvinceId, UName.getText().toString(),
-							UEmail.getText().toString(), UPhonnumber.getText()
-									.toString(), UFax.getText().toString(),
-							null, UMobile.getText().toString());
-
+				String title = dialog_anad_et1.getText().toString();
+				String desc = dialog_anad_et2.getText().toString();
+				if ("".equals(title) || "".equals(desc)) {
+					Toast.makeText(context,
+							" عنوان آگهی یا شرح آگهی نمی تواند خالی باشد",
+							Toast.LENGTH_LONG).show();
 				} else {
+					if ((dialog_img1.getDrawable() == null)) {
 
-					Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
-							.getBitmap();
-
-					Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
-							bitmap.getHeight(), bitmap.getConfig());
-					if (bitmap.sameAs(emptyBitmap)) {
 						dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
 								.getText().toString(), dialog_anad_et2
 								.getText().toString(), u.getId(), date,
@@ -139,27 +129,49 @@ public class DialogAnad extends Dialog {
 										.toString(), UPhonnumber.getText()
 										.toString(), UFax.getText().toString(),
 								null, UMobile.getText().toString());
-					} else {
-						byte[] bytes = getBitmapAsByteArray(bitmap);
 
-						dbadapter.insertTickettoDb(dialog_anad_et1.getText()
-								.toString(), dialog_anad_et2.getText()
-								.toString(), u.getId(), bytes, date,
-								ticketTypeID, 0, 0, 0, 0, 0, ProvinceId, UName
-										.getText().toString(), UEmail.getText()
-										.toString(), UPhonnumber.getText()
-										.toString(), UFax.getText().toString(),
-								null, null, UMobile.getText().toString());
+					} else {
+
+						Bitmap bitmap = ((BitmapDrawable) dialog_img1
+								.getDrawable()).getBitmap();
+
+						Bitmap emptyBitmap = Bitmap.createBitmap(
+								bitmap.getWidth(), bitmap.getHeight(),
+								bitmap.getConfig());
+						if (bitmap.sameAs(emptyBitmap)) {
+							dbadapter.insertTickettoDbemptyImage(
+									dialog_anad_et1.getText().toString(),
+									dialog_anad_et2.getText().toString(), u
+											.getId(), date, ticketTypeID, 0, 0,
+									0, 0, 0, ProvinceId, UName.getText()
+											.toString(), UEmail.getText()
+											.toString(), UPhonnumber.getText()
+											.toString(), UFax.getText()
+											.toString(), null, UMobile
+											.getText().toString());
+						} else {
+							byte[] bytes = getBitmapAsByteArray(bitmap);
+
+							dbadapter.insertTickettoDb(dialog_anad_et1
+									.getText().toString(), dialog_anad_et2
+									.getText().toString(), u.getId(), bytes,
+									date, ticketTypeID, 0, 0, 0, 0, 0,
+									ProvinceId, UName.getText().toString(),
+									UEmail.getText().toString(), UPhonnumber
+											.getText().toString(), UFax
+											.getText().toString(), null, null,
+									UMobile.getText().toString());
+
+						}
 
 					}
+					Toast.makeText(context, "آگهی شما با موفقیت ثبت شد",
+							Toast.LENGTH_SHORT).show();
+					dbadapter.close();
+					((AnadFragment) fragment).updateView();
+					DialogAnad.this.dismiss();
 
 				}
-				Toast.makeText(context, "آگهی شما با موفقیت ثبت شد",
-						Toast.LENGTH_SHORT).show();
-				dbadapter.close();
-				((AnadFragment) fragment).updateView();
-				DialogAnad.this.dismiss();
-
 			}
 		});
 

@@ -16,11 +16,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.fragment.IntroductionFragment;
+import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -123,7 +125,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new IntroductionFragment());
-				trans.addToBackStack(null);
+				// trans.addToBackStack(null);
 				trans.commit();
 
 				String item = txt1.getText().toString();
@@ -134,6 +136,8 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 						// check authentication and authorization
 						id = object.getId();
 						sendDataID.edit().putInt("main_Id", id).commit();
+						Toast.makeText(context, "object list adapter  = " + id,
+								Toast.LENGTH_SHORT).show();
 
 					}
 
@@ -145,4 +149,12 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		return convertView;
 	}
 
+	public void onBackPressed() {
+
+		FragmentTransaction trans = ((MainActivity) context)
+				.getSupportFragmentManager().beginTransaction();
+		trans.replace(R.id.content_frame, new MainFragment());
+		trans.commit();
+
+	}
 }

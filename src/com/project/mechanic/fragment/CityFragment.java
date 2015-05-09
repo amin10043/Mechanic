@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +19,8 @@ import com.project.mechanic.entity.City;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.RowMain;
 
-@SuppressLint("ValidFragment") public class CityFragment extends Fragment {
+@SuppressLint("ValidFragment")
+public class CityFragment extends Fragment {
 
 	DataBaseAdapter adapter;
 	List<City> cityList = null;
@@ -54,12 +55,20 @@ import com.project.mechanic.row_items.RowMain;
 				R.layout.row_city, cityList);
 
 		lstCity.setAdapter(ListAdapter);
-		
-//		SharedPreferences sendData = getActivity().getSharedPreferences(
-//				"Id", 0);
-//		int id = sendData.getInt("main_Id", -1);
 
+		// SharedPreferences sendData = getActivity().getSharedPreferences(
+		// "Id", 0);
+		// int id = sendData.getInt("main_Id", -1);
 
 		return view;
+	}
+
+	public void onBackPressed() {
+
+		FragmentTransaction trans = getActivity().getSupportFragmentManager()
+				.beginTransaction();
+		trans.replace(R.id.content_frame, new ProvinceFragment());
+		trans.commit();
+
 	}
 }
