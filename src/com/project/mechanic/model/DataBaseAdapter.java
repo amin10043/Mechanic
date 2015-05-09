@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import android.R.string;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -2208,4 +2209,66 @@ public class DataBaseAdapter {
 		return item;
 
 	}
+
+	public Integer count_serach(String word, String field) {
+
+		Cursor cu;
+		if (field.equals("Name")) {
+			cu = mDb.rawQuery("select * from content where " + field
+					+ " Like '%" + word + "%' group by Name", null);
+		} else {
+			cu = mDb.rawQuery("select * from content where " + field
+					+ " Like '%" + word + "%'", null);
+		}
+
+		int s = cu.getCount();
+		return s;
+	}
+
+	public String serach(int row, int col, String word, String field) {
+
+		Cursor cu;
+		if (field.equals("Name")) {
+			cu = mDb.rawQuery("select * from content where " + field
+					+ " Like '%" + word + "%' group by Name", null);
+		} else {
+			cu = mDb.rawQuery("select * from content where " + field
+					+ " Like '%" + word + "%'", null);
+		}
+
+		cu.moveToPosition(row);
+		String s = cu.getString(col);
+		return s;
+	}
+
+	public Integer count_search(String word, string field) {
+
+		Cursor cu;
+		if (field.equals("Name")) {
+			cu = mDb.rawQuery("select * from content where " + field
+					+ " Like '%" + word + "%' group by Name", null);
+		} else {
+			cu = mDb.rawQuery("select * from content where " + field
+					+ " Like '%" + word + "%'", null);
+		}
+
+		int s = cu.getCount();
+		return s;
+	}
+
+	public String search(int row, int col, String word, string field) {
+		Cursor cu;
+		if (field.equals("Name")) {
+			cu = mDb.rawQuery("select * from content where " + field
+					+ " Like '%" + word + "%' group by Name", null);
+		} else {
+			cu = mDb.rawQuery("select * from content where " + field
+					+ " Like '%" + word + "%'", null);
+		}
+
+		cu.moveToPosition(row);
+		String s = cu.getString(col);
+		return s;
+	}
+
 }
