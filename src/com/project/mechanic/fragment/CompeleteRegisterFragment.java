@@ -22,6 +22,7 @@ import android.preference.CheckBoxPreference;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Display;
@@ -88,8 +89,9 @@ public class CompeleteRegisterFragment extends Fragment {
 	 
 //	textrules.setText(Html.fromHtml("<html><a href=\"http://example.com/\">قوانین</a></html>"));
 //	textrules.setMovementMethod(LinkMovementMethod.getInstance());
-	
-	
+	TelephonyManager tm =(TelephonyManager)getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+	 String number = tm.getLine1Number();	
+	Mobiletxt.setText(number);
 	
 	Backbtn.setOnClickListener(new OnClickListener() {
 		
@@ -151,7 +153,7 @@ public class CompeleteRegisterFragment extends Fragment {
 
 		public void onClick(View arg0) {
 			
-				
+		
 				dbAdapter = new DataBaseAdapter(getActivity());
 				dbAdapter.open();
 

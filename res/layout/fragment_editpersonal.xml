@@ -207,7 +207,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"
                     android:ems="10"
-                    android:inputType="textPostalAddress" />
+                    android:inputType="textPostalAddress"
+                    android:scrollbars="vertical" />
 
                 <TextView
                     android:id="@+id/dialog_email"
