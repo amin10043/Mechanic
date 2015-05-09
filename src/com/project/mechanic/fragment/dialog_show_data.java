@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,7 +42,7 @@ public class dialog_show_data extends Dialog {
 	LinearLayout.LayoutParams headerEditParams;
 
 	public dialog_show_data(Context context, int resourceId,
-			FavoriteListAdapter favoriteListAdapter, final int ticketTypeID) {
+			FavoriteListAdapter favoriteListAdapter, int ticketTypeID) {
 		super(context);
 
 		this.resourceId = resourceId;
@@ -64,8 +65,27 @@ public class dialog_show_data extends Dialog {
 		setContentView(resourceId);
 		// id = Integer.valueOf(getArguments().getString("Id"));
 		TextView txtemail = (TextView) findViewById(R.id.dialog_show_email);
+		TextView txtphone = (TextView) findViewById(R.id.dialog_show_phone);
+		TextView txtmobile = (TextView) findViewById(R.id.dialog_show_mobile);
+		TextView txtfax = (TextView) findViewById(R.id.dialog_show_fax);
+		ImageButton imgbtnclose = (ImageButton) findViewById(R.id.dialog_btn_close);
 
 		dbadapter = new DataBaseAdapter(context);
+		dbadapter.open();
+		Ticket t = dbadapter.getTicketById(ticketTypeID);
+		txtemail.setText(t.getUEmail());
+		txtphone.setText(t.getUPhone());
+		txtmobile.setText(t.getUMobile());
+		txtfax.setText(t.getUFax());
+		dbadapter.close();
+		imgbtnclose.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				dialog_show_data.this.dismiss();
+
+			}
+		});
 
 	}
 
