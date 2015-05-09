@@ -256,6 +256,47 @@ public class DataBaseAdapter {
 	// }
 	// ///////////////
 
+	public  void UpdateAdminAllUser(int admin) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		// uc.put("Email", email);
+		// uc.put("Password", password);
+//		uc.put("Phonenumber", phonenumber);
+//
+//		uc.put("Mobailenumber", mobailenumber);
+//		uc.put("Faxnumber", faxnumber);
+		uc.put("Admin", admin);
+
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableUsers, uc, null, null);
+		
+		
+		
+	}
+	
+	
+
+	
+	
+	public void UpdateAdminUserToDb(int id,int admin) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		// uc.put("Email", email);
+		// uc.put("Password", password);
+//		uc.put("Phonenumber", phonenumber);
+//
+//		uc.put("Mobailenumber", mobailenumber);
+//		uc.put("Faxnumber", faxnumber);
+		uc.put("Admin", admin);
+
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableUsers, uc, "ID=" + id, null);
+	}
+	
+	
+	
 	public void UpdateUserToDb(int id, String phonenumber,
 			String mobailenumber, String faxnumber, String address) {
 
@@ -271,6 +312,28 @@ public class DataBaseAdapter {
 
 		// uc.put("ServiceId", serviceid);
 		mDb.update(TableUsers, uc, "ID=" + id, null);
+	}
+
+	public void UpdateTicketToDb(int id, String title, String desc,
+			byte[] image, String name, String date, String email, String phone,
+			String fax, String mobile) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		// uc.put("Email", email);
+		// uc.put("Password", password);
+		uc.put("Title", title);
+		uc.put("Desc", desc);
+		uc.put("Image", image);
+		uc.put("UName", name);
+		uc.put("UEmail", email);
+		uc.put("UPhonnumber", phone);
+		uc.put("UFax", fax);
+		uc.put("UMobile", mobile);
+		uc.put("Date", date);
+
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableTicket, uc, "Id=" + id, null);
 	}
 
 	// /////////////////
@@ -768,7 +831,7 @@ public class DataBaseAdapter {
 
 	}
 
-	public Favorite getFavoriteById(int Id) {
+	public Favorite f(int Id) {
 
 		Favorite item = null;
 		Cursor mCur = mDb.query(TableFavorite, Favorite, "Id=?",
@@ -1193,7 +1256,12 @@ public class DataBaseAdapter {
 		int s = cu.getCount();
 		return s;
 	}
-
+	
+	
+	
+	
+	
+	
 	// ///////////
 	// public Integer Image(String table) {
 	//
@@ -1613,6 +1681,37 @@ public class DataBaseAdapter {
 		}
 	}
 
+	
+	public Users getUserbymobailenumber(String mobailenumber)
+	
+	{
+		Users result = null;
+
+		Cursor mCur = mDb.query(TableUsers, Users, "Mobailenumber=?",
+				new String[] { String.valueOf(mobailenumber) }, null, null, null);
+		if (mCur.moveToNext()) {
+			result = CursorToUsers(mCur);
+		}
+		return result;
+	
+	}
+	
+	//////////////
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///////////////////////
+	
+	
+	
 	public Users getUserbyid(int id) {
 
 		Users result = null;
@@ -1947,7 +2046,7 @@ public class DataBaseAdapter {
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter,O.rate From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter,O.rate,O. From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
@@ -2186,6 +2285,66 @@ public class DataBaseAdapter {
 		}
 		return item;
 
+	}
+
+	public int NumOfNewLikeInObject() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInObject + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewLikeInPaper() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInPaper + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewLikeInFroum() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInFroum + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewCmtInObject() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInObject + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewCmtInPaper() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInPaper + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewCmtInFroum() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInFroum + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
 	}
 
 	public Integer count_serach(String word, String field) {

@@ -31,6 +31,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.project.mechanic.utility.ChatHeadService;
+
 public class WelcomeScreen extends Activity {
 
 	private LinearLayout verticalOuterLayout;
@@ -64,6 +66,8 @@ public class WelcomeScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_welcome_screen);
+
+		startService(new Intent(this, ChatHeadService.class));
 
 		initialize();
 		clickItem();
