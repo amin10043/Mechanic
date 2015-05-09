@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -144,9 +145,12 @@ utile = new Utility(getActivity());
 				 String txtdate = date.todayShamsi();
 //				Toast.makeText(getActivity(), txtdate,Toast.LENGTH_SHORT);
 				
-					
+				 TelephonyManager tm =(TelephonyManager)getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+				 String number = tm.getLine1Number();	
 
-				
+				 Toast.makeText(getActivity(),
+						 ""+number ,
+							Toast.LENGTH_SHORT).show();
 			
 				
 				if (Name.equals("") || Pass.equals("")) {
@@ -167,7 +171,7 @@ utile = new Utility(getActivity());
 					
 					if ((btnaddpic1.getDrawable() == null)) {
 
-						dbAdapter.inserUsernonpicToDb(Name, Email, Pass,  null,null,null,null,0,txtdate);
+						dbAdapter.inserUsernonpicToDb(Name, Email, Pass,  null,number,null,null,0,txtdate);
 						
 						Toast.makeText(getActivity(), "اطلاعات مورد نظر بدون عکس ثبت شد",
 								Toast.LENGTH_SHORT).show();
@@ -181,7 +185,7 @@ utile = new Utility(getActivity());
 							bitmap.getHeight(), bitmap.getConfig());
 					
 					if (bitmap.sameAs(emptyBitmap)) {
-						dbAdapter.inserUsernonpicToDb(Name, Email, Pass,  null,null,null,null,0,txtdate);
+						dbAdapter.inserUsernonpicToDb(Name, Email, Pass,  null,number,null,null,0,txtdate);
 					 
 					} 
 					else
@@ -190,7 +194,7 @@ utile = new Utility(getActivity());
 									byte[] Image = getBitmapAsByteArray(bitmap);
 							
 									
-									dbAdapter.inserUserToDb(Name, Email, Pass, null,null,null,null, Image, 0,txtdate);
+									dbAdapter.inserUserToDb(Name, Email, Pass, null,number,null,null, Image, 0,txtdate);
 				
 																		
 									
@@ -211,6 +215,8 @@ utile = new Utility(getActivity());
 				}
 
 			}
+
+			
 		});
 		
 		
@@ -290,6 +296,11 @@ comregtxt.setOnClickListener(new OnClickListener() {
 		});
 
 		return view;
+	}
+
+	protected TelephonyManager getSystemService(String telephonyService) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {

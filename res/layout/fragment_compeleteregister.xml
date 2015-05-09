@@ -11,22 +11,24 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/txtsize10"
         android:background="@drawable/list_item1"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:weightSum="6.2" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.1"
             android:orientation="horizontal" >
 
             <EditText
                 android:id="@+id/phonetxt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="1.1"
                 android:ems="10"
                 android:gravity="right"
-                android:hint="شماره ثابت" >
+                android:hint="شماره ثابت"
+                android:inputType="phone" >
 
                 <requestFocus />
             </EditText>
@@ -35,14 +37,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.1"
             android:orientation="horizontal" >
 
             <EditText
                 android:id="@+id/mobiletxt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="1.1"
                 android:ems="10"
                 android:gravity="right"
                 android:hint="شماره همراه"
@@ -52,17 +54,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.1"
             android:orientation="horizontal" >
 
             <EditText
                 android:id="@+id/faxtxt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.9"
                 android:ems="10"
                 android:gravity="right"
-                android:hint="فکس" />
+                android:hint="فکس"
+                android:inputType="phone" />
         </LinearLayout>
 
         <LinearLayout
@@ -75,6 +78,7 @@
                 android:id="@+id/Addresstxt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="0.9"
                 android:ems="10"
                 android:gravity="right"
                 android:hint="آدرس محل سکونت"
@@ -85,36 +89,51 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/txtsize5"
-            android:layout_weight="1" >
+            android:layout_weight="1.1"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:weightSum="0.6" >
 
-            <CheckBox
-                android:id="@+id/rulescheck"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_margin="@dimen/txtsize5"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:textColor="@color/transparent"
-                android:textSize="@dimen/item_font_size" />
+                android:layout_height="match_parent"
+                android:layout_weight="0.5" >
 
-            <TextView
-                android:id="@+id/txtrulles"
+                <TextView
+                    android:id="@+id/txtrulles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|right"
+                    android:layout_weight="1"
+                    android:gravity="center|right"
+                    android:text="تمامی قوانین را مطالعه کردم و پذیرفته ام "
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/item_font_size" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="تمامی قوانین را مطالعه کردم و پذیرفته ام "
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/blue"
-                android:textSize="@dimen/item_font_size" />
+                android:layout_height="match_parent"
+                android:layout_weight="0.1" >
+
+                <CheckBox
+                    android:id="@+id/rulescheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center"
+                    android:layout_weight="1"
+                    android:gravity="right|center"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/item_font_size" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="0.9"
+            android:layout_weight="1"
             android:gravity="center" >
 
             <Button
