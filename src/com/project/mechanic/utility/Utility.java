@@ -86,15 +86,15 @@ public class Utility {
 		SharedPreferences settings = context.getSharedPreferences("user", 0);
 
 		boolean isLogin = settings.getBoolean("isLogin", false);
-		// if (isLogin) {
+		if (isLogin) {
 
-		adapter.open();
-		u = adapter.getUserbyid(2); // FOR TESTING !!!!
-		adapter.close();
-		return u;
-		// } else {
-		// return null;
-		// }
+			adapter.open();
+			u = adapter.getUserbyid(2); // FOR TESTING !!!!
+			adapter.close();
+			return u;
+		} else {
+			return null;
+		}
 
 	}
 
@@ -212,13 +212,13 @@ public class Utility {
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(
 				context)
 		// Set Icon
-				.setSmallIcon(R.drawable.a10)
+				.setSmallIcon(R.drawable.ic_notification)
 				// Set Ticker Message
-				.setTicker("dfsdf")
+				.setTicker("arabian")
 				// Set Title
-				.setContentTitle("hgjh")
+				.setContentTitle("پیام جدید")
 				// Set Text
-				.setContentText("fvdvdfvv")
+				.setContentText("مکانیکال")
 				// Add an Action Button below Notification
 				.addAction(R.drawable.ic_launcher, "Action Button", pIntent)
 				// Set PendingIntent into Notification
