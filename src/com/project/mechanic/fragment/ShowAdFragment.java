@@ -3,10 +3,14 @@ package com.project.mechanic.fragment;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +31,7 @@ public class ShowAdFragment extends Fragment {
 	int id;
 	int a;
 	int F = 0;
+	private static int RESULT_LOAD_IMAGE = 1;
 	int favorite = 0;
 	int userTicket;
 	DataBaseAdapter dbAdapter;
@@ -70,15 +75,19 @@ public class ShowAdFragment extends Fragment {
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 
-		if (getArguments().getString("ProID") != null) {
-			proID = Integer.valueOf(getArguments().getString("ProID"));
-		}
-
 		dbAdapter.open();
+
 		Ticket t = dbAdapter.getTicketById(id);
 		a = t.getId();
 		userTicket = t.getUserId();
+		boolean check = dbAdapter.isUserFavorite(userTicket, a);
+		if (check) {
+			like.setImageResource(R.drawable.ic_star_on);
+		} else {
+			like.setImageResource(R.drawable.ic_star_off);
+		}
 
+		like.setSelected(check);
 		byte[] bitmapbyte = t.getImage();
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
@@ -204,7 +213,107 @@ public class ShowAdFragment extends Fragment {
 		return view;
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == RESULT_LOAD_IMAGE
+				&& resultCode == Activity.RESULT_OK && null != data) {
+			Uri selectedImage = data.getData();
+
+			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+			Cursor cursor = getActivity().getContentResolver().query(
+					selectedImage, filePathColumn, null, null, null);
+			cursor.moveToFirst();
+
+			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+			String picturePath = cursor.getString(columnIndex);
+			cursor.close();
+
+			ImageView imageView = (ImageView) dialog
+					.findViewById(R.id.dialog_img11);
+			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+
+		}
+	}
+
 	public void updateView() {
 
+		dbAdapter.open();
+
+		Ticket t = dbAdapter.getTicketById(id);
+		a = t.getId();
+		userTicket = t.getUserId();
+
+		byte[] bitmapbyte = t.getImage();
+		if (bitmapbyte != null) {
+			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
+					bitmapbyte.length);
+			img.setImageBitmap(bmp);
+		}
+		dbAdapter.close();
+		u = util.getCurrentUser();
+
+		if (u == null) {
+			like.setEnabled(false);
+		} else if (userTicket == u.getId()) {
+
+			edite.setVisibility(1);
+		}
+
+		dbAdapter.open();
+
+		desc.setText(t.getDesc());
+
+		if ("".equals(t.getUName())) {
+			showname.setVisibility(View.GONE);
+			name.setVisibility(View.GONE);
+
+		} else {
+			showname.setVisibility(View.VISIBLE);
+			name.setVisibility(View.VISIBLE);
+			name.setText(t.getUName());
+		}
+		if ("".equals(t.getUEmail())) {
+			showemail.setVisibility(View.GONE);
+			email.setVisibility(View.GONE);
+
+		} else {
+			showemail.setVisibility(View.VISIBLE);
+			email.setVisibility(View.VISIBLE);
+			email.setText(t.getUEmail());
+		}
+		if ("".equals(t.getUPhone())) {
+			showphone.setVisibility(View.GONE);
+			phone.setVisibility(View.GONE);
+
+		} else {
+			showphone.setVisibility(View.VISIBLE);
+			phone.setVisibility(View.VISIBLE);
+			phone.setText(t.getUPhone());
+		}
+		if ("".equals(t.getUMobile())) {
+			showmobile.setVisibility(View.GONE);
+			mobile.setVisibility(View.GONE);
+
+		} else {
+			showmobile.setVisibility(View.VISIBLE);
+			mobile.setVisibility(View.VISIBLE);
+			mobile.setText(t.getUMobile());
+		}
+		if ("".equals(t.getUFax())) {
+			showfax.setVisibility(View.GONE);
+			fax.setVisibility(View.GONE);
+
+		} else {
+			showfax.setVisibility(View.VISIBLE);
+			fax.setVisibility(View.VISIBLE);
+			fax.setText(t.getUFax());
+		}
+		dbAdapter.close();
+
 	}
+
 }
