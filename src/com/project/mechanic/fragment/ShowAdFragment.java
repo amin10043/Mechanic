@@ -1,5 +1,7 @@
 package com.project.mechanic.fragment;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,10 +33,11 @@ public class ShowAdFragment extends Fragment {
 	TextView desc, name, email, phone, mobile, fax, showname, showfax,
 			showemail, showphone, showmobile;
 	ImageView img;
+	List mylist;
 	ImageButton share, edite, like;
 	Utility util;
 	Users u;
-	private DialogAnad dialog;
+	private Dialog_show_fragment dialog;
 	int proID = -1;
 	int f;
 	private boolean isFavorite = false;
@@ -116,8 +119,8 @@ public class ShowAdFragment extends Fragment {
 
 			// @Override
 			public void onClick(View arg0) {
-				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,
-						ShowAdFragment.this, id, proID);
+				dialog = new Dialog_show_fragment(getActivity(),
+						R.layout.dialog_show, ShowAdFragment.this, a);
 				dialog.setTitle(R.string.txtanadedite);
 
 				dialog.show();
@@ -199,5 +202,9 @@ public class ShowAdFragment extends Fragment {
 		dbAdapter.close();
 
 		return view;
+	}
+
+	public void updateView() {
+
 	}
 }

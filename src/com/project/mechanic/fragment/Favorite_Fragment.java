@@ -30,6 +30,7 @@ public class Favorite_Fragment extends Fragment {
 	int user;
 	int ticket;
 	Users u;
+	View view;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class Favorite_Fragment extends Fragment {
 		util = new Utility(getActivity());
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.favorite);
-		View view = inflater.inflate(R.layout.favorite_fragment, null);
+		view = inflater.inflate(R.layout.favorite_fragment, null);
 
 		listFavorite = (ListView) view.findViewById(R.id.listView_favorite);
 
@@ -50,11 +51,24 @@ public class Favorite_Fragment extends Fragment {
 		mylist = dbAdapter.getTicketByusetId(u.getId());
 
 		FavoriteListAdapter ListAdapter = new FavoriteListAdapter(
-				getActivity(), R.layout.row_favorite, mylist);
+				getActivity(), R.layout.row_favorite, mylist, this);
 
 		listFavorite.setAdapter(ListAdapter);
 
 		return view;
+
+	}
+
+	public void updateView() {
+		dbAdapter.open();
+		mylist = dbAdapter.getTicketByusetId(u.getId());
+		dbAdapter.close();
+
+		listFavorite = (ListView) view.findViewById(R.id.listView_favorite);
+		FavoriteListAdapter ListAdapter = new FavoriteListAdapter(
+				getActivity(), R.layout.row_favorite, mylist, this);
+
+		listFavorite.setAdapter(ListAdapter);
 
 	}
 
