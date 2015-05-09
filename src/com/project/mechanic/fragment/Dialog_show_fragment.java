@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -31,6 +32,8 @@ public class Dialog_show_fragment extends Dialog {
 	Fragment fragment;
 	private DataBaseAdapter dbadapter;
 	Context context;
+	private static int RESULT_LOAD_IMAGE = 1;
+	private static final int SELECT_PICTURE = 1;
 	int ticketTypeID;
 	Utility util;
 	int resourceId;
@@ -85,6 +88,14 @@ public class Dialog_show_fragment extends Dialog {
 
 		dbadapter = new DataBaseAdapter(context);
 		dbadapter.open();
+		Ticket t = dbadapter.getTicketById(ticketTypeID);
+		dialog_anad_1.setText(t.getTitle());
+		dialog_anad_2.setText(t.getDesc());
+		Name.setText(t.getUName());
+		Mobile.setText(t.getUMobile());
+		Email.setText(t.getUEmail());
+		Fax.setText(t.getUFax());
+		Phonnumber.setText(t.getUPhone());
 		dialog_btn.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
@@ -93,6 +104,7 @@ public class Dialog_show_fragment extends Dialog {
 				String desc = dialog_anad_2.getText().toString();
 				String date = new SimpleDateFormat("yyyy-MM-dd")
 						.format(new Date());
+				// if(!"".equals(dialog_anad_1.setText(text);))
 				if ("".equals(title) || "".equals(desc)) {
 					Toast.makeText(context,
 							" عنوان آگهی یا شرح آگهی نمی تواند خالی باشد",
@@ -137,9 +149,22 @@ public class Dialog_show_fragment extends Dialog {
 					Toast.makeText(context, "آگهی شما با موفقیت ثبت شد",
 							Toast.LENGTH_SHORT).show();
 					dbadapter.close();
-
+					((ShowAdFragment) fragment).updateView();
 					Dialog_show_fragment.this.dismiss();
 				}
+
+			}
+		});
+		dialog_img1.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(
+						Intent.ACTION_PICK,
+						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+				fragment.getActivity().startActivityFromFragment(fragment, i,
+						RESULT_LOAD_IMAGE);
 
 			}
 		});

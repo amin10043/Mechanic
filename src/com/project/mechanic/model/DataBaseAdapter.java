@@ -790,7 +790,7 @@ public class DataBaseAdapter {
 
 	}
 
-	public Favorite getFavoriteById(int Id) {
+	public Favorite f(int Id) {
 
 		Favorite item = null;
 		Cursor mCur = mDb.query(TableFavorite, Favorite, "Id=?",

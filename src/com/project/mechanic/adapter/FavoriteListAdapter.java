@@ -8,19 +8,27 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Favorite;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.PersianDate;
+import com.project.mechanic.fragment.ShowAdFragment;
 import com.project.mechanic.fragment.dialog_show_data;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -30,6 +38,7 @@ public class FavoriteListAdapter extends ArrayAdapter<Ticket> {
 	List<Ticket> list;
 	int[] imageId;
 	Ticket tempItem;
+	Favorite favoItem;
 	Fragment fragment;
 	DataBaseAdapter adapter;
 	int ProvinceId;
@@ -79,6 +88,36 @@ public class FavoriteListAdapter extends ArrayAdapter<Ticket> {
 		ImageButton imgshare = (ImageButton) convertView
 				.findViewById(R.id.img_share_favorite);
 
+		convertView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				RelativeLayout parentlayout = (RelativeLayout) v;
+				TextView txtName = (TextView) parentlayout
+						.findViewById(R.id.row_favorite_title);
+				String item = txtName.getText().toString();
+				int id = 0;
+				for (Ticket Ticket : list) {
+
+					if (item.equals(Ticket.getTitle())) {
+						// check authentication and authorization
+						id = Ticket.getId();
+					}
+				}
+
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				ShowAdFragment fragment = new ShowAdFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString("Id", String.valueOf(id));
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+
+			}
+		});
 		PersianDate date = new PersianDate();
 		tempItem = list.get(position);
 		idticket = tempItem.getId();
@@ -127,9 +166,24 @@ public class FavoriteListAdapter extends ArrayAdapter<Ticket> {
 		imgdelete.setOnClickListener(new View.OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
+
+				LinearLayout parentlayout = (LinearLayout) v.getParent()
+						.getParent();
+				TextView txtName = (TextView) parentlayout
+						.findViewById(R.id.row_favorite_title);
+				String item = txtName.getText().toString();
+				int id = 0;
+				for (Ticket Ticket : list) {
+
+					if (item.equals(Ticket.getTitle())) {
+						// check authentication and authorization
+						id = Ticket.getId();
+					}
+				}
+
 				adapter.open();
-				adapter.deletebyIdTicket(idticket);
+				adapter.deletebyIdTicket(id);
 				adapter.close();
 				((Favorite_Fragment) fragment).updateView();
 

@@ -58,9 +58,6 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 					bitmapbyte.length);
 			img.setImageBitmap(bmp);
 		}
-		// byte[] blob = ((Anad) anadlist).getImage();
-		// Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
-		// img.setImageBitmap(bmp);
 
 		convertView.setOnClickListener(new OnClickListener() {
 
@@ -74,33 +71,6 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 
 				dialog1.setTitle(R.string.tabligh);
 				dialog1.show();
-				// int idImg = tempItem.getId();
-				// String a = Integer.toString(idImg);
-				// Toast.makeText(context, a, Toast.LENGTH_SHORT).show();
-
-				// TextView txtName = (TextView) parentlayout
-				// .findViewById(R.id.row_anad_txt);
-				// String item = txtName.getText().toString();
-				// int id = 0;
-				// for (Ticket Ticket : list) {
-				//
-				// if (item.equals(Ticket.getTitle())) {
-				// // check authentication and authorization
-				// id = Ticket.getId();
-				// }
-				// }
-
-				// FragmentTransaction trans = ((MainActivity) context)
-				// .getSupportFragmentManager().beginTransaction();
-				// ShowAdFragment fragment = new ShowAdFragment();
-				// Bundle bundle = new Bundle();
-				// bundle.putString("Id", String.valueOf(id));
-				// if (ProvinceId >= 0)
-				// bundle.putString("ProID", String.valueOf(ProvinceId));
-				// fragment.setArguments(bundle);
-				// trans.replace(R.id.content_frame, fragment);
-				// trans.addToBackStack(null);
-				// trans.commit();
 
 			}
 		});
