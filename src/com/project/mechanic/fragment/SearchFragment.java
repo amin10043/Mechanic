@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -20,10 +21,6 @@ public class SearchFragment extends Fragment {
 	DataBaseAdapter adapter;
 
 	private String[] Name;
-	private String[] Sea;
-	private String[] cPage;
-
-	private String[] Page;
 
 	private EditText word;
 
@@ -61,7 +58,7 @@ public class SearchFragment extends Fragment {
 					refresh(word.getText().toString(), "Name");
 				} else if (rbmatn.isChecked()) {
 
-					refresh(word.getText().toString(), "Matn");
+					refresh(word.getText().toString(), "Name");
 
 				}
 			}
@@ -83,16 +80,15 @@ public class SearchFragment extends Fragment {
 
 	}
 
-	// protected void onListItemClick(ListView l, View v, int position, long id)
-	// {
-	//
-	// Intent i = new Intent(search.this, main_matn.class);
-	// i.putExtra("sea", Sea[position]);
-	// i.putExtra("name", Name[position]);
-	// i.putExtra("page", cPage[position]);
-	// startActivity(i);
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		//
+		// Intent i = new Intent(search.this, main_matn.class);
+		//
+		// i.putExtra("name", Name[position]);
+		//
+		// startActivity(i);
 
-	// }
+	}
 
 	// class AA extends ArrayAdapter<String> {
 	//
@@ -131,29 +127,18 @@ public class SearchFragment extends Fragment {
 		}
 
 		Name = new String[s];
-		Sea = new String[s];
-		cPage = new String[s];
-		Page = new String[s];
 
 		for (int i = 0; i < s; i++) {
 
 			Name[i] = adapter.serach(i, 1, word1, field);
-			Sea[i] = adapter.serach(i, 4, word1, field);
-			// cPage[i] = adapter.Story_page_count("content", Sea[i], Name[i])
-			// + "";
 
 			if (field.equals("Name")) {
-				Page[i] = "";
-			} else {
-				Page[i] = " > " + adapter.serach(i, 3, word1, field);
 
 			}
 		}
 
 		// setListAdapter(new AA());
 		adapter.close();
-
-		// return view;
 
 	}
 
