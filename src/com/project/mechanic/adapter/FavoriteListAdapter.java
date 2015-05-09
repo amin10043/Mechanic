@@ -21,6 +21,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.PersianDate;
+import com.project.mechanic.fragment.dialog_show_data;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class FavoriteListAdapter extends ArrayAdapter<Ticket> {
@@ -32,6 +33,7 @@ public class FavoriteListAdapter extends ArrayAdapter<Ticket> {
 	Fragment fragment;
 	DataBaseAdapter adapter;
 	int ProvinceId;
+	private dialog_show_data dialog;
 	int idticket;
 	int proID;
 
@@ -60,6 +62,14 @@ public class FavoriteListAdapter extends ArrayAdapter<Ticket> {
 				.findViewById(R.id.row_favorite_img);
 		TextView txtdesc = (TextView) convertView
 				.findViewById(R.id.text_favorite_desc);
+		TextView txtemail = (TextView) convertView
+				.findViewById(R.id.dialog_show_email);
+		TextView txtmobile = (TextView) convertView
+				.findViewById(R.id.dialog_show_mobile);
+		TextView txtphone = (TextView) convertView
+				.findViewById(R.id.dialog_show_phone);
+		TextView txtfax = (TextView) convertView
+				.findViewById(R.id.dialog_show_fax);
 		TextView txttitle = (TextView) convertView
 				.findViewById(R.id.row_favorite_title);
 		ImageButton imgtamas = (ImageButton) convertView
@@ -73,7 +83,6 @@ public class FavoriteListAdapter extends ArrayAdapter<Ticket> {
 		tempItem = list.get(position);
 		idticket = tempItem.getId();
 		txttitle.setText(tempItem.getTitle());
-
 		txtdesc.setText(tempItem.getDesc());
 		byte[] bitmapbyte = tempItem.getImage();
 		if (bitmapbyte != null) {
@@ -106,6 +115,12 @@ public class FavoriteListAdapter extends ArrayAdapter<Ticket> {
 
 			@Override
 			public void onClick(View arg0) {
+				dialog = new dialog_show_data(context,
+						R.layout.dialog_show_data, FavoriteListAdapter.this,
+						idticket);
+				dialog.setTitle(R.string.txtanadedite);
+
+				dialog.show();
 
 			}
 		});

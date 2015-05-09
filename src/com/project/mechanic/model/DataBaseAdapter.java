@@ -272,6 +272,28 @@ public class DataBaseAdapter {
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
+	public void UpdateTicketToDb(int id, String title, String desc,
+			byte[] image, String name, String date, String email, String phone,
+			String fax, String mobile) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		// uc.put("Email", email);
+		// uc.put("Password", password);
+		uc.put("Title", title);
+		uc.put("Desc", desc);
+		uc.put("Image", image);
+		uc.put("UName", name);
+		uc.put("UEmail", email);
+		uc.put("UPhonnumber", phone);
+		uc.put("UFax", fax);
+		uc.put("UMobile", mobile);
+		uc.put("Date", date);
+
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableTicket, uc, "Id=" + id, null);
+	}
+
 	// /////////////////
 
 	public void UpdateAllUserToDb(int id, String email, String password,
