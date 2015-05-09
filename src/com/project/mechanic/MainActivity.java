@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
+import com.project.mechanic.fragment.SearchFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -99,17 +101,22 @@ public class MainActivity extends FragmentActivity {
 		// final ImageButton iBtnFavorite = (ImageButton)
 		// findViewById(R.id.iBtnFavorite);
 		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
-		// SearchView searchV = (SearchView) findViewById(R.id.searchV);
+		ImageView search = (ImageView) findViewById(R.id.sedarch_v);
 
-		// searchV.setOnSearchClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// txtTitle.setVisibility(View.GONE);
-		//
-		// }
-		// });
-		//
+		search.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				FragmentTransaction trans = getSupportFragmentManager()
+						.beginTransaction();
+				trans.replace(R.id.content_frame, new SearchFragment());
+				trans.addToBackStack(null);
+				trans.commit();
+
+			}
+		});
+
 		// searchV.setOnCloseListener(new OnCloseListener() {
 		//
 		// @Override
