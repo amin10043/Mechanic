@@ -95,7 +95,7 @@ public class DataBaseAdapter {
 			"Date", "CommentId", "Seen" };
 
 	private String[] Executertype = { "ID", "Name" };
-	private String[] Favorite = { "ID", "ObjectId", "UserId", "IdTickte" };
+	private String[] Favorite = { "ID", "ObjectId", "UserId", "IdTicket" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen",
 			"ServerDate", "Submit" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
@@ -256,47 +256,39 @@ public class DataBaseAdapter {
 	// }
 	// ///////////////
 
-	public  void UpdateAdminAllUser(int admin) {
+	public void UpdateAdminAllUser(int admin) {
 
 		ContentValues uc = new ContentValues();
 		// uc.put("Name", name);
 		// uc.put("Email", email);
 		// uc.put("Password", password);
-//		uc.put("Phonenumber", phonenumber);
-//
-//		uc.put("Mobailenumber", mobailenumber);
-//		uc.put("Faxnumber", faxnumber);
+		// uc.put("Phonenumber", phonenumber);
+		//
+		// uc.put("Mobailenumber", mobailenumber);
+		// uc.put("Faxnumber", faxnumber);
 		uc.put("Admin", admin);
 
 		// uc.put("ServiceId", serviceid);
 		mDb.update(TableUsers, uc, null, null);
-		
-		
-		
-	}
-	
-	
 
-	
-	
-	public void UpdateAdminUserToDb(int id,int admin) {
+	}
+
+	public void UpdateAdminUserToDb(int id, int admin) {
 
 		ContentValues uc = new ContentValues();
 		// uc.put("Name", name);
 		// uc.put("Email", email);
 		// uc.put("Password", password);
-//		uc.put("Phonenumber", phonenumber);
-//
-//		uc.put("Mobailenumber", mobailenumber);
-//		uc.put("Faxnumber", faxnumber);
+		// uc.put("Phonenumber", phonenumber);
+		//
+		// uc.put("Mobailenumber", mobailenumber);
+		// uc.put("Faxnumber", faxnumber);
 		uc.put("Admin", admin);
 
 		// uc.put("ServiceId", serviceid);
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
-	
-	
-	
+
 	public void UpdateUserToDb(int id, String phonenumber,
 			String mobailenumber, String faxnumber, String address) {
 
@@ -1256,12 +1248,7 @@ public class DataBaseAdapter {
 		int s = cu.getCount();
 		return s;
 	}
-	
-	
-	
-	
-	
-	
+
 	// ///////////
 	// public Integer Image(String table) {
 	//
@@ -1681,37 +1668,25 @@ public class DataBaseAdapter {
 		}
 	}
 
-	
 	public Users getUserbymobailenumber(String mobailenumber)
-	
+
 	{
 		Users result = null;
 
 		Cursor mCur = mDb.query(TableUsers, Users, "Mobailenumber=?",
-				new String[] { String.valueOf(mobailenumber) }, null, null, null);
+				new String[] { String.valueOf(mobailenumber) }, null, null,
+				null);
 		if (mCur.moveToNext()) {
 			result = CursorToUsers(mCur);
 		}
 		return result;
-	
+
 	}
-	
-	//////////////
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	///////////////////////
-	
-	
-	
+
+	// ////////////
+
+	// /////////////////////
+
 	public Users getUserbyid(int id) {
 
 		Users result = null;
