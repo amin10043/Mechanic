@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,11 +39,13 @@ public class ShowAdFragment extends Fragment {
 	TextView desc, name, email, phone, mobile, fax, showname, showfax,
 			showemail, showphone, showmobile;
 	ImageView img;
+	Button btnreport;
 	List mylist;
 	ImageButton share, edite, like;
 	Utility util;
 	Users u;
 	private Dialog_show_fragment dialog;
+	private Dialog_report dialog_report;
 	int proID = -1;
 	int f;
 	private boolean isFavorite = false;
@@ -72,6 +75,7 @@ public class ShowAdFragment extends Fragment {
 		showphone = (TextView) view.findViewById(R.id.fragment_showad_phone);
 		showmobile = (TextView) view.findViewById(R.id.fragment_showad_mobile);
 		showfax = (TextView) view.findViewById(R.id.fragment_showad_fax);
+		btnreport = (Button) view.findViewById(R.id.btn_report);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 
@@ -133,6 +137,18 @@ public class ShowAdFragment extends Fragment {
 				dialog.setTitle(R.string.txtanadedite);
 
 				dialog.show();
+
+			}
+		});
+		btnreport.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				dialog_report = new Dialog_report(getActivity(),
+						R.layout.dialog_report, ShowAdFragment.this, a);
+				dialog_report.setTitle(R.string.txtanadreport);
+
+				dialog_report.show();
 
 			}
 		});

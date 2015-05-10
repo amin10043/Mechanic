@@ -7,7 +7,7 @@
 
     <LinearLayout
         style="@style/List_Item_Style"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="120dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
@@ -25,7 +25,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="59dp"
                 android:layout_weight="1"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:paddingLeft="15dp" >
 
                 <TextView
                     android:id="@+id/row_favorite_title"
@@ -45,9 +46,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="118dp"
+                android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_gravity="bottom"
+                android:layout_weight="3"
                 android:gravity="bottom|left"
                 android:orientation="horizontal" >
 
@@ -58,7 +60,8 @@
                     android:layout_gravity="bottom"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:src="@drawable/menubar" />
+                    android:layout_weight="1"
+                    android:src="@drawable/negative" />
 
                 <ImageButton
                     android:id="@+id/img_share_favorite"
@@ -66,16 +69,19 @@
                     android:layout_height="25dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:src="@drawable/ic_share2" />
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_share" />
 
                 <ImageButton
                     android:id="@+id/img_tamas_favorite"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_gravity="bottom"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:src="@drawable/edit_pic" />
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_personal" />
             </LinearLayout>
         </LinearLayout>
 
@@ -83,7 +89,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingRight="20dp" >
 
             <ImageView
                 android:id="@+id/row_favorite_img"
