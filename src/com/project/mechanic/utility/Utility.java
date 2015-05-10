@@ -86,15 +86,15 @@ public class Utility {
 		SharedPreferences settings = context.getSharedPreferences("user", 0);
 
 		boolean isLogin = settings.getBoolean("isLogin", false);
-		// if (isLogin) {
+		if (isLogin) {
 
-		adapter.open();
-		u = adapter.getUserbyid(2); // FOR TESTING !!!!
-		adapter.close();
-		return u;
-		// } else {
-		// return null;
-		// }
+			adapter.open();
+			u = adapter.getUserbyid(2); // FOR TESTING !!!!
+			adapter.close();
+			return u;
+		} else {
+			return null;
+		}
 
 	}
 
