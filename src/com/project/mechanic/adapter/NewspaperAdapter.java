@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -69,6 +70,11 @@ public class NewspaperAdapter extends ArrayAdapter<NewsPaper> {
 		tx1.setText(tempItem.getName());
 		// tx1.setText(tempItem.getId());
 		// tx2.setText(tempItem.getId());
+
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
+				"fonts/BROYA.TTF");
+		tx1.setTypeface(typeFace);
+
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override

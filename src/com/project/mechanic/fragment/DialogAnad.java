@@ -109,6 +109,11 @@ public class DialogAnad extends Dialog {
 			public void onClick(View arg0) {
 				dbadapter = new DataBaseAdapter(context);
 				u = util.getCurrentUser();
+				if (u == null) {
+					Toast.makeText(context, " شما وارد نشده اید.",
+							Toast.LENGTH_LONG).show();
+					return;
+				}
 				dbadapter.open();
 				String date = new SimpleDateFormat("yyyy-MM-dd")
 						.format(new Date());

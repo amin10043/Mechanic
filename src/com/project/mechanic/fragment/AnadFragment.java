@@ -210,7 +210,8 @@ public class AnadFragment extends Fragment {
 	}
 
 	public void getScrollMaxAmount() {
-		// int actualWidth = (verticalOuterLayout.getMeasuredHeight()-(256*3));
+		// int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 *
+		// 3));
 		// verticalScrollMax = actualWidth;
 
 		// int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 *

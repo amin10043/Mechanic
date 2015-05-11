@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import android.R.string;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -94,7 +95,7 @@ public class DataBaseAdapter {
 			"Date", "CommentId", "Seen" };
 
 	private String[] Executertype = { "ID", "Name" };
-	private String[] Favorite = { "ID", "ObjectId", "UserId", "IdTickte" };
+	private String[] Favorite = { "ID", "ObjectId", "UserId", "IdTicket" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen",
 			"ServerDate", "Submit" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
@@ -255,6 +256,39 @@ public class DataBaseAdapter {
 	// }
 	// ///////////////
 
+	public void UpdateAdminAllUser(int admin) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		// uc.put("Email", email);
+		// uc.put("Password", password);
+		// uc.put("Phonenumber", phonenumber);
+		//
+		// uc.put("Mobailenumber", mobailenumber);
+		// uc.put("Faxnumber", faxnumber);
+		uc.put("Admin", admin);
+
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableUsers, uc, null, null);
+
+	}
+
+	public void UpdateAdminUserToDb(int id, int admin) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		// uc.put("Email", email);
+		// uc.put("Password", password);
+		// uc.put("Phonenumber", phonenumber);
+		//
+		// uc.put("Mobailenumber", mobailenumber);
+		// uc.put("Faxnumber", faxnumber);
+		uc.put("Admin", admin);
+
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableUsers, uc, "ID=" + id, null);
+	}
+
 	public void UpdateUserToDb(int id, String phonenumber,
 			String mobailenumber, String faxnumber, String address) {
 
@@ -270,6 +304,28 @@ public class DataBaseAdapter {
 
 		// uc.put("ServiceId", serviceid);
 		mDb.update(TableUsers, uc, "ID=" + id, null);
+	}
+
+	public void UpdateTicketToDb(int id, String title, String desc,
+			byte[] image, String name, String date, String email, String phone,
+			String fax, String mobile) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		// uc.put("Email", email);
+		// uc.put("Password", password);
+		uc.put("Title", title);
+		uc.put("Desc", desc);
+		uc.put("Image", image);
+		uc.put("UName", name);
+		uc.put("UEmail", email);
+		uc.put("UPhonnumber", phone);
+		uc.put("UFax", fax);
+		uc.put("UMobile", mobile);
+		uc.put("Date", date);
+
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableTicket, uc, "Id=" + id, null);
 	}
 
 	// /////////////////
@@ -767,7 +823,7 @@ public class DataBaseAdapter {
 
 	}
 
-	public Favorite getFavoriteById(int Id) {
+	public Favorite f(int Id) {
 
 		Favorite item = null;
 		Cursor mCur = mDb.query(TableFavorite, Favorite, "Id=?",
@@ -1233,10 +1289,10 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	public Integer LikeInPaper_count() {
+	public Integer LikeInPaper_count(int paperID) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableLikeInPaper, null);
+				+ TableLikeInPaper + " WHERE PaperId=" + paperID, null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -1267,12 +1323,15 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	public Integer CommentInPaper_count() {
+	public Integer CommentInPaper_count(int paperID) {
 
-		Cursor mCur = mDb.query(TableCommentInPaper, CommentInPaper, null,
-				null, null, null, null);
-		int s = mCur.getCount();
-		return s;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInPaper + " WHERE PaperId=" + paperID, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
 	}
 
 	public String province_display(String table, int row, int field) {
@@ -1612,6 +1671,25 @@ public class DataBaseAdapter {
 		}
 	}
 
+	public Users getUserbymobailenumber(String mobailenumber)
+
+	{
+		Users result = null;
+
+		Cursor mCur = mDb.query(TableUsers, Users, "Mobailenumber=?",
+				new String[] { String.valueOf(mobailenumber) }, null, null,
+				null);
+		if (mCur.moveToNext()) {
+			result = CursorToUsers(mCur);
+		}
+		return result;
+
+	}
+
+	// ////////////
+
+	// /////////////////////
+
 	public Users getUserbyid(int id) {
 
 		Users result = null;
@@ -1946,7 +2024,7 @@ public class DataBaseAdapter {
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter,O.rate From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter,O.rate,O. From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
@@ -2209,7 +2287,127 @@ public class DataBaseAdapter {
 		// mDb.rawQuery("delete from " + TableLikeInComment
 		// + " where Commentid = " + CommentID + " and UserId = " + userID
 		// + " and isLike = 1 ", t);
+	}
 
+	public int NumOfNewLikeInObject() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInObject + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewLikeInPaper() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInPaper + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewLikeInFroum() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInFroum + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewCmtInObject() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInObject + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewCmtInPaper() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInPaper + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public int NumOfNewCmtInFroum() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInFroum + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public Integer count_serach(String word, String field) {
+
+		Cursor cu;
+		if (field.equals("Name")) {
+			cu = mDb.rawQuery("select * from Mechanical where " + field
+					+ " Like '%" + word + "%' group by Name", null);
+		} else {
+			cu = mDb.rawQuery("select * from Mechanical where " + field
+					+ " Like '%" + word + "%'", null);
+		}
+
+		int s = cu.getCount();
+		return s;
+	}
+
+	public String serach(int row, int col, String word, String field) {
+
+		Cursor cu;
+		if (field.equals("Name")) {
+			cu = mDb.rawQuery("select * from Mechanical where " + field
+					+ " Like '%" + word + "%' group by Name", null);
+		} else {
+			cu = mDb.rawQuery("select * from Mechanical where " + field
+					+ " Like '%" + word + "%'", null);
+		}
+
+		cu.moveToPosition(row);
+		String s = cu.getString(col);
+		return s;
+	}
+
+	public Integer count_search(String word, string field) {
+
+		Cursor cu;
+		if (field.equals("Name")) {
+			cu = mDb.rawQuery("select * from Mechanical where " + field
+					+ " Like '%" + word + "%' group by Name", null);
+		} else {
+			cu = mDb.rawQuery("select * from Mechanical where " + field
+					+ " Like '%" + word + "%'", null);
+		}
+
+		int s = cu.getCount();
+		return s;
+	}
+
+	public String search(int row, int col, String word, string field) {
+		Cursor cu;
+		if (field.equals("Name")) {
+			cu = mDb.rawQuery("select * from Mechanical where " + field
+					+ " Like '%" + word + "%' group by Name", null);
+		} else {
+			cu = mDb.rawQuery("select * from Mechanical where " + field
+					+ " Like '%" + word + "%'", null);
+		}
+
+		cu.moveToPosition(row);
+		String s = cu.getString(col);
+		return s;
 	}
 
 }
