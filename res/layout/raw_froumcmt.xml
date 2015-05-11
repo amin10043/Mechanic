@@ -3,130 +3,132 @@
     android:id="@+id/LinearLayout14"
     style="@style/List_Item_Style"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/list_item"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:id="@+id/rlfroumrl"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="10" >
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical" >
 
-        <ImageView
-            android:id="@+id/imgvCmtuser_Froumfragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_launcher" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/linearLayout2"
-            android:gravity="top"
-            android:orientation="horizontal" >
-
-            <ImageButton
-                android:id="@+id/imgbtnDisLike_RawCmtFroum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/positive" />
-
-            <TextView
-                android:id="@+id/txtNumofLike_RawCmtFroum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="0"
-                android:textColor="@color/transparent" />
-
-            <ImageButton
-                android:id="@+id/imgbtnLike_RawCmtFroum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/negative" />
-
-            <TextView
-                android:id="@+id/txtNumofDislike_RawCmtFroum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="0"
-                android:textColor="@color/transparent" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/rawUsernamecmttxt_cmt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/rawUsernamecmttxt_cmt"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/imgvCmtuser_Froumfragment"
-            android:text="name"
-            android:textColor="@color/transparent" />
-
-        <TextView
-            android:id="@+id/txtPhonenumber_CmtFroum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="12dp"
-            android:layout_toLeftOf="@+id/rawUsernamecmttxt_cmt"
-            android:textColor="@color/red" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="45" >
-
-        <TextView
-            android:id="@+id/rawCmttxt"
+        <RelativeLayout
+            android:id="@+id/rlfroumrl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:hint=" "
-            android:text="message"
-            android:textColor="@color/transparent" />
-    </RelativeLayout>
+            android:layout_weight="10" >
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_weight="10" >
+            <ImageView
+                android:id="@+id/imgvCmtuser_Froumfragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_launcher" />
 
-        <ImageButton
-            android:id="@+id/imgvReplytoCm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="14dp"
-            android:background="@drawable/cmt" />
-    </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@+id/linearLayout2"
+                android:gravity="top"
+                android:orientation="horizontal" >
 
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="40" >
+                <ImageButton
+                    android:id="@+id/imgbtnDisLike_RawCmtFroum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/positive" />
 
-        <ListView
-            android:id="@+id/lstReplytoCm"
+                <TextView
+                    android:id="@+id/txtNumofLike_RawCmtFroum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="0"
+                    android:textColor="@color/transparent" />
+
+                <ImageButton
+                    android:id="@+id/imgbtnLike_RawCmtFroum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/negative" />
+
+                <TextView
+                    android:id="@+id/txtNumofDislike_RawCmtFroum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="0"
+                    android:textColor="@color/transparent" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/rawUsernamecmttxt_cmt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/rawUsernamecmttxt_cmt"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/imgvCmtuser_Froumfragment"
+                android:text="name"
+                android:textColor="@color/transparent" />
+
+            <TextView
+                android:id="@+id/txtPhonenumber_CmtFroum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:layout_toLeftOf="@+id/rawUsernamecmttxt_cmt"
+                android:textColor="@color/red" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-        </ListView>
-    </ScrollView>
+            android:layout_height="wrap_content"
+            android:layout_weight="45" >
+
+            <TextView
+                android:id="@+id/rawCmttxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:hint=" "
+                android:text="message"
+                android:textColor="@color/transparent" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_weight="10" >
+
+            <ImageButton
+                android:id="@+id/imgvReplytoCm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/cmt" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lstReplytoCm"
+        style="@style/second_item_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:choiceMode="singleChoice" />
 
 </LinearLayout>

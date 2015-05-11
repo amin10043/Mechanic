@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
@@ -59,15 +58,17 @@ public class DialogcmtInfroum extends Dialog {
 			public void onClick(View arg0) {
 				user = utility.getCurrentUser();
 				int userid = user.getId();
+				PersianDate date = new PersianDate();
+				String currentDate = date.todayShamsi();
+
 				dbadapter.open();
 				// int id = Integer.valueOf(f.getArguments().getString("Id"));
 				dbadapter.insertCommentInFroumtoDb(Cmttxt.getText().toString(),
-						Froumid, userid, "1", Commentid, "0", "0");
+						Froumid, userid, currentDate, Commentid, "0", "0");
 
 				dbadapter.close();
-				Toast.makeText(context, "reply adapter = " + Froumid,
-						Toast.LENGTH_SHORT).show();
-				((FroumFragment) f).updateView2();
+
+				((FroumFragment) f).updateList();
 				DialogcmtInfroum.this.dismiss();
 
 			}

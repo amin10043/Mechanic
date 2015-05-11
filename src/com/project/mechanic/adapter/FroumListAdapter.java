@@ -18,6 +18,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInFroum;
@@ -30,17 +31,15 @@ import com.project.mechanic.utility.Utility;
 public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 
 	Context context;
-	List<CommentInFroum> list;
+	List<CommentInFroum> list, replyList;
 	DataBaseAdapter adapter;
-	private ImageButton CmtLike;
-	private ImageButton CmtDisLike;
-	private ImageButton Replytocm;
-	private TextView NumofCmtLike;
-	private TextView NumofCmtDisLike;
+	private ImageButton CmtLike, CmtDisLike, Replytocm;
 	private ImageView Userimage;
+
+	private TextView NumofCmtLike, NumofCmtDisLike, txt1, txt2, txt3;
 	FroumFragment froumfragment;
 	Utility util;
-	List<CommentInFroum> replyList;
+	RelativeLayout rl;
 
 	int id = 0;
 
@@ -64,24 +63,31 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.raw_froumcmt, parent, false);
-		adapter = new DataBaseAdapter(context);
 
-		final TextView txt1 = (TextView) convertView
-				.findViewById(R.id.rawCmttxt);
-		TextView txt2 = (TextView) convertView
-				.findViewById(R.id.rawUsernamecmttxt_cmt);
-		TextView txt3 = (TextView) convertView
+		// //////// start find view
+
+		txt1 = (TextView) convertView.findViewById(R.id.rawCmttxt);
+		txt2 = (TextView) convertView.findViewById(R.id.rawUsernamecmttxt_cmt);
+		txt3 = (TextView) convertView
 				.findViewById(R.id.txtPhonenumber_CmtFroum);
-		CmtDisLike = (ImageButton) convertView
-				.findViewById(R.id.imgbtnLike_RawCmtFroum);
+
 		CmtLike = (ImageButton) convertView
 				.findViewById(R.id.imgbtnDisLike_RawCmtFroum);
+		CmtDisLike = (ImageButton) convertView
+				.findViewById(R.id.imgbtnLike_RawCmtFroum);
+
+		Userimage = (ImageView) convertView
+				.findViewById(R.id.imgvCmtuser_Froumfragment);
+
+		Replytocm = (ImageButton) convertView.findViewById(R.id.imgvReplytoCm);
+
 		NumofCmtLike = (TextView) convertView
 				.findViewById(R.id.txtNumofLike_RawCmtFroum);
 		NumofCmtDisLike = (TextView) convertView
 				.findViewById(R.id.txtNumofDislike_RawCmtFroum);
-		Userimage = (ImageView) convertView
-				.findViewById(R.id.imgvCmtuser_Froumfragment);
+
+		// //////// end find view
+
 		CommentInFroum comment = list.get(position);
 		adapter.open();
 		Users x = adapter.getUserbyid(comment.getUserid());
@@ -93,8 +99,7 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 		byte[] blob = x.getImage();
 		Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
 
-		RelativeLayout rl = (RelativeLayout) convertView
-				.findViewById(R.id.rlfroumrl);
+		rl = (RelativeLayout) convertView.findViewById(R.id.rlfroumrl);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				rl.getLayoutParams());
 
@@ -158,6 +163,11 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				adapter.insertLikeInCommentToDb(userid, 1, id);
 
 				a = adapter.getCommentInFroumbyID(id);
+
+				txtlike.setText(a.getNumOfLike());
+				adapter.close();
+
+				a = adapter.getCommentInFroumbyID(id);
 				txtlike.setText(a.getNumOfLike());
 				adapter.close();
 
@@ -203,7 +213,6 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 			}
 		});
 
-		Replytocm = (ImageButton) convertView.findViewById(R.id.imgvReplytoCm);
 		Replytocm.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -220,7 +229,8 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 						commentid = listItem.getId();
 					}
 				}
-
+				Toast.makeText(context, "f l adapter", Toast.LENGTH_SHORT)
+						.show();
 				DialogcmtInfroum dialog = new DialogcmtInfroum(froumfragment,
 						commentid, context, froumfragment.getFroumId(),
 						R.layout.dialog_addcomment);
@@ -254,6 +264,8 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 		}
 
 		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		// params.height =
+		// android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
 		params.height = totalHeight
 				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
 		listView.setLayoutParams(params);
