@@ -88,10 +88,10 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/txtDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Date"
             android:textColor="@color/transparent" />
 
         <TextView
