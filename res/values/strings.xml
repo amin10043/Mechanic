@@ -43,6 +43,7 @@
     <string name="search">جستجو </string>
     <string name="txtanadedite">ویرایش آگهی </string>
     <string name="txtanadedate">اطلاعات تماس </string>
+     <string name="txtanadreport">گزارش </string>
 
     <string-array name="MenuItems">
         <item name="home">خانه</item>

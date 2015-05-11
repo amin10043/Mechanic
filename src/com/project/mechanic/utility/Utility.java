@@ -141,7 +141,7 @@ public class Utility {
 
 		columnWidth = (int) dpHeight;
 
-		int padding = (int) (70 * density);
+		int padding = (int) (140 * density);
 		return point.y - padding;
 
 	}
