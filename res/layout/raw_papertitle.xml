@@ -57,12 +57,12 @@
             android:gravity="center" >
 
             <TextView
+                android:id="@+id/NumOfComment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="123"
                 android:textColor="@color/transparent"
                 android:textSize="8dp" />
         </LinearLayout>
@@ -77,12 +77,12 @@
             android:gravity="center" >
 
             <TextView
+                android:id="@+id/NumOfLike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="456"
                 android:textColor="@color/transparent"
                 android:textSize="8dp" />
         </LinearLayout>

@@ -1289,10 +1289,10 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	public Integer LikeInPaper_count() {
+	public Integer LikeInPaper_count(int paperID) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableLikeInPaper, null);
+				+ TableLikeInPaper + " WHERE PaperId=" + paperID, null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -1323,12 +1323,15 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	public Integer CommentInPaper_count() {
+	public Integer CommentInPaper_count(int paperID) {
 
-		Cursor mCur = mDb.query(TableCommentInPaper, CommentInPaper, null,
-				null, null, null, null);
-		int s = mCur.getCount();
-		return s;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInPaper + " WHERE PaperId=" + paperID, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
 	}
 
 	public String province_display(String table, int row, int field) {

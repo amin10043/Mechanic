@@ -13,8 +13,9 @@ import android.widget.TextView;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInPaper;
+import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.entity.*;
 
 public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 
@@ -22,14 +23,16 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 	List<CommentInPaper> list;
 	DataBaseAdapter adapter;
 	Fragment f;
+	private PaperFragment Paperfragment;
 
 	public PaperListAdapter(Context context, int resource,
-			List<CommentInPaper> objects) {
+			List<CommentInPaper> objects, PaperFragment f) {
 		super(context, resource, objects);
 
 		this.context = context;
 		this.list = objects;
 		adapter = new DataBaseAdapter(context);
+		this.Paperfragment = f;
 
 	}
 
@@ -50,9 +53,9 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 		CommentInPaper comment = list.get(position);
 
 		adapter.open();
-		 Users user = adapter.getUserbyid(comment.getUserid());
+		Users user = adapter.getUserbyid(comment.getUserid());
 		adapter.close();
-		
+
 		txtcmt.setText(comment.getDescription());
 		txtuser.setText(user.getName());
 		txtdate.setText(comment.getDatetime());
