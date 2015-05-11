@@ -2386,4 +2386,14 @@ public class DataBaseAdapter {
 		return s;
 	}
 
+	public Users getCurrentUser() {
+		Users u = null;
+		Cursor mCur = mDb.query(TableUsers, Users, "WHERE admin=1", null, null,
+				null, null);
+		if (mCur.moveToNext()) {
+			u = CursorToUsers(mCur);
+		}
+		return u;
+	}
+
 }
