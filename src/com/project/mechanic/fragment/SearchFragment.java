@@ -1,145 +1,188 @@
 package com.project.mechanic.fragment;
 
+import java.util.List;
+import android.graphics.Movie;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.TextView;
-
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
 
+
 public class SearchFragment extends Fragment {
 
-	DataBaseAdapter adapter;
+    DataBaseAdapter     adapter;
 
-	private String[] Name;
+    private List<Movie> mMovies;
+    private List<Movie> mMoviesFiltered;
+    private boolean     mSearchOpened;
+    private String      mSearchQuery;
+    private ListView    mMoviesLv;
+    private Drawable    mIconOpenSearch;
+    private Drawable    mIconCloseSearch;
+    private EditText    mSearchEt;
+    private MenuItem    mSearchAction;
 
-	private EditText word;
 
-	private RadioButton rbname;
-	private RadioButton rbmatn;
+    // @SuppressLint("InflateParams")
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        ((MainActivity) getActivity()).setActivityTitle(R.string.search);
 
-	private TextView status;
+        View view = inflater.inflate(R.layout.fragment_search, null);
+        adapter = new DataBaseAdapter(getActivity());
+        return view;
 
-	// @SuppressLint("InflateParams")
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		((MainActivity) getActivity()).setActivityTitle(R.string.search);
+        // DB = new DataBaseAdapter(this);
+        //		if (savedState == null) {
+        //			mMovies = getInitialListOfMovies();
+        //			mMoviesFiltered = mMovies;
+        //			mSearchOpened = false;
+        //			mSearchQuery = "";
+        //		} else {
+        //			mMovies = savedState.getParcelableArrayList(MOVIES);
+        //			mMoviesFiltered = savedState
+        //					.getParcelableArrayList(MOVIES_FILTERED);
+        //			mSearchOpened = savedState.getBoolean(SEARCH_OPENED);
+        //			mSearchQuery = savedState.getString(SEARCH_QUERY);
+        //		}
+        //
+        //		mIconOpenSearch = getResources().getDrawable(R.drawable.ic_search);
+        //		mIconCloseSearch = getResources().getDrawable(R.drawable.ic_favorite);
+        //
+        //		mMoviesLv = (ListView) view.findViewById(R.id.ListvCity);
+        //
+        //		MoviesListAdapter adapter = new MoviesListAdapter(mMoviesFiltered, this);
+        //		mMoviesLv.setAdapter(adapter);
+        //
+        //		if (mSearchOpened) {
+        //			openSearchBar(mSearchQuery);
+        //		}
+        //
+        //		return view;
+        //	}
+        //
+        //	@Override
+        //	public void onSaveInstanceState(Bundle outState) {
+        //		super.onSaveInstanceState(outState);
+        //		outState.putParcelableArrayList(MOVIES, (ArrayList<Movie>) mMovies);
+        //		outState.putParcelableArrayList(MOVIES_FILTERED,
+        //				(ArrayList<Movie>) mMoviesFiltered);
+        //		outState.putBoolean(SEARCH_OPENED, mSearchOpened);
+        //		outState.putString(SEARCH_QUERY, mSearchQuery);
+        //	}
+        //
+        //	public boolean onCreateOptionsMenu(Menu menu) {
+        //		getMenuInflater().inflate(R.menu.main, menu);
+        //		return true;
+        //	}
+        //
+        //	@Override
+        //	public boolean onPrepareOptionsMenu(Menu menu) {
+        //		mSearchAction = menu.findItem(R.id.ic_search);
+        //		return super.onPrepareOptionsMenu(menu);
+        //	}
+        //
+        //	@Override
+        //	public boolean onOptionsItemSelected(MenuItem item) {
+        //		int id = item.getItemId();
+        //		if (id == R.id.ic_search) {
+        //			if (mSearchOpened) {
+        //				closeSearchBar();
+        //			} else {
+        //				openSearchBar(mSearchQuery);
+        //			}
+        //			return true;
+        //		}
+        //		return super.onOptionsItemSelected(item);
+        //	}
+        //
+        //	private void openSearchBar(String queryText) {
+        //
+        //		ActionBar actionBar = getSupportActionBar();
+        //		actionBar.setDisplayShowCustomEnabled(true);
+        //		actionBar.setCustomView(R.layout.search_bar);
+        //
+        //		mSearchEt = (EditText) actionBar.getCustomView().findViewById(
+        //				R.id.etSearch);
+        //		mSearchEt.addTextChangedListener(new SearchWatcher());
+        //		mSearchEt.setText(queryText);
+        //		mSearchEt.requestFocus();
+        //
+        //		mSearchAction.setIcon(mIconCloseSearch);
+        //		mSearchOpened = true;
+        //
+        //	}
+        //
+        //	private void closeSearchBar() {
+        //
+        //		getSupportActionBar().setDisplayShowCustomEnabled(false);
+        //
+        //		mSearchAction.setIcon(mIconOpenSearch);
+        //		mSearchOpened = false;
+        //
+        //	}
+        //
+        //	private class SearchWatcher implements TextWatcher {
+        //
+        //		public void beforeTextChanged(CharSequence c, int i, int i2, int i3) {
+        //
+        //		}
+        //
+        //		public void onTextChanged(CharSequence c, int i, int i2, int i3) {
+        //
+        //		}
+        //
+        //		@Override
+        //		public void afterTextChanged(Editable editable) {
+        //			mSearchQuery = mSearchEt.getText().toString();
+        //			mMoviesFiltered = performSearch(mMovies, mSearchQuery);
+        //			getListAdapter().update(mMoviesFiltered);
+        //		}
+        //
+        //	}
+        //
+        //	private MoviesListAdapter getListAdapter() {
+        //		return (MoviesListAdapter) mMoviesLv.getAdapter();
+        //	}
+        //
+        //	private List<Movie> performSearch(List<Movie> movies, String query) {
+        //
+        //		String[] queryByWords = query.toLowerCase().split("\\s+");
+        //
+        //		List<Movie> moviesFiltered = new ArrayList<Movie>();
+        //
+        //		for (Movie movie : mMovies) {
+        //
+        //			String content = (movie.getTitle() + " " + movie.getDirector()
+        //					+ " " + String.valueOf(movie.getYear())).toLowerCase();
+        //
+        //			for (String word : queryByWords) {
+        //
+        //				int numberOfMatches = queryByWords.length;
+        //
+        //				if (content.contains(word)) {
+        //					numberOfMatches--;
+        //				} else {
+        //					break;
+        //				}
+        //
+        //				if (numberOfMatches == 0) {
+        //					moviesFiltered.add(movie);
+        //				}
+        //
+        //			}
+        //
+        //		}
 
-		View view = inflater.inflate(R.layout.fragment_search, null);
-		adapter = new DataBaseAdapter(getActivity());
-
-		// DB = new DataBaseAdapter(this);
-
-		word = (EditText) view.findViewById(R.id.search_word);
-		rbname = (RadioButton) view.findViewById(R.id.search_rb_name);
-		rbmatn = (RadioButton) view.findViewById(R.id.search_rb_matn);
-		status = (TextView) view.findViewById(R.id.search_status);
-
-		refresh(word.getText().toString(), "Name");
-
-		word.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-					int arg3) {
-				// TODO Auto-generated method stub
-
-				if (rbname.isChecked()) {
-					refresh(word.getText().toString(), "Name");
-				} else if (rbmatn.isChecked()) {
-
-					refresh(word.getText().toString(), "Name");
-
-				}
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1,
-					int arg2, int arg3) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-		return view;
-
-	}
-
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		//
-		// Intent i = new Intent(search.this, main_matn.class);
-		//
-		// i.putExtra("name", Name[position]);
-		//
-		// startActivity(i);
-
-	}
-
-	// class AA extends ArrayAdapter<String> {
-	//
-	// // public AA() {
-	// // super(getActivity() R.layout.row_ostan, Name);
-	// }
-
-	// public View getView(final int position, View convertView,
-	// ViewGroup parent) {
-	//
-	// LayoutInflater in = getLayoutInflater();
-	// View row = in.inflate(R.layout.row_season, parent, false);
-	//
-	// TextView name = (TextView) row.findViewById(R.id.row_season_name);
-	//
-	// name.setText(Sea[position] + ": " + Name[position] + Page[position]);
-	// name.setTypeface(Main.font);
-	//
-	// return (row);
-	// }
-	//
-	// }
-
-	private void refresh(String word1, String field) {
-
-		adapter.open();
-
-		int s = adapter.count_serach(word1, field);
-
-		if (word.getText().toString().equals("")) {
-			s = 0;
-			status.setText("لطفا کلمه مورد جستجو را وارد نمایید");
-		} else {
-
-			status.setText("تعداد " + s + " نتیجه یافت شد");
-		}
-
-		Name = new String[s];
-
-		for (int i = 0; i < s; i++) {
-
-			Name[i] = adapter.serach(i, 1, word1, field);
-
-			if (field.equals("Name")) {
-
-			}
-		}
-
-		// setListAdapter(new AA());
-		adapter.close();
-
-	}
-
+        //  return moviesFiltered;
+    }
 }

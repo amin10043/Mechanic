@@ -1,66 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAEAEA" >
+    android:background="#EAEAEA"
+    android:orientation="vertical" >
 
     <EditText
-        android:id="@+id/search_word"
+        android:id="@+id/etSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:ems="10" >
+        android:ems="10"
+        android:inputType="text" >
 
         <requestFocus />
     </EditText>
 
-    <RadioGroup
-        android:id="@+id/radioGroup1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/search_word"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:id="@+id/search_rb_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/search_word"
-            android:layout_toRightOf="@+id/radioGroup1"
-            android:checked="true"
-            android:text="براساس نام" />
-
-        <RadioButton
-            android:id="@+id/search_rb_matn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/search_rb_name"
-            android:layout_alignBottom="@+id/search_rb_name"
-            android:layout_toRightOf="@+id/search_rb_name"
-            android:text="براساس متن" />
-    </RadioGroup>
-
-    <TextView
-        android:id="@+id/search_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/radioGroup1"
-        android:gravity="center"
-        android:text="TextView" />
-
     <ListView
-        android:id="@android:id/list"
+        android:id="@+id/listView1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/search_status"
-        android:layout_marginTop="66dp"
-        android:background="@android:color/transparent"
-        android:cacheColorHint="@android:color/transparent" >
+        android:layout_height="match_parent" >
     </ListView>
 
-</RelativeLayout>
+</LinearLayout>
