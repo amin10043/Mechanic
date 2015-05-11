@@ -29,11 +29,11 @@ public class ChatHeadService extends Service {
 	public void onCreate() {
 		super.onCreate();
 
-		windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-
+		boolean newNoti = false;
 		chatHead = new ImageView(this);
 		chatHead.setImageResource(R.drawable.addimage);
 
+		windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 		final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
 				WindowManager.LayoutParams.WRAP_CONTENT,
 				WindowManager.LayoutParams.WRAP_CONTENT,
@@ -44,9 +44,9 @@ public class ChatHeadService extends Service {
 		params.gravity = Gravity.TOP | Gravity.LEFT;
 		params.x = 0;
 		params.y = 100;
-
-		windowManager.addView(chatHead, params);
-
+		if (newNoti) {
+			windowManager.addView(chatHead, params);
+		}
 		chatHead.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -74,7 +74,7 @@ public class ChatHeadService extends Service {
 					initialTouchY = event.getRawY();
 					return true;
 				case MotionEvent.ACTION_UP:
-					return true;
+					return false;
 				case MotionEvent.ACTION_MOVE:
 					params.x = initialX
 							+ (int) (event.getRawX() - initialTouchX);
@@ -86,6 +86,7 @@ public class ChatHeadService extends Service {
 				return false;
 			}
 		});
+
 	}
 
 	@Override

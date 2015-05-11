@@ -1,5 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey"
@@ -68,20 +68,23 @@
                 </FrameLayout>
 
                 <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" >
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/txtsize10"
-                    android:background="@drawable/color1" >
+                    android:background="@drawable/color1"
+                    android:orientation="vertical" >
 
                     <TextView
                         android:id="@+id/etxtname"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
                         android:gravity="right|center"
-                        android:textColor="@color/transparent"
-                        android:textSize="@dimen/txtsize30" />
+                        android:textColor="@color/transparent" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -96,7 +99,7 @@
                     android:id="@+id/etxtemail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.8"
                     android:ems="10" >
 
                     <requestFocus />
@@ -107,9 +110,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.2"
                     android:gravity="right"
-                    android:text="ایمیل:"
+                    android:text="ايميل:"
                     android:textColor="@color/transparent" />
             </LinearLayout>
 
@@ -124,15 +127,15 @@
                     android:id="@+id/etxtphone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.8"
                     android:ems="10" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/dialog_show_phone"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.2"
                     android:gravity="right"
                     android:text="شماره ثابت :"
                     android:textColor="@color/transparent" />
@@ -150,15 +153,15 @@
                     android:id="@+id/etxtcellphone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.8"
                     android:ems="10" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/dialog_show_mobile"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.2"
                     android:gravity="right"
                     android:text="شماره همراه:"
                     android:textColor="@color/transparent" />
@@ -176,15 +179,15 @@
                     android:id="@+id/etxtfax"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.8"
                     android:ems="10" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/dialog_show_fax"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.2"
                     android:gravity="right"
                     android:text="شماره فکس: "
                     android:textColor="@color/transparent" />
@@ -201,17 +204,18 @@
                 <EditText
                     android:id="@+id/etxtaddress"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"
                     android:ems="10"
-                    android:inputType="textPostalAddress" />
+                    android:inputType="textPostalAddress"
+                    android:scrollbars="vertical" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/dialog_email"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.2"
                     android:gravity="right"
                     android:text="آدرس :"
                     android:textColor="@color/transparent" />
@@ -231,7 +235,7 @@
                 android:layout_marginLeft="@dimen/txtsize100"
                 android:layout_marginRight="@dimen/txtsize100"
                 android:background="@drawable/buttonshape"
-                android:text="ثبت ویرایش" />
+                android:text="ثبت ويرايش" />
         </LinearLayout>
     </LinearLayout>
 

@@ -23,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnHoverListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -48,6 +49,7 @@ public class EditPersonalFragment  extends Fragment {
 		ImageView   img2, imagecamera;
 		LinearLayout.LayoutParams lp2;
 		Utility ut;
+	int id ;
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		bitmap.compress(CompressFormat.PNG, 0, outputStream);
@@ -59,12 +61,12 @@ public class EditPersonalFragment  extends Fragment {
 
 		service = new ServiceComm(getActivity());
 		ut=new Utility(getActivity());
-	final TextView	txtaddress	=(TextView) view.findViewById(R.id.etxtaddress);
-	final TextView	txtcellphone=(TextView) view.findViewById(R.id.etxtcellphone);
-	final TextView	txtphone=(TextView) view.findViewById(R.id.etxtphone);
-	final TextView	txtemail=(TextView) view.findViewById(R.id.etxtemail);
-	final TextView	txtname=(TextView) view.findViewById(R.id.etxtname);
-	final TextView	txtfax=(TextView) view.findViewById(R.id.etxtfax);
+	final EditText	txtaddress	=(EditText) view.findViewById(R.id.etxtaddress);
+	final EditText	txtcellphone=(EditText) view.findViewById(R.id.etxtcellphone);
+	final EditText	txtphone=(EditText) view.findViewById(R.id.etxtphone);
+	final EditText	txtemail=(EditText) view.findViewById(R.id.etxtemail);
+	final TextView   txtname =  (TextView) view.findViewById(R.id.etxtname);
+	final EditText	txtfax=(EditText) view.findViewById(R.id.etxtfax);
 img2=(ImageView) view.findViewById(R.id.img2);
 imagecamera=(ImageView) view.findViewById(R.id.imagcamera);
  Button btnregedit=(Button) view.findViewById(R.id.btnregedit)	;
@@ -82,40 +84,40 @@ lp2=new LinearLayout.LayoutParams(lin3.getLayoutParams());
 	dbAdapter.open();
 	///
 	
-//	Users u  =utile1.getCurrentUser();
-//	int id = u.getId();
-//	byte[] bitmapbyte = u.getImage();
-//	if (bitmapbyte != null) {
-//		Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-//				bitmapbyte.length);
-//		img.setImageBitmap(bmp);
-//	}
-//	String name=u.getName();
-// 	String email=u.getEmail();
-// 	String address=u.getAddress();
-// 	String phone=u.getPhonenumber();
-// 	String cellphone=u.getMobailenumber();
-// 	String fax=u.getFaxnumber();
-	
-	////////////
-	
-	final int id =1;
-	Users x =dbAdapter.getUserById(id);	
-	byte[] bitmapbyte = x.getImage();
+	Users u  = ut.getCurrentUser();
+	 id = u.getId();
+	byte[] bitmapbyte = u.getImage();
 	if (bitmapbyte != null) {
 		Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 				bitmapbyte.length);
 		img2.setImageBitmap(bmp);
 	}
+	String name=u.getName();
+ 	String email=u.getEmail();
+ 	String address=u.getAddress();
+ 	String phone=u.getPhonenumber();
+ 	String cellphone=u.getMobailenumber();
+ 	String fax=u.getFaxnumber();
+	
+	////////////
+	
+//	final int id =1;
+//	Users x =dbAdapter.getUserById(id);	
+//	byte[] bitmapbyte = x.getImage();
+//	if (bitmapbyte != null) {
+//		Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
+//				bitmapbyte.length);
+//		img2.setImageBitmap(bmp);
+//	}
 					
- 	int item = x.getId();
- 	String name=x.getName();
- 	String email=x.getEmail();
- 	String address=x.getAddress();
- 	String phone=x.getPhonenumber();
- 	String cellphone=x.getMobailenumber();
- 	String fax=x.getFaxnumber();
- 	
+ 	int item = u.getId();
+ //	String name=x.getName();
+ //	String email=x.getEmail();
+ //	String address=x.getAddress();
+ //	String phone=x.getPhonenumber();
+ //	String cellphone=x.getMobailenumber();
+ //	String fax=x.getFaxnumber();
+ //	
  	
 		
 	dbAdapter.close();
@@ -148,8 +150,8 @@ lp2=new LinearLayout.LayoutParams(lin3.getLayoutParams());
 			 Bitmap bitmap = ((BitmapDrawable) img2.getDrawable())
 						.getBitmap();
 
-				Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
-						bitmap.getHeight(), bitmap.getConfig());
+			//	Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+				//		bitmap.getHeight(), bitmap.getConfig());
 			 
 			 
 		dbAdapter = new DataBaseAdapter(getActivity());

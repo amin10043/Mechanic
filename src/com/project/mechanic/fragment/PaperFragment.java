@@ -52,46 +52,58 @@ public class PaperFragment extends Fragment {
 		txttitleDes = (TextView) view.findViewById(R.id.rawtxtDescription);
 
 		adapter = new DataBaseAdapter(getActivity());
-		adapter.open();
+		if (getArguments().getString("Id") != null) {
+			adapter.open();
+			id = Integer.valueOf(getArguments().getString("Id"));
+			NumofComment.setText(adapter.CommentInPaper_count(id).toString());
 
-		// Bundle bundle = new Bundle();
-		// bundle.getString("Id", String.valueOf(id));
-		id = Integer.valueOf(getArguments().getString("Id"));
-		mylist = adapter.getCommentInPaperbyPaperid(id);
-		Paper p = adapter.getPaperItembyid(id);
+			NumofLike.setText(adapter.LikeInPaper_count(id).toString());
 
-		txttitle.setText(p.getTitle());
-		txttitleDes.setText(p.getContext());
-		adapter.close();
-		PaperListadapter = new PaperListAdapter(getActivity(),
-				R.layout.raw_papercmt, mylist);
+			// Bundle bundle = new Bundle();
+			// bundle.getString("Id", String.valueOf(id));
+			id = Integer.valueOf(getArguments().getString("Id"));
+			mylist = adapter.getCommentInPaperbyPaperid(id);
+			Paper p = adapter.getPaperItembyid(id);
 
-		lst.setAdapter(PaperListadapter);
+			txttitle.setText(p.getTitle());
+			txttitleDes.setText(p.getContext());
+			adapter.close();
+			if (lst != null) {
+				PaperListadapter = new PaperListAdapter(getActivity(),
+						R.layout.raw_papercmt, mylist, PaperFragment.this);
 
-		Like.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				adapter.open();
-
-				adapter.insertLikeInPaperToDb(user.getId(), id, "");
-				NumofLike.setText(adapter.LikeInPaper_count().toString());
-				adapter.close();
+				lst.setAdapter(PaperListadapter);
 			}
-		});
 
-		btnAddcmt.setOnClickListener(new View.OnClickListener() {
+			Like.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
+				@Override
+				public void onClick(View arg0) {
+					Utility utility = new Utility(getActivity());
+					Users user = new Users();
+					user = utility.getCurrentUser();
+					int userid = user.getId();
+					adapter.open();
+					adapter.insertLikeInPaperToDb(user.getId(), id, "");
+					NumofLike.setText(adapter.LikeInPaper_count(id).toString());
+					adapter.close();
+				}
+			});
 
-				// TODO Auto-generated method stub
-				dialog = new DialogcmtInPaper(PaperFragment.this,
-						getActivity(), R.layout.dialog_addcomment,id);
-				dialog.show();
+			btnAddcmt.setOnClickListener(new View.OnClickListener() {
 
-			}
-		});
+				@Override
+				public void onClick(View v) {
+
+					// TODO Auto-generated method stub
+					dialog = new DialogcmtInPaper(PaperFragment.this,
+							getActivity(), R.layout.dialog_addcomment, id);
+					dialog.show();
+
+				}
+			});
+			return view;
+		}
 		return view;
 
 	}
@@ -104,12 +116,12 @@ public class PaperFragment extends Fragment {
 	public void updateView2() {
 		adapter.open();
 		mylist = adapter.getCommentInPaperbyPaperid(id);
-		NumofComment.setText(adapter.CommentInPaper_count().toString());
+		NumofComment.setText(adapter.CommentInPaper_count(id).toString());
 
 		adapter.close();
 
 		PaperListadapter = new PaperListAdapter(getActivity(),
-				R.layout.raw_papercmt, mylist);
+				R.layout.raw_papercmt, mylist, PaperFragment.this);
 		PaperListadapter.notifyDataSetChanged();
 		lst.setAdapter(PaperListadapter);
 

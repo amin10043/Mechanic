@@ -19,7 +19,7 @@ public class ServiceComm extends AsyncTask<String, Integer, String> {
 
 	public final String WSDL_TARGET_NAMESPACE = "http://tempuri.org/";
 
-	public final String SOAP_ADDRESS = "http://192.168.1.4/FirstService/MyService.asmx";
+	public final String SOAP_ADDRESS = "http://srv.mechanical0098.com/MyService.asmx";
 
 	public String response = "";
 

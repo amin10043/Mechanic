@@ -15,15 +15,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.SearchView.OnCloseListener;
 import android.widget.TextView;
 
 import com.project.mechanic.adapter.SlideMenuAdapter;
+import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
+import com.project.mechanic.fragment.SearchFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -39,7 +40,7 @@ public class MainActivity extends FragmentActivity {
 	private Fragment lastFragment;
 	private boolean isFavorite = false;
 	Utility util;
-	private int mInterval = 50000; // 5 seconds by default, can be changed later
+	private int mInterval = 40000; // 5 seconds by default, can be changed later
 	private Handler mHandler;
 	SlideMenuAdapter slideadapter;
 
@@ -100,25 +101,30 @@ public class MainActivity extends FragmentActivity {
 		// final ImageButton iBtnFavorite = (ImageButton)
 		// findViewById(R.id.iBtnFavorite);
 		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
-		SearchView searchV = (SearchView) findViewById(R.id.searchV);
+		ImageView search = (ImageView) findViewById(R.id.sedarch_v);
 
-		searchV.setOnSearchClickListener(new OnClickListener() {
+		search.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				txtTitle.setVisibility(View.GONE);
+
+				FragmentTransaction trans = getSupportFragmentManager()
+						.beginTransaction();
+				trans.replace(R.id.content_frame, new SearchFragment());
+				trans.addToBackStack(null);
+				trans.commit();
 
 			}
 		});
 
-		searchV.setOnCloseListener(new OnCloseListener() {
-
-			@Override
-			public boolean onClose() {
-				txtTitle.setVisibility(View.VISIBLE);
-				return false;
-			}
-		});
+		// searchV.setOnCloseListener(new OnCloseListener() {
+		//
+		// @Override
+		// public boolean onClose() {
+		// txtTitle.setVisibility(View.VISIBLE);
+		// return false;
+		// }
+		// });
 
 		iBtnMenu.setOnClickListener(new OnClickListener() {
 
@@ -193,8 +199,6 @@ public class MainActivity extends FragmentActivity {
 
 		setActivityTitle(R.string.strMain);
 
-		// startService(new Intent(this, ChatHeadService.class));
-
 		mHandler = new Handler();
 		mHandler.postDelayed(mStatusChecker, mInterval);
 	}
@@ -260,26 +264,26 @@ public class MainActivity extends FragmentActivity {
 
 			// ////////////////////////////////////////////////
 
-			// if ( util.getCurrentUser()!=null ) {
-			//
+			 if ( util.getCurrentUser()!=null ) {
+			
 			// // SharedPreferences sendData = this.getSharedPreferences("Id",
 			// // 0);
 			// //sendData.edit().putInt("main_Id", Service).commit();
-			// fragment = new DisplayPersonalInformationFragment();
-			// fragmentManager = getSupportFragmentManager();
-			// fragmentManager.beginTransaction()
-			// .replace(R.id.content_frame, fragment).commit();
+		fragment = new DisplayPersonalInformationFragment();
+			fragmentManager = getSupportFragmentManager();
+		fragmentManager.beginTransaction()
+			 .replace(R.id.content_frame, fragment).commit();
+		
 			//
-			//
-			// }
-			// else
-			// {
+			 }
+			 else
+			 {
 
 			fragment = new LoginFragment();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
-			// }
+			}
 			break;
 
 		case 2:
