@@ -56,8 +56,6 @@ public class FroumReplyetocmAdapter extends ArrayAdapter<CommentInFroum> {
 				.findViewById(R.id.rawCmttxt);
 		TextView txt2 = (TextView) convertView
 				.findViewById(R.id.rawUsernamecmttxt_cmt);
-		TextView txt3 = (TextView) convertView
-				.findViewById(R.id.txtPhonenumber_CmtFroum);
 
 		Userimage = (ImageView) convertView
 				.findViewById(R.id.imgvCmtuser_Froumfragment);
@@ -68,7 +66,6 @@ public class FroumReplyetocmAdapter extends ArrayAdapter<CommentInFroum> {
 
 		txt1.setText(comment.getDesk());
 		txt2.setText(x.getName());
-		txt3.setText(x.getPhonenumber());
 		byte[] blob = x.getImage();
 		Bitmap bmp = BitmapFactory.decodeByteArray(blob, 0, blob.length);
 		Userimage.getLayoutParams().height = 50;

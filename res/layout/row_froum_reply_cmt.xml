@@ -3,15 +3,14 @@
     android:id="@+id/LinearLayout14"
     style="@style/list_style_reply_froum"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/shape_froum_reply"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:id="@+id/rlfroumrl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="10" >
+        android:layout_height="wrap_content" >
 
         <ImageView
             android:id="@+id/imgvCmtuser_Froumfragment"
@@ -31,21 +30,11 @@
             android:layout_toLeftOf="@+id/imgvCmtuser_Froumfragment"
             android:text="name"
             android:textColor="@color/transparent" />
-
-        <TextView
-            android:id="@+id/txtPhonenumber_CmtFroum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="12dp"
-            android:layout_toLeftOf="@+id/rawUsernamecmttxt_cmt"
-            android:textColor="@color/red" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="45" >
+        android:layout_height="wrap_content" >
 
         <TextView
             android:id="@+id/rawCmttxt"
@@ -53,7 +42,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:hint=" "
             android:text="message"
             android:textColor="@color/transparent" />
     </RelativeLayout>

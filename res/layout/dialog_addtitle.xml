@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#6e80c5"
     android:baselineAligned="true"
     android:orientation="vertical" >
 
@@ -11,13 +12,11 @@
 
         <EditText
             android:id="@+id/txtTitleP"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="20dp"
+            android:layout_margin="10dp"
             android:ems="10"
+            android:gravity="center"
             android:hint="لطفا عنوان را وارد نمایید"
             android:inputType="textMultiLine" >
 
@@ -31,13 +30,13 @@
 
         <EditText
             android:id="@+id/txttitleDes"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
             android:ems="10"
+            android:gravity="center"
             android:hint="توضیحات را وارد کنید" />
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -50,10 +49,9 @@
             android:id="@+id/btnPdf1_Object"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:text="ثبت عنوان" />
-
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/save" />
     </RelativeLayout>
 
 </LinearLayout>

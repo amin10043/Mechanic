@@ -1540,7 +1540,7 @@ public class DataBaseAdapter {
 	}
 
 	public void insertCmtLikebyid(int id, String numofLike, int UserId) {
-		if (!isUserLikedComment(UserId, id)) {
+		if (!isUserLikedComment(UserId, id, 1)) {
 			ContentValues uc = new ContentValues();
 			uc.put("NumOfLike", numofLike);
 			mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
@@ -1561,13 +1561,13 @@ public class DataBaseAdapter {
 	}
 
 	// ///////////////////////////////////////////////////////////////////
-	public boolean isUserLikedComment(int userId, int CommentId) {
+	public boolean isUserLikedComment(int userId, int CommentId, int isLike) {
 
 		Cursor curs = mDb.rawQuery(
 				"SELECT COUNT(*) AS NUM FROM " + TableLikeInComment
 						+ " WHERE UserId= " + String.valueOf(userId)
 						+ " AND CommentId=" + String.valueOf(CommentId)
-						+ " AND IsLike=" + "1", null);
+						+ " AND IsLike=" + isLike, null);
 		if (curs.moveToNext()) {
 			int number = curs.getInt(0);
 			if (number > 0)
@@ -2186,4 +2186,30 @@ public class DataBaseAdapter {
 		return item;
 
 	}
+
+	public Integer getCountofCommentinFroumObject(int froumID, int CommentID) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInFroum + " WHERE FroumId=" + froumID
+				+ " AND CommentID=" + CommentID, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public void deleteLikeFromCommentInFroum(int CommentID, int userID,
+			int isLike) {
+		String[] t = { String.valueOf(CommentID), String.valueOf(userID),
+				String.valueOf(isLike) };
+		mDb.delete(TableLikeInComment,
+				"CommentId=? and UserId =? and IsLike =?", t);
+
+		// mDb.rawQuery("delete from " + TableLikeInComment
+		// + " where Commentid = " + CommentID + " and UserId = " + userID
+		// + " and isLike = 1 ", t);
+
+	}
+
 }
