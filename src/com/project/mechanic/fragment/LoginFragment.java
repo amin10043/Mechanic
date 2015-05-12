@@ -77,7 +77,7 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 					String[] params = new String[] { "login", mobile, pass };
 					service.delegate = LoginFragment.this;
-					service.execute(params);
+					// service.execute(params);
 				}
 			}
 		});
