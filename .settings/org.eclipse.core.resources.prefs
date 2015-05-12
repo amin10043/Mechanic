@@ -3,6 +3,7 @@
 >>>>>>>=branch 'master' of https\://github.com/amin10043/Mechanic.git
 eclipse.preferences.version=1
 encoding//src/com/project/mechanic/MainActivity.java=UTF-8
+encoding//src/com/project/mechanic/Search.java=UTF-8
 encoding//src/com/project/mechanic/SplashActivity.java=UTF-8
 encoding//src/com/project/mechanic/WelcomeScreen.java=UTF-8
 encoding//src/com/project/mechanic/adapter/FavoriteListAdapter.java=UTF-8
@@ -39,7 +40,6 @@ encoding//src/com/project/mechanic/fragment/Province3Fragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ProvinceFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/PublicationsFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/RegisterFragment.java=UTF-8
-encoding//src/com/project/mechanic/fragment/SearchFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ShopFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ShowAdFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/dialog_show_data.java=UTF-8
