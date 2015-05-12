@@ -43,11 +43,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+ <activity
+            android:name="com.project.mechanic.Search"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
         <service
             android:name="com.project.mechanic.utility.ChatHeadService"
             android:enabled="true" >
         </service>
+        
     </application>
 
 </manifest>
