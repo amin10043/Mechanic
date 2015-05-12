@@ -58,16 +58,27 @@ public class DialogcmtInfroum extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 				user = utility.getCurrentUser();
-				int userid = user.getId();
-				dbadapter.open();
-				// int id = Integer.valueOf(f.getArguments().getString("Id"));
-				dbadapter.insertCommentInFroumtoDb(Cmttxt.getText().toString(),
-						Froumid, userid, "1", Commentid, "0", "0");
+				if (user == null) {
+					(Toast.makeText(context,
+							"برای ثبت نظر ابتدا باید وارد شوید.",
+							Toast.LENGTH_LONG)).show();
+				} else {
 
-				dbadapter.close();
-				Toast.makeText(context, "reply adapter = " + Froumid,
-						Toast.LENGTH_SHORT).show();
-				((FroumFragment) f).updateView2();
+					int userid = user.getId();
+					PersianDate date = new PersianDate();
+					String currentDate = date.todayShamsi();
+
+					dbadapter.open();
+					// int id =
+					// Integer.valueOf(f.getArguments().getString("Id"));
+					dbadapter.insertCommentInFroumtoDb(Cmttxt.getText()
+							.toString(), Froumid, userid, currentDate,
+							Commentid, "0", "0");
+
+					dbadapter.close();
+
+					((FroumFragment) f).updateList();
+				}
 				DialogcmtInfroum.this.dismiss();
 
 			}

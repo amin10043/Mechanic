@@ -36,6 +36,7 @@ public class DialogcmtInPaper extends Dialog {
 		util = new Utility(context);
 		user = util.getCurrentUser();
 		p = new PersianDate();
+		dbadapter = new DataBaseAdapter(context);
 	}
 
 	@Override
@@ -45,7 +46,6 @@ public class DialogcmtInPaper extends Dialog {
 		setContentView(R.layout.dialog_addcomment);
 		btncmt = (ImageButton) findViewById(R.id.btnComment);
 		Cmttxt = (EditText) findViewById(R.id.txtCmt);
-		dbadapter = new DataBaseAdapter(context);
 
 		btncmt.setOnClickListener(new android.view.View.OnClickListener() {
 
@@ -56,12 +56,19 @@ public class DialogcmtInPaper extends Dialog {
 							Toast.LENGTH_LONG)).show();
 				else {
 
-					dbadapter.open();
+					if (user == null) {
+						(Toast.makeText(context,
+								"برای ثبت نظر ابتدا باید وارد شوید.",
+								Toast.LENGTH_LONG)).show();
+					} else {
 
-					dbadapter.insertCommentInPapertoDb(Cmttxt.getText()
-							.toString(), paperId, user.getId(), p.todayShamsi());
-					dbadapter.close();
-					((PaperFragment) f).updateView2();
+						dbadapter.open();
+						dbadapter.insertCommentInPapertoDb(Cmttxt.getText()
+								.toString(), paperId, user.getId(), p
+								.todayShamsi());
+						dbadapter.close();
+						((PaperFragment) f).updateView2();
+					}
 					DialogcmtInPaper.this.dismiss();
 				}
 			}

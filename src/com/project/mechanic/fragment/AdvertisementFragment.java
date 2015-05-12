@@ -38,8 +38,8 @@ public class AdvertisementFragment extends Fragment {
 		SharedPreferences sendIDpro = getActivity().getSharedPreferences("Id",
 				0);
 		sendIDpro.edit().putInt("main_Id", provinceId).commit();
-		Toast.makeText(getActivity(), provinceId + "", Toast.LENGTH_SHORT)
-				.show();
+		Toast.makeText(getActivity(), "advers fragment " + provinceId,
+				Toast.LENGTH_SHORT).show();
 
 		dbAdapter.open();
 		List<TicketType> mylist = dbAdapter.getAllTicketType();

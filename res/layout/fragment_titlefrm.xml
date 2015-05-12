@@ -8,9 +8,12 @@
     android:weightSum="100" >
 
     <RelativeLayout
+        style="@style/brandStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="10" >
+        android:layout_margin="10dp"
+        android:layout_weight="10"
+        android:background="@drawable/shape_froum_reply" >
 
         <ImageButton
             android:id="@+id/imgBtnAddcmt_CmtFroum"
@@ -19,8 +22,17 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
-            android:background="#EAEAEA"
+            android:background="@android:color/transparent"
             android:src="@drawable/add" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/imgBtnAddcmt_CmtFroum"
+            android:gravity="center"
+            android:text="نظرات و تجربیات خود را با سایر کاربران به اشتراک بگذارید"
+            android:textColor="@color/transparent" />
     </RelativeLayout>
 
     <ScrollView

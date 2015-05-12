@@ -1,136 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollView1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true" >
+    android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ExpandableListView
+        android:id="@+id/commentlist"
+        style="@style/second_item_style"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginRight="30dp"
-        android:background="#EAEAEA"
-        android:orientation="vertical" >
+        android:dividerHeight="1dp" />
 
-        <LinearLayout
-            android:id="@+id/LinearLayout1"
-            style="@style/List_Item_Style"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/list_item"
-            android:orientation="vertical" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:gravity="right"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/rawTitletxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="right"
-                    android:text="title"
-                    android:textColor="@color/transparent" />
-
-                <TextView
-                    android:id="@+id/rawtxtDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="description"
-                    android:textColor="@color/transparent" />
-
-                <TextView
-                    android:id="@+id/txtPhone_Object"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:textColor="@color/transparent" />
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="horizontal" >
-
-                <LinearLayout
-                    android:id="@+id/imgBtnAddcmt_CmtFroum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/ic_cmt_froum"
-                    android:gravity="center" >
-
-                    <TextView
-                        android:id="@+id/txtNumofCmt_CmtFroum"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:text="n"
-                        android:textColor="@color/transparent" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/imgbtnLike_Cmt_Froum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="5dp"
-                    android:layout_toRightOf="@+id/imgBtnAddcmt_CmtFroum"
-                    android:background="@drawable/like_froum"
-                    android:gravity="center" >
-
-                    <TextView
-                        android:id="@+id/txtNumofLike_CmtFroum"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:text="nlike"
-                        android:textColor="@color/transparent" />
-                </LinearLayout>
-
-                <ImageButton
-                    android:id="@+id/sharefroumicon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/imgbtnLike_Cmt_Froum"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_share_froum" />
-
-                <ImageView
-                    android:id="@+id/iconfroumtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="right"
-                    android:background="@drawable/profile_account" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="10dp"
-                    android:layout_toRightOf="@+id/sharefroumicon"
-                    android:text="Data"
-                    android:textColor="@color/transparent" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <ListView
-            android:id="@+id/lstComment"
-            style="@style/second_item_style"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="30dp"
-            android:dividerHeight="10dp" >
-        </ListView>
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>

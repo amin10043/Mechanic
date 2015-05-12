@@ -19,6 +19,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.fragment.DialogcmtInPaper;
 import com.project.mechanic.fragment.PaperFragment;
+import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class PapertitleListAdapter extends ArrayAdapter<Paper> {
@@ -26,6 +27,9 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 	Context context;
 	List<Paper> mylist;
 	DataBaseAdapter adapter;
+	private TextView NumofComment;
+	private TextView NumofLike;
+	private TextView DateView;
 
 	public PapertitleListAdapter(Context context, int resource,
 			List<Paper> objects) {
@@ -52,12 +56,25 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 		TextView txt2 = (TextView) convertView
 				.findViewById(R.id.rowdescriptionpaper);
 		TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
-
+		NumofComment = (TextView) convertView.findViewById(R.id.NumOfComment);
+		NumofLike = (TextView) convertView.findViewById(R.id.NumOfLike);
+		DateView = (TextView) convertView.findViewById(R.id.txtDate);
+		PersianDate p = new PersianDate();
+		DateView.setText(p.todayShamsi());
 		Paper person1 = mylist.get(position);
 
 		txt1.setText(person1.getTitle());
 		txt2.setText(person1.getContext());
 		txt3.setText("Maryam");
+		adapter.open();
+
+		NumofComment.setText(adapter.CommentInPaper_count(person1.getId())
+				.toString());
+
+		NumofLike
+				.setText(adapter.LikeInPaper_count(person1.getId()).toString());
+		adapter.close();
+
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -73,6 +90,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 						// check authentication and authorization
 						id = listItem.getId();
 					}
+
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					PaperFragment fragment = new PaperFragment();
