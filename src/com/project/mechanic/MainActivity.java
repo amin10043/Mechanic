@@ -21,10 +21,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.project.mechanic.adapter.SlideMenuAdapter;
+import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
+import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -108,13 +110,19 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onClick(View arg0) {
 
-				// FragmentTransaction trans = getSupportFragmentManager()
-				// .beginTransaction();
-				// trans.replace(R.id.content_frame, new SearchFragment());
-				// trans.addToBackStack(null);
-				// trans.commit();
+				Fragment f = getSupportFragmentManager().findFragmentById(
+						R.id.content_frame);
+
+				String tableName = "";
+				if (f instanceof ProvinceFragment) {
+					tableName = "Province";
+				} else if (f instanceof CityFragment) {
+					tableName = "City";
+				}
+
 				Intent i = new Intent(MainActivity.this, Search.class);
-				i.putExtra("table", "Province");
+
+				i.putExtra("table", tableName);
 				startActivity(i);
 
 			}
