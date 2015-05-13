@@ -1,6 +1,8 @@
 package com.project.mechanic.utility;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
@@ -14,7 +16,7 @@ import android.os.AsyncTask;
 import com.project.mechanic.inter.AsyncInterface;
 
 public class ServiceComm extends
-		AsyncTask<Map.Entry<String, String>, Integer, String> {
+		AsyncTask<Map<String, String>, Integer, String> {
 
 	public String SOAP_ACTION = "http://tempuri.org/";
 
@@ -34,18 +36,22 @@ public class ServiceComm extends
 		// this.context = context;
 	}
 
-	protected String doInBackground(Map.Entry<String, String>... action) {
+	protected String doInBackground(Map<String, String>... action) {
 		try {
 
-			OPERATION_NAME = action[0].getValue();
+			Iterator<Entry<String, String>> it = action[0].entrySet()
+					.iterator();
+			Entry<String, String> item1 = it.next();
+
+			OPERATION_NAME = item1.getValue();
 			SOAP_ACTION += OPERATION_NAME;
 			PropertyInfo pi = null;
 
 			SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,
 					OPERATION_NAME);
 			Map.Entry<String, String> arg;
-			for (int i = 1; i < action.length; ++i) {
-				arg = action[i];
+			while (it.hasNext()) {
+				arg = it.next();
 				if (arg != null) {
 					pi = new PropertyInfo();
 					pi.setName(arg.getKey());
@@ -54,24 +60,6 @@ public class ServiceComm extends
 					request.addProperty(pi);
 				}
 			}
-			// String arg0 = action[1];
-			// if (arg0 != null) {
-			// pi = new PropertyInfo();
-			// pi.setName("arg0");
-			// pi.setValue(arg0);
-			// pi.setType(Integer.class);
-			// request.addProperty(pi);
-			// }
-			//
-			// arg0 = action[2];
-			// if (arg0 != null) {
-			// pi = new PropertyInfo();
-			// pi.setName("arg1");
-			// pi.setValue(arg0);
-			// pi.setType(Integer.class);
-			// request.addProperty(pi);
-			// }
-
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 					SoapEnvelope.VER11);
 			envelope.dotNet = true;
@@ -90,8 +78,9 @@ public class ServiceComm extends
 	}
 
 	protected void onPostExecute(String res) {
-		// Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
-		delegate.processFinish(res);
+
+		if (delegate != null)
+			delegate.processFinish(res);
 	}
 
 	@Override

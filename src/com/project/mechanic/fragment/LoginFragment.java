@@ -1,5 +1,8 @@
 package com.project.mechanic.fragment;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -53,6 +56,7 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 		// TextView test = (TextView) view.findViewById(R.id.texttest);
 		btnlog.setOnClickListener(new View.OnClickListener() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void onClick(View v) {
 
@@ -75,9 +79,14 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 				else {
 
-					String[] params = new String[] { "login", mobile, pass };
+					// String[] params = new String[] { "login", mobile, pass };
 					service.delegate = LoginFragment.this;
-					// service.execute(params);
+					Map<String, String> items = new LinkedHashMap<String, String>();
+					items.put("login", "login");
+					items.put("username", mobile);
+					items.put("password", pass);
+
+					service.execute(items);
 				}
 			}
 		});
@@ -153,15 +162,22 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 					.getSupportFragmentManager().beginTransaction();
 			trans.replace(R.id.content_frame, new MainFragment());
 			trans.commit();
-			mobile = editmobile.getText().toString();
+			if (editmobile.getText() != null) {
+				mobile = editmobile.getText().toString();
 
-			u = dbAdapter.getUserbymobailenumber(mobile);
-			int id = u.getId();
-			int admin = 1;
-			dbAdapter.open();
+				u = dbAdapter.getUserbymobailenumber(mobile);
+				int id = u.getId();
+				int admin = 1;
+				dbAdapter.open();
 
-			dbAdapter.UpdateAdminUserToDb(id, admin);
-			dbAdapter.close();
+				dbAdapter.UpdateAdminUserToDb(id, admin);
+				dbAdapter.close();
+			} else {
+				Toast.makeText(
+						getActivity(),
+						"شما وارد شده اید اما شماره تلفن به درستی وارد نشده است.",
+						Toast.LENGTH_SHORT).show();
+			}
 
 		} else {
 			Toast.makeText(getActivity(),

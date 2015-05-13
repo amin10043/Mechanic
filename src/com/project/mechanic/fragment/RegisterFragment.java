@@ -2,10 +2,8 @@ package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import android.app.Activity;
 import android.content.Context;
@@ -185,25 +183,13 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 						items.put("email", Email);
 						items.put("password", Pass);
 						items.put("phone", "");
-						items.put("mobile", number);
+						items.put("mobile", "123");
 						items.put("fax", "0");
 						items.put("address", "");
 						items.put("date", txtdate);
 
-						Iterator<Entry<String, String>> it = items.entrySet()
-								.iterator();
-						Entry<String, String> item1 = it.next();
-						Entry<String, String> item2 = it.next();
-						Entry<String, String> item3 = it.next();
-						Entry<String, String> item4 = it.next();
-						Entry<String, String> item5 = it.next();
-						Entry<String, String> item6 = it.next();
-						Entry<String, String> item7 = it.next();
-						Entry<String, String> item8 = it.next();
-						Entry<String, String> item9 = it.next();
-
-						service.execute(item1, item2, item3, item4, item5,
-								item6, item7, item8, item9);
+						service.delegate = RegisterFragment.this;
+						service.execute(items);
 
 						Toast.makeText(getActivity(),
 								"اطلاعات مورد نظر بدون عکس ثبت شد",
