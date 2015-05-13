@@ -1,5 +1,9 @@
 package com.project.mechanic.utility;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
@@ -11,7 +15,8 @@ import android.os.AsyncTask;
 
 import com.project.mechanic.inter.AsyncInterface;
 
-public class ServiceComm extends AsyncTask<String, Integer, String> {
+public class ServiceComm extends
+		AsyncTask<Map<String, String>, Integer, String> {
 
 	public String SOAP_ACTION = "http://tempuri.org/";
 
@@ -31,37 +36,35 @@ public class ServiceComm extends AsyncTask<String, Integer, String> {
 		// this.context = context;
 	}
 
-	protected String doInBackground(String... action) {
+	protected String doInBackground(Map<String, String>... action) {
 		try {
-			OPERATION_NAME = action[0];
+
+			Iterator<Entry<String, String>> it = action[0].entrySet()
+					.iterator();
+			Entry<String, String> item1 = it.next();
+
+			OPERATION_NAME = item1.getValue();
 			SOAP_ACTION += OPERATION_NAME;
 			PropertyInfo pi = null;
 
 			SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,
 					OPERATION_NAME);
-
-			String arg0 = action[1];
-			if (arg0 != null) {
-				pi = new PropertyInfo();
-				pi.setName("arg0");
-				pi.setValue(arg0);
-				pi.setType(Integer.class);
-				request.addProperty(pi);
+			Map.Entry<String, String> arg;
+			while (it.hasNext()) {
+				arg = it.next();
+				if (arg != null) {
+					pi = new PropertyInfo();
+					pi.setName(arg.getKey());
+					pi.setValue(arg.getValue());
+					pi.setType(String.class);
+					request.addProperty(pi);
+				}
 			}
-
-			arg0 = action[2];
-			if (arg0 != null) {
-				pi = new PropertyInfo();
-				pi.setName("arg1");
-				pi.setValue(arg0);
-				pi.setType(Integer.class);
-				request.addProperty(pi);
-			}
-
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 					SoapEnvelope.VER11);
 			envelope.dotNet = true;
-
+			envelope.setAddAdornments(false);
+			envelope.implicitTypes = true;
 			envelope.setOutputSoapObject(request);
 			HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS);
 			// Object response = null;
@@ -75,8 +78,9 @@ public class ServiceComm extends AsyncTask<String, Integer, String> {
 	}
 
 	protected void onPostExecute(String res) {
-		// Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
-		delegate.processFinish(res);
+
+		if (delegate != null)
+			delegate.processFinish(res);
 	}
 
 	@Override
