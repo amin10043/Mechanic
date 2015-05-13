@@ -1,12 +1,15 @@
 package com.project.mechanic;
 
 import com.project.mechanic.entity.Province;
+import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
 import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -32,7 +35,7 @@ public class Search extends ListActivity {
 	private EditText word;
 
 	private TextView status;
-
+	Fragment fragment;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -86,6 +89,20 @@ public class Search extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 //
+		
+//
+//		android.app.FragmentManager fragmentManager;
+//		switch (position) {
+//		case 0:
+//			fragment = new ProvinceFragment();
+//			fragmentManager = getFragmentManager();
+//			fragmentManager.beginTransaction()
+//					.replace(R.id.content_frame, fragment).commit();
+//			break;
+//
+//		case 1:
+//		}
+		
 		Intent i = new Intent(Search.this, Province.class);
 	
 		i.putExtra("name", Name[position]);

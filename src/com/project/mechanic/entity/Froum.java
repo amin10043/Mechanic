@@ -9,7 +9,8 @@ public class Froum {
 	int Seen;
 	String ServerDate;
 	int Submit;
-
+	String Date;
+	
 	public int getId() {
 		return Id;
 	}
@@ -65,9 +66,15 @@ public class Froum {
 	public void setSubmit(int submit) {
 		Submit = submit;
 	}
+	public String getDate() {
+		return Date;
+	}
 
+	public void setDate(String date) {
+		Date = date;
+	}
 	public Froum(int id, int userId, String title, String description,
-			int seen, String serverdate, int submit) {
+			int seen, String serverdate, int submit, String date) {
 		super();
 		Id = id;
 		UserId = userId;
@@ -76,6 +83,7 @@ public class Froum {
 		Seen = seen;
 		ServerDate = serverdate;
 		Submit = submit;
+		Date = date;
 	}
 
 }
