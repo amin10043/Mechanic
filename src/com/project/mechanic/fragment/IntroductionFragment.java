@@ -169,6 +169,7 @@ public class IntroductionFragment extends Fragment {
 		txtNumofComment.setText(adapter.CommentInObject_count().toString());
 		txtNumofLike.setText(adapter.LikeInObject_count().toString());
 		object = adapter.getObjectbyid(cid);
+		adapter.close();
 		if (object == null) {
 			return view;
 		}
@@ -176,11 +177,11 @@ public class IntroductionFragment extends Fragment {
 		headerImage.setLayoutParams(headerParams);
 		// imagedisplay.setBackgroundResource(R.drawable.profile_account);
 		Users user = ut.getCurrentUser();
-		if (cid == user.getId()) {
-			EditPage.setVisibility(View.VISIBLE);
+		if (user == null || cid != user.getId()) {
+			EditPage.setVisibility(View.INVISIBLE);
 
 		} else
-			EditPage.setVisibility(View.INVISIBLE);
+			EditPage.setVisibility(View.VISIBLE);
 
 		byte[] bitmapbyte = object.getImage1();
 
@@ -484,7 +485,6 @@ public class IntroductionFragment extends Fragment {
 			}
 		});
 
-		adapter.close();
 		IntroductionListAdapter listAdapter = new IntroductionListAdapter(
 				getActivity(), R.layout.raw_froumcmt, mylist);
 		lst.setAdapter(listAdapter);
@@ -524,7 +524,7 @@ public class IntroductionFragment extends Fragment {
 				adapter.open();
 				adapter.insertLikeInObjectToDb(1, 0, "", 1);
 				txtNumofLike.setText(adapter.LikeInObject_count().toString());
-
+				adapter.close();
 			}
 		});
 
@@ -592,7 +592,7 @@ public class IntroductionFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 
-				Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
 				// startActivityForResult(new
 				// Intent("android.intent.action.call",Uri.parse("tel:"+
 				// txtPhone.getText().toString())), 1);

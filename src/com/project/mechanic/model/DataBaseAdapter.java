@@ -97,7 +97,7 @@ public class DataBaseAdapter {
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId", "IdTicket" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen",
-			"ServerDate", "Submit" };
+			"ServerDate", "Submit", "Date" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date",
 			"CommentId", "Seen" };
@@ -1081,7 +1081,7 @@ public class DataBaseAdapter {
 	private Froum CursorToFroum(Cursor cursor) {
 		Froum tempForum = new Froum(cursor.getInt(0), cursor.getInt(1),
 				cursor.getString(2), cursor.getString(3), cursor.getInt(4),
-				cursor.getString(5), cursor.getInt(6));
+				cursor.getString(5), cursor.getInt(6), cursor.getString(7));
 		return tempForum;
 
 	}
@@ -2346,14 +2346,23 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	public Integer count_serach(String word, String field) {
+	
+	public Users getCurrentUser() {
+		Users u = null;
+		Cursor mCur = mDb.query(TableUsers, Users, "WHERE admin=1", null, null,
+				null, null);
+		if (mCur.moveToNext()) {
+			u = CursorToUsers(mCur);
+		}
+		return u;
+	}
+	public Integer Province_serach(String word, String field) {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
-					+ " Like '%" + word + "%' group by Name", null);
+			cu = mDb.rawQuery("select * from Province where " + field + " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from content where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2365,10 +2374,10 @@ public class DataBaseAdapter {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from Province where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from Province where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2381,10 +2390,10 @@ public class DataBaseAdapter {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from content where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from content where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2392,20 +2401,7 @@ public class DataBaseAdapter {
 		return s;
 	}
 
-	public String search(int row, int col, String word, string field) {
-		Cursor cu;
-		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
-					+ " Like '%" + word + "%' group by Name", null);
-		} else {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
-					+ " Like '%" + word + "%'", null);
-		}
-
-		cu.moveToPosition(row);
-		String s = cu.getString(col);
-		return s;
-	}
+	
 
 	public void deleteLikeFromFroum(int userID, int FroumId) {
 		String[] t = { String.valueOf(userID), String.valueOf(FroumId) };
