@@ -20,6 +20,14 @@
             android:orientation="vertical" >
 
             <TextView
+                android:id="@+id/date_cc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="date"
+                android:textColor="@color/transparent" />
+
+            <TextView
                 android:id="@+id/title_topic"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -33,13 +41,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:text="description"
-                android:textColor="@color/transparent" />
-
-            <TextView
-                android:id="@+id/txtPhone_Object"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
                 android:textColor="@color/transparent" />
         </LinearLayout>
 
@@ -91,30 +92,38 @@
                 android:id="@+id/sharefroumicon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="3dp"
                 android:layout_toRightOf="@+id/LikeTopicLinear"
                 android:background="@android:color/transparent"
                 android:padding="2dp"
                 android:src="@drawable/ic_share_froum" />
 
-            <ImageView
-                android:id="@+id/iconfroumtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="right"
-                android:background="@drawable/profile_account" />
-
             <TextView
-                android:id="@+id/date_topic"
+                android:id="@+id/name_cc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_margin="10dp"
-                android:layout_toRightOf="@+id/sharefroumicon"
-                android:text="Date"
+                android:layout_gravity="left"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/profileLinearcommenterinContinue"
+                android:text="name"
                 android:textColor="@color/transparent" />
+
+            <LinearLayout
+                android:id="@+id/profileLinearcommenterinContinue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" >
+
+                <ImageView
+                    android:id="@+id/iconfroumtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@drawable/profile_account"
+                    android:scaleType="fitXY" />
+            </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
 

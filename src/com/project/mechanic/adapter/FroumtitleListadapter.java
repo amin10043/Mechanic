@@ -4,6 +4,8 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -11,7 +13,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
@@ -21,12 +25,14 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 
 	Context context;
 	List<Froum> mylist;
 	DataBaseAdapter adapter;
+	Utility util;
 
 	public FroumtitleListadapter(Context context, int resource,
 			List<Froum> objects) {
@@ -34,6 +40,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 		this.context = context;
 		this.mylist = objects;
 		adapter = new DataBaseAdapter(context);
+		util = new Utility(context);
 
 	}
 
@@ -53,15 +60,41 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 		TextView txt2 = (TextView) convertView
 				.findViewById(R.id.rowdescriptionpaper);
 		TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
+		TextView countcommentfroum = (TextView) convertView
+				.findViewById(R.id.countCommentInEveryTopic);
+		TextView countLikeFroum = (TextView) convertView
+				.findViewById(R.id.countLikeInFroumTitle);
+		ImageView profileImg = (ImageView) convertView
+				.findViewById(R.id.iconfroumtitle);
 
 		Froum person1 = mylist.get(position);
 
 		adapter.open();
 		Users x = adapter.getUserbyid(person1.getUserId());
-		adapter.close();
+
 		txt1.setText(person1.getTitle());
 		txt2.setText(person1.getDescription());
 		txt3.setText(x.getName());
+		countcommentfroum.setText(adapter.CommentInFroum_count(person1.getId())
+				.toString());
+		countLikeFroum.setText(adapter.LikeInFroum_count(person1.getId())
+				.toString());
+
+		byte[] byteImg = x.getImage();
+		Bitmap bmp = BitmapFactory.decodeByteArray(byteImg, 0, byteImg.length);
+		profileImg.setImageBitmap(bmp);
+
+		RelativeLayout rl = (RelativeLayout) convertView
+				.findViewById(R.id.topicTitleFroum);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				rl.getLayoutParams());
+
+		lp.width = util.getScreenwidth() / 7;
+		lp.height = util.getScreenwidth() / 7;
+		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		lp.setMargins(5, 5, 5, 5);
+		profileImg.setLayoutParams(lp);
+		adapter.close();
 
 		convertView.setOnClickListener(new OnClickListener() {
 

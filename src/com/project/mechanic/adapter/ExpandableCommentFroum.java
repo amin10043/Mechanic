@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -131,10 +132,6 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 	public View getGroupView(final int groupPosition, final boolean isExpanded,
 			View convertView, ViewGroup parent) {
 
-		// SharedPreferences sendIDtoExapandAdapter = context
-		// .getSharedPreferences("Id", 0);
-		// final int froumID = sendIDtoExapandAdapter.getInt("main_Id", -1);
-
 		adapter.open();
 
 		final CommentInFroum comment = cmt.get(groupPosition);
@@ -142,7 +139,6 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 		adapter.close();
 
-		// String laptopName = (String) getGroup(groupPosition);
 		if (convertView == null) {
 			LayoutInflater infalInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -164,6 +160,9 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 		TextView dateCommenter = (TextView) convertView
 				.findViewById(R.id.date_commented_in_froum);
 
+		TextView countOfReply = (TextView) convertView
+				.findViewById(R.id.countofreplyFroum);
+
 		ImageButton addreply = (ImageButton) convertView
 				.findViewById(R.id.replyToComment);
 
@@ -175,43 +174,44 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 		final ImageButton imgdislikeComment = (ImageButton) convertView
 				.findViewById(R.id.negative_img);
+
+		final ExpandableListView mExpandableListView = (ExpandableListView) parent;
+
 		// end find view
 
+		// start set variable
 		adapter.open();
 		Users vv = util.getCurrentUser();
 		if (adapter.isUserLikedComment(vv.getId(), comment.getId(), 1)) {
 			imglikeComment.setImageResource((R.drawable.positive));
-			// imgdislikeComment.setImageResource((R.drawable.negative));
 
 		} else {
 			imglikeComment.setImageResource((R.drawable.positive_off));
-			// imgdislikeComment.setImageResource((R.drawable.negative_off));
 		}
 
 		if (adapter.isUserLikedComment(vv.getId(), comment.getId(), 0)) {
 			imgdislikeComment.setImageResource((R.drawable.negative));
-			// imgdislikeComment.setImageResource((R.drawable.negative));
 
 		} else {
 			imgdislikeComment.setImageResource((R.drawable.negative_off));
-			// imgdislikeComment.setImageResource((R.drawable.negative_off));
 		}
 
-		adapter.close();
-
-		// imglikeComment.setBackgroundResource(R.drawable.positive);
-
-		// imgdislikeComment.setBackgroundResource(R.drawable.negative);
-
-		final ExpandableListView mExpandableListView = (ExpandableListView) parent;
-
-		// start initialize
 		mainComment.setText(comment.getDesk());
 		nameCommenter.setText(x.getName());
 		dateCommenter.setText(comment.getDatetime());
+		if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) == 0) {
+			LinearLayout lrr = (LinearLayout) convertView
+					.findViewById(R.id.linearShowcountofRepply);
+			lrr.setVisibility(View.GONE);
+
+		} else
+			countOfReply.setText(adapter.getCountOfReplyInFroum(froumID,
+					comment.getId()).toString());
 
 		countLike.setText(comment.getNumOfLike());
 		countdisLike.setText(comment.getNumOfDislike());
+
+		// start... this code for set image of profile
 
 		byte[] byteImageProfile = x.getImage();
 
@@ -230,6 +230,12 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
 		profileImage.setLayoutParams(lp);
+
+		// end... this code for set image of profile
+
+		adapter.close();
+
+		// end set variable
 
 		notifyDataSetChanged();
 
@@ -273,8 +279,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 				// send to database
 
 				if (adapter.isUserLikedComment(userid, id, 0)) {
-					// Toast.makeText(context, "dis",
-					// Toast.LENGTH_SHORT).show();
+
 					int b = intCureentDisLike - 1;
 					String c = String.valueOf(b);
 					adapter.deleteLikeFromCommentInFroum(id, userid, 0);
@@ -388,7 +393,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 			@Override
 			public void onClick(View m) {
 				RelativeLayout parentlayout = (RelativeLayout) m.getParent()
-						.getParent();
+						.getParent().getParent();
 				View view = parentlayout.findViewById(R.id.peygham);
 				TextView x = (TextView) view;
 				String item = x.getText().toString();
@@ -425,7 +430,6 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 		});
 		mainComment.setTypeface(null, Typeface.BOLD);
 
-		// item.setText(laptopName);
 		return convertView;
 	}
 

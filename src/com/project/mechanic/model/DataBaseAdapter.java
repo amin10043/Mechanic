@@ -374,6 +374,7 @@ public class DataBaseAdapter {
 			uc.put("FroumId", FroumId);
 			uc.put("CommentId", CommentId);
 			uc.put("Date", Date);
+			uc.put("Seen", 1);
 
 			long res = mDb.insert(TableLikeInFroum, null, uc);
 			long res2 = res;
@@ -2283,10 +2284,6 @@ public class DataBaseAdapter {
 				String.valueOf(isLike) };
 		mDb.delete(TableLikeInComment,
 				"CommentId=? and UserId =? and IsLike =?", t);
-
-		// mDb.rawQuery("delete from " + TableLikeInComment
-		// + " where Commentid = " + CommentID + " and UserId = " + userID
-		// + " and isLike = 1 ", t);
 	}
 
 	public int NumOfNewLikeInObject() {
@@ -2408,6 +2405,23 @@ public class DataBaseAdapter {
 		cu.moveToPosition(row);
 		String s = cu.getString(col);
 		return s;
+	}
+
+	public void deleteLikeFromFroum(int userID, int FroumId) {
+		String[] t = { String.valueOf(userID), String.valueOf(FroumId) };
+		mDb.delete(TableLikeInFroum, "UserId=? and FroumId=?", t);
+	}
+
+	public Integer getCountOfReplyInFroum(int froumID, int commentID) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInFroum + " WHERE FroumId=" + froumID
+				+ " AND CommentID= " + commentID, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
 	}
 
 }
