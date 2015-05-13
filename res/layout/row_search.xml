@@ -14,13 +14,4 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#000" />
 
-    <Button
-        android:id="@+id/search_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="20dp"
-        android:text="جستجو" />
-
 </RelativeLayout>

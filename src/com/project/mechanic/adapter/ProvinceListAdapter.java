@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
@@ -29,6 +30,7 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 	List<Province> list;
 	DataBaseAdapter adapter;
 	int lastPosition = 0;
+	private ImageView search;
 
 	public ProvinceListAdapter(Context context, int resource,
 			List<Province> objact) {
@@ -48,7 +50,7 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 
 		convertView = myInflater
 				.inflate(R.layout.main_item_list, parent, false);
-
+		// search = (ImageView)findViewById(R.id.sedarch_v);
 		convertView = myInflater.inflate(R.layout.row_ostan, parent, false);
 
 		Animation animation = AnimationUtils.loadAnimation(getContext(),
@@ -90,6 +92,20 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 			}
 		});
 		return convertView;
+
+		// search.setOnClickListener(new OnClickListener() {
+		//
+		// public void onClick(View arg0) {
+		//
+		// FragmentTransaction trans = ((MainActivity) context)
+		// .getSupportFragmentManager().beginTransaction();
+		// trans.replace(R.id.content_frame, new FroumtitleFragment());
+		// trans.addToBackStack(null);
+		// trans.commit();
+		//
+		// }
+		// });
+		// }
 	}
 
 	public void onBackPressed() {
