@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInFroum;
@@ -34,7 +35,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 	DataBaseAdapter adapter;
 	Utility util;
 	FroumFragment f;
-	int froumID;
+	int froumID, userid;
+	Users Currentuser;
 
 	public ExpandableCommentFroum(Context context,
 			ArrayList<CommentInFroum> laptops,
@@ -47,6 +49,9 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 		util = new Utility(context);
 		this.f = f;
 		this.froumID = froumID;
+		adapter.open();
+		Currentuser = util.getCurrentUser();
+		adapter.close();
 
 	}
 
@@ -78,29 +83,33 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 		ImageButton ReplyerPic = (ImageButton) convertView
 				.findViewById(R.id.icon_reply_comment);
-
 		adapter.open();
 
 		final CommentInFroum comment = cmt.get(groupPosition);
 		Users y = adapter.getUserbyid(comment.getUserid());
 
-		byte[] byteImageProfile = y.getImage();
+		if (y.getImage() == null) {
+			ReplyerPic.setImageResource(R.drawable.no_img_profile);
+		} else {
 
-		Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
-				byteImageProfile.length);
+			byte[] byteImageProfile = y.getImage();
 
-		ReplyerPic.setImageBitmap(bmp);
+			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
+					byteImageProfile.length);
 
-		RelativeLayout rl = (RelativeLayout) convertView
-				.findViewById(R.id.main_icon_reply);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				rl.getLayoutParams());
+			ReplyerPic.setImageBitmap(bmp);
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
-		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		lp.setMargins(5, 5, 5, 5);
-		ReplyerPic.setLayoutParams(lp);
+			RelativeLayout rl = (RelativeLayout) convertView
+					.findViewById(R.id.main_icon_reply);
+			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+					rl.getLayoutParams());
+
+			lp.width = util.getScreenwidth() / 7;
+			lp.height = util.getScreenwidth() / 7;
+			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp.setMargins(5, 5, 5, 5);
+			ReplyerPic.setLayoutParams(lp);
+		}
 
 		mainReply.setText(reply.getDesk());
 		dateReply.setText(reply.getDatetime());
@@ -181,19 +190,27 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 		// start set variable
 		adapter.open();
-		Users vv = util.getCurrentUser();
-		if (adapter.isUserLikedComment(vv.getId(), comment.getId(), 1)) {
-			imglikeComment.setImageResource((R.drawable.positive));
+		Currentuser = util.getCurrentUser();
 
-		} else {
+		if (Currentuser == null) {
 			imglikeComment.setImageResource((R.drawable.positive_off));
-		}
-
-		if (adapter.isUserLikedComment(vv.getId(), comment.getId(), 0)) {
-			imgdislikeComment.setImageResource((R.drawable.negative));
-
-		} else {
 			imgdislikeComment.setImageResource((R.drawable.negative_off));
+		} else {
+			if (adapter.isUserLikedComment(Currentuser.getId(),
+					comment.getId(), 1)) {
+				imglikeComment.setImageResource((R.drawable.positive));
+			} else {
+				imglikeComment.setImageResource((R.drawable.positive_off));
+
+			}
+			if (adapter.isUserLikedComment(Currentuser.getId(),
+					comment.getId(), 0)) {
+				imgdislikeComment.setImageResource((R.drawable.negative));
+			} else {
+				imgdislikeComment.setImageResource((R.drawable.negative_off));
+
+			}
+
 		}
 
 		mainComment.setText(comment.getDesk());
@@ -212,14 +229,19 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 		countdisLike.setText(comment.getNumOfDislike());
 
 		// start... this code for set image of profile
+		adapter.open();
+		if (x.getImage() == null) {
+			profileImage.setImageResource(R.drawable.no_img_profile);
+		} else {
 
-		byte[] byteImageProfile = x.getImage();
+			byte[] byteImageProfile = x.getImage();
 
-		Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
-				byteImageProfile.length);
+			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
+					byteImageProfile.length);
 
-		profileImage.setImageBitmap(bmp);
-
+			profileImage.setImageBitmap(bmp);
+		}
+		adapter.close();
 		RelativeLayout rl = (RelativeLayout) convertView
 				.findViewById(R.id.icon_header_comment_froum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
@@ -245,66 +267,72 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 			public void onClick(View t) {
 
 				adapter.open();
-				int intCureentDisLike = Integer.valueOf(comment
-						.getNumOfDislike());
-				int newCountDisLike = intCureentDisLike + 1;
-				String stringNewcountDisLike = String.valueOf(newCountDisLike);
+				if (Currentuser == null) {
+					Toast.makeText(context, "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+					return;
+				} else {
+					int intCureentDisLike = Integer.valueOf(comment
+							.getNumOfDislike());
+					int newCountDisLike = intCureentDisLike + 1;
+					String stringNewcountDisLike = String
+							.valueOf(newCountDisLike);
 
-				Users user = new Users();
-				user = util.getCurrentUser();
-				int userid = user.getId();
-				//
-				// // peyda kardan id comment sabt shode
+					//
+					// // peyda kardan id comment sabt shode
 
-				RelativeLayout parentlayout = (RelativeLayout) t.getParent()
-						.getParent().getParent();
-				View viewMaincmt = parentlayout.findViewById(R.id.peygham);
-				TextView txtMaincmt = (TextView) viewMaincmt;
+					RelativeLayout parentlayout = (RelativeLayout) t
+							.getParent().getParent().getParent();
+					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
+					TextView txtMaincmt = (TextView) viewMaincmt;
 
-				View viewnumDislike = parentlayout
-						.findViewById(R.id.countdislikecommentFroum);
-				TextView txtdislike = (TextView) viewnumDislike;
+					View viewnumDislike = parentlayout
+							.findViewById(R.id.countdislikecommentFroum);
+					TextView txtdislike = (TextView) viewnumDislike;
 
-				int id = 0;
+					int id = 0;
 
-				for (CommentInFroum listItem : cmt) {
-					if (txtMaincmt.getText().toString()
-							.equals(listItem.getDesk())) {
+					for (CommentInFroum listItem : cmt) {
+						if (txtMaincmt.getText().toString()
+								.equals(listItem.getDesk())) {
 
-						id = listItem.getId();
+							id = listItem.getId();
+
+						}
+					}
+
+					// send to database
+
+					if (adapter.isUserLikedComment(Currentuser.getId(), id, 0)) {
+
+						int b = intCureentDisLike - 1;
+						String c = String.valueOf(b);
+						adapter.deleteLikeFromCommentInFroum(id,
+								Currentuser.getId(), 0);
+
+						adapter.insertCmtDisLikebyid(id, c, Currentuser.getId());
+						f.updateList();
+
+						txtdislike.setText(comment.getNumOfDislike());
+						notifyDataSetChanged();
+						imgdislikeComment
+								.setImageResource((R.drawable.negative));
+
+					} else {
+						adapter.insertCmtDisLikebyid(id, stringNewcountDisLike,
+								Currentuser.getId());
+						adapter.insertLikeInCommentToDb(Currentuser.getId(), 0,
+								id);
+						f.updateList();
+
+						txtdislike.setText(comment.getNumOfDislike());
+						imgdislikeComment
+								.setImageResource((R.drawable.negative_off));
+						notifyDataSetChanged();
 
 					}
+					adapter.close();
 				}
-
-				// send to database
-
-				if (adapter.isUserLikedComment(userid, id, 0)) {
-
-					int b = intCureentDisLike - 1;
-					String c = String.valueOf(b);
-					adapter.deleteLikeFromCommentInFroum(id, userid, 0);
-
-					adapter.insertCmtDisLikebyid(id, c, userid);
-					f.updateList();
-
-					txtdislike.setText(comment.getNumOfDislike());
-					notifyDataSetChanged();
-					imgdislikeComment.setImageResource((R.drawable.negative));
-
-				} else {
-
-					adapter.insertCmtDisLikebyid(id, stringNewcountDisLike,
-							userid);
-					adapter.insertLikeInCommentToDb(userid, 0, id);
-					f.updateList();
-
-					txtdislike.setText(comment.getNumOfDislike());
-					imgdislikeComment
-							.setImageResource((R.drawable.negative_off));
-					notifyDataSetChanged();
-				}
-				adapter.close();
-
 			}
 		});
 
@@ -318,73 +346,80 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 				// tabdil be String
 				adapter.open();
 
-				int intCureentLike = Integer.valueOf(comment.getNumOfLike());
-				int newCountLike = intCureentLike + 1;
-				String stringNewcountLike = String.valueOf(newCountLike);
-
-				Users user = new Users();
-				user = util.getCurrentUser();
-				int userid = user.getId();
-				//
-				// // peyda kardan id comment sabt shode
-
-				RelativeLayout parentlayout = (RelativeLayout) v.getParent()
-						.getParent().getParent();
-				View viewMaincmt = parentlayout.findViewById(R.id.peygham);
-				TextView txtMaincmt = (TextView) viewMaincmt;
-
-				View viewnumlike = parentlayout
-						.findViewById(R.id.countCommentFroum);
-				TextView txtlike = (TextView) viewnumlike;
-
-				int id = 0;
-
-				for (CommentInFroum listItem : cmt) {
-					if (txtMaincmt.getText().toString()
-							.equals(listItem.getDesk())) {
-
-						id = listItem.getId();
-
-					}
-				}
-
-				// send to database
-
-				if (adapter.isUserLikedComment(userid, id, 1)) {
-
-					adapter.deleteLikeFromCommentInFroum(id, userid, 1);
-
-					int b = intCureentLike - 1;
-					String c = String.valueOf(b);
-
-					adapter.insertCmtLikebyid(id, c, userid);
-					f.updateList();
-
-					txtlike.setText(String.valueOf(adapter
-							.getCountofCommentinFroumObject(froumID, id)));
-
-					adapter.close();
-					notifyDataSetChanged();
-
-					imglikeComment
-							.setBackgroundResource(R.drawable.positive_off);
-
+				if (Currentuser == null) {
+					Toast.makeText(context, "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+					return;
 				} else {
 
-					adapter.insertCmtLikebyid(id, stringNewcountLike, userid);
-					adapter.insertLikeInCommentToDb(userid, 1, id);
+					int intCureentLike = Integer.valueOf(comment.getNumOfLike());
+					int newCountLike = intCureentLike + 1;
+					String stringNewcountLike = String.valueOf(newCountLike);
 
-					f.updateList();
+					// // peyda kardan id comment sabt shode
 
-					txtlike.setText(String.valueOf(adapter
-							.getCountofCommentinFroumObject(froumID, id)));
+					RelativeLayout parentlayout = (RelativeLayout) v
+							.getParent().getParent().getParent();
+					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
+					TextView txtMaincmt = (TextView) viewMaincmt;
 
-					adapter.close();
-					notifyDataSetChanged();
-					imglikeComment.setBackgroundResource(R.drawable.positive);
+					View viewnumlike = parentlayout
+							.findViewById(R.id.countCommentFroum);
+					TextView txtlike = (TextView) viewnumlike;
+
+					int id = 0;
+
+					for (CommentInFroum listItem : cmt) {
+						if (txtMaincmt.getText().toString()
+								.equals(listItem.getDesk())) {
+
+							id = listItem.getId();
+
+						}
+					}
+
+					// send to database
+
+					if (adapter.isUserLikedComment(Currentuser.getId(), id, 1)) {
+
+						adapter.deleteLikeFromCommentInFroum(id,
+								Currentuser.getId(), 1);
+
+						int b = intCureentLike - 1;
+						String c = String.valueOf(b);
+
+						adapter.insertCmtLikebyid(id, c, Currentuser.getId());
+						f.updateList();
+
+						txtlike.setText(String.valueOf(adapter
+								.getCountofCommentinFroumObject(froumID, id)));
+
+						adapter.close();
+						notifyDataSetChanged();
+
+						imglikeComment
+								.setBackgroundResource(R.drawable.positive_off);
+
+					} else {
+
+						adapter.insertCmtLikebyid(id, stringNewcountLike,
+								Currentuser.getId());
+						adapter.insertLikeInCommentToDb(Currentuser.getId(), 1,
+								id);
+
+						f.updateList();
+
+						txtlike.setText(String.valueOf(adapter
+								.getCountofCommentinFroumObject(froumID, id)));
+
+						adapter.close();
+						notifyDataSetChanged();
+						imglikeComment
+								.setBackgroundResource(R.drawable.positive);
+
+					}
 
 				}
-
 			}
 		});
 
@@ -392,25 +427,36 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 			@Override
 			public void onClick(View m) {
-				RelativeLayout parentlayout = (RelativeLayout) m.getParent()
-						.getParent().getParent();
-				View view = parentlayout.findViewById(R.id.peygham);
-				TextView x = (TextView) view;
-				String item = x.getText().toString();
-				int commentid = 0;
-				for (CommentInFroum listItem : cmt) {
-					if (item.equals(listItem.getDesk())) {
 
-						commentid = listItem.getId();
+				adapter.open();
+
+				if (Currentuser == null) {
+					Toast.makeText(context, "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+					return;
+				} else {
+
+					RelativeLayout parentlayout = (RelativeLayout) m
+							.getParent().getParent().getParent();
+					View view = parentlayout.findViewById(R.id.peygham);
+					TextView x = (TextView) view;
+					String item = x.getText().toString();
+					int commentid = 0;
+					for (CommentInFroum listItem : cmt) {
+						if (item.equals(listItem.getDesk())) {
+
+							commentid = listItem.getId();
+						}
 					}
+
+					DialogcmtInfroum dialog = new DialogcmtInfroum(f,
+							commentid, context, froumID,
+							R.layout.dialog_addcomment);
+					dialog.show();
+
+					notifyDataSetChanged();
+					adapter.close();
 				}
-
-				DialogcmtInfroum dialog = new DialogcmtInfroum(f, commentid,
-						context, froumID, R.layout.dialog_addcomment);
-				dialog.show();
-
-				notifyDataSetChanged();
-
 			}
 		});
 

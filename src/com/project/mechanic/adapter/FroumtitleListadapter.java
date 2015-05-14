@@ -62,6 +62,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 		TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
 		TextView countcommentfroum = (TextView) convertView
 				.findViewById(R.id.countCommentInEveryTopic);
+		TextView dateTopic = (TextView) convertView
+				.findViewById(R.id.datetopicinFroum);
 		TextView countLikeFroum = (TextView) convertView
 				.findViewById(R.id.countLikeInFroumTitle);
 		ImageView profileImg = (ImageView) convertView
@@ -79,21 +81,29 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 				.toString());
 		countLikeFroum.setText(adapter.LikeInFroum_count(person1.getId())
 				.toString());
+		dateTopic.setText(x.getDate());
+		adapter.open();
+		if (x.getImage() == null) {
+			profileImg.setImageResource(R.drawable.no_img_profile);
+		} else {
 
-		byte[] byteImg = x.getImage();
-		Bitmap bmp = BitmapFactory.decodeByteArray(byteImg, 0, byteImg.length);
-		profileImg.setImageBitmap(bmp);
+			byte[] byteImg = x.getImage();
+			Bitmap bmp = BitmapFactory.decodeByteArray(byteImg, 0,
+					byteImg.length);
+			profileImg.setImageBitmap(bmp);
 
-		RelativeLayout rl = (RelativeLayout) convertView
-				.findViewById(R.id.topicTitleFroum);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				rl.getLayoutParams());
+			RelativeLayout rl = (RelativeLayout) convertView
+					.findViewById(R.id.topicTitleFroum);
+			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+					rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
-		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		lp.setMargins(5, 5, 5, 5);
-		profileImg.setLayoutParams(lp);
+			lp.width = util.getScreenwidth() / 7;
+			lp.height = util.getScreenwidth() / 7;
+			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp.setMargins(5, 5, 5, 5);
+			profileImg.setLayoutParams(lp);
+			adapter.close();
+		}
 		adapter.close();
 
 		convertView.setOnClickListener(new OnClickListener() {

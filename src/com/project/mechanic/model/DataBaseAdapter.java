@@ -289,16 +289,16 @@ public class DataBaseAdapter {
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
-	public void UpdateUserToDb(int id,String email, String phonenumber,
-		 String faxnumber, String address) {
+	public void UpdateUserToDb(int id, String email, String phonenumber,
+			String faxnumber, String address) {
 
 		ContentValues uc = new ContentValues();
 		// uc.put("Name", name);
-		 uc.put("Email", email);
+		uc.put("Email", email);
 		// uc.put("Password", password);
 		uc.put("Phonenumber", phonenumber);
 
-	//	uc.put("Mobailenumber", mobailenumber);
+		// uc.put("Mobailenumber", mobailenumber);
 		uc.put("Faxnumber", faxnumber);
 		uc.put("Address", address);
 
@@ -474,12 +474,14 @@ public class DataBaseAdapter {
 	}
 
 	public void insertFroumtitletoDb(String Title, String description,
-			int userId) {
+			int userId, String date) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Title", Title);
 		cv.put("Description", description);
 		cv.put("UserId", userId);
+		cv.put("Date", date);
+		cv.put("Seen", 1);
 
 		mDb.insert(TableFroum, null, cv);
 
@@ -1678,8 +1680,7 @@ public class DataBaseAdapter {
 		Users result = null;
 
 		Cursor mCur = mDb.query(TableUsers, Users, "Mobailenumber=?",
-				new String[] { mobailenumber}, null, null,
-				null);
+				new String[] { mobailenumber }, null, null, null);
 		if (mCur.moveToNext()) {
 			result = CursorToUsers(mCur);
 		}

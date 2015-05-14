@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -76,8 +77,6 @@ public class FroumFragment extends Fragment {
 
 		user = new Users();
 
-		CurrentUser = util.getCurrentUser();
-		IDcurrentUser = CurrentUser.getId();
 		date = new PersianDate();
 		currentDate = date.todayShamsi();
 
@@ -107,30 +106,46 @@ public class FroumFragment extends Fragment {
 			froumid = Integer.valueOf(getArguments().getString("Id"));
 
 		adapter.open();
+		CurrentUser = util.getCurrentUser();
+		if (CurrentUser == null) {
+			Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+					Toast.LENGTH_SHORT).show();
+
+		}
+
+		else
+			IDcurrentUser = CurrentUser.getId();
 
 		topics = adapter.getFroumItembyid(froumid);
 		Users u = adapter.getUserbyid(topics.getUserId());
 
 		nametxt.setText(u.getName());
-		byte[] bytepic = u.getImage();
 
-		Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0, bytepic.length);
-		LinearLayout rl = (LinearLayout) header
-				.findViewById(R.id.profileLinearcommenterinContinue);
+		if (u.getImage() == null) {
+			profileImg.setImageResource(R.drawable.no_img_profile);
+		} else {
+			byte[] bytepic = u.getImage();
 
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-				rl.getLayoutParams());
+			Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0,
+					bytepic.length);
+			LinearLayout rl = (LinearLayout) header
+					.findViewById(R.id.profileLinearcommenterinContinue);
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
-		lp.setMargins(5, 5, 5, 5);
-		profileImg.setImageBitmap(bmp);
-		profileImg.setLayoutParams(lp);
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+					rl.getLayoutParams());
+
+			lp.width = util.getScreenwidth() / 7;
+			lp.height = util.getScreenwidth() / 7;
+			lp.setMargins(5, 5, 5, 5);
+			profileImg.setImageBitmap(bmp);
+			profileImg.setLayoutParams(lp);
+		}
 
 		titletxt.setText(topics.getTitle());
 		descriptiontxt.setText(topics.getDescription());
 		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
 		countLike.setText(adapter.LikeInFroum_count(froumid).toString());
+		dateTopic.setText(topics.getDate());
 
 		adapter.close();
 
@@ -138,11 +153,18 @@ public class FroumFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				dialog = new DialogcmtInfroum(FroumFragment.this, 0,
-						getActivity(), froumid, R.layout.dialog_addcomment);
-				dialog.show();
-				exadapter.notifyDataSetChanged();
 
+				if (CurrentUser == null) {
+					Toast.makeText(getActivity(),
+							"برای درج کامنت ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+
+				} else {
+					dialog = new DialogcmtInfroum(FroumFragment.this, 0,
+							getActivity(), froumid, R.layout.dialog_addcomment);
+					dialog.show();
+					exadapter.notifyDataSetChanged();
+				}
 			}
 		});
 		adapter.open();
@@ -168,11 +190,12 @@ public class FroumFragment extends Fragment {
 		exlistview.setAdapter(exadapter);
 		adapter.open();
 
-		if (adapter.isUserLikedFroum(IDcurrentUser, froumid))
-			likeTopic.setBackgroundResource(R.drawable.like_froum);
+		if (CurrentUser == null
+				|| !adapter.isUserLikedFroum(CurrentUser.getId(), froumid))
+			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
 		else
 
-			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+			likeTopic.setBackgroundResource(R.drawable.like_froum);
 
 		adapter.close();
 
@@ -180,27 +203,61 @@ public class FroumFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-
 				adapter.open();
 
-				if (adapter.isUserLikedFroum(IDcurrentUser, froumid)) {
-					likeTopic.setBackgroundResource(R.drawable.like_froum_off);
-					int c = adapter.LikeInFroum_count(froumid) - 1;
-					countLike.setText(String.valueOf(c));
-					adapter.deleteLikeFromFroum(IDcurrentUser, froumid);
-				} else {
-					likeTopic.setBackgroundResource(R.drawable.like_froum);
-					adapter.insertLikeInFroumToDb(IDcurrentUser, froumid,
-							currentDate, 0);
+				if (CurrentUser == null) {
+					adapter.open();
 
-					countLike.setText(adapter.LikeInFroum_count(froumid)
-							.toString());
+					Toast.makeText(getActivity(),
+							"برای درج لایک ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+					adapter.close();
+				} else {
+					if (adapter.isUserLikedFroum(IDcurrentUser, froumid)) {
+						adapter.open();
+						likeTopic
+								.setBackgroundResource(R.drawable.like_froum_off);
+						int c = adapter.LikeInFroum_count(froumid) - 1;
+						countLike.setText(String.valueOf(c));
+						adapter.deleteLikeFromFroum(IDcurrentUser, froumid);
+						adapter.close();
+					} else {
+						adapter.open();
+						likeTopic.setBackgroundResource(R.drawable.like_froum);
+						adapter.insertLikeInFroumToDb(IDcurrentUser, froumid,
+								currentDate, 0);
+
+						countLike.setText(adapter.LikeInFroum_count(froumid)
+								.toString());
+
+						adapter.close();
+
+					}
+
+					// if (CurrentUser == null
+					// || !adapter.isUserLikedFroum(IDcurrentUser, froumid))
+					// {
+					// likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+					// int c = adapter.LikeInFroum_count(froumid) - 1;
+					// countLike.setText(String.valueOf(c));
+					// adapter.deleteLikeFromFroum(IDcurrentUser, froumid);
+					//
+					// } else {
+					//
+					// likeTopic.setBackgroundResource(R.drawable.like_froum);
+					// adapter.insertLikeInFroumToDb(IDcurrentUser, froumid,
+					// currentDate, 0);
+					//
+					// countLike.setText(adapter.LikeInFroum_count(froumid)
+					// .toString());
+					//
+					// }
 
 				}
-
 				adapter.close();
 
 			}
+
 		});
 
 		sharebtn.setOnClickListener(new View.OnClickListener() {
