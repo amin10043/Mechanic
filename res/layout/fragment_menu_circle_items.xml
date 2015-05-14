@@ -4,42 +4,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.szugyi.circlemenu.view.CircleImageView
+    <com.project.mechanic.view.CircleImageView
         android:id="@+id/instagram"
         circle:name="@string/instagram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/i1" />
 
-    <com.szugyi.circlemenu.view.CircleImageView
+    <com.project.mechanic.view.CircleImageView
         android:id="@+id/site"
         circle:name="@string/site"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/i2" />
 
-    <com.szugyi.circlemenu.view.CircleImageView
+    <com.project.mechanic.view.CircleImageView
         android:id="@+id/google_plus"
         circle:name="@string/google_plus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/i3" />
 
-    <com.szugyi.circlemenu.view.CircleImageView
+    <com.project.mechanic.view.CircleImageView
         android:id="@+id/facebook"
         circle:name="@string/facebook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/i4" />
 
-    <com.szugyi.circlemenu.view.CircleImageView
+    <com.project.mechanic.view.CircleImageView
         android:id="@+id/twitter"
         circle:name="@string/twitter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/i5" />
 
-    <com.szugyi.circlemenu.view.CircleImageView
+    <com.project.mechanic.view.CircleImageView
         android:id="@+id/linkedin"
         circle:name="@string/linkedin"
         android:layout_width="wrap_content"

@@ -33,7 +33,7 @@
                 android:text="تماس با ما"
                 android:textSize="@dimen/activity_horizontal_margin" />
 
-    <com.szugyi.circlemenu.view.CircleLayout
+    <com.project.mechanic.view.CircleLayout
         android:id="@+id/main_circle_layout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -44,7 +44,7 @@
         circle:speed="50" >
 
         <include layout="@layout/fragment_menu_circle_items" />
-    </com.szugyi.circlemenu.view.CircleLayout>
+    </com.project.mechanic.view.CircleLayout>
 
     <TextView
         android:id="@+id/main_selected_textView"

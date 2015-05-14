@@ -23,12 +23,12 @@ import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.project.mechanic.R;
-import com.szugyi.circlemenu.view.CircleImageView;
-import com.szugyi.circlemenu.view.CircleLayout;
-import com.szugyi.circlemenu.view.CircleLayout.OnCenterClickListener;
-import com.szugyi.circlemenu.view.CircleLayout.OnItemClickListener;
-import com.szugyi.circlemenu.view.CircleLayout.OnItemSelectedListener;
-import com.szugyi.circlemenu.view.CircleLayout.OnRotationFinishedListener;
+import com.project.mechanic.view.CircleImageView;
+import com.project.mechanic.view.CircleLayout;
+import com.project.mechanic.view.CircleLayout.OnCenterClickListener;
+import com.project.mechanic.view.CircleLayout.OnItemClickListener;
+import com.project.mechanic.view.CircleLayout.OnItemSelectedListener;
+import com.project.mechanic.view.CircleLayout.OnRotationFinishedListener;
 
 
 public class FragmentContactUs extends Fragment implements OnItemSelectedListener,

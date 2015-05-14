@@ -1,4 +1,4 @@
-package com.szugyi.circlemenu.view;
+package com.project.mechanic.view;
 
 /*
  * Copyright 2013 Csaba Szugyiczki
