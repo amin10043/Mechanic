@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -47,14 +48,20 @@ public class Favorite_Fragment extends Fragment {
 
 		dbAdapter.open();
 		u = util.getCurrentUser();
+		if (u == null) {
+			Toast.makeText(getActivity(),
+					"برای مشاهده این صفحه شما باید وارد شوید.",
+					Toast.LENGTH_SHORT).show();
 
-		mylist = dbAdapter.getTicketByusetId(u.getId());
+		} else {
 
-		FavoriteListAdapter ListAdapter = new FavoriteListAdapter(
-				getActivity(), R.layout.row_favorite, mylist, this);
+			mylist = dbAdapter.getTicketByusetId(u.getId());
 
-		listFavorite.setAdapter(ListAdapter);
+			FavoriteListAdapter ListAdapter = new FavoriteListAdapter(
+					getActivity(), R.layout.row_favorite, mylist, this);
 
+			listFavorite.setAdapter(ListAdapter);
+		}
 		return view;
 
 	}
