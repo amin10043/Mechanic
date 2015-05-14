@@ -24,9 +24,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,12 +91,18 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		final TextView comregtxt = (TextView) view
 				.findViewById(R.id.compeletereg);
 		final EditText editname = (EditText) view
-				.findViewById(R.id.editTextname);
-		final EditText edituser = (EditText) view
-				.findViewById(R.id.editTextuser);
+				.findViewById(R.id.Textname);
+		final EditText editmobile = (EditText) view
+				.findViewById(R.id.mobiletxt);
 		final EditText editpass = (EditText) view
-				.findViewById(R.id.editTextpass);
-		txtclickpic = (TextView) view.findViewById(R.id.txtclickpic);
+				.findViewById(R.id.Textpass);
+		 btnreg.setEnabled(false);
+		 final CheckBox Rulescheck = (CheckBox)
+				 view.findViewById(R.id.rulescheck);
+				 TextView textrules=(TextView) view.findViewById(R.id.txtrulles);
+					 ScrollView scroll_vertical_register1 =(ScrollView)
+					 view.findViewById(R.id.scroll_vertical_register);
+	//	txtclickpic = (TextView) view.findViewById(R.id.txtclickpic);
 
 		final LinearLayout lin1 = (LinearLayout) view.findViewById(R.id.lin1);
 
@@ -102,8 +110,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		// columnWidth = (int) (getScreenWidth() /3);
 
 		lp = new LinearLayout.LayoutParams(lin1.getLayoutParams());
-		lp.width = utile.getScreenwidth() / 3;
-		lp.height = utile.getScreenwidth() / 3;
+		lp.width = utile.getScreenwidth() / 4;
+		lp.height = utile.getScreenwidth() / 4;
 		btnaddpic1.setLayoutParams(lp);
 		// btnaddpic1.setLayoutParams(lp);
 		// l1.addView(btnaddpic1);
@@ -136,13 +144,44 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		// }
 
 		// ///////////////////////////////////////////////////
+		textrules.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View arg0) {
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new DisplayeRullseFragment());
+			trans.commit();
+
+			}
+		});
+
+		Rulescheck.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// is chkIos checked?
+				if (((CheckBox) v).isChecked()) {
+					btnreg.setEnabled(true);
+				} else {
+
+					btnreg.setEnabled(false);
+
+				}
+				StringBuffer result = new StringBuffer();
+				result.append("Linux check : ").append(Rulescheck.isChecked());
+
+				Context context;
+
+		}
+		});
 		btnreg.setOnClickListener(new OnClickListener() {
 
 			@SuppressWarnings("unchecked")
 			public void onClick(View arg0) {
 				final String Name = editname.getText().toString();
-				final String Email = edituser.getText().toString();
+				final String Mobile = editmobile.getText().toString();
 				final String Pass = editpass.getText().toString();
 
 				PersianDate date = new PersianDate();
@@ -166,7 +205,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 				else {
 
-					txtclickpic.setVisibility(View.INVISIBLE);
+				//	txtclickpic.setVisibility(View.INVISIBLE);
 					comregtxt.setVisibility(View.VISIBLE);
 					btnreg.setEnabled(false);
 					dbAdapter = new DataBaseAdapter(getActivity());
@@ -174,16 +213,16 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 					if ((btnaddpic1.getDrawable() == null)) {
 
-						dbAdapter.inserUsernonpicToDb(Name, Email, Pass, null,
-								number, null, null, 0, txtdate);
+						dbAdapter.inserUsernonpicToDb(Name, null, Pass, null,
+							Mobile, null, null, 0, txtdate);
 
 						Map<String, String> items = new HashMap<String, String>();
 						items.put("register", "register");
 						items.put("username", Name);
-						items.put("email", Email);
+						items.put("email", "");
 						items.put("password", Pass);
 						items.put("phone", "");
-						items.put("mobile", "123");
+						items.put("mobile",Mobile);
 						items.put("fax", "0");
 						items.put("address", "");
 						items.put("date", txtdate);
@@ -204,15 +243,15 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 								bitmap.getConfig());
 
 						if (bitmap.sameAs(emptyBitmap)) {
-							dbAdapter.inserUsernonpicToDb(Name, Email, Pass,
-									null, number, null, null, 0, txtdate);
+							dbAdapter.inserUsernonpicToDb(Name, null, Pass,
+									null, Mobile, null, null, 0, txtdate);
 
 						} else {
 
 							byte[] Image = getBitmapAsByteArray(bitmap);
 
-							dbAdapter.inserUserToDb(Name, Email, Pass, null,
-									number, null, null, Image, 0, txtdate);
+							dbAdapter.inserUserToDb(Name, null, Pass, null,
+									Mobile, null, null, Image, 0, txtdate);
 
 							dbAdapter.close();
 
@@ -336,7 +375,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 					android.R.color.transparent));
 
 			btnaddpic1.setLayoutParams(lp);
-			txtclickpic.setVisibility(View.INVISIBLE);
+			//txtclickpic.setVisibility(View.INVISIBLE);
 		}
 
 	}

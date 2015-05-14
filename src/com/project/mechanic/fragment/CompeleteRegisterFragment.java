@@ -68,30 +68,28 @@ public class CompeleteRegisterFragment extends Fragment {
 		dbAdapter = new DataBaseAdapter(getActivity());
 		
 		
-		final	EditText Addresstxt = (EditText) view.findViewById(R.id.Addresstxt);
+		final	EditText Addresstxt = (EditText) view.findViewById(R.id.Addtxt);
 		final   EditText Phonetxt = (EditText) view.findViewById(R.id.phonetxt);
-		final   EditText Mobiletxt = (EditText) view.findViewById(R.id.mobiletxt);
+		final   EditText Emailtxt = (EditText) view.findViewById(R.id.Textemail);
 		final   EditText Faxtxt = (EditText) view.findViewById(R.id.faxtxt);
-	final CheckBox Rulescheck = (CheckBox) view.findViewById(R.id.rulescheck);
 	final Button Compeletebtn = (Button) view.findViewById(R.id.compeleteregisterbtn);
 	Button Backbtn = (Button) view.findViewById(R.id.backbtn);
 		
 	final EditText editname = (EditText) view
-			.findViewById(R.id.editTextname);
+			.findViewById(R.id.Textname);
 	final EditText edituser = (EditText) view
-			.findViewById(R.id.editTextuser);
+			.findViewById(R.id.mobiletxt);
 	final EditText editpass = (EditText) view
-			.findViewById(R.id.editTextpass);
+			.findViewById(R.id.Textpass);
 	
-	TextView textrules=(TextView) view.findViewById(R.id.txtrulles);
-	Compeletebtn.setEnabled(false);
+	
 	
 	 
 //	textrules.setText(Html.fromHtml("<html><a href=\"http://example.com/\">قوانین</a></html>"));
 //	textrules.setMovementMethod(LinkMovementMethod.getInstance());
-	TelephonyManager tm =(TelephonyManager)getActivity().getSystemService(Context.TELEPHONY_SERVICE);
-	 String number = tm.getLine1Number();	
-	Mobiletxt.setText(number);
+//	TelephonyManager tm =(TelephonyManager)getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+//	 String number = tm.getLine1Number();	
+//	 Emailtxt.setText(number);
 	
 	Backbtn.setOnClickListener(new OnClickListener() {
 		
@@ -109,44 +107,10 @@ public class CompeleteRegisterFragment extends Fragment {
 	});
 	
 	
-	textrules.setOnClickListener(new OnClickListener() {
-		
-		@Override
-		public void onClick(View arg0) {
-			
-			
-			FragmentTransaction trans = getActivity()
-					.getSupportFragmentManager().beginTransaction();
-			trans.replace(R.id.content_frame, new DisplayeRullseFragment());
-			trans.commit();
-			
-		}
-	});
 	
 	
-	Rulescheck.setOnClickListener(new OnClickListener()
-	 {
-	
-	 @Override
-	 public void onClick(View v) {
-	// is chkIos checked?
-	 if (((CheckBox) v).isChecked()) {
-		 Compeletebtn.setEnabled(true);
-	 }
-	 else {
-		 
-		 Compeletebtn.setEnabled(false);
-		 
-		 
-	 }
-	 StringBuffer result = new StringBuffer();
-	 result.append("Linux check : ").append(Rulescheck.isChecked());
 	
 	
-	 Context context;
-	
-	 }
-	 });
 	
 	
 	Compeletebtn.setOnClickListener(new OnClickListener() {
@@ -161,11 +125,11 @@ public class CompeleteRegisterFragment extends Fragment {
 				
 					Users x =dbAdapter.getUserById(id);					
 		     	int item = x.getId();
-//				Toast.makeText(getActivity(),
-//						item+"",
-//				Toast.LENGTH_SHORT).show();
-			        dbAdapter.UpdateUserToDb(item, Phonetxt.getText().toString(), 
-			        		Mobiletxt.getText().toString(),Faxtxt.getText().toString(),
+				Toast.makeText(getActivity(),
+						item+"",
+				Toast.LENGTH_SHORT).show();
+			        dbAdapter.UpdateUserToDb(item, Emailtxt.getText().toString(),Phonetxt.getText().toString(), 
+			        		Faxtxt.getText().toString(),
 			        		Addresstxt.getText().toString());
 			        dbAdapter.close();			
 			        Toast.makeText(getActivity(),
@@ -174,7 +138,7 @@ public class CompeleteRegisterFragment extends Fragment {
 			       
 			        Addresstxt.setText("");
 			        Phonetxt.setText("");
-             		Mobiletxt.setText("");
+			        Emailtxt.setText("");
              		Faxtxt.setText("");
 			}
 	

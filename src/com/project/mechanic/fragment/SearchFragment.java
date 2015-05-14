@@ -1,9 +1,9 @@
-package com.project.mechanic;
+package com.project.mechanic.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.ListActivity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -15,35 +15,35 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.project.mechanic.entity.Province;
+import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class Search extends ListActivity {
+public class SearchFragment extends ListFragment {
 
 	private DataBaseAdapter db;
-
 	private String[] Name;
 	private String[] cPage;
 	private String[] Page;
 	private EditText word;
-	String tableName;
+	String tableName = "Province";
 
 	private TextView status;
+	Fragment fragment;
 
-	// Fragment fragment;
-
+	@SuppressLint("InflateParams")
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_search);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.showad);
 
-		db = new DataBaseAdapter(this);
+		View view = inflater.inflate(R.layout.activity_search, null);
+		db = new DataBaseAdapter(getActivity());
 
-		tableName = getIntent().getExtras().getString("table");
+		// tableName = getIntent().getExtras().getString("table");
 
-		word = (EditText) findViewById(R.id.search_word);
+		word = (EditText) view.findViewById(R.id.search_word);
 
-		status = (TextView) findViewById(R.id.search_status);
+		status = (TextView) view.findViewById(R.id.search_status);
 
 		refresh(word.getText().toString(), "Name");
 
@@ -81,17 +81,31 @@ public class Search extends ListActivity {
 
 			}
 		});
+		return view;
 
 	}
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		//
 
-		Intent i = new Intent(Search.this, Province.class);
+		//
+		// android.app.FragmentManager fragmentManager;
+		// switch (position) {
+		// case 0:
+		// fragment = new ProvinceFragment();
+		// fragmentManager = getFragmentManager();
+		// fragmentManager.beginTransaction()
+		// .replace(R.id.content_frame, fragment).commit();
+		// break;
+		//
+		// case 1:
+		// }
 
-		i.putExtra("name", Name[position]);
-
-		startActivity(i);
+		// Intent i = new Intent(Search.this, Province.class);
+		//
+		// i.putExtra("name", Name[position]);
+		//
+		// startActivity(i);
 
 	}
 
@@ -103,7 +117,7 @@ public class Search extends ListActivity {
 	class AA extends ArrayAdapter<String> {
 
 		public AA() {
-			super(Search.this, R.layout.row_search, Name);
+			super(getActivity(), R.layout.row_search, Name);
 		}
 
 		@SuppressLint("ViewHolder")
@@ -120,6 +134,11 @@ public class Search extends ListActivity {
 			// name.setTypeface(Main.font);
 
 			return (row);
+		}
+
+		private LayoutInflater getLayoutInflater() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 	}
@@ -160,5 +179,4 @@ public class Search extends ListActivity {
 		db.close();
 
 	}
-
 }
