@@ -2357,15 +2357,15 @@ public class DataBaseAdapter {
 		return u;
 	}
 
-	public Integer Mechanical_serach(String tableName, String word, String field) {
+	public Integer Mechanical_serach(String table, String word, String field) {
 
 		Cursor cu;
 		if (field.equals("Name")) {
 
-			cu = mDb.rawQuery("select * from " + tableName + " where " + field
+			cu = mDb.rawQuery("select * from  Province  where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from Province where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2378,10 +2378,10 @@ public class DataBaseAdapter {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from " + tableName + " where " + field
+			cu = mDb.rawQuery("select * from Province where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from Province  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2390,14 +2390,14 @@ public class DataBaseAdapter {
 		return s;
 	}
 
-	public Integer count_search(String word, string field) {
+	public Integer count_search(String tableName, String word, string field) {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from Province where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from Province where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
