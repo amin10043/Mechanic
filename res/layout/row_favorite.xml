@@ -55,33 +55,29 @@
 
                 <ImageButton
                     android:id="@+id/img_delete_favorite"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/negative" />
+                    android:background="@drawable/ic_delete" />
 
                 <ImageButton
                     android:id="@+id/img_share_favorite"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_share" />
+                    android:background="@drawable/ic_share_froum" />
 
                 <ImageButton
                     android:id="@+id/img_tamas_favorite"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_personal" />
+                    android:background="@drawable/ic_about_us"
+                    android:scaleType="centerCrop" />
             </LinearLayout>
         </LinearLayout>
 
@@ -97,7 +93,7 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_gravity="right"
-                android:src="@drawable/no_image" />
+                android:src="@drawable/no_img_profile" />
         </LinearLayout>
     </LinearLayout>
 
