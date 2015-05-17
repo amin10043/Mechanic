@@ -2362,10 +2362,10 @@ public class DataBaseAdapter {
 		Cursor cu;
 		if (field.equals("Name")) {
 
-			cu = mDb.rawQuery("select * from  Province  where " + field
+			cu = mDb.rawQuery("select * from  ListItem   where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Province where " + field
+			cu = mDb.rawQuery("select * from ListItem  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2378,10 +2378,10 @@ public class DataBaseAdapter {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from Province where " + field
+			cu = mDb.rawQuery("select * from ListItem  where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Province  where " + field
+			cu = mDb.rawQuery("select * from ListItem  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2394,10 +2394,10 @@ public class DataBaseAdapter {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from Province where " + field
+			cu = mDb.rawQuery("select * from ListItem  where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Province where " + field
+			cu = mDb.rawQuery("select * from ListItem  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
