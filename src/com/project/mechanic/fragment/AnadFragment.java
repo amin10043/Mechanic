@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -36,6 +37,7 @@ import com.project.mechanic.adapter.AnadImgListAdapter;
 import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.Ticket;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -75,6 +77,8 @@ public class AnadFragment extends Fragment {
 	private Timer clickTimer = null;
 	private Timer faceTimer = null;
 	private Button clickedButton = null;
+	Users u;
+	Utility util;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -93,6 +97,8 @@ public class AnadFragment extends Fragment {
 		img = (ImageView) view.findViewById(R.id.img_anad);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
+		util = new Utility(getActivity());
+		u = util.getCurrentUser();
 
 		if (getArguments().getString("ProID") != null) {
 			proID = Integer.valueOf(getArguments().getString("ProID"));
@@ -121,7 +127,11 @@ public class AnadFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-
+				if (u == null) {
+					Toast.makeText(getActivity(), " شما وارد نشده اید.",
+							Toast.LENGTH_LONG).show();
+					return;
+				}
 				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,
 						AnadFragment.this, ticketTypeid, proID);
 				dialog.setTitle(R.string.txtanad);

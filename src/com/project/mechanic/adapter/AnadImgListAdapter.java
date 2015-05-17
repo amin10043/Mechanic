@@ -13,11 +13,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Anad;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogAnadimg;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 
@@ -28,6 +31,8 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 	Anad tempItem;
 	DataBaseAdapter adapter;
 	int ProvinceId;
+	Users u;
+	Utility util;
 
 	public AnadImgListAdapter(Context context, int resource, List<Anad> objact,
 			int ProvinceId) {
@@ -50,7 +55,9 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 		convertView = myInflater.inflate(R.layout.row_anad_img, parent, false);
 
 		ImageView img = (ImageView) convertView.findViewById(R.id.img_anad);
-
+		adapter = new DataBaseAdapter(context);
+		util = new Utility(context);
+		u = util.getCurrentUser();
 		tempItem = list.get(position);
 		byte[] bitmapbyte = tempItem.getImage();
 		if (bitmapbyte != null) {
@@ -63,6 +70,11 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 
 			@Override
 			public void onClick(View v) {
+				if (u == null) {
+					Toast.makeText(context, " شما وارد نشده اید.",
+							Toast.LENGTH_LONG).show();
+					return;
+				}
 
 				RelativeLayout parentlayout = (RelativeLayout) v;
 

@@ -14,8 +14,8 @@ import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.project.mechanic.R;
@@ -37,7 +37,7 @@ public class Dialog_report extends Dialog {
 	int resourceId;
 	private EditText Editreport;
 	LinearLayout Lheader;
-	private ImageButton btnreport;
+	private Button btnreport;
 	LinearLayout.LayoutParams headerEditParams;
 
 	public Dialog_report(final Context context, int resourceId,
@@ -65,7 +65,7 @@ public class Dialog_report extends Dialog {
 		setContentView(resourceId);
 		// id = Integer.valueOf(getArguments().getString("Id"));
 
-		btnreport = (ImageButton) findViewById(R.id.imageButton_report);
+		btnreport = (Button) findViewById(R.id.Button_report);
 		Editreport = (EditText) findViewById(R.id.editText_report);
 
 		dbadapter = new DataBaseAdapter(context);
