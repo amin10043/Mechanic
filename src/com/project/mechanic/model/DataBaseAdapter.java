@@ -2357,15 +2357,15 @@ public class DataBaseAdapter {
 		return u;
 	}
 
-	public Integer Mechanical_serach(String table, String word, String field) {
+	public Integer Mechanical_serach(String tableName, String word, String field) {
 
 		Cursor cu;
 		if (field.equals("Name")) {
 
-			cu = mDb.rawQuery("select * from  ListItem   where " + field
-					+ " Like '%" + word + "%' group by Name", null);
+			cu = mDb.rawQuery("select * from " + tableName + "   where "
+					+ field + " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from ListItem  where " + field
+			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2378,10 +2378,10 @@ public class DataBaseAdapter {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from ListItem  where " + field
+			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from ListItem  where " + field
+			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2394,10 +2394,10 @@ public class DataBaseAdapter {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from ListItem  where " + field
+			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from ListItem  where " + field
+			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
