@@ -359,6 +359,7 @@ public class DataBaseAdapter {
 		uc.put("PaperId", PaperId);
 		uc.put("CommentId", CommentId);
 		uc.put("Date", Date);
+		uc.put("Seen", 1);
 
 		long res = mDb.insert(TableLikeInObject, null, uc);
 		long res2 = res;
@@ -446,6 +447,8 @@ public class DataBaseAdapter {
 		cv.put("CommentId", commentid);
 		cv.put("NumOfDislike", numofDisLike);
 		cv.put("NumOfLike", numoflike);
+		cv.put("Seen", 1);
+
 		mDb.insert(TableCommentInFroum, null, cv);
 	}
 
@@ -470,6 +473,8 @@ public class DataBaseAdapter {
 		cv.put("ObjectID", Objectid);
 		cv.put("Date", datetime);
 		cv.put("CommentId", commentid);
+		cv.put("Seen", 1);
+
 		mDb.insert(TableCommentInObject, null, cv);
 	}
 
@@ -1270,10 +1275,10 @@ public class DataBaseAdapter {
 
 	}
 
-	public Integer LikeInObject_count() {
+	public Integer LikeInObject_count(int ObjectId) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableLikeInObject, null);
+				+ TableLikeInObject + " WHERE PaperId= " + ObjectId, null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -1303,10 +1308,11 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	public Integer CommentInObject_count() {
+	public Integer CommentInObject_count(int ObjectID) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableCommentInObject, null);
+				+ TableCommentInObject + " WHERE ObjectId= " + ObjectID
+				+ " AND CommentId = 0 ", null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -1464,11 +1470,15 @@ public class DataBaseAdapter {
 	 * result.add(CursorToComment(cursor)); } return result; }
 	 */
 
-	public ArrayList<CommentInObject> getAllCommentInObjectById(int ObjectID) {
+	public ArrayList<CommentInObject> getAllCommentInObjectById(int ObjectID,
+			int CommentID) {
 		ArrayList<CommentInObject> result = new ArrayList<CommentInObject>();
-		Cursor cursor = mDb.query(TableCommentInObject, CommentInObject,
-				" ObjectId=?", new String[] { String.valueOf(ObjectID) }, null,
-				null, null);
+		Cursor cursor = mDb.query(
+				TableCommentInObject,
+				CommentInObject,
+				" ObjectId=? AND CommentId=?",
+				new String[] { String.valueOf(ObjectID),
+						String.valueOf(CommentID) }, null, null, null);
 		CommentInObject tempComment;
 		while (cursor.moveToNext()) {
 			result.add(CursorToCommentInObject(cursor));
@@ -2414,6 +2424,65 @@ public class DataBaseAdapter {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
 				+ TableCommentInFroum + " WHERE FroumId=" + froumID
+				+ " AND CommentID= " + commentID, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public boolean isUserLikeIntroductionPage(int userId, int ObjectId) {
+
+		Cursor curs = mDb.rawQuery(
+				"SELECT COUNT(*) AS NUM FROM " + TableLikeInObject
+						+ " WHERE UserId= " + String.valueOf(userId)
+						+ " AND PaperId= " + String.valueOf(ObjectId), null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
+	public void deleteLikeIntroduction(int userID, int ObjectId) {
+		String[] t = { String.valueOf(userID), String.valueOf(ObjectId) };
+		mDb.delete(TableLikeInObject, "UserId =? AND PaperId=?", t);
+	}
+
+	public ArrayList<CommentInObject> getReplyCommentIntroduction(int ObjectId,
+			int Commentid) {
+
+		ArrayList<CommentInObject> result = new ArrayList<CommentInObject>();
+		CommentInObject item = null;
+
+		/*
+		 * Cursor tCur = mDb.rawQuery("Select FroumId From " +
+		 * TableCommentInFroum + " Where FroumId=" +String.valueOf(Froumid),null
+		 * );
+		 */
+
+		Cursor mCur = mDb.query(
+				TableCommentInObject,
+				CommentInObject,
+				"ObjectId=? AND CommentId=?",
+				new String[] { String.valueOf(ObjectId),
+						String.valueOf(Commentid) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInObject(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	public Integer getCountOfReplyInObject(int ObjectID, int commentID) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInObject + " WHERE ObjectId=" + ObjectID
 				+ " AND CommentID= " + commentID, null);
 		int res = 0;
 		if (cu.moveToNext()) {
