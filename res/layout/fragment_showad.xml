@@ -29,7 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/noimageshow" />
+                    android:src="@drawable/no_image_header" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -38,28 +38,27 @@
 
                     <ImageButton
                         android:id="@+id/imgLike_showAd"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
                         android:background="@drawable/ic_star_off" />
 
                     <ImageButton
                         android:id="@+id/imgShare_showAd"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_toLeftOf="@+id/imgLike_showAd"
                         android:background="@drawable/ic_share" />
 
                     <ImageButton
                         android:id="@+id/imgedite_showAd"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginRight="24dp"
-                        android:layout_toLeftOf="@+id/imgShare_showAd"
-                        android:background="@drawable/ic_video"
+                        android:background="@drawable/ic_edit"
                         android:visibility="invisible" />
                 </RelativeLayout>
             </FrameLayout>
@@ -223,6 +222,7 @@
                     android:id="@+id/btn_report"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/buttonshape"
                     android:text="گزارش آگهی" />
             </LinearLayout>
         </LinearLayout>

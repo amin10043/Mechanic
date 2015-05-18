@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -144,6 +145,11 @@ public class ShowAdFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
+				if (u == null) {
+					Toast.makeText(getActivity(), " شما وارد نشده اید.",
+							Toast.LENGTH_LONG).show();
+					return;
+				}
 				dialog_report = new Dialog_report(getActivity(),
 						R.layout.dialog_report, ShowAdFragment.this, a);
 				dialog_report.setTitle(R.string.txtanadreport);

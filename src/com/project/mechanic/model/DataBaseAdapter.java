@@ -977,6 +977,55 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+	////////////////////////////////////////////////////////////////
+	public ArrayList<CommentInFroum> getseencomment() {
+
+		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
+		CommentInFroum item = null;
+		Cursor mCur = mDb.query(TableCommentInFroum,CommentInFroum,"seen=1", null, null,
+				null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInFroum(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+//////////////////////////////////////////////////////////////////////////////////////////////////
+	public ArrayList<CommentInFroum> getUnseencomment() {
+
+		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
+		CommentInFroum item = null;
+		Cursor mCur = mDb.query(TableCommentInFroum,CommentInFroum,"seen=0", null, null,
+				null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInFroum(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+	////////////////////////////////////////////////////////////////////////////////////
+	
+	public ArrayList<Object> getUnseenlike() {
+
+		ArrayList<Object> result = new ArrayList<Object>();
+		Object item = null;
+		Cursor mCur = mDb.query(TableObject,Object,"seen=0", null, null,
+				null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToObject(mCur);
+			result.add(item);
+		}
+
+		return result;
+	}
+	///////////////////////////////////////////////////////////////////////////////////////
 
 	private ListItem CursorToListItem(Cursor mCur) {
 
@@ -2326,6 +2375,17 @@ public class DataBaseAdapter {
 		}
 		return res;
 	}
+	//////////////////////////////////////////////////////////
+	public int NumOfNewLikeInObject1() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableObject + " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+	////////////////////////////////////////////////////////////
 
 	public int NumOfNewCmtInObject() {
 		int res = 0;
@@ -2367,15 +2427,15 @@ public class DataBaseAdapter {
 		return u;
 	}
 
-	public Integer Mechanical_serach(String tableName, String word, String field) {
+	public Integer Mechanical_serach(String table, String word, String field) {
 
 		Cursor cu;
 		if (field.equals("Name")) {
 
-			cu = mDb.rawQuery("select * from " + tableName + " where " + field
+			cu = mDb.rawQuery("select * from  ListItem   where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from ListItem  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2388,10 +2448,10 @@ public class DataBaseAdapter {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from " + tableName + " where " + field
+			cu = mDb.rawQuery("select * from ListItem  where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from ListItem  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2400,14 +2460,14 @@ public class DataBaseAdapter {
 		return s;
 	}
 
-	public Integer count_search(String word, string field) {
+	public Integer count_search(String tableName, String word, string field) {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from ListItem  where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from ListItem  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2430,6 +2490,24 @@ public class DataBaseAdapter {
 			res = cu.getInt(0);
 		}
 		return res;
+	}
+	////////////////////////////////////////////////////////////////
+	public void updatecmseentodb(int seen) {
+
+		ContentValues uc = new ContentValues();
+		
+		uc.put("Seen",seen);
+		mDb.update(TableCommentInFroum, uc, null, null);
+
+	}
+	
+	public void updatelikeseentodb(int seen) {
+
+		ContentValues uc = new ContentValues();
+		
+		uc.put("Seen",seen);
+		mDb.update(TableObject, uc, null, null);
+
 	}
 
 	public boolean isUserLikeIntroductionPage(int userId, int ObjectId) {

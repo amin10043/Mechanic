@@ -146,7 +146,7 @@ public class Search extends ListActivity {
 
 			Name[i] = db.serach(tableName, i, 1, word1, field);
 
-			// cPage[i] = db.Story_page_count("content", Name[i]) + "";
+			cPage[i] = db.province_count("Province") + "";
 
 			if (field.equals("Name")) {
 				Page[i] = "";
