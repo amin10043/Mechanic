@@ -10,7 +10,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:background="@drawable/headershape" >
 
         <TextView
             android:id="@+id/rownews_Titletxt"
@@ -19,14 +20,23 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:hint=" "
-            android:textColor="#000" />
+            android:textColor="#000"
+            android:textSize="@dimen/item_font_size" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_news" />
+
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_weight="8" >
+        android:layout_weight="8"
+        android:background="@drawable/color1" >
 
         <TextView
             android:id="@+id/rownews_txtDescription"
