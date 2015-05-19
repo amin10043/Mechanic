@@ -345,91 +345,91 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 		// }
 		// });
 		//
-		// imglikeComment.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// // khandan meghdar ghabli tedad like ha
-		// // tabdil be int
-		// // ezafe kardan 1 vahed be meghdar ghabli
-		// // tabdil be String
-		// adapter.open();
-		//
-		// if (Currentuser == null) {
-		// Toast.makeText(context, "ابتدا باید وارد شوید",
-		// Toast.LENGTH_SHORT).show();
-		// return;
-		// } else {
-		//
-		// int intCureentLike = Integer.valueOf(comment.getId());
-		// int newCountLike = intCureentLike + 1;
-		// String stringNewcountLike = String.valueOf(newCountLike);
-		//
-		// // // peyda kardan id comment sabt shode
-		//
-		// RelativeLayout parentlayout = (RelativeLayout) v
-		// .getParent().getParent().getParent();
-		// View viewMaincmt = parentlayout.findViewById(R.id.peygham);
-		// TextView txtMaincmt = (TextView) viewMaincmt;
-		//
-		// View viewnumlike = parentlayout
-		// .findViewById(R.id.countCommentFroum);
-		// TextView txtlike = (TextView) viewnumlike;
-		//
-		// int id = 0;
-		//
-		// for (CommentInObject listItem : CommentList) {
-		// if (txtMaincmt.getText().toString().equals(listItem)) {
-		//
-		// id = listItem.getId();
-		//
-		// }
-		// }
-		//
-		// // send to database
-		//
-		// if (adapter.isUserLikedComment(Currentuser.getId(), id, 1)) {
-		//
-		// adapter.deleteLikeFromCommentInFroum(id,
-		// Currentuser.getId(), 1);
-		//
-		// int b = intCureentLike - 1;
-		// String c = String.valueOf(b);
-		//
-		// adapter.insertCmtLikebyid(id, c, Currentuser.getId());
-		// f.updateList();
-		//
-		// txtlike.setText(String.valueOf(adapter
-		// .getCountofCommentinFroumObject(ObjectID, id)));
-		//
-		// adapter.close();
-		// notifyDataSetChanged();
-		//
-		// imglikeComment
-		// .setBackgroundResource(R.drawable.positive_off);
-		//
-		// } else {
-		//
-		// adapter.insertCmtLikebyid(id, stringNewcountLike,
-		// Currentuser.getId());
-		// adapter.insertLikeInCommentToDb(Currentuser.getId(), 1,
-		// id);
-		//
-		// f.updateList();
-		//
-		// txtlike.setText(String.valueOf(adapter
-		// .getCountofCommentinFroumObject(ObjectID, id)));
-		//
-		// adapter.close();
-		// notifyDataSetChanged();
-		// imglikeComment
-		// .setBackgroundResource(R.drawable.positive);
-		//
-		// }
-		//
-		// }
-		// }
-		// });
+		imglikeComment.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// khandan meghdar ghabli tedad like ha
+				// tabdil be int
+				// ezafe kardan 1 vahed be meghdar ghabli
+				// tabdil be String
+				adapter.open();
+
+				if (Currentuser == null) {
+					Toast.makeText(context, "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+					return;
+				} else {
+
+					int intCureentLike = Integer.valueOf(comment.getId());
+					int newCountLike = intCureentLike + 1;
+					String stringNewcountLike = String.valueOf(newCountLike);
+
+					// // peyda kardan id comment sabt shode
+
+					RelativeLayout parentlayout = (RelativeLayout) v
+							.getParent().getParent().getParent();
+					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
+					TextView txtMaincmt = (TextView) viewMaincmt;
+
+					View viewnumlike = parentlayout
+							.findViewById(R.id.countCommentFroum);
+					TextView txtlike = (TextView) viewnumlike;
+
+					int id = 0;
+
+					for (CommentInObject listItem : CommentList) {
+						if (txtMaincmt.getText().toString().equals(listItem)) {
+
+							id = listItem.getId();
+
+						}
+					}
+
+					// send to database
+
+					if (adapter.isUserLikedComment(Currentuser.getId(), id, 1)) {
+
+						adapter.deleteLikeFromCommentInFroum(id,
+								Currentuser.getId(), 1);
+
+						int b = intCureentLike - 1;
+						String c = String.valueOf(b);
+
+						adapter.insertCmtLikebyid(id, c, Currentuser.getId());
+						f.updateList();
+
+						txtlike.setText(String.valueOf(adapter
+								.getCountofCommentinFroumObject(ObjectID, id)));
+
+						adapter.close();
+						notifyDataSetChanged();
+
+						imglikeComment
+								.setBackgroundResource(R.drawable.positive_off);
+
+					} else {
+
+						adapter.insertCmtLikebyid(id, stringNewcountLike,
+								Currentuser.getId());
+						adapter.insertLikeInCommentToDb(Currentuser.getId(), 1,
+								id);
+
+						f.updateList();
+
+						txtlike.setText(String.valueOf(adapter
+								.getCountofCommentinFroumObject(ObjectID, id)));
+
+						adapter.close();
+						notifyDataSetChanged();
+						imglikeComment
+								.setBackgroundResource(R.drawable.positive);
+
+					}
+
+				}
+			}
+		});
 
 		addreply.setOnClickListener(new View.OnClickListener() {
 

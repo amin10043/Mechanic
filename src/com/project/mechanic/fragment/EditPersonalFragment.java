@@ -53,6 +53,7 @@ public class EditPersonalFragment extends Fragment {
 				.inflate(R.layout.fragment_editpersonal, null);
 
 		service = new ServiceComm(getActivity());
+
 		ut = new Utility(getActivity());
 		final EditText txtaddress = (EditText) view
 				.findViewById(R.id.etxtaddress);
@@ -62,7 +63,7 @@ public class EditPersonalFragment extends Fragment {
 		final EditText txtemail = (EditText) view.findViewById(R.id.etxtemail);
 		final TextView txtname = (TextView) view.findViewById(R.id.etxtname);
 		final EditText txtfax = (EditText) view.findViewById(R.id.etxtfax);
-		// img2=(ImageView) view.findViewById(R.id.imgp);
+		img2 = (ImageView) view.findViewById(R.id.imgp);
 		// imagecamera=(ImageView) view.findViewById(R.id.imagcamera);
 		Button btnregedit = (Button) view.findViewById(R.id.btnregedit);
 

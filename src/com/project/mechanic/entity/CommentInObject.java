@@ -8,10 +8,13 @@ public class CommentInObject {
 	int Userid;
 	String Datetime;
 	int Commentid;
+	int NumofLike;
+	int NumofDisLike;
 	int Seen;
 
 	public CommentInObject(int id, String description, int froumid, int userid,
-			String datetime, int commentid, int seen) {
+			String datetime, int commentid, int NumofLike, int NumofDislike,
+			int seen) {
 		super();
 		Id = id;
 		Description = description;
@@ -19,7 +22,25 @@ public class CommentInObject {
 		Userid = userid;
 		Datetime = datetime;
 		Commentid = commentid;
+		this.NumofLike = NumofLike;
+		this.NumofDisLike = NumofDislike;
 		Seen = seen;
+	}
+
+	public int getNumofLike() {
+		return NumofLike;
+	}
+
+	public void setNumofLike(int numofLike) {
+		NumofLike = numofLike;
+	}
+
+	public int getNumofDisLike() {
+		return NumofDisLike;
+	}
+
+	public void setNumofDisLike(int numofDisLike) {
+		NumofDisLike = numofDisLike;
 	}
 
 	public String getDescription() {

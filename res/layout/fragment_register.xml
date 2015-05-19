@@ -111,7 +111,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:gravity="right|center"
-                android:hint="نام نام خانوادگی را وارد کنید (اجباری)"
+                android:hint="نام نام خانوادگی را وارد کنید...اجباری"
                 android:inputType="textEmailAddress"
                 android:textSize="@dimen/txtsize10" />
 
@@ -140,7 +140,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:gravity="right|center"
-                android:hint="رمز عبور خود را وارد کنید(اجباری)"
+                android:hint="رمز عبور خود را وارد کنید...اجباری"
                 android:inputType="textPassword"
                 android:textSize="@dimen/txtsize10" />
         </LinearLayout>

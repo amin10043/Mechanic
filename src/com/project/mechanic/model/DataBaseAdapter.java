@@ -87,7 +87,7 @@ public class DataBaseAdapter {
 
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] CommentInObject = { "Id", "Desk", "ObjectId", "UserId",
-			"Date", "CommentId", "Seen" };
+			"Date", "CommentId", "NumofLike", "NumofDisLike ", "Seen" };
 	private String[] CommentInFroum = { "ID", "Desk", "FroumId", "UserId",
 
 	"Date", "CommentId", "NumOfDislike", "NumOfLike", "Seen" };
@@ -1168,7 +1168,8 @@ public class DataBaseAdapter {
 	private CommentInObject CursorToCommentInObject(Cursor cursor) {
 		CommentInObject tempNews = new CommentInObject(cursor.getInt(0),
 				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
-				cursor.getString(4), cursor.getInt(5), cursor.getInt(6));
+				cursor.getString(4), cursor.getInt(5), cursor.getInt(6),
+				cursor.getInt(7), cursor.getInt(8));
 		return tempNews;
 
 	}
@@ -2012,8 +2013,8 @@ public class DataBaseAdapter {
 		CommentInFroum tempComment = new CommentInFroum(cursor.getInt(0),
 				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
 
-				cursor.getString(4), cursor.getInt(5), cursor.getString(6),
-				cursor.getString(7), cursor.getInt(8));
+				cursor.getString(4), cursor.getInt(5), cursor.getInt(6),
+				cursor.getInt(7), cursor.getInt(8));
 
 		return tempComment;
 
@@ -2577,5 +2578,14 @@ public class DataBaseAdapter {
 		}
 		return res;
 	}
+
+	// public void insertCommentIntroduction(int id, String numofLike, int
+	// UserId) {
+	// if (!isUserLikedComment(UserId, id, 1)) {
+	// ContentValues uc = new ContentValues();
+	// uc.put("NumOfLike", numofLike);
+	// mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+	// }
+	// }
 
 }
