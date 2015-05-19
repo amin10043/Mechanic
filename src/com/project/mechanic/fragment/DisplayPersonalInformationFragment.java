@@ -56,9 +56,9 @@ utile1=new Utility(getActivity());
 Button btnedit=(Button) view.findViewById(R.id.btnedit);
 
 TextView txtdate=(TextView)view.findViewById(R.id.txtdate);
-final LinearLayout lin2 = (LinearLayout) view.findViewById(R.id.lin2);
+final LinearLayout lin4 = (LinearLayout) view.findViewById(R.id.lin4);
 
-LayoutParams lp1 = new LinearLayout.LayoutParams(lin2.getLayoutParams());		
+LayoutParams lp1 = new LinearLayout.LayoutParams(lin4.getLayoutParams());		
 lp1.width=utile1.getScreenwidth()/4;
    lp1.height=utile1.getScreenwidth()/4;
    img.setLayoutParams(lp1);
