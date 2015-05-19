@@ -1,6 +1,5 @@
 package com.project.mechanic;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +29,7 @@ import com.project.mechanic.fragment.FragmentContactUs;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
+import com.project.mechanic.fragment.SearchFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -39,21 +39,17 @@ public class MainActivity extends FragmentActivity {
 	private String[] mPlanetTitles;
 	private DrawerLayout mDrawerLayout;
 
-
-    private ListView              mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
-    // private CharSequence title;
-    private Fragment              lastFragment;
-    private boolean               isFavorite = false;
-    Utility                       util;
-    private int                   mInterval  = 40000; // 5 seconds by default, can be changed later
-    private Handler               mHandler;
-    SlideMenuAdapter              slideadapter;
-    Dialog_notification dialog;
-    Dialog_notificationlike dialog1;
-
-	
-
+	private ListView mDrawerList;
+	private ActionBarDrawerToggle mDrawerToggle;
+	// private CharSequence title;
+	private Fragment lastFragment;
+	private boolean isFavorite = false;
+	Utility util;
+	private int mInterval = 40000; // 5 seconds by default, can be changed later
+	private Handler mHandler;
+	SlideMenuAdapter slideadapter;
+	Dialog_notification dialog;
+	Dialog_notificationlike dialog1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,79 +59,63 @@ public class MainActivity extends FragmentActivity {
 		adapter = new DataBaseAdapter(this);
 		slideadapter = new SlideMenuAdapter(this);
 
+		adapter = new DataBaseAdapter(this);
+		slideadapter = new SlideMenuAdapter(this);
 
-        adapter = new DataBaseAdapter(this);
-        slideadapter = new SlideMenuAdapter(this);
-        
-        
-        adapter.open();
-		int r=	adapter. NumOfNewCmtInFroum();
+		adapter.open();
+		int r = adapter.NumOfNewCmtInFroum();
 		TextView txtcm = (TextView) findViewById(R.id.txtcm);
-		txtcm.setText(""+r);
-		
-		
-		int t= adapter.NumOfNewLikeInObject1();
-		TextView txtlike=(TextView) findViewById(R.id.txtlike);
-		txtlike.setText(""+t);
+		txtcm.setText("" + r);
+
+		int t = adapter.NumOfNewLikeInObject1();
+		TextView txtlike = (TextView) findViewById(R.id.txtlike);
+		txtlike.setText("" + t);
 		adapter.close();
-		
-		ImageButton iBtnmessage=(ImageButton)findViewById(R.id.iBtnmessage);
+
+		ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
 		iBtnmessage.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				adapter.open();
-				
-                dialog = new Dialog_notification(MainActivity.this);
-				
+
+				dialog = new Dialog_notification(MainActivity.this);
+
 				dialog.show();
-				int seen=1;
+				int seen = 1;
 				adapter.updatecmseentodb(seen);
-				int r=	adapter. NumOfNewCmtInFroum();
+				int r = adapter.NumOfNewCmtInFroum();
 				TextView txtcm = (TextView) findViewById(R.id.txtcm);
-				txtcm.setText(""+r);
+				txtcm.setText("" + r);
 				adapter.close();
-				
+
 			}
 		});
-		ImageButton iBtnNotification=(ImageButton)findViewById(R.id.iBtnNotification);
+		ImageButton iBtnNotification = (ImageButton) findViewById(R.id.iBtnNotification);
 		iBtnNotification.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				adapter.open();
-           dialog1 = new Dialog_notificationlike(MainActivity.this);
-				
+				dialog1 = new Dialog_notificationlike(MainActivity.this);
+
 				dialog1.show();
-				int seen=1;
+				int seen = 1;
 				adapter.updatelikeseentodb(seen);
-				
-				int t= adapter.NumOfNewLikeInObject1();
-				TextView txtlike=(TextView) findViewById(R.id.txtlike);
-				txtlike.setText(""+t);
+
+				int t = adapter.NumOfNewLikeInObject1();
+				TextView txtlike = (TextView) findViewById(R.id.txtlike);
+				txtlike.setText("" + t);
 				adapter.close();
-				
+
 			}
 
-			
-				
-				
-				
-			
 		});
-        
-        
-        
-        
-        
-        
-        
 
 		util = new Utility(MainActivity.this);
 		// mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
-
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -199,11 +179,17 @@ public class MainActivity extends FragmentActivity {
 				} else if (f instanceof CityFragment) {
 					tableName = "City";
 				}
+				Fragment fragment;
+				FragmentManager fragmentManager;
+				fragment = new SearchFragment();
+				fragmentManager = getSupportFragmentManager();
+				fragmentManager.beginTransaction()
+						.replace(R.id.content_frame, fragment).commit();
 
-				Intent i = new Intent(MainActivity.this, Search.class);
-
-				i.putExtra("table", tableName);
-				startActivity(i);
+				// Intent i = new Intent(MainActivity.this, Search.class);
+				//
+				// i.putExtra("table", tableName);
+				// startActivity(i);
 
 			}
 		});

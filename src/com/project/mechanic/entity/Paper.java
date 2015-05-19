@@ -8,6 +8,8 @@ public class Paper {
 	int Seen;
 	String ServerDate;
 	int Submit;
+	int UserId;
+	String Date;
 
 	public int getId() {
 		return Id;
@@ -57,8 +59,24 @@ public class Paper {
 		Submit = submit;
 	}
 
+	public int getUserId() {
+		return UserId;
+	}
+
+	public void setUserId(int userId) {
+		UserId = userId;
+	}
+
+	public String getDate() {
+		return Date;
+	}
+
+	public void setDate(String date) {
+		Date = date;
+	}
+
 	public Paper(int id, String title, String context, int seen,
-			String serversate, int submit) {
+			String serversate, int submit, int userId, String date) {
 		super();
 		Id = id;
 		Title = title;
@@ -66,6 +84,8 @@ public class Paper {
 		Seen = seen;
 		ServerDate = serversate;
 		Submit = submit;
+		UserId = userId;
+		Date = date;
 	}
 
 }

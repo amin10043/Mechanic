@@ -66,6 +66,7 @@ public class DataBaseAdapter {
 	private String TablePaper = "Paper";
 	private String TablePaperType = "PaperType";
 	private String TableProvince = "Province";
+	private String TableSettings = "Settings";
 	private String TableTicket = "Ticket";
 	private String TableTicketType = "TicketType";
 	private String TableUsers = "Users";
@@ -120,9 +121,10 @@ public class DataBaseAdapter {
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
 	private String[] Paper = { "ID", "Title", "Context", "Seen", "ServerDate",
-			"Submit" };
+			"Submit", "UserId", "Date" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name", "Count" };
+	private String[] Settings = { "Id", "ServerDate", "IMEI" };
 
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
@@ -1150,7 +1152,7 @@ public class DataBaseAdapter {
 	private Paper CursorToPaper(Cursor cursor) {
 		Paper tempPaper = new Paper(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getInt(3), cursor.getString(4),
-				cursor.getInt(5));
+				cursor.getInt(5), cursor.getInt(6), cursor.getString(7));
 		return tempPaper;
 
 	}
@@ -1295,7 +1297,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			tempObject = new Paper(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getInt(3), cursor.getString(4),
-					cursor.getInt(5));
+					cursor.getInt(5), cursor.getInt(6), cursor.getString(7));
 			result.add(tempObject);
 		}
 
@@ -2439,8 +2441,8 @@ public class DataBaseAdapter {
 		Cursor cu;
 		if (field.equals("Name")) {
 
-			cu = mDb.rawQuery("select * from " + tableName + "   where "
-					+ field + " Like '%" + word + "%' group by Name", null);
+			cu = mDb.rawQuery("select * from  " + tableName + " where " + field
+					+ " Like '%" + word + "%' group by Name", null);
 		} else {
 			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
 					+ " Like '%" + word + "%'", null);
