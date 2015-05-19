@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:circle="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.project.mechanic.view.CircleImageView
+        android:id="@+id/instagram"
+        circle:name="@string/instagram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/i1" />
+
+    <com.project.mechanic.view.CircleImageView
+        android:id="@+id/site"
+        circle:name="@string/site"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/i2" />
+
+    <com.project.mechanic.view.CircleImageView
+        android:id="@+id/google_plus"
+        circle:name="@string/google_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/i3" />
+
+    <com.project.mechanic.view.CircleImageView
+        android:id="@+id/facebook"
+        circle:name="@string/facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/i4" />
+
+    <com.project.mechanic.view.CircleImageView
+        android:id="@+id/twitter"
+        circle:name="@string/twitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/i5" />
+
+    <com.project.mechanic.view.CircleImageView
+        android:id="@+id/linkedin"
+        circle:name="@string/linkedin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/i6" />
+
+</merge>

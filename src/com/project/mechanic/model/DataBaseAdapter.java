@@ -86,7 +86,7 @@ public class DataBaseAdapter {
 
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] CommentInObject = { "Id", "Desk", "ObjectId", "UserId",
-			"Date", "CommentId", "Seen" };
+			"Date", "CommentId", "NumofLike", "NumofDisLike ", "Seen" };
 	private String[] CommentInFroum = { "ID", "Desk", "FroumId", "UserId",
 
 	"Date", "CommentId", "NumOfDislike", "NumOfLike", "Seen" };
@@ -289,16 +289,16 @@ public class DataBaseAdapter {
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
-	public void UpdateUserToDb(int id,String email, String phonenumber,
-		 String faxnumber, String address) {
+	public void UpdateUserToDb(int id, String email, String phonenumber,
+			String faxnumber, String address) {
 
 		ContentValues uc = new ContentValues();
 		// uc.put("Name", name);
-		 uc.put("Email", email);
+		uc.put("Email", email);
 		// uc.put("Password", password);
 		uc.put("Phonenumber", phonenumber);
 
-	//	uc.put("Mobailenumber", mobailenumber);
+		// uc.put("Mobailenumber", mobailenumber);
 		uc.put("Faxnumber", faxnumber);
 		uc.put("Address", address);
 
@@ -359,6 +359,7 @@ public class DataBaseAdapter {
 		uc.put("PaperId", PaperId);
 		uc.put("CommentId", CommentId);
 		uc.put("Date", Date);
+		uc.put("Seen", 1);
 
 		long res = mDb.insert(TableLikeInObject, null, uc);
 		long res2 = res;
@@ -374,6 +375,7 @@ public class DataBaseAdapter {
 			uc.put("FroumId", FroumId);
 			uc.put("CommentId", CommentId);
 			uc.put("Date", Date);
+			uc.put("Seen", 1);
 
 			long res = mDb.insert(TableLikeInFroum, null, uc);
 			long res2 = res;
@@ -445,6 +447,8 @@ public class DataBaseAdapter {
 		cv.put("CommentId", commentid);
 		cv.put("NumOfDislike", numofDisLike);
 		cv.put("NumOfLike", numoflike);
+		cv.put("Seen", 1);
+
 		mDb.insert(TableCommentInFroum, null, cv);
 	}
 
@@ -469,16 +473,20 @@ public class DataBaseAdapter {
 		cv.put("ObjectID", Objectid);
 		cv.put("Date", datetime);
 		cv.put("CommentId", commentid);
+		cv.put("Seen", 1);
+
 		mDb.insert(TableCommentInObject, null, cv);
 	}
 
 	public void insertFroumtitletoDb(String Title, String description,
-			int userId) {
+			int userId, String date) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Title", Title);
 		cv.put("Description", description);
 		cv.put("UserId", userId);
+		cv.put("Date", date);
+		cv.put("Seen", 1);
 
 		mDb.insert(TableFroum, null, cv);
 
@@ -970,6 +978,59 @@ public class DataBaseAdapter {
 
 	}
 
+	// //////////////////////////////////////////////////////////////
+	public ArrayList<CommentInFroum> getseencomment() {
+
+		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
+		CommentInFroum item = null;
+		Cursor mCur = mDb.query(TableCommentInFroum, CommentInFroum, "seen=1",
+				null, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInFroum(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	// ////////////////////////////////////////////////////////////////////////////////////////////////
+	public ArrayList<CommentInFroum> getUnseencomment() {
+
+		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
+		CommentInFroum item = null;
+		Cursor mCur = mDb.query(TableCommentInFroum, CommentInFroum, "seen=0",
+				null, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInFroum(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	// //////////////////////////////////////////////////////////////////////////////////
+
+	public ArrayList<Object> getUnseenlike() {
+
+		ArrayList<Object> result = new ArrayList<Object>();
+		Object item = null;
+		Cursor mCur = mDb.query(TableObject, Object, "seen=0", null, null,
+				null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToObject(mCur);
+			result.add(item);
+		}
+
+		return result;
+	}
+
+	// /////////////////////////////////////////////////////////////////////////////////////
+
 	private ListItem CursorToListItem(Cursor mCur) {
 
 		ListItem item = new ListItem(mCur.getInt(0), mCur.getString(1),
@@ -1105,7 +1166,8 @@ public class DataBaseAdapter {
 	private CommentInObject CursorToCommentInObject(Cursor cursor) {
 		CommentInObject tempNews = new CommentInObject(cursor.getInt(0),
 				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
-				cursor.getString(4), cursor.getInt(5), cursor.getInt(6));
+				cursor.getString(4), cursor.getInt(5), cursor.getInt(6),
+				cursor.getInt(7), cursor.getInt(8));
 		return tempNews;
 
 	}
@@ -1267,10 +1329,10 @@ public class DataBaseAdapter {
 
 	}
 
-	public Integer LikeInObject_count() {
+	public Integer LikeInObject_count(int ObjectId) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableLikeInObject, null);
+				+ TableLikeInObject + " WHERE PaperId= " + ObjectId, null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -1300,10 +1362,11 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	public Integer CommentInObject_count() {
+	public Integer CommentInObject_count(int ObjectID) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableCommentInObject, null);
+				+ TableCommentInObject + " WHERE ObjectId= " + ObjectID
+				+ " AND CommentId = 0 ", null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -1461,11 +1524,15 @@ public class DataBaseAdapter {
 	 * result.add(CursorToComment(cursor)); } return result; }
 	 */
 
-	public ArrayList<CommentInObject> getAllCommentInObjectById(int ObjectID) {
+	public ArrayList<CommentInObject> getAllCommentInObjectById(int ObjectID,
+			int CommentID) {
 		ArrayList<CommentInObject> result = new ArrayList<CommentInObject>();
-		Cursor cursor = mDb.query(TableCommentInObject, CommentInObject,
-				" ObjectId=?", new String[] { String.valueOf(ObjectID) }, null,
-				null, null);
+		Cursor cursor = mDb.query(
+				TableCommentInObject,
+				CommentInObject,
+				" ObjectId=? AND CommentId=?",
+				new String[] { String.valueOf(ObjectID),
+						String.valueOf(CommentID) }, null, null, null);
 		CommentInObject tempComment;
 		while (cursor.moveToNext()) {
 			result.add(CursorToCommentInObject(cursor));
@@ -1677,8 +1744,7 @@ public class DataBaseAdapter {
 		Users result = null;
 
 		Cursor mCur = mDb.query(TableUsers, Users, "Mobailenumber=?",
-				new String[] { mobailenumber}, null, null,
-				null);
+				new String[] { mobailenumber }, null, null, null);
 		if (mCur.moveToNext()) {
 			result = CursorToUsers(mCur);
 		}
@@ -1945,8 +2011,8 @@ public class DataBaseAdapter {
 		CommentInFroum tempComment = new CommentInFroum(cursor.getInt(0),
 				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
 
-				cursor.getString(4), cursor.getInt(5), cursor.getString(6),
-				cursor.getString(7), cursor.getInt(8));
+				cursor.getString(4), cursor.getInt(5), cursor.getInt(6),
+				cursor.getInt(7), cursor.getInt(8));
 
 		return tempComment;
 
@@ -2283,10 +2349,6 @@ public class DataBaseAdapter {
 				String.valueOf(isLike) };
 		mDb.delete(TableLikeInComment,
 				"CommentId=? and UserId =? and IsLike =?", t);
-
-		// mDb.rawQuery("delete from " + TableLikeInComment
-		// + " where Commentid = " + CommentID + " and UserId = " + userID
-		// + " and isLike = 1 ", t);
 	}
 
 	public int NumOfNewLikeInObject() {
@@ -2318,6 +2380,19 @@ public class DataBaseAdapter {
 		}
 		return res;
 	}
+
+	// ////////////////////////////////////////////////////////
+	public int NumOfNewLikeInObject1() {
+		int res = 0;
+		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TableObject
+				+ " WHERE Seen=0", null);
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	// //////////////////////////////////////////////////////////
 
 	public int NumOfNewCmtInObject() {
 		int res = 0;
@@ -2364,10 +2439,10 @@ public class DataBaseAdapter {
 		Cursor cu;
 		if (field.equals("Name")) {
 
-			cu = mDb.rawQuery("select * from " + tableName + " where " + field
-					+ " Like '%" + word + "%' group by Name", null);
+			cu = mDb.rawQuery("select * from " + tableName + "   where "
+					+ field + " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2380,10 +2455,10 @@ public class DataBaseAdapter {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from " + tableName + " where " + field
+			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2392,19 +2467,123 @@ public class DataBaseAdapter {
 		return s;
 	}
 
-	public Integer count_search(String word, string field) {
+	public Integer count_search(String tableName, String word, string field) {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from Mechanical where " + field
+			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
 		int s = cu.getCount();
 		return s;
 	}
+
+	public void deleteLikeFromFroum(int userID, int FroumId) {
+		String[] t = { String.valueOf(userID), String.valueOf(FroumId) };
+		mDb.delete(TableLikeInFroum, "UserId=? and FroumId=?", t);
+	}
+
+	public Integer getCountOfReplyInFroum(int froumID, int commentID) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInFroum + " WHERE FroumId=" + froumID
+				+ " AND CommentID= " + commentID, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	// //////////////////////////////////////////////////////////////
+	public void updatecmseentodb(int seen) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("Seen", seen);
+		mDb.update(TableCommentInFroum, uc, null, null);
+
+	}
+
+	public void updatelikeseentodb(int seen) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("Seen", seen);
+		mDb.update(TableObject, uc, null, null);
+
+	}
+
+	public boolean isUserLikeIntroductionPage(int userId, int ObjectId) {
+
+		Cursor curs = mDb.rawQuery(
+				"SELECT COUNT(*) AS NUM FROM " + TableLikeInObject
+						+ " WHERE UserId= " + String.valueOf(userId)
+						+ " AND PaperId= " + String.valueOf(ObjectId), null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
+	public void deleteLikeIntroduction(int userID, int ObjectId) {
+		String[] t = { String.valueOf(userID), String.valueOf(ObjectId) };
+		mDb.delete(TableLikeInObject, "UserId =? AND PaperId=?", t);
+	}
+
+	public ArrayList<CommentInObject> getReplyCommentIntroduction(int ObjectId,
+			int Commentid) {
+
+		ArrayList<CommentInObject> result = new ArrayList<CommentInObject>();
+		CommentInObject item = null;
+
+		/*
+		 * Cursor tCur = mDb.rawQuery("Select FroumId From " +
+		 * TableCommentInFroum + " Where FroumId=" +String.valueOf(Froumid),null
+		 * );
+		 */
+
+		Cursor mCur = mDb.query(
+				TableCommentInObject,
+				CommentInObject,
+				"ObjectId=? AND CommentId=?",
+				new String[] { String.valueOf(ObjectId),
+						String.valueOf(Commentid) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInObject(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	public Integer getCountOfReplyInObject(int ObjectID, int commentID) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInObject + " WHERE ObjectId=" + ObjectID
+				+ " AND CommentID= " + commentID, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	// public void insertCommentIntroduction(int id, String numofLike, int
+	// UserId) {
+	// if (!isUserLikedComment(UserId, id, 1)) {
+	// ContentValues uc = new ContentValues();
+	// uc.put("NumOfLike", numofLike);
+	// mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+	// }
+	// }
 
 }

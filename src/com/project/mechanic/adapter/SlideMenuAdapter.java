@@ -21,7 +21,7 @@ public class SlideMenuAdapter extends BaseAdapter {
 	String[] slideitem = { "صفحه اصلی", "کاربری", "صفحه شخصی", "پسند شده ها",
 			"درباره ما", "تماس با ما" };
 	int[] icon = { R.drawable.ic_home, R.drawable.ic_pro,
-			R.drawable.ic_personal, R.drawable.ic_launcher,
+			R.drawable.ic_personal, R.drawable.ic_bookmark,
 			R.drawable.ic_about_us, R.drawable.phone };
 
 	@Override

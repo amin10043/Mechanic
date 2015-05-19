@@ -3,28 +3,39 @@ package com.project.mechanic.fragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ImageButton;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class DialogcmtInobject extends Dialog {
 
 	Context context;
-	Fragment f;
-	private Button btncmt;
+	IntroductionFragment f;
+	private ImageButton btncmt;
 	private EditText Cmttxt;
 	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
+	Utility util;
+	Users CurrentUser;
+	PersianDate persiandate;
+	String currentDate;
+	int objectID, commentId;
 
-	public DialogcmtInobject(Fragment f, Context context, int resourceId) {
+	public DialogcmtInobject(IntroductionFragment f, Context context,
+			int resourceId, int objectID, int commentId) {
 		super(context);
 		this.context = context;
 		this.f = f;
+		dbadapter = new DataBaseAdapter(context);
+		util = new Utility(context);
+		persiandate = new PersianDate();
+		this.objectID = objectID;
+		this.commentId = commentId;
 
 	}
 
@@ -33,21 +44,20 @@ public class DialogcmtInobject extends Dialog {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog_addcomment);
-		btncmt = (Button) findViewById(R.id.btnComment);
+		btncmt = (ImageButton) findViewById(R.id.btnComment);
 		Cmttxt = (EditText) findViewById(R.id.txtCmt);
+		currentDate = persiandate.todayShamsi();
 		btncmt.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				dbadapter = new DataBaseAdapter(context);
 				dbadapter.open();
-				int id = Integer.valueOf(f.getArguments().getString("Id"));
-				Toast.makeText(context, id + "", Toast.LENGTH_SHORT).show();
+				CurrentUser = util.getCurrentUser();
 				dbadapter.insertCommentObjecttoDb(Cmttxt.getText().toString(),
-						1, 1, "", 1);
+						objectID, CurrentUser.getId(), currentDate, commentId);
 
 				dbadapter.close();
-				((IntroductionFragment) f).updateView3();
+				f.updateList();
 				DialogcmtInobject.this.dismiss();
 
 			}

@@ -6,24 +6,25 @@ import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.ExpandableCommentFroum;
-import com.project.mechanic.adapter.FroumListAdapter;
-import com.project.mechanic.adapter.FroumReplyetocmAdapter;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
@@ -37,52 +38,31 @@ public class FroumFragment extends Fragment {
 	DataBaseAdapter adapter;
 	ExpandableCommentFroum exadapter;
 
-	ExpandableListView commentListview;
-	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike;
+	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike,
+			nametxt;
 	LinearLayout addComment, likeTopic;
 	ImageButton sharebtn;
+	ImageView profileImg;
 	int froumid;
 
 	Froum topics;
 
 	DialogcmtInfroum dialog;
 	ArrayList<CommentInFroum> commentGroup, ReplyGroup;
+	String currentDate;
 
-	List<String> groupList;
-	List<String> childList;
 	Map<CommentInFroum, List<CommentInFroum>> mapCollection;
 	ExpandableListView exlistview;
 
 	View header;
+	Users CurrentUser;
+	int IDcurrentUser;
+	PersianDate date;
+	Utility util;
+	int id;
+	Users user;
 
 	// end defined by masoud
-
-	private ImageButton CmtLike, CmtDisLike;
-	private Button btncmt;
-
-	//
-	TextView txttitleDes, NumofLike, NumofComment, NumofCmtLike,
-			NumofCmtDisLike, datetxt;
-
-	private int frmid;
-	private LinearLayout btnAddcmt, Like;
-
-	FroumListAdapter ListAdapter;
-
-	ArrayList<CommentInFroum> mylist;
-	// ArrayList<CommentInFroum> ReplyeList;
-	ImageButton Replytocm;
-	FroumListAdapter froumListadapter;
-	FroumReplyetocmAdapter ReplyAdapter;
-	int id;
-	int id2;
-	int Commentid;
-
-	ListView lstReply;
-	Froum x;
-	String dateString;
-	Users user;
-	Utility util;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -97,6 +77,9 @@ public class FroumFragment extends Fragment {
 
 		user = new Users();
 
+		date = new PersianDate();
+		currentDate = date.todayShamsi();
+
 		header = getActivity().getLayoutInflater().inflate(
 				R.layout.header_expandable, null);
 
@@ -104,15 +87,17 @@ public class FroumFragment extends Fragment {
 
 		titletxt = (TextView) header.findViewById(R.id.title_topic);
 		descriptiontxt = (TextView) header.findViewById(R.id.description_topic);
-		dateTopic = (TextView) header.findViewById(R.id.date_topic);
+		dateTopic = (TextView) header.findViewById(R.id.date_cc);
 		countComment = (TextView) header
 				.findViewById(R.id.numberOfCommentTopic);
 		countLike = (TextView) header.findViewById(R.id.txtNumofLike_CmtFroum);
+		nametxt = (TextView) header.findViewById(R.id.name_cc);
 
 		addComment = (LinearLayout) header.findViewById(R.id.addCommentToTopic);
-		likeTopic = (LinearLayout) view.findViewById(R.id.LikeTopicLinear);
+		likeTopic = (LinearLayout) header.findViewById(R.id.LikeTopicLinear);
 
 		sharebtn = (ImageButton) header.findViewById(R.id.sharefroumicon);
+		profileImg = (ImageView) header.findViewById(R.id.iconfroumtitle);
 		exlistview = (ExpandableListView) view.findViewById(R.id.commentlist);
 
 		// end find view
@@ -121,12 +106,46 @@ public class FroumFragment extends Fragment {
 			froumid = Integer.valueOf(getArguments().getString("Id"));
 
 		adapter.open();
+		CurrentUser = util.getCurrentUser();
+		if (CurrentUser == null) {
+			Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+					Toast.LENGTH_SHORT).show();
+
+		}
+
+		else
+			IDcurrentUser = CurrentUser.getId();
 
 		topics = adapter.getFroumItembyid(froumid);
+		Users u = adapter.getUserbyid(topics.getUserId());
+
+		nametxt.setText(u.getName());
+
+		if (u.getImage() == null) {
+			profileImg.setImageResource(R.drawable.no_img_profile);
+		} else {
+			byte[] bytepic = u.getImage();
+
+			Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0,
+					bytepic.length);
+			LinearLayout rl = (LinearLayout) header
+					.findViewById(R.id.profileLinearcommenterinContinue);
+
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+					rl.getLayoutParams());
+
+			lp.width = util.getScreenwidth() / 7;
+			lp.height = util.getScreenwidth() / 7;
+			lp.setMargins(5, 5, 5, 5);
+			profileImg.setImageBitmap(bmp);
+			profileImg.setLayoutParams(lp);
+		}
+
 		titletxt.setText(topics.getTitle());
 		descriptiontxt.setText(topics.getDescription());
 		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
-		countLike.setText(adapter.LikeInFroum_count(id).toString());
+		countLike.setText(adapter.LikeInFroum_count(froumid).toString());
+		dateTopic.setText(topics.getDate());
 
 		adapter.close();
 
@@ -134,11 +153,18 @@ public class FroumFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				dialog = new DialogcmtInfroum(FroumFragment.this, 0,
-						getActivity(), froumid, R.layout.dialog_addcomment);
-				dialog.show();
-				exadapter.notifyDataSetChanged();
 
+				if (CurrentUser == null) {
+					Toast.makeText(getActivity(),
+							"برای درج کامنت ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+
+				} else {
+					dialog = new DialogcmtInfroum(FroumFragment.this, 0,
+							getActivity(), froumid, R.layout.dialog_addcomment);
+					dialog.show();
+					exadapter.notifyDataSetChanged();
+				}
 			}
 		});
 		adapter.open();
@@ -162,140 +188,78 @@ public class FroumFragment extends Fragment {
 
 		exadapter.notifyDataSetChanged();
 		exlistview.setAdapter(exadapter);
+		adapter.open();
 
-		// nnnnnn
+		if (CurrentUser == null
+				|| !adapter.isUserLikedFroum(CurrentUser.getId(), froumid))
+			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+		else
 
-		// datetxt = (TextView) view.findViewById(R.id.datefroum);
+			likeTopic.setBackgroundResource(R.drawable.like_froum);
 
-		// btnAddcmt = (LinearLayout) view
-		// .findViewById(R.id.imgBtnAddcmt_CmtFroum);
-		// // Like = (LinearLayout)
-		// view.findViewById(R.id.imgbtnLike_Cmt_Froum);
-		// CmtLike = (ImageButton)
-		// view.findViewById(R.id.imgbtnLike_RawCmtFroum);
-		// CmtDisLike = (ImageButton) view
-		// .findViewById(R.id.imgbtnDisLike_RawCmtFroum);
-		//
-		// btncmt = (Button) view.findViewById(R.id.btnComment);
-		// titletxt = (TextView) view.findViewById(R.id.rawTitletxt);
-		// txttitleDes = (TextView) view.findViewById(R.id.rawtxtDescription);
-		// NumofComment = (TextView)
-		// view.findViewById(R.id.txtNumofCmt_CmtFroum);
-		// NumofLike = (TextView) view.findViewById(R.id.txtNumofLike_CmtFroum);
-		// NumofCmtLike = (TextView) view
-		// .findViewById(R.id.txtNumofLike_RawCmtFroum);
-		// NumofCmtDisLike = (TextView) view
-		// .findViewById(R.id.txtNumofDislike_RawCmtFroum);
-		//
+		adapter.close();
 
-		// NumofComment.setText(adapter.CommentInFroum_count(id).toString());
-		//
-		// NumofLike.setText(adapter.LikeInFroum_count(id).toString());
-		// mylist = adapter.getCommentInFroumbyPaperid(id, 0);
-		// // ReplyeList = adapter.getReplyCommentbyCommentID(id, );
-		// Froum x = adapter.getFroumItembyid(id);
-		// titletxt.setText(x.getTitle());
-		// txttitleDes.setText(x.getDescription());
+		likeTopic.setOnClickListener(new View.OnClickListener() {
 
-		// Commentid =
-		// Integer.valueOf(getArguments().getString("CommentID"));
+			@Override
+			public void onClick(View arg0) {
+				adapter.open();
 
-		// NumofComment.setText(adapter.CommentInFroum_count(id).toString());
-		//
-		// NumofLike.setText(adapter.LikeInFroum_count(id).toString());
-		// mylist = adapter.getCommentInFroumbyPaperid(id, 0);
+				if (CurrentUser == null) {
+					adapter.open();
 
-		/*
-		 * CommentInFroum d = null; NumofCmtLike.setText(d.getNumofLike());
-		 * NumofCmtDisLike.setText(d.getNumofDisLike());
-		 */
+					Toast.makeText(getActivity(),
+							"برای درج لایک ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+					adapter.close();
+				} else {
+					if (adapter.isUserLikedFroum(IDcurrentUser, froumid)) {
+						adapter.open();
+						likeTopic
+								.setBackgroundResource(R.drawable.like_froum_off);
+						int c = adapter.LikeInFroum_count(froumid) - 1;
+						countLike.setText(String.valueOf(c));
+						adapter.deleteLikeFromFroum(IDcurrentUser, froumid);
+						adapter.close();
+					} else {
+						adapter.open();
+						likeTopic.setBackgroundResource(R.drawable.like_froum);
+						adapter.insertLikeInFroumToDb(IDcurrentUser, froumid,
+								currentDate, 0);
 
-		// x = adapter.getFroumItembyid(id);
-		// titletxt.setText(x.getTitle());
-		// txttitleDes.setText(x.getDescription());
-		// NumofComment.setText(adapter.CommentInFroum_count(id).toString());
-		//
-		// NumofLike.setText(adapter.LikeInFroum_count(id).toString());
+						countLike.setText(adapter.LikeInFroum_count(froumid)
+								.toString());
 
-		/*
-		 * CommentInFroum d = null; NumofCmtLike.setText(d.getNumofLike());
-		 * NumofCmtDisLike.setText(d.getNumofDisLike());
-		 */
+						adapter.close();
 
-		// final Froum x = adapter.getFroumItembyid(id);
-		// ReplyeList = adapter.getReplyCommentbyCommentID(id, 1);
-		// // Froum x = adapter.getFroumItembyid(id);
-		// titletxt.setText(x.getTitle());
-		// txttitleDes.setText(x.getDescription());
-		// adapter.close();
-		// }
+					}
 
-		// Commentid = Integer.valueOf(getArguments().getString("CommentID"));
+				}
+				adapter.close();
 
-		// commentListview = (ExpandableListView) view
-		// .findViewById(R.id.commentlist);
-		//
-		// if (commentListview != null) {
-		// ListAdapter = new FroumListAdapter(getActivity(),
-		// R.layout.raw_froumcmt, mylist, FroumFragment.this);
-		// commentListview.setAdapter(ListAdapter);
-		// // resizeListView(commentListview);
-		// }
+			}
 
-		// Like.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// user = util.getCurrentUser();
-		// int userid = user.getId();
-		// adapter.open();
-		// adapter.insertLikeInFroumToDb(userid, 0, "", 1);
-		// NumofLike.setText(adapter.LikeInFroum_count(id).toString());
-		// adapter.close();
-		//
-		// }
-		// });
-		// sharebtn.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// Intent sharingIntent = new Intent(
-		// android.content.Intent.ACTION_SEND);
-		// sharingIntent.setType("text/plain");
-		// // String shareBody = x.getDescription();
-		// sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-		// x.getTitle());
-		// sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-		// "froumfragment");
-		// startActivity(Intent.createChooser(sharingIntent,
-		// "اشتراک از طریق"));
-		// }
-		// });
+		});
 
-		// btnAddcmt.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// // TODO Auto-generated method stub
-		//
-		// dialog = new DialogcmtInfroum(FroumFragment.this, 0,
-		// getActivity(), id, R.layout.dialog_addcomment);
-		// dialog.show();
-		//
-		// }
-		// });
+		sharebtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent sharingIntent = new Intent(
+						android.content.Intent.ACTION_SEND);
+				sharingIntent.setType("text/plain");
+				// String shareBody = x.getDescription();
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+						topics.getTitle());
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+						topics.getDescription());
+				startActivity(Intent.createChooser(sharingIntent,
+						"اشتراک از طریق"));
+			}
+		});
+
 		return view;
 	}
-
-	/*
-	 * @Override public void onResume() { // TODO Auto-generated method stub
-	 * super.onResume(); froumListadapter = new FroumListAdapter(getActivity(),
-	 * R.layout.raw_froumcmt, mylist, FroumFragment.this);
-	 * froumListadapter.notifyDataSetChanged();
-	 * lst.setAdapter(froumListadapter);
-	 * 
-	 * }
-	 */
 
 	public int getFroumId() {
 		return id;
@@ -344,62 +308,5 @@ public class FroumFragment extends Fragment {
 		exlistview.setAdapter(exadapter);
 
 	}
-
-	// public void updateView2() {
-	// adapter.open();
-	// mylist = adapter.getCommentInFroumbyPaperid(id, 0);
-	// NumofComment.setText(adapter.CommentInFroum_count(id).toString());
-	// adapter.close();
-	// froumListadapter = new FroumListAdapter(getActivity(),
-	// R.layout.raw_froumcmt, mylist, FroumFragment.this);
-	// commentListview.setAdapter(froumListadapter);
-	// froumListadapter.notifyDataSetChanged();
-	//
-	// }
-
-	//
-	// public void updateView3() {
-	//
-	// froumListadapter = new FroumListAdapter(getActivity(),
-	// R.layout.raw_froumcmt, mylist, FroumFragment.this);
-	// froumListadapter.notifyDataSetChanged();
-	// lst.setAdapter(froumListadapter);
-	//
-	// }
-
-	// private void resizeListView(ListView listView) {
-	// ListAdapter listAdapter = listView.getAdapter();
-	// if (listAdapter == null) {
-	// // pre-condition
-	// return;
-	// }
-	//
-	// int totalHeight = listView.getPaddingTop()
-	// + listView.getPaddingBottom();
-	// for (int i = 0; i < listAdapter.getCount(); i++) {
-	// View listItem = listAdapter.getView(i, null, listView);
-	//
-	// if (listItem instanceof ViewGroup) {
-	// listItem.setLayoutParams(new LayoutParams(
-	// LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-	// }
-	// listItem.measure(0, 0);
-	// totalHeight += listItem.getMeasuredHeight();
-	// }
-	//
-	// ViewGroup.LayoutParams params = listView.getLayoutParams();
-	// params.height = totalHeight
-	// + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-	// listView.setLayoutParams(params);
-	// }
-	/*
-	 * public void refresh(){ adapter.open(); int
-	 * count=adapter.Tablecommentcount(); String[] cmt=new String[count];
-	 * for(int i=0;i<count;i++){ cmt[i]=adapter.DisplayComment(i,3); }
-	 * adapter.close(); // list1.setAdapter(new
-	 * ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,cmt));
-	 * 
-	 * }
-	 */
 
 }

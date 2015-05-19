@@ -10,10 +10,20 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
         android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/datetopicinFroum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginRight="20dp"
+            android:gravity="left"
+            android:text="Date"
+            android:textColor="@color/transparent" />
 
         <TextView
             android:id="@+id/rowtitlepaper"
@@ -44,32 +54,33 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/topicTitleFroum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp" >
 
         <LinearLayout
             android:id="@+id/l1cm"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:background="@drawable/ic_cmt_froum_display"
             android:gravity="center" >
 
             <TextView
+                android:id="@+id/countCommentInEveryTopic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="123"
-                android:textColor="@color/transparent"
-                android:textSize="8dp" />
+                android:textColor="@color/transparent" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:layout_toRightOf="@+id/l1cm"
@@ -77,22 +88,15 @@
             android:gravity="center" >
 
             <TextView
+                android:id="@+id/countLikeInFroumTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="456"
-                android:textColor="@color/transparent"
-                android:textSize="8dp" />
+                android:textColor="@color/transparent" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Date"
-            android:textColor="@color/transparent" />
 
         <TextView
             android:id="@+id/authorname"
@@ -111,7 +115,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_gravity="right"
-            android:background="@drawable/profile_account" />
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY" />
     </RelativeLayout>
 
 </LinearLayout>

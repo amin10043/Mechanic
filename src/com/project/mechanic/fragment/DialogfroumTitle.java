@@ -21,9 +21,11 @@ public class DialogfroumTitle extends Dialog {
 	private EditText titleDestxt;
 	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
+	Utility utility;
 	int resourceId;
 	Context context;
 	Fragment fragment;
+	PersianDate date;
 
 	public DialogfroumTitle(Context context, int resourceId, Fragment fragment) {
 		super(context);
@@ -31,6 +33,9 @@ public class DialogfroumTitle extends Dialog {
 		this.resourceId = resourceId;
 		this.context = context;
 		this.fragment = fragment;
+		dbadapter = new DataBaseAdapter(context);
+		utility = new Utility(context);
+
 	}
 
 	@Override
@@ -49,14 +54,15 @@ public class DialogfroumTitle extends Dialog {
 
 			@Override
 			public void onClick(View arg0) {
-				Utility utility = new Utility(context);
 				Users user = new Users();
 				user = utility.getCurrentUser();
 				int userid = user.getId();
-				dbadapter = new DataBaseAdapter(context);
+
+				PersianDate date = new PersianDate();
+				String currentDate = date.todayShamsi();
 				dbadapter.open();
 				dbadapter.insertFroumtitletoDb(titletxt.getText().toString(),
-						titleDestxt.getText().toString(), userid);
+						titleDestxt.getText().toString(), userid, currentDate);
 				dbadapter.close();
 				((FroumtitleFragment) fragment).updateView();
 				DialogfroumTitle.this.dismiss();

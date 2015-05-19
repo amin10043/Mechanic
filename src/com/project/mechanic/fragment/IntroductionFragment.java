@@ -1,9 +1,11 @@
 package com.project.mechanic.fragment;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -16,19 +18,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.adapter.IntroductionListAdapter;
+import com.project.mechanic.adapter.ExpandIntroduction;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Users;
@@ -37,118 +37,149 @@ import com.project.mechanic.utility.Utility;
 
 public class IntroductionFragment extends Fragment {
 
-	Context context;
+	Utility ut;
+	Users CurrentUser;
+	PersianDate datePersian;
+	String currentDate;
+	View header;
+	ExpandableListView exListView;
+	ExpandIntroduction exadapter;
+	int ObjectID;
+
+	ArrayList<CommentInObject> commentGroup, ReplyGroup;
+	Map<CommentInObject, List<CommentInObject>> mapCollection;
+
 	private ImageView peykan6, peykan5;
 	public RelativeLayout link1, link2;
-	public ImageButton btnCmt;
 
 	public DialogcmtInobject dialog;
-	DialogcmtInfroum dialog2;
-	public int id = 1;
 	Fragment fragment;
-	public ImageButton like;
+
+	public LinearLayout AddLike;
+	public LinearLayout AddComment;
+
 	public ImageButton Comment;
-	ImageView profileImage;
 
 	LinearLayout.LayoutParams profileParams, headerParams;
 
 	ArrayList<CommentInObject> mylist;
 	DataBaseAdapter adapter;
-	ListView lst;
 	LinearLayout headImageLinear, profileLinear;
 
-	TextView txtFax;
-	TextView txtAddress;
-	TextView txtPhone;
-	TextView txtCellphone;
-	TextView txtEmail;
-	TextView txtDesc;
-	TextView txtNumofLike;
-	TextView txtNumofComment;
-	ImageView headerImage;
-	ImageView advertise2;
-	ImageButton Facebook;
-	ImageButton Instagram;
-	ImageButton LinkedIn;
-	ImageButton Google;
-	ImageButton Site;
-	ImageButton Twitter;
-	ImageButton Pdf1;
-	ImageButton Pdf2;
-	ImageButton Pdf3;
-	ImageButton Pdf4;
+	TextView txtFax, txtAddress, txtPhone, txtCellphone, txtEmail, txtDesc,
+			CountLikeIntroduction, CountCommentIntroduction;
+
+	ImageView headerImage, advertise2, profileImage;
+	ImageButton Facebook, Instagram, LinkedIn, Google, Site, Twitter, Pdf1,
+			Pdf2, Pdf3, Pdf4, phone, cphone, map, email, EditPage, CreatePage;
 	Object object;
-	ImageButton phone;
-	ImageButton cphone;
-	ImageButton map;
-	ImageButton email;
-	ImageButton EditPage;
-	ImageButton CreatePage;
 	byte[] headerbyte, profilebyte, footerbyte;
 
-	Utility ut;
 	SharedPreferences sendDataID;
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+
 		View view = inflater.inflate(R.layout.fragment_introduction, null);
-		ut = new Utility(getActivity());
 		((MainActivity) getActivity()).setActivityTitle(R.string.brand);
+
 		adapter = new DataBaseAdapter(getActivity());
-		peykan6 = (ImageView) view.findViewById(R.id.imageButton6);
-		peykan5 = (ImageView) view.findViewById(R.id.imageButton7);
-		headerImage = (ImageView) view.findViewById(R.id.imgvadvertise_Object);
-		advertise2 = (ImageView) view.findViewById(R.id.imgvadvertise2_Object);
-		profileImage = (ImageView) view.findViewById(R.id.icon_pro);
+		ut = new Utility(getActivity());
+		datePersian = new PersianDate();
+		currentDate = datePersian.todayShamsi();
+		header = getActivity().getLayoutInflater().inflate(
+				R.layout.header_introduction, null);
+		CurrentUser = ut.getCurrentUser();
 
-		headImageLinear = (LinearLayout) view
+		// start find view
+
+		exListView = (ExpandableListView) view
+				.findViewById(R.id.ExpandIntroduction);
+		peykan6 = (ImageView) header.findViewById(R.id.imageButton6);
+		peykan5 = (ImageView) header.findViewById(R.id.imageButton7);
+		headerImage = (ImageView) header
+				.findViewById(R.id.imgvadvertise_Object);
+		advertise2 = (ImageView) header
+				.findViewById(R.id.imgvadvertise2_Object);
+		profileImage = (ImageView) header.findViewById(R.id.icon_pro);
+
+		headImageLinear = (LinearLayout) header
 				.findViewById(R.id.headerlinerpageintroduction);
-		link1 = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
-		link2 = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
+		link1 = (RelativeLayout) header.findViewById(R.id.Layoutlink1);
+		link2 = (RelativeLayout) header.findViewById(R.id.Layoutlink2);
 
-		txtFax = (TextView) view.findViewById(R.id.txtFax_Object);
-		txtAddress = (TextView) view.findViewById(R.id.txtAddress_Object);
-		txtPhone = (TextView) view.findViewById(R.id.txtPhone_Object);
-		txtCellphone = (TextView) view.findViewById(R.id.txtCellphone_Object);
-		txtDesc = (TextView) view.findViewById(R.id.txtDesc_Object);
-		txtEmail = (TextView) view.findViewById(R.id.txtEmail_Object);
-		txtNumofLike = (TextView) view.findViewById(R.id.txtNumofLike_Object);
-		txtNumofComment = (TextView) view
-				.findViewById(R.id.txtNumofComment_Object);
+		txtFax = (TextView) header.findViewById(R.id.txtFax_Object);
+		txtAddress = (TextView) header.findViewById(R.id.txtAddress_Object);
+		txtPhone = (TextView) header.findViewById(R.id.txtPhone_Object);
+		txtCellphone = (TextView) header.findViewById(R.id.txtCellphone_Object);
+		txtDesc = (TextView) header.findViewById(R.id.txtDesc_Object);
+		txtEmail = (TextView) header.findViewById(R.id.txtEmail_Object);
+		CountLikeIntroduction = (TextView) header
+				.findViewById(R.id.countLikeIntroduction);
+		CountCommentIntroduction = (TextView) header
+				.findViewById(R.id.CountCommentIntroduction);
 
-		like = (ImageButton) view.findViewById(R.id.ImgbtnLike_Object);
-		btnCmt = (ImageButton) view.findViewById(R.id.imgbtnCmt_introduction);
-		Facebook = (ImageButton) view.findViewById(R.id.nfacebook);
-		Instagram = (ImageButton) view.findViewById(R.id.ninstagram);
-		LinkedIn = (ImageButton) view.findViewById(R.id.nlinkedin);
-		Google = (ImageButton) view.findViewById(R.id.ngoogle);
-		Site = (ImageButton) view.findViewById(R.id.nsite);
-		Twitter = (ImageButton) view.findViewById(R.id.ntwtert);
+		AddLike = (LinearLayout) header
+				.findViewById(R.id.AddLikeIntroductionLinear);
+		AddComment = (LinearLayout) header
+				.findViewById(R.id.AddcommentIntroductionLinear);
 
-		phone = (ImageButton) view.findViewById(R.id.phonebtn);
-		cphone = (ImageButton) view.findViewById(R.id.cphonebtn);
-		map = (ImageButton) view.findViewById(R.id.mapbtn);
-		email = (ImageButton) view.findViewById(R.id.emailbtn);
+		Facebook = (ImageButton) header.findViewById(R.id.nfacebook);
+		Instagram = (ImageButton) header.findViewById(R.id.ninstagram);
+		LinkedIn = (ImageButton) header.findViewById(R.id.nlinkedin);
+		Google = (ImageButton) header.findViewById(R.id.ngoogle);
+		Site = (ImageButton) header.findViewById(R.id.nsite);
+		Twitter = (ImageButton) header.findViewById(R.id.ntwtert);
 
-		Pdf1 = (ImageButton) view.findViewById(R.id.btnPdf1_Object);
-		Pdf2 = (ImageButton) view.findViewById(R.id.btnPdf2_Object);
-		Pdf3 = (ImageButton) view.findViewById(R.id.btnPdf3_Object);
-		Pdf4 = (ImageButton) view.findViewById(R.id.btnPdf4_Object);
-		profileLinear = (LinearLayout) view
+		phone = (ImageButton) header.findViewById(R.id.phonebtn);
+		cphone = (ImageButton) header.findViewById(R.id.cphonebtn);
+		map = (ImageButton) header.findViewById(R.id.mapbtn);
+		email = (ImageButton) header.findViewById(R.id.emailbtn);
+
+		Pdf1 = (ImageButton) header.findViewById(R.id.btnPdf1_Object);
+		Pdf2 = (ImageButton) header.findViewById(R.id.btnPdf2_Object);
+		Pdf3 = (ImageButton) header.findViewById(R.id.btnPdf3_Object);
+		Pdf4 = (ImageButton) header.findViewById(R.id.btnPdf4_Object);
+		profileLinear = (LinearLayout) header
 				.findViewById(R.id.linear_id_profile_introduction_page);
-		EditPage = (ImageButton) view.findViewById(R.id.ImgbtnEdit);
-		CreatePage = (ImageButton) view.findViewById(R.id.ImgbtnCreate);
-
-		lst = (ListView) view.findViewById(R.id.listvCmt_Introduction);
-
-		if (getArguments() != null && getArguments().getString("Id") != null) {
-			id = Integer.valueOf(getArguments().getString("Id"));
-		}
+		EditPage = (ImageButton) header.findViewById(R.id.ImgbtnEdit);
+		CreatePage = (ImageButton) header.findViewById(R.id.ImgbtnCreate);
 
 		sendDataID = getActivity().getSharedPreferences("Id", 0);
-		final int cid = sendDataID.getInt("main_Id", -1);
+		final int ObjectID = sendDataID.getInt("main_Id", -1);
+
+		adapter.open();
+		commentGroup = adapter.getAllCommentInObjectById(ObjectID, 0);
+		mapCollection = new LinkedHashMap<CommentInObject, List<CommentInObject>>();
+
+		List<CommentInObject> reply = null;
+		for (CommentInObject comment : commentGroup) {
+			reply = adapter.getReplyCommentIntroduction(ObjectID,
+					comment.getId());
+			mapCollection.put(comment, reply);
+		}
+
+		adapter.close();
+
+		exadapter = new ExpandIntroduction(getActivity(),
+				(ArrayList<CommentInObject>) commentGroup, mapCollection, this,
+				ObjectID);
+		exListView.addHeaderView(header);
+
+		exListView.setAdapter(exadapter);
+		adapter.open();
+
+		if (CurrentUser == null) {
+		} else {
+			if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
+					ObjectID))
+				AddLike.setBackgroundResource(R.drawable.like_froum);
+			else
+				AddLike.setBackgroundResource(R.drawable.like_froum_off);
+		}
+		adapter.close();
 
 		profileParams = new LinearLayout.LayoutParams(
 				profileLinear.getLayoutParams());
@@ -165,10 +196,13 @@ public class IntroductionFragment extends Fragment {
 		headImageLinear.setPadding(0, 0, 0, 20);
 
 		adapter.open();
-		mylist = adapter.getAllCommentInObjectById(id);
-		txtNumofComment.setText(adapter.CommentInObject_count().toString());
-		txtNumofLike.setText(adapter.LikeInObject_count().toString());
-		object = adapter.getObjectbyid(cid);
+		int countcmt = adapter.CommentInObject_count(ObjectID);
+		CountCommentIntroduction.setText(String.valueOf(countcmt));
+
+		int countlike = adapter.LikeInObject_count(ObjectID);
+		CountLikeIntroduction.setText(String.valueOf(countlike));
+
+		object = adapter.getObjectbyid(ObjectID);
 		adapter.close();
 		if (object == null) {
 			return view;
@@ -177,7 +211,7 @@ public class IntroductionFragment extends Fragment {
 		headerImage.setLayoutParams(headerParams);
 		// imagedisplay.setBackgroundResource(R.drawable.profile_account);
 		Users user = ut.getCurrentUser();
-		if (user == null || cid != user.getId()) {
+		if (user == null || ObjectID != user.getId()) {
 			EditPage.setVisibility(View.INVISIBLE);
 
 		} else
@@ -310,10 +344,6 @@ public class IntroductionFragment extends Fragment {
 					trans.commit();
 				}
 
-				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-				// .parse(object.getInstagram()));
-				// startActivity(browserIntent);
-
 			}
 		});
 
@@ -330,10 +360,6 @@ public class IntroductionFragment extends Fragment {
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
 					trans.commit();
 				}
-				//
-				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-				// .parse(object.getLinkedIn()));
-				// startActivity(browserIntent);
 
 			}
 		});
@@ -352,10 +378,6 @@ public class IntroductionFragment extends Fragment {
 					trans.commit();
 				}
 
-				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-				// .parse(object.getGoogle()));
-				// startActivity(browserIntent);
-
 			}
 		});
 
@@ -372,10 +394,6 @@ public class IntroductionFragment extends Fragment {
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
 					trans.commit();
 				}
-
-				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-				// .parse(object.getSite()));
-				// startActivity(browserIntent);
 
 			}
 		});
@@ -394,10 +412,6 @@ public class IntroductionFragment extends Fragment {
 					trans.commit();
 				}
 
-				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-				// .parse(object.getTwitter()));
-				// startActivity(browserIntent);
-
 			}
 		});
 
@@ -413,10 +427,6 @@ public class IntroductionFragment extends Fragment {
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
 					trans.commit();
 				}
-
-				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-				// .parse(object.getPdf1()));
-				// startActivity(browserIntent);
 
 			}
 		});
@@ -435,10 +445,6 @@ public class IntroductionFragment extends Fragment {
 					trans.commit();
 				}
 
-				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-				// .parse(object.getPdf2()));
-				// startActivity(browserIntent);
-
 			}
 		});
 
@@ -455,10 +461,6 @@ public class IntroductionFragment extends Fragment {
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
 					trans.commit();
 				}
-
-				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-				// .parse(object.getPdf3()));
-				// startActivity(browserIntent);
 
 			}
 		});
@@ -478,20 +480,16 @@ public class IntroductionFragment extends Fragment {
 					trans.commit();
 				}
 
-				// Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
-				// .parse(object.getPdf4()));
-				// startActivity(browserIntent);
-
 			}
 		});
 
-		IntroductionListAdapter listAdapter = new IntroductionListAdapter(
-				getActivity(), R.layout.raw_froumcmt, mylist);
-		lst.setAdapter(listAdapter);
+		// IntroductionListAdapter listAdapter = new IntroductionListAdapter(
+		// getActivity(), R.layout.raw_froumcmt, mylist);
+		// lst.setAdapter(listAdapter);
 
-		resizeListView(lst);
+		// resizeListView(lst);
 
-		link2 = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
+		link2 = (RelativeLayout) header.findViewById(R.id.Layoutlink2);
 
 		link1.setOnClickListener(new OnClickListener() {
 
@@ -506,26 +504,58 @@ public class IntroductionFragment extends Fragment {
 			}
 		});
 
-		btnCmt.setOnClickListener(new View.OnClickListener() {
+		AddComment.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				dialog = new DialogcmtInobject(IntroductionFragment.this,
-						getActivity(), R.layout.dialog_addcomment);
-				dialog.show();
+				if (CurrentUser == null) {
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+					return;
+				} else {
+					dialog = new DialogcmtInobject(IntroductionFragment.this,
+							getActivity(), R.layout.dialog_addcomment,
+							ObjectID, 0);
+					dialog.show();
+					exadapter.notifyDataSetChanged();
+				}
+
 			}
 		});
 
-		like.setOnClickListener(new View.OnClickListener() {
+		AddLike.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				adapter.open();
-				adapter.insertLikeInObjectToDb(1, 0, "", 1);
-				txtNumofLike.setText(adapter.LikeInObject_count().toString());
+
+				if (CurrentUser == null) {
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+					return;
+
+				} else {
+					if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
+							ObjectID)) {
+						AddLike.setBackgroundResource(R.drawable.like_froum_off);
+						adapter.deleteLikeIntroduction(CurrentUser.getId(),
+								ObjectID);
+						int countlike = adapter.LikeInObject_count(ObjectID);
+						CountLikeIntroduction.setText(String.valueOf(countlike));
+					} else {
+						adapter.insertLikeInObjectToDb(CurrentUser.getId(),
+								ObjectID, currentDate, 0);
+						AddLike.setBackgroundResource(R.drawable.like_froum);
+
+						int countlike = adapter.LikeInObject_count(ObjectID);
+						CountLikeIntroduction.setText(String.valueOf(countlike));
+					}
+
+				}
 				adapter.close();
 			}
+
 		});
 
 		link2.setOnClickListener(new OnClickListener() {
@@ -592,7 +622,8 @@ public class IntroductionFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 
-				//Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(getActivity(), "ok",
+				// Toast.LENGTH_SHORT).show();
 				// startActivityForResult(new
 				// Intent("android.intent.action.call",Uri.parse("tel:"+
 				// txtPhone.getText().toString())), 1);
@@ -666,41 +697,45 @@ public class IntroductionFragment extends Fragment {
 
 	}
 
-	private void resizeListView(ListView listView) {
-		ListAdapter listAdapter = listView.getAdapter();
-		if (listAdapter == null) {
-			// pre-condition
-			return;
-		}
+	public void updateList() {
+		sendDataID = getActivity().getSharedPreferences("Id", 0);
+		final int ObjectID = sendDataID.getInt("main_Id", -1);
 
-		int totalHeight = listView.getPaddingTop()
-				+ listView.getPaddingBottom();
-		for (int i = 0; i < listAdapter.getCount(); i++) {
-			View listItem = listAdapter.getView(i, null, listView);
-
-			if (listItem instanceof ViewGroup) {
-				listItem.setLayoutParams(new LayoutParams(
-						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-			}
-			listItem.measure(0, 0);
-			totalHeight += listItem.getMeasuredHeight();
-		}
-
-		ViewGroup.LayoutParams params = listView.getLayoutParams();
-		params.height = totalHeight
-				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-		listView.setLayoutParams(params);
-	}
-
-	public void updateView3() {
 		adapter.open();
-		mylist = adapter.getAllCommentInObjectById(id);
-		txtNumofComment.setText(adapter.CommentInObject_count().toString());
+		commentGroup = adapter.getAllCommentInObjectById(ObjectID, 0);
+		mapCollection = new LinkedHashMap<CommentInObject, List<CommentInObject>>();
+
+		List<CommentInObject> reply = null;
+		for (CommentInObject comment : commentGroup) {
+			reply = adapter.getReplyCommentIntroduction(ObjectID,
+					comment.getId());
+			mapCollection.put(comment, reply);
+		}
+
+		int countcmt = adapter.CommentInObject_count(ObjectID);
+		CountCommentIntroduction.setText(String.valueOf(countcmt));
+		exadapter = new ExpandIntroduction(getActivity(),
+				(ArrayList<CommentInObject>) commentGroup, mapCollection, this,
+				ObjectID);
 		adapter.close();
-		IntroductionListAdapter x = new IntroductionListAdapter(getActivity(),
-				R.layout.raw_froumcmt, mylist);
-		x.notifyDataSetChanged();
-		lst.setAdapter(x);
+		exadapter.notifyDataSetChanged();
+
+		exListView.setAdapter(exadapter);
+
 	}
+
+	// public void updateView3() {
+	// adapter.open();
+	// sendDataID = getActivity().getSharedPreferences("Id", 0);
+	// final int cid = sendDataID.getInt("main_Id", -1);
+	// mylist = adapter.getAllCommentInObjectById(cid);
+	// CountCommentIntroduction.setText(adapter.CommentInObject_count()
+	// .toString());
+	// adapter.close();
+	// IntroductionListAdapter x = new IntroductionListAdapter(getActivity(),
+	// R.layout.raw_froumcmt, mylist);
+	// x.notifyDataSetChanged();
+	// // lst.setAdapter(x);
+	// }
 
 }

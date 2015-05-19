@@ -7,17 +7,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FroumtitleListadapter;
 import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class FroumtitleFragment extends Fragment {
 	private ImageButton addtitle;
@@ -30,6 +29,8 @@ public class FroumtitleFragment extends Fragment {
 	FroumtitleListadapter ListAdapter;
 	ImageButton Replytocm;
 	public static final int DIALOG_FRAGMENT = 1;
+	Utility util;
+	Users Currentuser;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -44,6 +45,13 @@ public class FroumtitleFragment extends Fragment {
 		mdb.open();
 		mylist = mdb.getAllFroum();
 		mdb.close();
+
+		util = new Utility(getActivity());
+
+		Currentuser = util.getCurrentUser();
+
+		if (Currentuser == null)
+			addtitle.setVisibility(View.INVISIBLE);
 
 		addtitle.setOnClickListener(new OnClickListener() {
 
@@ -61,30 +69,6 @@ public class FroumtitleFragment extends Fragment {
 				R.layout.raw_froumtitle, mylist);
 		lst.setAdapter(ListAdapter);
 
-		lst.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				Toast.makeText(getActivity(), "masoudFroum", Toast.LENGTH_SHORT)
-						.show();
-
-				// FragmentTransaction trans = getActivity()
-				// .getSupportFragmentManager().beginTransaction();
-				// trans.replace(R.id.content_frame, new FroumFragment());
-				// trans.commit();
-				// mdb.open();
-				// ArrayList<ListItem> allItems = adapter.getListItemsById(1);
-				// int id = 0;
-				// for (ListItem listItem : allItems) {
-				// if (item.equals(listItem.getName())) {
-				// // check authentication and authorization
-				// id = listItem.getId();
-				// }
-				// }
-				// mdb.close();
-
-			}
-		});
 		return view;
 	}
 

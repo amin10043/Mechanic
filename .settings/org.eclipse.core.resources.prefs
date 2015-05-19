@@ -6,10 +6,17 @@ encoding//src/com/project/mechanic/MainActivity.java=UTF-8
 encoding//src/com/project/mechanic/Search.java=UTF-8
 encoding//src/com/project/mechanic/SplashActivity.java=UTF-8
 encoding//src/com/project/mechanic/WelcomeScreen.java=UTF-8
+<<<<<<< HEAD
+encoding//src/com/project/mechanic/adapter/ExpandIntroduction.java=UTF-8
+=======
+encoding//src/com/project/mechanic/adapter/AnadImgListAdapter.java=UTF-8
+>>>>>>> branch 'master' of https://github.com/amin10043/Mechanic.git
+encoding//src/com/project/mechanic/adapter/ExpandableCommentFroum.java=UTF-8
 encoding//src/com/project/mechanic/adapter/FavoriteListAdapter.java=UTF-8
 encoding//src/com/project/mechanic/adapter/SlideMenuAdapter.java=UTF-8
 encoding//src/com/project/mechanic/fragment/AdvertisementFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/AdvisorTypeFragment.java=UTF-8
+encoding//src/com/project/mechanic/fragment/AnadFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/City2Fragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/City3Fragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/CityFragment.java=UTF-8
@@ -30,6 +37,7 @@ encoding//src/com/project/mechanic/fragment/Favorite_Fragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/FroumFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/FroumtitleFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/IntroductionEditFragment.java=UTF-8
+encoding//src/com/project/mechanic/fragment/IntroductionFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/LoginFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/MainBrandFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/MainFragment.java=UTF-8

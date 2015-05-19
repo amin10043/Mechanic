@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
-            android:layout_toRightOf="@+id/replyToComment"
+            android:layout_toRightOf="@+id/frameLayoutGroup"
             android:orientation="horizontal" >
 
             <ImageButton
@@ -43,7 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"
+                android:src="@drawable/positive_off" />
 
             <TextView
                 android:id="@+id/countCommentFroum"
@@ -69,23 +70,45 @@
                 android:textColor="@color/transparent" />
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/replyToComment"
+        <FrameLayout
+            android:id="@+id/frameLayoutGroup"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/mainmessage"
-            android:background="@drawable/cmt" />
+            android:layout_height="wrap_content" >
+
+            <ImageButton
+                android:id="@+id/replyToComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mainmessage"
+                android:background="@drawable/cmt" />
+
+            <LinearLayout
+                android:id="@+id/linearShowcountofRepply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_count_reply" >
+
+                <TextView
+                    android:id="@+id/countofreplyFroum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    android:text="1"
+                    android:textColor="@color/transparent" />
+            </LinearLayout>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/date_commented_in_froum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/replyToComment"
+            android:layout_below="@+id/frameLayoutGroup"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="10dp"
             android:text="Date"
-            android:textColor="@color/transparent" />
+            android:textColor="@color/transparent"
+            android:textSize="10dp" />
     </RelativeLayout>
 
     <RelativeLayout

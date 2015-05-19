@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/List_Item_Style"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_item"
     android:orientation="horizontal" >
 
-    <ImageView
-        android:id="@+id/icon_ostan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_blank" />
-
     <TextView
         android:id="@+id/row_news_txt"
         style="@style/row_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="right"
-        android:text="Large Text" />
+        android:text="Large Text"
+        android:textSize="@dimen/iconPadding" />
 
-</RelativeLayout>
+</LinearLayout>
