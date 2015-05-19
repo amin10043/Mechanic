@@ -9,6 +9,7 @@ public class Paper {
 	String ServerDate;
 	int Submit;
 	int UserId;
+	String Date;
 
 	public int getId() {
 		return Id;
@@ -66,8 +67,16 @@ public class Paper {
 		UserId = userId;
 	}
 
+	public String getDate() {
+		return Date;
+	}
+
+	public void setDate(String date) {
+		Date = date;
+	}
+
 	public Paper(int id, String title, String context, int seen,
-			String serversate, int submit, int userId) {
+			String serversate, int submit, int userId, String date) {
 		super();
 		Id = id;
 		Title = title;
@@ -76,6 +85,7 @@ public class Paper {
 		ServerDate = serversate;
 		Submit = submit;
 		UserId = userId;
+		Date = date;
 	}
 
 }
