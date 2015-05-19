@@ -121,7 +121,7 @@ public class DataBaseAdapter {
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
 	private String[] Paper = { "ID", "Title", "Context", "Seen", "ServerDate",
-			"Submit" };
+			"Submit", "UserId" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name", "Count" };
 	private String[] Settings = { "Id", "ServerDate", "IMEI" };
@@ -1152,7 +1152,7 @@ public class DataBaseAdapter {
 	private Paper CursorToPaper(Cursor cursor) {
 		Paper tempPaper = new Paper(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getInt(3), cursor.getString(4),
-				cursor.getInt(5));
+				cursor.getInt(5), cursor.getInt(6));
 		return tempPaper;
 
 	}
@@ -1297,7 +1297,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			tempObject = new Paper(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getInt(3), cursor.getString(4),
-					cursor.getInt(5));
+					cursor.getInt(5), cursor.getInt(6));
 			result.add(tempObject);
 		}
 
@@ -2441,10 +2441,10 @@ public class DataBaseAdapter {
 		Cursor cu;
 		if (field.equals("Name")) {
 
-			cu = mDb.rawQuery("select * from " + tableName + "   where "
-					+ field + " Like '%" + word + "%' group by Name", null);
+			cu = mDb.rawQuery("select * from  Province where " + field
+					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2457,10 +2457,10 @@ public class DataBaseAdapter {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province  where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2473,10 +2473,10 @@ public class DataBaseAdapter {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province  where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
