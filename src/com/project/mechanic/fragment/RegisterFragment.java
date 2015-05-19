@@ -253,8 +253,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 							dbAdapter.inserUserToDb(Name, null, Pass, null,
 									Mobile, null, null, Image, 0, txtdate);
 
-							dbAdapter.close();
-
 							Toast.makeText(getActivity(),
 									"اطلاعات مورد نظر ثبت شد",
 									Toast.LENGTH_SHORT).show();
@@ -265,6 +263,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 							//
 						}
 					}
+					dbAdapter.close();
 
 				}
 
