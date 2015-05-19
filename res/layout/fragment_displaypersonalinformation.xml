@@ -1,15 +1,17 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/lin2"
+    android:id="@+id/scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/activity_horizontal_margin"
+    android:layout_marginLeft="@dimen/txtsize10"
+    android:layout_marginRight="@dimen/txtsize10"
+    android:layout_marginTop="@dimen/txtsize10"
     android:background="@color/light_grey"
     android:fillViewport="true"
     android:scrollbars="vertical" >
 
     <LinearLayout
-        android:id="@+id/lin_vertical_register"
+        android:id="@+id/lin__register"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_grey"
@@ -17,98 +19,96 @@
         android:weightSum="7" >
 
         <LinearLayout
-            android:id="@+id/lin3_vertical_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginLeft="@dimen/txtsize10"
             android:layout_marginRight="@dimen/txtsize10"
             android:layout_marginTop="@dimen/txtsize10"
-            android:layout_weight="1"
-            android:background="@color/blue3"
-            android:gravity="center"
-            android:orientation="vertical" >
+            android:layout_weight="0.8"
+            android:background="@color/blue3" >
 
             <LinearLayout
-                android:id="@+id/linear1_vertical_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/txtsize10"
-                android:layout_weight="1"
                 android:background="@drawable/color1"
                 android:orientation="horizontal"
-                android:weightSum="2" >
+                android:weightSum="3" >
 
-                <FrameLayout
-                    android:id="@+id/lin5"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentStart="true"
-                    android:background="@color/blue3"
-                    android:scaleType="fitXY" >
+                    android:layout_gravity="center"
+                    android:layout_weight="1" >
 
                     <LinearLayout
-                        android:id="@+id/lin4"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_gravity="bottom"
-                        android:gravity="bottom"
-                        android:scaleType="fitXY" >
+                        android:id="@+id/lin2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/txtsize30"
+                        android:layout_weight="1" >
 
                         <ImageView
                             android:id="@+id/img1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/i13"
-                            android:scaleType="fitXY" />
+                            android:layout_gravity="center"
+                            android:src="@drawable/i13" />
                     </LinearLayout>
-                </FrameLayout>
+                </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" >
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1.2"
+                    android:gravity="bottom" >
 
                     <TextView
                         android:id="@+id/txtdate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_weight="1"
-                        android:text="TextView"
-                        android:textColor="@color/transparent"
-                        android:textSize="@dimen/txtsize10" />
+                        android:text="TextView" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/color1"
+                    android:layout_weight="0.8"
                     android:orientation="vertical" >
 
-                    <ImageView
-                        android:id="@+id/imagelogout"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:layout_weight="1"
-                        android:src="@drawable/logout" />
+                        android:layout_margin="@dimen/txtsize10"
+                        android:layout_weight="1" >
+
+                        <ImageView
+                            android:id="@+id/logout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="1"
+                            android:src="@drawable/logout" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/txtname"
+                        android:id="@+id/displayname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:gravity="right|center"
-                        android:textColor="@color/transparent"
-                        android:textSize="@dimen/item_font_size" />
+                        android:gravity="center"
+                        android:text="TextView"
+                        android:textColor="@color/transparent" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/lin4_vertical_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/txtsize10"
@@ -119,49 +119,48 @@
 
             <TextView
                 android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/txtsize10"
+                android:text="TextView"
                 android:textColor="@color/transparent" />
 
             <TextView
-                android:id="@+id/txttitledialog"
+                android:id="@+id/textView4"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginRight="@dimen/txtsize10"
-                android:layout_weight="1.2"
                 android:gravity="right"
-                android:text="ايميل:"
-                android:textColor="@color/transparent" />
+                android:text="ایمیل :"
+                android:textColor="@color/transparent"
+                android:textSize="@dimen/activity_horizontal_margin" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/lin5_vertical_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/txtsize10"
             android:layout_marginRight="@dimen/txtsize10"
             android:layout_weight="1"
-            android:background="@color/blue3"
-            android:orientation="horizontal" >
+            android:background="@color/blue3" >
 
             <TextView
                 android:id="@+id/phone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/txtsize10"
                 android:text="TextView"
                 android:textColor="@color/transparent" />
 
             <TextView
-                android:id="@+id/dialog_show_phone"
-                android:layout_width="fill_parent"
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/txtsize10"
-                android:layout_weight="1.2"
                 android:gravity="right"
                 android:text="شماره ثابت :"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/transparent"
+                android:textSize="@dimen/activity_horizontal_margin" />
         </LinearLayout>
 
         <LinearLayout
@@ -174,21 +173,21 @@
 
             <TextView
                 android:id="@+id/cellphone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/txtsize10"
                 android:text="TextView"
                 android:textColor="@color/transparent" />
 
             <TextView
-                android:id="@+id/dialog_show_mobile"
-                android:layout_width="fill_parent"
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/txtsize10"
-                android:layout_weight="1.2"
                 android:gravity="right"
-                android:text="شماره همراه:"
-                android:textColor="@color/transparent" />
+                android:text="شماره همراه :"
+                android:textColor="@color/transparent"
+                android:textSize="@dimen/activity_horizontal_margin" />
         </LinearLayout>
 
         <LinearLayout
@@ -201,21 +200,21 @@
 
             <TextView
                 android:id="@+id/fax"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/txtsize10"
                 android:text="TextView"
                 android:textColor="@color/transparent" />
 
             <TextView
-                android:id="@+id/dialog_show_fax"
-                android:layout_width="fill_parent"
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/txtsize10"
-                android:layout_weight="1.2"
                 android:gravity="right"
-                android:text="شماره فکس: "
-                android:textColor="@color/transparent" />
+                android:text="دورنما :"
+                android:textColor="@color/transparent"
+                android:textSize="@dimen/activity_horizontal_margin" />
         </LinearLayout>
 
         <LinearLayout
@@ -223,75 +222,59 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/txtsize10"
             android:layout_marginRight="@dimen/txtsize10"
-            android:layout_weight="1"
-            android:background="@color/blue3"
-            android:weightSum="2" >
-
-            <ScrollView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
-                android:fillViewport="true" >
-
-                <LinearLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="top"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/address"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.8"
-                        android:filterTouchesWhenObscured="true"
-                        android:gravity="top|right"
-                        android:overScrollMode="always"
-                        android:scrollbarStyle="insideInset"
-                        android:scrollbars="vertical" />
-                </LinearLayout>
-            </ScrollView>
+            android:layout_weight="1.2"
+            android:background="@color/blue3" >
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.2"
-                android:gravity="center|right" >
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/txtsize10"
-                    android:gravity="right|center"
-                    android:text="آدرس:"
-                    android:textColor="@color/transparent" />
+                <ScrollView
+                    android:id="@+id/scrollView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
+
+                        <TextView
+                            android:id="@+id/address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/txtsize10"
+                            android:text="TextView"
+                            android:textColor="@color/transparent" />
+                    </LinearLayout>
+                </ScrollView>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/txtsize10"
+                android:gravity="right"
+                android:text="آدرس :"
+                android:textColor="@color/transparent"
+                android:textSize="@dimen/activity_horizontal_margin" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/lin6_vertical_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:layout_marginRight="@dimen/activity_vertical_margin"
             android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal" >
+            android:gravity="center" >
 
             <Button
                 android:id="@+id/btnedit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/txtsize30"
-                android:layout_marginRight="@dimen/txtsize30"
-                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/txtsize80"
+                android:layout_marginRight="@dimen/txtsize80"
                 android:background="@drawable/buttonshape"
-                android:enabled="true"
-                android:text="ثبت نام"
-                android:textColor="@color/white" />
+                android:text="ویرایش اطلاعات" />
         </LinearLayout>
     </LinearLayout>
 

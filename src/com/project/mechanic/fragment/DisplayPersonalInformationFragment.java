@@ -49,14 +49,14 @@ utile1=new Utility(getActivity());
 	TextView	txtcellphone=(TextView) view.findViewById(R.id.cellphone);
 	TextView	txtphone=(TextView) view.findViewById(R.id.phone);
 	TextView	txtemail=(TextView) view.findViewById(R.id.email);
-	TextView	txtname=(TextView) view.findViewById(R.id.txtname);
+	TextView	txtname=(TextView) view.findViewById(R.id.displayname);
 	TextView	txtfax=(TextView) view.findViewById(R.id.fax);
 	ImageView    img=(ImageView) view.findViewById(R.id.img1)	;
-	ImageView logout =(ImageView) view.findViewById(R.id.imagelogout)	;
+	ImageView logout =(ImageView) view.findViewById(R.id.logout)	;
 Button btnedit=(Button) view.findViewById(R.id.btnedit);
 
 TextView txtdate=(TextView)view.findViewById(R.id.txtdate);
-final LinearLayout lin4 = (LinearLayout) view.findViewById(R.id.lin4);
+final LinearLayout lin4 = (LinearLayout) view.findViewById(R.id.lin2);
 
 LayoutParams lp1 = new LinearLayout.LayoutParams(lin4.getLayoutParams());		
 lp1.width=utile1.getScreenwidth()/4;
