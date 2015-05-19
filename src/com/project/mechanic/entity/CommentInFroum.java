@@ -7,23 +7,23 @@ public class CommentInFroum {
 	int UserId;
 	String Datetime;
 	int CommentId;
-	String NumOfLike;
-	String NumOfDislike;
+	int NumOfLike;
+	int NumOfDislike;
 	int Seen;
 
-	public String getNumOfLike() {
+	public int getNumOfLike() {
 		return NumOfLike;
 	}
 
-	public void setNumOfLike(String numOfLike) {
+	public void setNumOfLike(int numOfLike) {
 		NumOfLike = numOfLike;
 	}
 
-	public String getNumOfDislike() {
+	public int getNumOfDislike() {
 		return NumOfDislike;
 	}
 
-	public void setNumOfDislike(String numOfDislike) {
+	public void setNumOfDislike(int numOfDislike) {
 		NumOfDislike = numOfDislike;
 	}
 
@@ -84,8 +84,8 @@ public class CommentInFroum {
 	}
 
 	public CommentInFroum(int iD, String desk, int froumid, int userId,
-			String datetime, int commentId, String numofDisLike,
-			String numofLike, int seen) {
+			String datetime, int commentId, int numofDisLike, int numofLike,
+			int seen) {
 		super();
 		ID = iD;
 		Desk = desk;

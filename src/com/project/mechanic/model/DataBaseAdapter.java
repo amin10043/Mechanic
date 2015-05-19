@@ -977,13 +977,14 @@ public class DataBaseAdapter {
 		return result;
 
 	}
-	////////////////////////////////////////////////////////////////
+
+	// //////////////////////////////////////////////////////////////
 	public ArrayList<CommentInFroum> getseencomment() {
 
 		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
 		CommentInFroum item = null;
-		Cursor mCur = mDb.query(TableCommentInFroum,CommentInFroum,"seen=1", null, null,
-				null, null);
+		Cursor mCur = mDb.query(TableCommentInFroum, CommentInFroum, "seen=1",
+				null, null, null, null);
 
 		while (mCur.moveToNext()) {
 			item = CursorToCommentInFroum(mCur);
@@ -993,13 +994,14 @@ public class DataBaseAdapter {
 		return result;
 
 	}
-//////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// ////////////////////////////////////////////////////////////////////////////////////////////////
 	public ArrayList<CommentInFroum> getUnseencomment() {
 
 		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
 		CommentInFroum item = null;
-		Cursor mCur = mDb.query(TableCommentInFroum,CommentInFroum,"seen=0", null, null,
-				null, null);
+		Cursor mCur = mDb.query(TableCommentInFroum, CommentInFroum, "seen=0",
+				null, null, null, null);
 
 		while (mCur.moveToNext()) {
 			item = CursorToCommentInFroum(mCur);
@@ -1009,13 +1011,14 @@ public class DataBaseAdapter {
 		return result;
 
 	}
-	////////////////////////////////////////////////////////////////////////////////////
-	
+
+	// //////////////////////////////////////////////////////////////////////////////////
+
 	public ArrayList<Object> getUnseenlike() {
 
 		ArrayList<Object> result = new ArrayList<Object>();
 		Object item = null;
-		Cursor mCur = mDb.query(TableObject,Object,"seen=0", null, null,
+		Cursor mCur = mDb.query(TableObject, Object, "seen=0", null, null,
 				null, null);
 
 		while (mCur.moveToNext()) {
@@ -1025,7 +1028,8 @@ public class DataBaseAdapter {
 
 		return result;
 	}
-	///////////////////////////////////////////////////////////////////////////////////////
+
+	// /////////////////////////////////////////////////////////////////////////////////////
 
 	private ListItem CursorToListItem(Cursor mCur) {
 
@@ -1162,7 +1166,8 @@ public class DataBaseAdapter {
 	private CommentInObject CursorToCommentInObject(Cursor cursor) {
 		CommentInObject tempNews = new CommentInObject(cursor.getInt(0),
 				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
-				cursor.getString(4), cursor.getInt(5), cursor.getInt(6));
+				cursor.getString(4), cursor.getInt(5), cursor.getInt(6),
+				cursor.getInt(7), cursor.getInt(8));
 		return tempNews;
 
 	}
@@ -2006,8 +2011,8 @@ public class DataBaseAdapter {
 		CommentInFroum tempComment = new CommentInFroum(cursor.getInt(0),
 				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
 
-				cursor.getString(4), cursor.getInt(5), cursor.getString(6),
-				cursor.getString(7), cursor.getInt(8));
+				cursor.getString(4), cursor.getInt(5), cursor.getInt(6),
+				cursor.getInt(7), cursor.getInt(8));
 
 		return tempComment;
 
@@ -2375,17 +2380,19 @@ public class DataBaseAdapter {
 		}
 		return res;
 	}
-	//////////////////////////////////////////////////////////
+
+	// ////////////////////////////////////////////////////////
 	public int NumOfNewLikeInObject1() {
 		int res = 0;
-		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableObject + " WHERE Seen=0", null);
+		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TableObject
+				+ " WHERE Seen=0", null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
 		return res;
 	}
-	////////////////////////////////////////////////////////////
+
+	// //////////////////////////////////////////////////////////
 
 	public int NumOfNewCmtInObject() {
 		int res = 0;
@@ -2491,21 +2498,22 @@ public class DataBaseAdapter {
 		}
 		return res;
 	}
-	////////////////////////////////////////////////////////////////
+
+	// //////////////////////////////////////////////////////////////
 	public void updatecmseentodb(int seen) {
 
 		ContentValues uc = new ContentValues();
-		
-		uc.put("Seen",seen);
+
+		uc.put("Seen", seen);
 		mDb.update(TableCommentInFroum, uc, null, null);
 
 	}
-	
+
 	public void updatelikeseentodb(int seen) {
 
 		ContentValues uc = new ContentValues();
-		
-		uc.put("Seen",seen);
+
+		uc.put("Seen", seen);
 		mDb.update(TableObject, uc, null, null);
 
 	}
@@ -2568,5 +2576,14 @@ public class DataBaseAdapter {
 		}
 		return res;
 	}
+
+	// public void insertCommentIntroduction(int id, String numofLike, int
+	// UserId) {
+	// if (!isUserLikedComment(UserId, id, 1)) {
+	// ContentValues uc = new ContentValues();
+	// uc.put("NumOfLike", numofLike);
+	// mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
+	// }
+	// }
 
 }
