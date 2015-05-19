@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.project.mechanic.adapter.SlideMenuAdapter;
 import com.project.mechanic.fragment.CityFragment;
+import com.project.mechanic.fragment.Dialog_notification;
+import com.project.mechanic.fragment.Dialog_notificationlike;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.FragmentContactUs;
@@ -46,6 +48,8 @@ public class MainActivity extends FragmentActivity {
     private int                   mInterval  = 40000; // 5 seconds by default, can be changed later
     private Handler               mHandler;
     SlideMenuAdapter              slideadapter;
+    Dialog_notification dialog;
+    Dialog_notificationlike dialog1;
 
 
     @Override
@@ -55,6 +59,72 @@ public class MainActivity extends FragmentActivity {
 
         adapter = new DataBaseAdapter(this);
         slideadapter = new SlideMenuAdapter(this);
+        
+        
+        adapter.open();
+		int r=	adapter. NumOfNewCmtInFroum();
+		TextView txtcm = (TextView) findViewById(R.id.txtcm);
+		txtcm.setText(""+r);
+		
+		
+		int t= adapter.NumOfNewLikeInObject1();
+		TextView txtlike=(TextView) findViewById(R.id.txtlike);
+		txtlike.setText(""+t);
+		adapter.close();
+		
+		ImageButton iBtnmessage=(ImageButton)findViewById(R.id.iBtnmessage);
+		iBtnmessage.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				adapter.open();
+				
+                dialog = new Dialog_notification(MainActivity.this);
+				
+				dialog.show();
+				int seen=1;
+				adapter.updatecmseentodb(seen);
+				int r=	adapter. NumOfNewCmtInFroum();
+				TextView txtcm = (TextView) findViewById(R.id.txtcm);
+				txtcm.setText(""+r);
+				adapter.close();
+				
+			}
+		});
+		ImageButton iBtnNotification=(ImageButton)findViewById(R.id.iBtnNotification);
+		iBtnNotification.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				adapter.open();
+           dialog1 = new Dialog_notificationlike(MainActivity.this);
+				
+				dialog1.show();
+				int seen=1;
+				adapter.updatelikeseentodb(seen);
+				
+				int t= adapter.NumOfNewLikeInObject1();
+				TextView txtlike=(TextView) findViewById(R.id.txtlike);
+				txtlike.setText(""+t);
+				adapter.close();
+				
+			}
+
+			
+				
+				
+				
+			
+		});
+        
+        
+        
+        
+        
+        
+        
 
         util = new Utility(MainActivity.this);
         // mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
