@@ -30,10 +30,15 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.service.Updating;
 import com.project.mechanic.utility.ChatHeadService;
+import com.project.mechanic.utility.ServiceComm;
+import com.project.mechanic.utility.Utility;
 
-public class WelcomeScreen extends Activity {
+public class WelcomeScreen extends Activity implements AsyncInterface {
 
 	private LinearLayout verticalOuterLayout;
 	private ImageButton btnNext, btnExit, btnins1, btnint1, btngp1, btnfb1,
@@ -61,11 +66,21 @@ public class WelcomeScreen extends Activity {
 	private Timer faceTimer = null;
 	private Button clickedButton = null;
 
+	private Updating serviceUpdate;
+	private ServiceComm comm;
+	private Utility util;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_welcome_screen);
+
+		String tableUpdating = "User";
+		util = new Utility(this);
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating);
 
 		startService(new Intent(this, ChatHeadService.class));
 
@@ -657,6 +672,13 @@ public class WelcomeScreen extends Activity {
 			timerTask.cancel();
 			timerTask = null;
 		}
+	}
+
+	@Override
+	public void processFinish(String output) {
+		util.parseQuery(output);
+
+		Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
 	}
 
 }

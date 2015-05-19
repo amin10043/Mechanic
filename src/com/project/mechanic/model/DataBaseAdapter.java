@@ -2586,4 +2586,16 @@ public class DataBaseAdapter {
 	// }
 	// }
 
+	public void updateTables(String tableName, String[] cols, String[][] values) {
+
+		ContentValues cv = null;
+		for (int i = 0; i < values.length; i++) {
+			cv = new ContentValues();
+			for (int j = 0; j < values[i].length; j++) {
+				cv.put(cols[j], values[i][j]);
+			}
+			mDb.insert(tableName, null, cv);
+		}
+
+	}
 }
