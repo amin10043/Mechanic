@@ -67,11 +67,11 @@ public class EditPersonalFragment  extends Fragment {
 	final EditText	txtemail=(EditText) view.findViewById(R.id.etxtemail);
 	final TextView   txtname =  (TextView) view.findViewById(R.id.etxtname);
 	final EditText	txtfax=(EditText) view.findViewById(R.id.etxtfax);
-img2=(ImageView) view.findViewById(R.id.img2);
-imagecamera=(ImageView) view.findViewById(R.id.imagcamera);
+img2=(ImageView) view.findViewById(R.id.imgp);
+//imagecamera=(ImageView) view.findViewById(R.id.imagcamera);
  Button btnregedit=(Button) view.findViewById(R.id.btnregedit)	;
 
-LinearLayout lin3= (LinearLayout) view.findViewById(R.id.lin3);
+LinearLayout lin3= (LinearLayout) view.findViewById(R.id.lin5);
 		
 
 lp2=new LinearLayout.LayoutParams(lin3.getLayoutParams());

@@ -1,242 +1,196 @@
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_vertical_reg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey"
-    tools:context=".MainActivity" >
+    android:fillViewport="true"
+    android:scrollbars="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="2" >
+        android:weightSum="4" >
+
+        <RelativeLayout
+            android:id="@+id/relative_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginRight="@dimen/txtsize10"
+            android:layout_marginTop="@dimen/txtsize10"
+            android:layout_weight="1"
+            android:background="@color/blue3"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/lin5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="38dp" >
+
+                <ImageView
+                    android:id="@+id/imgp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/i13" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/etxtname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="@dimen/txtsize10"
+                    android:text="عکس"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/txtsize10" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="@dimen/txtsize10"
+                    android:layout_marginTop="@dimen/txtsize5"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="(جهت تغییر عکس در کادر کلیک کتید)"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/txtsize10" />
+            </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/txtsize10"
-            android:layout_weight="0.3"
-            android:background="@drawable/list_item1"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginRight="@dimen/txtsize10"
+            android:layout_weight="1"
+            android:background="@color/blue3"
             android:orientation="vertical"
-            android:weightSum="5.7" >
+            android:weightSum="3" >
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/etxtphone"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/txtsize10"
-                android:layout_weight="0.8"
-                android:background="@drawable/color1"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="2" >
-
-                <FrameLayout
-                    android:id="@+id/lin5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY" >
-
-                    <LinearLayout
-                        android:id="@+id/lin3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:scaleType="fitXY" >
-
-                        <ImageView
-                            android:id="@+id/img2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/i13" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/lin4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:gravity="bottom"
-                        android:scaleType="fitXY" >
-
-                        <ImageView
-                            android:id="@+id/imagcamera"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@drawable/camera1" />
-                    </LinearLayout>
-                </FrameLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" >
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/color1"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/etxtname"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="right|center"
-                        android:textColor="@color/transparent" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/txtsize10"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/txtsize5"
+                android:layout_marginRight="@dimen/txtsize5"
                 android:layout_weight="1"
-                android:gravity="center" >
+                android:ems="10"
+                android:gravity="right"
+                android:hint="02122222222"
+                android:inputType="phone" >
 
-                <EditText
-                    android:id="@+id/etxtemail"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.8"
-                    android:ems="10" >
+                <requestFocus />
+            </EditText>
 
-                    <requestFocus />
-                </EditText>
-
-                <TextView
-                    android:id="@+id/txttitledialog"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1.2"
-                    android:gravity="right"
-                    android:text="ايميل:"
-                    android:textColor="@color/transparent" />
-            </LinearLayout>
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/etxtcellphone"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/txtsize10"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/txtsize5"
+                android:layout_marginRight="@dimen/txtsize5"
                 android:layout_weight="1"
-                android:gravity="center" >
+                android:ems="10"
+                android:gravity="right"
+                android:hint="09122222222"
+                android:inputType="phone" />
 
-                <EditText
-                    android:id="@+id/etxtphone"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.8"
-                    android:ems="10" />
-
-                <TextView
-                    android:id="@+id/dialog_show_phone"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1.2"
-                    android:gravity="right"
-                    android:text="شماره ثابت :"
-                    android:textColor="@color/transparent" />
-            </LinearLayout>
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/etxtemail"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/txtsize10"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/txtsize5"
+                android:layout_marginRight="@dimen/txtsize5"
                 android:layout_weight="1"
-                android:gravity="center" >
+                android:ems="10"
+                android:gravity="right"
+                android:hint="ایمیل"
+                android:inputType="textEmailAddress" />
 
-                <EditText
-                    android:id="@+id/etxtcellphone"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.8"
-                    android:ems="10" />
-
-                <TextView
-                    android:id="@+id/dialog_show_mobile"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1.2"
-                    android:gravity="right"
-                    android:text="شماره همراه:"
-                    android:textColor="@color/transparent" />
-            </LinearLayout>
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/etxtfax"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/txtsize10"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/txtsize5"
+                android:layout_marginRight="@dimen/txtsize5"
                 android:layout_weight="1"
-                android:gravity="center" >
-
-                <EditText
-                    android:id="@+id/etxtfax"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.8"
-                    android:ems="10" />
-
-                <TextView
-                    android:id="@+id/dialog_show_fax"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1.2"
-                    android:gravity="right"
-                    android:text="شماره فکس: "
-                    android:textColor="@color/transparent" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/txtsize10"
-                android:layout_weight="0.9"
-                android:gravity="center" >
-
-                <EditText
-                    android:id="@+id/etxtaddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.8"
-                    android:ems="10"
-                    android:inputType="textPostalAddress"
-                    android:scrollbars="vertical" />
-
-                <TextView
-                    android:id="@+id/dialog_email"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1.2"
-                    android:gravity="right"
-                    android:text="آدرس :"
-                    android:textColor="@color/transparent" />
-            </LinearLayout>
+                android:ems="10"
+                android:gravity="right"
+                android:hint="فکس"
+                android:inputType="phone" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/btneditpersonal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1.8" >
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginRight="@dimen/txtsize10"
+            android:layout_weight="1"
+            android:background="@color/blue3"
+            android:orientation="vertical" >
+
+            <ScrollView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true" >
+
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:orientation="vertical" >
+
+                    <EditText
+                        android:id="@+id/etxtaddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/txtsize5"
+                        android:layout_marginRight="@dimen/txtsize5"
+                        android:filterTouchesWhenObscured="true"
+                        android:gravity="top|right"
+                        android:hint="آدرس "
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical" />
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/txtsize80"
+            android:layout_marginRight="@dimen/txtsize80"
+            android:layout_marginTop="@dimen/txtsize10"
+            android:layout_weight="1"
+            android:gravity="center" >
 
             <Button
                 android:id="@+id/btnregedit"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/txtsize100"
-                android:layout_marginRight="@dimen/txtsize100"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
                 android:background="@drawable/buttonshape"
-                android:text="ثبت ويرايش" />
+                android:gravity="center"
+                android:text="ثبت ویرایش" />
         </LinearLayout>
     </LinearLayout>
 
-</RelativeLayout>
+</ScrollView>
