@@ -86,7 +86,7 @@ public class DataBaseAdapter {
 
 	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] CommentInObject = { "Id", "Desk", "ObjectId", "UserId",
-			"Date", "CommentId", "Seen" };
+			"Date", "CommentId", "NumofLike", "NumofDisLike ", "Seen" };
 	private String[] CommentInFroum = { "ID", "Desk", "FroumId", "UserId",
 
 	"Date", "CommentId", "NumOfDislike", "NumOfLike", "Seen" };

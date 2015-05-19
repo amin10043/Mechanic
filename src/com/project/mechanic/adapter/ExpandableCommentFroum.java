@@ -225,8 +225,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 			countOfReply.setText(adapter.getCountOfReplyInFroum(froumID,
 					comment.getId()).toString());
 
-		countLike.setText(comment.getNumOfLike());
-		countdisLike.setText(comment.getNumOfDislike());
+		countLike.setText(String.valueOf(comment.getNumOfLike()));
+		countdisLike.setText(String.valueOf(comment.getNumOfDislike()));
 
 		// start... this code for set image of profile
 		adapter.open();
@@ -313,7 +313,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 						adapter.insertCmtDisLikebyid(id, c, Currentuser.getId());
 						f.updateList();
 
-						txtdislike.setText(comment.getNumOfDislike());
+						txtdislike.setText(String.valueOf(comment
+								.getNumOfDislike()));
 						notifyDataSetChanged();
 						imgdislikeComment
 								.setImageResource((R.drawable.negative));
@@ -325,7 +326,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 								id);
 						f.updateList();
 
-						txtdislike.setText(comment.getNumOfDislike());
+						txtdislike.setText(String.valueOf(comment
+								.getNumOfDislike()));
 						imgdislikeComment
 								.setImageResource((R.drawable.negative_off));
 						notifyDataSetChanged();
