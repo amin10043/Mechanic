@@ -14,7 +14,9 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FroumtitleListadapter;
 import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class FroumtitleFragment extends Fragment {
 	private ImageButton addtitle;
@@ -27,6 +29,8 @@ public class FroumtitleFragment extends Fragment {
 	FroumtitleListadapter ListAdapter;
 	ImageButton Replytocm;
 	public static final int DIALOG_FRAGMENT = 1;
+	Utility util;
+	Users Currentuser;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -41,6 +45,13 @@ public class FroumtitleFragment extends Fragment {
 		mdb.open();
 		mylist = mdb.getAllFroum();
 		mdb.close();
+
+		util = new Utility(getActivity());
+
+		Currentuser = util.getCurrentUser();
+
+		if (Currentuser == null)
+			addtitle.setVisibility(View.INVISIBLE);
 
 		addtitle.setOnClickListener(new OnClickListener() {
 

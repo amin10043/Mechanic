@@ -69,8 +69,7 @@ public class DialogcmtInfroum extends Dialog {
 					String currentDate = date.todayShamsi();
 
 					dbadapter.open();
-					// int id =
-					// Integer.valueOf(f.getArguments().getString("Id"));
+
 					dbadapter.insertCommentInFroumtoDb(Cmttxt.getText()
 							.toString(), Froumid, userid, currentDate,
 							Commentid, "0", "0");
