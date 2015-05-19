@@ -88,7 +88,7 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 					service.delegate = LoginFragment.this;
 					Map<String, String> items = new LinkedHashMap<String, String>();
 					items.put("login", "login");
-					items.put("username", mobile);
+					items.put("phone", mobile);
 					items.put("password", pass);
 
 					service.execute(items);
