@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,7 +53,7 @@ public class DisplayPersonalInformationFragment extends Fragment {
 		TextView txtdate = (TextView) view.findViewById(R.id.txtdate);
 
 		final LinearLayout lin4 = (LinearLayout) view.findViewById(R.id.lin2);
-
+		txtaddress.setMovementMethod(new ScrollingMovementMethod());
 		LayoutParams lp1 = new LinearLayout.LayoutParams(lin4.getLayoutParams());
 		lp1.width = utile1.getScreenwidth() / 4;
 		lp1.height = utile1.getScreenwidth() / 4;

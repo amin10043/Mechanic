@@ -57,8 +57,8 @@
                 android:layout_marginTop="@dimen/txtsize10"
                 android:layout_weight="0.2"
                 android:ems="10"
-                android:gravity="right"
-                android:hint="شماره همراه خود را وارد کنید"
+                android:gravity="right|center"
+                android:hint="09122222222"
                 android:inputType="phone"
                 android:textSize="@dimen/item_font_size" >
 
@@ -75,7 +75,7 @@
                 android:layout_marginTop="@dimen/txtsize5"
                 android:layout_weight="0.2"
                 android:ems="10"
-                android:gravity="right"
+                android:gravity="right|center"
                 android:hint="رمز عبور خود را وارد کنید"
                 android:inputType="textPassword"
                 android:textSize="@dimen/item_font_size" />

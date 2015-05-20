@@ -3,7 +3,7 @@
     android:id="@+id/LinearLayout14"
     style="@style/List_Item_Style"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_gravity="right"
     android:background="@drawable/list_item"
     android:gravity="right"
@@ -34,13 +34,6 @@
             android:maxLength="30"
             android:text="text description"
             android:textColor="@color/transparent" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:orientation="horizontal" >
-        </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout
@@ -50,8 +43,8 @@
 
         <LinearLayout
             android:id="@+id/l1cm"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:background="@drawable/ic_cmt_froum_display"
             android:gravity="center" >
@@ -63,13 +56,13 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:textColor="@color/transparent"
-                android:textSize="8dp" />
+                android:text="7"
+                android:textColor="@color/transparent" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:layout_toRightOf="@+id/l1cm"
@@ -82,9 +75,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:textColor="@color/transparent"
-                android:textSize="8dp" />
+                android:text="v"
+                android:textColor="@color/transparent" />
         </LinearLayout>
 
         <TextView
@@ -92,6 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:text="date"
             android:textColor="@color/transparent" />
 
         <TextView
