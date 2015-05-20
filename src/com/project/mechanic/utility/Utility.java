@@ -239,6 +239,7 @@ public class Utility {
 	public void parseQuery(String query) {
 		StringTokenizer tokens = new StringTokenizer(query, "*");
 		String tableName = tokens.nextToken();
+		String serverDate = tokens.nextToken();
 
 		StringTokenizer inner = new StringTokenizer(tokens.nextToken(), ",");
 		int i = 0;
@@ -262,6 +263,7 @@ public class Utility {
 		}
 		adapter.open();
 		adapter.updateTables(tableName, col, values);
+		adapter.setServerDate(serverDate);
 		adapter.close();
 
 	}

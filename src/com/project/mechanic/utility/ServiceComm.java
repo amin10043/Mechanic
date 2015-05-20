@@ -24,16 +24,16 @@ public class ServiceComm extends
 
 	public final String WSDL_TARGET_NAMESPACE = "http://tempuri.org/";
 
-	public final String SOAP_ADDRESS = "http://srv.mechanical0098.com/MyService.asmx";
+	public final String SOAP_ADDRESS = "http://192.168.1.9/MyService/MyService.asmx";
 
 	public String response = "";
 
-	 private Context context;
+	private Context context;
 
 	public AsyncInterface delegate = null;
 
 	public ServiceComm(Context context) {
-		 this.context = context;
+		this.context = context;
 	}
 
 	protected String doInBackground(Map<String, String>... action) {

@@ -32,7 +32,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.project.mechanic.entity.Settings;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.utility.ChatHeadService;
 import com.project.mechanic.utility.ServiceComm;
@@ -69,6 +71,7 @@ public class WelcomeScreen extends Activity implements AsyncInterface {
 	private Updating serviceUpdate;
 	private ServiceComm comm;
 	private Utility util;
+	private DataBaseAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,11 +79,19 @@ public class WelcomeScreen extends Activity implements AsyncInterface {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_welcome_screen);
 
+		adapter = new DataBaseAdapter(this);
+
+		boolean isFirstTime = false;
+
+		adapter.open();
+		Settings settings = adapter.getSettings();
+		adapter.close();
+
 		String tableUpdating = "User";
 		util = new Utility(this);
 		serviceUpdate = new Updating(this);
 		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating);
+		serviceUpdate.execute(tableUpdating, settings.getServerDate());
 
 		startService(new Intent(this, ChatHeadService.class));
 
