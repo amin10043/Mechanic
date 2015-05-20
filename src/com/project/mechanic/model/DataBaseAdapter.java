@@ -2097,26 +2097,29 @@ public class DataBaseAdapter {
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter,O.rate,O. From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
 								+ " as C On O.Id = C.ObjectId Where O.ObjectBrandTypeId = "
-								+ Object_id + " and C.CityId =" + City_id, null);
+								+ Object_id + " and C.CityId = " + City_id,
+						null);
 		Object tempObject;
+
 		while (cursor.moveToNext()) {
 			tempObject = new Object(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4), cursor.getString(5), null, null, null,
-					null, cursor.getString(6), cursor.getString(7),
-					cursor.getString(8), cursor.getString(9),
-					cursor.getString(10), cursor.getString(11),
-					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
-					cursor.getString(15), cursor.getString(16),
-					cursor.getString(17), cursor.getString(18),
-					cursor.getString(19), cursor.getInt(25), cursor.getInt(27),
-					cursor.getInt(28), cursor.getString(29), cursor.getInt(30),
-					cursor.getInt(31));
+					cursor.getString(4), cursor.getString(5),
+					cursor.getBlob(6), cursor.getBlob(7), cursor.getBlob(8),
+					cursor.getBlob(9), cursor.getString(10),
+					cursor.getString(11), cursor.getString(12),
+					cursor.getString(13), cursor.getString(14),
+					cursor.getString(15), cursor.getInt(16), cursor.getInt(17),
+					cursor.getString(18), cursor.getString(19),
+					cursor.getString(20), cursor.getString(21),
+					cursor.getString(22), cursor.getString(23),
+					cursor.getInt(24), cursor.getInt(25), cursor.getInt(26),
+					cursor.getString(27), cursor.getInt(28), cursor.getInt(29));
 
 			result.add(tempObject);
 		}
