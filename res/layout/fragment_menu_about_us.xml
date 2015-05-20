@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:background="@drawable/list_item" >
+
+
+ <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+
+       <ImageView android:id="@+id/about_us_01" android:layout_width="0dip" android:layout_height="100dip" android:layout_margin="2dip" android:layout_weight="0.1" android:src="@drawable/about_us" android:visibility="invisible" />
+
+       <ImageView android:id="@+id/about_us_02" android:layout_width="0dip" android:layout_height="100dp" android:layout_margin="2dip" android:layout_weight="0.8" android:src="@drawable/about_us" />
+
+       <ImageView android:id="@+id/about_us_03" android:layout_width="0dip" android:layout_height="100dp" android:layout_margin="2dip" android:layout_weight="0.1" android:src="@drawable/about_us" android:visibility="invisible" />
+   </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/book"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ir.noghteh.JustifiedTextView
+            xmlns:noghteh="http://noghteh.ir"
+            android:id="@+id/activity_main_jtv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:padding="25dp"
+            noghteh:text="@string/text_fa"
+            noghteh:textColor="@color/transparent"
+            noghteh:textSize="20sp" >
+        </ir.noghteh.JustifiedTextView>
+    </ScrollView>
+</LinearLayout>
