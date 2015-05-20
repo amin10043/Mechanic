@@ -6,11 +6,8 @@ encoding//src/com/project/mechanic/MainActivity.java=UTF-8
 encoding//src/com/project/mechanic/Search.java=UTF-8
 encoding//src/com/project/mechanic/SplashActivity.java=UTF-8
 encoding//src/com/project/mechanic/WelcomeScreen.java=UTF-8
-<<<<<<< HEAD
-encoding//src/com/project/mechanic/adapter/ExpandIntroduction.java=UTF-8
-=======
 encoding//src/com/project/mechanic/adapter/AnadImgListAdapter.java=UTF-8
->>>>>>> branch 'master' of https://github.com/amin10043/Mechanic.git
+encoding//src/com/project/mechanic/adapter/ExpandIntroduction.java=UTF-8
 encoding//src/com/project/mechanic/adapter/ExpandableCommentFroum.java=UTF-8
 encoding//src/com/project/mechanic/adapter/FavoriteListAdapter.java=UTF-8
 encoding//src/com/project/mechanic/adapter/SlideMenuAdapter.java=UTF-8
@@ -44,6 +41,7 @@ encoding//src/com/project/mechanic/fragment/MainFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/NewsFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/NewspaperFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ObjectFragment.java=UTF-8
+encoding//src/com/project/mechanic/fragment/PaperFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/Province2Fragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/Province3Fragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ProvinceFragment.java=UTF-8
@@ -52,6 +50,7 @@ encoding//src/com/project/mechanic/fragment/RegisterFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/SearchFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ShopFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/ShowAdFragment.java=UTF-8
+encoding//src/com/project/mechanic/fragment/TitlepaperFragment.java=UTF-8
 encoding//src/com/project/mechanic/fragment/dialog_show_data.java=UTF-8
 encoding//src/com/project/mechanic/fragment/show_pay_fragment.java=UTF-8
 encoding//src/com/project/mechanic/model/DataBaseAdapter.java=UTF-8

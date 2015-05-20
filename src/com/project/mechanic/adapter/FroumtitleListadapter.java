@@ -50,7 +50,6 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		adapter = new DataBaseAdapter(context);
 
 		convertView = myInflater
 				.inflate(R.layout.raw_froumtitle, parent, false);

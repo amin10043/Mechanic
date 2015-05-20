@@ -569,11 +569,14 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertPapertitletoDb(String Title, String Context) {
+	public void insertPapertitletoDb(String Title, String Context, int userID,
+			String date) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Title", Title);
 		cv.put("Context", Context);
+		cv.put("UserId", userID);
+		cv.put("Date", date);
 
 		mDb.insert(TablePaper, null, cv);
 
@@ -2608,6 +2611,11 @@ public class DataBaseAdapter {
 			uc.put("NumofDisLike", numofdisLike);
 			mDb.update(TableCommentInObject, uc, "ID=" + id, null);
 		}
+	}
+
+	public void deleteLikeFromPaper(int userID, int PaperID) {
+		String[] t = { String.valueOf(userID), String.valueOf(PaperID) };
+		mDb.delete(TableLikeInPaper, "UserId=? and PaperId=?", t);
 	}
 
 }
