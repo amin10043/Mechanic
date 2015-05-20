@@ -31,6 +31,7 @@ import com.project.mechanic.entity.NewsPaper;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Province;
+import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.TicketType;
 import com.project.mechanic.entity.Users;
@@ -1166,6 +1167,13 @@ public class DataBaseAdapter {
 		News tempNews = new News(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getInt(4));
 		return tempNews;
+
+	}
+
+	private Settings CursorToSettings(Cursor cursor) {
+		Settings tempSettings = new Settings(cursor.getInt(0),
+				cursor.getString(1), cursor.getString(2));
+		return tempSettings;
 
 	}
 
@@ -2618,4 +2626,32 @@ public class DataBaseAdapter {
 		mDb.delete(TableLikeInPaper, "UserId=? and PaperId=?", t);
 	}
 
+	public void updateTables(String tableName, String[] cols, String[][] values) {
+
+		ContentValues cv = null;
+		for (int i = 0; i < values.length; i++) {
+			cv = new ContentValues();
+			for (int j = 0; j < values[i].length; j++) {
+				cv.put(cols[j], values[i][j]);
+			}
+			mDb.insert(tableName, null, cv);
+		}
+
+	}
+
+	public Settings getSettings() {
+		Settings set = null;
+		Cursor cur = mDb.query(TableSettings, Settings, null, null, null, null,
+				null);
+		if (cur.moveToNext())
+			set = CursorToSettings(cur);
+		return set;
+
+	}
+
+	public void setServerDate(String value) {
+		ContentValues cv = new ContentValues();
+		cv.put("ServerDate", value);
+		mDb.update(TableSettings, cv, null, null);
+	}
 }
