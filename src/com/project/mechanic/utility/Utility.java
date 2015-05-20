@@ -237,8 +237,13 @@ public class Utility {
 	}
 
 	public void parseQuery(String query) {
-		StringTokenizer tokens = new StringTokenizer(query, "*");
+
+		StringTokenizer tokens = new StringTokenizer(query, "***");
+		if (!tokens.hasMoreTokens())
+			return;
 		String tableName = tokens.nextToken();
+		if (!tokens.hasMoreTokens())
+			return;
 		String serverDate = tokens.nextToken();
 
 		StringTokenizer inner = new StringTokenizer(tokens.nextToken(), ",");
