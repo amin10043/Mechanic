@@ -174,7 +174,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 
 		final TextView countLike = (TextView) convertView
 				.findViewById(R.id.countCommentFroum);
-		TextView countdisLike = (TextView) convertView
+		final TextView countdisLike = (TextView) convertView
 				.findViewById(R.id.countdislikecommentFroum);
 
 		TextView dateCommenter = (TextView) convertView
@@ -236,8 +236,8 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 			countOfReply.setText(adapter.getCountOfReplyInObject(ObjectID,
 					comment.getId()).toString());
 
-		// countLike.setText(comment.getId());
-		// countdisLike.setText(comment.getFroumid());
+		countLike.setText(String.valueOf(comment.getNumofLike()));
+		countdisLike.setText(String.valueOf(comment.getNumofDisLike()));
 
 		// start... this code for set image of profile
 		adapter.open();
@@ -272,79 +272,87 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 
 		notifyDataSetChanged();
 
-		// imgdislikeComment.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View t) {
-		//
-		// adapter.open();
-		// if (Currentuser == null) {
-		// Toast.makeText(context, "ابتدا باید وارد شوید",
-		// Toast.LENGTH_SHORT).show();
-		// return;
-		// } else {
-		// int intCureentDisLike = Integer.valueOf(comment.getId());
-		// int newCountDisLike = intCureentDisLike + 1;
-		// String stringNewcountDisLike = String
-		// .valueOf(newCountDisLike);
-		//
-		// //
-		// // // peyda kardan id comment sabt shode
-		//
-		// RelativeLayout parentlayout = (RelativeLayout) t
-		// .getParent().getParent().getParent();
-		// View viewMaincmt = parentlayout.findViewById(R.id.peygham);
-		// TextView txtMaincmt = (TextView) viewMaincmt;
-		//
-		// View viewnumDislike = parentlayout
-		// .findViewById(R.id.countdislikecommentFroum);
-		// TextView txtdislike = (TextView) viewnumDislike;
-		//
-		// int id = 0;
-		//
-		// for (CommentInObject listItem : CommentList) {
-		// if (txtMaincmt.getText().toString().equals(listItem)) {
-		//
-		// id = listItem.getId();
-		//
-		// }
-		// }
-		//
-		// // send to database
-		//
-		// if (adapter.isUserLikedComment(Currentuser.getId(), id, 0)) {
-		//
-		// int b = intCureentDisLike - 1;
-		// String c = String.valueOf(b);
-		// adapter.deleteLikeFromCommentInFroum(id,
-		// Currentuser.getId(), 0);
-		//
-		// adapter.insertCmtDisLikebyid(id, c, Currentuser.getId());
-		// f.updateList();
-		//
-		// txtdislike.setText(comment.getId());
-		// notifyDataSetChanged();
-		// imgdislikeComment
-		// .setImageResource((R.drawable.negative));
-		//
-		// } else {
-		// adapter.insertCmtDisLikebyid(id, stringNewcountDisLike,
-		// Currentuser.getId());
-		// adapter.insertLikeInCommentToDb(Currentuser.getId(), 0,
-		// id);
-		// f.updateList();
-		//
-		// txtdislike.setText(comment.getId());
-		// imgdislikeComment
-		// .setImageResource((R.drawable.negative_off));
-		// notifyDataSetChanged();
-		//
-		// }
-		// adapter.close();
-		// }
-		// }
-		// });
-		//
+		imgdislikeComment.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View t) {
+
+				adapter.open();
+				if (Currentuser == null) {
+					Toast.makeText(context, "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+					return;
+				} else {
+					int intCureentDisLike = Integer.valueOf(comment
+							.getNumofDisLike());
+					int newCountDisLike = intCureentDisLike + 1;
+					String stringNewcountDisLike = String
+							.valueOf(newCountDisLike);
+
+					//
+					// // peyda kardan id comment sabt shode
+
+					RelativeLayout parentlayout = (RelativeLayout) t
+							.getParent().getParent().getParent();
+					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
+					TextView txtMaincmt = (TextView) viewMaincmt;
+
+					View viewnumDislike = parentlayout
+							.findViewById(R.id.countdislikecommentFroum);
+					TextView txtdislike = (TextView) viewnumDislike;
+
+					int id = 0;
+
+					for (CommentInObject listItem : CommentList) {
+						if (txtMaincmt.getText().toString()
+								.equals(listItem.getDescription())) {
+
+							id = listItem.getId();
+
+						}
+					}
+
+					// send to database
+
+					if (adapter.isUserLikedComment(Currentuser.getId(), id, 0)) {
+
+						adapter.deleteLikeFromCommentInFroum(id,
+								Currentuser.getId(), 0);
+
+						int b = intCureentDisLike - 1;
+						// String c = String.valueOf(b);
+
+						adapter.putDisLikeIntroduction(id, b,
+								Currentuser.getId());
+
+						f.updateList();
+						countdisLike.setText(String.valueOf(adapter
+								.getCountofLikeCommentIntroduction(ObjectID, id)));
+
+						notifyDataSetChanged();
+						imgdislikeComment
+								.setImageResource((R.drawable.negative));
+
+					} else {
+						adapter.putDisLikeIntroduction(id, newCountDisLike,
+								Currentuser.getId());
+						adapter.insertLikeInCommentToDb(Currentuser.getId(), 0,
+								id);
+						f.updateList();
+
+						countdisLike.setText(String.valueOf(adapter
+								.getCountofLikeCommentIntroduction(ObjectID, id)));
+
+						imgdislikeComment
+								.setImageResource((R.drawable.negative_off));
+						notifyDataSetChanged();
+
+					}
+					adapter.close();
+				}
+			}
+		});
+
 		imglikeComment.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -361,7 +369,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 					return;
 				} else {
 
-					int intCureentLike = Integer.valueOf(comment.getId());
+					int intCureentLike = Integer.valueOf(comment.getNumofLike());
 					int newCountLike = intCureentLike + 1;
 					String stringNewcountLike = String.valueOf(newCountLike);
 
@@ -379,7 +387,8 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 					int id = 0;
 
 					for (CommentInObject listItem : CommentList) {
-						if (txtMaincmt.getText().toString().equals(listItem)) {
+						if (txtMaincmt.getText().toString()
+								.equals(listItem.getDescription())) {
 
 							id = listItem.getId();
 
@@ -396,32 +405,31 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 						int b = intCureentLike - 1;
 						String c = String.valueOf(b);
 
-						adapter.insertCmtLikebyid(id, c, Currentuser.getId());
+						adapter.putLikeOrDisLikeIntroduction(id, c,
+								Currentuser.getId());
 						f.updateList();
 
-						txtlike.setText(String.valueOf(adapter
-								.getCountofCommentinFroumObject(ObjectID, id)));
+						countLike.setText(String.valueOf(adapter
+								.getCountofLikeCommentIntroduction(ObjectID, id)));
 
 						adapter.close();
-						notifyDataSetChanged();
 
 						imglikeComment
 								.setBackgroundResource(R.drawable.positive_off);
 
 					} else {
 
-						adapter.insertCmtLikebyid(id, stringNewcountLike,
-								Currentuser.getId());
+						adapter.putLikeOrDisLikeIntroduction(id,
+								stringNewcountLike, Currentuser.getId());
 						adapter.insertLikeInCommentToDb(Currentuser.getId(), 1,
 								id);
 
 						f.updateList();
 
-						txtlike.setText(String.valueOf(adapter
-								.getCountofCommentinFroumObject(ObjectID, id)));
+						countLike.setText(String.valueOf(adapter
+								.getCountofLikeCommentIntroduction(ObjectID, id)));
 
 						adapter.close();
-						notifyDataSetChanged();
 						imglikeComment
 								.setBackgroundResource(R.drawable.positive);
 

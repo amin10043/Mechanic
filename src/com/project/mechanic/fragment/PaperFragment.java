@@ -8,9 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.PaperListAdapter;
@@ -24,44 +25,62 @@ public class PaperFragment extends Fragment {
 
 	DataBaseAdapter adapter;
 	int id;
-	private ImageButton btnAddcmt;
-	private ImageButton Like;
+	private LinearLayout btnAddcmt;
+	private LinearLayout Like;
 	private TextView NumofLike;
 	private TextView NumofComment;
 	private TextView txttitle;
 	private TextView txttitleDes;
 	DialogcmtInPaper dialog;
+	private TextView txtdate;
+
 	ListView lst;
 	ArrayList<CommentInPaper> mylist;
 	PaperListAdapter PaperListadapter;
 	int like = 0;
 	Utility util;
+	View header;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_paper, null);
+		header = getActivity().getLayoutInflater().inflate(
+				R.layout.header_expandable, null);
 		util = new Utility(getActivity());
+
 		final Users user = util.getCurrentUser();
-		btnAddcmt = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
-		Like = (ImageButton) view.findViewById(R.id.imgbtnLike_CmtFroum);
-		lst = (ListView) view.findViewById(R.id.lstComment);
-		NumofComment = (TextView) view.findViewById(R.id.txtNumofCmt_CmtFroum);
-		NumofLike = (TextView) view.findViewById(R.id.txtNumofLike_CmtFroum);
-		txttitle = (TextView) view.findViewById(R.id.rawTitletxt);
-		txttitleDes = (TextView) view.findViewById(R.id.rawtxtDescription);
+
+		lst = (ListView) view.findViewById(R.id.listViewnewspaper);
+
+		btnAddcmt = (LinearLayout) header.findViewById(R.id.addCommentToTopic);
+		Like = (LinearLayout) header.findViewById(R.id.LikeTopicLinear);
+
+		NumofComment = (TextView) header
+				.findViewById(R.id.numberOfCommentTopic);
+		NumofLike = (TextView) header.findViewById(R.id.txtNumofLike_CmtFroum);
+		txttitle = (TextView) header.findViewById(R.id.title_topic);
+		txttitleDes = (TextView) header.findViewById(R.id.description_topic);
+		txtdate = (TextView) header.findViewById(R.id.date_cc);
 
 		adapter = new DataBaseAdapter(getActivity());
-		if (getArguments().getString("Id") != null) {
+		// if (getArguments().getString("Id") != null) {
+		{
 			adapter.open();
+
 			id = Integer.valueOf(getArguments().getString("Id"));
+			// Toast.makeText(getActivity(), paperId + "", Toast.LENGTH_SHORT)
+			// .show();
 			NumofComment.setText(adapter.CommentInPaper_count(id).toString());
 
 			NumofLike.setText(adapter.LikeInPaper_count(id).toString());
 
+			Toast.makeText(getActivity(), "recieve = " + id, Toast.LENGTH_SHORT)
+					.show();
+
 			// Bundle bundle = new Bundle();
 			// bundle.getString("Id", String.valueOf(id));
-			id = Integer.valueOf(getArguments().getString("Id"));
+			// id = Integer.valueOf(getArguments().getString("Id"));
 			mylist = adapter.getCommentInPaperbyPaperid(id);
 			Paper p = adapter.getPaperItembyid(id);
 
@@ -69,6 +88,7 @@ public class PaperFragment extends Fragment {
 			txttitleDes.setText(p.getContext());
 			adapter.close();
 			if (lst != null) {
+				lst.addHeaderView(header);
 				PaperListadapter = new PaperListAdapter(getActivity(),
 						R.layout.raw_papercmt, mylist, PaperFragment.this);
 
@@ -104,7 +124,6 @@ public class PaperFragment extends Fragment {
 			});
 			return view;
 		}
-		return view;
 
 	}
 

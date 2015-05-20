@@ -474,6 +474,8 @@ public class DataBaseAdapter {
 		cv.put("Date", datetime);
 		cv.put("CommentId", commentid);
 		cv.put("Seen", 1);
+		cv.put("NumofLike", 0);
+		cv.put("NumofDisLike", 0);
 
 		mDb.insert(TableCommentInObject, null, cv);
 	}
@@ -2577,13 +2579,33 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	// public void insertCommentIntroduction(int id, String numofLike, int
-	// UserId) {
-	// if (!isUserLikedComment(UserId, id, 1)) {
-	// ContentValues uc = new ContentValues();
-	// uc.put("NumOfLike", numofLike);
-	// mDb.update(TableCommentInFroum, uc, "ID=" + id, null);
-	// }
-	// }
+	public void putLikeOrDisLikeIntroduction(int id, String numofLike,
+			int UserId) {
+		if (!isUserLikedComment(UserId, id, 1)) {
+			ContentValues uc = new ContentValues();
+			uc.put("NumOfLike", numofLike);
+			mDb.update(TableCommentInObject, uc, "ID=" + id, null);
+		}
+	}
+
+	public Integer getCountofLikeCommentIntroduction(int ObjectId, int CommentID) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInObject + " WHERE ObjectId=" + ObjectId
+				+ " AND CommentID=" + CommentID, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public void putDisLikeIntroduction(int id, int numofdisLike, int UserId) {
+		if (!isUserDisLikedComment(UserId, id)) {
+			ContentValues uc = new ContentValues();
+			uc.put("NumofDisLike", numofdisLike);
+			mDb.update(TableCommentInObject, uc, "ID=" + id, null);
+		}
+	}
 
 }

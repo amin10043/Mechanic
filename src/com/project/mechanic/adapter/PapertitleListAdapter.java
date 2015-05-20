@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -30,6 +31,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 	private TextView NumofComment;
 	private TextView NumofLike;
 	private TextView DateView;
+	int id;
 
 	public PapertitleListAdapter(Context context, int resource,
 			List<Paper> objects) {
@@ -42,7 +44,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 
 	@SuppressLint("ViewHolder")
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -84,30 +86,31 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 
 				String item = ((TextView) parentlayout
 						.findViewById(R.id.rowtitlepaper)).getText().toString();
-				int id = 0;
+
 				for (Paper listItem : mylist) {
 					if (item.equals(listItem.getTitle())) {
 						// check authentication and authorization
 						id = listItem.getId();
 					}
-
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					PaperFragment fragment = new PaperFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-
-					DialogcmtInPaper dialog = new DialogcmtInPaper(null,
-							context, R.layout.dialog_addcomment, id);
-					Bundle bundle2 = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-
-					trans.replace(R.id.content_frame, fragment);
-					trans.commit();
 				}
+				Toast.makeText(context, "send = " + id, Toast.LENGTH_SHORT)
+						.show();
 
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				PaperFragment fragment = new PaperFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString("Id", String.valueOf(id));
+				fragment.setArguments(bundle);
+
+				DialogcmtInPaper dialog = new DialogcmtInPaper(null, context,
+						R.layout.dialog_addcomment, id);
+				Bundle bundle2 = new Bundle();
+				bundle.putString("Id", String.valueOf(id));
+				fragment.setArguments(bundle);
+
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
 			}
 
 		});
