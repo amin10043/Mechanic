@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class DialogPaperTitle extends Dialog {
 
@@ -21,6 +23,8 @@ public class DialogPaperTitle extends Dialog {
 	int resourceId;
 	Context context;
 	Fragment fragment;
+	Users CurrentUser;
+	Utility utility;
 
 	public DialogPaperTitle(Context context, int resourceId, Fragment fragment) {
 		super(context);
@@ -28,6 +32,12 @@ public class DialogPaperTitle extends Dialog {
 		this.resourceId = resourceId;
 		this.context = context;
 		this.fragment = fragment;
+		dbadapter = new DataBaseAdapter(context);
+		utility = new Utility(context);
+		dbadapter.open();
+		CurrentUser = utility.getCurrentUser();
+		dbadapter.close();
+
 	}
 
 	@Override
@@ -39,14 +49,18 @@ public class DialogPaperTitle extends Dialog {
 		btntitle = (Button) findViewById(R.id.btnPdf1_Object);
 		titletxt = (EditText) findViewById(R.id.txtTitleP);
 		titleDestxt = (EditText) findViewById(R.id.txttitleDes);
+
+		PersianDate date = new PersianDate();
+		final String currentDate = date.todayShamsi();
+
 		btntitle.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				dbadapter = new DataBaseAdapter(context);
 				dbadapter.open();
 				dbadapter.insertPapertitletoDb(titletxt.getText().toString(),
-						titleDestxt.getText().toString());
+						titleDestxt.getText().toString(), CurrentUser.getId(),
+						currentDate);
 				dbadapter.close();
 				((TitlepaperFragment) fragment).updateView();
 				DialogPaperTitle.this.dismiss();

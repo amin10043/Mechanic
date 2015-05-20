@@ -4,6 +4,8 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -11,17 +13,21 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Paper;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogcmtInPaper;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 
@@ -32,6 +38,8 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 	private TextView NumofLike;
 	private TextView DateView;
 	int id;
+	PersianDate p;
+	Utility util;
 
 	public PapertitleListAdapter(Context context, int resource,
 			List<Paper> objects) {
@@ -39,6 +47,8 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 		this.context = context;
 		this.mylist = objects;
 		adapter = new DataBaseAdapter(context);
+		util = new Utility(context);
+		p = new PersianDate();
 
 	}
 
@@ -48,26 +58,59 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		adapter = new DataBaseAdapter(context);
 
 		convertView = myInflater
-				.inflate(R.layout.raw_papertitle, parent, false);
+				.inflate(R.layout.raw_froumtitle, parent, false);
+
+		// start find view
 
 		final TextView txt1 = (TextView) convertView
 				.findViewById(R.id.rowtitlepaper);
 		TextView txt2 = (TextView) convertView
 				.findViewById(R.id.rowdescriptionpaper);
 		TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
-		NumofComment = (TextView) convertView.findViewById(R.id.NumOfComment);
-		NumofLike = (TextView) convertView.findViewById(R.id.NumOfLike);
-		DateView = (TextView) convertView.findViewById(R.id.txtDate);
-		PersianDate p = new PersianDate();
-		DateView.setText(p.todayShamsi());
+		NumofComment = (TextView) convertView
+				.findViewById(R.id.countCommentInEveryTopic);
+		NumofLike = (TextView) convertView
+				.findViewById(R.id.countLikeInFroumTitle);
+		DateView = (TextView) convertView.findViewById(R.id.datetopicinFroum);
+		ImageView iconProile = (ImageView) convertView
+				.findViewById(R.id.iconfroumtitle);
+
+		// end find view
+		adapter.open();
+
 		Paper person1 = mylist.get(position);
+
+		Users x = adapter.getUserbyid(person1.getUserId());
+		if (x.getImage() == null) {
+			iconProile.setImageResource(R.drawable.no_img_profile);
+		} else {
+
+			byte[] byteImg = x.getImage();
+			Bitmap bmp = BitmapFactory.decodeByteArray(byteImg, 0,
+					byteImg.length);
+			iconProile.setImageBitmap(bmp);
+
+			RelativeLayout rl = (RelativeLayout) convertView
+					.findViewById(R.id.topicTitleFroum);
+			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+					rl.getLayoutParams());
+
+			lp.width = util.getScreenwidth() / 7;
+			lp.height = util.getScreenwidth() / 7;
+			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp.setMargins(5, 5, 5, 5);
+			iconProile.setLayoutParams(lp);
+			adapter.close();
+		}
+		adapter.close();
+
+		DateView.setText(x.getDate());
 
 		txt1.setText(person1.getTitle());
 		txt2.setText(person1.getContext());
-		txt3.setText("Maryam");
+		txt3.setText(x.getName());
 		adapter.open();
 
 		NumofComment.setText(adapter.CommentInPaper_count(person1.getId())
@@ -117,5 +160,4 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 
 		return convertView;
 	}
-
 }
