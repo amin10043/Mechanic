@@ -3,8 +3,11 @@ package com.project.mechanic.fragment;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -36,19 +39,24 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 	EditText editmobile;
 	EditText editpass;
 	String mobileNumber ="";
-
+	 ProgressDialog pDialog;
+	 ProgressDialog ringProgressDialog;
+	 	    Handler updateBarHandler;
+	 	  final int progress_bar_type = 0;
+	 	 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
 		service = new ServiceComm(getActivity());
 		util = new Utility(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
+		updateBarHandler = new Handler();
 		((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
 		View view = inflater.inflate(R.layout.fragment_login, null);
 
 		Button btnlog = (Button) view.findViewById(R.id.btnlogin);
 		Button btncancle = (Button) view.findViewById(R.id.btncancle);
-
+//		Button launchRingDialog= (Button) view.findViewById(R.id.btnring);
 		TextView btnreg = (TextView) view.findViewById(R.id.btnreg1);
 		TextView btnforgot = (TextView) view.findViewById(R.id.btnforgot);
 		 editmobile = (EditText) view
@@ -62,6 +70,11 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 			@Override
 			public void onClick(View v) {
 
+				
+				
+				
+				
+				
 				dbAdapter.open();
 
 				mobile = editmobile.getText().toString();
@@ -83,6 +96,8 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 				}
 
 				else {
+					
+					
 
 					// String[] params = new String[] { "login", mobile, pass };
 					service.delegate = LoginFragment.this;
@@ -93,6 +108,44 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 					service.execute(items);
 					mobileNumber = mobile;
+					
+				
+ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "ConnectToService...", true);
+					
+			        ringProgressDialog.setCancelable(true);
+		
+			        new Thread(new Runnable() {
+		
+	            @Override
+		
+			            public void run() {
+	
+		                try {
+	
+		                    // Here you should write your time consuming task...
+	
+		                    // Let the progress ring for 10 seconds...
+			                    Thread.sleep(10000);
+		
+			                } catch (Exception e) {
+		
+			 
+		
+		                }
+	
+//			                ringProgressDialog.dismiss();
+		
+	}
+	            }).start();
+					
+					
+					
+					///////////////////////
+					
+		///////////////////////////			
+					
+					
+					
 				}
 			}
 		});
@@ -121,6 +174,10 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 				trans.commit();
 			}
 		});
+		
+		
+		
+
 
 		btnforgot.setOnClickListener(new View.OnClickListener() {
 
@@ -150,14 +207,33 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 	}
 
+	
+	
+	
+	
+	
+		 	 
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public void processFinish(String output) {
 
+		
+		
+		 ringProgressDialog.dismiss();
+		
 		SharedPreferences settings = getActivity().getSharedPreferences("user",
 				0);
 		SharedPreferences.Editor editor = settings.edit();
 		if ("true".equals(output)) {
-
+			
 			editor.putBoolean("isLogin", true);
 
 			// ثبت اطلاعات کاربر در دیتا بیس هم حتما انجام گیرد. فراموش نشود!!!!
@@ -190,6 +266,8 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 					Toast.LENGTH_SHORT).show();
 
 		} else {
+			
+			
 			Toast.makeText(getActivity(),
 					"نام کاربری و یا کلمه عبور به درستی وارد نشده است.",
 					Toast.LENGTH_SHORT).show();

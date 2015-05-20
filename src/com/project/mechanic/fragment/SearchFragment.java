@@ -125,7 +125,7 @@ public class SearchFragment extends ListFragment {
 		public View getView(final int position, View convertView,
 				ViewGroup parent) {
 
-			LayoutInflater in = getLayoutInflater();
+			LayoutInflater in = getActivity().getLayoutInflater();
 			View row = in.inflate(R.layout.row_search, parent, false);
 
 			TextView name = (TextView) row.findViewById(R.id.row_search_name);

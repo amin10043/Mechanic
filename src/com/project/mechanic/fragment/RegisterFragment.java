@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -52,6 +53,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	Utility utile;
 	LinearLayout.LayoutParams lp;
 	ServiceComm service;
+	 ProgressDialog ringProgressDialog;
 	// byte[] byteImage1 = null;
 	// ContentValues newValues = new ContentValues();
 	// public RegisterFragment(Context context, int resourceId, Fragment
@@ -204,6 +206,37 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 				}
 
 				else {
+					
+					
+					
+ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "ConnectToService...", true);
+					
+			        ringProgressDialog.setCancelable(true);
+		
+			        new Thread(new Runnable() {
+		
+	            @Override
+		
+			            public void run() {
+	
+		                try {
+	
+		                    // Here you should write your time consuming task...
+	
+		                    // Let the progress ring for 10 seconds...
+			                    Thread.sleep(10000);
+		
+			                } catch (Exception e) {
+		
+			 
+		
+		                }
+	
+//			                ringProgressDialog.dismiss();
+		
+	}
+	            }).start();
+					
 
 				//	txtclickpic.setVisibility(View.INVISIBLE);
 					comregtxt.setVisibility(View.VISIBLE);
@@ -341,9 +374,14 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
+		   ringProgressDialog.dismiss();
+		
 		if ("0".equals(output)) {
 			Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT).show();
 		} else {
+			
+			
+			
 			Toast.makeText(getActivity(), "sabt shod ", Toast.LENGTH_SHORT)
 					.show();
 		}

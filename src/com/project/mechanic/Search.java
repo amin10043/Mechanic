@@ -28,7 +28,7 @@ public class Search extends ListActivity {
 	private String[] cPage;
 	private String[] Page;
 	private EditText word;
-	String tableName;
+	String tableName = "Province";
 
 	private TextView status;
 
