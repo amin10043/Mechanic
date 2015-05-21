@@ -30,7 +30,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.inter.AsyncInterface;
@@ -72,6 +71,7 @@ public class WelcomeScreen extends Activity implements AsyncInterface {
 	private ServiceComm comm;
 	private Utility util;
 	private DataBaseAdapter adapter;
+	Settings settings;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,11 +84,11 @@ public class WelcomeScreen extends Activity implements AsyncInterface {
 		boolean isFirstTime = false;
 
 		adapter.open();
-		Settings settings = adapter.getSettings();
+		settings = adapter.getSettings();
 		adapter.close();
+		util = new Utility(this);
 
 		String tableUpdating = "User";
-		util = new Utility(this);
 		serviceUpdate = new Updating(this);
 		serviceUpdate.delegate = this;
 		serviceUpdate.execute(tableUpdating, settings.getServerDate());
@@ -689,7 +689,11 @@ public class WelcomeScreen extends Activity implements AsyncInterface {
 	public void processFinish(String output) {
 		util.parseQuery(output);
 
-		Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
-	}
+		String tableUpdating = "Paper";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate() : ""));
 
+	}
 }

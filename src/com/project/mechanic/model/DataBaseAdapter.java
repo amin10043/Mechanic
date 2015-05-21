@@ -125,7 +125,8 @@ public class DataBaseAdapter {
 			"Submit", "UserId", "Date" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name", "Count" };
-	private String[] Settings = { "Id", "ServerDate", "IMEI" };
+	private String[] Settings = { "Id", "ServerDate_Users", "ServerDate_Paper",
+			"IMEI" };
 
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
