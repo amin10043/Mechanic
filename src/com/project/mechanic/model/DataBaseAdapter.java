@@ -2636,7 +2636,8 @@ public class DataBaseAdapter {
 		for (int i = 0; i < values.length; i++) {
 			cv = new ContentValues();
 			for (int j = 0; j < values[i].length; j++) {
-				cv.put(cols[j], values[i][j]);
+				if (values[i][j] != null)
+					cv.put(cols[j], values[i][j]);
 			}
 			mDb.insert(tableName, null, cv);
 		}
