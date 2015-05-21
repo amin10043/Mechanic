@@ -2650,9 +2650,9 @@ public class DataBaseAdapter {
 
 	}
 
-	public void setServerDate(String value) {
+	public void setServerDate(String tableNameFiled, String value) {
 		ContentValues cv = new ContentValues();
-		cv.put("ServerDate", value);
+		cv.put(tableNameFiled, value);
 		mDb.update(TableSettings, cv, null, null);
 	}
 }

@@ -271,7 +271,7 @@ public class Utility {
 
 		adapter.open();
 		adapter.updateTables(tableName, col, values);
-		adapter.setServerDate(serverDate);
+		adapter.setServerDate("ServerDate_" + tableName, serverDate);
 		adapter.close();
 
 	}
