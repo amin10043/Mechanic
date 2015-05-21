@@ -126,7 +126,11 @@ public class DataBaseAdapter {
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name", "Count" };
 	private String[] Settings = { "Id", "ServerDate_Users", "ServerDate_Paper",
-			"IMEI" };
+			"ServerDate_Object", "ServerDate_News", "ServerDate_Froum",
+			"ServerDate_Anad", "ServerDate_Ticket",
+			"ServerDate_CommentInObject", "ServerDate_CommentInFroum",
+			"ServerDate_CmtInPaper", "ServerDate_LikeInPaper",
+			"ServerDate_LikeInFroum", "ServerDate_LikeInObject", "IMEI" };
 
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
@@ -2630,13 +2634,14 @@ public class DataBaseAdapter {
 	public void updateTables(String tableName, String[] cols, String[][] values) {
 
 		ContentValues cv = null;
+		long res;
 		for (int i = 0; i < values.length; i++) {
 			cv = new ContentValues();
 			for (int j = 0; j < values[i].length; j++) {
 				if (values[i][j] != null)
 					cv.put(cols[j], values[i][j]);
 			}
-			mDb.insert(tableName, null, cv);
+			res = mDb.insert(tableName, null, cv);
 		}
 
 	}
