@@ -3,9 +3,14 @@ package com.project.mechanic.fragment;
 import java.util.ArrayList;
 
 import com.project.mechanic.R;
+import com.project.mechanic.adapter.LikeFroumNotificationAdapter;
 import com.project.mechanic.adapter.LikeNotificationAdapter;
+import com.project.mechanic.adapter.LikePaperNotificationAdapter;
 import com.project.mechanic.adapter.commentnotificationAdapter;
 import com.project.mechanic.entity.CommentInFroum;
+import com.project.mechanic.entity.LikeInFroum;
+import com.project.mechanic.entity.LikeInObject;
+import com.project.mechanic.entity.LikeInPaper;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -14,6 +19,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -24,6 +30,8 @@ public class Dialog_notificationlike extends Dialog{
 	private Fragment fragment;
 	private int seen;
 	ListView listnotificationlike;
+	ListView listnotificationlike1;
+	ListView listnotificationlike2;
 
 	public Dialog_notificationlike(Context context) {
 		super(context);
@@ -47,27 +55,65 @@ public void onCreate(Bundle savedInstanceState) {
 		
 		
 		listnotificationlike= (ListView) findViewById(R.id.listnotificationlike);
+		listnotificationlike1= (ListView) findViewById(R.id.listnotificationlike1);
+		listnotificationlike2= (ListView) findViewById(R.id.listnotificationlike2);
+		
 		dbadapter.open();
 		
-		ArrayList<Object> mylist = dbadapter.getUnseenlike();
+        ArrayList<LikeInObject> mylist = dbadapter.getUnseenlike();
+		ArrayList<LikeInFroum> mylist1 = dbadapter.getUnseenlikeInFroum();
+		ArrayList<LikeInPaper> mylist2 = dbadapter.getUnseenlikeInPaper();
 		//CommentInFroum c = dbadapter.getCommentInFroumbyID(1);
 		//String [] aa = {c.getDesk(),c.getDesk(),c.getDesk(),c.getDesk()};
 		dbadapter.close();
 		
 		
-		LikeNotificationAdapter dataAdapter = new  LikeNotificationAdapter(context,R.layout.row_notification_list,mylist);
 		
-		//ArrayAdapter dataAdapter = new ArrayAdapter(
-						//context, android.R.layout.simple_list_item_1, mylist);
-				//listnotificationlike.setAdapter(dataAdapter);
+		
+		LikeNotificationAdapter dataAdapter = new LikeNotificationAdapter(context, R.layout.row_notification_list, mylist);
+		LikeFroumNotificationAdapter dataAdapter1 = new  LikeFroumNotificationAdapter(context,R.layout.row_notification_list,mylist1);
+		LikePaperNotificationAdapter dataAdapter2 = new LikePaperNotificationAdapter(context, R.layout.row_notification_list, mylist2);
+		
+		
+//		if(listnotificationlike!=null){
+//			listnotificationlike.setAdapter(dataAdapter);}
+//			
+//		else{listnotificationlike.setVisibility(View.INVISIBLE);
+//		
+//		}
+//		
+//		
+//		if(listnotificationlike1!=null){
+//			listnotificationlike1.setAdapter(dataAdapter1);	}
+//		else{listnotificationlike1.setVisibility(View.INVISIBLE);
+//		
+//		}
+//		if(listnotificationlike2!=null){
+//			listnotificationlike2.setAdapter(dataAdapter2);	}
+//		else{listnotificationlike2.setVisibility(View.INVISIBLE);
+//		
+//		}
 			
 			
-		listnotificationlike.setAdapter(dataAdapter);	
+		listnotificationlike.setAdapter(dataAdapter);
+		listnotificationlike1.setAdapter(dataAdapter1);
+		listnotificationlike2.setAdapter(dataAdapter2);
 			
+		
+	
+		
+		
 	}
+		
+	
+}
+		
+	
 
 
 
-	}
+
+
+	
 
 

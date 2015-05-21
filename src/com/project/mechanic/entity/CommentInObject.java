@@ -1,5 +1,7 @@
 package com.project.mechanic.entity;
 
+import android.R.string;
+
 public class CommentInObject {
 
 	int Id;
@@ -9,6 +11,7 @@ public class CommentInObject {
 	String Datetime;
 	int Commentid;
 	int Seen;
+	
 
 	public CommentInObject(int id, String description, int froumid, int userid,
 			String datetime, int commentid, int seen) {
@@ -20,6 +23,7 @@ public class CommentInObject {
 		Datetime = datetime;
 		Commentid = commentid;
 		Seen = seen;
+		
 	}
 
 	public String getDescription() {
@@ -77,4 +81,5 @@ public class CommentInObject {
 	public void setSeen(int seen) {
 		Seen = seen;
 	}
+	
 }

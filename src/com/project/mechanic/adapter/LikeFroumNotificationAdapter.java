@@ -1,6 +1,5 @@
 package com.project.mechanic.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -8,34 +7,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
+
 import com.project.mechanic.R;
-import com.project.mechanic.entity.LikeInObject;
+import com.project.mechanic.entity.LikeInFroum;
+import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 
-
-
-public class LikeNotificationAdapter extends ArrayAdapter<LikeInObject> { 
+public class LikeFroumNotificationAdapter extends ArrayAdapter<LikeInFroum> {
 	Context context;
-	List<LikeInObject> mylist;
+	List<LikeInFroum> mylist1;
 	DataBaseAdapter dbadapter;
 	
-	
-	
-	
-	
-	public LikeNotificationAdapter(Context context, int resource,ArrayList<LikeInObject> mylist) {
-		super(context,resource,mylist);
+
+	public LikeFroumNotificationAdapter(Context context, int resource,List<LikeInFroum>list) {
+		super(context, resource,list);
 		// TODO Auto-generated constructor stub
 		this.context = context;
-		this.mylist  = mylist;
+		this.mylist1  = list;
 		dbadapter =new DataBaseAdapter(context);
 	}
-
-
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -44,13 +36,13 @@ public class LikeNotificationAdapter extends ArrayAdapter<LikeInObject> {
 		
 		TextView txt = (TextView) convertView
 				.findViewById(R.id.main_text_notification);
-		LikeInObject c=mylist.get(position);
+		LikeInFroum c=mylist1.get(position);
 		dbadapter.open();
-		int m=c.getUserId();
-		
+		int m2=c.getUserid();
+		//List<Users> mylist2=(List<Users>) dbadapter.getUserById(m2);
 		
 
-		Users u =dbadapter.getUserbyid(m);
+		Users u =dbadapter.getUserbyid(m2);
 
 		txt.setText(u.getName());
 
@@ -63,13 +55,5 @@ public class LikeNotificationAdapter extends ArrayAdapter<LikeInObject> {
 		return convertView;
 	}
 
+
 }
-
-
-		
-		
-		
-		
-		
-		
-	

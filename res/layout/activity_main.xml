@@ -12,23 +12,17 @@ android:layout_gravity="bottom"
   android:layout_height="wrap_content"
    android:background="@drawable/header">
    
-    
- <LinearLayout android:layout_width="wrap_content"
- android:layout_height="wrap_content"
-  android:layout_alignParentRight="true"
-   android:layout_centerVertical="true">
-   
-    
-  <ImageButton android:id="@+id/iBtnMenu"
-       android:layout_width="30dp" 
-       android:layout_height="30dp"
-        android:layout_marginRight="10dp"
-         android:background="@drawable/imeg_menu" /> 
-         
+ <LinearLayout
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_alignParentRight="true"
+     android:layout_centerVertical="true"
+     android:weightSum="3" >
   
- <FrameLayout android:layout_width="wrap_content"
- android:layout_height="match_parent">
- 
+ <FrameLayout
+     android:layout_width="wrap_content"
+     android:layout_height="match_parent"
+     android:layout_weight="1" >
     
  <LinearLayout android:layout_width="wrap_content"
  android:layout_height="wrap_content" 
@@ -63,8 +57,11 @@ android:layout_gravity="bottom"
   
 
   </FrameLayout>
-  <FrameLayout android:layout_width="match_parent"
- android:layout_height="match_parent">
+
+  <FrameLayout
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_weight="1" >
 
   <LinearLayout android:layout_width="wrap_content"
  android:layout_height="wrap_content"
@@ -100,6 +97,21 @@ android:layout_gravity="bottom"
   </LinearLayout>
   
   </FrameLayout>
+
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_marginRight="@dimen/txtsize10"
+      android:layout_weight="1" >
+
+      <ImageButton
+          android:id="@+id/iBtnMenu"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          
+          android:background="@drawable/imeg_menu" />
+
+  </LinearLayout>
   
   </LinearLayout>
   <TextView android:id="@+id/txtTitleP"
@@ -115,7 +127,7 @@ android:layout_gravity="bottom"
        android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
         android:layout_marginLeft="5dp"
-         android:src="@drawable/ic_search" /> 
+         android:src="@drawable/ic_search" />
          
   </RelativeLayout>
   <android.support.v4.widget.DrawerLayout android:id="@+id/drawer_layout"

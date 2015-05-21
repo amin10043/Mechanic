@@ -51,6 +51,7 @@ public class MainActivity extends FragmentActivity {
     SlideMenuAdapter              slideadapter;
     Dialog_notification dialog;
     Dialog_notificationlike dialog1;
+    
 
 	
 
@@ -59,11 +60,12 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 
-		adapter = new DataBaseAdapter(this);
-		slideadapter = new SlideMenuAdapter(this);
+//		adapter = new DataBaseAdapter(this);
+//		slideadapter = new SlideMenuAdapter(this);
 
-
+           final String title = "comment in froum";
         adapter = new DataBaseAdapter(this);
         slideadapter = new SlideMenuAdapter(this);
         
@@ -74,7 +76,7 @@ public class MainActivity extends FragmentActivity {
 		txtcm.setText(""+r);
 		
 		
-		int t= adapter.NumOfNewLikeInObject1();
+		int t= adapter.NumOfNewLikeInObject();
 		TextView txtlike=(TextView) findViewById(R.id.txtlike);
 		txtlike.setText(""+t);
 		adapter.close();
@@ -88,10 +90,15 @@ public class MainActivity extends FragmentActivity {
 				adapter.open();
 				
                 dialog = new Dialog_notification(MainActivity.this);
+                dialog.setTitle(title);
+                
 				
 				dialog.show();
 				int seen=1;
 				adapter.updatecmseentodb(seen);
+				adapter.updatecmobjectseentodb(seen);
+				adapter.updatecmpaperseentodb(seen);
+				
 				int r=	adapter. NumOfNewCmtInFroum();
 				TextView txtcm = (TextView) findViewById(R.id.txtcm);
 				txtcm.setText(""+r);
@@ -111,8 +118,10 @@ public class MainActivity extends FragmentActivity {
 				dialog1.show();
 				int seen=1;
 				adapter.updatelikeseentodb(seen);
+				adapter.updatelikefroumseentodb(seen);
+				adapter.updatelikepaperseentodb(seen);
 				
-				int t= adapter.NumOfNewLikeInObject1();
+				int t= adapter.NumOfNewLikeInObject();
 				TextView txtlike=(TextView) findViewById(R.id.txtlike);
 				txtlike.setText(""+t);
 				adapter.close();
@@ -177,7 +186,7 @@ public class MainActivity extends FragmentActivity {
 
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		ImageButton iBtnMenu = (ImageButton) findViewById(R.id.iBtnMenu);
+  ImageButton   iBtnMenu	=(ImageButton) findViewById(R.id.iBtnMenu);
 		// ImageButton iBtnShare = (ImageButton) findViewById(R.id.iBtnShare);
 		// ImageButton iBtnBack = (ImageButton) findViewById(R.id.iBtnBack);
 		// final ImageButton iBtnFavorite = (ImageButton)
