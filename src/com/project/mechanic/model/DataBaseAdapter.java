@@ -1109,6 +1109,7 @@ public class DataBaseAdapter {
 	}
 
 	private Object CursorToObject(Cursor cursor) {
+
 		Object tempObject = new Object(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
 				cursor.getString(5), cursor.getBlob(6), cursor.getBlob(7),
@@ -2160,43 +2161,43 @@ public class DataBaseAdapter {
 		if (!"".equals(name) && name != null)
 			uc.put("Name", name);
 		if (!"".equals(Phone) && Phone != null)
-			uc.put(Object[2], Phone);
+			uc.put("Phone", Phone);
 		if (!"".equals(Email) && Email != null)
-			uc.put(Object[3], Email);
+			uc.put("Email", Email);
 		if (!"".equals(fax) && fax != null)
-			uc.put(Object[4], fax);
+			uc.put("Fax", fax);
 		if (!"".equals(description) && description != null)
-			uc.put(Object[5], description);
+			uc.put("Description", description);
 		if (HeaderImage != null)
-			uc.put(Object[6], HeaderImage);
+			uc.put("Image1", HeaderImage);
 		if (ProfileImage != null)
-			uc.put(Object[7], ProfileImage);
+			uc.put("Image2", ProfileImage);
 		if (FooterImage != null)
-			uc.put(Object[8], FooterImage);
+			uc.put("Image3", FooterImage);
 		if (!"".equals(LinkCatalog) && LinkCatalog != null)
-			uc.put(Object[10], LinkCatalog);
+			uc.put("Pdf1", LinkCatalog);
 		if (!"".equals(LinkPrice) && LinkPrice != null)
-			uc.put(Object[11], LinkPrice);
+			uc.put("Pdf2", LinkPrice);
 		if (!"".equals(LinkPDF) && LinkPDF != null)
-			uc.put(Object[12], LinkPDF);
+			uc.put("Pdf3", LinkPDF);
 		if (!"".equals(LinkVideo) && LinkVideo != null)
-			uc.put(Object[13], LinkVideo);
+			uc.put("Pdf4", LinkVideo);
 		if (!"".equals(Address) && Address != null)
-			uc.put(Object[14], Address);
+			uc.put("Address", Address);
 		if (!"".equals(Mobile) && Mobile != null)
-			uc.put(Object[15], Mobile);
+			uc.put("Mobile", Mobile);
 		if (!"".equals(LinkFaceBook) && LinkFaceBook != null)
-			uc.put(Object[18], LinkFaceBook);
+			uc.put("Facebook", LinkFaceBook);
 		if (!"".equals(LinkInstagram) && LinkInstagram != null)
-			uc.put(Object[19], LinkInstagram);
+			uc.put("Instagram", LinkInstagram);
 		if (!"".equals(LinkLinkedin) && LinkLinkedin != null)
-			uc.put(Object[20], LinkLinkedin);
+			uc.put("LinkedIn", LinkLinkedin);
 		if (!"".equals(LinkGoogle) && LinkGoogle != null)
-			uc.put(Object[21], LinkGoogle);
+			uc.put("Google", LinkGoogle);
 		if (!"".equals(LinkSite) && LinkSite != null)
-			uc.put(Object[22], LinkSite);
+			uc.put("Site", LinkSite);
 		if (!"".equals(LinkTweitter) && LinkTweitter != null)
-			uc.put(Object[23], LinkTweitter);
+			uc.put("Twitter", LinkTweitter);
 
 		mDb.update(TableObject, uc, "ID=" + id, null);
 		Toast.makeText(mContext, "اطلاعات با موفقیت ویرایش شد",
