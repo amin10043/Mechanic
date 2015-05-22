@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="4" >
+        android:weightSum="4.1" >
 
         <RelativeLayout
             android:id="@+id/relative_display"
@@ -179,8 +179,8 @@
             android:layout_marginLeft="@dimen/txtsize40"
             android:layout_marginRight="@dimen/txtsize40"
             android:layout_marginTop="@dimen/txtsize10"
-            android:layout_weight="1.1"
-            android:gravity="center"
+            android:layout_weight="1.2"
+            android:orientation="horizontal"
             android:weightSum="2" >
 
             <Button
