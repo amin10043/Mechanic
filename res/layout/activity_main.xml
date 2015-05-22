@@ -1,146 +1,161 @@
- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
- android:layout_width="match_parent"
-  android:layout_height="match_parent"
-android:layout_gravity="bottom"
- android:background="@color/transparent"
-  android:orientation="vertical"
-   android:weightSum="1">
-   
-    
- <RelativeLayout android:id="@+id/searchV"
- android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-   android:background="@drawable/header">
-   
-    
- <LinearLayout android:layout_width="wrap_content"
- android:layout_height="wrap_content"
-  android:layout_alignParentRight="true"
-   android:layout_centerVertical="true">
-   
-    
-  <ImageButton android:id="@+id/iBtnMenu"
-       android:layout_width="30dp" 
-       android:layout_height="30dp"
-        android:layout_marginRight="10dp"
-         android:background="@drawable/imeg_menu" /> 
-         
-  
- <FrameLayout android:layout_width="wrap_content"
- android:layout_height="match_parent">
- 
-    
- <LinearLayout android:layout_width="wrap_content"
- android:layout_height="wrap_content" 
- android:orientation="vertical">
- 
-    
-  <ImageButton android:id="@+id/iBtnmessage"
-       android:layout_width="28dp"
-        android:layout_height="28dp"
-         android:layout_marginRight="10dp" 
-         android:background="@drawable/ic_message" />
-  </LinearLayout>
-  
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="bottom"
+    android:background="@color/transparent"
+    android:orientation="vertical"
+    android:weightSum="1" >
 
-  <LinearLayout android:layout_width="wrap_content"
- android:layout_height="wrap_content" 
- android:layout_gravity="bottom"
-  android:layout_marginRight="10dp"
-   android:background="@color/red" 
-   android:orientation="horizontal">
-  
-    
-  <TextView android:id="@+id/txtcm"
-       android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/searchV"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-         android:layout_gravity="bottom|left" 
-         android:layout_marginLeft="1dp"
-          android:layout_marginRight="1dp"
-           android:text="" android:textColor="@color/white"
-            android:textSize="@dimen/txtsize10" /> 
-  </LinearLayout>
-  
+        android:background="@drawable/header" >
 
-  </FrameLayout>
-  <FrameLayout android:layout_width="match_parent"
- android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:weightSum="3" >
 
-  <LinearLayout android:layout_width="wrap_content"
- android:layout_height="wrap_content"
-  android:orientation="vertical">
-  
-    
-  <ImageButton android:id="@+id/iBtnNotification"
-       android:layout_width="25dp"
-        android:layout_height="25dp"
-         android:layout_marginRight="10dp" 
-         android:background="@drawable/ic_notification" /> 
-  </LinearLayout>
-  
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
 
-  <LinearLayout android:layout_width="wrap_content"
- android:layout_height="wrap_content"
-  android:layout_gravity="bottom"
-   android:layout_marginRight="10dp"
-    android:gravity="bottom"
-     android:orientation="vertical">
-  
-  <TextView android:id="@+id/txtlike"
-       android:layout_width="match_parent" 
-       android:layout_height="match_parent" 
-       android:layout_gravity="bottom"
-        android:layout_marginLeft="1dp"
-         android:layout_marginRight="1dp"
-          android:background="@color/red"
-           android:gravity="left|bottom"
-            android:text=""
-             android:textColor="@color/white" 
-             android:textSize="@dimen/txtsize10" /> 
-  </LinearLayout>
-  
-  </FrameLayout>
-  
-  </LinearLayout>
-  <TextView android:id="@+id/txtTitleP"
-       android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-         android:layout_centerHorizontal="true"
-          android:layout_centerVertical="true"
-           android:textAppearance="?android:attr/textAppearanceLarge"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <ImageButton
+                        android:id="@+id/iBtnmessage"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/ic_message" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/circle_notification"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/txtcm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|left"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/txtsize10" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <ImageButton
+                        android:id="@+id/iBtnNotification"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/ic_notification" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginRight="10dp"
+                    android:gravity="bottom"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/txtlike"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+                        android:background="@drawable/circle_notification"
+                        android:gravity="left|bottom"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/txtsize10" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/txtsize10"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/iBtnMenu"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/imeg_menu" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtTitleP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#002230"
-             android:textSize="14sp" /> 
-             
-  <ImageView android:id="@+id/sedarch_v"
-       android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_marginLeft="5dp"
-         android:src="@drawable/ic_search" /> 
-         
-  </RelativeLayout>
-  <android.support.v4.widget.DrawerLayout android:id="@+id/drawer_layout"
- android:layout_width="match_parent"
-  android:layout_height="match_parent">
-  
-- <!--  The main content view 
-  --> 
-  <FrameLayout android:id="@+id/content_frame"
-       android:layout_width="match_parent"
-        android:layout_height="match_parent" /> 
-        
-- <!--  The navigation drawer 
-  --> 
-- <!--  should not be larger than 320 to show content 
-  --> 
-  <ListView android:id="@+id/left_drawer"
-       android:layout_width="180dp"
-        android:layout_height="match_parent" 
-        android:layout_gravity="right" 
-        android:background="@color/transparent"
-         android:choiceMode="singleChoice"
-          android:divider="@android:color/transparent"
-           android:dividerHeight="10dp" /> 
-  </android.support.v4.widget.DrawerLayout>
-  </LinearLayout>
-  
- 
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/sedarch_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/ic_search" />
+    </RelativeLayout>
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+- 
+<!--   The main content view  -->
+
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+- 
+<!--   The navigation drawer  -->
+- 
+<!--   should not be larger than 320 to show content  -->
+
+        <ListView
+            android:id="@+id/left_drawer"
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:background="@color/transparent"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10dp" />
+    </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>

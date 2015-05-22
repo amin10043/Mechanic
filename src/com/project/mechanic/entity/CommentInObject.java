@@ -1,5 +1,7 @@
 package com.project.mechanic.entity;
 
+import android.R.string;
+
 public class CommentInObject {
 
 	int Id;
@@ -11,6 +13,7 @@ public class CommentInObject {
 	int NumofLike;
 	int NumofDisLike;
 	int Seen;
+	
 
 	public CommentInObject(int id, String description, int froumid, int userid,
 			String datetime, int commentid, int NumofLike, int NumofDislike,
@@ -25,6 +28,7 @@ public class CommentInObject {
 		this.NumofLike = NumofLike;
 		this.NumofDisLike = NumofDislike;
 		Seen = seen;
+		
 	}
 
 	public int getNumofLike() {
@@ -98,4 +102,5 @@ public class CommentInObject {
 	public void setSeen(int seen) {
 		Seen = seen;
 	}
+	
 }

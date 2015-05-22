@@ -84,7 +84,7 @@ public class IntroductionFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_introduction, null);
-		((MainActivity) getActivity()).setActivityTitle(R.string.brand);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.brand);
 
 		adapter = new DataBaseAdapter(getActivity());
 		ut = new Utility(getActivity());

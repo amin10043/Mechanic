@@ -83,34 +83,37 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 		Paper person1 = mylist.get(position);
 
 		Users x = adapter.getUserbyid(person1.getUserId());
-		if (x.getImage() == null) {
-			iconProile.setImageResource(R.drawable.no_img_profile);
-		} else {
+		if (x != null) {
 
-			byte[] byteImg = x.getImage();
-			Bitmap bmp = BitmapFactory.decodeByteArray(byteImg, 0,
-					byteImg.length);
-			iconProile.setImageBitmap(bmp);
+			if (x.getImage() == null) {
+				iconProile.setImageResource(R.drawable.no_img_profile);
+			} else {
 
-			RelativeLayout rl = (RelativeLayout) convertView
-					.findViewById(R.id.topicTitleFroum);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-					rl.getLayoutParams());
+				byte[] byteImg = x.getImage();
+				Bitmap bmp = BitmapFactory.decodeByteArray(byteImg, 0,
+						byteImg.length);
+				iconProile.setImageBitmap(bmp);
 
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 5, 5, 5);
-			iconProile.setLayoutParams(lp);
-			adapter.close();
+				RelativeLayout rl = (RelativeLayout) convertView
+						.findViewById(R.id.topicTitleFroum);
+				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+						rl.getLayoutParams());
+
+				lp.width = util.getScreenwidth() / 7;
+				lp.height = util.getScreenwidth() / 7;
+				lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				lp.setMargins(5, 5, 5, 5);
+				iconProile.setLayoutParams(lp);
+				adapter.close();
+			}
+			DateView.setText(x.getDate());
+			txt3.setText(x.getName());
 		}
 		adapter.close();
 
-		DateView.setText(x.getDate());
-
 		txt1.setText(person1.getTitle());
 		txt2.setText(person1.getContext());
-		txt3.setText(x.getName());
+
 		adapter.open();
 
 		NumofComment.setText(adapter.CommentInPaper_count(person1.getId())

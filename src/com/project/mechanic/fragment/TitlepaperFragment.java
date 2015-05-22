@@ -36,7 +36,7 @@ public class TitlepaperFragment extends Fragment {
 	public View onCreateView(android.view.LayoutInflater inflater,
 			android.view.ViewGroup container, Bundle savedInstanceState) {
 
-		((MainActivity) getActivity()).setActivityTitle(R.string.News);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.News);
 		view = inflater.inflate(R.layout.fragment_titlepaper, null);
 		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 

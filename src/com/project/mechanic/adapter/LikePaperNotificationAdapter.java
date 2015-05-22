@@ -11,21 +11,22 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.project.mechanic.R;
-import com.project.mechanic.entity.LikeInObject;
+import com.project.mechanic.entity.LikeInPaper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class LikeNotificationAdapter extends ArrayAdapter<LikeInObject> {
+public class LikePaperNotificationAdapter extends ArrayAdapter<LikeInPaper> {
+
 	Context context;
-	List<LikeInObject> mylist;
+	List<LikeInPaper> mylist2;
 	DataBaseAdapter dbadapter;
 
-	public LikeNotificationAdapter(Context context, int resource,
-			ArrayList<LikeInObject> mylist) {
-		super(context, resource, mylist);
+	public LikePaperNotificationAdapter(Context context, int resource,
+			ArrayList<LikeInPaper> mylist2) {
+		super(context, resource);
 		// TODO Auto-generated constructor stub
 		this.context = context;
-		this.mylist = mylist;
+		this.mylist2 = mylist2;
 		dbadapter = new DataBaseAdapter(context);
 	}
 
@@ -35,9 +36,9 @@ public class LikeNotificationAdapter extends ArrayAdapter<LikeInObject> {
 		convertView = myInflater.inflate(R.layout.row_notification_list, null);
 
 		TextView txt = (TextView) convertView.findViewById(R.id.namenotif);
-		LikeInObject c = mylist.get(position);
+		LikeInPaper c = mylist2.get(position);
 		dbadapter.open();
-		int m = c.getUserId();
+		int m = c.getUserid();
 
 		Users u = dbadapter.getUserbyid(m);
 
