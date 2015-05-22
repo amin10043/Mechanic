@@ -66,6 +66,7 @@ public class EditPersonalFragment extends Fragment {
 		img2 = (ImageView) view.findViewById(R.id.imgp);
 		// imagecamera=(ImageView) view.findViewById(R.id.imagcamera);
 		Button btnregedit = (Button) view.findViewById(R.id.btnregedit);
+	Button btnback	=(Button) view.findViewById(R.id.btnbackdisplay);
 
 		LinearLayout lin3 = (LinearLayout) view.findViewById(R.id.lin5);
 
@@ -169,6 +170,27 @@ public class EditPersonalFragment extends Fragment {
 			}
 		});
 
+		
+		
+		btnback.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new DisplayPersonalInformationFragment());
+				trans.commit();
+				
+				
+			}
+		});
+		
+		
+		
+		
+		
 		img2.setOnClickListener(new OnClickListener() {
 
 			@Override

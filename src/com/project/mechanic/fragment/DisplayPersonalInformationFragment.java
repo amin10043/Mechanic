@@ -51,9 +51,9 @@ public class DisplayPersonalInformationFragment extends Fragment {
 		Button btnedit = (Button) view.findViewById(R.id.btnedit);
 
 		TextView txtdate = (TextView) view.findViewById(R.id.txtdate);
-
+	//	txtaddress.setMovementMethod(ScrollingMovementMethod.getInstance());
 		final LinearLayout lin4 = (LinearLayout) view.findViewById(R.id.lin2);
-		txtaddress.setMovementMethod(new ScrollingMovementMethod());
+	
 		LayoutParams lp1 = new LinearLayout.LayoutParams(lin4.getLayoutParams());
 		lp1.width = utile1.getScreenwidth() / 4;
 		lp1.height = utile1.getScreenwidth() / 4;

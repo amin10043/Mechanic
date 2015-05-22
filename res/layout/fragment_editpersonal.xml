@@ -11,12 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="4" >
+        android:weightSum="4.1" >
 
         <RelativeLayout
             android:id="@+id/relative_display"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/txtsize10"
             android:layout_marginRight="@dimen/txtsize10"
             android:layout_marginTop="@dimen/txtsize10"
@@ -74,10 +74,10 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/txtsize10"
             android:layout_marginRight="@dimen/txtsize10"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:background="@color/blue3"
             android:orientation="vertical"
             android:weightSum="3" >
@@ -136,10 +136,10 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/txtsize10"
             android:layout_marginRight="@dimen/txtsize10"
-            android:layout_weight="1"
+            android:layout_weight="1.1"
             android:background="@color/blue3"
             android:orientation="vertical" >
 
@@ -174,18 +174,27 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/txtsize80"
-            android:layout_marginRight="@dimen/txtsize80"
+            android:layout_marginLeft="@dimen/txtsize40"
+            android:layout_marginRight="@dimen/txtsize40"
             android:layout_marginTop="@dimen/txtsize10"
-            android:layout_weight="1"
-            android:gravity="center" >
+            android:layout_weight="1.2"
+            android:orientation="horizontal"
+            android:weightSum="2" >
+
+            <Button
+                android:id="@+id/btnbackdisplay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/buttonshape"
+                android:text="برگشت" />
 
             <Button
                 android:id="@+id/btnregedit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@drawable/buttonshape"

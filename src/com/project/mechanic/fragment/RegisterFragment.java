@@ -139,18 +139,13 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 			}
 		});
 		btnreg.setOnClickListener(new OnClickListener() {
-
-			@SuppressWarnings("unchecked")
 			public void onClick(View arg0) {
 				Name = editname.getText().toString();
 				Mobile = editmobile.getText().toString();
 				Pass = editpass.getText().toString();
 				txtdate = date.todayShamsi();
-
 				number = tm.getLine1Number();
-
-				if (Name.equals("") || Pass.equals("")) {
-
+				if (Name.equals("") || Pass.equals("") || Mobile.equals("")) {
 					Toast.makeText(getActivity(),
 							"لطفا فيلدهاي اجباری را پر کنيد  ",
 							Toast.LENGTH_SHORT).show();
@@ -159,17 +154,16 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 							"Please wait ...", "ConnectToService...", true);
 
 					ringProgressDialog.setCancelable(true);
-
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
 							try {
 								Thread.sleep(10000);
-
 							} catch (Exception e) {
 							}
 						}
 					}).start();
+
 					comregtxt.setVisibility(View.VISIBLE);
 					btnreg.setEnabled(false);
 
@@ -191,7 +185,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 				}
 
 			}
-
 		});
 
 		comregtxt.setOnClickListener(new OnClickListener() {
