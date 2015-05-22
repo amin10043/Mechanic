@@ -125,7 +125,12 @@ public class DataBaseAdapter {
 			"Submit", "UserId", "Date" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name", "Count" };
-	private String[] Settings = { "Id", "ServerDate", "IMEI" };
+	private String[] Settings = { "Id", "ServerDate_Users", "ServerDate_Paper",
+			"ServerDate_Object", "ServerDate_News", "ServerDate_Froum",
+			"ServerDate_Anad", "ServerDate_Ticket",
+			"ServerDate_CommentInObject", "ServerDate_CommentInFroum",
+			"ServerDate_CmtInPaper", "ServerDate_LikeInPaper",
+			"ServerDate_LikeInFroum", "ServerDate_LikeInObject", "IMEI" };
 
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
@@ -2629,12 +2634,14 @@ public class DataBaseAdapter {
 	public void updateTables(String tableName, String[] cols, String[][] values) {
 
 		ContentValues cv = null;
+		long res;
 		for (int i = 0; i < values.length; i++) {
 			cv = new ContentValues();
 			for (int j = 0; j < values[i].length; j++) {
-				cv.put(cols[j], values[i][j]);
+				if (values[i][j] != null)
+					cv.put(cols[j], values[i][j]);
 			}
-			mDb.insert(tableName, null, cv);
+			res = mDb.insert(tableName, null, cv);
 		}
 
 	}
@@ -2649,9 +2656,9 @@ public class DataBaseAdapter {
 
 	}
 
-	public void setServerDate(String value) {
+	public void setServerDate(String tableNameFiled, String value) {
 		ContentValues cv = new ContentValues();
-		cv.put("ServerDate", value);
+		cv.put(tableNameFiled, value);
 		mDb.update(TableSettings, cv, null, null);
 	}
 }

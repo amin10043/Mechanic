@@ -254,21 +254,24 @@ public class Utility {
 		}
 		int j = 0;
 		String tempToken = "";
-		StringTokenizer innerToken;
+		// StringTokenizer innerToken;
+		String[] innerString;
 		String[][] values = new String[tokens.countTokens()][];
 		while (tokens.hasMoreTokens()) {
 			tempToken = tokens.nextToken();
-			innerToken = new StringTokenizer(tempToken, ",");
-			values[j] = new String[innerToken.countTokens()];
-			int k = 0;
-			while (innerToken.hasMoreTokens()) {
-				values[j][k++] = innerToken.nextToken();
-			}
+
+			innerString = tempToken.split(",");
+			// innerToken = new StringTokenizer(tempToken, ",");
+			values[j] = tempToken.split(",");
+			// int k = 0;
+			// while (innerToken.hasMoreTokens()) {
+			// values[j][k++] = innerToken.nextToken();
 			j++;
 		}
+
 		adapter.open();
 		adapter.updateTables(tableName, col, values);
-		adapter.setServerDate(serverDate);
+		adapter.setServerDate("ServerDate_" + tableName.trim(), serverDate);
 		adapter.close();
 
 	}

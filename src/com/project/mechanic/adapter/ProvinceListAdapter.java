@@ -30,6 +30,8 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 	List<Province> list;
 	DataBaseAdapter adapter;
 	int lastPosition = 0;
+	int i = 10;
+
 	private ImageView search;
 
 	public ProvinceListAdapter(Context context, int resource,
@@ -116,4 +118,12 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 		trans.commit();
 
 	}
+
+	// @Override
+	// public int getCount() {
+	// // TODO Auto-generated method stub
+	//
+	// return i;
+
+	// }
 }
