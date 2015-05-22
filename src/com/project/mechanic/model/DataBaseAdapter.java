@@ -185,12 +185,14 @@ public class DataBaseAdapter {
 		mDbHelper.close();
 	}
 
-	public void inserUserToDb(String name, String email, String password,
-			String phonenumber, String mobailenumber, String faxnumber,
-			String address, byte[] image, int serviceid, String date) {
+	public void inserUserToDb(int id, String name, String email,
+			String password, String phonenumber, String mobailenumber,
+			String faxnumber, String address, byte[] image, int serviceid,
+			String date) {
 
 		ContentValues uc = new ContentValues();
 
+		uc.put("Id", id);
 		uc.put("Name", name);
 		uc.put("Email", email);
 		uc.put("Password", password);
@@ -224,12 +226,12 @@ public class DataBaseAdapter {
 
 	}
 
-	public void inserUsernonpicToDb(String name, String email, String password,
-			String phonenumber, String mobailenumber, String faxnumber,
-			String address, int serviceid, String date) {
+	public void inserUsernonpicToDb(int Id, String name, String email,
+			String password, String phonenumber, String mobailenumber,
+			String faxnumber, String address, int serviceid, String date) {
 
 		ContentValues uc = new ContentValues();
-
+		uc.put("Id", Id);
 		uc.put("Name", name);
 		uc.put("Email", email);
 		uc.put("Password", password);
