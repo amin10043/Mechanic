@@ -122,7 +122,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:background="@android:color/transparent"
-                    android:scaleType="fitXY" />
+                    android:scaleType="fitXY"
+                    android:src="@drawable/no_img_profile" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

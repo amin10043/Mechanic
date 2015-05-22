@@ -20,59 +20,63 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
-import com.project.mechanic.entity.CommentInFroum;
+import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.DialogcmtInfroum;
-import com.project.mechanic.fragment.FroumFragment;
+import com.project.mechanic.fragment.DialogcmtInobject;
+import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
-public class ExpandableCommentFroum extends BaseExpandableListAdapter {
+public class ExpandIntroduction extends BaseExpandableListAdapter {
 
 	Context context;
-	private Map<CommentInFroum, List<CommentInFroum>> mapCollection;
-	private ArrayList<CommentInFroum> cmt;
+	private Map<CommentInObject, List<CommentInObject>> mapCollection;
+	private ArrayList<CommentInObject> CommentList;
 	DataBaseAdapter adapter;
 	Utility util;
-	FroumFragment f;
-	int froumID, userid;
+	IntroductionFragment f;
+	int ObjectID, userid;
 	Users Currentuser;
 
-	public ExpandableCommentFroum(Context context,
-			ArrayList<CommentInFroum> laptops,
-			Map<CommentInFroum, List<CommentInFroum>> mapCollection,
-			FroumFragment f, int froumID) {
+	public ExpandIntroduction(Context context,
+			ArrayList<CommentInObject> CommentList,
+			Map<CommentInObject, List<CommentInObject>> mapCollection,
+			IntroductionFragment introductionFragment, int ObjectId) {
+
 		this.context = context;
 		this.mapCollection = mapCollection;
-		this.cmt = laptops;
+		this.CommentList = CommentList;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
-		this.f = f;
-		this.froumID = froumID;
+		this.f = introductionFragment;
+		this.ObjectID = ObjectId;
 		adapter.open();
 		Currentuser = util.getCurrentUser();
 		adapter.close();
-
 	}
 
+	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		return mapCollection.get(cmt.get(groupPosition)).get(childPosition);
+		return mapCollection.get(CommentList.get(groupPosition)).get(
+				childPosition);
+
 	}
 
+	@Override
 	public long getChildId(int groupPosition, int childPosition) {
 		return childPosition;
 	}
 
+	@Override
 	public View getChildView(final int groupPosition, final int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
-		CommentInFroum reply = (CommentInFroum) getChild(groupPosition,
+		CommentInObject reply = (CommentInObject) getChild(groupPosition,
 				childPosition);
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.row_child_item, null);
 		}
-
 		TextView mainReply = (TextView) convertView
 				.findViewById(R.id.reply_txt_child);
 
@@ -85,7 +89,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 				.findViewById(R.id.icon_reply_comment);
 		adapter.open();
 
-		final CommentInFroum comment = cmt.get(groupPosition);
+		final CommentInObject comment = CommentList.get(groupPosition);
 		Users y = adapter.getUserbyid(comment.getUserid());
 
 		if (y.getImage() == null) {
@@ -111,7 +115,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 			ReplyerPic.setLayoutParams(lp);
 		}
 
-		mainReply.setText(reply.getDesk());
+		mainReply.setText(reply.getDescription());
 		dateReply.setText(reply.getDatetime());
 		nameReplyer.setText(y.getName());
 		adapter.close();
@@ -120,30 +124,37 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 		return convertView;
 	}
 
+	@Override
 	public int getChildrenCount(int groupPosition) {
-		if (mapCollection.get(cmt.get(groupPosition)) != null)
-			return mapCollection.get(cmt.get(groupPosition)).size();
+		if (mapCollection.get(CommentList.get(groupPosition)) != null)
+			return mapCollection.get(CommentList.get(groupPosition)).size();
 		return 0;
 	}
 
+	@Override
 	public Object getGroup(int groupPosition) {
-		return cmt.get(groupPosition);
+		return CommentList.get(groupPosition);
+
 	}
 
+	@Override
 	public int getGroupCount() {
-		return cmt.size();
+		return CommentList.size();
+
 	}
 
+	@Override
 	public long getGroupId(int groupPosition) {
 		return groupPosition;
+
 	}
 
+	@Override
 	public View getGroupView(final int groupPosition, final boolean isExpanded,
 			View convertView, ViewGroup parent) {
-
 		adapter.open();
 
-		final CommentInFroum comment = cmt.get(groupPosition);
+		final CommentInObject comment = CommentList.get(groupPosition);
 		Users x = adapter.getUserbyid(comment.getUserid());
 
 		adapter.close();
@@ -163,7 +174,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 		final TextView countLike = (TextView) convertView
 				.findViewById(R.id.countCommentFroum);
-		TextView countdisLike = (TextView) convertView
+		final TextView countdisLike = (TextView) convertView
 				.findViewById(R.id.countdislikecommentFroum);
 
 		TextView dateCommenter = (TextView) convertView
@@ -213,20 +224,20 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 		}
 
-		mainComment.setText(comment.getDesk());
+		mainComment.setText(comment.getDescription());
 		nameCommenter.setText(x.getName());
 		dateCommenter.setText(comment.getDatetime());
-		if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) == 0) {
+		if (adapter.getCountOfReplyInObject(ObjectID, comment.getId()) == 0) {
 			LinearLayout lrr = (LinearLayout) convertView
 					.findViewById(R.id.linearShowcountofRepply);
 			lrr.setVisibility(View.GONE);
 
 		} else
-			countOfReply.setText(adapter.getCountOfReplyInFroum(froumID,
+			countOfReply.setText(adapter.getCountOfReplyInObject(ObjectID,
 					comment.getId()).toString());
 
-		countLike.setText(String.valueOf(comment.getNumOfLike()));
-		countdisLike.setText(String.valueOf(comment.getNumOfDislike()));
+		countLike.setText(String.valueOf(comment.getNumofLike()));
+		countdisLike.setText(String.valueOf(comment.getNumofDisLike()));
 
 		// start... this code for set image of profile
 		adapter.open();
@@ -273,7 +284,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 					return;
 				} else {
 					int intCureentDisLike = Integer.valueOf(comment
-							.getNumOfDislike());
+							.getNumofDisLike());
 					int newCountDisLike = intCureentDisLike + 1;
 					String stringNewcountDisLike = String
 							.valueOf(newCountDisLike);
@@ -292,9 +303,9 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 					int id = 0;
 
-					for (CommentInFroum listItem : cmt) {
+					for (CommentInObject listItem : CommentList) {
 						if (txtMaincmt.getText().toString()
-								.equals(listItem.getDesk())) {
+								.equals(listItem.getDescription())) {
 
 							id = listItem.getId();
 
@@ -305,29 +316,33 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 					if (adapter.isUserLikedComment(Currentuser.getId(), id, 0)) {
 
-						int b = intCureentDisLike - 1;
-						String c = String.valueOf(b);
 						adapter.deleteLikeFromCommentInFroum(id,
 								Currentuser.getId(), 0);
 
-						adapter.insertCmtDisLikebyid(id, c, Currentuser.getId());
-						f.updateList();
+						int b = intCureentDisLike - 1;
+						// String c = String.valueOf(b);
 
-						txtdislike.setText(String.valueOf(comment
-								.getNumOfDislike()));
+						adapter.putDisLikeIntroduction(id, b,
+								Currentuser.getId());
+
+						f.updateList();
+						countdisLike.setText(String.valueOf(adapter
+								.getCountofLikeCommentIntroduction(ObjectID, id)));
+
 						notifyDataSetChanged();
 						imgdislikeComment
 								.setImageResource((R.drawable.negative));
 
 					} else {
-						adapter.insertCmtDisLikebyid(id, stringNewcountDisLike,
+						adapter.putDisLikeIntroduction(id, newCountDisLike,
 								Currentuser.getId());
 						adapter.insertLikeInCommentToDb(Currentuser.getId(), 0,
 								id);
 						f.updateList();
 
-						txtdislike.setText(String.valueOf(comment
-								.getNumOfDislike()));
+						countdisLike.setText(String.valueOf(adapter
+								.getCountofLikeCommentIntroduction(ObjectID, id)));
+
 						imgdislikeComment
 								.setImageResource((R.drawable.negative_off));
 						notifyDataSetChanged();
@@ -354,7 +369,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 					return;
 				} else {
 
-					int intCureentLike = Integer.valueOf(comment.getNumOfLike());
+					int intCureentLike = Integer.valueOf(comment.getNumofLike());
 					int newCountLike = intCureentLike + 1;
 					String stringNewcountLike = String.valueOf(newCountLike);
 
@@ -371,9 +386,9 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 					int id = 0;
 
-					for (CommentInFroum listItem : cmt) {
+					for (CommentInObject listItem : CommentList) {
 						if (txtMaincmt.getText().toString()
-								.equals(listItem.getDesk())) {
+								.equals(listItem.getDescription())) {
 
 							id = listItem.getId();
 
@@ -390,32 +405,31 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 						int b = intCureentLike - 1;
 						String c = String.valueOf(b);
 
-						adapter.insertCmtLikebyid(id, c, Currentuser.getId());
+						adapter.putLikeOrDisLikeIntroduction(id, c,
+								Currentuser.getId());
 						f.updateList();
 
-						txtlike.setText(String.valueOf(adapter
-								.getCountofCommentinFroumObject(froumID, id)));
+						countLike.setText(String.valueOf(adapter
+								.getCountofLikeCommentIntroduction(ObjectID, id)));
 
 						adapter.close();
-						notifyDataSetChanged();
 
 						imglikeComment
 								.setBackgroundResource(R.drawable.positive_off);
 
 					} else {
 
-						adapter.insertCmtLikebyid(id, stringNewcountLike,
-								Currentuser.getId());
+						adapter.putLikeOrDisLikeIntroduction(id,
+								stringNewcountLike, Currentuser.getId());
 						adapter.insertLikeInCommentToDb(Currentuser.getId(), 1,
 								id);
 
 						f.updateList();
 
-						txtlike.setText(String.valueOf(adapter
-								.getCountofCommentinFroumObject(froumID, id)));
+						countLike.setText(String.valueOf(adapter
+								.getCountofLikeCommentIntroduction(ObjectID, id)));
 
 						adapter.close();
-						notifyDataSetChanged();
 						imglikeComment
 								.setBackgroundResource(R.drawable.positive);
 
@@ -444,16 +458,17 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 					TextView x = (TextView) view;
 					String item = x.getText().toString();
 					int commentid = 0;
-					for (CommentInFroum listItem : cmt) {
-						if (item.equals(listItem.getDesk())) {
-
-							commentid = listItem.getId();
+					// String dd = comment.getDescription();
+					for (CommentInObject test : CommentList) {
+						if (item.equals(test.getDescription())) {
+							commentid = test.getId();
+							break;
 						}
 					}
 
-					DialogcmtInfroum dialog = new DialogcmtInfroum(f,
-							commentid, context, froumID,
-							R.layout.dialog_addcomment);
+					DialogcmtInobject dialog = new DialogcmtInobject(f,
+							context, R.layout.dialog_addcomment, ObjectID,
+							commentid);
 					dialog.show();
 
 					notifyDataSetChanged();
@@ -481,11 +496,14 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 		return convertView;
 	}
 
+	@Override
 	public boolean hasStableIds() {
 		return true;
 	}
 
+	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
 	}
+
 }

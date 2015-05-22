@@ -8,9 +8,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,7 +28,7 @@ public class Search extends ListActivity {
 	private String[] cPage;
 	private String[] Page;
 	private EditText word;
-	String tableName;
+	String tableName = "Province";
 
 	private TextView status;
 
@@ -47,15 +49,15 @@ public class Search extends ListActivity {
 
 		refresh(word.getText().toString(), "Name");
 
-		// Button btn = (Button) findViewById(R.id.search_btn);
-		// btn.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// refresh(word.getText().toString(), "Name");
-		//
-		// }
-		// });
+		Button btn = (Button) findViewById(R.id.search_btn);
+		btn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				refresh(word.getText().toString(), "Name");
+
+			}
+		});
 
 		word.addTextChangedListener(new TextWatcher() {
 
@@ -146,7 +148,7 @@ public class Search extends ListActivity {
 
 			Name[i] = db.serach(tableName, i, 1, word1, field);
 
-			cPage[i] = db.province_count("Province") + "";
+			// cPage[i] = db.province_count("Province") + "";
 
 			if (field.equals("Name")) {
 				Page[i] = "";

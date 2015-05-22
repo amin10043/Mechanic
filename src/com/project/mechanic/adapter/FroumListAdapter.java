@@ -150,7 +150,7 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 
 				adapter.open();
 				CommentInFroum a = list.get(position);
-				String s = a.getNumOfLike();
+				int s = a.getNumOfLike();
 				int c = Integer.valueOf(a.getNumOfLike());
 				int k = c + 1;
 				String f = String.valueOf(k);
@@ -195,7 +195,7 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 				}
 				adapter.open();
 				CommentInFroum a = list.get(position);
-				String c = a.getNumOfDislike();
+				int c = a.getNumOfDislike();
 				int h = Integer.valueOf(a.getNumOfDislike());
 				int k = h + 1;
 				String f = String.valueOf(k);

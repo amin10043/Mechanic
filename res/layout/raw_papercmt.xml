@@ -2,47 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/List_Item_Style"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right"
     android:background="@drawable/list_item"
+    android:gravity="right"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="10" >
+    <TextView
+        android:id="@+id/txtUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="name"
+        android:textColor="@color/transparent" />
 
-        <TextView
-            android:id="@+id/txtUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="14dp"
-            android:layout_toRightOf="@+id/rawCmttxt"
-            android:text="TextView" />
+    <TextView
+        android:id="@+id/rawCmttxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="comment"
+        android:textColor="@color/transparent" />
 
-        <TextView
-            android:id="@+id/rawCmttxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="TextView" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="90" >
-
-        <TextView
-            android:id="@+id/txtDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="25dp"
-            android:layout_marginLeft="30dp"
-            android:text="TextView" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/txtDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:gravity="left"
+        android:text="date"
+        android:textColor="@color/transparent" />
 
 </LinearLayout>

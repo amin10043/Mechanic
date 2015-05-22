@@ -234,25 +234,6 @@ public class FroumFragment extends Fragment {
 
 					}
 
-					// if (CurrentUser == null
-					// || !adapter.isUserLikedFroum(IDcurrentUser, froumid))
-					// {
-					// likeTopic.setBackgroundResource(R.drawable.like_froum_off);
-					// int c = adapter.LikeInFroum_count(froumid) - 1;
-					// countLike.setText(String.valueOf(c));
-					// adapter.deleteLikeFromFroum(IDcurrentUser, froumid);
-					//
-					// } else {
-					//
-					// likeTopic.setBackgroundResource(R.drawable.like_froum);
-					// adapter.insertLikeInFroumToDb(IDcurrentUser, froumid,
-					// currentDate, 0);
-					//
-					// countLike.setText(adapter.LikeInFroum_count(froumid)
-					// .toString());
-					//
-					// }
-
 				}
 				adapter.close();
 
