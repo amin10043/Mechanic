@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -248,6 +249,10 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		int serverId = 0;
 		try {
 			serverId = Integer.valueOf(output);
+			SharedPreferences idserver= context.getSharedPreferences("Id",
+					0);
+			idserver.edit().putInt("main_Id", serverId).commit();
+
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT).show();
 		}

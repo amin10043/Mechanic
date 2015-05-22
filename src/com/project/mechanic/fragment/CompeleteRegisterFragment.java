@@ -9,6 +9,7 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorJoiner.Result;
 import android.graphics.Bitmap;
@@ -121,10 +122,14 @@ public class CompeleteRegisterFragment extends Fragment {
 				dbAdapter = new DataBaseAdapter(getActivity());
 				dbAdapter.open();
 
-				int id = Integer.valueOf(getArguments().getString("Id"));
+//				int id = Integer.valueOf(getArguments().getString("Id"));
+//				Toast.makeText(getActivity(), ""+id, Toast.LENGTH_LONG).show();
+//					Users x =dbAdapter.getUserById(id);	
 				
-					Users x =dbAdapter.getUserById(id);					
-		     	int item = x.getId();
+				SharedPreferences idserver = getActivity()
+						.getSharedPreferences("Id", 0);
+				int item = idserver.getInt("main_Id", -1);
+		     	
 				Toast.makeText(getActivity(),
 						item+"",
 				Toast.LENGTH_SHORT).show();
@@ -148,17 +153,13 @@ public class CompeleteRegisterFragment extends Fragment {
 	});
 			return view;
 	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	}
+	
+	
+	
 }
 	
 	
