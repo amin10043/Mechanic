@@ -269,8 +269,8 @@ int serverId=0;
 		
 		try {
 			serverId = Integer.valueOf(output);
-			
-server.edit().putInt("srv_id", serverId).commit();
+
+    server.edit().putInt("srv_id", serverId).commit();
 			
 //			CompeleteRegisterFragment fragment = new CompeleteRegisterFragment();
 //			Bundle bundle = new Bundle();
@@ -283,6 +283,8 @@ server.edit().putInt("srv_id", serverId).commit();
 		
 		
 		
+
+
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT).show();
 		}
