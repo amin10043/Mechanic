@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
@@ -46,11 +45,10 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		service = new ServiceComm(getActivity());
 		util = new Utility(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
 		updateBarHandler = new Handler();
-		//((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
 		View view = inflater.inflate(R.layout.fragment_login, null);
 
 		Button btnlog = (Button) view.findViewById(R.id.btnlogin);
@@ -72,8 +70,8 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 				mobile = editmobile.getText().toString();
 				pass = editpass.getText().toString();
-//				Toast.makeText(getActivity(), mobile, Toast.LENGTH_SHORT)
-//						.show();
+				// Toast.makeText(getActivity(), mobile, Toast.LENGTH_SHORT)
+				// .show();
 				dbAdapter.close();
 				if (!util.isNetworkConnected()) {
 					util.showOkDialog(getActivity(), "خطا در ارتباط",
@@ -89,6 +87,7 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 				else {
 
 					// String[] params = new String[] { "login", mobile, pass };
+					service = new ServiceComm(getActivity());
 					service.delegate = LoginFragment.this;
 					Map<String, String> items = new LinkedHashMap<String, String>();
 					items.put("login", "login");
@@ -98,8 +97,8 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 					service.execute(items);
 					mobileNumber = mobile;
 
-					ringProgressDialog = ProgressDialog.show(getActivity(),
-							"", "لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(getActivity(), "",
+							"لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 
