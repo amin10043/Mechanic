@@ -9,6 +9,7 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorJoiner.Result;
 import android.graphics.Bitmap;
@@ -121,13 +122,21 @@ public class CompeleteRegisterFragment extends Fragment {
 				dbAdapter = new DataBaseAdapter(getActivity());
 				dbAdapter.open();
 
-				int id = Integer.valueOf(getArguments().getString("Id"));
-				
-					Users x =dbAdapter.getUserById(id);					
-		     	int item = x.getId();
+//				int id = Integer.valueOf(getArguments().getString("Id"));
+//				Toast.makeText(getActivity(), ""+id, Toast.LENGTH_LONG).show();
+//					Users x =dbAdapter.getUserById(id);	
+//				SharedPreferences sendDataID = getActivity().getSharedPreferences("Id",
+//						0);
+	//		final int id = sendDataID.getInt("main_Id", -1);
+	//		int item= Integer.valueOf(getArguments().getString("Id"));
+				int item=0;	
 				Toast.makeText(getActivity(),
-						item+"",
+						""+item,
 				Toast.LENGTH_SHORT).show();
+				
+				
+//				int item=1;
+				
 			        dbAdapter.UpdateUserToDb(item, Emailtxt.getText().toString(),Phonetxt.getText().toString(), 
 			        		Faxtxt.getText().toString(),
 			        		Addresstxt.getText().toString());
@@ -148,17 +157,13 @@ public class CompeleteRegisterFragment extends Fragment {
 	});
 			return view;
 	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	}
+	
+	
+	
 }
 	
 	
