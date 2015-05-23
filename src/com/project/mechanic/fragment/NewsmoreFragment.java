@@ -22,7 +22,7 @@ public class NewsmoreFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		((MainActivity) getActivity()).setActivityTitle(R.string.news);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.news);
 
 		View view = inflater.inflate(R.layout.fragment_newsmore, null);
 		TextView titletxt = (TextView) view.findViewById(R.id.titletxt);

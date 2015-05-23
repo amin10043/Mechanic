@@ -89,7 +89,7 @@ public class AnadFragment extends Fragment {
 		verticalOuterLayout = (LinearLayout) view
 				.findViewById(R.id.vertical_outer_layout_id);
 
-		((MainActivity) getActivity()).setActivityTitle(R.string.anad);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.anad);
 		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
 
 		imgadd = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);

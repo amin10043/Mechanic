@@ -55,7 +55,7 @@ public class ShowAdFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		((MainActivity) getActivity()).setActivityTitle(R.string.showad);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.showad);
 		id = Integer.valueOf(getArguments().getString("Id"));
 		util = new Utility(getActivity());
 		View view = inflater.inflate(R.layout.fragment_showad, null);

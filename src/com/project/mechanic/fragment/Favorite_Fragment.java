@@ -39,7 +39,7 @@ public class Favorite_Fragment extends Fragment {
 		service = new ServiceComm(getActivity());
 		util = new Utility(getActivity());
 
-		((MainActivity) getActivity()).setActivityTitle(R.string.favorite);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.favorite);
 		view = inflater.inflate(R.layout.favorite_fragment, null);
 
 		listFavorite = (ListView) view.findViewById(R.id.listView_favorite);

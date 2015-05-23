@@ -59,12 +59,13 @@ public class IntroductionFragment extends Fragment {
 	public LinearLayout AddComment;
 
 	public ImageButton Comment;
+	byte[] bitHeader, bytepro, bytefoot;
 
-	LinearLayout.LayoutParams profileParams, headerParams;
+	LinearLayout.LayoutParams profileParams, headerParams, footerParams;
 
 	ArrayList<CommentInObject> mylist;
 	DataBaseAdapter adapter;
-	LinearLayout headImageLinear, profileLinear;
+	LinearLayout headImageLinear, profileLinear, footerLinear;
 
 	TextView txtFax, txtAddress, txtPhone, txtCellphone, txtEmail, txtDesc,
 			CountLikeIntroduction, CountCommentIntroduction;
@@ -83,7 +84,7 @@ public class IntroductionFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_introduction, null);
-		((MainActivity) getActivity()).setActivityTitle(R.string.brand);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.brand);
 
 		adapter = new DataBaseAdapter(getActivity());
 		ut = new Utility(getActivity());
@@ -144,6 +145,7 @@ public class IntroductionFragment extends Fragment {
 		Pdf4 = (ImageButton) header.findViewById(R.id.btnPdf4_Object);
 		profileLinear = (LinearLayout) header
 				.findViewById(R.id.linear_id_profile_introduction_page);
+		footerLinear = (LinearLayout) header.findViewById(R.id.footerint);
 		EditPage = (ImageButton) header.findViewById(R.id.ImgbtnEdit);
 		CreatePage = (ImageButton) header.findViewById(R.id.ImgbtnCreate);
 
@@ -191,9 +193,12 @@ public class IntroductionFragment extends Fragment {
 
 		headerParams = new LinearLayout.LayoutParams(
 				headImageLinear.getLayoutParams());
-		headerParams.width = ut.getScreenwidth();
 		headerParams.height = (int) (ut.getScreenHeight() / 2.5);
 		headImageLinear.setPadding(0, 0, 0, 20);
+
+		footerParams = new LinearLayout.LayoutParams(
+				footerLinear.getLayoutParams());
+		footerParams.height = (int) (ut.getScreenHeight() / 2.5);
 
 		adapter.open();
 		int countcmt = adapter.CommentInObject_count(ObjectID);
@@ -209,7 +214,72 @@ public class IntroductionFragment extends Fragment {
 		}
 
 		headerImage.setLayoutParams(headerParams);
+		advertise2.setLayoutParams(footerParams);
+
 		// imagedisplay.setBackgroundResource(R.drawable.profile_account);
+		adapter.open();
+		if (object.getIsActive() == 0) {
+
+			Toast.makeText(getActivity(), "صفحه مورد نظر فعال نمی باشد",
+					Toast.LENGTH_SHORT).show();
+			View t = inflater.inflate(R.layout.fragment_is_active_introduction,
+					null);
+
+			bitHeader = object.getImage1();
+			ImageView HeaderActive = (ImageView) t
+					.findViewById(R.id.imgvadvertise_Object);
+
+			if (bitHeader != null) {
+				Bitmap bmp1 = BitmapFactory.decodeByteArray(bitHeader, 0,
+						bitHeader.length);
+				HeaderActive.setImageBitmap(bmp1);
+			} else
+				HeaderActive.setImageResource(R.drawable.no_image_header);
+
+			ImageView profileActive = (ImageView) t.findViewById(R.id.icon_pro);
+			bytepro = object.getImage2();
+			if (bytepro != null) {
+				Bitmap bmp2 = BitmapFactory.decodeByteArray(bytepro, 0,
+						bytepro.length);
+				profileActive.setImageBitmap(bmp2);
+
+			} else
+				profileActive.setImageResource(R.drawable.no_img_profile);
+
+			RelativeLayout namayandegiActive = (RelativeLayout) t
+					.findViewById(R.id.Layoutlink1);
+
+			namayandegiActive.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.commit();
+				}
+			});
+
+			RelativeLayout khadamatActive = (RelativeLayout) t
+					.findViewById(R.id.Layoutlink2);
+			khadamatActive.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new ProvinceFragment());
+					trans.commit();
+				}
+			});
+
+			return t;
+
+		}
+
+		adapter.close();
+
 		Users user = ut.getCurrentUser();
 		if (user == null || ObjectID != user.getId()) {
 			EditPage.setVisibility(View.INVISIBLE);
@@ -217,28 +287,32 @@ public class IntroductionFragment extends Fragment {
 		} else
 			EditPage.setVisibility(View.VISIBLE);
 
-		byte[] bitmapbyte = object.getImage1();
+		bitHeader = object.getImage1();
 
-		if (bitmapbyte != null) {
-			Bitmap bmp1 = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-					bitmapbyte.length);
+		if (bitHeader != null) {
+			Bitmap bmp1 = BitmapFactory.decodeByteArray(bitHeader, 0,
+					bitHeader.length);
 			headerImage.setImageBitmap(bmp1);
-
-		}
-
-		byte[] bitmap = object.getImage2();
-		if (bitmap != null) {
-			Bitmap bmp2 = BitmapFactory.decodeByteArray(bitmap, 0,
-					bitmap.length);
+		} else
+			headerImage.setImageResource(R.drawable.no_image_header);
+		// /////////////////////
+		bytepro = object.getImage2();
+		if (bytepro != null) {
+			Bitmap bmp2 = BitmapFactory.decodeByteArray(bytepro, 0,
+					bytepro.length);
 			profileImage.setImageBitmap(bmp2);
 
-		}
-		byte[] bitm = object.getImage3();
-		if (bitm != null) {
-			Bitmap bmp3 = BitmapFactory.decodeByteArray(bitm, 0, bitm.length);
+		} else
+			profileImage.setImageResource(R.drawable.no_img_profile);
+		// ///////////////////////
+		bytefoot = object.getImage3();
+		if (bytefoot != null) {
+			Bitmap bmp3 = BitmapFactory.decodeByteArray(bytefoot, 0,
+					bytefoot.length);
 			advertise2.setImageBitmap(bmp3);
 
-		}
+		} else
+			advertise2.setImageResource(R.drawable.no_image_header);
 
 		txtFax.setText(object.getFax());
 		txtPhone.setText(object.getPhone());

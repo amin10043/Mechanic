@@ -74,46 +74,6 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		rating.setRating(person.getRate());
 		rating.setEnabled(false);
 
-		// String item = txt1.getText().toString();
-
-		// final ImageView img = (ImageView) convertView
-		// .findViewById(R.id.icon_item);
-		// final ImageView star1Img = (ImageView) convertView
-		// .findViewById(R.id.star1);
-		// final ImageView star2Img = (ImageView) convertView
-		// .findViewById(R.id.star2);
-		// final ImageView star3Img = (ImageView) convertView
-		// .findViewById(R.id.star3);
-		// final ImageView star4Img = (ImageView) convertView
-		// .findViewById(R.id.star4);
-		// final ImageView star5Img = (ImageView) convertView
-		// .findViewById(R.id.star5);
-
-		// int id = 0;
-		// for (Object listItem : list) {
-		// if (item.equals(listItem.getName())) {
-		// // check authentication and authorization
-		// id = listItem.getId();
-		// }
-		// }
-		//
-		// adapter.open();
-		// int res = adapter.getNumberOfListItemChilds(id);
-		// if (res > 0) {
-		// img.setBackgroundResource(R.drawable.profile_account);
-		// star1Img.setBackgroundResource(R.drawable.ic_star_on);
-		// star2Img.setBackgroundResource(R.drawable.ic_star_on);
-		// star3Img.setBackgroundResource(R.drawable.ic_star_on);
-		// star4Img.setBackgroundResource(R.drawable.ic_star_on);
-		// star5Img.setBackgroundResource(R.drawable.ic_star_on);
-		//
-		// } else
-		//
-		// Toast.makeText(context, "object list adapter", Toast.LENGTH_SHORT)
-		// .show();
-
-		// adapter.close();
-
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override

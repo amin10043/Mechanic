@@ -24,7 +24,7 @@ public class PublicationsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		((MainActivity) getActivity()).setActivityTitle(R.string.ostan);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.ostan);
 
 		View view = inflater.inflate(R.layout.row_publications, null);
 

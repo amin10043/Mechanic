@@ -32,6 +32,7 @@ public class Object {
 	byte[] Image2;
 	byte[] Image3;
 	byte[] Image4;
+	int IsActive;
 
 	public String getFacebook() {
 		return Facebook;
@@ -273,6 +274,14 @@ public class Object {
 		MainObjectId = mainObjectid;
 	}
 
+	public int getIsActive() {
+		return IsActive;
+	}
+
+	public void setIsActive(int isActive) {
+		IsActive = isActive;
+	}
+
 	public Object(int id, String name, String phone, String email, String fax,
 			String description, byte[] image1, byte[] image2, byte[] image3,
 			byte[] image4, String pdf1, String pdf2, String pdf3, String pdf4,
@@ -280,7 +289,7 @@ public class Object {
 			int objectBrandTypeId, String facebook, String instagram,
 			String linkedIn, String google, String site, String twitter,
 			int rate, int parentid, int seen, String serverdate, int submit,
-			int mainObjectid) {
+			int mainObjectid, int IsActive) {
 		super();
 		Id = id;
 		Name = name;
@@ -312,6 +321,7 @@ public class Object {
 		ServerDate = serverdate;
 		Submit = submit;
 		MainObjectId = mainObjectid;
+		this.IsActive = IsActive;
 	}
 
 }
