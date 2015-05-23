@@ -490,10 +490,11 @@ public class DataBaseAdapter {
 		mDb.insert(TableCommentInObject, null, cv);
 	}
 
-	public void insertFroumtitletoDb(String Title, String description,
+	public void insertFroumtitletoDb(int id, String Title, String description,
 			int userId, String date) {
 
 		ContentValues cv = new ContentValues();
+		cv.put("Id", id);
 		cv.put("Title", Title);
 		cv.put("Description", description);
 		cv.put("UserId", userId);
@@ -577,10 +578,11 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertPapertitletoDb(String Title, String Context, int userID,
-			String date) {
+	public void insertPapertitletoDb(int id, String Title, String Context,
+			int userID, String date) {
 
 		ContentValues cv = new ContentValues();
+		cv.put("Id", id);
 		cv.put("Title", Title);
 		cv.put("Context", Context);
 		cv.put("UserId", userID);
@@ -2639,13 +2641,22 @@ public class DataBaseAdapter {
 		long res;
 		for (int i = 0; i < values.length; i++) {
 			cv = new ContentValues();
+			String id = "-1";
 			for (int j = 0; j < values[i].length; j++) {
-				if (values[i][j] != null)
-					cv.put(cols[j], values[i][j]);
-			}
-			res = mDb.insert(tableName, null, cv);
-		}
+				if (values[i][j] != null) {
 
+					if ("Id".equals(cols[j]))
+						id = values[i][j];
+					cv.put(cols[j], values[i][j]);
+				}
+			}
+			try {
+				res = mDb.insertWithOnConflict(tableName, null, cv,
+						SQLiteDatabase.CONFLICT_ABORT);
+			} catch (Exception ex) {
+
+			}
+		}
 	}
 
 	public Settings getSettings() {

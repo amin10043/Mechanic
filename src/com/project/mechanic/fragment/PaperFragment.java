@@ -74,141 +74,130 @@ public class PaperFragment extends Fragment {
 		sharebtn = (ImageView) header.findViewById(R.id.sharefroumicon);
 
 		adapter = new DataBaseAdapter(getActivity());
-		// if (getArguments().getString("Id") != null) {
-		{
-			adapter.open();
+		adapter.open();
 
-			paperID = Integer.valueOf(getArguments().getString("Id"));
+		paperID = Integer.valueOf(getArguments().getString("Id"));
 
-			if (CurrentUser == null
-					|| !adapter.isUserLikedPaper(CurrentUser.getId(), paperID))
-				Like.setBackgroundResource(R.drawable.like_froum_off);
-			else
+		if (CurrentUser == null
+				|| !adapter.isUserLikedPaper(CurrentUser.getId(), paperID))
+			Like.setBackgroundResource(R.drawable.like_froum_off);
+		else
 
-				Like.setBackgroundResource(R.drawable.like_froum);
+			Like.setBackgroundResource(R.drawable.like_froum);
 
-			NumofComment.setText(adapter.CommentInPaper_count(paperID)
-					.toString());
+		NumofComment.setText(adapter.CommentInPaper_count(paperID).toString());
 
-			NumofLike.setText(adapter.LikeInPaper_count(paperID).toString());
+		NumofLike.setText(adapter.LikeInPaper_count(paperID).toString());
 
-			// Bundle bundle = new Bundle();
-			// bundle.getString("Id", String.valueOf(id));
-			// id = Integer.valueOf(getArguments().getString("Id"));
-			mylist = adapter.getCommentInPaperbyPaperid(paperID);
-			final Paper p = adapter.getPaperItembyid(paperID);
-			Users u = adapter.getUserbyid(p.getUserId());
+		// Bundle bundle = new Bundle();
+		// bundle.getString("Id", String.valueOf(id));
+		// id = Integer.valueOf(getArguments().getString("Id"));
+		mylist = adapter.getCommentInPaperbyPaperid(paperID);
+		final Paper p = adapter.getPaperItembyid(paperID);
+		Users u = adapter.getUserbyid(p.getUserId());
 
-			txtname.setText(u.getName());
+		txtname.setText(u.getName());
 
-			txttitle.setText(p.getTitle());
-			txttitleDes.setText(p.getContext());
-			txtdate.setText(p.getDate());
+		txttitle.setText(p.getTitle());
+		txttitleDes.setText(p.getContext());
+		txtdate.setText(p.getDate());
 
-			if (u.getImage() == null) {
-				icon.setImageResource(R.drawable.no_img_profile);
-			} else {
-				byte[] bytepic = u.getImage();
+		if (u.getImage() == null) {
+			icon.setImageResource(R.drawable.no_img_profile);
+		} else {
+			byte[] bytepic = u.getImage();
 
-				Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0,
-						bytepic.length);
-				LinearLayout rl = (LinearLayout) header
-						.findViewById(R.id.profileLinearcommenterinContinue);
+			Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0,
+					bytepic.length);
+			LinearLayout rl = (LinearLayout) header
+					.findViewById(R.id.profileLinearcommenterinContinue);
 
-				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-						rl.getLayoutParams());
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+					rl.getLayoutParams());
 
-				lp.width = util.getScreenwidth() / 7;
-				lp.height = util.getScreenwidth() / 7;
-				lp.setMargins(5, 5, 5, 5);
-				icon.setImageBitmap(bmp);
-				icon.setLayoutParams(lp);
+			lp.width = util.getScreenwidth() / 7;
+			lp.height = util.getScreenwidth() / 7;
+			lp.setMargins(5, 5, 5, 5);
+			icon.setImageBitmap(bmp);
+			icon.setLayoutParams(lp);
+		}
+		adapter.close();
+		if (lst != null) {
+			lst.addHeaderView(header);
+			PaperListadapter = new PaperListAdapter(getActivity(),
+					R.layout.raw_papercmt, mylist, PaperFragment.this);
+
+			lst.setAdapter(PaperListadapter);
+		}
+		sharebtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent sharingIntent = new Intent(
+						android.content.Intent.ACTION_SEND);
+				sharingIntent.setType("text/plain");
+				// String shareBody = x.getDescription();
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+						p.getTitle());
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+						p.getContext());
+				startActivity(Intent.createChooser(sharingIntent,
+						"اشتراک از طریق"));
 			}
-			adapter.close();
-			if (lst != null) {
-				lst.addHeaderView(header);
-				PaperListadapter = new PaperListAdapter(getActivity(),
-						R.layout.raw_papercmt, mylist, PaperFragment.this);
+		});
 
-				lst.setAdapter(PaperListadapter);
-			}
-			sharebtn.setOnClickListener(new View.OnClickListener() {
+		Like.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View arg0) {
-					Intent sharingIntent = new Intent(
-							android.content.Intent.ACTION_SEND);
-					sharingIntent.setType("text/plain");
-					// String shareBody = x.getDescription();
-					sharingIntent.putExtra(
-							android.content.Intent.EXTRA_SUBJECT, p.getTitle());
-					sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-							p.getContext());
-					startActivity(Intent.createChooser(sharingIntent,
-							"اشتراک از طریق"));
-				}
-			});
+			@Override
+			public void onClick(View arg0) {
+				if (CurrentUser == null) {
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+					return;
 
-			Like.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					if (CurrentUser == null) {
-						Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-								Toast.LENGTH_SHORT).show();
-						return;
-
+				} else {
+					adapter.open();
+					if (adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
+						Like.setBackgroundResource(R.drawable.like_froum_off);
+						int c = adapter.LikeInPaper_count(paperID) - 1;
+						NumofLike.setText(String.valueOf(c));
+						adapter.deleteLikeFromPaper(CurrentUser.getId(),
+								paperID);
 					} else {
 						adapter.open();
-						if (adapter.isUserLikedPaper(CurrentUser.getId(),
-								paperID)) {
-							Like.setBackgroundResource(R.drawable.like_froum_off);
-							int c = adapter.LikeInPaper_count(paperID) - 1;
-							NumofLike.setText(String.valueOf(c));
-							adapter.deleteLikeFromPaper(CurrentUser.getId(),
-									paperID);
-						} else {
-							adapter.open();
-							Like.setBackgroundResource(R.drawable.like_froum);
-							adapter.insertLikeInPaperToDb(CurrentUser.getId(),
-									paperID, currentDate);
-							NumofLike.setText(String.valueOf(adapter
-									.LikeInPaper_count(paperID)));
-							adapter.close();
-						}
-
-					}
-					adapter.close();
-
-				}
-			});
-
-			btnAddcmt.setOnClickListener(new View.OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					if (CurrentUser == null) {
-						Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-								Toast.LENGTH_SHORT).show();
-						return;
-					} else {
-						dialog = new DialogcmtInPaper(PaperFragment.this,
-								getActivity(), R.layout.dialog_addcomment,
-								paperID);
-						dialog.show();
+						Like.setBackgroundResource(R.drawable.like_froum);
+						adapter.insertLikeInPaperToDb(CurrentUser.getId(),
+								paperID, currentDate);
+						NumofLike.setText(String.valueOf(adapter
+								.LikeInPaper_count(paperID)));
+						adapter.close();
 					}
 
 				}
-			});
-			return view;
-		}
+				adapter.close();
+
+			}
+		});
+
+		btnAddcmt.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (CurrentUser == null) {
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+					return;
+				} else {
+					dialog = new DialogcmtInPaper(PaperFragment.this,
+							getActivity(), R.layout.dialog_addcomment, paperID);
+					dialog.show();
+				}
+
+			}
+		});
+		return view;
 
 	}
-
-	/*
-	 * @Override public void onResume() { // TODO Auto-generated method stub
-	 * super.onResume(); lst.deferNotifyDataSetChanged(); }
-	 */
 
 	public void updateView2() {
 		adapter.open();
