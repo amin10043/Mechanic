@@ -121,15 +121,15 @@ public class CompeleteRegisterFragment extends Fragment {
 		
 				dbAdapter = new DataBaseAdapter(getActivity());
 				dbAdapter.open();
-
-//				int id = Integer.valueOf(getArguments().getString("Id"));
+				
+	//				int id = Integer.valueOf(getArguments().getString("Id"));
 //				Toast.makeText(getActivity(), ""+id, Toast.LENGTH_LONG).show();
 //					Users x =dbAdapter.getUserById(id);	
-//				SharedPreferences sendDataID = getActivity().getSharedPreferences("Id",
-//						0);
-	//		final int id = sendDataID.getInt("main_Id", -1);
+			SharedPreferences server= getActivity().getSharedPreferences("sId",
+						0);
+		 int item = server.getInt("srv_id", -1);
 	//		int item= Integer.valueOf(getArguments().getString("Id"));
-				int item=0;	
+				//int item=0;	
 				Toast.makeText(getActivity(),
 						""+item,
 				Toast.LENGTH_SHORT).show();

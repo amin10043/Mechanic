@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -44,7 +45,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 	protected static final Context Contaxt = null;
 	int resourceId;
-	Context context;
+
 	Fragment fragment;
 	int ticketTypeID;
 	int ProvinceId;
@@ -61,7 +62,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	String txtdate;
 	TelephonyManager tm;
 	String number;
-
+	SharedPreferences server;
+int serverId=0;
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
 	private Activity view;
@@ -105,6 +107,12 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		lp.height = utile.getScreenwidth() / 4;
 		btnaddpic1.setLayoutParams(lp);
 		// ///////////////////////////////////////////////////
+		
+	 server= getActivity().getSharedPreferences("sId",
+				0);
+		
+		
+		
 		textrules.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -144,13 +152,20 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 				Pass = editpass.getText().toString();
 				txtdate = date.todayShamsi();
 				number = tm.getLine1Number();
-				if (Name.equals("") || Pass.equals("") || Mobile.equals("")) {
+				
+				
+				if (!utile.isNetworkConnected()) {
+					utile.showOkDialog(getActivity(), "خطا در ارتباط",
+							"شما به اینترنت متصل نیستید.");
+				}
+				
+				else if (Name.equals("") || Pass.equals("") || Mobile.equals("")) {
 					Toast.makeText(getActivity(),
 							"لطفا فيلدهاي اجباری را پر کنيد  ",
 							Toast.LENGTH_SHORT).show();
 				} else {
 					ringProgressDialog = ProgressDialog.show(getActivity(),
-							"Please wait ...", "ConnectToService...", true);
+							"", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -183,6 +198,13 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 				}
 
+				
+				
+
+				
+				
+				
+				
 			}
 		});
 
@@ -244,9 +266,25 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	@Override
 	public void processFinish(String output) {
 		ringProgressDialog.dismiss();
-		int serverId = 0;
+		
 		try {
 			serverId = Integer.valueOf(output);
+
+    server.edit().putInt("srv_id", serverId).commit();
+			
+//			CompeleteRegisterFragment fragment = new CompeleteRegisterFragment();
+//			Bundle bundle = new Bundle();
+//			bundle.putString("Id", String.valueOf(serverId));
+//			fragment.setArguments(bundle);
+		
+	Toast.makeText(getActivity(), ""+serverId, Toast.LENGTH_SHORT).show();
+		
+		
+		
+		
+		
+
+
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT).show();
 		}
@@ -322,4 +360,10 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 	}
 
+	
+	
+	
+	
+	
+	
 }

@@ -1,7 +1,6 @@
 package com.project.mechanic.fragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -31,10 +30,6 @@ public class ProvinceFragment extends Fragment {
 	PullAndLoadListView lstProvince;
 	ProvinceListAdapter ListAdapter;
 	ArrayList<Province> mylist;
-	List<Province> subList;
-	List<Province> tempList;
-	View view;
-	int i=0,j=9;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -51,16 +46,10 @@ public class ProvinceFragment extends Fragment {
 
 		mylist = adapter.getAllProvinceName();
 		adapter.close();
-		
-		List<Province> tmpList = mylist.subList(i, j);
-		subList = new ArrayList<Province>();
-		for(Province p : tmpList){
-			if(!subList.contains(p))
-				subList.add(p);
-		}
+
 		lstProvince = (PullAndLoadListView) view.findViewById(R.id.listvOstan);
 		ListAdapter = new ProvinceListAdapter(getActivity(),
-				R.layout.row_ostan, subList);
+				R.layout.row_ostan, mylist);
 
 		lstProvince.setAdapter(ListAdapter);
 
@@ -81,23 +70,7 @@ public class ProvinceFragment extends Fragment {
 					public void onLoadMore() {
 						// Do the work to load more items at the end of list
 						// here
-						if(mylist.size()< j+1){
-							i=j+1;
-						}
-					
-					if(mylist.size()< j+10){
-						j = mylist.size()-1;
-					}else{
-						j+=10;
-					}
-					tempList = mylist.subList(i, j);
-					for(Province p : tempList){
-						if(!subList.contains(p))
-						subList.add(p);
-					}
-					//Toast.makeText(getActivity(), String.valueOf(i), Toast.LENGTH_SHORT).show();
-					//ListAdapter.notifyDataSetChanged();
-					new LoadMoreDataTask().execute();
+						new LoadMoreDataTask().execute();
 					}
 				});
 
@@ -115,13 +88,12 @@ public class ProvinceFragment extends Fragment {
 
 			// Simulates a background task
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 			}
 			//
 			// for (int i = 0; i < mNames.length; i++)
 			// mListItems.add(mNames[i]);
-			
 
 			return null;
 		}
