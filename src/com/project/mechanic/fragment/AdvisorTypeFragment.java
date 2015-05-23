@@ -26,7 +26,7 @@ public class AdvisorTypeFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		((MainActivity) getActivity()).setActivityTitle(R.string.advisor);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.advisor);
 
 		View view = inflater.inflate(R.layout.fragment_advisortype, null);
 

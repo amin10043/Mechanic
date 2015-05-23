@@ -28,7 +28,7 @@ public class BerandFragment extends Fragment {
 
 		id = Integer.valueOf(getArguments().getString("Id"));
 
-		((MainActivity) getActivity()).setActivityTitle(R.string.brand);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.brand);
 		View view = inflater.inflate(R.layout.fragment_berand, null);
 
 		dbAdapter = new DataBaseAdapter(getActivity());

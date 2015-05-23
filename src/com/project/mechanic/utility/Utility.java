@@ -1,6 +1,9 @@
 package com.project.mechanic.utility;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -230,6 +233,54 @@ public class Utility {
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		// Build Notification with Notification Manager
 		notificationmanager.notify(0, builder.build());
+
+	}
+
+	public void parseQuery(String query) {
+
+		StringTokenizer tokens = new StringTokenizer(query, "***");
+		if (!tokens.hasMoreTokens())
+			return;
+		String tableName = tokens.nextToken();
+		if (!tokens.hasMoreTokens())
+			return;
+		String serverDate = tokens.nextToken();
+
+		StringTokenizer inner = new StringTokenizer(tokens.nextToken(), ",");
+		int i = 0;
+		String[] col = new String[inner.countTokens()];
+		while (inner.hasMoreTokens()) {
+			col[i++] = inner.nextToken();
+		}
+		int j = 0;
+		String tempToken = "";
+		// StringTokenizer innerToken;
+		String[] innerString;
+		String[][] values = new String[tokens.countTokens()][];
+		while (tokens.hasMoreTokens()) {
+			tempToken = tokens.nextToken();
+
+			innerString = tempToken.split(",");
+			// innerToken = new StringTokenizer(tempToken, ",");
+			values[j] = tempToken.split(",");
+			// int k = 0;
+			// while (innerToken.hasMoreTokens()) {
+			// values[j][k++] = innerToken.nextToken();
+			j++;
+		}
+
+		adapter.open();
+		adapter.updateTables(tableName, col, values);
+		adapter.setServerDate(serverDate);
+		adapter.close();
+
+	}
+
+	public String getCuurentDateTime() {
+		java.text.DateFormat dateFormat = new SimpleDateFormat(
+				"yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		return dateFormat.format(date);
 
 	}
 }

@@ -32,6 +32,7 @@ import com.project.mechanic.entity.NewsPaper;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Province;
+import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.TicketType;
 import com.project.mechanic.entity.Users;
@@ -104,7 +105,7 @@ public class DataBaseAdapter {
 	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date",
 			"CommentId", "Seen" };
 	private String[] LikeInFroum = { "Id", "UserId", "FroumId", "Date",
-			"CommentId","Seen" };
+			"CommentId", "Seen" };
 	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike" };
 	private String[] LikeInPaper = { "Id", "UserId", "PaperId", "Date",
 			"CommentId", "Seen" };
@@ -1019,13 +1020,14 @@ public class DataBaseAdapter {
 		return result;
 
 	}
-	////////////////////////////////////////////////////////////////////////////////////
+
+	// //////////////////////////////////////////////////////////////////////////////////
 	public ArrayList<CommentInObject> getUnseencommentobject() {
 
 		ArrayList<CommentInObject> result = new ArrayList<CommentInObject>();
 		CommentInObject item = null;
-		Cursor mCur = mDb.query(TableCommentInObject,CommentInObject,"seen=0", null, null,
-				null, null);
+		Cursor mCur = mDb.query(TableCommentInObject, CommentInObject,
+				"seen=0", null, null, null, null);
 
 		while (mCur.moveToNext()) {
 			item = CursorToCommentInObject(mCur);
@@ -1035,14 +1037,32 @@ public class DataBaseAdapter {
 		return result;
 
 	}
-	////////////////////////////////////////////////////////////////////////////////////
-	
+
+	// /////////////////////////////////////////////////////////////////////////////
+	public ArrayList<CommentInPaper> getUnseencommentpaper() {
+
+		ArrayList<CommentInPaper> result = new ArrayList<CommentInPaper>();
+		CommentInPaper item = null;
+		Cursor mCur = mDb.query(TableCommentInPaper, CommentInPaper, "seen=0",
+				null, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInPaper(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	// //////////////////////////////////////////////////////////////////////////////////
+
 	public ArrayList<LikeInObject> getUnseenlike() {
 
 		ArrayList<LikeInObject> result = new ArrayList<LikeInObject>();
 		LikeInObject item = null;
-		Cursor mCur = mDb.query(TableLikeInObject,LikeInObject,"seen=0", null, null,
-				null, null);
+		Cursor mCur = mDb.query(TableLikeInObject, LikeInObject, "seen=0",
+				null, null, null, null);
 
 		while (mCur.moveToNext()) {
 			item = CursorToLikeInObject(mCur);
@@ -1051,13 +1071,14 @@ public class DataBaseAdapter {
 
 		return result;
 	}
-	/////////////////////////////////////////////////////////////////////////////////////
+
+	// ///////////////////////////////////////////////////////////////////////////////////
 	public ArrayList<com.project.mechanic.entity.LikeInFroum> getUnseenlikeInFroum() {
 
 		ArrayList<com.project.mechanic.entity.LikeInFroum> result = new ArrayList<com.project.mechanic.entity.LikeInFroum>();
 		com.project.mechanic.entity.LikeInFroum item = null;
-		Cursor mCur = mDb.query(TableLikeInFroum,LikeInFroum,"seen=0", null, null,
-				null, null);
+		Cursor mCur = mDb.query(TableLikeInFroum, LikeInFroum, "seen=0", null,
+				null, null, null);
 
 		while (mCur.moveToNext()) {
 			item = CursorToLikeInFroum(mCur);
@@ -1066,13 +1087,14 @@ public class DataBaseAdapter {
 
 		return result;
 	}
-	/////////////////////////////////////////////////////////////////////////////////////
+
+	// ///////////////////////////////////////////////////////////////////////////////////
 	public ArrayList<LikeInPaper> getUnseenlikeInPaper() {
 
 		ArrayList<LikeInPaper> result = new ArrayList<LikeInPaper>();
 		LikeInPaper item = null;
-		Cursor mCur = mDb.query(TableLikeInPaper,LikeInPaper,"seen=0", null, null,
-				null, null);
+		Cursor mCur = mDb.query(TableLikeInPaper, LikeInPaper, "seen=0", null,
+				null, null, null);
 
 		while (mCur.moveToNext()) {
 			item = CursorToLikeInPaper(mCur);
@@ -1120,12 +1142,12 @@ public class DataBaseAdapter {
 		return tempProvince;
 
 	}
-	
+
 	@SuppressWarnings("unused")
 	private LikeInFroum CursorToLikeInFroum(Cursor cursor) {
-		com.project.mechanic.entity.LikeInFroum temp = new com.project.mechanic.entity.LikeInFroum(cursor.getInt(0),
-				cursor.getInt(1), cursor.getInt(2), cursor.getString(3),
-				cursor.getInt(4), cursor.getInt(5));
+		com.project.mechanic.entity.LikeInFroum temp = new com.project.mechanic.entity.LikeInFroum(
+				cursor.getInt(0), cursor.getInt(1), cursor.getInt(2),
+				cursor.getString(3), cursor.getInt(4), cursor.getInt(5));
 		return temp;
 
 	}
@@ -1221,6 +1243,13 @@ public class DataBaseAdapter {
 		News tempNews = new News(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getInt(4));
 		return tempNews;
+
+	}
+
+	private Settings CursorToSettings(Cursor cursor) {
+		Settings tempSettings = new Settings(cursor.getInt(0),
+				cursor.getString(1), cursor.getString(2));
+		return tempSettings;
 
 	}
 
@@ -1833,7 +1862,7 @@ public class DataBaseAdapter {
 	public Froum getFroumItembyid(int Id) {
 
 		Froum item = null;
-		Cursor mCur = mDb.query("Froum", Froum, " Id=?",
+		Cursor mCur = mDb.query(TableFroum, Froum, " Id=?",
 				new String[] { String.valueOf(Id) }, null, null, null);
 
 		if (mCur.moveToNext()) {
@@ -2443,18 +2472,17 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	//////////////////////////////////////////////////////////
-//	public int NumOfNewLikeInObject1() {
-//		int res = 0;
-//		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-//				+ TableObject + " WHERE Seen=0", null);
-//		if (cu.moveToNext()) {
-//			res = cu.getInt(0);
-//		}
-//		return res;
-//	}
-	////////////////////////////////////////////////////////////
-
+	// ////////////////////////////////////////////////////////
+	// public int NumOfNewLikeInObject1() {
+	// int res = 0;
+	// Cursor cu = mDb.rawQuery("Select count(*) as co from "
+	// + TableObject + " WHERE Seen=0", null);
+	// if (cu.moveToNext()) {
+	// res = cu.getInt(0);
+	// }
+	// return res;
+	// }
+	// //////////////////////////////////////////////////////////
 
 	// ////////////////////////////////////////////////////////
 	public int NumOfNewLikeInObject1() {
@@ -2468,7 +2496,6 @@ public class DataBaseAdapter {
 	}
 
 	// //////////////////////////////////////////////////////////
-
 
 	public int NumOfNewCmtInObject() {
 		int res = 0;
@@ -2588,49 +2615,49 @@ public class DataBaseAdapter {
 	public void updatelikeseentodb(int seen) {
 
 		ContentValues uc = new ContentValues();
-		
-		uc.put("Seen",seen);
+
+		uc.put("Seen", seen);
 		mDb.update(TableLikeInObject, uc, null, null);
 
 	}
+
 	public void updatelikefroumseentodb(int seen) {
 
 		ContentValues uc = new ContentValues();
-		
-		uc.put("Seen",seen);
+
+		uc.put("Seen", seen);
 		mDb.update(TableLikeInFroum, uc, null, null);
 
 	}
-	
-	
+
 	public void updatelikepaperseentodb(int seen) {
 
 		ContentValues uc = new ContentValues();
-		
-		uc.put("Seen",seen);
+
+		uc.put("Seen", seen);
 		mDb.update(TableLikeInPaper, uc, null, null);
 
 	}
-//////////////////////////////////////////////////////////////////////
+
+	// ////////////////////////////////////////////////////////////////////
 	public void updatecmobjectseentodb(int seen) {
 
 		ContentValues uc = new ContentValues();
-		
-		uc.put("Seen",seen);
+
+		uc.put("Seen", seen);
 		mDb.update(TableCommentInObject, uc, null, null);
 
 	}
-	
+
 	public void updatecmpaperseentodb(int seen) {
 
 		ContentValues uc = new ContentValues();
-		
-		uc.put("Seen",seen);
+
+		uc.put("Seen", seen);
 		mDb.update(TableCommentInPaper, uc, null, null);
 
 		uc.put("Seen", seen);
 		mDb.update(TableObject, uc, null, null);
-
 
 	}
 
@@ -2727,4 +2754,33 @@ public class DataBaseAdapter {
 		mDb.delete(TableLikeInPaper, "UserId=? and PaperId=?", t);
 	}
 
+	public void updateTables(String tableName, String[] cols, String[][] values) {
+
+		ContentValues cv = null;
+		for (int i = 0; i < values.length; i++) {
+			cv = new ContentValues();
+			for (int j = 0; j < values[i].length; j++) {
+				if (values[i][j] != null)
+					cv.put(cols[j], values[i][j]);
+			}
+			mDb.insert(tableName, null, cv);
+		}
+
+	}
+
+	public Settings getSettings() {
+		Settings set = null;
+		Cursor cur = mDb.query(TableSettings, Settings, null, null, null, null,
+				null);
+		if (cur.moveToNext())
+			set = CursorToSettings(cur);
+		return set;
+
+	}
+
+	public void setServerDate(String value) {
+		ContentValues cv = new ContentValues();
+		cv.put("ServerDate", value);
+		mDb.update(TableSettings, cv, null, null);
+	}
 }

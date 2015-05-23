@@ -69,7 +69,7 @@ public class FroumFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceStdataate) {
 
-		((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
 		View view = inflater.inflate(R.layout.fragment_froum, null);
 
 		adapter = new DataBaseAdapter(getActivity());

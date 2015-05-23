@@ -46,7 +46,7 @@ public class AdvertisementFragment extends Fragment {
 
 		dbAdapter.close();
 
-		((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
 		View view = inflater.inflate(R.layout.fragment_shop, null);
 
 		dbAdapter = new DataBaseAdapter(getActivity());

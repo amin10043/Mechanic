@@ -7,7 +7,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.project.mechanic.R;
@@ -17,14 +18,13 @@ import com.project.mechanic.adapter.commentnotificationAdapter;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.CommentInPaper;
-import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
 public class Dialog_notification extends Dialog {
 
 	private static final Context Dialog = null;
-	//private DataBaseAdapter dbadapter;
+	// private DataBaseAdapter dbadapter;
 	private Context context;
 	private Fragment fragment;
 	private int seen;
@@ -32,56 +32,172 @@ public class Dialog_notification extends Dialog {
 	ListView listcmnotification2;
 	ListView listcmnotification3;
 	DataBaseAdapter adapter;
-
+	Utility util;
 
 	public Dialog_notification(Context context) {
 		super(context);
 		this.context = context;
-		//dbadapter = new DataBaseAdapter(context);
+		// dbadapter = new DataBaseAdapter(context);
 		// TODO Auto-generated constructor stub
 		adapter = new DataBaseAdapter(context);
-
+		util = new Utility(context);
 	}
 
 	@Override
-public void onCreate(Bundle savedInstanceState) {
-	// TODO Auto-generated method stub
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.dialog_notification);
-	
-	
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-	
+		setContentView(R.layout.dialog_notification1);
 
-	
-		listcmnotification= (ListView) findViewById(R.id.listcmnotification);
-//		String [] aa = {c.getDesk(),c.getDesk(),c.getDesk(),c.getDesk()};
-		listcmnotification2= (ListView) findViewById(R.id.listcmnotification2);
-		listcmnotification3= (ListView) findViewById(R.id.listcmnotification3);
-		
-		
-		
+		// listcmnotification = (ListView)
+		// findViewById(R.id.listcmnotification);
+		// // String [] aa = {c.getDesk(),c.getDesk(),c.getDesk(),c.getDesk()};
+		// listcmnotification2 = (ListView)
+		// findViewById(R.id.listcmnotification2);
+		// listcmnotification3 = (ListView)
+		// findViewById(R.id.listcmnotification3);
+
+		// final LinearLayout linlist1 = (LinearLayout)
+		// findViewById(R.id.linlist1);
+		// final LinearLayout linlist2 = (LinearLayout)
+		// findViewById(R.id.linlist2);
+		// final LinearLayout linlist3 = (LinearLayout)
+		// findViewById(R.id.linlist3);
+
+		// AbsListView.LayoutParams lp = new
+		// AbsListView.LayoutParams(linlist1.getLayoutParams());
+		ImageButton btnshowcmf = (ImageButton) findViewById(R.id.btnshowcmf);
+		ImageButton btnshowcmo = (ImageButton) findViewById(R.id.btnshowcmo);
+		ImageButton btnshowcmp = (ImageButton) findViewById(R.id.btnshowcmp);
+		final ListView listnewcm = (ListView) findViewById(R.id.listnewcm);
+
 		adapter.open();
 
 		ArrayList<CommentInFroum> mylist = adapter.getUnseencomment();
 		ArrayList<CommentInObject> mylist1 = adapter.getUnseencommentobject();
 		ArrayList<CommentInPaper> mylist2 = adapter.getUnseencommentpaper();
-		
+
 		adapter.close();
-		commentnotificationAdapter dataAdapter = new  commentnotificationAdapter(context,R.layout.row_notification_list,mylist);
-		CommentObjectNotificationAdapter dataAdapter1 = new  CommentObjectNotificationAdapter(context, R.layout.row_notification_list,mylist1);
-		CommentPaperNotificationAdapter dataAdapter2 = new  CommentPaperNotificationAdapter(context, R.layout.row_notification_list,mylist2);
-		
-		//if(listcmnotification!=null){
-		//	listcmnotification.setAdapter(dataAdapter);	}
-		//else{listcmnotification.setVisibility(View.GONE);
-			
-//		commentnotificationAdapter dataAdapter = new commentnotificationAdapter(
-//						context, android.R.layout.simple_list_item_1, mylist);
-		listcmnotification.setAdapter(dataAdapter);
-				listcmnotification2.setAdapter(dataAdapter1);
-				listcmnotification3.setAdapter(dataAdapter2);
-			
+		final commentnotificationAdapter dataAdapter = new commentnotificationAdapter(
+				context, R.layout.row_notification_list, mylist);
+		final CommentObjectNotificationAdapter dataAdapter1 = new CommentObjectNotificationAdapter(
+				context, R.layout.row_notification_list, mylist1);
+		final CommentPaperNotificationAdapter dataAdapter2 = new CommentPaperNotificationAdapter(
+				context, R.layout.row_notification_list, mylist2);
+
+		btnshowcmf.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				listnewcm.setAdapter(dataAdapter);
+
+			}
+		});
+		btnshowcmo.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				listnewcm.setAdapter(dataAdapter1);
+
+			}
+		});
+		btnshowcmp.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				listnewcm.setAdapter(dataAdapter2);
+
+			}
+		});
+
+		// listcmnotification.setAdapter(dataAdapter);
+		// listcmnotification2.setAdapter(dataAdapter1);
+		// listcmnotification3.setAdapter(dataAdapter2);
 	}
+	// if (listcmnotification2 != null) {
+	//
+	// }
+	//
+	// else {
+	//
+	// linlist2.setVisibility(View.GONE);
+
+	// Toast.makeText(context, "dovomi khali ",
+	// Toast.LENGTH_LONG).show();
 
 }
+
+// if (listcmnotification != null) {
+// if (listcmnotification2 != null && listcmnotification3 != null) {
+// ListView.LayoutParams lp2 = new ListView.LayoutParams(
+// listcmnotification.getLayoutParams());
+// lp2.height = (int) ((util.getScreenHeight() / 3));
+// listcmnotification.setLayoutParams(lp2);
+
+// } else if (listcmnotification2 != null
+// || listcmnotification3 != null) {
+//
+// Toast.makeText(context, "dovomi khali ", Toast.LENGTH_LONG)
+// .show();
+// ListView.LayoutParams lp1 = new ListView.LayoutParams(
+// listcmnotification.getLayoutParams());
+// lp1.height = (int) ((util.getScreenHeight() / 2));
+// listcmnotification.setLayoutParams(lp1);
+
+// } else {
+// // ListView.LayoutParams lp = new ListView.LayoutParams(
+// listcmnotification.getLayoutParams());
+// lp.height = (int) ((util.getScreenHeight()));
+// listcmnotification.setLayoutParams(lp);
+
+// }
+// }
+// if (listcmnotification2 != null) {
+// if (listcmnotification != null && listcmnotification3 != null) {
+// ListView.LayoutParams lp5 = new ListView.LayoutParams(
+// listcmnotification2.getLayoutParams());
+// lp5.height = (int) ((util.getScreenHeight() / 3));
+// listcmnotification2.setLayoutParams(lp5);
+
+// } else if (listcmnotification != null
+// || listcmnotification3 != null) {
+// ListView.LayoutParams lp4 = new ListView.LayoutParams(
+// listcmnotification2.getLayoutParams());
+// lp4.height = (int) ((util.getScreenHeight() / 2));
+// listcmnotification2.setLayoutParams(lp4);
+
+// } else {
+// ListView.LayoutParams lp3 = new ListView.LayoutParams(
+// listcmnotification2.getLayoutParams());
+// lp3.height = (int) ((util.getScreenHeight()));
+// listcmnotification2.setLayoutParams(lp3);
+
+// }
+// }
+
+// if (listcmnotification3 != null) {
+// if (listcmnotification != null && listcmnotification2 != null) {
+// ListView.LayoutParams lp8 = new ListView.LayoutParams(
+// listcmnotification3.getLayoutParams());
+// lp8.height = (int) ((util.getScreenHeight() / 3));
+// listcmnotification3.setLayoutParams(lp8);
+// } else if (listcmnotification2 != null
+// || listcmnotification != null) {
+// ListView.LayoutParams lp7 = new ListView.LayoutParams(
+// listcmnotification3.getLayoutParams());
+// lp7.height = (int) ((util.getScreenHeight() / 2));
+// listcmnotification3.setLayoutParams(lp7);
+// } else {
+// ListView.LayoutParams lp6 = new ListView.LayoutParams(
+// listcmnotification3.getLayoutParams());
+// lp6.height = (int) ((util.getScreenHeight()));
+// listcmnotification3.setLayoutParams(lp6);
+
+// }
+// }
+

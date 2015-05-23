@@ -36,7 +36,7 @@ public class NewspaperFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		((MainActivity) getActivity()).setActivityTitle(R.string.news);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.news);
 
 		View view = inflater.inflate(R.layout.fragment_newspaper, null);
 
