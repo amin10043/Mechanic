@@ -66,7 +66,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
 	private Activity view;
-
 	TextView txtclickpic;
 
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {

@@ -8,6 +8,18 @@ public class CommentInPaper {
 	String Datetime;
 	int CommentId;
 	int Seen;
+	
+	public CommentInPaper(int id, String description, int paperId, int userId,
+			String datetime, int commentId, int seen) {
+
+		Id = id;
+		Description = description;
+		PaperId = paperId;
+		UserId = userId;
+		Datetime = datetime;
+		CommentId = commentId;
+		Seen = seen;
+	}
 
 	public int getId() {
 		return Id;
@@ -65,16 +77,6 @@ public class CommentInPaper {
 		Seen = seen;
 	}
 
-	public CommentInPaper(int id, String description, int paperId, int userId,
-			String datetime, int commentId, int seen) {
-
-		Id = id;
-		Description = description;
-		PaperId = paperId;
-		UserId = userId;
-		Datetime = datetime;
-		CommentId = commentId;
-		Seen = seen;
-	}
+	
 
 }

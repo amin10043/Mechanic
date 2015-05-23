@@ -68,7 +68,7 @@
                             android:layout_marginRight="25dp"
                             android:background="@drawable/icon_header_shape"
                             android:scaleType="fitXY"
-                            android:src="@drawable/profile_account" />
+                            android:src="@drawable/add" />
                     </LinearLayout>
                 </RelativeLayout>
             </FrameLayout>

@@ -37,7 +37,7 @@ public class FroumtitleFragment extends Fragment {
 	public View onCreateView(android.view.LayoutInflater inflater,
 			android.view.ViewGroup container, Bundle savedInstanceState) {
 
-		((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
 		view = inflater.inflate(R.layout.fragment_titlefrm, null);
 		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 
