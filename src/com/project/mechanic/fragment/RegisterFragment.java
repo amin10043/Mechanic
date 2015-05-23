@@ -252,10 +252,10 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 //					0);
 //		server.edit().putInt("main_Id", serverId).commit();
 			
-			CompeleteRegisterFragment fragment = new CompeleteRegisterFragment();
-			Bundle bundle = new Bundle();
-			bundle.putString("Id", String.valueOf(serverId));
-			fragment.setArguments(bundle);
+//			CompeleteRegisterFragment fragment = new CompeleteRegisterFragment();
+//			Bundle bundle = new Bundle();
+//			bundle.putString("Id", String.valueOf(serverId));
+//			fragment.setArguments(bundle);
 		
 	Toast.makeText(getActivity(), ""+serverId, Toast.LENGTH_SHORT).show();
 		
