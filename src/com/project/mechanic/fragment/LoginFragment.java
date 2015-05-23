@@ -72,8 +72,8 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 				mobile = editmobile.getText().toString();
 				pass = editpass.getText().toString();
-				Toast.makeText(getActivity(), mobile, Toast.LENGTH_SHORT)
-						.show();
+//				Toast.makeText(getActivity(), mobile, Toast.LENGTH_SHORT)
+//						.show();
 				dbAdapter.close();
 				if (!util.isNetworkConnected()) {
 					util.showOkDialog(getActivity(), "خطا در ارتباط",
@@ -99,7 +99,7 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 					mobileNumber = mobile;
 
 					ringProgressDialog = ProgressDialog.show(getActivity(),
-							"Please wait ...", "ConnectToService...", true);
+							"", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 

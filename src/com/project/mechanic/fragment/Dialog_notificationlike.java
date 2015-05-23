@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -41,7 +42,8 @@ public class Dialog_notificationlike extends Dialog {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.dialog_notificationlike);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.dialog_notificationlike1);
 
 		ImageButton btnshowlikef = (ImageButton) findViewById(R.id.btnshowlikef);
 		ImageButton btnshowlikeo = (ImageButton) findViewById(R.id.btnshowlikeo);

@@ -193,11 +193,11 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 				TelephonyManager tm = (TelephonyManager) getActivity()
 						.getSystemService(Context.TELEPHONY_SERVICE);
 				String number = tm.getLine1Number();
+//
+//				Toast.makeText(getActivity(), "" + number, Toast.LENGTH_SHORT)
+//						.show();
 
-				Toast.makeText(getActivity(), "" + number, Toast.LENGTH_SHORT)
-						.show();
-
-				if (Name.equals("") || Pass.equals("")) {
+				if (Name.equals("") || Pass.equals("")  || Mobile.equals("")) {
 
 					Toast.makeText(getActivity(),
 							"لطفا فيلدهاي اجباری را پر کنيد  ",
@@ -209,7 +209,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 					
 					
 					
-ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "ConnectToService...", true);
+ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 					
 			        ringProgressDialog.setCancelable(true);
 		
