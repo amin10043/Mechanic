@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:background="@color/light_grey"
         android:orientation="vertical"
-        android:weightSum="6.8" >
+        android:weightSum="6.7" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -226,7 +226,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/txtsize10"
             android:layout_marginRight="@dimen/txtsize10"
-            android:layout_weight="1"
+            android:layout_weight="0.9"
             android:background="@color/blue3"
             android:weightSum="2" >
 
