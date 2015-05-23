@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -248,21 +247,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		int serverId = 0;
 		try {
 			serverId = Integer.valueOf(output);
-//			SharedPreferences server= context.getSharedPreferences("Id",
-//					0);
-//		server.edit().putInt("main_Id", serverId).commit();
-			
-//			CompeleteRegisterFragment fragment = new CompeleteRegisterFragment();
-//			Bundle bundle = new Bundle();
-//			bundle.putString("Id", String.valueOf(serverId));
-//			fragment.setArguments(bundle);
-		
-	Toast.makeText(getActivity(), ""+serverId, Toast.LENGTH_SHORT).show();
-		
-		
-		
-		
-		
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT).show();
 		}
