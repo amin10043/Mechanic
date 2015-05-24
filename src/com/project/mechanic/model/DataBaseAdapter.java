@@ -2794,7 +2794,6 @@ public class DataBaseAdapter {
 			String id = "-1";
 			for (int j = 0; j < values[i].length; j++) {
 				if (values[i][j] != null) {
-
 					if ("Id".equals(cols[j]))
 						id = values[i][j];
 					cv.put(cols[j], values[i][j]);

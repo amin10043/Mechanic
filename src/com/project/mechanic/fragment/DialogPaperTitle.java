@@ -1,5 +1,6 @@
 package com.project.mechanic.fragment;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.app.Dialog;
@@ -47,6 +48,7 @@ public class DialogPaperTitle extends Dialog implements AsyncInterface {
 		CurrentUser = utility.getCurrentUser();
 		dbadapter.close();
 		date = new PersianDate();
+		params = new LinkedHashMap<String, String>();
 
 	}
 
@@ -70,9 +72,11 @@ public class DialogPaperTitle extends Dialog implements AsyncInterface {
 			@Override
 			public void onClick(View arg0) {
 
-				params.put("TableName", "Froum");
+				saving = new Saving(context);
+				saving.delegate = DialogPaperTitle.this;
+				params.put("TableName", "Paper");
 				params.put("Title", titletxt.getText().toString());
-				params.put("Description", titleDestxt.getText().toString());
+				params.put("Context", titleDestxt.getText().toString());
 				params.put("UserId", String.valueOf(CurrentUser.getId()));
 				params.put("Date", currentDate);
 
@@ -101,7 +105,7 @@ public class DialogPaperTitle extends Dialog implements AsyncInterface {
 					titleDestxt.getText().toString(), CurrentUser.getId(),
 					currentDate);
 			dbadapter.close();
-			((FroumtitleFragment) fragment).updateView();
+			((TitlepaperFragment) fragment).updateView();
 			DialogPaperTitle.this.dismiss();
 
 		} catch (Exception ex) {
