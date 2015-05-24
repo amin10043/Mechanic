@@ -5,11 +5,11 @@
     android:background="#EAEAEA"
     tools:context="com.arabian.constitution_mechanic.City$PlaceholderFragment" >
 
-    <com.project.mechanic.ListView.PullAndLoadListView
+    <ListView
         android:id="@+id/listvOstan"
         style="@style/second_item_style"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-    </com.project.mechanic.ListView.PullAndLoadListView>
+    </ListView>
 
 </RelativeLayout>
