@@ -112,7 +112,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:gravity="right|center"
-                android:hint="نام نام خانوادگی را وارد کنید...اجباری"
+                android:hint="نام  و نام خانوادگی : اجباری"
                 android:inputType="textEmailAddress"
                 android:textSize="@dimen/txtsize10" />
 
@@ -125,7 +125,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:gravity="right|center"
-                android:hint="09122222222...اجباری"
+                android:hint="09122222222: اجباری"
                 android:inputType="phone"
                 android:textSize="@dimen/txtsize10" >
 
@@ -141,7 +141,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:gravity="right|center"
-                android:hint="رمز عبور خود را وارد کنید...اجباری"
+                android:hint="رمز عبور:اجباری-حداقل 6 کاراکتر وارد کنید"
                 android:inputType="textPassword"
                 android:textSize="@dimen/txtsize10" />
         </LinearLayout>
