@@ -45,9 +45,7 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 		this.fragment = fragment;
 		dbadapter = new DataBaseAdapter(context);
 		utility = new Utility(context);
-		params = new LinkedHashMap<String, String>();
-		saving = new Saving(context);
-		saving.delegate = this;
+
 		date = new PersianDate();
 		user = utility.getCurrentUser();
 		currentDate = date.todayShamsi();
@@ -72,6 +70,11 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 
 			@Override
 			public void onClick(View arg0) {
+
+				params = new LinkedHashMap<String, String>();
+				saving = new Saving(context);
+				saving.delegate = DialogfroumTitle.this;
+
 				params.put("TableName", "Froum");
 				params.put("Title", titletxt.getText().toString());
 				params.put("Description", titleDestxt.getText().toString());
