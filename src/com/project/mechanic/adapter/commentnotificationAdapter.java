@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInFroum;
-import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -77,12 +76,5 @@ public class commentnotificationAdapter extends ArrayAdapter<CommentInFroum> {
 
 		return convertView;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

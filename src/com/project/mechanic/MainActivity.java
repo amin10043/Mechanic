@@ -25,7 +25,6 @@ import com.project.mechanic.fragment.Dialog_notification;
 import com.project.mechanic.fragment.Dialog_notificationlike;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.Favorite_Fragment;
-import com.project.mechanic.fragment.FragmentAboutUs;
 import com.project.mechanic.fragment.FragmentContactUs;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
@@ -49,7 +48,6 @@ public class MainActivity extends FragmentActivity {
 	private int mInterval = 40000; // 5 seconds by default, can be changed later
 	private Handler mHandler;
 	SlideMenuAdapter slideadapter;
-
 	Dialog_notification dialog;
 	Dialog_notificationlike dialog1;
 
@@ -58,26 +56,20 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// final String title = "comment in froum";
+		adapter = new DataBaseAdapter(this);
+		slideadapter = new SlideMenuAdapter(this);
 
 		adapter = new DataBaseAdapter(this);
 		slideadapter = new SlideMenuAdapter(this);
 
 		adapter.open();
-
 		int r = adapter.NumOfNewCmtInFroum();
-		int r1 = adapter.NumOfNewCmtInObject();
-		int r2 = adapter.NumOfNewCmtInPaper();
-		int r3 = r + r1 + r2;
 		TextView txtcm = (TextView) findViewById(R.id.txtcm);
-		txtcm.setText("" + r3);
+		txtcm.setText("" + r);
 
-		int t = adapter.NumOfNewLikeInObject();
-		int t1 = adapter.NumOfNewLikeInFroum();
-		int t2 = adapter.NumOfNewLikeInPaper();
-		int t3 = t + t1 + t2;
+		int t = adapter.NumOfNewLikeInObject1();
 		TextView txtlike = (TextView) findViewById(R.id.txtlike);
-		txtlike.setText("" + t3);
+		txtlike.setText("" + t);
 		adapter.close();
 
 		ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
@@ -86,26 +78,13 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				// adapter.open();
-				//
-				// int r = adapter.NumOfNewCmtInFroum();
-				// TextView txtcm = (TextView) findViewById(R.id.txtcm);
-				// txtcm.setText("" + r);
-				//
-				// int t = adapter.NumOfNewLikeInObject1();
-				// TextView txtlike = (TextView) findViewById(R.id.txtlike);
-				// txtlike.setText("" + t);
 				adapter.open();
-				dialog = new Dialog_notification(MainActivity.this);
 
-				// dialog.setTitle(title);
+				dialog = new Dialog_notification(MainActivity.this);
 
 				dialog.show();
 				int seen = 1;
 				adapter.updatecmseentodb(seen);
-				adapter.updatecmobjectseentodb(seen);
-				adapter.updatecmpaperseentodb(seen);
-
 				int r = adapter.NumOfNewCmtInFroum();
 				TextView txtcm = (TextView) findViewById(R.id.txtcm);
 				txtcm.setText("" + r);
@@ -125,20 +104,18 @@ public class MainActivity extends FragmentActivity {
 				dialog1.show();
 				int seen = 1;
 				adapter.updatelikeseentodb(seen);
-				adapter.updatelikefroumseentodb(seen);
-				adapter.updatelikepaperseentodb(seen);
 
-				int t = adapter.NumOfNewLikeInObject();
+				int t = adapter.NumOfNewLikeInObject1();
 				TextView txtlike = (TextView) findViewById(R.id.txtlike);
 				txtlike.setText("" + t);
 				adapter.close();
 
 			}
+
 		});
 
 		util = new Utility(MainActivity.this);
-		// mPlanetTitles =
-		// getResources().getStringArray(R.array.MenuItems);
+		// mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -150,16 +127,6 @@ public class MainActivity extends FragmentActivity {
 		mDrawerList.setAdapter(slideadapter);
 
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-		ImageButton iBtnMenu = (ImageButton) findViewById(R.id.iBtnMenu);
-		// ImageButton iBtnShare = (ImageButton)
-		// findViewById(R.id.iBtnShare);
-		// ImageButton iBtnBack = (ImageButton)
-		// findViewById(R.id.iBtnBack);
-		// final ImageButton iBtnFavorite = (ImageButton)
-		// findViewById(R.id.iBtnFavorite);
-		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
-		ImageView search = (ImageView) findViewById(R.id.sedarch_v);
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 		mDrawerLayout, /* DrawerLayout object */
@@ -190,6 +157,14 @@ public class MainActivity extends FragmentActivity {
 
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+		ImageButton iBtnMenu = (ImageButton) findViewById(R.id.iBtnMenu);
+		// ImageButton iBtnShare = (ImageButton) findViewById(R.id.iBtnShare);
+		// ImageButton iBtnBack = (ImageButton) findViewById(R.id.iBtnBack);
+		// final ImageButton iBtnFavorite = (ImageButton)
+		// findViewById(R.id.iBtnFavorite);
+		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
+		ImageView search = (ImageView) findViewById(R.id.sedarch_v);
+
 		search.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -211,8 +186,7 @@ public class MainActivity extends FragmentActivity {
 				fragmentManager.beginTransaction()
 						.replace(R.id.content_frame, fragment).commit();
 
-				// Intent i = new Intent(MainActivity.this,
-				// Search.class);
+				// Intent i = new Intent(MainActivity.this, Search.class);
 				//
 				// i.putExtra("table", tableName);
 				// startActivity(i);
@@ -229,6 +203,59 @@ public class MainActivity extends FragmentActivity {
 			}
 		});
 
+		// iBtnShare.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// Intent sharingIntent = new Intent(
+		// android.content.Intent.ACTION_SEND);
+		// sharingIntent.setType("text/plain");
+		// String shareBody = "Here is the share content body";
+		// sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+		// "Subject Here");
+		// sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+		// shareBody);
+		// startActivity(Intent.createChooser(sharingIntent,
+		// "اشتراک از طریق"));
+		//
+		// }
+		// });
+		//
+		// iBtnBack.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// if (lastFragment != null) {
+		// FragmentTransaction trans = getSupportFragmentManager()
+		// .beginTransaction();
+		// trans.replace(R.id.content_frame, lastFragment);
+		// trans.addToBackStack(null);
+		// trans.commit();
+		// } else {
+		// Intent intent = new Intent(MainActivity.this,
+		// SplashActivity.class);
+		// startActivity(intent);
+		// }
+		//
+		// }
+		// });
+		//
+		// iBtnFavorite.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// if (isFavorite) {
+		// iBtnFavorite
+		// .setImageResource(android.R.drawable.btn_star_big_off);
+		// } else {
+		//
+		// iBtnFavorite
+		// .setImageResource(android.R.drawable.btn_star_big_on);
+		// }
+		// isFavorite = !isFavorite;
+		// }
+		// });
+		//
 		txtTitle.setText(R.string.strMain);
 
 		FragmentTransaction trans = getSupportFragmentManager()
@@ -311,8 +338,7 @@ public class MainActivity extends FragmentActivity {
 				// // SharedPreferences sendData =
 				// this.getSharedPreferences("Id",
 				// // 0);
-				// //sendData.edit().putInt("main_Id",
-				// Service).commit();
+				// //sendData.edit().putInt("main_Id", Service).commit();
 				fragment = new DisplayPersonalInformationFragment();
 				fragmentManager = getSupportFragmentManager();
 				fragmentManager.beginTransaction()
@@ -340,23 +366,43 @@ public class MainActivity extends FragmentActivity {
 			break;
 
 		case 4:
-			fragment = new FragmentAboutUs();
-			fragmentManager = getSupportFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
-			break;
-
 		case 5:
 			fragment = new FragmentContactUs();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
-			break;
-
 		}
 
 		mDrawerList.setItemChecked(position, true);
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}
+
+	// public boolean onKeyDown(int keyCode, KeyEvent event) {
+	// if (keyCode == KeyEvent.KEYCODE_BACK) {
+	// exitByBackKey();
+	//
+	// // moveTaskToBack(false);
+	//
+	// return true;
+	// }
+	// return super.onKeyDown(keyCode, event);
+	// }
+	//
+	// protected void exitByBackKey() {
+	//
+	// new AlertDialog.Builder(MainActivity.this)
+	// .setTitle("خروج از برنامه")
+	// .setMessage("آیا از خروج اطمینان دارید؟")
+	// .setNegativeButton("خیر", null)
+	// .setPositiveButton("بله",
+	// new DialogInterface.OnClickListener() {
+	//
+	// public void onClick(DialogInterface arg0, int arg1) {
+	// finish();
+	// System.exit(0);
+	// }
+	// }).create().show();
+	//
+	// }
 
 }

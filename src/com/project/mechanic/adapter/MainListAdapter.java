@@ -145,6 +145,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					Fragment ostan = new ProvinceFragment();
 					trans.addToBackStack(null);
 					trans.replace(R.id.content_frame, ostan);
+
 					trans.commit();
 
 				} else if (id == 3) {

@@ -39,7 +39,7 @@ public class CityFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		//((MainActivity) getActivity()).setActivityTitle(R.string.city);
+		((MainActivity) getActivity()).setActivityTitle(R.string.city);
 		View view = inflater.inflate(R.layout.fragment_city, null);
 
 		adapter = new DataBaseAdapter(getActivity());
