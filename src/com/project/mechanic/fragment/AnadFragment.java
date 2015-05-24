@@ -90,7 +90,7 @@ public class AnadFragment extends Fragment {
 	private Button clickedButton = null;
 	Users u;
 	Utility util;
-	int i=0,j=6;
+	int i=0,j=9;
 	AnadListAdapter ListAdapter;
 	@SuppressLint("InflateParams")
 	@Override
@@ -122,7 +122,10 @@ public class AnadFragment extends Fragment {
 		anadlist = dbAdapter.getAnadtByTypeIdProId(proID);
 
 		dbAdapter.close();
-		if(!mylist.isEmpty()){
+		if(mylist!=null &&!mylist.isEmpty()){
+			if(mylist.size()<j){
+				j=mylist.size();
+			}
 		List<Ticket> tmpList = mylist.subList(i, j);
 		subList = new ArrayList<Ticket>();
 		for(Ticket p : tmpList){
@@ -159,7 +162,7 @@ public class AnadFragment extends Fragment {
 				dialog.show();
 			}
 		});
-		if(!mylist.isEmpty()){
+		if(mylist!=null &&!mylist.isEmpty()){
 		lstTicket = (PullAndLoadListView) view.findViewById(R.id.listVanad);
 		
 		 ListAdapter = new AnadListAdapter(getActivity(),
