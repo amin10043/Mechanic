@@ -3,7 +3,6 @@ package com.project.mechanic.fragment;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
@@ -38,12 +36,12 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 	String pass;
 	EditText editmobile;
 	EditText editpass;
-	String mobileNumber ="";
-	 ProgressDialog pDialog;
-	 ProgressDialog ringProgressDialog;
-	 	    Handler updateBarHandler;
-	 	  final int progress_bar_type = 0;
-	 	 
+	String mobileNumber = "";
+	ProgressDialog pDialog;
+	ProgressDialog ringProgressDialog;
+	Handler updateBarHandler;
+	final int progress_bar_type = 0;
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
@@ -51,16 +49,15 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 		util = new Utility(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
 		updateBarHandler = new Handler();
-		((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
 		View view = inflater.inflate(R.layout.fragment_login, null);
 
 		Button btnlog = (Button) view.findViewById(R.id.btnlogin);
 		Button btncancle = (Button) view.findViewById(R.id.btncancle);
-//		Button launchRingDialog= (Button) view.findViewById(R.id.btnring);
+		// Button launchRingDialog= (Button) view.findViewById(R.id.btnring);
 		TextView btnreg = (TextView) view.findViewById(R.id.btnreg1);
 		TextView btnforgot = (TextView) view.findViewById(R.id.btnforgot);
-		 editmobile = (EditText) view
-				.findViewById(R.id.editTextmobile);
+		editmobile = (EditText) view.findViewById(R.id.editTextmobile);
 		final EditText editpass = (EditText) view
 				.findViewById(R.id.editTextpass);
 		// TextView test = (TextView) view.findViewById(R.id.texttest);
@@ -70,19 +67,12 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 			@Override
 			public void onClick(View v) {
 
-				
-				
-				
-				
-				
 				dbAdapter.open();
 
 				mobile = editmobile.getText().toString();
 				pass = editpass.getText().toString();
-				Toast.makeText(
-						getActivity(),
-						mobile,
-						Toast.LENGTH_SHORT).show();
+				// Toast.makeText(getActivity(), mobile, Toast.LENGTH_SHORT)
+				// .show();
 				dbAdapter.close();
 				if (!util.isNetworkConnected()) {
 					util.showOkDialog(getActivity(), "خطا در ارتباط",
@@ -91,13 +81,11 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 				else if ("".equals(mobile) || "".equals(pass)) {
 					Toast.makeText(getActivity(),
-							"نام کاربری و یا کلمه عبور نمی تواند خالی باشد.",
+							"تلفن همراه و کلمه عبور نمی تواند خالی باشد.",
 							Toast.LENGTH_SHORT).show();
 				}
 
 				else {
-					
-					
 
 					// String[] params = new String[] { "login", mobile, pass };
 					service.delegate = LoginFragment.this;
@@ -108,44 +96,27 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 					service.execute(items);
 					mobileNumber = mobile;
-					
-				
-ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "ConnectToService...", true);
-					
-			        ringProgressDialog.setCancelable(true);
-		
-			        new Thread(new Runnable() {
-		
-	            @Override
-		
-			            public void run() {
-	
-		                try {
-	
-		                    // Here you should write your time consuming task...
-	
-		                    // Let the progress ring for 10 seconds...
-			                    Thread.sleep(10000);
-		
-			                } catch (Exception e) {
-		
-			 
-		
-		                }
-	
-//			                ringProgressDialog.dismiss();
-		
-	}
-	            }).start();
-					
-					
-					
-					///////////////////////
-					
-		///////////////////////////			
-					
-					
-					
+
+					ringProgressDialog = ProgressDialog.show(getActivity(), "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
+
 				}
 			}
 		});
@@ -154,7 +125,6 @@ ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Conn
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
@@ -174,10 +144,6 @@ ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Conn
 				trans.commit();
 			}
 		});
-		
-		
-		
-
 
 		btnforgot.setOnClickListener(new View.OnClickListener() {
 
@@ -207,33 +173,16 @@ ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Conn
 
 	}
 
-	
-	
-	
-	
-	
-		 	 
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@Override
 	public void processFinish(String output) {
 
-		
-		
-		 ringProgressDialog.dismiss();
-		
+		ringProgressDialog.dismiss();
+
 		SharedPreferences settings = getActivity().getSharedPreferences("user",
 				0);
 		SharedPreferences.Editor editor = settings.edit();
 		if ("true".equals(output)) {
-			
+
 			editor.putBoolean("isLogin", true);
 
 			// ثبت اطلاعات کاربر در دیتا بیس هم حتما انجام گیرد. فراموش نشود!!!!
@@ -242,32 +191,31 @@ ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Conn
 					.getSupportFragmentManager().beginTransaction();
 			trans.replace(R.id.content_frame, new MainFragment());
 			trans.commit();
-	//String mobile2 = editmobile.getText().toString();
+			// String mobile2 = editmobile.getText().toString();
 
-//			if (mobile != null) {
-//				
-//
-		
+			// if (mobile != null) {
+			//
+			//
+
 			dbAdapter.open();
-				u = dbAdapter.getUserbymobailenumber(mobileNumber);
-			int id = u.getId();
+			u = dbAdapter.getUserbymobailenumber(mobileNumber);
+			if (u != null) {
+				int id = u.getId();
 				int admin = 1;
-				
-
 				dbAdapter.UpdateAdminUserToDb(id, admin);
+			}
 			dbAdapter.close();
-//			} else {
-//				Toast.makeText(
-//						getActivity(),
-//						"شما وارد شده اید اما شماره تلفن به درستی وارد نشده است.",
-//						Toast.LENGTH_SHORT).show();
-//			}
+			// } else {
+			// Toast.makeText(
+			// getActivity(),
+			// "شما وارد شده اید اما شماره تلفن به درستی وارد نشده است.",
+			// Toast.LENGTH_SHORT).show();
+			// }
 			Toast.makeText(getActivity(), "شما وارد شده اید.",
 					Toast.LENGTH_SHORT).show();
 
 		} else {
-			
-			
+
 			Toast.makeText(getActivity(),
 					"نام کاربری و یا کلمه عبور به درستی وارد نشده است.",
 					Toast.LENGTH_SHORT).show();

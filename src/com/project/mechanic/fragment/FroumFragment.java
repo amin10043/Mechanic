@@ -69,7 +69,7 @@ public class FroumFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceStdataate) {
 
-		((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
 		View view = inflater.inflate(R.layout.fragment_froum, null);
 
 		adapter = new DataBaseAdapter(getActivity());
@@ -119,28 +119,30 @@ public class FroumFragment extends Fragment {
 		topics = adapter.getFroumItembyid(froumid);
 		Users u = adapter.getUserbyid(topics.getUserId());
 
-		nametxt.setText(u.getName());
+		if (u != null) {
 
-		if (u.getImage() == null) {
-			profileImg.setImageResource(R.drawable.no_img_profile);
-		} else {
-			byte[] bytepic = u.getImage();
+			nametxt.setText(u.getName());
 
-			Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0,
-					bytepic.length);
-			LinearLayout rl = (LinearLayout) header
-					.findViewById(R.id.profileLinearcommenterinContinue);
+			if (u.getImage() == null) {
+				profileImg.setImageResource(R.drawable.no_img_profile);
+			} else {
+				byte[] bytepic = u.getImage();
 
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-					rl.getLayoutParams());
+				Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0,
+						bytepic.length);
+				LinearLayout rl = (LinearLayout) header
+						.findViewById(R.id.profileLinearcommenterinContinue);
 
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
-			lp.setMargins(5, 5, 5, 5);
-			profileImg.setImageBitmap(bmp);
-			profileImg.setLayoutParams(lp);
+				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+						rl.getLayoutParams());
+
+				lp.width = util.getScreenwidth() / 7;
+				lp.height = util.getScreenwidth() / 7;
+				lp.setMargins(5, 5, 5, 5);
+				profileImg.setImageBitmap(bmp);
+				profileImg.setLayoutParams(lp);
+			}
 		}
-
 		titletxt.setText(topics.getTitle());
 		descriptiontxt.setText(topics.getDescription());
 		countComment.setText(adapter.CommentInFroum_count(froumid).toString());

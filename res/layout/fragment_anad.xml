@@ -69,14 +69,14 @@
             android:layout_height="match_parent"
             android:layout_weight="3" >
 
-            <ListView
+            <com.project.mechanic.ListView.PullAndLoadListView
                 android:id="@+id/listVanad"
                 style="@style/second_item_style"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="left"
                 android:dividerHeight="0dp" >
-            </ListView>
+            </com.project.mechanic.ListView.PullAndLoadListView>
         </LinearLayout>
     </LinearLayout>
 

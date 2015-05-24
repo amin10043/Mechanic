@@ -1,5 +1,6 @@
 package com.project.mechanic.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +26,7 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,11 +36,16 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.ListView.PullAndLoadListView;
+import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
+import com.project.mechanic.ListView.PullToRefreshListView.OnRefreshListener;
 import com.project.mechanic.adapter.AnadImgListAdapter;
 import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.entity.Anad;
+import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
+
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -57,6 +65,8 @@ public class AnadFragment extends Fragment {
 	int proID = -1;
 	private LinearLayout verticalOuterLayout;
 	List<Anad> list;
+	List<Ticket> subList;
+	List<Ticket> tempList;
 	Anad tempItem;
 	int position;
 	private Anad x;
@@ -68,6 +78,7 @@ public class AnadFragment extends Fragment {
 	// private ListView verticalScrollview;
 	private TextView verticalTextView;
 	private int verticalScrollMax;
+	PullAndLoadListView lstTicket;
 	private Timer scrollTimer = null;
 	private TimerTask clickSchedule;
 	private TimerTask scrollerSchedule;
@@ -79,7 +90,8 @@ public class AnadFragment extends Fragment {
 	private Button clickedButton = null;
 	Users u;
 	Utility util;
-
+	int i=0,j=9;
+	AnadListAdapter ListAdapter;
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,7 +101,7 @@ public class AnadFragment extends Fragment {
 		verticalOuterLayout = (LinearLayout) view
 				.findViewById(R.id.vertical_outer_layout_id);
 
-		((MainActivity) getActivity()).setActivityTitle(R.string.anad);
+		//((MainActivity) getActivity()).setActivityTitle(R.string.anad);
 		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
 
 		imgadd = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
@@ -110,6 +122,17 @@ public class AnadFragment extends Fragment {
 		anadlist = dbAdapter.getAnadtByTypeIdProId(proID);
 
 		dbAdapter.close();
+		if(mylist!=null &&!mylist.isEmpty()){
+			if(mylist.size()<j){
+				j=mylist.size();
+			}
+		List<Ticket> tmpList = mylist.subList(i, j);
+		subList = new ArrayList<Ticket>();
+		for(Ticket p : tmpList){
+			if(!subList.contains(p))
+				subList.add(p);
+		}
+		}
 		// img.setOnClickListener(new OnClickListener() {
 		//
 		// @Override
@@ -139,12 +162,49 @@ public class AnadFragment extends Fragment {
 				dialog.show();
 			}
 		});
+		if(mylist!=null &&!mylist.isEmpty()){
+		lstTicket = (PullAndLoadListView) view.findViewById(R.id.listVanad);
+		
+		 ListAdapter = new AnadListAdapter(getActivity(),
+				R.layout.row_anad, subList, proID);
 
-		ListView lstAnad = (ListView) view.findViewById(R.id.listVanad);
-		AnadListAdapter ListAdapter = new AnadListAdapter(getActivity(),
-				R.layout.row_anad, mylist, proID);
+		 lstTicket.setAdapter(ListAdapter);
+		 
+		 ((PullAndLoadListView) lstTicket)
+			.setOnRefreshListener(new OnRefreshListener() {
 
-		lstAnad.setAdapter(ListAdapter);
+				public void onRefresh() {
+					// Do work to refresh the list here.
+
+					new PullToRefreshDataTask().execute();
+				}
+			});
+		 
+			((PullAndLoadListView) lstTicket)
+			.setOnLoadMoreListener(new OnLoadMoreListener() {
+
+				public void onLoadMore() {
+					// Do the work to load more items at the end of list
+					// here
+					if(mylist.size()< j+1){
+						i=j+1;
+					}
+				
+				if(mylist.size()< j+10){
+					j = mylist.size()-1;
+				}else{
+					j+=10;
+				}
+				tempList = mylist.subList(i, j);
+				for(Ticket p : tempList){
+					if(!subList.contains(p))
+					subList.add(p);
+				}
+				//Toast.makeText(getActivity(), String.valueOf(i), Toast.LENGTH_SHORT).show();
+				//ListAdapter.notifyDataSetChanged();
+				new LoadMoreDataTask().execute();
+				}
+			});}
 
 		lstimg = (ListView) view.findViewById(R.id.listVanad2);
 		AnadImgListAdapter ListAdapter2 = new AnadImgListAdapter(getActivity(),
@@ -177,6 +237,85 @@ public class AnadFragment extends Fragment {
 
 		return view;
 
+	}
+	private class LoadMoreDataTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+
+			if (isCancelled()) {
+				return null;
+			}
+
+			// Simulates a background task
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+			}
+			//
+			// for (int i = 0; i < mNames.length; i++)
+			// mListItems.add(mNames[i]);
+			
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+
+			// We need notify the adapter that the data have been changed
+			((BaseAdapter) ListAdapter).notifyDataSetChanged();
+
+			// Call onLoadMoreComplete when the LoadMore task, has finished
+			((PullAndLoadListView) lstTicket).onLoadMoreComplete();
+
+			super.onPostExecute(result);
+		}
+
+		@Override
+		protected void onCancelled() {
+			// Notify the loading more operation has finished
+			((PullAndLoadListView) lstTicket).onLoadMoreComplete();
+		}
+	}
+	private class PullToRefreshDataTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+
+			if (isCancelled()) {
+				return null;
+			}
+
+			// Simulates a background task
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+
+			// for (int i = 0; i < mAnimals.length; i++)
+			// mListItems.addFirst(mAnimals[i]);
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+
+			// We need notify the adapter that the data have been changed
+			((BaseAdapter) ListAdapter).notifyDataSetChanged();
+
+			// Call onLoadMoreComplete when the LoadMore task, has finished
+			((PullAndLoadListView) lstTicket).onRefreshComplete();
+
+			super.onPostExecute(result);
+		}
+
+		@Override
+		protected void onCancelled() {
+			// Notify the loading more operation has finished
+			((PullAndLoadListView) lstTicket).onLoadMoreComplete();
+		}
 	}
 
 	public void updateView() {

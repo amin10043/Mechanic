@@ -31,9 +31,15 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.project.mechanic.entity.Settings;
+import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Updating;
 import com.project.mechanic.utility.ChatHeadService;
+import com.project.mechanic.utility.ServiceComm;
+import com.project.mechanic.utility.Utility;
 
-public class WelcomeScreen extends Activity {
+public class WelcomeScreen extends Activity implements AsyncInterface {
 
 	private LinearLayout verticalOuterLayout;
 	private ImageButton btnNext, btnExit, btnins1, btnint1, btngp1, btnfb1,
@@ -61,11 +67,95 @@ public class WelcomeScreen extends Activity {
 	private Timer faceTimer = null;
 	private Button clickedButton = null;
 
+	private Updating serviceUpdate;
+	private ServiceComm comm;
+	private Utility util;
+	private DataBaseAdapter adapter;
+	Settings settings;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_welcome_screen);
+
+		adapter = new DataBaseAdapter(this);
+
+		boolean isFirstTime = false;
+
+		adapter.open();
+		settings = adapter.getSettings();
+		adapter.close();
+		util = new Utility(this);
+
+		String tableUpdating = "User";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating, settings.getServerDate());
+
+		tableUpdating = "Paper";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate() : ""));
+
+		tableUpdating = "Froum";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate() : ""));
+		// tableUpdating = "Object";
+		// serviceUpdate = new Updating(this);
+		// serviceUpdate.delegate = this;
+		// serviceUpdate.execute(tableUpdating,
+		// (settings != null ? settings.getServerDate() : ""));
+		tableUpdating = "News";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate() : ""));
+		tableUpdating = "Anad";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate() : ""));
+		tableUpdating = "Ticket";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate() : ""));
+		tableUpdating = "LikeInPaper";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate() : ""));
+		tableUpdating = "CmtInPaper";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate() : ""));
+
+		tableUpdating = "LikeInFroum";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate() : ""));
+		tableUpdating = "CommentInFroum";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate() : ""));
+
+		tableUpdating = "LikeInObject";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate() : ""));
+		tableUpdating = "CommentInObject";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate() : ""));
 
 		startService(new Intent(this, ChatHeadService.class));
 
@@ -659,4 +749,15 @@ public class WelcomeScreen extends Activity {
 		}
 	}
 
+	@Override
+	public void processFinish(String output) {
+		util.parseQuery(output);
+
+		// String tableUpdating = "Paper";
+		// serviceUpdate = new Updating(this);
+		// serviceUpdate.delegate = this;
+		// serviceUpdate.execute(tableUpdating,
+		// (settings != null ? settings.getServerDate() : ""));
+
+	}
 }

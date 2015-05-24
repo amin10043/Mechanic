@@ -28,12 +28,12 @@ public class ServiceComm extends
 
 	public String response = "";
 
-	// private Context context;
+	private Context context;
 
 	public AsyncInterface delegate = null;
 
 	public ServiceComm(Context context) {
-		// this.context = context;
+		this.context = context;
 	}
 
 	protected String doInBackground(Map<String, String>... action) {

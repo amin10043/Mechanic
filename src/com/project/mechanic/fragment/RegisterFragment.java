@@ -4,11 +4,14 @@ import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -44,7 +47,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 	protected static final Context Contaxt = null;
 	int resourceId;
-	Context context;
+
 	Fragment fragment;
 	int ticketTypeID;
 	int ProvinceId;
@@ -53,25 +56,19 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	Utility utile;
 	LinearLayout.LayoutParams lp;
 	ServiceComm service;
-	 ProgressDialog ringProgressDialog;
-	// byte[] byteImage1 = null;
-	// ContentValues newValues = new ContentValues();
-	// public RegisterFragment(Context context, int resourceId, Fragment
-	// fragment,
-	// int ticketTypeID, int ProvinceId) {
-	//
-	// // TODO Auto-generated constructor stub
-	// this.resourceId = resourceId;
-	// this.context = context;
-	// this.fragment = fragment;
-	// this.ticketTypeID = ticketTypeID;
-	// this.ProvinceId = ProvinceId;
-	// }
-
+	ProgressDialog ringProgressDialog;
+	String Name;
+	String Mobile;
+	String Pass;
+	PersianDate date;
+	String txtdate;
+	TelephonyManager tm;
+	String number;
+	SharedPreferences server;
+	int serverId = 0;
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
 	private Activity view;
-
 	TextView txtclickpic;
 
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
@@ -86,66 +83,35 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		View view = inflater.inflate(R.layout.fragment_register, null);
 		utile = new Utility(getActivity());
 		service = new ServiceComm(getActivity());
-		// dbAdapter = new DataBaseAdapter(getActivity());
+		dbAdapter = new DataBaseAdapter(getActivity());
+		date = new PersianDate();
+		tm = (TelephonyManager) getActivity().getSystemService(
+				Context.TELEPHONY_SERVICE);
 		btnaddpic1 = (ImageView) view.findViewById(R.id.btnaddpic);
 		Button btncan = (Button) view.findViewById(R.id.btncancle2);
 		final Button btnreg = (Button) view.findViewById(R.id.btnreg2);
 		final TextView comregtxt = (TextView) view
 				.findViewById(R.id.compeletereg);
-		final EditText editname = (EditText) view
-				.findViewById(R.id.Textname);
+		final EditText editname = (EditText) view.findViewById(R.id.Textname);
 		final EditText editmobile = (EditText) view
 				.findViewById(R.id.mobiletxt);
-		final EditText editpass = (EditText) view
-				.findViewById(R.id.Textpass);
-		 btnreg.setEnabled(false);
-		 final CheckBox Rulescheck = (CheckBox)
-				 view.findViewById(R.id.rulescheck);
-				 TextView textrules=(TextView) view.findViewById(R.id.txtrulles);
-					 ScrollView scroll_vertical_register1 =(ScrollView)
-					 view.findViewById(R.id.scroll_vertical_register);
-	//	txtclickpic = (TextView) view.findViewById(R.id.txtclickpic);
-
+		final EditText editpass = (EditText) view.findViewById(R.id.Textpass);
+		btnreg.setEnabled(false);
+		final CheckBox Rulescheck = (CheckBox) view
+				.findViewById(R.id.rulescheck);
+		TextView textrules = (TextView) view.findViewById(R.id.txtrulles);
+		ScrollView scroll_vertical_register1 = (ScrollView) view
+				.findViewById(R.id.scroll_vertical_register);
 		final LinearLayout lin1 = (LinearLayout) view.findViewById(R.id.lin1);
-
 		btnaddpic1.setBackgroundResource(R.drawable.i13);
-		// columnWidth = (int) (getScreenWidth() /3);
-
 		lp = new LinearLayout.LayoutParams(lin1.getLayoutParams());
 		lp.width = utile.getScreenwidth() / 4;
 		lp.height = utile.getScreenwidth() / 4;
 		btnaddpic1.setLayoutParams(lp);
-		// btnaddpic1.setLayoutParams(lp);
-		// l1.addView(btnaddpic1);
-		// btnaddpic1.getLayoutParams().height = 150;
-		// btnaddpic1.getLayoutParams().width = 150;
-		// btnaddpic1.requestLayout();
-
-		// ///////////////////////////////////
-		// if (editname.getText().toString().equals("") &&
-		// editpass.getText().toString().equals(""))
-		// {
-		//
-		//
-		//
-		// comregtxt.setVisibility(View.GONE);
-		// }
-		//
-		// else {
-		//
-		//
-		//
-		//
-		// comregtxt.setVisibility(View.VISIBLE);
-		// Toast.makeText(getActivity(),
-		// "link faal shavad ",
-		// Toast.LENGTH_SHORT).show();
-		//
-		//
-		//
-		// }
-
 		// ///////////////////////////////////////////////////
+
+		server = getActivity().getSharedPreferences("sId", 0);
+
 		textrules.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -154,7 +120,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new DisplayeRullseFragment());
-			trans.commit();
+				trans.commit();
 
 			}
 		});
@@ -176,132 +142,72 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 				Context context;
 
-		}
+			}
 		});
 		btnreg.setOnClickListener(new OnClickListener() {
-
-			@SuppressWarnings("unchecked")
 			public void onClick(View arg0) {
-				final String Name = editname.getText().toString();
-				final String Mobile = editmobile.getText().toString();
-				final String Pass = editpass.getText().toString();
+				Name = editname.getText().toString();
+				Mobile = editmobile.getText().toString();
+				Pass = editpass.getText().toString();
+				txtdate = date.todayShamsi();
+				number = tm.getLine1Number();
 
-				PersianDate date = new PersianDate();
-				String txtdate = date.todayShamsi();
-				// Toast.makeText(getActivity(), txtdate,Toast.LENGTH_SHORT);
+				if (!utile.isNetworkConnected()) {
+					utile.showOkDialog(getActivity(), "خطا در ارتباط",
+							"شما به اینترنت متصل نیستید.");
+				}
 
-				TelephonyManager tm = (TelephonyManager) getActivity()
-						.getSystemService(Context.TELEPHONY_SERVICE);
-				String number = tm.getLine1Number();
-
-				Toast.makeText(getActivity(), "" + number, Toast.LENGTH_SHORT)
-						.show();
-
-				if (Name.equals("") || Pass.equals("")) {
-
+				else if (Name.equals("") || Pass.equals("")
+						|| Mobile.equals("")) {
 					Toast.makeText(getActivity(),
 							"لطفا فيلدهاي اجباری را پر کنيد  ",
 							Toast.LENGTH_SHORT).show();
+				}
 
+				else if (!isValidName(Name)) {
+					editname.setError("Invalid Name");
+				}
+
+				else if (!isValidPassword(Pass)) {
+					editpass.setError("Invalid Password");
 				}
 
 				else {
-					
-					
-					
-ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "ConnectToService...", true);
-					
-			        ringProgressDialog.setCancelable(true);
-		
-			        new Thread(new Runnable() {
-		
-	            @Override
-		
-			            public void run() {
-	
-		                try {
-	
-		                    // Here you should write your time consuming task...
-	
-		                    // Let the progress ring for 10 seconds...
-			                    Thread.sleep(10000);
-		
-			                } catch (Exception e) {
-		
-			 
-		
-		                }
-	
-//			                ringProgressDialog.dismiss();
-		
-	}
-	            }).start();
-					
+					ringProgressDialog = ProgressDialog.show(getActivity(), "",
+							"لطفا منتظر بمانید...", true);
 
-				//	txtclickpic.setVisibility(View.INVISIBLE);
+					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								Thread.sleep(10000);
+							} catch (Exception e) {
+							}
+						}
+					}).start();
+
 					comregtxt.setVisibility(View.VISIBLE);
 					btnreg.setEnabled(false);
-					dbAdapter = new DataBaseAdapter(getActivity());
-					dbAdapter.open();
 
-					if ((btnaddpic1.getDrawable() == null)) {
+					Map<String, String> items = new HashMap<String, String>();
+					items.put("register", "register");
+					items.put("username", Name);
+					items.put("email", "");
+					items.put("password", Pass);
+					items.put("phone", "");
+					items.put("mobile", Mobile);
+					items.put("fax", "0");
+					items.put("address", "");
+					items.put("date", txtdate);
 
-						dbAdapter.inserUsernonpicToDb(Name, null, Pass, null,
-							Mobile, null, null, 0, txtdate);
-
-						Map<String, String> items = new HashMap<String, String>();
-						items.put("register", "register");
-						items.put("username", Name);
-						items.put("email", "");
-						items.put("password", Pass);
-						items.put("phone", "");
-						items.put("mobile",Mobile);
-						items.put("fax", "0");
-						items.put("address", "");
-						items.put("date", txtdate);
-
-						service.delegate = RegisterFragment.this;
-						service.execute(items);
-
-						Toast.makeText(getActivity(),
-								"اطلاعات مورد نظر بدون عکس ثبت شد",
-								Toast.LENGTH_SHORT).show();
-
-					} else {
-						Bitmap bitmap = ((BitmapDrawable) btnaddpic1
-								.getDrawable()).getBitmap();
-
-						Bitmap emptyBitmap = Bitmap.createBitmap(
-								bitmap.getWidth(), bitmap.getHeight(),
-								bitmap.getConfig());
-
-						if (bitmap.sameAs(emptyBitmap)) {
-							dbAdapter.inserUsernonpicToDb(Name, null, Pass,
-									null, Mobile, null, null, 0, txtdate);
-
-						} else {
-
-							byte[] Image = getBitmapAsByteArray(bitmap);
-
-							dbAdapter.inserUserToDb(Name, null, Pass, null,
-									Mobile, null, null, Image, 0, txtdate);
-
-							Toast.makeText(getActivity(),
-									"اطلاعات مورد نظر ثبت شد",
-									Toast.LENGTH_SHORT).show();
-
-							// editname.setText("");
-							// edituser.setText("");
-							// editpass.setText("");
-							//
-						}
-					}
-					dbAdapter.close();
+					service.delegate = RegisterFragment.this;
+					service.execute(items);
+					// old place
 
 				}
 
 			}
-
 		});
 
 		comregtxt.setOnClickListener(new OnClickListener() {
@@ -309,23 +215,13 @@ ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Conn
 			@Override
 			public void onClick(View arg0) {
 
-				final String Name = editname.getText().toString();
+				// final String Name = editname.getText().toString();
 
 				dbAdapter = new DataBaseAdapter(getActivity());
 				dbAdapter.open();
 
 				int id = dbAdapter.getcount();
-
-				// Toast.makeText(getActivity(),
-				// id+"",
-				// Toast.LENGTH_SHORT).show();
 				dbAdapter.close();
-				// for (Users u: list) {
-				// if (Name.equals(u.getName())) {
-				// // check authentication and authorization
-				// id = u.getId();
-				// }
-				// }
 
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
@@ -337,7 +233,6 @@ ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Conn
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-
 			}
 		});
 
@@ -348,7 +243,7 @@ ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Conn
 
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new LoginFragment());
+				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
 			}
 		});
@@ -357,8 +252,6 @@ ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Conn
 
 			@Override
 			public void onClick(View arg0) {
-				// Toast.makeText(getActivity(), "ok",
-				// Toast.LENGTH_LONG).show();
 
 				Intent i = new Intent(
 						Intent.ACTION_PICK,
@@ -374,19 +267,66 @@ ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Conn
 
 	@Override
 	public void processFinish(String output) {
-		   ringProgressDialog.dismiss();
-		
-		if ("0".equals(output)) {
+		ringProgressDialog.dismiss();
+
+		try {
+			serverId = Integer.valueOf(output);
+
+			if (serverId > 0) {
+
+				server.edit().putInt("srv_id", serverId).commit();
+
+				dbAdapter.open();
+
+				if ((btnaddpic1.getDrawable() == null)) {
+
+					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
+							null, Mobile, null, null, 0, txtdate);
+
+					Toast.makeText(getActivity(),
+							"اطلاعات مورد نظر بدون عکس ثبت شد",
+							Toast.LENGTH_SHORT).show();
+
+				} else {
+					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
+							.getBitmap();
+
+					Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+							bitmap.getHeight(), bitmap.getConfig());
+
+					if (bitmap.sameAs(emptyBitmap)) {
+						dbAdapter.inserUsernonpicToDb(serverId, Name, null,
+								Pass, null, Mobile, null, null, 0, txtdate);
+					} else {
+						byte[] Image = getBitmapAsByteArray(bitmap);
+
+						dbAdapter.inserUserToDb(serverId, Name, null, Pass,
+								null, Mobile, null, null, Image, 0, txtdate);
+
+						Toast.makeText(getActivity(),
+								"اطلاعات مورد نظر ثبت شد", Toast.LENGTH_SHORT)
+								.show();
+					}
+				}
+				dbAdapter.close();
+
+				Toast.makeText(getActivity(), "sabt shod ", Toast.LENGTH_SHORT)
+						.show();
+
+			} else {
+				Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT)
+						.show();
+			}
+		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT).show();
-		} else {
-			
-			
-			
-			Toast.makeText(getActivity(), "sabt shod ", Toast.LENGTH_SHORT)
-					.show();
 		}
 
 	}
+
+	// FragmentTransaction trans = getActivity()
+	// .getSupportFragmentManager().beginTransaction();
+	// trans.replace(R.id.content_frame, new LoginFragment());
+	// trans.commit();
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -412,9 +352,36 @@ ringProgressDialog = ProgressDialog.show(getActivity(), "Please wait ...", "Conn
 					android.R.color.transparent));
 
 			btnaddpic1.setLayoutParams(lp);
-			//txtclickpic.setVisibility(View.INVISIBLE);
+			// txtclickpic.setVisibility(View.INVISIBLE);
 		}
 
+	}
+
+	private boolean isValidName(String name) {
+		String Name_PATTERN = "[a-zA-Z0-9- ]+";
+		// String Name_PATTERN = "[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)" +
+		// "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)" ;
+		Pattern pattern = Pattern.compile(Name_PATTERN);
+		Matcher matcher = pattern.matcher(name);
+		return matcher.matches();
+	}
+
+	// validating password with retype password
+	private boolean isValidPassword(String pass) {
+		if (pass.length() > 5) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean isValidEmail(String email) {
+		String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		Matcher matcher = pattern.matcher(email);
+		return matcher.matches();
 	}
 
 }

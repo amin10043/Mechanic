@@ -156,20 +156,23 @@ public class IntroductionEditFragment extends Fragment {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 					bitmapbyte.length);
 			profileImageEdit.setImageBitmap(bmp);
-		}
+		} else
+			profileImageEdit.setImageResource(R.drawable.no_img_profile);
 
 		byte[] bitmap = object.getImage1();
 		if (bitmap != null) {
 			Bitmap bmp = BitmapFactory
 					.decodeByteArray(bitmap, 0, bitmap.length);
 			headerImageEdit.setImageBitmap(bmp);
-		}
+		} else
+			headerImageEdit.setImageResource(R.drawable.no_image_header);
 
 		byte[] bitm = object.getImage3();
 		if (bitm != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitm, 0, bitm.length);
 			footerImageEdit.setImageBitmap(bmp);
-		}
+		} else
+			footerImageEdit.setImageResource(R.drawable.no_image_header);
 
 		nameEnter.setText(object.getName());
 		phoneEnter.setText(object.getPhone());
@@ -258,12 +261,6 @@ public class IntroductionEditFragment extends Fragment {
 				bmpFooter = ((BitmapDrawable) footerImageEdit.getDrawable())
 						.getBitmap();
 
-				Bitmap emptyBitmap1 = Bitmap.createBitmap(bmpHeader.getWidth(),
-						bmpHeader.getHeight(), bmpHeader.getConfig());
-				Bitmap emptyBitmap2 = Bitmap.createBitmap(bmpProfil.getWidth(),
-						bmpProfil.getHeight(), bmpProfil.getConfig());
-				Bitmap emptyBitmap3 = Bitmap.createBitmap(bmpFooter.getWidth(),
-						bmpFooter.getHeight(), bmpFooter.getConfig());
 				final byte[] byteHeader = getBitmapAsByteArray(bmpHeader);
 				final byte[] byteProfil = getBitmapAsByteArray(bmpProfil);
 				final byte[] byteFooter = getBitmapAsByteArray(bmpFooter);
@@ -293,9 +290,12 @@ public class IntroductionEditFragment extends Fragment {
 					DBAdapter.open();
 					DBAdapter.UpdateObjectProperties(id, nameValue, phoneValue,
 							emailValue, faxValue, descriptionValue, byteHeader,
-							byteProfil, byteFooter, Dcatalog, Dprice, Dpdf,
-							Dvideo, addressValue, mobileValue, Dface,
-							Dinstagram, Dlink, Dgoogle, Dweb, Dtwt);
+							byteProfil, byteFooter,
+
+							Dcatalog, Dprice, Dpdf, Dvideo, addressValue,
+							mobileValue, Dface, Dinstagram, Dlink, Dgoogle,
+							Dweb, Dtwt);
+
 					DBAdapter.close();
 
 					getActivity().getSupportFragmentManager().popBackStack();
