@@ -1,6 +1,8 @@
 package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.project.mechanic.R;
 import android.R.color;
@@ -41,6 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.R.string;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 
@@ -82,9 +85,7 @@ public class CompeleteRegisterFragment extends Fragment {
 			.findViewById(R.id.mobiletxt);
 	final EditText editpass = (EditText) view
 			.findViewById(R.id.Textpass);
-	
-	
-	
+
 	 
 //	textrules.setText(Html.fromHtml("<html><a href=\"http://example.com/\">قوانین</a></html>"));
 //	textrules.setMovementMethod(LinkMovementMethod.getInstance());
@@ -125,6 +126,12 @@ public class CompeleteRegisterFragment extends Fragment {
 	//				int id = Integer.valueOf(getArguments().getString("Id"));
 //				Toast.makeText(getActivity(), ""+id, Toast.LENGTH_LONG).show();
 //					Users x =dbAdapter.getUserById(id);	
+				
+				final String Email = Emailtxt .getText().toString();
+				
+//				if (!isValidEmail(Email)) {
+//				Emailtxt.setError("Invalid Email");
+//			}
 			SharedPreferences server= getActivity().getSharedPreferences("sId",
 						0);
 		 int item = server.getInt("srv_id", -1);
@@ -162,7 +169,14 @@ public class CompeleteRegisterFragment extends Fragment {
 	
 	}
 	
-	
+	private boolean isValidEmail(String email) {
+		String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		Matcher matcher = pattern.matcher(email);
+		return matcher.matches();
+	}
 	
 }
 	
