@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.project.mechanic.MainActivity;
@@ -22,7 +21,6 @@ public class ProvinceFragment extends Fragment {
 
 	DataBaseAdapter adapter;
 	Utility util;
-	private ImageView search;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -32,7 +30,7 @@ public class ProvinceFragment extends Fragment {
 		util = new Utility(getActivity());
 
 		View view = inflater.inflate(R.layout.fragment_ostan, null);
-		search = (ImageView) view.findViewById(R.id.sedarch_v);
+
 		adapter = new DataBaseAdapter(getActivity());
 
 		adapter.open();
