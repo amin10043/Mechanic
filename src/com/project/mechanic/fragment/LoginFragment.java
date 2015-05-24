@@ -86,6 +86,11 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 							Toast.LENGTH_SHORT).show();
 				}
 
+
+				
+				
+				
+				
 				else {
 
 					// String[] params = new String[] { "login", mobile, pass };

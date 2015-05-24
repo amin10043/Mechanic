@@ -4,11 +4,13 @@ import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -44,7 +46,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 	protected static final Context Contaxt = null;
 	int resourceId;
-	Context context;
+
 	Fragment fragment;
 	int ticketTypeID;
 	int ProvinceId;
@@ -61,7 +63,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	String txtdate;
 	TelephonyManager tm;
 	String number;
-
+	SharedPreferences server;
+int serverId=0;
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
 	private Activity view;
@@ -105,6 +108,15 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		lp.height = utile.getScreenwidth() / 4;
 		btnaddpic1.setLayoutParams(lp);
 		// ///////////////////////////////////////////////////
+		
+	
+		
+		
+	 server= getActivity().getSharedPreferences("sId",
+				0);
+		
+		
+		
 		textrules.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -144,13 +156,39 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 				Pass = editpass.getText().toString();
 				txtdate = date.todayShamsi();
 				number = tm.getLine1Number();
-				if (Name.equals("") || Pass.equals("") || Mobile.equals("")) {
-					Toast.makeText(getActivity(),
+				
+				
+				if (!utile.isNetworkConnected()) {
+					utile.showOkDialog(getActivity(), "خطا در ارتباط",
+							"شما به اینترنت متصل نیستید.");
+				}
+				
+				else if (Name.equals("") || Pass.equals("") || Mobile.equals("")) {
+				Toast.makeText(getActivity(),
 							"لطفا فيلدهاي اجباری را پر کنيد  ",
-							Toast.LENGTH_SHORT).show();
-				} else {
+						Toast.LENGTH_SHORT).show();
+				} 
+				
+				
+				
+				else	if (!isValidName(Name)) {
+					editname.setError("Invalid Name");
+				}
+
+			
+				else if (!isValidPassword(Pass)) {
+					editpass.setError("Invalid Password");
+				}
+				
+				
+				
+				
+				
+				
+				
+				else {
 					ringProgressDialog = ProgressDialog.show(getActivity(),
-							"Please wait ...", "ConnectToService...", true);
+							"", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -181,8 +219,18 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 					service.execute(items);
 					// old place
 
-				}
+				}     
+				 
+				
+				  
 
+				
+				
+
+				
+				
+				
+				
 			}
 		});
 
@@ -244,9 +292,25 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	@Override
 	public void processFinish(String output) {
 		ringProgressDialog.dismiss();
-		int serverId = 0;
+		
 		try {
 			serverId = Integer.valueOf(output);
+
+    server.edit().putInt("srv_id", serverId).commit();
+			
+//			CompeleteRegisterFragment fragment = new CompeleteRegisterFragment();
+//			Bundle bundle = new Bundle();
+//			bundle.putString("Id", String.valueOf(serverId));
+//			fragment.setArguments(bundle);
+		
+	Toast.makeText(getActivity(), ""+serverId, Toast.LENGTH_SHORT).show();
+		
+		
+		
+		
+		
+
+
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT).show();
 		}
@@ -291,6 +355,12 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 			Toast.makeText(getActivity(), "sabt shod ", Toast.LENGTH_SHORT)
 					.show();
 		}
+		
+		
+//		FragmentTransaction trans = getActivity()
+//				.getSupportFragmentManager().beginTransaction();
+//		trans.replace(R.id.content_frame, new LoginFragment());
+//		trans.commit();
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -298,7 +368,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (requestCode == RESULT_LOAD_IMAGE
-				&& resultCode == Activity.RESULT_OK && null != data) {
+				&& resultCode == Activity.RESULT_OK && null != data)
+		{
 			Uri selectedImage = data.getData();
 			String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
@@ -322,4 +393,40 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 	}
 
+	private boolean isValidName(String name) {
+	String Name_PATTERN = "[a-zA-Z0-9- ]+" ;
+	//	String Name_PATTERN = "[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)" ;
+		Pattern pattern = Pattern.compile(Name_PATTERN);
+		Matcher matcher = pattern.matcher(name);
+		return matcher.matches();
+	}
+
+	// validating password with retype password
+	private boolean isValidPassword(String pass) {
+		if (pass != null && pass.length() > 6) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	
+	private boolean isValidEmail(String email) {
+		String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		Matcher matcher = pattern.matcher(email);
+		return matcher.matches();
+	}
+	
+	
+	
 }
+	
+	
+	
+	
+	
+
