@@ -80,15 +80,10 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 				else if ("".equals(mobile) || "".equals(pass)) {
 					Toast.makeText(getActivity(),
-							"نام کاربری و یا کلمه عبور نمی تواند خالی باشد.",
+							"تلفن همراه و کلمه عبور نمی تواند خالی باشد.",
 							Toast.LENGTH_SHORT).show();
 				}
 
-
-				
-				
-				
-				
 				else {
 
 					// String[] params = new String[] { "login", mobile, pass };
@@ -114,24 +109,13 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 							try {
 
-								// Here you should write your time consuming
-								// task...
-
-								// Let the progress ring for 10 seconds...
 								Thread.sleep(10000);
 
 							} catch (Exception e) {
 
 							}
-
-							// ringProgressDialog.dismiss();
-
 						}
 					}).start();
-
-					// /////////////////////
-
-					// /////////////////////////
 
 				}
 			}
@@ -141,7 +125,6 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();

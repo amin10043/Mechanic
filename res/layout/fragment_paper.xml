@@ -7,11 +7,11 @@
     android:orientation="vertical"
     android:weightSum="100" >
 
-    <ListView
+    <com.project.mechanic.ListView.PullAndLoadListView
         android:id="@+id/listViewnewspaper"
         style="@style/ListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-    </ListView>
+    </com.project.mechanic.ListView.PullAndLoadListView>
 
 </LinearLayout>

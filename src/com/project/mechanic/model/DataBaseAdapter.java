@@ -1746,6 +1746,23 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+	public ArrayList<CommentInPaper> getCommentInPaperbyPaperid2(int Paperid) {
+
+		ArrayList<CommentInPaper> result = new ArrayList<CommentInPaper>();
+		CommentInPaper item = null;
+
+		Cursor mCur = mDb.query(TableCommentInPaper, CommentInPaper,
+				"PaperId=?", new String[] { String.valueOf(Paperid) }, null,
+				null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInPaper(mCur);
+			//result.add(item);
+		}
+
+		return result;
+
+	}
 
 	public CommentInFroum getCommentInFroumbyID(int ID) {
 

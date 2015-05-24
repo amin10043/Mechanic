@@ -67,7 +67,7 @@ public class DialogcmtInPaper extends Dialog {
 								.toString(), paperId, user.getId(), p
 								.todayShamsi());
 						dbadapter.close();
-						((PaperFragment) f).updateView2();
+						((PaperFragment) f).updateView();
 					}
 					DialogcmtInPaper.this.dismiss();
 				}
