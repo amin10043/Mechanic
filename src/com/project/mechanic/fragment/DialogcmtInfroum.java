@@ -1,6 +1,8 @@
 package com.project.mechanic.fragment;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -14,10 +16,12 @@ import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Saving;
 import com.project.mechanic.utility.Utility;
 
-public class DialogcmtInfroum extends Dialog {
+public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 	private ImageButton btncmt;
 	private EditText Cmttxt;
@@ -30,6 +34,9 @@ public class DialogcmtInfroum extends Dialog {
 	private int Commentid;
 	private int Froumid;
 	Users user;
+	Saving saving;
+	Map<String, String> params;
+	int userid;
 
 	public DialogcmtInfroum(Fragment f, int Commentid, Context context,
 			int froumId, int resourceId) {
@@ -53,6 +60,11 @@ public class DialogcmtInfroum extends Dialog {
 		setContentView(R.layout.dialog_addcomment);
 		btncmt = (ImageButton) findViewById(R.id.btnComment);
 		Cmttxt = (EditText) findViewById(R.id.txtCmt);
+
+		userid = user.getId();
+		PersianDate date = new PersianDate();
+		final String currentDate = date.todayShamsi();
+
 		btncmt.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
@@ -64,19 +76,22 @@ public class DialogcmtInfroum extends Dialog {
 							Toast.LENGTH_LONG)).show();
 				} else {
 
-					int userid = user.getId();
-					PersianDate date = new PersianDate();
-					String currentDate = date.todayShamsi();
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(context);
+					saving.delegate = DialogcmtInfroum.this;
 
-					dbadapter.open();
+					params.put("TableName", "CommentInFroum");
 
-					dbadapter.insertCommentInFroumtoDb(Cmttxt.getText()
-							.toString(), Froumid, userid, currentDate,
-							Commentid, "0", "0");
+					params.put("Desk", Cmttxt.getText().toString());
+					params.put("FroumID", String.valueOf(Froumid));
+					params.put("UserId", String.valueOf(userid));
+					params.put("Date", currentDate);
+					params.put("CommentId", String.valueOf(Commentid));
+					params.put("NumOfDislike", String.valueOf(0));
+					params.put("NumOfLike", String.valueOf(0));
 
-					dbadapter.close();
+					saving.execute(params);
 
-					((FroumFragment) f).updateList();
 				}
 				DialogcmtInfroum.this.dismiss();
 
@@ -91,6 +106,32 @@ public class DialogcmtInfroum extends Dialog {
 
 	public void setDialogResult(OnMyDialogResult dialogResult) {
 		mDialogResult = dialogResult;
+	}
+
+	@Override
+	public void processFinish(String output) {
+		int id = -1;
+		try {
+			id = Integer.valueOf(output);
+			int userid = user.getId();
+			PersianDate date = new PersianDate();
+			String currentDate = date.todayShamsi();
+
+			dbadapter.open();
+
+			dbadapter.insertCommentInFroumtoDb(Cmttxt.getText().toString(),
+					Froumid, userid, currentDate, Commentid, "0", "0");
+
+			dbadapter.close();
+
+			((FroumFragment) f).updateList();
+
+		} catch (Exception ex) {
+			Toast.makeText(context, "خطا در ارتباط با سرور", Toast.LENGTH_SHORT)
+					.show();
+
+		}
+
 	}
 
 }
