@@ -1,0 +1,256 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EAEAEA"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <LinearLayout
+                    android:id="@+id/headerlinerpageintroduction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:id="@+id/imgvadvertise_Object"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:paddingBottom="20dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/pre_header" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_id_profile_introduction_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="120dp" >
+
+                    <ImageView
+                        android:id="@+id/icon_pro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/profile_account" />
+                </LinearLayout>
+            </RelativeLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="10dp" >
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="صفحه مورد نظر شما فعال نمی باشد"
+                android:textColor="@color/transparent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:weightSum="7" >
+
+                <LinearLayout
+                    android:id="@+id/LinearLayout14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="10dp" >
+
+                    <ImageButton
+                        android:id="@+id/nfacebook"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#0000"
+                        android:src="@drawable/facebook_off" />
+
+                    <ImageButton
+                        android:id="@+id/nlinkedin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#0000"
+                        android:src="@drawable/lnkin_off" />
+
+                    <ImageButton
+                        android:id="@+id/ntwtert"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#0000"
+                        android:src="@drawable/twtr_off" />
+
+                    <ImageButton
+                        android:id="@+id/nsite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#0000"
+                        android:src="@drawable/internet_off" />
+
+                    <ImageButton
+                        android:id="@+id/ngoogle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#0000"
+                        android:src="@drawable/google_off" />
+
+                    <ImageButton
+                        android:id="@+id/ninstagram"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#0000"
+                        android:src="@drawable/insta_off" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/Layoutlink1"
+                    style="@style/brandStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/brand_list_item_shape"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:text="نمایندگی ها و همکاران مرتبط"
+                        android:textColor="@color/transparent"
+                        android:textSize="12sp" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="#CCCCCC"
+                        android:scaleType="fitEnd"
+                        android:src="@drawable/peykan6" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/Layoutlink2"
+                    style="@style/brandStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/brand_list_item_shape"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp" >
+
+                    <ImageButton
+                        android:id="@+id/imageButton7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="#CCCCCC"
+                        android:src="@drawable/peykan6" />
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:text="خدمات"
+                        android:textColor="@color/transparent" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/downloadLinear"
+                    style="@style/brandStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/brand_list_item_shape"
+                    android:gravity="center" >
+
+                    <ImageButton
+                        android:id="@+id/btnPdf1_Object"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="5dp"
+                        android:background="#0000"
+                        android:src="@drawable/ic_catalog_off" />
+
+                    <ImageButton
+                        android:id="@+id/btnPdf2_Object"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toLeftOf="@+id/btnPdf1_Object"
+                        android:background="#0000"
+                        android:src="@drawable/ic_price_off" />
+
+                    <ImageButton
+                        android:id="@+id/btnPdf3_Object"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toLeftOf="@+id/btnPdf2_Object"
+                        android:background="#0000"
+                        android:src="@drawable/ic_pdf_off" />
+
+                    <ImageButton
+                        android:id="@+id/btnPdf4_Object"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toLeftOf="@+id/btnPdf3_Object"
+                        android:background="#0000"
+                        android:src="@drawable/ic_video_off" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
