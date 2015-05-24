@@ -56,8 +56,7 @@
                 <ImageView
                     android:id="@+id/btnaddpic"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -125,7 +124,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:gravity="right|center"
-                android:hint="09122222222...اجباری"
+                android:hint="شماره همراه خود را وارد کنید...اجباری"
                 android:inputType="phone"
                 android:textSize="@dimen/txtsize10" >
 

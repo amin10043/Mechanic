@@ -113,5 +113,4 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 		}
 
 	}
-
 }

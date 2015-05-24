@@ -36,7 +36,7 @@ public class UrlNewsPaperFragment extends Fragment {
 
 		id = Integer.valueOf(getArguments().getString("Id"));
 
-		//((MainActivity) getActivity()).setActivityTitle(R.string.News);
+		((MainActivity) getActivity()).setActivityTitle(R.string.News);
 		View view = inflater.inflate(R.layout.fragment_urlnewspaper, null);
 		
 
