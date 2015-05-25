@@ -20,6 +20,17 @@ public class MainBrandFragment extends Fragment {
 	DataBaseAdapter adapter;
 	int id;
 
+	// List<Object> objectList = null;
+
+	// public MainBrandFragment(List<Object> allob) {
+	// super();
+	// objectList = allob;
+	// }
+
+	public MainBrandFragment() {
+		super();
+	}
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,7 +45,9 @@ public class MainBrandFragment extends Fragment {
 		adapter = new DataBaseAdapter(getActivity());
 
 		adapter.open();
+		// objectList = adapter.getObjectbyParentId(id);
 		ArrayList<Object> mylist = adapter.getObjectbyParentId(id);
+
 		adapter.close();
 
 		ListView lstObject = (ListView) view

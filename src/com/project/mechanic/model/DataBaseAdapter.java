@@ -651,6 +651,7 @@ public class DataBaseAdapter {
 
 			result.add(tempObject);
 		}
+
 		return result;
 	}
 
@@ -1746,6 +1747,7 @@ public class DataBaseAdapter {
 		return result;
 
 	}
+
 	public ArrayList<CommentInPaper> getCommentInPaperbyPaperid2(int Paperid) {
 
 		ArrayList<CommentInPaper> result = new ArrayList<CommentInPaper>();
@@ -1757,7 +1759,7 @@ public class DataBaseAdapter {
 
 		while (mCur.moveToNext()) {
 			item = CursorToCommentInPaper(mCur);
-			//result.add(item);
+			// result.add(item);
 		}
 
 		return result;
@@ -2190,6 +2192,7 @@ public class DataBaseAdapter {
 	public ArrayList<Object> getObjectbyParentId(int parentid) {
 
 		ArrayList<Object> result = new ArrayList<Object>();
+
 		Object item = null;
 
 		Cursor mCur = mDb.query(TableObject, Object, "ParentId=?",
@@ -2199,6 +2202,8 @@ public class DataBaseAdapter {
 			item = CursorToObject(mCur);
 			result.add(item);
 		}
+
+		Collections.sort(result);
 
 		return result;
 
@@ -2235,6 +2240,7 @@ public class DataBaseAdapter {
 
 			result.add(tempObject);
 		}
+
 		return result;
 	}
 
@@ -2793,18 +2799,23 @@ public class DataBaseAdapter {
 			cv = new ContentValues();
 			String id = "-1";
 			for (int j = 0; j < values[i].length; j++) {
-				if (values[i][j] != null) {
-					if ("Id".equals(cols[j]))
-						id = values[i][j];
-					cv.put(cols[j], values[i][j]);
-				}
-			}
-			try {
-				res = mDb.insertWithOnConflict(tableName, null, cv,
-						SQLiteDatabase.CONFLICT_ABORT);
-			} catch (Exception ex) {
 
+				if (values[i][j] != null)
+					;
+				cv.put(cols[j], values[i][j]);
+
+				// if (values[i][j] != null) {
+				if ("Id".equals(cols[j]))
+					id = values[i][j];
+				// cv.put(cols[j], values[i][j]);
 			}
+
+		}
+		try {
+			res = mDb.insertWithOnConflict(tableName, null, cv,
+					SQLiteDatabase.CONFLICT_ABORT);
+		} catch (Exception ex) {
+
 		}
 	}
 

@@ -63,13 +63,19 @@ public class MainActivity extends FragmentActivity {
 		slideadapter = new SlideMenuAdapter(this);
 
 		adapter.open();
-		int r = adapter.NumOfNewCmtInFroum();
+		final int r = adapter.NumOfNewCmtInFroum();
+		int r1 = adapter.NumOfNewCmtInObject();
+		int r2 = adapter.NumOfNewCmtInPaper();
+		int r3 = r + r1 + r2;
 		TextView txtcm = (TextView) findViewById(R.id.txtcm);
-		txtcm.setText("" + r);
+		txtcm.setText("" + r3);
 
-		int t = adapter.NumOfNewLikeInObject1();
+		int t = adapter.NumOfNewLikeInObject();
+		int t1 = adapter.NumOfNewLikeInFroum();
+		int t2 = adapter.NumOfNewLikeInPaper();
+		int t3 = t + t1 + t2;
 		TextView txtlike = (TextView) findViewById(R.id.txtlike);
-		txtlike.setText("" + t);
+		txtlike.setText("" + t3);
 		adapter.close();
 
 		ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
@@ -85,9 +91,15 @@ public class MainActivity extends FragmentActivity {
 				dialog.show();
 				int seen = 1;
 				adapter.updatecmseentodb(seen);
+				adapter.updatecmobjectseentodb(seen);
+				adapter.updatecmpaperseentodb(seen);
 				int r = adapter.NumOfNewCmtInFroum();
+				int r1 = adapter.NumOfNewCmtInObject();
+				int r2 = adapter.NumOfNewCmtInPaper();
+				int r3 = r + r1 + r2;
 				TextView txtcm = (TextView) findViewById(R.id.txtcm);
-				txtcm.setText("" + r);
+				txtcm.setText("" + r3);
+
 				adapter.close();
 
 			}
@@ -104,10 +116,16 @@ public class MainActivity extends FragmentActivity {
 				dialog1.show();
 				int seen = 1;
 				adapter.updatelikeseentodb(seen);
+				adapter.updatelikefroumseentodb(seen);
+				adapter.updatelikepaperseentodb(seen);
 
-				int t = adapter.NumOfNewLikeInObject1();
+				int t = adapter.NumOfNewLikeInObject();
+
+				int t1 = adapter.NumOfNewLikeInFroum();
+				int t2 = adapter.NumOfNewLikeInPaper();
+				int t3 = t + t1 + t2;
 				TextView txtlike = (TextView) findViewById(R.id.txtlike);
-				txtlike.setText("" + t);
+				txtlike.setText("" + t3);
 				adapter.close();
 
 			}
