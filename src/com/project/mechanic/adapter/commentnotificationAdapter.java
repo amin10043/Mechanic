@@ -47,7 +47,7 @@ public class commentnotificationAdapter extends ArrayAdapter<CommentInFroum> {
 		int id = u.getId();
 
 		CommentInFroum c = mylist.get(position);
-		if (id == c.getId()) {
+		if (id == c.getUserid()) {
 
 			String m = c.getDesk();
 			txt.setText(m);
