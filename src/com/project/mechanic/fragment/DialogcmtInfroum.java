@@ -36,7 +36,6 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 	Users user;
 	Saving saving;
 	Map<String, String> params;
-	int userid;
 
 	public DialogcmtInfroum(Fragment f, int Commentid, Context context,
 			int froumId, int resourceId) {
@@ -48,7 +47,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 		utility = new Utility(context);
 		dbadapter = new DataBaseAdapter(context);
 
-		user = new Users();
+		user = utility.getCurrentUser();
 
 	}
 
@@ -68,8 +67,6 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 			@Override
 			public void onClick(View arg0) {
-				user = utility.getCurrentUser();
-				userid = user.getId();
 
 				if (user == null) {
 					(Toast.makeText(context,
@@ -85,7 +82,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 					params.put("Desk", Cmttxt.getText().toString());
 					params.put("FroumID", String.valueOf(Froumid));
-					params.put("UserId", String.valueOf(userid));
+					params.put("UserId", String.valueOf(user.getId()));
 					params.put("Date", currentDate);
 					params.put("CommentId", String.valueOf(Commentid));
 					params.put("NumOfDislike", String.valueOf(0));

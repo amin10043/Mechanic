@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -127,12 +126,6 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 						// check authentication and authorization
 						id = object.getId();
 						sendDataID.edit().putInt("main_Id", id).commit();
-						Toast.makeText(context, "object list adapter  = " + id,
-								Toast.LENGTH_SHORT).show();
-
-						// Toast.makeText(context,
-						// "rating is = " + person.getRate(),
-						// Toast.LENGTH_SHORT).show();
 
 					}
 

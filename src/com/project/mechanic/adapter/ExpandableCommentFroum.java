@@ -92,8 +92,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 				.findViewById(R.id.icon_reply_comment);
 		adapter.open();
 
-		final CommentInFroum comment = cmt.get(groupPosition);
-		Users y = adapter.getUserbyid(comment.getUserid());
+		// final CommentInFroum comment = cmt.get(groupPosition);
+		Users y = adapter.getUserbyid(reply.getUserid());
 
 		if (y.getImage() == null) {
 			ReplyerPic.setImageResource(R.drawable.no_img_profile);
@@ -221,7 +221,6 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 		}
 
 		mainComment.setText(comment.getDesk());
-		nameCommenter.setText(x.getName());
 		dateCommenter.setText(comment.getDatetime());
 		if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) == 0) {
 			LinearLayout lrr = (LinearLayout) convertView
@@ -234,21 +233,20 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 		countLike.setText(String.valueOf(comment.getNumOfLike()));
 		countdisLike.setText(String.valueOf(comment.getNumOfDislike()));
+		if (x != null) {
+			nameCommenter.setText(x.getName());
+			if (x.getImage() == null) {
+				profileImage.setImageResource(R.drawable.no_img_profile);
+			} else {
 
-		// start... this code for set image of profile
-		adapter.open();
-		if (x.getImage() == null) {
-			profileImage.setImageResource(R.drawable.no_img_profile);
-		} else {
+				byte[] byteImageProfile = x.getImage();
 
-			byte[] byteImageProfile = x.getImage();
+				Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
+						byteImageProfile.length);
 
-			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
-					byteImageProfile.length);
-
-			profileImage.setImageBitmap(bmp);
+				profileImage.setImageBitmap(bmp);
+			}
 		}
-		adapter.close();
 		RelativeLayout rl = (RelativeLayout) convertView
 				.findViewById(R.id.icon_header_comment_froum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
