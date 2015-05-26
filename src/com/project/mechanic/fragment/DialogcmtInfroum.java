@@ -36,7 +36,6 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 	Users user;
 	Saving saving;
 	Map<String, String> params;
-	int userid;
 
 	public DialogcmtInfroum(Fragment f, int Commentid, Context context,
 			int froumId, int resourceId) {
@@ -48,7 +47,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 		utility = new Utility(context);
 		dbadapter = new DataBaseAdapter(context);
 
-		user = new Users();
+		user = utility.getCurrentUser();
 
 	}
 
@@ -61,7 +60,6 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 		btncmt = (ImageButton) findViewById(R.id.btnComment);
 		Cmttxt = (EditText) findViewById(R.id.txtCmt);
 
-		userid = user.getId();
 		PersianDate date = new PersianDate();
 		final String currentDate = date.todayShamsi();
 
@@ -69,7 +67,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 			@Override
 			public void onClick(View arg0) {
-				user = utility.getCurrentUser();
+
 				if (user == null) {
 					(Toast.makeText(context,
 							"برای ثبت نظر ابتدا باید وارد شوید.",
@@ -84,7 +82,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 					params.put("Desk", Cmttxt.getText().toString());
 					params.put("FroumID", String.valueOf(Froumid));
-					params.put("UserId", String.valueOf(userid));
+					params.put("UserId", String.valueOf(user.getId()));
 					params.put("Date", currentDate);
 					params.put("CommentId", String.valueOf(Commentid));
 					params.put("NumOfDislike", String.valueOf(0));
