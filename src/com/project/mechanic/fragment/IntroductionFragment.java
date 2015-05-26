@@ -26,7 +26,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.ExpandIntroduction;
 import com.project.mechanic.entity.CommentInObject;
@@ -84,7 +83,7 @@ public class IntroductionFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_introduction, null);
-		//((MainActivity) getActivity()).setActivityTitle(R.string.brand);
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.brand);
 
 		adapter = new DataBaseAdapter(getActivity());
 		ut = new Utility(getActivity());
@@ -273,7 +272,7 @@ public class IntroductionFragment extends Fragment {
 					trans.commit();
 				}
 			});
-
+			adapter.close();
 			return t;
 
 		}
