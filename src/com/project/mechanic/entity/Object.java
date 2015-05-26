@@ -1,6 +1,6 @@
 package com.project.mechanic.entity;
 
-public class Object {
+public class Object implements Comparable<Object> {
 
 	int Id;
 	int ObjectTypeId;
@@ -22,7 +22,7 @@ public class Object {
 	String Instagram;
 	String LinkedIn;
 	String ServerDate;
-	int rate;
+	int Rate;
 	int ParentId;
 	int MainObjectId;
 	String Google;
@@ -227,11 +227,11 @@ public class Object {
 	}
 
 	public int getRate() {
-		return rate;
+		return Rate;
 	}
 
-	public void setRate(int Rate) {
-		rate = Rate;
+	public void setRate(int r) {
+		Rate = r;
 	}
 
 	public int getParentId() {
@@ -280,6 +280,7 @@ public class Object {
 
 	public void setIsActive(int isActive) {
 		IsActive = isActive;
+
 	}
 
 	public Object(int id, String name, String phone, String email, String fax,
@@ -288,8 +289,9 @@ public class Object {
 			String address, String cellphone, int objectTypeId,
 			int objectBrandTypeId, String facebook, String instagram,
 			String linkedIn, String google, String site, String twitter,
-			int rate, int parentid, int seen, String serverdate, int submit,
+			int parentid, int rate, int seen, String serverdate, int submit,
 			int mainObjectid, int IsActive) {
+
 		super();
 		Id = id;
 		Name = name;
@@ -316,7 +318,7 @@ public class Object {
 		Site = site;
 		Twitter = twitter;
 		ParentId = parentid;
-		this.rate = rate;
+		Rate = rate;
 		Seen = seen;
 		ServerDate = serverdate;
 		Submit = submit;
@@ -324,4 +326,29 @@ public class Object {
 		this.IsActive = IsActive;
 	}
 
+	public int compareTo(Object compareObject) {
+		// TODO Auto-generated method stub
+		int compareRate = compareObject.getRate();
+
+		// return this.Rate - compareRate;
+
+		return compareRate - this.Rate;
+	}
+
 }
+// public static Comparator<Object>
+// = new Comparator<Object>() {
+//
+//
+// public int compare(Object object1, Object object2) {
+//
+// String objectName1 = object1.getName().toUpperCase();
+// String objectName2 = object2.getName().toUpperCase();
+//
+// // ascending order
+// return objectName1.compareTo(objectName2);
+//
+// //descending order
+// return objectName2.compareTo(objectName1);
+// }
+

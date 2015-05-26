@@ -27,6 +27,17 @@ public class MainBrandFragment extends Fragment {
 	Users CurrentUser;
 	Utility util;
 
+	// List<Object> objectList = null;
+
+	// public MainBrandFragment(List<Object> allob) {
+	// super();
+	// objectList = allob;
+	// }
+
+	public MainBrandFragment() {
+		super();
+	}
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,7 +54,9 @@ public class MainBrandFragment extends Fragment {
 		CurrentUser = util.getCurrentUser();
 
 		adapter.open();
+		// objectList = adapter.getObjectbyParentId(id);
 		ArrayList<Object> mylist = adapter.getObjectbyParentId(id);
+
 		adapter.close();
 
 		RelativeLayout CreatePage = (RelativeLayout) view

@@ -270,7 +270,7 @@ public class IntroductionFragment extends Fragment {
 					trans.commit();
 				}
 			});
-
+			adapter.close();
 			return t;
 
 		}

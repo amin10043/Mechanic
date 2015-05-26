@@ -47,6 +47,7 @@ public class Dialog_notification extends Dialog {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.dialog_notification1);
@@ -72,8 +73,10 @@ public class Dialog_notification extends Dialog {
 		ImageButton btnshowcmo = (ImageButton) findViewById(R.id.btnshowcmo);
 		ImageButton btnshowcmp = (ImageButton) findViewById(R.id.btnshowcmp);
 		final ListView listnewcm = (ListView) findViewById(R.id.listnewcm);
-
+		//
 		adapter.open();
+		// Users u = util.getCurrentUser();
+		// int id = u.getId();
 
 		ArrayList<CommentInFroum> mylist = adapter.getUnseencomment();
 		ArrayList<CommentInObject> mylist1 = adapter.getUnseencommentobject();
