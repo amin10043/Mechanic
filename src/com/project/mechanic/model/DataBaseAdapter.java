@@ -2809,13 +2809,11 @@ public class DataBaseAdapter {
 					id = values[i][j];
 				// cv.put(cols[j], values[i][j]);
 			}
-
-		}
-		try {
-			res = mDb.insertWithOnConflict(tableName, null, cv,
-					SQLiteDatabase.CONFLICT_ABORT);
-		} catch (Exception ex) {
-
+			try {
+				res = mDb.insertWithOnConflict(tableName, null, cv,
+						SQLiteDatabase.CONFLICT_ABORT);
+			} catch (Exception ex) {
+			}
 		}
 	}
 
