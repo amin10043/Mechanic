@@ -5,6 +5,8 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -14,7 +16,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,6 +77,32 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 		rating.setRating(person.getRate());
 		rating.setEnabled(false);
+
+		ImageView profileIco = (ImageView) convertView
+				.findViewById(R.id.icon_object);
+
+		if (person.getImage2() == null) {
+			profileIco.setImageResource(R.drawable.no_img_profile);
+
+		} else {
+			byte[] byteImageProfile = person.getImage2();
+
+			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
+					byteImageProfile.length);
+
+			profileIco.setImageBitmap(bmp);
+
+			RelativeLayout rl = (RelativeLayout) convertView
+					.findViewById(R.id.main_icon_reply);
+			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+					rl.getLayoutParams());
+
+			lp.width = (util.getScreenwidth() / 9);
+			lp.height = (util.getScreenwidth() / 9);
+			lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+			lp.setMargins(5, 5, 5, 5);
+			profileIco.setLayoutParams(lp);
+		}
 
 		convertView.setOnClickListener(new OnClickListener() {
 

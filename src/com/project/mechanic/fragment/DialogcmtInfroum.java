@@ -61,7 +61,6 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 		btncmt = (ImageButton) findViewById(R.id.btnComment);
 		Cmttxt = (EditText) findViewById(R.id.txtCmt);
 
-		userid = user.getId();
 		PersianDate date = new PersianDate();
 		final String currentDate = date.todayShamsi();
 
@@ -70,6 +69,8 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 			@Override
 			public void onClick(View arg0) {
 				user = utility.getCurrentUser();
+				userid = user.getId();
+
 				if (user == null) {
 					(Toast.makeText(context,
 							"برای ثبت نظر ابتدا باید وارد شوید.",

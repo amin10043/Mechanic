@@ -26,7 +26,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.ExpandIntroduction;
 import com.project.mechanic.entity.CommentInObject;
@@ -84,7 +83,7 @@ public class IntroductionFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_introduction, null);
-		//((MainActivity) getActivity()).setActivityTitle(R.string.brand);
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.brand);
 
 		adapter = new DataBaseAdapter(getActivity());
 		ut = new Utility(getActivity());
@@ -193,12 +192,12 @@ public class IntroductionFragment extends Fragment {
 
 		headerParams = new LinearLayout.LayoutParams(
 				headImageLinear.getLayoutParams());
-		headerParams.height = (int) (ut.getScreenHeight() / 2.5);
+		headerParams.height = (int) (ut.getScreenHeight() / 3.5);
 		headImageLinear.setPadding(0, 0, 0, 20);
 
 		footerParams = new LinearLayout.LayoutParams(
 				footerLinear.getLayoutParams());
-		footerParams.height = (int) (ut.getScreenHeight() / 2.5);
+		footerParams.height = (int) (ut.getScreenHeight() / 3.5);
 
 		adapter.open();
 		int countcmt = adapter.CommentInObject_count(ObjectID);
@@ -220,8 +219,6 @@ public class IntroductionFragment extends Fragment {
 		adapter.open();
 		if (object.getIsActive() == 0) {
 
-			Toast.makeText(getActivity(), "صفحه مورد نظر فعال نمی باشد",
-					Toast.LENGTH_SHORT).show();
 			View t = inflater.inflate(R.layout.fragment_is_active_introduction,
 					null);
 
