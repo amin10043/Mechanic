@@ -63,7 +63,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		final TextView txt1 = (TextView) convertView
 				.findViewById(R.id.Rowobjecttxt);
 
-		Object person = list.get(position);
+		final Object person = list.get(position);
 
 		txt1.setText(person.getName());
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
@@ -72,6 +72,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		rating = (RatingBar) convertView.findViewById(R.id.ratingBar1);
 
 		rating.setRating(person.getRate());
+
 		rating.setEnabled(false);
 
 		// String item = txt1.getText().toString();
@@ -138,6 +139,10 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 						sendDataID.edit().putInt("main_Id", id).commit();
 						Toast.makeText(context, "object list adapter  = " + id,
 								Toast.LENGTH_SHORT).show();
+
+						// Toast.makeText(context,
+						// "rating is = " + person.getRate(),
+						// Toast.LENGTH_SHORT).show();
 
 					}
 

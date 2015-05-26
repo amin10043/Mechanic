@@ -648,6 +648,7 @@ public class DataBaseAdapter {
 
 			result.add(tempObject);
 		}
+
 		return result;
 	}
 
@@ -2169,6 +2170,7 @@ public class DataBaseAdapter {
 	public ArrayList<Object> getObjectbyParentId(int parentid) {
 
 		ArrayList<Object> result = new ArrayList<Object>();
+
 		Object item = null;
 
 		Cursor mCur = mDb.query(TableObject, Object, "ParentId=?",
@@ -2178,6 +2180,8 @@ public class DataBaseAdapter {
 			item = CursorToObject(mCur);
 			result.add(item);
 		}
+
+		Collections.sort(result);
 
 		return result;
 
@@ -2211,6 +2215,7 @@ public class DataBaseAdapter {
 
 			result.add(tempObject);
 		}
+
 		return result;
 	}
 
@@ -2769,7 +2774,8 @@ public class DataBaseAdapter {
 			cv = new ContentValues();
 			for (int j = 0; j < values[i].length; j++) {
 				if (values[i][j] != null)
-					cv.put(cols[j], values[i][j]);
+					;
+				cv.put(cols[j], values[i][j]);
 			}
 			res = mDb.insert(tableName, null, cv);
 		}
