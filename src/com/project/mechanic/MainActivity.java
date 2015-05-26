@@ -27,6 +27,7 @@ import com.project.mechanic.fragment.Dialog_notification;
 import com.project.mechanic.fragment.Dialog_notificationlike;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.Favorite_Fragment;
+import com.project.mechanic.fragment.FragmentAboutUs;
 import com.project.mechanic.fragment.FragmentContactUs;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
@@ -401,11 +402,19 @@ public class MainActivity extends FragmentActivity {
                 break;
 
             case 4:
+                fragment = new FragmentAboutUs();
+                fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, fragment).commit();
+                break;
+
             case 5:
                 fragment = new FragmentContactUs();
                 fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame, fragment).commit();
+                break;
+
         }
 
         mDrawerList.setItemChecked(position, true);
