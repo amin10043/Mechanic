@@ -214,6 +214,8 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 			Toast.makeText(getActivity(), "شما وارد شده اید.",
 					Toast.LENGTH_SHORT).show();
 
+			util.setNoti(getActivity(), u.getId());
+
 		} else {
 
 			Toast.makeText(getActivity(),

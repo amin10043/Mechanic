@@ -18,8 +18,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.adapter.SlideMenuAdapter;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.fragment.Dialog_notification;
 import com.project.mechanic.fragment.Dialog_notificationlike;
@@ -50,6 +52,7 @@ public class MainActivity extends FragmentActivity {
 	SlideMenuAdapter slideadapter;
 	Dialog_notification dialog;
 	Dialog_notificationlike dialog1;
+	Users user;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,21 +65,11 @@ public class MainActivity extends FragmentActivity {
 		adapter = new DataBaseAdapter(this);
 		slideadapter = new SlideMenuAdapter(this);
 
-		adapter.open();
-		final int r = adapter.NumOfNewCmtInFroum();
-		int r1 = adapter.NumOfNewCmtInObject();
-		int r2 = adapter.NumOfNewCmtInPaper();
-		int r3 = r + r1 + r2;
-		TextView txtcm = (TextView) findViewById(R.id.txtcm);
-		txtcm.setText("" + r3);
-
-		int t = adapter.NumOfNewLikeInObject();
-		int t1 = adapter.NumOfNewLikeInFroum();
-		int t2 = adapter.NumOfNewLikeInPaper();
-		int t3 = t + t1 + t2;
-		TextView txtlike = (TextView) findViewById(R.id.txtlike);
-		txtlike.setText("" + t3);
-		adapter.close();
+		util = new Utility(MainActivity.this);
+		user = util.getCurrentUser();
+		if (user != null) {
+			util.setNoti(this, user.getId());
+		}
 
 		ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
 		iBtnmessage.setOnClickListener(new OnClickListener() {
@@ -84,18 +77,25 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				user = util.getCurrentUser();
+				if (user == null) {
+					Toast.makeText(MainActivity.this,
+							"شما هنوز وارد نشده اید.", Toast.LENGTH_SHORT)
+							.show();
+					return;
+				}
 				adapter.open();
 
 				dialog = new Dialog_notification(MainActivity.this);
 
 				dialog.show();
 				int seen = 1;
-				adapter.updatecmseentodb(seen);
-				adapter.updatecmobjectseentodb(seen);
-				adapter.updatecmpaperseentodb(seen);
-				int r = adapter.NumOfNewCmtInFroum();
-				int r1 = adapter.NumOfNewCmtInObject();
-				int r2 = adapter.NumOfNewCmtInPaper();
+				adapter.updatecmseentodb(seen, user.getId());
+				adapter.updatecmobjectseentodb(seen, user.getId());
+				adapter.updatecmpaperseentodb(seen, user.getId());
+				int r = adapter.NumOfNewCmtInFroum(user.getId());
+				int r1 = adapter.NumOfNewCmtInObject(user.getId());
+				int r2 = adapter.NumOfNewCmtInPaper(user.getId());
 				int r3 = r + r1 + r2;
 				TextView txtcm = (TextView) findViewById(R.id.txtcm);
 				txtcm.setText("" + r3);
@@ -109,20 +109,25 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				if (util.getCurrentUser() == null) {
+					Toast.makeText(MainActivity.this,
+							"شما هنوز وارد نشده اید.", Toast.LENGTH_SHORT)
+							.show();
+					return;
+				}
 				adapter.open();
 				dialog1 = new Dialog_notificationlike(MainActivity.this);
 
 				dialog1.show();
 				int seen = 1;
-				adapter.updatelikeseentodb(seen);
-				adapter.updatelikefroumseentodb(seen);
-				adapter.updatelikepaperseentodb(seen);
+				adapter.updatelikeseentodb(seen, user.getId());
+				adapter.updatelikefroumseentodb(seen, user.getId());
+				adapter.updatelikepaperseentodb(seen, user.getId());
 
-				int t = adapter.NumOfNewLikeInObject();
+				int t = adapter.NumOfNewLikeInObject(user.getId());
 
-				int t1 = adapter.NumOfNewLikeInFroum();
-				int t2 = adapter.NumOfNewLikeInPaper();
+				int t1 = adapter.NumOfNewLikeInFroum(user.getId());
+				int t2 = adapter.NumOfNewLikeInPaper(user.getId());
 				int t3 = t + t1 + t2;
 				TextView txtlike = (TextView) findViewById(R.id.txtlike);
 				txtlike.setText("" + t3);
@@ -132,7 +137,6 @@ public class MainActivity extends FragmentActivity {
 
 		});
 
-		util = new Utility(MainActivity.this);
 		// mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

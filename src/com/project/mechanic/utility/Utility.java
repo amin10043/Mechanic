@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,6 +21,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -277,6 +279,25 @@ public class Utility {
 		Date date = new Date();
 		return dateFormat.format(date);
 
+	}
+
+	public void setNoti(Activity a, int userId) {
+		adapter.open();
+		final int r = adapter.NumOfNewCmtInFroum(userId);
+		int r1 = adapter.NumOfNewCmtInObject(userId);
+		int r2 = adapter.NumOfNewCmtInPaper(userId);
+		int r3 = r + r1 + r2;
+		TextView txtcm = (TextView) a.findViewById(R.id.txtcm);
+		txtcm.setText(String.valueOf(r3));
+
+		int t = adapter.NumOfNewLikeInObject(userId);
+		int t1 = adapter.NumOfNewLikeInFroum(userId);
+		int t2 = adapter.NumOfNewLikeInPaper(userId);
+		int t3 = t + t1 + t2;
+
+		TextView txtlike = (TextView) a.findViewById(R.id.txtlike);
+		txtlike.setText(String.valueOf(t3));
+		adapter.close();
 	}
 
 }
