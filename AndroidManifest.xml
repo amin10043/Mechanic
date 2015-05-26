@@ -60,6 +60,8 @@
             android:name="com.project.mechanic.utility.ChatHeadService"
             android:enabled="true" >
         </service>
+                <service android:name="com.project.mechanic.service.HelloService"/>
+        
     </application>
 
 </manifest>
