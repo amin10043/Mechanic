@@ -1,5 +1,8 @@
 package com.project.mechanic.fragment;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -7,13 +10,16 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Saving;
 import com.project.mechanic.utility.Utility;
 
-public class DialogPaperTitle extends Dialog {
+public class DialogPaperTitle extends Dialog implements AsyncInterface {
 
 	private Button btntitle;
 	private EditText titletxt;
@@ -25,6 +31,10 @@ public class DialogPaperTitle extends Dialog {
 	Fragment fragment;
 	Users CurrentUser;
 	Utility utility;
+	PersianDate date;
+	Saving saving;
+	String currentDate;
+	Map<String, String> params;
 
 	public DialogPaperTitle(Context context, int resourceId, Fragment fragment) {
 		super(context);
@@ -37,33 +47,40 @@ public class DialogPaperTitle extends Dialog {
 		dbadapter.open();
 		CurrentUser = utility.getCurrentUser();
 		dbadapter.close();
+		date = new PersianDate();
+		params = new LinkedHashMap<String, String>();
 
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+		if (CurrentUser == null) {
+			// karbar vared nashode ast !!!!!!!
+			// nabayad inja bashaaad !!!!!!
+			return;
+		}
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.dialog_addcomment);
 		setContentView(resourceId);
 		btntitle = (Button) findViewById(R.id.btnPdf1_Object);
 		titletxt = (EditText) findViewById(R.id.txtTitleP);
 		titleDestxt = (EditText) findViewById(R.id.txttitleDes);
 
-		PersianDate date = new PersianDate();
-		final String currentDate = date.todayShamsi();
+		currentDate = date.todayShamsi();
 
 		btntitle.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				dbadapter.open();
-				dbadapter.insertPapertitletoDb(titletxt.getText().toString(),
-						titleDestxt.getText().toString(), CurrentUser.getId(),
-						currentDate);
-				dbadapter.close();
-				((TitlepaperFragment) fragment).updateView();
-				DialogPaperTitle.this.dismiss();
+
+				saving = new Saving(context);
+				saving.delegate = DialogPaperTitle.this;
+				params.put("TableName", "Paper");
+				params.put("Title", titletxt.getText().toString());
+				params.put("Context", titleDestxt.getText().toString());
+				params.put("UserId", String.valueOf(CurrentUser.getId()));
+				params.put("Date", currentDate);
+
+				saving.execute(params);
 
 			}
 		});
@@ -76,6 +93,25 @@ public class DialogPaperTitle extends Dialog {
 
 	public void setDialogResult(OnMyDialogResult dialogResult) {
 		mDialogResult = dialogResult;
+	}
+
+	@Override
+	public void processFinish(String output) {
+		int id = -1;
+		try {
+			id = Integer.valueOf(output);
+			dbadapter.open();
+			dbadapter.insertPapertitletoDb(id, titletxt.getText().toString(),
+					titleDestxt.getText().toString(), CurrentUser.getId(),
+					currentDate);
+			dbadapter.close();
+			((TitlepaperFragment) fragment).updateView();
+			DialogPaperTitle.this.dismiss();
+
+		} catch (Exception ex) {
+			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
+		}
+
 	}
 
 }

@@ -320,20 +320,28 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 								.setImageResource((R.drawable.negative));
 
 					} else {
-						adapter.insertCmtDisLikebyid(id, stringNewcountDisLike,
-								Currentuser.getId());
-						adapter.insertLikeInCommentToDb(Currentuser.getId(), 0,
-								id);
-						f.updateList();
+						if (adapter.isUserLikedComment(Currentuser.getId(), id,
+								1)) {
+							Toast.makeText(
+									context,
+									"شما قبلا نظرتان را در این مورد این مطلب بیان کردید",
+									Toast.LENGTH_SHORT).show();
+						} else {
+							adapter.insertCmtDisLikebyid(id,
+									stringNewcountDisLike, Currentuser.getId());
+							adapter.insertLikeInCommentToDb(
+									Currentuser.getId(), 0, id);
+							f.updateList();
 
-						txtdislike.setText(String.valueOf(comment
-								.getNumOfDislike()));
-						imgdislikeComment
-								.setImageResource((R.drawable.negative_off));
-						notifyDataSetChanged();
+							txtdislike.setText(String.valueOf(comment
+									.getNumOfDislike()));
+							imgdislikeComment
+									.setImageResource((R.drawable.negative_off));
+							notifyDataSetChanged();
 
+						}
+						adapter.close();
 					}
-					adapter.close();
 				}
 			}
 		});
@@ -404,21 +412,29 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 					} else {
 
-						adapter.insertCmtLikebyid(id, stringNewcountLike,
-								Currentuser.getId());
-						adapter.insertLikeInCommentToDb(Currentuser.getId(), 1,
-								id);
+						if (adapter.isUserLikedComment(Currentuser.getId(), id,
+								0)) {
+							Toast.makeText(
+									context,
+									"شما قبلا نظرتان را در این مورد این مطلب بیان کردید",
+									Toast.LENGTH_SHORT).show();
+						} else {
 
-						f.updateList();
+							adapter.insertCmtLikebyid(id, stringNewcountLike,
+									Currentuser.getId());
+							adapter.insertLikeInCommentToDb(
+									Currentuser.getId(), 1, id);
 
-						txtlike.setText(String.valueOf(adapter
-								.getCountofCommentinFroumObject(froumID, id)));
+							f.updateList();
 
-						adapter.close();
-						notifyDataSetChanged();
-						imglikeComment
-								.setBackgroundResource(R.drawable.positive);
+							txtlike.setText(String.valueOf(adapter
+									.getCountofCommentinFroumObject(froumID, id)));
 
+							adapter.close();
+							notifyDataSetChanged();
+							imglikeComment
+									.setBackgroundResource(R.drawable.positive);
+						}
 					}
 
 				}

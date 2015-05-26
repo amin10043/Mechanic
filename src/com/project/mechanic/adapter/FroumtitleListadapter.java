@@ -50,6 +50,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		adapter = new DataBaseAdapter(context);
 
 		convertView = myInflater
 				.inflate(R.layout.raw_froumtitle, parent, false);
@@ -75,39 +76,36 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 
 		txt1.setText(person1.getTitle());
 		txt2.setText(person1.getDescription());
+		txt3.setText(x.getName());
 		countcommentfroum.setText(adapter.CommentInFroum_count(person1.getId())
 				.toString());
 		countLikeFroum.setText(adapter.LikeInFroum_count(person1.getId())
 				.toString());
+		dateTopic.setText(x.getDate());
+		adapter.open();
+		if (x.getImage() == null) {
+			profileImg.setImageResource(R.drawable.no_img_profile);
+		} else {
 
-		if (x != null) {
-			txt3.setText(x.getName());
-			dateTopic.setText(x.getDate());
+			byte[] byteImg = x.getImage();
+			Bitmap bmp = BitmapFactory.decodeByteArray(byteImg, 0,
+					byteImg.length);
+			profileImg.setImageBitmap(bmp);
 
-			adapter.open();
-			if (x.getImage() == null) {
-				profileImg.setImageResource(R.drawable.no_img_profile);
-			} else {
+			RelativeLayout rl = (RelativeLayout) convertView
+					.findViewById(R.id.topicTitleFroum);
+			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+					rl.getLayoutParams());
 
-				byte[] byteImg = x.getImage();
-				Bitmap bmp = BitmapFactory.decodeByteArray(byteImg, 0,
-						byteImg.length);
-				profileImg.setImageBitmap(bmp);
-
-				RelativeLayout rl = (RelativeLayout) convertView
-						.findViewById(R.id.topicTitleFroum);
-				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-						rl.getLayoutParams());
-
-				lp.width = util.getScreenwidth() / 7;
-				lp.height = util.getScreenwidth() / 7;
-				lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-				lp.setMargins(5, 5, 5, 5);
-				profileImg.setLayoutParams(lp);
-				adapter.close();
-			}
+			lp.width = util.getScreenwidth() / 7;
+			lp.height = util.getScreenwidth() / 7;
+			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp.setMargins(5, 5, 5, 5);
+			profileImg.setLayoutParams(lp);
 			adapter.close();
 		}
+		adapter.close();
+
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override

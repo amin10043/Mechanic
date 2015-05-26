@@ -118,7 +118,7 @@ public class DataBaseAdapter {
 			"Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId",
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
 			"Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
-			"Submit", "MainObjectId" };
+			"Submit", "MainObjectId", "IsActive" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
@@ -491,10 +491,11 @@ public class DataBaseAdapter {
 		mDb.insert(TableCommentInObject, null, cv);
 	}
 
-	public void insertFroumtitletoDb(String Title, String description,
+	public void insertFroumtitletoDb(int id, String Title, String description,
 			int userId, String date) {
 
 		ContentValues cv = new ContentValues();
+		cv.put("Id", id);
 		cv.put("Title", Title);
 		cv.put("Description", description);
 		cv.put("UserId", userId);
@@ -578,10 +579,11 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertPapertitletoDb(String Title, String Context, int userID,
-			String date) {
+	public void insertPapertitletoDb(int id, String Title, String Context,
+			int userID, String date) {
 
 		ContentValues cv = new ContentValues();
+		cv.put("Id", id);
 		cv.put("Title", Title);
 		cv.put("Context", Context);
 		cv.put("UserId", userID);
@@ -635,16 +637,17 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			tempObject = new Object(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4), cursor.getString(5), null, null, null,
-					null, cursor.getString(6), cursor.getString(7),
-					cursor.getString(8), cursor.getString(9),
-					cursor.getString(10), cursor.getString(11),
-					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
-					cursor.getString(15), cursor.getString(16),
-					cursor.getString(17), cursor.getString(18),
-					cursor.getString(19), cursor.getInt(25), cursor.getInt(26),
-					cursor.getInt(27), cursor.getString(28), cursor.getInt(29),
-					cursor.getInt(30));
+					cursor.getString(4), cursor.getString(5),
+					cursor.getBlob(6), cursor.getBlob(7), cursor.getBlob(8),
+					null, cursor.getString(10), cursor.getString(11),
+					cursor.getString(12), cursor.getString(13),
+					cursor.getString(14), cursor.getString(15),
+					cursor.getInt(16), cursor.getInt(17), cursor.getString(18),
+					cursor.getString(19), cursor.getString(20),
+					cursor.getString(21), cursor.getString(22),
+					cursor.getString(23), cursor.getInt(24), cursor.getInt(25),
+					cursor.getInt(26), cursor.getString(27), cursor.getInt(28),
+					cursor.getInt(29), cursor.getInt(30));
 
 			result.add(tempObject);
 		}
@@ -1193,10 +1196,11 @@ public class DataBaseAdapter {
 	}
 
 	private Object CursorToObject(Cursor cursor) {
+
 		Object tempObject = new Object(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
 				cursor.getString(5), cursor.getBlob(6), cursor.getBlob(7),
-				cursor.getBlob(8), cursor.getBlob(9), cursor.getString(10),
+				cursor.getBlob(8), null, cursor.getString(10),
 				cursor.getString(11), cursor.getString(12),
 				cursor.getString(13), cursor.getString(14),
 				cursor.getString(15), cursor.getInt(16), cursor.getInt(17),
@@ -1204,7 +1208,7 @@ public class DataBaseAdapter {
 				cursor.getString(20), cursor.getString(21),
 				cursor.getString(22), cursor.getString(23), cursor.getInt(24),
 				cursor.getInt(25), cursor.getInt(26), cursor.getString(27),
-				cursor.getInt(28), cursor.getInt(29));
+				cursor.getInt(28), cursor.getInt(29), cursor.getInt(30));
 		return tempObject;
 	}
 
@@ -1744,6 +1748,24 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<CommentInPaper> getCommentInPaperbyPaperid2(int Paperid) {
+
+		ArrayList<CommentInPaper> result = new ArrayList<CommentInPaper>();
+		CommentInPaper item = null;
+
+		Cursor mCur = mDb.query(TableCommentInPaper, CommentInPaper,
+				"PaperId=?", new String[] { String.valueOf(Paperid) }, null,
+				null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInPaper(mCur);
+			// result.add(item);
+		}
+
+		return result;
+
+	}
+
 	public CommentInFroum getCommentInFroumbyID(int ID) {
 
 		CommentInFroum item = null;
@@ -2192,26 +2214,29 @@ public class DataBaseAdapter {
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax,O.Description, O.Image1, O.Image2, O.Image3, O.Image4,O.Pdf1,O.Pdf2,O.Pdf3,O.Pdf4,O.Address,O.CellPhone,O.ObjectTypeId,O.ObjectBrandTypeId,O.Facebook,O.Instagram,O.LinkedIn,O.Google,O.Site,O.Twitter,O.rate,O. From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
 								+ " as C On O.Id = C.ObjectId Where O.ObjectBrandTypeId = "
-								+ Object_id + " and C.CityId =" + City_id, null);
+								+ Object_id + " and C.CityId = " + City_id,
+						null);
 		Object tempObject;
+
 		while (cursor.moveToNext()) {
 			tempObject = new Object(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-					cursor.getString(4), cursor.getString(5), null, null, null,
-					null, cursor.getString(6), cursor.getString(7),
-					cursor.getString(8), cursor.getString(9),
-					cursor.getString(10), cursor.getString(11),
-					cursor.getInt(12), cursor.getInt(13), cursor.getString(14),
-					cursor.getString(15), cursor.getString(16),
-					cursor.getString(17), cursor.getString(18),
-					cursor.getString(19), cursor.getInt(25), cursor.getInt(27),
-					cursor.getInt(28), cursor.getString(29), cursor.getInt(30),
-					cursor.getInt(31));
+					cursor.getString(4), cursor.getString(5),
+					cursor.getBlob(6), cursor.getBlob(7), cursor.getBlob(8),
+					null, cursor.getString(10), cursor.getString(11),
+					cursor.getString(12), cursor.getString(13),
+					cursor.getString(14), cursor.getString(15),
+					cursor.getInt(16), cursor.getInt(17), cursor.getString(18),
+					cursor.getString(19), cursor.getString(20),
+					cursor.getString(21), cursor.getString(22),
+					cursor.getString(23), cursor.getInt(24), cursor.getInt(25),
+					cursor.getInt(26), cursor.getString(27), cursor.getInt(28),
+					cursor.getInt(29), cursor.getInt(30));
 
 			result.add(tempObject);
 		}
@@ -2245,45 +2270,45 @@ public class DataBaseAdapter {
 		if (!"".equals(name) && name != null)
 			uc.put("Name", name);
 		if (!"".equals(Phone) && Phone != null)
-			uc.put(Object[2], Phone);
+			uc.put("Phone", Phone);
 		if (!"".equals(Email) && Email != null)
-			uc.put(Object[3], Email);
+			uc.put("Email", Email);
 		if (!"".equals(fax) && fax != null)
-			uc.put(Object[4], fax);
+			uc.put("Fax", fax);
 		if (!"".equals(description) && description != null)
-			uc.put(Object[5], description);
+			uc.put("Description", description);
 		if (HeaderImage != null)
-			uc.put(Object[6], HeaderImage);
+			uc.put("Image1", HeaderImage);
 		if (ProfileImage != null)
-			uc.put(Object[7], ProfileImage);
+			uc.put("Image2", ProfileImage);
 		if (FooterImage != null)
-			uc.put(Object[8], FooterImage);
+			uc.put("Image3", FooterImage);
 		if (!"".equals(LinkCatalog) && LinkCatalog != null)
-			uc.put(Object[10], LinkCatalog);
+			uc.put("Pdf1", LinkCatalog);
 		if (!"".equals(LinkPrice) && LinkPrice != null)
-			uc.put(Object[11], LinkPrice);
+			uc.put("Pdf2", LinkPrice);
 		if (!"".equals(LinkPDF) && LinkPDF != null)
-			uc.put(Object[12], LinkPDF);
+			uc.put("Pdf3", LinkPDF);
 		if (!"".equals(LinkVideo) && LinkVideo != null)
-			uc.put(Object[13], LinkVideo);
+			uc.put("Pdf4", LinkVideo);
 		if (!"".equals(Address) && Address != null)
-			uc.put(Object[14], Address);
+			uc.put("Address", Address);
 		if (!"".equals(Mobile) && Mobile != null)
-			uc.put(Object[15], Mobile);
+			uc.put("Cellphone", Mobile);
 		if (!"".equals(LinkFaceBook) && LinkFaceBook != null)
-			uc.put(Object[18], LinkFaceBook);
+			uc.put("Facebook", LinkFaceBook);
 		if (!"".equals(LinkInstagram) && LinkInstagram != null)
-			uc.put(Object[19], LinkInstagram);
+			uc.put("Instagram", LinkInstagram);
 		if (!"".equals(LinkLinkedin) && LinkLinkedin != null)
-			uc.put(Object[20], LinkLinkedin);
+			uc.put("LinkedIn", LinkLinkedin);
 		if (!"".equals(LinkGoogle) && LinkGoogle != null)
-			uc.put(Object[21], LinkGoogle);
+			uc.put("Google", LinkGoogle);
 		if (!"".equals(LinkSite) && LinkSite != null)
-			uc.put(Object[22], LinkSite);
+			uc.put("Site", LinkSite);
 		if (!"".equals(LinkTweitter) && LinkTweitter != null)
-			uc.put(Object[23], LinkTweitter);
+			uc.put("Twitter", LinkTweitter);
 
-		mDb.update(TableObject, uc, "ID=" + id, null);
+		mDb.update(TableObject, uc, "Id=" + id, null);
 		Toast.makeText(mContext, "اطلاعات با موفقیت ویرایش شد",
 				Toast.LENGTH_SHORT).show();
 	}
@@ -2772,14 +2797,26 @@ public class DataBaseAdapter {
 		long res;
 		for (int i = 0; i < values.length; i++) {
 			cv = new ContentValues();
+			String id = "-1";
 			for (int j = 0; j < values[i].length; j++) {
+
 				if (values[i][j] != null)
 					;
 				cv.put(cols[j], values[i][j]);
-			}
-			res = mDb.insert(tableName, null, cv);
-		}
 
+				// if (values[i][j] != null) {
+				if ("Id".equals(cols[j]))
+					id = values[i][j];
+				// cv.put(cols[j], values[i][j]);
+			}
+
+		}
+		try {
+			res = mDb.insertWithOnConflict(tableName, null, cv,
+					SQLiteDatabase.CONFLICT_ABORT);
+		} catch (Exception ex) {
+
+		}
 	}
 
 	public Settings getSettings() {
@@ -2797,4 +2834,5 @@ public class DataBaseAdapter {
 		cv.put(tableNameFiled, value);
 		mDb.update(TableSettings, cv, null, null);
 	}
+
 }

@@ -74,4 +74,5 @@ public class commentnotificationAdapter extends ArrayAdapter<CommentInFroum> {
 		return convertView;
 
 	}
+
 }

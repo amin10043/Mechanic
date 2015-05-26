@@ -16,7 +16,6 @@ import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -42,12 +41,8 @@ public class Utility {
 	public boolean isNetworkConnected() {
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo ni = cm.getActiveNetworkInfo();
-		if (ni == null) {
-			// There are no active networks.
-			return false;
-		} else
-			return true;
+		return cm.getActiveNetworkInfo() != null
+				&& cm.getActiveNetworkInfo().isConnectedOrConnecting();
 	}
 
 	public void showYesNoDialog(Context context, String Title, String message) {
@@ -283,4 +278,5 @@ public class Utility {
 		return dateFormat.format(date);
 
 	}
+
 }

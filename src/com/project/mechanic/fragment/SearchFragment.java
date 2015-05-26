@@ -1,8 +1,12 @@
 package com.project.mechanic.fragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +20,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.City;
+import com.project.mechanic.entity.Province;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class SearchFragment extends ListFragment {
@@ -29,6 +35,10 @@ public class SearchFragment extends ListFragment {
 
 	private TextView status;
 	Fragment fragment;
+	List<Province> list;
+
+	// int lastPosition = 0;
+	// int i = 10;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -86,27 +96,20 @@ public class SearchFragment extends ListFragment {
 	}
 
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		//
 
-		//
-		// android.app.FragmentManager fragmentManager;
-		// switch (position) {
-		// case 0:
-		// fragment = new ProvinceFragment();
-		// fragmentManager = getFragmentManager();
-		// fragmentManager.beginTransaction()
-		// .replace(R.id.content_frame, fragment).commit();
-		// break;
-		//
-		// case 1:
-		// }
+		db.open();
+		ArrayList<Province> mylist = db.getAllProvinceName();
+		Province p = mylist.get(position);
 
-		// Intent i = new Intent(Search.this, Province.class);
-		//
-		// i.putExtra("name", Name[position]);
-		//
-		// startActivity(i);
+		List<City> allItems = db.getCitysByProvinceId(p.getId());
 
+		db.close();
+
+		FragmentTransaction trans = (getActivity()).getSupportFragmentManager()
+				.beginTransaction();
+		trans.replace(R.id.content_frame, new CityFragment(allItems));
+		trans.addToBackStack(null);
+		trans.commit();
 	}
 
 	private void startAnimation(Animation animation) {
@@ -179,4 +182,5 @@ public class SearchFragment extends ListFragment {
 		db.close();
 
 	}
+
 }
