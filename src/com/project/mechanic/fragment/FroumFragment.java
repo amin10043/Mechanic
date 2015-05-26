@@ -340,9 +340,9 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 			adapter.open();
 			adapter.insertLikeInFroumToDb(IDcurrentUser, froumid, currentDate,
 					0);
-			adapter.close();
-			countLike.setText(adapter.LikeInFroum_count(froumid).toString());
 
+			countLike.setText(adapter.LikeInFroum_count(froumid).toString());
+			adapter.close();
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "خطا در ارتباط با سرور",
 					Toast.LENGTH_SHORT).show();
