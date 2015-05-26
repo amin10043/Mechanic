@@ -91,71 +91,76 @@ public class WelcomeScreen extends Activity implements AsyncInterface {
 		String tableUpdating = "User";
 		serviceUpdate = new Updating(this);
 		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating, settings.getServerDate());
+		serviceUpdate.execute(tableUpdating, settings.getServerDate_Users());
 
-		// tableUpdating = "Paper";
+		tableUpdating = "Paper";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_Paper() : ""));
+
+		tableUpdating = "Froum";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_Froum() : ""));
+		// tableUpdating = "Object";
 		// serviceUpdate = new Updating(this);
 		// serviceUpdate.delegate = this;
 		// serviceUpdate.execute(tableUpdating,
 		// (settings != null ? settings.getServerDate() : ""));
-		//
-		// tableUpdating = "Froum";
-		// serviceUpdate = new Updating(this);
-		// serviceUpdate.delegate = this;
-		// serviceUpdate.execute(tableUpdating,
-		// (settings != null ? settings.getServerDate() : ""));
-		// // tableUpdating = "Object";
-		// // serviceUpdate = new Updating(this);
-		// // serviceUpdate.delegate = this;
-		// // serviceUpdate.execute(tableUpdating,
-		// // (settings != null ? settings.getServerDate() : ""));
-		// tableUpdating = "News";
-		// serviceUpdate = new Updating(this);
-		// serviceUpdate.delegate = this;
-		// serviceUpdate.execute(tableUpdating,
-		// (settings != null ? settings.getServerDate() : ""));
-		// tableUpdating = "Anad";
-		// serviceUpdate = new Updating(this);
-		// serviceUpdate.delegate = this;
-		// serviceUpdate.execute(tableUpdating,
-		// (settings != null ? settings.getServerDate() : ""));
-		// tableUpdating = "Ticket";
-		// serviceUpdate = new Updating(this);
-		// serviceUpdate.delegate = this;
-		// serviceUpdate.execute(tableUpdating,
-		// (settings != null ? settings.getServerDate() : ""));
-		// tableUpdating = "LikeInPaper";
-		// serviceUpdate = new Updating(this);
-		// serviceUpdate.delegate = this;
-		// serviceUpdate.execute(tableUpdating,
-		// (settings != null ? settings.getServerDate() : ""));
-		// tableUpdating = "CmtInPaper";
-		// serviceUpdate = new Updating(this);
-		// serviceUpdate.delegate = this;
-		// serviceUpdate.execute(tableUpdating,
-		// (settings != null ? settings.getServerDate() : ""));
-		//
-		// tableUpdating = "LikeInFroum";
-		// serviceUpdate = new Updating(this);
-		// serviceUpdate.delegate = this;
-		// serviceUpdate.execute(tableUpdating,
-		// (settings != null ? settings.getServerDate() : ""));
-		// tableUpdating = "CommentInFroum";
-		// serviceUpdate = new Updating(this);
-		// serviceUpdate.delegate = this;
-		// serviceUpdate.execute(tableUpdating,
-		// (settings != null ? settings.getServerDate() : ""));
-		//
-		// tableUpdating = "LikeInObject";
-		// serviceUpdate = new Updating(this);
-		// serviceUpdate.delegate = this;
-		// serviceUpdate.execute(tableUpdating,
-		// (settings != null ? settings.getServerDate() : ""));
-		// tableUpdating = "CommentInObject";
-		// serviceUpdate = new Updating(this);
-		// serviceUpdate.delegate = this;
-		// serviceUpdate.execute(tableUpdating,
-		// (settings != null ? settings.getServerDate() : ""));
+		tableUpdating = "News";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_News() : ""));
+		tableUpdating = "Anad";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_Anad() : ""));
+		tableUpdating = "Ticket";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_Ticket() : ""));
+		tableUpdating = "LikeInPaper";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_LikeInPaper() : ""));
+		tableUpdating = "CmtInPaper";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_CmtInPaper() : ""));
+
+		tableUpdating = "LikeInFroum";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_LikeInFroum() : ""));
+		tableUpdating = "CommentInFroum";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_CommentInFroum()
+						: ""));
+
+		tableUpdating = "LikeInObject";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate
+				.execute(
+						tableUpdating,
+						(settings != null ? settings
+								.getServerDate_LikeInObject() : ""));
+		tableUpdating = "CommentInObject";
+		serviceUpdate = new Updating(this);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_CommentInObject()
+						: ""));
 
 		startService(new Intent(this, ChatHeadService.class));
 
