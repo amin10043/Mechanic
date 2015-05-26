@@ -25,6 +25,8 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Deleting;
+import com.project.mechanic.service.Saving;
 import com.project.mechanic.utility.Utility;
 
 public class ExpandableCommentFroum extends BaseExpandableListAdapter {
@@ -37,6 +39,11 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 	FroumFragment f;
 	int froumID, userid;
 	Users Currentuser;
+
+	Saving saving;
+	Deleting deleting;
+	Map<String, String> params;
+	int GlobalLikeId;
 
 	public ExpandableCommentFroum(Context context,
 			ArrayList<CommentInFroum> laptops,
@@ -85,8 +92,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 				.findViewById(R.id.icon_reply_comment);
 		adapter.open();
 
-		final CommentInFroum comment = cmt.get(groupPosition);
-		Users y = adapter.getUserbyid(comment.getUserid());
+		// final CommentInFroum comment = cmt.get(groupPosition);
+		Users y = adapter.getUserbyid(reply.getUserid());
 
 		if (y.getImage() == null) {
 			ReplyerPic.setImageResource(R.drawable.no_img_profile);
@@ -381,7 +388,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 						if (txtMaincmt.getText().toString()
 								.equals(listItem.getDesk())) {
 
-							id = listItem.getId();
+							GlobalLikeId = id = listItem.getId();
 
 						}
 					}
@@ -502,4 +509,5 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
 	}
+
 }
