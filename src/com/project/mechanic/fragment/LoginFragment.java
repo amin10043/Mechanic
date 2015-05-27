@@ -45,7 +45,6 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		service = new ServiceComm(getActivity());
 		util = new Utility(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
 		updateBarHandler = new Handler();
@@ -88,6 +87,7 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 				else {
 
 					// String[] params = new String[] { "login", mobile, pass };
+					service = new ServiceComm(getActivity());
 					service.delegate = LoginFragment.this;
 					Map<String, String> items = new LinkedHashMap<String, String>();
 					items.put("login", "login");
@@ -213,6 +213,8 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 			// }
 			Toast.makeText(getActivity(), "شما وارد شده اید.",
 					Toast.LENGTH_SHORT).show();
+
+			util.setNoti(getActivity(), u.getId());
 
 		} else {
 

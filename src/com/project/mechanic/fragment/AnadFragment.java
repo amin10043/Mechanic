@@ -34,7 +34,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.ListView.PullAndLoadListView;
 import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
@@ -42,10 +41,8 @@ import com.project.mechanic.ListView.PullToRefreshListView.OnRefreshListener;
 import com.project.mechanic.adapter.AnadImgListAdapter;
 import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.entity.Anad;
-import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
-
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -90,8 +87,9 @@ public class AnadFragment extends Fragment {
 	private Button clickedButton = null;
 	Users u;
 	Utility util;
-	int i=0,j=9;
+	int i = 0, j = 9;
 	AnadListAdapter ListAdapter;
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,7 +99,7 @@ public class AnadFragment extends Fragment {
 		verticalOuterLayout = (LinearLayout) view
 				.findViewById(R.id.vertical_outer_layout_id);
 
-		//((MainActivity) getActivity()).setActivityTitle(R.string.anad);
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.anad);
 		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
 
 		imgadd = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
@@ -122,16 +120,16 @@ public class AnadFragment extends Fragment {
 		anadlist = dbAdapter.getAnadtByTypeIdProId(proID);
 
 		dbAdapter.close();
-		if(mylist!=null &&!mylist.isEmpty()){
-			if(mylist.size()<j){
-				j=mylist.size();
+		if (mylist != null && !mylist.isEmpty()) {
+			if (mylist.size() < j) {
+				j = mylist.size();
 			}
-		List<Ticket> tmpList = mylist.subList(i, j);
-		subList = new ArrayList<Ticket>();
-		for(Ticket p : tmpList){
-			if(!subList.contains(p))
-				subList.add(p);
-		}
+			List<Ticket> tmpList = mylist.subList(i, j);
+			subList = new ArrayList<Ticket>();
+			for (Ticket p : tmpList) {
+				if (!subList.contains(p))
+					subList.add(p);
+			}
 		}
 		// img.setOnClickListener(new OnClickListener() {
 		//
@@ -162,49 +160,51 @@ public class AnadFragment extends Fragment {
 				dialog.show();
 			}
 		});
-		if(mylist!=null &&!mylist.isEmpty()){
-		lstTicket = (PullAndLoadListView) view.findViewById(R.id.listVanad);
-		
-		 ListAdapter = new AnadListAdapter(getActivity(),
-				R.layout.row_anad, subList, proID);
+		if (mylist != null && !mylist.isEmpty()) {
+			lstTicket = (PullAndLoadListView) view.findViewById(R.id.listVanad);
 
-		 lstTicket.setAdapter(ListAdapter);
-		 
-		 ((PullAndLoadListView) lstTicket)
-			.setOnRefreshListener(new OnRefreshListener() {
+			ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
+					subList, proID);
 
-				public void onRefresh() {
-					// Do work to refresh the list here.
+			lstTicket.setAdapter(ListAdapter);
 
-					new PullToRefreshDataTask().execute();
-				}
-			});
-		 
 			((PullAndLoadListView) lstTicket)
-			.setOnLoadMoreListener(new OnLoadMoreListener() {
+					.setOnRefreshListener(new OnRefreshListener() {
 
-				public void onLoadMore() {
-					// Do the work to load more items at the end of list
-					// here
-					if(mylist.size()< j+1){
-						i=j+1;
-					}
-				
-				if(mylist.size()< j+10){
-					j = mylist.size()-1;
-				}else{
-					j+=10;
-				}
-				tempList = mylist.subList(i, j);
-				for(Ticket p : tempList){
-					if(!subList.contains(p))
-					subList.add(p);
-				}
-				//Toast.makeText(getActivity(), String.valueOf(i), Toast.LENGTH_SHORT).show();
-				//ListAdapter.notifyDataSetChanged();
-				new LoadMoreDataTask().execute();
-				}
-			});}
+						public void onRefresh() {
+							// Do work to refresh the list here.
+
+							new PullToRefreshDataTask().execute();
+						}
+					});
+
+			((PullAndLoadListView) lstTicket)
+					.setOnLoadMoreListener(new OnLoadMoreListener() {
+
+						public void onLoadMore() {
+							// Do the work to load more items at the end of list
+							// here
+							if (mylist.size() < j + 1) {
+								i = j + 1;
+							}
+
+							if (mylist.size() < j + 10) {
+								j = mylist.size() - 1;
+							} else {
+								j += 10;
+							}
+							tempList = mylist.subList(i, j);
+							for (Ticket p : tempList) {
+								if (!subList.contains(p))
+									subList.add(p);
+							}
+							// Toast.makeText(getActivity(), String.valueOf(i),
+							// Toast.LENGTH_SHORT).show();
+							// ListAdapter.notifyDataSetChanged();
+							new LoadMoreDataTask().execute();
+						}
+					});
+		}
 
 		lstimg = (ListView) view.findViewById(R.id.listVanad2);
 		AnadImgListAdapter ListAdapter2 = new AnadImgListAdapter(getActivity(),
@@ -238,6 +238,7 @@ public class AnadFragment extends Fragment {
 		return view;
 
 	}
+
 	private class LoadMoreDataTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -255,7 +256,6 @@ public class AnadFragment extends Fragment {
 			//
 			// for (int i = 0; i < mNames.length; i++)
 			// mListItems.add(mNames[i]);
-			
 
 			return null;
 		}
@@ -278,6 +278,7 @@ public class AnadFragment extends Fragment {
 			((PullAndLoadListView) lstTicket).onLoadMoreComplete();
 		}
 	}
+
 	private class PullToRefreshDataTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -496,16 +497,6 @@ public class AnadFragment extends Fragment {
 		return scaleFace;
 	}
 
-	// public void onBackPressed() {
-	// // super.onBackPressed();
-	// // finish();
-	// }
-
-	// public void onPause() {
-	// super.onPause();
-	// // finish();
-	// }
-
 	public void onDestroy() {
 		clearTimerTaks(clickSchedule);
 		clearTimerTaks(scrollerSchedule);
@@ -539,14 +530,3 @@ public class AnadFragment extends Fragment {
 	}
 
 }
-
-// public void onBackPressed() {
-//
-// FragmentTransaction trans = getActivity().getSupportFragmentManager()
-// .beginTransaction();
-// trans.replace(R.id.content_frame, new BerandFragment());
-// trans.addToBackStack(null);
-// trans.commit();
-// }
-//
-// }

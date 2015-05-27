@@ -26,7 +26,7 @@ public class ExecutertypeFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		//((MainActivity) getActivity()).setActivityTitle(R.string.Executertyper);
+		((MainActivity) getActivity()).setActivityTitle(R.string.Executertyper);
 
 		View view = inflater.inflate(R.layout.fragment_executertype, null);
 

@@ -23,7 +23,7 @@
                 <ImageView
                     android:id="@+id/imgvadvertise_Object"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="160dp"
                     android:layout_weight="3"
                     android:paddingBottom="20dp"
                     android:scaleType="fitXY"
@@ -37,6 +37,14 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="25dp"
                 android:layout_marginTop="120dp" >
+
+                <TextView
+                    android:id="@+id/namePage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="name"
+                    android:textColor="#000" />
 
                 <ImageView
                     android:id="@+id/icon_pro"
@@ -107,15 +115,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="2dp"
                 android:background="@drawable/ic_edit" />
-
-            <ImageButton
-                android:id="@+id/ImgbtnCreate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@+id/AddLikeIntroductionLinear"
-                android:background="@drawable/ic_create" />
         </RelativeLayout>
 
         <LinearLayout

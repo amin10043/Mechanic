@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,11 +17,11 @@ import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -42,12 +43,8 @@ public class Utility {
 	public boolean isNetworkConnected() {
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo ni = cm.getActiveNetworkInfo();
-		if (ni == null) {
-			// There are no active networks.
-			return false;
-		} else
-			return true;
+		return cm.getActiveNetworkInfo() != null
+				&& cm.getActiveNetworkInfo().isConnectedOrConnecting();
 	}
 
 	public void showYesNoDialog(Context context, String Title, String message) {
@@ -282,6 +279,25 @@ public class Utility {
 		Date date = new Date();
 		return dateFormat.format(date);
 
+	}
+
+	public void setNoti(Activity a, int userId) {
+		adapter.open();
+		final int r = adapter.NumOfNewCmtInFroum(userId);
+		int r1 = adapter.NumOfNewCmtInObject(userId);
+		int r2 = adapter.NumOfNewCmtInPaper(userId);
+		int r3 = r + r1 + r2;
+		TextView txtcm = (TextView) a.findViewById(R.id.txtcm);
+		txtcm.setText(String.valueOf(r3));
+
+		int t = adapter.NumOfNewLikeInObject(userId);
+		int t1 = adapter.NumOfNewLikeInFroum(userId);
+		int t2 = adapter.NumOfNewLikeInPaper(userId);
+		int t3 = t + t1 + t2;
+
+		TextView txtlike = (TextView) a.findViewById(R.id.txtlike);
+		txtlike.setText(String.valueOf(t3));
+		adapter.close();
 	}
 
 }

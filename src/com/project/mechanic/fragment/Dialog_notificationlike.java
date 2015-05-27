@@ -18,7 +18,9 @@ import com.project.mechanic.adapter.LikePaperNotificationAdapter;
 import com.project.mechanic.entity.LikeInFroum;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.LikeInPaper;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class Dialog_notificationlike extends Dialog {
 	private static final Context Dialog = null;
@@ -29,18 +31,25 @@ public class Dialog_notificationlike extends Dialog {
 	ListView listnotificationlike;
 	ListView listnotificationlike1;
 	ListView listnotificationlike2;
+	Users user;
+	Utility util;
 
 	public Dialog_notificationlike(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		this.context = context;
 		dbadapter = new DataBaseAdapter(context);
+		util = new Utility(context);
+		user = util.getCurrentUser();
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		if (user == null) {
+			return;
+		}
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.dialog_notificationlike1);
@@ -59,9 +68,11 @@ public class Dialog_notificationlike extends Dialog {
 
 		dbadapter.open();
 
-		ArrayList<LikeInObject> mylist = dbadapter.getUnseenlike();
-		ArrayList<LikeInFroum> mylist1 = dbadapter.getUnseenlikeInFroum();
-		ArrayList<LikeInPaper> mylist2 = dbadapter.getUnseenlikeInPaper();
+		ArrayList<LikeInObject> mylist = dbadapter.getUnseenlike(user.getId());
+		ArrayList<LikeInFroum> mylist1 = dbadapter.getUnseenlikeInFroum(user
+				.getId());
+		ArrayList<LikeInPaper> mylist2 = dbadapter.getUnseenlikeInPaper(user
+				.getId());
 		// CommentInFroum c = dbadapter.getCommentInFroumbyID(1);
 		// String [] aa = {c.getDesk(),c.getDesk(),c.getDesk(),c.getDesk()};
 		dbadapter.close();

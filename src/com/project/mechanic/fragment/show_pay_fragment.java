@@ -55,7 +55,7 @@ public class show_pay_fragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		//((MainActivity) getActivity()).setActivityTitle(R.string.showad);
+		((MainActivity) getActivity()).setActivityTitle(R.string.showad);
 		// id = Integer.valueOf(getArguments().getString("Id"));
 		// if (getArguments().getString("ProID") != null) {
 		// proID = Integer.valueOf(getArguments().getString("ProID"));

@@ -26,6 +26,11 @@
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="adjustResize" >
+            <intent-filter>
+   				<action android:name="android.intent.action.SEND" />
+ 			    <category android:name="android.intent.category.DEFAULT" />
+   				<data android:mimeType="image/*" />
+			</intent-filter>
         </activity>
         <activity
             android:name="com.project.mechanic.SplashActivity"
@@ -55,6 +60,8 @@
             android:name="com.project.mechanic.utility.ChatHeadService"
             android:enabled="true" >
         </service>
+                <service android:name="com.project.mechanic.service.HelloService"/>
+        
     </application>
 
 </manifest>

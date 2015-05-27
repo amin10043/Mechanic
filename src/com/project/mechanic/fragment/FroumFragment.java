@@ -22,16 +22,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.ExpandableCommentFroum;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Deleting;
+import com.project.mechanic.service.Saving;
 import com.project.mechanic.utility.Utility;
 
-public class FroumFragment extends Fragment {
+public class FroumFragment extends Fragment implements AsyncInterface {
 
 	// start defined by masoud
 
@@ -62,6 +64,10 @@ public class FroumFragment extends Fragment {
 	int id;
 	Users user;
 
+	Saving saving;
+	Deleting deleting;
+	Map<String, String> params;
+
 	// end defined by masoud
 
 	@SuppressLint("InflateParams")
@@ -69,7 +75,7 @@ public class FroumFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceStdataate) {
 
-		//((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
 		View view = inflater.inflate(R.layout.fragment_froum, null);
 
 		adapter = new DataBaseAdapter(getActivity());
@@ -221,13 +227,37 @@ public class FroumFragment extends Fragment {
 								.setBackgroundResource(R.drawable.like_froum_off);
 						int c = adapter.LikeInFroum_count(froumid) - 1;
 						countLike.setText(String.valueOf(c));
-						adapter.deleteLikeFromFroum(IDcurrentUser, froumid);
+
+						params = new LinkedHashMap<String, String>();
+						deleting = new Deleting(getActivity());
+						deleting.delegate = FroumFragment.this;
+
+						params.put("TableName", "LikeInFroum");
+						params.put("UserId", String.valueOf(IDcurrentUser));
+						params.put("FroumId", String.valueOf(froumid));
+						deleting.execute(params);
+
 						adapter.close();
 					} else {
 						adapter.open();
 						likeTopic.setBackgroundResource(R.drawable.like_froum);
-						adapter.insertLikeInFroumToDb(IDcurrentUser, froumid,
-								currentDate, 0);
+
+						// start : for sync with server
+
+						params = new LinkedHashMap<String, String>();
+						saving = new Saving(getActivity());
+						saving.delegate = FroumFragment.this;
+
+						params.put("TableName", "LikeInFroum");
+
+						params.put("UserId", String.valueOf(IDcurrentUser));
+						params.put("FroumId", String.valueOf(froumid));
+						params.put("CommentId", "0");
+						params.put("Date", currentDate);
+
+						saving.execute(params);
+
+						// end : for sync with server
 
 						countLike.setText(adapter.LikeInFroum_count(froumid)
 								.toString());
@@ -308,6 +338,29 @@ public class FroumFragment extends Fragment {
 
 		exadapter.notifyDataSetChanged();
 		exlistview.setAdapter(exadapter);
+
+	}
+
+	@Override
+	public void processFinish(String output) {
+		int id = -1;
+		try {
+			id = Integer.valueOf(output);
+
+			adapter.open();
+			if (adapter.isUserLikedFroum(id, froumid)) {
+				adapter.deleteLikeFromFroum(id, froumid);
+
+			} else {
+				adapter.insertLikeInFroumToDb(id, froumid, currentDate, 0);
+				adapter.close();
+				countLike
+						.setText(adapter.LikeInFroum_count(froumid).toString());
+			}
+		} catch (Exception ex) {
+			Toast.makeText(getActivity(), "خطا در ارتباط با سرور",
+					Toast.LENGTH_SHORT).show();
+		}
 
 	}
 

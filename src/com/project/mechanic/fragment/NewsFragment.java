@@ -32,7 +32,7 @@ public class NewsFragment extends Fragment {
 		// Context.MODE_PRIVATE);
 		// id = getData.getInt("main_Id", 0);
 
-		//((MainActivity) getActivity()).setActivityTitle(R.string.News);
+		((MainActivity) getActivity()).setActivityTitle(R.string.News);
 		View view = inflater.inflate(R.layout.fragment_news, null);
 
 		dbAdapter = new DataBaseAdapter(getActivity());

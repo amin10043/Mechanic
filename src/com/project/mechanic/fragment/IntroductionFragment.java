@@ -26,7 +26,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.ExpandIntroduction;
 import com.project.mechanic.entity.CommentInObject;
@@ -68,11 +67,11 @@ public class IntroductionFragment extends Fragment {
 	LinearLayout headImageLinear, profileLinear, footerLinear;
 
 	TextView txtFax, txtAddress, txtPhone, txtCellphone, txtEmail, txtDesc,
-			CountLikeIntroduction, CountCommentIntroduction;
+			CountLikeIntroduction, CountCommentIntroduction, namePage;
 
 	ImageView headerImage, advertise2, profileImage;
 	ImageButton Facebook, Instagram, LinkedIn, Google, Site, Twitter, Pdf1,
-			Pdf2, Pdf3, Pdf4, phone, cphone, map, email, EditPage, CreatePage;
+			Pdf2, Pdf3, Pdf4, phone, cphone, map, email, EditPage;
 	Object object;
 	byte[] headerbyte, profilebyte, footerbyte;
 
@@ -84,7 +83,7 @@ public class IntroductionFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_introduction, null);
-		//((MainActivity) getActivity()).setActivityTitle(R.string.brand);
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.brand);
 
 		adapter = new DataBaseAdapter(getActivity());
 		ut = new Utility(getActivity());
@@ -117,6 +116,7 @@ public class IntroductionFragment extends Fragment {
 		txtCellphone = (TextView) header.findViewById(R.id.txtCellphone_Object);
 		txtDesc = (TextView) header.findViewById(R.id.txtDesc_Object);
 		txtEmail = (TextView) header.findViewById(R.id.txtEmail_Object);
+		namePage = (TextView) header.findViewById(R.id.namePage);
 		CountLikeIntroduction = (TextView) header
 				.findViewById(R.id.countLikeIntroduction);
 		CountCommentIntroduction = (TextView) header
@@ -147,7 +147,6 @@ public class IntroductionFragment extends Fragment {
 				.findViewById(R.id.linear_id_profile_introduction_page);
 		footerLinear = (LinearLayout) header.findViewById(R.id.footerint);
 		EditPage = (ImageButton) header.findViewById(R.id.ImgbtnEdit);
-		CreatePage = (ImageButton) header.findViewById(R.id.ImgbtnCreate);
 
 		sendDataID = getActivity().getSharedPreferences("Id", 0);
 		final int ObjectID = sendDataID.getInt("main_Id", -1);
@@ -186,19 +185,19 @@ public class IntroductionFragment extends Fragment {
 		profileParams = new LinearLayout.LayoutParams(
 				profileLinear.getLayoutParams());
 
-		profileParams.height = ut.getScreenwidth() / 5;
-		profileParams.width = ut.getScreenwidth() / 5;
+		profileParams.height = ut.getScreenwidth() / 6;
+		profileParams.width = ut.getScreenwidth() / 6;
 
 		profileImage.setLayoutParams(profileParams);
 
 		headerParams = new LinearLayout.LayoutParams(
 				headImageLinear.getLayoutParams());
-		headerParams.height = (int) (ut.getScreenHeight() / 2.5);
+		headerParams.height = (int) (ut.getScreenHeight() / 3.5);
 		headImageLinear.setPadding(0, 0, 0, 20);
 
 		footerParams = new LinearLayout.LayoutParams(
 				footerLinear.getLayoutParams());
-		footerParams.height = (int) (ut.getScreenHeight() / 2.5);
+		footerParams.height = (int) (ut.getScreenHeight() / 3.5);
 
 		adapter.open();
 		int countcmt = adapter.CommentInObject_count(ObjectID);
@@ -212,6 +211,7 @@ public class IntroductionFragment extends Fragment {
 		if (object == null) {
 			return view;
 		}
+		namePage.setText(object.getName());
 
 		headerImage.setLayoutParams(headerParams);
 		advertise2.setLayoutParams(footerParams);
@@ -220,8 +220,6 @@ public class IntroductionFragment extends Fragment {
 		adapter.open();
 		if (object.getIsActive() == 0) {
 
-			Toast.makeText(getActivity(), "صفحه مورد نظر فعال نمی باشد",
-					Toast.LENGTH_SHORT).show();
 			View t = inflater.inflate(R.layout.fragment_is_active_introduction,
 					null);
 
@@ -273,8 +271,12 @@ public class IntroductionFragment extends Fragment {
 					trans.commit();
 				}
 			});
+			adapter.close();
 
-			return t;
+			// this view is created for check active or inactive introduction
+			// page
+
+			// return t;
 
 		}
 
@@ -754,19 +756,6 @@ public class IntroductionFragment extends Fragment {
 			}
 		});
 
-		CreatePage.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame,
-						new CreateIntroductionFragment());
-				trans.commit();
-
-			}
-		});
 		return view;
 
 	}

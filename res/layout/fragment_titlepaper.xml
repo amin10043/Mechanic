@@ -30,12 +30,14 @@
         android:layout_weight="90"
         android:fillViewport="true" >
 
-        <ListView
+        <com.project.mechanic.ListView.PullAndLoadListView
             android:id="@+id/lstComment"
             style="@style/second_item_style"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-        </ListView>
+            android:layout_height="401dp"
+            android:divider="@null"
+            android:dividerHeight="0dp" >
+        </com.project.mechanic.ListView.PullAndLoadListView>
     </ScrollView>
 
 </LinearLayout>

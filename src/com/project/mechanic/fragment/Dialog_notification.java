@@ -18,6 +18,7 @@ import com.project.mechanic.adapter.commentnotificationAdapter;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.CommentInPaper;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -33,6 +34,7 @@ public class Dialog_notification extends Dialog {
 	ListView listcmnotification3;
 	DataBaseAdapter adapter;
 	Utility util;
+	Users user;
 
 	public Dialog_notification(Context context) {
 		super(context);
@@ -41,12 +43,17 @@ public class Dialog_notification extends Dialog {
 		// TODO Auto-generated constructor stub
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
+		user = util.getCurrentUser();
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		if (user == null) {
+			return;
+		}
 		super.onCreate(savedInstanceState);
+
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.dialog_notification1);
@@ -72,12 +79,17 @@ public class Dialog_notification extends Dialog {
 		ImageButton btnshowcmo = (ImageButton) findViewById(R.id.btnshowcmo);
 		ImageButton btnshowcmp = (ImageButton) findViewById(R.id.btnshowcmp);
 		final ListView listnewcm = (ListView) findViewById(R.id.listnewcm);
-
+		//
 		adapter.open();
+		// Users u = util.getCurrentUser();
+		// int id = u.getId();
 
-		ArrayList<CommentInFroum> mylist = adapter.getUnseencomment();
-		ArrayList<CommentInObject> mylist1 = adapter.getUnseencommentobject();
-		ArrayList<CommentInPaper> mylist2 = adapter.getUnseencommentpaper();
+		ArrayList<CommentInFroum> mylist = adapter.getUnseencomment(user
+				.getId());
+		ArrayList<CommentInObject> mylist1 = adapter
+				.getUnseencommentobject(user.getId());
+		ArrayList<CommentInPaper> mylist2 = adapter.getUnseencommentpaper(user
+				.getId());
 
 		adapter.close();
 		final commentnotificationAdapter dataAdapter = new commentnotificationAdapter(
