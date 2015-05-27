@@ -73,6 +73,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	TextView txtclickpic;
 	private Toast toast;
 	ViewGroup toastlayout;
+	View view2;
 
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -108,6 +109,10 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		ScrollView scroll_vertical_register1 = (ScrollView) view
 				.findViewById(R.id.scroll_vertical_register);
 		final LinearLayout lin1 = (LinearLayout) view.findViewById(R.id.lin1);
+
+		LayoutInflater inflater1 = getLayoutInflater(getArguments());
+		final View view2 = inflater1
+				.inflate(R.layout.toast_define, toastlayout);
 		btnaddpic1.setBackgroundResource(R.drawable.i13);
 		lp = new LinearLayout.LayoutParams(lin1.getLayoutParams());
 		lp.width = utile.getScreenwidth() / 4;
@@ -165,19 +170,18 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 				else if (Name.equals("") || Pass.equals("")
 						|| Mobile.equals("")) {
 
-					LayoutInflater inflater = getLayoutInflater(getArguments());
-					View view = inflater.inflate(R.layout.toast_define,
-							toastlayout);
-					TextView txtView_Title = (TextView) view
-							.findViewById(R.id.txt_Title);
-					TextView txtView_Context = (TextView) view
-							.findViewById(R.id.txt_context);
-					ImageView imageView = (ImageView) view
-							.findViewById(R.id.image_toast);
+					utile.showtoast(view2, R.drawable.errormassage,
+							"لطفا فیلدهای اجباری را پر نمایید", "خطا");
+					// TextView txtView_Title = (TextView) view
+					// .findViewById(R.id.txt_Title);
+					// TextView txtView_Context = (TextView) view
+					// .findViewById(R.id.txt_context);
+					// ImageView imageView = (ImageView) view
+					// .findViewById(R.id.image_toast);
 					toast = new Toast(getActivity());
 					toast.setGravity(Gravity.CENTER, 0, 0);
 					toast.setDuration(Toast.LENGTH_LONG);
-					toast.setView(view);
+					toast.setView(view2);
 					toast.show();
 				}
 
@@ -288,7 +292,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 		try {
 			serverId = Integer.valueOf(output);
-
+			Toast.makeText(getActivity(), "" + serverId, Toast.LENGTH_SHORT)
+					.show();
 			if (serverId > 0) {
 
 				server.edit().putInt("srv_id", serverId).commit();
@@ -299,22 +304,16 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
 							null, Mobile, null, null, 0, txtdate);
-
-					LayoutInflater inflater = getLayoutInflater(getArguments());
-
-					View view = inflater.inflate(R.layout.toast_define,
-							toastlayout);
-					TextView txtView_Title = (TextView) view
-							.findViewById(R.id.txt_Title);
-					TextView txtView_Context = (TextView) view
-							.findViewById(R.id.txt_context);
-					ImageView imageView = (ImageView) view
-							.findViewById(R.id.image_toast);
-					toast = new Toast(getActivity());
-					toast.setGravity(Gravity.CENTER, 0, 0);
-					toast.setDuration(Toast.LENGTH_LONG);
-					toast.setView(view);
-					toast.show();
+					Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد",
+							Toast.LENGTH_SHORT).show();
+					// utile.showtoast(view2, R.drawable.massage,
+					// "اطلاعات مورد نظر ثبت شد", "پیغام");
+					//
+					// toast = new Toast(getActivity());
+					// toast.setGravity(Gravity.CENTER, 0, 0);
+					// toast.setDuration(Toast.LENGTH_LONG);
+					// toast.setView(view2);
+					// toast.show();
 
 				} else {
 					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
@@ -331,10 +330,17 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 						dbAdapter.inserUserToDb(serverId, Name, null, Pass,
 								null, Mobile, null, null, Image, 0, txtdate);
-
 						Toast.makeText(getActivity(),
 								"اطلاعات مورد نظر ثبت شد", Toast.LENGTH_SHORT)
 								.show();
+						// utile.showtoast(view2, R.drawable.massage,
+						// "اطلاعات مورد نظر ثبت شد", "پیغام");
+						//
+						// toast = new Toast(getActivity());
+						// toast.setGravity(Gravity.CENTER, 0, 0);
+						// toast.setDuration(Toast.LENGTH_LONG);
+						// toast.setView(view2);
+						// toast.show();
 					}
 				}
 				dbAdapter.close();

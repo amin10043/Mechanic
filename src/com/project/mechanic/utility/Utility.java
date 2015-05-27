@@ -20,7 +20,11 @@ import android.net.ConnectivityManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
@@ -34,6 +38,8 @@ public class Utility {
 	private Context context;
 	private DataBaseAdapter adapter;
 	int notificationID;
+	LayoutInflater inflater;
+	ViewGroup toastlayout;
 
 	public Utility(Context context) {
 		this.context = context;
@@ -78,6 +84,20 @@ public class Utility {
 								dialog.dismiss();
 							}
 						}).setIcon(android.R.drawable.ic_dialog_alert).show();
+	}
+
+	public void showtoast(View view, int picture, String massage, String Title) {
+
+		TextView txtView_Title = (TextView) view.findViewById(R.id.txt_Title);
+		TextView txtView_Context = (TextView) view
+				.findViewById(R.id.txt_context);
+		ImageView imageView = (ImageView) view.findViewById(R.id.image_toast);
+
+		txtView_Title.setText(Title);
+
+		txtView_Context.setText(massage);
+		imageView.setImageResource(picture);
+
 	}
 
 	public Users getCurrentUser() {
