@@ -85,6 +85,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_register, null);
+
 		utile = new Utility(getActivity());
 		service = new ServiceComm(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
@@ -292,8 +293,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 		try {
 			serverId = Integer.valueOf(output);
-			Toast.makeText(getActivity(), "" + serverId, Toast.LENGTH_SHORT)
-					.show();
+			// Toast.makeText(getActivity(), "" + serverId, Toast.LENGTH_SHORT)
+			// .show();
 			if (serverId > 0) {
 
 				server.edit().putInt("srv_id", serverId).commit();
@@ -304,16 +305,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
 							null, Mobile, null, null, 0, txtdate);
-					Toast.makeText(getActivity(), "اطلاعات مورد نظر ثبت شد",
-							Toast.LENGTH_SHORT).show();
-					// utile.showtoast(view2, R.drawable.massage,
-					// "اطلاعات مورد نظر ثبت شد", "پیغام");
-					//
-					// toast = new Toast(getActivity());
-					// toast.setGravity(Gravity.CENTER, 0, 0);
-					// toast.setDuration(Toast.LENGTH_LONG);
-					// toast.setView(view2);
-					// toast.show();
 
 				} else {
 					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
@@ -330,27 +321,35 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 						dbAdapter.inserUserToDb(serverId, Name, null, Pass,
 								null, Mobile, null, null, Image, 0, txtdate);
-						Toast.makeText(getActivity(),
-								"اطلاعات مورد نظر ثبت شد", Toast.LENGTH_SHORT)
-								.show();
-						// utile.showtoast(view2, R.drawable.massage,
-						// "اطلاعات مورد نظر ثبت شد", "پیغام");
-						//
-						// toast = new Toast(getActivity());
-						// toast.setGravity(Gravity.CENTER, 0, 0);
-						// toast.setDuration(Toast.LENGTH_LONG);
-						// toast.setView(view2);
-						// toast.show();
+
 					}
 				}
 				dbAdapter.close();
 
-				Toast.makeText(getActivity(), "sabt shod ", Toast.LENGTH_SHORT)
-						.show();
+				LayoutInflater inflater4 = getLayoutInflater(getArguments());
+				View view4 = inflater4.inflate(R.layout.toast_define,
+						toastlayout);
+				utile.showtoast(view4, R.drawable.massage,
+						"اطلاعات مورد نظر ثبت شد", "پیغام");
+
+				toast = new Toast(getActivity());
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.setDuration(Toast.LENGTH_LONG);
+				toast.setView(view4);
+				toast.show();
 
 			} else {
-				Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT)
-						.show();
+				LayoutInflater inflater5 = getLayoutInflater(getArguments());
+				View view5 = inflater5.inflate(R.layout.toast_define,
+						toastlayout);
+				utile.showtoast(view5, R.drawable.errormassage,
+						"شما به سرویس متصل نشده اید", "خطا");
+
+				toast = new Toast(getActivity());
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.setDuration(Toast.LENGTH_LONG);
+				toast.setView(view5);
+				toast.show();
 			}
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT).show();
