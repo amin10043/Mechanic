@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,9 +29,11 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +41,6 @@ import com.project.mechanic.R;
 import com.project.mechanic.ListView.PullAndLoadListView;
 import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
 import com.project.mechanic.ListView.PullToRefreshListView.OnRefreshListener;
-import com.project.mechanic.adapter.AnadImgListAdapter;
 import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.Ticket;
@@ -67,7 +69,7 @@ public class AnadFragment extends Fragment {
 	Anad tempItem;
 	int position;
 	private Anad x;
-	private ListView lstimg;
+	// private ListView lstimg;
 
 	private int column = 3;
 	int gridePadding = 1;
@@ -89,15 +91,13 @@ public class AnadFragment extends Fragment {
 	Utility util;
 	int i = 0, j = 9;
 	AnadListAdapter ListAdapter;
+	private ScrollView verticalScrollview;
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_anad, null);
-
-		verticalOuterLayout = (LinearLayout) view
-				.findViewById(R.id.vertical_outer_layout_id);
 
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.anad);
 		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
@@ -206,14 +206,18 @@ public class AnadFragment extends Fragment {
 					});
 		}
 
-		lstimg = (ListView) view.findViewById(R.id.listVanad2);
-		AnadImgListAdapter ListAdapter2 = new AnadImgListAdapter(getActivity(),
-				R.layout.row_anad_img, anadlist, proID);
+		// lstimg = (ListView) view.findViewById(R.id.listVanad2);
+		// AnadImgListAdapter ListAdapter2 = new
+		// AnadImgListAdapter(getActivity(),
+		// R.layout.row_anad_img, anadlist, proID);
 
-		lstimg.setAdapter(ListAdapter2);
-
+		// lstimg.setAdapter(ListAdapter2);
+		verticalScrollview = (ScrollView) view
+				.findViewById(R.id.vertical_scrollview_id);
 		verticalOuterLayout = (LinearLayout) view
 				.findViewById(R.id.vertical_outer_layout_id);
+		addImagesToView(anadlist);
+
 		ViewTreeObserver vto = verticalOuterLayout.getViewTreeObserver();
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@Override
@@ -237,6 +241,57 @@ public class AnadFragment extends Fragment {
 
 		return view;
 
+	}
+
+	public void addImagesToView(List<Anad> lst) {
+
+		for (int i = 0; i < lst.size(); i++) {
+			byte[] tmpImage = lst.get(i).getImage();
+			final ImageButton imageButton = new ImageButton(getActivity());
+			if (tmpImage == null) {
+				Drawable image = this.getResources().getDrawable(
+						R.drawable.propagand);
+				imageButton.setImageDrawable(image);
+			} else {
+				imageButton.setImageBitmap(BitmapFactory.decodeByteArray(
+						tmpImage, 0, tmpImage.length));
+			}
+			// imageButton.setTag(i);
+			// imageButton.setOnClickListener(new OnClickListener() {
+			// @Override
+			// public void onClick(View arg0) {
+			// if (isFaceDown) {
+			// if (clickTimer != null) {
+			// clickTimer.cancel();
+			// clickTimer = null;
+			// }
+			// clickedButton = (Button) arg0;
+			// stopAutoScrolling();
+			// clickedButton.startAnimation(scaleFaceUpAnimation());
+			// clickedButton.setSelected(true);
+			// clickTimer = new Timer();
+			//
+			// if (clickSchedule != null) {
+			// clickSchedule.cancel();
+			// clickSchedule = null;
+			// }
+			//
+			// clickSchedule = new TimerTask() {
+			// public void run() {
+			// startAutoScrolling();
+			// }
+			// };
+			//
+			// clickTimer.schedule(clickSchedule, 1500);
+			// }
+			// }
+			// });
+
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					256, 256);
+			imageButton.setLayoutParams(params);
+			verticalOuterLayout.addView(imageButton);
+		}
 	}
 
 	private class LoadMoreDataTask extends AsyncTask<Void, Void, Void> {
@@ -360,17 +415,9 @@ public class AnadFragment extends Fragment {
 	}
 
 	public void getScrollMaxAmount() {
-		// int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 *
-		// 3));
-		// verticalScrollMax = actualWidth;
-
-		// int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 *
-		// 3));
-		// int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 *
-		// 3));
-		// verticalScrollMax = actualWidth;
-		// verticalScrollMax = verticalScrollview.getHeight();
-		verticalScrollMax = new Utility(getActivity()).getScreenHeight();
+		// verticalScrollMax = new Utility(getActivity()).getScreenHeight();
+		int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 * 3));
+		verticalScrollMax = actualWidth;
 	}
 
 	public void startAutoScrolling() {
@@ -393,16 +440,28 @@ public class AnadFragment extends Fragment {
 				}
 			};
 
-			scrollTimer.schedule(scrollerSchedule, 30, 15);
+			scrollTimer.schedule(scrollerSchedule, 30, 30);
 		}
 	}
 
 	public void moveScrollView() {
-		scrollPos = (int) (lstimg.getScrollY() + 1.0);
+
+		scrollPos = (int) (verticalScrollview.getScrollY() + 1.0);
 		if (scrollPos >= verticalScrollMax) {
 			scrollPos = 0;
 		}
-		lstimg.scrollTo(0, scrollPos);
+		verticalScrollview.scrollTo(0, scrollPos);
+		// scrollPos = (int) (lstimg.getScrollY() + 1.0);
+		// if (scrollPos >= verticalScrollMax) {
+		// scrollPos = 0;
+		// }
+		// lstimg.scrollTo(0, scrollPos);
+
+		// scrollPos = (int) (lstimg.getScrollY() + 1.0);
+		// if (scrollPos >= verticalScrollMax) {
+		// scrollPos = 0;
+		// }
+		// lstimg.scrollTo(0, scrollPos);
 	}
 
 	public void stopAutoScrolling() {
