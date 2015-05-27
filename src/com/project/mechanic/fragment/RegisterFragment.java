@@ -23,6 +23,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.telephony.TelephonyManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -70,6 +71,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	DataBaseAdapter dbAdapter;
 	private Activity view;
 	TextView txtclickpic;
+	private Toast toast;
+	ViewGroup toastlayout;
 
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -99,6 +102,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		btnreg.setEnabled(false);
 		final CheckBox Rulescheck = (CheckBox) view
 				.findViewById(R.id.rulescheck);
+
+		toastlayout = (ViewGroup) view.findViewById(R.id.toast_layout);
 		TextView textrules = (TextView) view.findViewById(R.id.txtrulles);
 		ScrollView scroll_vertical_register1 = (ScrollView) view
 				.findViewById(R.id.scroll_vertical_register);
@@ -159,17 +164,29 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 				else if (Name.equals("") || Pass.equals("")
 						|| Mobile.equals("")) {
-					Toast.makeText(getActivity(),
-							"لطفا فيلدهاي اجباری را پر کنيد  ",
-							Toast.LENGTH_SHORT).show();
+
+					LayoutInflater inflater = getLayoutInflater(getArguments());
+					View view = inflater.inflate(R.layout.toast_define,
+							toastlayout);
+					TextView txtView_Title = (TextView) view
+							.findViewById(R.id.txt_Title);
+					TextView txtView_Context = (TextView) view
+							.findViewById(R.id.txt_context);
+					ImageView imageView = (ImageView) view
+							.findViewById(R.id.image_toast);
+					toast = new Toast(getActivity());
+					toast.setGravity(Gravity.CENTER, 0, 0);
+					toast.setDuration(Toast.LENGTH_LONG);
+					toast.setView(view);
+					toast.show();
 				}
 
 				else if (!isValidName(Name)) {
-					editname.setError("Invalid Name");
+					editname.setError(" نام و نام خانوادگی شما نامعتبر است");
 				}
 
 				else if (!isValidPassword(Pass)) {
-					editpass.setError("Invalid Password");
+					editpass.setError("رمز عبور نا معتبر است");
 				}
 
 				else {
@@ -283,9 +300,21 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
 							null, Mobile, null, null, 0, txtdate);
 
-					Toast.makeText(getActivity(),
-							"اطلاعات مورد نظر بدون عکس ثبت شد",
-							Toast.LENGTH_SHORT).show();
+					LayoutInflater inflater = getLayoutInflater(getArguments());
+
+					View view = inflater.inflate(R.layout.toast_define,
+							toastlayout);
+					TextView txtView_Title = (TextView) view
+							.findViewById(R.id.txt_Title);
+					TextView txtView_Context = (TextView) view
+							.findViewById(R.id.txt_context);
+					ImageView imageView = (ImageView) view
+							.findViewById(R.id.image_toast);
+					toast = new Toast(getActivity());
+					toast.setGravity(Gravity.CENTER, 0, 0);
+					toast.setDuration(Toast.LENGTH_LONG);
+					toast.setView(view);
+					toast.show();
 
 				} else {
 					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
