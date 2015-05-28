@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#a3a3a3"
+    android:layout_marginBottom="1dp"
+    android:background="@drawable/shape_froum_reply"
     android:padding="10dp" >
 
     <RelativeLayout
@@ -17,8 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/businnesscard"
-            android:scaleType="fitXY" />
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:src="@drawable/businnesscard" />
 
         <TextView
             android:id="@+id/name_replyed"

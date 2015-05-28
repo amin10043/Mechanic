@@ -29,6 +29,7 @@ import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.utility.Utility;
 
@@ -64,6 +65,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 	Users user;
 
 	Saving saving;
+	Deleting deleting;
 	Map<String, String> params;
 
 	// end defined by masoud
@@ -226,7 +228,15 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 						int c = adapter.LikeInFroum_count(froumid) - 1;
 						countLike.setText(String.valueOf(c));
 
-						adapter.deleteLikeFromFroum(IDcurrentUser, froumid);
+						params = new LinkedHashMap<String, String>();
+						deleting = new Deleting(getActivity());
+						deleting.delegate = FroumFragment.this;
+
+						params.put("TableName", "LikeInFroum");
+						params.put("UserId", String.valueOf(IDcurrentUser));
+						params.put("FroumId", String.valueOf(froumid));
+						deleting.execute(params);
+
 						adapter.close();
 					} else {
 						adapter.open();
@@ -338,11 +348,15 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 			id = Integer.valueOf(output);
 
 			adapter.open();
-			adapter.insertLikeInFroumToDb(IDcurrentUser, froumid, currentDate,
-					0);
-			adapter.close();
-			countLike.setText(adapter.LikeInFroum_count(froumid).toString());
+			if (adapter.isUserLikedFroum(id, froumid)) {
+				adapter.deleteLikeFromFroum(id, froumid);
 
+			} else {
+				adapter.insertLikeInFroumToDb(id, froumid, currentDate, 0);
+				adapter.close();
+				countLike
+						.setText(adapter.LikeInFroum_count(froumid).toString());
+			}
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "خطا در ارتباط با سرور",
 					Toast.LENGTH_SHORT).show();

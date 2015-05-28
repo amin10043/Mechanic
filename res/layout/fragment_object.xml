@@ -5,11 +5,40 @@
     android:background="#EAEAEA"
     tools:context="com.arabian.constitution_mechanic.City$PlaceholderFragment" >
 
+    <RelativeLayout
+        android:id="@+id/relative"
+        style="@style/brandStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_froum_reply" >
+
+        <ImageButton
+            android:id="@+id/imgBtnAddcmt_CmtFroum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_create" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/imgBtnAddcmt_CmtFroum"
+            android:gravity="center"
+            android:text="ایجاد صفحه جدید"
+            android:textColor="@color/transparent" />
+    </RelativeLayout>
+
     <ListView
         android:id="@+id/listvCmt_Introduction"
-      style="@style/second_item_style"
+        style="@style/second_item_style"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_below="@+id/relative" >
     </ListView>
 
 </RelativeLayout>

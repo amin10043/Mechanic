@@ -25,6 +25,8 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Deleting;
+import com.project.mechanic.service.Saving;
 import com.project.mechanic.utility.Utility;
 
 public class ExpandableCommentFroum extends BaseExpandableListAdapter {
@@ -37,6 +39,11 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 	FroumFragment f;
 	int froumID, userid;
 	Users Currentuser;
+
+	Saving saving;
+	Deleting deleting;
+	Map<String, String> params;
+	int GlobalLikeId;
 
 	public ExpandableCommentFroum(Context context,
 			ArrayList<CommentInFroum> laptops,
@@ -85,8 +92,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 				.findViewById(R.id.icon_reply_comment);
 		adapter.open();
 
-		final CommentInFroum comment = cmt.get(groupPosition);
-		Users y = adapter.getUserbyid(comment.getUserid());
+		// final CommentInFroum comment = cmt.get(groupPosition);
+		Users y = adapter.getUserbyid(reply.getUserid());
 
 		if (y.getImage() == null) {
 			ReplyerPic.setImageResource(R.drawable.no_img_profile);
@@ -214,7 +221,6 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 		}
 
 		mainComment.setText(comment.getDesk());
-		nameCommenter.setText(x.getName());
 		dateCommenter.setText(comment.getDatetime());
 		if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) == 0) {
 			LinearLayout lrr = (LinearLayout) convertView
@@ -227,21 +233,20 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 		countLike.setText(String.valueOf(comment.getNumOfLike()));
 		countdisLike.setText(String.valueOf(comment.getNumOfDislike()));
+		if (x != null) {
+			nameCommenter.setText(x.getName());
+			if (x.getImage() == null) {
+				profileImage.setImageResource(R.drawable.no_img_profile);
+			} else {
 
-		// start... this code for set image of profile
-		adapter.open();
-		if (x.getImage() == null) {
-			profileImage.setImageResource(R.drawable.no_img_profile);
-		} else {
+				byte[] byteImageProfile = x.getImage();
 
-			byte[] byteImageProfile = x.getImage();
+				Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
+						byteImageProfile.length);
 
-			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
-					byteImageProfile.length);
-
-			profileImage.setImageBitmap(bmp);
+				profileImage.setImageBitmap(bmp);
+			}
 		}
-		adapter.close();
 		RelativeLayout rl = (RelativeLayout) convertView
 				.findViewById(R.id.icon_header_comment_froum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
@@ -383,7 +388,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 						if (txtMaincmt.getText().toString()
 								.equals(listItem.getDesk())) {
 
-							id = listItem.getId();
+							GlobalLikeId = id = listItem.getId();
 
 						}
 					}
@@ -504,4 +509,5 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
 	}
+
 }

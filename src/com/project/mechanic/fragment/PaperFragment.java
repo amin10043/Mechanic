@@ -55,7 +55,6 @@ public class PaperFragment extends Fragment {
 	List<CommentInPaper> subList;
 	List<CommentInPaper> tempList;
 	View view;
-	
 	PullAndLoadListView lstNews;
 
 	@Override
