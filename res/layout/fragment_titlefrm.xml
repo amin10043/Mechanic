@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAEAEA"
-    android:gravity="start"
-    android:orientation="vertical"
-    android:weightSum="100" >
+    android:background="#EAEAEA" >
 
     <RelativeLayout
         android:id="@+id/re"
@@ -13,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_weight="10"
         android:background="@drawable/shape_froum_reply" >
 
         <ImageButton
@@ -22,9 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
+            android:layout_marginRight="10dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/add" />
+            android:src="@drawable/ic_create" />
 
         <TextView
             android:layout_width="match_parent"
@@ -36,20 +32,13 @@
             android:textColor="@color/transparent" />
     </RelativeLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView1"
+    <ListView
+        android:id="@+id/lstComment"
+        style="@style/second_item_style"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="90"
-        android:fillViewport="true" >
+        android:layout_height="match_parent"
+        android:layout_below="@+id/re"
+        android:dividerHeight="10dp" >
+    </ListView>
 
-        <ListView
-            android:id="@+id/lstComment"
-            style="@style/second_item_style"
-            android:layout_width="match_parent"
-            android:layout_height="401dp"
-            android:dividerHeight="10dp" >
-        </ListView>
-    </ScrollView>
-
-</LinearLayout>
+</RelativeLayout>

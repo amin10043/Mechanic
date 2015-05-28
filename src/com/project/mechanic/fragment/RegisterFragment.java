@@ -2,6 +2,7 @@ package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -40,11 +41,14 @@ import android.widget.Toast;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.SavingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class RegisterFragment extends Fragment implements AsyncInterface {
+public class RegisterFragment extends Fragment implements AsyncInterface,
+		GetAsyncInterface {
 
 	protected static final Context Contaxt = null;
 	int resourceId;
@@ -74,6 +78,11 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	private Toast toast;
 	ViewGroup toastlayout;
 
+	SavingImage savingImage;
+	private boolean firstTime = true;
+
+	View view2;
+
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		bitmap.compress(CompressFormat.PNG, 0, outputStream);
@@ -84,6 +93,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_register, null);
+
 		utile = new Utility(getActivity());
 		service = new ServiceComm(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
@@ -108,6 +118,10 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		ScrollView scroll_vertical_register1 = (ScrollView) view
 				.findViewById(R.id.scroll_vertical_register);
 		final LinearLayout lin1 = (LinearLayout) view.findViewById(R.id.lin1);
+
+		LayoutInflater inflater1 = getLayoutInflater(getArguments());
+		final View view2 = inflater1
+				.inflate(R.layout.toast_define, toastlayout);
 		btnaddpic1.setBackgroundResource(R.drawable.i13);
 		lp = new LinearLayout.LayoutParams(lin1.getLayoutParams());
 		lp.width = utile.getScreenwidth() / 4;
@@ -165,19 +179,13 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 				else if (Name.equals("") || Pass.equals("")
 						|| Mobile.equals("")) {
 
-					LayoutInflater inflater = getLayoutInflater(getArguments());
-					View view = inflater.inflate(R.layout.toast_define,
-							toastlayout);
-					TextView txtView_Title = (TextView) view
-							.findViewById(R.id.txt_Title);
-					TextView txtView_Context = (TextView) view
-							.findViewById(R.id.txt_context);
-					ImageView imageView = (ImageView) view
-							.findViewById(R.id.image_toast);
+					utile.showtoast(view2, R.drawable.errormassage,
+							"لطفا فیلدهای اجباری را پر نمایید", "خطا");
+
 					toast = new Toast(getActivity());
 					toast.setGravity(Gravity.CENTER, 0, 0);
 					toast.setDuration(Toast.LENGTH_LONG);
-					toast.setView(view);
+					toast.setView(view2);
 					toast.show();
 				}
 
@@ -206,7 +214,9 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 					comregtxt.setVisibility(View.VISIBLE);
 					btnreg.setEnabled(false);
+					// //////////////////////////////////////////////////////////////////
 
+					// //////////////////////////
 					Map<String, String> items = new HashMap<String, String>();
 					items.put("register", "register");
 					items.put("username", Name);
@@ -220,7 +230,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 					service.delegate = RegisterFragment.this;
 					service.execute(items);
-					// old place
 
 				}
 
@@ -289,73 +298,106 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		try {
 			serverId = Integer.valueOf(output);
 
+			// saveImage
 			if (serverId > 0) {
 
 				server.edit().putInt("srv_id", serverId).commit();
 
 				dbAdapter.open();
 
-				if ((btnaddpic1.getDrawable() == null)) {
+				if ((btnaddpic1.getDrawable() != null) && firstTime) {
 
-					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
-							null, Mobile, null, null, 0, txtdate);
-
-					LayoutInflater inflater = getLayoutInflater(getArguments());
-
-					View view = inflater.inflate(R.layout.toast_define,
-							toastlayout);
-					TextView txtView_Title = (TextView) view
-							.findViewById(R.id.txt_Title);
-					TextView txtView_Context = (TextView) view
-							.findViewById(R.id.txt_context);
-					ImageView imageView = (ImageView) view
-							.findViewById(R.id.image_toast);
-					toast = new Toast(getActivity());
-					toast.setGravity(Gravity.CENTER, 0, 0);
-					toast.setDuration(Toast.LENGTH_LONG);
-					toast.setView(view);
-					toast.show();
-
-				} else {
 					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
 							.getBitmap();
 
 					Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
 							bitmap.getHeight(), bitmap.getConfig());
 
-					if (bitmap.sameAs(emptyBitmap)) {
-						dbAdapter.inserUsernonpicToDb(serverId, Name, null,
-								Pass, null, Mobile, null, null, 0, txtdate);
-					} else {
+					firstTime = false;
+					if (!bitmap.sameAs(emptyBitmap)) {
+
 						byte[] Image = getBitmapAsByteArray(bitmap);
+						savingImage = new SavingImage(getActivity());
+						Map<String, Object> it = new LinkedHashMap<String, Object>();
+						it.put("tableName", "Users");
+						it.put("fieldName", "Image");
+						it.put("id", serverId);
+						it.put("Image", Image);
 
-						dbAdapter.inserUserToDb(serverId, Name, null, Pass,
-								null, Mobile, null, null, Image, 0, txtdate);
-
-						Toast.makeText(getActivity(),
-								"اطلاعات مورد نظر ثبت شد", Toast.LENGTH_SHORT)
-								.show();
+						savingImage.delegate = this;
+						savingImage.execute(it);
 					}
+				} else {
+					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
+							null, Mobile, null, null, 0, txtdate);
 				}
+
 				dbAdapter.close();
 
-				Toast.makeText(getActivity(), "sabt shod ", Toast.LENGTH_SHORT)
-						.show();
+				LayoutInflater inflater4 = getLayoutInflater(getArguments());
+				View view4 = inflater4.inflate(R.layout.toast_define,
+						toastlayout);
+				utile.showtoast(view4, R.drawable.massage,
+						"اطلاعات مورد نظر ثبت شد", "پیغام");
 
-			} else {
-				Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT)
-						.show();
+				toast = new Toast(getActivity());
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.setDuration(Toast.LENGTH_LONG);
+				toast.setView(view4);
+				toast.show();
+
+				// if ("true".equals(output)) {
+				// SharedPreferences settings = getActivity()
+				// .getSharedPreferences("user", 0);
+				// SharedPreferences.Editor editor = settings.edit();
+				// editor.putBoolean("isLogin", true);
+				//
+				// // ثبت اطلاعات کاربر در دیتا بیس هم حتما انجام گیرد. فراموش
+				// // نشود!!!!
+				//
+				// FragmentTransaction trans = getActivity()
+				// .getSupportFragmentManager().beginTransaction();
+				// trans.replace(R.id.content_frame, new MainFragment());
+				// trans.commit();
+				// dbAdapter.open();
+				// u = dbAdapter.getUserbymobailenumber(mobileNumber);
+				// if (u != null) {
+				// int id = u.getId();
+				// int admin = 1;
+				// dbAdapter.UpdateAdminUserToDb(id, admin);
+				// }
+				// dbAdapter.close();
+				// // } else {
+				// Toast.makeText(
+				// getActivity(),
+				// "شما وارد شده اید اما شماره تلفن به درستی وارد نشده است.",
+				// Toast.LENGTH_SHORT).show();
+				// }
+				// Toast.makeText(getActivity(), "شما وارد شده اید.",
+				// Toast.LENGTH_SHORT).show();
+				//
+				// }
+
+			}
+
+			else {
+				LayoutInflater inflater5 = getLayoutInflater(getArguments());
+				View view5 = inflater5.inflate(R.layout.toast_define,
+						toastlayout);
+				utile.showtoast(view5, R.drawable.errormassage,
+						"شما به سرویس متصل نشده اید", "خطا");
+
+				toast = new Toast(getActivity());
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.setDuration(Toast.LENGTH_LONG);
+				toast.setView(view5);
+				toast.show();
 			}
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT).show();
 		}
 
 	}
-
-	// FragmentTransaction trans = getActivity()
-	// .getSupportFragmentManager().beginTransaction();
-	// trans.replace(R.id.content_frame, new LoginFragment());
-	// trans.commit();
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -411,6 +453,12 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
+	}
+
+	@Override
+	public void processFinish(byte[] output) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

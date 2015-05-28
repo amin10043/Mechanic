@@ -89,13 +89,10 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 					params.put("NumOfLike", String.valueOf(0));
 
 					saving.execute(params);
-
 				}
 				DialogcmtInfroum.this.dismiss();
-
 			}
 		});
-
 	}
 
 	public interface OnMyDialogResult {
@@ -111,19 +108,23 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 		int id = -1;
 		try {
 			id = Integer.valueOf(output);
-			int userid = user.getId();
-			PersianDate date = new PersianDate();
-			String currentDate = date.todayShamsi();
+			if (id < 0) {
+				Toast.makeText(context, "خطا در ثبت سرور", Toast.LENGTH_SHORT)
+						.show();
+			} else {
+				int userid = user.getId();
+				PersianDate date = new PersianDate();
+				String currentDate = date.todayShamsi();
 
-			dbadapter.open();
+				dbadapter.open();
 
-			dbadapter.insertCommentInFroumtoDb(Cmttxt.getText().toString(),
-					Froumid, userid, currentDate, Commentid, "0", "0");
+				dbadapter.insertCommentInFroumtoDb(Cmttxt.getText().toString(),
+						Froumid, userid, currentDate, Commentid, "0", "0");
 
-			dbadapter.close();
+				dbadapter.close();
 
-			((FroumFragment) f).updateList();
-
+				((FroumFragment) f).updateList();
+			}
 		} catch (Exception ex) {
 			Toast.makeText(context, "خطا در ارتباط با سرور", Toast.LENGTH_SHORT)
 					.show();
