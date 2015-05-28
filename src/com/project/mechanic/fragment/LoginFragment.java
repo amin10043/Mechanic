@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,6 +42,8 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 	ProgressDialog ringProgressDialog;
 	Handler updateBarHandler;
 	final int progress_bar_type = 0;
+	ViewGroup toastlayout;
+	private Toast toast;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -79,9 +82,24 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 				}
 
 				else if ("".equals(mobile) || "".equals(pass)) {
-					Toast.makeText(getActivity(),
-							"تلفن همراه و کلمه عبور نمی تواند خالی باشد.",
-							Toast.LENGTH_SHORT).show();
+					// Toast.makeText(getActivity(),
+					// "تلفن همراه و کلمه عبور نمی تواند خالی باشد.",
+					// Toast.LENGTH_SHORT).show();
+
+					LayoutInflater inflater4 = getLayoutInflater(getArguments());
+					View view4 = inflater4.inflate(R.layout.toast_define,
+							toastlayout);
+					util.showtoast(view4, R.drawable.massage,
+							"تلفن همراه و کلمه عبور نمی تواند خالی باشد",
+							"اخطار");
+
+					toast = new Toast(getActivity());
+					toast.setGravity(Gravity.CENTER, 0, 0);
+
+					toast.setDuration(Toast.LENGTH_SHORT);
+					toast.setView(view4);
+					toast.show();
+
 				}
 
 				else {

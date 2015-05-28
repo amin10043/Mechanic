@@ -173,12 +173,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 					utile.showtoast(view2, R.drawable.errormassage,
 							"لطفا فیلدهای اجباری را پر نمایید", "خطا");
-					// TextView txtView_Title = (TextView) view
-					// .findViewById(R.id.txt_Title);
-					// TextView txtView_Context = (TextView) view
-					// .findViewById(R.id.txt_context);
-					// ImageView imageView = (ImageView) view
-					// .findViewById(R.id.image_toast);
+
 					toast = new Toast(getActivity());
 					toast.setGravity(Gravity.CENTER, 0, 0);
 					toast.setDuration(Toast.LENGTH_LONG);
@@ -211,7 +206,9 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 					comregtxt.setVisibility(View.VISIBLE);
 					btnreg.setEnabled(false);
+					// //////////////////////////////////////////////////////////////////
 
+					// //////////////////////////
 					Map<String, String> items = new HashMap<String, String>();
 					items.put("register", "register");
 					items.put("username", Name);
@@ -324,6 +321,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 					}
 				}
+
 				dbAdapter.close();
 
 				LayoutInflater inflater4 = getLayoutInflater(getArguments());
@@ -338,7 +336,41 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 				toast.setView(view4);
 				toast.show();
 
-			} else {
+				// if ("true".equals(output)) {
+				// SharedPreferences settings = getActivity()
+				// .getSharedPreferences("user", 0);
+				// SharedPreferences.Editor editor = settings.edit();
+				// editor.putBoolean("isLogin", true);
+				//
+				// // ثبت اطلاعات کاربر در دیتا بیس هم حتما انجام گیرد. فراموش
+				// // نشود!!!!
+				//
+				// FragmentTransaction trans = getActivity()
+				// .getSupportFragmentManager().beginTransaction();
+				// trans.replace(R.id.content_frame, new MainFragment());
+				// trans.commit();
+				// dbAdapter.open();
+				// u = dbAdapter.getUserbymobailenumber(mobileNumber);
+				// if (u != null) {
+				// int id = u.getId();
+				// int admin = 1;
+				// dbAdapter.UpdateAdminUserToDb(id, admin);
+				// }
+				// dbAdapter.close();
+				// // } else {
+				// Toast.makeText(
+				// getActivity(),
+				// "شما وارد شده اید اما شماره تلفن به درستی وارد نشده است.",
+				// Toast.LENGTH_SHORT).show();
+				// }
+				// Toast.makeText(getActivity(), "شما وارد شده اید.",
+				// Toast.LENGTH_SHORT).show();
+				//
+				// }
+
+			}
+
+			else {
 				LayoutInflater inflater5 = getLayoutInflater(getArguments());
 				View view5 = inflater5.inflate(R.layout.toast_define,
 						toastlayout);
