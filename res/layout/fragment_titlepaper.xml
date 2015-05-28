@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAEAEA"
-    android:gravity="start"
-    android:orientation="vertical"
-    android:weightSum="100" >
+    android:background="#EAEAEA" >
 
     <RelativeLayout
+        android:id="@+id/headerTitleArticle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="10" >
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_froum_reply" >
 
         <ImageButton
             android:id="@+id/imgBtnAddcmt_CmtFroum"
@@ -18,26 +17,27 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
-            android:background="#EAEAEA"
-            android:src="@drawable/add" />
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_create" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/imgBtnAddcmt_CmtFroum"
+            android:gravity="center"
+            android:text="مقالات خود را با سایر کاربران به اشتراک بگذارید"
+            android:textColor="@color/transparent" />
     </RelativeLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView1"
+    <com.project.mechanic.ListView.PullAndLoadListView
+        android:id="@+id/lstComment"
+        style="@style/second_item_style"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="90"
-        android:fillViewport="true" >
+        android:layout_height="match_parent"
+        android:layout_below="@+id/headerTitleArticle"
+        android:dividerHeight="10dp" >
+    </com.project.mechanic.ListView.PullAndLoadListView>
 
-        <com.project.mechanic.ListView.PullAndLoadListView
-            android:id="@+id/lstComment"
-            style="@style/second_item_style"
-            android:layout_width="match_parent"
-            android:layout_height="401dp"
-            android:divider="@null"
-            android:dividerHeight="0dp" >
-        </com.project.mechanic.ListView.PullAndLoadListView>
-    </ScrollView>
-
-</LinearLayout>
+</RelativeLayout>

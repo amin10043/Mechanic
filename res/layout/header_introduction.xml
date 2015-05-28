@@ -380,6 +380,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/emailRelative"
                 style="@style/brandStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -388,8 +389,8 @@
                 android:layout_marginRight="25dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/brand_list_item_shape"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp" >
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp" >
 
                 <ImageButton
                     android:id="@+id/emailbtn"
@@ -414,14 +415,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/dialog_show_fax"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
+                    android:gravity="center"
                     android:textColor="@color/transparent" />
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/addressRelative"
                 style="@style/brandStyle"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="25dp"
@@ -455,12 +456,13 @@
                     android:id="@+id/txtAddress_Object"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="sssdsdsdasdasdasdasdasdasdassdhsdhusdhusdhusdhfusdhfusdhfusdhfsudhfsudhfsudhfsudfhusdhfusd"
                     android:textColor="@color/transparent" />
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/sendsmsIntroduction"
                 style="@style/brandStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
