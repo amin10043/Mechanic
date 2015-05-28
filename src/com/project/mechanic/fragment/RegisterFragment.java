@@ -2,6 +2,7 @@ package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -41,6 +42,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.SavingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
@@ -73,6 +75,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	TextView txtclickpic;
 	private Toast toast;
 	ViewGroup toastlayout;
+	SavingImage savingImage;
+	private boolean firstTime = true;
 
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -220,7 +224,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 					service.delegate = RegisterFragment.this;
 					service.execute(items);
-					// old place
 
 				}
 
@@ -289,6 +292,33 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		try {
 			serverId = Integer.valueOf(output);
 
+			// saveImage
+			if ((btnaddpic1.getDrawable() != null && firstTime)) {
+
+				Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
+						.getBitmap();
+
+				Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+						bitmap.getHeight(), bitmap.getConfig());
+				firstTime = false;
+				if (!bitmap.sameAs(emptyBitmap)) {
+
+					byte[] Image = getBitmapAsByteArray(bitmap);
+					savingImage = new SavingImage(getActivity());
+					Map<String, Object> it = new LinkedHashMap<String, Object>();
+					it.put("tableName", "Users");
+					it.put("fieldName", "Image");
+					it.put("id", serverId);
+					it.put("Image", Image);
+
+					savingImage.delegate = this;
+					savingImage.execute(it);
+
+				}
+			}
+
+			// saveImage
+
 			if (serverId > 0) {
 
 				server.edit().putInt("srv_id", serverId).commit();
@@ -351,11 +381,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		}
 
 	}
-
-	// FragmentTransaction trans = getActivity()
-	// .getSupportFragmentManager().beginTransaction();
-	// trans.replace(R.id.content_frame, new LoginFragment());
-	// trans.commit();
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 

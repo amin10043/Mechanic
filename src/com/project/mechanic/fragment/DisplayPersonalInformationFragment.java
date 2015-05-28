@@ -1,5 +1,8 @@
 package com.project.mechanic.fragment;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,16 +22,21 @@ import android.widget.TextView;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class DisplayPersonalInformationFragment extends Fragment {
+public class DisplayPersonalInformationFragment extends Fragment implements
+		GetAsyncInterface {
 
 	DataBaseAdapter dbAdapter;
 	ServiceComm service;
 	Utility utile1;
+	UpdatingImage serviceImage;
 
+	ImageView img;
 	Ticket tempItem;
 
 	@Override
@@ -39,13 +47,25 @@ public class DisplayPersonalInformationFragment extends Fragment {
 		utile1 = new Utility(getActivity());
 		service = new ServiceComm(getActivity());
 
+		Users u = utile1.getCurrentUser();
+		int id = u.getId();
+
+		// ADD HERE ? OR WHERE ?
+		HashMap<String, String> params = new LinkedHashMap<String, String>();
+		params.put("tableName", "Users");
+		params.put("Id", String.valueOf(id));
+		String tableUpdating = "Users";
+		serviceImage = new UpdatingImage(getActivity());
+		serviceImage.delegate = this;
+		serviceImage.execute(params);
+
 		TextView txtaddress = (TextView) view.findViewById(R.id.address);
 		TextView txtcellphone = (TextView) view.findViewById(R.id.cellphone);
 		TextView txtphone = (TextView) view.findViewById(R.id.phone);
 		TextView txtemail = (TextView) view.findViewById(R.id.email);
 		TextView txtname = (TextView) view.findViewById(R.id.displayname);
 		TextView txtfax = (TextView) view.findViewById(R.id.fax);
-		ImageView img = (ImageView) view.findViewById(R.id.img1);
+		img = (ImageView) view.findViewById(R.id.img1);
 		ImageView logout = (ImageView) view.findViewById(R.id.logout);
 		Button btnedit = (Button) view.findViewById(R.id.btnedit);
 
@@ -62,8 +82,6 @@ public class DisplayPersonalInformationFragment extends Fragment {
 		dbAdapter = new DataBaseAdapter(getActivity());
 		dbAdapter.open();
 
-		Users u = utile1.getCurrentUser();
-		int id = u.getId();
 		byte[] bitmapbyte = u.getImage();
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
@@ -150,6 +168,15 @@ public class DisplayPersonalInformationFragment extends Fragment {
 		});
 
 		return view;
+	}
+
+	@Override
+	public void processFinish(byte[] output) {
+		if (output != null) {
+			Bitmap bmp = BitmapFactory
+					.decodeByteArray(output, 0, output.length);
+			img.setImageBitmap(bmp);
+		}
 	}
 
 }
