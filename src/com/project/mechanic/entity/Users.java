@@ -16,6 +16,7 @@ public class Users {
 	int Serviceid;
 	int Submit;
 	int Admin;
+	String ImageServerDate;
 
 	public int getId() {
 		return Id;
@@ -118,6 +119,14 @@ public class Users {
 
 	public void setServerDate(String serverdate) {
 		ServerDate = serverdate;
+	}
+
+	public String getImageServerDate() {
+		return ImageServerDate;
+	}
+
+	public void setImageServerDate(String imageserverdate) {
+		ImageServerDate = imageserverdate;
 	}
 
 	public int getSubmit() {

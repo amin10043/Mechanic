@@ -142,7 +142,8 @@ public class DataBaseAdapter {
 
 	private String[] Users = { "ID", "Name", "Email", "Password",
 			"Phonenumber", "Mobailenumber", "Faxnumber", "Address", "Image",
-			"ServiceId", "ServerDate", "Date", "Submit", "Admin" };
+			"ServiceId", "ServerDate", "Date", "Submit", "Admin",
+			"ImageServerDate" };
 
 	private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url", "ServerDate" };
@@ -2843,6 +2844,14 @@ public class DataBaseAdapter {
 		ContentValues cv = new ContentValues();
 		cv.put(tableNameFiled, value);
 		mDb.update(TableSettings, cv, null, null);
+	}
+
+	public void UpdateUserImage(int userId, byte[] image, String fromDate) {
+		ContentValues uc = new ContentValues();
+		uc.put("Image", image);
+		uc.put("ImageServerDate", fromDate);
+
+		mDb.update(TableUsers, uc, "ID=" + userId, null);
 	}
 
 }
