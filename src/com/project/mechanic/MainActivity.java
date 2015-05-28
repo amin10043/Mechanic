@@ -337,8 +337,8 @@ public class MainActivity extends FragmentActivity {
 		setActivityTitle(R.string.strMain);
 
 		// @MK for set period time for repeat your code by mHandler
-		mHandler = new Handler();
-		mHandler.postDelayed(mStatusChecker, mInterval);
+		// mHandler = new Handler();
+		// mHandler.postDelayed(mStatusChecker, mInterval);
 		Intent intent = new Intent(MainActivity.this, HelloService.class);
 		startService(intent);
 
@@ -350,8 +350,8 @@ public class MainActivity extends FragmentActivity {
 		// calendar.set(Calendar.YEAR, 2013);
 		// calendar.set(Calendar.DAY_OF_MONTH, 13);
 
-		calendar.set(Calendar.HOUR_OF_DAY, 3);
-		calendar.set(Calendar.MINUTE, 26);
+		calendar.set(Calendar.HOUR_OF_DAY, 4);
+		calendar.set(Calendar.MINUTE, 46);
 		calendar.set(Calendar.SECOND, 00);
 		calendar.set(Calendar.AM_PM, Calendar.PM);
 
@@ -364,22 +364,22 @@ public class MainActivity extends FragmentActivity {
 				pendingIntent);
 	}
 
-	Runnable mStatusChecker = new Runnable() {
+	// Runnable mStatusChecker = new Runnable() {
+	//
+	// @Override
+	// public void run() {
+	// util.Notification();
+	// mHandler.postDelayed(mStatusChecker, mInterval);
+	// }
+	// };
 
-		@Override
-		public void run() {
-			util.Notification();
-			mHandler.postDelayed(mStatusChecker, mInterval);
-		}
-	};
-
-	void startRepeatingTask() {
-		mStatusChecker.run();
-	}
-
-	void stopRepeatingTask() {
-		mHandler.removeCallbacks(mStatusChecker);
-	}
+	// void startRepeatingTask() {
+	// mStatusChecker.run();
+	// }
+	//
+	// void stopRepeatingTask() {
+	// mHandler.removeCallbacks(mStatusChecker);
+	// }
 
 	public void setActivityTitle(int title) {
 		TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
