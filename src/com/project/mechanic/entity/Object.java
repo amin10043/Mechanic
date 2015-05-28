@@ -33,6 +33,7 @@ public class Object implements Comparable<Object> {
 	byte[] Image3;
 	byte[] Image4;
 	int IsActive;
+	int UserId;
 
 	public String getFacebook() {
 		return Facebook;
@@ -290,7 +291,7 @@ public class Object implements Comparable<Object> {
 			int objectBrandTypeId, String facebook, String instagram,
 			String linkedIn, String google, String site, String twitter,
 			int parentid, int rate, int seen, String serverdate, int submit,
-			int mainObjectid, int IsActive) {
+			int mainObjectid, int IsActive, int UserId) {
 
 		super();
 		Id = id;
@@ -324,6 +325,15 @@ public class Object implements Comparable<Object> {
 		Submit = submit;
 		MainObjectId = mainObjectid;
 		this.IsActive = IsActive;
+		this.UserId = UserId;
+	}
+
+	public int getUserId() {
+		return UserId;
+	}
+
+	public void setUserId(int userId) {
+		UserId = userId;
 	}
 
 	public int compareTo(Object compareObject) {

@@ -118,7 +118,7 @@ public class DataBaseAdapter {
 			"Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId",
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
 			"Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
-			"Submit", "MainObjectId", "IsActive" };
+			"Submit", "MainObjectId", "IsActive", "UserId" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
@@ -339,9 +339,9 @@ public class DataBaseAdapter {
 		// uc.put("ServiceId", serviceid);
 		mDb.update(TableTicket, uc, "Id=" + id, null);
 	}
-	
-	public void UpdateAnadToDb(int id, byte[] image, int objectId, String date, int typeId,
-			int provinceId) {
+
+	public void UpdateAnadToDb(int id, byte[] image, int objectId, String date,
+			int typeId, int provinceId) {
 
 		ContentValues uc = new ContentValues();
 		// uc.put("Name", name);
@@ -353,7 +353,6 @@ public class DataBaseAdapter {
 		uc.put("Date", date);
 		uc.put("TypeId", typeId);
 		uc.put("ProvinceId", provinceId);
-	
 
 		// uc.put("ServiceId", serviceid);
 		mDb.update(TableAnad, uc, "Id=" + id, null);
@@ -667,7 +666,7 @@ public class DataBaseAdapter {
 					cursor.getString(21), cursor.getString(22),
 					cursor.getString(23), cursor.getInt(24), cursor.getInt(25),
 					cursor.getInt(26), cursor.getString(27), cursor.getInt(28),
-					cursor.getInt(29), cursor.getInt(30));
+					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31));
 
 			result.add(tempObject);
 		}
@@ -1229,7 +1228,8 @@ public class DataBaseAdapter {
 				cursor.getString(20), cursor.getString(21),
 				cursor.getString(22), cursor.getString(23), cursor.getInt(24),
 				cursor.getInt(25), cursor.getInt(26), cursor.getString(27),
-				cursor.getInt(28), cursor.getInt(29), cursor.getInt(30));
+				cursor.getInt(28), cursor.getInt(29), cursor.getInt(30),
+				cursor.getInt(31));
 		return tempObject;
 	}
 
@@ -2240,7 +2240,7 @@ public class DataBaseAdapter {
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive , O.UserId From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
@@ -2262,7 +2262,7 @@ public class DataBaseAdapter {
 					cursor.getString(21), cursor.getString(22),
 					cursor.getString(23), cursor.getInt(24), cursor.getInt(25),
 					cursor.getInt(26), cursor.getString(27), cursor.getInt(28),
-					cursor.getInt(29), cursor.getInt(30));
+					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31));
 
 			result.add(tempObject);
 		}
