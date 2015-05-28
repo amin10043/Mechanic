@@ -40,11 +40,13 @@ import android.widget.Toast;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class RegisterFragment extends Fragment implements AsyncInterface {
+public class RegisterFragment extends Fragment implements AsyncInterface,
+		GetAsyncInterface {
 
 	protected static final Context Contaxt = null;
 	int resourceId;
@@ -449,6 +451,12 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
+	}
+
+	@Override
+	public void processFinish(byte[] output) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
