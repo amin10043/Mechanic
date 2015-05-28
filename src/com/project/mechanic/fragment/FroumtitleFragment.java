@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FroumtitleListadapter;
@@ -58,6 +59,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 		Currentuser = util.getCurrentUser();
 		if (Currentuser == null)
+
 			addtitle.setVisibility(View.INVISIBLE);
 		mdb.open();
 		mylist = mdb.getAllFroum();
@@ -67,15 +69,22 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		date = new ServerDate(getActivity());
 		date.delegate = this;
 		date.execute("");
+		addtitle.setImageResource(R.drawable.ic_create_off);
 
 		addtitle.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				dialog = new DialogfroumTitle(getActivity(),
-						R.layout.dialog_addtitle, FroumtitleFragment.this);
-				dialog.show();
+				if (Currentuser == null)
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+				else {
+
+					dialog = new DialogfroumTitle(getActivity(),
+							R.layout.dialog_addtitle, FroumtitleFragment.this);
+					dialog.show();
+				}
 			}
 		});
 

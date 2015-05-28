@@ -49,18 +49,18 @@ public class IntroductionFragment extends Fragment {
 	Map<CommentInObject, List<CommentInObject>> mapCollection;
 
 	private ImageView peykan6, peykan5;
-	public RelativeLayout link1, link2;
+	public RelativeLayout link1, link2, sendSMS, addressRelative,
+			emailRelative;
 
 	public DialogcmtInobject dialog;
 	Fragment fragment;
 
-	public LinearLayout AddLike;
-	public LinearLayout AddComment;
-
+	public LinearLayout AddLike, AddComment;
 	public ImageButton Comment;
 	byte[] bitHeader, bytepro, bytefoot;
 
 	LinearLayout.LayoutParams profileParams, headerParams, footerParams;
+	RelativeLayout.LayoutParams addressParams, emailParams;
 
 	ArrayList<CommentInObject> mylist;
 	DataBaseAdapter adapter;
@@ -109,6 +109,8 @@ public class IntroductionFragment extends Fragment {
 				.findViewById(R.id.headerlinerpageintroduction);
 		link1 = (RelativeLayout) header.findViewById(R.id.Layoutlink1);
 		link2 = (RelativeLayout) header.findViewById(R.id.Layoutlink2);
+		sendSMS = (RelativeLayout) header
+				.findViewById(R.id.sendsmsIntroduction);
 
 		txtFax = (TextView) header.findViewById(R.id.txtFax_Object);
 		txtAddress = (TextView) header.findViewById(R.id.txtAddress_Object);
@@ -126,6 +128,11 @@ public class IntroductionFragment extends Fragment {
 				.findViewById(R.id.AddLikeIntroductionLinear);
 		AddComment = (LinearLayout) header
 				.findViewById(R.id.AddcommentIntroductionLinear);
+
+		addressRelative = (RelativeLayout) header
+				.findViewById(R.id.addressRelative);
+		emailRelative = (RelativeLayout) header
+				.findViewById(R.id.emailRelative);
 
 		Facebook = (ImageButton) header.findViewById(R.id.nfacebook);
 		Instagram = (ImageButton) header.findViewById(R.id.ninstagram);
@@ -288,6 +295,20 @@ public class IntroductionFragment extends Fragment {
 
 		} else
 			EditPage.setVisibility(View.VISIBLE);
+
+		addressParams = new RelativeLayout.LayoutParams(
+				addressRelative.getLayoutParams());
+
+		addressParams.width = ut.getScreenwidth() / 2;
+		addressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+		txtAddress.setLayoutParams(addressParams);
+
+		emailParams = new RelativeLayout.LayoutParams(
+				emailRelative.getLayoutParams());
+
+		emailParams.width = (int) (ut.getScreenwidth() / 2.5);
+		emailParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+		txtEmail.setLayoutParams(emailParams);
 
 		bitHeader = object.getImage1();
 
@@ -556,6 +577,29 @@ public class IntroductionFragment extends Fragment {
 					trans.commit();
 				}
 
+			}
+		});
+
+		sendSMS.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// add the phone number in the data
+				Uri uri = Uri.parse("smsto:");
+
+				Intent smsSIntent = new Intent(Intent.ACTION_SENDTO, uri);
+				// add the message at the sms_body extra field
+				smsSIntent.putExtra("sms_body", object.getName() + "\n"
+						+ "همراه : " + "\n" + object.getCellphone() + "\n"
+						+ "تلفن :" + "\n" + object.getPhone() + "\n" + "آدرس :"
+						+ "\n" + object.getAddress());
+				try {
+					startActivity(smsSIntent);
+				} catch (Exception ex) {
+					Toast.makeText(getActivity(), "Your sms has failed...",
+							Toast.LENGTH_LONG).show();
+					ex.printStackTrace();
+				}
 			}
 		});
 

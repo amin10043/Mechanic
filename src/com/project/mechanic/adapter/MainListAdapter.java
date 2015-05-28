@@ -73,7 +73,7 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 			AbsListView.LayoutParams.MATCH_PARENT,
 					AbsListView.LayoutParams.MATCH_PARENT);
 
-			lp.height = (int) ((util.getScreenHeightWithPadding()) / 9);
+			lp.height = (int) ((util.getScreenHeightWithPadding()) / 8);
 
 			li.setLayoutParams(lp);
 
