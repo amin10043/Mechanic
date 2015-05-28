@@ -285,7 +285,6 @@ public class Utility {
 			// values[j][k++] = innerToken.nextToken();
 			j++;
 		}
-
 		adapter.open();
 		adapter.updateTables(tableName, col, values);
 		adapter.setServerDate("ServerDate_" + tableName.trim(), serverDate);

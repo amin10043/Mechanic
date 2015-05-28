@@ -14,14 +14,11 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.ListView.PullAndLoadListView;
 import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
 import com.project.mechanic.ListView.PullToRefreshListView.OnRefreshListener;
 import com.project.mechanic.adapter.PapertitleListAdapter;
-import com.project.mechanic.entity.CommentInPaper;
-import com.project.mechanic.entity.News;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -36,7 +33,7 @@ public class TitlepaperFragment extends Fragment {
 	List<Paper> subList;
 	List<Paper> tempList;
 	PullAndLoadListView lstNews;
-	int i=0,j=9;
+	int i = 0, j = 9;
 	ListView lst;
 	PapertitleListAdapter ListAdapter;
 	public static final int DIALOG_FRAGMENT = 1;
@@ -48,7 +45,7 @@ public class TitlepaperFragment extends Fragment {
 	public View onCreateView(android.view.LayoutInflater inflater,
 			android.view.ViewGroup container, Bundle savedInstanceState) {
 
-		//((MainActivity) getActivity()).setActivityTitle(R.string.News);
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.News);
 		view = inflater.inflate(R.layout.fragment_titlepaper, null);
 		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 
@@ -58,17 +55,20 @@ public class TitlepaperFragment extends Fragment {
 		mdb.open();
 		mylist = mdb.getAllPaper();
 		mdb.close();
-		if(mylist!=null && !mylist.isEmpty()){
-			
-			if(mylist.size()<j){
-				j=mylist.size();
+		if (mylist != null && !mylist.isEmpty()) {
+
+			if (mylist.size() < j) {
+				j = mylist.size();
 			}
-		List<Paper> tmpList = mylist.subList(i, j);
-		subList = new ArrayList<Paper>();
-		for(Paper p : tmpList){
-			if(!subList.contains(p))
-				subList.add(p);
+			List<Paper> tmpList = mylist.subList(i, j);
+			subList = new ArrayList<Paper>();
+			for (Paper p : tmpList) {
+				if (!subList.contains(p))
+					subList.add(p);
+			}
 		}
+		if (CurrentUser == null) {
+			addtitle.setImageResource(R.drawable.ic_create_off);
 		}
 
 		addtitle.setOnClickListener(new OnClickListener() {
@@ -87,48 +87,48 @@ public class TitlepaperFragment extends Fragment {
 
 			}
 		});
-		
-		
-		if(mylist!=null && !mylist.isEmpty()){
 
-		lstNews = (PullAndLoadListView) view.findViewById(R.id.lstComment);
-		ListAdapter = new PapertitleListAdapter(getActivity(),
-				R.layout.raw_froumtitle, subList);
-		lstNews.setAdapter(ListAdapter);
-	    ((PullAndLoadListView) lstNews)
-			.setOnRefreshListener(new OnRefreshListener() {
+		if (mylist != null && !mylist.isEmpty()) {
 
-				public void onRefresh() {
-					// Do work to refresh the list here.
+			lstNews = (PullAndLoadListView) view.findViewById(R.id.lstComment);
+			ListAdapter = new PapertitleListAdapter(getActivity(),
+					R.layout.raw_froumtitle, subList);
+			lstNews.setAdapter(ListAdapter);
+			((PullAndLoadListView) lstNews)
+					.setOnRefreshListener(new OnRefreshListener() {
 
-					new PullToRefreshDataTask().execute();
-				}
-			});
-	    ((PullAndLoadListView) lstNews)
-		.setOnLoadMoreListener(new OnLoadMoreListener() {
+						public void onRefresh() {
+							// Do work to refresh the list here.
 
-			public void onLoadMore() {
-				// Do the work to load more items at the end of list
-				// here
-				if(mylist.size()< j+1){
-					i=j+1;
-				}
-			
-			if(mylist.size()< j+10){
-				j = mylist.size()-1;
-			}else{
-				j+=10;
-			}
-			tempList = mylist.subList(i, j);
-			for(Paper p : tempList){
-				if(!subList.contains(p))
-				subList.add(p);
-			}
-			//Toast.makeText(getActivity(), String.valueOf(i), Toast.LENGTH_SHORT).show();
-			//ListAdapter.notifyDataSetChanged();
-			new LoadMoreDataTask().execute();
-			}
-		});
+							new PullToRefreshDataTask().execute();
+						}
+					});
+			((PullAndLoadListView) lstNews)
+					.setOnLoadMoreListener(new OnLoadMoreListener() {
+
+						public void onLoadMore() {
+							// Do the work to load more items at the end of list
+							// here
+							if (mylist.size() < j + 1) {
+								i = j + 1;
+							}
+
+							if (mylist.size() < j + 10) {
+								j = mylist.size() - 1;
+							} else {
+								j += 10;
+							}
+							tempList = mylist.subList(i, j);
+							for (Paper p : tempList) {
+								if (!subList.contains(p))
+									subList.add(p);
+							}
+							// Toast.makeText(getActivity(), String.valueOf(i),
+							// Toast.LENGTH_SHORT).show();
+							// ListAdapter.notifyDataSetChanged();
+							new LoadMoreDataTask().execute();
+						}
+					});
 		}
 
 		/*
@@ -144,6 +144,7 @@ public class TitlepaperFragment extends Fragment {
 		 */
 		return view;
 	}
+
 	private class LoadMoreDataTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -161,7 +162,6 @@ public class TitlepaperFragment extends Fragment {
 			//
 			// for (int i = 0; i < mNames.length; i++)
 			// mListItems.add(mNames[i]);
-			
 
 			return null;
 		}
@@ -184,6 +184,7 @@ public class TitlepaperFragment extends Fragment {
 			((PullAndLoadListView) lstNews).onLoadMoreComplete();
 		}
 	}
+
 	private class PullToRefreshDataTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -217,7 +218,8 @@ public class TitlepaperFragment extends Fragment {
 			super.onPostExecute(result);
 		}
 
-}
+	}
+
 	public void updateView() {
 		mdb.open();
 		mylist = mdb.getAllPaper();

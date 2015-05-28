@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FroumtitleListadapter;
 import com.project.mechanic.entity.Froum;
@@ -37,7 +37,7 @@ public class FroumtitleFragment extends Fragment {
 	public View onCreateView(android.view.LayoutInflater inflater,
 			android.view.ViewGroup container, Bundle savedInstanceState) {
 
-		//((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
 		view = inflater.inflate(R.layout.fragment_titlefrm, null);
 		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 
@@ -51,16 +51,22 @@ public class FroumtitleFragment extends Fragment {
 		Currentuser = util.getCurrentUser();
 
 		if (Currentuser == null)
-			addtitle.setVisibility(View.INVISIBLE);
+			addtitle.setImageResource(R.drawable.ic_create_off);
 
 		addtitle.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				dialog = new DialogfroumTitle(getActivity(),
-						R.layout.dialog_addtitle, FroumtitleFragment.this);
-				dialog.show();
+				if (Currentuser == null)
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+				else {
+
+					dialog = new DialogfroumTitle(getActivity(),
+							R.layout.dialog_addtitle, FroumtitleFragment.this);
+					dialog.show();
+				}
 			}
 		});
 

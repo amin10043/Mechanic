@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
@@ -71,7 +71,7 @@ public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 			@Override
 			public void onClick(View v) {
 
-				LinearLayout parentlayout = (LinearLayout) v;
+				RelativeLayout parentlayout = (RelativeLayout) v;
 				TextView txtName = (TextView) parentlayout
 						.findViewById(R.id.RowAdvisortypetxt);
 				String item = txtName.getText().toString();

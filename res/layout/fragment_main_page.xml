@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eaeaea"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:weightSum="8" >
+
+    <RelativeLayout
+        android:id="@+id/relative_item1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/list_item" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="تولیدکنندگان داخلی ، برندهای وارداتی ، نمایندگی ها ، دفاتر فروش"
+            android:textColor="@color/transparent" />
+
+        <ImageView
+            android:id="@+id/icon_item1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/ic_main_item1" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relative_item2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/list_item" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="فروشگاهها و شرکت کننده های عرضه کننده محصولات"
+            android:textColor="@color/transparent" />
+
+        <ImageView
+            android:id="@+id/icon_item2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/ic_main_item2" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relative_item3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/list_item" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="مشاوران ، ناظران و شرکت های مجری تأسیسات مکانیکی "
+            android:textColor="@color/transparent" />
+
+        <ImageView
+            android:id="@+id/icon_item3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/ic_main_item3" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relative_item4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/list_item" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="اشخاص حقیقی (استادکاران)تاسیسات مکانیکی"
+            android:textColor="@color/transparent" />
+
+        <ImageView
+            android:id="@+id/icon_item4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/ic_main_item4" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relative_item5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/list_item" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="نشریات ، مقالات و اخبار تاسیسات مکانیکی"
+            android:textColor="@color/transparent" />
+
+        <ImageView
+            android:id="@+id/icon_item5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/ic_main_item5" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relative_item6"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/list_item" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="آگهی و تبلیغات"
+            android:textColor="@color/transparent" />
+
+        <ImageView
+            android:id="@+id/icon_item6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/ic_main_item6" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relative_item7"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/list_item" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="تالار گفتگو"
+            android:textColor="@color/transparent" />
+
+        <ImageView
+            android:id="@+id/icon_item7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/ic_main_item7" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relative_item8"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/propaganda" >
+    </RelativeLayout>
+
+</LinearLayout>

@@ -4,10 +4,10 @@ import java.util.Calendar;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -82,10 +82,7 @@ public class MainActivity extends FragmentActivity {
 		user = util.getCurrentUser();
 		if (user != null) {
 			util.setNoti(this, user.getId());
-		}
-
-		else {
-
+		} else {
 			AlertDialog.Builder builder = new AlertDialog.Builder(
 					MainActivity.this);
 			builder.setTitle("خروج از برنامه");
@@ -96,6 +93,7 @@ public class MainActivity extends FragmentActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
+
 							FragmentTransaction trans = getSupportFragmentManager()
 									.beginTransaction();
 							trans.replace(R.id.content_frame,
@@ -107,7 +105,10 @@ public class MainActivity extends FragmentActivity {
 			builder.setPositiveButton("انصراف",
 					new DialogInterface.OnClickListener() {
 
+						@Override
 						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+
 							dialog.dismiss();
 
 						}
@@ -116,9 +117,10 @@ public class MainActivity extends FragmentActivity {
 			alert.show();
 
 		}
+		// this code is for lock rotate screen
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 
 		ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
-
 		iBtnmessage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -131,6 +133,7 @@ public class MainActivity extends FragmentActivity {
 							.show();
 					return;
 				}
+
 				adapter.open();
 
 				dialog = new Dialog_notification(MainActivity.this);
@@ -359,12 +362,6 @@ public class MainActivity extends FragmentActivity {
 		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),
 				pendingIntent);
-	}
-
-	private Builder setPositiveButton(String string,
-			android.content.DialogInterface.OnClickListener onClickListener) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	Runnable mStatusChecker = new Runnable() {

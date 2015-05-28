@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
@@ -77,7 +77,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 			@Override
 			public void onClick(View v) {
 
-				LinearLayout parentlayout = (LinearLayout) v;
+				RelativeLayout parentlayout = (RelativeLayout) v;
 				TextView txtName = (TextView) parentlayout
 						.findViewById(R.id.row_news_txt);
 				String item = txtName.getText().toString();
