@@ -61,6 +61,10 @@
             android:enabled="true" >
         </service>
                 <service android:name="com.project.mechanic.service.HelloService"/>
+                <service android:name="com.project.mechanic.service.MyAlarmService"
+                 android:enabled="true" />
+        
+        <receiver android:name="com.project.mechanic.service.MyReceiver"/>
         
     </application>
 

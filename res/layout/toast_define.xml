@@ -11,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
-        android:text="@string/toast_text_1"
         android:textColor="@color/white"
         android:textSize="20dip" >
     </TextView>
@@ -26,8 +25,7 @@
             android:id="@+id/image_toast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/txtsize10"
-            android:src="@drawable/errormassage" >
+            android:layout_marginRight="@dimen/txtsize10" >
         </ImageView>
 
         <TextView
@@ -36,7 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|right"
             android:layout_marginRight="@dimen/txtsize10"
-            android:text="@string/toast_text_2"
             android:textColor="@color/white"
             android:textSize="@dimen/item_font_size" >
         </TextView>
