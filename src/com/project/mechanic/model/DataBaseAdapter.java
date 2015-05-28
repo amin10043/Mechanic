@@ -338,6 +338,25 @@ public class DataBaseAdapter {
 		// uc.put("ServiceId", serviceid);
 		mDb.update(TableTicket, uc, "Id=" + id, null);
 	}
+	
+	public void UpdateAnadToDb(int id, byte[] image, int objectId, String date, int typeId,
+			int provinceId) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		// uc.put("Email", email);
+		// uc.put("Password", password);
+		uc.put("Id", id);
+		uc.put("Image", image);
+		uc.put("ObjectId", objectId);
+		uc.put("Date", date);
+		uc.put("TypeId", typeId);
+		uc.put("ProvinceId", provinceId);
+	
+
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableAnad, uc, "Id=" + id, null);
+	}
 
 	// /////////////////
 
