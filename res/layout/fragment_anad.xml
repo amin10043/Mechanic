@@ -47,6 +47,14 @@
         android:layout_weight="10"
         android:weightSum="10" >
 
+        <ScrollView
+            android:id="@+id/vertical_scrollview_id"
+            android:layout_width="119dp"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:fadingEdge="none"
+            android:scrollbars="none" >
+        
         <LinearLayout
             android:id="@+id/vertical_outer_layout_id"
             android:layout_width="match_parent"
@@ -54,16 +62,17 @@
             android:layout_weight="7"
             android:orientation="vertical" >
 
-            <ListView
-                android:id="@+id/listVanad2"
-                style="@style/second_item_style"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:dividerHeight="0dp"
-                android:scrollbars="none" >
-            </ListView>
+<!--             <ListView -->
+<!--                 android:id="@+id/listVanad2" -->
+<!--                 style="@style/second_item_style" -->
+<!--                 android:layout_width="match_parent" -->
+<!--                 android:layout_height="match_parent" -->
+<!--                 android:dividerHeight="0dp" -->
+<!--                 android:scrollbars="none" > -->
+<!--             </ListView> -->
         </LinearLayout>
-
+        
+</ScrollView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

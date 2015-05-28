@@ -214,12 +214,9 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 				adapter.open();
 
 				if (CurrentUser == null) {
-					adapter.open();
-
 					Toast.makeText(getActivity(),
 							"برای درج لایک ابتدا باید وارد شوید",
 							Toast.LENGTH_SHORT).show();
-					adapter.close();
 				} else {
 					if (adapter.isUserLikedFroum(IDcurrentUser, froumid)) {
 						adapter.open();

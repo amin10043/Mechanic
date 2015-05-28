@@ -1,5 +1,9 @@
 package com.project.mechanic;
 
+import java.util.Calendar;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -33,10 +37,12 @@ import com.project.mechanic.fragment.FragmentAboutUs;
 import com.project.mechanic.fragment.FragmentContactUs;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
+import com.project.mechanic.fragment.ObjectFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.fragment.SearchFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.HelloService;
+import com.project.mechanic.service.MyReceiver;
 import com.project.mechanic.utility.Utility;
 
 public class MainActivity extends FragmentActivity {
@@ -57,6 +63,7 @@ public class MainActivity extends FragmentActivity {
 	Dialog_notification dialog;
 	Dialog_notificationlike dialog1;
 	Users user;
+	private PendingIntent pendingIntent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +82,7 @@ public class MainActivity extends FragmentActivity {
 			util.setNoti(this, user.getId());
 		}
 
-		// this code for lock rotate screen device
+		// this code is for lock rotate screen
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 
 		ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
@@ -207,18 +214,16 @@ public class MainActivity extends FragmentActivity {
 					tableName = "Province";
 				} else if (f instanceof CityFragment) {
 					tableName = "City";
+				} else if (f instanceof ObjectFragment) {
+					tableName = "Object";
 				}
+
 				Fragment fragment;
 				FragmentManager fragmentManager;
 				fragment = new SearchFragment();
 				fragmentManager = getSupportFragmentManager();
 				fragmentManager.beginTransaction()
 						.replace(R.id.content_frame, fragment).commit();
-
-				// Intent i = new Intent(MainActivity.this, Search.class);
-				//
-				// i.putExtra("table", tableName);
-				// startActivity(i);
 
 			}
 		});
@@ -295,10 +300,32 @@ public class MainActivity extends FragmentActivity {
 
 		setActivityTitle(R.string.strMain);
 
+		// @MK for set period time for repeat your code by mHandler
 		mHandler = new Handler();
 		mHandler.postDelayed(mStatusChecker, mInterval);
 		Intent intent = new Intent(MainActivity.this, HelloService.class);
 		startService(intent);
+
+		// @MK for set specified time for send intent to service for runnig your
+		// code
+		Calendar calendar = Calendar.getInstance();
+
+		// calendar.set(Calendar.MONTH, 6);
+		// calendar.set(Calendar.YEAR, 2013);
+		// calendar.set(Calendar.DAY_OF_MONTH, 13);
+
+		calendar.set(Calendar.HOUR_OF_DAY, 3);
+		calendar.set(Calendar.MINUTE, 26);
+		calendar.set(Calendar.SECOND, 00);
+		calendar.set(Calendar.AM_PM, Calendar.PM);
+
+		Intent myIntent = new Intent(MainActivity.this, MyReceiver.class);
+		pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,
+				myIntent, 0);
+
+		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+		alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),
+				pendingIntent);
 	}
 
 	Runnable mStatusChecker = new Runnable() {

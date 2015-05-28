@@ -43,9 +43,8 @@
     <string name="search">جستجو </string>
     <string name="txtanadedite">ویرایش آگهی </string>
     <string name="txtanadedate">اطلاعات تماس </string>
-     <string name="txtanadreport">گزارش </string>
-
-     <string name="instagram">Instagram</string>
+    <string name="txtanadreport">گزارش </string>
+    <string name="instagram">Instagram</string>
     <string name="site">Stie</string>
     <string name="google_plus">Google+</string>
     <string name="facebook">Facebook</string>
@@ -53,18 +52,12 @@
     <string name="linkedin">LinkdIn</string>
     <string name="start_app">Starting application:</string>
     <string name="center_click">Center has been clicked</string>
-    
     <string name="text_fa">مجموعه رادکام از سال 1377 با هدف فعالیت در زمینه نرم‌افزار پا به عرصه وجود نهاد و در سال 1379 همگام با آغاز رشد روز افزون کاربرد اینترنت در دنیا، به طور تخصصی فعالیت خود را در زمینه ثبت‌دامنه، هاست و سرور اختصاصی و نیز طراحی سایت و پورتال سازمانی متمرکزساخت.
 
 در این گذار ، چالش عمده ای پیش روی ما بود، چون می‌بایست کارهایی عرضه‌کنیم که در کنار کارهای دیگران از سراسر دنیا بر یک محمل قرار‌گیرند و بالطبع توقعات روز‌افزون مشتریان ما را برآورده‌سازد.
 
-بالا‌بردن کیفیت کارهای ارائه‌شده در چهارچوب استانداردهای حاکم در دنیا، امری نبود که به طور اتفاقی حاصل‌گردد. دیدگاه بلندمدت در تحقیق، تولید، عرضه و پشتیبانی از جمله نگرش راهبردی ما در کار است، نگرشی که به شهادت آنچه انجام‌گرفته‌است برای مجموعه رادکام تخصص و برای مشتریان آن رضایت را به همراه داشته‌است.
+بالا‌بردن کیفیت کارهای ارائه‌شده در چهارچوب استانداردهای حاکم در دنیا، امری نبود که به طور اتفاقی حاصل‌گردد. دیدگاه بلندمدت در تحقیق، تولید، عرضه و پشتیبانی از جمله نگرش راهبردی ما در کار است، نگرشی که به شهادت آنچه انجام‌گرفته‌است برای مجموعه رادکام تخصص و برای مشتریان آن رضایت را به همراه داشته‌است.</string>
 
-        
-    </string>
-    
-        
-    
     <string-array name="MenuItems">
         <item name="home">خانه</item>
         <item name="users">کاربری</item>
@@ -91,5 +84,7 @@
 5-لذبیبطططططططططططططططیلیبلللللللللللللللللللللللللللللیطزرررررررررررررررررررررررررررررررررررررربلطططططططططططططططططططشرایط پنجم
 6-شرایط ششم</string>
     <string name="tabligh">&quot;&quot;شرایط درج بیلبورد تبلیغاتی&quot;&quot;</string>
+    <string name="toast_text_1">خطا</string>
+    <string name="toast_text_2">لطفا فیلدهای اجباری را پر نمایید.</string>
 
 </resources>
