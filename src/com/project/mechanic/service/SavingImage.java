@@ -14,7 +14,7 @@ import org.ksoap2.transport.HttpTransportSE;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.utility.Utility;
 
 public class SavingImage extends
@@ -32,7 +32,7 @@ public class SavingImage extends
 	private Context context;
 	private Utility util;
 
-	public AsyncInterface delegate = null;
+	public GetAsyncInterface delegate = null;
 
 	public SavingImage(Context context) {
 		this.context = context;
@@ -97,7 +97,7 @@ public class SavingImage extends
 		return response.toString();
 	}
 
-	protected void onPostExecute(String res) {
+	protected void onPostExecute(byte[] res) {
 
 		if (delegate != null)
 			delegate.processFinish(res);

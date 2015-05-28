@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,8 @@ public class show_pay_fragment extends Fragment {
 	DataBaseAdapter dbAdapter;
 	int proID;
 	int id;
+	int i;
+	int a=0;
 	Utility util;
 	LinearLayout.LayoutParams headerEditParams;
 	LinearLayout Lheader;
@@ -56,7 +59,7 @@ public class show_pay_fragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		((MainActivity) getActivity()).setActivityTitle(R.string.showad);
-		// id = Integer.valueOf(getArguments().getString("Id"));
+		 i = Integer.valueOf(getArguments().getString("I"));
 		// if (getArguments().getString("ProID") != null) {
 		// proID = Integer.valueOf(getArguments().getString("ProID"));
 		// }
@@ -98,7 +101,7 @@ public class show_pay_fragment extends Fragment {
 				SharedPreferences sendIdpro = getActivity()
 						.getSharedPreferences("Id", 0);
 				int id = sendIdpro.getInt("main_Id", -1);
-				Toast.makeText(getActivity(), id + "do", Toast.LENGTH_SHORT)
+				Toast.makeText(getActivity(), i + "do", Toast.LENGTH_SHORT)
 						.show();
 				Bitmap bitmap = ((BitmapDrawable) img_pay.getDrawable())
 						.getBitmap();
@@ -116,8 +119,183 @@ public class show_pay_fragment extends Fragment {
 				dbAdapter.open();
 				com.project.mechanic.entity.Object o = dbAdapter
 						.getObjectByName(b);
-				dbAdapter.insertAnadToDb(bytes, o.getId(), date, 0, id, 1);
+				switch(id) {
+				case 1:
+					 a=i+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 3:
+					 a=i+50+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 4:
+					a=i+80+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 5:
+					a=i+150+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 6:
+					a=i+200+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 7:
+					a=i+230+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 8:
+					a=i+260+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 9:
+					a=i+360+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 10:
+					a=i+390+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 11:
+					a=i+420+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 12:
+					a=i+470+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 13:
+					a=i+500+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 14:
+					a=i+530+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 15:
+					a=i+560+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 16:
+					a=i+590+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 17:
+					a=i+620+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 18:
+					a=i+670+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 19:
+					a=i+700+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 20:
+					a=i+750+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 21:
+					a=i+780+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 22:
+					a=i+830+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 23:
+					a=i+860+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 24:
+					a=i+890+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 25:
+					a=i+920+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 26:
+					a=i+970+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 27:
+					a=i+1020+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 28:
+					a=i+1070+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 29:
+					a=i+1120+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 30:
+					a=i+1170+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 31:
+					a=i+1200+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case -1:
+					a=i+1250+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				case 2:
+					a=i+1350+1;
+					dbAdapter.UpdateAnadToDb(a,bytes, o.getId(), date, 0, id);
+					a=0;
+				break;
+				default:
+				}
+
+				
 				dbAdapter.close();
+//				FragmentTransaction trans = ((MainActivity) getActivity())
+//						.getSupportFragmentManager().beginTransaction();
+//				AnadFragment fragment = new AnadFragment();
+//				Bundle bundle = new Bundle();
+//				// bundle.putString("Id", String.valueOf(id));
+//				//if (id >= 0)
+//				//	bundle.putString("ProID", String.valueOf(id));
+//				fragment.setArguments(bundle);
+//				trans.replace(R.id.content_frame, fragment);
+//				trans.addToBackStack(null);
+//				trans.commit();
 
 			}
 		});

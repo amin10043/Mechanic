@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +32,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -51,10 +53,11 @@ import com.project.mechanic.utility.Utility;
 public class AnadFragment extends Fragment {
 
 	DataBaseAdapter dbAdapter;
-	private ImageView imgadd, img;
+	private ImageView imgadd;
+	private ImageButton img;
 	private TextView txt1;
 	View view;
-	List<Ticket> mylist;
+    List<Ticket> mylist;   	
 	List<Anad> anadlist;
 	private DialogAnad dialog;
 	private DialogAnadimg dialog1;
@@ -69,9 +72,11 @@ public class AnadFragment extends Fragment {
 	Anad tempItem;
 	int position;
 	private Anad x;
+	int a;
 	// private ListView lstimg;
 
 	private int column = 3;
+	int I;
 	int gridePadding = 1;
 	private int columnWidth;
 	// private ListView verticalScrollview;
@@ -86,10 +91,11 @@ public class AnadFragment extends Fragment {
 	private Boolean isFaceDown = true;
 	private Timer clickTimer = null;
 	private Timer faceTimer = null;
-	private Button clickedButton = null;
+	private ImageButton clickedButton = null;
 	Users u;
 	Utility util;
 	int i = 0, j = 9;
+
 	AnadListAdapter ListAdapter;
 	private ScrollView verticalScrollview;
 
@@ -101,10 +107,10 @@ public class AnadFragment extends Fragment {
 
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.anad);
 		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
-
+	
 		imgadd = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
 		txt1 = (TextView) view.findViewById(R.id.fragment_anad_txt1);
-		img = (ImageView) view.findViewById(R.id.img_anad);
+		img = (ImageButton) view.findViewById(R.id.img_anad);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
@@ -131,19 +137,7 @@ public class AnadFragment extends Fragment {
 					subList.add(p);
 			}
 		}
-		// img.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// dialogimg = new DialogAnadimg(getActivity(),
-		// R.layout.dialog_imganad, AnadFragment.this,
-		// ticketTypeid, proID);
-		// // dialog.setTitle(R.string.txtanad);
-		//
-		// dialogimg.show();
-		//
-		// }
-		// });
+
 		imgadd.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -160,6 +154,7 @@ public class AnadFragment extends Fragment {
 				dialog.show();
 			}
 		});
+		
 		if (mylist != null && !mylist.isEmpty()) {
 			lstTicket = (PullAndLoadListView) view.findViewById(R.id.listVanad);
 
@@ -217,6 +212,19 @@ public class AnadFragment extends Fragment {
 		verticalOuterLayout = (LinearLayout) view
 				.findViewById(R.id.vertical_outer_layout_id);
 		addImagesToView(anadlist);
+		// img.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// dialog1 = new DialogAnadimg(getActivity(),
+		// R.layout.dialog_imganad, AnadFragment.this,
+		// ticketTypeid, proID);
+		// // dialog.setTitle(R.string.txtanad);
+		//
+		// dialog1.show();
+		//
+		// }
+		// });
 
 		ViewTreeObserver vto = verticalOuterLayout.getViewTreeObserver();
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
@@ -245,51 +253,77 @@ public class AnadFragment extends Fragment {
 
 	public void addImagesToView(List<Anad> lst) {
 
-		for (int i = 0; i < lst.size(); i++) {
-			byte[] tmpImage = lst.get(i).getImage();
+		for (I = 0; I < lst.size(); I++) {
+			byte[] tmpImage = lst.get(I).getImage();
+			
 			final ImageButton imageButton = new ImageButton(getActivity());
 			if (tmpImage == null) {
 				Drawable image = this.getResources().getDrawable(
 						R.drawable.propagand);
+				
 				imageButton.setImageDrawable(image);
+				imageButton.setScaleType(ScaleType.FIT_XY);
+
 			} else {
 				imageButton.setImageBitmap(BitmapFactory.decodeByteArray(
 						tmpImage, 0, tmpImage.length));
+
 			}
-			// imageButton.setTag(i);
-			// imageButton.setOnClickListener(new OnClickListener() {
-			// @Override
-			// public void onClick(View arg0) {
-			// if (isFaceDown) {
-			// if (clickTimer != null) {
-			// clickTimer.cancel();
-			// clickTimer = null;
-			// }
-			// clickedButton = (Button) arg0;
-			// stopAutoScrolling();
-			// clickedButton.startAnimation(scaleFaceUpAnimation());
-			// clickedButton.setSelected(true);
-			// clickTimer = new Timer();
-			//
-			// if (clickSchedule != null) {
-			// clickSchedule.cancel();
-			// clickSchedule = null;
-			// }
-			//
-			// clickSchedule = new TimerTask() {
-			// public void run() {
-			// startAutoScrolling();
-			// }
-			// };
-			//
-			// clickTimer.schedule(clickSchedule, 1500);
-			// }
-			// }
-			// });
+			imageButton.setTag(I);
+				
+			imageButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					int position=(Integer)arg0.getTag();
+					if (isFaceDown) {
+						if (clickTimer != null) {
+							clickTimer.cancel();
+							clickTimer = null;
+						}
+						clickedButton = (ImageButton) arg0;
+						
+						Toast.makeText(getActivity(), position+"",
+								Toast.LENGTH_LONG).show();
+
+						stopAutoScrolling();
+						clickedButton.startAnimation(scaleFaceUpAnimation());
+						clickedButton.setSelected(true);
+						clickTimer = new Timer();
+
+						if (clickSchedule != null) {
+							clickSchedule.cancel();
+							clickSchedule = null;
+						}
+
+						clickSchedule = new TimerTask() {
+							public void run() {
+								startAutoScrolling();
+							}
+						};
+
+						clickTimer.schedule(clickSchedule, 1500);
+						if (u == null) {
+							Toast.makeText(getActivity(), " شما وارد نشده اید.",
+									Toast.LENGTH_LONG).show();
+							return;
+						}else{
+						dialog1 = new DialogAnadimg(getActivity(),
+								R.layout.dialog_imganad, AnadFragment.this,
+								ticketTypeid, proID,position);
+						
+						// dialog.setTitle(R.string.txtanad);
+
+						dialog1.show();
+						}
+					}
+				}
+
+			});
 
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-					256, 256);
+					util.getScreenwidth()/3, util.getScreenwidth()/3);
 			imageButton.setLayoutParams(params);
+			imageButton.setScaleType(ScaleType.FIT_XY);
 			verticalOuterLayout.addView(imageButton);
 		}
 	}
@@ -542,13 +576,13 @@ public class AnadFragment extends Fragment {
 
 			@Override
 			public void onAnimationRepeat(Animation arg0) {
-				verticalTextView.setText("");
+				// verticalTextView.setText("");
 				isFaceDown = true;
 			}
 
 			@Override
 			public void onAnimationEnd(Animation arg0) {
-				verticalTextView.setText("");
+				// verticalTextView.setText("");
 				isFaceDown = true;
 			}
 		};
