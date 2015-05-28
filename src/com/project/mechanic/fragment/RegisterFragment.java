@@ -2,7 +2,6 @@ package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -42,7 +41,6 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.service.SavingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
@@ -75,10 +73,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	TextView txtclickpic;
 	private Toast toast;
 	ViewGroup toastlayout;
-
-	SavingImage savingImage;
-	private boolean firstTime = true;
-
 	View view2;
 
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
@@ -228,6 +222,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 					service.delegate = RegisterFragment.this;
 					service.execute(items);
+					// old place
 
 				}
 
@@ -292,42 +287,42 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	@Override
 	public void processFinish(String output) {
 		ringProgressDialog.dismiss();
+		SharedPreferences settings = getActivity().getSharedPreferences("user",
+				0);
+		SharedPreferences.Editor editor = settings.edit();
 
 		try {
 			serverId = Integer.valueOf(output);
-
-			// saveImage
+			// Toast.makeText(getActivity(), "" + serverId, Toast.LENGTH_SHORT)
+			// .show();
 			if (serverId > 0) {
 
 				server.edit().putInt("srv_id", serverId).commit();
 
 				dbAdapter.open();
 
-				if ((btnaddpic1.getDrawable() != null) && firstTime) {
+				if ((btnaddpic1.getDrawable() == null)) {
 
+					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
+							null, Mobile, null, null, 0, txtdate);
+
+				} else {
 					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
 							.getBitmap();
 
 					Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
 							bitmap.getHeight(), bitmap.getConfig());
 
-					firstTime = false;
-					if (!bitmap.sameAs(emptyBitmap)) {
-
+					if (bitmap.sameAs(emptyBitmap)) {
+						dbAdapter.inserUsernonpicToDb(serverId, Name, null,
+								Pass, null, Mobile, null, null, 0, txtdate);
+					} else {
 						byte[] Image = getBitmapAsByteArray(bitmap);
-						savingImage = new SavingImage(getActivity());
-						Map<String, Object> it = new LinkedHashMap<String, Object>();
-						it.put("tableName", "Users");
-						it.put("fieldName", "Image");
-						it.put("id", serverId);
-						it.put("Image", Image);
 
-						savingImage.delegate = this;
-						savingImage.execute(it);
+						dbAdapter.inserUserToDb(serverId, Name, null, Pass,
+								null, Mobile, null, null, Image, 0, txtdate);
+
 					}
-				} else {
-					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
-							null, Mobile, null, null, 0, txtdate);
 				}
 
 				dbAdapter.close();
@@ -344,12 +339,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 				toast.setView(view4);
 				toast.show();
 
-				// if ("true".equals(output)) {
-				// SharedPreferences settings = getActivity()
-				// .getSharedPreferences("user", 0);
-				// SharedPreferences.Editor editor = settings.edit();
-				// editor.putBoolean("isLogin", true);
-				//
+				editor.putBoolean("isLogin", true);
+
 				// // ثبت اطلاعات کاربر در دیتا بیس هم حتما انجام گیرد. فراموش
 				// // نشود!!!!
 				//
@@ -357,25 +348,23 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 				// .getSupportFragmentManager().beginTransaction();
 				// trans.replace(R.id.content_frame, new MainFragment());
 				// trans.commit();
-				// dbAdapter.open();
-				// u = dbAdapter.getUserbymobailenumber(mobileNumber);
-				// if (u != null) {
-				// int id = u.getId();
-				// int admin = 1;
-				// dbAdapter.UpdateAdminUserToDb(id, admin);
-				// }
-				// dbAdapter.close();
+				dbAdapter.open();
+				Users u = dbAdapter.getUserbymobailenumber(Mobile);
+				if (u != null) {
+					int id = u.getId();
+					int admin = 1;
+					dbAdapter.UpdateAdminUserToDb(id, admin);
+				}
+				dbAdapter.close();
 				// // } else {
 				// Toast.makeText(
 				// getActivity(),
 				// "شما وارد شده اید اما شماره تلفن به درستی وارد نشده است.",
 				// Toast.LENGTH_SHORT).show();
 				// }
-				// Toast.makeText(getActivity(), "شما وارد شده اید.",
-				// Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "شما وارد شده اید.",
+						Toast.LENGTH_SHORT).show();
 				//
-				// }
-
 			}
 
 			else {
@@ -390,12 +379,21 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 				toast.setDuration(Toast.LENGTH_LONG);
 				toast.setView(view5);
 				toast.show();
+				editor.putBoolean("isLogin", false);
 			}
+
+			editor.commit();
+
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT).show();
 		}
 
 	}
+
+	// FragmentTransaction trans = getActivity()
+	// .getSupportFragmentManager().beginTransaction();
+	// trans.replace(R.id.content_frame, new LoginFragment());
+	// trans.commit();
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -427,7 +425,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	}
 
 	private boolean isValidName(String name) {
-		String Name_PATTERN = "[a-zA-Z0-9- ]+";
+		String Name_PATTERN = "[a-zA-Z0-9-ا-ی ]+";
 		// String Name_PATTERN = "[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)" +
 		// "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)" ;
 		Pattern pattern = Pattern.compile(Name_PATTERN);
