@@ -41,7 +41,7 @@
                             android:layout_weight="3"
                             android:paddingBottom="20dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/gf2" />
+                            android:src="@drawable/no_image_header" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -64,7 +64,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:scaleType="fitXY"
-                            android:src="@drawable/profile_account" />
+                            android:src="@drawable/no_img_profile" />
                     </LinearLayout>
                 </RelativeLayout>
             </FrameLayout>
@@ -521,7 +521,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/gf" />
+                        android:src="@drawable/no_image_header" />
                 </LinearLayout>
 
                 <LinearLayout

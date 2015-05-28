@@ -2368,50 +2368,54 @@ public class DataBaseAdapter {
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
-			String LinkTweitter) {
+			String LinkTweitter, int UserId, int ParentId) {
 
 		ContentValues cv = new ContentValues();
 
 		if (!"".equals(name))
-			cv.put(Object[1], name);
+			cv.put("Name", name);
 		if (!"".equals(Phone))
-			cv.put(Object[2], Phone);
+			cv.put("Phone", Phone);
 		if (!"".equals(Email))
-			cv.put(Object[3], Email);
+			cv.put("Email", Email);
 		if (!"".equals(fax))
-			cv.put(Object[4], fax);
+			cv.put("Fax", fax);
 		if (!"".equals(description))
-			cv.put(Object[5], description);
+			cv.put("Description", description);
 		if (HeaderImage != null)
-			cv.put(Object[6], HeaderImage);
+			cv.put("Image1", HeaderImage);
 		if (ProfileImage != null)
-			cv.put(Object[7], ProfileImage);
+			cv.put("Image2", ProfileImage);
 		if (FooterImage != null)
-			cv.put(Object[8], FooterImage);
+			cv.put("Image3", FooterImage);
 		if (!"".equals(LinkCatalog))
-			cv.put(Object[10], LinkCatalog);
+			cv.put("pdf1", LinkCatalog);
 		if (!"".equals(LinkPrice))
-			cv.put(Object[11], LinkPrice);
+			cv.put("pdf2", LinkPrice);
 		if (!"".equals(LinkPDF))
-			cv.put(Object[12], LinkPDF);
+			cv.put("pdf3", LinkPDF);
 		if (!"".equals(LinkVideo))
-			cv.put(Object[13], LinkVideo);
+			cv.put("pdf4", LinkVideo);
 		if (!"".equals(Address))
-			cv.put(Object[14], Address);
+			cv.put("Address", Address);
 		if (!"".equals(Mobile))
-			cv.put(Object[15], Mobile);
+			cv.put("Cellphone", Mobile);
 		if (!"".equals(LinkFaceBook))
-			cv.put(Object[18], LinkFaceBook);
+			cv.put("Facebook", LinkFaceBook);
 		if (!"".equals(LinkInstagram))
-			cv.put(Object[19], LinkInstagram);
+			cv.put("Instagram", LinkInstagram);
 		if (!"".equals(LinkLinkedin))
-			cv.put(Object[20], LinkLinkedin);
+			cv.put("Linkedin", LinkLinkedin);
 		if (!"".equals(LinkGoogle))
-			cv.put(Object[21], LinkGoogle);
+			cv.put("google", LinkGoogle);
 		if (!"".equals(LinkSite))
-			cv.put(Object[22], LinkSite);
+			cv.put("site", LinkSite);
 		if (!"".equals(LinkTweitter))
-			cv.put(Object[23], LinkTweitter);
+			cv.put("Twitter", LinkTweitter);
+		if (!"".equals(UserId))
+			cv.put("UserId", UserId);
+		if (!"".equals(ParentId))
+			cv.put("ParentId", ParentId);
 
 		mDb.insert(TableObject, null, cv);
 		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT)
