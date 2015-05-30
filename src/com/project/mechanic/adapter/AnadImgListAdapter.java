@@ -78,11 +78,11 @@ public class AnadImgListAdapter extends ArrayAdapter<Anad> {
 
 				RelativeLayout parentlayout = (RelativeLayout) v;
 
-				dialog1 = new DialogAnadimg(context, R.layout.dialog_imganad,
-						null, 0, 0);
-
-				dialog1.setTitle(R.string.tabligh);
-				dialog1.show();
+				// dialog1 = new DialogAnadimg(context, R.layout.dialog_imganad,
+				// null, 0, 0);
+				//
+				// dialog1.setTitle(R.string.tabligh);
+				// dialog1.show();
 
 			}
 		});

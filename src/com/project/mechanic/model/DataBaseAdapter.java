@@ -340,6 +340,24 @@ public class DataBaseAdapter {
 		mDb.update(TableTicket, uc, "Id=" + id, null);
 	}
 
+	public void UpdateAnadToDb(int id, byte[] image, int objectId, String date,
+			int typeId, int provinceId) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		// uc.put("Email", email);
+		// uc.put("Password", password);
+		uc.put("Id", id);
+		uc.put("Image", image);
+		uc.put("ObjectId", objectId);
+		uc.put("Date", date);
+		uc.put("TypeId", typeId);
+		uc.put("ProvinceId", provinceId);
+
+		// uc.put("ServiceId", serviceid);
+		mDb.update(TableAnad, uc, "Id=" + id, null);
+	}
+
 	// /////////////////
 
 	public void UpdateAllUserToDb(int id, String email, String password,
@@ -825,6 +843,20 @@ public class DataBaseAdapter {
 
 		if (mCur.moveToNext()) {
 			item = CursorToTicket(mCur);
+		}
+
+		return item;
+
+	}
+
+	public Anad getAnadByid(int Id) {
+
+		Anad item = null;
+		Cursor mCur = mDb.query(TableAnad, Anad, "Id=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToAnad(mCur);
 		}
 
 		return item;
