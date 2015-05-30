@@ -3,6 +3,7 @@ package com.project.mechanic.fragment;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -76,10 +77,15 @@ public class MainBrandFragment extends Fragment {
 					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
 							Toast.LENGTH_SHORT).show();
 				} else {
+
+					SharedPreferences sendParentID = getActivity()
+							.getSharedPreferences("Id", 0);
+
 					FragmentTransaction trans = getActivity()
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame,
 							new CreateIntroductionFragment());
+					sendParentID.edit().putInt("ParentId", id).commit();
 					trans.commit();
 				}
 			}

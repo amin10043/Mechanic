@@ -85,7 +85,7 @@ public class MainActivity extends FragmentActivity {
 		} else {
 			AlertDialog.Builder builder = new AlertDialog.Builder(
 					MainActivity.this);
-			builder.setTitle("خروج از برنامه");
+			builder.setTitle("پیغام");
 			builder.setMessage("جهت استفاده از تمامی امکانات نرم افزار وارد شوید ");
 			builder.setNegativeButton("ورود به لاگین",
 					new DialogInterface.OnClickListener() {

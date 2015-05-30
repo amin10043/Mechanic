@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -59,6 +60,7 @@ public class CreateIntroductionFragment extends Fragment {
 	public String Lfacebook, Llinkedin, Ltwitter, Lwebsite, Lgoogle,
 			Linstagram;
 	public String Lcatalog, Lprice, Lpdf, Lvideo;
+	Users currentUser;
 
 	// EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle,
 	// inInstagram;
@@ -72,6 +74,8 @@ public class CreateIntroductionFragment extends Fragment {
 		//Object = Integer.valueOf(getArguments().getString("I"));
 		DBAdapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
+
+		currentUser = util.getCurrentUser();
 
 		NetworkSocial = (RelativeLayout) view.findViewById(R.id.editNetwork);
 		DownloadLink = (RelativeLayout) view.findViewById(R.id.editdownload);
@@ -96,11 +100,12 @@ public class CreateIntroductionFragment extends Fragment {
 		namayendegi.setVisibility(View.GONE);
 		khadamat.setVisibility(View.GONE);
 
-		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id",
-				0);
-		final int id = sendDataID.getInt("main_Id", -1);
+		SharedPreferences sendParentID = getActivity().getSharedPreferences(
+				"Id", 0);
+		final int parentId = sendParentID.getInt("ParentId", -1);
 
-		Toast.makeText(getActivity(), id + "", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), " parentId create = " + parentId,
+				Toast.LENGTH_SHORT).show();
 
 		linearCreateProfil = (LinearLayout) view
 				.findViewById(R.id.linearCreateProfil);
@@ -246,7 +251,8 @@ public class CreateIntroductionFragment extends Fragment {
 							emailValue, faxValue, descriptionValue, byteHeader,
 							byteProfil, byteFooter, Lcatalog, Lprice, Lpdf,
 							Lvideo, addressValue, mobileValue, Lfacebook,
-							Linstagram, Llinkedin, Lgoogle, Lwebsite, Ltwitter);
+							Linstagram, Llinkedin, Lgoogle, Lwebsite, Ltwitter,
+							currentUser.getId(), parentId);
 
 					DBAdapter.close();
 					getActivity().getSupportFragmentManager().popBackStack();

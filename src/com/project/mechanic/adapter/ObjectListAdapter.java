@@ -127,6 +127,11 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 						id = object.getId();
 						sendDataID.edit().putInt("main_Id", id).commit();
 
+						//
+						// Toast.makeText(context,
+						// "parentId = " + object.getParentId(),
+						// Toast.LENGTH_SHORT).show();
+
 					}
 
 				}

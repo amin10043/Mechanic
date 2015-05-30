@@ -290,9 +290,11 @@ public class IntroductionFragment extends Fragment {
 		adapter.close();
 
 		Users user = ut.getCurrentUser();
-		if (user == null || ObjectID != user.getId()) {
+		if (user == null || object.getUserId() != user.getId()) {
 			EditPage.setVisibility(View.INVISIBLE);
-
+			Toast.makeText(getActivity(),
+					"userid dar database sqlite be soorat dasti 0 save shode",
+					Toast.LENGTH_LONG).show();
 		} else
 			EditPage.setVisibility(View.VISIBLE);
 
