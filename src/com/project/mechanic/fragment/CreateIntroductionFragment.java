@@ -35,6 +35,7 @@ public class CreateIntroductionFragment extends Fragment {
 	private static int RESULT_LOAD_IMAGE = 1;
 	private static int HeaderCode = 2;
 	private static int FooterCode = 3;
+	int Object;
 
 	DataBaseAdapter DBAdapter;
 	ImageButton btnSave;
@@ -68,7 +69,7 @@ public class CreateIntroductionFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_create_introduction,
 				null);
-
+		//Object = Integer.valueOf(getArguments().getString("I"));
 		DBAdapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
 
