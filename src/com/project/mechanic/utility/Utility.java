@@ -332,7 +332,7 @@ public class Utility {
 			File f = new File(path);
 
 			FileOutputStream fileOut = new FileOutputStream(f);
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 50, fileOut);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 50, fileOut);
 			try {
 				fileOut.close();
 			} catch (IOException e) {
