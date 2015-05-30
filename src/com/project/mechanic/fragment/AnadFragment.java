@@ -110,7 +110,7 @@ public class AnadFragment extends Fragment {
 
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.anad);
 		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
-		proID  = Integer.valueOf(getArguments().getString("ProID"));
+		//proID  = Integer.valueOf(getArguments().getString("ProID"));
 	
 		imgadd = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
 		txt1 = (TextView) view.findViewById(R.id.fragment_anad_txt1);
@@ -444,7 +444,7 @@ public class AnadFragment extends Fragment {
 			imageButton.setLayoutParams(params);
 			imageButton.setScaleType(ScaleType.FIT_XY);
 			verticalOuterLayout.addView(imageButton);
-		}
+			dbAdapter.close();		}
 	}
 
 	private class LoadMoreDataTask extends AsyncTask<Void, Void, Void> {
