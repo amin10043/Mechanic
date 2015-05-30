@@ -848,6 +848,19 @@ public class DataBaseAdapter {
 		return item;
 
 	}
+	public Anad getAnadByid(int Id) {
+
+		Anad item = null;
+		Cursor mCur = mDb.query(TableAnad, Anad, "Id=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToAnad(mCur);
+		}
+
+		return item;
+
+	}
 
 	public ArrayList<Ticket> getFavoriteById(int TypeId, int provinceID) {
 
