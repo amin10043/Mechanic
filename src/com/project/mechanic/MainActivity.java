@@ -72,6 +72,9 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		// this code is for lock rotate screen
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+
 		adapter = new DataBaseAdapter(this);
 		slideadapter = new SlideMenuAdapter(this);
 
@@ -117,8 +120,6 @@ public class MainActivity extends FragmentActivity {
 			alert.show();
 
 		}
-		// this code is for lock rotate screen
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 
 		ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
 		iBtnmessage.setOnClickListener(new OnClickListener() {
