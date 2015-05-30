@@ -192,15 +192,15 @@ public class IntroductionFragment extends Fragment {
 		profileParams = new LinearLayout.LayoutParams(
 				profileLinear.getLayoutParams());
 
-		profileParams.height = ut.getScreenwidth() / 6;
-		profileParams.width = ut.getScreenwidth() / 6;
+		profileParams.height = ut.getScreenwidth() / 8;
+		profileParams.width = ut.getScreenwidth() / 8;
 
 		profileImage.setLayoutParams(profileParams);
 
 		headerParams = new LinearLayout.LayoutParams(
 				headImageLinear.getLayoutParams());
-		headerParams.height = (int) (ut.getScreenHeight() / 3.5);
-		headImageLinear.setPadding(0, 0, 0, 20);
+		headerParams.height = (int) (ut.getScreenHeight() / 3);
+		// headImageLinear.setPadding(0, 0, 0, 20);
 
 		footerParams = new LinearLayout.LayoutParams(
 				footerLinear.getLayoutParams());
