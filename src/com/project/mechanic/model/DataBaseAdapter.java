@@ -848,6 +848,7 @@ public class DataBaseAdapter {
 		return item;
 
 	}
+
 	public Anad getAnadByid(int Id) {
 
 		Anad item = null;
