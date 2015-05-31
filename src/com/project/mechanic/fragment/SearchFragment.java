@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.text.Editable;
@@ -32,11 +31,10 @@ public class SearchFragment extends ListFragment {
 	private String[] cPage;
 	private String[] Page;
 	private EditText word;
-	String tableName = "Province";
-
-	private TextView status;
-	Fragment fragment;
+	// String tableName = "Province";
 	List<Province> list;
+	private TextView status;
+	MainActivity context;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -86,9 +84,8 @@ public class SearchFragment extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 
 		db.open();
-		ArrayList<Province> mylist = db.getAllProvinceName();
-		Province p = mylist.get(position);
-
+		ArrayList<Province> list = db.getAllProvinceName();
+		Province p = list.get(position);
 		List<City> allItems = db.getCitysByProvinceId(p.getId());
 
 		db.close();
@@ -100,6 +97,7 @@ public class SearchFragment extends ListFragment {
 		trans.commit();
 	}
 
+	@SuppressWarnings("unused")
 	private void startAnimation(Animation animation) {
 		// TODO Auto-generated method stub
 
@@ -127,6 +125,7 @@ public class SearchFragment extends ListFragment {
 			return (row);
 		}
 
+		@SuppressWarnings("unused")
 		private LayoutInflater getLayoutInflater() {
 			// TODO Auto-generated method stub
 			return null;
@@ -138,7 +137,7 @@ public class SearchFragment extends ListFragment {
 
 		db.open();
 
-		int s = db.Mechanical_serach(tableName, word1, field);
+		int s = db.Mechanical_serach(word1, field);
 
 		if (word.getText().toString().equals("")) {
 			s = 0;
@@ -154,14 +153,14 @@ public class SearchFragment extends ListFragment {
 
 		for (int i = 0; i < s; i++) {
 
-			Name[i] = db.serach(tableName, i, 1, word1, field);
+			Name[i] = db.serach(i, 1, word1, field);
 
 			// cPage[i] = db.Story_page_count("content", Name[i]) + "";
 
 			if (field.equals("Name")) {
 				Page[i] = "";
 			} else {
-				Page[i] = " > " + db.serach(tableName, i, 3, word1, field);
+				Page[i] = " > " + db.serach(i, 3, word1, field);
 
 			}
 		}
