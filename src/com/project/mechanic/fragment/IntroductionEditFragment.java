@@ -55,12 +55,15 @@ public class IntroductionEditFragment extends Fragment {
 
 	ImageView headerImageEdit, profileImageEdit, footerImageEdit;
 
-	LinearLayout.LayoutParams headerEditParams, profileEditParams,
-			footerEditParams, editnameParams;
+	LinearLayout.LayoutParams headerEditParams, footerEditParams,
+			editnameParams;
 
-	RelativeLayout editnetLink, editDNlink, namayendegi, khadamat;
+	RelativeLayout.LayoutParams profileEditParams;
 
-	LinearLayout Linearheader, Linearprofile, Linearfooter;
+	RelativeLayout editnetLink, editDNlink, namayendegi, khadamat,
+			Linearprofile;
+
+	LinearLayout Linearheader, Linearfooter;
 
 	public String Dcatalog, Dprice, Dpdf, Dvideo;
 	public String Dface, Dlink, Dtwt, Dweb, Dgoogle, Dinstagram;
@@ -99,23 +102,22 @@ public class IntroductionEditFragment extends Fragment {
 		khadamat.setVisibility(View.GONE);
 
 		Linearheader = (LinearLayout) view.findViewById(R.id.headerLinearPage);
-		Linearprofile = (LinearLayout) view.findViewById(R.id.linearEditProfil);
+		Linearprofile = (RelativeLayout) view
+				.findViewById(R.id.linearEditProfil);
 		Linearfooter = (LinearLayout) view.findViewById(R.id.linearfooteredit);
 
 		headerEditParams = new LinearLayout.LayoutParams(
 				Linearheader.getLayoutParams());
-		headerEditParams.width = util.getScreenwidth();
-		headerEditParams.height = (int) (util.getScreenHeight() / 2.5);
-		Linearheader.setPadding(0, 0, 0, 20);
+		headerEditParams.height = (int) (util.getScreenHeight() / 3);
 
-		profileEditParams = new LinearLayout.LayoutParams(
+		profileEditParams = new RelativeLayout.LayoutParams(
 				Linearprofile.getLayoutParams());
-		profileEditParams.width = util.getScreenwidth() / 5;
-		profileEditParams.height = util.getScreenwidth() / 5;
+		profileEditParams.width = util.getScreenwidth() / 8;
+		profileEditParams.height = util.getScreenwidth() / 8;
+		profileEditParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
 		footerEditParams = new LinearLayout.LayoutParams(
 				Linearfooter.getLayoutParams());
-		footerEditParams.width = util.getScreenwidth();
 		footerEditParams.height = util.getScreenHeight() / 3;
 
 		editnameParams = new LinearLayout.LayoutParams(
@@ -135,6 +137,7 @@ public class IntroductionEditFragment extends Fragment {
 
 		headerImageEdit.setLayoutParams(headerEditParams);
 		profileImageEdit.setLayoutParams(profileEditParams);
+		footerImageEdit.setLayoutParams(footerEditParams);
 
 		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id",
 				0);
@@ -308,7 +311,8 @@ public class IntroductionEditFragment extends Fragment {
 
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		bitmap.compress(CompressFormat.PNG, 0, outputStream);
+		bitmap.compress(CompressFormat.PNG, 50, outputStream);
+
 		return outputStream.toByteArray();
 	}
 

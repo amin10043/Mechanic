@@ -1,5 +1,9 @@
 package com.project.mechanic.utility;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -14,9 +18,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
+import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -317,6 +323,27 @@ public class Utility {
 		TextView txtlike = (TextView) a.findViewById(R.id.txtlike);
 		txtlike.setText(String.valueOf(t3));
 		adapter.close();
+	}
+
+	public static void CompressBitmap(Context context, Bitmap bitmap) {
+		String env = Environment.getExternalStorageDirectory().getPath();
+		String path = env + "/test.png";
+		try {
+			File f = new File(path);
+
+			FileOutputStream fileOut = new FileOutputStream(f);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 50, fileOut);
+			try {
+				fileOut.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			bitmap.recycle();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

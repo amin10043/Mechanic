@@ -9,14 +9,52 @@
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_height="match_parent" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:weightSum="12" >
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/headerLinearPage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/hh1"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/gf2" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/linearEditProfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="10dp" >
+
+                <EditText
+                    android:id="@+id/nameEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_toLeftOf="@+id/pp1"
+                    android:hint="Name" />
+
+                <ImageView
+                    android:id="@+id/pp1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/no_img_profile" />
+            </RelativeLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -27,48 +65,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
-
-                    <LinearLayout
-                        android:id="@+id/headerLinearPage"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" >
-
-                        <ImageView
-                            android:id="@+id/hh1"
-                            android:layout_width="match_parent"
-                            android:layout_height="160dp"
-                            android:layout_weight="3"
-                            android:paddingBottom="20dp"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/gf2" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/linearEditProfil"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="25dp" >
-
-                        <EditText
-                            android:id="@+id/nameEdit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/profile_img"
-                            android:hint="Name" />
-
-                        <ImageView
-                            android:id="@+id/pp1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="25dp"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/add" />
-                    </LinearLayout>
                 </RelativeLayout>
             </FrameLayout>
 
@@ -514,9 +510,8 @@
                 <LinearLayout
                     android:id="@+id/linearfooteredit"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:layout_weight="3"
                     android:orientation="vertical" >
 
                     <ImageView
