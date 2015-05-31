@@ -1323,7 +1323,6 @@ public class DataBaseAdapter {
 				cursor.getInt(8), cursor.getInt(9), cursor.getInt(10),
 				cursor.getInt(11), cursor.getInt(12), cursor.getString(13),
 				cursor.getString(14), cursor.getString(15),
-
 				cursor.getString(16), cursor.getString(17), cursor.getBlob(18),
 				cursor.getString(19), cursor.getInt(20), cursor.getInt(21));
 
