@@ -1323,7 +1323,6 @@ public class DataBaseAdapter {
 				cursor.getInt(8), cursor.getInt(9), cursor.getInt(10),
 				cursor.getInt(11), cursor.getInt(12), cursor.getString(13),
 				cursor.getString(14), cursor.getString(15),
-
 				cursor.getString(16), cursor.getString(17), cursor.getBlob(18),
 				cursor.getString(19), cursor.getInt(20), cursor.getInt(21));
 
@@ -2620,15 +2619,15 @@ public class DataBaseAdapter {
 		return u;
 	}
 
-	public Integer Mechanical_serach(String tableName, String word, String field) {
+	public Integer Mechanical_serach(String word, String field) {
 
 		Cursor cu;
 		if (field.equals("Name")) {
 
-			cu = mDb.rawQuery("select * from  " + tableName + " where " + field
+			cu = mDb.rawQuery("select * from  Province where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2636,15 +2635,14 @@ public class DataBaseAdapter {
 		return s;
 	}
 
-	public String serach(String tableName, int row, int col, String word,
-			String field) {
+	public String serach(int row, int col, String word, String field) {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2653,14 +2651,14 @@ public class DataBaseAdapter {
 		return s;
 	}
 
-	public Integer count_search(String tableName, String word, string field) {
+	public Integer count_search(String word, string field) {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province  where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 

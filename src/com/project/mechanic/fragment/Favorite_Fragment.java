@@ -61,6 +61,8 @@ public class Favorite_Fragment extends Fragment {
 					getActivity(), R.layout.row_favorite, mylist, this);
 
 			listFavorite.setAdapter(ListAdapter);
+
+			dbAdapter.close();
 		}
 		return view;
 

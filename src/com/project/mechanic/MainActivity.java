@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -473,7 +474,37 @@ public class MainActivity extends FragmentActivity {
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
 			break;
+		case 6:
+			new AlertDialog.Builder(this)
+					.setMessage("آیا میخواهید از برنامه خارج شوید؟")
+					.setPositiveButton("بله",
+							new DialogInterface.OnClickListener() {
 
+								// do something when the button is clicked
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+
+									finish();
+									// close();
+
+								}
+							})
+					.setNegativeButton("نه میخوام نظر بدم",
+							new DialogInterface.OnClickListener() {
+
+								// do something when the button is clicked
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+
+									Intent browserIntent = new Intent(
+											Intent.ACTION_EDIT,
+											Uri.parse("http://cafebazaar.ir/app/com.example.dynacord/?l=fa"));
+									startActivity(browserIntent);
+
+								}
+							}).show();
+
+			break;
 		}
 
 		mDrawerList.setItemChecked(position, true);
