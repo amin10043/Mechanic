@@ -81,8 +81,19 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		ImageView profileIco = (ImageView) convertView
 				.findViewById(R.id.icon_object);
 
+		RelativeLayout rl = (RelativeLayout) convertView
+				.findViewById(R.id.main_icon_reply);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				rl.getLayoutParams());
+
+		lp.width = (util.getScreenwidth() / 8);
+		lp.height = (util.getScreenwidth() / 8);
+		lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		lp.setMargins(5, 5, 5, 5);
+
 		if (person.getImage2() == null) {
 			profileIco.setImageResource(R.drawable.no_img_profile);
+			profileIco.setLayoutParams(lp);
 
 		} else {
 			byte[] byteImageProfile = person.getImage2();
@@ -92,15 +103,6 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 			profileIco.setImageBitmap(bmp);
 
-			RelativeLayout rl = (RelativeLayout) convertView
-					.findViewById(R.id.main_icon_reply);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-					rl.getLayoutParams());
-
-			lp.width = (util.getScreenwidth() / 9);
-			lp.height = (util.getScreenwidth() / 9);
-			lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-			lp.setMargins(5, 5, 5, 5);
 			profileIco.setLayoutParams(lp);
 		}
 
@@ -126,6 +128,11 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 						// check authentication and authorization
 						id = object.getId();
 						sendDataID.edit().putInt("main_Id", id).commit();
+
+						//
+						// Toast.makeText(context,
+						// "parentId = " + object.getParentId(),
+						// Toast.LENGTH_SHORT).show();
 
 					}
 

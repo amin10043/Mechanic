@@ -1,5 +1,6 @@
 package com.project.mechanic.fragment;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -50,7 +52,7 @@ public class IntroductionFragment extends Fragment {
 
 	private ImageView peykan6, peykan5;
 	public RelativeLayout link1, link2, sendSMS, addressRelative,
-			emailRelative;
+			emailRelative, profileLinear;
 
 	public DialogcmtInobject dialog;
 	Fragment fragment;
@@ -59,12 +61,12 @@ public class IntroductionFragment extends Fragment {
 	public ImageButton Comment;
 	byte[] bitHeader, bytepro, bytefoot;
 
-	LinearLayout.LayoutParams profileParams, headerParams, footerParams;
-	RelativeLayout.LayoutParams addressParams, emailParams;
+	LinearLayout.LayoutParams headerParams, footerParams;
+	RelativeLayout.LayoutParams addressParams, emailParams, profileParams;
 
 	ArrayList<CommentInObject> mylist;
 	DataBaseAdapter adapter;
-	LinearLayout headImageLinear, profileLinear, footerLinear;
+	LinearLayout headImageLinear, footerLinear;
 
 	TextView txtFax, txtAddress, txtPhone, txtCellphone, txtEmail, txtDesc,
 			CountLikeIntroduction, CountCommentIntroduction, namePage;
@@ -150,7 +152,7 @@ public class IntroductionFragment extends Fragment {
 		Pdf2 = (ImageButton) header.findViewById(R.id.btnPdf2_Object);
 		Pdf3 = (ImageButton) header.findViewById(R.id.btnPdf3_Object);
 		Pdf4 = (ImageButton) header.findViewById(R.id.btnPdf4_Object);
-		profileLinear = (LinearLayout) header
+		profileLinear = (RelativeLayout) header
 				.findViewById(R.id.linear_id_profile_introduction_page);
 		footerLinear = (LinearLayout) header.findViewById(R.id.footerint);
 		EditPage = (ImageButton) header.findViewById(R.id.ImgbtnEdit);
@@ -189,22 +191,22 @@ public class IntroductionFragment extends Fragment {
 		}
 		adapter.close();
 
-		profileParams = new LinearLayout.LayoutParams(
+		profileParams = new RelativeLayout.LayoutParams(
 				profileLinear.getLayoutParams());
 
-		profileParams.height = ut.getScreenwidth() / 6;
-		profileParams.width = ut.getScreenwidth() / 6;
+		profileParams.height = ut.getScreenwidth() / 8;
+		profileParams.width = ut.getScreenwidth() / 8;
+		profileParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
 		profileImage.setLayoutParams(profileParams);
 
 		headerParams = new LinearLayout.LayoutParams(
 				headImageLinear.getLayoutParams());
-		headerParams.height = (int) (ut.getScreenHeight() / 3.5);
-		headImageLinear.setPadding(0, 0, 0, 20);
+		headerParams.height = ut.getScreenHeight() / 3;
 
 		footerParams = new LinearLayout.LayoutParams(
 				footerLinear.getLayoutParams());
-		footerParams.height = (int) (ut.getScreenHeight() / 3.5);
+		footerParams.height = ut.getScreenHeight() / 3;
 
 		adapter.open();
 		int countcmt = adapter.CommentInObject_count(ObjectID);
@@ -290,9 +292,11 @@ public class IntroductionFragment extends Fragment {
 		adapter.close();
 
 		Users user = ut.getCurrentUser();
-		if (user == null || ObjectID != user.getId()) {
+		if (user == null || object.getUserId() != user.getId()) {
 			EditPage.setVisibility(View.INVISIBLE);
-
+			Toast.makeText(getActivity(),
+					"userid dar database sqlite be soorat dasti 0 save shode",
+					Toast.LENGTH_LONG).show();
 		} else
 			EditPage.setVisibility(View.VISIBLE);
 
@@ -315,6 +319,7 @@ public class IntroductionFragment extends Fragment {
 		if (bitHeader != null) {
 			Bitmap bmp1 = BitmapFactory.decodeByteArray(bitHeader, 0,
 					bitHeader.length);
+
 			headerImage.setImageBitmap(bmp1);
 		} else
 			headerImage.setImageResource(R.drawable.no_image_header);
@@ -323,6 +328,7 @@ public class IntroductionFragment extends Fragment {
 		if (bytepro != null) {
 			Bitmap bmp2 = BitmapFactory.decodeByteArray(bytepro, 0,
 					bytepro.length);
+
 			profileImage.setImageBitmap(bmp2);
 
 		} else
@@ -332,6 +338,7 @@ public class IntroductionFragment extends Fragment {
 		if (bytefoot != null) {
 			Bitmap bmp3 = BitmapFactory.decodeByteArray(bytefoot, 0,
 					bytefoot.length);
+
 			advertise2.setImageBitmap(bmp3);
 
 		} else
@@ -403,16 +410,20 @@ public class IntroductionFragment extends Fragment {
 			Pdf4.setImageResource(R.drawable.ic_video);
 		else
 			Pdf4.setImageResource(R.drawable.ic_video_off);
+		//
+		// headerbyte = object.getImage1();
+		// profilebyte = object.getImage2();
+		// footerbyte = object.getImage3();
 
-		headerbyte = object.getImage1();
-		profilebyte = object.getImage2();
-		footerbyte = object.getImage3();
+		// if (footerbyte != null) {
+		// Bitmap bmp = BitmapFactory.decodeByteArray(footerbyte, 0,
+		// footerbyte.length);
+		// OutputStream stream = null;
+		// bmp.compress(CompressFormat.PNG, 80, stream);
+		//
+		// advertise2.setImageBitmap(bmp);
+		// }
 
-		if (profilebyte != null) {
-			Bitmap bmp = BitmapFactory.decodeByteArray(profilebyte, 0,
-					profilebyte.length);
-			profileImage.setImageBitmap(bmp);
-		}
 		// advertise.setimage
 		Facebook.setOnClickListener(new OnClickListener() {
 
@@ -801,6 +812,16 @@ public class IntroductionFragment extends Fragment {
 		});
 
 		return view;
+
+	}
+
+	//
+
+	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.PNG, 50, outputStream);
+
+		return outputStream.toByteArray();
 
 	}
 

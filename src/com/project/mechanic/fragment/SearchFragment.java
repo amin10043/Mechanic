@@ -32,7 +32,7 @@ public class SearchFragment extends ListFragment {
 	private String[] cPage;
 	private String[] Page;
 	private EditText word;
-	String tableName = "Object";
+	String tableName = "Province";
 
 	private TextView status;
 	Fragment fragment;

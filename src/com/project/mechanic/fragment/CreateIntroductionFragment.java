@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -35,6 +36,7 @@ public class CreateIntroductionFragment extends Fragment {
 	private static int RESULT_LOAD_IMAGE = 1;
 	private static int HeaderCode = 2;
 	private static int FooterCode = 3;
+	int Object;
 
 	DataBaseAdapter DBAdapter;
 	ImageButton btnSave;
@@ -45,11 +47,11 @@ public class CreateIntroductionFragment extends Fragment {
 			addressEnter, DescriptionEnter;
 	Fragment fragment;
 	Utility util;
-	LinearLayout linearCreateProfil, headerLinear, footerLinear;
+	LinearLayout headerLinear, footerLinear;
 	RelativeLayout NetworkSocial, DownloadLink, nameEditRelative, namayendegi,
-			khadamat;
-	LinearLayout.LayoutParams profilParams, headerParams, footerParams,
-			nameParams;
+			khadamat, linearCreateProfil;
+	LinearLayout.LayoutParams headerParams, footerParams;
+	RelativeLayout.LayoutParams profilParams, nameParams;
 	DialogNetworkSocial dialognetwork;
 	DialogLinkDownload dialogDownload;
 
@@ -58,6 +60,7 @@ public class CreateIntroductionFragment extends Fragment {
 	public String Lfacebook, Llinkedin, Ltwitter, Lwebsite, Lgoogle,
 			Linstagram;
 	public String Lcatalog, Lprice, Lpdf, Lvideo;
+	Users currentUser;
 
 	// EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle,
 	// inInstagram;
@@ -68,9 +71,11 @@ public class CreateIntroductionFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_create_introduction,
 				null);
-
+		// Object = Integer.valueOf(getArguments().getString("I"));
 		DBAdapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
+
+		currentUser = util.getCurrentUser();
 
 		NetworkSocial = (RelativeLayout) view.findViewById(R.id.editNetwork);
 		DownloadLink = (RelativeLayout) view.findViewById(R.id.editdownload);
@@ -95,34 +100,34 @@ public class CreateIntroductionFragment extends Fragment {
 		namayendegi.setVisibility(View.GONE);
 		khadamat.setVisibility(View.GONE);
 
-		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id",
-				0);
-		final int id = sendDataID.getInt("main_Id", -1);
+		SharedPreferences sendParentID = getActivity().getSharedPreferences(
+				"Id", 0);
+		final int parentId = sendParentID.getInt("ParentId", -1);
 
-		Toast.makeText(getActivity(), id + "", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), " parentId create = " + parentId,
+				Toast.LENGTH_SHORT).show();
 
-		linearCreateProfil = (LinearLayout) view
+		linearCreateProfil = (RelativeLayout) view
 				.findViewById(R.id.linearCreateProfil);
 
 		headerLinear = (LinearLayout) view.findViewById(R.id.headerLinear);
 		footerLinear = (LinearLayout) view.findViewById(R.id.footerlinears);
 
-		profilParams = new LinearLayout.LayoutParams(
+		profilParams = new RelativeLayout.LayoutParams(
 				linearCreateProfil.getLayoutParams());
-		profilParams.width = (util.getScreenwidth() / 5);
-		profilParams.height = (util.getScreenwidth() / 5);
+		profilParams.width = (util.getScreenwidth() / 8);
+		profilParams.height = (util.getScreenwidth() / 8);
+		profilParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
 		headerParams = new LinearLayout.LayoutParams(
 				headerLinear.getLayoutParams());
 		headerParams.height = util.getScreenHeight() / 3;
-		headerLinear.setPadding(0, 0, 0, 20);
 
 		footerParams = new LinearLayout.LayoutParams(
 				footerLinear.getLayoutParams());
-		footerParams.width = util.getScreenwidth();
 		footerParams.height = util.getScreenHeight() / 3;
 
-		nameParams = new LinearLayout.LayoutParams(
+		nameParams = new RelativeLayout.LayoutParams(
 				linearCreateProfil.getLayoutParams());
 		nameParams.width = util.getScreenwidth() / 3;
 		nameParams.height = util.getScreenwidth() / 10;
@@ -136,6 +141,11 @@ public class CreateIntroductionFragment extends Fragment {
 		mobileEnter.setLayoutParams(edittextParams);
 		emailEnter.setLayoutParams(edittextParams);
 		addressEnter.setLayoutParams(edittextParams);
+
+		btnHeader.setLayoutParams(headerParams);
+		btnProfile.setLayoutParams(profilParams);
+		btnFooter.setLayoutParams(headerParams);
+		// NameEnter.setLayoutParams(nameParams);
 
 		btnProfile.setOnClickListener(new OnClickListener() {
 
@@ -207,23 +217,27 @@ public class CreateIntroductionFragment extends Fragment {
 			Toast.makeText(getActivity(), "Empty Bitmap", Toast.LENGTH_SHORT)
 					.show();
 
-		bitmapHeader = ((BitmapDrawable) btnHeader.getDrawable()).getBitmap();
-		bitmapProfil = ((BitmapDrawable) btnProfile.getDrawable()).getBitmap();
-		bitmapFooter = ((BitmapDrawable) btnFooter.getDrawable()).getBitmap();
-
-		if (bitmapHeader == null & bitmapProfil == null & bitmapFooter == null)
-
-			Toast.makeText(getActivity(), "Empty ByteArray", Toast.LENGTH_SHORT)
-					.show();
-
-		final byte[] byteHeader = getBitmapAsByteArray(bitmapHeader);
-		final byte[] byteProfil = getBitmapAsByteArray(bitmapProfil);
-		final byte[] byteFooter = getBitmapAsByteArray(bitmapFooter);
-
 		btnSave.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
+				bitmapHeader = ((BitmapDrawable) btnHeader.getDrawable())
+						.getBitmap();
+				bitmapProfil = ((BitmapDrawable) btnProfile.getDrawable())
+						.getBitmap();
+				bitmapFooter = ((BitmapDrawable) btnFooter.getDrawable())
+						.getBitmap();
+
+				if (bitmapHeader == null & bitmapProfil == null
+						& bitmapFooter == null)
+
+					Toast.makeText(getActivity(), "Empty ByteArray",
+							Toast.LENGTH_SHORT).show();
+
+				final byte[] byteHeader = getBitmapAsByteArray(bitmapHeader);
+				final byte[] byteProfil = getBitmapAsByteArray(bitmapProfil);
+				final byte[] byteFooter = getBitmapAsByteArray(bitmapFooter);
+
 				nameValue = NameEnter.getText().toString();
 				phoneValue = phoneEnter.getText().toString();
 				faxValue = faxEnter.getText().toString();
@@ -245,7 +259,8 @@ public class CreateIntroductionFragment extends Fragment {
 							emailValue, faxValue, descriptionValue, byteHeader,
 							byteProfil, byteFooter, Lcatalog, Lprice, Lpdf,
 							Lvideo, addressValue, mobileValue, Lfacebook,
-							Linstagram, Llinkedin, Lgoogle, Lwebsite, Ltwitter);
+							Linstagram, Llinkedin, Lgoogle, Lwebsite, Ltwitter,
+							currentUser.getId(), parentId);
 
 					DBAdapter.close();
 					getActivity().getSupportFragmentManager().popBackStack();
@@ -260,7 +275,7 @@ public class CreateIntroductionFragment extends Fragment {
 
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		bitmap.compress(CompressFormat.PNG, 0, outputStream);
+		bitmap.compress(CompressFormat.PNG, 50, outputStream);
 		return outputStream.toByteArray();
 	}
 
@@ -287,7 +302,7 @@ public class CreateIntroductionFragment extends Fragment {
 			btnProfile.setBackgroundColor(getResources().getColor(
 					android.R.color.transparent));
 			btnProfile.setLayoutParams(profilParams);
-			NameEnter.setLayoutParams(nameParams);
+			// NameEnter.setLayoutParams(nameParams);
 
 		}
 		if (requestCode == HeaderCode && resultCode == Activity.RESULT_OK
@@ -310,7 +325,7 @@ public class CreateIntroductionFragment extends Fragment {
 			btnHeader.setBackgroundColor(getResources().getColor(
 					android.R.color.transparent));
 			btnHeader.setLayoutParams(headerParams);
-			NameEnter.setLayoutParams(nameParams);
+			// NameEnter.setLayoutParams(nameParams);
 
 		}
 		if (requestCode == FooterCode && resultCode == Activity.RESULT_OK
@@ -333,7 +348,7 @@ public class CreateIntroductionFragment extends Fragment {
 			btnFooter.setBackgroundColor(getResources().getColor(
 					android.R.color.transparent));
 			btnFooter.setLayoutParams(headerParams);
-			NameEnter.setLayoutParams(nameParams);
+			// NameEnter.setLayoutParams(nameParams);
 
 		}
 

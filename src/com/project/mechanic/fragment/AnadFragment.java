@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.ListView.PullAndLoadListView;
 import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
@@ -65,6 +67,7 @@ public class AnadFragment extends Fragment {
 	private static int RESULT_LOAD_IMAGE = 1;
 	public static String picturePath;
 	int proID = -1;
+	int ticket;
 	private LinearLayout verticalOuterLayout;
 	List<Anad> list;
 	List<Ticket> subList;
@@ -107,6 +110,7 @@ public class AnadFragment extends Fragment {
 
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.anad);
 		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
+		//proID  = Integer.valueOf(getArguments().getString("ProID"));
 	
 		imgadd = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
 		txt1 = (TextView) view.findViewById(R.id.fragment_anad_txt1);
@@ -251,10 +255,11 @@ public class AnadFragment extends Fragment {
 
 	}
 
-	public void addImagesToView(List<Anad> lst) {
+	public void addImagesToView(final List<Anad> lst) {
 
 		for (I = 0; I < lst.size(); I++) {
 			byte[] tmpImage = lst.get(I).getImage();
+			
 			
 			final ImageButton imageButton = new ImageButton(getActivity());
 			if (tmpImage == null) {
@@ -270,7 +275,7 @@ public class AnadFragment extends Fragment {
 
 			}
 			imageButton.setTag(I);
-				
+			
 			imageButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
@@ -281,7 +286,6 @@ public class AnadFragment extends Fragment {
 							clickTimer = null;
 						}
 						clickedButton = (ImageButton) arg0;
-						
 						Toast.makeText(getActivity(), position+"",
 								Toast.LENGTH_LONG).show();
 
@@ -300,20 +304,135 @@ public class AnadFragment extends Fragment {
 								startAutoScrolling();
 							}
 						};
-
+						dbAdapter.open();
+						switch(proID) {
+						case 1:
+							 a=position+1;
+						break;
+						case 3:
+							 a=position+50+1;
+						break;
+						case 4:
+							a=position+80+1;
+						break;
+						case 5:
+							a=position+150+1;
+						break;
+						case 6:
+							a=position+200+1;		
+						break;
+						case 7:
+							a=position+230+1;			
+						break;
+						case 8:
+							a=position+260+1;				
+						break;
+						case 9:
+							a=position+360+1;											
+						break;
+						case 10:
+							a=position+390+1;											
+						break;
+						case 11:
+							a=position+420+1;												
+						break;
+						case 12:
+							a=position+470+1;												
+						break;
+						case 13:
+							a=position+500+1;									
+						break;
+						case 14:
+							a=position+530+1;					
+						break;
+						case 15:
+							a=position+560+1;											
+						break;
+						case 16:
+							a=position+590+1;											
+						break;
+						case 17:
+							a=position+620+1;									
+						break;
+						case 18:
+							a=position+670+1;											
+						break;
+						case 19:
+							a=position+700+1;											
+						break;
+						case 20:
+							a=position+750+1;												
+						break;
+						case 21:
+							a=position+780+1;					
+						break;
+						case 22:
+							a=position+830+1;					
+						break;
+						case 23:
+							a=position+860+1;						
+						break;
+						case 24:
+							a=position+890+1;				
+						break;
+						case 25:
+							a=position+920+1;							
+						break;
+						case 26:
+							a=position+970+1;						
+						break;
+						case 27:
+							a=position+1020+1;							
+						break;
+						case 28:
+							a=position+1070+1;
+						break;
+						case 29:
+							a=position+1120+1;					
+						break;
+						case 30:
+							a=position+1170+1;					
+						break;
+						case 31:
+							a=position+1200+1;							
+						break;
+						case -1:
+							a=position+1250+1;							
+						break;
+						case 2:
+							a=position+1350+1;						
+						break;
+						default:
+						}
+					
+						Anad t = dbAdapter.getAnadByid(a);
+						t.getObjectId();
 						clickTimer.schedule(clickSchedule, 1500);
 						if (u == null) {
 							Toast.makeText(getActivity(), " شما وارد نشده اید.",
 									Toast.LENGTH_LONG).show();
 							return;
+						}else{ if(t.getObjectId()==0){
+							dialog1 = new DialogAnadimg(getActivity(),
+									R.layout.dialog_imganad, AnadFragment.this,
+									ticketTypeid, proID,a);
+							dialog1.show();
+							a=0;
 						}else{
-						dialog1 = new DialogAnadimg(getActivity(),
-								R.layout.dialog_imganad, AnadFragment.this,
-								ticketTypeid, proID,position);
+							Toast.makeText(getActivity(), " عکس قبلا انتخاب شده",
+									Toast.LENGTH_LONG).show();
+							FragmentTransaction trans = ((MainActivity) getActivity())
+									.getSupportFragmentManager().beginTransaction();
+							IntroductionFragment fragment = new IntroductionFragment();
+							Bundle bundlei = new Bundle();
+							// bundle.putString("Id", String.valueOf(id));
+							bundlei.putString("I", String.valueOf(t.getObjectId()));
+							fragment.setArguments(bundlei);
+							trans.replace(R.id.content_frame, fragment);
+							trans.addToBackStack(null);
+							trans.commit();
+						}
 						
-						// dialog.setTitle(R.string.txtanad);
-
-						dialog1.show();
 						}
 					}
 				}
@@ -325,7 +444,7 @@ public class AnadFragment extends Fragment {
 			imageButton.setLayoutParams(params);
 			imageButton.setScaleType(ScaleType.FIT_XY);
 			verticalOuterLayout.addView(imageButton);
-		}
+			dbAdapter.close();		}
 	}
 
 	private class LoadMoreDataTask extends AsyncTask<Void, Void, Void> {
