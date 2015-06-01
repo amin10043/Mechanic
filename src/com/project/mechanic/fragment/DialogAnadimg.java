@@ -82,7 +82,6 @@ public class DialogAnadimg extends Dialog {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.dialog_addcomment);
-
 		// id = Integer.valueOf(getArguments().getString("Id"));
 
 		setContentView(resourceId);

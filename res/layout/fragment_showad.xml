@@ -4,7 +4,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#EAEAEA"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingTop="10dp" >
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -38,26 +39,33 @@
 
                     <ImageButton
                         android:id="@+id/imgLike_showAd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:background="@drawable/ic_star_off" />
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/ic_star_off"
+                        android:scaleType="fitXY" />
 
                     <ImageButton
                         android:id="@+id/imgShare_showAd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentTop="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="2dp"
                         android:layout_toLeftOf="@+id/imgLike_showAd"
                         android:background="@drawable/ic_share" />
 
                     <ImageButton
                         android:id="@+id/imgedite_showAd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="5dp"
                         android:background="@drawable/ic_edit"
                         android:visibility="invisible" />
                 </RelativeLayout>
@@ -214,16 +222,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:text="پس  از انجام معامله از صحت آگهی مطمئن شوید. این نرم افزار هیچگونه مسئولیتی در قبال این آگهی ندارد."
                     android:textColor="#000000" />
 
                 <Button
                     android:id="@+id/btn_report"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="100dp"
+                    android:layout_marginTop="20dp"
                     android:background="@drawable/buttonshape"
-                    android:text="گزارش آگهی" />
+                    android:paddingTop="5dp"
+                    android:text="گزارش آگهی"
+                    android:textSize="@dimen/txtsize10" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

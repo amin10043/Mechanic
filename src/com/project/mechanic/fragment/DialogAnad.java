@@ -44,6 +44,7 @@ public class DialogAnad extends Dialog {
 	Context context;
 	Fragment fragment;
 	int ticketTypeID;
+	int iduser;
 	int emailCheck = 0;
 	int nameCheck = 0;
 	int faxCheck = 0;
@@ -102,13 +103,26 @@ public class DialogAnad extends Dialog {
 		headerEditParams.height = util.getScreenHeight() / 5;
 		headerEditParams.width = util.getScreenHeight() / 5;
 		dialog_img1.setLayoutParams(headerEditParams);
-
+		dbadapter = new DataBaseAdapter(context);
+		u = util.getCurrentUser();
+		UName.setText(u.getName());
+		UMobile.setText(u.getMobailenumber());
+		if(u.getEmail()!=null){
+		UEmail.setText(u.getEmail());
+		}
+		if(u.getFaxnumber()!=null){
+		UFax.setText(u.getFaxnumber());
+		} 
+		if(u.getPhonenumber()!=null){
+		UPhonnumber.setText(u.getPhonenumber());
+		}
+		
+		
 		dialog_img2.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				dbadapter = new DataBaseAdapter(context);
-				u = util.getCurrentUser();
+				
 				if (u == null) {
 					Toast.makeText(context, " شما وارد نشده اید.",
 							Toast.LENGTH_LONG).show();

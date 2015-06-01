@@ -27,7 +27,7 @@
         <EditText
             android:id="@+id/dialog_anad_et2"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="100dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:ems="10"
