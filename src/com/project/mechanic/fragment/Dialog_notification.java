@@ -78,7 +78,9 @@ public class Dialog_notification extends Dialog {
 		ImageButton btnshowcmf = (ImageButton) findViewById(R.id.btnshowcmf);
 		ImageButton btnshowcmo = (ImageButton) findViewById(R.id.btnshowcmo);
 		ImageButton btnshowcmp = (ImageButton) findViewById(R.id.btnshowcmp);
-		final ListView listnewcm = (ListView) findViewById(R.id.listnewcm);
+		final ListView listnewcmf = (ListView) findViewById(R.id.listnewcmf);
+		final ListView listnewcmo = (ListView) findViewById(R.id.listnewcmo);
+		final ListView listnewcmp = (ListView) findViewById(R.id.listnewcmp);
 		//
 		adapter.open();
 		// Users u = util.getCurrentUser();
@@ -104,7 +106,7 @@ public class Dialog_notification extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				listnewcm.setAdapter(dataAdapter);
+				listnewcmf.setAdapter(dataAdapter);
 
 			}
 		});
@@ -113,7 +115,7 @@ public class Dialog_notification extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				listnewcm.setAdapter(dataAdapter1);
+				listnewcmo.setAdapter(dataAdapter1);
 
 			}
 		});
@@ -122,15 +124,55 @@ public class Dialog_notification extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				listnewcm.setAdapter(dataAdapter2);
+				listnewcmp.setAdapter(dataAdapter2);
 
 			}
+
 		});
+		// listnewcmf.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// // TODO Auto-generated method stub
+		// FragmentTransaction trans = ((FragmentActivity) context)
+		// .getSupportFragmentManager().beginTransaction();
+		// trans.replace(R.id.content_frame, new FroumFragment());
+		// trans.commit();
+		//
+		// }
+		// });
+		//
+		// listnewcmo.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// // TODO Auto-generated method stub
+		// FragmentTransaction trans = ((FragmentActivity) context)
+		// .getSupportFragmentManager().beginTransaction();
+		// trans.replace(R.id.content_frame, new ObjectFragment());
+		// trans.commit();
+		//
+		// }
+		// });
+		//
+		// listnewcmp.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// // TODO Auto-generated method stub
+		// FragmentTransaction trans = ((FragmentActivity) context)
+		// .getSupportFragmentManager().beginTransaction();
+		// trans.replace(R.id.content_frame, new PaperFragment());
+		// trans.commit();
+		//
+		// }
+		// });
 
 		// listcmnotification.setAdapter(dataAdapter);
 		// listcmnotification2.setAdapter(dataAdapter1);
 		// listcmnotification3.setAdapter(dataAdapter2);
 	}
+
 	// if (listcmnotification2 != null) {
 	//
 	// }

@@ -11,15 +11,17 @@ import android.widget.TextView;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInFroum;
+import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.utility.Utility;
 
 public class commentnotificationAdapter extends ArrayAdapter<CommentInFroum> {
 	Context context;
 	List<CommentInFroum> mylist;
+	List<Froum> mylist1;
 	DataBaseAdapter dbadapter;
-	Utility util;
+
+	// Utility util;
 
 	public commentnotificationAdapter(Context context, int resource,
 			List<CommentInFroum> list) {
@@ -28,7 +30,7 @@ public class commentnotificationAdapter extends ArrayAdapter<CommentInFroum> {
 		this.context = context;
 		this.mylist = list;
 		dbadapter = new DataBaseAdapter(context);
-		util = new Utility(context);
+		// util = new Utility(context);
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -42,31 +44,29 @@ public class commentnotificationAdapter extends ArrayAdapter<CommentInFroum> {
 		// convertView.findViewById(R.id.iBtnmessage);
 		TextView txt = (TextView) convertView
 				.findViewById(R.id.main_text_notification);
-
-		Users u = util.getCurrentUser();
-		int id = u.getId();
-
+		dbadapter.open();
+		// Users u = util.getCurrentUser();
+		// int id = u.getId();
+		// Froum d = mylist1.get(position);
 		CommentInFroum c = mylist.get(position);
-		if (id == c.getUserid()) {
+		// if (id == d.getUserId()) {
 
-			String m = c.getDesk();
-			txt.setText(m);
-			TextView txt1 = (TextView) convertView.findViewById(R.id.datenotif);
-			String m1 = c.getDatetime();
-			txt1.setText(m1);
+		String m = c.getDesk();
+		txt.setText(m);
+		TextView txt1 = (TextView) convertView.findViewById(R.id.datenotif);
+		String m1 = c.getDatetime();
+		txt1.setText(m1);
 
-			TextView txt2 = (TextView) convertView.findViewById(R.id.namenotif);
-			dbadapter.open();
+		TextView txt2 = (TextView) convertView.findViewById(R.id.namenotif);
 
-			int m2 = c.getUserid();
-			// List<Users> mylist2=(List<Users>) dbadapter.getUserById(m2);
+		int m2 = c.getUserid();
+		// List<Users> mylist2=(List<Users>) dbadapter.getUserById(m2);
 
-			Users u1 = dbadapter.getUserbyid(m2);
+		Users u1 = dbadapter.getUserbyid(m2);
 
-			txt2.setText(u1.getName());
+		txt2.setText(u1.getName());
 
-			dbadapter.close();
-		}
+		dbadapter.close();
 
 		// CommentInFroum comment = list.get(position);
 		// Users x = adapter.getUserbyid(comment.getUserid());

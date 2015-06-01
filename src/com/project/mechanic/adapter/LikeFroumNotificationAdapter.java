@@ -17,16 +17,20 @@ import com.project.mechanic.model.DataBaseAdapter;
 
 public class LikeFroumNotificationAdapter extends ArrayAdapter<LikeInFroum> {
 	Context context;
-	List<LikeInFroum> mylist1;
+	List<LikeInFroum> mylist;
+	List<Froum> mylist1;
 	DataBaseAdapter dbadapter;
+
+	// Utility util;
 
 	public LikeFroumNotificationAdapter(Context context, int resource,
 			List<LikeInFroum> list) {
 		super(context, resource, list);
 		// TODO Auto-generated constructor stub
 		this.context = context;
-		this.mylist1 = list;
+		this.mylist = list;
 		dbadapter = new DataBaseAdapter(context);
+		// util = new Utility(context);
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -36,18 +40,23 @@ public class LikeFroumNotificationAdapter extends ArrayAdapter<LikeInFroum> {
 
 		TextView txt = (TextView) convertView.findViewById(R.id.namenotif);
 		dbadapter.open();
-		LikeInFroum c = mylist1.get(position);
+		// Users u = util.getCurrentUser();
+		// int id = u.getId();
+		// Froum d = mylist1.get(position);
+		//
+		// if (id == d.getUserId()) {
+		LikeInFroum c = mylist.get(position);
 
 		int m2 = c.getUserid();
 		// List<Users> mylist2=(List<Users>) dbadapter.getUserById(m2);
 
-		Users u = dbadapter.getUserbyid(m2);
+		Users u1 = dbadapter.getUserbyid(m2);
 
-		txt.setText(u.getName());
+		txt.setText(u1.getName());
 
 		TextView txt1 = (TextView) convertView
 				.findViewById(R.id.main_text_notification);
-		LikeInFroum c1 = mylist1.get(position);
+		LikeInFroum c1 = mylist.get(position);
 		int m = c1.getFroumid();
 		Froum f = dbadapter.getFroumItembyid(m);
 		txt1.setText(f.getDescription());

@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/circle_notification"
+                   
                     android:orientation="horizontal" >
 
                     <TextView
@@ -52,6 +52,7 @@
                         android:layout_gravity="bottom|left"
                         android:layout_marginLeft="1dp"
                         android:layout_marginRight="1dp"
+                         android:background="@drawable/circle_notification"
                         android:text=""
                         android:textColor="@color/white"
                         android:textSize="@dimen/txtsize10" />

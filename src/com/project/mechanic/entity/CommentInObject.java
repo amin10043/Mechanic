@@ -12,13 +12,13 @@ public class CommentInObject {
 	int NumofDisLike;
 	int Seen;
 
-	public CommentInObject(int id, String description, int froumid, int userid,
-			String datetime, int commentid, int NumofLike, int NumofDislike,
-			int seen) {
+	public CommentInObject(int id, String description, int objectid,
+			int userid, String datetime, int commentid, int NumofLike,
+			int NumofDislike, int seen) {
 		super();
 		Id = id;
 		Description = description;
-		Objectid = froumid;
+		Objectid = objectid;
 		Userid = userid;
 		Datetime = datetime;
 		Commentid = commentid;
@@ -51,12 +51,12 @@ public class CommentInObject {
 		Description = description;
 	}
 
-	public int getFroumid() {
+	public int getObjectid() {
 		return Objectid;
 	}
 
-	public void setFroumid(int froumid) {
-		Objectid = froumid;
+	public void setObjectid(int objectid) {
+		Objectid = objectid;
 	}
 
 	public int getUserid() {

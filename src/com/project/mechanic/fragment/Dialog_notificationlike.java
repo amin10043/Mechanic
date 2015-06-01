@@ -57,7 +57,9 @@ public class Dialog_notificationlike extends Dialog {
 		ImageButton btnshowlikef = (ImageButton) findViewById(R.id.btnshowlikef);
 		ImageButton btnshowlikeo = (ImageButton) findViewById(R.id.btnshowlikeo);
 		ImageButton btnshowlikep = (ImageButton) findViewById(R.id.btnshowlikep);
-		final ListView listnewlike = (ListView) findViewById(R.id.listnewlike);
+		final ListView listnewlikef = (ListView) findViewById(R.id.listnewlikef);
+		final ListView listnewlikeo = (ListView) findViewById(R.id.listnewlikeo);
+		final ListView listnewlikep = (ListView) findViewById(R.id.listnewlikep);
 
 		// listnotificationlike= (ListView)
 		// findViewById(R.id.listnotificationlike);
@@ -84,21 +86,21 @@ public class Dialog_notificationlike extends Dialog {
 		final LikePaperNotificationAdapter dataAdapter2 = new LikePaperNotificationAdapter(
 				context, R.layout.row_notification_list, mylist2);
 
-		btnshowlikef.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				listnewlike.setAdapter(dataAdapter);
-
-			}
-		});
 		btnshowlikeo.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				listnewlike.setAdapter(dataAdapter1);
+				listnewlikeo.setAdapter(dataAdapter);
+
+			}
+		});
+		btnshowlikef.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				listnewlikef.setAdapter(dataAdapter1);
 
 			}
 		});
@@ -107,10 +109,46 @@ public class Dialog_notificationlike extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				listnewlike.setAdapter(dataAdapter2);
+				listnewlikep.setAdapter(dataAdapter2);
 
 			}
 		});
+		// listnewlikef.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// // TODO Auto-generated method stub
+		// FragmentTransaction trans = ((FragmentActivity) context)
+		// .getSupportFragmentManager().beginTransaction();
+		// trans.replace(R.id.content_frame, new FroumFragment());
+		// trans.commit();
+		//
+		// }
+		// });
+		// listnewlikeo.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// // TODO Auto-generated method stub
+		// FragmentTransaction trans = ((FragmentActivity) context)
+		// .getSupportFragmentManager().beginTransaction();
+		// trans.replace(R.id.content_frame, new ObjectFragment());
+		// trans.commit();
+		//
+		// }
+		// });
+		// listnewlikep.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// // TODO Auto-generated method stub
+		// FragmentTransaction trans = ((FragmentActivity) context)
+		// .getSupportFragmentManager().beginTransaction();
+		// trans.replace(R.id.content_frame, new PaperFragment());
+		// trans.commit();
+		//
+		// }
+		// });
 
 		// if(listnotificationlike!=null){
 		// listnotificationlike.setAdapter(dataAdapter);}
