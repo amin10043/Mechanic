@@ -429,7 +429,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	}
 
 	private boolean isValidName(String name) {
-		String Name_PATTERN = "[a-zA-Z0-9-ا-ی ]+";
+		String Name_PATTERN = "[a-zA-Z0-9ا-ی ]+";
 		// String Name_PATTERN = "[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)" +
 		// "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)" ;
 		Pattern pattern = Pattern.compile(Name_PATTERN);

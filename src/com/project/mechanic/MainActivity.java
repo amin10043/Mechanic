@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -339,8 +338,8 @@ public class MainActivity extends FragmentActivity {
 		setActivityTitle(R.string.strMain);
 
 		// @MK for set period time for repeat your code by mHandler
-		// mHandler = new Handler();
-		// mHandler.postDelayed(mStatusChecker, mInterval);
+		mHandler = new Handler();
+		mHandler.postDelayed(mStatusChecker, mInterval);
 		Intent intent = new Intent(MainActivity.this, HelloService.class);
 		startService(intent);
 
@@ -352,8 +351,8 @@ public class MainActivity extends FragmentActivity {
 		// calendar.set(Calendar.YEAR, 2013);
 		// calendar.set(Calendar.DAY_OF_MONTH, 13);
 
-		calendar.set(Calendar.HOUR_OF_DAY, 4);
-		calendar.set(Calendar.MINUTE, 46);
+		calendar.set(Calendar.HOUR_OF_DAY, 3);
+		calendar.set(Calendar.MINUTE, 26);
 		calendar.set(Calendar.SECOND, 00);
 		calendar.set(Calendar.AM_PM, Calendar.PM);
 
@@ -366,22 +365,22 @@ public class MainActivity extends FragmentActivity {
 				pendingIntent);
 	}
 
-	// Runnable mStatusChecker = new Runnable() {
-	//
-	// @Override
-	// public void run() {
-	// util.Notification();
-	// mHandler.postDelayed(mStatusChecker, mInterval);
-	// }
-	// };
+	Runnable mStatusChecker = new Runnable() {
 
-	// void startRepeatingTask() {
-	// mStatusChecker.run();
-	// }
-	//
-	// void stopRepeatingTask() {
-	// mHandler.removeCallbacks(mStatusChecker);
-	// }
+		@Override
+		public void run() {
+			util.Notification();
+			mHandler.postDelayed(mStatusChecker, mInterval);
+		}
+	};
+
+	void startRepeatingTask() {
+		mStatusChecker.run();
+	}
+
+	void stopRepeatingTask() {
+		mHandler.removeCallbacks(mStatusChecker);
+	}
 
 	public void setActivityTitle(int title) {
 		TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
@@ -475,68 +474,69 @@ public class MainActivity extends FragmentActivity {
 					.replace(R.id.content_frame, fragment).commit();
 			break;
 		case 6:
-			new AlertDialog.Builder(this)
-					.setMessage("آیا میخواهید از برنامه خارج شوید؟")
-					.setPositiveButton("بله",
-							new DialogInterface.OnClickListener() {
-
-								// do something when the button is clicked
-								public void onClick(DialogInterface arg0,
-										int arg1) {
-
-									finish();
-									// close();
-
-								}
-							})
-					.setNegativeButton("نه میخوام نظر بدم",
-							new DialogInterface.OnClickListener() {
-
-								// do something when the button is clicked
-								public void onClick(DialogInterface arg0,
-										int arg1) {
-
-									Intent browserIntent = new Intent(
-											Intent.ACTION_EDIT,
-											Uri.parse("http://cafebazaar.ir/app/com.example.dynacord/?l=fa"));
-									startActivity(browserIntent);
-
-								}
-							}).show();
-
+			ConfirmAlert();
 			break;
 		}
 
 		mDrawerList.setItemChecked(position, true);
 		mDrawerLayout.closeDrawer(mDrawerList);
+
 	}
 
-	// public boolean onKeyDown(int keyCode, KeyEvent event) {
-	// if (keyCode == KeyEvent.KEYCODE_BACK) {
-	// exitByBackKey();
-	//
-	// // moveTaskToBack(false);
-	//
-	// return true;
-	// }
-	// return super.onKeyDown(keyCode, event);
-	// }
-	//
-	// protected void exitByBackKey() {
-	//
-	// new AlertDialog.Builder(MainActivity.this)
-	// .setTitle("خروج از برنامه")
-	// .setMessage("آیا از خروج اطمینان دارید؟")
-	// .setNegativeButton("خیر", null)
-	// .setPositiveButton("بله",
-	// new DialogInterface.OnClickListener() {
-	//
-	// public void onClick(DialogInterface arg0, int arg1) {
-	// finish();
-	// System.exit(0);
-	// }
-	// }).create().show();
-	//
-	// }
+	@Override
+	public void onBackPressed() {
+		Fragment f = getSupportFragmentManager().findFragmentById(
+				R.id.content_frame);
 
+		String page = "";
+		if (f instanceof MainFragment) {
+			page = "FragmentOne";
+			ConfirmAlert();
+		}
+
+		else {
+			super.onBackPressed();
+		}
+	}
+
+	private void ConfirmAlert() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("خروج از برنامه");
+		builder.setMessage("آیا از خروج اطمینان دارید؟")
+				.setCancelable(false)
+				.setPositiveButton("بــــله",
+						new DialogInterface.OnClickListener() {
+
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+								onYesClick();
+
+							}
+
+						})
+				.setNegativeButton("خــیر",
+						new DialogInterface.OnClickListener() {
+
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+								onNoClick();
+							}
+						});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+
+	private void onYesClick() {
+		Intent setIntent = new Intent(Intent.ACTION_MAIN);
+		setIntent.addCategory(Intent.CATEGORY_HOME);
+		setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(setIntent);
+
+		MainActivity.this.finish();
+
+	}
+
+	private void onNoClick() {
+
+	}
 }

@@ -1,7 +1,6 @@
 package com.project.mechanic.adapter;
 
 import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -17,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.ListItem;
@@ -25,106 +23,109 @@ import com.project.mechanic.fragment.BerandFragment;
 import com.project.mechanic.fragment.MainBrandFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
+
 public class BerandListAdapter extends ArrayAdapter<ListItem> {
 
-	Context context;
-	List<ListItem> list;
-	ListItem tempItem;
-	DataBaseAdapter adapter;
-	int itemId;
-	int lastPosition = 0;
+    Context         context;
+    List<ListItem>  list;
+    ListItem        tempItem;
+    DataBaseAdapter adapter;
+    int             itemId;
+    int             lastPosition = 0;
 
-	public BerandListAdapter(Context context, int resource,
-			List<ListItem> objact, int id) {
-		super(context, resource, objact);
 
-		this.context = context;
-		this.list = objact;
-		adapter = new DataBaseAdapter(context);
-		this.itemId = id;
+    public BerandListAdapter(Context context, int resource,
+                             List<ListItem> objact, int id) {
+        super(context, resource, objact);
 
-	}
+        this.context = context;
+        this.list = objact;
+        adapter = new DataBaseAdapter(context);
+        this.itemId = id;
 
-	@SuppressLint("ViewHolder")
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+    }
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.row_berand, parent, false);
+    @SuppressLint("ViewHolder")
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-		Animation animation = AnimationUtils.loadAnimation(getContext(),
-				(position > lastPosition) ? R.anim.up_from_bottom
-						: R.anim.down_from_top);
-		convertView.startAnimation(animation);
-		TextView txtName = (TextView) convertView
-				.findViewById(R.id.row_berand_txt);
+        LayoutInflater myInflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		// img.setBackgroundResource(R.drawable.google);
+        convertView = myInflater.inflate(R.layout.row_berand, parent, false);
 
-		tempItem = list.get(position);
-		txtName.setText(tempItem.getName());
+        Animation animation = AnimationUtils.loadAnimation(getContext(),
+                (position > lastPosition) ? R.anim.up_from_bottom
+                        : R.anim.down_from_top);
+        convertView.startAnimation(animation);
+        TextView txtName = (TextView) convertView
+                .findViewById(R.id.row_berand_txt);
 
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		txtName.setTypeface(typeFace);
+        // img.setBackgroundResource(R.drawable.google);
 
-		String item = txtName.getText().toString();
+        tempItem = list.get(position);
+        txtName.setText(tempItem.getName());
 
-		final ImageView img = (ImageView) convertView
-				.findViewById(R.id.icon_item);
+        Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
+                "fonts/BROYA.TTF");
+        txtName.setTypeface(typeFace);
 
-		convertView.setOnClickListener(new OnClickListener() {
+        String item = txtName.getText().toString();
 
-			@Override
-			public void onClick(View v) {
+        final ImageView img = (ImageView) convertView
+                .findViewById(R.id.icon_item);
 
-				RelativeLayout parentlayout = (RelativeLayout) v;
-				TextView txtName = (TextView) parentlayout
-						.findViewById(R.id.row_berand_txt);
-				String item = txtName.getText().toString();
+        convertView.setOnClickListener(new OnClickListener() {
 
-				int id = 0;
-				for (ListItem listItem : list) {
-					if (item.equals(listItem.getName())) {
-						// check authentication and authorization
-						id = listItem.getId();
-					}
-				}
+            @Override
+            public void onClick(View v) {
 
-				adapter.open();
-				int res = adapter.getNumberOfListItemChilds(id);
+                RelativeLayout parentlayout = (RelativeLayout) v;
+                TextView txtName = (TextView) parentlayout
+                        .findViewById(R.id.row_berand_txt);
+                String item = txtName.getText().toString();
 
-				adapter.close();
+                int id = 0;
+                for (ListItem listItem: list) {
+                    if (item.equals(listItem.getName())) {
+                        // check authentication and authorization
+                        id = listItem.getId();
+                    }
+                }
 
-				if (res > 0) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					BerandFragment fragment = new BerandFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
+                adapter.open();
+                int res = adapter.getNumberOfListItemChilds(id);
 
-				} else {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					MainBrandFragment fragment = new MainBrandFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
+                adapter.close();
 
-					trans.commit();
-				}
-			}
-		});
+                if (res > 0) {
+                    FragmentTransaction trans = ((MainActivity) context)
+                            .getSupportFragmentManager().beginTransaction();
+                    BerandFragment fragment = new BerandFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Id", String.valueOf(id));
+                    fragment.setArguments(bundle);
+                    trans.replace(R.id.content_frame, fragment);
+                    trans.addToBackStack(null);
+                    trans.commit();
 
-		return convertView;
+                } else {
+                    FragmentTransaction trans = ((MainActivity) context)
+                            .getSupportFragmentManager().beginTransaction();
+                    MainBrandFragment fragment = new MainBrandFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Id", String.valueOf(id));
+                    fragment.setArguments(bundle);
+                    trans.replace(R.id.content_frame, fragment);
+                    trans.addToBackStack(null);
 
-	}
+                    trans.commit();
+                }
+            }
+        });
+
+        return convertView;
+
+    }
 }

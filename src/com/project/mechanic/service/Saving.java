@@ -88,6 +88,8 @@ public class Saving extends AsyncTask<Map<String, String>, Integer, String> {
 			envelope.implicitTypes = true;
 			envelope.setOutputSoapObject(request);
 			HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS);
+			httpTransport
+					.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 			// Object response = null;
 			httpTransport.call(SOAP_ACTION, envelope);
 			Object response = envelope.getResponse();
