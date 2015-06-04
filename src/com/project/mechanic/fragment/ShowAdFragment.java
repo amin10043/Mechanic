@@ -45,6 +45,7 @@ public class ShowAdFragment extends Fragment {
 	ImageButton share, edite, like;
 	Utility util;
 	Users u;
+	Ticket t;
 	private Dialog_show_fragment dialog;
 	private Dialog_report dialog_report;
 	int proID = -1;
@@ -82,7 +83,7 @@ public class ShowAdFragment extends Fragment {
 
 		dbAdapter.open();
 
-		Ticket t = dbAdapter.getTicketById(id);
+		 t = dbAdapter.getTicketById(id);
 		a = t.getId();
 		userTicket = t.getUserId();
 		boolean check = dbAdapter.isUserFavorite(userTicket, a);
@@ -172,7 +173,7 @@ public class ShowAdFragment extends Fragment {
 				Intent sharingIntent = new Intent(
 						android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
-				String shareBody = "Here is the share content body";
+				String shareBody = t.getDesc();
 				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
 						"Subject Here");
 				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,

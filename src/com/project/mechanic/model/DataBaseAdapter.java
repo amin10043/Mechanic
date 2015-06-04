@@ -556,14 +556,14 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertTickettoDbemptyImage(String Title, String desc,
+	public void insertTickettoDbemptyImage(int id,String Title, String desc,
 			int userId, String date, int typeId, int name, int email,
 			int mobile, int phone, int fax, int provinceId, String uname,
 			String uemail, String uphonnumber, String ufax, String uadress,
 			String umobile) {
 
 		ContentValues cv = new ContentValues();
-
+		cv.put("Id", id);
 		cv.put("Title", Title);
 		cv.put("Desc", desc);
 		cv.put("UserId", userId);
