@@ -104,7 +104,7 @@ public class CreateIntroductionFragment extends Fragment {
 				"Id", 0);
 		final int parentId = sendParentID.getInt("ParentId", -1);
 
-		Toast.makeText(getActivity(), " parentId create = " + parentId,
+		Toast.makeText(getActivity(), " parentId recieve = " + parentId,
 				Toast.LENGTH_SHORT).show();
 
 		linearCreateProfil = (RelativeLayout) view
