@@ -125,6 +125,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> {
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				FroumFragment fragment = new FroumFragment();
+				trans.setCustomAnimations(R.anim.pull_in_left,
+						R.anim.push_out_right);
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
 				fragment.setArguments(bundle);

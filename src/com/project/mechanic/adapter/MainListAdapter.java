@@ -132,6 +132,8 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					BerandFragment fragment = new BerandFragment();
+					trans.setCustomAnimations(R.anim.pull_in_left,
+							R.anim.push_out_right);
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
 					fragment.setArguments(bundle);
@@ -142,6 +144,8 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 				} else if (id == 2) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
+					trans.setCustomAnimations(R.anim.pull_in_left,
+							R.anim.push_out_right);
 					Fragment ostan = new ProvinceFragment();
 					trans.addToBackStack(null);
 					trans.replace(R.id.content_frame, ostan);
@@ -151,6 +155,8 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 				} else if (id == 3) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
+					trans.setCustomAnimations(R.anim.pull_in_left,
+							R.anim.push_out_right);
 					trans.replace(R.id.content_frame, new Province2Fragment());
 					trans.addToBackStack(null);
 					trans.commit();
@@ -159,6 +165,8 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
+					trans.setCustomAnimations(R.anim.pull_in_left,
+							R.anim.push_out_right);
 					trans.replace(R.id.content_frame, new Province3Fragment());
 					trans.addToBackStack(null);
 					trans.commit();
@@ -168,6 +176,8 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					NewsFragment fragment = new NewsFragment();
+					trans.setCustomAnimations(R.anim.pull_in_left,
+							R.anim.push_out_right);
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
 					fragment.setArguments(bundle);
@@ -183,6 +193,8 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					CountryFragment fragment = new CountryFragment();
+					trans.setCustomAnimations(R.anim.pull_in_left,
+							R.anim.push_out_right);
 					// Bundle bundle = new Bundle();
 					// bundle.putString("Id", String.valueOf(id));
 					// fragment.setArguments(bundle);
@@ -193,6 +205,8 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 				} else if (id == 7) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
+					trans.setCustomAnimations(R.anim.pull_in_left,
+							R.anim.push_out_right);
 					trans.replace(R.id.content_frame, new FroumtitleFragment());
 					trans.addToBackStack(null);
 					trans.commit();
