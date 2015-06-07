@@ -50,7 +50,6 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	public View onCreateView(android.view.LayoutInflater inflater,
 			android.view.ViewGroup container, Bundle savedInstanceState) {
 
-		// ((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
 		view = inflater.inflate(R.layout.fragment_titlefrm, null);
 		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 
@@ -63,8 +62,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			addtitle.setVisibility(View.INVISIBLE);
 		mdb.open();
 		mylist = mdb.getAllFroum();
-		if (mylist != null && mylist.size() > 0)
-			u = mdb.getUserById(mylist.get(userItemId++).getUserId());
+
 		mdb.close();
 
 		date = new ServerDate(getActivity());
@@ -138,16 +136,20 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 	@Override
 	public void processFinish(String output) {
-		if ("".equals(output) && output != null) {
-			serverDate = output;
-			updating = new UpdatingImage(getActivity());
-			updating.delegate = this;
-			maps = new LinkedHashMap<String, String>();
-			maps.put("tableName", "Users");
-			maps.put("Id", String.valueOf(u.getId()));
-			maps.put("fromDate", u.getImageServerDate());
-			updating.execute(maps);
-
+		if (!"".equals(output) && output != null) {
+			if (mylist != null && mylist.size() > 0) {
+				mdb.open();
+				u = mdb.getUserById(mylist.get(userItemId).getUserId());
+				mdb.close();
+				serverDate = output; // agar khata dashte bashad !
+				updating = new UpdatingImage(getActivity());
+				updating.delegate = this;
+				maps = new LinkedHashMap<String, String>();
+				maps.put("tableName", "Users");
+				maps.put("Id", String.valueOf(u.getId()));
+				maps.put("fromDate", u.getImageServerDate());
+				updating.execute(maps);
+			}
 		}
 	}
 }
