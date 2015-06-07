@@ -41,14 +41,14 @@ import android.widget.Toast;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
-import com.project.mechanic.inter.GetAsyncInterface;
+import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.SavingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class RegisterFragment extends Fragment implements AsyncInterface,
-		GetAsyncInterface {
+		SaveAsyncInterface {
 
 	protected static final Context Contaxt = null;
 	int resourceId;
@@ -77,7 +77,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	TextView txtclickpic;
 	private Toast toast;
 	ViewGroup toastlayout;
-
+	Users u;
 	SavingImage savingImage;
 	private boolean firstTime = true;
 
@@ -326,61 +326,26 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 
 						savingImage.delegate = this;
 						savingImage.execute(it);
+						dbAdapter.inserUserToDb(serverId, Name, null, Pass,
+								null, Mobile, null, null, Image, 0, txtdate);
 					}
 				} else {
 					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
 							null, Mobile, null, null, 0, txtdate);
+					LayoutInflater inflater4 = getLayoutInflater(getArguments());
+					View view4 = inflater4.inflate(R.layout.toast_define,
+							toastlayout);
+					utile.showtoast(view4, R.drawable.massage,
+							"اطلاعات مورد نظر ثبت شد", "پیغام");
+
+					toast = new Toast(getActivity());
+					toast.setGravity(Gravity.CENTER, 0, 0);
+					toast.setDuration(Toast.LENGTH_LONG);
+					toast.setView(view4);
+					toast.show();
 				}
-
 				dbAdapter.close();
-
-				LayoutInflater inflater4 = getLayoutInflater(getArguments());
-				View view4 = inflater4.inflate(R.layout.toast_define,
-						toastlayout);
-				utile.showtoast(view4, R.drawable.massage,
-						"اطلاعات مورد نظر ثبت شد", "پیغام");
-
-				toast = new Toast(getActivity());
-				toast.setGravity(Gravity.CENTER, 0, 0);
-				toast.setDuration(Toast.LENGTH_LONG);
-				toast.setView(view4);
-				toast.show();
-
-				// if ("true".equals(output)) {
-				// SharedPreferences settings = getActivity()
-				// .getSharedPreferences("user", 0);
-				// SharedPreferences.Editor editor = settings.edit();
-				// editor.putBoolean("isLogin", true);
-				//
-				// // ثبت اطلاعات کاربر در دیتا بیس هم حتما انجام گیرد. فراموش
-				// // نشود!!!!
-				//
-				// FragmentTransaction trans = getActivity()
-				// .getSupportFragmentManager().beginTransaction();
-				// trans.replace(R.id.content_frame, new MainFragment());
-				// trans.commit();
-				// dbAdapter.open();
-				// u = dbAdapter.getUserbymobailenumber(mobileNumber);
-				// if (u != null) {
-				// int id = u.getId();
-				// int admin = 1;
-				// dbAdapter.UpdateAdminUserToDb(id, admin);
-				// }
-				// dbAdapter.close();
-				// // } else {
-				// Toast.makeText(
-				// getActivity(),
-				// "شما وارد شده اید اما شماره تلفن به درستی وارد نشده است.",
-				// Toast.LENGTH_SHORT).show();
-				// }
-				// Toast.makeText(getActivity(), "شما وارد شده اید.",
-				// Toast.LENGTH_SHORT).show();
-				//
-				// }
-
-			}
-
-			else {
+			} else {
 				LayoutInflater inflater5 = getLayoutInflater(getArguments());
 				View view5 = inflater5.inflate(R.layout.toast_define,
 						toastlayout);
@@ -456,9 +421,38 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	}
 
 	@Override
-	public void processFinish(byte[] output) {
-		// TODO Auto-generated method stub
+	public void processFinishSaveImage(String output) {
+		int res = 0;
+		try {
+			res = Integer.valueOf(output);
+			if (res > 0) {
+				SharedPreferences settings = getActivity()
+						.getSharedPreferences("user", 0);
+				SharedPreferences.Editor editor = settings.edit();
+				editor.putBoolean("isLogin", true);
 
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+				dbAdapter.open();
+				u = dbAdapter.getUserbymobailenumber(Mobile);
+				if (u != null) {
+					int id = u.getId();
+					int admin = 1;
+					dbAdapter.UpdateAdminUserToDb(id, admin);
+				}
+				dbAdapter.close();
+				Toast.makeText(getActivity(), "شما وارد شده اید.",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getActivity(), "خطا در ثبت عکس",
+						Toast.LENGTH_SHORT).show();
+			}
+
+		} catch (Exception ex) {
+			Toast.makeText(getActivity(), "خطا در ثبت عکس", Toast.LENGTH_SHORT)
+					.show();
+		}
 	}
-
 }
