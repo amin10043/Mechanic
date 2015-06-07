@@ -312,8 +312,10 @@ public class IntroductionEditFragment extends Fragment {
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		bitmap.compress(CompressFormat.PNG, 50, outputStream);
-
+		byte[] array = outputStream.toByteArray();
+		BitmapFactory.decodeByteArray(array, 0, array.length);
 		return outputStream.toByteArray();
+
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {

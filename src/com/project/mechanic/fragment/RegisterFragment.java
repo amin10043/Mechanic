@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -45,11 +46,14 @@ import android.widget.Toast;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.SavingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class RegisterFragment extends Fragment implements AsyncInterface {
+public class RegisterFragment extends Fragment implements AsyncInterface,
+		SaveAsyncInterface {
 
 	protected static final Context Contaxt = null;
 	int resourceId;
@@ -78,11 +82,14 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	TextView txtclickpic;
 	private Toast toast;
 	ViewGroup toastlayout;
+	Users u;
+	SavingImage savingImage;
+	private boolean firstTime = true;
+
 	View view2;
+	// ////////////
 	Uri selectedImage;
 	private Uri picUri;
-	// /////////////////////////////////////
-
 	private Button select;
 	ProgressDialog imageloadprogressdialog;
 	private static final int CAMERA_PIC_REQUEST = 1337;
@@ -91,7 +98,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 	private static final int PICK_FROM_GALLERY = 2;
 	final int CROP_PIC = 3;
 
-	// //////////////////////////////////////////////////
+	// /////////
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		bitmap.compress(CompressFormat.PNG, 0, outputStream);
@@ -239,7 +246,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 
 					service.delegate = RegisterFragment.this;
 					service.execute(items);
-					// old place
 
 				}
 
@@ -316,6 +322,9 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		return view;
 	}
 
+	// ////////////////////////////////////////////////////crop
+	// image////////////////
+
 	public void do_cam_work() {
 		imageloadprogressdialog = ProgressDialog.show(getActivity(), "",
 				"Loading Camera.Please wait..");
@@ -370,89 +379,62 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		}
 	}
 
+	// /////////
+	@Override
 	public void processFinish(String output) {
 		ringProgressDialog.dismiss();
-		SharedPreferences settings = getActivity().getSharedPreferences("user",
-				0);
-		SharedPreferences.Editor editor = settings.edit();
 
 		try {
 			serverId = Integer.valueOf(output);
-			// Toast.makeText(getActivity(), "" + serverId, Toast.LENGTH_SHORT)
-			// .show();
+
+			// saveImage
 			if (serverId > 0) {
 
 				server.edit().putInt("srv_id", serverId).commit();
 
 				dbAdapter.open();
 
-				if ((btnaddpic1.getDrawable() == null)) {
+				if ((btnaddpic1.getDrawable() != null) && firstTime) {
 
-					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
-							null, Mobile, null, null, 0, txtdate);
-
-				} else {
 					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
 							.getBitmap();
 
 					Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
 							bitmap.getHeight(), bitmap.getConfig());
 
-					if (bitmap.sameAs(emptyBitmap)) {
-						dbAdapter.inserUsernonpicToDb(serverId, Name, null,
-								Pass, null, Mobile, null, null, 0, txtdate);
-					} else {
-						byte[] Image = getBitmapAsByteArray(bitmap);
+					firstTime = false;
+					if (!bitmap.sameAs(emptyBitmap)) {
 
+						byte[] Image = getBitmapAsByteArray(bitmap);
+						savingImage = new SavingImage(getActivity());
+						Map<String, Object> it = new LinkedHashMap<String, Object>();
+						it.put("tableName", "Users");
+						it.put("fieldName", "Image");
+						it.put("id", serverId);
+						it.put("Image", Image);
+
+						savingImage.delegate = this;
+						savingImage.execute(it);
 						dbAdapter.inserUserToDb(serverId, Name, null, Pass,
 								null, Mobile, null, null, Image, 0, txtdate);
-
 					}
-				}
+				} else {
+					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
+							null, Mobile, null, null, 0, txtdate);
+					LayoutInflater inflater4 = getLayoutInflater(getArguments());
+					View view4 = inflater4.inflate(R.layout.toast_define,
+							toastlayout);
+					utile.showtoast(view4, R.drawable.massage,
+							"اطلاعات مورد نظر ثبت شد", "پیغام");
 
-				dbAdapter.close();
-
-				LayoutInflater inflater4 = getLayoutInflater(getArguments());
-				View view4 = inflater4.inflate(R.layout.toast_define,
-						toastlayout);
-				utile.showtoast(view4, R.drawable.massage,
-						"اطلاعات مورد نظر ثبت شد", "پیغام");
-
-				toast = new Toast(getActivity());
-				toast.setGravity(Gravity.CENTER, 0, 0);
-				toast.setDuration(Toast.LENGTH_LONG);
-				toast.setView(view4);
-				toast.show();
-
-				editor.putBoolean("isLogin", true);
-
-				// // ثبت اطلاعات کاربر در دیتا بیس هم حتما انجام گیرد. فراموش
-				// // نشود!!!!
-				//
-				// FragmentTransaction trans = getActivity()
-				// .getSupportFragmentManager().beginTransaction();
-				// trans.replace(R.id.content_frame, new MainFragment());
-				// trans.commit();
-				dbAdapter.open();
-				Users u = dbAdapter.getUserbymobailenumber(Mobile);
-				if (u != null) {
-					int id = u.getId();
-					int admin = 1;
-					dbAdapter.UpdateAdminUserToDb(id, admin);
+					toast = new Toast(getActivity());
+					toast.setGravity(Gravity.CENTER, 0, 0);
+					toast.setDuration(Toast.LENGTH_LONG);
+					toast.setView(view4);
+					toast.show();
 				}
 				dbAdapter.close();
-				// // } else {
-				// Toast.makeText(
-				// getActivity(),
-				// "شما وارد شده اید اما شماره تلفن به درستی وارد نشده است.",
-				// Toast.LENGTH_SHORT).show();
-				// }
-				Toast.makeText(getActivity(), "شما وارد شده اید.",
-						Toast.LENGTH_SHORT).show();
-				//
-			}
-
-			else {
+			} else {
 				LayoutInflater inflater5 = getLayoutInflater(getArguments());
 				View view5 = inflater5.inflate(R.layout.toast_define,
 						toastlayout);
@@ -464,96 +446,28 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 				toast.setDuration(Toast.LENGTH_LONG);
 				toast.setView(view5);
 				toast.show();
-				editor.putBoolean("isLogin", false);
 			}
-
-			editor.commit();
-
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT).show();
 		}
 
 	}
 
-	// FragmentTransaction trans = getActivity()
-	// .getSupportFragmentManager().beginTransaction();
-	// trans.replace(R.id.content_frame, new LoginFragment());
-	// trans.commit();
-
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		super.onActivityResult(requestCode, resultCode, data);
 
-		// if (requestCode == RESULT_LOAD_IMAGE
-		// && resultCode == Activity.RESULT_OK && null != data) {
-		// Uri selectedImage = data.getData();
-		// String[] filePathColumn = { MediaStore.Images.Media.DATA };
-		//
-		// Cursor cursor = getActivity().getContentResolver().query(
-		// selectedImage, filePathColumn, null, null, null);
-		// cursor.moveToFirst();
-		//
-		// int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-		// String picturePath = cursor.getString(columnIndex);
-		// cursor.close();
-		//
-		// // ImageView btnaddpic1 = (ImageView) view
-		// // .findViewById(R.id.btnaddpic);
-		// btnaddpic1.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-		// btnaddpic1.setBackgroundColor(getResources().getColor(
-		// android.R.color.transparent));
-		//
-		// btnaddpic1.setLayoutParams(lp);
-		// // txtclickpic.setVisibility(View.INVISIBLE);
-		// }
-
-		imageloadprogressdialog.dismiss();
+		// imageloadprogressdialog.dismiss();
 		if (resultCode == 0) {
 			imageloadprogressdialog.dismiss();
 		} else if (requestCode == PICK_FROM_CAMERA) {
 
 			picUri = data.getData();
 			performCrop();
-			// if (requestCode == CROP_PIC) {
-			// // get the returned data
-			// Bundle extras = data.getExtras();
-			// // get the cropped bitmap
-			// Bitmap thePic = extras.getParcelable("data");
-			// // ImageView picView = (ImageView) findViewById(R.id.picture);
-			// btnaddpic1.setImageBitmap(thePic);
-			// }
-			// Bundle extras_cam = data.getExtras();
-			// Bitmap photo = null;
-			// if (extras_cam != null) {
-			// photo = extras_cam.getParcelable("data");
-			// btnaddpic1.setImageBitmap(photo);
-			//
-			// try {
-			// Drawable myDrawable = Drawable.createFromXml(
-			// getResources(),
-			// getResources().getXml(R.drawable.facebook));
-			// btnaddpic1.setBackgroundDrawable(myDrawable);
-			// } catch (Exception ex) {
-			// System.out.println("exception camera" + ex);
-			// }
-			// btnaddpic1.setPadding(3, 3, 3, 3);
-			// String extStorageDirectory = Environment
-			// .getExternalStorageDirectory().toString();
-			// FileOutputStream outStream = null;
-			// File file = new File(extStorageDirectory, "tmp.jpg");
-			// try {
-			// outStream = new FileOutputStream(file);
-			// photo.compress(Bitmap.CompressFormat.JPEG, 72, outStream);
-			// outStream.flush();
-			// outStream.close();
-			// } catch (Exception e) {
-			// }
-			// // String &nbsp;
-			// //
-			// uploaded_image_physcl_path_for_db_thumbsize=extStorageDirectory+"/tmp.jpg";
-			// }
 
-		} else if (requestCode == PICK_FROM_GALLERY) {
+		}
+
+		else if (requestCode == PICK_FROM_GALLERY) {
 			Bundle extras = data.getExtras();
 			Bitmap photo2 = null;
 			if (extras != null) {
@@ -585,10 +499,11 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 			Toast.makeText(getActivity(), "Picture NOt taken",
 					Toast.LENGTH_LONG).show();
 		}
+
 	}
 
 	private boolean isValidName(String name) {
-		String Name_PATTERN = "[a-zA-Z0-9-ا-ی ]+";
+		String Name_PATTERN = "[a-zA-Z0-9ا-ی ]+";
 		// String Name_PATTERN = "[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)" +
 		// "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)" ;
 		Pattern pattern = Pattern.compile(Name_PATTERN);
@@ -614,11 +529,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		return matcher.matches();
 	}
 
-	// @Override
-	// public void processFinish(byte[] output) {
-	// // TODO Auto-generated method stub
-	//
-	// }
+	// ///////////////////////////////crop/////////
 
 	private void performCrop() {
 		// take care of exceptions
@@ -650,4 +561,39 @@ public class RegisterFragment extends Fragment implements AsyncInterface {
 		}
 	}
 
+	@Override
+	public void processFinishSaveImage(String output) {
+		int res = 0;
+		try {
+			res = Integer.valueOf(output);
+			if (res > 0) {
+				SharedPreferences settings = getActivity()
+						.getSharedPreferences("user", 0);
+				SharedPreferences.Editor editor = settings.edit();
+				editor.putBoolean("isLogin", true);
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+				dbAdapter.open();
+				u = dbAdapter.getUserbymobailenumber(Mobile);
+				if (u != null) {
+					int id = u.getId();
+					int admin = 1;
+					dbAdapter.UpdateAdminUserToDb(id, admin);
+				}
+				dbAdapter.close();
+				Toast.makeText(getActivity(), "شما وارد شده اید.",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getActivity(), "خطا در ثبت عکس",
+						Toast.LENGTH_SHORT).show();
+			}
+
+		} catch (Exception ex) {
+			Toast.makeText(getActivity(), "خطا در ثبت عکس", Toast.LENGTH_SHORT)
+					.show();
+		}
+	}
 }

@@ -81,12 +81,12 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 					params.put("TableName", "CommentInFroum");
 
 					params.put("Desk", Cmttxt.getText().toString());
-					params.put("FroumID", String.valueOf(Froumid));
+					params.put("FroumId", String.valueOf(Froumid));
 					params.put("UserId", String.valueOf(user.getId()));
 					params.put("Date", currentDate);
 					params.put("CommentId", String.valueOf(Commentid));
-					params.put("NumOfDislike", String.valueOf(0));
-					params.put("NumOfLike", String.valueOf(0));
+					params.put("NumofDisLike", String.valueOf(0));
+					params.put("NumofLike", String.valueOf(0));
 
 					saving.execute(params);
 				}

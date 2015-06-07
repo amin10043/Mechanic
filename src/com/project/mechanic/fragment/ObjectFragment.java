@@ -7,13 +7,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -29,6 +29,7 @@ public class ObjectFragment extends Fragment {
 	private Intent intent;
 	Users currentUser;
 	Utility util;
+	DialogCreatePage dialog;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -41,7 +42,8 @@ public class ObjectFragment extends Fragment {
 		SharedPreferences sendData = getActivity()
 				.getSharedPreferences("Id", 0);
 		int id = sendData.getInt("main_Id", -1);
-		int city_id = Integer.valueOf(getArguments().getString("cityId"));
+		Toast.makeText(getActivity(), "id = " + id, Toast.LENGTH_SHORT).show();
+		final int city_id = Integer.valueOf(getArguments().getString("cityId"));
 
 		adapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
@@ -59,19 +61,14 @@ public class ObjectFragment extends Fragment {
 
 		lstObject.setAdapter(ListAdapter);
 
-		if (currentUser == null) {
-			createPage.setVisibility(View.GONE);
-		}
-
 		createPage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame,
-						new CreateIntroductionFragment());
-				trans.commit();
+
+				dialog = new DialogCreatePage(getActivity());
+				dialog.show();
+
 			}
 		});
 

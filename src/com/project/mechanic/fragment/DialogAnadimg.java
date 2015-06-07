@@ -67,7 +67,7 @@ public class DialogAnadimg extends Dialog {
 		this.fragment = fragment;
 		this.ticketTypeID = ticketTypeID;
 		this.ProvinceId = ProvinceId;
-		this.i=i;
+		this.i = i;
 
 	}
 
@@ -111,8 +111,8 @@ public class DialogAnadimg extends Dialog {
 				Bundle bundle = new Bundle();
 				Bundle bundlei = new Bundle();
 				// bundle.putString("Id", String.valueOf(id));
-				//if (ProvinceId >= 0)
-				//	bundle.putString("ProID", String.valueOf(ProvinceId));
+				// if (ProvinceId >= 0)
+				// bundle.putString("ProID", String.valueOf(ProvinceId));
 				bundlei.putString("I", String.valueOf(i));
 				fragment.setArguments(bundle);
 				fragment.setArguments(bundlei);

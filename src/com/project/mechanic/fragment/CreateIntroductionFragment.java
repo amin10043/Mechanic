@@ -104,7 +104,7 @@ public class CreateIntroductionFragment extends Fragment {
 				"Id", 0);
 		final int parentId = sendParentID.getInt("ParentId", -1);
 
-		Toast.makeText(getActivity(), " parentId create = " + parentId,
+		Toast.makeText(getActivity(), " parentId recieve = " + parentId,
 				Toast.LENGTH_SHORT).show();
 
 		linearCreateProfil = (RelativeLayout) view
@@ -255,12 +255,15 @@ public class CreateIntroductionFragment extends Fragment {
 				else {
 
 					DBAdapter.open();
-					DBAdapter.InsertInformationNewObject(nameValue, phoneValue,
-							emailValue, faxValue, descriptionValue, byteHeader,
-							byteProfil, byteFooter, Lcatalog, Lprice, Lpdf,
-							Lvideo, addressValue, mobileValue, Lfacebook,
-							Linstagram, Llinkedin, Lgoogle, Lwebsite, Ltwitter,
-							currentUser.getId(), parentId);
+					// اینجا خطا میداد کامنت کردم اگر خطایش برطرف شده است کامنت
+					// آن را بردارید.
+					// DBAdapter.InsertInformationNewObject(nameValue,
+					// phoneValue,
+					// emailValue, faxValue, descriptionValue, byteHeader,
+					// byteProfil, byteFooter, Lcatalog, Lprice, Lpdf,
+					// Lvideo, addressValue, mobileValue, Lfacebook,
+					// Linstagram, Llinkedin, Lgoogle, Lwebsite, Ltwitter,
+					// currentUser.getId(), parentId);
 
 					DBAdapter.close();
 					getActivity().getSupportFragmentManager().popBackStack();
