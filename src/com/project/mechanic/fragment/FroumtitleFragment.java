@@ -63,7 +63,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			addtitle.setVisibility(View.INVISIBLE);
 		mdb.open();
 		mylist = mdb.getAllFroum();
-		u = mdb.getUserById(mylist.get(userItemId++).getUserId());
+		if (mylist != null && mylist.size() > 0)
+			u = mdb.getUserById(mylist.get(userItemId++).getUserId());
 		mdb.close();
 
 		date = new ServerDate(getActivity());
