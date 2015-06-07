@@ -16,12 +16,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
@@ -50,12 +53,14 @@ public class ShowAdFragment extends Fragment {
 	int proID = -1;
 	int f;
 	private boolean isFavorite = false;
+	RelativeLayout headerRelative, iconRelative;
+	RelativeLayout.LayoutParams headerParams, shareParams, likeParams;
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		//((MainActivity) getActivity()).setActivityTitle(R.string.showad);
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.showad);
 		id = Integer.valueOf(getArguments().getString("Id"));
 		util = new Utility(getActivity());
 		View view = inflater.inflate(R.layout.fragment_showad, null);
@@ -87,9 +92,9 @@ public class ShowAdFragment extends Fragment {
 		userTicket = t.getUserId();
 		boolean check = dbAdapter.isUserFavorite(userTicket, a);
 		if (check) {
-			like.setImageResource(R.drawable.ic_star_on);
+			like.setBackgroundResource(R.drawable.like_anad_on);
 		} else {
-			like.setImageResource(R.drawable.ic_star_off);
+			like.setBackgroundResource(R.drawable.like_anad_off);
 		}
 
 		like.setSelected(check);
@@ -109,6 +114,45 @@ public class ShowAdFragment extends Fragment {
 			edite.setVisibility(1);
 		}
 
+		headerRelative = (RelativeLayout) view.findViewById(R.id.headerAnad);
+		headerParams = new RelativeLayout.LayoutParams(
+				headerRelative.getLayoutParams());
+		headerParams.width = (int) (util.getScreenwidth() / 1.5);
+		headerParams.height = util.getScreenHeight() / 5;
+
+		iconRelative = (RelativeLayout) view.findViewById(R.id.iconAnad);
+
+		shareParams = new RelativeLayout.LayoutParams(
+				iconRelative.getLayoutParams());
+		shareParams.width = util.getScreenwidth() / 3;
+		shareParams.height = util.getScreenHeight() / 10;
+		shareParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+		img.setLayoutParams(headerParams);
+		share.setLayoutParams(shareParams);
+
+		likeParams = new RelativeLayout.LayoutParams(
+				iconRelative.getLayoutParams());
+		likeParams.width = util.getScreenwidth() / 3;
+		likeParams.height = util.getScreenHeight() / 10;
+		likeParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		likeParams.addRule(RelativeLayout.BELOW, R.id.imgShare_showAd);
+
+		like.setLayoutParams(likeParams);
+		final EditText DescriptionReport = (EditText) view
+				.findViewById(R.id.descriptionEdit);
+		RadioGroup rd = (RadioGroup) view.findViewById(R.id.rb1);
+
+		rd.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(RadioGroup arg0, int checkedId) {
+				DescriptionReport.setVisibility(View.VISIBLE);
+				btnreport.setVisibility(View.VISIBLE);
+
+			}
+		});
+
 		like.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -117,12 +161,15 @@ public class ShowAdFragment extends Fragment {
 					dbAdapter.open();
 					dbAdapter.deletebyIdTicket(a);
 					dbAdapter.close();
-					like.setImageResource(R.drawable.ic_star_off);
+					like.setBackgroundResource(R.drawable.like_anad_off);
+					like.setLayoutParams(likeParams);
+
 				} else {
 					dbAdapter.open();
 					dbAdapter.insertFavoritetoDb(0, u.getId(), a);
 					dbAdapter.close();
-					like.setImageResource(R.drawable.ic_star_on);
+					like.setBackgroundResource(R.drawable.like_anad_on);
+					like.setLayoutParams(likeParams);
 
 				}
 				isFavorite = !isFavorite;
