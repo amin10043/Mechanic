@@ -463,7 +463,41 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		} else if (requestCode == PICK_FROM_CAMERA) {
 
 			picUri = data.getData();
-			performCrop();
+			try {
+				// call the standard crop action intent (the user device may not
+				// support it)
+				Intent cropIntent = new Intent("com.android.camera.action.CROP");
+				// indicate image type and Uri
+				cropIntent.setDataAndType(picUri, "image/*");
+				// set crop properties
+				cropIntent.putExtra("crop", "true");
+				// indicate aspect of desired crop
+				cropIntent.putExtra("aspectX", 2);
+				cropIntent.putExtra("aspectY", 1);
+				// indicate output X and Y
+				cropIntent.putExtra("outputX", 256);
+				cropIntent.putExtra("outputY", 256);
+				// retrieve data on return
+				cropIntent.putExtra("return-data", true);
+				// start the activity - we handle returning in onActivityResult
+
+				// // get the returned data
+				Bundle extras = data.getExtras();
+				// // get the cropped bitmap
+				Bitmap thePic = extras.getParcelable("data");
+				// // ImageView picView = (ImageView)
+				// findViewById(R.id.picture);
+				btnaddpic1.setImageBitmap(thePic);
+				imageloadprogressdialog.dismiss();
+
+			}
+			// respond to users whose devices do not support the crop action
+			catch (ActivityNotFoundException anfe) {
+				Toast toast = Toast.makeText(getActivity(),
+						"This device doesn't support the crop action!",
+						Toast.LENGTH_SHORT);
+				toast.show();
+			}
 
 		}
 
@@ -473,6 +507,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			if (extras != null) {
 				photo2 = extras.getParcelable("data");
 				btnaddpic1.setImageBitmap(photo2);
+				imageloadprogressdialog.dismiss();
 				try {
 					Drawable myDrawable = Drawable.createFromXml(
 							getResources(),
@@ -533,32 +568,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 
 	private void performCrop() {
 		// take care of exceptions
-		try {
-			// call the standard crop action intent (the user device may not
-			// support it)
-			Intent cropIntent = new Intent("com.android.camera.action.CROP");
-			// indicate image type and Uri
-			cropIntent.setDataAndType(picUri, "image/*");
-			// set crop properties
-			cropIntent.putExtra("crop", "true");
-			// indicate aspect of desired crop
-			cropIntent.putExtra("aspectX", 2);
-			cropIntent.putExtra("aspectY", 1);
-			// indicate output X and Y
-			cropIntent.putExtra("outputX", 256);
-			cropIntent.putExtra("outputY", 256);
-			// retrieve data on return
-			cropIntent.putExtra("return-data", true);
-			// start the activity - we handle returning in onActivityResult
-			startActivityForResult(cropIntent, CROP_PIC);
-		}
-		// respond to users whose devices do not support the crop action
-		catch (ActivityNotFoundException anfe) {
-			Toast toast = Toast.makeText(getActivity(),
-					"This device doesn't support the crop action!",
-					Toast.LENGTH_SHORT);
-			toast.show();
-		}
+
 	}
 
 	@Override
