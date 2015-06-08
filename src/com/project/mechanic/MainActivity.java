@@ -274,59 +274,6 @@ public class MainActivity extends FragmentActivity {
 			}
 		});
 
-		// iBtnShare.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// Intent sharingIntent = new Intent(
-		// android.content.Intent.ACTION_SEND);
-		// sharingIntent.setType("text/plain");
-		// String shareBody = "Here is the share content body";
-		// sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-		// "Subject Here");
-		// sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-		// shareBody);
-		// startActivity(Intent.createChooser(sharingIntent,
-		// "اشتراک از طریق"));
-		//
-		// }
-		// });
-		//
-		// iBtnBack.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// if (lastFragment != null) {
-		// FragmentTransaction trans = getSupportFragmentManager()
-		// .beginTransaction();
-		// trans.replace(R.id.content_frame, lastFragment);
-		// trans.addToBackStack(null);
-		// trans.commit();
-		// } else {
-		// Intent intent = new Intent(MainActivity.this,
-		// SplashActivity.class);
-		// startActivity(intent);
-		// }
-		//
-		// }
-		// });
-		//
-		// iBtnFavorite.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// if (isFavorite) {
-		// iBtnFavorite
-		// .setImageResource(android.R.drawable.btn_star_big_off);
-		// } else {
-		//
-		// iBtnFavorite
-		// .setImageResource(android.R.drawable.btn_star_big_on);
-		// }
-		// isFavorite = !isFavorite;
-		// }
-		// });
-		//
 		txtTitle.setText(R.string.strMain);
 
 		FragmentTransaction trans = getSupportFragmentManager()
@@ -429,11 +376,6 @@ public class MainActivity extends FragmentActivity {
 			// ////////////////////////////////////////////////
 
 			if (util.getCurrentUser() != null) {
-
-				// // SharedPreferences sendData =
-				// this.getSharedPreferences("Id",
-				// // 0);
-				// //sendData.edit().putInt("main_Id", Service).commit();
 				fragment = new DisplayPersonalInformationFragment();
 				fragmentManager = getSupportFragmentManager();
 				fragmentManager.beginTransaction()
@@ -451,8 +393,6 @@ public class MainActivity extends FragmentActivity {
 
 		case 2:
 
-		case 3:
-
 			fragment = new Favorite_Fragment();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
@@ -460,20 +400,20 @@ public class MainActivity extends FragmentActivity {
 
 			break;
 
-		case 4:
+		case 3:
 			fragment = new FragmentAboutUs();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
 			break;
 
-		case 5:
+		case 4:
 			fragment = new FragmentContactUs();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
 			break;
-		case 6:
+		case 5:
 			ConfirmAlert();
 			break;
 		}
