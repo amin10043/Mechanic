@@ -14,6 +14,7 @@ import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -62,6 +63,7 @@ public class Dialog_report extends Dialog {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.dialog_addcomment);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(resourceId);
 		// id = Integer.valueOf(getArguments().getString("Id"));
 
