@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="1dp"
-    android:background="@drawable/shape_froum_reply"
-    android:padding="10dp" >
+    android:background="@drawable/shape_froum_reply" >
 
     <RelativeLayout
         android:id="@+id/main_icon_reply"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp" >
 
@@ -26,8 +25,8 @@
             android:id="@+id/name_replyed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
+            android:layout_alignBottom="@+id/icon_reply_comment"
+            android:layout_marginRight="5dp"
             android:layout_toLeftOf="@+id/icon_reply_comment"
             android:text="Name"
             android:textColor="@color/transparent" />
@@ -49,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/main_icon_reply"
+        android:layout_marginRight="5dp"
         android:gravity="right"
         android:text="reply meesage"
         android:textColor="@color/transparent" />

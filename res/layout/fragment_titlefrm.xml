@@ -28,7 +28,7 @@
             android:layout_centerInParent="true"
             android:layout_toLeftOf="@+id/imgBtnAddcmt_CmtFroum"
             android:gravity="center"
-            android:text="نظرات و تجربیات خود را با سایر کاربران به اشتراک بگذارید"
+            android:text="نظرات و تجربیات خود را  به اشتراک بگذارید"
             android:textColor="@color/transparent" />
     </RelativeLayout>
 

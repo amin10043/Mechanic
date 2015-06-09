@@ -44,7 +44,7 @@ public class show_pay_fragment extends Fragment {
 	int id;
 	int i;
 	int T;
-	int a=0;
+	int a = 0;
 	Utility util;
 	LinearLayout.LayoutParams headerEditParams;
 	LinearLayout Lheader;
@@ -60,8 +60,8 @@ public class show_pay_fragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		((MainActivity) getActivity()).setActivityTitle(R.string.showad);
-		 i = Integer.valueOf(getArguments().getString("I"));
-	
+		i = Integer.valueOf(getArguments().getString("I"));
+
 		// if (getArguments().getString("ProID") != null) {
 		// proID = Integer.valueOf(getArguments().getString("ProID"));
 		// }
@@ -121,15 +121,15 @@ public class show_pay_fragment extends Fragment {
 				dbAdapter.open();
 				com.project.mechanic.entity.Object o = dbAdapter
 						.getObjectByName(b);
-				dbAdapter.UpdateAnadToDb(i,bytes, o.getId(), date, 0, id);	
+				dbAdapter.UpdateAnadToDb(i, bytes, o.getId(), date, 0, id);
 				dbAdapter.close();
 				FragmentTransaction trans = ((MainActivity) getActivity())
 						.getSupportFragmentManager().beginTransaction();
 				AnadFragment fragment = new AnadFragment();
 				Bundle bundle = new Bundle();
-				 bundle.putString("Id", String.valueOf(id));
+				bundle.putString("Id", String.valueOf(id));
 				if (id >= 0)
-		    	bundle.putString("ProID", String.valueOf(id));
+					bundle.putString("ProID", String.valueOf(id));
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.addToBackStack(null);

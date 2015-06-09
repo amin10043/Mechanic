@@ -1,30 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </RelativeLayout>
-
-    <EditText
-        android:id="@+id/editText_report"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:ems="10"
-        android:gravity="right"
-        android:hint="توضیحات" >
-
-        <requestFocus />
-    </EditText>
-
-    <Button
-        android:id="@+id/Button_report"
+    <LinearLayout
+        android:id="@+id/linearReportEdittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/buttonshape"
-        android:text="ارسال" />
+        android:background="@color/background_dialog_color"
+        android:orientation="vertical" >
 
-</LinearLayout>
+        <RelativeLayout
+            style="@style/header_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="گزارش آگهی"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/editText_report"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:ems="10"
+                android:hint="توضیحات" >
+
+                <requestFocus />
+            </EditText>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="left" >
+
+            <Button
+                android:id="@+id/Button_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonshape"
+                android:text="ثبت" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

@@ -42,8 +42,8 @@ import com.project.mechanic.utility.Utility;
 public class WelcomeScreen extends Activity implements AsyncInterface {
 
 	private LinearLayout verticalOuterLayout;
-	private ImageButton btnNext, btnExit, btnins1, btnint1, btngp1, btnfb1,
-			btntw1, btnlink1;
+	// private ImageButton btnNext, btnExit, btnins1, btnint1, btngp1, btnfb1,
+	// btntw1, btnlink1;
 
 	LinearLayout row1, row2, row3, row4, row5, row6, row7, row8,
 			row_Displacement, row_network;
@@ -81,18 +81,19 @@ public class WelcomeScreen extends Activity implements AsyncInterface {
 		setContentView(R.layout.activity_welcome_screen);
 
 		adapter = new DataBaseAdapter(this);
+		util = new Utility(this);
 
-		boolean isFirstTime = false;
+		// boolean isFirstTime = false;
 
 		adapter.open();
 		settings = adapter.getSettings();
 		adapter.close();
-		util = new Utility(this);
 
 		String tableUpdating = "User";
 		serviceUpdate = new Updating(this);
 		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating, settings.getServerDate_Users());
+		serviceUpdate.execute(tableUpdating,
+				settings != null ? settings.getServerDate_Users() : "");
 
 		tableUpdating = "Paper";
 		serviceUpdate = new Updating(this);
@@ -758,12 +759,6 @@ public class WelcomeScreen extends Activity implements AsyncInterface {
 	@Override
 	public void processFinish(String output) {
 		util.parseQuery(output);
-
-		// String tableUpdating = "Paper";
-		// serviceUpdate = new Updating(this);
-		// serviceUpdate.delegate = this;
-		// serviceUpdate.execute(tableUpdating,
-		// (settings != null ? settings.getServerDate() : ""));
 
 	}
 }

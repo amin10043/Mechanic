@@ -220,8 +220,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 				} else {
 					if (adapter.isUserLikedFroum(IDcurrentUser, froumid)) {
 						adapter.open();
-						likeTopic
-								.setBackgroundResource(R.drawable.like_froum_off);
 						int c = adapter.LikeInFroum_count(froumid) - 1;
 						countLike.setText(String.valueOf(c));
 
@@ -237,10 +235,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 						adapter.close();
 					} else {
 						adapter.open();
-						likeTopic.setBackgroundResource(R.drawable.like_froum);
-
-						// start : for sync with server
-
 						params = new LinkedHashMap<String, String>();
 						saving = new Saving(getActivity());
 						saving.delegate = FroumFragment.this;
@@ -251,11 +245,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 						params.put("FroumId", String.valueOf(froumid));
 						params.put("CommentId", "0");
 						params.put("Date", currentDate);
-
 						saving.execute(params);
-
-						// end : for sync with server
-
 						countLike.setText(adapter.LikeInFroum_count(froumid)
 								.toString());
 
@@ -343,21 +333,22 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		int id = -1;
 		try {
 			id = Integer.valueOf(output);
-
-			adapter.open();
-			if (adapter.isUserLikedFroum(id, froumid)) {
-				adapter.deleteLikeFromFroum(id, froumid);
-
-			} else {
-				adapter.insertLikeInFroumToDb(id, froumid, currentDate, 0);
-				adapter.close();
-				countLike
-						.setText(adapter.LikeInFroum_count(froumid).toString());
-			}
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "خطا در ارتباط با سرور",
 					Toast.LENGTH_SHORT).show();
 		}
+		adapter.open();
+		if (adapter.isUserLikedFroum(id, froumid)) {
+			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+			adapter.deleteLikeFromFroum(id, froumid);
+
+		} else {
+			likeTopic.setBackgroundResource(R.drawable.like_froum);
+			adapter.insertLikeInFroumToDb(id, froumid, currentDate, 0);
+
+			countLike.setText(adapter.LikeInFroum_count(froumid).toString());
+		}
+		adapter.close();
 
 	}
 

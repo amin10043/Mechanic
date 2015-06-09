@@ -4,9 +4,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.kobjects.base64.Base64;
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.MarshalBase64;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
@@ -74,15 +77,15 @@ public class UpdatingImage extends
 
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 					SoapEnvelope.VER11);
+			new MarshalBase64().register(envelope);
 			envelope.dotNet = true;
 			envelope.setAddAdornments(false);
 			envelope.implicitTypes = true;
 			envelope.setOutputSoapObject(request);
 			HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS);
-			// Object response = null;
 			httpTransport.call(SOAP_ACTION, envelope);
-			Object response = envelope.getResponse();
-			res = (byte[]) response;
+			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+			res = Base64.decode(response.toString());
 		} catch (Exception e) {
 			response = e.toString();
 		}
