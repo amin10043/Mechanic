@@ -28,49 +28,49 @@
                     android:id="@+id/fragment_anad_imgadd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:scaleType="fitXY"
                     android:src="@drawable/no_image_header" />
+            </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/iconAnad"
+            <LinearLayout
+                android:id="@+id/iconAnad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/imgShare_showAd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:orientation="vertical" >
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/ic_share_froum" />
 
-                    <ImageButton
-                        android:id="@+id/imgShare_showAd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/anad_share" />
+                <ImageButton
+                    android:id="@+id/imgLike_showAd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/imgShare_showAd"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/like_anad_off" />
 
-                    <ImageButton
-                        android:id="@+id/imgLike_showAd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_below="@+id/imgShare_showAd"
-                        android:background="@drawable/like_anad_off" />
-                </RelativeLayout>
-            </RelativeLayout>
+                <ImageButton
+                    android:id="@+id/imgedite_showAd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_edit"
+                    android:visibility="visible" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="right" >
-
-                <ImageButton
-                    android:id="@+id/imgedite_showAd"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/ic_edit"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <LinearLayout
@@ -241,34 +241,25 @@
                 android:background="@drawable/headershape"
                 android:orientation="vertical" >
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center" >
-
-                    <TextView
-                        android:id="@+id/dangrousTxt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_margin="10dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_toRightOf="@+id/dangrousIcon"
-                        android:gravity="center"
-                        android:text="هشدار"
-                        android:textColor="@color/transparent" />
+                    android:layout_gravity="center" >
 
                     <ImageView
                         android:id="@+id/dangrousIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
                         android:background="@drawable/ic_dangrous" />
-                </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/dangrousTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="هشدار"
+                        android:textColor="@color/transparent" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -380,14 +371,29 @@
                         android:hint="توضیح درمورد گزارش"
                         android:visibility="gone" />
 
-                    <Button
-                        android:id="@+id/btn_report"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/headershape"
-                        android:text="ارسال"
-                        android:textSize="@dimen/txtsize10"
-                        android:visibility="gone" />
+                        android:orientation="horizontal" >
+
+                        <Button
+                            android:id="@+id/btn_report"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/headershape"
+                            android:text="ارسال"
+                            android:textSize="@dimen/txtsize10"
+                            android:visibility="gone" />
+
+                        <Button
+                            android:id="@+id/btn_cancel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/headershape"
+                            android:text="انصراف"
+                            android:textSize="@dimen/txtsize10"
+                            android:visibility="gone" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

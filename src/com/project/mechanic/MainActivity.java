@@ -34,6 +34,7 @@ import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.fragment.Dialog_notification;
 import com.project.mechanic.fragment.Dialog_notificationlike;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
+import com.project.mechanic.fragment.ExitDialog;
 import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.FragmentAboutUs;
 import com.project.mechanic.fragment.FragmentContactUs;
@@ -436,30 +437,33 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	private void ConfirmAlert() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("خروج از برنامه");
-		builder.setMessage("آیا از خروج اطمینان دارید؟")
-				.setCancelable(false)
-				.setPositiveButton("بــــله",
-						new DialogInterface.OnClickListener() {
 
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.dismiss();
-								onYesClick();
+		ExitDialog exDialog = new ExitDialog(MainActivity.this);
 
-							}
-
-						})
-				.setNegativeButton("خــیر",
-						new DialogInterface.OnClickListener() {
-
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.cancel();
-								onNoClick();
-							}
-						});
-		AlertDialog alert = builder.create();
-		alert.show();
+		exDialog.show();
+		// AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// builder.setMessage("آیا از خروج اطمینان دارید؟")
+		// .setCancelable(false)
+		// .setPositiveButton("بــــله",
+		// new DialogInterface.OnClickListener() {
+		//
+		// public void onClick(DialogInterface dialog, int id) {
+		// dialog.dismiss();
+		// onYesClick();
+		//
+		// }
+		//
+		// })
+		// .setNegativeButton("خــیر",
+		// new DialogInterface.OnClickListener() {
+		//
+		// public void onClick(DialogInterface dialog, int id) {
+		// dialog.cancel();
+		// onNoClick();
+		// }
+		// });
+		// AlertDialog alert = builder.create();
+		// alert.show();
 	}
 
 	private void onYesClick() {
