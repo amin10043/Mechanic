@@ -534,6 +534,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			Toast.makeText(getActivity(), "Picture NOt taken",
 					Toast.LENGTH_LONG).show();
 		}
+		// btnaddpic1.setLayoutParams(lp);
 
 	}
 
