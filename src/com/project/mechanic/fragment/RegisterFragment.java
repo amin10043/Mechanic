@@ -508,6 +508,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			if (extras != null) {
 				photo2 = extras.getParcelable("data");
 				btnaddpic1.setImageBitmap(photo2);
+
 				imageloadprogressdialog.dismiss();
 				try {
 					Drawable myDrawable = Drawable.createFromXml(
@@ -535,6 +536,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			Toast.makeText(getActivity(), "Picture NOt taken",
 					Toast.LENGTH_LONG).show();
 		}
+		btnaddpic1.setLayoutParams(lp);
 
 	}
 
