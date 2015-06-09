@@ -231,10 +231,6 @@ public class MainActivity extends FragmentActivity {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		ImageButton iBtnMenu = (ImageButton) findViewById(R.id.iBtnMenu);
-		// ImageButton iBtnShare = (ImageButton) findViewById(R.id.iBtnShare);
-		// ImageButton iBtnBack = (ImageButton) findViewById(R.id.iBtnBack);
-		// final ImageButton iBtnFavorite = (ImageButton)
-		// findViewById(R.id.iBtnFavorite);
 		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
 		ImageView search = (ImageView) findViewById(R.id.sedarch_v);
 
@@ -285,8 +281,8 @@ public class MainActivity extends FragmentActivity {
 		setActivityTitle(R.string.strMain);
 
 		// @MK for set period time for repeat your code by mHandler
-		mHandler = new Handler();
-		mHandler.postDelayed(mStatusChecker, mInterval);
+		// mHandler = new Handler();
+		// mHandler.postDelayed(mStatusChecker, mInterval);
 		Intent intent = new Intent(MainActivity.this, HelloService.class);
 		startService(intent);
 
@@ -312,22 +308,22 @@ public class MainActivity extends FragmentActivity {
 				pendingIntent);
 	}
 
-	Runnable mStatusChecker = new Runnable() {
+	// Runnable mStatusChecker = new Runnable() {
+	//
+	// @Override
+	// public void run() {
+	// util.Notification();
+	// mHandler.postDelayed(mStatusChecker, mInterval);
+	// }
+	// };
 
-		@Override
-		public void run() {
-			util.Notification();
-			mHandler.postDelayed(mStatusChecker, mInterval);
-		}
-	};
-
-	void startRepeatingTask() {
-		mStatusChecker.run();
-	}
-
-	void stopRepeatingTask() {
-		mHandler.removeCallbacks(mStatusChecker);
-	}
+	// void startRepeatingTask() {
+	// mStatusChecker.run();
+	// }
+	//
+	// void stopRepeatingTask() {
+	// mHandler.removeCallbacks(mStatusChecker);
+	// }
 
 	public void setActivityTitle(int title) {
 		TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
