@@ -525,55 +525,49 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertTickettoDb(String Title, String desc, int userId,
+//	public void insertTickettoDb(String Title, String desc, int userId,
+//
+//	byte[] bytes, String date, int typeId, int name, int email, int mobile,
+//			int phone, int fax, int provinceId, String uname, String uemail,
+//			String uphonnumber, String ufax, String uadress, byte[] uimage,
+//			String umobile) {
+//
+//		ContentValues cv = new ContentValues();
+//		cv.put("Title", Title);
+//		cv.put("Desc", desc);
+//		cv.put("UserId", userId);
+//		cv.put("Image", bytes);
+//		cv.put("Date", date);
+//		cv.put("TypeId", typeId);
+//		cv.put("Name", name);
+//		cv.put("Email", email);
+//		cv.put("Mobile", mobile);
+//		cv.put("Phone", phone);
+//		cv.put("Fax", fax);
+//		cv.put("ProvinceId", provinceId);
+//		cv.put("UName", uname);
+//		cv.put("UEmail", uemail);
+//		cv.put("UPhonnumber", uphonnumber);
+//		cv.put("UFax", ufax);
+//		cv.put("UAdress", uadress);
+//		cv.put("UImage", uimage);
+//		cv.put("UMobile", umobile);
+//		mDb.insert(TableTicket, null, cv);
+//
+//	}
 
-	byte[] bytes, String date, int typeId, int name, int email, int mobile,
-			int phone, int fax, int provinceId, String uname, String uemail,
-			String uphonnumber, String ufax, String uadress, byte[] uimage,
-			String umobile) {
-
-		ContentValues cv = new ContentValues();
-		cv.put("Title", Title);
-		cv.put("Desc", desc);
-		cv.put("UserId", userId);
-		cv.put("Image", bytes);
-		cv.put("Date", date);
-		cv.put("TypeId", typeId);
-		cv.put("Name", name);
-		cv.put("Email", email);
-		cv.put("Mobile", mobile);
-		cv.put("Phone", phone);
-		cv.put("Fax", fax);
-		cv.put("ProvinceId", provinceId);
-		cv.put("UName", uname);
-		cv.put("UEmail", uemail);
-		cv.put("UPhonnumber", uphonnumber);
-		cv.put("UFax", ufax);
-		cv.put("UAdress", uadress);
-		cv.put("UImage", uimage);
-		cv.put("UMobile", umobile);
-		mDb.insert(TableTicket, null, cv);
-
-	}
-
-	public void insertTickettoDbemptyImage(String Title, String desc,
-			int userId, String date, int typeId, int name, int email,
-			int mobile, int phone, int fax, int provinceId, String uname,
+	public void insertTickettoDbemptyImage(int id,String Title, String Desc,
+			int userId, String date, int typeId, int provinceId, String uname,
 			String uemail, String uphonnumber, String ufax, String uadress,
 			String umobile) {
 
 		ContentValues cv = new ContentValues();
-
+		cv.put("Id", id);
 		cv.put("Title", Title);
-		cv.put("Desc", desc);
+		cv.put("Desc", Desc);
 		cv.put("UserId", userId);
 		cv.put("Date", date);
 		cv.put("TypeId", typeId);
-		cv.put("Name", name);
-		cv.put("Email", email);
-		cv.put("Mobile", mobile);
-		cv.put("Phone", phone);
-		cv.put("Fax", fax);
 		cv.put("ProvinceId", provinceId);
 		cv.put("UName", uname);
 		cv.put("UEmail", uemail);

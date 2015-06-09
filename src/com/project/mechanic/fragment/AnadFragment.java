@@ -534,13 +534,15 @@ public class AnadFragment extends Fragment {
 	public void updateView() {
 		dbAdapter.open();
 		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
-		dbAdapter.close();
+		
 
 		ListView lstAnad = (ListView) view.findViewById(R.id.listVanad);
 		AnadListAdapter ListAdapter = new AnadListAdapter(getActivity(),
 				R.layout.row_anad, mylist, proID);
 		ListAdapter.notifyDataSetChanged();
 		lstAnad.setAdapter(ListAdapter);
+		
+		dbAdapter.close();
 
 	}
 
