@@ -366,8 +366,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		intent.setAction(Intent.ACTION_GET_CONTENT);
 		// ******** code for crop image
 		intent.putExtra("crop", "true");
-		intent.putExtra("aspectX", 0);
-		intent.putExtra("aspectY", 0);
+		intent.putExtra("aspectX", 1);
+		intent.putExtra("aspectY", 1);
 		intent.putExtra("outputX", 200);
 		intent.putExtra("outputY", 200);
 		try {
@@ -471,9 +471,9 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 				// indicate image type and Uri
 				cropIntent.setDataAndType(picUri, "image/*");
 				// set crop properties
-				cropIntent.putExtra("crop", "true");
+				cropIntent.putExtra("scale", "true");
 				// indicate aspect of desired crop
-				cropIntent.putExtra("aspectX", 2);
+				cropIntent.putExtra("aspectX", 1);
 				cropIntent.putExtra("aspectY", 1);
 				// indicate output X and Y
 				cropIntent.putExtra("outputX", 256);
@@ -508,6 +508,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			if (extras != null) {
 				photo2 = extras.getParcelable("data");
 				btnaddpic1.setImageBitmap(photo2);
+
 				imageloadprogressdialog.dismiss();
 				try {
 					Drawable myDrawable = Drawable.createFromXml(
@@ -535,6 +536,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			Toast.makeText(getActivity(), "Picture NOt taken",
 					Toast.LENGTH_LONG).show();
 		}
+		btnaddpic1.setLayoutParams(lp);
 
 	}
 

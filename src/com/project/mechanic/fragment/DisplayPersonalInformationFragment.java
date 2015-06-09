@@ -3,6 +3,7 @@ package com.project.mechanic.fragment;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -174,10 +175,13 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 			params.put("tableName", "Users");
 			params.put("Id", String.valueOf(u.getId()));
 			params.put("fromDate", u.getImageServerDate());
-			serviceImage = new UpdatingImage(getActivity());
-			serviceImage.delegate = this;
-			serviceImage.execute(params);
+			Context context = getActivity();
+			if (context != null) {
 
+				serviceImage = new UpdatingImage(context);
+				serviceImage.delegate = this;
+				serviceImage.execute(params);
+			}
 		}
 	}
 }

@@ -10,19 +10,18 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.project.mechanic.R;
-import com.project.mechanic.entity.CommentInFroum;
-import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.row_items.CommentNotiItem;
 import com.project.mechanic.utility.Utility;
 
-public class commentnotificationAdapter extends ArrayAdapter<CommentInFroum> {
+public class commentnotificationAdapter extends ArrayAdapter<CommentNotiItem> {
 	Context context;
-	List<CommentInFroum> mylist;
+	List<CommentNotiItem> mylist;
 	DataBaseAdapter dbadapter;
 	Utility util;
 
 	public commentnotificationAdapter(Context context, int resource,
-			List<CommentInFroum> list) {
+			List<CommentNotiItem> list) {
 		super(context, resource, list);
 		// TODO Auto-generated constructor stub
 		this.context = context;
@@ -36,41 +35,12 @@ public class commentnotificationAdapter extends ArrayAdapter<CommentInFroum> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		convertView = myInflater.inflate(R.layout.row_notification_list, null);
 
-		// listcmnotification= (ListView)
-		// convertView.findViewById(R.id.listcmnotification);
-		// ImageButton iBtnmessage=(ImageButton)
-		// convertView.findViewById(R.id.iBtnmessage);
 		TextView txt = (TextView) convertView
 				.findViewById(R.id.main_text_notification);
 
-		Users u = util.getCurrentUser();
-		int id = u.getId();
+		CommentNotiItem c = mylist.get(position);
 
-		CommentInFroum c = mylist.get(position);
-		if (id == c.getUserid()) {
-
-			String m = c.getDesk();
-			txt.setText(m);
-			TextView txt1 = (TextView) convertView.findViewById(R.id.datenotif);
-			String m1 = c.getDatetime();
-			txt1.setText(m1);
-
-			TextView txt2 = (TextView) convertView.findViewById(R.id.namenotif);
-			dbadapter.open();
-
-			int m2 = c.getUserid();
-			// List<Users> mylist2=(List<Users>) dbadapter.getUserById(m2);
-
-			Users u1 = dbadapter.getUserbyid(m2);
-
-			txt2.setText(u1.getName());
-
-			dbadapter.close();
-		}
-
-		// CommentInFroum comment = list.get(position);
-		// Users x = adapter.getUserbyid(comment.getUserid());
-
+		txt.setText(c.getTitle());
 		return convertView;
 
 	}
