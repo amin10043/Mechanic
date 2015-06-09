@@ -161,7 +161,8 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				if (util.getCurrentUser() == null) {
+				user = util.getCurrentUser();
+				if (user == null) {
 					Toast.makeText(MainActivity.this,
 							"شما هنوز وارد نشده اید.", Toast.LENGTH_SHORT)
 							.show();

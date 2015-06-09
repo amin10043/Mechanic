@@ -36,6 +36,8 @@ import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.TicketType;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.row_items.CommentNotiItem;
+import com.project.mechanic.row_items.LikeNotiItem;
 import com.project.mechanic.row_items.RowMain;
 
 public class DataBaseAdapter {
@@ -1049,33 +1051,44 @@ public class DataBaseAdapter {
 	}
 
 	// ////////////////////////////////////////////////////////////////////////////////////////////////
-	public ArrayList<CommentInFroum> getUnseencomment(int userId) {
+	public ArrayList<CommentNotiItem> getUnseencomment(int userId) {
 
-		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
-		CommentInFroum item = null;
-		Cursor mCur = mDb.query(TableCommentInFroum, CommentInFroum,
-				"seen=0 AND UserId=" + userId, null, null, null, null);
+		ArrayList<CommentNotiItem> result = new ArrayList<CommentNotiItem>();
+		com.project.mechanic.entity.LikeInFroum item = null;
+		Cursor mCur = mDb
+				.rawQuery(
+						"select f.Id,u.Name || '  بر روی ' || f.Title || '  در تاریخ ' || l.[Date]  || ' کامنت گذاشت ',l.Desk from CommentInFroum l inner join Froum f on l.FroumId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+								+ userId
+								+ " AND f.UserId != l.UserId AND l.seen=0",
+						null);
 
+		CommentNotiItem noti;
 		while (mCur.moveToNext()) {
-			item = CursorToCommentInFroum(mCur);
-			result.add(item);
+			noti = new CommentNotiItem(mCur.getInt(0), mCur.getString(1),
+					mCur.getString(2), "");
+			result.add(noti);
 		}
 
 		return result;
-
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////
-	public ArrayList<CommentInObject> getUnseencommentobject(int userId) {
+	public ArrayList<CommentNotiItem> getUnseencommentobject(int userId) {
 
-		ArrayList<CommentInObject> result = new ArrayList<CommentInObject>();
-		CommentInObject item = null;
-		Cursor mCur = mDb.query(TableCommentInObject, CommentInObject,
-				"seen=0 AND UserId=" + userId, null, null, null, null);
+		ArrayList<CommentNotiItem> result = new ArrayList<CommentNotiItem>();
+		com.project.mechanic.entity.LikeInFroum item = null;
+		Cursor mCur = mDb
+				.rawQuery(
+						"select f.Id,u.Name || '  بر روی ' || f.Name || '  در تاریخ ' || l.[Date]  || ' کامنت گذاشت ',l.Desk from CommentInObject l inner join Object f on l.ObjectId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+								+ userId
+								+ " AND f.UserId != l.UserId AND l.seen=0",
+						null);
 
+		CommentNotiItem noti;
 		while (mCur.moveToNext()) {
-			item = CursorToCommentInObject(mCur);
-			result.add(item);
+			noti = new CommentNotiItem(mCur.getInt(0), mCur.getString(1),
+					mCur.getString(2), "");
+			result.add(noti);
 		}
 
 		return result;
@@ -1083,70 +1096,88 @@ public class DataBaseAdapter {
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////
-	public ArrayList<CommentInPaper> getUnseencommentpaper(int userId) {
+	public ArrayList<CommentNotiItem> getUnseencommentpaper(int userId) {
 
-		ArrayList<CommentInPaper> result = new ArrayList<CommentInPaper>();
-		CommentInPaper item = null;
-		Cursor mCur = mDb.query(TableCommentInPaper, CommentInPaper,
-				"seen=0 AND UserId=" + userId, null, null, null, null);
+		ArrayList<CommentNotiItem> result = new ArrayList<CommentNotiItem>();
+		com.project.mechanic.entity.LikeInFroum item = null;
+		Cursor mCur = mDb
+				.rawQuery(
+						"select f.Id,u.Name || '  بر روی ' || f.Title || '  در تاریخ ' || l.[Date]  || ' کامنت گذاشت:  ',l.Desk from CmtInPaper l inner join Paper f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+								+ userId
+								+ " AND f.UserId != l.UserId AND l.seen=0",
+						null);
 
+		CommentNotiItem noti;
 		while (mCur.moveToNext()) {
-			item = CursorToCommentInPaper(mCur);
-			result.add(item);
+			noti = new CommentNotiItem(mCur.getInt(0), mCur.getString(1),
+					mCur.getString(2), "");
+			result.add(noti);
 		}
-
 		return result;
 
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////
 
-	public ArrayList<LikeInObject> getUnseenlike(int userId) {
+	public ArrayList<LikeNotiItem> getUnseenlike(int userId) {
 
-		ArrayList<LikeInObject> result = new ArrayList<LikeInObject>();
-		LikeInObject item = null;
-		Cursor mCur = mDb.query(TableLikeInObject, LikeInObject,
-				"seen=0 AND UserId=" + userId, null, null, null, null);
-
-		while (mCur.moveToNext()) {
-			item = CursorToLikeInObject(mCur);
-			result.add(item);
-		}
-
-		return result;
-	}
-
-	// ///////////////////////////////////////////////////////////////////////////////////
-	public ArrayList<com.project.mechanic.entity.LikeInFroum> getUnseenlikeInFroum(
-			int userId) {
-
-		ArrayList<com.project.mechanic.entity.LikeInFroum> result = new ArrayList<com.project.mechanic.entity.LikeInFroum>();
+		ArrayList<LikeNotiItem> result = new ArrayList<LikeNotiItem>();
 		com.project.mechanic.entity.LikeInFroum item = null;
-		Cursor mCur = mDb.query(TableLikeInFroum, LikeInFroum,
-				"seen=0 AND UserId=" + userId, null, null, null, null);
+		Cursor mCur = mDb
+				.rawQuery(
+						"select f.Id,u.Name + '  پست ' || f.Name || ' را در تاریخ ' || l.[Date]  || ' پسندید ' from LikeInObject l inner join Object f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+								+ userId
+								+ " AND f.UserId != l.UserId AND l.seen=0",
+						null);
 
+		LikeNotiItem noti;
 		while (mCur.moveToNext()) {
-			item = CursorToLikeInFroum(mCur);
-			result.add(item);
+			noti = new LikeNotiItem(mCur.getInt(0), mCur.getString(1), "");
+			result.add(noti);
+		}
+		return result;
+	}
+
+	// ///////////////////////////////////////////////////////////////////////////////////
+	public ArrayList<LikeNotiItem> getUnseenlikeInFroum(int userId) {
+
+		ArrayList<LikeNotiItem> result = new ArrayList<LikeNotiItem>();
+		com.project.mechanic.entity.LikeInFroum item = null;
+		Cursor mCur = mDb
+				.rawQuery(
+						"select f.Id,u.Name || '  پست ' || f.Title || ' را در تاریخ ' || l.[Date]  || ' پسندید ' from LikeInFroum l inner join Froum f on l.FroumId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+								+ userId
+								+ " AND f.UserId != l.UserId AND l.seen=0",
+						null);
+
+		LikeNotiItem noti;
+		while (mCur.moveToNext()) {
+			noti = new LikeNotiItem(mCur.getInt(0), mCur.getString(1), "");
+			result.add(noti);
 		}
 
 		return result;
 	}
 
 	// ///////////////////////////////////////////////////////////////////////////////////
-	public ArrayList<LikeInPaper> getUnseenlikeInPaper(int userId) {
+	public ArrayList<LikeNotiItem> getUnseenlikeInPaper(int userId) {
+		ArrayList<LikeNotiItem> result = new ArrayList<LikeNotiItem>();
+		com.project.mechanic.entity.LikeInFroum item = null;
+		Cursor mCur = mDb
+				.rawQuery(
+						"select f.Id,u.Name || '  پست ' || f.Title || ' را در تاریخ ' || l.[Date]  || ' پسندید ' from LikeInPaper l inner join Paper f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+								+ userId
+								+ " AND f.UserId != l.UserId AND l.seen=0",
+						null);
 
-		ArrayList<LikeInPaper> result = new ArrayList<LikeInPaper>();
-		LikeInPaper item = null;
-		Cursor mCur = mDb.query(TableLikeInPaper, LikeInPaper,
-				"seen=0 AND UserId=" + userId, null, null, null, null);
-
+		LikeNotiItem noti;
 		while (mCur.moveToNext()) {
-			item = CursorToLikeInPaper(mCur);
-			result.add(item);
+			noti = new LikeNotiItem(mCur.getInt(0), mCur.getString(1), "");
+			result.add(noti);
 		}
 
 		return result;
+
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -2521,8 +2552,9 @@ public class DataBaseAdapter {
 	public int NumOfNewLikeInObject(int userId) {
 		int res = 0;
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableLikeInObject + " WHERE Seen=0 AND UserId=" + userId,
-				null);
+				+ TableLikeInObject + " as l inner join " + TableObject
+				+ " as f on f.Id = l.PaperId WHERE l.Seen=0 AND f.UserId="
+				+ userId, null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
@@ -2531,9 +2563,10 @@ public class DataBaseAdapter {
 
 	public int NumOfNewLikeInPaper(int userId) {
 		int res = 0;
-		Cursor cu = mDb
-				.rawQuery("Select count(*) as co from " + TableLikeInPaper
-						+ " WHERE Seen=0 AND UserId=" + userId, null);
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInPaper + " as l inner join " + TablePaper
+				+ " as f on f.Id = l.PaperId WHERE l.Seen=0 AND f.UserId="
+				+ userId, null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
@@ -2542,9 +2575,10 @@ public class DataBaseAdapter {
 
 	public int NumOfNewLikeInFroum(int userId) {
 		int res = 0;
-		Cursor cu = mDb
-				.rawQuery("Select count(*) as co from " + TableLikeInFroum
-						+ " WHERE Seen=0 AND UserId=" + userId, null);
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInFroum + " as l inner join " + TableFroum
+				+ " as f on f.Id = l.FroumId WHERE l.Seen=0 AND f.UserId="
+				+ userId, null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
@@ -2566,8 +2600,10 @@ public class DataBaseAdapter {
 	// ////////////////////////////////////////////////////////
 	public int NumOfNewLikeInObject1(int userId) {
 		int res = 0;
-		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TableObject
-				+ " WHERE Seen=0 AND UserId=" + userId, null);
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInObject + " as l inner join " + TableObject
+				+ " as f on f.Id = l.PaperId WHERE l.Seen=0 AND f.UserId="
+				+ userId, null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
@@ -2579,8 +2615,9 @@ public class DataBaseAdapter {
 	public int NumOfNewCmtInObject(int userId) {
 		int res = 0;
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableCommentInObject + " WHERE Seen=0 AND UserId=" + userId,
-				null);
+				+ TableCommentInObject + " as l inner join " + TableObject
+				+ " as f on f.Id = l.ObjectId WHERE l.Seen=0 AND f.UserId="
+				+ userId, null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
@@ -2590,8 +2627,9 @@ public class DataBaseAdapter {
 	public int NumOfNewCmtInPaper(int userId) {
 		int res = 0;
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableCommentInPaper + " WHERE Seen=0 AND UserId=" + userId,
-				null);
+				+ TableCommentInPaper + " as l inner join " + TablePaper
+				+ " as f on f.Id = l.PaperId WHERE l.Seen=0 AND f.UserId="
+				+ userId, null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
@@ -2601,8 +2639,9 @@ public class DataBaseAdapter {
 	public int NumOfNewCmtInFroum(int userId) {
 		int res = 0;
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableCommentInFroum + " WHERE Seen=0 AND UserId=" + userId,
-				null);
+				+ TableCommentInFroum + " as l inner join " + TableFroum
+				+ " as f on f.Id = l.FroumId WHERE l.Seen=0 AND f.UserId="
+				+ userId, null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
@@ -2884,6 +2923,16 @@ public class DataBaseAdapter {
 		uc.put("ImageServerDate", fromDate);
 
 		mDb.update(TableUsers, uc, "ID=" + userId, null);
+	}
+
+	public LikeInFroum getLikeInFroumById(int id) {
+		LikeInFroum lk = null;
+		Cursor cur = mDb.query(TableLikeInFroum, LikeInFroum, "Id=?",
+				new String[] { String.valueOf(id) }, null, null, null);
+		if (cur.moveToNext())
+			lk = CursorToLikeInFroum(cur);
+
+		return lk;
 	}
 
 }
