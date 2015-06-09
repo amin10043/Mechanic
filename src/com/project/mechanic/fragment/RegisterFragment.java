@@ -405,7 +405,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 					firstTime = false;
 					if (!bitmap.sameAs(emptyBitmap)) {
 
-						byte[] Image = getBitmapAsByteArray(bitmap);
+						byte[] Image = Utility.CompressBitmap(bitmap);
+						// byte[] Image = getBitmapAsByteArray(bitmap);
 						savingImage = new SavingImage(getActivity());
 						Map<String, Object> it = new LinkedHashMap<String, Object>();
 						it.put("tableName", "Users");

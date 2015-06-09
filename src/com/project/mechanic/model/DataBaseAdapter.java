@@ -2852,6 +2852,7 @@ public class DataBaseAdapter {
 				if ("Id".equals(cols[j]))
 					id = values[i][j];
 				// cv.put(cols[j], values[i][j]);
+
 			}
 			try {
 				res = mDb.insertWithOnConflict(tableName, null, cv,

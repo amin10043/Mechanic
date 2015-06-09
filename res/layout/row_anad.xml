@@ -24,7 +24,7 @@
                 android:id="@+id/row_favorite_img"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:src="@drawable/no_image" />
+                android:src="@drawable/no_img_profile" />
 
             <TextView
                 android:id="@+id/text_favorite_desc"

@@ -25,7 +25,7 @@
             android:id="@+id/name_froum_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignBottom="@+id/icon_froum_profile"
             android:layout_toLeftOf="@+id/icon_froum_profile"
             android:text="Name"
             android:textColor="@color/transparent" />
@@ -51,6 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
+                android:layout_marginTop="8dp"
                 android:text="L"
                 android:textColor="@color/transparent" />
 
@@ -59,13 +60,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"
+                android:src="@drawable/negative_off" />
 
             <TextView
                 android:id="@+id/countdislikecommentFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
+                android:layout_marginTop="8dp"
                 android:text="D"
                 android:textColor="@color/transparent" />
         </LinearLayout>
@@ -97,18 +100,6 @@
                     android:textColor="@color/transparent" />
             </LinearLayout>
         </FrameLayout>
-
-        <TextView
-            android:id="@+id/date_commented_in_froum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/frameLayoutGroup"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="10dp"
-            android:text="Date"
-            android:textColor="@color/transparent"
-            android:textSize="10dp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -123,9 +114,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
             android:gravity="right"
             android:text="Message"
             android:textColor="@color/transparent" />
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/date_commented_in_froum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mainmessage"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="10dp"
+        android:text="Date"
+        android:textColor="@color/transparent"
+        android:textSize="10dp" />
 
 </RelativeLayout>
