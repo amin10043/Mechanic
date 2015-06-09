@@ -123,7 +123,7 @@ public class FavoriteListAdapter extends ArrayAdapter<Ticket> {
 		idticket = tempItem.getId();
 		txttitle.setText(tempItem.getTitle());
 		txtdesc.setText(tempItem.getDesc());
-		byte[] bitmapbyte = tempItem.getImage();
+	    byte[] bitmapbyte = tempItem.getImage();
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 					bitmapbyte.length);

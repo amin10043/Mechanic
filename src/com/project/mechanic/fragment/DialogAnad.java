@@ -61,9 +61,10 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 	LinearLayout Lheader;
 	String titel;
 	String Bytimage;
-	String date;
+	PersianDate date;
 	int ProvinceId;
 	Users u;
+	String currentDate;
 	protected byte[] img;
 	String TABLE_NAME = "Ticket";
 
@@ -129,15 +130,21 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 
 			@Override
 			public void onClick(View arg0) {
+//				 date = new SimpleDateFormat("yyyy-MM-dd")
+//					.format(new Date());
+				 date = new PersianDate();
+				 currentDate = date.todayShamsi();
 				params = new LinkedHashMap<String, String>();
 				saving = new Saving(context);
 				saving.delegate = DialogAnad.this;
 
 				params.put("TableName", "Ticket");
 				params.put("Title", dialog_anad_et1.getText().toString());
-				//params.put("Desc", dialog_anad_et2.getText().toString());
+			  //  params.put("Desc", dialog_anad_et2.getText().toString());
 				params.put("UserId", String.valueOf(u.getId()));
-				params.put("Date", date);
+				params.put("TypeId", String.valueOf(ticketTypeID));
+				params.put("ProvinceId", String.valueOf(ProvinceId));
+				params.put("Date", currentDate);
 				params.put("UName", UName.getText().toString());
 				params.put("UEmail", UEmail.getText().toString());
 				params.put("UPhonnumber",UPhonnumber.getText().toString());
@@ -262,26 +269,28 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 			id = Integer.valueOf(output);
 
 		dbadapter.open();
-		 date = new SimpleDateFormat("yyyy-MM-dd")
-				.format(new Date());
-	//	String title = dialog_anad_et1.getText().toString();
-	//	String desc = dialog_anad_et2.getText().toString();
-//		if ("".equals(title) || "".equals(desc)) {
-//			Toast.makeText(context,
-//					" عنوان آگهی یا شرح آگهی نمی تواند خالی باشد",
-//					Toast.LENGTH_LONG).show();
-//		} else {
-		
-
+	
+		String title = dialog_anad_et1.getText().toString();
+		String desc = dialog_anad_et2.getText().toString();
+		if ("".equals(title) || "".equals(desc)) {
+			Toast.makeText(context,
+					" عنوان آگهی یا شرح آگهی نمی تواند خالی باشد",
+					Toast.LENGTH_LONG).show();
+		} else {
 				dbadapter.insertTickettoDbemptyImage(id,dialog_anad_et1
 						.getText().toString(), dialog_anad_et2
-						.getText().toString(), u.getId(), date,
-						ticketTypeID, 0, 0, 0, 0, 0, ProvinceId, UName
+						.getText().toString(), u.getId(), currentDate,
+						ticketTypeID, ProvinceId, UName
 								.getText().toString(), UEmail.getText()
 								.toString(), UPhonnumber.getText()
 								.toString(), UFax.getText().toString(),
 						null, UMobile.getText().toString());
-
+				
+				Toast.makeText(context, "آگهی شما با موفقیت ثبت شد",
+						Toast.LENGTH_SHORT).show();
+				((AnadFragment) fragment).updateView();
+				DialogAnad.this.dismiss();
+				dbadapter.close();
 //		} else {
 //
 //				Bitmap bitmap = ((BitmapDrawable) dialog_img1
@@ -317,13 +326,9 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 //				}
 
 			
-			Toast.makeText(context, "آگهی شما با موفقیت ثبت شد",
-					Toast.LENGTH_SHORT).show();
-			dbadapter.close();
-			((AnadFragment) fragment).updateView();
-			DialogAnad.this.dismiss();
+			
 
-//	}
+	}
 
 		} catch (Exception ex) {
 			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
