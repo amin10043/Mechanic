@@ -135,13 +135,13 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 
 				params.put("TableName", "Ticket");
 				params.put("Title", dialog_anad_et1.getText().toString());
-				params.put("Desc", dialog_anad_et2.getText().toString());
-				//params.put("UserId", String.valueOf(u.getId()));
-				//params.put("Date", date);
+				//params.put("Desc", dialog_anad_et2.getText().toString());
+				params.put("UserId", String.valueOf(u.getId()));
+				params.put("Date", date);
 				params.put("UName", UName.getText().toString());
 				params.put("UEmail", UEmail.getText().toString());
 				params.put("UPhonnumber",UPhonnumber.getText().toString());
-				params.put("UFax", UFax.getText().toString());
+		     	params.put("UFax", UFax.getText().toString());
 				params.put("UMobile", UMobile.getText().toString());
 
 				saving.execute(params);
@@ -264,8 +264,8 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 		dbadapter.open();
 		 date = new SimpleDateFormat("yyyy-MM-dd")
 				.format(new Date());
-		String title = dialog_anad_et1.getText().toString();
-		String desc = dialog_anad_et2.getText().toString();
+	//	String title = dialog_anad_et1.getText().toString();
+	//	String desc = dialog_anad_et2.getText().toString();
 //		if ("".equals(title) || "".equals(desc)) {
 //			Toast.makeText(context,
 //					" عنوان آگهی یا شرح آگهی نمی تواند خالی باشد",
@@ -323,7 +323,7 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 			((AnadFragment) fragment).updateView();
 			DialogAnad.this.dismiss();
 
-//		}
+//	}
 
 		} catch (Exception ex) {
 			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
