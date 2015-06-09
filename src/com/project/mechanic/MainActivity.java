@@ -3,9 +3,7 @@ package com.project.mechanic;
 import java.util.Calendar;
 
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -34,6 +32,7 @@ import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.fragment.Dialog_notification;
 import com.project.mechanic.fragment.Dialog_notificationlike;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
+import com.project.mechanic.fragment.EnterDialog;
 import com.project.mechanic.fragment.ExitDialog;
 import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.FragmentAboutUs;
@@ -87,38 +86,41 @@ public class MainActivity extends FragmentActivity {
 		if (user != null) {
 			util.setNoti(this, user.getId());
 		} else {
-			AlertDialog.Builder builder = new AlertDialog.Builder(
-					MainActivity.this);
-			builder.setTitle("پیغام");
-			builder.setMessage("جهت استفاده از تمامی امکانات نرم افزار وارد شوید ");
-			builder.setNegativeButton("ورود به لاگین",
-					new DialogInterface.OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-
-							FragmentTransaction trans = getSupportFragmentManager()
-									.beginTransaction();
-							trans.replace(R.id.content_frame,
-									new LoginFragment());
-							trans.commit();
-						}
-					});
-
-			builder.setPositiveButton("انصراف",
-					new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-
-							dialog.dismiss();
-
-						}
-					});
-			AlertDialog alert = builder.create();
-			alert.show();
+			EnterDialog dialogEnter = new EnterDialog(MainActivity.this);
+			dialogEnter.show();
+			// AlertDialog.Builder builder = new AlertDialog.Builder(
+			// MainActivity.this);
+			// builder.setTitle("پیغام");
+			// builder.setMessage("جهت استفاده از تمامی امکانات نرم افزار وارد شوید ");
+			// builder.setNegativeButton("ورود به لاگین",
+			// new DialogInterface.OnClickListener() {
+			//
+			// @Override
+			// public void onClick(DialogInterface dialog, int which) {
+			// // TODO Auto-generated method stub
+			//
+			// FragmentTransaction trans = getSupportFragmentManager()
+			// .beginTransaction();
+			// trans.replace(R.id.content_frame,
+			// new LoginFragment());
+			// trans.commit();
+			// }
+			// });
+			//
+			// builder.setPositiveButton("انصراف",
+			// new DialogInterface.OnClickListener() {
+			//
+			// @Override
+			// public void onClick(DialogInterface dialog, int which) {
+			// // TODO Auto-generated method stub
+			//
+			// dialog.dismiss();
+			//
+			// }
+			// });
+			// AlertDialog alert = builder.create();
+			// alert.show();
 
 		}
 

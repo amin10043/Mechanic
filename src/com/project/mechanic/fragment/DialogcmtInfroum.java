@@ -6,6 +6,7 @@ import java.util.Map;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -56,6 +57,8 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setBackgroundDrawable(
+				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		setContentView(R.layout.dialog_addcomment);
 		btncmt = (ImageButton) findViewById(R.id.btnComment);
 		Cmttxt = (EditText) findViewById(R.id.txtCmt);

@@ -2,13 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAEAEA" >
+    android:background="@android:color/transparent" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:background="#EAEAEA"
+        android:background="@drawable/list_item"
         android:orientation="vertical" >
 
         <RelativeLayout

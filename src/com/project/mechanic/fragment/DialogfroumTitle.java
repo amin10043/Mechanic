@@ -5,6 +5,7 @@ import java.util.Map;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -61,6 +62,8 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 		}
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setBackgroundDrawable(
+				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		setContentView(resourceId);
 		btntitle = (Button) findViewById(R.id.btnPdf1_Object);
 		titletxt = (EditText) findViewById(R.id.txtTitleP);

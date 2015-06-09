@@ -100,12 +100,20 @@ public class CreateIntroductionFragment extends Fragment {
 		namayendegi.setVisibility(View.GONE);
 		khadamat.setVisibility(View.GONE);
 
+		SharedPreferences sendObjectBrandTypeId = getActivity()
+				.getSharedPreferences("Id", 0);
+
 		SharedPreferences sendParentID = getActivity().getSharedPreferences(
 				"Id", 0);
 		final int parentId = sendParentID.getInt("ParentId", -1);
+		final int MainObjectId = sendObjectBrandTypeId.getInt("MainObjectId",
+				-1);
+		final int CityId = sendObjectBrandTypeId.getInt("CityId", -1);
 
-		Toast.makeText(getActivity(), " parentId recieve = " + parentId,
-				Toast.LENGTH_SHORT).show();
+		Toast.makeText(
+				getActivity(),
+				" parentId recieve = " + parentId + "\n ObjectBrandTypeId = "
+						+ MainObjectId, Toast.LENGTH_SHORT).show();
 
 		linearCreateProfil = (RelativeLayout) view
 				.findViewById(R.id.linearCreateProfil);
@@ -255,15 +263,31 @@ public class CreateIntroductionFragment extends Fragment {
 				else {
 
 					DBAdapter.open();
-					// اینجا خطا میداد کامنت کردم اگر خطایش برطرف شده است کامنت
-					// آن را بردارید.
-					// DBAdapter.InsertInformationNewObject(nameValue,
-					// phoneValue,
-					// emailValue, faxValue, descriptionValue, byteHeader,
-					// byteProfil, byteFooter, Lcatalog, Lprice, Lpdf,
-					// Lvideo, addressValue, mobileValue, Lfacebook,
-					// Linstagram, Llinkedin, Lgoogle, Lwebsite, Ltwitter,
-					// currentUser.getId(), parentId);
+					if (MainObjectId == 2 || MainObjectId == 3
+							|| MainObjectId == 4) {
+						int LastObjectId = DBAdapter.CreatePageInShopeObject(
+								nameValue, phoneValue, emailValue, faxValue,
+								descriptionValue, byteHeader, byteProfil,
+								byteFooter, Lcatalog, Lprice, Lpdf, Lvideo,
+								addressValue, mobileValue, Lfacebook,
+								Linstagram, Llinkedin, Lgoogle, Lwebsite,
+								Ltwitter, currentUser.getId(), MainObjectId);
+
+						DBAdapter.insertObjectInCity(LastObjectId, CityId);
+
+					}
+					if (MainObjectId == 1) {
+						int LastObjectId = DBAdapter
+								.InsertInformationNewObject(nameValue,
+										phoneValue, emailValue, faxValue,
+										descriptionValue, byteHeader,
+										byteProfil, byteFooter, Lcatalog,
+										Lprice, Lpdf, Lvideo, addressValue,
+										mobileValue, Lfacebook, Linstagram,
+										Llinkedin, Lgoogle, Lwebsite, Ltwitter,
+										currentUser.getId(), parentId, 1);
+
+					}
 
 					DBAdapter.close();
 					getActivity().getSupportFragmentManager().popBackStack();

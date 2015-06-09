@@ -2257,7 +2257,7 @@ public class DataBaseAdapter {
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
-								+ " as C On O.Id = C.ObjectId Where O.ObjectBrandTypeId = "
+								+ " as C On O.Id = C.ObjectId Where O.MainObjectId = "
 								+ Object_id + " and C.CityId = " + City_id,
 						null);
 		Object tempObject;
@@ -2375,60 +2375,71 @@ public class DataBaseAdapter {
 
 	}
 
-	public void InsertInformationNewObject(String name, String Phone,
+	public int InsertInformationNewObject(String name, String Phone,
 			String Email, String fax, String description, byte[] HeaderImage,
 			byte[] ProfileImage, byte[] FooterImage, String LinkCatalog,
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
-			String LinkTweitter) {
+			String LinkTweitter, int userId, int parentId, int MainObjectId) {
 
 		ContentValues cv = new ContentValues();
 
 		if (!"".equals(name))
-			cv.put(Object[1], name);
+			cv.put("Name", name);
 		if (!"".equals(Phone))
-			cv.put(Object[2], Phone);
+			cv.put("Phone", Phone);
 		if (!"".equals(Email))
-			cv.put(Object[3], Email);
+			cv.put("Email", Email);
 		if (!"".equals(fax))
-			cv.put(Object[4], fax);
+			cv.put("Fax", fax);
 		if (!"".equals(description))
-			cv.put(Object[5], description);
+			cv.put("Description", description);
 		if (HeaderImage != null)
-			cv.put(Object[6], HeaderImage);
+			cv.put("Image1", HeaderImage);
 		if (ProfileImage != null)
-			cv.put(Object[7], ProfileImage);
+			cv.put("Image2", ProfileImage);
 		if (FooterImage != null)
-			cv.put(Object[8], FooterImage);
+			cv.put("Image3", FooterImage);
 		if (!"".equals(LinkCatalog))
-			cv.put(Object[10], LinkCatalog);
+			cv.put("Pdf1", LinkCatalog);
 		if (!"".equals(LinkPrice))
-			cv.put(Object[11], LinkPrice);
+			cv.put("Pdf2", LinkPrice);
 		if (!"".equals(LinkPDF))
-			cv.put(Object[12], LinkPDF);
+			cv.put("Pdf3", LinkPDF);
 		if (!"".equals(LinkVideo))
-			cv.put(Object[13], LinkVideo);
+			cv.put("Pdf4", LinkVideo);
 		if (!"".equals(Address))
-			cv.put(Object[14], Address);
+			cv.put("Address", Address);
 		if (!"".equals(Mobile))
-			cv.put(Object[15], Mobile);
+			cv.put("Cellphone", Mobile);
 		if (!"".equals(LinkFaceBook))
-			cv.put(Object[18], LinkFaceBook);
+			cv.put("Facebook", LinkFaceBook);
 		if (!"".equals(LinkInstagram))
-			cv.put(Object[19], LinkInstagram);
+			cv.put("Instagram", LinkInstagram);
 		if (!"".equals(LinkLinkedin))
-			cv.put(Object[20], LinkLinkedin);
+			cv.put("LinkedIn", LinkLinkedin);
 		if (!"".equals(LinkGoogle))
-			cv.put(Object[21], LinkGoogle);
+			cv.put("Google", LinkGoogle);
 		if (!"".equals(LinkSite))
-			cv.put(Object[22], LinkSite);
+			cv.put("Site", LinkSite);
 		if (!"".equals(LinkTweitter))
-			cv.put(Object[23], LinkTweitter);
+			cv.put("Twitter", LinkTweitter);
 
-		mDb.insert(TableObject, null, cv);
+		cv.put("userId", userId);
+
+		if (parentId != -1)
+			cv.put("ParentId", parentId);
+		if (MainObjectId != -1)
+			cv.put("MainObjectId", MainObjectId);
+
+		cv.put("IsActive", 0);
+		cv.put("rate", 0);
+		cv.put("Seen", 1);
+
 		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT)
 				.show();
+		return (int) mDb.insert(TableObject, null, cv);
 
 	}
 
@@ -2884,6 +2895,82 @@ public class DataBaseAdapter {
 		uc.put("ImageServerDate", fromDate);
 
 		mDb.update(TableUsers, uc, "ID=" + userId, null);
+	}
+
+	public void insertObjectInCity(int objectId, int cityId) {
+		ContentValues cv = new ContentValues();
+
+		cv.put("ObjectId", objectId);
+		cv.put("CityId", cityId);
+
+		mDb.insert(TableObjectInCity, null, cv);
+
+	}
+
+	public int CreatePageInShopeObject(String name, String Phone, String Email,
+			String fax, String description, byte[] HeaderImage,
+			byte[] ProfileImage, byte[] FooterImage, String LinkCatalog,
+			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
+			String Mobile, String LinkFaceBook, String LinkInstagram,
+			String LinkLinkedin, String LinkGoogle, String LinkSite,
+			String LinkTweitter, int userId, int MainObjectId) {
+
+		ContentValues cv = new ContentValues();
+
+		if (!"".equals(name))
+			cv.put("Name", name);
+		if (!"".equals(Phone))
+			cv.put("Phone", Phone);
+		if (!"".equals(Email))
+			cv.put("Email", Email);
+		if (!"".equals(fax))
+			cv.put("Fax", fax);
+		if (!"".equals(description))
+			cv.put("Description", description);
+		if (HeaderImage != null)
+			cv.put("Image1", HeaderImage);
+		if (ProfileImage != null)
+			cv.put("Image2", ProfileImage);
+		if (FooterImage != null)
+			cv.put("Image3", FooterImage);
+		if (!"".equals(LinkCatalog))
+			cv.put("Pdf1", LinkCatalog);
+		if (!"".equals(LinkPrice))
+			cv.put("Pdf2", LinkPrice);
+		if (!"".equals(LinkPDF))
+			cv.put("Pdf3", LinkPDF);
+		if (!"".equals(LinkVideo))
+			cv.put("Pdf4", LinkVideo);
+		if (!"".equals(Address))
+			cv.put("Address", Address);
+		if (!"".equals(Mobile))
+			cv.put("Cellphone", Mobile);
+		if (!"".equals(LinkFaceBook))
+			cv.put("Facebook", LinkFaceBook);
+		if (!"".equals(LinkInstagram))
+			cv.put("Instagram", LinkInstagram);
+		if (!"".equals(LinkLinkedin))
+			cv.put("LinkedIn", LinkLinkedin);
+		if (!"".equals(LinkGoogle))
+			cv.put("Google", LinkGoogle);
+		if (!"".equals(LinkSite))
+			cv.put("Site", LinkSite);
+		if (!"".equals(LinkTweitter))
+			cv.put("Twitter", LinkTweitter);
+
+		cv.put("userId", userId);
+
+		if (MainObjectId != -1)
+			cv.put("MainObjectId", MainObjectId);
+
+		cv.put("IsActive", 0);
+		cv.put("rate", 0);
+		cv.put("Seen", 1);
+
+		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT)
+				.show();
+		return (int) mDb.insert(TableObject, null, cv);
+
 	}
 
 }

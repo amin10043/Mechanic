@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="آیا می خواهید از برنامه خارج شوید؟"
+            android:text="به منظور استفاده از تمامی امکانات برنامه باید ثبت نام کرده باشید"
             android:textColor="@color/transparent" />
 
         <LinearLayout
@@ -31,19 +31,19 @@
 
             <Button
                 android:id="@+id/yesExit"
-                android:layout_width="60dp"
-                android:layout_height="40dp"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
                 android:layout_marginRight="10dp"
                 android:background="#bfbfbf"
-                android:text="بله"
+                android:text="ورود"
                 android:textColor="@color/transparent" />
 
             <Button
                 android:id="@+id/noExit"
-                android:layout_width="60dp"
-                android:layout_height="40dp"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
                 android:background="#bfbfbf"
-                android:text="خیر"
+                android:text="انصراف"
                 android:textColor="@color/transparent" />
         </LinearLayout>
     </RelativeLayout>
