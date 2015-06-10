@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 	Users user;
 	Saving saving;
 	Map<String, String> params;
+	ProgressDialog ringProgressDialog;
 
 	public DialogcmtInfroum(Fragment f, int Commentid, Context context,
 			int froumId, int resourceId) {
@@ -92,6 +94,26 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 					params.put("NumofLike", String.valueOf(0));
 
 					saving.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(context, "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
 				}
 				DialogcmtInfroum.this.dismiss();
 			}
@@ -108,6 +130,8 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
+		ringProgressDialog.dismiss();
+
 		int id = -1;
 		try {
 			id = Integer.valueOf(output);

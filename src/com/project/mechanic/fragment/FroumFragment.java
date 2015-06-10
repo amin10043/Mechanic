@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -67,6 +68,8 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 	Saving saving;
 	Deleting deleting;
 	Map<String, String> params;
+
+	ProgressDialog ringProgressDialog;
 
 	// end defined by masoud
 
@@ -232,6 +235,26 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 						params.put("FroumId", String.valueOf(froumid));
 						deleting.execute(params);
 
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								"", "لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+
 						adapter.close();
 					} else {
 						adapter.open();
@@ -246,6 +269,26 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 						params.put("CommentId", "0");
 						params.put("Date", currentDate);
 						saving.execute(params);
+
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								"", "لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
 						countLike.setText(adapter.LikeInFroum_count(froumid)
 								.toString());
 
@@ -330,6 +373,8 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
+		ringProgressDialog.dismiss();
+
 		int id = -1;
 		try {
 			id = Integer.valueOf(output);

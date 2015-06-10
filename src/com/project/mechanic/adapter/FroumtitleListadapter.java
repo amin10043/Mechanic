@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -47,6 +48,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 	LinearLayout LikeTitle;
 	int ItemId;
 	TextView countLikeFroum;
+	ProgressDialog ringProgressDialog;
 
 	Saving saving;
 	Deleting deleting;
@@ -168,6 +170,26 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 						params.put("FroumId", String.valueOf(position));
 						deleting.execute(params);
 
+						ringProgressDialog = ProgressDialog.show(context, "",
+								"لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+
 						adapter.close();
 					} else {
 						adapter.open();
@@ -183,6 +205,27 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 						params.put("CommentId", "0");
 						params.put("Date", currentDate);
 						saving.execute(params);
+
+						ringProgressDialog = ProgressDialog.show(context, "",
+								"لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+
 						countLikeFroum.setText(adapter.LikeInFroum_count(
 								position).toString());
 
@@ -239,6 +282,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 	@Override
 	public void processFinish(String output) {
+		ringProgressDialog.dismiss();
+
 		int id = -1;
 		try {
 			id = Integer.valueOf(output);
