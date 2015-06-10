@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Province;
@@ -37,14 +38,11 @@ public class SearchFragment extends ListFragment {
 	Fragment fragment;
 	List<Province> list;
 
-	// int lastPosition = 0;
-	// int i = 10;
-
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// ((MainActivity) getActivity()).setActivityTitle(R.string.showad);
+		((MainActivity) getActivity()).setActivityTitle(R.string.search);
 
 		View view = inflater.inflate(R.layout.activity_search, null);
 		db = new DataBaseAdapter(getActivity());
@@ -56,16 +54,6 @@ public class SearchFragment extends ListFragment {
 		status = (TextView) view.findViewById(R.id.search_status);
 
 		refresh(word.getText().toString(), "Name");
-
-		// Button btn = (Button) findViewById(R.id.search_btn);
-		// btn.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// refresh(word.getText().toString(), "Name");
-		//
-		// }
-		// });
 
 		word.addTextChangedListener(new TextWatcher() {
 

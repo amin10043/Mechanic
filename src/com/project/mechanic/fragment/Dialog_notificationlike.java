@@ -6,11 +6,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.LikeFroumNotificationAdapter;
 import com.project.mechanic.adapter.LikeNotificationAdapter;
@@ -93,6 +96,22 @@ public class Dialog_notificationlike extends Dialog {
 				// TODO Auto-generated method stub
 				listnewlikeo.setAdapter(dataAdapter);
 
+				listnewlikeo
+						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> arg0,
+									View arg1, int arg2, long arg3) {
+								// TODO Auto-generated method stub
+								FragmentTransaction trans = ((MainActivity) context)
+										.getSupportFragmentManager()
+										.beginTransaction();
+								trans.replace(R.id.content_frame,
+										new ObjectFragment());
+								trans.commit();
+
+							}
+						});
 			}
 		});
 		btnshowlikef.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +120,23 @@ public class Dialog_notificationlike extends Dialog {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				listnewlikef.setAdapter(dataAdapter1);
+
+				listnewlikef
+						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> arg0,
+									View arg1, int arg2, long arg3) {
+								// TODO Auto-generated method stub
+								FragmentTransaction trans = ((MainActivity) context)
+										.getSupportFragmentManager()
+										.beginTransaction();
+								trans.replace(R.id.content_frame,
+										new FroumFragment());
+								trans.commit();
+
+							}
+						});
 
 			}
 		});
@@ -111,44 +147,26 @@ public class Dialog_notificationlike extends Dialog {
 				// TODO Auto-generated method stub
 				listnewlikep.setAdapter(dataAdapter2);
 
+				listnewlikep
+						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> arg0,
+									View arg1, int arg2, long arg3) {
+								// TODO Auto-generated method stub
+								FragmentTransaction trans = ((MainActivity) context)
+										.getSupportFragmentManager()
+										.beginTransaction();
+								trans.replace(R.id.content_frame,
+										new PaperFragment());
+								trans.commit();
+
+							}
+
+						});
+
 			}
 		});
-		// listnewlikef.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// // TODO Auto-generated method stub
-		// FragmentTransaction trans = ((FragmentActivity) context)
-		// .getSupportFragmentManager().beginTransaction();
-		// trans.replace(R.id.content_frame, new FroumFragment());
-		// trans.commit();
-		//
-		// }
-		// });
-		// listnewlikeo.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// // TODO Auto-generated method stub
-		// FragmentTransaction trans = ((FragmentActivity) context)
-		// .getSupportFragmentManager().beginTransaction();
-		// trans.replace(R.id.content_frame, new ObjectFragment());
-		// trans.commit();
-		//
-		// }
-		// });
-		// listnewlikep.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// // TODO Auto-generated method stub
-		// FragmentTransaction trans = ((FragmentActivity) context)
-		// .getSupportFragmentManager().beginTransaction();
-		// trans.replace(R.id.content_frame, new PaperFragment());
-		// trans.commit();
-		//
-		// }
-		// });
 
 		// if(listnotificationlike!=null){
 		// listnotificationlike.setAdapter(dataAdapter);}

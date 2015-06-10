@@ -6,11 +6,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.CommentObjectNotificationAdapter;
 import com.project.mechanic.adapter.CommentPaperNotificationAdapter;
@@ -108,6 +111,36 @@ public class Dialog_notification extends Dialog {
 				// TODO Auto-generated method stub
 				listnewcmf.setAdapter(dataAdapter);
 
+				listnewcmf
+						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> arg0,
+									View arg1, int arg2, long arg3) {
+								// TODO Auto-generated method stub
+								FragmentTransaction trans = ((MainActivity) context)
+										.getSupportFragmentManager()
+										.beginTransaction();
+								trans.replace(R.id.content_frame,
+										new FroumFragment());
+								trans.commit();
+
+							}
+						});
+
+				// listnewcmf.setOnClickListener(new View.OnClickListener() {
+				//
+				// @Override
+				// public void onClick(View arg0) {
+				// // TODO Auto-generated method stub
+				// FragmentTransaction trans = ((FragmentActivity) context)
+				// .getSupportFragmentManager().beginTransaction();
+				// trans.replace(R.id.content_frame, new FroumFragment());
+				// trans.commit();
+				//
+				// }
+				// });
+
 			}
 		});
 		btnshowcmo.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +149,36 @@ public class Dialog_notification extends Dialog {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				listnewcmo.setAdapter(dataAdapter1);
+
+				listnewcmo
+						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> arg0,
+									View arg1, int arg2, long arg3) {
+								// TODO Auto-generated method stub
+								FragmentTransaction trans = ((MainActivity) context)
+										.getSupportFragmentManager()
+										.beginTransaction();
+								trans.replace(R.id.content_frame,
+										new ObjectFragment());
+								trans.commit();
+
+							}
+						});
+
+				// listnewcmo.setOnClickListener(new View.OnClickListener() {
+				//
+				// @Override
+				// public void onClick(View arg0) {
+				// // TODO Auto-generated method stub
+				// FragmentTransaction trans = ((FragmentActivity) context)
+				// .getSupportFragmentManager().beginTransaction();
+				// trans.replace(R.id.content_frame, new ObjectFragment());
+				// trans.commit();
+				//
+				// }
+				// });
 
 			}
 		});
@@ -126,47 +189,27 @@ public class Dialog_notification extends Dialog {
 				// TODO Auto-generated method stub
 				listnewcmp.setAdapter(dataAdapter2);
 
+				listnewcmp
+						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> arg0,
+									View arg1, int arg2, long arg3) {
+								// TODO Auto-generated method stub
+								FragmentTransaction trans = ((MainActivity) context)
+										.getSupportFragmentManager()
+										.beginTransaction();
+								trans.replace(R.id.content_frame,
+										new PaperFragment());
+								trans.commit();
+
+							}
+
+						});
+
 			}
 
 		});
-		// listnewcmf.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// // TODO Auto-generated method stub
-		// FragmentTransaction trans = ((FragmentActivity) context)
-		// .getSupportFragmentManager().beginTransaction();
-		// trans.replace(R.id.content_frame, new FroumFragment());
-		// trans.commit();
-		//
-		// }
-		// });
-		//
-		// listnewcmo.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// // TODO Auto-generated method stub
-		// FragmentTransaction trans = ((FragmentActivity) context)
-		// .getSupportFragmentManager().beginTransaction();
-		// trans.replace(R.id.content_frame, new ObjectFragment());
-		// trans.commit();
-		//
-		// }
-		// });
-		//
-		// listnewcmp.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// // TODO Auto-generated method stub
-		// FragmentTransaction trans = ((FragmentActivity) context)
-		// .getSupportFragmentManager().beginTransaction();
-		// trans.replace(R.id.content_frame, new PaperFragment());
-		// trans.commit();
-		//
-		// }
-		// });
 
 		// listcmnotification.setAdapter(dataAdapter);
 		// listcmnotification2.setAdapter(dataAdapter1);

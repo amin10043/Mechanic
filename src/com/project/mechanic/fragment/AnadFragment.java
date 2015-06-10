@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,17 +31,20 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.ListView.PullAndLoadListView;
 import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
 import com.project.mechanic.ListView.PullToRefreshListView.OnRefreshListener;
-import com.project.mechanic.adapter.AnadImgListAdapter;
 import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.Ticket;
@@ -49,10 +55,11 @@ import com.project.mechanic.utility.Utility;
 public class AnadFragment extends Fragment {
 
 	DataBaseAdapter dbAdapter;
-	private ImageView imgadd, img;
+	private ImageView imgadd;
+	private ImageButton img;
 	private TextView txt1;
 	View view;
-	List<Ticket> mylist;
+    List<Ticket> mylist;   	
 	List<Anad> anadlist;
 	private DialogAnad dialog;
 	private DialogAnadimg dialog1;
@@ -60,6 +67,7 @@ public class AnadFragment extends Fragment {
 	private static int RESULT_LOAD_IMAGE = 1;
 	public static String picturePath;
 	int proID = -1;
+	int ticket;
 	private LinearLayout verticalOuterLayout;
 	List<Anad> list;
 	List<Ticket> subList;
@@ -67,9 +75,11 @@ public class AnadFragment extends Fragment {
 	Anad tempItem;
 	int position;
 	private Anad x;
-	private ListView lstimg;
+	int a;
+	// private ListView lstimg;
 
 	private int column = 3;
+	int I;
 	int gridePadding = 1;
 	private int columnWidth;
 	// private ListView verticalScrollview;
@@ -84,11 +94,13 @@ public class AnadFragment extends Fragment {
 	private Boolean isFaceDown = true;
 	private Timer clickTimer = null;
 	private Timer faceTimer = null;
-	private Button clickedButton = null;
+	private ImageButton clickedButton = null;
 	Users u;
 	Utility util;
 	int i = 0, j = 9;
+
 	AnadListAdapter ListAdapter;
+	private ScrollView verticalScrollview;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -96,15 +108,13 @@ public class AnadFragment extends Fragment {
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_anad, null);
 
-		verticalOuterLayout = (LinearLayout) view
-				.findViewById(R.id.vertical_outer_layout_id);
-
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.anad);
 		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
-
+		//proID  = Integer.valueOf(getArguments().getString("ProID"));
+	
 		imgadd = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
 		txt1 = (TextView) view.findViewById(R.id.fragment_anad_txt1);
-		img = (ImageView) view.findViewById(R.id.img_anad);
+		img = (ImageButton) view.findViewById(R.id.img_anad);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
@@ -131,19 +141,7 @@ public class AnadFragment extends Fragment {
 					subList.add(p);
 			}
 		}
-		// img.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// dialogimg = new DialogAnadimg(getActivity(),
-		// R.layout.dialog_imganad, AnadFragment.this,
-		// ticketTypeid, proID);
-		// // dialog.setTitle(R.string.txtanad);
-		//
-		// dialogimg.show();
-		//
-		// }
-		// });
+
 		imgadd.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -160,6 +158,7 @@ public class AnadFragment extends Fragment {
 				dialog.show();
 			}
 		});
+		
 		if (mylist != null && !mylist.isEmpty()) {
 			lstTicket = (PullAndLoadListView) view.findViewById(R.id.listVanad);
 
@@ -206,14 +205,31 @@ public class AnadFragment extends Fragment {
 					});
 		}
 
-		lstimg = (ListView) view.findViewById(R.id.listVanad2);
-		AnadImgListAdapter ListAdapter2 = new AnadImgListAdapter(getActivity(),
-				R.layout.row_anad_img, anadlist, proID);
+		// lstimg = (ListView) view.findViewById(R.id.listVanad2);
+		// AnadImgListAdapter ListAdapter2 = new
+		// AnadImgListAdapter(getActivity(),
+		// R.layout.row_anad_img, anadlist, proID);
 
-		lstimg.setAdapter(ListAdapter2);
-
+		// lstimg.setAdapter(ListAdapter2);
+		verticalScrollview = (ScrollView) view
+				.findViewById(R.id.vertical_scrollview_id);
 		verticalOuterLayout = (LinearLayout) view
 				.findViewById(R.id.vertical_outer_layout_id);
+		addImagesToView(anadlist);
+		// img.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// dialog1 = new DialogAnadimg(getActivity(),
+		// R.layout.dialog_imganad, AnadFragment.this,
+		// ticketTypeid, proID);
+		// // dialog.setTitle(R.string.txtanad);
+		//
+		// dialog1.show();
+		//
+		// }
+		// });
+
 		ViewTreeObserver vto = verticalOuterLayout.getViewTreeObserver();
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@Override
@@ -237,6 +253,198 @@ public class AnadFragment extends Fragment {
 
 		return view;
 
+	}
+
+	public void addImagesToView(final List<Anad> lst) {
+
+		for (I = 0; I < lst.size(); I++) {
+			byte[] tmpImage = lst.get(I).getImage();
+			
+			
+			final ImageButton imageButton = new ImageButton(getActivity());
+			if (tmpImage == null) {
+				Drawable image = this.getResources().getDrawable(
+						R.drawable.propagand);
+				
+				imageButton.setImageDrawable(image);
+				imageButton.setScaleType(ScaleType.FIT_XY);
+
+			} else {
+				imageButton.setImageBitmap(BitmapFactory.decodeByteArray(
+						tmpImage, 0, tmpImage.length));
+
+			}
+			imageButton.setTag(I);
+			
+			imageButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					int position=(Integer)arg0.getTag();
+					if (isFaceDown) {
+						if (clickTimer != null) {
+							clickTimer.cancel();
+							clickTimer = null;
+						}
+						clickedButton = (ImageButton) arg0;
+						Toast.makeText(getActivity(), position+"",
+								Toast.LENGTH_LONG).show();
+
+						stopAutoScrolling();
+						clickedButton.startAnimation(scaleFaceUpAnimation());
+						clickedButton.setSelected(true);
+						clickTimer = new Timer();
+
+						if (clickSchedule != null) {
+							clickSchedule.cancel();
+							clickSchedule = null;
+						}
+
+						clickSchedule = new TimerTask() {
+							public void run() {
+								startAutoScrolling();
+							}
+						};
+						dbAdapter.open();
+						switch(proID) {
+						case 1:
+							 a=position+1;
+						break;
+						case 3:
+							 a=position+50+1;
+						break;
+						case 4:
+							a=position+80+1;
+						break;
+						case 5:
+							a=position+150+1;
+						break;
+						case 6:
+							a=position+200+1;		
+						break;
+						case 7:
+							a=position+230+1;			
+						break;
+						case 8:
+							a=position+260+1;				
+						break;
+						case 9:
+							a=position+360+1;											
+						break;
+						case 10:
+							a=position+390+1;											
+						break;
+						case 11:
+							a=position+420+1;												
+						break;
+						case 12:
+							a=position+470+1;												
+						break;
+						case 13:
+							a=position+500+1;									
+						break;
+						case 14:
+							a=position+530+1;					
+						break;
+						case 15:
+							a=position+560+1;											
+						break;
+						case 16:
+							a=position+590+1;											
+						break;
+						case 17:
+							a=position+620+1;									
+						break;
+						case 18:
+							a=position+670+1;											
+						break;
+						case 19:
+							a=position+700+1;											
+						break;
+						case 20:
+							a=position+750+1;												
+						break;
+						case 21:
+							a=position+780+1;					
+						break;
+						case 22:
+							a=position+830+1;					
+						break;
+						case 23:
+							a=position+860+1;						
+						break;
+						case 24:
+							a=position+890+1;				
+						break;
+						case 25:
+							a=position+920+1;							
+						break;
+						case 26:
+							a=position+970+1;						
+						break;
+						case 27:
+							a=position+1020+1;							
+						break;
+						case 28:
+							a=position+1070+1;
+						break;
+						case 29:
+							a=position+1120+1;					
+						break;
+						case 30:
+							a=position+1170+1;					
+						break;
+						case 31:
+							a=position+1200+1;							
+						break;
+						case -1:
+							a=position+1250+1;							
+						break;
+						case 2:
+							a=position+1350+1;						
+						break;
+						default:
+						}
+					
+						Anad t = dbAdapter.getAnadByid(a);
+						t.getObjectId();
+						clickTimer.schedule(clickSchedule, 1500);
+						if (u == null) {
+							Toast.makeText(getActivity(), " شما وارد نشده اید.",
+									Toast.LENGTH_LONG).show();
+							return;
+						}else{ if(t.getObjectId()==0){
+							dialog1 = new DialogAnadimg(getActivity(),
+									R.layout.dialog_imganad, AnadFragment.this,
+									ticketTypeid, proID,a);
+							dialog1.show();
+							a=0;
+						}else{
+							Toast.makeText(getActivity(), " عکس قبلا انتخاب شده",
+									Toast.LENGTH_LONG).show();
+							FragmentTransaction trans = ((MainActivity) getActivity())
+									.getSupportFragmentManager().beginTransaction();
+							IntroductionFragment fragment = new IntroductionFragment();
+							Bundle bundlei = new Bundle();
+							// bundle.putString("Id", String.valueOf(id));
+							bundlei.putString("I", String.valueOf(t.getObjectId()));
+							fragment.setArguments(bundlei);
+							trans.replace(R.id.content_frame, fragment);
+							trans.addToBackStack(null);
+							trans.commit();
+						}
+						
+						}
+					}
+				}
+
+			});
+
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					util.getScreenwidth()/3, util.getScreenwidth()/3);
+			imageButton.setLayoutParams(params);
+			imageButton.setScaleType(ScaleType.FIT_XY);
+			verticalOuterLayout.addView(imageButton);
+			dbAdapter.close();		}
 	}
 
 	private class LoadMoreDataTask extends AsyncTask<Void, Void, Void> {
@@ -360,17 +568,9 @@ public class AnadFragment extends Fragment {
 	}
 
 	public void getScrollMaxAmount() {
-		// int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 *
-		// 3));
-		// verticalScrollMax = actualWidth;
-
-		// int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 *
-		// 3));
-		// int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 *
-		// 3));
-		// verticalScrollMax = actualWidth;
-		// verticalScrollMax = verticalScrollview.getHeight();
-		verticalScrollMax = new Utility(getActivity()).getScreenHeight();
+		// verticalScrollMax = new Utility(getActivity()).getScreenHeight();
+		int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 * 3));
+		verticalScrollMax = actualWidth;
 	}
 
 	public void startAutoScrolling() {
@@ -393,16 +593,28 @@ public class AnadFragment extends Fragment {
 				}
 			};
 
-			scrollTimer.schedule(scrollerSchedule, 30, 15);
+			scrollTimer.schedule(scrollerSchedule, 30, 30);
 		}
 	}
 
 	public void moveScrollView() {
-		scrollPos = (int) (lstimg.getScrollY() + 1.0);
+
+		scrollPos = (int) (verticalScrollview.getScrollY() + 1.0);
 		if (scrollPos >= verticalScrollMax) {
 			scrollPos = 0;
 		}
-		lstimg.scrollTo(0, scrollPos);
+		verticalScrollview.scrollTo(0, scrollPos);
+		// scrollPos = (int) (lstimg.getScrollY() + 1.0);
+		// if (scrollPos >= verticalScrollMax) {
+		// scrollPos = 0;
+		// }
+		// lstimg.scrollTo(0, scrollPos);
+
+		// scrollPos = (int) (lstimg.getScrollY() + 1.0);
+		// if (scrollPos >= verticalScrollMax) {
+		// scrollPos = 0;
+		// }
+		// lstimg.scrollTo(0, scrollPos);
 	}
 
 	public void stopAutoScrolling() {
@@ -483,13 +695,13 @@ public class AnadFragment extends Fragment {
 
 			@Override
 			public void onAnimationRepeat(Animation arg0) {
-				verticalTextView.setText("");
+				// verticalTextView.setText("");
 				isFaceDown = true;
 			}
 
 			@Override
 			public void onAnimationEnd(Animation arg0) {
-				verticalTextView.setText("");
+				// verticalTextView.setText("");
 				isFaceDown = true;
 			}
 		};

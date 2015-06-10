@@ -68,6 +68,7 @@ public class WelcomeScreen extends Activity implements AsyncInterface {
 	private Button clickedButton = null;
 
 	private Updating serviceUpdate;
+	// private UpdatingImage serviceImage;
 	private ServiceComm comm;
 	private Utility util;
 	private DataBaseAdapter adapter;

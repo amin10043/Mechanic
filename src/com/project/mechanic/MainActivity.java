@@ -1,8 +1,14 @@
 package com.project.mechanic;
 
+import java.util.Calendar;
 import java.util.List;
 
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,13 +31,6 @@ import android.widget.Toast;
 
 import com.project.mechanic.adapter.SlideMenuAdapter;
 import com.project.mechanic.entity.CommentInFroum;
-import com.project.mechanic.entity.CommentInObject;
-import com.project.mechanic.entity.CommentInPaper;
-import com.project.mechanic.entity.Froum;
-import com.project.mechanic.entity.LikeInFroum;
-import com.project.mechanic.entity.LikeInObject;
-import com.project.mechanic.entity.LikeInPaper;
-import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.fragment.Dialog_notification;
@@ -42,10 +41,12 @@ import com.project.mechanic.fragment.FragmentAboutUs;
 import com.project.mechanic.fragment.FragmentContactUs;
 import com.project.mechanic.fragment.LoginFragment;
 import com.project.mechanic.fragment.MainFragment;
+import com.project.mechanic.fragment.ObjectFragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.fragment.SearchFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.HelloService;
+import com.project.mechanic.service.MyReceiver;
 import com.project.mechanic.utility.Utility;
 
 public class MainActivity extends FragmentActivity {
@@ -66,17 +67,16 @@ public class MainActivity extends FragmentActivity {
 	Dialog_notification dialog;
 	Dialog_notificationlike dialog1;
 	Users user;
+	private PendingIntent pendingIntent;
 	List<CommentInFroum> mylist;
-	List<CommentInObject> mylist1;
-	List<CommentInPaper> mylist2;
-	List<LikeInFroum> mylist3;
-	List<LikeInObject> mylist4;
-	List<LikeInPaper> mylist5;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		// this code is for lock rotate screen
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 
 		adapter = new DataBaseAdapter(this);
 		slideadapter = new SlideMenuAdapter(this);
@@ -88,6 +88,39 @@ public class MainActivity extends FragmentActivity {
 		user = util.getCurrentUser();
 		if (user != null) {
 			util.setNoti(this, user.getId());
+		} else {
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					MainActivity.this);
+			builder.setTitle("پیغام");
+			builder.setMessage("جهت استفاده از تمامی امکانات نرم افزار وارد شوید ");
+			builder.setNegativeButton("ورود به لاگین",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+
+							FragmentTransaction trans = getSupportFragmentManager()
+									.beginTransaction();
+							trans.replace(R.id.content_frame,
+									new LoginFragment());
+							trans.commit();
+						}
+					});
+
+			builder.setPositiveButton("انصراف",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+
+							dialog.dismiss();
+
+						}
+					});
+			AlertDialog alert = builder.create();
+			alert.show();
 
 		}
 
@@ -104,47 +137,50 @@ public class MainActivity extends FragmentActivity {
 							.show();
 					return;
 				}
+
+				adapter.open();
+				// int r = adapter.NumOfNewCmtInFroum(user.getId());
+				// int r1 = adapter.NumOfNewCmtInObject(user.getId());
+				// int r2 = adapter.NumOfNewCmtInPaper(user.getId());
+				// int r3 = r + r1 + r2;
+				// TextView txtcm = (TextView) findViewById(R.id.txtcm);
+				// txtcm.setText("" + r3);
+
+				dialog = new Dialog_notification(MainActivity.this);
+				int r = adapter.NumOfNewCmtInFroum(user.getId());
+				int r1 = adapter.NumOfNewCmtInObject(user.getId());
+				int r2 = adapter.NumOfNewCmtInPaper(user.getId());
+
+				dialog.show();
+
+				// CommentInFroum a = (CommentInFroum) mylist;
+
+				// int b = a.getFroumid();
+				// Froum d = adapter.getFroumItembyid(b);
+				// int e = d.getUserId();
+
+				int seen = 1;
+				adapter.updatecmseentodb(seen, user.getId());
+				adapter.updatecmobjectseentodb(seen, user.getId());
+				adapter.updatecmpaperseentodb(seen, user.getId());
+				int r4 = adapter.NumOfNewCmtInFroum(user.getId());
+				int r5 = adapter.NumOfNewCmtInObject(user.getId());
+				int r6 = adapter.NumOfNewCmtInPaper(user.getId());
+				int r7 = r4 + r5 + r6;
+				TextView txtcm1 = (TextView) findViewById(R.id.txtcm);
+				txtcm1.setText("" + r7);
 				TextView numf = (TextView) findViewById(R.id.numf);
 				TextView numo = (TextView) findViewById(R.id.numo);
 				TextView nump = (TextView) findViewById(R.id.nump);
-				adapter.open();
-
-				dialog = new Dialog_notification(MainActivity.this);
-
-				dialog.show();
-				int seen = 1;
-				CommentInFroum a = (CommentInFroum) mylist;
-
-				int b = a.getFroumid();
-				Froum d = adapter.getFroumItembyid(b);
-				int e = d.getUserId();
-				// /////////////////////
-				// CommentInObject a1 = (CommentInObject) mylist1;
-				// int b1 = a1.getObjectid();
-				// Object d1 = adapter.getObjectbyid(b1);
-
-				// //////////////////////////////////////
-				CommentInPaper a2 = (CommentInPaper) mylist2;
-				int b2 = a2.getPaperid();
-				Paper d2 = adapter.getPaperItembyid(b2);
-
-				adapter.updatecmseentodb(seen, d.getUserId());
-				adapter.updatecmobjectseentodb(seen, user.getId());
-				adapter.updatecmpaperseentodb(seen, d2.getUserId());
-				int r = adapter.NumOfNewCmtInFroum(d.getUserId());
-				int r1 = adapter.NumOfNewCmtInObject(user.getId());
-				int r2 = adapter.NumOfNewCmtInPaper(d2.getUserId());
-				int r3 = r + r1 + r2;
-				TextView txtcm = (TextView) findViewById(R.id.txtcm);
-				txtcm.setText("" + r3);
-				numf.setText(r);
-				numo.setText(r1);
-				nump.setText(r2);
+				// numf.setText("" + r);
+				// numo.setText("" + r1);
+				// nump.setText("" + r2);
 
 				adapter.close();
 
 			}
 		});
+
 		ImageButton iBtnNotification = (ImageButton) findViewById(R.id.iBtnNotification);
 		iBtnNotification.setOnClickListener(new OnClickListener() {
 
@@ -163,49 +199,27 @@ public class MainActivity extends FragmentActivity {
 				dialog1 = new Dialog_notificationlike(MainActivity.this);
 
 				dialog1.show();
-				int froumid = 0;
-				if (getArguments().getInt("seen") == 0)
-					froumid = Integer.valueOf(getArguments().getString("seen"));
-
-				Froum d = adapter.getFroumItembyid(froumid);
-
-				Integer paperid = null;
-				// /////////////////////////////////////
-				// LikeInObject a1 = (LikeInObject) mylist4;
-				// int b1 = a1.getObjectid();
-				// Object d1 = adapter.getObjectbyid(b1);
-				// ////////////////////////////////////
-				if (getArguments().getInt("seen") == 0)
-					paperid = Integer.valueOf(getArguments().getString("seen"));
-
-				Froum d2 = adapter.getFroumItembyid(paperid);
-
 				int seen = 1;
-
 				adapter.updatelikeseentodb(seen, user.getId());
-				adapter.updatelikefroumseentodb(seen, d.getUserId());
-				adapter.updatelikepaperseentodb(seen, d2.getUserId());
+				adapter.updatelikefroumseentodb(seen, user.getId());
+				adapter.updatelikepaperseentodb(seen, user.getId());
 
-				int t1 = adapter.NumOfNewLikeInObject(user.getId());
+				int t = adapter.NumOfNewLikeInObject(user.getId());
 
-				int t = adapter.NumOfNewLikeInFroum(d.getUserId());
-				int t2 = adapter.NumOfNewLikeInPaper(d2.getUserId());
+				int t1 = adapter.NumOfNewLikeInFroum(user.getId());
+				int t2 = adapter.NumOfNewLikeInPaper(user.getId());
 				int t3 = t + t1 + t2;
 				TextView txtlike = (TextView) findViewById(R.id.txtlike);
 				txtlike.setText("" + t3);
-				numlikef.setText(t);
-				numlikeo.setText(t1);
-				numlikep.setText(t2);
+				// numlikef.setText(t);
+				// numlikeo.setText(t1);
+				// numlikep.setText(t2);
 				adapter.close();
 
 			}
 
-			private Bundle getArguments() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
 		});
+
 		// mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -269,18 +283,16 @@ public class MainActivity extends FragmentActivity {
 					tableName = "Province";
 				} else if (f instanceof CityFragment) {
 					tableName = "City";
+				} else if (f instanceof ObjectFragment) {
+					tableName = "Object";
 				}
+
 				Fragment fragment;
 				FragmentManager fragmentManager;
 				fragment = new SearchFragment();
 				fragmentManager = getSupportFragmentManager();
 				fragmentManager.beginTransaction()
 						.replace(R.id.content_frame, fragment).commit();
-
-				// Intent i = new Intent(MainActivity.this, Search.class);
-				//
-				// i.putExtra("table", tableName);
-				// startActivity(i);
 
 			}
 		});
@@ -357,10 +369,32 @@ public class MainActivity extends FragmentActivity {
 
 		setActivityTitle(R.string.strMain);
 
+		// @MK for set period time for repeat your code by mHandler
 		mHandler = new Handler();
 		mHandler.postDelayed(mStatusChecker, mInterval);
 		Intent intent = new Intent(MainActivity.this, HelloService.class);
 		startService(intent);
+
+		// @MK for set specified time for send intent to service for runnig your
+		// code
+		Calendar calendar = Calendar.getInstance();
+
+		// calendar.set(Calendar.MONTH, 6);
+		// calendar.set(Calendar.YEAR, 2013);
+		// calendar.set(Calendar.DAY_OF_MONTH, 13);
+
+		calendar.set(Calendar.HOUR_OF_DAY, 3);
+		calendar.set(Calendar.MINUTE, 26);
+		calendar.set(Calendar.SECOND, 00);
+		calendar.set(Calendar.AM_PM, Calendar.PM);
+
+		Intent myIntent = new Intent(MainActivity.this, MyReceiver.class);
+		pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,
+				myIntent, 0);
+
+		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+		alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),
+				pendingIntent);
 	}
 
 	Runnable mStatusChecker = new Runnable() {

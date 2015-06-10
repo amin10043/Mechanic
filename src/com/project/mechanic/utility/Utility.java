@@ -1,5 +1,9 @@
 package com.project.mechanic.utility;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -14,13 +18,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
+import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
@@ -34,6 +44,8 @@ public class Utility {
 	private Context context;
 	private DataBaseAdapter adapter;
 	int notificationID;
+	LayoutInflater inflater;
+	ViewGroup toastlayout;
 
 	public Utility(Context context) {
 		this.context = context;
@@ -78,6 +90,20 @@ public class Utility {
 								dialog.dismiss();
 							}
 						}).setIcon(android.R.drawable.ic_dialog_alert).show();
+	}
+
+	public void showtoast(View view, int picture, String massage, String Title) {
+
+		TextView txtView_Title = (TextView) view.findViewById(R.id.txt_Title);
+		TextView txtView_Context = (TextView) view
+				.findViewById(R.id.txt_context);
+		ImageView imageView = (ImageView) view.findViewById(R.id.image_toast);
+
+		txtView_Title.setText(Title);
+
+		txtView_Context.setText(massage);
+		imageView.setImageResource(picture);
+
 	}
 
 	public Users getCurrentUser() {
@@ -265,7 +291,6 @@ public class Utility {
 			// values[j][k++] = innerToken.nextToken();
 			j++;
 		}
-
 		adapter.open();
 		adapter.updateTables(tableName, col, values);
 		adapter.setServerDate("ServerDate_" + tableName.trim(), serverDate);
@@ -298,6 +323,27 @@ public class Utility {
 		TextView txtlike = (TextView) a.findViewById(R.id.txtlike);
 		txtlike.setText(String.valueOf(t3));
 		adapter.close();
+	}
+
+	public static void CompressBitmap(Context context, Bitmap bitmap) {
+		String env = Environment.getExternalStorageDirectory().getPath();
+		String path = env + "/test.png";
+		try {
+			File f = new File(path);
+
+			FileOutputStream fileOut = new FileOutputStream(f);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 50, fileOut);
+			try {
+				fileOut.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			bitmap.recycle();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

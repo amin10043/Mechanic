@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,9 @@ public class show_pay_fragment extends Fragment {
 	DataBaseAdapter dbAdapter;
 	int proID;
 	int id;
+	int i;
+	int T;
+	int a=0;
 	Utility util;
 	LinearLayout.LayoutParams headerEditParams;
 	LinearLayout Lheader;
@@ -56,7 +60,8 @@ public class show_pay_fragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		((MainActivity) getActivity()).setActivityTitle(R.string.showad);
-		// id = Integer.valueOf(getArguments().getString("Id"));
+		 i = Integer.valueOf(getArguments().getString("I"));
+	
 		// if (getArguments().getString("ProID") != null) {
 		// proID = Integer.valueOf(getArguments().getString("ProID"));
 		// }
@@ -98,7 +103,7 @@ public class show_pay_fragment extends Fragment {
 				SharedPreferences sendIdpro = getActivity()
 						.getSharedPreferences("Id", 0);
 				int id = sendIdpro.getInt("main_Id", -1);
-				Toast.makeText(getActivity(), id + "do", Toast.LENGTH_SHORT)
+				Toast.makeText(getActivity(), i + "do", Toast.LENGTH_SHORT)
 						.show();
 				Bitmap bitmap = ((BitmapDrawable) img_pay.getDrawable())
 						.getBitmap();
@@ -116,8 +121,19 @@ public class show_pay_fragment extends Fragment {
 				dbAdapter.open();
 				com.project.mechanic.entity.Object o = dbAdapter
 						.getObjectByName(b);
-				dbAdapter.insertAnadToDb(bytes, o.getId(), date, 0, id, 1);
+				dbAdapter.UpdateAnadToDb(i,bytes, o.getId(), date, 0, id);	
 				dbAdapter.close();
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				AnadFragment fragment = new AnadFragment();
+				Bundle bundle = new Bundle();
+				 bundle.putString("Id", String.valueOf(id));
+				if (id >= 0)
+		    	bundle.putString("ProID", String.valueOf(id));
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
 
 			}
 		});

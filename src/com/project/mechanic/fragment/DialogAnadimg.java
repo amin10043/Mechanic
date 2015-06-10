@@ -54,11 +54,12 @@ public class DialogAnadimg extends Dialog {
 	String Bytimage;
 	int ProvinceId;
 	int id;
+	int i;
 	protected byte[] img;
 	String TABLE_NAME = "Ticket";
 
 	public DialogAnadimg(Context context, int resourceId, Fragment fragment,
-			int ticketTypeID, int ProvinceId) {
+			int ticketTypeID, int ProvinceId, int i) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		this.resourceId = resourceId;
@@ -66,6 +67,7 @@ public class DialogAnadimg extends Dialog {
 		this.fragment = fragment;
 		this.ticketTypeID = ticketTypeID;
 		this.ProvinceId = ProvinceId;
+		this.i=i;
 
 	}
 
@@ -108,10 +110,13 @@ public class DialogAnadimg extends Dialog {
 						.getSupportFragmentManager().beginTransaction();
 				show_pay_fragment fragment = new show_pay_fragment();
 				Bundle bundle = new Bundle();
+				Bundle bundlei = new Bundle();
 				// bundle.putString("Id", String.valueOf(id));
-				if (ProvinceId >= 0)
-					bundle.putString("ProID", String.valueOf(ProvinceId));
+				//if (ProvinceId >= 0)
+				//	bundle.putString("ProID", String.valueOf(ProvinceId));
+				bundlei.putString("I", String.valueOf(i));
 				fragment.setArguments(bundle);
+				fragment.setArguments(bundlei);
 				trans.replace(R.id.content_frame, fragment);
 				trans.addToBackStack(null);
 				trans.commit();

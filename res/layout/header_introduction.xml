@@ -1,60 +1,49 @@
 <LinearLayout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="#EAEAEA"
     android:orientation="vertical" >
 
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/headerlinerpageintroduction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/imgvadvertise_Object"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/no_image_header" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/linear_id_profile_introduction_page"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:orientation="vertical" >
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="10dp" >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+        <ImageView
+            android:id="@+id/icon_pro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/no_img_profile" />
 
-            <LinearLayout
-                android:id="@+id/headerlinerpageintroduction"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/imgvadvertise_Object"
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:layout_weight="3"
-                    android:paddingBottom="20dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/pre_header" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linear_id_profile_introduction_page"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="25dp"
-                android:layout_marginTop="120dp" >
-
-                <TextView
-                    android:id="@+id/namePage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:text="name"
-                    android:textColor="#000" />
-
-                <ImageView
-                    android:id="@+id/icon_pro"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/profile_account" />
-            </LinearLayout>
-        </RelativeLayout>
-    </FrameLayout>
+        <TextView
+            android:id="@+id/namePage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@+id/icon_pro"
+            android:text="name"
+            android:textColor="#000" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -380,6 +369,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/emailRelative"
                 style="@style/brandStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -388,8 +378,8 @@
                 android:layout_marginRight="25dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/brand_list_item_shape"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp" >
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp" >
 
                 <ImageButton
                     android:id="@+id/emailbtn"
@@ -414,14 +404,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/dialog_show_fax"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
+                    android:gravity="center"
                     android:textColor="@color/transparent" />
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/addressRelative"
                 style="@style/brandStyle"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="25dp"
@@ -455,12 +445,13 @@
                     android:id="@+id/txtAddress_Object"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="sssdsdsdasdasdasdasdasdasdassdhsdhusdhusdhusdhfusdhfusdhfusdhfsudhfsudhfsudhfsudfhusdhfusd"
                     android:textColor="@color/transparent" />
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/sendsmsIntroduction"
                 style="@style/brandStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

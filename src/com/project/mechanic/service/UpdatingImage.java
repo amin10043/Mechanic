@@ -10,15 +10,14 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import android.R.integer;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.utility.Utility;
 
-public class Saving extends AsyncTask<Map<String, String>, Integer, String> {
-
+public class UpdatingImage extends
+		AsyncTask<Map<String, String>, Integer, byte[]> {
 	public String SOAP_ACTION = "http://tempuri.org/";
 
 	public String OPERATION_NAME = "";
@@ -30,31 +29,27 @@ public class Saving extends AsyncTask<Map<String, String>, Integer, String> {
 	public String response = "";
 	private Context context;
 	private Utility util;
+	byte[] res = null;
 
-	public AsyncInterface delegate = null;
+	public GetAsyncInterface delegate = null;
 
-	public Saving(Context context) {
+	public UpdatingImage(Context context) {
 		this.context = context;
 		util = new Utility(context);
 	}
 
 	@Override
-	protected String doInBackground(Map<String, String>... action) {
-		OPERATION_NAME = "Saving";
-		SOAP_ACTION += OPERATION_NAME;
-		Iterator<Entry<String, String>> it = action[0].entrySet().iterator();
-		Entry<String, String> item1 = it.next();
-
-		String param = "";
-		Entry<String, String> item2;
-		while (it.hasNext()) {
-			item2 = it.next();
-			param += item2.getKey() + ":" + item2.getValue() + "-";
-		}
-
+	protected byte[] doInBackground(Map<String, String>... action) {
 		try {
+			Iterator<Entry<String, String>> it = action[0].entrySet()
+					.iterator();
+			Entry<String, String> item1 = it.next();
+
+			OPERATION_NAME = "get" + item1.getValue() + "Image";
+			SOAP_ACTION += OPERATION_NAME;
 			SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,
 					OPERATION_NAME);
+
 			PropertyInfo pi = null;
 
 			pi = new PropertyInfo();
@@ -63,22 +58,18 @@ public class Saving extends AsyncTask<Map<String, String>, Integer, String> {
 			pi.setType(String.class);
 			request.addProperty(pi);
 
+			Entry<String, String> item2 = it.next();
 			pi = new PropertyInfo();
-			pi.setName("param");
-			pi.setValue(param);
+			pi.setName("id");
+			pi.setValue(item2.getValue());
 			pi.setType(String.class);
 			request.addProperty(pi);
 
+			Entry<String, String> item3 = it.next();
 			pi = new PropertyInfo();
-			pi.setName("IsUpdate");
-			pi.setValue(0);
-			pi.setType(integer.class);
-			request.addProperty(pi);
-
-			pi = new PropertyInfo();
-			pi.setName("Id");
-			pi.setValue(0);
-			pi.setType(integer.class);
+			pi.setName("fromDate");
+			pi.setValue(item3.getValue());
+			pi.setType(String.class);
 			request.addProperty(pi);
 
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
@@ -91,17 +82,17 @@ public class Saving extends AsyncTask<Map<String, String>, Integer, String> {
 			// Object response = null;
 			httpTransport.call(SOAP_ACTION, envelope);
 			Object response = envelope.getResponse();
-			return response.toString();
+			res = (byte[]) response;
 		} catch (Exception e) {
 			response = e.toString();
 		}
-		return response.toString();
+		return res;
+
 	}
 
-	protected void onPostExecute(String res) {
+	protected void onPostExecute(byte[] res) {
 
 		if (delegate != null)
 			delegate.processFinish(res);
 	}
-
 }
