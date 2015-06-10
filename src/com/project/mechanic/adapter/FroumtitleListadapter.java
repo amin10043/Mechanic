@@ -155,10 +155,19 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 							"برای درج لایک ابتدا باید وارد شوید",
 							Toast.LENGTH_SHORT).show();
 				} else {
-					if (adapter.isUserLikedFroum(CurrentUser.getId(), position)) {
+
+					String item = txt1.getText().toString();
+					ItemId = 0;
+					for (Froum listItem : mylist) {
+						if (item.equals(listItem.getTitle())) {
+							// check authentication and authorization
+							ItemId = listItem.getId();
+						}
+					}
+					if (adapter.isUserLikedFroum(CurrentUser.getId(), ItemId)) {
 						adapter.open();
-						int c = adapter.LikeInFroum_count(position) - 1;
-						countLikeFroum.setText(String.valueOf(c));
+						int c = adapter.LikeInFroum_count(ItemId) - 1;
+						// countLikeFroum.setText(String.valueOf(c));
 
 						params = new LinkedHashMap<String, String>();
 						deleting = new Deleting(context);
@@ -167,7 +176,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 						params.put("TableName", "LikeInFroum");
 						params.put("UserId",
 								String.valueOf(CurrentUser.getId()));
-						params.put("FroumId", String.valueOf(position));
+						params.put("FroumId", String.valueOf(ItemId));
 						deleting.execute(params);
 
 						ringProgressDialog = ProgressDialog.show(context, "",
@@ -201,7 +210,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 						params.put("UserId",
 								String.valueOf(CurrentUser.getId()));
-						params.put("FroumId", String.valueOf(position));
+						params.put("FroumId", String.valueOf(ItemId));
 						params.put("CommentId", "0");
 						params.put("Date", currentDate);
 						saving.execute(params);
@@ -226,8 +235,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 							}
 						}).start();
 
-						countLikeFroum.setText(adapter.LikeInFroum_count(
-								position).toString());
+						countLikeFroum.setText(adapter
+								.LikeInFroum_count(ItemId).toString());
 
 						adapter.close();
 
@@ -293,13 +302,14 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		}
 		adapter.open();
 
-		if (adapter.isUserLikedFroum(id, ItemId)) {
+		if (adapter.isUserLikedFroum(CurrentUser.getId(), ItemId)) {
 			LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
-			adapter.deleteLikeFromFroum(id, ItemId);
+			adapter.deleteLikeFromFroum(CurrentUser.getId(), ItemId);
 
 		} else {
 			LikeTitle.setBackgroundResource(R.drawable.like_froum);
-			adapter.insertLikeInFroumToDb(id, ItemId, currentDate, 0);
+			adapter.insertLikeInFroumToDb(CurrentUser.getId(), ItemId,
+					currentDate, 0);
 
 			countLikeFroum
 					.setText(adapter.LikeInFroum_count(ItemId).toString());
