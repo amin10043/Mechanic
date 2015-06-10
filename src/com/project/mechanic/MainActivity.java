@@ -3,9 +3,7 @@ package com.project.mechanic;
 import java.util.Calendar;
 
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -34,6 +32,7 @@ import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.fragment.Dialog_notification;
 import com.project.mechanic.fragment.Dialog_notificationlike;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
+import com.project.mechanic.fragment.EnterDialog;
 import com.project.mechanic.fragment.ExitDialog;
 import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.FragmentAboutUs;
@@ -87,38 +86,41 @@ public class MainActivity extends FragmentActivity {
 		if (user != null) {
 			util.setNoti(this, user.getId());
 		} else {
-			AlertDialog.Builder builder = new AlertDialog.Builder(
-					MainActivity.this);
-			builder.setTitle("پیغام");
-			builder.setMessage("جهت استفاده از تمامی امکانات نرم افزار وارد شوید ");
-			builder.setNegativeButton("ورود به لاگین",
-					new DialogInterface.OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-
-							FragmentTransaction trans = getSupportFragmentManager()
-									.beginTransaction();
-							trans.replace(R.id.content_frame,
-									new LoginFragment());
-							trans.commit();
-						}
-					});
-
-			builder.setPositiveButton("انصراف",
-					new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-
-							dialog.dismiss();
-
-						}
-					});
-			AlertDialog alert = builder.create();
-			alert.show();
+			EnterDialog dialogEnter = new EnterDialog(MainActivity.this);
+			dialogEnter.show();
+			// AlertDialog.Builder builder = new AlertDialog.Builder(
+			// MainActivity.this);
+			// builder.setTitle("پیغام");
+			// builder.setMessage("جهت استفاده از تمامی امکانات نرم افزار وارد شوید ");
+			// builder.setNegativeButton("ورود به لاگین",
+			// new DialogInterface.OnClickListener() {
+			//
+			// @Override
+			// public void onClick(DialogInterface dialog, int which) {
+			// // TODO Auto-generated method stub
+			//
+			// FragmentTransaction trans = getSupportFragmentManager()
+			// .beginTransaction();
+			// trans.replace(R.id.content_frame,
+			// new LoginFragment());
+			// trans.commit();
+			// }
+			// });
+			//
+			// builder.setPositiveButton("انصراف",
+			// new DialogInterface.OnClickListener() {
+			//
+			// @Override
+			// public void onClick(DialogInterface dialog, int which) {
+			// // TODO Auto-generated method stub
+			//
+			// dialog.dismiss();
+			//
+			// }
+			// });
+			// AlertDialog alert = builder.create();
+			// alert.show();
 
 		}
 
@@ -161,7 +163,8 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				if (util.getCurrentUser() == null) {
+				user = util.getCurrentUser();
+				if (user == null) {
 					Toast.makeText(MainActivity.this,
 							"شما هنوز وارد نشده اید.", Toast.LENGTH_SHORT)
 							.show();
@@ -232,10 +235,6 @@ public class MainActivity extends FragmentActivity {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		ImageButton iBtnMenu = (ImageButton) findViewById(R.id.iBtnMenu);
-		// ImageButton iBtnShare = (ImageButton) findViewById(R.id.iBtnShare);
-		// ImageButton iBtnBack = (ImageButton) findViewById(R.id.iBtnBack);
-		// final ImageButton iBtnFavorite = (ImageButton)
-		// findViewById(R.id.iBtnFavorite);
 		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
 		ImageView search = (ImageView) findViewById(R.id.sedarch_v);
 
@@ -286,8 +285,8 @@ public class MainActivity extends FragmentActivity {
 		setActivityTitle(R.string.strMain);
 
 		// @MK for set period time for repeat your code by mHandler
-		mHandler = new Handler();
-		mHandler.postDelayed(mStatusChecker, mInterval);
+		// mHandler = new Handler();
+		// mHandler.postDelayed(mStatusChecker, mInterval);
 		Intent intent = new Intent(MainActivity.this, HelloService.class);
 		startService(intent);
 
@@ -313,22 +312,22 @@ public class MainActivity extends FragmentActivity {
 				pendingIntent);
 	}
 
-	Runnable mStatusChecker = new Runnable() {
+	// Runnable mStatusChecker = new Runnable() {
+	//
+	// @Override
+	// public void run() {
+	// util.Notification();
+	// mHandler.postDelayed(mStatusChecker, mInterval);
+	// }
+	// };
 
-		@Override
-		public void run() {
-			util.Notification();
-			mHandler.postDelayed(mStatusChecker, mInterval);
-		}
-	};
-
-	void startRepeatingTask() {
-		mStatusChecker.run();
-	}
-
-	void stopRepeatingTask() {
-		mHandler.removeCallbacks(mStatusChecker);
-	}
+	// void startRepeatingTask() {
+	// mStatusChecker.run();
+	// }
+	//
+	// void stopRepeatingTask() {
+	// mHandler.removeCallbacks(mStatusChecker);
+	// }
 
 	public void setActivityTitle(int title) {
 		TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);

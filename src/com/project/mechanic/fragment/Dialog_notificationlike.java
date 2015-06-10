@@ -15,11 +15,9 @@ import com.project.mechanic.R;
 import com.project.mechanic.adapter.LikeFroumNotificationAdapter;
 import com.project.mechanic.adapter.LikeNotificationAdapter;
 import com.project.mechanic.adapter.LikePaperNotificationAdapter;
-import com.project.mechanic.entity.LikeInFroum;
-import com.project.mechanic.entity.LikeInObject;
-import com.project.mechanic.entity.LikeInPaper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.row_items.LikeNotiItem;
 import com.project.mechanic.utility.Utility;
 
 public class Dialog_notificationlike extends Dialog {
@@ -59,19 +57,11 @@ public class Dialog_notificationlike extends Dialog {
 		ImageButton btnshowlikep = (ImageButton) findViewById(R.id.btnshowlikep);
 		final ListView listnewlike = (ListView) findViewById(R.id.listnewlike);
 
-		// listnotificationlike= (ListView)
-		// findViewById(R.id.listnotificationlike);
-		// listnotificationlike1= (ListView)
-		// findViewById(R.id.listnotificationlike1);
-		// listnotificationlike2= (ListView)
-		// findViewById(R.id.listnotificationlike2);
-
 		dbadapter.open();
-
-		ArrayList<LikeInObject> mylist = dbadapter.getUnseenlike(user.getId());
-		ArrayList<LikeInFroum> mylist1 = dbadapter.getUnseenlikeInFroum(user
+		ArrayList<LikeNotiItem> mylist = dbadapter.getUnseenlike(user.getId());
+		ArrayList<LikeNotiItem> mylist1 = dbadapter.getUnseenlikeInFroum(user
 				.getId());
-		ArrayList<LikeInPaper> mylist2 = dbadapter.getUnseenlikeInPaper(user
+		ArrayList<LikeNotiItem> mylist2 = dbadapter.getUnseenlikeInPaper(user
 				.getId());
 		// CommentInFroum c = dbadapter.getCommentInFroumbyID(1);
 		// String [] aa = {c.getDesk(),c.getDesk(),c.getDesk(),c.getDesk()};
@@ -111,29 +101,6 @@ public class Dialog_notificationlike extends Dialog {
 
 			}
 		});
-
-		// if(listnotificationlike!=null){
-		// listnotificationlike.setAdapter(dataAdapter);}
-		//
-		// else{listnotificationlike.setVisibility(View.INVISIBLE);
-		//
-		// }
-		//
-		//
-		// if(listnotificationlike1!=null){
-		// listnotificationlike1.setAdapter(dataAdapter1); }
-		// else{listnotificationlike1.setVisibility(View.INVISIBLE);
-		//
-		// }
-		// if(listnotificationlike2!=null){
-		// listnotificationlike2.setAdapter(dataAdapter2); }
-		// else{listnotificationlike2.setVisibility(View.INVISIBLE);
-		//
-		// }
-
-		// listnotificationlike.setAdapter(dataAdapter);
-		// listnotificationlike1.setAdapter(dataAdapter1);
-		// listnotificationlike2.setAdapter(dataAdapter2);
 
 	}
 

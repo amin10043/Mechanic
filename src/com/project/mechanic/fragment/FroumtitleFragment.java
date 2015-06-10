@@ -57,9 +57,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		util = new Utility(getActivity());
 
 		Currentuser = util.getCurrentUser();
-		if (Currentuser == null)
 
-			addtitle.setVisibility(View.INVISIBLE);
 		mdb.open();
 		mylist = mdb.getAllFroum();
 
@@ -68,7 +66,6 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		date = new ServerDate(getActivity());
 		date.delegate = this;
 		date.execute("");
-		addtitle.setImageResource(R.drawable.ic_create_off);
 
 		addtitle.setOnClickListener(new OnClickListener() {
 

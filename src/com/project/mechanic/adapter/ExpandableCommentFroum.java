@@ -359,14 +359,13 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 				// tabdil be int
 				// ezafe kardan 1 vahed be meghdar ghabli
 				// tabdil be String
-				adapter.open();
 
 				if (Currentuser == null) {
 					Toast.makeText(context, "ابتدا باید وارد شوید",
 							Toast.LENGTH_SHORT).show();
 					return;
 				} else {
-
+					adapter.open();
 					int intCureentLike = Integer.valueOf(comment.getNumOfLike());
 					int newCountLike = intCureentLike + 1;
 					String stringNewcountLike = String.valueOf(newCountLike);
@@ -389,10 +388,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 								.equals(listItem.getDesk())) {
 
 							GlobalLikeId = id = listItem.getId();
-
 						}
 					}
-
 					// send to database
 
 					if (adapter.isUserLikedComment(Currentuser.getId(), id, 1)) {
@@ -409,7 +406,6 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 						txtlike.setText(String.valueOf(adapter
 								.getCountofCommentinFroumObject(froumID, id)));
 
-						adapter.close();
 						notifyDataSetChanged();
 
 						imglikeComment
@@ -435,14 +431,14 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 							txtlike.setText(String.valueOf(adapter
 									.getCountofCommentinFroumObject(froumID, id)));
 
-							adapter.close();
 							notifyDataSetChanged();
 							imglikeComment
 									.setBackgroundResource(R.drawable.positive);
 						}
 					}
-
+					adapter.close();
 				}
+
 			}
 		});
 
@@ -451,14 +447,12 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 			@Override
 			public void onClick(View m) {
 
-				adapter.open();
-
 				if (Currentuser == null) {
 					Toast.makeText(context, "ابتدا باید وارد شوید",
 							Toast.LENGTH_SHORT).show();
 					return;
 				} else {
-
+					adapter.open();
 					RelativeLayout parentlayout = (RelativeLayout) m
 							.getParent().getParent().getParent();
 					View view = parentlayout.findViewById(R.id.peygham);

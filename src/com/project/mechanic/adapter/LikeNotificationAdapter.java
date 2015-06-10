@@ -11,17 +11,16 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.project.mechanic.R;
-import com.project.mechanic.entity.LikeInObject;
-import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.row_items.LikeNotiItem;
 
-public class LikeNotificationAdapter extends ArrayAdapter<LikeInObject> {
+public class LikeNotificationAdapter extends ArrayAdapter<LikeNotiItem> {
 	Context context;
-	List<LikeInObject> mylist;
+	List<LikeNotiItem> mylist;
 	DataBaseAdapter dbadapter;
 
 	public LikeNotificationAdapter(Context context, int resource,
-			ArrayList<LikeInObject> mylist) {
+			ArrayList<LikeNotiItem> mylist) {
 		super(context, resource, mylist);
 		// TODO Auto-generated constructor stub
 		this.context = context;
@@ -34,16 +33,14 @@ public class LikeNotificationAdapter extends ArrayAdapter<LikeInObject> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		convertView = myInflater.inflate(R.layout.row_notification_list, null);
 
-		TextView txt = (TextView) convertView.findViewById(R.id.namenotif);
-		LikeInObject c = mylist.get(position);
-		dbadapter.open();
-		int m = c.getUserId();
+		TextView txtTitle = (TextView) convertView
+				.findViewById(R.id.main_text_notification);
+		LikeNotiItem likeNoti = mylist.get(position);
+		// dbadapter.open();
+		// LikeInFroum lk = dbadapter.getLikeInFroumById(c.getId());
+		// dbadapter.close();
 
-		Users u = dbadapter.getUserbyid(m);
-
-		txt.setText(u.getName());
-
-		dbadapter.close();
+		txtTitle.setText(likeNoti.getTitle());
 
 		return convertView;
 	}

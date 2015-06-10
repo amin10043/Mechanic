@@ -15,11 +15,9 @@ import com.project.mechanic.R;
 import com.project.mechanic.adapter.CommentObjectNotificationAdapter;
 import com.project.mechanic.adapter.CommentPaperNotificationAdapter;
 import com.project.mechanic.adapter.commentnotificationAdapter;
-import com.project.mechanic.entity.CommentInFroum;
-import com.project.mechanic.entity.CommentInObject;
-import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.row_items.CommentNotiItem;
 import com.project.mechanic.utility.Utility;
 
 public class Dialog_notification extends Dialog {
@@ -81,14 +79,12 @@ public class Dialog_notification extends Dialog {
 		final ListView listnewcm = (ListView) findViewById(R.id.listnewcm);
 		//
 		adapter.open();
-		// Users u = util.getCurrentUser();
-		// int id = u.getId();
 
-		ArrayList<CommentInFroum> mylist = adapter.getUnseencomment(user
+		ArrayList<CommentNotiItem> mylist = adapter.getUnseencomment(user
 				.getId());
-		ArrayList<CommentInObject> mylist1 = adapter
+		ArrayList<CommentNotiItem> mylist1 = adapter
 				.getUnseencommentobject(user.getId());
-		ArrayList<CommentInPaper> mylist2 = adapter.getUnseencommentpaper(user
+		ArrayList<CommentNotiItem> mylist2 = adapter.getUnseencommentpaper(user
 				.getId());
 
 		adapter.close();
