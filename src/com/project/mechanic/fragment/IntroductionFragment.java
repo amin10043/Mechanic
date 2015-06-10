@@ -233,6 +233,16 @@ public class IntroductionFragment extends Fragment {
 			View t = inflater.inflate(R.layout.fragment_is_active_introduction,
 					null);
 
+			ImageButton EditActive = (ImageButton) t
+					.findViewById(R.id.ImgbtnEdit);
+			Users user = ut.getCurrentUser();
+			if (user == null || object.getUserId() != user.getId()) {
+				EditActive.setVisibility(View.INVISIBLE);
+			} else {
+				EditActive.setVisibility(View.VISIBLE);
+
+			}
+
 			bitHeader = object.getImage1();
 			ImageView HeaderActive = (ImageView) t
 					.findViewById(R.id.imgvadvertise_Object);
@@ -243,6 +253,14 @@ public class IntroductionFragment extends Fragment {
 				HeaderActive.setImageBitmap(bmp1);
 			} else
 				HeaderActive.setImageResource(R.drawable.no_image_header);
+			RelativeLayout profileActiveRelative = (RelativeLayout) t
+					.findViewById(R.id.linear_id_profile_introduction_page);
+
+			RelativeLayout.LayoutParams ll = new RelativeLayout.LayoutParams(
+					profileActiveRelative.getLayoutParams());
+			ll.width = ut.getScreenwidth() / 8;
+			ll.height = ut.getScreenwidth() / 8;
+			ll.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
 			ImageView profileActive = (ImageView) t.findViewById(R.id.icon_pro);
 			bytepro = object.getImage2();
@@ -250,9 +268,13 @@ public class IntroductionFragment extends Fragment {
 				Bitmap bmp2 = BitmapFactory.decodeByteArray(bytepro, 0,
 						bytepro.length);
 				profileActive.setImageBitmap(bmp2);
+				profileActive.setLayoutParams(ll);
 
-			} else
+			} else {
 				profileActive.setImageResource(R.drawable.no_img_profile);
+				profileActive.setLayoutParams(ll);
+
+			}
 
 			RelativeLayout namayandegiActive = (RelativeLayout) t
 					.findViewById(R.id.Layoutlink1);
@@ -281,12 +303,29 @@ public class IntroductionFragment extends Fragment {
 					trans.commit();
 				}
 			});
+
+			EditActive.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame,
+							new IntroductionEditFragment());
+					trans.commit();
+				}
+			});
+
+			TextView namePageDisActive = (TextView) t
+					.findViewById(R.id.namePage);
+			namePageDisActive.setText(object.getName());
 			adapter.close();
 
 			// this view is created for check active or inactive introduction
 			// page
 
-			// return t;
+			return t;
 
 		}
 

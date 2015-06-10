@@ -36,6 +36,8 @@ import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.TicketType;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.row_items.CommentNotiItem;
+import com.project.mechanic.row_items.LikeNotiItem;
 import com.project.mechanic.row_items.RowMain;
 
 public class DataBaseAdapter {
@@ -525,38 +527,38 @@ public class DataBaseAdapter {
 
 	}
 
-//	public void insertTickettoDb(String Title, String desc, int userId,
-//
-//	byte[] bytes, String date, int typeId, int name, int email, int mobile,
-//			int phone, int fax, int provinceId, String uname, String uemail,
-//			String uphonnumber, String ufax, String uadress, byte[] uimage,
-//			String umobile) {
-//
-//		ContentValues cv = new ContentValues();
-//		cv.put("Title", Title);
-//		cv.put("Desc", desc);
-//		cv.put("UserId", userId);
-//		cv.put("Image", bytes);
-//		cv.put("Date", date);
-//		cv.put("TypeId", typeId);
-//		cv.put("Name", name);
-//		cv.put("Email", email);
-//		cv.put("Mobile", mobile);
-//		cv.put("Phone", phone);
-//		cv.put("Fax", fax);
-//		cv.put("ProvinceId", provinceId);
-//		cv.put("UName", uname);
-//		cv.put("UEmail", uemail);
-//		cv.put("UPhonnumber", uphonnumber);
-//		cv.put("UFax", ufax);
-//		cv.put("UAdress", uadress);
-//		cv.put("UImage", uimage);
-//		cv.put("UMobile", umobile);
-//		mDb.insert(TableTicket, null, cv);
-//
-//	}
+	// public void insertTickettoDb(String Title, String desc, int userId,
+	//
+	// byte[] bytes, String date, int typeId, int name, int email, int mobile,
+	// int phone, int fax, int provinceId, String uname, String uemail,
+	// String uphonnumber, String ufax, String uadress, byte[] uimage,
+	// String umobile) {
+	//
+	// ContentValues cv = new ContentValues();
+	// cv.put("Title", Title);
+	// cv.put("Desc", desc);
+	// cv.put("UserId", userId);
+	// cv.put("Image", bytes);
+	// cv.put("Date", date);
+	// cv.put("TypeId", typeId);
+	// cv.put("Name", name);
+	// cv.put("Email", email);
+	// cv.put("Mobile", mobile);
+	// cv.put("Phone", phone);
+	// cv.put("Fax", fax);
+	// cv.put("ProvinceId", provinceId);
+	// cv.put("UName", uname);
+	// cv.put("UEmail", uemail);
+	// cv.put("UPhonnumber", uphonnumber);
+	// cv.put("UFax", ufax);
+	// cv.put("UAdress", uadress);
+	// cv.put("UImage", uimage);
+	// cv.put("UMobile", umobile);
+	// mDb.insert(TableTicket, null, cv);
+	//
+	// }
 
-	public void insertTickettoDbemptyImage(int id,String Title, String Desc,
+	public void insertTickettoDbemptyImage(int id, String Title, String Desc,
 			int userId, String date, int typeId, int provinceId, String uname,
 			String uemail, String uphonnumber, String ufax, String uadress,
 			String umobile) {
@@ -1043,33 +1045,44 @@ public class DataBaseAdapter {
 	}
 
 	// ////////////////////////////////////////////////////////////////////////////////////////////////
-	public ArrayList<CommentInFroum> getUnseencomment(int userId) {
+	public ArrayList<CommentNotiItem> getUnseencomment(int userId) {
 
-		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
-		CommentInFroum item = null;
-		Cursor mCur = mDb.query(TableCommentInFroum, CommentInFroum,
-				"seen=0 AND UserId=" + userId, null, null, null, null);
+		ArrayList<CommentNotiItem> result = new ArrayList<CommentNotiItem>();
+		com.project.mechanic.entity.LikeInFroum item = null;
+		Cursor mCur = mDb
+				.rawQuery(
+						"select f.Id,u.Name || '  بر روی ' || f.Title || '  در تاریخ ' || l.[Date]  || ' کامنت گذاشت ',l.Desk from CommentInFroum l inner join Froum f on l.FroumId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+								+ userId
+								+ " AND f.UserId != l.UserId AND l.seen=0",
+						null);
 
+		CommentNotiItem noti;
 		while (mCur.moveToNext()) {
-			item = CursorToCommentInFroum(mCur);
-			result.add(item);
+			noti = new CommentNotiItem(mCur.getInt(0), mCur.getString(1),
+					mCur.getString(2), "");
+			result.add(noti);
 		}
 
 		return result;
-
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////
-	public ArrayList<CommentInObject> getUnseencommentobject(int userId) {
+	public ArrayList<CommentNotiItem> getUnseencommentobject(int userId) {
 
-		ArrayList<CommentInObject> result = new ArrayList<CommentInObject>();
-		CommentInObject item = null;
-		Cursor mCur = mDb.query(TableCommentInObject, CommentInObject,
-				"seen=0 AND UserId=" + userId, null, null, null, null);
+		ArrayList<CommentNotiItem> result = new ArrayList<CommentNotiItem>();
+		com.project.mechanic.entity.LikeInFroum item = null;
+		Cursor mCur = mDb
+				.rawQuery(
+						"select f.Id,u.Name || '  بر روی ' || f.Name || '  در تاریخ ' || l.[Date]  || ' کامنت گذاشت ',l.Desk from CommentInObject l inner join Object f on l.ObjectId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+								+ userId
+								+ " AND f.UserId != l.UserId AND l.seen=0",
+						null);
 
+		CommentNotiItem noti;
 		while (mCur.moveToNext()) {
-			item = CursorToCommentInObject(mCur);
-			result.add(item);
+			noti = new CommentNotiItem(mCur.getInt(0), mCur.getString(1),
+					mCur.getString(2), "");
+			result.add(noti);
 		}
 
 		return result;
@@ -1077,70 +1090,88 @@ public class DataBaseAdapter {
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////
-	public ArrayList<CommentInPaper> getUnseencommentpaper(int userId) {
+	public ArrayList<CommentNotiItem> getUnseencommentpaper(int userId) {
 
-		ArrayList<CommentInPaper> result = new ArrayList<CommentInPaper>();
-		CommentInPaper item = null;
-		Cursor mCur = mDb.query(TableCommentInPaper, CommentInPaper,
-				"seen=0 AND UserId=" + userId, null, null, null, null);
+		ArrayList<CommentNotiItem> result = new ArrayList<CommentNotiItem>();
+		com.project.mechanic.entity.LikeInFroum item = null;
+		Cursor mCur = mDb
+				.rawQuery(
+						"select f.Id,u.Name || '  بر روی ' || f.Title || '  در تاریخ ' || l.[Date]  || ' کامنت گذاشت:  ',l.Desk from CmtInPaper l inner join Paper f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+								+ userId
+								+ " AND f.UserId != l.UserId AND l.seen=0",
+						null);
 
+		CommentNotiItem noti;
 		while (mCur.moveToNext()) {
-			item = CursorToCommentInPaper(mCur);
-			result.add(item);
+			noti = new CommentNotiItem(mCur.getInt(0), mCur.getString(1),
+					mCur.getString(2), "");
+			result.add(noti);
 		}
-
 		return result;
 
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////
 
-	public ArrayList<LikeInObject> getUnseenlike(int userId) {
+	public ArrayList<LikeNotiItem> getUnseenlike(int userId) {
 
-		ArrayList<LikeInObject> result = new ArrayList<LikeInObject>();
-		LikeInObject item = null;
-		Cursor mCur = mDb.query(TableLikeInObject, LikeInObject,
-				"seen=0 AND UserId=" + userId, null, null, null, null);
-
-		while (mCur.moveToNext()) {
-			item = CursorToLikeInObject(mCur);
-			result.add(item);
-		}
-
-		return result;
-	}
-
-	// ///////////////////////////////////////////////////////////////////////////////////
-	public ArrayList<com.project.mechanic.entity.LikeInFroum> getUnseenlikeInFroum(
-			int userId) {
-
-		ArrayList<com.project.mechanic.entity.LikeInFroum> result = new ArrayList<com.project.mechanic.entity.LikeInFroum>();
+		ArrayList<LikeNotiItem> result = new ArrayList<LikeNotiItem>();
 		com.project.mechanic.entity.LikeInFroum item = null;
-		Cursor mCur = mDb.query(TableLikeInFroum, LikeInFroum,
-				"seen=0 AND UserId=" + userId, null, null, null, null);
+		Cursor mCur = mDb
+				.rawQuery(
+						"select f.Id,u.Name + '  پست ' || f.Name || ' را در تاریخ ' || l.[Date]  || ' پسندید ' from LikeInObject l inner join Object f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+								+ userId
+								+ " AND f.UserId != l.UserId AND l.seen=0",
+						null);
 
+		LikeNotiItem noti;
 		while (mCur.moveToNext()) {
-			item = CursorToLikeInFroum(mCur);
-			result.add(item);
+			noti = new LikeNotiItem(mCur.getInt(0), mCur.getString(1), "");
+			result.add(noti);
+		}
+		return result;
+	}
+
+	// ///////////////////////////////////////////////////////////////////////////////////
+	public ArrayList<LikeNotiItem> getUnseenlikeInFroum(int userId) {
+
+		ArrayList<LikeNotiItem> result = new ArrayList<LikeNotiItem>();
+		com.project.mechanic.entity.LikeInFroum item = null;
+		Cursor mCur = mDb
+				.rawQuery(
+						"select f.Id,u.Name || '  پست ' || f.Title || ' را در تاریخ ' || l.[Date]  || ' پسندید ' from LikeInFroum l inner join Froum f on l.FroumId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+								+ userId
+								+ " AND f.UserId != l.UserId AND l.seen=0",
+						null);
+
+		LikeNotiItem noti;
+		while (mCur.moveToNext()) {
+			noti = new LikeNotiItem(mCur.getInt(0), mCur.getString(1), "");
+			result.add(noti);
 		}
 
 		return result;
 	}
 
 	// ///////////////////////////////////////////////////////////////////////////////////
-	public ArrayList<LikeInPaper> getUnseenlikeInPaper(int userId) {
+	public ArrayList<LikeNotiItem> getUnseenlikeInPaper(int userId) {
+		ArrayList<LikeNotiItem> result = new ArrayList<LikeNotiItem>();
+		com.project.mechanic.entity.LikeInFroum item = null;
+		Cursor mCur = mDb
+				.rawQuery(
+						"select f.Id,u.Name || '  پست ' || f.Title || ' را در تاریخ ' || l.[Date]  || ' پسندید ' from LikeInPaper l inner join Paper f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+								+ userId
+								+ " AND f.UserId != l.UserId AND l.seen=0",
+						null);
 
-		ArrayList<LikeInPaper> result = new ArrayList<LikeInPaper>();
-		LikeInPaper item = null;
-		Cursor mCur = mDb.query(TableLikeInPaper, LikeInPaper,
-				"seen=0 AND UserId=" + userId, null, null, null, null);
-
+		LikeNotiItem noti;
 		while (mCur.moveToNext()) {
-			item = CursorToLikeInPaper(mCur);
-			result.add(item);
+			noti = new LikeNotiItem(mCur.getInt(0), mCur.getString(1), "");
+			result.add(noti);
 		}
 
 		return result;
+
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////
@@ -2251,7 +2282,7 @@ public class DataBaseAdapter {
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
-								+ " as C On O.Id = C.ObjectId Where O.ObjectBrandTypeId = "
+								+ " as C On O.Id = C.ObjectId Where O.MainObjectId = "
 								+ Object_id + " and C.CityId = " + City_id,
 						null);
 		Object tempObject;
@@ -2369,60 +2400,71 @@ public class DataBaseAdapter {
 
 	}
 
-	public void InsertInformationNewObject(String name, String Phone,
+	public int InsertInformationNewObject(String name, String Phone,
 			String Email, String fax, String description, byte[] HeaderImage,
 			byte[] ProfileImage, byte[] FooterImage, String LinkCatalog,
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
-			String LinkTweitter) {
+			String LinkTweitter, int userId, int parentId, int MainObjectId) {
 
 		ContentValues cv = new ContentValues();
 
 		if (!"".equals(name))
-			cv.put(Object[1], name);
+			cv.put("Name", name);
 		if (!"".equals(Phone))
-			cv.put(Object[2], Phone);
+			cv.put("Phone", Phone);
 		if (!"".equals(Email))
-			cv.put(Object[3], Email);
+			cv.put("Email", Email);
 		if (!"".equals(fax))
-			cv.put(Object[4], fax);
+			cv.put("Fax", fax);
 		if (!"".equals(description))
-			cv.put(Object[5], description);
+			cv.put("Description", description);
 		if (HeaderImage != null)
-			cv.put(Object[6], HeaderImage);
+			cv.put("Image1", HeaderImage);
 		if (ProfileImage != null)
-			cv.put(Object[7], ProfileImage);
+			cv.put("Image2", ProfileImage);
 		if (FooterImage != null)
-			cv.put(Object[8], FooterImage);
+			cv.put("Image3", FooterImage);
 		if (!"".equals(LinkCatalog))
-			cv.put(Object[10], LinkCatalog);
+			cv.put("Pdf1", LinkCatalog);
 		if (!"".equals(LinkPrice))
-			cv.put(Object[11], LinkPrice);
+			cv.put("Pdf2", LinkPrice);
 		if (!"".equals(LinkPDF))
-			cv.put(Object[12], LinkPDF);
+			cv.put("Pdf3", LinkPDF);
 		if (!"".equals(LinkVideo))
-			cv.put(Object[13], LinkVideo);
+			cv.put("Pdf4", LinkVideo);
 		if (!"".equals(Address))
-			cv.put(Object[14], Address);
+			cv.put("Address", Address);
 		if (!"".equals(Mobile))
-			cv.put(Object[15], Mobile);
+			cv.put("Cellphone", Mobile);
 		if (!"".equals(LinkFaceBook))
-			cv.put(Object[18], LinkFaceBook);
+			cv.put("Facebook", LinkFaceBook);
 		if (!"".equals(LinkInstagram))
-			cv.put(Object[19], LinkInstagram);
+			cv.put("Instagram", LinkInstagram);
 		if (!"".equals(LinkLinkedin))
-			cv.put(Object[20], LinkLinkedin);
+			cv.put("LinkedIn", LinkLinkedin);
 		if (!"".equals(LinkGoogle))
-			cv.put(Object[21], LinkGoogle);
+			cv.put("Google", LinkGoogle);
 		if (!"".equals(LinkSite))
-			cv.put(Object[22], LinkSite);
+			cv.put("Site", LinkSite);
 		if (!"".equals(LinkTweitter))
-			cv.put(Object[23], LinkTweitter);
+			cv.put("Twitter", LinkTweitter);
 
-		mDb.insert(TableObject, null, cv);
+		cv.put("userId", userId);
+
+		if (parentId != -1)
+			cv.put("ParentId", parentId);
+		if (MainObjectId != -1)
+			cv.put("MainObjectId", MainObjectId);
+
+		cv.put("IsActive", 0);
+		cv.put("rate", 0);
+		cv.put("Seen", 1);
+
 		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT)
 				.show();
+		return (int) mDb.insert(TableObject, null, cv);
 
 	}
 
@@ -2515,8 +2557,9 @@ public class DataBaseAdapter {
 	public int NumOfNewLikeInObject(int userId) {
 		int res = 0;
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableLikeInObject + " WHERE Seen=0 AND UserId=" + userId,
-				null);
+				+ TableLikeInObject + " as l inner join " + TableObject
+				+ " as f on f.Id = l.PaperId WHERE l.Seen=0 AND f.UserId="
+				+ userId, null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
@@ -2525,9 +2568,10 @@ public class DataBaseAdapter {
 
 	public int NumOfNewLikeInPaper(int userId) {
 		int res = 0;
-		Cursor cu = mDb
-				.rawQuery("Select count(*) as co from " + TableLikeInPaper
-						+ " WHERE Seen=0 AND UserId=" + userId, null);
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInPaper + " as l inner join " + TablePaper
+				+ " as f on f.Id = l.PaperId WHERE l.Seen=0 AND f.UserId="
+				+ userId, null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
@@ -2536,9 +2580,10 @@ public class DataBaseAdapter {
 
 	public int NumOfNewLikeInFroum(int userId) {
 		int res = 0;
-		Cursor cu = mDb
-				.rawQuery("Select count(*) as co from " + TableLikeInFroum
-						+ " WHERE Seen=0 AND UserId=" + userId, null);
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInFroum + " as l inner join " + TableFroum
+				+ " as f on f.Id = l.FroumId WHERE l.Seen=0 AND f.UserId="
+				+ userId, null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
@@ -2560,8 +2605,10 @@ public class DataBaseAdapter {
 	// ////////////////////////////////////////////////////////
 	public int NumOfNewLikeInObject1(int userId) {
 		int res = 0;
-		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TableObject
-				+ " WHERE Seen=0 AND UserId=" + userId, null);
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInObject + " as l inner join " + TableObject
+				+ " as f on f.Id = l.PaperId WHERE l.Seen=0 AND f.UserId="
+				+ userId, null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
@@ -2573,8 +2620,9 @@ public class DataBaseAdapter {
 	public int NumOfNewCmtInObject(int userId) {
 		int res = 0;
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableCommentInObject + " WHERE Seen=0 AND UserId=" + userId,
-				null);
+				+ TableCommentInObject + " as l inner join " + TableObject
+				+ " as f on f.Id = l.ObjectId WHERE l.Seen=0 AND f.UserId="
+				+ userId, null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
@@ -2584,8 +2632,9 @@ public class DataBaseAdapter {
 	public int NumOfNewCmtInPaper(int userId) {
 		int res = 0;
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableCommentInPaper + " WHERE Seen=0 AND UserId=" + userId,
-				null);
+				+ TableCommentInPaper + " as l inner join " + TablePaper
+				+ " as f on f.Id = l.PaperId WHERE l.Seen=0 AND f.UserId="
+				+ userId, null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
@@ -2595,8 +2644,9 @@ public class DataBaseAdapter {
 	public int NumOfNewCmtInFroum(int userId) {
 		int res = 0;
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableCommentInFroum + " WHERE Seen=0 AND UserId=" + userId,
-				null);
+				+ TableCommentInFroum + " as l inner join " + TableFroum
+				+ " as f on f.Id = l.FroumId WHERE l.Seen=0 AND f.UserId="
+				+ userId, null);
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
 		}
@@ -2878,6 +2928,91 @@ public class DataBaseAdapter {
 		uc.put("ImageServerDate", fromDate);
 
 		mDb.update(TableUsers, uc, "ID=" + userId, null);
+	}
+
+	public void insertObjectInCity(int objectId, int cityId) {
+		ContentValues cv = new ContentValues();
+
+		cv.put("ObjectId", objectId);
+		cv.put("CityId", cityId);
+
+		mDb.insert(TableObjectInCity, null, cv);
+
+	}
+
+	public int CreatePageInShopeObject(String name, String Phone, String Email,
+			String fax, String description, byte[] HeaderImage,
+			byte[] ProfileImage, byte[] FooterImage, String LinkCatalog,
+			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
+			String Mobile, String LinkFaceBook, String LinkInstagram,
+			String LinkLinkedin, String LinkGoogle, String LinkSite,
+			String LinkTweitter, int userId, int MainObjectId) {
+
+		ContentValues cv = new ContentValues();
+
+		if (!"".equals(name))
+			cv.put("Name", name);
+		if (!"".equals(Phone))
+			cv.put("Phone", Phone);
+		if (!"".equals(Email))
+			cv.put("Email", Email);
+		if (!"".equals(fax))
+			cv.put("Fax", fax);
+		if (!"".equals(description))
+			cv.put("Description", description);
+		if (HeaderImage != null)
+			cv.put("Image1", HeaderImage);
+		if (ProfileImage != null)
+			cv.put("Image2", ProfileImage);
+		if (FooterImage != null)
+			cv.put("Image3", FooterImage);
+		if (!"".equals(LinkCatalog))
+			cv.put("Pdf1", LinkCatalog);
+		if (!"".equals(LinkPrice))
+			cv.put("Pdf2", LinkPrice);
+		if (!"".equals(LinkPDF))
+			cv.put("Pdf3", LinkPDF);
+		if (!"".equals(LinkVideo))
+			cv.put("Pdf4", LinkVideo);
+		if (!"".equals(Address))
+			cv.put("Address", Address);
+		if (!"".equals(Mobile))
+			cv.put("Cellphone", Mobile);
+		if (!"".equals(LinkFaceBook))
+			cv.put("Facebook", LinkFaceBook);
+		if (!"".equals(LinkInstagram))
+			cv.put("Instagram", LinkInstagram);
+		if (!"".equals(LinkLinkedin))
+			cv.put("LinkedIn", LinkLinkedin);
+		if (!"".equals(LinkGoogle))
+			cv.put("Google", LinkGoogle);
+		if (!"".equals(LinkSite))
+			cv.put("Site", LinkSite);
+		if (!"".equals(LinkTweitter))
+			cv.put("Twitter", LinkTweitter);
+
+		cv.put("userId", userId);
+
+		if (MainObjectId != -1)
+			cv.put("MainObjectId", MainObjectId);
+
+		cv.put("IsActive", 0);
+		cv.put("rate", 0);
+		cv.put("Seen", 1);
+
+		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT)
+				.show();
+		return (int) mDb.insert(TableObject, null, cv);
+	}
+
+	public LikeInFroum getLikeInFroumById(int id) {
+		LikeInFroum lk = null;
+		Cursor cur = mDb.query(TableLikeInFroum, LikeInFroum, "Id=?",
+				new String[] { String.valueOf(id) }, null, null, null);
+		if (cur.moveToNext())
+			lk = CursorToLikeInFroum(cur);
+
+		return lk;
 	}
 
 }

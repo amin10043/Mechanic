@@ -10,12 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Users;
@@ -50,8 +52,12 @@ public class MainBrandFragment extends Fragment {
 		((MainActivity) getActivity()).setTitle(R.string.object);
 
 		View view = inflater.inflate(R.layout.fragment_object, null);
-		RelativeLayout createPage = (RelativeLayout) view
-				.findViewById(R.id.relative);
+
+		SharedPreferences sendData = getActivity()
+				.getSharedPreferences("Id", 0);
+		final int MainObjectId = sendData.getInt("main_Id", -1);
+		// RelativeLayout createPage = (RelativeLayout) view
+		// .findViewById(R.id.relative);
 
 		adapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
@@ -63,21 +69,56 @@ public class MainBrandFragment extends Fragment {
 
 		adapter.close();
 
-		createPage.setOnClickListener(new OnClickListener() {
+		// createPage.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+
+		// dialog = new DialogCreatePage(getActivity());
+		// dialog.show();
+		//
+		// SharedPreferences sendParentID = getActivity()
+		// .getSharedPreferences("Id", 0);
+		// sendParentID.edit().putInt("ParentId", id).commit();
+		// Toast.makeText(getActivity(), "ParentId send = " + id,
+		// Toast.LENGTH_SHORT).show();
+		// }
+		//
+		// });
+		RelativeLayout rl = (RelativeLayout) view
+				.findViewById(R.id.tablighRelative);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				rl.getLayoutParams());
+
+		lp.width = (util.getScreenwidth() / 8);
+		lp.height = (util.getScreenwidth() / 8);
+		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		lp.setMargins(5, 5, 5, 5);
+		ImageButton iconCreateTabligh = (ImageButton) view
+				.findViewById(R.id.iconCreateTabligh);
+		iconCreateTabligh.setLayoutParams(lp);
+
+		FloatingActionButton createItem = (FloatingActionButton) view
+				.findViewById(R.id.fab);
+		createItem.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-
 				dialog = new DialogCreatePage(getActivity());
 				dialog.show();
 
 				SharedPreferences sendParentID = getActivity()
 						.getSharedPreferences("Id", 0);
 				sendParentID.edit().putInt("ParentId", id).commit();
+
+				SharedPreferences sendMainObjectId = getActivity()
+						.getSharedPreferences("Id", 0);
+				sendMainObjectId.edit().putInt("MainObjectId", MainObjectId)
+						.commit();
+
 				Toast.makeText(getActivity(), "ParentId send = " + id,
 						Toast.LENGTH_SHORT).show();
 			}
-
 		});
 
 		ListView lstObject = (ListView) view

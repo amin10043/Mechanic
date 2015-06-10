@@ -16,32 +16,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:maxLength="40"
-            android:text=""
-            android:textColor="@color/white"
-            android:textSize="@dimen/iconPadding" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/blue2"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/datenotif"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text=""
             android:textColor="@color/white" />
 
         <TextView
-            android:id="@+id/namenotif"
+            android:id="@+id/Desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text=""
+            android:maxLength="20"
+            android:layout_gravity="right"
             android:textColor="@color/white" />
 
     </LinearLayout>

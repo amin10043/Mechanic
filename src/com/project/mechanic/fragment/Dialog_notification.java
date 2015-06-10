@@ -10,19 +10,20 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.CommentObjectNotificationAdapter;
 import com.project.mechanic.adapter.CommentPaperNotificationAdapter;
 import com.project.mechanic.adapter.commentnotificationAdapter;
-import com.project.mechanic.entity.CommentInFroum;
-import com.project.mechanic.entity.CommentInObject;
-import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.row_items.CommentNotiItem;
 import com.project.mechanic.utility.Utility;
 
 public class Dialog_notification extends Dialog {
+	public void tasks() {
+	}
 
 	private static final Context Dialog = null;
 	// private DataBaseAdapter dbadapter;
@@ -36,7 +37,7 @@ public class Dialog_notification extends Dialog {
 	Utility util;
 	Users user;
 
-	public Dialog_notification(Context context) {
+	public Dialog_notification(Context context, int r, int r1, int r2) {
 		super(context);
 		this.context = context;
 		// dbadapter = new DataBaseAdapter(context);
@@ -78,17 +79,31 @@ public class Dialog_notification extends Dialog {
 		ImageButton btnshowcmf = (ImageButton) findViewById(R.id.btnshowcmf);
 		ImageButton btnshowcmo = (ImageButton) findViewById(R.id.btnshowcmo);
 		ImageButton btnshowcmp = (ImageButton) findViewById(R.id.btnshowcmp);
-		final ListView listnewcm = (ListView) findViewById(R.id.listnewcm);
+		final ListView listnewcmf = (ListView) findViewById(R.id.listnewcmf);
+		final ListView listnewcmo = (ListView) findViewById(R.id.listnewcmo);
+		final ListView listnewcmp = (ListView) findViewById(R.id.listnewcmp);
+		TextView numf = (TextView) findViewById(R.id.numf);
+		TextView numo = (TextView) findViewById(R.id.numo);
+		TextView nump = (TextView) findViewById(R.id.nump);
+
 		//
 		adapter.open();
+
+		int r = adapter.NumOfNewCmtInFroum(user.getId());
+		int r1 = adapter.NumOfNewCmtInObject(user.getId());
+		int r2 = adapter.NumOfNewCmtInPaper(user.getId());
+		numf.setText("" + r);
+		numo.setText("" + r1);
+		nump.setText("" + r2);
+
 		// Users u = util.getCurrentUser();
 		// int id = u.getId();
 
-		ArrayList<CommentInFroum> mylist = adapter.getUnseencomment(user
+		ArrayList<CommentNotiItem> mylist = adapter.getUnseencomment(user
 				.getId());
-		ArrayList<CommentInObject> mylist1 = adapter
+		ArrayList<CommentNotiItem> mylist1 = adapter
 				.getUnseencommentobject(user.getId());
-		ArrayList<CommentInPaper> mylist2 = adapter.getUnseencommentpaper(user
+		ArrayList<CommentNotiItem> mylist2 = adapter.getUnseencommentpaper(user
 				.getId());
 
 		adapter.close();
@@ -104,7 +119,42 @@ public class Dialog_notification extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				listnewcm.setAdapter(dataAdapter);
+				listnewcmf.setAdapter(dataAdapter);
+
+				// listnewcmf
+				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
+				// {
+				//
+				// @Override
+				// public void onItemClick(AdapterView<?> parent,
+				// View view, int position, long id) {
+				// // TODO Auto-generated method stub
+				// // Fragment fragment = new tasks();
+				// android.support.v4.app.FragmentManager fragmentManager =
+				// ((MainActivity) context)
+				// .getSupportFragmentManager();
+				// FragmentTransaction fragmentTransaction = fragmentManager
+				// .beginTransaction();
+				// fragmentTransaction.replace(R.id.content_frame,
+				// new FroumFragment());
+				// fragmentTransaction.addToBackStack(null);
+				// fragmentTransaction.commit();
+				// }
+
+				// });
+
+				// listnewcmf.setOnClickListener(new View.OnClickListener() {
+				//
+				// @Override
+				// public void onClick(View arg0) {
+				// // TODO Auto-generated method stub
+				// FragmentTransaction trans = ((FragmentActivity) context)
+				// .getSupportFragmentManager().beginTransaction();
+				// trans.replace(R.id.content_frame, new FroumFragment());
+				// trans.commit();
+				//
+				// }
+				// });
 
 			}
 		});
@@ -113,7 +163,38 @@ public class Dialog_notification extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				listnewcm.setAdapter(dataAdapter1);
+				listnewcmo.setAdapter(dataAdapter1);
+
+				// listnewcmo
+				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
+				// {
+				//
+				// @Override
+				// public void onItemClick(AdapterView<?> parent,
+				// View view, int position, long id) {
+				// // TODO Auto-generated method stub
+				// FragmentTransaction trans = ((MainActivity) context)
+				// .getSupportFragmentManager()
+				// .beginTransaction();
+				// trans.replace(R.id.content_frame,
+				// new ObjectFragment());
+				// trans.commit();
+				//
+				// }
+				// });
+
+				// listnewcmo.setOnClickListener(new View.OnClickListener() {
+				//
+				// @Override
+				// public void onClick(View arg0) {
+				// // TODO Auto-generated method stub
+				// FragmentTransaction trans = ((FragmentActivity) context)
+				// .getSupportFragmentManager().beginTransaction();
+				// trans.replace(R.id.content_frame, new ObjectFragment());
+				// trans.commit();
+				//
+				// }
+				// });
 
 			}
 		});
@@ -122,27 +203,51 @@ public class Dialog_notification extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				listnewcm.setAdapter(dataAdapter2);
+				listnewcmp.setAdapter(dataAdapter2);
 
+				// listnewcmp
+				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
+				// {
+				//
+				// @Override
+				// public void onItemClick(AdapterView<?> parent,
+				// View view, int position, long id) {
+				// // TODO Auto-generated method stub
+				// FragmentTransaction t = getActivity()
+				// .getFragmentManager()
+				// .beginTransaction();
+				// Fragment paperfragment = new PaperFragment();
+				// t.replace(R.id.content_frame, paperfragment);
+				// t.addToBackStack(null);
+				// t.commit();
+				// }
+				//
+				// private Fragment getActivity() {
+				// // TODO Auto-generated method stub
+				// return null;
+				// }
+				//
+				// });
 			}
+
 		});
-
-		// listcmnotification.setAdapter(dataAdapter);
-		// listcmnotification2.setAdapter(dataAdapter1);
-		// listcmnotification3.setAdapter(dataAdapter2);
 	}
-	// if (listcmnotification2 != null) {
-	//
-	// }
-	//
-	// else {
-	//
-	// linlist2.setVisibility(View.GONE);
-
-	// Toast.makeText(context, "dovomi khali ",
-	// Toast.LENGTH_LONG).show();
-
 }
+
+// listcmnotification.setAdapter(dataAdapter);
+// listcmnotification2.setAdapter(dataAdapter1);
+// listcmnotification3.setAdapter(dataAdapter2);
+
+// if (listcmnotification2 != null) {
+//
+// }
+//
+// else {
+//
+// linlist2.setVisibility(View.GONE);
+
+// Toast.makeText(context, "dovomi khali ",
+// Toast.LENGTH_LONG).show();
 
 // if (listcmnotification != null) {
 // if (listcmnotification2 != null && listcmnotification3 != null) {
