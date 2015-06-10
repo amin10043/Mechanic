@@ -1,6 +1,7 @@
 package com.project.mechanic;
 
 import java.util.Calendar;
+import java.util.List;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.adapter.SlideMenuAdapter;
+import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.fragment.Dialog_notification;
@@ -66,6 +68,9 @@ public class MainActivity extends FragmentActivity {
 	Dialog_notificationlike dialog1;
 	Users user;
 	private PendingIntent pendingIntent;
+	List<CommentInFroum> mylist;
+	int t1, t2, t3, t;
+	int r1, r2, r3, r;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,25 +112,37 @@ public class MainActivity extends FragmentActivity {
 				}
 
 				adapter.open();
+				// int r = adapter.NumOfNewCmtInFroum(user.getId());
+				// int r1 = adapter.NumOfNewCmtInObject(user.getId());
+				// int r2 = adapter.NumOfNewCmtInPaper(user.getId());
+				// int r3 = r + r1 + r2;
+				// TextView txtcm = (TextView) findViewById(R.id.txtcm);
+				// txtcm.setText("" + r3);
 
-				dialog = new Dialog_notification(MainActivity.this);
+				dialog = new Dialog_notification(MainActivity.this, r, r1, r2);
 
 				dialog.show();
+
+				// CommentInFroum a = (CommentInFroum) mylist;
+
+				// int b = a.getFroumid();
+				// Froum d = adapter.getFroumItembyid(b);
+				// int e = d.getUserId();
+
 				int seen = 1;
 				adapter.updatecmseentodb(seen, user.getId());
 				adapter.updatecmobjectseentodb(seen, user.getId());
 				adapter.updatecmpaperseentodb(seen, user.getId());
-				int r = adapter.NumOfNewCmtInFroum(user.getId());
-				int r1 = adapter.NumOfNewCmtInObject(user.getId());
-				int r2 = adapter.NumOfNewCmtInPaper(user.getId());
+
+				TextView txtcm1 = (TextView) findViewById(R.id.txtcm);
 				int r3 = r + r1 + r2;
-				TextView txtcm = (TextView) findViewById(R.id.txtcm);
-				txtcm.setText("" + r3);
+				txtcm1.setText("" + r3);
 
 				adapter.close();
 
 			}
 		});
+
 		ImageButton iBtnNotification = (ImageButton) findViewById(R.id.iBtnNotification);
 		iBtnNotification.setOnClickListener(new OnClickListener() {
 
@@ -138,8 +155,18 @@ public class MainActivity extends FragmentActivity {
 							.show();
 					return;
 				}
+
+				// TextView numlikef = (TextView) findViewById(R.id.numlikef);
+				// TextView numlikeo = (TextView) findViewById(R.id.numlikeo);
+				// TextView numlikep = (TextView) findViewById(R.id.numlikep);
 				adapter.open();
-				dialog1 = new Dialog_notificationlike(MainActivity.this);
+
+				dialog1 = new Dialog_notificationlike(MainActivity.this, t, t1,
+						t2, t3);
+				TextView txtlike = (TextView) findViewById(R.id.txtlike);
+
+				int t3 = t + t1 + t2;
+				txtlike.setText("" + t3);
 
 				dialog1.show();
 				int seen = 1;
@@ -147,13 +174,18 @@ public class MainActivity extends FragmentActivity {
 				adapter.updatelikefroumseentodb(seen, user.getId());
 				adapter.updatelikepaperseentodb(seen, user.getId());
 
-				int t = adapter.NumOfNewLikeInObject(user.getId());
-
-				int t1 = adapter.NumOfNewLikeInFroum(user.getId());
-				int t2 = adapter.NumOfNewLikeInPaper(user.getId());
-				int t3 = t + t1 + t2;
-				TextView txtlike = (TextView) findViewById(R.id.txtlike);
-				txtlike.setText("" + t3);
+				// int t = adapter.NumOfNewLikeInObject(user.getId());
+				// int t = 4;
+				// // String tt = String.valueOf(t);
+				// int t1 = adapter.NumOfNewLikeInFroum(user.getId());
+				// int t2 = adapter.NumOfNewLikeInPaper(user.getId());
+				// int t3 = t + t1 + t2;
+				//
+				// TextView txtlike = (TextView) findViewById(R.id.txtlike);
+				// txtlike.setText(String.valueOf(t3));
+				// numlikef.setText(String.valueOf(t));
+				// // numlikeo.setText("" + t1);
+				// // numlikep.setText("" + t2);
 				adapter.close();
 
 			}

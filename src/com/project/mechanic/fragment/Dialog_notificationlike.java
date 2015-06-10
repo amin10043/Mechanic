@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.LikeFroumNotificationAdapter;
@@ -32,7 +33,8 @@ public class Dialog_notificationlike extends Dialog {
 	Users user;
 	Utility util;
 
-	public Dialog_notificationlike(Context context) {
+	public Dialog_notificationlike(Context context, int t, int t1, int t2,
+			int t3) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		this.context = context;
@@ -55,12 +57,34 @@ public class Dialog_notificationlike extends Dialog {
 		ImageButton btnshowlikef = (ImageButton) findViewById(R.id.btnshowlikef);
 		ImageButton btnshowlikeo = (ImageButton) findViewById(R.id.btnshowlikeo);
 		ImageButton btnshowlikep = (ImageButton) findViewById(R.id.btnshowlikep);
-		final ListView listnewlike = (ListView) findViewById(R.id.listnewlike);
+		final ListView listnewlikef = (ListView) findViewById(R.id.listnewlikef);
+		final ListView listnewlikeo = (ListView) findViewById(R.id.listnewlikeo);
+		final ListView listnewlikep = (ListView) findViewById(R.id.listnewlikep);
+
+		TextView numlikef = (TextView) findViewById(R.id.numlikef);
+		TextView numlikeo = (TextView) findViewById(R.id.numlikeo);
+		TextView numlikep = (TextView) findViewById(R.id.numlikep);
 
 		dbadapter.open();
+
+		int t = dbadapter.NumOfNewLikeInObject(user.getId());
+
+		int t1 = dbadapter.NumOfNewLikeInFroum(user.getId());
+		int t2 = dbadapter.NumOfNewLikeInPaper(user.getId());
+		int t3 = t + t1 + t2;
+
+		numlikef.setText("" + t);
+		numlikeo.setText("" + t1);
+		numlikep.setText("" + t2);
+
+		// ArrayList<LikeInObject> mylist =
+		// dbadapter.getUnseenlike(user.getId());
+		// ArrayList<LikeInFroum> mylist1 = dbadapter.getUnseenlikeInFroum(user
+
 		ArrayList<LikeNotiItem> mylist = dbadapter.getUnseenlike(user.getId());
 		ArrayList<LikeNotiItem> mylist1 = dbadapter.getUnseenlikeInFroum(user
-				.getId());
+
+		.getId());
 		ArrayList<LikeNotiItem> mylist2 = dbadapter.getUnseenlikeInPaper(user
 				.getId());
 		// CommentInFroum c = dbadapter.getCommentInFroumbyID(1);
@@ -74,21 +98,56 @@ public class Dialog_notificationlike extends Dialog {
 		final LikePaperNotificationAdapter dataAdapter2 = new LikePaperNotificationAdapter(
 				context, R.layout.row_notification_list, mylist2);
 
-		btnshowlikef.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				listnewlike.setAdapter(dataAdapter);
-
-			}
-		});
 		btnshowlikeo.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				listnewlike.setAdapter(dataAdapter1);
+				listnewlikeo.setAdapter(dataAdapter);
+
+				// listnewlikeo
+				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
+				// {
+				//
+				// @Override
+				// public void onItemClick(AdapterView<?> arg0,
+				// View arg1, int arg2, long arg3) {
+				// // TODO Auto-generated method stub
+				// FragmentTransaction trans = ((MainActivity) context)
+				// .getSupportFragmentManager()
+				// .beginTransaction();
+				// trans.replace(R.id.content_frame,
+				// new ObjectFragment());
+				// trans.commit();
+				//
+				// }
+				// });
+			}
+		});
+		btnshowlikef.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				listnewlikef.setAdapter(dataAdapter1);
+
+				// listnewlikef
+				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
+				// {
+				//
+				// @Override
+				// public void onItemClick(AdapterView<?> arg0,
+				// View arg1, int arg2, long arg3) {
+				// // TODO Auto-generated method stub
+				// FragmentTransaction trans = ((MainActivity) context)
+				// .getSupportFragmentManager()
+				// .beginTransaction();
+				// trans.replace(R.id.content_frame,
+				// new FroumFragment());
+				// trans.commit();
+				//
+				// }
+				// });
 
 			}
 		});
@@ -97,7 +156,26 @@ public class Dialog_notificationlike extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				listnewlike.setAdapter(dataAdapter2);
+				listnewlikep.setAdapter(dataAdapter2);
+
+				// listnewlikep
+				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
+				// {
+				//
+				// @Override
+				// public void onItemClick(AdapterView<?> arg0,
+				// View arg1, int arg2, long arg3) {
+				// // TODO Auto-generated method stub
+				// FragmentTransaction trans = ((MainActivity) context)
+				// .getSupportFragmentManager()
+				// .beginTransaction();
+				// trans.replace(R.id.content_frame,
+				// new PaperFragment());
+				// trans.commit();
+				//
+				// }
+				//
+				// });
 
 			}
 		});
