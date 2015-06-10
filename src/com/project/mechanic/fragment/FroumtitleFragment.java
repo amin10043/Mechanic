@@ -9,11 +9,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.FroumtitleListadapter;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
@@ -44,6 +47,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	String serverDate = "";
 	ServerDate date;
 	Users u;
+	FloatingActionButton action;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -52,6 +56,24 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 		view = inflater.inflate(R.layout.fragment_titlefrm, null);
 		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
+		action = (FloatingActionButton) view.findViewById(R.id.fab);
+
+		action.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if (Currentuser == null)
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+				else {
+
+					dialog = new DialogfroumTitle(getActivity(),
+							R.layout.dialog_addtitle, FroumtitleFragment.this);
+					dialog.show();
+				}
+
+			}
+		});
 
 		mdb = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
@@ -88,6 +110,30 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		ListAdapter = new FroumtitleListadapter(getActivity(),
 				R.layout.raw_froumtitle, mylist);
 		lst.setAdapter(ListAdapter);
+
+		lst.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView arg0, int arg1) {
+				switch (arg1) {
+				case SCROLL_STATE_FLING:
+					action.setVisibility(View.GONE);
+					break;
+				case SCROLL_STATE_IDLE:
+					action.setVisibility(View.VISIBLE);
+					break;
+				case SCROLL_STATE_TOUCH_SCROLL:
+					action.setVisibility(View.GONE);
+					break;
+				}
+
+			}
+
+			@Override
+			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+
+			}
+		});
 
 		return view;
 	}
