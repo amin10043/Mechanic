@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#eaeaea"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="کاربر گرامی اگر برند یا مجموعه تولیدی را در اختیار دارید یا در بازار ایران نسبت به آن شناخت دارید که در این نرم افزار قید نشده لطفا مشخصات مورد نظر را برای ما ارسال نمایید   با تشکر"
+            android:textColor="@color/transparent" />
+
+        <ImageButton
+            android:id="@+id/createDialogPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/ic_create" />
+    </LinearLayout>
+
+</RelativeLayout>

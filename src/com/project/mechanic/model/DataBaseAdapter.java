@@ -1323,7 +1323,6 @@ public class DataBaseAdapter {
 				cursor.getInt(8), cursor.getInt(9), cursor.getInt(10),
 				cursor.getInt(11), cursor.getInt(12), cursor.getString(13),
 				cursor.getString(14), cursor.getString(15),
-
 				cursor.getString(16), cursor.getString(17), cursor.getBlob(18),
 				cursor.getString(19), cursor.getInt(20), cursor.getInt(21));
 
@@ -2254,7 +2253,7 @@ public class DataBaseAdapter {
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive , O.UserId From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
@@ -2382,54 +2381,50 @@ public class DataBaseAdapter {
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
-			String LinkTweitter, int UserId, int ParentId) {
+			String LinkTweitter) {
 
 		ContentValues cv = new ContentValues();
 
 		if (!"".equals(name))
-			cv.put("Name", name);
+			cv.put(Object[1], name);
 		if (!"".equals(Phone))
-			cv.put("Phone", Phone);
+			cv.put(Object[2], Phone);
 		if (!"".equals(Email))
-			cv.put("Email", Email);
+			cv.put(Object[3], Email);
 		if (!"".equals(fax))
-			cv.put("Fax", fax);
+			cv.put(Object[4], fax);
 		if (!"".equals(description))
-			cv.put("Description", description);
+			cv.put(Object[5], description);
 		if (HeaderImage != null)
-			cv.put("Image1", HeaderImage);
+			cv.put(Object[6], HeaderImage);
 		if (ProfileImage != null)
-			cv.put("Image2", ProfileImage);
+			cv.put(Object[7], ProfileImage);
 		if (FooterImage != null)
-			cv.put("Image3", FooterImage);
+			cv.put(Object[8], FooterImage);
 		if (!"".equals(LinkCatalog))
-			cv.put("pdf1", LinkCatalog);
+			cv.put(Object[10], LinkCatalog);
 		if (!"".equals(LinkPrice))
-			cv.put("pdf2", LinkPrice);
+			cv.put(Object[11], LinkPrice);
 		if (!"".equals(LinkPDF))
-			cv.put("pdf3", LinkPDF);
+			cv.put(Object[12], LinkPDF);
 		if (!"".equals(LinkVideo))
-			cv.put("pdf4", LinkVideo);
+			cv.put(Object[13], LinkVideo);
 		if (!"".equals(Address))
-			cv.put("Address", Address);
+			cv.put(Object[14], Address);
 		if (!"".equals(Mobile))
-			cv.put("Cellphone", Mobile);
+			cv.put(Object[15], Mobile);
 		if (!"".equals(LinkFaceBook))
-			cv.put("Facebook", LinkFaceBook);
+			cv.put(Object[18], LinkFaceBook);
 		if (!"".equals(LinkInstagram))
-			cv.put("Instagram", LinkInstagram);
+			cv.put(Object[19], LinkInstagram);
 		if (!"".equals(LinkLinkedin))
-			cv.put("Linkedin", LinkLinkedin);
+			cv.put(Object[20], LinkLinkedin);
 		if (!"".equals(LinkGoogle))
-			cv.put("google", LinkGoogle);
+			cv.put(Object[21], LinkGoogle);
 		if (!"".equals(LinkSite))
-			cv.put("site", LinkSite);
+			cv.put(Object[22], LinkSite);
 		if (!"".equals(LinkTweitter))
-			cv.put("Twitter", LinkTweitter);
-		if (!"".equals(UserId))
-			cv.put("UserId", UserId);
-		if (!"".equals(ParentId))
-			cv.put("ParentId", ParentId);
+			cv.put(Object[23], LinkTweitter);
 
 		mDb.insert(TableObject, null, cv);
 		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT)
@@ -2624,15 +2619,15 @@ public class DataBaseAdapter {
 		return u;
 	}
 
-	public Integer Mechanical_serach(String tableName, String word, String field) {
+	public Integer Mechanical_serach(String word, String field) {
 
 		Cursor cu;
 		if (field.equals("Name")) {
 
-			cu = mDb.rawQuery("select * from  " + tableName + " where " + field
+			cu = mDb.rawQuery("select * from  Province where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2640,15 +2635,14 @@ public class DataBaseAdapter {
 		return s;
 	}
 
-	public String serach(String tableName, int row, int col, String word,
-			String field) {
+	public String serach(int row, int col, String word, String field) {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2657,14 +2651,14 @@ public class DataBaseAdapter {
 		return s;
 	}
 
-	public Integer count_search(String tableName, String word, string field) {
+	public Integer count_search(String word, string field) {
 
 		Cursor cu;
 		if (field.equals("Name")) {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province  where " + field
 					+ " Like '%" + word + "%' group by Name", null);
 		} else {
-			cu = mDb.rawQuery("select * from " + tableName + "  where " + field
+			cu = mDb.rawQuery("select * from Province  where " + field
 					+ " Like '%" + word + "%'", null);
 		}
 
@@ -2858,6 +2852,7 @@ public class DataBaseAdapter {
 				if ("Id".equals(cols[j]))
 					id = values[i][j];
 				// cv.put(cols[j], values[i][j]);
+
 			}
 			try {
 				res = mDb.insertWithOnConflict(tableName, null, cv,

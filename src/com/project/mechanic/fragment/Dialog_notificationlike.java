@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -37,7 +38,8 @@ public class Dialog_notificationlike extends Dialog {
 	Users user;
 	Utility util;
 
-	public Dialog_notificationlike(Context context) {
+	public Dialog_notificationlike(Context context, int t, int t1, int t2,
+			int t3) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		this.context = context;
@@ -64,6 +66,10 @@ public class Dialog_notificationlike extends Dialog {
 		final ListView listnewlikeo = (ListView) findViewById(R.id.listnewlikeo);
 		final ListView listnewlikep = (ListView) findViewById(R.id.listnewlikep);
 
+		TextView numlikef = (TextView) findViewById(R.id.numlikef);
+		TextView numlikeo = (TextView) findViewById(R.id.numlikeo);
+		TextView numlikep = (TextView) findViewById(R.id.numlikep);
+
 		// listnotificationlike= (ListView)
 		// findViewById(R.id.listnotificationlike);
 		// listnotificationlike1= (ListView)
@@ -72,6 +78,16 @@ public class Dialog_notificationlike extends Dialog {
 		// findViewById(R.id.listnotificationlike2);
 
 		dbadapter.open();
+
+		int t = dbadapter.NumOfNewLikeInObject(user.getId());
+
+		int t1 = dbadapter.NumOfNewLikeInFroum(user.getId());
+		int t2 = dbadapter.NumOfNewLikeInPaper(user.getId());
+		int t3 = t + t1 + t2;
+
+		numlikef.setText("" + t);
+		numlikeo.setText("" + t1);
+		numlikep.setText("" + t2);
 
 		ArrayList<LikeInObject> mylist = dbadapter.getUnseenlike(user.getId());
 		ArrayList<LikeInFroum> mylist1 = dbadapter.getUnseenlikeInFroum(user

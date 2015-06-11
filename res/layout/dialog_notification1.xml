@@ -66,7 +66,7 @@
                         android:layout_gravity="bottom|center"
                         android:background="@drawable/circle_notification"
                         android:gravity="bottom|center"
-                        android:text="1" />
+                        android:text="" />
 
                 </LinearLayout>
 
@@ -115,7 +115,7 @@
                         android:layout_gravity="top"
                         android:background="@drawable/circle_notification"
                         android:gravity="top"
-                        android:text="2" />
+                        android:text="" />
 
                 </LinearLayout>
 
@@ -161,7 +161,7 @@
                         android:layout_gravity="top"
                         android:background="@drawable/circle_notification"
                         android:gravity="top"
-                        android:text="33" />
+                        android:text="" />
 
                 </LinearLayout>
 

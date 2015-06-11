@@ -73,7 +73,7 @@ public class IntroductionFragment extends Fragment {
 
 	ImageView headerImage, advertise2, profileImage;
 	ImageButton Facebook, Instagram, LinkedIn, Google, Site, Twitter, Pdf1,
-			Pdf2, Pdf3, Pdf4, phone, cphone, map, email, EditPage;
+			Pdf2, Pdf3, Pdf4, phone, cphone, map, email, EditPage, shareBtn;
 	Object object;
 	byte[] headerbyte, profilebyte, footerbyte;
 
@@ -147,6 +147,7 @@ public class IntroductionFragment extends Fragment {
 		cphone = (ImageButton) header.findViewById(R.id.cphonebtn);
 		map = (ImageButton) header.findViewById(R.id.mapbtn);
 		email = (ImageButton) header.findViewById(R.id.emailbtn);
+		shareBtn = (ImageButton) header.findViewById(R.id.shareIntroduction);
 
 		Pdf1 = (ImageButton) header.findViewById(R.id.btnPdf1_Object);
 		Pdf2 = (ImageButton) header.findViewById(R.id.btnPdf2_Object);
@@ -297,9 +298,10 @@ public class IntroductionFragment extends Fragment {
 			Toast.makeText(getActivity(),
 					"userid dar database sqlite be soorat dasti 0 save shode",
 					Toast.LENGTH_LONG).show();
-		} else
+		} else {
 			EditPage.setVisibility(View.VISIBLE);
 
+		}
 		addressParams = new RelativeLayout.LayoutParams(
 				addressRelative.getLayoutParams());
 
@@ -808,6 +810,43 @@ public class IntroductionFragment extends Fragment {
 						new IntroductionEditFragment());
 				trans.commit();
 
+			}
+		});
+		shareBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent sharingIntent = new Intent(
+						android.content.Intent.ACTION_SEND);
+				sharingIntent.setType("text/plain");
+				// String shareBody = x.getDescription();
+				// sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+				// object.getName());
+
+				sharingIntent.putExtra(
+						android.content.Intent.EXTRA_TEXT,
+						object.getName() + "\n" + "تلفن :" + "\n"
+								+ object.getPhone() + "\n" + "فکس :" + "\n"
+								+ object.getFax() + "\n" + "موبایل :" + "\n"
+								+ object.getCellphone() + "\n" + "ایمیل :"
+								+ "\n" + object.getEmail() + "\n" + "آدرس : "
+								+ "\n" + object.getAddress() + "\n"
+								+ "فیس بوک : " + "\n" + object.getFacebook()
+								+ "\n" + "لینکدین : " + "\n"
+								+ object.getLinkedIn() + "\n" + "توئیتر :"
+								+ "\n" + object.getTwitter() + "\n"
+								+ " سایت : " + "\n" + object.getSite() + "\n"
+								+ "  گوگل پلاس : " + "\n" + object.getGoogle()
+								+ "\n" + "اینستاگرام : " + "\n"
+								+ object.getInstagram() + "\n"
+								+ "لینک کاتالوگ :" + "\n" + object.getPdf1()
+								+ "\n" + "لیست قیمت" + "\n" + object.getPdf2()
+								+ "\n" + "Pdf : " + "\n" + object.getPdf3()
+								+ "\n" + "لینک آپارات" + "\n"
+								+ object.getPdf4() + "\n" + "توضیحات :" + "\n"
+								+ object.getDescription());
+				startActivity(Intent.createChooser(sharingIntent,
+						"اشتراک از طریق"));
 			}
 		});
 

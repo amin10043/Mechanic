@@ -20,16 +20,19 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class DisplayPersonalInformationFragment extends Fragment implements
-		GetAsyncInterface {
+		GetAsyncInterface, AsyncInterface {
 
 	DataBaseAdapter dbAdapter;
 	ServiceComm service;
@@ -38,6 +41,10 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 
 	ImageView img;
 	Ticket tempItem;
+	Users u;
+	Settings setting;
+	String serverDate;
+	ServerDate date;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,18 +53,17 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 				R.layout.fragment_displaypersonalinformation, null);
 		utile1 = new Utility(getActivity());
 		service = new ServiceComm(getActivity());
+		dbAdapter = new DataBaseAdapter(getActivity());
 
-		Users u = utile1.getCurrentUser();
-		int id = u.getId();
+		u = utile1.getCurrentUser();
+		if (u == null) {
+			// خطا . نباید این اتفاق بیفتد!
+			return view;
+		}
 
-		// ADD HERE ? OR WHERE ?
-		HashMap<String, String> params = new LinkedHashMap<String, String>();
-		params.put("tableName", "Users");
-		params.put("Id", String.valueOf(id));
-		String tableUpdating = "Users";
-		serviceImage = new UpdatingImage(getActivity());
-		serviceImage.delegate = this;
-		serviceImage.execute(params);
+		date = new ServerDate(getActivity());
+		date.delegate = this;
+		date.execute("");
 
 		TextView txtaddress = (TextView) view.findViewById(R.id.address);
 		TextView txtcellphone = (TextView) view.findViewById(R.id.cellphone);
@@ -77,10 +83,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		lp1.width = utile1.getScreenwidth() / 4;
 		lp1.height = utile1.getScreenwidth() / 4;
 		img.setLayoutParams(lp1);
-		PersianDate date = new PersianDate();
-
-		dbAdapter = new DataBaseAdapter(getActivity());
-		dbAdapter.open();
 
 		byte[] bitmapbyte = u.getImage();
 		if (bitmapbyte != null) {
@@ -94,28 +96,8 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		String phone = u.getPhonenumber();
 		String cellphone = u.getMobailenumber();
 		String fax = u.getFaxnumber();
-		// ////////////////////////////////////////////// ///////////////
-		// int id =1;
-		// Users x =dbAdapter.getUserById(id);
-		// byte[] bitmapbyte = x.getImage();
-		// if (bitmapbyte != null) {
-		// Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-		// bitmapbyte.length);
-		// img.setImageBitmap(bmp);
-		// }
-		//
 		String d = u.getDate();
-		// int item = x.getId();
-		// String name=x.getName();
-		// String email=x.getEmail();
-		// String address=x.getAddress();
-		// String phone=x.getPhonenumber();
-		// String cellphone=x.getMobailenumber();
-		// String fax=x.getFaxnumber();
 
-		// ///////////////////////
-
-		dbAdapter.close();
 		txtdate.setText(d);
 		txtname.setText(name);
 		txtemail.setText(email);
@@ -123,7 +105,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		txtphone.setText(phone);
 		txtfax.setText(fax);
 		txtaddress.setText(address);
-		// picture.setImageURI(uri);
 
 		logout.setOnClickListener(new OnClickListener() {
 
@@ -140,7 +121,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 
 				editor.commit();
 				// ////////////////////////////////////////////////
-				dbAdapter = new DataBaseAdapter(getActivity());
 				dbAdapter.open();
 				int ad = 0;
 				dbAdapter.UpdateAdminAllUser(ad);
@@ -150,7 +130,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new LoginFragment());
 				trans.commit();
-
 			}
 		});
 
@@ -163,7 +142,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new EditPersonalFragment());
 				trans.commit();
-
 			}
 		});
 
@@ -176,7 +154,30 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 			Bitmap bmp = BitmapFactory
 					.decodeByteArray(output, 0, output.length);
 			img.setImageBitmap(bmp);
+			dbAdapter.open();
+			dbAdapter.UpdateUserImage(u.getId(), output, serverDate);
+			dbAdapter.close();
+		} else {
+			if (u != null && u.getImage() != null) {
+				Bitmap bmp = BitmapFactory.decodeByteArray(u.getImage(), 0,
+						u.getImage().length);
+				img.setImageBitmap(bmp);
+			}
 		}
 	}
 
+	@Override
+	public void processFinish(String output) {
+		if (!"".equals(output) && output != null) {
+			serverDate = output;
+			HashMap<String, String> params = new LinkedHashMap<String, String>();
+			params.put("tableName", "Users");
+			params.put("Id", String.valueOf(u.getId()));
+			params.put("fromDate", u.getImageServerDate());
+			serviceImage = new UpdatingImage(getActivity());
+			serviceImage.delegate = this;
+			serviceImage.execute(params);
+
+		}
+	}
 }

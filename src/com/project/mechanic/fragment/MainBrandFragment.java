@@ -6,13 +6,12 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
@@ -28,6 +27,7 @@ public class MainBrandFragment extends Fragment {
 	int id;
 	Users CurrentUser;
 	Utility util;
+	DialogCreatePage dialog;
 
 	// List<Object> objectList = null;
 
@@ -50,8 +50,8 @@ public class MainBrandFragment extends Fragment {
 		((MainActivity) getActivity()).setTitle(R.string.object);
 
 		View view = inflater.inflate(R.layout.fragment_object, null);
-		ImageButton createPage = (ImageButton) view
-				.findViewById(R.id.imgBtnAddcmt_CmtFroum);
+		RelativeLayout createPage = (RelativeLayout) view
+				.findViewById(R.id.relative);
 
 		adapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
@@ -63,32 +63,21 @@ public class MainBrandFragment extends Fragment {
 
 		adapter.close();
 
-		// RelativeLayout CreatePage = (RelativeLayout) view
-		// .findViewById(R.id.relative);
-		if (CurrentUser == null)
-			createPage.setImageResource(R.drawable.ic_create_off);
-
 		createPage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				if (CurrentUser == null) {
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
-				} else {
+				dialog = new DialogCreatePage(getActivity());
+				dialog.show();
 
-					SharedPreferences sendParentID = getActivity()
-							.getSharedPreferences("Id", 0);
-
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame,
-							new CreateIntroductionFragment());
-					sendParentID.edit().putInt("ParentId", id).commit();
-					trans.commit();
-				}
+				SharedPreferences sendParentID = getActivity()
+						.getSharedPreferences("Id", 0);
+				sendParentID.edit().putInt("ParentId", id).commit();
+				Toast.makeText(getActivity(), "ParentId send = " + id,
+						Toast.LENGTH_SHORT).show();
 			}
+
 		});
 
 		ListView lstObject = (ListView) view

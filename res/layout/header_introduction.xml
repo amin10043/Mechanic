@@ -104,6 +104,15 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="2dp"
                 android:background="@drawable/ic_edit" />
+
+            <ImageButton
+                android:id="@+id/shareIntroduction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/AddLikeIntroductionLinear"
+                android:background="@drawable/ic_share_froum" />
         </RelativeLayout>
 
         <LinearLayout
@@ -446,7 +455,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="sssdsdsdasdasdasdasdasdasdassdhsdhusdhusdhusdhfusdhfusdhfusdhfsudhfsudhfsudhfsudfhusdhfusd"
+                    android:text="test"
                     android:textColor="@color/transparent" />
             </RelativeLayout>
 

@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -26,6 +27,8 @@ import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
 public class Dialog_notification extends Dialog {
+	public void tasks() {
+	}
 
 	private static final Context Dialog = null;
 	// private DataBaseAdapter dbadapter;
@@ -39,7 +42,7 @@ public class Dialog_notification extends Dialog {
 	Utility util;
 	Users user;
 
-	public Dialog_notification(Context context) {
+	public Dialog_notification(Context context, int r, int r1, int r2) {
 		super(context);
 		this.context = context;
 		// dbadapter = new DataBaseAdapter(context);
@@ -84,8 +87,19 @@ public class Dialog_notification extends Dialog {
 		final ListView listnewcmf = (ListView) findViewById(R.id.listnewcmf);
 		final ListView listnewcmo = (ListView) findViewById(R.id.listnewcmo);
 		final ListView listnewcmp = (ListView) findViewById(R.id.listnewcmp);
+		TextView numf = (TextView) findViewById(R.id.numf);
+		TextView numo = (TextView) findViewById(R.id.numo);
+		TextView nump = (TextView) findViewById(R.id.nump);
+		// numf.setText("" + r);
+		// numo.setText("" + r1);
+		// nump.setText("" + r2);
+
 		//
 		adapter.open();
+		int r = adapter.NumOfNewCmtInFroum(user.getId());
+		int r1 = adapter.NumOfNewCmtInObject(user.getId());
+		int r2 = adapter.NumOfNewCmtInPaper(user.getId());
+
 		// Users u = util.getCurrentUser();
 		// int id = u.getId();
 
@@ -115,17 +129,20 @@ public class Dialog_notification extends Dialog {
 						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 							@Override
-							public void onItemClick(AdapterView<?> arg0,
-									View arg1, int arg2, long arg3) {
+							public void onItemClick(AdapterView<?> parent,
+									View view, int position, long id) {
 								// TODO Auto-generated method stub
-								FragmentTransaction trans = ((MainActivity) context)
-										.getSupportFragmentManager()
+								// Fragment fragment = new tasks();
+								android.support.v4.app.FragmentManager fragmentManager = ((MainActivity) context)
+										.getSupportFragmentManager();
+								FragmentTransaction fragmentTransaction = fragmentManager
 										.beginTransaction();
-								trans.replace(R.id.content_frame,
+								fragmentTransaction.replace(R.id.content_frame,
 										new FroumFragment());
-								trans.commit();
-
+								fragmentTransaction.addToBackStack(null);
+								fragmentTransaction.commit();
 							}
+
 						});
 
 				// listnewcmf.setOnClickListener(new View.OnClickListener() {
@@ -154,8 +171,8 @@ public class Dialog_notification extends Dialog {
 						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 							@Override
-							public void onItemClick(AdapterView<?> arg0,
-									View arg1, int arg2, long arg3) {
+							public void onItemClick(AdapterView<?> parent,
+									View view, int position, long id) {
 								// TODO Auto-generated method stub
 								FragmentTransaction trans = ((MainActivity) context)
 										.getSupportFragmentManager()
@@ -193,41 +210,44 @@ public class Dialog_notification extends Dialog {
 						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 							@Override
-							public void onItemClick(AdapterView<?> arg0,
-									View arg1, int arg2, long arg3) {
+							public void onItemClick(AdapterView<?> parent,
+									View view, int position, long id) {
 								// TODO Auto-generated method stub
-								FragmentTransaction trans = ((MainActivity) context)
-										.getSupportFragmentManager()
+								FragmentTransaction t = getActivity()
+										.getFragmentManager()
 										.beginTransaction();
-								trans.replace(R.id.content_frame,
-										new PaperFragment());
-								trans.commit();
+								Fragment paperfragment = new PaperFragment();
+								t.replace(R.id.content_frame, paperfragment);
+								t.addToBackStack(null);
+								t.commit();
+							}
 
+							private Fragment getActivity() {
+								// TODO Auto-generated method stub
+								return null;
 							}
 
 						});
-
 			}
 
 		});
-
-		// listcmnotification.setAdapter(dataAdapter);
-		// listcmnotification2.setAdapter(dataAdapter1);
-		// listcmnotification3.setAdapter(dataAdapter2);
 	}
-
-	// if (listcmnotification2 != null) {
-	//
-	// }
-	//
-	// else {
-	//
-	// linlist2.setVisibility(View.GONE);
-
-	// Toast.makeText(context, "dovomi khali ",
-	// Toast.LENGTH_LONG).show();
-
 }
+
+// listcmnotification.setAdapter(dataAdapter);
+// listcmnotification2.setAdapter(dataAdapter1);
+// listcmnotification3.setAdapter(dataAdapter2);
+
+// if (listcmnotification2 != null) {
+//
+// }
+//
+// else {
+//
+// linlist2.setVisibility(View.GONE);
+
+// Toast.makeText(context, "dovomi khali ",
+// Toast.LENGTH_LONG).show();
 
 // if (listcmnotification != null) {
 // if (listcmnotification2 != null && listcmnotification3 != null) {

@@ -8,13 +8,13 @@ import android.view.View;
 
 public class HelloService extends Service {
 
-	private int mInterval = 5000; // 5 seconds by default, can be changed later
+	private int mInterval = 3000; // 5 seconds by default, can be changed later
 	private Handler mHandler;
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		// mHandler = new Handler();
-		// mHandler.postDelayed(mStatusChecker, mInterval);
+		mHandler = new Handler();
+		mHandler.postDelayed(mStatusChecker, mInterval);
 
 		return Service.START_FLAG_REDELIVERY;
 	}
@@ -27,8 +27,7 @@ public class HelloService extends Service {
 	public void startAlert(View view) {
 
 		// your code for running in background in period time
-		// Toast.makeText(this, "Service is runnig",
-		// Toast.LENGTH_SHORT).show();
+		// Toast.makeText(this, "Service is runnig", Toast.LENGTH_SHORT).show();
 	}
 
 	Runnable mStatusChecker = new Runnable() {

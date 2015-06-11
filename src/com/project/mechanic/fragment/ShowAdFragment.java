@@ -14,14 +14,18 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
@@ -40,7 +44,7 @@ public class ShowAdFragment extends Fragment {
 	TextView desc, name, email, phone, mobile, fax, showname, showfax,
 			showemail, showphone, showmobile;
 	ImageView img;
-	Button btnreport;
+	Button btnreport, btnCancel;
 	List mylist;
 	ImageButton share, edite, like;
 	Utility util;
@@ -50,12 +54,14 @@ public class ShowAdFragment extends Fragment {
 	int proID = -1;
 	int f;
 	private boolean isFavorite = false;
+	RelativeLayout headerRelative, iconRelative;
+	RelativeLayout.LayoutParams headerParams;
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		//((MainActivity) getActivity()).setActivityTitle(R.string.showad);
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.showad);
 		id = Integer.valueOf(getArguments().getString("Id"));
 		util = new Utility(getActivity());
 		View view = inflater.inflate(R.layout.fragment_showad, null);
@@ -77,6 +83,7 @@ public class ShowAdFragment extends Fragment {
 		showmobile = (TextView) view.findViewById(R.id.fragment_showad_mobile);
 		showfax = (TextView) view.findViewById(R.id.fragment_showad_fax);
 		btnreport = (Button) view.findViewById(R.id.btn_report);
+		btnCancel = (Button) view.findViewById(R.id.btn_cancel);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 
@@ -87,10 +94,12 @@ public class ShowAdFragment extends Fragment {
 		userTicket = t.getUserId();
 		boolean check = dbAdapter.isUserFavorite(userTicket, a);
 		if (check) {
-			like.setImageResource(R.drawable.ic_star_on);
+			like.setBackgroundResource(R.drawable.like_anad_on);
 		} else {
-			like.setImageResource(R.drawable.ic_star_off);
+			like.setBackgroundResource(R.drawable.like_anad_off);
 		}
+		// this code invisible edit button
+		edite.setVisibility(View.GONE);
 
 		like.setSelected(check);
 		byte[] bitmapbyte = t.getImage();
@@ -106,8 +115,49 @@ public class ShowAdFragment extends Fragment {
 			like.setEnabled(false);
 		} else if (userTicket == u.getId()) {
 
-			edite.setVisibility(1);
+			// edite.setVisibility(1);
 		}
+
+		headerRelative = (RelativeLayout) view.findViewById(R.id.headerAnad);
+		headerParams = new RelativeLayout.LayoutParams(
+				headerRelative.getLayoutParams());
+		headerParams.width = util.getScreenwidth();
+		headerParams.height = (int) (util.getScreenHeight() / 2.5);
+		headerParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+		// iconRelative = (RelativeLayout) view.findViewById(R.id.iconAnad);
+
+		// shareParams = new RelativeLayout.LayoutParams(
+		// iconRelative.getLayoutParams());
+		// shareParams.width = util.getScreenwidth() / 3;
+		// shareParams.height = util.getScreenHeight() / 10;
+		// shareParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+		img.setLayoutParams(headerParams);
+		// share.setLayoutParams(shareParams);
+
+		// likeParams = new RelativeLayout.LayoutParams(
+		// iconRelative.getLayoutParams());
+		// likeParams.width = util.getScreenwidth() / 3;
+		// likeParams.height = util.getScreenHeight() / 10;
+		// likeParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// likeParams.addRule(RelativeLayout.BELOW, R.id.imgShare_showAd);
+
+		// like.setLayoutParams(likeParams);
+		final EditText DescriptionReport = (EditText) view
+				.findViewById(R.id.descriptionEdit);
+		final RadioGroup rd = (RadioGroup) view.findViewById(R.id.rb1);
+
+		rd.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(RadioGroup arg0, int checkedId) {
+				DescriptionReport.setVisibility(View.VISIBLE);
+				btnreport.setVisibility(View.VISIBLE);
+				btnCancel.setVisibility(View.VISIBLE);
+
+			}
+		});
 
 		like.setOnClickListener(new View.OnClickListener() {
 
@@ -117,12 +167,15 @@ public class ShowAdFragment extends Fragment {
 					dbAdapter.open();
 					dbAdapter.deletebyIdTicket(a);
 					dbAdapter.close();
-					like.setImageResource(R.drawable.ic_star_off);
+					like.setBackgroundResource(R.drawable.like_anad_off);
+					// like.setLayoutParams(likeParams);
+
 				} else {
 					dbAdapter.open();
 					dbAdapter.insertFavoritetoDb(0, u.getId(), a);
 					dbAdapter.close();
-					like.setImageResource(R.drawable.ic_star_on);
+					like.setBackgroundResource(R.drawable.like_anad_on);
+					// like.setLayoutParams(likeParams);
 
 				}
 				isFavorite = !isFavorite;
@@ -141,6 +194,17 @@ public class ShowAdFragment extends Fragment {
 
 			}
 		});
+		btnCancel.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				rd.clearCheck();
+				DescriptionReport.setVisibility(View.GONE);
+				btnreport.setVisibility(View.GONE);
+				btnCancel.setVisibility(View.GONE);
+
+			}
+		});
 		btnreport.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -150,11 +214,13 @@ public class ShowAdFragment extends Fragment {
 							Toast.LENGTH_LONG).show();
 					return;
 				}
-				dialog_report = new Dialog_report(getActivity(),
-						R.layout.dialog_report, ShowAdFragment.this, a);
-				dialog_report.setTitle(R.string.txtanadreport);
-
-				dialog_report.show();
+				Toast.makeText(getActivity(), "گزارش شما با موفقیت ارسال شد",
+						Toast.LENGTH_SHORT).show();
+				// dialog_report = new Dialog_report(getActivity(),
+				// R.layout.dialog_report, ShowAdFragment.this, a);
+				// dialog_report.setTitle("گزارش آگهی");
+				//
+				// dialog_report.show();
 
 			}
 		});

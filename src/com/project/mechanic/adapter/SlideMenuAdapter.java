@@ -18,11 +18,11 @@ public class SlideMenuAdapter extends BaseAdapter {
 
 	Context context;
 
-	String[] slideitem = { "صفحه اصلی", "کاربری", "صفحه شخصی", "پسند شده ها",
-			"درباره ما", "تماس با ما" };
-	int[] icon = { R.drawable.ic_home, R.drawable.ic_pro,
-			R.drawable.ic_personal, R.drawable.ic_bookmark,
-			R.drawable.ic_about_us, R.drawable.phone };
+	String[] slideitem = { "صفحه اصلی", "صفحه شخصی", "پسند شده ها",
+			"درباره ما", "تماس با ما", "خروج" };
+	int[] icon = { R.drawable.ic_home, R.drawable.ic_personal,
+			R.drawable.ic_bookmark, R.drawable.ic_about_us, R.drawable.phone,
+			R.drawable.exit };
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
