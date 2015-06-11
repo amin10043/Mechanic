@@ -32,14 +32,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.project.mechanic.entity.Settings;
-import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Updating;
-import com.project.mechanic.utility.ChatHeadService;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class WelcomeScreen extends Activity implements AsyncInterface {
+public class WelcomeScreen extends Activity {
 
 	private LinearLayout verticalOuterLayout;
 	// private ImageButton btnNext, btnExit, btnins1, btnint1, btngp1, btnfb1,
@@ -89,82 +87,9 @@ public class WelcomeScreen extends Activity implements AsyncInterface {
 		settings = adapter.getSettings();
 		adapter.close();
 
-		String tableUpdating = "User";
-		serviceUpdate = new Updating(this);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				settings != null ? settings.getServerDate_Users() : "");
+		util.Updating();
 
-		tableUpdating = "Paper";
-		serviceUpdate = new Updating(this);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_Paper() : ""));
-
-		tableUpdating = "Froum";
-		serviceUpdate = new Updating(this);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_Froum() : ""));
-		// tableUpdating = "Object";
-		// serviceUpdate = new Updating(this);
-		// serviceUpdate.delegate = this;
-		// serviceUpdate.execute(tableUpdating,
-		// (settings != null ? settings.getServerDate() : ""));
-		tableUpdating = "News";
-		serviceUpdate = new Updating(this);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_News() : ""));
-		tableUpdating = "Anad";
-		serviceUpdate = new Updating(this);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_Anad() : ""));
-		tableUpdating = "Ticket";
-		serviceUpdate = new Updating(this);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_Ticket() : ""));
-		tableUpdating = "LikeInPaper";
-		serviceUpdate = new Updating(this);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_LikeInPaper() : ""));
-		tableUpdating = "CmtInPaper";
-		serviceUpdate = new Updating(this);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_CmtInPaper() : ""));
-
-		tableUpdating = "LikeInFroum";
-		serviceUpdate = new Updating(this);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_LikeInFroum() : ""));
-		tableUpdating = "CommentInFroum";
-		serviceUpdate = new Updating(this);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_CommentInFroum()
-						: ""));
-
-		tableUpdating = "LikeInObject";
-		serviceUpdate = new Updating(this);
-		serviceUpdate.delegate = this;
-		serviceUpdate
-				.execute(
-						tableUpdating,
-						(settings != null ? settings
-								.getServerDate_LikeInObject() : ""));
-		tableUpdating = "CommentInObject";
-		serviceUpdate = new Updating(this);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_CommentInObject()
-						: ""));
-
-		startService(new Intent(this, ChatHeadService.class));
+		// startService(new Intent(this, ChatHeadService.class));
 
 		initialize();
 		clickItem();
@@ -756,9 +681,4 @@ public class WelcomeScreen extends Activity implements AsyncInterface {
 		}
 	}
 
-	@Override
-	public void processFinish(String output) {
-		util.parseQuery(output);
-
-	}
 }

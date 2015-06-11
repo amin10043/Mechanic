@@ -1,11 +1,8 @@
 package com.project.mechanic;
 
-import java.util.Calendar;
 import java.util.List;
 
-import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -30,23 +27,35 @@ import android.widget.Toast;
 import com.project.mechanic.adapter.SlideMenuAdapter;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.AdvisorTypeFragment;
+import com.project.mechanic.fragment.BerandFragment;
+import com.project.mechanic.fragment.City2Fragment;
+import com.project.mechanic.fragment.City3Fragment;
 import com.project.mechanic.fragment.CityFragment;
+import com.project.mechanic.fragment.CountryFragment;
 import com.project.mechanic.fragment.Dialog_notification;
 import com.project.mechanic.fragment.Dialog_notificationlike;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.EnterDialog;
+import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.ExitDialog;
 import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.FragmentAboutUs;
 import com.project.mechanic.fragment.FragmentContactUs;
+import com.project.mechanic.fragment.FroumFragment;
+import com.project.mechanic.fragment.FroumtitleFragment;
+import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.fragment.LoginFragment;
+import com.project.mechanic.fragment.MainBrandFragment;
 import com.project.mechanic.fragment.MainFragment;
+import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.fragment.ObjectFragment;
+import com.project.mechanic.fragment.Province2Fragment;
+import com.project.mechanic.fragment.Province3Fragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.fragment.SearchFragment;
 import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.service.HelloService;
-import com.project.mechanic.service.MyReceiver;
+import com.project.mechanic.utility.PeriodicTask;
 import com.project.mechanic.utility.Utility;
 
 public class MainActivity extends FragmentActivity {
@@ -279,23 +288,30 @@ public class MainActivity extends FragmentActivity {
 
 		setActivityTitle(R.string.strMain);
 
-		Intent intent = new Intent(MainActivity.this, HelloService.class);
-		startService(intent);
+		// Service for period task EveryTime
+		// Intent intent = new Intent(MainActivity.this, HelloService.class);
+		// startService(intent);
+		// Service for period task EveryTime
 
-		Calendar calendar = Calendar.getInstance();
+		// Second Service
+		// Calendar calendar = Calendar.getInstance();
+		//
+		// calendar.set(Calendar.HOUR_OF_DAY, 10);
+		// calendar.set(Calendar.MINUTE, 43);
+		// calendar.set(Calendar.SECOND, 00);
+		// calendar.set(Calendar.AM_PM, Calendar.AM);
+		//
+		// Intent myIntent = new Intent(MainActivity.this, MyReceiver.class);
+		// pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,
+		// myIntent, 0);
+		// AlarmManager alarmManager = (AlarmManager)
+		// getSystemService(ALARM_SERVICE);
+		// alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),
+		// pendingIntent);
+		// Second Service
 
-		calendar.set(Calendar.HOUR_OF_DAY, 3);
-		calendar.set(Calendar.MINUTE, 26);
-		calendar.set(Calendar.SECOND, 00);
-		calendar.set(Calendar.AM_PM, Calendar.PM);
-
-		Intent myIntent = new Intent(MainActivity.this, MyReceiver.class);
-		pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,
-				myIntent, 0);
-
-		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-		alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),
-				pendingIntent);
+		PeriodicTask task = new PeriodicTask(this);
+		// task.startAlert();
 	}
 
 	public void setActivityTitle(int title) {
@@ -394,8 +410,9 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public void onBackPressed() {
-		Fragment f = getSupportFragmentManager().findFragmentById(
-				R.id.content_frame);
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction trans = fm.beginTransaction();
+		Fragment f = fm.findFragmentById(R.id.content_frame);
 
 		String page = "";
 		if (f instanceof MainFragment) {
@@ -404,7 +421,94 @@ public class MainActivity extends FragmentActivity {
 		}
 
 		else {
-			super.onBackPressed();
+			if (f instanceof FroumFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new FroumtitleFragment());
+				trans.commit();
+			} else if (f instanceof FroumtitleFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+
+			} else if (f instanceof BerandFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			} else if (f instanceof MainBrandFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				BerandFragment fragment = new BerandFragment();
+				// Bundle b = new Bundle();
+				// b.putString("Id", "1");
+				// fragment.setArguments(b);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+			} else if (f instanceof IntroductionFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainBrandFragment());
+				trans.commit();
+			} else if (f instanceof ProvinceFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			} else if (f instanceof Province2Fragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			} else if (f instanceof Province3Fragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new Province3Fragment());
+				trans.commit();
+			} else if (f instanceof City3Fragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			} else if (f instanceof City2Fragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new Province2Fragment());
+				trans.commit();
+			} else if (f instanceof CityFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new ProvinceFragment());
+				trans.commit();
+			} else if (f instanceof ObjectFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new CityFragment());
+				trans.commit();
+			} else if (f instanceof AdvisorTypeFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new City2Fragment());
+				trans.commit();
+			} else if (f instanceof ExecutertypeFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new City3Fragment());
+				trans.commit();
+			} else if (f instanceof NewsFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			} else if (f instanceof CountryFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			} else {
+				super.onBackPressed();
+			}
 		}
 	}
 
@@ -438,17 +542,4 @@ public class MainActivity extends FragmentActivity {
 		// alert.show();
 	}
 
-	private void onYesClick() {
-		Intent setIntent = new Intent(Intent.ACTION_MAIN);
-		setIntent.addCategory(Intent.CATEGORY_HOME);
-		setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(setIntent);
-
-		MainActivity.this.finish();
-
-	}
-
-	private void onNoClick() {
-
-	}
 }

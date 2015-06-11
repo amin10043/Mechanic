@@ -46,7 +46,9 @@ public class MainBrandFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		id = Integer.valueOf(getArguments().getString("Id"));
+		if (getArguments() != null && getArguments().getString("Id") != null) {
+			id = Integer.valueOf(getArguments().getString("Id"));
+		}
 
 		((MainActivity) getActivity()).setTitle(R.string.object);
 
