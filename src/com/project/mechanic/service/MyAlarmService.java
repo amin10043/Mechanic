@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.widget.Toast;
 
 public class MyAlarmService extends Service
 
@@ -28,6 +29,7 @@ public class MyAlarmService extends Service
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
 
+		Toast.makeText(this, "Service is runnig", Toast.LENGTH_SHORT).show();
 		// mManager = (NotificationManager) this.getApplicationContext()
 		// .getSystemService(
 		// this.getApplicationContext().NOTIFICATION_SERVICE);

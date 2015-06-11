@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.view.View;
+import android.widget.Toast;
 
 public class HelloService extends Service {
 
-	private int mInterval = 3000; // 5 seconds by default, can be changed later
+	private int mInterval = 3000;
 	private Handler mHandler;
 
 	@Override
@@ -27,7 +28,7 @@ public class HelloService extends Service {
 	public void startAlert(View view) {
 
 		// your code for running in background in period time
-		// Toast.makeText(this, "Service is runnig", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Service is runnig", Toast.LENGTH_SHORT).show();
 	}
 
 	Runnable mStatusChecker = new Runnable() {

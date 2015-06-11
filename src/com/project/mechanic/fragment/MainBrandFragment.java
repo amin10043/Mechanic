@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -47,7 +46,9 @@ public class MainBrandFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		id = Integer.valueOf(getArguments().getString("Id"));
+		if (getArguments() != null && getArguments().getString("Id") != null) {
+			id = Integer.valueOf(getArguments().getString("Id"));
+		}
 
 		((MainActivity) getActivity()).setTitle(R.string.object);
 
@@ -116,8 +117,6 @@ public class MainBrandFragment extends Fragment {
 				sendMainObjectId.edit().putInt("MainObjectId", MainObjectId)
 						.commit();
 
-				Toast.makeText(getActivity(), "ParentId send = " + id,
-						Toast.LENGTH_SHORT).show();
 			}
 		});
 

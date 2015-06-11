@@ -2,10 +2,14 @@ package com.project.mechanic.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
@@ -29,17 +33,19 @@ public class DialogCreatePage extends Dialog {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setBackgroundDrawable(
+				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 		setContentView(R.layout.dialog_create);
 		create = (ImageButton) findViewById(R.id.createDialogPage);
+		TextView message = (TextView) findViewById(R.id.textView1);
 		Currentser = util.getCurrentUser();
 
-		if (Currentser == null) {
-			create.setBackgroundResource(R.drawable.ic_create_off);
-		} else {
-			create.setBackgroundResource(R.drawable.ic_create);
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
+				"fonts/BoldRoya.TTF");
 
-		}
+		message.setTypeface(typeFace);
 
 		create.setOnClickListener(new android.view.View.OnClickListener() {
 
