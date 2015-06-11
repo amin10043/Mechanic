@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -45,8 +46,10 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 	PersianDate date;
 	String currentDate;
 	LinearLayout LikeTitle;
-	int ItemId;
+	// int ItemId;
+	int froumNumber;
 	TextView countLikeFroum;
+	ProgressDialog ringProgressDialog;
 
 	Saving saving;
 	Deleting deleting;
@@ -97,6 +100,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		Froum person1 = mylist.get(position);
 
 		adapter.open();
+
 		Users x = adapter.getUserbyid(person1.getUserId());
 		CurrentUser = util.getCurrentUser();
 
@@ -111,13 +115,21 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		adapter.open();
 
 		String item = txt1.getText().toString();
-		ItemId = 0;
+		int ItemId = 0;
 		for (Froum listItem : mylist) {
 			if (item.equals(listItem.getTitle())) {
 				// check authentication and authorization
-				ItemId = listItem.getId();
+				froumNumber = ItemId = listItem.getId();
 			}
 		}
+
+		if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
+			LikeTitle.setBackgroundResource(R.drawable.like_froum);
+		} else
+			LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
+
+		countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
+				.toString());
 
 		if (x.getImage() == null) {
 			profileImg.setImageResource(R.drawable.no_img_profile);
@@ -153,10 +165,20 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 							"برای درج لایک ابتدا باید وارد شوید",
 							Toast.LENGTH_SHORT).show();
 				} else {
-					if (adapter.isUserLikedFroum(CurrentUser.getId(), position)) {
+
+					String item = txt1.getText().toString();
+					int ItemId = 0;
+					for (Froum listItem : mylist) {
+						if (item.equals(listItem.getTitle())) {
+							// check authentication and authorization
+							froumNumber = ItemId = listItem.getId();
+						}
+					}
+
+					if (adapter.isUserLikedFroum(CurrentUser.getId(), ItemId)) {
 						adapter.open();
-						int c = adapter.LikeInFroum_count(position) - 1;
-						countLikeFroum.setText(String.valueOf(c));
+						// int c = adapter.LikeInFroum_count(ItemId) - 1;
+						// countLikeFroum.setText(String.valueOf(c));
 
 						params = new LinkedHashMap<String, String>();
 						deleting = new Deleting(context);
@@ -165,8 +187,28 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 						params.put("TableName", "LikeInFroum");
 						params.put("UserId",
 								String.valueOf(CurrentUser.getId()));
-						params.put("FroumId", String.valueOf(position));
+						params.put("FroumId", String.valueOf(ItemId));
 						deleting.execute(params);
+
+						ringProgressDialog = ProgressDialog.show(context, "",
+								"لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
 
 						adapter.close();
 					} else {
@@ -179,12 +221,33 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 						params.put("UserId",
 								String.valueOf(CurrentUser.getId()));
-						params.put("FroumId", String.valueOf(position));
+						params.put("FroumId", String.valueOf(ItemId));
 						params.put("CommentId", "0");
 						params.put("Date", currentDate);
 						saving.execute(params);
-						countLikeFroum.setText(adapter.LikeInFroum_count(
-								position).toString());
+
+						ringProgressDialog = ProgressDialog.show(context, "",
+								"لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+
+						// countLikeFroum.setText(adapter
+						// .LikeInFroum_count(ItemId).toString());
 
 						adapter.close();
 
@@ -204,7 +267,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				LinearLayout parentlayout = (LinearLayout) v;
 
 				String item = txt1.getText().toString();
-				ItemId = 0;
+				int ItemId = 0;
 				for (Froum listItem : mylist) {
 					if (item.equals(listItem.getTitle())) {
 						// check authentication and authorization
@@ -239,27 +302,35 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 	@Override
 	public void processFinish(String output) {
+		ringProgressDialog.dismiss();
+
 		int id = -1;
+
 		try {
 			id = Integer.valueOf(output);
+
+			adapter.open();
+
+			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
+				adapter.deleteLikeFromFroum(CurrentUser.getId(), froumNumber);
+				LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
+
+				countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
+						.toString());
+
+			} else {
+				adapter.insertLikeInFroumToDb(CurrentUser.getId(), froumNumber,
+						currentDate, 0);
+				LikeTitle.setBackgroundResource(R.drawable.like_froum);
+
+				countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
+						.toString());
+			}
+			adapter.close();
 		} catch (Exception ex) {
 			Toast.makeText(context, "خطا در ارتباط با سرور", Toast.LENGTH_SHORT)
 					.show();
 		}
-		adapter.open();
-
-		if (adapter.isUserLikedFroum(id, ItemId)) {
-			LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
-			adapter.deleteLikeFromFroum(id, ItemId);
-
-		} else {
-			LikeTitle.setBackgroundResource(R.drawable.like_froum);
-			adapter.insertLikeInFroumToDb(id, ItemId, currentDate, 0);
-
-			countLikeFroum
-					.setText(adapter.LikeInFroum_count(ItemId).toString());
-		}
-		adapter.close();
 
 	}
 }
