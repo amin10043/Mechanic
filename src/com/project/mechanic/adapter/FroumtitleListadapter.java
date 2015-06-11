@@ -46,7 +46,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 	PersianDate date;
 	String currentDate;
 	LinearLayout LikeTitle;
-	int ItemId;
+	// int ItemId;
+	int froumNumber;
 	TextView countLikeFroum;
 	ProgressDialog ringProgressDialog;
 
@@ -99,6 +100,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		Froum person1 = mylist.get(position);
 
 		adapter.open();
+
 		Users x = adapter.getUserbyid(person1.getUserId());
 		CurrentUser = util.getCurrentUser();
 
@@ -113,13 +115,21 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		adapter.open();
 
 		String item = txt1.getText().toString();
-		ItemId = 0;
+		int ItemId = 0;
 		for (Froum listItem : mylist) {
 			if (item.equals(listItem.getTitle())) {
 				// check authentication and authorization
-				ItemId = listItem.getId();
+				froumNumber = ItemId = listItem.getId();
 			}
 		}
+
+		if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
+			LikeTitle.setBackgroundResource(R.drawable.like_froum);
+		} else
+			LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
+
+		countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
+				.toString());
 
 		if (x.getImage() == null) {
 			profileImg.setImageResource(R.drawable.no_img_profile);
@@ -157,16 +167,17 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				} else {
 
 					String item = txt1.getText().toString();
-					ItemId = 0;
+					int ItemId = 0;
 					for (Froum listItem : mylist) {
 						if (item.equals(listItem.getTitle())) {
 							// check authentication and authorization
-							ItemId = listItem.getId();
+							froumNumber = ItemId = listItem.getId();
 						}
 					}
+
 					if (adapter.isUserLikedFroum(CurrentUser.getId(), ItemId)) {
 						adapter.open();
-						int c = adapter.LikeInFroum_count(ItemId) - 1;
+						// int c = adapter.LikeInFroum_count(ItemId) - 1;
 						// countLikeFroum.setText(String.valueOf(c));
 
 						params = new LinkedHashMap<String, String>();
@@ -235,8 +246,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 							}
 						}).start();
 
-						countLikeFroum.setText(adapter
-								.LikeInFroum_count(ItemId).toString());
+						// countLikeFroum.setText(adapter
+						// .LikeInFroum_count(ItemId).toString());
 
 						adapter.close();
 
@@ -256,7 +267,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				LinearLayout parentlayout = (LinearLayout) v;
 
 				String item = txt1.getText().toString();
-				ItemId = 0;
+				int ItemId = 0;
 				for (Froum listItem : mylist) {
 					if (item.equals(listItem.getTitle())) {
 						// check authentication and authorization
@@ -294,27 +305,32 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		ringProgressDialog.dismiss();
 
 		int id = -1;
+
 		try {
 			id = Integer.valueOf(output);
+
+			adapter.open();
+
+			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
+				adapter.deleteLikeFromFroum(CurrentUser.getId(), froumNumber);
+				LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
+
+				countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
+						.toString());
+
+			} else {
+				adapter.insertLikeInFroumToDb(CurrentUser.getId(), froumNumber,
+						currentDate, 0);
+				LikeTitle.setBackgroundResource(R.drawable.like_froum);
+
+				countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
+						.toString());
+			}
+			adapter.close();
 		} catch (Exception ex) {
 			Toast.makeText(context, "خطا در ارتباط با سرور", Toast.LENGTH_SHORT)
 					.show();
 		}
-		adapter.open();
-
-		if (adapter.isUserLikedFroum(CurrentUser.getId(), ItemId)) {
-			LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
-			adapter.deleteLikeFromFroum(CurrentUser.getId(), ItemId);
-
-		} else {
-			LikeTitle.setBackgroundResource(R.drawable.like_froum);
-			adapter.insertLikeInFroumToDb(CurrentUser.getId(), ItemId,
-					currentDate, 0);
-
-			countLikeFroum
-					.setText(adapter.LikeInFroum_count(ItemId).toString());
-		}
-		adapter.close();
 
 	}
 }

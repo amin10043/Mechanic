@@ -201,12 +201,11 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		exlistview.setAdapter(exadapter);
 		adapter.open();
 
-		if (CurrentUser == null
-				|| !adapter.isUserLikedFroum(CurrentUser.getId(), froumid))
-			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+		if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid))
+			likeTopic.setBackgroundResource(R.drawable.like_froum);
 		else
 
-			likeTopic.setBackgroundResource(R.drawable.like_froum);
+			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
 
 		adapter.close();
 
@@ -221,17 +220,18 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 							"برای درج لایک ابتدا باید وارد شوید",
 							Toast.LENGTH_SHORT).show();
 				} else {
-					if (adapter.isUserLikedFroum(IDcurrentUser, froumid)) {
+					if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid)) {
 						adapter.open();
-						int c = adapter.LikeInFroum_count(froumid) - 1;
-						countLike.setText(String.valueOf(c));
+						// int c = adapter.LikeInFroum_count(froumid) - 1;
+						// countLike.setText(String.valueOf(c));
 
 						params = new LinkedHashMap<String, String>();
 						deleting = new Deleting(getActivity());
 						deleting.delegate = FroumFragment.this;
 
 						params.put("TableName", "LikeInFroum");
-						params.put("UserId", String.valueOf(IDcurrentUser));
+						params.put("UserId",
+								String.valueOf(CurrentUser.getId()));
 						params.put("FroumId", String.valueOf(froumid));
 						deleting.execute(params);
 
@@ -264,7 +264,8 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 						params.put("TableName", "LikeInFroum");
 
-						params.put("UserId", String.valueOf(IDcurrentUser));
+						params.put("UserId",
+								String.valueOf(CurrentUser.getId()));
 						params.put("FroumId", String.valueOf(froumid));
 						params.put("CommentId", "0");
 						params.put("Date", currentDate);
@@ -289,8 +290,8 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 								}
 							}
 						}).start();
-						countLike.setText(adapter.LikeInFroum_count(froumid)
-								.toString());
+						// countLike.setText(adapter.LikeInFroum_count(froumid)
+						// .toString());
 
 						adapter.close();
 
@@ -378,22 +379,27 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		int id = -1;
 		try {
 			id = Integer.valueOf(output);
+
+			adapter.open();
+			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid)) {
+				adapter.deleteLikeFromFroum(CurrentUser.getId(), froumid);
+				likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+				countLike
+						.setText(adapter.LikeInFroum_count(froumid).toString());
+
+			} else {
+				adapter.insertLikeInFroumToDb(CurrentUser.getId(), froumid,
+						currentDate, 0);
+				likeTopic.setBackgroundResource(R.drawable.like_froum);
+
+				countLike
+						.setText(adapter.LikeInFroum_count(froumid).toString());
+			}
+			adapter.close();
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "خطا در ارتباط با سرور",
 					Toast.LENGTH_SHORT).show();
 		}
-		adapter.open();
-		if (adapter.isUserLikedFroum(id, froumid)) {
-			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
-			adapter.deleteLikeFromFroum(id, froumid);
-
-		} else {
-			likeTopic.setBackgroundResource(R.drawable.like_froum);
-			adapter.insertLikeInFroumToDb(id, froumid, currentDate, 0);
-
-			countLike.setText(adapter.LikeInFroum_count(froumid).toString());
-		}
-		adapter.close();
 
 	}
 
