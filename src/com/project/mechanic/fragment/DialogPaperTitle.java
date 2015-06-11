@@ -4,10 +4,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -35,6 +38,7 @@ public class DialogPaperTitle extends Dialog implements AsyncInterface {
 	Saving saving;
 	String currentDate;
 	Map<String, String> params;
+	ProgressDialog ringProgressDialog;
 
 	public DialogPaperTitle(Context context, int resourceId, Fragment fragment) {
 		super(context);
@@ -60,6 +64,10 @@ public class DialogPaperTitle extends Dialog implements AsyncInterface {
 			return;
 		}
 		super.onCreate(savedInstanceState);
+
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setBackgroundDrawable(
+				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		setContentView(resourceId);
 		btntitle = (Button) findViewById(R.id.btnPdf1_Object);
 		titletxt = (EditText) findViewById(R.id.txtTitleP);
@@ -82,6 +90,26 @@ public class DialogPaperTitle extends Dialog implements AsyncInterface {
 
 				saving.execute(params);
 
+				ringProgressDialog = ProgressDialog.show(context, "",
+						"لطفا منتظر بمانید...", true);
+
+				ringProgressDialog.setCancelable(true);
+
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+
+						try {
+
+							Thread.sleep(10000);
+
+						} catch (Exception e) {
+
+						}
+					}
+				}).start();
+
 			}
 		});
 
@@ -97,6 +125,8 @@ public class DialogPaperTitle extends Dialog implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
+		ringProgressDialog.dismiss();
+
 		int id = -1;
 		try {
 			id = Integer.valueOf(output);
