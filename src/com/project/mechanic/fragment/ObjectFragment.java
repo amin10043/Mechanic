@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Users;
@@ -41,15 +41,15 @@ public class ObjectFragment extends Fragment {
 
 		SharedPreferences sendData = getActivity()
 				.getSharedPreferences("Id", 0);
-		int id = sendData.getInt("main_Id", -1);
+		final int id = sendData.getInt("main_Id", -1);
 		Toast.makeText(getActivity(), "id = " + id, Toast.LENGTH_SHORT).show();
 		final int city_id = Integer.valueOf(getArguments().getString("cityId"));
 
 		adapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
 		currentUser = util.getCurrentUser();
-		RelativeLayout createPage = (RelativeLayout) view
-				.findViewById(R.id.relative);
+		// RelativeLayout createPage = (RelativeLayout) view
+		// .findViewById(R.id.relative);
 		adapter.open();
 		ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(id, city_id);
 		adapter.close();
@@ -61,16 +61,34 @@ public class ObjectFragment extends Fragment {
 
 		lstObject.setAdapter(ListAdapter);
 
-		createPage.setOnClickListener(new OnClickListener() {
+		FloatingActionButton createItem = (FloatingActionButton) view
+				.findViewById(R.id.fab);
+		createItem.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-
 				dialog = new DialogCreatePage(getActivity());
 				dialog.show();
 
+				SharedPreferences sendMainObjectId = getActivity()
+						.getSharedPreferences("Id", 0);
+				sendMainObjectId.edit().putInt("MainObjectId", id).commit();
+				sendMainObjectId.edit().putInt("CityId", city_id).commit();
+				Toast.makeText(getActivity(), "MainObjectId = " + id,
+						Toast.LENGTH_SHORT).show();
 			}
 		});
+
+		// createPage.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		//
+		// dialog = new DialogCreatePage(getActivity());
+		// dialog.show();
+		//
+		// }
+		// });
 
 		return view;
 	}

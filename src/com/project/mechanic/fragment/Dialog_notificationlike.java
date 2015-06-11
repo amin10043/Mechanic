@@ -6,24 +6,19 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.LikeFroumNotificationAdapter;
 import com.project.mechanic.adapter.LikeNotificationAdapter;
 import com.project.mechanic.adapter.LikePaperNotificationAdapter;
-import com.project.mechanic.entity.LikeInFroum;
-import com.project.mechanic.entity.LikeInObject;
-import com.project.mechanic.entity.LikeInPaper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.row_items.LikeNotiItem;
 import com.project.mechanic.utility.Utility;
 
 public class Dialog_notificationlike extends Dialog {
@@ -70,13 +65,6 @@ public class Dialog_notificationlike extends Dialog {
 		TextView numlikeo = (TextView) findViewById(R.id.numlikeo);
 		TextView numlikep = (TextView) findViewById(R.id.numlikep);
 
-		// listnotificationlike= (ListView)
-		// findViewById(R.id.listnotificationlike);
-		// listnotificationlike1= (ListView)
-		// findViewById(R.id.listnotificationlike1);
-		// listnotificationlike2= (ListView)
-		// findViewById(R.id.listnotificationlike2);
-
 		dbadapter.open();
 
 		int t = dbadapter.NumOfNewLikeInObject(user.getId());
@@ -89,10 +77,15 @@ public class Dialog_notificationlike extends Dialog {
 		numlikeo.setText("" + t1);
 		numlikep.setText("" + t2);
 
-		ArrayList<LikeInObject> mylist = dbadapter.getUnseenlike(user.getId());
-		ArrayList<LikeInFroum> mylist1 = dbadapter.getUnseenlikeInFroum(user
-				.getId());
-		ArrayList<LikeInPaper> mylist2 = dbadapter.getUnseenlikeInPaper(user
+		// ArrayList<LikeInObject> mylist =
+		// dbadapter.getUnseenlike(user.getId());
+		// ArrayList<LikeInFroum> mylist1 = dbadapter.getUnseenlikeInFroum(user
+
+		ArrayList<LikeNotiItem> mylist = dbadapter.getUnseenlike(user.getId());
+		ArrayList<LikeNotiItem> mylist1 = dbadapter.getUnseenlikeInFroum(user
+
+		.getId());
+		ArrayList<LikeNotiItem> mylist2 = dbadapter.getUnseenlikeInPaper(user
 				.getId());
 		// CommentInFroum c = dbadapter.getCommentInFroumbyID(1);
 		// String [] aa = {c.getDesk(),c.getDesk(),c.getDesk(),c.getDesk()};
@@ -112,22 +105,23 @@ public class Dialog_notificationlike extends Dialog {
 				// TODO Auto-generated method stub
 				listnewlikeo.setAdapter(dataAdapter);
 
-				listnewlikeo
-						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-							@Override
-							public void onItemClick(AdapterView<?> arg0,
-									View arg1, int arg2, long arg3) {
-								// TODO Auto-generated method stub
-								FragmentTransaction trans = ((MainActivity) context)
-										.getSupportFragmentManager()
-										.beginTransaction();
-								trans.replace(R.id.content_frame,
-										new ObjectFragment());
-								trans.commit();
-
-							}
-						});
+				// listnewlikeo
+				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
+				// {
+				//
+				// @Override
+				// public void onItemClick(AdapterView<?> arg0,
+				// View arg1, int arg2, long arg3) {
+				// // TODO Auto-generated method stub
+				// FragmentTransaction trans = ((MainActivity) context)
+				// .getSupportFragmentManager()
+				// .beginTransaction();
+				// trans.replace(R.id.content_frame,
+				// new ObjectFragment());
+				// trans.commit();
+				//
+				// }
+				// });
 			}
 		});
 		btnshowlikef.setOnClickListener(new View.OnClickListener() {
@@ -137,22 +131,23 @@ public class Dialog_notificationlike extends Dialog {
 				// TODO Auto-generated method stub
 				listnewlikef.setAdapter(dataAdapter1);
 
-				listnewlikef
-						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-							@Override
-							public void onItemClick(AdapterView<?> arg0,
-									View arg1, int arg2, long arg3) {
-								// TODO Auto-generated method stub
-								FragmentTransaction trans = ((MainActivity) context)
-										.getSupportFragmentManager()
-										.beginTransaction();
-								trans.replace(R.id.content_frame,
-										new FroumFragment());
-								trans.commit();
-
-							}
-						});
+				// listnewlikef
+				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
+				// {
+				//
+				// @Override
+				// public void onItemClick(AdapterView<?> arg0,
+				// View arg1, int arg2, long arg3) {
+				// // TODO Auto-generated method stub
+				// FragmentTransaction trans = ((MainActivity) context)
+				// .getSupportFragmentManager()
+				// .beginTransaction();
+				// trans.replace(R.id.content_frame,
+				// new FroumFragment());
+				// trans.commit();
+				//
+				// }
+				// });
 
 			}
 		});
@@ -163,49 +158,27 @@ public class Dialog_notificationlike extends Dialog {
 				// TODO Auto-generated method stub
 				listnewlikep.setAdapter(dataAdapter2);
 
-				listnewlikep
-						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-							@Override
-							public void onItemClick(AdapterView<?> arg0,
-									View arg1, int arg2, long arg3) {
-								// TODO Auto-generated method stub
-								FragmentTransaction trans = ((MainActivity) context)
-										.getSupportFragmentManager()
-										.beginTransaction();
-								trans.replace(R.id.content_frame,
-										new PaperFragment());
-								trans.commit();
-
-							}
-
-						});
+				// listnewlikep
+				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
+				// {
+				//
+				// @Override
+				// public void onItemClick(AdapterView<?> arg0,
+				// View arg1, int arg2, long arg3) {
+				// // TODO Auto-generated method stub
+				// FragmentTransaction trans = ((MainActivity) context)
+				// .getSupportFragmentManager()
+				// .beginTransaction();
+				// trans.replace(R.id.content_frame,
+				// new PaperFragment());
+				// trans.commit();
+				//
+				// }
+				//
+				// });
 
 			}
 		});
-
-		// if(listnotificationlike!=null){
-		// listnotificationlike.setAdapter(dataAdapter);}
-		//
-		// else{listnotificationlike.setVisibility(View.INVISIBLE);
-		//
-		// }
-		//
-		//
-		// if(listnotificationlike1!=null){
-		// listnotificationlike1.setAdapter(dataAdapter1); }
-		// else{listnotificationlike1.setVisibility(View.INVISIBLE);
-		//
-		// }
-		// if(listnotificationlike2!=null){
-		// listnotificationlike2.setAdapter(dataAdapter2); }
-		// else{listnotificationlike2.setVisibility(View.INVISIBLE);
-		//
-		// }
-
-		// listnotificationlike.setAdapter(dataAdapter);
-		// listnotificationlike1.setAdapter(dataAdapter1);
-		// listnotificationlike2.setAdapter(dataAdapter2);
 
 	}
 

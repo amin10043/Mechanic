@@ -6,24 +6,19 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.CommentObjectNotificationAdapter;
 import com.project.mechanic.adapter.CommentPaperNotificationAdapter;
 import com.project.mechanic.adapter.commentnotificationAdapter;
-import com.project.mechanic.entity.CommentInFroum;
-import com.project.mechanic.entity.CommentInObject;
-import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.row_items.CommentNotiItem;
 import com.project.mechanic.utility.Utility;
 
 public class Dialog_notification extends Dialog {
@@ -90,24 +85,25 @@ public class Dialog_notification extends Dialog {
 		TextView numf = (TextView) findViewById(R.id.numf);
 		TextView numo = (TextView) findViewById(R.id.numo);
 		TextView nump = (TextView) findViewById(R.id.nump);
-		// numf.setText("" + r);
-		// numo.setText("" + r1);
-		// nump.setText("" + r2);
 
 		//
 		adapter.open();
+
 		int r = adapter.NumOfNewCmtInFroum(user.getId());
 		int r1 = adapter.NumOfNewCmtInObject(user.getId());
 		int r2 = adapter.NumOfNewCmtInPaper(user.getId());
+		numf.setText("" + r);
+		numo.setText("" + r1);
+		nump.setText("" + r2);
 
 		// Users u = util.getCurrentUser();
 		// int id = u.getId();
 
-		ArrayList<CommentInFroum> mylist = adapter.getUnseencomment(user
+		ArrayList<CommentNotiItem> mylist = adapter.getUnseencomment(user
 				.getId());
-		ArrayList<CommentInObject> mylist1 = adapter
+		ArrayList<CommentNotiItem> mylist1 = adapter
 				.getUnseencommentobject(user.getId());
-		ArrayList<CommentInPaper> mylist2 = adapter.getUnseencommentpaper(user
+		ArrayList<CommentNotiItem> mylist2 = adapter.getUnseencommentpaper(user
 				.getId());
 
 		adapter.close();
@@ -125,25 +121,27 @@ public class Dialog_notification extends Dialog {
 				// TODO Auto-generated method stub
 				listnewcmf.setAdapter(dataAdapter);
 
-				listnewcmf
-						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				// listnewcmf
+				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
+				// {
+				//
+				// @Override
+				// public void onItemClick(AdapterView<?> parent,
+				// View view, int position, long id) {
+				// // TODO Auto-generated method stub
+				// // Fragment fragment = new tasks();
+				// android.support.v4.app.FragmentManager fragmentManager =
+				// ((MainActivity) context)
+				// .getSupportFragmentManager();
+				// FragmentTransaction fragmentTransaction = fragmentManager
+				// .beginTransaction();
+				// fragmentTransaction.replace(R.id.content_frame,
+				// new FroumFragment());
+				// fragmentTransaction.addToBackStack(null);
+				// fragmentTransaction.commit();
+				// }
 
-							@Override
-							public void onItemClick(AdapterView<?> parent,
-									View view, int position, long id) {
-								// TODO Auto-generated method stub
-								// Fragment fragment = new tasks();
-								android.support.v4.app.FragmentManager fragmentManager = ((MainActivity) context)
-										.getSupportFragmentManager();
-								FragmentTransaction fragmentTransaction = fragmentManager
-										.beginTransaction();
-								fragmentTransaction.replace(R.id.content_frame,
-										new FroumFragment());
-								fragmentTransaction.addToBackStack(null);
-								fragmentTransaction.commit();
-							}
-
-						});
+				// });
 
 				// listnewcmf.setOnClickListener(new View.OnClickListener() {
 				//
@@ -167,22 +165,23 @@ public class Dialog_notification extends Dialog {
 				// TODO Auto-generated method stub
 				listnewcmo.setAdapter(dataAdapter1);
 
-				listnewcmo
-						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-							@Override
-							public void onItemClick(AdapterView<?> parent,
-									View view, int position, long id) {
-								// TODO Auto-generated method stub
-								FragmentTransaction trans = ((MainActivity) context)
-										.getSupportFragmentManager()
-										.beginTransaction();
-								trans.replace(R.id.content_frame,
-										new ObjectFragment());
-								trans.commit();
-
-							}
-						});
+				// listnewcmo
+				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
+				// {
+				//
+				// @Override
+				// public void onItemClick(AdapterView<?> parent,
+				// View view, int position, long id) {
+				// // TODO Auto-generated method stub
+				// FragmentTransaction trans = ((MainActivity) context)
+				// .getSupportFragmentManager()
+				// .beginTransaction();
+				// trans.replace(R.id.content_frame,
+				// new ObjectFragment());
+				// trans.commit();
+				//
+				// }
+				// });
 
 				// listnewcmo.setOnClickListener(new View.OnClickListener() {
 				//
@@ -206,28 +205,29 @@ public class Dialog_notification extends Dialog {
 				// TODO Auto-generated method stub
 				listnewcmp.setAdapter(dataAdapter2);
 
-				listnewcmp
-						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-							@Override
-							public void onItemClick(AdapterView<?> parent,
-									View view, int position, long id) {
-								// TODO Auto-generated method stub
-								FragmentTransaction t = getActivity()
-										.getFragmentManager()
-										.beginTransaction();
-								Fragment paperfragment = new PaperFragment();
-								t.replace(R.id.content_frame, paperfragment);
-								t.addToBackStack(null);
-								t.commit();
-							}
-
-							private Fragment getActivity() {
-								// TODO Auto-generated method stub
-								return null;
-							}
-
-						});
+				// listnewcmp
+				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
+				// {
+				//
+				// @Override
+				// public void onItemClick(AdapterView<?> parent,
+				// View view, int position, long id) {
+				// // TODO Auto-generated method stub
+				// FragmentTransaction t = getActivity()
+				// .getFragmentManager()
+				// .beginTransaction();
+				// Fragment paperfragment = new PaperFragment();
+				// t.replace(R.id.content_frame, paperfragment);
+				// t.addToBackStack(null);
+				// t.commit();
+				// }
+				//
+				// private Fragment getActivity() {
+				// // TODO Auto-generated method stub
+				// return null;
+				// }
+				//
+				// });
 			}
 
 		});

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.FavoriteListAdapter;
 import com.project.mechanic.entity.Ticket;
@@ -39,7 +38,7 @@ public class Favorite_Fragment extends Fragment {
 		service = new ServiceComm(getActivity());
 		util = new Utility(getActivity());
 
-		//((MainActivity) getActivity()).setActivityTitle(R.string.favorite);
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.favorite);
 		view = inflater.inflate(R.layout.favorite_fragment, null);
 
 		listFavorite = (ListView) view.findViewById(R.id.listView_favorite);
@@ -62,8 +61,8 @@ public class Favorite_Fragment extends Fragment {
 
 			listFavorite.setAdapter(ListAdapter);
 
-			dbAdapter.close();
 		}
+		dbAdapter.close();
 		return view;
 
 	}

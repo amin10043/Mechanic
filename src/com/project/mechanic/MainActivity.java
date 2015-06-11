@@ -4,9 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -36,6 +34,7 @@ import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.fragment.Dialog_notification;
 import com.project.mechanic.fragment.Dialog_notificationlike;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
+import com.project.mechanic.fragment.EnterDialog;
 import com.project.mechanic.fragment.ExitDialog;
 import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.FragmentAboutUs;
@@ -92,38 +91,9 @@ public class MainActivity extends FragmentActivity {
 		if (user != null) {
 			util.setNoti(this, user.getId());
 		} else {
-			AlertDialog.Builder builder = new AlertDialog.Builder(
-					MainActivity.this);
-			builder.setTitle("پیغام");
-			builder.setMessage("جهت استفاده از تمامی امکانات نرم افزار وارد شوید ");
-			builder.setNegativeButton("ورود به لاگین",
-					new DialogInterface.OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-
-							FragmentTransaction trans = getSupportFragmentManager()
-									.beginTransaction();
-							trans.replace(R.id.content_frame,
-									new LoginFragment());
-							trans.commit();
-						}
-					});
-
-			builder.setPositiveButton("انصراف",
-					new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-
-							dialog.dismiss();
-
-						}
-					});
-			AlertDialog alert = builder.create();
-			alert.show();
+			EnterDialog dialogEnter = new EnterDialog(MainActivity.this);
+			dialogEnter.show();
 
 		}
 
@@ -178,7 +148,8 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				if (util.getCurrentUser() == null) {
+				user = util.getCurrentUser();
+				if (user == null) {
 					Toast.makeText(MainActivity.this,
 							"شما هنوز وارد نشده اید.", Toast.LENGTH_SHORT)
 							.show();
@@ -221,14 +192,9 @@ public class MainActivity extends FragmentActivity {
 
 		});
 
-		// mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
-
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-		// mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-		// R.layout.drawer_item, R.id.content, mPlanetTitles));
 
 		mDrawerList.setAdapter(slideadapter);
 
@@ -264,10 +230,6 @@ public class MainActivity extends FragmentActivity {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		ImageButton iBtnMenu = (ImageButton) findViewById(R.id.iBtnMenu);
-		// ImageButton iBtnShare = (ImageButton) findViewById(R.id.iBtnShare);
-		// ImageButton iBtnBack = (ImageButton) findViewById(R.id.iBtnBack);
-		// final ImageButton iBtnFavorite = (ImageButton)
-		// findViewById(R.id.iBtnFavorite);
 		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
 		ImageView search = (ImageView) findViewById(R.id.sedarch_v);
 
@@ -317,19 +279,10 @@ public class MainActivity extends FragmentActivity {
 
 		setActivityTitle(R.string.strMain);
 
-		// @MK for set period time for repeat your code by mHandler
-		mHandler = new Handler();
-		mHandler.postDelayed(mStatusChecker, mInterval);
 		Intent intent = new Intent(MainActivity.this, HelloService.class);
 		startService(intent);
 
-		// @MK for set specified time for send intent to service for runnig your
-		// code
 		Calendar calendar = Calendar.getInstance();
-
-		// calendar.set(Calendar.MONTH, 6);
-		// calendar.set(Calendar.YEAR, 2013);
-		// calendar.set(Calendar.DAY_OF_MONTH, 13);
 
 		calendar.set(Calendar.HOUR_OF_DAY, 3);
 		calendar.set(Calendar.MINUTE, 26);
@@ -343,23 +296,6 @@ public class MainActivity extends FragmentActivity {
 		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),
 				pendingIntent);
-	}
-
-	Runnable mStatusChecker = new Runnable() {
-
-		@Override
-		public void run() {
-			util.Notification();
-			mHandler.postDelayed(mStatusChecker, mInterval);
-		}
-	};
-
-	void startRepeatingTask() {
-		mStatusChecker.run();
-	}
-
-	void stopRepeatingTask() {
-		mHandler.removeCallbacks(mStatusChecker);
 	}
 
 	public void setActivityTitle(int title) {
