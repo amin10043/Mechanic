@@ -122,11 +122,15 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				froumNumber = ItemId = listItem.getId();
 			}
 		}
-
-		if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
-			LikeTitle.setBackgroundResource(R.drawable.like_froum);
-		} else
+		if (CurrentUser == null) {
 			LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
+
+		} else {
+			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
+				LikeTitle.setBackgroundResource(R.drawable.like_froum);
+			} else
+				LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
+		}
 
 		countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
 				.toString());

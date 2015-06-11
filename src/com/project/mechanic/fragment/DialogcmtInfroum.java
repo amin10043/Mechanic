@@ -35,7 +35,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 	List<Users> list;
 	private int Commentid;
 	private int Froumid;
-	Users user;
+	Users currentUser;
 	Saving saving;
 	Map<String, String> params;
 	ProgressDialog ringProgressDialog;
@@ -50,7 +50,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 		utility = new Utility(context);
 		dbadapter = new DataBaseAdapter(context);
 
-		user = utility.getCurrentUser();
+		currentUser = utility.getCurrentUser();
 
 	}
 
@@ -73,7 +73,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 			@Override
 			public void onClick(View arg0) {
 
-				if (user == null) {
+				if (currentUser == null) {
 					(Toast.makeText(context,
 							"برای ثبت نظر ابتدا باید وارد شوید.",
 							Toast.LENGTH_LONG)).show();
@@ -87,7 +87,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 					params.put("Desk", Cmttxt.getText().toString());
 					params.put("FroumId", String.valueOf(Froumid));
-					params.put("UserId", String.valueOf(user.getId()));
+					params.put("UserId", String.valueOf(currentUser.getId()));
 					params.put("Date", currentDate);
 					params.put("CommentId", String.valueOf(Commentid));
 					params.put("NumofDisLike", String.valueOf(0));
@@ -139,14 +139,14 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 				Toast.makeText(context, "خطا در ثبت سرور", Toast.LENGTH_SHORT)
 						.show();
 			} else {
-				int userid = user.getId();
 				PersianDate date = new PersianDate();
 				String currentDate = date.todayShamsi();
 
 				dbadapter.open();
 
 				dbadapter.insertCommentInFroumtoDb(Cmttxt.getText().toString(),
-						Froumid, userid, currentDate, Commentid, "0", "0");
+						Froumid, currentUser.getId(), currentDate, Commentid,
+						"0", "0");
 
 				dbadapter.close();
 
