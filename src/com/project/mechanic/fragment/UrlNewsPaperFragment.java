@@ -27,8 +27,7 @@ public class UrlNewsPaperFragment extends Fragment {
 	DataBaseAdapter dbAdapter;
 	int id;
 	String a;
-
-    
+	    
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

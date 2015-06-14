@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/list_item"
@@ -30,6 +30,7 @@
                 android:id="@+id/text_favorite_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
                 android:text="TextView"
                 android:textColor="@color/transparent" />
         </LinearLayout>
@@ -44,12 +45,16 @@
                 style="@style/row_text"
                 android:layout_width="match_parent"
                 android:layout_height="34dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
                 android:text="Large Text" />
 
             <TextView
                 android:id="@+id/row_anad_txt2"
                 android:layout_width="225dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
                 android:layout_weight="2"
                 android:maxLength="20"
                 android:text="Medium Text"
