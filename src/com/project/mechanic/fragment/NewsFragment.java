@@ -19,7 +19,7 @@ import com.project.mechanic.model.DataBaseAdapter;
 public class NewsFragment extends Fragment {
 
 	DataBaseAdapter dbAdapter;
-	int id;
+	int id = 166;
 
 	@SuppressLint("InflateParams")
 	@Override

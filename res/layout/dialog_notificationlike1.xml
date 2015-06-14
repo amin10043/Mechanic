@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/list_item"
     android:orientation="vertical" >
 
     <TextView
@@ -10,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="لایک ها" />
+        android:text="لایک ها"
+        android:textColor="@color/transparent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,86 +28,166 @@
             android:gravity="center"
             android:orientation="horizontal" >
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginRight="20dp"
-                android:orientation="vertical" >
+                android:layout_marginRight="20dp" >
 
-                <ImageButton
-                    android:id="@+id/btnshowlikef"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ic_notification_froum" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/textView1"
+                    <ImageButton
+                        android:id="@+id/btnshowlikef"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_notification_froum" />
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="تالار گفتگو"
+                        android:textColor="@color/transparent"
+                        android:textSize="@dimen/txtsize10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/numlikef"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/circle_notification"
+                        android:gravity="top"
+                        android:text="" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="تالار گفتگو"
-                    android:textSize="@dimen/txtsize10" />
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:orientation="vertical" >
 
-            </LinearLayout>
+                    <ImageButton
+                        android:id="@+id/btnshowlikeo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:background="@drawable/ic_notification_object" />
 
-            <LinearLayout
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="شخصی"
+                        android:textColor="@color/transparent"
+                        android:textSize="@dimen/txtsize10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/numlikeo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/circle_notification"
+                        android:text="" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginRight="5dp"
-                android:orientation="vertical" >
+                android:layout_marginLeft="20dp" >
 
-                <ImageButton
-                    android:id="@+id/btnshowlikeo"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginRight="3dp"
-                    android:background="@drawable/ic_notification_object" />
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="0dp"
+                    android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="شخصی"
-                    android:textSize="@dimen/txtsize10" />
+                    <ImageButton
+                        android:id="@+id/btnshowlikep"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_notification_news" />
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="مقالات"
+                        android:textColor="@color/transparent"
+                        android:textSize="@dimen/txtsize10" />
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:orientation="vertical" >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
 
-                <ImageButton
-                    android:id="@+id/btnshowlikep"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ic_notification_news" />
+                    <TextView
+                        android:id="@+id/numlikep"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/circle_notification"
+                        android:text="" />
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="مقالات"
-                    android:textSize="@dimen/txtsize10" />
+                </LinearLayout>
 
-            </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/listnewlike"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-        </ListView>
+
+            <ListView
+                android:id="@+id/listnewlikef"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView>
+
+            <ListView
+                android:id="@+id/listnewlikeo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView>
+
+            <ListView
+                android:id="@+id/listnewlikep"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView>
+
+        </FrameLayout>
 
     </LinearLayout>
 

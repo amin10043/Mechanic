@@ -368,8 +368,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		intent.putExtra("crop", "true");
 		intent.putExtra("aspectX", 1);
 		intent.putExtra("aspectY", 1);
-		intent.putExtra("outputX", 200);
-		intent.putExtra("outputY", 200);
+		intent.putExtra("outputX", 128);
+		intent.putExtra("outputY", 128);
 		try {
 			intent.putExtra("return-data", true);
 			startActivityForResult(

@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <application
         android:allowBackup="true"
@@ -29,7 +30,9 @@
             android:windowSoftInputMode="adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
@@ -39,12 +42,19 @@
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
- 			 <action android:name="android.intent.action.VIEW"></action>
- 			 <category android:name="android.intent.category.DEFAULT"></category>
-			 <category android:name="android.intent.category.BROWSABLE"></category>
-			 <data android:host="srv.mechanical0098.com" android:scheme="mechanical"></data>
-			 
-</intent-filter>
+                <action android:name="android.intent.action.VIEW" >
+                </action>
+
+                <category android:name="android.intent.category.DEFAULT" >
+                </category>
+                <category android:name="android.intent.category.BROWSABLE" >
+                </category>
+
+                <data
+                    android:host="srv.mechanical0098.com"
+                    android:scheme="mechanical" >
+                </data>
+            </intent-filter>
         </activity>
         <activity
             android:name="com.project.mechanic.WelcomeScreen"
@@ -52,6 +62,7 @@
             android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -73,6 +84,11 @@
             android:enabled="true" />
 
         <receiver android:name="com.project.mechanic.service.MyReceiver" />
+
+        <activity
+            android:name="com.project.mechanic.CropingOptionAdapter"
+            android:label="@string/title_activity_croping_option_adapter" >
+        </activity>
     </application>
 
 </manifest>

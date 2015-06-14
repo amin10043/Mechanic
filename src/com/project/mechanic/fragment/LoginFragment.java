@@ -231,6 +231,12 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 			// }
 			Toast.makeText(getActivity(), "شما وارد شده اید.",
 					Toast.LENGTH_SHORT).show();
+			TextView txtlike = (TextView) (getActivity())
+					.findViewById(R.id.txtlike);
+			txtlike.setVisibility(View.VISIBLE);
+			TextView txtcm1 = (TextView) (getActivity())
+					.findViewById(R.id.txtcm);
+			txtcm1.setVisibility(View.VISIBLE);
 
 			util.setNoti(getActivity(), u.getId());
 

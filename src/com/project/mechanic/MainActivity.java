@@ -1,10 +1,8 @@
 package com.project.mechanic;
 
-import java.util.Calendar;
+import java.util.List;
 
-import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -27,24 +25,37 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.adapter.SlideMenuAdapter;
+import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.AdvisorTypeFragment;
+import com.project.mechanic.fragment.BerandFragment;
+import com.project.mechanic.fragment.City2Fragment;
+import com.project.mechanic.fragment.City3Fragment;
 import com.project.mechanic.fragment.CityFragment;
+import com.project.mechanic.fragment.CountryFragment;
 import com.project.mechanic.fragment.Dialog_notification;
 import com.project.mechanic.fragment.Dialog_notificationlike;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.EnterDialog;
+import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.ExitDialog;
 import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.FragmentAboutUs;
 import com.project.mechanic.fragment.FragmentContactUs;
+import com.project.mechanic.fragment.FroumFragment;
+import com.project.mechanic.fragment.FroumtitleFragment;
+import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.fragment.LoginFragment;
+import com.project.mechanic.fragment.MainBrandFragment;
 import com.project.mechanic.fragment.MainFragment;
+import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.fragment.ObjectFragment;
+import com.project.mechanic.fragment.Province2Fragment;
+import com.project.mechanic.fragment.Province3Fragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.fragment.SearchFragment;
 import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.service.HelloService;
-import com.project.mechanic.service.MyReceiver;
+import com.project.mechanic.utility.PeriodicTask;
 import com.project.mechanic.utility.Utility;
 
 public class MainActivity extends FragmentActivity {
@@ -66,6 +77,9 @@ public class MainActivity extends FragmentActivity {
 	Dialog_notificationlike dialog1;
 	Users user;
 	private PendingIntent pendingIntent;
+	List<CommentInFroum> mylist;
+	int t1, t2, t3, t;
+	int r1, r2, r3, r;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,51 +94,24 @@ public class MainActivity extends FragmentActivity {
 
 		adapter = new DataBaseAdapter(this);
 		slideadapter = new SlideMenuAdapter(this);
+		ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
+		final TextView txtcm1 = (TextView) findViewById(R.id.txtcm);
+		final TextView txtlike = (TextView) findViewById(R.id.txtlike);
 
 		util = new Utility(MainActivity.this);
 		user = util.getCurrentUser();
 		if (user != null) {
+			txtcm1.setVisibility(View.VISIBLE);
+			txtlike.setVisibility(View.VISIBLE);
 			util.setNoti(this, user.getId());
+
 		} else {
 
 			EnterDialog dialogEnter = new EnterDialog(MainActivity.this);
 			dialogEnter.show();
-			// AlertDialog.Builder builder = new AlertDialog.Builder(
-			// MainActivity.this);
-			// builder.setTitle("پیغام");
-			// builder.setMessage("جهت استفاده از تمامی امکانات نرم افزار وارد شوید ");
-			// builder.setNegativeButton("ورود به لاگین",
-			// new DialogInterface.OnClickListener() {
-			//
-			// @Override
-			// public void onClick(DialogInterface dialog, int which) {
-			// // TODO Auto-generated method stub
-			//
-			// FragmentTransaction trans = getSupportFragmentManager()
-			// .beginTransaction();
-			// trans.replace(R.id.content_frame,
-			// new LoginFragment());
-			// trans.commit();
-			// }
-			// });
-			//
-			// builder.setPositiveButton("انصراف",
-			// new DialogInterface.OnClickListener() {
-			//
-			// @Override
-			// public void onClick(DialogInterface dialog, int which) {
-			// // TODO Auto-generated method stub
-			//
-			// dialog.dismiss();
-			//
-			// }
-			// });
-			// AlertDialog alert = builder.create();
-			// alert.show();
 
 		}
 
-		ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
 		iBtnmessage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -135,29 +122,42 @@ public class MainActivity extends FragmentActivity {
 					Toast.makeText(MainActivity.this,
 							"شما هنوز وارد نشده اید.", Toast.LENGTH_SHORT)
 							.show();
+
 					return;
 				}
 
 				adapter.open();
+				// int r = adapter.NumOfNewCmtInFroum(user.getId());
+				// int r1 = adapter.NumOfNewCmtInObject(user.getId());
+				// int r2 = adapter.NumOfNewCmtInPaper(user.getId());
+				// int r3 = r + r1 + r2;
+				// TextView txtcm = (TextView) findViewById(R.id.txtcm);
+				// txtcm.setText("" + r3);
 
-				dialog = new Dialog_notification(MainActivity.this);
+				dialog = new Dialog_notification(MainActivity.this, r, r1, r2);
 
 				dialog.show();
+
+				// CommentInFroum a = (CommentInFroum) mylist;
+
+				// int b = a.getFroumid();
+				// Froum d = adapter.getFroumItembyid(b);
+				// int e = d.getUserId();
+
 				int seen = 1;
 				adapter.updatecmseentodb(seen, user.getId());
 				adapter.updatecmobjectseentodb(seen, user.getId());
 				adapter.updatecmpaperseentodb(seen, user.getId());
-				int r = adapter.NumOfNewCmtInFroum(user.getId());
-				int r1 = adapter.NumOfNewCmtInObject(user.getId());
-				int r2 = adapter.NumOfNewCmtInPaper(user.getId());
-				int r3 = r + r1 + r2;
-				TextView txtcm = (TextView) findViewById(R.id.txtcm);
-				txtcm.setText("" + r3);
+				txtcm1.setVisibility(View.GONE);
+
+				// int r3 = r + r1 + r2;
+				// txtcm1.setText("" + r3);
 
 				adapter.close();
 
 			}
 		});
+
 		ImageButton iBtnNotification = (ImageButton) findViewById(R.id.iBtnNotification);
 		iBtnNotification.setOnClickListener(new OnClickListener() {
 
@@ -170,36 +170,46 @@ public class MainActivity extends FragmentActivity {
 							.show();
 					return;
 				}
+
+				// TextView numlikef = (TextView) findViewById(R.id.numlikef);
+				// TextView numlikeo = (TextView) findViewById(R.id.numlikeo);
+				// TextView numlikep = (TextView) findViewById(R.id.numlikep);
 				adapter.open();
-				dialog1 = new Dialog_notificationlike(MainActivity.this);
+
+				dialog1 = new Dialog_notificationlike(MainActivity.this, t, t1,
+						t2);
+
+				// int t3 = t + t1 + t2;
+				// txtlike.setText("" + t3);
 
 				dialog1.show();
 				int seen = 1;
 				adapter.updatelikeseentodb(seen, user.getId());
 				adapter.updatelikefroumseentodb(seen, user.getId());
 				adapter.updatelikepaperseentodb(seen, user.getId());
+				txtlike.setVisibility(View.GONE);
 
-				int t = adapter.NumOfNewLikeInObject(user.getId());
-
-				int t1 = adapter.NumOfNewLikeInFroum(user.getId());
-				int t2 = adapter.NumOfNewLikeInPaper(user.getId());
-				int t3 = t + t1 + t2;
-				TextView txtlike = (TextView) findViewById(R.id.txtlike);
-				txtlike.setText("" + t3);
+				// int t = adapter.NumOfNewLikeInObject(user.getId());
+				// int t = 4;
+				// // String tt = String.valueOf(t);
+				// int t1 = adapter.NumOfNewLikeInFroum(user.getId());
+				// int t2 = adapter.NumOfNewLikeInPaper(user.getId());
+				// int t3 = t + t1 + t2;
+				//
+				// TextView txtlike = (TextView) findViewById(R.id.txtlike);
+				// txtlike.setText(String.valueOf(t3));
+				// numlikef.setText(String.valueOf(t));
+				// // numlikeo.setText("" + t1);
+				// // numlikep.setText("" + t2);
 				adapter.close();
 
 			}
 
 		});
 
-		// mPlanetTitles = getResources().getStringArray(R.array.MenuItems);
-
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-		// mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-		// R.layout.drawer_item, R.id.content, mPlanetTitles));
 
 		mDrawerList.setAdapter(slideadapter);
 
@@ -264,6 +274,7 @@ public class MainActivity extends FragmentActivity {
 
 			}
 		});
+
 		iBtnMenu.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -284,50 +295,31 @@ public class MainActivity extends FragmentActivity {
 
 		setActivityTitle(R.string.strMain);
 
-		// @MK for set period time for repeat your code by mHandler
-		// mHandler = new Handler();
-		// mHandler.postDelayed(mStatusChecker, mInterval);
-		Intent intent = new Intent(MainActivity.this, HelloService.class);
-		startService(intent);
+		// Service for period task EveryTime
+		// Intent intent = new Intent(MainActivity.this, HelloService.class);
+		// startService(intent);
+		// Service for period task EveryTime
 
-		// @MK for set specified time for send intent to service for runnig your
-		// code
-		Calendar calendar = Calendar.getInstance();
+		// Second Service
+		// Calendar calendar = Calendar.getInstance();
+		//
+		// calendar.set(Calendar.HOUR_OF_DAY, 10);
+		// calendar.set(Calendar.MINUTE, 43);
+		// calendar.set(Calendar.SECOND, 00);
+		// calendar.set(Calendar.AM_PM, Calendar.AM);
+		//
+		// Intent myIntent = new Intent(MainActivity.this, MyReceiver.class);
+		// pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,
+		// myIntent, 0);
+		// AlarmManager alarmManager = (AlarmManager)
+		// getSystemService(ALARM_SERVICE);
+		// alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),
+		// pendingIntent);
+		// Second Service
 
-		// calendar.set(Calendar.MONTH, 6);
-		// calendar.set(Calendar.YEAR, 2013);
-		// calendar.set(Calendar.DAY_OF_MONTH, 13);
-
-		calendar.set(Calendar.HOUR_OF_DAY, 3);
-		calendar.set(Calendar.MINUTE, 26);
-		calendar.set(Calendar.SECOND, 00);
-		calendar.set(Calendar.AM_PM, Calendar.PM);
-
-		Intent myIntent = new Intent(MainActivity.this, MyReceiver.class);
-		pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,
-				myIntent, 0);
-
-		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-		alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),
-				pendingIntent);
+		PeriodicTask task = new PeriodicTask(this);
+		// task.startAlert();
 	}
-
-	// Runnable mStatusChecker = new Runnable() {
-	//
-	// @Override
-	// public void run() {
-	// util.Notification();
-	// mHandler.postDelayed(mStatusChecker, mInterval);
-	// }
-	// };
-
-	// void startRepeatingTask() {
-	// mStatusChecker.run();
-	// }
-	//
-	// void stopRepeatingTask() {
-	// mHandler.removeCallbacks(mStatusChecker);
-	// }
 
 	public void setActivityTitle(int title) {
 		TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
@@ -425,8 +417,9 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public void onBackPressed() {
-		Fragment f = getSupportFragmentManager().findFragmentById(
-				R.id.content_frame);
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction trans = fm.beginTransaction();
+		Fragment f = fm.findFragmentById(R.id.content_frame);
 
 		String page = "";
 		if (f instanceof MainFragment) {
@@ -435,7 +428,94 @@ public class MainActivity extends FragmentActivity {
 		}
 
 		else {
-			super.onBackPressed();
+			if (f instanceof FroumFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new FroumtitleFragment());
+				trans.commit();
+			} else if (f instanceof FroumtitleFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+
+			} else if (f instanceof BerandFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			} else if (f instanceof MainBrandFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				BerandFragment fragment = new BerandFragment();
+				// Bundle b = new Bundle();
+				// b.putString("Id", "1");
+				// fragment.setArguments(b);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+			} else if (f instanceof IntroductionFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainBrandFragment());
+				trans.commit();
+			} else if (f instanceof ProvinceFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			} else if (f instanceof Province2Fragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			} else if (f instanceof Province3Fragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new Province3Fragment());
+				trans.commit();
+			} else if (f instanceof City3Fragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			} else if (f instanceof City2Fragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new Province2Fragment());
+				trans.commit();
+			} else if (f instanceof CityFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new ProvinceFragment());
+				trans.commit();
+			} else if (f instanceof ObjectFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new CityFragment());
+				trans.commit();
+			} else if (f instanceof AdvisorTypeFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new City2Fragment());
+				trans.commit();
+			} else if (f instanceof ExecutertypeFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new City3Fragment());
+				trans.commit();
+			} else if (f instanceof NewsFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			} else if (f instanceof CountryFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			} else {
+				super.onBackPressed();
+			}
 		}
 	}
 
@@ -469,17 +549,4 @@ public class MainActivity extends FragmentActivity {
 		// alert.show();
 	}
 
-	private void onYesClick() {
-		Intent setIntent = new Intent(Intent.ACTION_MAIN);
-		setIntent.addCategory(Intent.CATEGORY_HOME);
-		setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(setIntent);
-
-		MainActivity.this.finish();
-
-	}
-
-	private void onNoClick() {
-
-	}
 }

@@ -1,6 +1,7 @@
 package com.project.mechanic.adapter;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,12 +25,14 @@ import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.FroumFragment;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.utility.Utility;
 
-public class ExpandableCommentFroum extends BaseExpandableListAdapter {
+public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
+		AsyncInterface {
 
 	Context context;
 	private Map<CommentInFroum, List<CommentInFroum>> mapCollection;
@@ -312,6 +315,29 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 						int b = intCureentDisLike - 1;
 						String c = String.valueOf(b);
+
+						/*
+						 * start >>>>> delete dislike from server
+						 */
+
+						params = new LinkedHashMap<String, String>();
+						deleting = new Deleting(context);
+						deleting.delegate = ExpandableCommentFroum.this;
+
+						params.put("TableName", "LikeInComment");
+
+						params.put("UserId",
+								String.valueOf(Currentuser.getId()));
+
+						params.put("IsLike", String.valueOf(0));
+						params.put("CommentId", String.valueOf(id));
+
+						deleting.execute(params);
+
+						/*
+						 * end >>>>> delete dislike from server
+						 */
+
 						adapter.deleteLikeFromCommentInFroum(id,
 								Currentuser.getId(), 0);
 
@@ -332,6 +358,27 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 									"شما قبلا نظرتان را در این مورد این مطلب بیان کردید",
 									Toast.LENGTH_SHORT).show();
 						} else {
+
+							/*
+							 * start >>>>> save dislike to server
+							 */
+							params = new LinkedHashMap<String, String>();
+							saving = new Saving(context);
+							saving.delegate = ExpandableCommentFroum.this;
+
+							params.put("TableName", "LikeInComment");
+
+							params.put("UserId",
+									String.valueOf(Currentuser.getId()));
+
+							params.put("IsLike", String.valueOf(0));
+							params.put("CommentId", String.valueOf(id));
+
+							saving.execute(params);
+
+							/*
+							 * end >>>>> save dislike to server
+							 */
 							adapter.insertCmtDisLikebyid(id,
 									stringNewcountDisLike, Currentuser.getId());
 							adapter.insertLikeInCommentToDb(
@@ -381,30 +428,52 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 							.findViewById(R.id.countCommentFroum);
 					TextView txtlike = (TextView) viewnumlike;
 
-					int id = 0;
+					int cmtId = 0;
 
 					for (CommentInFroum listItem : cmt) {
 						if (txtMaincmt.getText().toString()
 								.equals(listItem.getDesk())) {
 
-							GlobalLikeId = id = listItem.getId();
+							GlobalLikeId = cmtId = listItem.getId();
 						}
 					}
 					// send to database
 
-					if (adapter.isUserLikedComment(Currentuser.getId(), id, 1)) {
+					if (adapter.isUserLikedComment(Currentuser.getId(), cmtId,
+							1)) {
+						/*
+						 * start >>>>> delete like from server
+						 */
 
-						adapter.deleteLikeFromCommentInFroum(id,
+						params = new LinkedHashMap<String, String>();
+						deleting = new Deleting(context);
+						deleting.delegate = ExpandableCommentFroum.this;
+
+						params.put("TableName", "LikeInComment");
+
+						params.put("UserId",
+								String.valueOf(Currentuser.getId()));
+
+						params.put("IsLike", String.valueOf(1));
+						params.put("CommentId", String.valueOf(cmtId));
+
+						deleting.execute(params);
+
+						/*
+						 * end >>> delete like from server
+						 */
+
+						adapter.deleteLikeFromCommentInFroum(cmtId,
 								Currentuser.getId(), 1);
 
 						int b = intCureentLike - 1;
 						String c = String.valueOf(b);
 
-						adapter.insertCmtLikebyid(id, c, Currentuser.getId());
+						adapter.insertCmtLikebyid(cmtId, c, Currentuser.getId());
 						f.updateList();
 
 						txtlike.setText(String.valueOf(adapter
-								.getCountofCommentinFroumObject(froumID, id)));
+								.getCountofCommentinFroumObject(froumID, cmtId)));
 
 						notifyDataSetChanged();
 
@@ -413,23 +482,46 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 					} else {
 
-						if (adapter.isUserLikedComment(Currentuser.getId(), id,
-								0)) {
+						if (adapter.isUserLikedComment(Currentuser.getId(),
+								cmtId, 0)) {
 							Toast.makeText(
 									context,
 									"شما قبلا نظرتان را در این مورد این مطلب بیان کردید",
 									Toast.LENGTH_SHORT).show();
 						} else {
 
-							adapter.insertCmtLikebyid(id, stringNewcountLike,
-									Currentuser.getId());
+							/*
+							 * start : save like to server
+							 */
+							params = new LinkedHashMap<String, String>();
+							saving = new Saving(context);
+							saving.delegate = ExpandableCommentFroum.this;
+
+							params.put("TableName", "LikeInComment");
+
+							params.put("UserId",
+									String.valueOf(Currentuser.getId()));
+
+							params.put("IsLike", String.valueOf(1));
+							params.put("CommentId", String.valueOf(cmtId));
+
+							saving.execute(params);
+
+							/*
+							 * end : save to server
+							 */
+
+							adapter.insertCmtLikebyid(cmtId,
+									stringNewcountLike, Currentuser.getId());
+
 							adapter.insertLikeInCommentToDb(
-									Currentuser.getId(), 1, id);
+									Currentuser.getId(), 1, cmtId);
 
 							f.updateList();
 
 							txtlike.setText(String.valueOf(adapter
-									.getCountofCommentinFroumObject(froumID, id)));
+									.getCountofCommentinFroumObject(froumID,
+											cmtId)));
 
 							notifyDataSetChanged();
 							imglikeComment
@@ -502,6 +594,19 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
+	}
+
+	@Override
+	public void processFinish(String output) {
+		int id = -1;
+		try {
+			id = Integer.valueOf(output);
+
+			Toast.makeText(context, "در سرور ثبت شد", Toast.LENGTH_SHORT)
+					.show();
+		} catch (Exception e) {
+			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 }

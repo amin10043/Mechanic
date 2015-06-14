@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/list_item"
     android:orientation="vertical" >
 
     <TextView
@@ -10,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
+        android:textColor="@color/transparent"
         android:text="کامنت ها" />
 
     <LinearLayout
@@ -26,89 +28,174 @@
             android:gravity="center"
             android:orientation="horizontal" >
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="left"
-                android:layout_marginRight="20dp"
-                android:orientation="vertical" >
+                android:layout_marginRight="20dp" >
 
-                <ImageButton
-                    android:id="@+id/btnshowcmf"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
+                    <ImageButton
+                        android:id="@+id/btnshowcmf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_notification_froum" />
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text=" تالار گفتگو"
+                        android:textColor="@color/transparent"
+                        android:textSize="@dimen/txtsize10" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ic_notification_froum" />
-
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:gravity="center"
-                    android:text=" تالار گفتگو"
-                    android:textSize="@dimen/txtsize10" />
+                    android:orientation="vertical" >
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/numf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center"
+                        android:background="@drawable/circle_notification"
+                        android:gravity="bottom|center"
+                        android:text="" />
 
-            <LinearLayout
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center"
-                android:orientation="vertical" >
+                android:layout_height="match_parent" >
 
-                <ImageButton
-                    android:id="@+id/btnshowcmo"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ic_notification_object" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text=" شخصی "
-                    android:textSize="@dimen/txtsize10" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:orientation="vertical" >
-
-                <ImageButton
-                    android:id="@+id/btnshowcmp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ic_notification_news" />
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="0dp"
+                    android:layout_marginRight="20dp"
                     android:gravity="center"
-                    android:text=" مقالات"
-                    android:textSize="@dimen/txtsize10" />
+                    android:orientation="vertical" >
 
-            </LinearLayout>
+                    <ImageButton
+                        android:id="@+id/btnshowcmo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_notification_object" />
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text=" شخصی "
+                        android:textColor="@color/transparent"
+                        android:textSize="@dimen/txtsize10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:gravity="bottom"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/numo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:background="@drawable/circle_notification"
+                        android:gravity="top"
+                        android:text="" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
+                    <ImageButton
+                        android:id="@+id/btnshowcmp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_notification_news" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="0dp"
+                        android:gravity="center"
+                        android:text=" مقالات"
+                        android:textColor="@color/transparent"
+                        android:textSize="@dimen/txtsize10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/nump"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:background="@drawable/circle_notification"
+                        android:gravity="top"
+                        android:text="" />
+
+                </LinearLayout>
+
+            </FrameLayout>
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/listnewcm"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-        </ListView>
+
+            <ListView
+                android:id="@+id/listnewcmf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView>
+
+            <ListView
+                android:id="@+id/listnewcmo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView>
+
+            <ListView
+                android:id="@+id/listnewcmp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView>
+
+        </FrameLayout>
 
     </LinearLayout>
 
