@@ -86,5 +86,6 @@
     <string name="tabligh">&quot;&quot;شرایط درج بیلبورد تبلیغاتی&quot;&quot;</string>
     <string name="toast_text_1">خطا</string>
     <string name="toast_text_2">لطفا فیلدهای اجباری را پر نمایید.</string>
+    <string name="title_activity_croping_option_adapter">CropingOptionAdapter</string>
 
 </resources>

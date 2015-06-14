@@ -77,14 +77,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:weightSum="2" >
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_margin="@dimen/txtsize10"
-                        android:layout_weight="1" >
+                        android:layout_gravity="right|center"
+                        android:layout_weight="0.8" >
 
                         <ImageView
                             android:id="@+id/logout"
@@ -95,15 +95,22 @@
                             android:src="@drawable/logout" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/displayname"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="TextView"
-                        android:textColor="@color/transparent" />
+                        android:layout_weight="1.2" >
+
+                        <TextView
+                            android:id="@+id/displayname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|top"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="TextView"
+                            android:textColor="@color/transparent"
+                            android:textSize="@dimen/item_font_size" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -198,12 +205,13 @@
             android:layout_marginLeft="@dimen/txtsize10"
             android:layout_marginRight="@dimen/txtsize10"
             android:layout_weight="1"
-            android:background="@color/blue3" >
+            android:background="@color/blue3"
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/fax"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_marginLeft="@dimen/txtsize10"
                 android:gravity="right"
@@ -239,7 +247,8 @@
                 <ScrollView
                     android:id="@+id/scrollView1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent"
+                    android:background="@color/white" >
 
                     <LinearLayout
                         android:layout_width="match_parent"

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -34,9 +35,10 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 	List<Users> list;
 	private int Commentid;
 	private int Froumid;
-	Users user;
+	Users currentUser;
 	Saving saving;
 	Map<String, String> params;
+	ProgressDialog ringProgressDialog;
 
 	public DialogcmtInfroum(Fragment f, int Commentid, Context context,
 			int froumId, int resourceId) {
@@ -48,7 +50,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 		utility = new Utility(context);
 		dbadapter = new DataBaseAdapter(context);
 
-		user = utility.getCurrentUser();
+		currentUser = utility.getCurrentUser();
 
 	}
 
@@ -71,7 +73,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 			@Override
 			public void onClick(View arg0) {
 
-				if (user == null) {
+				if (currentUser == null) {
 					(Toast.makeText(context,
 							"برای ثبت نظر ابتدا باید وارد شوید.",
 							Toast.LENGTH_LONG)).show();
@@ -85,13 +87,33 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 					params.put("Desk", Cmttxt.getText().toString());
 					params.put("FroumId", String.valueOf(Froumid));
-					params.put("UserId", String.valueOf(user.getId()));
+					params.put("UserId", String.valueOf(currentUser.getId()));
 					params.put("Date", currentDate);
 					params.put("CommentId", String.valueOf(Commentid));
 					params.put("NumofDisLike", String.valueOf(0));
 					params.put("NumofLike", String.valueOf(0));
 
 					saving.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(context, "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
 				}
 				DialogcmtInfroum.this.dismiss();
 			}
@@ -108,6 +130,8 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
+		ringProgressDialog.dismiss();
+
 		int id = -1;
 		try {
 			id = Integer.valueOf(output);
@@ -115,14 +139,14 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 				Toast.makeText(context, "خطا در ثبت سرور", Toast.LENGTH_SHORT)
 						.show();
 			} else {
-				int userid = user.getId();
 				PersianDate date = new PersianDate();
 				String currentDate = date.todayShamsi();
 
 				dbadapter.open();
 
 				dbadapter.insertCommentInFroumtoDb(Cmttxt.getText().toString(),
-						Froumid, userid, currentDate, Commentid, "0", "0");
+						Froumid, currentUser.getId(), currentDate, Commentid,
+						"0", "0");
 
 				dbadapter.close();
 

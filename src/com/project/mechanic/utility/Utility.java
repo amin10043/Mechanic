@@ -3,11 +3,14 @@ package com.project.mechanic.utility;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -32,17 +35,23 @@ import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Updating;
 import com.project.mechanic.utility.Roozh.SolarCalendar;
 
-public class Utility {
+public class Utility implements AsyncInterface {
 
 	private Context context;
 	private DataBaseAdapter adapter;
 	int notificationID;
 	LayoutInflater inflater;
 	ViewGroup toastlayout;
+
+	private Updating serviceUpdate;
+	Settings settings;
 
 	public Utility(Context context) {
 		this.context = context;
@@ -273,21 +282,18 @@ public class Utility {
 			col[i++] = inner.nextToken();
 		}
 		int j = 0;
-		String tempToken = "";
-		String[] innerString;
 		String[][] values = new String[tokens.countTokens()][];
 		while (tokens.hasMoreTokens()) {
-			tempToken = tokens.nextToken();
-
-			innerString = tempToken.split(",");
-			values[j] = tempToken.split(",");
+			values[j] = tokens.nextToken().split(",");
 			j++;
 		}
+
 		adapter.open();
-		adapter.updateTables(tableName, col, values);
+		if (values != null && values.length > 0)
+			adapter.updateTables(tableName, col, values);
+
 		adapter.setServerDate("ServerDate_" + tableName.trim(), serverDate);
 		adapter.close();
-
 	}
 
 	public String getCuurentDateTime() {
@@ -296,6 +302,21 @@ public class Utility {
 		Date date = new Date();
 		return dateFormat.format(date);
 
+	}
+
+	public static boolean isAppRunning(Context context) {
+		// check with the first task(task in the foreground)
+		// in the returned list of tasks
+		ActivityManager activityManager = (ActivityManager) context
+				.getSystemService(Context.ACTIVITY_SERVICE);
+		List<RunningTaskInfo> services = activityManager
+				.getRunningTasks(Integer.MAX_VALUE);
+		if (services.get(0).topActivity.getPackageName().toString()
+				.equalsIgnoreCase(context.getPackageName().toString())) {
+			// your application is running in the background
+			return true;
+		}
+		return false;
 	}
 
 	public void setNoti(Activity a, int userId) {
@@ -356,4 +377,86 @@ public class Utility {
 		// }
 	}
 
+	public void Updating() {
+		String tableUpdating = "User";
+		serviceUpdate = new Updating(context);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				settings != null ? settings.getServerDate_Users() : "");
+
+		tableUpdating = "Paper";
+		serviceUpdate = new Updating(context);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_Paper() : ""));
+
+		tableUpdating = "Froum";
+		serviceUpdate = new Updating(context);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_Froum() : ""));
+		// tableUpdating = "Object";
+		// serviceUpdate = new Updating(this);
+		// serviceUpdate.delegate = this;
+		// serviceUpdate.execute(tableUpdating,
+		// (settings != null ? settings.getServerDate() : ""));
+		tableUpdating = "News";
+		serviceUpdate = new Updating(context);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_News() : ""));
+		tableUpdating = "Anad";
+		serviceUpdate = new Updating(context);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_Anad() : ""));
+		tableUpdating = "Ticket";
+		serviceUpdate = new Updating(context);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_Ticket() : ""));
+		tableUpdating = "LikeInPaper";
+		serviceUpdate = new Updating(context);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_LikeInPaper() : ""));
+		tableUpdating = "CmtInPaper";
+		serviceUpdate = new Updating(context);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_CmtInPaper() : ""));
+
+		tableUpdating = "LikeInFroum";
+		serviceUpdate = new Updating(context);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_LikeInFroum() : ""));
+		tableUpdating = "CommentInFroum";
+		serviceUpdate = new Updating(context);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_CommentInFroum()
+						: ""));
+
+		tableUpdating = "LikeInObject";
+		serviceUpdate = new Updating(context);
+		serviceUpdate.delegate = this;
+		serviceUpdate
+				.execute(
+						tableUpdating,
+						(settings != null ? settings
+								.getServerDate_LikeInObject() : ""));
+		tableUpdating = "CommentInObject";
+		serviceUpdate = new Updating(context);
+		serviceUpdate.delegate = this;
+		serviceUpdate.execute(tableUpdating,
+				(settings != null ? settings.getServerDate_CommentInObject()
+						: ""));
+	}
+
+	@Override
+	public void processFinish(String output) {
+		parseQuery(output);
+
+	}
 }

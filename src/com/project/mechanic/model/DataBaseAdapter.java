@@ -2882,24 +2882,15 @@ public class DataBaseAdapter {
 	public void updateTables(String tableName, String[] cols, String[][] values) {
 
 		ContentValues cv = null;
-		long res;
 		for (int i = 0; i < values.length; i++) {
 			cv = new ContentValues();
-			String id = "-1";
 			for (int j = 0; j < values[i].length; j++) {
 
 				if (values[i][j] != null)
-					;
-				cv.put(cols[j], values[i][j]);
-
-				// if (values[i][j] != null) {
-				if ("Id".equals(cols[j]))
-					id = values[i][j];
-				// cv.put(cols[j], values[i][j]);
-
+					cv.put(cols[j], values[i][j]);
 			}
 			try {
-				res = mDb.insertWithOnConflict(tableName, null, cv,
+				mDb.insertWithOnConflict(tableName, null, cv,
 						SQLiteDatabase.CONFLICT_ABORT);
 			} catch (Exception ex) {
 			}
