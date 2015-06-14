@@ -12,33 +12,46 @@
         android:layout_height="30dp"
         android:background="#BFDEFC" >
 
-        <ImageView
-            android:id="@+id/fragment_anad_imgadd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/add" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="3" >
 
-        <TextView
-            android:id="@+id/fragment_anad_txt1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="50dp"
-            android:text="@string/txtanad"
-            android:textColor="#000000" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:gravity="center" >
 
-        <TextView
-            android:id="@+id/fragment_anad_txt2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:text="تبلیغات شما"
-            android:textColor="#000000" />
+                <TextView
+                    android:id="@+id/fragment_anad_txt2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="تبلیغات شما"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/fragment_anad_txt1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="50dp"
+                    android:gravity="center"
+                    android:text="@string/txtanad"
+                    android:textColor="#000000" />
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
 
     <LinearLayout
@@ -76,16 +89,29 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" >
+            android:layout_weight="1"
+            android:orientation="vertical" >
 
-            <com.project.mechanic.ListView.PullAndLoadListView
-                android:id="@+id/listVanad"
-                style="@style/second_item_style"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="left"
-                android:dividerHeight="0dp" >
-            </com.project.mechanic.ListView.PullAndLoadListView>
+                android:layout_height="wrap_content" >
+
+                <com.project.mechanic.Action.FloatingActionButton
+                    android:id="@+id/fabAnad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/fab_add" />
+
+                <com.project.mechanic.ListView.PullAndLoadListView
+                    android:id="@+id/listVanad"
+                    style="@style/second_item_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:dividerHeight="0dp" >
+                </com.project.mechanic.ListView.PullAndLoadListView>
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 

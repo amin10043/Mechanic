@@ -300,6 +300,7 @@ public class Utility implements AsyncInterface {
 		java.text.DateFormat dateFormat = new SimpleDateFormat(
 				"yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
+		
 		return dateFormat.format(date);
 
 	}
@@ -325,16 +326,28 @@ public class Utility implements AsyncInterface {
 		int r1 = adapter.NumOfNewCmtInObject(userId);
 		int r2 = adapter.NumOfNewCmtInPaper(userId);
 		int r3 = r + r1 + r2;
-		TextView txtcm = (TextView) a.findViewById(R.id.txtcm);
-		txtcm.setText(String.valueOf(r3));
+		if (r3 == 0) {
+
+			TextView txtcm = (TextView) a.findViewById(R.id.txtcm);
+			txtcm.setVisibility(View.GONE);
+		} else {
+			TextView txtcm = (TextView) a.findViewById(R.id.txtcm);
+			txtcm.setText(String.valueOf(r3));
+
+		}
 
 		int t = adapter.NumOfNewLikeInObject(userId);
 		int t1 = adapter.NumOfNewLikeInFroum(userId);
 		int t2 = adapter.NumOfNewLikeInPaper(userId);
 		int t3 = t + t1 + t2;
+		if (t3 == 0) {
+			TextView txtlike = (TextView) a.findViewById(R.id.txtlike);
+			txtlike.setVisibility(View.GONE);
+		} else {
+			TextView txtlike = (TextView) a.findViewById(R.id.txtlike);
+			txtlike.setText(String.valueOf(t3));
+		}
 
-		TextView txtlike = (TextView) a.findViewById(R.id.txtlike);
-		txtlike.setText(String.valueOf(t3));
 		adapter.close();
 	}
 
