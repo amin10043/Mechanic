@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
             android:gravity="right"
-            android:maxLength="30"
+            android:maxLength="100"
             android:text="text description"
             android:textColor="@color/transparent" />
 

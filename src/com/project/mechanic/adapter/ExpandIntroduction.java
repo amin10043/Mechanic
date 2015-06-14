@@ -412,8 +412,8 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 
 						adapter.insertCmtLikebyid(id, stringNewcountLike,
 								Currentuser.getId());
-						adapter.insertLikeInCommentToDb(Currentuser.getId(), 1,
-								id);
+//						adapter.insertLikeInCommentToDb(Currentuser.getId(), 1,
+//								id);
 
 						f.updateList();
 

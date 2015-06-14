@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="8dp"
-                android:text="L"
+                android:text="0"
                 android:textColor="@color/transparent" />
 
             <ImageButton
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="8dp"
-                android:text="D"
+                android:text="0"
                 android:textColor="@color/transparent" />
         </LinearLayout>
 
