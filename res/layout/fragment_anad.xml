@@ -50,13 +50,6 @@
                     android:gravity="center"
                     android:text="@string/txtanad"
                     android:textColor="#000000" />
-
-                <ImageView
-                    android:id="@+id/fragment_anad_imgadd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/add" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
@@ -99,14 +92,26 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <com.project.mechanic.ListView.PullAndLoadListView
-                android:id="@+id/listVanad"
-                style="@style/second_item_style"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="left"
-                android:dividerHeight="0dp" >
-            </com.project.mechanic.ListView.PullAndLoadListView>
+                android:layout_height="wrap_content" >
+
+                <com.project.mechanic.Action.FloatingActionButton
+                    android:id="@+id/fabAnad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/fab_add" />
+
+                <com.project.mechanic.ListView.PullAndLoadListView
+                    android:id="@+id/listVanad"
+                    style="@style/second_item_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:dividerHeight="0dp" >
+                </com.project.mechanic.ListView.PullAndLoadListView>
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 
