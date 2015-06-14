@@ -13,6 +13,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
@@ -48,6 +49,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	ServerDate date;
 	Users u;
 	FloatingActionButton action;
+	RelativeLayout header;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -57,6 +59,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		view = inflater.inflate(R.layout.fragment_titlefrm, null);
 		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 		action = (FloatingActionButton) view.findViewById(R.id.fab);
+		header = (RelativeLayout) view.findViewById(R.id.re);
+		header.setVisibility(View.GONE);
 
 		action.setOnClickListener(new OnClickListener() {
 

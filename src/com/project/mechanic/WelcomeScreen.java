@@ -43,12 +43,12 @@ public class WelcomeScreen extends Activity {
 	// private ImageButton btnNext, btnExit, btnins1, btnint1, btngp1, btnfb1,
 	// btntw1, btnlink1;
 
-	LinearLayout row1, row2, row3, row4, row5, row6, row7, row8,
+	LinearLayout row1, row2, row3, row4, row5, row6, row7, row8, row9, row10,
 			row_Displacement, row_network;
 	ImageButton img1, img2, img3, img4, img5, img6, img7, img8, img9, img10,
 			img11, img12, img13, img14, img15, img16, img17, img18, img19,
-			img20, img21, img22, img23, img24, next_btn, pre_btn, i1, i2, i3,
-			i4, i5, i6;
+			img20, img21, img22, img23, img24, img25, img26, img27, img28,
+			img29, img30, next_btn, pre_btn, i1, i2, i3, i4, i5, i6;
 	private int column = 3;
 	int gridePadding = 1;
 	private int columnWidth;
@@ -157,6 +157,9 @@ public class WelcomeScreen extends Activity {
 		row6 = (LinearLayout) findViewById(R.id.row6_linear);
 		row7 = (LinearLayout) findViewById(R.id.row7_linear);
 		row8 = (LinearLayout) findViewById(R.id.row8_linear);
+		row9 = (LinearLayout) findViewById(R.id.row9_linear);
+		row10 = (LinearLayout) findViewById(R.id.row10_linear);
+
 		row_Displacement = (LinearLayout) findViewById(R.id.row_Displacement);
 		row_network = (LinearLayout) findViewById(R.id.row_network);
 
@@ -191,6 +194,14 @@ public class WelcomeScreen extends Activity {
 		img22 = new ImageButton(WelcomeScreen.this);
 		img23 = new ImageButton(WelcomeScreen.this);
 		img24 = new ImageButton(WelcomeScreen.this);
+
+		img25 = new ImageButton(WelcomeScreen.this);
+		img26 = new ImageButton(WelcomeScreen.this);
+		img27 = new ImageButton(WelcomeScreen.this);
+
+		img28 = new ImageButton(WelcomeScreen.this);
+		img29 = new ImageButton(WelcomeScreen.this);
+		img30 = new ImageButton(WelcomeScreen.this);
 
 		next_btn = new ImageButton(WelcomeScreen.this);
 		pre_btn = new ImageButton(WelcomeScreen.this);
@@ -236,6 +247,14 @@ public class WelcomeScreen extends Activity {
 		img22.setBackgroundResource(R.drawable.up2);
 		img23.setBackgroundResource(R.drawable.on2);
 		img24.setBackgroundResource(R.drawable.or2);
+
+		img25.setBackgroundResource(R.drawable.up2);
+		img26.setBackgroundResource(R.drawable.on2);
+		img27.setBackgroundResource(R.drawable.or2);
+
+		img28.setBackgroundResource(R.drawable.up2);
+		img29.setBackgroundResource(R.drawable.on2);
+		img30.setBackgroundResource(R.drawable.or2);
 
 		next_btn.setBackgroundResource(R.drawable.next);
 		pre_btn.setBackgroundResource(R.drawable.prev);
@@ -322,6 +341,24 @@ public class WelcomeScreen extends Activity {
 		img24.setMinimumHeight(columnWidth);
 		img24.setMinimumWidth(columnWidth);
 
+		img25.setMinimumHeight(columnWidth);
+		img25.setMinimumWidth(columnWidth);
+
+		img26.setMinimumHeight(columnWidth);
+		img26.setMinimumWidth(columnWidth);
+
+		img27.setMinimumHeight(columnWidth);
+		img27.setMinimumWidth(columnWidth);
+
+		img28.setMinimumHeight(columnWidth);
+		img28.setMinimumWidth(columnWidth);
+
+		img29.setMinimumHeight(columnWidth);
+		img29.setMinimumWidth(columnWidth);
+
+		img30.setMinimumHeight(columnWidth);
+		img30.setMinimumWidth(columnWidth);
+
 	}
 
 	private void Adding() {
@@ -357,6 +394,14 @@ public class WelcomeScreen extends Activity {
 		row8.addView(img22);
 		row8.addView(img23);
 		row8.addView(img24);
+
+		row9.addView(img25);
+		row9.addView(img26);
+		row9.addView(img27);
+
+		row10.addView(img28);
+		row10.addView(img29);
+		row10.addView(img30);
 
 		row_Displacement.addView(pre_btn);
 		row_Displacement.addView(next_btn);
@@ -430,6 +475,14 @@ public class WelcomeScreen extends Activity {
 		img22.setLayoutParams(lp);
 		img23.setLayoutParams(lp);
 		img24.setLayoutParams(lp);
+
+		img25.setLayoutParams(lp);
+		img26.setLayoutParams(lp);
+		img27.setLayoutParams(lp);
+
+		img28.setLayoutParams(lp);
+		img29.setLayoutParams(lp);
+		img30.setLayoutParams(lp);
 
 		LinearLayout.LayoutParams ip = new LinearLayout.LayoutParams(
 				row_network.getLayoutParams());

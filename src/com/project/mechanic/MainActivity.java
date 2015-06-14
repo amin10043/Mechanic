@@ -94,11 +94,17 @@ public class MainActivity extends FragmentActivity {
 
 		adapter = new DataBaseAdapter(this);
 		slideadapter = new SlideMenuAdapter(this);
+		ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
+		final TextView txtcm1 = (TextView) findViewById(R.id.txtcm);
+		final TextView txtlike = (TextView) findViewById(R.id.txtlike);
 
 		util = new Utility(MainActivity.this);
 		user = util.getCurrentUser();
 		if (user != null) {
+			txtcm1.setVisibility(View.VISIBLE);
+			txtlike.setVisibility(View.VISIBLE);
 			util.setNoti(this, user.getId());
+
 		} else {
 
 			EnterDialog dialogEnter = new EnterDialog(MainActivity.this);
@@ -106,7 +112,6 @@ public class MainActivity extends FragmentActivity {
 
 		}
 
-		ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
 		iBtnmessage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -117,6 +122,7 @@ public class MainActivity extends FragmentActivity {
 					Toast.makeText(MainActivity.this,
 							"شما هنوز وارد نشده اید.", Toast.LENGTH_SHORT)
 							.show();
+
 					return;
 				}
 
@@ -142,10 +148,10 @@ public class MainActivity extends FragmentActivity {
 				adapter.updatecmseentodb(seen, user.getId());
 				adapter.updatecmobjectseentodb(seen, user.getId());
 				adapter.updatecmpaperseentodb(seen, user.getId());
+				txtcm1.setVisibility(View.GONE);
 
-				TextView txtcm1 = (TextView) findViewById(R.id.txtcm);
-				int r3 = r + r1 + r2;
-				txtcm1.setText("" + r3);
+				// int r3 = r + r1 + r2;
+				// txtcm1.setText("" + r3);
 
 				adapter.close();
 
@@ -171,17 +177,17 @@ public class MainActivity extends FragmentActivity {
 				adapter.open();
 
 				dialog1 = new Dialog_notificationlike(MainActivity.this, t, t1,
-						t2, t3);
-				TextView txtlike = (TextView) findViewById(R.id.txtlike);
+						t2);
 
-				int t3 = t + t1 + t2;
-				txtlike.setText("" + t3);
+				// int t3 = t + t1 + t2;
+				// txtlike.setText("" + t3);
 
 				dialog1.show();
 				int seen = 1;
 				adapter.updatelikeseentodb(seen, user.getId());
 				adapter.updatelikefroumseentodb(seen, user.getId());
 				adapter.updatelikepaperseentodb(seen, user.getId());
+				txtlike.setVisibility(View.GONE);
 
 				// int t = adapter.NumOfNewLikeInObject(user.getId());
 				// int t = 4;
@@ -268,6 +274,7 @@ public class MainActivity extends FragmentActivity {
 
 			}
 		});
+
 		iBtnMenu.setOnClickListener(new OnClickListener() {
 
 			@Override

@@ -1,9 +1,11 @@
 package com.project.mechanic.adapter;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,12 +26,14 @@ import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.FroumFragment;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.utility.Utility;
 
-public class ExpandableCommentFroum extends BaseExpandableListAdapter {
+public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
+		AsyncInterface {
 
 	Context context;
 	private Map<CommentInFroum, List<CommentInFroum>> mapCollection;
@@ -39,11 +43,14 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 	FroumFragment f;
 	int froumID, userid;
 	Users Currentuser;
+	boolean flag;
 
 	Saving saving;
 	Deleting deleting;
 	Map<String, String> params;
-	int GlobalLikeId;
+	int GlobalId;
+	TextView countLike, countdisLike;
+	ProgressDialog ringProgressDialog;
 
 	public ExpandableCommentFroum(Context context,
 			ArrayList<CommentInFroum> laptops,
@@ -94,9 +101,21 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 		// final CommentInFroum comment = cmt.get(groupPosition);
 		Users y = adapter.getUserbyid(reply.getUserid());
+		RelativeLayout rl = (RelativeLayout) convertView
+				.findViewById(R.id.main_icon_reply);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				rl.getLayoutParams());
+
+		lp.width = util.getScreenwidth() / 7;
+		lp.height = util.getScreenwidth() / 7;
+		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		lp.setMargins(5, 5, 5, 5);
+		ReplyerPic.setLayoutParams(lp);
 
 		if (y.getImage() == null) {
 			ReplyerPic.setImageResource(R.drawable.no_img_profile);
+			ReplyerPic.setLayoutParams(lp);
+
 		} else {
 
 			byte[] byteImageProfile = y.getImage();
@@ -105,17 +124,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 					byteImageProfile.length);
 
 			ReplyerPic.setImageBitmap(bmp);
-
-			RelativeLayout rl = (RelativeLayout) convertView
-					.findViewById(R.id.main_icon_reply);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-					rl.getLayoutParams());
-
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 5, 5, 5);
 			ReplyerPic.setLayoutParams(lp);
+
 		}
 
 		mainReply.setText(reply.getDesk());
@@ -168,9 +178,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 		TextView nameCommenter = (TextView) convertView
 				.findViewById(R.id.name_froum_profile);
 
-		final TextView countLike = (TextView) convertView
-				.findViewById(R.id.countCommentFroum);
-		TextView countdisLike = (TextView) convertView
+		countLike = (TextView) convertView.findViewById(R.id.countCommentFroum);
+		countdisLike = (TextView) convertView
 				.findViewById(R.id.countdislikecommentFroum);
 
 		TextView dateCommenter = (TextView) convertView
@@ -231,8 +240,6 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 			countOfReply.setText(adapter.getCountOfReplyInFroum(froumID,
 					comment.getId()).toString());
 
-		countLike.setText(String.valueOf(comment.getNumOfLike()));
-		countdisLike.setText(String.valueOf(comment.getNumOfDislike()));
 		if (x != null) {
 			nameCommenter.setText(x.getName());
 			if (x.getImage() == null) {
@@ -259,6 +266,19 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 		profileImage.setLayoutParams(lp);
 
 		// end... this code for set image of profile
+		int c = 0;
+
+		for (CommentInFroum listItem : cmt) {
+			if (mainComment.getText().toString().equals(listItem.getDesk())) {
+
+				c = listItem.getId();
+
+			}
+		}
+		countLike.setText(String.valueOf(adapter.NumberOfLikeOrDisLikeFroum(c,
+				1)));
+		countdisLike.setText(String.valueOf(adapter.NumberOfLikeOrDisLikeFroum(
+				c, 0)));
 
 		adapter.close();
 
@@ -277,15 +297,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 							Toast.LENGTH_SHORT).show();
 					return;
 				} else {
-					int intCureentDisLike = Integer.valueOf(comment
-							.getNumOfDislike());
-					int newCountDisLike = intCureentDisLike + 1;
-					String stringNewcountDisLike = String
-							.valueOf(newCountDisLike);
 
-					//
-					// // peyda kardan id comment sabt shode
-
+					flag = false;
 					RelativeLayout parentlayout = (RelativeLayout) t
 							.getParent().getParent().getParent();
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
@@ -301,7 +314,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 						if (txtMaincmt.getText().toString()
 								.equals(listItem.getDesk())) {
 
-							id = listItem.getId();
+							GlobalId = id = listItem.getId();
 
 						}
 					}
@@ -310,19 +323,47 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 					if (adapter.isUserLikedComment(Currentuser.getId(), id, 0)) {
 
-						int b = intCureentDisLike - 1;
-						String c = String.valueOf(b);
-						adapter.deleteLikeFromCommentInFroum(id,
-								Currentuser.getId(), 0);
+						/*
+						 * start >>>>> delete dislike from server
+						 */
 
-						adapter.insertCmtDisLikebyid(id, c, Currentuser.getId());
-						f.updateList();
+						params = new LinkedHashMap<String, String>();
+						deleting = new Deleting(context);
+						deleting.delegate = ExpandableCommentFroum.this;
 
-						txtdislike.setText(String.valueOf(comment
-								.getNumOfDislike()));
-						notifyDataSetChanged();
-						imgdislikeComment
-								.setImageResource((R.drawable.negative));
+						params.put("TableName", "LikeInComment");
+
+						params.put("UserId",
+								String.valueOf(Currentuser.getId()));
+
+						params.put("IsLike", String.valueOf(0));
+						params.put("CommentId", String.valueOf(id));
+
+						deleting.execute(params);
+
+						ringProgressDialog = ProgressDialog.show(context, "",
+								"لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+
+						/*
+						 * end >>>>> delete dislike from server
+						 */
 
 					} else {
 						if (adapter.isUserLikedComment(Currentuser.getId(), id,
@@ -332,16 +373,48 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 									"شما قبلا نظرتان را در این مورد این مطلب بیان کردید",
 									Toast.LENGTH_SHORT).show();
 						} else {
-							adapter.insertCmtDisLikebyid(id,
-									stringNewcountDisLike, Currentuser.getId());
-							adapter.insertLikeInCommentToDb(
-									Currentuser.getId(), 0, id);
-							f.updateList();
 
-							txtdislike.setText(String.valueOf(comment
-									.getNumOfDislike()));
-							imgdislikeComment
-									.setImageResource((R.drawable.negative_off));
+							/*
+							 * start >>>>> save dislike to server
+							 */
+							params = new LinkedHashMap<String, String>();
+							saving = new Saving(context);
+							saving.delegate = ExpandableCommentFroum.this;
+
+							params.put("TableName", "LikeInComment");
+
+							params.put("UserId",
+									String.valueOf(Currentuser.getId()));
+
+							params.put("IsLike", String.valueOf(0));
+							params.put("CommentId", String.valueOf(id));
+
+							saving.execute(params);
+
+							ringProgressDialog = ProgressDialog.show(context,
+									"", "لطفا منتظر بمانید...", true);
+
+							ringProgressDialog.setCancelable(true);
+
+							new Thread(new Runnable() {
+
+								@Override
+								public void run() {
+
+									try {
+
+										Thread.sleep(10000);
+
+									} catch (Exception e) {
+
+									}
+								}
+							}).start();
+
+							/*
+							 * end >>>>> save dislike to server
+							 */
+
 							notifyDataSetChanged();
 
 						}
@@ -355,20 +428,14 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 			@Override
 			public void onClick(View v) {
-				// khandan meghdar ghabli tedad like ha
-				// tabdil be int
-				// ezafe kardan 1 vahed be meghdar ghabli
-				// tabdil be String
 
 				if (Currentuser == null) {
 					Toast.makeText(context, "ابتدا باید وارد شوید",
 							Toast.LENGTH_SHORT).show();
 					return;
 				} else {
+					flag = true;
 					adapter.open();
-					int intCureentLike = Integer.valueOf(comment.getNumOfLike());
-					int newCountLike = intCureentLike + 1;
-					String stringNewcountLike = String.valueOf(newCountLike);
 
 					// // peyda kardan id comment sabt shode
 
@@ -381,59 +448,113 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 							.findViewById(R.id.countCommentFroum);
 					TextView txtlike = (TextView) viewnumlike;
 
-					int id = 0;
+					int cmtId = 0;
 
 					for (CommentInFroum listItem : cmt) {
 						if (txtMaincmt.getText().toString()
 								.equals(listItem.getDesk())) {
 
-							GlobalLikeId = id = listItem.getId();
+							GlobalId = cmtId = listItem.getId();
 						}
 					}
+
 					// send to database
 
-					if (adapter.isUserLikedComment(Currentuser.getId(), id, 1)) {
+					if (adapter.isUserLikedComment(Currentuser.getId(), cmtId,
+							1)) {
+						/*
+						 * start >>>>> delete like from server
+						 */
 
-						adapter.deleteLikeFromCommentInFroum(id,
-								Currentuser.getId(), 1);
+						params = new LinkedHashMap<String, String>();
+						deleting = new Deleting(context);
+						deleting.delegate = ExpandableCommentFroum.this;
 
-						int b = intCureentLike - 1;
-						String c = String.valueOf(b);
+						params.put("TableName", "LikeInComment");
 
-						adapter.insertCmtLikebyid(id, c, Currentuser.getId());
-						f.updateList();
+						params.put("UserId",
+								String.valueOf(Currentuser.getId()));
 
-						txtlike.setText(String.valueOf(adapter
-								.getCountofCommentinFroumObject(froumID, id)));
+						params.put("IsLike", String.valueOf(1));
+						params.put("CommentId", String.valueOf(cmtId));
 
-						notifyDataSetChanged();
+						deleting.execute(params);
 
-						imglikeComment
-								.setBackgroundResource(R.drawable.positive_off);
+						ringProgressDialog = ProgressDialog.show(context, "",
+								"لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+
+						/*
+						 * end >>> delete like from server
+						 */
 
 					} else {
 
-						if (adapter.isUserLikedComment(Currentuser.getId(), id,
-								0)) {
+						if (adapter.isUserLikedComment(Currentuser.getId(),
+								cmtId, 0)) {
 							Toast.makeText(
 									context,
 									"شما قبلا نظرتان را در این مورد این مطلب بیان کردید",
 									Toast.LENGTH_SHORT).show();
 						} else {
 
-							adapter.insertCmtLikebyid(id, stringNewcountLike,
-									Currentuser.getId());
-							adapter.insertLikeInCommentToDb(
-									Currentuser.getId(), 1, id);
+							/*
+							 * start : save like to server
+							 */
+							params = new LinkedHashMap<String, String>();
+							saving = new Saving(context);
+							saving.delegate = ExpandableCommentFroum.this;
 
-							f.updateList();
+							params.put("TableName", "LikeInComment");
 
-							txtlike.setText(String.valueOf(adapter
-									.getCountofCommentinFroumObject(froumID, id)));
+							params.put("UserId",
+									String.valueOf(Currentuser.getId()));
 
-							notifyDataSetChanged();
-							imglikeComment
-									.setBackgroundResource(R.drawable.positive);
+							params.put("IsLike", String.valueOf(1));
+							params.put("CommentId", String.valueOf(cmtId));
+
+							saving.execute(params);
+
+							ringProgressDialog = ProgressDialog.show(context,
+									"", "لطفا منتظر بمانید...", true);
+
+							ringProgressDialog.setCancelable(true);
+
+							new Thread(new Runnable() {
+
+								@Override
+								public void run() {
+
+									try {
+
+										Thread.sleep(10000);
+
+									} catch (Exception e) {
+
+									}
+								}
+							}).start();
+
+							/*
+							 * end : save to server
+							 */
+
 						}
 					}
 					adapter.close();
@@ -502,6 +623,63 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter {
 
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
+	}
+
+	@Override
+	public void processFinish(String output) {
+		ringProgressDialog.dismiss();
+
+		int id = -1;
+		try {
+			id = Integer.valueOf(output);
+
+			adapter.open();
+
+			if (flag) {
+
+				/*
+				 * save like in database device
+				 */
+
+				if (adapter
+						.isUserLikedComment(Currentuser.getId(), GlobalId, 1)) {
+					adapter.deleteLikeFromCommentInFroum(GlobalId,
+							Currentuser.getId(), 1);
+
+					notifyDataSetChanged();
+
+				} else {
+					adapter.InsertLikeCommentFroumToDatabase(id,
+							Currentuser.getId(), 1, GlobalId);
+
+					notifyDataSetChanged();
+
+				}
+			} else {
+				/*
+				 * save dislike in database device
+				 */
+
+				if (adapter
+						.isUserLikedComment(Currentuser.getId(), GlobalId, 0)) {
+					adapter.deleteLikeFromCommentInFroum(GlobalId,
+							Currentuser.getId(), 0);
+					notifyDataSetChanged();
+
+				} else {
+					adapter.InsertLikeCommentFroumToDatabase(id,
+							Currentuser.getId(), 0, GlobalId);
+
+					notifyDataSetChanged();
+
+				}
+			}
+
+			adapter.close();
+
+		} catch (Exception e) {
+			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 }

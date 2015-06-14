@@ -131,23 +131,27 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		if (u != null) {
 
 			nametxt.setText(u.getName());
+			LinearLayout rl = (LinearLayout) header
+					.findViewById(R.id.profileLinearcommenterinContinue);
+
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+					rl.getLayoutParams());
+
+			lp.width = util.getScreenwidth() / 7;
+			lp.height = util.getScreenwidth() / 7;
+			lp.setMargins(5, 5, 5, 5);
+			profileImg.setLayoutParams(lp);
 
 			if (u.getImage() == null) {
 				profileImg.setImageResource(R.drawable.no_img_profile);
+				profileImg.setLayoutParams(lp);
+
 			} else {
 				byte[] bytepic = u.getImage();
 
 				Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0,
 						bytepic.length);
-				LinearLayout rl = (LinearLayout) header
-						.findViewById(R.id.profileLinearcommenterinContinue);
 
-				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-						rl.getLayoutParams());
-
-				lp.width = util.getScreenwidth() / 7;
-				lp.height = util.getScreenwidth() / 7;
-				lp.setMargins(5, 5, 5, 5);
 				profileImg.setImageBitmap(bmp);
 				profileImg.setLayoutParams(lp);
 			}
