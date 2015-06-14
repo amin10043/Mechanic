@@ -60,7 +60,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 	View header;
 	Users CurrentUser;
 	int IDcurrentUser;
-	PersianDate date;
+	// PersianDate date;
 	Utility util;
 	int id;
 	Users user;
@@ -86,11 +86,12 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 		user = new Users();
 
-		date = new PersianDate();
-		currentDate = date.todayShamsi();
+		// date = new PersianDate();
+		// currentDate = date.todayShamsi();
 
 		header = getActivity().getLayoutInflater().inflate(
 				R.layout.header_expandable, null);
+		// s = new ServerDate(getActivity());
 
 		// start find view
 

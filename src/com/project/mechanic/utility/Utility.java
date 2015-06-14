@@ -1,6 +1,7 @@
 package com.project.mechanic.utility;
 
 import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -300,7 +302,7 @@ public class Utility implements AsyncInterface {
 		java.text.DateFormat dateFormat = new SimpleDateFormat(
 				"yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
-		
+
 		return dateFormat.format(date);
 
 	}
@@ -453,6 +455,20 @@ public class Utility implements AsyncInterface {
 		serviceUpdate.execute(tableUpdating,
 				(settings != null ? settings.getServerDate_CommentInObject()
 						: ""));
+	}
+
+	public Date readDateFromServer(String serverDate) {
+		String pattern = "M/dd/yyyyh:mm aa";
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		Date x = null;
+		try {
+			x = sdf.parse(serverDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			Toast.makeText(context, "خطا در خواندن تاریخ از سرور ",
+					Toast.LENGTH_SHORT).show();
+		}
+		return x;
 	}
 
 	@Override
