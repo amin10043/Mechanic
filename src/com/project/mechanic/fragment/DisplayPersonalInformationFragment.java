@@ -131,7 +131,15 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new LoginFragment());
 				trans.commit();
+				TextView txtlike = (TextView) (getActivity())
+						.findViewById(R.id.txtlike);
+				txtlike.setVisibility(View.GONE);
+				TextView txtcm1 = (TextView) (getActivity())
+						.findViewById(R.id.txtcm);
+				txtcm1.setVisibility(View.GONE);
+
 			}
+
 		});
 
 		btnedit.setOnClickListener(new OnClickListener() {
