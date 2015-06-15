@@ -1,5 +1,6 @@
 package com.project.mechanic.adapter;
 
+import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -331,9 +332,16 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 						.toString());
 			}
 			adapter.close();
+
 		} catch (Exception ex) {
-			Toast.makeText(context, "خطا در ارتباط با سرور", Toast.LENGTH_SHORT)
-					.show();
+			try {
+				SimpleDateFormat parserSDF = new SimpleDateFormat("m/dd/yyyy");
+
+			} catch (Exception e) {
+				Toast.makeText(context, "خطا در ارتباط با سرور",
+						Toast.LENGTH_SHORT).show();
+			}
+
 		}
 
 	}

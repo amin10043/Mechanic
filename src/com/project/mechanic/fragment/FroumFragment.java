@@ -199,15 +199,17 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 		exadapter.notifyDataSetChanged();
 		exlistview.setAdapter(exadapter);
-		adapter.open();
 
-		if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid))
-			likeTopic.setBackgroundResource(R.drawable.like_froum);
-		else
+		if (CurrentUser != null) {
+			adapter.open();
+			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid))
+				likeTopic.setBackgroundResource(R.drawable.like_froum);
+			else
 
-			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+				likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+			adapter.close();
 
-		adapter.close();
+		}
 
 		likeTopic.setOnClickListener(new View.OnClickListener() {
 

@@ -24,8 +24,6 @@ import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.ObjectFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
-//import com.project.mechanic.fragment.ExecutertypeFragment;
-
 public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 
 	Context context;

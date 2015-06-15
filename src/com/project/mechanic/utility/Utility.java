@@ -218,12 +218,6 @@ public class Utility implements AsyncInterface {
 				+ String.format(loc, "%02d", sc.date);
 	}
 
-	public void setFont() {
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-
-	}
-
 	public void Notification() {
 		// Set Notification Title
 		String strtitle = "t1";// getString(R.string.notificationtitle);
@@ -446,5 +440,9 @@ public class Utility implements AsyncInterface {
 	public void processFinish(String output) {
 		parseQuery(output);
 
+	}
+
+	public Typeface setFont() {
+		return Typeface.createFromAsset(context.getAssets(), "fonts/BROYA.TTF");
 	}
 }
