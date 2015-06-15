@@ -60,7 +60,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 	View header;
 	Users CurrentUser;
 	int IDcurrentUser;
-	// PersianDate date;
+	PersianDate date;
 	Utility util;
 	int id;
 	Users user;
@@ -86,8 +86,8 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 		user = new Users();
 
-		// date = new PersianDate();
-		// currentDate = date.todayShamsi();
+		date = new PersianDate();
+		currentDate = date.todayShamsi();
 
 		header = getActivity().getLayoutInflater().inflate(
 				R.layout.header_expandable, null);
@@ -118,8 +118,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		adapter.open();
 		CurrentUser = util.getCurrentUser();
 		if (CurrentUser == null) {
-			Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-					Toast.LENGTH_SHORT).show();
 
 		}
 
@@ -128,7 +126,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 		topics = adapter.getFroumItembyid(froumid);
 		Users u = adapter.getUserbyid(topics.getUserId());
-
 		if (u != null) {
 
 			nametxt.setText(u.getName());
@@ -203,15 +200,19 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 				froumid);
 
 		exadapter.notifyDataSetChanged();
+
 		exlistview.setAdapter(exadapter);
 		adapter.open();
 
-		if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid))
-			likeTopic.setBackgroundResource(R.drawable.like_froum);
-		else
-
+		if (CurrentUser == null) {
 			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+		} else {
+			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid))
+				likeTopic.setBackgroundResource(R.drawable.like_froum);
+			else
 
+				likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+		}
 		adapter.close();
 
 		likeTopic.setOnClickListener(new View.OnClickListener() {

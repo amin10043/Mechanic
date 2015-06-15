@@ -8,6 +8,7 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.FroumFragment;
+import com.project.mechanic.fragment.FroumWithoutComment;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
@@ -272,6 +274,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			}
 
 		});
+		final SharedPreferences abc = context.getSharedPreferences("Id", 0);
+		final SharedPreferences froumId = context.getSharedPreferences("Id", 0);
+
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -289,7 +294,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				FroumFragment fragment = new FroumFragment();
+				FroumWithoutComment fragment = new FroumWithoutComment();
 				trans.setCustomAnimations(R.anim.pull_in_left,
 						R.anim.push_out_right);
 				Bundle bundle = new Bundle();
@@ -305,6 +310,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
+				abc.edit().putInt("main_Id", 1).commit();
+				froumId.edit().putInt("main_Id", ItemId).commit();
 
 			}
 		});
@@ -342,6 +349,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
+				abc.edit().putInt("main_Id", 2).commit();
 
 			}
 
@@ -383,15 +391,16 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				// serverDate = output;
 				Date d = util.readDateFromServer(output);
 
-				Toast.makeText(context, " date = " + d, Toast.LENGTH_SHORT)
-						.show();
+				// Toast.makeText(context, " date = " + d, Toast.LENGTH_SHORT)
+				// .show();
 
 			} catch (Exception e) {
 
 				Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
 			}
-			Toast.makeText(context, "خطا در ارتباط با سرور", Toast.LENGTH_SHORT)
-					.show();
+			// Toast.makeText(context, "خطا در ارتباط با سرور",
+			// Toast.LENGTH_SHORT)
+			// .show();
 		}
 
 	}
