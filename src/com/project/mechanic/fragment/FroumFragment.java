@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -309,14 +310,16 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 			@Override
 			public void onClick(View arg0) {
+				String body = topics.getDescription() + "\n"
+						+ " مشاهده کامل گفتگو در: "
+						+ "<a href=\"mechanical://SplashActivity\">اینجا</a> ";
 				Intent sharingIntent = new Intent(
 						android.content.Intent.ACTION_SEND);
-				sharingIntent.setType("text/plain");
-				// String shareBody = x.getDescription();
+				sharingIntent.setType("text/html");
 				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
 						topics.getTitle());
 				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-						topics.getDescription());
+						Html.fromHtml(body));
 				startActivity(Intent.createChooser(sharingIntent,
 						"اشتراک از طریق"));
 			}
