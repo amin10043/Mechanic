@@ -1,8 +1,8 @@
 package com.project.mechanic.utility;
 
 import java.io.ByteArrayOutputStream;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -452,17 +452,16 @@ public class Utility implements AsyncInterface {
 	}
 
 	public Date readDateFromServer(String serverDate) {
-		String pattern = "M/dd/yyyyh:mm aa";
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-		Date x = null;
+
+		Calendar c = null;
 		try {
-			x = sdf.parse(serverDate);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			c = Calendar.getInstance();
+			c.setTimeInMillis(Long.valueOf(serverDate));
+		} catch (Exception e) {
 			Toast.makeText(context, "خطا در خواندن تاریخ از سرور ",
 					Toast.LENGTH_SHORT).show();
 		}
-		return x;
+		return c.getTime();
 	}
 
 	@Override

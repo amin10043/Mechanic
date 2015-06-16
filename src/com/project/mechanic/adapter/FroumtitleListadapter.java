@@ -389,19 +389,12 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 			try {
 
-				// serverDate = output;
 				Date d = util.readDateFromServer(output);
-
-				// Toast.makeText(context, " date = " + d, Toast.LENGTH_SHORT)
-				// .show();
 
 			} catch (Exception e) {
 
 				Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
 			}
-			// Toast.makeText(context, "خطا در ارتباط با سرور",
-			// Toast.LENGTH_SHORT)
-			// .show();
 		}
 
 	}
