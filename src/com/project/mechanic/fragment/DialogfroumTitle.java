@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
@@ -36,9 +38,11 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 	PersianDate date;
 	Saving saving;
 	Map<String, String> params;
-	Users user;
+	Users currentUser;
 	ProgressDialog ringProgressDialog;
 	String currentDate;
+	TextView titleHeader;
+	ImageButton createImage;
 
 	public DialogfroumTitle(Context context, int resourceId, Fragment fragment) {
 		super(context);
@@ -50,16 +54,18 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 		utility = new Utility(context);
 
 		date = new PersianDate();
-		user = utility.getCurrentUser();
+		currentUser = utility.getCurrentUser();
 		currentDate = date.todayShamsi();
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-		if (user == null) {
+		if (currentUser == null) {
 			// karbar vared nashode ast !!!!!!!
 			// nabayad inja bashaaad !!!!!!
+			Toast.makeText(context, "ابدتدا باید وارد شوید", Toast.LENGTH_SHORT)
+					.show();
 			return;
 		}
 		super.onCreate(savedInstanceState);
@@ -70,6 +76,29 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 		btntitle = (Button) findViewById(R.id.btnPdf1_Object);
 		titletxt = (EditText) findViewById(R.id.txtTitleP);
 		titleDestxt = (EditText) findViewById(R.id.txttitleDes);
+
+		createImage = (ImageButton) findViewById(R.id.createicondialog);
+		titleHeader = (TextView) findViewById(R.id.maintextcreate);
+
+		titletxt.setVisibility(View.GONE);
+		titleDestxt.setVisibility(View.GONE);
+		btntitle.setVisibility(View.GONE);
+
+		createImage.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if (currentUser != null) {
+					titletxt.setVisibility(View.VISIBLE);
+					titleDestxt.setVisibility(View.VISIBLE);
+					btntitle.setVisibility(View.VISIBLE);
+
+					createImage.setVisibility(View.GONE);
+					titleHeader.setVisibility(View.GONE);
+				}
+
+			}
+		});
 
 		btntitle.setOnClickListener(new android.view.View.OnClickListener() {
 
@@ -83,7 +112,7 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 				params.put("TableName", "Froum");
 				params.put("Title", titletxt.getText().toString());
 				params.put("Description", titleDestxt.getText().toString());
-				params.put("UserId", String.valueOf(user.getId()));
+				params.put("UserId", String.valueOf(currentUser.getId()));
 				params.put("Date", currentDate);
 
 				saving.execute(params);
@@ -126,10 +155,9 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 		try {
 			id = Integer.valueOf(output);
 			dbadapter.open();
-			dbadapter
-					.insertFroumtitletoDb(id, titletxt.getText().toString(),
-							titleDestxt.getText().toString(), user.getId(),
-							currentDate);
+			dbadapter.insertFroumtitletoDb(id, titletxt.getText().toString(),
+					titleDestxt.getText().toString(), currentUser.getId(),
+					currentDate);
 			dbadapter.close();
 			((FroumtitleFragment) fragment).updateView();
 			DialogfroumTitle.this.dismiss();

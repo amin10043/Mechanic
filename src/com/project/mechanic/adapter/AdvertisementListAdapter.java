@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -22,6 +21,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.TicketType;
 import com.project.mechanic.fragment.AnadFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class AdvertisementListAdapter extends ArrayAdapter<TicketType> {
 
@@ -33,6 +33,7 @@ public class AdvertisementListAdapter extends ArrayAdapter<TicketType> {
 	int lastPosition = 0;
 	int typeID = 0;
 	int proId;
+	Utility util;
 
 	public AdvertisementListAdapter(Context context, int resource,
 			List<TicketType> objact, int proID) {
@@ -43,6 +44,7 @@ public class AdvertisementListAdapter extends ArrayAdapter<TicketType> {
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
 		this.proId = proID;
+		util = new Utility(context);
 	}
 
 	@SuppressLint("ViewHolder")
@@ -64,9 +66,7 @@ public class AdvertisementListAdapter extends ArrayAdapter<TicketType> {
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getDesc());
 
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		txtName.setTypeface(typeFace);
+		txtName.setTypeface(util.setFont());
 
 		convertView.setOnClickListener(new OnClickListener() {
 
@@ -81,7 +81,6 @@ public class AdvertisementListAdapter extends ArrayAdapter<TicketType> {
 				int id = 0;
 				for (TicketType listItem : list) {
 					if (item.equals(listItem.getDesc())) {
-						// check authentication and authorization
 						id = listItem.getId();
 					}
 				}

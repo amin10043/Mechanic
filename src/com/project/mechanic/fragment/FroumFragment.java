@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,6 +92,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 		header = getActivity().getLayoutInflater().inflate(
 				R.layout.header_expandable, null);
+		// s = new ServerDate(getActivity());
 
 		// start find view
 
@@ -117,8 +119,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		adapter.open();
 		CurrentUser = util.getCurrentUser();
 		if (CurrentUser == null) {
-			Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-					Toast.LENGTH_SHORT).show();
 
 		}
 
@@ -127,7 +127,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 		topics = adapter.getFroumItembyid(froumid);
 		Users u = adapter.getUserbyid(topics.getUserId());
-
 		if (u != null) {
 
 			nametxt.setText(u.getName());
@@ -162,8 +161,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		countLike.setText(adapter.LikeInFroum_count(froumid).toString());
 		dateTopic.setText(topics.getDate());
 
-		adapter.close();
-
 		addComment.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -182,7 +179,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 				}
 			}
 		});
-		adapter.open();
 
 		commentGroup = adapter.getCommentInFroumbyPaperid(froumid, 0);
 
@@ -194,7 +190,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 					.getReplyCommentbyCommentID(froumid, comment.getId());
 			mapCollection.put(comment, reply);
 		}
-		adapter.close();
 
 		exlistview.addHeaderView(header);
 		exadapter = new ExpandableCommentFroum(getActivity(),
@@ -202,15 +197,18 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 				froumid);
 
 		exadapter.notifyDataSetChanged();
+
 		exlistview.setAdapter(exadapter);
-		adapter.open();
 
-		if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid))
-			likeTopic.setBackgroundResource(R.drawable.like_froum);
-		else
-
+		if (CurrentUser == null) {
 			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+		} else {
+			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid))
+				likeTopic.setBackgroundResource(R.drawable.like_froum);
+			else
 
+				likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+		}
 		adapter.close();
 
 		likeTopic.setOnClickListener(new View.OnClickListener() {
@@ -312,14 +310,16 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 			@Override
 			public void onClick(View arg0) {
+				String body = topics.getDescription() + "\n"
+						+ " مشاهده کامل گفتگو در: "
+						+ "<a href=\"mechanical://SplashActivity\">اینجا</a> ";
 				Intent sharingIntent = new Intent(
 						android.content.Intent.ACTION_SEND);
-				sharingIntent.setType("text/plain");
-				// String shareBody = x.getDescription();
+				sharingIntent.setType("text/html");
 				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
 						topics.getTitle());
 				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-						topics.getDescription());
+						Html.fromHtml(body));
 				startActivity(Intent.createChooser(sharingIntent,
 						"اشتراک از طریق"));
 			}

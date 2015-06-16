@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -36,6 +37,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -220,12 +222,6 @@ public class Utility implements AsyncInterface {
 		return String.valueOf(sc.year) + "/"
 				+ String.format(loc, "%02d", sc.month) + "/"
 				+ String.format(loc, "%02d", sc.date);
-	}
-
-	public void setFont() {
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-
 	}
 
 	public void Notification() {
@@ -488,9 +484,26 @@ public class Utility implements AsyncInterface {
 						: ""));
 	}
 
+	public Date readDateFromServer(String serverDate) {
+
+		Calendar c = null;
+		try {
+			c = Calendar.getInstance();
+			c.setTimeInMillis(Long.valueOf(serverDate));
+		} catch (Exception e) {
+			Toast.makeText(context, "خطا در خواندن تاریخ از سرور ",
+					Toast.LENGTH_SHORT).show();
+		}
+		return c.getTime();
+	}
+
 	@Override
 	public void processFinish(String output) {
 		parseQuery(output);
 
+	}
+
+	public Typeface setFont() {
+		return Typeface.createFromAsset(context.getAssets(), "fonts/BROYA.TTF");
 	}
 }

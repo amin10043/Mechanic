@@ -2,6 +2,7 @@ package com.project.mechanic.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -22,11 +23,14 @@ public class DialogCreatePage extends Dialog {
 	Utility util;
 	ImageButton create;
 	Users Currentser;
+	String message;
+	private DialogfroumTitle dialog;
 
-	public DialogCreatePage(Context context) {
+	public DialogCreatePage(Context context, String message) {
 		super(context);
 		this.context = context;
 		util = new Utility(context);
+		this.message = message;
 	}
 
 	@Override
@@ -39,14 +43,15 @@ public class DialogCreatePage extends Dialog {
 
 		setContentView(R.layout.dialog_create);
 		create = (ImageButton) findViewById(R.id.createDialogPage);
-		TextView message = (TextView) findViewById(R.id.textView1);
+		TextView main = (TextView) findViewById(R.id.textView1);
 		Currentser = util.getCurrentUser();
 
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BoldRoya.TTF");
+		main.setText(message);
+		main.setTypeface(typeFace);
 
-		message.setTypeface(typeFace);
-
+		SharedPreferences realize = context.getSharedPreferences("Id", 0);
 		create.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override

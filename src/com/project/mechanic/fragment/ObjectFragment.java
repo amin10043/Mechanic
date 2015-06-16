@@ -63,11 +63,13 @@ public class ObjectFragment extends Fragment {
 
 		FloatingActionButton createItem = (FloatingActionButton) view
 				.findViewById(R.id.fab);
+		final String message = "کاربر گرامی اگر برند یا مجموعه تولیدی را در اختیار دارید یا در بازار ایران نسبت به آن شناخت دارید که در این نرم افزار قید نشده لطفا مشخصات مورد نظر را برای ما ارسال نمایید   با تشکر";
+
 		createItem.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				dialog = new DialogCreatePage(getActivity());
+				dialog = new DialogCreatePage(getActivity(), message);
 				dialog.show();
 
 				SharedPreferences sendMainObjectId = getActivity()

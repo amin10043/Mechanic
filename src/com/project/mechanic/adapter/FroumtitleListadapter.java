@@ -1,5 +1,6 @@
 package com.project.mechanic.adapter;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -28,13 +30,16 @@ import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.FroumFragment;
+import com.project.mechanic.fragment.FroumWithoutComment;
 import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
+@SuppressLint("SimpleDateFormat")
 public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		AsyncInterface {
 
@@ -43,7 +48,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 	DataBaseAdapter adapter;
 	Utility util;
 	Users CurrentUser;
-	PersianDate date;
+	PersianDate todayDate;
 	String currentDate;
 	LinearLayout LikeTitle;
 	// int ItemId;
@@ -54,6 +59,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 	Saving saving;
 	Deleting deleting;
 	Map<String, String> params;
+
+	String serverDate = "";
+	ServerDate date;
 
 	public FroumtitleListadapter(Context context, int resource,
 			List<Froum> objects) {
@@ -94,8 +102,12 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		LikeTitle = (LinearLayout) convertView
 				.findViewById(R.id.liketitleTopic);
 
-		date = new PersianDate();
-		currentDate = date.todayShamsi();
+		todayDate = new PersianDate();
+		currentDate = todayDate.todayShamsi();
+
+		// date = new ServerDate(context);
+		// date.delegate = this;
+		// date.execute("");
 
 		Froum person1 = mylist.get(position);
 
@@ -111,7 +123,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				.toString());
 		countLikeFroum.setText(adapter.LikeInFroum_count(person1.getId())
 				.toString());
-		dateTopic.setText(x.getDate());
+		dateTopic.setText(person1.getDate());
 		adapter.open();
 
 		String item = txt1.getText().toString();
@@ -263,6 +275,47 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			}
 
 		});
+		final SharedPreferences abc = context.getSharedPreferences("Id", 0);
+		final SharedPreferences froumId = context.getSharedPreferences("Id", 0);
+
+		convertView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				LinearLayout parentlayout = (LinearLayout) v;
+
+				String item = txt1.getText().toString();
+				int ItemId = 0;
+				for (Froum listItem : mylist) {
+					if (item.equals(listItem.getTitle())) {
+						// check authentication and authorization
+						ItemId = listItem.getId();
+					}
+				}
+
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				FroumWithoutComment fragment = new FroumWithoutComment();
+				trans.setCustomAnimations(R.anim.pull_in_left,
+						R.anim.push_out_right);
+				Bundle bundle = new Bundle();
+				bundle.putString("Id", String.valueOf(ItemId));
+				fragment.setArguments(bundle);
+
+				DialogcmtInfroum dialog = new DialogcmtInfroum(null, ItemId,
+						context, -1, R.layout.dialog_addcomment);
+
+				Bundle bundle2 = new Bundle();
+				bundle.putString("Id", String.valueOf(ItemId));
+				fragment.setArguments(bundle);
+
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+				abc.edit().putInt("main_Id", 1).commit();
+				froumId.edit().putInt("main_Id", ItemId).commit();
+
+			}
+		});
 		commenttitle.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -297,6 +350,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
+				abc.edit().putInt("main_Id", 2).commit();
 
 			}
 
@@ -306,7 +360,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 	@Override
 	public void processFinish(String output) {
-		ringProgressDialog.dismiss();
+		// ringProgressDialog.dismiss();
 
 		int id = -1;
 
@@ -331,9 +385,17 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 						.toString());
 			}
 			adapter.close();
+
 		} catch (Exception ex) {
-			Toast.makeText(context, "خطا در ارتباط با سرور", Toast.LENGTH_SHORT)
-					.show();
+
+			try {
+
+				Date d = util.readDateFromServer(output);
+
+			} catch (Exception e) {
+
+				Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
+			}
 		}
 
 	}

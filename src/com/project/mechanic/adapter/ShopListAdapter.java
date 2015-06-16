@@ -74,6 +74,12 @@ public class ShopListAdapter extends ArrayAdapter<Province> {
 				adapter.open();
 				List<Ticket> allItems = adapter.getTicketByProvinceId(province
 						.getId());
+				int count = province.getCount();
+				int id = province.getId();
+				count = count + 1;
+				adapter.UpdateProvinceToDb(id, count);
+
+				adapter.close();
 
 				adapter.close();
 
