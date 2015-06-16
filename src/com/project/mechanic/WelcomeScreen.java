@@ -9,12 +9,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,8 +31,6 @@ import android.widget.TextView;
 
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.service.Updating;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class WelcomeScreen extends Activity {
@@ -60,14 +56,10 @@ public class WelcomeScreen extends Activity {
 	private TimerTask scrollerSchedule;
 	private TimerTask faceAnimationSchedule;
 	private int scrollPos = 0;
-	private Boolean isFaceDown = true;
 	private Timer clickTimer = null;
 	private Timer faceTimer = null;
 	private Button clickedButton = null;
 
-	private Updating serviceUpdate;
-	// private UpdatingImage serviceImage;
-	private ServiceComm comm;
 	private Utility util;
 	private DataBaseAdapter adapter;
 	Settings settings;
@@ -81,30 +73,15 @@ public class WelcomeScreen extends Activity {
 		adapter = new DataBaseAdapter(this);
 		util = new Utility(this);
 
-		// boolean isFirstTime = false;
-
 		adapter.open();
 		settings = adapter.getSettings();
 		adapter.close();
 
 		util.Updating();
 
-		// startService(new Intent(this, ChatHeadService.class));
-
 		initialize();
 		clickItem();
-		int[] image = { R.drawable.up2, R.drawable.on2, R.drawable.or2,
-				R.drawable.g1, R.drawable.g2, R.drawable.g3, R.drawable.tayan,
-				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
-				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
-				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
-				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
-				R.drawable.tayan, R.drawable.tayan, R.drawable.tayan,
-				R.drawable.tayan, R.drawable.tayan, };
 
-		Resources r = getResources();
-		float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-				gridePadding, r.getDisplayMetrics());
 		columnWidth = (int) (getScreenWidth() / column);
 
 		initialize();
@@ -118,6 +95,7 @@ public class WelcomeScreen extends Activity {
 		verticalScrollview = (ScrollView) findViewById(R.id.vertical_scrollview_id);
 		ViewTreeObserver vto = verticalOuterLayout.getViewTreeObserver();
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void onGlobalLayout() {
 				verticalOuterLayout.getViewTreeObserver()
@@ -129,6 +107,7 @@ public class WelcomeScreen extends Activity {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	public int getScreenWidth() {
 		int columnWidth;
@@ -415,27 +394,6 @@ public class WelcomeScreen extends Activity {
 
 	}
 
-	private void padding(int padding) {
-		row1.setPadding((int) padding, (int) padding, (int) padding,
-				(int) padding);
-
-		row2.setPadding((int) padding, (int) padding, (int) padding,
-				(int) padding);
-		row3.setPadding((int) padding, (int) padding, (int) padding,
-				(int) padding);
-		row4.setPadding((int) padding, (int) padding, (int) padding,
-				(int) padding);
-		row5.setPadding((int) padding, (int) padding, (int) padding,
-				(int) padding);
-		row6.setPadding((int) padding, (int) padding, (int) padding,
-				(int) padding);
-		row7.setPadding((int) padding, (int) padding, (int) padding,
-				(int) padding);
-		row8.setPadding((int) padding, (int) padding, (int) padding,
-				(int) padding);
-
-	}
-
 	private void setParams() {
 
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -617,9 +575,6 @@ public class WelcomeScreen extends Activity {
 		Animation.AnimationListener scaleFaceAnimationListener = new Animation.AnimationListener() {
 			@Override
 			public void onAnimationStart(Animation arg0) {
-				// verticalTextView.setText(nameArray[(Integer) clickedButton
-				// .getTag()]);
-				isFaceDown = false;
 			}
 
 			@Override
@@ -656,6 +611,7 @@ public class WelcomeScreen extends Activity {
 		return scaleFace;
 	}
 
+	@SuppressLint("HandlerLeak")
 	private Handler faceScaleHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -679,28 +635,16 @@ public class WelcomeScreen extends Activity {
 			@Override
 			public void onAnimationRepeat(Animation arg0) {
 				verticalTextView.setText("");
-				isFaceDown = true;
 			}
 
 			@Override
 			public void onAnimationEnd(Animation arg0) {
 				verticalTextView.setText("");
-				isFaceDown = true;
 			}
 		};
 		scaleFace.setAnimationListener(scaleFaceAnimationListener);
 		return scaleFace;
 	}
-
-	// public void onBackPressed() {
-	// super.onBackPressed();
-	// finish();
-	// }
-	//
-	// public void onPause() {
-	// super.onPause();
-	// finish();
-	// }
 
 	public void onDestroy() {
 		clearTimerTaks(clickSchedule);
