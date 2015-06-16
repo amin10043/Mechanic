@@ -30,7 +30,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -320,14 +319,13 @@ public class EditPersonalFragment extends Fragment {
 
 			System.out.println("Camera Image URI : " + mImageCaptureUri);
 			CropingIMG();
+
 		} else if (requestCode == CROPING_CODE) {
 
 			try {
 				if (outPutFile.exists()) {
 					Bitmap photo = decodeFile(outPutFile);
 					img2.setImageBitmap(photo);
-					img2.setLayoutParams(lp2);
-					img2.setScaleType(ScaleType.FIT_XY);
 				} else {
 					Toast.makeText(getActivity().getApplicationContext(),
 							"Error while save image", Toast.LENGTH_SHORT)
@@ -341,7 +339,7 @@ public class EditPersonalFragment extends Fragment {
 
 	private void CropingIMG() {
 
-		final ArrayList cropOptions = new ArrayList();
+		final ArrayList<CropingOption> cropOptions = new ArrayList();
 
 		final Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setType("image/*");
@@ -407,7 +405,8 @@ public class EditPersonalFragment extends Fragment {
 
 								final CropingOption co = new CropingOption();
 								co.appIntent = new Intent(intent);
-								startActivityForResult(co.appIntent,
+								startActivityForResult(
+										cropOptions.get(itemc).appIntent,
 										CROPING_CODE);
 							}
 						});
