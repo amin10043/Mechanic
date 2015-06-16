@@ -319,6 +319,7 @@ public class EditPersonalFragment extends Fragment {
 
 			System.out.println("Camera Image URI : " + mImageCaptureUri);
 			CropingIMG();
+
 		} else if (requestCode == CROPING_CODE) {
 
 			try {
@@ -338,7 +339,7 @@ public class EditPersonalFragment extends Fragment {
 
 	private void CropingIMG() {
 
-		final ArrayList cropOptions = new ArrayList();
+		final ArrayList<CropingOption> cropOptions = new ArrayList();
 
 		final Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setType("image/*");
@@ -404,7 +405,8 @@ public class EditPersonalFragment extends Fragment {
 
 								final CropingOption co = new CropingOption();
 								co.appIntent = new Intent(intent);
-								startActivityForResult(co.appIntent,
+								startActivityForResult(
+										cropOptions.get(itemc).appIntent,
 										CROPING_CODE);
 							}
 						});

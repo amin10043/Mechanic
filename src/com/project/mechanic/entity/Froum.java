@@ -1,6 +1,6 @@
 package com.project.mechanic.entity;
 
-public class Froum {
+public class Froum implements Comparable<Froum> {
 
 	int Id;
 	int UserId;
@@ -10,7 +10,7 @@ public class Froum {
 	String ServerDate;
 	int Submit;
 	String Date;
-	
+
 	public int getId() {
 		return Id;
 	}
@@ -66,6 +66,7 @@ public class Froum {
 	public void setSubmit(int submit) {
 		Submit = submit;
 	}
+
 	public String getDate() {
 		return Date;
 	}
@@ -73,6 +74,7 @@ public class Froum {
 	public void setDate(String date) {
 		Date = date;
 	}
+
 	public Froum(int id, int userId, String title, String description,
 			int seen, String serverdate, int submit, String date) {
 		super();
@@ -84,6 +86,15 @@ public class Froum {
 		ServerDate = serverdate;
 		Submit = submit;
 		Date = date;
+	}
+
+	@Override
+	public int compareTo(Froum d1) {
+		// TODO Auto-generated method stub
+		if (getDate() == null || d1.getDate() == null)
+			return 0;
+		return getDate().compareTo(d1.getDate());
+
 	}
 
 }
