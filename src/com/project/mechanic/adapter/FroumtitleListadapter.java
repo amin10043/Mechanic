@@ -123,7 +123,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				.toString());
 		countLikeFroum.setText(adapter.LikeInFroum_count(person1.getId())
 				.toString());
-		dateTopic.setText(person1.getDate());
+		dateTopic.setText(util.getPersianDate(person1.getDate()));
 		adapter.open();
 
 		String item = txt1.getText().toString();

@@ -41,6 +41,7 @@ import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.FragmentAboutUs;
 import com.project.mechanic.fragment.FragmentContactUs;
 import com.project.mechanic.fragment.FroumFragment;
+import com.project.mechanic.fragment.FroumWithoutComment;
 import com.project.mechanic.fragment.FroumtitleFragment;
 import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.fragment.LoginFragment;
@@ -377,6 +378,12 @@ public class MainActivity extends FragmentActivity {
 						R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new FroumtitleFragment());
 				trans.commit();
+			} else if (f instanceof FroumWithoutComment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new FroumtitleFragment());
+				trans.commit();
+
 			} else if (f instanceof FroumtitleFragment) {
 				trans.setCustomAnimations(R.anim.push_out_right,
 						R.anim.pull_in_left);

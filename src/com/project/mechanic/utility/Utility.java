@@ -43,6 +43,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Updating;
@@ -58,10 +59,12 @@ public class Utility implements AsyncInterface {
 
 	private Updating serviceUpdate;
 	Settings settings;
+	PersianDate pDate;
 
 	public Utility(Context context) {
 		this.context = context;
 		adapter = new DataBaseAdapter(context);
+		pDate = new PersianDate();
 	}
 
 	public boolean isNetworkConnected() {
@@ -505,5 +508,22 @@ public class Utility implements AsyncInterface {
 
 	public Typeface setFont() {
 		return Typeface.createFromAsset(context.getAssets(), "fonts/BROYA.TTF");
+	}
+
+	public String getPersianDate(String timeStamp) {
+		String ret = "";
+		String test = timeStamp;
+		if (timeStamp != null && !"".equals(timeStamp)) {
+			String y = test.substring(0, 4);
+			String m = test.substring(4, 6);
+			String d = test.substring(6, 8);
+			String h = test.substring(8, 10);
+			String M = test.substring(10, 12);
+			String s = test.substring(12, 14);
+			ret = pDate.Shamsi(Integer.valueOf(y), Integer.valueOf(m),
+					Integer.valueOf(d))
+					+ "  " + h + ":" + M + ":" + s;
+		}
+		return ret;
 	}
 }
