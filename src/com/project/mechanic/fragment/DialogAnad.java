@@ -61,7 +61,7 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 	LinearLayout Lheader;
 	String titel;
 	String Bytimage;
-	PersianDate date;
+
 	int ProvinceId;
 	Users u;
 	String currentDate;
@@ -113,6 +113,7 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 		dialog_img1.setLayoutParams(headerEditParams);
 		dbadapter = new DataBaseAdapter(context);
 		u = util.getCurrentUser();
+		
 		UName.setText(u.getName());
 		UMobile.setText(u.getMobailenumber());
 		if(u.getEmail()!=null){
@@ -132,15 +133,15 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 			public void onClick(View arg0) {
 //				 date = new SimpleDateFormat("yyyy-MM-dd")
 //					.format(new Date());
-				 date = new PersianDate();
-				 currentDate = date.todayShamsi();
+				
+				 currentDate = util.getCuurentDateTime();
 				params = new LinkedHashMap<String, String>();
 				saving = new Saving(context);
 				saving.delegate = DialogAnad.this;
 
 				params.put("TableName", "Ticket");
 				params.put("Title", dialog_anad_et1.getText().toString());
-			  //  params.put("Desc", dialog_anad_et2.getText().toString());
+			//    params.put("Desc", dialog_anad_et2.getText().toString());
 				params.put("UserId", String.valueOf(u.getId()));
 				params.put("TypeId", String.valueOf(ticketTypeID));
 				params.put("ProvinceId", String.valueOf(ProvinceId));

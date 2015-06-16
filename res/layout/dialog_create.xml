@@ -18,7 +18,7 @@
             android:layout_margin="10dp"
             android:gravity="right"
             android:lineSpacingExtra="10dp"
-            android:text="کاربر گرامی اگر برند یا مجموعه تولیدی را در اختیار دارید یا در بازار ایران نسبت به آن شناخت دارید که در این نرم افزار قید نشده لطفا مشخصات مورد نظر را برای ما ارسال نمایید   با تشکر"
+            android:text=""
             android:textColor="@color/transparent"
             android:textSize="20dp" />
 

@@ -91,6 +91,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 		header = getActivity().getLayoutInflater().inflate(
 				R.layout.header_expandable, null);
+		// s = new ServerDate(getActivity());
 
 		// start find view
 
@@ -117,8 +118,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		adapter.open();
 		CurrentUser = util.getCurrentUser();
 		if (CurrentUser == null) {
-			Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-					Toast.LENGTH_SHORT).show();
 
 		}
 
@@ -127,27 +126,30 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 		topics = adapter.getFroumItembyid(froumid);
 		Users u = adapter.getUserbyid(topics.getUserId());
-
 		if (u != null) {
 
 			nametxt.setText(u.getName());
+			LinearLayout rl = (LinearLayout) header
+					.findViewById(R.id.profileLinearcommenterinContinue);
+
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+					rl.getLayoutParams());
+
+			lp.width = util.getScreenwidth() / 7;
+			lp.height = util.getScreenwidth() / 7;
+			lp.setMargins(5, 5, 5, 5);
+			profileImg.setLayoutParams(lp);
 
 			if (u.getImage() == null) {
 				profileImg.setImageResource(R.drawable.no_img_profile);
+				profileImg.setLayoutParams(lp);
+
 			} else {
 				byte[] bytepic = u.getImage();
 
 				Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0,
 						bytepic.length);
-				LinearLayout rl = (LinearLayout) header
-						.findViewById(R.id.profileLinearcommenterinContinue);
 
-				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-						rl.getLayoutParams());
-
-				lp.width = util.getScreenwidth() / 7;
-				lp.height = util.getScreenwidth() / 7;
-				lp.setMargins(5, 5, 5, 5);
 				profileImg.setImageBitmap(bmp);
 				profileImg.setLayoutParams(lp);
 			}
@@ -157,8 +159,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
 		countLike.setText(adapter.LikeInFroum_count(froumid).toString());
 		dateTopic.setText(topics.getDate());
-
-		adapter.close();
 
 		addComment.setOnClickListener(new View.OnClickListener() {
 
@@ -178,7 +178,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 				}
 			}
 		});
-		adapter.open();
 
 		commentGroup = adapter.getCommentInFroumbyPaperid(froumid, 0);
 
@@ -190,7 +189,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 					.getReplyCommentbyCommentID(froumid, comment.getId());
 			mapCollection.put(comment, reply);
 		}
-		adapter.close();
 
 		exlistview.addHeaderView(header);
 		exadapter = new ExpandableCommentFroum(getActivity(),
@@ -198,18 +196,19 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 				froumid);
 
 		exadapter.notifyDataSetChanged();
+
 		exlistview.setAdapter(exadapter);
 
-		if (CurrentUser != null) {
-			adapter.open();
+		if (CurrentUser == null) {
+			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+		} else {
 			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid))
 				likeTopic.setBackgroundResource(R.drawable.like_froum);
 			else
 
 				likeTopic.setBackgroundResource(R.drawable.like_froum_off);
-			adapter.close();
-
 		}
+		adapter.close();
 
 		likeTopic.setOnClickListener(new View.OnClickListener() {
 

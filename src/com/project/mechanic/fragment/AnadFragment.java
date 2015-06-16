@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.ListView.PullAndLoadListView;
 import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
 import com.project.mechanic.ListView.PullToRefreshListView.OnRefreshListener;
@@ -110,9 +111,10 @@ public class AnadFragment extends Fragment {
 		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
 		// proID = Integer.valueOf(getArguments().getString("ProID"));
 
-		imgadd = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
+		//imgadd = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
 		txt1 = (TextView) view.findViewById(R.id.fragment_anad_txt1);
 		img = (ImageButton) view.findViewById(R.id.img_anad);
+		FloatingActionButton createItem = (FloatingActionButton) view.findViewById(R.id.fabAnad);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
@@ -140,7 +142,7 @@ public class AnadFragment extends Fragment {
 			}
 		}
 
-		imgadd.setOnClickListener(new OnClickListener() {
+		createItem.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -462,7 +464,7 @@ public class AnadFragment extends Fragment {
 
 			// Simulates a background task
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 			}
 			//

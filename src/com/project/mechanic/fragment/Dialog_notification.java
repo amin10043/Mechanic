@@ -4,14 +4,18 @@ import java.util.ArrayList;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.CommentObjectNotificationAdapter;
 import com.project.mechanic.adapter.CommentPaperNotificationAdapter;
@@ -56,6 +60,8 @@ public class Dialog_notification extends Dialog {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setBackgroundDrawable(
+				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 		setContentView(R.layout.dialog_notification1);
 
@@ -82,9 +88,9 @@ public class Dialog_notification extends Dialog {
 		final ListView listnewcmf = (ListView) findViewById(R.id.listnewcmf);
 		final ListView listnewcmo = (ListView) findViewById(R.id.listnewcmo);
 		final ListView listnewcmp = (ListView) findViewById(R.id.listnewcmp);
-		TextView numf = (TextView) findViewById(R.id.numf);
-		TextView numo = (TextView) findViewById(R.id.numo);
-		TextView nump = (TextView) findViewById(R.id.nump);
+		final TextView numf = (TextView) findViewById(R.id.numf);
+		final TextView numo = (TextView) findViewById(R.id.numo);
+		final TextView nump = (TextView) findViewById(R.id.nump);
 
 		//
 		adapter.open();
@@ -92,9 +98,26 @@ public class Dialog_notification extends Dialog {
 		int r = adapter.NumOfNewCmtInFroum(user.getId());
 		int r1 = adapter.NumOfNewCmtInObject(user.getId());
 		int r2 = adapter.NumOfNewCmtInPaper(user.getId());
-		numf.setText("" + r);
-		numo.setText("" + r1);
-		nump.setText("" + r2);
+
+		if (r == 0) {
+			numf.setVisibility(View.GONE);
+		} else {
+			numf.setText("" + r);
+		}
+		;
+
+		if (r1 == 0) {
+			numo.setVisibility(View.GONE);
+		} else {
+			numo.setText("" + r1);
+		}
+		;
+		if (r2 == 0) {
+			nump.setVisibility(View.GONE);
+		} else {
+			nump.setText("" + r2);
+		}
+		;
 
 		// Users u = util.getCurrentUser();
 		// int id = u.getId();
@@ -119,82 +142,53 @@ public class Dialog_notification extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
+				numf.setVisibility(View.GONE);
 				listnewcmf.setAdapter(dataAdapter);
+				// if (listnewcmf != null) {
+				// Toast.makeText(context, "khali nis", Toast.LENGTH_LONG)
+				// .show();
 
-				// listnewcmf
-				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
-				// {
-				//
-				// @Override
-				// public void onItemClick(AdapterView<?> parent,
-				// View view, int position, long id) {
-				// // TODO Auto-generated method stub
-				// // Fragment fragment = new tasks();
-				// android.support.v4.app.FragmentManager fragmentManager =
-				// ((MainActivity) context)
-				// .getSupportFragmentManager();
-				// FragmentTransaction fragmentTransaction = fragmentManager
-				// .beginTransaction();
-				// fragmentTransaction.replace(R.id.content_frame,
-				// new FroumFragment());
-				// fragmentTransaction.addToBackStack(null);
-				// fragmentTransaction.commit();
 				// }
 
-				// });
+				listnewcmf.setOnItemClickListener(new OnItemClickListener() {
 
-				// listnewcmf.setOnClickListener(new View.OnClickListener() {
-				//
-				// @Override
-				// public void onClick(View arg0) {
-				// // TODO Auto-generated method stub
-				// FragmentTransaction trans = ((FragmentActivity) context)
-				// .getSupportFragmentManager().beginTransaction();
-				// trans.replace(R.id.content_frame, new FroumFragment());
-				// trans.commit();
-				//
-				// }
-				// });
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int position, long arg3) {
+						android.support.v4.app.FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						trans.replace(R.id.content_frame,
+								new FroumtitleFragment());
+						trans.commit();
+						dismiss();
+
+					}
+
+				});
 
 			}
 		});
+
 		btnshowcmo.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
+				numo.setVisibility(View.GONE);
 				listnewcmo.setAdapter(dataAdapter1);
 
-				// listnewcmo
-				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
-				// {
-				//
-				// @Override
-				// public void onItemClick(AdapterView<?> parent,
-				// View view, int position, long id) {
-				// // TODO Auto-generated method stub
-				// FragmentTransaction trans = ((MainActivity) context)
-				// .getSupportFragmentManager()
-				// .beginTransaction();
-				// trans.replace(R.id.content_frame,
-				// new ObjectFragment());
-				// trans.commit();
-				//
-				// }
-				// });
+				listnewcmo.setOnItemClickListener(new OnItemClickListener() {
 
-				// listnewcmo.setOnClickListener(new View.OnClickListener() {
-				//
-				// @Override
-				// public void onClick(View arg0) {
-				// // TODO Auto-generated method stub
-				// FragmentTransaction trans = ((FragmentActivity) context)
-				// .getSupportFragmentManager().beginTransaction();
-				// trans.replace(R.id.content_frame, new ObjectFragment());
-				// trans.commit();
-				//
-				// }
-				// });
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int position, long arg3) {
+						android.support.v4.app.FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						trans.replace(R.id.content_frame, new ObjectFragment());
+						trans.commit();
+						dismiss();
+					}
+				});
 
 			}
 		});
@@ -203,31 +197,23 @@ public class Dialog_notification extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
+				nump.setVisibility(View.GONE);
 				listnewcmp.setAdapter(dataAdapter2);
 
-				// listnewcmp
-				// .setOnItemClickListener(new AdapterView.OnItemClickListener()
-				// {
-				//
-				// @Override
-				// public void onItemClick(AdapterView<?> parent,
-				// View view, int position, long id) {
-				// // TODO Auto-generated method stub
-				// FragmentTransaction t = getActivity()
-				// .getFragmentManager()
-				// .beginTransaction();
-				// Fragment paperfragment = new PaperFragment();
-				// t.replace(R.id.content_frame, paperfragment);
-				// t.addToBackStack(null);
-				// t.commit();
-				// }
-				//
-				// private Fragment getActivity() {
-				// // TODO Auto-generated method stub
-				// return null;
-				// }
-				//
-				// });
+				listnewcmp.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int position, long arg3) {
+						android.support.v4.app.FragmentTransaction trans = ((MainActivity) context)
+								.getSupportFragmentManager().beginTransaction();
+						trans.replace(R.id.content_frame,
+								new TitlepaperFragment());
+						trans.commit();
+						dismiss();
+					}
+				});
+
 			}
 
 		});

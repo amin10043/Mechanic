@@ -5,14 +5,17 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
@@ -48,6 +51,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	ServerDate date;
 	Users u;
 	FloatingActionButton action;
+	RelativeLayout header;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -57,6 +61,11 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		view = inflater.inflate(R.layout.fragment_titlefrm, null);
 		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 		action = (FloatingActionButton) view.findViewById(R.id.fab);
+		header = (RelativeLayout) view.findViewById(R.id.re);
+		header.setVisibility(View.GONE);
+
+		final SharedPreferences realize = getActivity().getSharedPreferences(
+				"Id", 0);
 
 		action.setOnClickListener(new OnClickListener() {
 
@@ -69,7 +78,13 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 					dialog = new DialogfroumTitle(getActivity(),
 							R.layout.dialog_addtitle, FroumtitleFragment.this);
+					dialog.getWindow()
+							.setSoftInputMode(
+									WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 					dialog.show();
+
+					realize.edit().putInt("main_Id", 1).commit();
+
 				}
 
 			}

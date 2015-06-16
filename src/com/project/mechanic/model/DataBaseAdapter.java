@@ -3006,4 +3006,30 @@ public class DataBaseAdapter {
 		return lk;
 	}
 
+	public void InsertLikeCommentFroumToDatabase(int id, int UserId,
+			int ISLike, int CommentId) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("ID", id);
+		uc.put("UserId", UserId);
+		uc.put("CommentId", CommentId);
+		uc.put("IsLike", ISLike);
+
+		long res = mDb.insert(TableLikeInComment, null, uc);
+		long res2 = res;
+	}
+
+	public Integer NumberOfLikeOrDisLikeFroum(int commentID, int isLike) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInComment + " WHERE CommentID=" + commentID
+				+ " AND isLike = " + isLike, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
 }

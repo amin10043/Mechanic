@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/list_item"
     android:orientation="vertical" >
 
     <TextView
@@ -10,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="لایک ها" />
+        android:text="لایک ها"
+        android:textColor="@color/transparent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,6 +52,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="تالار گفتگو"
+                        android:textColor="@color/transparent"
                         android:textSize="@dimen/txtsize10" />
                 </LinearLayout>
 
@@ -95,6 +99,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="شخصی"
+                        android:textColor="@color/transparent"
                         android:textSize="@dimen/txtsize10" />
                 </LinearLayout>
 
@@ -139,6 +144,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="مقالات"
+                        android:textColor="@color/transparent"
                         android:textSize="@dimen/txtsize10" />
                 </LinearLayout>
 
