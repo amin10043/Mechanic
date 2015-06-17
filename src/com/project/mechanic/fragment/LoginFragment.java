@@ -196,60 +196,67 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 		ringProgressDialog.dismiss();
 
-		SharedPreferences settings = getActivity().getSharedPreferences("user",
-				0);
-		SharedPreferences.Editor editor = settings.edit();
-		if ("true".equals(output)) {
-
-			editor.putBoolean("isLogin", true);
-
-			// ثبت اطلاعات کاربر در دیتا بیس هم حتما انجام گیرد. فراموش نشود!!!!
-
-			FragmentTransaction trans = getActivity()
-					.getSupportFragmentManager().beginTransaction();
-			trans.replace(R.id.content_frame, new MainFragment());
-			trans.commit();
-			// String mobile2 = editmobile.getText().toString();
-
-			// if (mobile != null) {
-			//
-			//
-
-			dbAdapter.open();
-			u = dbAdapter.getUserbymobailenumber(mobileNumber);
-			if (u != null) {
-				int id = u.getId();
-				int admin = 1;
-				dbAdapter.UpdateAdminUserToDb(id, admin);
-			}
-			dbAdapter.close();
-			// } else {
-			// Toast.makeText(
-			// getActivity(),
-			// "شما وارد شده اید اما شماره تلفن به درستی وارد نشده است.",
-			// Toast.LENGTH_SHORT).show();
-			// }
-			Toast.makeText(getActivity(), "شما وارد شده اید.",
+		if (output != null && output.contains("SocketTimeoutException")) {
+			Toast.makeText(getActivity(),
+					"خطا در ارتباط با سرور. مهات زمانی تمام شده است",
 					Toast.LENGTH_SHORT).show();
-			TextView txtlike = (TextView) (getActivity())
-					.findViewById(R.id.txtlike);
-			txtlike.setVisibility(View.VISIBLE);
-			TextView txtcm1 = (TextView) (getActivity())
-					.findViewById(R.id.txtcm);
-			txtcm1.setVisibility(View.VISIBLE);
-
-			util.setNoti(getActivity(), u.getId());
-
 		} else {
 
-			Toast.makeText(getActivity(),
-					"نام کاربری و یا کلمه عبور به درستی وارد نشده است.",
-					Toast.LENGTH_SHORT).show();
-			editor.putBoolean("isLogin", false);
+			SharedPreferences settings = getActivity().getSharedPreferences(
+					"user", 0);
+			SharedPreferences.Editor editor = settings.edit();
+			if ("true".equals(output)) {
 
+				editor.putBoolean("isLogin", true);
+
+				// ثبت اطلاعات کاربر در دیتا بیس هم حتما انجام گیرد. فراموش
+				// نشود!!!!
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+				// String mobile2 = editmobile.getText().toString();
+
+				// if (mobile != null) {
+				//
+				//
+
+				dbAdapter.open();
+				u = dbAdapter.getUserbymobailenumber(mobileNumber);
+				if (u != null) {
+					int id = u.getId();
+					int admin = 1;
+					dbAdapter.UpdateAdminUserToDb(id, admin);
+				}
+				dbAdapter.close();
+				// } else {
+				// Toast.makeText(
+				// getActivity(),
+				// "شما وارد شده اید اما شماره تلفن به درستی وارد نشده است.",
+				// Toast.LENGTH_SHORT).show();
+				// }
+				Toast.makeText(getActivity(), "شما وارد شده اید.",
+						Toast.LENGTH_SHORT).show();
+				TextView txtlike = (TextView) (getActivity())
+						.findViewById(R.id.txtlike);
+				txtlike.setVisibility(View.VISIBLE);
+				TextView txtcm1 = (TextView) (getActivity())
+						.findViewById(R.id.txtcm);
+				txtcm1.setVisibility(View.VISIBLE);
+
+				util.setNoti(getActivity(), u.getId());
+
+			} else {
+
+				Toast.makeText(getActivity(),
+						"نام کاربری و یا کلمه عبور به درستی وارد نشده است.",
+						Toast.LENGTH_SHORT).show();
+				editor.putBoolean("isLogin", false);
+
+			}
+
+			editor.commit();
 		}
-
-		editor.commit();
-
 	}
 }

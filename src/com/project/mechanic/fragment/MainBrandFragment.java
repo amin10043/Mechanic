@@ -25,7 +25,7 @@ import com.project.mechanic.utility.Utility;
 
 public class MainBrandFragment extends Fragment {
 	DataBaseAdapter adapter;
-	int id;
+	int parentId;
 	Users CurrentUser;
 	Utility util;
 	DialogCreatePage dialog;
@@ -47,7 +47,7 @@ public class MainBrandFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		if (getArguments() != null && getArguments().getString("Id") != null) {
-			id = Integer.valueOf(getArguments().getString("Id"));
+			parentId = Integer.valueOf(getArguments().getString("Id"));
 		}
 
 		((MainActivity) getActivity()).setTitle(R.string.object);
@@ -66,7 +66,7 @@ public class MainBrandFragment extends Fragment {
 
 		adapter.open();
 		// objectList = adapter.getObjectbyParentId(id);
-		ArrayList<Object> mylist = adapter.getObjectbyParentId(id);
+		ArrayList<Object> mylist = adapter.getObjectbyParentId(parentId);
 
 		adapter.close();
 
@@ -111,12 +111,9 @@ public class MainBrandFragment extends Fragment {
 
 				SharedPreferences sendParentID = getActivity()
 						.getSharedPreferences("Id", 0);
-				sendParentID.edit().putInt("ParentId", id).commit();
-
-				SharedPreferences sendMainObjectId = getActivity()
-						.getSharedPreferences("Id", 0);
-				sendMainObjectId.edit().putInt("MainObjectId", MainObjectId)
-						.commit();
+				sendParentID.edit().putInt("ParentId", parentId).commit();
+				sendParentID.edit().putInt("mainObject", MainObjectId).commit();
+				sendParentID.edit().putInt("objectId", 0).commit();
 
 			}
 		});

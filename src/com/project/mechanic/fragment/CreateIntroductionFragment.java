@@ -100,20 +100,35 @@ public class CreateIntroductionFragment extends Fragment {
 		namayendegi.setVisibility(View.GONE);
 		khadamat.setVisibility(View.GONE);
 
-		SharedPreferences sendObjectBrandTypeId = getActivity()
-				.getSharedPreferences("Id", 0);
+		/* ********** start: come from create object fragment ********** */
 
+		SharedPreferences sendToCreate = getActivity().getSharedPreferences(
+				"Id", 0);
+		final int MainObjectId = sendToCreate.getInt("MainObjectId", -1);
+		final int CityId = sendToCreate.getInt("CityId", -1);
+		final int objectId = sendToCreate.getInt("objectId", -1);
+
+		/* ********** end: come from create of object fragment ********** */
+
+		/* ********** start: come from create of main brand fragment ********** */
 		SharedPreferences sendParentID = getActivity().getSharedPreferences(
 				"Id", 0);
 		final int parentId = sendParentID.getInt("ParentId", -1);
-		final int MainObjectId = sendObjectBrandTypeId.getInt("MainObjectId",
-				-1);
-		final int CityId = sendObjectBrandTypeId.getInt("CityId", -1);
-
+		final int mainItem = sendParentID.getInt("mainObject", -1);
+		final int objectIdItem1 = sendParentID.getInt("objectId", -1);
 		Toast.makeText(
 				getActivity(),
 				" parentId recieve = " + parentId + "\n ObjectBrandTypeId = "
-						+ MainObjectId, Toast.LENGTH_SHORT).show();
+						+ mainItem, Toast.LENGTH_SHORT).show();
+
+		/* ********** end: come from create of main brand fragment ********** */
+
+		/* ********** start: come from main fragment ********** */
+		SharedPreferences sendData = getActivity()
+				.getSharedPreferences("Id", 0);
+		final int mainID = sendData.getInt("main_Id", -1);
+
+		/* ********** end: come from main fragment ********** */
 
 		linearCreateProfil = (RelativeLayout) view
 				.findViewById(R.id.linearCreateProfil);
@@ -263,20 +278,19 @@ public class CreateIntroductionFragment extends Fragment {
 				else {
 
 					DBAdapter.open();
-					if (MainObjectId == 2 || MainObjectId == 3
-							|| MainObjectId == 4) {
+					if (mainID == 2 || mainID == 3 || mainID == 4) {
 						int LastObjectId = DBAdapter.CreatePageInShopeObject(
 								nameValue, phoneValue, emailValue, faxValue,
 								descriptionValue, byteHeader, byteProfil,
 								byteFooter, Lcatalog, Lprice, Lpdf, Lvideo,
 								addressValue, mobileValue, Lfacebook,
 								Linstagram, Llinkedin, Lgoogle, Lwebsite,
-								Ltwitter, currentUser.getId(), MainObjectId);
+								Ltwitter, currentUser.getId(), mainID);
 
 						DBAdapter.insertObjectInCity(LastObjectId, CityId);
 
-					}
-					if (MainObjectId == 1) {
+					} else if (mainID == 1) {
+
 						int LastObjectId = DBAdapter
 								.InsertInformationNewObject(nameValue,
 										phoneValue, emailValue, faxValue,
@@ -285,7 +299,25 @@ public class CreateIntroductionFragment extends Fragment {
 										Lprice, Lpdf, Lvideo, addressValue,
 										mobileValue, Lfacebook, Linstagram,
 										Llinkedin, Lgoogle, Lwebsite, Ltwitter,
-										currentUser.getId(), parentId, 1);
+										currentUser.getId(), parentId,
+										mainItem, objectIdItem1);
+						if (objectIdItem1 > 4)
+							DBAdapter.insertObjectInCity(LastObjectId, CityId);
+
+					} else {
+
+						int LastObjectId = DBAdapter
+								.InsertInformationNewObject(nameValue,
+										phoneValue, emailValue, faxValue,
+										descriptionValue, byteHeader,
+										byteProfil, byteFooter, Lcatalog,
+										Lprice, Lpdf, Lvideo, addressValue,
+										mobileValue, Lfacebook, Linstagram,
+										Llinkedin, Lgoogle, Lwebsite, Ltwitter,
+										currentUser.getId(), 0, MainObjectId,
+										objectId);
+						if (objectIdItem1 > 4)
+							DBAdapter.insertObjectInCity(LastObjectId, CityId);
 
 					}
 

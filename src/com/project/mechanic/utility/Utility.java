@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,9 +24,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.support.v4.app.NotificationCompat;
@@ -43,6 +50,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Updating;
@@ -58,10 +66,12 @@ public class Utility implements AsyncInterface {
 
 	private Updating serviceUpdate;
 	Settings settings;
+	PersianDate pDate;
 
 	public Utility(Context context) {
 		this.context = context;
 		adapter = new DataBaseAdapter(context);
+		pDate = new PersianDate();
 	}
 
 	public boolean isNetworkConnected() {
@@ -353,29 +363,16 @@ public class Utility implements AsyncInterface {
 
 	public static byte[] CompressBitmap(Bitmap bitmap) {
 
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		bitmap.compress(CompressFormat.PNG, 0, bos);
-		return bos.toByteArray();
+		ByteArrayOutputStream str = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.PNG, 50, str);
+		try {
+			str.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		// String env = Environment.getExternalStorageDirectory().getPath();
-		// String path = env + "/test.png";
-		// try {
-		// File f = new File(path);
-		//
-		// FileOutputStream fileOut = new FileOutputStream(f);
-		// OutputStream str = new
-		// bitmap.compress(Bitmap.CompressFormat.PNG, 50, fileOut);
-		// try {
-		// fileOut.close();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		//
-		// bitmap.recycle();
-		//
-		// } catch (FileNotFoundException e) {
-		// e.printStackTrace();
-		// }
+		bitmap.recycle();
+		return str.toByteArray();
 	}
 
 	private Bitmap decodeFile(File f) {
@@ -505,5 +502,45 @@ public class Utility implements AsyncInterface {
 
 	public Typeface setFont() {
 		return Typeface.createFromAsset(context.getAssets(), "fonts/BROYA.TTF");
+	}
+
+	public String getPersianDate(String timeStamp) {
+		String ret = "";
+		String test = timeStamp;
+		if (timeStamp != null && !"".equals(timeStamp)) {
+			String y = test.substring(0, 4);
+			String m = test.substring(4, 6);
+			String d = test.substring(6, 8);
+			String h = test.substring(8, 10);
+			String M = test.substring(10, 12);
+			String s = test.substring(12, 14);
+			ret = pDate.Shamsi(Integer.valueOf(y), Integer.valueOf(m),
+					Integer.valueOf(d))
+					+ "  " + h + ":" + M + ":" + s;
+		}
+		return ret;
+	}
+
+	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
+
+		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+				bitmap.getHeight(), Config.ARGB_8888);
+		Canvas canvas = new Canvas(output);
+
+		final int color = 0xff424242;
+		final Paint paint = new Paint();
+		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+		final RectF rectF = new RectF(rect);
+		final float roundPx = pixels;
+
+		paint.setAntiAlias(true);
+		canvas.drawARGB(0, 0, 0, 0);
+		paint.setColor(color);
+		canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+
+		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+		canvas.drawBitmap(bitmap, rect, rect, paint);
+
+		return output;
 	}
 }

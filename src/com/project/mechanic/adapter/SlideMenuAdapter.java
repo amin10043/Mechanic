@@ -1,6 +1,7 @@
 package com.project.mechanic.adapter;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Users;
+import com.project.mechanic.utility.Utility;
 
 public class SlideMenuAdapter extends BaseAdapter {
+	Utility util;
+
 	public SlideMenuAdapter(Context context) {
 		super();
 		this.context = context;
+		util = new Utility(context);
 	}
 
 	Context context;
@@ -39,7 +45,14 @@ public class SlideMenuAdapter extends BaseAdapter {
 				.findViewById(R.id.icon_slidemenu);
 		TextView nametxt = (TextView) convertView.findViewById(R.id.namemenu);
 
-		iconImg.setImageResource(icon[position]);
+		Users u = util.getCurrentUser();
+		if (position == 1 && u != null && u.getImage() != null) {
+			iconImg.setImageBitmap(Utility.getRoundedCornerBitmap(BitmapFactory
+					.decodeByteArray(u.getImage(), 0, u.getImage().length), 100));
+		} else {
+			iconImg.setImageResource(icon[position]);
+		}
+
 		nametxt.setText(slideitem[position]);
 
 		return convertView;

@@ -89,7 +89,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 					bitmapbyte.length);
-			img.setImageBitmap(bmp);
+			img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
 		}
 		String name = u.getName();
 		String email = u.getEmail();
@@ -162,7 +162,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		if (output != null) {
 			Bitmap bmp = BitmapFactory
 					.decodeByteArray(output, 0, output.length);
-			img.setImageBitmap(bmp);
+			img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
 			dbAdapter.open();
 			dbAdapter.UpdateUserImage(u.getId(), output, serverDate);
 			dbAdapter.close();
@@ -170,7 +170,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 			if (u != null && u.getImage() != null) {
 				Bitmap bmp = BitmapFactory.decodeByteArray(u.getImage(), 0,
 						u.getImage().length);
-				img.setImageBitmap(bmp);
+				img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
 			}
 		}
 	}
