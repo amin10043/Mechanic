@@ -31,6 +31,7 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.FroumWithoutComment;
+import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
@@ -47,7 +48,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 	DataBaseAdapter adapter;
 	Utility util;
 	Users CurrentUser;
-	// PersianDate date;
+	PersianDate todayDate;
 	String currentDate;
 	LinearLayout LikeTitle;
 	// int ItemId;
@@ -101,12 +102,12 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		LikeTitle = (LinearLayout) convertView
 				.findViewById(R.id.liketitleTopic);
 
-		// date = new PersianDate();
-		// currentDate = date.todayShamsi();
+		todayDate = new PersianDate();
+		currentDate = todayDate.todayShamsi();
 
-		date = new ServerDate(context);
-		date.delegate = this;
-		date.execute("");
+		// date = new ServerDate(context);
+		// date.delegate = this;
+		// date.execute("");
 
 		Froum person1 = mylist.get(position);
 
@@ -122,7 +123,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				.toString());
 		countLikeFroum.setText(adapter.LikeInFroum_count(person1.getId())
 				.toString());
-		dateTopic.setText(x.getDate());
+		dateTopic.setText(person1.getDate());
 		adapter.open();
 
 		String item = txt1.getText().toString();
