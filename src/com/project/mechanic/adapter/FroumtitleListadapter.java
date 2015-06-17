@@ -154,7 +154,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			byte[] byteImg = x.getImage();
 			Bitmap bmp = BitmapFactory.decodeByteArray(byteImg, 0,
 					byteImg.length);
-			profileImg.setImageBitmap(bmp);
+			profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
 
 			RelativeLayout rl = (RelativeLayout) convertView
 					.findViewById(R.id.topicTitleFroum);

@@ -79,8 +79,6 @@ public class MainActivity extends FragmentActivity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 		adapter = new DataBaseAdapter(this);
 		slideadapter = new SlideMenuAdapter(this);
-		adapter = new DataBaseAdapter(this);
-		slideadapter = new SlideMenuAdapter(this);
 		ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
 		final TextView txtcm1 = (TextView) findViewById(R.id.txtcm);
 		final TextView txtlike = (TextView) findViewById(R.id.txtlike);

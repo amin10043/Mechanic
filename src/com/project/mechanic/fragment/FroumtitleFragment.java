@@ -199,7 +199,6 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 				mdb.open();
 				if (mylist.size() < userItemId) {
 					u = mdb.getUserById(mylist.get(userItemId).getUserId());
-					mdb.close();
 					serverDate = output; // agar khata dashte bashad !
 					if (getActivity() != null) {
 						updating = new UpdatingImage(getActivity());
@@ -211,6 +210,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 						updating.execute(maps);
 					}
 				}
+				mdb.close();
 
 			}
 		}
