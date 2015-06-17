@@ -99,7 +99,6 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 					createImage.setVisibility(View.GONE);
 					titleHeader.setVisibility(View.GONE);
 				}
-
 			}
 		});
 
@@ -128,7 +127,6 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 
 		if (ringProgressDialog != null)
 			ringProgressDialog.dismiss();
-
 		int id = -1;
 		try {
 			id = Integer.valueOf(output);
@@ -138,37 +136,30 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 					severDate);
 			dbadapter.close();
 			((FroumtitleFragment) fragment).updateView();
-			DialogfroumTitle.this.dismiss();
 
 		} catch (NumberFormatException ex) {
-			try {
-				if (output != null
-						&& !(output.contains("Exception") || output
-								.contains("java"))) {
-					params = new LinkedHashMap<String, String>();
-					saving = new Saving(context);
-					saving.delegate = DialogfroumTitle.this;
+			if (output != null
+					&& !(output.contains("Exception") || output
+							.contains("java"))) {
+				params = new LinkedHashMap<String, String>();
+				saving = new Saving(context);
+				saving.delegate = DialogfroumTitle.this;
 
-					params.put("TableName", "Froum");
-					params.put("Title", titletxt.getText().toString());
-					params.put("Description", titleDestxt.getText().toString());
-					params.put("UserId", String.valueOf(currentUser.getId()));
-					params.put("Date", output);
-					severDate = output;
-					saving.execute(params);
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
+				params.put("TableName", "Froum");
+				params.put("Title", titletxt.getText().toString());
+				params.put("Description", titleDestxt.getText().toString());
+				params.put("UserId", String.valueOf(currentUser.getId()));
+				params.put("Date", output);
+				severDate = output;
+				saving.execute(params);
+				ringProgressDialog = ProgressDialog.show(context, "",
+						"لطفا منتظر بمانید...", true);
 
-					ringProgressDialog.setCancelable(true);
-				} else {
-					Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
-							Toast.LENGTH_SHORT).show();
-				}
-			} catch (Exception e) {
-				Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT)
-						.show();
+				ringProgressDialog.setCancelable(true);
+			} else {
+				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
+						Toast.LENGTH_SHORT).show();
 			}
-
 		}
 
 	}

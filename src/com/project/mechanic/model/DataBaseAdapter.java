@@ -3042,4 +3042,13 @@ public class DataBaseAdapter {
 		mDb.update(TableName, uc, "Id=?", new String[] { String.valueOf(id) });
 	}
 
+	public void updateTicketImage(int id, byte[] image) {
+		ContentValues uc = new ContentValues();
+
+		uc.put("Image", image);
+
+		mDb.update(TableTicket, uc, "Id=?", new String[] { String.valueOf(id) });
+
+	}
+
 }
