@@ -143,7 +143,8 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 		} catch (NumberFormatException ex) {
 			try {
 				if (output != null
-						&& !(output.contains("Soap") || output.contains("soap"))) {
+						&& !(output.contains("Exception") || output
+								.contains("java"))) {
 					params = new LinkedHashMap<String, String>();
 					saving = new Saving(context);
 					saving.delegate = DialogfroumTitle.this;

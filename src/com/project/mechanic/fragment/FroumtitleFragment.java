@@ -210,7 +210,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	@Override
 	public void processFinish(String output) {
 		if (!"".equals(output) && output != null
-				&& (!output.contains("Exception") || !output.contains("java"))) {
+				&& !(output.contains("Exception") || output.contains("java"))) {
 			if (mylist != null && mylist.size() > 0) {
 				mdb.open();
 				if (mylist.size() > userItemId) {
