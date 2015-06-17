@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,7 +24,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -363,29 +363,16 @@ public class Utility implements AsyncInterface {
 
 	public static byte[] CompressBitmap(Bitmap bitmap) {
 
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		bitmap.compress(CompressFormat.PNG, 0, bos);
-		return bos.toByteArray();
+		ByteArrayOutputStream str = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.PNG, 50, str);
+		try {
+			str.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		// String env = Environment.getExternalStorageDirectory().getPath();
-		// String path = env + "/test.png";
-		// try {
-		// File f = new File(path);
-		//
-		// FileOutputStream fileOut = new FileOutputStream(f);
-		// OutputStream str = new
-		// bitmap.compress(Bitmap.CompressFormat.PNG, 50, fileOut);
-		// try {
-		// fileOut.close();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-		//
-		// bitmap.recycle();
-		//
-		// } catch (FileNotFoundException e) {
-		// e.printStackTrace();
-		// }
+		bitmap.recycle();
+		return str.toByteArray();
 	}
 
 	private Bitmap decodeFile(File f) {
@@ -535,6 +522,7 @@ public class Utility implements AsyncInterface {
 	}
 
 	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
+
 		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
 				bitmap.getHeight(), Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);

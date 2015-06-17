@@ -102,7 +102,7 @@ public class DataBaseAdapter {
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId", "IdTicket" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen",
-			"ServerDate", "Submit", "Date" };
+			"ServerDate", "Submit", "Date", "SeenBefore" };
 	private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date",
 			"CommentId", "Seen" };
@@ -1297,7 +1297,8 @@ public class DataBaseAdapter {
 	private Froum CursorToFroum(Cursor cursor) {
 		Froum tempForum = new Froum(cursor.getInt(0), cursor.getInt(1),
 				cursor.getString(2), cursor.getString(3), cursor.getInt(4),
-				cursor.getString(5), cursor.getInt(6), cursor.getString(7));
+				cursor.getString(5), cursor.getInt(6), cursor.getString(7),
+				cursor.getInt(8));
 		return tempForum;
 
 	}
@@ -3031,6 +3032,14 @@ public class DataBaseAdapter {
 			res = cu.getInt(0);
 		}
 		return res;
+	}
+
+	public void SetSeen(String TableName, int id, String seen) {
+		ContentValues uc = new ContentValues();
+
+		uc.put("SeenBefore", seen);
+
+		mDb.update(TableName, uc, "Id=?", new String[] { String.valueOf(id) });
 	}
 
 }

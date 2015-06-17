@@ -46,7 +46,7 @@ public class SlideMenuAdapter extends BaseAdapter {
 		TextView nametxt = (TextView) convertView.findViewById(R.id.namemenu);
 
 		Users u = util.getCurrentUser();
-		if (position == 1 && u != null) {
+		if (position == 1 && u != null && u.getImage() != null) {
 			iconImg.setImageBitmap(Utility.getRoundedCornerBitmap(BitmapFactory
 					.decodeByteArray(u.getImage(), 0, u.getImage().length), 100));
 		} else {
