@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -51,7 +52,7 @@ public class IntroductionFragment extends Fragment {
 	Map<CommentInObject, List<CommentInObject>> mapCollection;
 
 	private ImageView peykan6, peykan5;
-	public RelativeLayout link1, link2, sendSMS, addressRelative,
+	public RelativeLayout agency, service, sendSMS, addressRelative,
 			emailRelative, profileLinear;
 
 	public DialogcmtInobject dialog;
@@ -78,6 +79,7 @@ public class IntroductionFragment extends Fragment {
 	byte[] headerbyte, profilebyte, footerbyte;
 
 	SharedPreferences sendDataID;
+	GradientDrawable gdDefault;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -109,8 +111,8 @@ public class IntroductionFragment extends Fragment {
 
 		headImageLinear = (LinearLayout) header
 				.findViewById(R.id.headerlinerpageintroduction);
-		link1 = (RelativeLayout) header.findViewById(R.id.Layoutlink1);
-		link2 = (RelativeLayout) header.findViewById(R.id.Layoutlink2);
+		agency = (RelativeLayout) header.findViewById(R.id.Layoutlink1);
+		service = (RelativeLayout) header.findViewById(R.id.Layoutlink2);
 		sendSMS = (RelativeLayout) header
 				.findViewById(R.id.sendsmsIntroduction);
 
@@ -200,6 +202,9 @@ public class IntroductionFragment extends Fragment {
 		profileParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
 		profileImage.setLayoutParams(profileParams);
+		gdDefault = new GradientDrawable();
+		gdDefault.setCornerRadius(50);
+		profileImage.setBackgroundDrawable(gdDefault);
 
 		headerParams = new LinearLayout.LayoutParams(
 				headImageLinear.getLayoutParams());
@@ -325,7 +330,7 @@ public class IntroductionFragment extends Fragment {
 			// this view is created for check active or inactive introduction
 			// page
 
-			return t;
+			// return t;
 
 		}
 
@@ -371,9 +376,14 @@ public class IntroductionFragment extends Fragment {
 					bytepro.length);
 
 			profileImage.setImageBitmap(bmp2);
+			gdDefault.setCornerRadius(10);
+			profileImage.setBackgroundDrawable(gdDefault);
 
-		} else
+		} else {
 			profileImage.setImageResource(R.drawable.no_img_profile);
+			gdDefault.setCornerRadius(10);
+			profileImage.setBackgroundDrawable(gdDefault);
+		}
 		// ///////////////////////
 		bytefoot = object.getImage3();
 		if (bytefoot != null) {
@@ -392,13 +402,14 @@ public class IntroductionFragment extends Fragment {
 		txtAddress.setText(object.getAddress());
 		txtDesc.setText(object.getDescription());
 
-		if (object.getObjectBrandTypeId() == 2)
-			link2.setVisibility(View.GONE);
-		else if (object.getObjectBrandTypeId() == 3)
-			link1.setVisibility(View.GONE);
-		else if (object.getObjectBrandTypeId() == 1) {
-			link1.setVisibility(View.GONE);
-			link2.setVisibility(View.GONE);
+		if (object.getMainObjectId() == 2) {
+			agency.setVisibility(View.GONE);
+			service.setVisibility(View.GONE);
+
+		}
+		if (object.getMainObjectId() == 3) {
+			agency.setVisibility(View.GONE);
+			service.setVisibility(View.GONE);
 		}
 
 		if (object.getFacebook() != null)
@@ -661,9 +672,9 @@ public class IntroductionFragment extends Fragment {
 
 		// resizeListView(lst);
 
-		link2 = (RelativeLayout) header.findViewById(R.id.Layoutlink2);
-
-		link1.setOnClickListener(new OnClickListener() {
+		final SharedPreferences pageId = getActivity().getSharedPreferences(
+				"Id", 0);
+		agency.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -672,6 +683,12 @@ public class IntroductionFragment extends Fragment {
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new ProvinceFragment());
 				trans.commit();
+				Toast.makeText(getActivity(), "brand id = " + object.getId(), 0)
+						.show();
+				pageId.edit().putInt("brandID", object.getId()).commit();
+				pageId.edit()
+						.putInt("main object id", object.getMainObjectId())
+						.commit();
 
 			}
 		});
@@ -730,7 +747,7 @@ public class IntroductionFragment extends Fragment {
 
 		});
 
-		link2.setOnClickListener(new OnClickListener() {
+		service.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

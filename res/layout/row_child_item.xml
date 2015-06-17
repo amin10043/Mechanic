@@ -7,9 +7,9 @@
 
     <RelativeLayout
         android:id="@+id/main_icon_reply"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp" >
+        android:layout_margin="5dp" >
 
         <ImageButton
             android:id="@+id/icon_reply_comment"
@@ -36,8 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
+            android:layout_alignTop="@+id/icon_reply_comment"
             android:text="Date"
             android:textColor="@color/transparent" />
     </RelativeLayout>
@@ -48,8 +47,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/main_icon_reply"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="20dp"
         android:gravity="right"
+        android:lineSpacingExtra="5dp"
+        android:paddingRight="10dp"
         android:text="reply meesage"
         android:textColor="@color/transparent" />
 

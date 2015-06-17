@@ -120,7 +120,7 @@ public class DataBaseAdapter {
 			"Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId",
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
 			"Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
-			"Submit", "MainObjectId", "IsActive", "UserId" };
+			"Submit", "MainObjectId", "IsActive", "UserId", "ObjectId" };
 	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
@@ -662,7 +662,8 @@ public class DataBaseAdapter {
 					cursor.getString(21), cursor.getString(22),
 					cursor.getString(23), cursor.getInt(24), cursor.getInt(25),
 					cursor.getInt(26), cursor.getString(27), cursor.getInt(28),
-					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31));
+					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
+					cursor.getInt(32));
 
 			result.add(tempObject);
 		}
@@ -1268,7 +1269,7 @@ public class DataBaseAdapter {
 				cursor.getString(22), cursor.getString(23), cursor.getInt(24),
 				cursor.getInt(25), cursor.getInt(26), cursor.getString(27),
 				cursor.getInt(28), cursor.getInt(29), cursor.getInt(30),
-				cursor.getInt(31));
+				cursor.getInt(31), cursor.getInt(32));
 		return tempObject;
 	}
 
@@ -2275,18 +2276,17 @@ public class DataBaseAdapter {
 
 	}
 
-	public ArrayList<Object> getObjectBy_BTId_CityId(int Object_id, int City_id) {
+	public ArrayList<Object> getObjectBy_BTId_CityId(int MainId, int CityId) {
 		ArrayList<Object> result = new ArrayList<Object>();
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
 								+ " as C On O.Id = C.ObjectId Where O.MainObjectId = "
-								+ Object_id + " and C.CityId = " + City_id,
-						null);
+								+ MainId + " and C.CityId = " + CityId, null);
 		Object tempObject;
 
 		while (cursor.moveToNext()) {
@@ -2302,7 +2302,8 @@ public class DataBaseAdapter {
 					cursor.getString(21), cursor.getString(22),
 					cursor.getString(23), cursor.getInt(24), cursor.getInt(25),
 					cursor.getInt(26), cursor.getString(27), cursor.getInt(28),
-					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31));
+					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
+					cursor.getInt(32));
 
 			result.add(tempObject);
 		}
@@ -2408,7 +2409,8 @@ public class DataBaseAdapter {
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
-			String LinkTweitter, int userId, int parentId, int MainObjectId) {
+			String LinkTweitter, int userId, int parentId, int MainObjectId,
+			int ObjectId) {
 
 		ContentValues cv = new ContentValues();
 
@@ -2455,7 +2457,7 @@ public class DataBaseAdapter {
 
 		cv.put("userId", userId);
 
-		if (parentId != -1)
+		if (MainObjectId == 1 || parentId != -1)
 			cv.put("ParentId", parentId);
 		if (MainObjectId != -1)
 			cv.put("MainObjectId", MainObjectId);
@@ -2463,6 +2465,10 @@ public class DataBaseAdapter {
 		cv.put("IsActive", 0);
 		cv.put("rate", 0);
 		cv.put("Seen", 1);
+		if (ObjectId != -1)
+			cv.put("ObjectID", ObjectId);
+		else
+			cv.put("ObjectID", 0);
 
 		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT)
 				.show();
@@ -3032,6 +3038,41 @@ public class DataBaseAdapter {
 			res = cu.getInt(0);
 		}
 		return res;
+	}
+
+	public ArrayList<Object> subBrandObject(int ObjectId, int CityId) {
+		ArrayList<Object> result = new ArrayList<Object>();
+		Cursor cursor = mDb
+				.rawQuery(
+
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId From "
+								+ TableObject
+								+ " as O inner join "
+								+ TableObjectInCity
+								+ " as C On O.Id = C.ObjectId Where O.ObjectId = "
+								+ ObjectId + " and C.CityId = " + CityId, null);
+		Object tempObject;
+
+		while (cursor.moveToNext()) {
+			tempObject = new Object(cursor.getInt(0), cursor.getString(1),
+					cursor.getString(2), cursor.getString(3),
+					cursor.getString(4), cursor.getString(5),
+					cursor.getBlob(6), cursor.getBlob(7), cursor.getBlob(8),
+					null, cursor.getString(10), cursor.getString(11),
+					cursor.getString(12), cursor.getString(13),
+					cursor.getString(14), cursor.getString(15),
+					cursor.getInt(16), cursor.getInt(17), cursor.getString(18),
+					cursor.getString(19), cursor.getString(20),
+					cursor.getString(21), cursor.getString(22),
+					cursor.getString(23), cursor.getInt(24), cursor.getInt(25),
+					cursor.getInt(26), cursor.getString(27), cursor.getInt(28),
+					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
+					cursor.getInt(32));
+
+			result.add(tempObject);
+		}
+
+		return result;
 	}
 
 	public void SetSeen(String TableName, int id, String seen) {
