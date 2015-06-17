@@ -197,18 +197,21 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		if (!"".equals(output) && output != null) {
 			if (mylist != null && mylist.size() > 0) {
 				mdb.open();
-				u = mdb.getUserById(mylist.get(userItemId).getUserId());
-				mdb.close();
-				serverDate = output; // agar khata dashte bashad !
-				if (getActivity() != null) {
-					updating = new UpdatingImage(getActivity());
-					updating.delegate = this;
-					maps = new LinkedHashMap<String, String>();
-					maps.put("tableName", "Users");
-					maps.put("Id", String.valueOf(u.getId()));
-					maps.put("fromDate", u.getImageServerDate());
-					updating.execute(maps);
+				if (mylist.size() < userItemId) {
+					u = mdb.getUserById(mylist.get(userItemId).getUserId());
+					mdb.close();
+					serverDate = output; // agar khata dashte bashad !
+					if (getActivity() != null) {
+						updating = new UpdatingImage(getActivity());
+						updating.delegate = this;
+						maps = new LinkedHashMap<String, String>();
+						maps.put("tableName", "Users");
+						maps.put("Id", String.valueOf(u.getId()));
+						maps.put("fromDate", u.getImageServerDate());
+						updating.execute(maps);
+					}
 				}
+
 			}
 		}
 	}

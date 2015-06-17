@@ -36,7 +36,7 @@ public class ServerDate extends AsyncTask<String, Integer, String> {
 
 	@Override
 	protected String doInBackground(String... arg0) {
-		OPERATION_NAME = "getCuurentServerDate";
+		OPERATION_NAME = "getServerDateMilis";
 		SOAP_ACTION += OPERATION_NAME;
 
 		try {

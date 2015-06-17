@@ -2035,6 +2035,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			result.add(CursorToFroum(cursor));
 		}
+		Collections.sort(result);
 		return result;
 	}
 

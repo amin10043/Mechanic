@@ -1,8 +1,11 @@
 package com.project.mechanic.utility;
 
 import java.io.ByteArrayOutputStream;
-import java.text.ParseException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -21,6 +24,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
@@ -39,6 +43,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Updating;
@@ -54,10 +59,12 @@ public class Utility implements AsyncInterface {
 
 	private Updating serviceUpdate;
 	Settings settings;
+	PersianDate pDate;
 
 	public Utility(Context context) {
 		this.context = context;
 		adapter = new DataBaseAdapter(context);
+		pDate = new PersianDate();
 	}
 
 	public boolean isNetworkConnected() {
@@ -220,12 +227,6 @@ public class Utility implements AsyncInterface {
 				+ String.format(loc, "%02d", sc.date);
 	}
 
-	public void setFont() {
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-
-	}
-
 	public void Notification() {
 		// Set Notification Title
 		String strtitle = "t1";// getString(R.string.notificationtitle);
@@ -380,6 +381,35 @@ public class Utility implements AsyncInterface {
 		// }
 	}
 
+	private Bitmap decodeFile(File f) {
+		try {
+			// decode image size
+			BitmapFactory.Options o = new BitmapFactory.Options();
+			o.inJustDecodeBounds = true;
+			BitmapFactory.decodeStream(new FileInputStream(f), null, o);
+
+			// Find the correct scale value. It should be the power of 2.
+			final int REQUIRED_SIZE = 512;
+			int width_tmp = o.outWidth, height_tmp = o.outHeight;
+			int scale = 1;
+			while (true) {
+				if (width_tmp / 2 < REQUIRED_SIZE
+						|| height_tmp / 2 < REQUIRED_SIZE)
+					break;
+				width_tmp /= 2;
+				height_tmp /= 2;
+				scale *= 2;
+			}
+
+			// decode with inSampleSize
+			BitmapFactory.Options o2 = new BitmapFactory.Options();
+			o2.inSampleSize = scale;
+			return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+		} catch (FileNotFoundException e) {
+		}
+		return null;
+	}
+
 	public void Updating() {
 		String tableUpdating = "User";
 		serviceUpdate = new Updating(context);
@@ -458,22 +488,42 @@ public class Utility implements AsyncInterface {
 	}
 
 	public Date readDateFromServer(String serverDate) {
-		String pattern = "M/dd/yyyyh:mm aa";
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-		Date x = null;
+
+		Calendar c = null;
 		try {
-			x = sdf.parse(serverDate);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			c = Calendar.getInstance();
+			c.setTimeInMillis(Long.valueOf(serverDate));
+		} catch (Exception e) {
 			Toast.makeText(context, "خطا در خواندن تاریخ از سرور ",
 					Toast.LENGTH_SHORT).show();
 		}
-		return x;
+		return c.getTime();
 	}
 
 	@Override
 	public void processFinish(String output) {
 		parseQuery(output);
 
+	}
+
+	public Typeface setFont() {
+		return Typeface.createFromAsset(context.getAssets(), "fonts/BROYA.TTF");
+	}
+
+	public String getPersianDate(String timeStamp) {
+		String ret = "";
+		String test = timeStamp;
+		if (timeStamp != null && !"".equals(timeStamp)) {
+			String y = test.substring(0, 4);
+			String m = test.substring(4, 6);
+			String d = test.substring(6, 8);
+			String h = test.substring(8, 10);
+			String M = test.substring(10, 12);
+			String s = test.substring(12, 14);
+			ret = pDate.Shamsi(Integer.valueOf(y), Integer.valueOf(m),
+					Integer.valueOf(d))
+					+ "  " + h + ":" + M + ":" + s;
+		}
+		return ret;
 	}
 }

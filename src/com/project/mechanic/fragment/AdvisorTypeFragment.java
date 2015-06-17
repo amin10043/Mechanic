@@ -13,9 +13,7 @@ import android.widget.ListView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.AdvisorTypeListAdapter;
-import com.project.mechanic.adapter.ProvinceListAdapter;
 import com.project.mechanic.entity.AdvisorType;
-import com.project.mechanic.entity.Province;
 import com.project.mechanic.model.DataBaseAdapter;
 
 public class AdvisorTypeFragment extends Fragment {
@@ -37,7 +35,8 @@ public class AdvisorTypeFragment extends Fragment {
 		ArrayList<AdvisorType> mylist = adapter.getAllAdvisorTypeName();
 		adapter.close();
 
-		ListView lstadvisortype = (ListView) view.findViewById(R.id.listVadvisortype);
+		ListView lstadvisortype = (ListView) view
+				.findViewById(R.id.listVadvisortype);
 		AdvisorTypeListAdapter ListAdapter = new AdvisorTypeListAdapter(
 				getActivity(), R.layout.row_advisortype, mylist);
 

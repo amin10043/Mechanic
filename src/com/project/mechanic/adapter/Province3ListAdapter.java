@@ -74,6 +74,11 @@ public class Province3ListAdapter extends ArrayAdapter<Province> {
 				adapter.open();
 				List<City> allItems = adapter.getCitysByProvinceId(province
 						.getId());
+				int count = province.getCount();
+				int id = province.getId();
+				count = count + 1;
+				adapter.UpdateProvinceToDb(id, count);
+
 				adapter.close();
 
 				FragmentTransaction trans = ((MainActivity) context)
