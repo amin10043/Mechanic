@@ -2,6 +2,7 @@ package com.project.mechanic;
 
 import java.util.List;
 
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -374,12 +375,24 @@ public class MainActivity extends FragmentActivity {
 			if (f instanceof FroumFragment) {
 				trans.setCustomAnimations(R.anim.push_out_right,
 						R.anim.pull_in_left);
-				trans.replace(R.id.content_frame, new FroumtitleFragment());
+				SharedPreferences shared = getSharedPreferences("Id", 0);
+				FroumtitleFragment fragment = new FroumtitleFragment();
+				int ListId = shared.getInt("Froum_List_Id", 0);
+				Bundle b = new Bundle();
+				b.putInt("Froum_List_Id", ListId);
+				fragment.setArguments(b);
+				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
 			} else if (f instanceof FroumWithoutComment) {
 				trans.setCustomAnimations(R.anim.push_out_right,
 						R.anim.pull_in_left);
-				trans.replace(R.id.content_frame, new FroumtitleFragment());
+				SharedPreferences shared = getSharedPreferences("Id", 0);
+				FroumtitleFragment fragment = new FroumtitleFragment();
+				int ListId = shared.getInt("Froum_List_Id", 0);
+				Bundle b = new Bundle();
+				b.putInt("Froum_List_Id", ListId);
+				fragment.setArguments(b);
+				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
 
 			} else if (f instanceof FroumtitleFragment) {

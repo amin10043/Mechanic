@@ -432,7 +432,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 				Bundle extras = data.getExtras();
 				Bitmap thePic = extras.getParcelable("data");
 				btnaddpic1.setImageBitmap(thePic);
-				imageloadprogressdialog.dismiss();
+				if (imageloadprogressdialog != null)
+					imageloadprogressdialog.dismiss();
 			} catch (ActivityNotFoundException anfe) {
 				Toast toast = Toast.makeText(getActivity(),
 						"این دستگاه از برش تصویر پشتیبانی نمی کند.",

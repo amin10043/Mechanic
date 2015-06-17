@@ -52,7 +52,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	Users u;
 	FloatingActionButton action;
 	RelativeLayout header;
-	int mLastFirstVisibleItem;
+	int mLastFirstVisibleItem = 0;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -64,6 +64,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		action = (FloatingActionButton) view.findViewById(R.id.fab);
 		header = (RelativeLayout) view.findViewById(R.id.re);
 		header.setVisibility(View.GONE);
+		lst = (ListView) view.findViewById(R.id.lstComment);
 
 		final SharedPreferences realize = getActivity().getSharedPreferences(
 				"Id", 0);
@@ -122,10 +123,15 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			}
 		});
 
-		lst = (ListView) view.findViewById(R.id.lstComment);
 		ListAdapter = new FroumtitleListadapter(getActivity(),
 				R.layout.raw_froumtitle, mylist);
 		lst.setAdapter(ListAdapter);
+
+		if (getArguments() != null) {
+
+			mLastFirstVisibleItem = getArguments().getInt("Froum_List_Id");
+			lst.setSelection(mLastFirstVisibleItem);
+		}
 
 		lst.setOnScrollListener(new OnScrollListener() {
 
@@ -191,10 +197,10 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			ListAdapter.notifyDataSetChanged();
 		}
 
-		Users u = mdb.getUserById(mylist.get(userItemId).getUserId());
 		userItemId++;
 
 		if (userItemId < mylist.size() && getActivity() != null) {
+			Users u = mdb.getUserById(mylist.get(userItemId).getUserId());
 			updating = new UpdatingImage(getActivity());
 			updating.delegate = this;
 			maps = new LinkedHashMap<String, String>();

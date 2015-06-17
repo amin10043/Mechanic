@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +30,6 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.FroumWithoutComment;
 import com.project.mechanic.fragment.PersianDate;
@@ -71,12 +71,12 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		this.mylist = objects;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
-
 	}
 
 	@SuppressLint("ViewHolder")
 	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView,
+			final ViewGroup parent) {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -311,19 +311,17 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				trans.setCustomAnimations(R.anim.pull_in_left,
 						R.anim.push_out_right);
 				Bundle bundle = new Bundle();
-				bundle.putString("Id", String.valueOf(ItemId));
-				fragment.setArguments(bundle);
 
-				DialogcmtInfroum dialog = new DialogcmtInfroum(null, ItemId,
-						context, -1, R.layout.dialog_addcomment);
-
-				Bundle bundle2 = new Bundle();
 				bundle.putString("Id", String.valueOf(ItemId));
 				fragment.setArguments(bundle);
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
 				abc.edit().putInt("main_Id", 1).commit();
+				abc.edit()
+						.putInt("Froum_List_Id",
+								((ListView) parent).getFirstVisiblePosition())
+						.commit();
 				froumId.edit().putInt("main_Id", ItemId).commit();
 
 			}
@@ -353,10 +351,6 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				bundle.putString("Id", String.valueOf(ItemId));
 				fragment.setArguments(bundle);
 
-				DialogcmtInfroum dialog = new DialogcmtInfroum(null, ItemId,
-						context, -1, R.layout.dialog_addcomment);
-
-				Bundle bundle2 = new Bundle();
 				bundle.putString("Id", String.valueOf(ItemId));
 				fragment.setArguments(bundle);
 
