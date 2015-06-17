@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -116,6 +117,13 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		Users x = adapter.getUserbyid(person1.getUserId());
 		CurrentUser = util.getCurrentUser();
 
+		if (person1.getSeenBefore() > 0) {
+			txt1.setTextColor(Color.GRAY);
+			txt2.setTextColor(Color.GRAY);
+			txt3.setTextColor(Color.GRAY);
+			dateTopic.setTextColor(Color.GRAY);
+
+		}
 		txt1.setText(person1.getTitle());
 		txt2.setText(person1.getDescription());
 		txt3.setText(x.getName());
@@ -154,7 +162,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			byte[] byteImg = x.getImage();
 			Bitmap bmp = BitmapFactory.decodeByteArray(byteImg, 0,
 					byteImg.length);
-			profileImg.setImageBitmap(bmp);
+			profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
 
 			RelativeLayout rl = (RelativeLayout) convertView
 					.findViewById(R.id.topicTitleFroum);
@@ -292,6 +300,10 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 						ItemId = listItem.getId();
 					}
 				}
+
+				adapter.open();
+				adapter.SetSeen("Froum", ItemId, "1");
+				adapter.close();
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();

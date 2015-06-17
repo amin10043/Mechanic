@@ -1,6 +1,5 @@
 package com.project.mechanic.fragment;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
@@ -10,7 +9,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -19,7 +17,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -39,7 +36,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,7 +74,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	int serverId = 0;
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
-	private Activity view;
 	TextView txtclickpic;
 	private Toast toast;
 	ViewGroup toastlayout;
@@ -90,20 +85,10 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	// ////////////
 	Uri selectedImage;
 	private Uri picUri;
-	private Button select;
 	ProgressDialog imageloadprogressdialog;
-	private static final int CAMERA_PIC_REQUEST = 1337;
-	private static final int SELECT_PICTURE = 1;
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int PICK_FROM_GALLERY = 2;
 	final int CROP_PIC = 3;
-
-	// /////////
-	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		bitmap.compress(CompressFormat.PNG, 0, outputStream);
-		return outputStream.toByteArray();
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -131,8 +116,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 
 		toastlayout = (ViewGroup) view.findViewById(R.id.toast_layout);
 		TextView textrules = (TextView) view.findViewById(R.id.txtrulles);
-		ScrollView scroll_vertical_register1 = (ScrollView) view
-				.findViewById(R.id.scroll_vertical_register);
 		final LinearLayout lin1 = (LinearLayout) view.findViewById(R.id.lin1);
 
 		LayoutInflater inflater1 = getLayoutInflater(getArguments());
@@ -174,12 +157,10 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 				}
 				StringBuffer result = new StringBuffer();
 				result.append("Linux check : ").append(Rulescheck.isChecked());
-
-				Context context;
-
 			}
 		});
 		btnreg.setOnClickListener(new OnClickListener() {
+			@SuppressWarnings("unchecked")
 			public void onClick(View arg0) {
 				Name = editname.getText().toString();
 				Mobile = editmobile.getText().toString();
@@ -295,14 +276,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 
-				// Intent i = new Intent(
-				// Intent.ACTION_PICK,
-				// android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				//
-				// getActivity().startActivityFromFragment(RegisterFragment.this,
-				// i, RESULT_LOAD_IMAGE);
-
-				final CharSequence[] items = { "Gallery", "Camera" };
+				final CharSequence[] items = { "گالری تصاویر", "دوربین" };
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						getActivity());
 				builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -327,30 +301,13 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 
 	public void do_cam_work() {
 		imageloadprogressdialog = ProgressDialog.show(getActivity(), "",
-				"Loading Camera.Please wait..");
-		// Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		// intent.putExtra(MediaStore.EXTRA_OUTPUT,
-		// MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
-		// // ******** code for crop image
-		// intent.putExtra("crop", "true");
-		// intent.putExtra("aspectX", 0);
-		// intent.putExtra("aspectY", 0);
-		// intent.putExtra("outputX", 200);
-		// intent.putExtra("outputY", 200);
-		// try {
-		// intent.putExtra("return-data", true);
-		// startActivityForResult(intent, PICK_FROM_CAMERA);
-		// } catch (ActivityNotFoundException e) {
-		// }
-
+				"در حال باز کردن دوربین. لطفا منتظر بمانید...");
 		try {
-			// use standard intent to capture an image
 			Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			// we will handle the returned data in onActivityResult
 			startActivityForResult(captureIntent, PICK_FROM_CAMERA);
 		} catch (ActivityNotFoundException anfe) {
 			Toast toast = Toast.makeText(getActivity(),
-					"This device doesn't support the crop action!",
+					"این دستگاه از برش تصویر پشتیبانی نمی کند.",
 					Toast.LENGTH_SHORT);
 			toast.show();
 		}
@@ -359,7 +316,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 
 	public void do_gallery_work() {
 		imageloadprogressdialog = ProgressDialog.show(getActivity(), "",
-				"Loading Gallery.Please wait..");
+				"در حال باز کردن گالری تصاویر. لطفا منتظر بمانید...");
 		Intent intent = new Intent();
 		// call android default gallery
 		intent.setType("image/*");
@@ -373,13 +330,14 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		try {
 			intent.putExtra("return-data", true);
 			startActivityForResult(
-					Intent.createChooser(intent, "Complete action using"),
+					Intent.createChooser(intent, "تکمیل این کار توسط..."),
 					PICK_FROM_GALLERY);
 		} catch (ActivityNotFoundException e) {
 		}
 	}
 
 	// /////////
+	@SuppressWarnings("unchecked")
 	@Override
 	public void processFinish(String output) {
 		ringProgressDialog.dismiss();
@@ -406,7 +364,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 					if (!bitmap.sameAs(emptyBitmap)) {
 
 						byte[] Image = Utility.CompressBitmap(bitmap);
-						// byte[] Image = getBitmapAsByteArray(bitmap);
 						savingImage = new SavingImage(getActivity());
 						Map<String, Object> it = new LinkedHashMap<String, Object>();
 						it.put("tableName", "Users");
@@ -449,53 +406,36 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 				toast.show();
 			}
 		} catch (Exception ex) {
-			Toast.makeText(getActivity(), "khata", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), " :خطا " + ex, Toast.LENGTH_SHORT)
+					.show();
 		}
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		super.onActivityResult(requestCode, resultCode, data);
-
-		// imageloadprogressdialog.dismiss();
 		if (resultCode == 0) {
 			imageloadprogressdialog.dismiss();
 		} else if (requestCode == PICK_FROM_CAMERA) {
-
 			picUri = data.getData();
 			try {
-				// call the standard crop action intent (the user device may not
-				// support it)
 				Intent cropIntent = new Intent("com.android.camera.action.CROP");
-				// indicate image type and Uri
 				cropIntent.setDataAndType(picUri, "image/*");
-				// set crop properties
 				cropIntent.putExtra("scale", "true");
-				// indicate aspect of desired crop
 				cropIntent.putExtra("aspectX", 1);
 				cropIntent.putExtra("aspectY", 1);
-				// indicate output X and Y
 				cropIntent.putExtra("outputX", 256);
 				cropIntent.putExtra("outputY", 256);
-				// retrieve data on return
 				cropIntent.putExtra("return-data", true);
-				// start the activity - we handle returning in onActivityResult
-
-				// // get the returned data
 				Bundle extras = data.getExtras();
-				// // get the cropped bitmap
 				Bitmap thePic = extras.getParcelable("data");
-				// // ImageView picView = (ImageView)
-				// findViewById(R.id.picture);
 				btnaddpic1.setImageBitmap(thePic);
 				imageloadprogressdialog.dismiss();
-
-			}
-			// respond to users whose devices do not support the crop action
-			catch (ActivityNotFoundException anfe) {
+			} catch (ActivityNotFoundException anfe) {
 				Toast toast = Toast.makeText(getActivity(),
-						"This device doesn't support the crop action!",
+						"این دستگاه از برش تصویر پشتیبانی نمی کند.",
 						Toast.LENGTH_SHORT);
 				toast.show();
 			}
@@ -558,21 +498,16 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		return false;
 	}
 
-	private boolean isValidEmail(String email) {
-		String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
-		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-		Matcher matcher = pattern.matcher(email);
-		return matcher.matches();
-	}
+	// private boolean isValidEmail(String email) {
+	// String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+	// + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	//
+	// Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+	// Matcher matcher = pattern.matcher(email);
+	// return matcher.matches();
+	// }
 
 	// ///////////////////////////////crop/////////
-
-	private void performCrop() {
-		// take care of exceptions
-
-	}
 
 	@Override
 	public void processFinishSaveImage(String output) {

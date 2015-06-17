@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAEAEA" >
+    android:background="#EAEAEA" xmlns:app1="http://schemas.android.com/apk/res/com.project.mechanic">
 
     <RelativeLayout
         android:id="@+id/re"
@@ -49,12 +49,13 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/fab_add"
             app:fab_hideAnimation="@anim/fab_scale_down"
-            app:fab_shadowColor="#66000000"
+            app:fab_shadowColor="#3366FF"
             app:fab_shadowRadius="4dp"
             app:fab_shadowXOffset="1dp"
             app:fab_shadowYOffset="3dp"
             app:fab_showAnimation="@anim/fab_scale_up"
             app:fab_showShadow="true"
+            app:fab_colorNormal="#7ac5cd"
             app:fab_size="normal" />
 
 </RelativeLayout>

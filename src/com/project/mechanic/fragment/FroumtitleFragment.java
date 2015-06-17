@@ -52,6 +52,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	Users u;
 	FloatingActionButton action;
 	RelativeLayout header;
+	int mLastFirstVisibleItem;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -130,17 +131,31 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 			@Override
 			public void onScrollStateChanged(AbsListView arg0, int arg1) {
-				switch (arg1) {
-				case SCROLL_STATE_FLING:
-					action.setVisibility(View.GONE);
-					break;
-				case SCROLL_STATE_IDLE:
-					action.setVisibility(View.VISIBLE);
-					break;
-				case SCROLL_STATE_TOUCH_SCROLL:
-					action.setVisibility(View.GONE);
-					break;
+
+				final int currentFirstVisibleItem = lst
+						.getFirstVisiblePosition();
+				if (currentFirstVisibleItem > mLastFirstVisibleItem) {
+					action.hide(true);
+				} else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
+					action.show(true);
 				}
+
+				mLastFirstVisibleItem = currentFirstVisibleItem;
+
+				// switch (arg1) {
+				// case SCROLL_STATE_FLING:
+				// action.hide(true);
+				// // action.setVisibility(View.GONE);
+				// break;
+				// case SCROLL_STATE_IDLE:
+				// action.show(true);
+				// // action.setVisibility(View.VISIBLE);
+				// break;
+				// case SCROLL_STATE_TOUCH_SCROLL:
+				// action.hide(true);
+				// // action.setVisibility(View.GONE);
+				// break;
+				// }
 
 			}
 
@@ -164,16 +179,15 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void processFinish(byte[] output) {
 
 		Froum f;
 		mdb.open();
-		// Users u;
 		if (output != null) {
 			f = mylist.get(userItemId);
 			mdb.UpdateUserImage(f.getUserId(), output, serverDate);
-
 			ListAdapter.notifyDataSetChanged();
 		}
 
@@ -192,15 +206,16 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		mdb.close();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void processFinish(String output) {
-		if (!"".equals(output) && output != null) {
+		if (!"".equals(output) && output != null
+				&& !(output.contains("Exception") || output.contains("java"))) {
 			if (mylist != null && mylist.size() > 0) {
 				mdb.open();
-				if (mylist.size() < userItemId) {
+				if (mylist.size() > userItemId) {
 					u = mdb.getUserById(mylist.get(userItemId).getUserId());
-					mdb.close();
-					serverDate = output; // agar khata dashte bashad !
+					serverDate = output;
 					if (getActivity() != null) {
 						updating = new UpdatingImage(getActivity());
 						updating.delegate = this;
@@ -211,6 +226,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 						updating.execute(maps);
 					}
 				}
+				mdb.close();
 
 			}
 		}
