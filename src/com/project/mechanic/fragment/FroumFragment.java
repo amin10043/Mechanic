@@ -363,6 +363,20 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 							"لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
 
 					adapter.close();
 				} else {
@@ -386,6 +400,20 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 							"لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
 
 					// countLikeFroum.setText(adapter
 					// .LikeInFroum_count(ItemId).toString());
