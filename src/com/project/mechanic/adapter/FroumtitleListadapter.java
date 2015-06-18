@@ -375,6 +375,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 					params.put("FroumId", String.valueOf(froumNumber));
 					params.put("CommentId", "0");
 					params.put("Date", output);
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
 
 					serverDate = output;
 

@@ -136,6 +136,7 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 					severDate);
 			dbadapter.close();
 			((FroumtitleFragment) fragment).updateView();
+			this.dismiss();
 
 		} catch (NumberFormatException ex) {
 			if (output != null
@@ -150,6 +151,8 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 				params.put("Description", titleDestxt.getText().toString());
 				params.put("UserId", String.valueOf(currentUser.getId()));
 				params.put("Date", output);
+				params.put("IsUpdate", "0");
+				params.put("Id", "0");
 				severDate = output;
 				saving.execute(params);
 				ringProgressDialog = ProgressDialog.show(context, "",
