@@ -184,16 +184,15 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 	}
 
 	private void selectImageOption() {
-		final CharSequence[] items = { "Capture Photo", "Choose from Gallery",
-				"Cancel" };
+		final CharSequence[] items = { "از دوربین", "از گالری تصاویر", "انصراف" };
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle("Add Photo!");
+		builder.setTitle("افزودن تصویر");
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int item) {
 
-				if (items[item].equals("Capture Photo")) {
+				if (items[item].equals("از دوربین")) {
 
 					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -205,19 +204,20 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 
 					startActivityForResult(intent, CAMERA_CODE);
 
-				} else if (items[item].equals("Choose from Gallery")) {
+				} else if (items[item].equals("از گالری تصاویر")) {
 
 					Intent intent = new Intent();
 					intent.setType("image/*");
 					intent.setAction(Intent.ACTION_GET_CONTENT);
 					try {
 						intent.putExtra("return-data", true);
-						startActivityForResult(Intent.createChooser(intent,
-								"Complete action using"), GALLERY_CODE);
+						startActivityForResult(
+								Intent.createChooser(intent, "تکمیل کار با"),
+								GALLERY_CODE);
 					} catch (ActivityNotFoundException e) {
 					}
 
-				} else if (items[item].equals("Cancel")) {
+				} else if (items[item].equals("انصراف")) {
 					dialog.dismiss();
 				}
 			}
@@ -275,10 +275,10 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 			return;
 		} else {
 			intent.setData(mImageCaptureUri);
-			intent.putExtra("outputX", 512);
-			intent.putExtra("outputY", 512);
-			intent.putExtra("aspectX", 1);
-			intent.putExtra("aspectY", 1);
+			// intent.putExtra("outputX", 512);
+			// intent.putExtra("outputY", 512);
+			// intent.putExtra("aspectX", 1);
+			// intent.putExtra("aspectY", 1);
 			intent.putExtra("scale", true);
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(outPutFile));
 			if (size == 1) {

@@ -531,6 +531,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 							params.put("IsLike", String.valueOf(1));
 							params.put("CommentId", String.valueOf(cmtId));
+							params.put("IsUpdate", "0");
+							params.put("Id", "0");
 
 							saving.execute(params);
 

@@ -391,6 +391,8 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 					params.put("FroumId", String.valueOf(froumid));
 					params.put("CommentId", "0");
 					params.put("Date", output);
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
 
 					serverDate = output;
 

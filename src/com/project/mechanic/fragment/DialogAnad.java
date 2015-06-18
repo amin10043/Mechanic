@@ -222,6 +222,8 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 					params.put("UPhonnumber", UPhonnumber.getText().toString());
 					params.put("UFax", UFax.getText().toString());
 					params.put("UMobile", UMobile.getText().toString());
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
 					gServerDate = output;
 					saving.execute(params);
 					ringProgressDialog = ProgressDialog.show(context, "",
