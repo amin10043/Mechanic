@@ -1,21 +1,23 @@
 package com.project.mechanic.fragment;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -38,28 +40,40 @@ import com.project.mechanic.R;
 import com.project.mechanic.adapter.CropingOptionAdapter;
 import com.project.mechanic.entity.CropingOption;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.SavingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class EditPersonalFragment extends Fragment {
+public class EditPersonalFragment extends Fragment implements AsyncInterface,
+		SaveAsyncInterface {
 	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201,
 			CROPING_CODE = 301;
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
 	ServiceComm service;
 	ImageView img2, imagecamera;
+	Utility util;
 	LinearLayout.LayoutParams lp2;
 	Utility ut;
 	int id;
+	Saving saving;
 	private Uri mImageCaptureUri;
 	private File outPutFile = null;
-
-	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		bitmap.compress(CompressFormat.PNG, 0, outputStream);
-		return outputStream.toByteArray();
-	}
+	Map<String, String> params;
+	Map<String, Object> imageParams;
+	ProgressDialog dialog;
+	SavingImage saveImage;
+	String Address;
+	String Cellphone;
+	String Phone;
+	String Email;
+	String Fax;
+	Context context;
+	int gId;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -70,6 +84,7 @@ public class EditPersonalFragment extends Fragment {
 				"temp.jpg");
 
 		service = new ServiceComm(getActivity());
+		context = getActivity();
 
 		ut = new Utility(getActivity());
 		final EditText txtaddress = (EditText) view
@@ -81,23 +96,17 @@ public class EditPersonalFragment extends Fragment {
 		final TextView txtname = (TextView) view.findViewById(R.id.etxtname);
 		final EditText txtfax = (EditText) view.findViewById(R.id.etxtfax);
 		img2 = (ImageView) view.findViewById(R.id.imgp);
-		// imagecamera=(ImageView) view.findViewById(R.id.imagcamera);
 		Button btnregedit = (Button) view.findViewById(R.id.btnregedit);
 		Button btnback = (Button) view.findViewById(R.id.btnbackdisplay);
-
 		LinearLayout lin3 = (LinearLayout) view.findViewById(R.id.lin5);
-
 		lp2 = new LinearLayout.LayoutParams(lin3.getLayoutParams());
-
 		lp2.height = ut.getScreenwidth() / 4;
 		lp2.width = ut.getScreenwidth() / 4;
-
 		img2.setLayoutParams(lp2);
 		dbAdapter = new DataBaseAdapter(getActivity());
-		dbAdapter.open();
-		// /
 
 		Users u = ut.getCurrentUser();
+		gId = u.getId();
 		id = u.getId();
 		byte[] bitmapbyte = u.getImage();
 		if (bitmapbyte != null) {
@@ -105,79 +114,40 @@ public class EditPersonalFragment extends Fragment {
 					bitmapbyte.length);
 			img2.setImageBitmap(bmp);
 		}
-		String name = u.getName();
-		String email = u.getEmail();
-		String address = u.getAddress();
-		String phone = u.getPhonenumber();
-		String cellphone = u.getMobailenumber();
-		String fax = u.getFaxnumber();
 
-		// //////////
-
-		// final int id =1;
-		// Users x =dbAdapter.getUserById(id);
-		// byte[] bitmapbyte = x.getImage();
-		// if (bitmapbyte != null) {
-		// Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-		// bitmapbyte.length);
-		// img2.setImageBitmap(bmp);
-		// }
-
-		int item = u.getId();
-		// String name=x.getName();
-		// String email=x.getEmail();
-		// String address=x.getAddress();
-		// String phone=x.getPhonenumber();
-		// String cellphone=x.getMobailenumber();
-		// String fax=x.getFaxnumber();
-		//
-
-		dbAdapter.close();
-
-		txtname.setText(name);
-		txtemail.setText(email);
-		txtcellphone.setText(cellphone);
-		txtphone.setText(phone);
-		txtfax.setText(fax);
-		txtaddress.setText(address);
-		// picture.setImageURI(uri);
-
+		txtname.setText(u.getName());
+		txtemail.setText(u.getEmail());
+		txtcellphone.setText(u.getMobailenumber());
+		txtphone.setText(u.getPhonenumber());
+		txtfax.setText(u.getFaxnumber());
+		txtaddress.setText(u.getAddress());
 		btnregedit.setOnClickListener(new OnClickListener() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 
-				String Name = txtname.getText().toString();
-				String Address = txtaddress.getText().toString();
-				String Cellphone = txtcellphone.getText().toString();
-				String Phone = txtphone.getText().toString();
-				String Email = txtemail.getText().toString();
-				String Fax = txtfax.getText().toString();
+				dialog = ProgressDialog.show(getActivity(), "در حال بروزرسانی",
+						"لطفا منتظر بمانید...");
 
-				//
-				Bitmap bitmap = ((BitmapDrawable) img2.getDrawable())
-						.getBitmap();
+				Address = txtaddress.getText().toString();
+				Cellphone = txtcellphone.getText().toString();
+				Phone = txtphone.getText().toString();
+				Email = txtemail.getText().toString();
+				Fax = txtfax.getText().toString();
 
-				// Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
-				// bitmap.getHeight(), bitmap.getConfig());
+				saving = new Saving(getActivity());
+				saving.delegate = EditPersonalFragment.this;
+				params = new LinkedHashMap<String, String>();
+				params.put("tableName", "Users");
+				params.put("Email", Email);
+				params.put("Phonenumber", Cellphone);
+				params.put("Faxnumber", Fax);
+				params.put("Address", Address);
+				params.put("IsUpdate", "1");
+				params.put("Id", String.valueOf(id));
+				saving.execute(params);
 
-				dbAdapter = new DataBaseAdapter(getActivity());
-				dbAdapter.open();
-				byte[] Image = getBitmapAsByteArray(bitmap);
-
-				if (img2.getDrawable() == null) {
-					Toast.makeText(getActivity(), "null", Toast.LENGTH_SHORT);
-				} else {
-
-					Toast.makeText(getActivity(), "notnull", Toast.LENGTH_SHORT);
-
-				}
-
-				dbAdapter.UpdateAllUserToDb(id, Email, null, Phone, Cellphone,
-						Fax, Address, Image);
-
-				dbAdapter.close();
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame,
@@ -191,7 +161,6 @@ public class EditPersonalFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
@@ -206,13 +175,6 @@ public class EditPersonalFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				// Intent i = new Intent(
-				// Intent.ACTION_PICK,
-				// android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				//
-				// getActivity().startActivityFromFragment(
-				// EditPersonalFragment.this, i, RESULT_LOAD_IMAGE);
 				selectImageOption();
 			}
 		});
@@ -220,34 +182,6 @@ public class EditPersonalFragment extends Fragment {
 		return view;
 
 	}
-
-	// public void onActivityResult(int requestCode, int resultCode, Intent
-	// data) {
-	//
-	// super.onActivityResult(requestCode, resultCode, data);
-	//
-	// if (requestCode == RESULT_LOAD_IMAGE
-	// && resultCode == Activity.RESULT_OK && null != data) {
-	// Uri selectedImage = data.getData();
-	// String[] filePathColumn = { MediaStore.Images.Media.DATA };
-	//
-	// Cursor cursor = getActivity().getContentResolver().query(
-	// selectedImage, filePathColumn, null, null, null);
-	// cursor.moveToFirst();
-	//
-	// int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-	// String picturePath = cursor.getString(columnIndex);
-	// cursor.close();
-	//
-	// // ImageView btnaddpic1 = (ImageView) view
-	// // .findViewById(R.id.btnaddpic);
-	// img2.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-	// img2.setBackgroundColor(getResources().getColor(
-	// android.R.color.transparent));
-	// img2.setLayoutParams(lp2);
-	// }
-	//
-	// }
 
 	private void selectImageOption() {
 		final CharSequence[] items = { "Capture Photo", "Choose from Gallery",
@@ -263,12 +197,6 @@ public class EditPersonalFragment extends Fragment {
 
 					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-					// String imageName = "temp1.jpg";
-					// String path = getActivity().getDir("images",
-					// getActivity().MODE_WORLD_WRITEABLE).getPath()
-					// + File.separator + imageName;
-					// File f = new File(path);
-
 					File f = new File(android.os.Environment
 							.getExternalStorageDirectory(), "temp1.jpg");
 
@@ -279,24 +207,9 @@ public class EditPersonalFragment extends Fragment {
 
 				} else if (items[item].equals("Choose from Gallery")) {
 
-					// Intent i = new Intent(
-					// Intent.ACTION_PICK,
-					// android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
 					Intent intent = new Intent();
-					// call android default gallery
 					intent.setType("image/*");
 					intent.setAction(Intent.ACTION_GET_CONTENT);
-					// ******** code for crop image
-					// intent.putExtra("crop", "true");
-					// intent.putExtra("aspectX", 1);
-					// intent.putExtra("aspectY", 1);
-					// intent.putExtra("outputX", 128);
-					// intent.putExtra("outputY", 128);
-
-					// getActivity().startActivityForResult(intent,
-					// GALLERY_CODE);
-
 					try {
 						intent.putExtra("return-data", true);
 						startActivityForResult(Intent.createChooser(intent,
@@ -322,7 +235,6 @@ public class EditPersonalFragment extends Fragment {
 		if (requestCode == GALLERY_CODE && null != data) {
 
 			mImageCaptureUri = data.getData();
-			System.out.println("Gallery Image URI : " + mImageCaptureUri);
 			CropingIMG();
 
 		} else if (requestCode == CAMERA_CODE
@@ -351,7 +263,7 @@ public class EditPersonalFragment extends Fragment {
 
 	private void CropingIMG() {
 
-		final ArrayList<CropingOption> cropOptions = new ArrayList();
+		final ArrayList<CropingOption> cropOptions = new ArrayList<CropingOption>();
 
 		final Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setType("image/*");
@@ -360,8 +272,6 @@ public class EditPersonalFragment extends Fragment {
 				.getPackageManager().queryIntentActivities(intent, 0);
 		int size = list.size();
 		if (size == 0) {
-			// Toast.makeText(this, "Cann't find image croping app",
-			// Toast.LENGTH_SHORT).show();
 			return;
 		} else {
 			intent.setData(mImageCaptureUri);
@@ -370,14 +280,7 @@ public class EditPersonalFragment extends Fragment {
 			intent.putExtra("aspectX", 1);
 			intent.putExtra("aspectY", 1);
 			intent.putExtra("scale", true);
-
-			// TODO: don't use return-data tag because it's not return large
-			// image data and crash not given any message
-			// intent.putExtra("return-data", true);
-
-			// Create output file here
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(outPutFile));
-
 			if (size == 1) {
 				Intent i = new Intent(intent);
 				ResolveInfo res = list.get(0);
@@ -443,12 +346,9 @@ public class EditPersonalFragment extends Fragment {
 
 	private Bitmap decodeFile(File f) {
 		try {
-			// decode image size
 			BitmapFactory.Options o = new BitmapFactory.Options();
 			o.inJustDecodeBounds = true;
 			BitmapFactory.decodeStream(new FileInputStream(f), null, o);
-
-			// Find the correct scale value. It should be the power of 2.
 			final int REQUIRED_SIZE = 512;
 			int width_tmp = o.outWidth, height_tmp = o.outHeight;
 			int scale = 1;
@@ -460,8 +360,6 @@ public class EditPersonalFragment extends Fragment {
 				height_tmp /= 2;
 				scale *= 2;
 			}
-
-			// decode with inSampleSize
 			BitmapFactory.Options o2 = new BitmapFactory.Options();
 			o2.inSampleSize = scale;
 			return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
@@ -470,4 +368,79 @@ public class EditPersonalFragment extends Fragment {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public void processFinish(String output) {
+		int id = -1;
+		try {
+			id = Integer.valueOf(output);
+
+			// id > 0 -> updating
+
+			Bitmap bitmap = ((BitmapDrawable) img2.getDrawable()).getBitmap();
+
+			Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+					bitmap.getHeight(), bitmap.getConfig());
+			byte[] Image = null;
+
+			if (!emptyBitmap.equals(bitmap)) {
+				Image = Utility.CompressBitmap(bitmap);
+			}
+
+			if (context != null) {
+				saveImage = new SavingImage(context);
+				saveImage.delegate = this;
+				imageParams = new LinkedHashMap<String, Object>();
+				imageParams.put("tableName", "Users");
+				imageParams.put("fieldName", "Image");
+				imageParams.put("id", gId);
+				imageParams.put("image", Image);
+
+				saveImage.execute(imageParams);
+			} else {
+				dbAdapter.open();
+				dbAdapter.UpdateAllUserToDbNoPic(id, Email, null, Phone,
+						Cellphone, Fax, Address);
+
+				dbAdapter.close();
+
+			}
+
+		} catch (NumberFormatException ex) {
+			Toast.makeText(context, "خطا در بروز رسانی", Toast.LENGTH_SHORT)
+					.show();
+		}
+	}
+
+	@Override
+	public void processFinishSaveImage(String output) {
+		if (dialog != null) {
+			dialog.dismiss();
+		}
+		if (output != null && "".equals(output)) {
+			try {
+				id = Integer.valueOf(output);
+
+				Bitmap bitmap = ((BitmapDrawable) img2.getDrawable())
+						.getBitmap();
+
+				Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+						bitmap.getHeight(), bitmap.getConfig());
+				byte[] Image = null;
+
+				if (!emptyBitmap.equals(bitmap)) {
+					Image = Utility.CompressBitmap(bitmap);
+				}
+				dbAdapter.open();
+				dbAdapter.UpdateAllUserToDb(gId, Email, null, Phone, Cellphone,
+						Fax, Address, Image);
+
+				dbAdapter.close();
+
+			} catch (NumberFormatException ex) {
+				Toast.makeText(context, "  خطا در بروز رسانی تصویر",
+						Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
 }

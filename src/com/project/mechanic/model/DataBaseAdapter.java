@@ -380,6 +380,23 @@ public class DataBaseAdapter {
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
+	public void UpdateAllUserToDbNoPic(int id, String email, String password,
+			String phonenumber, String mobailenumber, String faxnumber,
+			String address) {
+
+		ContentValues uc = new ContentValues();
+		// uc.put("Name", name);
+		uc.put("Email", email);
+		uc.put("Password", password);
+		uc.put("Phonenumber", phonenumber);
+
+		uc.put("Mobailenumber", mobailenumber);
+		uc.put("Faxnumber", faxnumber);
+		uc.put("Address", address);
+
+		mDb.update(TableUsers, uc, "ID=" + id, null);
+	}
+
 	// ///////////////////////////////////
 
 	public void insertLikeInObjectToDb(int UserId, int PaperId, String Date,
@@ -3082,6 +3099,15 @@ public class DataBaseAdapter {
 		uc.put("SeenBefore", seen);
 
 		mDb.update(TableName, uc, "Id=?", new String[] { String.valueOf(id) });
+	}
+
+	public void updateTicketImage(int id, byte[] image) {
+		ContentValues uc = new ContentValues();
+
+		uc.put("Image", image);
+
+		mDb.update(TableTicket, uc, "Id=?", new String[] { String.valueOf(id) });
+
 	}
 
 }

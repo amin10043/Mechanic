@@ -422,6 +422,22 @@ public class Utility implements AsyncInterface {
 		serviceUpdate.delegate = this;
 		serviceUpdate.execute(tableUpdating,
 				(settings != null ? settings.getServerDate_Froum() : ""));
+
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+
+					Thread.sleep(500);
+
+				} catch (Exception e) {
+
+				}
+			}
+		}).start();
+
 		// tableUpdating = "Object";
 		// serviceUpdate = new Updating(this);
 		// serviceUpdate.delegate = this;
@@ -442,6 +458,22 @@ public class Utility implements AsyncInterface {
 		serviceUpdate.delegate = this;
 		serviceUpdate.execute(tableUpdating,
 				(settings != null ? settings.getServerDate_Ticket() : ""));
+
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+
+					Thread.sleep(500);
+
+				} catch (Exception e) {
+
+				}
+			}
+		}).start();
+
 		tableUpdating = "LikeInPaper";
 		serviceUpdate = new Updating(context);
 		serviceUpdate.delegate = this;
@@ -452,6 +484,21 @@ public class Utility implements AsyncInterface {
 		serviceUpdate.delegate = this;
 		serviceUpdate.execute(tableUpdating,
 				(settings != null ? settings.getServerDate_CmtInPaper() : ""));
+
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+
+					Thread.sleep(500);
+
+				} catch (Exception e) {
+
+				}
+			}
+		}).start();
 
 		tableUpdating = "LikeInFroum";
 		serviceUpdate = new Updating(context);

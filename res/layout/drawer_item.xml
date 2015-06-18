@@ -3,28 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
-    android:weightSum="1"
-    android:gravity="right" >
+    android:gravity="right"
+    android:weightSum="1" >
 
-        <TextView
-            android:id="@+id/namemenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_margin="10dp"
-            android:layout_weight=".4"
-            android:text="mmmm"
-            android:textColor="#fff" />
+    <TextView
+        android:id="@+id/namemenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:layout_weight="0.4"
+        android:gravity="center"
+        android:text="mmmm"
+        android:textColor="#fff" />
 
-        <ImageView
-            android:id="@+id/icon_slidemenu"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_margin="5dp"
-            android:layout_weight=".6"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_home" />
+    <ImageView
+        android:id="@+id/icon_slidemenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:layout_weight="0.6"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_home" />
 
 </LinearLayout>
