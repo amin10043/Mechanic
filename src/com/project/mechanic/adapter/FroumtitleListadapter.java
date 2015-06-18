@@ -119,7 +119,11 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 		}
 		txt1.setText(person1.getTitle());
-		txt2.setText(person1.getDescription());
+		if (person1.getDescription().length() > 100) {
+			txt2.setText(person1.getDescription() + "   ...");
+
+		} else
+			txt2.setText(person1.getDescription());
 		txt3.setText(x.getName());
 		countcommentfroum.setText(adapter.CommentInFroum_count(person1.getId())
 				.toString());
