@@ -28,7 +28,7 @@ public class SlideMenuAdapter extends BaseAdapter {
 			"درباره ما", "تماس با ما", "خروج" };
 	int[] icon = { R.drawable.ic_home, R.drawable.ic_personal,
 			R.drawable.ic_bookmark, R.drawable.ic_about_us, R.drawable.phone,
-			R.drawable.exit };
+			R.drawable.exitt };
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -52,6 +52,7 @@ public class SlideMenuAdapter extends BaseAdapter {
 
 		} else {
 			iconImg.setImageResource(icon[position]);
+
 		}
 
 		nametxt.setText(slideitem[position]);
