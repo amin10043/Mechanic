@@ -7,6 +7,7 @@ import java.util.Map;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
 public class DialogcmtInfroum extends Dialog implements AsyncInterface {
@@ -39,6 +41,9 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 	Saving saving;
 	Map<String, String> params;
 	ProgressDialog ringProgressDialog;
+
+	String serverDate = "";
+	ServerDate date;
 
 	public DialogcmtInfroum(Fragment f, int Commentid, Context context,
 			int froumId, int resourceId) {
@@ -65,8 +70,12 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 		btncmt = (ImageButton) findViewById(R.id.btnComment);
 		Cmttxt = (EditText) findViewById(R.id.txtCmt);
 
-		PersianDate date = new PersianDate();
-		final String currentDate = date.todayShamsi();
+		// PersianDate date = new PersianDate();
+		// final String currentDate = date.todayShamsi();
+
+		date = new ServerDate(context);
+		date.delegate = this;
+		date.execute("");
 
 		btncmt.setOnClickListener(new android.view.View.OnClickListener() {
 
@@ -88,7 +97,6 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 					params.put("Desk", Cmttxt.getText().toString());
 					params.put("FroumId", String.valueOf(Froumid));
 					params.put("UserId", String.valueOf(currentUser.getId()));
-					params.put("Date", currentDate);
 					params.put("CommentId", String.valueOf(Commentid));
 					params.put("NumofDisLike", String.valueOf(0));
 					params.put("NumofLike", String.valueOf(0));
@@ -130,34 +138,52 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
-		ringProgressDialog.dismiss();
-
-		int id = -1;
-		try {
-			id = Integer.valueOf(output);
-			if (id < 0) {
-				Toast.makeText(context, "خطا در ثبت سرور", Toast.LENGTH_SHORT)
-						.show();
-			} else {
-				PersianDate date = new PersianDate();
-				String currentDate = date.todayShamsi();
-
-				dbadapter.open();
-
-				dbadapter.insertCommentInFroumtoDb(Cmttxt.getText().toString(),
-						Froumid, currentUser.getId(), currentDate, Commentid,
-						"0", "0");
-
-				dbadapter.close();
-
-				((FroumFragment) f).updateList();
-			}
-		} catch (Exception ex) {
-			Toast.makeText(context, "خطا در ارتباط با سرور", Toast.LENGTH_SHORT)
-					.show();
-
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
 		}
 
-	}
+		if (!"".equals(output) && output != null
+				&& !(output.contains("Exception") || output.contains("java"))) {
 
+			int id = -1;
+			try {
+				id = Integer.valueOf(output);
+				if (id < 0) {
+					Toast.makeText(context, "خطا در ثبت سرور",
+							Toast.LENGTH_SHORT).show();
+				} else {
+					// PersianDate date = new PersianDate();
+					// String currentDate = date.todayShamsi();
+
+					dbadapter.open();
+
+					dbadapter.insertCommentInFroumtoDb(Cmttxt.getText()
+							.toString(), Froumid, currentUser.getId(),
+							serverDate, Commentid, "0", "0");
+
+					dbadapter.close();
+
+					SharedPreferences expanding = context.getSharedPreferences(
+							"Id", 0);
+					final int expandPosition = expanding.getInt("main_Id", -1);
+
+					((FroumFragment) f).updateList();
+
+				}
+			} catch (Exception ex) {
+				if (!"".equals(output)
+						&& output != null
+						&& !(output.contains("Exception") || output
+								.contains("java"))) {
+					serverDate = output;
+				} else
+
+					Toast.makeText(context, "خطا در ارتباط با سرور",
+							Toast.LENGTH_SHORT).show();
+
+			}
+
+		} else
+			Toast.makeText(context, "error", 0).show();
+	}
 }

@@ -354,14 +354,26 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
 
-		adapter.close();
-
 		exadapter = new ExpandableCommentFroum(getActivity(),
 				(ArrayList<CommentInFroum>) commentGroup, mapCollection, this,
 				froumid);
 
 		exadapter.notifyDataSetChanged();
+
 		exlistview.setAdapter(exadapter);
+		adapter.close();
+
+	}
+
+	public void expandingList(int position) {
+		if (exlistview.isGroupExpanded(position)) {
+
+			Toast.makeText(getActivity(), "collapse", 0).show();
+
+		} else
+			exlistview.expandGroup(position);
+
+		exadapter.notifyDataSetChanged();
 
 	}
 

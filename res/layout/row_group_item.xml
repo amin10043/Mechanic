@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="@android:color/transparent"
             android:scaleType="fitXY"
             android:src="@drawable/ic_home" />
@@ -28,6 +28,15 @@
             android:layout_alignBottom="@+id/icon_froum_profile"
             android:layout_toLeftOf="@+id/icon_froum_profile"
             android:text="Name"
+            android:textColor="@color/transparent" />
+
+        <TextView
+            android:id="@+id/date_commented_in_froum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/icon_froum_profile"
+            android:layout_marginRight="10dp"
+            android:text="Date"
             android:textColor="@color/transparent" />
     </RelativeLayout>
 
@@ -122,17 +131,5 @@
                 android:textColor="@color/transparent" />
         </LinearLayout>
     </FrameLayout>
-
-    <TextView
-        android:id="@+id/date_commented_in_froum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/frameLayoutGroup"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="10dp"
-        android:text="Date"
-        android:textColor="@color/transparent"
-        android:textSize="10dp" />
 
 </RelativeLayout>
