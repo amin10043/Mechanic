@@ -49,6 +49,7 @@ public class SlideMenuAdapter extends BaseAdapter {
 		if (position == 1 && u != null && u.getImage() != null) {
 			iconImg.setImageBitmap(Utility.getRoundedCornerBitmap(BitmapFactory
 					.decodeByteArray(u.getImage(), 0, u.getImage().length), 100));
+
 		} else {
 			iconImg.setImageResource(icon[position]);
 		}
