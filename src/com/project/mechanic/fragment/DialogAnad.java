@@ -181,22 +181,27 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 					UFax.getText().toString(), null, UMobile.getText()
 							.toString());
 
-			Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
-					.getBitmap();
+			if (dialog_img1.getDrawable() != null) {
 
-			Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
-					bitmap.getHeight(), bitmap.getConfig());
-			if (!bitmap.sameAs(emptyBitmap)) {
-				image = Utility.CompressBitmap(bitmap);
-				savingImage = new SavingImage(context);
-				Map<String, Object> it = new LinkedHashMap<String, Object>();
-				it.put("tableName", "Ticket");
-				it.put("fieldName", "Image");
-				it.put("id", gId);
-				it.put("Image", image);
+				Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
+						.getBitmap();
 
-				savingImage.delegate = this;
-				savingImage.execute(it);
+				Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+						bitmap.getHeight(), bitmap.getConfig());
+				if (!bitmap.sameAs(emptyBitmap)) {
+					image = Utility.CompressBitmap(bitmap);
+					savingImage = new SavingImage(context);
+					Map<String, Object> it = new LinkedHashMap<String, Object>();
+					it.put("tableName", "Ticket");
+					it.put("fieldName", "Image");
+					it.put("id", gId);
+					it.put("Image", image);
+
+					savingImage.delegate = this;
+					savingImage.execute(it);
+				}
+			} else {
+				this.dismiss();
 			}
 			//
 
