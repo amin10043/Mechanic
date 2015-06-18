@@ -73,10 +73,6 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 		// PersianDate date = new PersianDate();
 		// final String currentDate = date.todayShamsi();
 
-		date = new ServerDate(context);
-		date.delegate = this;
-		date.execute("");
-
 		btncmt.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
@@ -87,43 +83,12 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 							"برای ثبت نظر ابتدا باید وارد شوید.",
 							Toast.LENGTH_LONG)).show();
 				} else {
+					date = new ServerDate(context);
+					date.delegate = DialogcmtInfroum.this;
+					date.execute("");
 
-					params = new LinkedHashMap<String, String>();
-					saving = new Saving(context);
-					saving.delegate = DialogcmtInfroum.this;
-
-					params.put("TableName", "CommentInFroum");
-
-					params.put("Desk", Cmttxt.getText().toString());
-					params.put("FroumId", String.valueOf(Froumid));
-					params.put("UserId", String.valueOf(currentUser.getId()));
-					params.put("CommentId", String.valueOf(Commentid));
-					params.put("NumofDisLike", String.valueOf(0));
-					params.put("NumofLike", String.valueOf(0));
-
-					saving.execute(params);
-
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
 				}
-				DialogcmtInfroum.this.dismiss();
+
 			}
 		});
 	}
@@ -148,42 +113,55 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 			int id = -1;
 			try {
 				id = Integer.valueOf(output);
-				if (id < 0) {
-					Toast.makeText(context, "خطا در ثبت سرور",
-							Toast.LENGTH_SHORT).show();
-				} else {
-					// PersianDate date = new PersianDate();
-					// String currentDate = date.todayShamsi();
+				dbadapter.open();
 
-					dbadapter.open();
+				dbadapter.insertCommentInFroumtoDb(Cmttxt.getText().toString(),
+						Froumid, currentUser.getId(), serverDate, Commentid,
+						"0", "0");
 
-					dbadapter.insertCommentInFroumtoDb(Cmttxt.getText()
-							.toString(), Froumid, currentUser.getId(),
-							serverDate, Commentid, "0", "0");
+				dbadapter.close();
 
-					dbadapter.close();
+				SharedPreferences expanding = context.getSharedPreferences(
+						"Id", 0);
+				final int expandPosition = expanding.getInt("main_Id", -1);
 
-					SharedPreferences expanding = context.getSharedPreferences(
-							"Id", 0);
-					final int expandPosition = expanding.getInt("main_Id", -1);
+				((FroumFragment) f).updateList();
+				DialogcmtInfroum.this.dismiss();
 
-					((FroumFragment) f).updateList();
-
-				}
-			} catch (Exception ex) {
+			} catch (NumberFormatException ex) {
 				if (!"".equals(output)
 						&& output != null
 						&& !(output.contains("Exception") || output
 								.contains("java"))) {
+
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(context);
+					saving.delegate = DialogcmtInfroum.this;
+
+					params.put("TableName", "CommentInFroum");
+
+					params.put("Desk", Cmttxt.getText().toString());
+					params.put("FroumId", String.valueOf(Froumid));
+					params.put("UserId", String.valueOf(currentUser.getId()));
+					params.put("CommentId", String.valueOf(Commentid));
+					params.put("NumofDisLike", String.valueOf(0));
+					params.put("NumofLike", String.valueOf(0));
 					serverDate = output;
+
+					saving.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(context, "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+
 				} else
 
-					Toast.makeText(context, "خطا در ارتباط با سرور",
+					Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
 							Toast.LENGTH_SHORT).show();
-
 			}
 
 		} else
-			Toast.makeText(context, "error", 0).show();
+			Toast.makeText(context, "خطا در ثبت", 0).show();
 	}
 }
