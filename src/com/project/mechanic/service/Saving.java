@@ -42,6 +42,13 @@ public class Saving extends AsyncTask<Map<String, String>, Integer, String> {
 	protected String doInBackground(Map<String, String>... action) {
 		OPERATION_NAME = "Saving";
 		SOAP_ACTION += OPERATION_NAME;
+
+		String isUpdate = action[0].get("IsUpdate");
+		String Id = action[0].get("Id");
+
+		action[0].remove("IsUpdate");
+		action[0].remove("Id");
+
 		Iterator<Entry<String, String>> it = action[0].entrySet().iterator();
 		Entry<String, String> item1 = it.next();
 
@@ -71,13 +78,13 @@ public class Saving extends AsyncTask<Map<String, String>, Integer, String> {
 
 			pi = new PropertyInfo();
 			pi.setName("IsUpdate");
-			pi.setValue(0);
+			pi.setValue(isUpdate);
 			pi.setType(integer.class);
 			request.addProperty(pi);
 
 			pi = new PropertyInfo();
 			pi.setName("Id");
-			pi.setValue(0);
+			pi.setValue(Id);
 			pi.setType(integer.class);
 			request.addProperty(pi);
 
