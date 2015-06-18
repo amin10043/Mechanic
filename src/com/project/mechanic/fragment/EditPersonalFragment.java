@@ -235,7 +235,6 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		if (requestCode == GALLERY_CODE && null != data) {
 
 			mImageCaptureUri = data.getData();
-			// System.out.println("Gallery Image URI : " + mImageCaptureUri);
 			CropingIMG();
 
 		} else if (requestCode == CAMERA_CODE
