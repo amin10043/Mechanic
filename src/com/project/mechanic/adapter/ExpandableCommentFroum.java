@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -129,7 +130,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 		}
 
 		mainReply.setText(reply.getDesk());
-		dateReply.setText(reply.getDatetime());
+		dateReply.setText(util.getPersianDate(reply.getDatetime()));
 		nameReplyer.setText(y.getName());
 		adapter.close();
 
@@ -230,7 +231,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 		}
 
 		mainComment.setText(comment.getDesk());
-		dateCommenter.setText(comment.getDatetime());
+		dateCommenter.setText(util.getPersianDate(comment.getDatetime()));
 		if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) == 0) {
 			LinearLayout lrr = (LinearLayout) convertView
 					.findViewById(R.id.linearShowcountofRepply);
@@ -300,7 +301,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 					flag = false;
 					RelativeLayout parentlayout = (RelativeLayout) t
-							.getParent().getParent().getParent();
+							.getParent().getParent();
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
 					TextView txtMaincmt = (TextView) viewMaincmt;
 
@@ -440,7 +441,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 					// // peyda kardan id comment sabt shode
 
 					RelativeLayout parentlayout = (RelativeLayout) v
-							.getParent().getParent().getParent();
+							.getParent().getParent();
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
 					TextView txtMaincmt = (TextView) viewMaincmt;
 
@@ -562,7 +563,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 			}
 		});
-
+		final SharedPreferences expanding = context.getSharedPreferences("Id",
+				0);
 		addreply.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -575,7 +577,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 				} else {
 					adapter.open();
 					RelativeLayout parentlayout = (RelativeLayout) m
-							.getParent().getParent().getParent();
+							.getParent().getParent();
 					View view = parentlayout.findViewById(R.id.peygham);
 					TextView x = (TextView) view;
 					String item = x.getText().toString();
@@ -586,13 +588,14 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 							commentid = listItem.getId();
 						}
 					}
+					expanding.edit().putInt("main_Id", 1).commit();
 
 					DialogcmtInfroum dialog = new DialogcmtInfroum(f,
 							commentid, context, froumID,
 							R.layout.dialog_addcomment);
 					dialog.show();
+					f.expandingList(groupPosition);
 
-					notifyDataSetChanged();
 					adapter.close();
 				}
 			}

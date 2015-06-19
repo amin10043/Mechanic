@@ -22,6 +22,7 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
 public class DialogfroumTitle extends Dialog implements AsyncInterface {
@@ -43,6 +44,8 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 	String currentDate;
 	TextView titleHeader;
 	ImageButton createImage;
+	ServerDate sDate;
+	String severDate;
 
 	public DialogfroumTitle(Context context, int resourceId, Fragment fragment) {
 		super(context);
@@ -105,37 +108,9 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 			@Override
 			public void onClick(View arg0) {
 
-				params = new LinkedHashMap<String, String>();
-				saving = new Saving(context);
-				saving.delegate = DialogfroumTitle.this;
-
-				params.put("TableName", "Froum");
-				params.put("Title", titletxt.getText().toString());
-				params.put("Description", titleDestxt.getText().toString());
-				params.put("UserId", String.valueOf(currentUser.getId()));
-				params.put("Date", currentDate);
-
-				saving.execute(params);
-
-				ringProgressDialog = ProgressDialog.show(context, "",
-						"لطفا منتظر بمانید...", true);
-
-				ringProgressDialog.setCancelable(true);
-
-				new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-
-						try {
-
-							Thread.sleep(10000);
-
-						} catch (Exception e) {
-
-						}
-					}
-				}).start();
+				sDate = new ServerDate(context);
+				sDate.delegate = DialogfroumTitle.this;
+				sDate.execute("");
 			}
 		});
 	}
@@ -150,20 +125,50 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
-		ringProgressDialog.dismiss();
+
+		if (ringProgressDialog != null)
+			ringProgressDialog.dismiss();
+
 		int id = -1;
 		try {
 			id = Integer.valueOf(output);
 			dbadapter.open();
 			dbadapter.insertFroumtitletoDb(id, titletxt.getText().toString(),
 					titleDestxt.getText().toString(), currentUser.getId(),
-					currentDate);
+					severDate);
 			dbadapter.close();
 			((FroumtitleFragment) fragment).updateView();
 			DialogfroumTitle.this.dismiss();
 
-		} catch (Exception ex) {
-			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
+		} catch (NumberFormatException ex) {
+			try {
+				if (output != null
+						&& !(output.contains("Exception") || output
+								.contains("java"))) {
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(context);
+					saving.delegate = DialogfroumTitle.this;
+
+					params.put("TableName", "Froum");
+					params.put("Title", titletxt.getText().toString());
+					params.put("Description", titleDestxt.getText().toString());
+					params.put("UserId", String.valueOf(currentUser.getId()));
+					params.put("Date", output);
+					severDate = output;
+					saving.execute(params);
+					ringProgressDialog = ProgressDialog.show(context, "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+				} else {
+					Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
+							Toast.LENGTH_SHORT).show();
+				}
+			} catch (Exception e) {
+				Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT)
+						.show();
+			}
+
 		}
 
 	}

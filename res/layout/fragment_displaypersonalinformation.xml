@@ -206,7 +206,7 @@
             android:layout_marginRight="@dimen/txtsize10"
             android:layout_weight="1"
             android:background="@color/blue3"
-            android:orientation="vertical" >
+            android:orientation="horizontal" >
 
             <TextView
                 android:id="@+id/fax"
@@ -247,8 +247,7 @@
                 <ScrollView
                     android:id="@+id/scrollView1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white" >
+                    android:layout_height="match_parent" >
 
                     <LinearLayout
                         android:layout_width="match_parent"

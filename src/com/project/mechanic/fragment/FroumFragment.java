@@ -13,7 +13,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.ExpandableCommentFroum;
 import com.project.mechanic.entity.CommentInFroum;
@@ -79,7 +79,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceStdataate) {
 
-		// ((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
+		((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
 		View view = inflater.inflate(R.layout.fragment_froum, null);
 
 		adapter = new DataBaseAdapter(getActivity());
@@ -92,7 +92,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 		header = getActivity().getLayoutInflater().inflate(
 				R.layout.header_expandable, null);
-		// s = new ServerDate(getActivity());
 
 		// start find view
 
@@ -159,7 +158,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		descriptiontxt.setText(topics.getDescription());
 		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
 		countLike.setText(adapter.LikeInFroum_count(froumid).toString());
-		dateTopic.setText(topics.getDate());
+		dateTopic.setText(util.getPersianDate(topics.getDate()));
 
 		addComment.setOnClickListener(new View.OnClickListener() {
 
@@ -332,16 +331,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		return id;
 	}
 
-	private void setGroupIndicatorToRight() {
-		/* Get the screen width */
-		DisplayMetrics dm = new DisplayMetrics();
-		getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-		int width = dm.widthPixels;
-
-		exlistview.setIndicatorBounds(width - getDipsFromPixel(35), width
-				- getDipsFromPixel(5));
-	}
-
 	public int getDipsFromPixel(float pixels) {
 		// Get the screen's density scale
 		final float scale = getResources().getDisplayMetrics().density;
@@ -365,14 +354,26 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
 
-		adapter.close();
-
 		exadapter = new ExpandableCommentFroum(getActivity(),
 				(ArrayList<CommentInFroum>) commentGroup, mapCollection, this,
 				froumid);
 
 		exadapter.notifyDataSetChanged();
+
 		exlistview.setAdapter(exadapter);
+		adapter.close();
+
+	}
+
+	public void expandingList(int position) {
+		if (exlistview.isGroupExpanded(position)) {
+
+			Toast.makeText(getActivity(), "collapse", 0).show();
+
+		} else
+			exlistview.expandGroup(position);
+
+		exadapter.notifyDataSetChanged();
 
 	}
 

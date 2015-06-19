@@ -132,7 +132,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 		descriptiontxt.setText(topics.getDescription());
 		countComment.setText(adapter.CommentInFroum_count(idFroum).toString());
 		countLike.setText(adapter.LikeInFroum_count(idFroum).toString());
-		dateTopic.setText(topics.getDate());
+		dateTopic.setText(util.getPersianDate(topics.getDate()));
 
 		adapter.close();
 		addComment.setOnClickListener(new View.OnClickListener() {

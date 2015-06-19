@@ -11,6 +11,8 @@ public class Froum implements Comparable<Froum> {
 	int Submit;
 	String Date;
 
+	int seenBefore;
+
 	public int getId() {
 		return Id;
 	}
@@ -76,7 +78,7 @@ public class Froum implements Comparable<Froum> {
 	}
 
 	public Froum(int id, int userId, String title, String description,
-			int seen, String serverdate, int submit, String date) {
+			int seen, String serverdate, int submit, String date, int seenBefore) {
 		super();
 		Id = id;
 		UserId = userId;
@@ -86,15 +88,35 @@ public class Froum implements Comparable<Froum> {
 		ServerDate = serverdate;
 		Submit = submit;
 		Date = date;
+		this.seenBefore = seenBefore;
+	}
+
+	public int getSeenBefore() {
+		return seenBefore;
+	}
+
+	public void setSeenBefore(int seenBefore) {
+		this.seenBefore = seenBefore;
 	}
 
 	@Override
-	public int compareTo(Froum d1) {
+	// public int compareTo(Froum d1) {
+	// TODO Auto-generated method stub
+	// double value = Double.parseDouble( Date.replace(",",".") );
+	// if (getDate() == null || d1.getDate() == null)
+	// return 0;
+	// return getDate().compareTo(d1.getDate());
+	public int compareTo(Froum compareFroum) {
 		// TODO Auto-generated method stub
-		if (getDate() == null || d1.getDate() == null)
-			return 0;
-		return getDate().compareTo(d1.getDate());
+		// String s=getDate();
+		// Double va=Convert.ToDouble(s);
+		long temp = Long.valueOf(getDate());
 
+		// number = temp.doubleValue();
+		Long comparetemp = Long.valueOf(compareFroum.getDate());
+
+		// return this.Count - compareCount;
+
+		return (int) (comparetemp - Long.valueOf(getDate()));
 	}
-
 }

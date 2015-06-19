@@ -30,6 +30,7 @@ public class ObjectFragment extends Fragment {
 	Users currentUser;
 	Utility util;
 	DialogCreatePage dialog;
+	ListView lstObject;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -42,24 +43,44 @@ public class ObjectFragment extends Fragment {
 		SharedPreferences sendData = getActivity()
 				.getSharedPreferences("Id", 0);
 		final int id = sendData.getInt("main_Id", -1);
-		Toast.makeText(getActivity(), "id = " + id, Toast.LENGTH_SHORT).show();
 		final int city_id = Integer.valueOf(getArguments().getString("cityId"));
 
 		adapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
 		currentUser = util.getCurrentUser();
+
+		lstObject = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 		// RelativeLayout createPage = (RelativeLayout) view
 		// .findViewById(R.id.relative);
+		// SharedPreferences sendObjectId = getActivity().getSharedPreferences(
+		// "Id", 0);
+		// final int ObjectId = sendData.getInt("main_Id", -1);
+
 		adapter.open();
-		ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(id, city_id);
+		if (id == 2 || id == 3 || id == 4) {
+			Toast.makeText(getActivity(), "come from main", 0).show();
+			ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(id,
+					city_id);
+			ObjectListAdapter ListAdapter = new ObjectListAdapter(
+					getActivity(), R.layout.row_object, mylist);
+			lstObject.setAdapter(ListAdapter);
+
+		} else {
+			SharedPreferences pageId = getActivity().getSharedPreferences("Id",
+					0);
+			int brand = pageId.getInt("brandID", -1);
+
+			Toast.makeText(getActivity(), "come from agency", 0).show();
+
+			ArrayList<Object> mylist = adapter.subBrandObject(brand, city_id);
+
+			ObjectListAdapter ListAdapter = new ObjectListAdapter(
+					getActivity(), R.layout.row_object, mylist);
+			lstObject.setAdapter(ListAdapter);
+
+		}
+
 		adapter.close();
-
-		ListView lstObject = (ListView) view
-				.findViewById(R.id.listvCmt_Introduction);
-		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(),
-				R.layout.row_object, mylist);
-
-		lstObject.setAdapter(ListAdapter);
 
 		FloatingActionButton createItem = (FloatingActionButton) view
 				.findViewById(R.id.fab);
@@ -71,13 +92,35 @@ public class ObjectFragment extends Fragment {
 			public void onClick(View arg0) {
 				dialog = new DialogCreatePage(getActivity(), message);
 				dialog.show();
-
-				SharedPreferences sendMainObjectId = getActivity()
+				SharedPreferences sendToCreate = getActivity()
 						.getSharedPreferences("Id", 0);
-				sendMainObjectId.edit().putInt("MainObjectId", id).commit();
-				sendMainObjectId.edit().putInt("CityId", city_id).commit();
-				Toast.makeText(getActivity(), "MainObjectId = " + id,
-						Toast.LENGTH_SHORT).show();
+
+				if (id == 2 || id == 3 || id == 4) {
+
+					sendToCreate.edit().putInt("MainObjectId", id).commit();
+					sendToCreate.edit().putInt("CityId", city_id).commit();
+					sendToCreate.edit().putInt("objectId", 0).commit();
+
+					Toast.makeText(getActivity(), "main id  = " + id,
+							Toast.LENGTH_SHORT).show();
+
+				} else {
+					SharedPreferences pageId = getActivity()
+							.getSharedPreferences("Id", 0);
+					int brandId = pageId.getInt("brandID", -1);
+					int MainObjID = pageId.getInt("main object id", -1);
+
+					sendToCreate.edit().putInt("MainObjectId", MainObjID)
+							.commit();
+					sendToCreate.edit().putInt("CityId", city_id).commit();
+					sendToCreate.edit().putInt("objectId", brandId).commit();
+
+					Toast.makeText(getActivity(), "brand id  = " + brandId,
+							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "main object = " + MainObjID,
+							Toast.LENGTH_SHORT).show();
+				}
+
 			}
 		});
 

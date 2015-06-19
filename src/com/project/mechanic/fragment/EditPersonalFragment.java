@@ -68,6 +68,7 @@ public class EditPersonalFragment extends Fragment {
 		outPutFile = new File(
 				android.os.Environment.getExternalStorageDirectory(),
 				"temp.jpg");
+
 		service = new ServiceComm(getActivity());
 
 		ut = new Utility(getActivity());
@@ -261,10 +262,19 @@ public class EditPersonalFragment extends Fragment {
 				if (items[item].equals("Capture Photo")) {
 
 					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+					// String imageName = "temp1.jpg";
+					// String path = getActivity().getDir("images",
+					// getActivity().MODE_WORLD_WRITEABLE).getPath()
+					// + File.separator + imageName;
+					// File f = new File(path);
+
 					File f = new File(android.os.Environment
 							.getExternalStorageDirectory(), "temp1.jpg");
+
 					mImageCaptureUri = Uri.fromFile(f);
 					intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+
 					startActivityForResult(intent, CAMERA_CODE);
 
 				} else if (items[item].equals("Choose from Gallery")) {
@@ -299,6 +309,7 @@ public class EditPersonalFragment extends Fragment {
 				}
 			}
 		});
+
 		builder.show();
 	}
 
@@ -319,12 +330,14 @@ public class EditPersonalFragment extends Fragment {
 
 			System.out.println("Camera Image URI : " + mImageCaptureUri);
 			CropingIMG();
+
 		} else if (requestCode == CROPING_CODE) {
 
 			try {
 				if (outPutFile.exists()) {
 					Bitmap photo = decodeFile(outPutFile);
 					img2.setImageBitmap(photo);
+					img2.setLayoutParams(lp2);
 				} else {
 					Toast.makeText(getActivity().getApplicationContext(),
 							"Error while save image", Toast.LENGTH_SHORT)
@@ -338,7 +351,7 @@ public class EditPersonalFragment extends Fragment {
 
 	private void CropingIMG() {
 
-		final ArrayList cropOptions = new ArrayList();
+		final ArrayList<CropingOption> cropOptions = new ArrayList();
 
 		final Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setType("image/*");
@@ -404,7 +417,8 @@ public class EditPersonalFragment extends Fragment {
 
 								final CropingOption co = new CropingOption();
 								co.appIntent = new Intent(intent);
-								startActivityForResult(co.appIntent,
+								startActivityForResult(
+										cropOptions.get(itemc).appIntent,
 										CROPING_CODE);
 							}
 						});
