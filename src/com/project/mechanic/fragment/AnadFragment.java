@@ -56,7 +56,7 @@ public class AnadFragment extends Fragment {
 	DataBaseAdapter dbAdapter;
 	private ImageView imgadd;
 	private ImageButton img;
-	private TextView txt1;
+	// private TextView txt1;
 	View view;
 	List<Ticket> mylist;
 	List<Anad> anadlist;
@@ -107,14 +107,11 @@ public class AnadFragment extends Fragment {
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_anad, null);
 
-		// ((MainActivity) getActivity()).setActivityTitle(R.string.anad);
 		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
-		// proID = Integer.valueOf(getArguments().getString("ProID"));
-
-		//imgadd = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
-		txt1 = (TextView) view.findViewById(R.id.fragment_anad_txt1);
+		// txt1 = (TextView) view.findViewById(R.id.fragment_anad_txt1);
 		img = (ImageButton) view.findViewById(R.id.img_anad);
-		FloatingActionButton createItem = (FloatingActionButton) view.findViewById(R.id.fabAnad);
+		FloatingActionButton createItem = (FloatingActionButton) view
+				.findViewById(R.id.fabAnad);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
@@ -240,19 +237,7 @@ public class AnadFragment extends Fragment {
 				startAutoScrolling();
 			}
 		});
-
-		txt1.setOnClickListener(new OnClickListener() {
-
-			@SuppressLint("NewApi")
-			@Override
-			public void onClick(View arg0) {
-
-				imgadd.callOnClick();
-			}
-		});
-
 		return view;
-
 	}
 
 	public void addImagesToView(final List<Anad> lst) {

@@ -124,7 +124,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
 					byteImageProfile.length);
 
-			ReplyerPic.setImageBitmap(bmp);
+			ReplyerPic.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
+
 			ReplyerPic.setLayoutParams(lp);
 
 		}
@@ -252,7 +253,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 				Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
 						byteImageProfile.length);
 
-				profileImage.setImageBitmap(bmp);
+				profileImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
+						50));
 			}
 		}
 		RelativeLayout rl = (RelativeLayout) convertView
@@ -529,6 +531,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 							params.put("IsLike", String.valueOf(1));
 							params.put("CommentId", String.valueOf(cmtId));
+							params.put("IsUpdate", "0");
+							params.put("Id", "0");
 
 							saving.execute(params);
 
@@ -630,58 +634,66 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 	@Override
 	public void processFinish(String output) {
-		ringProgressDialog.dismiss();
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
 
-		int id = -1;
-		try {
-			id = Integer.valueOf(output);
+		}
 
-			adapter.open();
+		if (!"".equals(output) && output != null
+				&& !(output.contains("Exception") || output.contains("java"))) {
 
-			if (flag) {
+			int id = -1;
+			try {
+				id = Integer.valueOf(output);
 
-				/*
-				 * save like in database device
-				 */
+				adapter.open();
 
-				if (adapter
-						.isUserLikedComment(Currentuser.getId(), GlobalId, 1)) {
-					adapter.deleteLikeFromCommentInFroum(GlobalId,
-							Currentuser.getId(), 1);
+				if (flag) {
 
-					notifyDataSetChanged();
+					/*
+					 * save like in database device
+					 */
 
+					if (adapter.isUserLikedComment(Currentuser.getId(),
+							GlobalId, 1)) {
+						adapter.deleteLikeFromCommentInFroum(GlobalId,
+								Currentuser.getId(), 1);
+
+						notifyDataSetChanged();
+
+					} else {
+						adapter.InsertLikeCommentFroumToDatabase(id,
+								Currentuser.getId(), 1, GlobalId);
+
+						notifyDataSetChanged();
+
+					}
 				} else {
-					adapter.InsertLikeCommentFroumToDatabase(id,
-							Currentuser.getId(), 1, GlobalId);
+					/*
+					 * save dislike in database device
+					 */
 
-					notifyDataSetChanged();
+					if (adapter.isUserLikedComment(Currentuser.getId(),
+							GlobalId, 0)) {
+						adapter.deleteLikeFromCommentInFroum(GlobalId,
+								Currentuser.getId(), 0);
+						notifyDataSetChanged();
 
+					} else {
+						adapter.InsertLikeCommentFroumToDatabase(id,
+								Currentuser.getId(), 0, GlobalId);
+
+						notifyDataSetChanged();
+
+					}
 				}
-			} else {
-				/*
-				 * save dislike in database device
-				 */
 
-				if (adapter
-						.isUserLikedComment(Currentuser.getId(), GlobalId, 0)) {
-					adapter.deleteLikeFromCommentInFroum(GlobalId,
-							Currentuser.getId(), 0);
-					notifyDataSetChanged();
+				adapter.close();
 
-				} else {
-					adapter.InsertLikeCommentFroumToDatabase(id,
-							Currentuser.getId(), 0, GlobalId);
-
-					notifyDataSetChanged();
-
-				}
+			} catch (Exception e) {
+				Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT)
+						.show();
 			}
-
-			adapter.close();
-
-		} catch (Exception e) {
-			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
 		}
 	}
 

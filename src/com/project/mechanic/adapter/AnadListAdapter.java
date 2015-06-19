@@ -53,13 +53,12 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_anad, parent, false);
-		TextView txtdate = (TextView) convertView.findViewById(R.id.text_favorite_desc);
+		TextView txtdate = (TextView) convertView
+				.findViewById(R.id.text_favorite_desc);
 		TextView txtName = (TextView) convertView
 				.findViewById(R.id.row_favorite_title);
 		TextView txtDesc = (TextView) convertView
 				.findViewById(R.id.row_anad_txt2);
-		// ImageView img = (ImageView)
-		// convertView.findViewById(R.id.row_anad_img);
 		ImageView img2 = (ImageView) convertView
 				.findViewById(R.id.row_favorite_img);
 		PersianDate date = new PersianDate();

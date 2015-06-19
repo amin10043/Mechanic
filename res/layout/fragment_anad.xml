@@ -1,64 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#EAEAEA"
-    android:gravity="start"
-    android:orientation="vertical"
-    android:weightSum="100" >
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="#BFDEFC" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:weightSum="3" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="2"
-                android:gravity="center" >
-
-                <TextView
-                    android:id="@+id/fragment_anad_txt2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="تبلیغات شما"
-                    android:textColor="#000000" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center" >
-
-                <TextView
-                    android:id="@+id/fragment_anad_txt1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="50dp"
-                    android:gravity="center"
-                    android:text="@string/txtanad"
-                    android:textColor="#000000" />
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+    	xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:background="#EAEAEA"
+        android:gravity="start"
+        android:orientation="horizontal"
         android:weightSum="3" >
-
         <ScrollView
             android:id="@+id/vertical_scrollview_id"
             android:layout_width="match_parent"
@@ -74,45 +23,36 @@
                 android:layout_height="match_parent"
                 android:layout_weight="7"
                 android:orientation="vertical" >
-
-                <!-- <ListView -->
-                <!-- android:id="@+id/listVanad2" -->
-                <!-- style="@style/second_item_style" -->
-                <!-- android:layout_width="match_parent" -->
-                <!-- android:layout_height="match_parent" -->
-                <!-- android:dividerHeight="0dp" -->
-                <!-- android:scrollbars="none" > -->
-                <!-- </ListView> -->
             </LinearLayout>
         </ScrollView>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical" >
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <com.project.mechanic.Action.FloatingActionButton
+                <com.project.mechanic.ListView.PullAndLoadListView
+                    android:id="@+id/listVanad"
+                    style="@style/second_item_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:dividerHeight="0dp" >
+                </com.project.mechanic.ListView.PullAndLoadListView>
+                 <com.project.mechanic.Action.FloatingActionButton
                     android:id="@+id/fabAnad"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
+                    app:fab_hideAnimation="@anim/fab_scale_down"
+		            app:fab_shadowColor="#3366FF"
+		            app:fab_shadowRadius="4dp"
+		            app:fab_shadowXOffset="1dp"
+		            app:fab_shadowYOffset="3dp"
+		            app:fab_showAnimation="@anim/fab_scale_up"
+		            app:fab_showShadow="true"
+		            app:fab_colorNormal="#7ac5cd"
+		            app:fab_size="normal"
                     android:src="@drawable/fab_add" />
-
-                <com.project.mechanic.ListView.PullAndLoadListView
-                    android:id="@+id/listVanad"
-                    style="@style/second_item_style"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:dividerHeight="0dp" >
-                </com.project.mechanic.ListView.PullAndLoadListView>
-            </RelativeLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
-
-</LinearLayout>

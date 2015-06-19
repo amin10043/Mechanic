@@ -33,7 +33,7 @@
             <EditText
                 android:id="@+id/txtTitleP"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:ems="10"
                 android:gravity="center"

@@ -87,6 +87,8 @@ public class DialogPaperTitle extends Dialog implements AsyncInterface {
 				params.put("Context", titleDestxt.getText().toString());
 				params.put("UserId", String.valueOf(CurrentUser.getId()));
 				params.put("Date", currentDate);
+				params.put("IsUpdate", "0");
+				params.put("Id", "0");
 
 				saving.execute(params);
 

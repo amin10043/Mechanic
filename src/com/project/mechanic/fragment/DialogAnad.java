@@ -1,17 +1,13 @@
 package com.project.mechanic.fragment;
 
-import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,11 +21,15 @@ import android.widget.Toast;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.SavingImage;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
-public class DialogAnad extends Dialog implements AsyncInterface {
+public class DialogAnad extends Dialog implements AsyncInterface,
+		SaveAsyncInterface {
 
 	protected static final Context Contaxt = null;
 
@@ -61,12 +61,17 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 	LinearLayout Lheader;
 	String titel;
 	String Bytimage;
+	SavingImage savingImage;
+	byte[] image;
+	int gId = -1;
 
 	int ProvinceId;
 	Users u;
-	String currentDate;
 	protected byte[] img;
 	String TABLE_NAME = "Ticket";
+	ServerDate serverDate;
+	String gServerDate = "";
+	ProgressDialog ringProgressDialog;
 
 	public DialogAnad(Context context, int resourceId, Fragment fragment,
 			int ticketTypeID, int ProvinceId) {
@@ -77,22 +82,14 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 		this.fragment = fragment;
 		this.ticketTypeID = ticketTypeID;
 		this.ProvinceId = ProvinceId;
-	}
+		ringProgressDialog = new ProgressDialog(context);
 
-	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		bitmap.compress(CompressFormat.PNG, 0, outputStream);
-		return outputStream.toByteArray();
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.dialog_addcomment);
-
-		// id = Integer.valueOf(getArguments().getString("Id"));
-
 		setContentView(resourceId);
 		dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
 		dialog_img2 = (Button) findViewById(R.id.dialog_img2);
@@ -113,118 +110,29 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 		dialog_img1.setLayoutParams(headerEditParams);
 		dbadapter = new DataBaseAdapter(context);
 		u = util.getCurrentUser();
-		
+
 		UName.setText(u.getName());
 		UMobile.setText(u.getMobailenumber());
-		if(u.getEmail()!=null){
-		UEmail.setText(u.getEmail());
+		if (u.getEmail() != null) {
+			UEmail.setText(u.getEmail());
 		}
-		if(u.getFaxnumber()!=null){
-		UFax.setText(u.getFaxnumber());
-		} 
-		if(u.getPhonenumber()!=null){
-		UPhonnumber.setText(u.getPhonenumber());
+		if (u.getFaxnumber() != null) {
+			UFax.setText(u.getFaxnumber());
 		}
-		
-		
+		if (u.getPhonenumber() != null) {
+			UPhonnumber.setText(u.getPhonenumber());
+		}
+
 		dialog_img2.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-//				 date = new SimpleDateFormat("yyyy-MM-dd")
-//					.format(new Date());
-				
-				 currentDate = util.getCuurentDateTime();
-				params = new LinkedHashMap<String, String>();
-				saving = new Saving(context);
-				saving.delegate = DialogAnad.this;
 
-				params.put("TableName", "Ticket");
-				params.put("Title", dialog_anad_et1.getText().toString());
-			//    params.put("Desc", dialog_anad_et2.getText().toString());
-				params.put("UserId", String.valueOf(u.getId()));
-				params.put("TypeId", String.valueOf(ticketTypeID));
-				params.put("ProvinceId", String.valueOf(ProvinceId));
-				params.put("Date", currentDate);
-				params.put("UName", UName.getText().toString());
-				params.put("UEmail", UEmail.getText().toString());
-				params.put("UPhonnumber",UPhonnumber.getText().toString());
-		     	params.put("UFax", UFax.getText().toString());
-				params.put("UMobile", UMobile.getText().toString());
-
-				saving.execute(params);
-				
-//				if (u == null) {
-//					Toast.makeText(context, " شما وارد نشده اید.",
-//							Toast.LENGTH_LONG).show();
-//					return;
-//				}
-//				dbadapter.open();
-//				 date = new SimpleDateFormat("yyyy-MM-dd")
-//						.format(new Date());
-//				String title = dialog_anad_et1.getText().toString();
-//				String desc = dialog_anad_et2.getText().toString();
-//				if ("".equals(title) || "".equals(desc)) {
-//					Toast.makeText(context,
-//							" عنوان آگهی یا شرح آگهی نمی تواند خالی باشد",
-//							Toast.LENGTH_LONG).show();
-//				} else {
-//					if ((dialog_img1.getDrawable() == null)) {
-//
-//						dbadapter.insertTickettoDbemptyImage(dialog_anad_et1
-//								.getText().toString(), dialog_anad_et2
-//								.getText().toString(), u.getId(), date,
-//								ticketTypeID, 0, 0, 0, 0, 0, ProvinceId, UName
-//										.getText().toString(), UEmail.getText()
-//										.toString(), UPhonnumber.getText()
-//										.toString(), UFax.getText().toString(),
-//								null, UMobile.getText().toString());
-//
-//					} else {
-//
-//						Bitmap bitmap = ((BitmapDrawable) dialog_img1
-//								.getDrawable()).getBitmap();
-//
-//						Bitmap emptyBitmap = Bitmap.createBitmap(
-//								bitmap.getWidth(), bitmap.getHeight(),
-//								bitmap.getConfig());
-//						if (bitmap.sameAs(emptyBitmap)) {
-//							dbadapter.insertTickettoDbemptyImage(
-//									dialog_anad_et1.getText().toString(),
-//									dialog_anad_et2.getText().toString(), u
-//											.getId(), date, ticketTypeID, 0, 0,
-//									0, 0, 0, ProvinceId, UName.getText()
-//											.toString(), UEmail.getText()
-//											.toString(), UPhonnumber.getText()
-//											.toString(), UFax.getText()
-//											.toString(), null, UMobile
-//											.getText().toString());
-//						} else {
-//							byte[] bytes = getBitmapAsByteArray(bitmap);
-//
-//							dbadapter.insertTickettoDb(dialog_anad_et1
-//									.getText().toString(), dialog_anad_et2
-//									.getText().toString(), u.getId(), bytes,
-//									date, ticketTypeID, 0, 0, 0, 0, 0,
-//									ProvinceId, UName.getText().toString(),
-//									UEmail.getText().toString(), UPhonnumber
-//											.getText().toString(), UFax
-//											.getText().toString(), null, null,
-//									UMobile.getText().toString());
-//
-//						}
-//
-//					}
-//					Toast.makeText(context, "آگهی شما با موفقیت ثبت شد",
-//							Toast.LENGTH_SHORT).show();
-//					dbadapter.close();
-//					((AnadFragment) fragment).updateView();
-//					DialogAnad.this.dismiss();
-//
-//				}
+				serverDate = new ServerDate(context);
+				serverDate.delegate = DialogAnad.this;
+				serverDate.execute("");
 			}
 		});
-
 		dialog_img1.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
@@ -241,16 +149,6 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 
 	}
 
-	protected Resources getResources() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected Intent getIntent() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public interface OnMyDialogResult {
 		void finish(String result);
 	}
@@ -265,75 +163,99 @@ public class DialogAnad extends Dialog implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
-		int id = -1;
-		try {
-			id = Integer.valueOf(output);
-
-		dbadapter.open();
-	
+		// int id = -1;
 		String title = dialog_anad_et1.getText().toString();
 		String desc = dialog_anad_et2.getText().toString();
-		if ("".equals(title) || "".equals(desc)) {
-			Toast.makeText(context,
-					" عنوان آگهی یا شرح آگهی نمی تواند خالی باشد",
-					Toast.LENGTH_LONG).show();
-		} else {
-				dbadapter.insertTickettoDbemptyImage(id,dialog_anad_et1
-						.getText().toString(), dialog_anad_et2
-						.getText().toString(), u.getId(), currentDate,
-						ticketTypeID, ProvinceId, UName
-								.getText().toString(), UEmail.getText()
-								.toString(), UPhonnumber.getText()
-								.toString(), UFax.getText().toString(),
-						null, UMobile.getText().toString());
-				
-				Toast.makeText(context, "آگهی شما با موفقیت ثبت شد",
-						Toast.LENGTH_SHORT).show();
-				((AnadFragment) fragment).updateView();
-				DialogAnad.this.dismiss();
-				dbadapter.close();
-//		} else {
-//
-//				Bitmap bitmap = ((BitmapDrawable) dialog_img1
-//						.getDrawable()).getBitmap();
-//
-//				Bitmap emptyBitmap = Bitmap.createBitmap(
-//						bitmap.getWidth(), bitmap.getHeight(),
-//						bitmap.getConfig());
-//				if (bitmap.sameAs(emptyBitmap)) {
-//					dbadapter.insertTickettoDbemptyImage(
-//							dialog_anad_et1.getText().toString(),
-//							dialog_anad_et2.getText().toString(), u
-//									.getId(), date, ticketTypeID, 0, 0,
-//							0, 0, 0, ProvinceId, UName.getText()
-//									.toString(), UEmail.getText()
-//									.toString(), UPhonnumber.getText()
-//									.toString(), UFax.getText()
-//									.toString(), null, UMobile
-//									.getText().toString());
-//				} else {
-//					byte[] bytes = getBitmapAsByteArray(bitmap);
-//
-//					dbadapter.insertTickettoDb(dialog_anad_et1
-//							.getText().toString(), dialog_anad_et2
-//							.getText().toString(), u.getId(), bytes,
-//							date, ticketTypeID, 0, 0, 0, 0, 0,
-//							ProvinceId, UName.getText().toString(),
-//							UEmail.getText().toString(), UPhonnumber
-//									.getText().toString(), UFax
-//									.getText().toString(), null, null,
-//							UMobile.getText().toString());
-//
-//				}
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
+		try {
+			// id = Integer.valueOf(output);
+			gId = Integer.valueOf(output);
+			dbadapter.open();
+			dbadapter.insertTickettoDbemptyImage(gId, dialog_anad_et1.getText()
+					.toString(), dialog_anad_et2.getText().toString(), u
+					.getId(), gServerDate, ticketTypeID, ProvinceId, UName
+					.getText().toString(), UEmail.getText().toString(),
+					UPhonnumber.getText().toString(),
+					UFax.getText().toString(), null, UMobile.getText()
+							.toString());
 
-			
-			
+			Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
+					.getBitmap();
 
-	}
+			Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+					bitmap.getHeight(), bitmap.getConfig());
+			if (!bitmap.sameAs(emptyBitmap)) {
+				image = Utility.CompressBitmap(bitmap);
+				savingImage = new SavingImage(context);
+				Map<String, Object> it = new LinkedHashMap<String, Object>();
+				it.put("tableName", "Ticket");
+				it.put("fieldName", "Image");
+				it.put("id", gId);
+				it.put("Image", image);
 
+				savingImage.delegate = this;
+				savingImage.execute(it);
+			}
+			//
+
+		} catch (NumberFormatException ex) {
+			if (!output.contains("java") || !output.contains("Exception")) {
+				if ("".equals(title) || "".equals(desc)) {
+					Toast.makeText(context,
+							" عنوان آگهی یا شرح آگهی نمی تواند خالی باشد",
+							Toast.LENGTH_LONG).show();
+				} else {
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(context);
+					saving.delegate = DialogAnad.this;
+
+					params.put("TableName", "Ticket");
+					params.put("Title", dialog_anad_et1.getText().toString());
+					params.put("UserId", String.valueOf(u.getId()));
+					params.put("TypeId", String.valueOf(ticketTypeID));
+					params.put("ProvinceId", String.valueOf(ProvinceId));
+					params.put("Date", output);
+					params.put("UName", UName.getText().toString());
+					params.put("UEmail", UEmail.getText().toString());
+					params.put("UPhonnumber", UPhonnumber.getText().toString());
+					params.put("UFax", UFax.getText().toString());
+					params.put("UMobile", UMobile.getText().toString());
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+					gServerDate = output;
+					saving.execute(params);
+					ringProgressDialog = ProgressDialog.show(context, "",
+							"لطفا منتظر بمانید...", true);
+				}
+			} else {
+				Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT)
+						.show();
+			}
 		} catch (Exception ex) {
 			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
 		}
 	}
 
+	@Override
+	public void processFinishSaveImage(String output) {
+
+		int res = 0;
+		try {
+			res = Integer.valueOf(output);
+			dbadapter.open();
+			dbadapter.updateTicketImage(gId, image);
+			dbadapter.close();
+
+			Toast.makeText(context, "آگهی شما با موفقیت ثبت شد",
+					Toast.LENGTH_SHORT).show();
+			((AnadFragment) fragment).updateView();
+			DialogAnad.this.dismiss();
+			dbadapter.close();
+		} catch (Exception ex) {
+			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
+		}
+
+	}
 }

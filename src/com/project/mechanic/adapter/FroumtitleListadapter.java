@@ -1,6 +1,5 @@
 package com.project.mechanic.adapter;
 
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,10 +29,8 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.FroumWithoutComment;
-import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
@@ -49,8 +47,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 	DataBaseAdapter adapter;
 	Utility util;
 	Users CurrentUser;
-	PersianDate todayDate;
-	String currentDate;
+	// PersianDate todayDate;
+	// String currentDate;
 	LinearLayout LikeTitle;
 	// int ItemId;
 	int froumNumber;
@@ -71,12 +69,12 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		this.mylist = objects;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
-
 	}
 
 	@SuppressLint("ViewHolder")
 	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView,
+			final ViewGroup parent) {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -103,12 +101,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		LikeTitle = (LinearLayout) convertView
 				.findViewById(R.id.liketitleTopic);
 
-		todayDate = new PersianDate();
-		currentDate = todayDate.todayShamsi();
-
-		// date = new ServerDate(context);
-		// date.delegate = this;
-		// date.execute("");
+		// todayDate = new PersianDate();
+		// currentDate = todayDate.todayShamsi();
 
 		Froum person1 = mylist.get(position);
 
@@ -144,6 +138,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				froumNumber = ItemId = listItem.getId();
 			}
 		}
+		countLikeFroum.setText(adapter.LikeInFroum_count(ItemId).toString());
+
 		if (CurrentUser == null) {
 			LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
 
@@ -154,11 +150,18 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
 		}
 
-		countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
-				.toString());
-
 		if (x.getImage() == null) {
 			profileImg.setImageResource(R.drawable.no_img_profile);
+			RelativeLayout rl = (RelativeLayout) convertView
+					.findViewById(R.id.topicTitleFroum);
+			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+					rl.getLayoutParams());
+
+			lp.width = util.getScreenwidth() / 7;
+			lp.height = util.getScreenwidth() / 7;
+			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp.setMargins(5, 5, 5, 5);
+			profileImg.setLayoutParams(lp);
 		} else {
 
 			byte[] byteImg = x.getImage();
@@ -201,85 +204,10 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 						}
 					}
 
-					if (adapter.isUserLikedFroum(CurrentUser.getId(), ItemId)) {
-						adapter.open();
-						// int c = adapter.LikeInFroum_count(ItemId) - 1;
-						// countLikeFroum.setText(String.valueOf(c));
-
-						params = new LinkedHashMap<String, String>();
-						deleting = new Deleting(context);
-						deleting.delegate = FroumtitleListadapter.this;
-
-						params.put("TableName", "LikeInFroum");
-						params.put("UserId",
-								String.valueOf(CurrentUser.getId()));
-						params.put("FroumId", String.valueOf(ItemId));
-						deleting.execute(params);
-
-						ringProgressDialog = ProgressDialog.show(context, "",
-								"لطفا منتظر بمانید...", true);
-
-						ringProgressDialog.setCancelable(true);
-
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
-							}
-						}).start();
-
-						adapter.close();
-					} else {
-						adapter.open();
-						params = new LinkedHashMap<String, String>();
-						saving = new Saving(context);
-						saving.delegate = FroumtitleListadapter.this;
-
-						params.put("TableName", "LikeInFroum");
-
-						params.put("UserId",
-								String.valueOf(CurrentUser.getId()));
-						params.put("FroumId", String.valueOf(ItemId));
-						params.put("CommentId", "0");
-						params.put("Date", currentDate);
-						saving.execute(params);
-
-						ringProgressDialog = ProgressDialog.show(context, "",
-								"لطفا منتظر بمانید...", true);
-
-						ringProgressDialog.setCancelable(true);
-
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
-							}
-						}).start();
-
-						// countLikeFroum.setText(adapter
-						// .LikeInFroum_count(ItemId).toString());
-
-						adapter.close();
-
-					}
-
 				}
+				date = new ServerDate(context);
+				date.delegate = FroumtitleListadapter.this;
+				date.execute("");
 				adapter.close();
 
 			}
@@ -313,19 +241,17 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				trans.setCustomAnimations(R.anim.pull_in_left,
 						R.anim.push_out_right);
 				Bundle bundle = new Bundle();
-				bundle.putString("Id", String.valueOf(ItemId));
-				fragment.setArguments(bundle);
 
-				DialogcmtInfroum dialog = new DialogcmtInfroum(null, ItemId,
-						context, -1, R.layout.dialog_addcomment);
-
-				Bundle bundle2 = new Bundle();
 				bundle.putString("Id", String.valueOf(ItemId));
 				fragment.setArguments(bundle);
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
 				abc.edit().putInt("main_Id", 1).commit();
+				abc.edit()
+						.putInt("Froum_List_Id",
+								((ListView) parent).getFirstVisiblePosition())
+						.commit();
 				froumId.edit().putInt("main_Id", ItemId).commit();
 
 			}
@@ -355,10 +281,6 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				bundle.putString("Id", String.valueOf(ItemId));
 				fragment.setArguments(bundle);
 
-				DialogcmtInfroum dialog = new DialogcmtInfroum(null, ItemId,
-						context, -1, R.layout.dialog_addcomment);
-
-				Bundle bundle2 = new Bundle();
 				bundle.putString("Id", String.valueOf(ItemId));
 				fragment.setArguments(bundle);
 
@@ -374,15 +296,15 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 	@Override
 	public void processFinish(String output) {
-		// ringProgressDialog.dismiss();
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
 
 		int id = -1;
 
 		try {
 			id = Integer.valueOf(output);
-
 			adapter.open();
-
 			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
 				adapter.deleteLikeFromFroum(CurrentUser.getId(), froumNumber);
 				LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
@@ -392,7 +314,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 			} else {
 				adapter.insertLikeInFroumToDb(CurrentUser.getId(), froumNumber,
-						currentDate, 0);
+						serverDate, 0);
 				LikeTitle.setBackgroundResource(R.drawable.like_froum);
 
 				countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
@@ -400,17 +322,103 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			}
 			adapter.close();
 
-		} catch (Exception ex) {
+		} catch (NumberFormatException ex) {
+			if (output != null
+					&& !(output.contains("Exception") || output
+							.contains("java"))) {
+				adapter.open();
 
-			try {
+				if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
+					adapter.open();
+					// int c = adapter.LikeInFroum_count(ItemId) - 1;
+					// countLikeFroum.setText(String.valueOf(c));
 
-				Date d = util.readDateFromServer(output);
+					params = new LinkedHashMap<String, String>();
+					deleting = new Deleting(context);
+					deleting.delegate = FroumtitleListadapter.this;
 
-			} catch (Exception e) {
+					params.put("TableName", "LikeInFroum");
+					params.put("UserId", String.valueOf(CurrentUser.getId()));
+					params.put("FroumId", String.valueOf(froumNumber));
 
-				Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
+					deleting.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(context, "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
+
+					adapter.close();
+				} else {
+					adapter.open();
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(context);
+					saving.delegate = FroumtitleListadapter.this;
+
+					params.put("TableName", "LikeInFroum");
+
+					params.put("UserId", String.valueOf(CurrentUser.getId()));
+					params.put("FroumId", String.valueOf(froumNumber));
+					params.put("CommentId", "0");
+					params.put("Date", output);
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+
+					serverDate = output;
+
+					saving.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(context, "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
+
+					// countLikeFroum.setText(adapter
+					// .LikeInFroum_count(ItemId).toString());
+
+					adapter.close();
+
+				}
+				adapter.close();
+
+			} else {
+				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 
+		catch (Exception e) {
+
+			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
+		}
 	}
+
 }
