@@ -82,7 +82,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 		this.fragment = fragment;
 		this.ticketTypeID = ticketTypeID;
 		this.ProvinceId = ProvinceId;
-		ringProgressDialog = new ProgressDialog(context);
+		// ringProgressDialog = new ProgressDialog(context);
 
 	}
 
@@ -131,6 +131,8 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 				serverDate = new ServerDate(context);
 				serverDate.delegate = DialogAnad.this;
 				serverDate.execute("");
+				ringProgressDialog = ProgressDialog.show(context, null,
+						"لطفا منتظر بمانید.");
 			}
 		});
 		dialog_img1.setOnClickListener(new android.view.View.OnClickListener() {
@@ -199,6 +201,8 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 
 					savingImage.delegate = this;
 					savingImage.execute(it);
+					ringProgressDialog = ProgressDialog.show(context, null,
+							"لطفا منتظر بمانید.");
 				}
 			} else {
 				this.dismiss();
@@ -245,6 +249,10 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 
 	@Override
 	public void processFinishSaveImage(String output) {
+
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
 
 		int res = 0;
 		try {

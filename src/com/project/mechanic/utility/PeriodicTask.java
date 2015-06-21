@@ -20,7 +20,7 @@ public class PeriodicTask {
 
 	public void startAlert() {
 		if (Utility.isAppRunning(context)) {
-			mInterval = 60000; // 1 minute
+			mInterval = 30000; // 1 minute
 			util.Updating();
 		} else {
 			mInterval = 7200000; // 2 hours

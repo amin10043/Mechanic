@@ -4,13 +4,15 @@ import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.utility.Utility;
+
+//import org.ksoap2.transport.HttpTransportSE;
+//import org.ksoap2.transport.HttpTransportSE;
 
 public class Updating extends AsyncTask<String, Integer, String> {
 
@@ -56,7 +58,7 @@ public class Updating extends AsyncTask<String, Integer, String> {
 			envelope.setAddAdornments(false);
 			envelope.implicitTypes = true;
 			envelope.setOutputSoapObject(request);
-			HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS);
+			MyTransport httpTransport = new MyTransport(SOAP_ADDRESS);
 			httpTransport
 					.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 			// Object response = null;

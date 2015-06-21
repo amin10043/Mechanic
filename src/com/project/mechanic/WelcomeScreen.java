@@ -28,6 +28,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -678,4 +679,10 @@ public class WelcomeScreen extends Activity {
 		}
 	}
 
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+
+		Toast.makeText(this, "LOW MEMORY1", Toast.LENGTH_SHORT).show();
+	}
 }

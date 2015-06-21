@@ -491,4 +491,10 @@ public class MainActivity extends FragmentActivity {
 		exDialog.show();
 	}
 
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+
+		Toast.makeText(this, "LOW MEMORY2", Toast.LENGTH_SHORT).show();
+	}
 }
