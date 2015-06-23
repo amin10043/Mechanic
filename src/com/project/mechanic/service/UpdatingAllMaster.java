@@ -1,6 +1,7 @@
 package com.project.mechanic.service;
 
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
@@ -11,7 +12,7 @@ import android.os.AsyncTask;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.utility.Utility;
 
-public class ServerDate extends AsyncTask<String, Integer, String> {
+public class UpdatingAllMaster extends AsyncTask<String, Integer, String> {
 
 	public String SOAP_ACTION = "http://tempuri.org/";
 
@@ -25,33 +26,50 @@ public class ServerDate extends AsyncTask<String, Integer, String> {
 	private Context context;
 	private Utility util;
 
-	// private Context context;
-
 	public AsyncInterface delegate = null;
 
-	public ServerDate(Context context) {
+	public UpdatingAllMaster(Context context) {
 		this.context = context;
 		util = new Utility(context);
 	}
 
 	@Override
 	protected String doInBackground(String... arg0) {
-		OPERATION_NAME = "getServerDateMilis";
+		OPERATION_NAME = "getAllUpdateMaster";
 		SOAP_ACTION += OPERATION_NAME;
 
 		try {
 
 			SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,
 					OPERATION_NAME);
+			PropertyInfo pi = null;
+			pi = new PropertyInfo();
+			pi.setName("fromDate");
+			pi.setValue(arg0[0]);
+			pi.setType(String.class);
+			request.addProperty(pi);
+
+			pi = new PropertyInfo();
+			pi.setName("from");
+			pi.setValue(arg0[1]);
+			pi.setType(Integer.class);
+			request.addProperty(pi);
+
+			pi = new PropertyInfo();
+			pi.setName("to");
+			pi.setValue(arg0[2]);
+			pi.setType(Integer.class);
+			request.addProperty(pi);
 
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 					SoapEnvelope.VER11);
 			envelope.dotNet = true;
-			// envelope.setAddAdornments(false);
+			envelope.setAddAdornments(false);
 			envelope.implicitTypes = true;
 			envelope.setOutputSoapObject(request);
 			HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS);
-			// Object response = null;
+			httpTransport
+					.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 			httpTransport.call(SOAP_ACTION, envelope);
 			Object response = envelope.getResponse();
 			return response.toString();
@@ -59,7 +77,6 @@ public class ServerDate extends AsyncTask<String, Integer, String> {
 			response = e.toString();
 		}
 		return response.toString();
-
 	}
 
 	protected void onPostExecute(String res) {

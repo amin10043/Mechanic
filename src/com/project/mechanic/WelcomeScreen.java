@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
@@ -70,6 +71,14 @@ public class WelcomeScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_welcome_screen);
+
+		SharedPreferences pref = getSharedPreferences("update", 0);
+		SharedPreferences.Editor editor = pref.edit();
+		editor.putInt("fromM", 0);
+		editor.putInt("toM", 4);
+		editor.putInt("fromD", 0);
+		editor.putInt("toD", 4);
+		editor.commit();
 
 		adapter = new DataBaseAdapter(this);
 		util = new Utility(this);

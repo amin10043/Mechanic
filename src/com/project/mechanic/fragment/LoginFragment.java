@@ -209,19 +209,10 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 				editor.putBoolean("isLogin", true);
 
-				// ثبت اطلاعات کاربر در دیتا بیس هم حتما انجام گیرد. فراموش
-				// نشود!!!!
-
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
-				// String mobile2 = editmobile.getText().toString();
-
-				// if (mobile != null) {
-				//
-				//
-
 				dbAdapter.open();
 				u = dbAdapter.getUserbymobailenumber(mobileNumber);
 				if (u != null) {
@@ -230,12 +221,6 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 					dbAdapter.UpdateAdminUserToDb(id, admin);
 				}
 				dbAdapter.close();
-				// } else {
-				// Toast.makeText(
-				// getActivity(),
-				// "شما وارد شده اید اما شماره تلفن به درستی وارد نشده است.",
-				// Toast.LENGTH_SHORT).show();
-				// }
 				Toast.makeText(getActivity(), "شما وارد شده اید.",
 						Toast.LENGTH_SHORT).show();
 				TextView txtlike = (TextView) (getActivity())
@@ -245,7 +230,7 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 						.findViewById(R.id.txtcm);
 				txtcm1.setVisibility(View.VISIBLE);
 
-				util.setNoti(getActivity(), u.getId());
+				// util.setNoti(getActivity(), u.getId());
 
 			} else {
 

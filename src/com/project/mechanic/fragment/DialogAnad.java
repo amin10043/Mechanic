@@ -36,9 +36,8 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	protected static final EditText number = null;
 
 	private static int RESULT_LOAD_IMAGE = 1;
-	private static final int SELECT_PICTURE = 1;
 
-	private ImageView dialog_img1, dialog_img3;
+	private ImageView dialog_img1;
 	private Button dialog_img2;
 	private EditText dialog_anad_et1, dialog_anad_et2, UName, UMobile,
 			UPhonnumber, UFax, UEmail;
@@ -76,14 +75,11 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	public DialogAnad(Context context, int resourceId, Fragment fragment,
 			int ticketTypeID, int ProvinceId) {
 		super(context);
-		// TODO Auto-generated constructor stub
 		this.resourceId = resourceId;
 		this.context = context;
 		this.fragment = fragment;
 		this.ticketTypeID = ticketTypeID;
 		this.ProvinceId = ProvinceId;
-		// ringProgressDialog = new ProgressDialog(context);
-
 	}
 
 	@Override
@@ -163,6 +159,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 		return this.getLayoutInflater().inflate(resourceId, null);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void processFinish(String output) {
 		// int id = -1;
@@ -253,10 +250,8 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 		if (ringProgressDialog != null) {
 			ringProgressDialog.dismiss();
 		}
-
-		int res = 0;
 		try {
-			res = Integer.valueOf(output);
+			Integer.valueOf(output);
 			dbadapter.open();
 			dbadapter.updateTicketImage(gId, image);
 			dbadapter.close();

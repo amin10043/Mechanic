@@ -10,9 +10,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -35,6 +36,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -53,7 +55,8 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.service.Updating;
+import com.project.mechanic.service.UpdatingAllDetail;
+import com.project.mechanic.service.UpdatingAllMaster;
 import com.project.mechanic.utility.Roozh.SolarCalendar;
 
 public class Utility implements AsyncInterface {
@@ -64,9 +67,12 @@ public class Utility implements AsyncInterface {
 	LayoutInflater inflater;
 	ViewGroup toastlayout;
 
-	private Updating serviceUpdate;
+	private UpdatingAllMaster serviceUpdate;
+	private UpdatingAllDetail serviceUpdateD;
 	Settings settings;
 	PersianDate pDate;
+	static boolean flag = false;
+	private final int NUMBER_OF_RECORD_RECEIVED = 4;
 
 	public Utility(Context context) {
 		this.context = context;
@@ -275,35 +281,28 @@ public class Utility implements AsyncInterface {
 
 	}
 
-	public void parseQuery(String query) {
+	public void parseQuery(String q) {
 
-		StringTokenizer tokens = new StringTokenizer(query, "***");
-		if (!tokens.hasMoreTokens())
-			return;
-		String tableName = tokens.nextToken();
-		if (!tokens.hasMoreTokens())
-			return;
-		String serverDate = tokens.nextToken();
+		String[] allStr = q.split("&&&"); // each Table
 
-		StringTokenizer inner = new StringTokenizer(tokens.nextToken(), ",");
-		int i = 0;
-		String[] col = new String[inner.countTokens()];
-		while (inner.hasMoreTokens()) {
-			col[i++] = inner.nextToken();
+		for (int i = 0; i < allStr.length; ++i) {
+			String[] strs = allStr[i].split(Pattern.quote("***")); // each
+																	// Record
+			String tableName = strs[0];
+			boolean flag = false;
+			String[] cols = strs[1].split(","); // column
+			int row = 0;
+			String[][] values = new String[cols.length][];
+			for (int j = 2; j < strs.length; j++, row++) {
+				values[row] = strs[j].split(",");
+				flag = true;
+			}
+			adapter.open();
+			if (values != null && values.length > 0 && flag)
+				adapter.updateTables(tableName, cols, values);
+
+			adapter.close();
 		}
-		int j = 0;
-		String[][] values = new String[tokens.countTokens()][];
-		while (tokens.hasMoreTokens()) {
-			values[j] = tokens.nextToken().split(",");
-			j++;
-		}
-
-		adapter.open();
-		if (values != null && values.length > 0)
-			adapter.updateTables(tableName, col, values);
-
-		adapter.setServerDate("ServerDate_" + tableName.trim(), serverDate);
-		adapter.close();
 	}
 
 	public String getCuurentDateTime() {
@@ -395,7 +394,6 @@ public class Utility implements AsyncInterface {
 				scale *= 2;
 			}
 
-			// decode with inSampleSize
 			BitmapFactory.Options o2 = new BitmapFactory.Options();
 			o2.inSampleSize = scale;
 			return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
@@ -404,128 +402,23 @@ public class Utility implements AsyncInterface {
 		return null;
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void Updating() {
-		String tableUpdating = "User";
-		serviceUpdate = new Updating(context);
+
+		SharedPreferences pref = context.getSharedPreferences("update", 0);
+		SharedPreferences.Editor editor = pref.edit();
+		int from = pref.getInt("fromM", 0);
+		int to = pref.getInt("toM", 0);
+		serviceUpdate = new UpdatingAllMaster(context);
 		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				settings != null ? settings.getServerDate_Users() : "");
+		serviceUpdate.execute(settings != null ? settings.getServerDate_Users()
+				: "", String.valueOf(from), String.valueOf(to));
+		flag = true;
+		editor.putInt("fromM", from + NUMBER_OF_RECORD_RECEIVED);
+		editor.putInt("toM", to + NUMBER_OF_RECORD_RECEIVED);
 
-		tableUpdating = "Paper";
-		serviceUpdate = new Updating(context);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_Paper() : ""));
+		editor.commit();
 
-		tableUpdating = "Froum";
-		serviceUpdate = new Updating(context);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_Froum() : ""));
-
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-
-				try {
-
-					Thread.sleep(500);
-
-				} catch (Exception e) {
-
-				}
-			}
-		}).start();
-
-		// tableUpdating = "Object";
-		// serviceUpdate = new Updating(this);
-		// serviceUpdate.delegate = this;
-		// serviceUpdate.execute(tableUpdating,
-		// (settings != null ? settings.getServerDate() : ""));
-		tableUpdating = "News";
-		serviceUpdate = new Updating(context);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_News() : ""));
-		tableUpdating = "Anad";
-		serviceUpdate = new Updating(context);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_Anad() : ""));
-		tableUpdating = "Ticket";
-		serviceUpdate = new Updating(context);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_Ticket() : ""));
-
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-
-				try {
-
-					Thread.sleep(500);
-
-				} catch (Exception e) {
-
-				}
-			}
-		}).start();
-
-		tableUpdating = "LikeInPaper";
-		serviceUpdate = new Updating(context);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_LikeInPaper() : ""));
-		tableUpdating = "CmtInPaper";
-		serviceUpdate = new Updating(context);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_CmtInPaper() : ""));
-
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-
-				try {
-
-					Thread.sleep(500);
-
-				} catch (Exception e) {
-
-				}
-			}
-		}).start();
-
-		tableUpdating = "LikeInFroum";
-		serviceUpdate = new Updating(context);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_LikeInFroum() : ""));
-		tableUpdating = "CommentInFroum";
-		serviceUpdate = new Updating(context);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_CommentInFroum()
-						: ""));
-
-		tableUpdating = "LikeInObject";
-		serviceUpdate = new Updating(context);
-		serviceUpdate.delegate = this;
-		serviceUpdate
-				.execute(
-						tableUpdating,
-						(settings != null ? settings
-								.getServerDate_LikeInObject() : ""));
-		tableUpdating = "CommentInObject";
-		serviceUpdate = new Updating(context);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(tableUpdating,
-				(settings != null ? settings.getServerDate_CommentInObject()
-						: ""));
 	}
 
 	public Date readDateFromServer(String serverDate) {
@@ -543,6 +436,24 @@ public class Utility implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
+
+		if (flag) {
+
+			SharedPreferences pref = context.getSharedPreferences("update", 0);
+			SharedPreferences.Editor editor = pref.edit();
+
+			int from = pref.getInt("fromD", 0);
+			int to = pref.getInt("toD", 0);
+
+			serviceUpdateD = new UpdatingAllDetail(context);
+			serviceUpdateD.delegate = this;
+			serviceUpdateD.execute(
+					settings != null ? settings.getServerDate_Users() : "",
+					String.valueOf(from), String.valueOf(to));
+
+			editor.putInt("fromD", from + NUMBER_OF_RECORD_RECEIVED);
+			editor.putInt("toD", to + NUMBER_OF_RECORD_RECEIVED);
+		}
 		parseQuery(output);
 
 	}

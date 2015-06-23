@@ -21,9 +21,9 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Ticket;
-import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.fragment.ShowAdFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.JalaliCalendar;
 
 public class AnadListAdapter extends ArrayAdapter<Ticket> {
 
@@ -61,9 +61,10 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				.findViewById(R.id.row_anad_txt2);
 		ImageView img2 = (ImageView) convertView
 				.findViewById(R.id.row_favorite_img);
-		PersianDate date = new PersianDate();
 		tempItem = list.get(position);
-		txtdate.setText(date.todayShamsi());
+		JalaliCalendar jalal = new JalaliCalendar();
+		jalal.setTimeInMillis(Long.valueOf(tempItem.getDate()));
+		txtdate.setText(jalal.toString());
 		txtName.setText(tempItem.getTitle());
 		txtDesc.setText(tempItem.getDesc());
 		byte[] bitmapbyte = tempItem.getImage();
