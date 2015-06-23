@@ -47,7 +47,7 @@ public class ServerDate extends AsyncTask<String, Integer, String> {
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 					SoapEnvelope.VER11);
 			envelope.dotNet = true;
-			envelope.setAddAdornments(false);
+			// envelope.setAddAdornments(false);
 			envelope.implicitTypes = true;
 			envelope.setOutputSoapObject(request);
 			HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS);
