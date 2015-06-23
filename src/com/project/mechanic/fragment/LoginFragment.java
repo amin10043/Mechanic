@@ -207,30 +207,36 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 			SharedPreferences.Editor editor = settings.edit();
 			if ("true".equals(output)) {
 
-				editor.putBoolean("isLogin", true);
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new MainFragment());
-				trans.commit();
 				dbAdapter.open();
 				u = dbAdapter.getUserbymobailenumber(mobileNumber);
+				dbAdapter.close();
 				if (u != null) {
 					int id = u.getId();
 					int admin = 1;
+					dbAdapter.open();
 					dbAdapter.UpdateAdminUserToDb(id, admin);
-				}
-				dbAdapter.close();
-				Toast.makeText(getActivity(), "شما وارد شده اید.",
-						Toast.LENGTH_SHORT).show();
-				TextView txtlike = (TextView) (getActivity())
-						.findViewById(R.id.txtlike);
-				txtlike.setVisibility(View.VISIBLE);
-				TextView txtcm1 = (TextView) (getActivity())
-						.findViewById(R.id.txtcm);
-				txtcm1.setVisibility(View.VISIBLE);
+					dbAdapter.close();
+					Toast.makeText(getActivity(), "شما وارد شده اید.",
+							Toast.LENGTH_SHORT).show();
+					TextView txtlike = (TextView) (getActivity())
+							.findViewById(R.id.txtlike);
+					txtlike.setVisibility(View.VISIBLE);
+					TextView txtcm1 = (TextView) (getActivity())
+							.findViewById(R.id.txtcm);
+					txtcm1.setVisibility(View.VISIBLE);
+					editor.putBoolean("isLogin", true);
 
-				// util.setNoti(getActivity(), u.getId());
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new MainFragment());
+					trans.commit();
+				}
+
+				else {
+					Toast.makeText(getActivity(),
+							"خطا در بارگذاری داده ها از سرور.",
+							Toast.LENGTH_SHORT).show();
+				}
 
 			} else {
 
