@@ -88,4 +88,5 @@ public class Anad {
 		Seen = seen;
 		Submit = submit;
 	}
+
 }

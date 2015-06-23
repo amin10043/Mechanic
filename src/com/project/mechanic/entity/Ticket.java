@@ -1,6 +1,6 @@
 package com.project.mechanic.entity;
 
-public class Ticket {
+public class Ticket implements Comparable<Ticket> {
 
 	int Id;
 	String Title;
@@ -231,5 +231,20 @@ public class Ticket {
 		UMobile = umobile;
 		Seen = seen;
 		Submit = submit;
+	}
+
+	@Override
+	public int compareTo(Ticket compareTicket) {
+		// TODO Auto-generated method stub
+		// String s=getDate();
+		// Double va=Convert.ToDouble(s);
+		long temp = Long.valueOf(getDate());
+
+		// number = temp.doubleValue();
+		Long comparetemp = Long.valueOf(compareTicket.getDate());
+
+		// return this.Count - compareCount;
+
+		return (int) (comparetemp - Long.valueOf(getDate()));
 	}
 }

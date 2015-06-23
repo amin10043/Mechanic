@@ -4,6 +4,7 @@ import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -11,10 +12,7 @@ import android.os.AsyncTask;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.utility.Utility;
 
-//import org.ksoap2.transport.HttpTransportSE;
-//import org.ksoap2.transport.HttpTransportSE;
-
-public class Updating extends AsyncTask<String, Integer, String> {
+public class UpdatingAllDetail extends AsyncTask<String, Integer, String> {
 
 	public String SOAP_ACTION = "http://tempuri.org/";
 
@@ -28,18 +26,16 @@ public class Updating extends AsyncTask<String, Integer, String> {
 	private Context context;
 	private Utility util;
 
-	// private Context context;
-
 	public AsyncInterface delegate = null;
 
-	public Updating(Context context) {
+	public UpdatingAllDetail(Context context) {
 		this.context = context;
 		util = new Utility(context);
 	}
 
 	@Override
 	protected String doInBackground(String... arg0) {
-		OPERATION_NAME = "getAll" + arg0[0];
+		OPERATION_NAME = "getAllUpdateDetails";
 		SOAP_ACTION += OPERATION_NAME;
 
 		try {
@@ -49,8 +45,20 @@ public class Updating extends AsyncTask<String, Integer, String> {
 			PropertyInfo pi = null;
 			pi = new PropertyInfo();
 			pi.setName("fromDate");
-			pi.setValue(arg0[1]);
+			pi.setValue(arg0[0]);
 			pi.setType(String.class);
+			request.addProperty(pi);
+
+			pi = new PropertyInfo();
+			pi.setName("from");
+			pi.setValue(arg0[1]);
+			pi.setType(Integer.class);
+			request.addProperty(pi);
+
+			pi = new PropertyInfo();
+			pi.setName("to");
+			pi.setValue(arg0[2]);
+			pi.setType(Integer.class);
 			request.addProperty(pi);
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 					SoapEnvelope.VER11);
@@ -58,7 +66,8 @@ public class Updating extends AsyncTask<String, Integer, String> {
 			envelope.setAddAdornments(false);
 			envelope.implicitTypes = true;
 			envelope.setOutputSoapObject(request);
-			MyTransport httpTransport = new MyTransport(SOAP_ADDRESS);
+			// MyTransport httpTransport = new MyTransport(SOAP_ADDRESS);
+			HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS);
 			httpTransport
 					.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 			// Object response = null;
@@ -76,4 +85,5 @@ public class Updating extends AsyncTask<String, Integer, String> {
 		if (delegate != null)
 			delegate.processFinish(res);
 	}
+
 }

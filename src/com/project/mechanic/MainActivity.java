@@ -80,7 +80,7 @@ public class MainActivity extends FragmentActivity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 		adapter = new DataBaseAdapter(this);
 		slideadapter = new SlideMenuAdapter(this);
-		ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
+		final ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
 		final TextView txtcm1 = (TextView) findViewById(R.id.txtcm);
 		final TextView txtlike = (TextView) findViewById(R.id.txtlike);
 
@@ -118,12 +118,14 @@ public class MainActivity extends FragmentActivity {
 				adapter.updatecmobjectseentodb(seen, user.getId());
 				adapter.updatecmpaperseentodb(seen, user.getId());
 				txtcm1.setVisibility(View.GONE);
+				iBtnmessage.setEnabled(false);
 
 				adapter.close();
+
 			}
 		});
 
-		ImageButton iBtnNotification = (ImageButton) findViewById(R.id.iBtnNotification);
+		final ImageButton iBtnNotification = (ImageButton) findViewById(R.id.iBtnNotification);
 		iBtnNotification.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -146,6 +148,7 @@ public class MainActivity extends FragmentActivity {
 				adapter.updatelikefroumseentodb(seen, user.getId());
 				adapter.updatelikepaperseentodb(seen, user.getId());
 				txtlike.setVisibility(View.GONE);
+				iBtnNotification.setEnabled(false);
 
 				adapter.close();
 
@@ -488,4 +491,10 @@ public class MainActivity extends FragmentActivity {
 		exDialog.show();
 	}
 
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+
+		Toast.makeText(this, "LOW MEMORY2", Toast.LENGTH_SHORT).show();
+	}
 }

@@ -956,6 +956,7 @@ public class DataBaseAdapter {
 			item = CursorToTicket(mCur);
 			result.add(item);
 		}
+		Collections.sort(result);
 
 		return result;
 
@@ -2081,6 +2082,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			result.add(CursorToTicket(cursor));
 		}
+		// Collections.sort(result);
 
 		return result;
 
@@ -2910,7 +2912,7 @@ public class DataBaseAdapter {
 		ContentValues cv = null;
 		for (int i = 0; i < values.length; i++) {
 			cv = new ContentValues();
-			for (int j = 0; j < values[i].length; j++) {
+			for (int j = 0; values[i] != null && j < values[i].length; j++) {
 
 				if (values[i][j] != null)
 					cv.put(cols[j], values[i][j]);

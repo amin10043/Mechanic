@@ -36,9 +36,8 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	protected static final EditText number = null;
 
 	private static int RESULT_LOAD_IMAGE = 1;
-	private static final int SELECT_PICTURE = 1;
 
-	private ImageView dialog_img1, dialog_img3;
+	private ImageView dialog_img1;
 	private Button dialog_img2;
 	private EditText dialog_anad_et1, dialog_anad_et2, UName, UMobile,
 			UPhonnumber, UFax, UEmail;
@@ -76,14 +75,11 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	public DialogAnad(Context context, int resourceId, Fragment fragment,
 			int ticketTypeID, int ProvinceId) {
 		super(context);
-		// TODO Auto-generated constructor stub
 		this.resourceId = resourceId;
 		this.context = context;
 		this.fragment = fragment;
 		this.ticketTypeID = ticketTypeID;
 		this.ProvinceId = ProvinceId;
-		ringProgressDialog = new ProgressDialog(context);
-
 	}
 
 	@Override
@@ -131,6 +127,8 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 				serverDate = new ServerDate(context);
 				serverDate.delegate = DialogAnad.this;
 				serverDate.execute("");
+				ringProgressDialog = ProgressDialog.show(context, null,
+						"لطفا منتظر بمانید.");
 			}
 		});
 		dialog_img1.setOnClickListener(new android.view.View.OnClickListener() {
@@ -161,6 +159,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 		return this.getLayoutInflater().inflate(resourceId, null);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void processFinish(String output) {
 		// int id = -1;
@@ -181,22 +180,29 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 					UFax.getText().toString(), null, UMobile.getText()
 							.toString());
 
-			Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
-					.getBitmap();
+			if (dialog_img1.getDrawable() != null) {
 
-			Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
-					bitmap.getHeight(), bitmap.getConfig());
-			if (!bitmap.sameAs(emptyBitmap)) {
-				image = Utility.CompressBitmap(bitmap);
-				savingImage = new SavingImage(context);
-				Map<String, Object> it = new LinkedHashMap<String, Object>();
-				it.put("tableName", "Ticket");
-				it.put("fieldName", "Image");
-				it.put("id", gId);
-				it.put("Image", image);
+				Bitmap bitmap = ((BitmapDrawable) dialog_img1.getDrawable())
+						.getBitmap();
 
-				savingImage.delegate = this;
-				savingImage.execute(it);
+				Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+						bitmap.getHeight(), bitmap.getConfig());
+				if (!bitmap.sameAs(emptyBitmap)) {
+					image = Utility.CompressBitmap(bitmap);
+					savingImage = new SavingImage(context);
+					Map<String, Object> it = new LinkedHashMap<String, Object>();
+					it.put("tableName", "Ticket");
+					it.put("fieldName", "Image");
+					it.put("id", gId);
+					it.put("Image", image);
+
+					savingImage.delegate = this;
+					savingImage.execute(it);
+					ringProgressDialog = ProgressDialog.show(context, null,
+							"لطفا منتظر بمانید.");
+				}
+			} else {
+				this.dismiss();
 			}
 			//
 
@@ -241,9 +247,11 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	@Override
 	public void processFinishSaveImage(String output) {
 
-		int res = 0;
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
 		try {
-			res = Integer.valueOf(output);
+			Integer.valueOf(output);
 			dbadapter.open();
 			dbadapter.updateTicketImage(gId, image);
 			dbadapter.close();
