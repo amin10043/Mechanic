@@ -77,7 +77,7 @@ public class WelcomeScreen extends Activity {
 		settings = adapter.getSettings();
 		adapter.close();
 
-		util.Updating();
+		// util.Updating();
 
 		initialize();
 		clickItem();

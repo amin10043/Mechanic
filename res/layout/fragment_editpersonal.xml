@@ -34,9 +34,9 @@
 
                 <ImageView
                     android:id="@+id/imgp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:adjustViewBounds="false"
                     android:src="@drawable/i13" />
             </LinearLayout>
 

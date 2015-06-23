@@ -7,6 +7,7 @@ public class NewsPaper {
 	int TypeId;
 	String Url;
 	String ServerDate;
+	String HtmlString;
 
 	public int getId() {
 		return Id;
@@ -46,6 +47,14 @@ public class NewsPaper {
 
 	public void setServerDate(String serverdate) {
 		ServerDate = serverdate;
+	}
+
+	public String getHtmlString() {
+		return HtmlString;
+	}
+
+	public void setHtmlString(String htmlstring) {
+		HtmlString = htmlstring;
 	}
 
 	public NewsPaper(int id, String name, int typeid, String url,

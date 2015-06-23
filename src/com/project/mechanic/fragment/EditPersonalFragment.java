@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -249,7 +250,11 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				if (outPutFile.exists()) {
 					Bitmap photo = decodeFile(outPutFile);
 					img2.setImageBitmap(photo);
-					img2.setLayoutParams(lp2);
+					// img2.setLayoutParams(lp2);
+					img2.setAdjustViewBounds(true);
+
+					// img2.setMaxHeight(maxHeight);
+					img2.setScaleType(ScaleType.CENTER_INSIDE);
 				} else {
 					Toast.makeText(getActivity().getApplicationContext(),
 							"Error while save image", Toast.LENGTH_SHORT)
