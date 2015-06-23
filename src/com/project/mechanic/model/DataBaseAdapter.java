@@ -148,7 +148,8 @@ public class DataBaseAdapter {
 			"ImageServerDate" };
 
 	private String[] WorkmanType = { "ID", "Name" };
-	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url", "ServerDate" };
+	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url", "ServerDate",
+			"HtmlString " };
 	private String[] ObjectBrandType = { "ID", "Description" };
 
 	private final Context mContext;
@@ -399,6 +400,16 @@ public class DataBaseAdapter {
 
 	// ///////////////////////////////////
 
+	public void UpdateHtmlStringInNewspaper(int id, String htmlstring) {
+
+		ContentValues uc = new ContentValues();
+		uc.put("Id", id);
+		uc.put("HtmlString", htmlstring);
+
+		long res = mDb.update(TableNewsPaper, uc, "ID=" + id, null);
+
+	}
+
 	public void insertLikeInObjectToDb(int UserId, int PaperId, String Date,
 			int CommentId) {
 
@@ -533,7 +544,7 @@ public class DataBaseAdapter {
 			int userId, String date) {
 
 		ContentValues cv = new ContentValues();
-		cv.put("Id", id);
+
 		cv.put("Title", Title);
 		cv.put("Description", description);
 		cv.put("UserId", userId);

@@ -55,9 +55,10 @@
 
                 <ImageView
                     android:id="@+id/btnaddpic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY" />
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside" />
             </LinearLayout>
 
             <LinearLayout

@@ -111,6 +111,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 				.findViewById(R.id.mobiletxt);
 		final EditText editpass = (EditText) view.findViewById(R.id.Textpass);
 		btnreg.setEnabled(false);
+
 		final CheckBox Rulescheck = (CheckBox) view
 				.findViewById(R.id.rulescheck);
 
@@ -150,10 +151,11 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 				// is chkIos checked?
 				if (((CheckBox) v).isChecked()) {
 					btnreg.setEnabled(true);
+					// btnreg.setBackgroundColor(R.drawable.buttonshape);
 				} else {
 
 					btnreg.setEnabled(false);
-
+					// btnreg.setBackgroundColor(R.drawable.buttonshape2);
 				}
 				StringBuffer result = new StringBuffer();
 				result.append("Linux check : ").append(Rulescheck.isChecked());
@@ -211,6 +213,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 
 					comregtxt.setVisibility(View.VISIBLE);
 					btnreg.setEnabled(false);
+					// btnreg.setBackgroundColor(R.drawable.buttonshape2);
 					// //////////////////////////////////////////////////////////////////
 
 					// //////////////////////////

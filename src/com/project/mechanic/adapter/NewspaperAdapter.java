@@ -3,6 +3,7 @@ package com.project.mechanic.adapter;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class NewspaperAdapter extends ArrayAdapter<NewsPaper> {
 	NewsPaper tempItem;
 	int lastPosition = 0;
 	int TypeId;
+	public ProgressDialog ringProgressDialog1;
 
 	public NewspaperAdapter(Context context, int resource,
 			List<NewsPaper> objact, int id) {
@@ -80,6 +82,21 @@ public class NewspaperAdapter extends ArrayAdapter<NewsPaper> {
 			@Override
 			public void onClick(View v) {
 
+				// ringProgressDialog1 = ProgressDialog.show(context, "",
+				// "لطفا منتظر بمانید...", true);
+				//
+				// ringProgressDialog1.setCancelable(true);
+				//
+				// new Thread(new Runnable() {
+				// @Override
+				// public void run() {
+				// try {
+				// Thread.sleep(10000);
+				// } catch (Exception e) {
+				// }
+				// }
+				// }).start();
+				// Toast.makeText(context, "okok", Toast.LENGTH_LONG).show();
 				RelativeLayout parentlayout = (RelativeLayout) v;
 				TextView txtName = (TextView) parentlayout
 						.findViewById(R.id.RowCitytxt);
@@ -90,11 +107,14 @@ public class NewspaperAdapter extends ArrayAdapter<NewsPaper> {
 				for (NewsPaper NewsPaper : list) {
 					if (item.equals(NewsPaper.getName())) {
 						// check authentication and authorization
+
 						typeId = NewsPaper.getTypeId();
 						id = NewsPaper.getId();
+
 					}
 				}
 				if (typeId == 169) {
+
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					UrlNewsPaperFragment fragment = new UrlNewsPaperFragment();
@@ -107,6 +127,7 @@ public class NewspaperAdapter extends ArrayAdapter<NewsPaper> {
 
 				}
 				if (typeId == 170) {
+
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					UrlNewsPaperFragment fragment = new UrlNewsPaperFragment();
@@ -119,6 +140,7 @@ public class NewspaperAdapter extends ArrayAdapter<NewsPaper> {
 
 				}
 				if (typeId == 171) {
+
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					UrlNewsPaperFragment fragment = new UrlNewsPaperFragment();
@@ -167,6 +189,7 @@ public class NewspaperAdapter extends ArrayAdapter<NewsPaper> {
 				// trans.commit();
 				// }
 				// });
+
 			}
 		});
 		return convertView;
