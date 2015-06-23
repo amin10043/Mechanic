@@ -181,10 +181,10 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 				.findViewById(R.id.date_commented_in_froum);
 
 		TextView countOfReply = (TextView) convertView
-				.findViewById(R.id.countofreplyFroum);
+				.findViewById(R.id.numberOfCommentTopic);
 
-		ImageButton addreply = (ImageButton) convertView
-				.findViewById(R.id.replyToComment);
+		LinearLayout addreply = (LinearLayout) convertView
+				.findViewById(R.id.addCommentToTopic);
 
 		ImageButton profileImage = (ImageButton) convertView
 				.findViewById(R.id.icon_froum_profile);
@@ -227,14 +227,15 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 		mainComment.setText(comment.getDescription());
 		nameCommenter.setText(x.getName());
 		dateCommenter.setText(comment.getDatetime());
-		if (adapter.getCountOfReplyInObject(ObjectID, comment.getId()) == 0) {
-			LinearLayout lrr = (LinearLayout) convertView
-					.findViewById(R.id.linearShowcountofRepply);
-			lrr.setVisibility(View.GONE);
-
-		} else
-			countOfReply.setText(adapter.getCountOfReplyInObject(ObjectID,
-					comment.getId()).toString());
+		// if (adapter.getCountOfReplyInObject(ObjectID, comment.getId()) == 0)
+		// {
+		// LinearLayout lrr = (LinearLayout) convertView
+		// .findViewById(R.id.linearShowcountofRepply);
+		// lrr.setVisibility(View.GONE);
+		//
+		// } else
+		// countOfReply.setText(adapter.getCountOfReplyInObject(ObjectID,
+		// comment.getId()).toString());
 
 		// countLike.setText(comment.getId());
 		// countdisLike.setText(comment.getFroumid());
@@ -412,8 +413,9 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 
 						adapter.insertCmtLikebyid(id, stringNewcountLike,
 								Currentuser.getId());
-//						adapter.insertLikeInCommentToDb(Currentuser.getId(), 1,
-//								id);
+						// adapter.insertLikeInCommentToDb(Currentuser.getId(),
+						// 1,
+						// id);
 
 						f.updateList();
 

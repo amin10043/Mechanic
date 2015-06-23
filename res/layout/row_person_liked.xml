@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout14"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ececec"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rlfroumrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" >
+
+        <ImageView
+            android:id="@+id/imgvCmtuser_Froumfragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/rawUsernamecmttxt_cmt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/rawUsernamecmttxt_cmt"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/imgvCmtuser_Froumfragment"
+            android:text="name"
+            android:textColor="@color/transparent" />
+
+        <TextView
+            android:id="@+id/dateLiked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="10dp"
+            android:text="date"
+            android:textColor="@color/transparent" />
+    </RelativeLayout>
+
+</LinearLayout>

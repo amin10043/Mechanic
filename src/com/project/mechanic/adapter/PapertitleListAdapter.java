@@ -70,9 +70,9 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 				.findViewById(R.id.rowdescriptionpaper);
 		TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
 		NumofComment = (TextView) convertView
-				.findViewById(R.id.countCommentInEveryTopic);
+				.findViewById(R.id.numberOfCommentTopic);
 		NumofLike = (TextView) convertView
-				.findViewById(R.id.countLikeInFroumTitle);
+				.findViewById(R.id.txtNumofLike_CmtFroum);
 		DateView = (TextView) convertView.findViewById(R.id.datetopicinFroum);
 		ImageView iconProile = (ImageView) convertView
 				.findViewById(R.id.iconfroumtitle);
@@ -95,7 +95,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> {
 				iconProile.setImageBitmap(bmp);
 
 				RelativeLayout rl = (RelativeLayout) convertView
-						.findViewById(R.id.topicTitleFroum);
+						.findViewById(R.id.profileLinearcommenterinContinue);
 				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 						rl.getLayoutParams());
 

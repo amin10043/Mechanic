@@ -3110,4 +3110,22 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<LikeInFroum> getLikefroumLikeInFroumByFroumId(int FroumId) {
+		ArrayList<LikeInFroum> result = new ArrayList<LikeInFroum>();
+		Cursor cursor = mDb.rawQuery(
+				"select * from LikeInFroum where FroumId =  " + FroumId, null);
+
+		LikeInFroum like;
+		while (cursor.moveToNext()) {
+			like = new LikeInFroum(cursor.getInt(0), cursor.getInt(1),
+					cursor.getInt(2), cursor.getString(3), cursor.getInt(4),
+					cursor.getInt(5));
+
+			result.add(like);
+		}
+
+		return result;
+
+	}
+
 }
