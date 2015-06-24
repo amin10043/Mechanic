@@ -72,7 +72,7 @@ public class Utility implements AsyncInterface {
 	Settings settings;
 	PersianDate pDate;
 	static boolean flag = false;
-	private final int NUMBER_OF_RECORD_RECEIVED = 4;
+	private final int NUMBER_OF_RECORD_RECEIVED = 5;
 
 	public Utility(Context context) {
 		this.context = context;
@@ -437,25 +437,30 @@ public class Utility implements AsyncInterface {
 	@Override
 	public void processFinish(String output) {
 
-		if (flag) {
+		if (output != null
+				&& !(output.contains("Exception") || output.contains("java"))) {
 
-			SharedPreferences pref = context.getSharedPreferences("update", 0);
-			SharedPreferences.Editor editor = pref.edit();
+			if (flag) {
 
-			int from = pref.getInt("fromD", 0);
-			int to = pref.getInt("toD", 0);
+				SharedPreferences pref = context.getSharedPreferences("update",
+						0);
+				SharedPreferences.Editor editor = pref.edit();
 
-			serviceUpdateD = new UpdatingAllDetail(context);
-			serviceUpdateD.delegate = this;
-			serviceUpdateD.execute(
-					settings != null ? settings.getServerDate_Users() : "",
-					String.valueOf(from), String.valueOf(to));
+				int from = pref.getInt("fromD", 0);
+				int to = pref.getInt("toD", 0);
 
-			editor.putInt("fromD", from + NUMBER_OF_RECORD_RECEIVED);
-			editor.putInt("toD", to + NUMBER_OF_RECORD_RECEIVED);
+				serviceUpdateD = new UpdatingAllDetail(context);
+				serviceUpdateD.delegate = this;
+				serviceUpdateD.execute(
+						settings != null ? settings.getServerDate_Users() : "",
+						String.valueOf(from), String.valueOf(to));
+
+				editor.putInt("fromD", from + NUMBER_OF_RECORD_RECEIVED);
+				editor.putInt("toD", to + NUMBER_OF_RECORD_RECEIVED);
+				flag = false;
+			}
+			parseQuery(output);
 		}
-		parseQuery(output);
-
 	}
 
 	public Typeface setFont() {
