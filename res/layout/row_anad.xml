@@ -1,23 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#EAEAEA" >
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/List_Item_Style"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="match_parent"
         android:background="@drawable/list_item"
+        android:weightSum="1"
         android:orientation="horizontal" >
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight=".3"
             android:orientation="vertical" >
 
             <ImageView
@@ -31,36 +24,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:text="TextView"
                 android:textColor="@color/transparent" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+             android:layout_weight=".7"
+             android:weightSum="1"
             android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/row_anad_txt2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".3"
+                android:maxLength="20"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/transparent" />
 
             <TextView
                 android:id="@+id/row_favorite_title"
                 style="@style/row_text"
                 android:layout_width="match_parent"
-                android:layout_height="34dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
+                android:layout_height="0dp"
+                android:layout_weight=".7"
                 android:text="Large Text" />
 
-            <TextView
-                android:id="@+id/row_anad_txt2"
-                android:layout_width="225dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:layout_weight="2"
-                android:maxLength="20"
-                android:text="Medium Text"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/transparent" />
         </LinearLayout>
     </LinearLayout>
-
-</RelativeLayout>

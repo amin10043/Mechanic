@@ -107,18 +107,20 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 		dbadapter = new DataBaseAdapter(context);
 		u = util.getCurrentUser();
 
-		UName.setText(u.getName());
-		UMobile.setText(u.getMobailenumber());
-		if (u.getEmail() != null) {
-			UEmail.setText(u.getEmail());
-		}
-		if (u.getFaxnumber() != null) {
-			UFax.setText(u.getFaxnumber());
-		}
-		if (u.getPhonenumber() != null) {
-			UPhonnumber.setText(u.getPhonenumber());
-		}
+		if (u != null) {
 
+			UName.setText(u.getName());
+			UMobile.setText(u.getMobailenumber());
+			if (u.getEmail() != null) {
+				UEmail.setText(u.getEmail());
+			}
+			if (u.getFaxnumber() != null) {
+				UFax.setText(u.getFaxnumber());
+			}
+			if (u.getPhonenumber() != null) {
+				UPhonnumber.setText(u.getPhonenumber());
+			}
+		}
 		dialog_img2.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
@@ -162,14 +164,12 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	@SuppressWarnings("unchecked")
 	@Override
 	public void processFinish(String output) {
-		// int id = -1;
 		String title = dialog_anad_et1.getText().toString();
 		String desc = dialog_anad_et2.getText().toString();
 		if (ringProgressDialog != null) {
 			ringProgressDialog.dismiss();
 		}
 		try {
-			// id = Integer.valueOf(output);
 			gId = Integer.valueOf(output);
 			dbadapter.open();
 			dbadapter.insertTickettoDbemptyImage(gId, dialog_anad_et1.getText()

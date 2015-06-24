@@ -149,7 +149,7 @@ public class PersianDate {
 		}
 		String month = "00";
 		String day = "00";
-		D = Integer.valueOf(D) + 1;
+		D = Integer.valueOf(D);
 		if (M < 10) {
 			month = "0" + M;
 		} else {

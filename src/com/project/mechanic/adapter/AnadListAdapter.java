@@ -15,7 +15,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
@@ -23,7 +23,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.fragment.ShowAdFragment;
 import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.utility.JalaliCalendar;
+import com.project.mechanic.utility.Utility;
 
 public class AnadListAdapter extends ArrayAdapter<Ticket> {
 
@@ -33,6 +33,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 	Ticket tempItem;
 	DataBaseAdapter adapter;
 	int ProvinceId;
+	Utility util;
 
 	public AnadListAdapter(Context context, int resource, List<Ticket> objact,
 			int ProvinceId) {
@@ -42,6 +43,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 		this.list = objact;
 		this.ProvinceId = ProvinceId;
 		adapter = new DataBaseAdapter(context);
+		util = new Utility(context);
 
 	}
 
@@ -62,9 +64,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 		ImageView img2 = (ImageView) convertView
 				.findViewById(R.id.row_favorite_img);
 		tempItem = list.get(position);
-		JalaliCalendar jalal = new JalaliCalendar();
-		jalal.setTimeInMillis(Long.valueOf(tempItem.getDate()));
-		txtdate.setText(jalal.toString());
+		txtdate.setText(util.getPersianDate(tempItem.getDate()));
 		txtName.setText(tempItem.getTitle());
 		txtDesc.setText(tempItem.getDesc());
 		byte[] bitmapbyte = tempItem.getImage();
@@ -81,7 +81,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 			@Override
 			public void onClick(View v) {
 
-				RelativeLayout parentlayout = (RelativeLayout) v;
+				LinearLayout parentlayout = (LinearLayout) v;
 				TextView txtName = (TextView) parentlayout
 						.findViewById(R.id.row_favorite_title);
 				String item = txtName.getText().toString();

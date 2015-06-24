@@ -35,7 +35,6 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
@@ -51,12 +50,10 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
+@SuppressLint("HandlerLeak")
 public class AnadFragment extends Fragment {
 
 	DataBaseAdapter dbAdapter;
-	private ImageView imgadd;
-	private ImageButton img;
-	// private TextView txt1;
 	View view;
 	List<Ticket> mylist;
 	List<Anad> anadlist;
@@ -73,16 +70,9 @@ public class AnadFragment extends Fragment {
 	List<Ticket> tempList;
 	Anad tempItem;
 	int position;
-	private Anad x;
 	int a;
-	// private ListView lstimg;
-
-	private int column = 3;
 	int I;
 	int gridePadding = 1;
-	private int columnWidth;
-	// private ListView verticalScrollview;
-	private TextView verticalTextView;
 	private int verticalScrollMax;
 	PullAndLoadListView lstTicket;
 	private Timer scrollTimer = null;
@@ -108,8 +98,6 @@ public class AnadFragment extends Fragment {
 		view = inflater.inflate(R.layout.fragment_anad, null);
 
 		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
-		// txt1 = (TextView) view.findViewById(R.id.fragment_anad_txt1);
-		img = (ImageButton) view.findViewById(R.id.img_anad);
 		FloatingActionButton createItem = (FloatingActionButton) view
 				.findViewById(R.id.fabAnad);
 
@@ -127,6 +115,7 @@ public class AnadFragment extends Fragment {
 		anadlist = dbAdapter.getAnadtByTypeIdProId(proID);
 
 		dbAdapter.close();
+
 		if (mylist != null && !mylist.isEmpty()) {
 			if (mylist.size() < j) {
 				j = mylist.size();
@@ -168,8 +157,6 @@ public class AnadFragment extends Fragment {
 					.setOnRefreshListener(new OnRefreshListener() {
 
 						public void onRefresh() {
-							// Do work to refresh the list here.
-
 							new PullToRefreshDataTask().execute();
 						}
 					});
@@ -178,8 +165,6 @@ public class AnadFragment extends Fragment {
 					.setOnLoadMoreListener(new OnLoadMoreListener() {
 
 						public void onLoadMore() {
-							// Do the work to load more items at the end of list
-							// here
 							if (mylist.size() < j + 1) {
 								i = j + 1;
 							}
@@ -194,41 +179,20 @@ public class AnadFragment extends Fragment {
 								if (!subList.contains(p))
 									subList.add(p);
 							}
-							// Toast.makeText(getActivity(), String.valueOf(i),
-							// Toast.LENGTH_SHORT).show();
-							// ListAdapter.notifyDataSetChanged();
 							new LoadMoreDataTask().execute();
 						}
 					});
 		}
 
-		// lstimg = (ListView) view.findViewById(R.id.listVanad2);
-		// AnadImgListAdapter ListAdapter2 = new
-		// AnadImgListAdapter(getActivity(),
-		// R.layout.row_anad_img, anadlist, proID);
-
-		// lstimg.setAdapter(ListAdapter2);
 		verticalScrollview = (ScrollView) view
 				.findViewById(R.id.vertical_scrollview_id);
 		verticalOuterLayout = (LinearLayout) view
 				.findViewById(R.id.vertical_outer_layout_id);
 		addImagesToView(anadlist);
-		// img.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// dialog1 = new DialogAnadimg(getActivity(),
-		// R.layout.dialog_imganad, AnadFragment.this,
-		// ticketTypeid, proID);
-		// // dialog.setTitle(R.string.txtanad);
-		//
-		// dialog1.show();
-		//
-		// }
-		// });
 
 		ViewTreeObserver vto = verticalOuterLayout.getViewTreeObserver();
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void onGlobalLayout() {
 				verticalOuterLayout.getViewTreeObserver()
@@ -446,34 +410,22 @@ public class AnadFragment extends Fragment {
 			if (isCancelled()) {
 				return null;
 			}
-
-			// Simulates a background task
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 			}
-			//
-			// for (int i = 0; i < mNames.length; i++)
-			// mListItems.add(mNames[i]);
-
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(Void result) {
-
-			// We need notify the adapter that the data have been changed
 			((BaseAdapter) ListAdapter).notifyDataSetChanged();
-
-			// Call onLoadMoreComplete when the LoadMore task, has finished
 			((PullAndLoadListView) lstTicket).onLoadMoreComplete();
-
 			super.onPostExecute(result);
 		}
 
 		@Override
 		protected void onCancelled() {
-			// Notify the loading more operation has finished
 			((PullAndLoadListView) lstTicket).onLoadMoreComplete();
 		}
 	}
@@ -486,34 +438,22 @@ public class AnadFragment extends Fragment {
 			if (isCancelled()) {
 				return null;
 			}
-
-			// Simulates a background task
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 			}
-
-			// for (int i = 0; i < mAnimals.length; i++)
-			// mListItems.addFirst(mAnimals[i]);
-
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(Void result) {
-
-			// We need notify the adapter that the data have been changed
 			((BaseAdapter) ListAdapter).notifyDataSetChanged();
-
-			// Call onLoadMoreComplete when the LoadMore task, has finished
 			((PullAndLoadListView) lstTicket).onRefreshComplete();
-
 			super.onPostExecute(result);
 		}
 
 		@Override
 		protected void onCancelled() {
-			// Notify the loading more operation has finished
 			((PullAndLoadListView) lstTicket).onLoadMoreComplete();
 		}
 	}
@@ -560,7 +500,6 @@ public class AnadFragment extends Fragment {
 	}
 
 	public void getScrollMaxAmount() {
-		// verticalScrollMax = new Utility(getActivity()).getScreenHeight();
 		int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 * 3));
 		verticalScrollMax = actualWidth;
 	}
@@ -596,17 +535,6 @@ public class AnadFragment extends Fragment {
 			scrollPos = 0;
 		}
 		verticalScrollview.scrollTo(0, scrollPos);
-		// scrollPos = (int) (lstimg.getScrollY() + 1.0);
-		// if (scrollPos >= verticalScrollMax) {
-		// scrollPos = 0;
-		// }
-		// lstimg.scrollTo(0, scrollPos);
-
-		// scrollPos = (int) (lstimg.getScrollY() + 1.0);
-		// if (scrollPos >= verticalScrollMax) {
-		// scrollPos = 0;
-		// }
-		// lstimg.scrollTo(0, scrollPos);
 	}
 
 	public void stopAutoScrolling() {
@@ -626,8 +554,6 @@ public class AnadFragment extends Fragment {
 		Animation.AnimationListener scaleFaceAnimationListener = new Animation.AnimationListener() {
 			@Override
 			public void onAnimationStart(Animation arg0) {
-				// verticalTextView.setText(nameArray[(Integer) clickedButton
-				// .getTag()]);
 				isFaceDown = false;
 			}
 
