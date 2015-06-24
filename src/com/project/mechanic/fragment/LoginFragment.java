@@ -174,19 +174,6 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 			}
 		});
 
-		// test.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		// // TODO Auto-generated method stub
-		// FragmentTransaction trans = getActivity()
-		// .getSupportFragmentManager().beginTransaction();
-		// trans.replace(R.id.content_frame,
-		// new DisplayPersonalInformationFragment());
-		// trans.commit();
-		// }
-		// });
-		//
 		return view;
 
 	}
@@ -195,59 +182,65 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 	public void processFinish(String output) {
 
 		ringProgressDialog.dismiss();
+		SharedPreferences settings = getActivity().getSharedPreferences("user",
+				0);
+		SharedPreferences.Editor editor = settings.edit();
 
-		if (output != null && output.contains("SocketTimeoutException")) {
+		if (output == null || "".equals(output)) {
+			Toast.makeText(getActivity(),
+					"نام کاربری و یا کلمه عبور به درستی وارد نشده است.",
+					Toast.LENGTH_SHORT).show();
+			editor.putBoolean("isLogin", false);
+
+		} else if (output.contains("SocketTimeoutException")) {
 			Toast.makeText(getActivity(),
 					"خطا در ارتباط با سرور. مهات زمانی تمام شده است",
 					Toast.LENGTH_SHORT).show();
+
+		} else if (output.contains("Exception") || output.contains("java")) {
+			Toast.makeText(getActivity(),
+					"خطایی در دریافت اطلاعات از سرور رخ داده است.",
+					Toast.LENGTH_SHORT).show();
+
 		} else {
 
-			SharedPreferences settings = getActivity().getSharedPreferences(
-					"user", 0);
-			SharedPreferences.Editor editor = settings.edit();
-			if ("true".equals(output)) {
-
-				dbAdapter.open();
-				u = dbAdapter.getUserbymobailenumber(mobileNumber);
-				dbAdapter.close();
-				if (u != null) {
-					int id = u.getId();
-					int admin = 1;
-					dbAdapter.open();
-					dbAdapter.UpdateAdminUserToDb(id, admin);
-					dbAdapter.close();
-					Toast.makeText(getActivity(), "شما وارد شده اید.",
-							Toast.LENGTH_SHORT).show();
-					TextView txtlike = (TextView) (getActivity())
-							.findViewById(R.id.txtlike);
-					txtlike.setVisibility(View.VISIBLE);
-					TextView txtcm1 = (TextView) (getActivity())
-							.findViewById(R.id.txtcm);
-					txtcm1.setVisibility(View.VISIBLE);
-					editor.putBoolean("isLogin", true);
-
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new MainFragment());
-					trans.commit();
-				}
-
-				else {
-					Toast.makeText(getActivity(),
-							"خطا در بارگذاری داده ها از سرور.",
-							Toast.LENGTH_SHORT).show();
-				}
-
-			} else {
-
-				Toast.makeText(getActivity(),
-						"نام کاربری و یا کلمه عبور به درستی وارد نشده است.",
-						Toast.LENGTH_SHORT).show();
-				editor.putBoolean("isLogin", false);
-
+			dbAdapter.open();
+			u = dbAdapter.getUserbymobailenumber(mobileNumber);
+			dbAdapter.close();
+			if (u == null) {
+				util.parseQuery(output);
 			}
+			dbAdapter.open();
+			u = dbAdapter.getUserbymobailenumber(mobileNumber);
+			dbAdapter.close();
 
-			editor.commit();
+			if (u == null) {
+				Toast.makeText(getActivity(),
+						"خطایی در دریافت اطلاعات از سرور رخ داده است.",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				int id = u.getId();
+				int admin = 1;
+				dbAdapter.open();
+				dbAdapter.UpdateAdminUserToDb(id, admin);
+				dbAdapter.close();
+				Toast.makeText(getActivity(), "شما وارد شده اید.",
+						Toast.LENGTH_SHORT).show();
+				TextView txtlike = (TextView) (getActivity())
+						.findViewById(R.id.txtlike);
+				txtlike.setVisibility(View.VISIBLE);
+				TextView txtcm1 = (TextView) (getActivity())
+						.findViewById(R.id.txtcm);
+				txtcm1.setVisibility(View.VISIBLE);
+				editor.putBoolean("isLogin", true);
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			}
 		}
+
+		editor.commit();
 	}
 }
