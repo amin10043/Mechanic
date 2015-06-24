@@ -113,6 +113,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 		}
 		txt1.setText(person1.getTitle());
+		txt2.setText(person1.getDescription() + "mmmmm");
+
 		txt2.setText(person1.getDescription());
 		if (x != null)
 			txt3.setText(x.getName());

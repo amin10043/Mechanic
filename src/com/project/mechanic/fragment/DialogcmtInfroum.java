@@ -11,12 +11,14 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
@@ -44,9 +46,12 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 	String serverDate = "";
 	ServerDate date;
+	// متغیر کد برای پیدا کردن مبدا ارسالی برای آپدیت کردن لیست می باشد
+
+	int code;
 
 	public DialogcmtInfroum(Fragment f, int Commentid, Context context,
-			int froumId, int resourceId) {
+			int froumId, int resourceId, int code) {
 		super(context);
 		this.context = context;
 		this.f = f;
@@ -56,6 +61,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 		dbadapter = new DataBaseAdapter(context);
 
 		currentUser = utility.getCurrentUser();
+		this.code = code;
 
 	}
 
@@ -120,12 +126,43 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 						"0", "0");
 
 				dbadapter.close();
+				SharedPreferences groupId = context.getSharedPreferences("Id",
+						0);
+				int IdGroup = groupId.getInt("main_Id", -1);
 
-				SharedPreferences expanding = context.getSharedPreferences(
-						"Id", 0);
-				final int expandPosition = expanding.getInt("main_Id", -1);
+				final SharedPreferences realizeIdComment = context
+						.getSharedPreferences("Id", 0);
 
-				((FroumFragment) f).updateList();
+				if (code == 1) {
+					// az froumWithoutComment vared shode
+
+					((FroumWithoutComment) f).setcount();
+					realizeIdComment.edit().putInt("main_Id", 1371).commit();
+
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					FroumFragment fragment = new FroumFragment();
+					trans.setCustomAnimations(R.anim.pull_in_left,
+							R.anim.push_out_right);
+					Bundle b = new Bundle();
+					b.putString("Id", String.valueOf(Froumid));
+					fragment.setArguments(b);
+
+					trans.replace(R.id.content_frame, fragment);
+					trans.commit();
+				}
+				if (code == 2) {
+					// az froumFragment vared shode
+
+					((FroumFragment) f).updateList();
+				}
+				if (code == 3) {
+					// az expandableCommentFroum vared shode
+
+					((FroumFragment) f).expanding(IdGroup);
+
+				}
+
 				DialogcmtInfroum.this.dismiss();
 
 			} catch (NumberFormatException ex) {

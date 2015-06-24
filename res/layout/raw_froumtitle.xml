@@ -39,8 +39,8 @@
             android:id="@+id/rowdescriptionpaper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"
             android:gravity="right"
             android:maxLines="2"
@@ -65,7 +65,7 @@
             android:id="@+id/l1cm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignTop="@+id/iconfroumtitle"
             android:background="@drawable/ic_cmt_froum_display"
             android:gravity="center" >
 
@@ -84,8 +84,8 @@
             android:id="@+id/liketitleTopic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
+            android:layout_alignTop="@+id/iconfroumtitle"
+            android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/l1cm"
             android:background="@drawable/like_froum_display"
             android:gravity="center" >
@@ -105,7 +105,7 @@
             android:id="@+id/authorname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignBottom="@+id/iconfroumtitle"
             android:layout_marginRight="5dp"
             android:layout_toLeftOf="@+id/iconfroumtitle"
             android:text="author"

@@ -65,7 +65,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/mainmessage"
         android:layout_marginLeft="20dp"
-        android:layout_toRightOf="@+id/frameLayoutGroup"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/cmffff"
         android:orientation="horizontal" >
 
         <ImageButton
@@ -103,33 +104,40 @@
             android:textColor="@color/transparent" />
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/frameLayoutGroup"
+    <LinearLayout
+        android:id="@+id/cmffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/mainmessage" >
+        android:layout_below="@+id/mainmessage"
+        android:layout_marginRight="5dp"
+        android:orientation="horizontal" >
 
-        <ImageButton
-            android:id="@+id/replyToComment"
+        <RelativeLayout
+            android:id="@+id/countComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mainmessage"
-            android:background="@drawable/cmt" />
-
-        <LinearLayout
-            android:id="@+id/linearShowcountofRepply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_count_reply" >
+            android:layout_centerVertical="true"
+            android:background="@drawable/count_comment" >
 
             <TextView
-                android:id="@+id/countofreplyFroum"
+                android:id="@+id/numberOfCommentTopic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="1dp"
-                android:text="1"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="2dp"
+                android:text="n"
                 android:textColor="@color/transparent" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/addCommentToTopic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/comment_fr"
+            android:gravity="center" >
         </LinearLayout>
-    </FrameLayout>
+    </LinearLayout>
 
 </RelativeLayout>
