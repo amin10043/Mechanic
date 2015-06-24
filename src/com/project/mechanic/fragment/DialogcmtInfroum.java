@@ -121,11 +121,20 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 				dbadapter.close();
 
-				SharedPreferences expanding = context.getSharedPreferences(
-						"Id", 0);
-				final int expandPosition = expanding.getInt("main_Id", -1);
+				SharedPreferences realizeIdComment = context
+						.getSharedPreferences("Id", 0);
 
-				((FroumFragment) f).updateList();
+				final int ccc = realizeIdComment.getInt("main_Id", -1);
+				// agar comment gozashteh shavad list az tabe'e zir update
+				// mishavad
+				if (ccc == 100) {
+					((FroumFragment) f).updateList();
+
+				}
+				// agar reply gozashteh shavad list az tabe'e zir update
+				// mishavad
+				((FroumFragment) f).expanding(ccc);
+
 				DialogcmtInfroum.this.dismiss();
 
 			} catch (NumberFormatException ex) {

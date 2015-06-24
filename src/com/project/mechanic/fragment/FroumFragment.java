@@ -8,6 +8,7 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -173,6 +174,9 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		countLike.setText(adapter.LikeInFroum_count(froumid).toString());
 		dateTopic.setText(util.getPersianDate(topics.getDate()));
 
+		final SharedPreferences realizeIdComment = getActivity()
+				.getSharedPreferences("Id", 0);
+
 		addComment.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -184,6 +188,8 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 							Toast.LENGTH_SHORT).show();
 
 				} else {
+					realizeIdComment.edit().putInt("main_Id", 100).commit();
+
 					dialog = new DialogcmtInfroum(FroumFragment.this, 0,
 							getActivity(), froumid, R.layout.dialog_addcomment);
 					dialog.show();
@@ -327,19 +333,44 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		exadapter.notifyDataSetChanged();
 
 		exlistview.setAdapter(exadapter);
+		exlistview.setSelectedGroup(mapCollection.size() - 1);
+
 		adapter.close();
 
 	}
 
-	public void expandingList(int position) {
-		if (exlistview.isGroupExpanded(position)) {
+	public void expanding(int groupPosition) {
+		adapter.open();
 
-			Toast.makeText(getActivity(), "collapse", 0).show();
+		commentGroup = adapter.getCommentInFroumbyPaperid(froumid, 0);
 
-		} else
-			exlistview.expandGroup(position);
+		mapCollection = new LinkedHashMap<CommentInFroum, List<CommentInFroum>>();
 
+		List<CommentInFroum> reply = null;
+		for (CommentInFroum comment : commentGroup) {
+			reply = adapter
+					.getReplyCommentbyCommentID(froumid, comment.getId());
+			mapCollection.put(comment, reply);
+		}
+
+		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
+
+		exadapter = new ExpandableCommentFroum(getActivity(),
+				(ArrayList<CommentInFroum>) commentGroup, mapCollection, this,
+				froumid);
 		exadapter.notifyDataSetChanged();
+		exlistview.setAdapter(exadapter);
+		// int c = mapCollection.get(reply.get(groupPosition)).size();
+
+		// exlistview.setSelectedGroup(groupPosition);
+		// exlistview.setSelectedChild(groupPosition, 10, true);
+		Toast.makeText(getActivity(), groupPosition + "", Toast.LENGTH_SHORT)
+				.show();
+		exlistview.expandGroup(groupPosition);
+		adapter.close();
+
+		// exlistview.setSelectedChild(groupPosition, 1, condition);
+		exlistview.setSelectedGroup(groupPosition);
 
 	}
 

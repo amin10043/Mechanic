@@ -567,8 +567,9 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 			}
 		});
-		final SharedPreferences expanding = context.getSharedPreferences("Id",
-				0);
+
+		final SharedPreferences realizeIdComment = context
+				.getSharedPreferences("Id", 0);
 		addreply.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -592,13 +593,13 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 							commentid = listItem.getId();
 						}
 					}
-					expanding.edit().putInt("main_Id", 1).commit();
+					realizeIdComment.edit().putInt("main_Id", groupPosition)
+							.commit();
 
 					DialogcmtInfroum dialog = new DialogcmtInfroum(f,
 							commentid, context, froumID,
 							R.layout.dialog_addcomment);
 					dialog.show();
-					f.expandingList(groupPosition);
 
 					adapter.close();
 				}
@@ -609,12 +610,15 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 			@Override
 			public void onClick(View arg0) {
+				mExpandableListView.setSelectedGroup(groupPosition);
+
 				if (isExpanded) {
 					mExpandableListView.collapseGroup(groupPosition);
 					notifyDataSetChanged();
 
 				} else
 					mExpandableListView.expandGroup(groupPosition);
+
 				notifyDataSetChanged();
 
 			}
