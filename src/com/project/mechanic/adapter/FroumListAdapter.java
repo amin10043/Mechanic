@@ -233,7 +233,7 @@ public class FroumListAdapter extends ArrayAdapter<CommentInFroum> {
 						.show();
 				DialogcmtInfroum dialog = new DialogcmtInfroum(froumfragment,
 						commentid, context, froumfragment.getFroumId(),
-						R.layout.dialog_addcomment);
+						R.layout.dialog_addcomment, 1);
 				dialog.show();
 
 			}

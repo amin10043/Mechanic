@@ -101,9 +101,6 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		LikeTitle = (LinearLayout) convertView
 				.findViewById(R.id.liketitleTopic);
 
-		// todayDate = new PersianDate();
-		// currentDate = todayDate.todayShamsi();
-
 		Froum person1 = mylist.get(position);
 
 		adapter.open();
@@ -121,7 +118,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		txt1.setText(person1.getTitle());
 		txt2.setText(person1.getDescription() + "mmmmm");
 
-		txt3.setText(x.getName());
+		txt2.setText(person1.getDescription());
+		if (x != null)
+			txt3.setText(x.getName());
 		countcommentfroum.setText(adapter.CommentInFroum_count(person1.getId())
 				.toString());
 		countLikeFroum.setText(adapter.LikeInFroum_count(person1.getId())
@@ -129,13 +128,10 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 		dateTopic.setText(util.getPersianDate(person1.getDate()));
 
-		adapter.open();
-
 		String item = txt1.getText().toString();
 		int ItemId = 0;
 		for (Froum listItem : mylist) {
 			if (item.equals(listItem.getTitle())) {
-				// check authentication and authorization
 				froumNumber = ItemId = listItem.getId();
 			}
 		}
@@ -151,36 +147,40 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
 		}
 
-		if (x.getImage() == null) {
-			profileImg.setImageResource(R.drawable.no_img_profile);
-			RelativeLayout rl = (RelativeLayout) convertView
-					.findViewById(R.id.topicTitleFroum);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-					rl.getLayoutParams());
+		if (x != null) {
 
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 5, 5, 5);
-			profileImg.setLayoutParams(lp);
-		} else {
+			if (x.getImage() == null) {
+				profileImg.setImageResource(R.drawable.no_img_profile);
+				RelativeLayout rl = (RelativeLayout) convertView
+						.findViewById(R.id.topicTitleFroum);
+				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+						rl.getLayoutParams());
 
-			byte[] byteImg = x.getImage();
-			Bitmap bmp = BitmapFactory.decodeByteArray(byteImg, 0,
-					byteImg.length);
-			profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
+				lp.width = util.getScreenwidth() / 7;
+				lp.height = util.getScreenwidth() / 7;
+				lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				lp.setMargins(5, 5, 5, 5);
+				profileImg.setLayoutParams(lp);
+			} else {
 
-			RelativeLayout rl = (RelativeLayout) convertView
-					.findViewById(R.id.topicTitleFroum);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-					rl.getLayoutParams());
+				byte[] byteImg = x.getImage();
+				Bitmap bmp = BitmapFactory.decodeByteArray(byteImg, 0,
+						byteImg.length);
+				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
+						50));
 
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 5, 5, 5);
-			profileImg.setLayoutParams(lp);
-			adapter.close();
+				RelativeLayout rl = (RelativeLayout) convertView
+						.findViewById(R.id.topicTitleFroum);
+				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+						rl.getLayoutParams());
+
+				lp.width = util.getScreenwidth() / 7;
+				lp.height = util.getScreenwidth() / 7;
+				lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				lp.setMargins(5, 5, 5, 5);
+				profileImg.setLayoutParams(lp);
+				adapter.close();
+			}
 		}
 		adapter.close();
 

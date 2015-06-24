@@ -59,6 +59,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 	String serverDate = "";
 	ServerDate date;
 	RelativeLayout count, commentcounter;
+	FroumFragment ff;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -200,6 +201,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 				}
 			}
 		});
+
 		addComment.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -212,7 +214,8 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 				} else {
 					dialog = new DialogcmtInfroum(FroumWithoutComment.this, 0,
-							getActivity(), idFroum, R.layout.dialog_addcomment);
+							getActivity(), idFroum, R.layout.dialog_addcomment,
+							1);
 					dialog.show();
 
 					// FragmentTransaction trans = ((MainActivity)
@@ -227,6 +230,8 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 					//
 					// trans.replace(R.id.content_frame, fragment);
 					// trans.commit();
+					// ff = new FroumFragment();
+					// ff.updateList();
 				}
 			}
 		});
@@ -272,6 +277,13 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 		return view;
 	}
 
+	public void setcount() {
+		adapter.open();
+		countComment
+				.setText(adapter.CommentInFroum_count(IdGglobal).toString());
+		adapter.close();
+	}
+
 	@Override
 	public void processFinish(String output) {
 		if (ringProgressDialog != null) {
@@ -295,7 +307,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 				adapter.insertLikeInFroumToDb(CurrentUser.getId(), IdGglobal,
 						serverDate, 0);
 				likeTopic.setBackgroundResource(R.drawable.like_on);
-				count.setBackgroundResource(R.drawable.count_like_off);
+				count.setBackgroundResource(R.drawable.count_like);
 
 				countLike.setText(adapter.LikeInFroum_count(IdGglobal)
 						.toString());

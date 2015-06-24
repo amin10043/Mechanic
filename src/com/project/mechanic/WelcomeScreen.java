@@ -75,9 +75,9 @@ public class WelcomeScreen extends Activity {
 		SharedPreferences pref = getSharedPreferences("update", 0);
 		SharedPreferences.Editor editor = pref.edit();
 		editor.putInt("fromM", 0);
-		editor.putInt("toM", 4);
+		editor.putInt("toM", Utility.NUMBER_OF_RECORD_RECEIVED);
 		editor.putInt("fromD", 0);
-		editor.putInt("toD", 4);
+		editor.putInt("toD", Utility.NUMBER_OF_RECORD_RECEIVED_D);
 		editor.commit();
 
 		adapter = new DataBaseAdapter(this);

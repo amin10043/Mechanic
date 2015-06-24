@@ -391,6 +391,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 							params.put("IsLike", String.valueOf(0));
 							params.put("CommentId", String.valueOf(id));
+							params.put("IsUpdate", "0");
+							params.put("Id", "0");
 
 							saving.execute(params);
 
@@ -568,8 +570,6 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 			}
 		});
 
-		final SharedPreferences realizeIdComment = context
-				.getSharedPreferences("Id", 0);
 		addreply.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -593,12 +593,14 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 							commentid = listItem.getId();
 						}
 					}
-					realizeIdComment.edit().putInt("main_Id", groupPosition)
-							.commit();
+					final SharedPreferences groupId = context
+							.getSharedPreferences("Id", 0);
+
+					groupId.edit().putInt("main_Id", groupPosition).commit();
 
 					DialogcmtInfroum dialog = new DialogcmtInfroum(f,
 							commentid, context, froumID,
-							R.layout.dialog_addcomment);
+							R.layout.dialog_addcomment, 3);
 					dialog.show();
 
 					adapter.close();

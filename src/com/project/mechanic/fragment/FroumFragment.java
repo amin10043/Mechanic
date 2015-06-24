@@ -174,9 +174,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		countLike.setText(adapter.LikeInFroum_count(froumid).toString());
 		dateTopic.setText(util.getPersianDate(topics.getDate()));
 
-		final SharedPreferences realizeIdComment = getActivity()
-				.getSharedPreferences("Id", 0);
-
 		addComment.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -188,10 +185,10 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 							Toast.LENGTH_SHORT).show();
 
 				} else {
-					realizeIdComment.edit().putInt("main_Id", 100).commit();
 
 					dialog = new DialogcmtInfroum(FroumFragment.this, 0,
-							getActivity(), froumid, R.layout.dialog_addcomment);
+							getActivity(), froumid, R.layout.dialog_addcomment,
+							2);
 					dialog.show();
 					exadapter.notifyDataSetChanged();
 				}
@@ -253,6 +250,12 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 				}
 			}
 		});
+		SharedPreferences realizeIdComment = getActivity()
+				.getSharedPreferences("Id", 0);
+		int destinyId = realizeIdComment.getInt("main_Id", -1);
+		if (destinyId == 1371) {
+			updateList();
+		}
 
 		likeTopic.setOnClickListener(new View.OnClickListener() {
 
@@ -339,6 +342,11 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 	}
 
+	public void setcount() {
+		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
+
+	}
+
 	public void expanding(int groupPosition) {
 		adapter.open();
 
@@ -364,8 +372,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 		// exlistview.setSelectedGroup(groupPosition);
 		// exlistview.setSelectedChild(groupPosition, 10, true);
-		Toast.makeText(getActivity(), groupPosition + "", Toast.LENGTH_SHORT)
-				.show();
 		exlistview.expandGroup(groupPosition);
 		adapter.close();
 
