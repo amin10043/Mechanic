@@ -66,9 +66,20 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 		CommentInPaper comment = list.get(position);
 
 		adapter.open();
+		RelativeLayout rl = (RelativeLayout) convertView
+				.findViewById(R.id.main_icon_reply);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				rl.getLayoutParams());
+
+		lp.width = util.getScreenwidth() / 7;
+		lp.height = util.getScreenwidth() / 7;
+		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		lp.setMargins(5, 5, 5, 5);
 		Users user = adapter.getUserbyid(comment.getUserid());
 		if (user.getImage() == null) {
 			profilepic.setImageResource(R.drawable.no_img_profile);
+			profilepic.setLayoutParams(lp);
+
 		} else {
 
 			byte[] byteImageProfile = user.getImage();
@@ -76,24 +87,15 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
 					byteImageProfile.length);
 
-			profilepic.setImageBitmap(bmp);
+			profilepic.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
 
-			RelativeLayout rl = (RelativeLayout) convertView
-					.findViewById(R.id.main_icon_reply);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-					rl.getLayoutParams());
-
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 5, 5, 5);
 			profilepic.setLayoutParams(lp);
 		}
 		adapter.close();
 
 		txtcmt.setText(comment.getDescription());
 		txtuser.setText(user.getName());
-		txtdate.setText(comment.getDatetime());
+		txtdate.setText(util.getPersianDate(comment.getDatetime()));
 		return convertView;
 	}
 }

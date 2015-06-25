@@ -138,6 +138,7 @@ public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 					params.put("PaperId", String.valueOf(paperId));
 					params.put("UserId", String.valueOf(currentuser.getId()));
 					params.put("IsUpdate", "0");
+					params.put("Date", output);
 					params.put("Id", "0");
 					serverDate = output;
 
@@ -162,9 +163,9 @@ public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 						}
 					}).start();
 
-				}
-				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
-						Toast.LENGTH_SHORT).show();
+				} else
+					Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
+							Toast.LENGTH_SHORT).show();
 			}
 
 		} else

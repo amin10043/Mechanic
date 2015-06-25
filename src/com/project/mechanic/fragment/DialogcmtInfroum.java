@@ -183,6 +183,8 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 					params.put("CommentId", String.valueOf(Commentid));
 					params.put("NumofDisLike", String.valueOf(0));
 					params.put("NumofLike", String.valueOf(0));
+					params.put("Date", output);
+
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 					serverDate = output;
