@@ -88,10 +88,18 @@ public class UrlNewsPaperFragment extends Fragment {
 
 						ringProgressDialog1.dismiss();
 
+						String url1 = newsPaper.getUrl();
+
+						try {
+							html = fetchContent(webview, url1);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						// ////////////////////////////////////////////////////
-						String html = "<html>"
-								+ "<body><h1>Yay, Mobiletuts+!</h1></body>"
-								+ "</html>";
+						// html = "<html>"
+						// + "<body><h1>Yay, Mobiletuts+!</h1></body>"
+						// + "</html>";
 
 						// ////////////////////////////////////////////////////////////
 						dbAdapter.open();
