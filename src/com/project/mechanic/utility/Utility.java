@@ -1,9 +1,6 @@
 package com.project.mechanic.utility;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,7 +23,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -173,7 +169,6 @@ public class Utility implements AsyncInterface {
 
 	@SuppressLint("NewApi")
 	public int getScreenHeightWithPadding() {
-		int columnWidth;
 		WindowManager wm = (WindowManager) context
 				.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
@@ -190,10 +185,6 @@ public class Utility implements AsyncInterface {
 		display.getMetrics(outMetrics);
 
 		float density = context.getResources().getDisplayMetrics().density;
-		float dpHeight = outMetrics.heightPixels / density;
-		float dpWidth = outMetrics.widthPixels / density;
-
-		columnWidth = (int) dpHeight;
 
 		int padding = (int) (140 * density);
 		return point.y - padding;
@@ -287,22 +278,24 @@ public class Utility implements AsyncInterface {
 		String[] allStr = q.split("&&&"); // each Table
 
 		for (int i = 0; i < allStr.length; ++i) {
-			String[] strs = allStr[i].split(Pattern.quote("***")); // each
-																	// Record
-			String tableName = strs[0];
-			boolean flag = false;
-			String[] cols = strs[1].split(","); // column
-			int row = 0;
-			String[][] values = new String[strs.length - 2][];
-			for (int j = 2; j < strs.length; j++, row++) {
-				values[row] = strs[j].split(",");
-				flag = true;
-			}
-			adapter.open();
-			if (values != null && values.length > 0 && flag)
-				adapter.updateTables(tableName, cols, values);
+			if (allStr[i] != null && !"".equals(allStr[i])) {
+				String[] strs = allStr[i].split(Pattern.quote("***")); // each
+																		// Record
+				String tableName = strs[0];
+				boolean flag = false;
+				String[] cols = strs[1].split(","); // column
+				int row = 0;
+				String[][] values = new String[strs.length - 2][];
+				for (int j = 2; j < strs.length; j++, row++) {
+					values[row] = strs[j].split(",");
+					flag = true;
+				}
+				adapter.open();
+				if (values != null && values.length > 0 && flag)
+					adapter.updateTables(tableName, cols, values);
 
-			adapter.close();
+				adapter.close();
+			}
 		}
 	}
 
@@ -373,34 +366,6 @@ public class Utility implements AsyncInterface {
 
 		bitmap.recycle();
 		return str.toByteArray();
-	}
-
-	private Bitmap decodeFile(File f) {
-		try {
-			// decode image size
-			BitmapFactory.Options o = new BitmapFactory.Options();
-			o.inJustDecodeBounds = true;
-			BitmapFactory.decodeStream(new FileInputStream(f), null, o);
-
-			// Find the correct scale value. It should be the power of 2.
-			final int REQUIRED_SIZE = 512;
-			int width_tmp = o.outWidth, height_tmp = o.outHeight;
-			int scale = 1;
-			while (true) {
-				if (width_tmp / 2 < REQUIRED_SIZE
-						|| height_tmp / 2 < REQUIRED_SIZE)
-					break;
-				width_tmp /= 2;
-				height_tmp /= 2;
-				scale *= 2;
-			}
-
-			BitmapFactory.Options o2 = new BitmapFactory.Options();
-			o2.inSampleSize = scale;
-			return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
-		} catch (FileNotFoundException e) {
-		}
-		return null;
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -478,9 +443,12 @@ public class Utility implements AsyncInterface {
 			String h = test.substring(8, 10);
 			String M = test.substring(10, 12);
 			String s = test.substring(12, 14);
-			ret = pDate.Shamsi(Integer.valueOf(y), Integer.valueOf(m),
-					Integer.valueOf(d))
-					+ "  " + h + ":" + M + ":" + s;
+			try {
+				ret = pDate.Shamsi(Integer.valueOf(y), Integer.valueOf(m),
+						Integer.valueOf(d)) + "  " + h + ":" + M + ":" + s;
+			} catch (Exception ex) {
+				ret = "";
+			}
 		}
 		return ret;
 	}
