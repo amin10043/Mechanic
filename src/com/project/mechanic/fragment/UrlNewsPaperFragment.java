@@ -1,5 +1,15 @@
 package com.project.mechanic.fragment;
 
+import java.io.IOException;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -25,6 +35,8 @@ public class UrlNewsPaperFragment extends Fragment {
 	public ProgressDialog ringProgressDialog1;
 	WebView webview;
 	Utility util;
+
+	String html;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -76,11 +88,12 @@ public class UrlNewsPaperFragment extends Fragment {
 
 						ringProgressDialog1.dismiss();
 
-						// webview.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
-
+						// ////////////////////////////////////////////////////
 						String html = "<html>"
 								+ "<body><h1>Yay, Mobiletuts+!</h1></body>"
 								+ "</html>";
+
+						// ////////////////////////////////////////////////////////////
 						dbAdapter.open();
 
 						dbAdapter.UpdateHtmlStringInNewspaper(id, html);
@@ -98,7 +111,9 @@ public class UrlNewsPaperFragment extends Fragment {
 
 				webview.loadData(newsPaper.getHtmlString(),
 						"text/html; charset=UTF-8", null);
-
+				// ////////////////////////////////////////
+				// webview.getSettings().setCacheMode(
+				// WebSettings.LOAD_CACHE_ELSE_NETWORK);
 				webview.setWebViewClient(new WebViewClient()
 
 				{
@@ -117,5 +132,21 @@ public class UrlNewsPaperFragment extends Fragment {
 
 		return view;
 
+	}
+
+	String fetchContent(WebView view, String url) throws IOException {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet get = new HttpGet(url);
+		HttpResponse response = httpClient.execute(get);
+		StatusLine statusLine = response.getStatusLine();
+		int statusCode = statusLine.getStatusCode();
+		HttpEntity entity = response.getEntity();
+		String html = EntityUtils.toString(entity); // assume html for //
+													// simplicity
+		view.loadDataWithBaseURL(url, html, "text/html", "utf-8", url); // todo:
+		if (statusCode != 200) {
+			// handle fail
+		}
+		return html;
 	}
 }
