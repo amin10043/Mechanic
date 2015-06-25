@@ -768,7 +768,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			tempNewsPaper = new NewsPaper(cursor.getInt(0),
 					cursor.getString(1), cursor.getInt(2), cursor.getString(3),
-					cursor.getString(4));
+					cursor.getString(4), cursor.getString(5));
 			result.add(tempNewsPaper);
 		}
 
@@ -1306,7 +1306,7 @@ public class DataBaseAdapter {
 	private NewsPaper CursorToNewsPaper(Cursor cursor) {
 		NewsPaper tempNewsPaper = new NewsPaper(cursor.getInt(0),
 				cursor.getString(1), cursor.getInt(2), cursor.getString(3),
-				cursor.getString(4));
+				cursor.getString(4), cursor.getString(5));
 		return tempNewsPaper;
 	}
 

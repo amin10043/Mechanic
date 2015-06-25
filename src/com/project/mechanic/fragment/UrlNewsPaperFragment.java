@@ -59,48 +59,61 @@ public class UrlNewsPaperFragment extends Fragment {
 
 		final NewsPaper newsPaper = dbAdapter.getNewsPaperId(id);
 
-		dbAdapter.close();
+		if (util.isNetworkConnected()) {
+			if (newsPaper != null) {
+				/* JavaScript must be enabled if you want it to work, obviously */
+				// webview.getSettings().setJavaScriptEnabled(true);
 
-		if (newsPaper != null && util.isNetworkConnected()) {
+				/* Register a new JavaScript interface called HTMLOUT */
+				// webview.addJavascriptInterface(myJavaScriptInterface,
+				// "HTMLOUT");
+				webview.loadUrl(newsPaper.getUrl());
+				webview.setWebViewClient(new WebViewClient()
 
-			/* JavaScript must be enabled if you want it to work, obviously */
-			// webview.getSettings().setJavaScriptEnabled(true);
+				{
 
-			/* Register a new JavaScript interface called HTMLOUT */
-			// webview.addJavascriptInterface(myJavaScriptInterface, "HTMLOUT");
-			webview.setWebViewClient(new WebViewClient()
+					public void onPageFinished(WebView view, String url) {
 
-			{
+						ringProgressDialog1.dismiss();
 
-				public void onPageFinished(WebView view, String url) {
+						// webview.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
 
-					ringProgressDialog1.dismiss();
+						String html = "<html>"
+								+ "<body><h1>Yay, Mobiletuts+!</h1></body>"
+								+ "</html>";
+						dbAdapter.open();
 
-					// webview.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
+						dbAdapter.UpdateHtmlStringInNewspaper(id, html);
+						dbAdapter.close();
+						// do your stuff here
+					}
 
-					String html = "<html>"
-							+ "<body><h1>Yay, Mobiletuts+!</h1></body>"
-							+ "</html>";
-					dbAdapter.open();
+				});
 
-					dbAdapter.UpdateHtmlStringInNewspaper(id, html);
-					dbAdapter.close();
-					// do your stuff here
-				}
+			}
+		} else if (!util.isNetworkConnected()) {
+			if (newsPaper != null) {
+				// rei=ad db html
+				//
 
-			});
-			webview.loadUrl(newsPaper.getUrl());
-		}
+				webview.loadData(newsPaper.getHtmlString(),
+						"text/html; charset=UTF-8", null);
 
-		else if (newsPaper != null && !util.isNetworkConnected()) {
+				webview.setWebViewClient(new WebViewClient()
 
-			// read db html
-			webview.loadData(newsPaper.getHtmlString(),
-					"text/html; charset=UTF-8", null);
+				{
 
-		}
+					public void onPageFinished(WebView view, String url) {
 
-		// /
+						ringProgressDialog1.dismiss();
+
+					}
+
+				});
+
+			}
+
+		} // /
 
 		return view;
 
