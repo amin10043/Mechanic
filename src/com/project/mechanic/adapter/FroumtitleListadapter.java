@@ -47,7 +47,10 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 	DataBaseAdapter adapter;
 	Utility util;
 	Users CurrentUser;
+	// PersianDate todayDate;
+	// String currentDate;
 	LinearLayout LikeTitle;
+	// int ItemId;
 	int froumNumber;
 	TextView countLikeFroum;
 	ProgressDialog ringProgressDialog;
