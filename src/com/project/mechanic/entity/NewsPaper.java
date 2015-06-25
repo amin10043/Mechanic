@@ -58,13 +58,14 @@ public class NewsPaper {
 	}
 
 	public NewsPaper(int id, String name, int typeid, String url,
-			String serverdate) {
+			String serverdate, String htmlstring) {
 		super();
 		Id = id;
 		Name = name;
 		TypeId = typeid;
 		Url = url;
 		ServerDate = serverdate;
+		HtmlString = htmlstring;
 	}
 
 }

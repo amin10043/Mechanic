@@ -54,6 +54,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	RelativeLayout header;
 	int mLastFirstVisibleItem = 0;
 	ArrayList<Integer> ids;
+	ArrayList<Integer> missedIds;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -67,6 +68,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		header.setVisibility(View.GONE);
 		lst = (ListView) view.findViewById(R.id.lstComment);
 		ids = new ArrayList<Integer>();
+		missedIds = new ArrayList<Integer>();
 
 		final SharedPreferences realize = getActivity().getSharedPreferences(
 				"Id", 0);
@@ -102,6 +104,16 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		mdb.open();
 		mylist = mdb.getAllFroum();
 
+		if (mylist != null) {
+			Users uId;
+			for (int i = 0; i < mylist.size(); ++i) {
+				int uidd = mylist.get(i).getUserId();
+				uId = mdb.getUserById(uidd);
+				if (uId == null) {
+					missedIds.add(uidd);
+				}
+			}
+		}
 		mdb.close();
 
 		date = new ServerDate(getActivity());
@@ -241,6 +253,10 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 							maps.put("fromDate", u.getImageServerDate());
 							updating.execute(maps);
 						}
+					} else {
+
+						byte[] b = null;
+						processFinish(b);
 					}
 				}
 				mdb.close();
