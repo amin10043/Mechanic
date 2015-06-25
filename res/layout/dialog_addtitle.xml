@@ -33,15 +33,17 @@
             <EditText
                 android:id="@+id/txtTitleP"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_margin="10dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="لطفا عنوان را وارد نمایید"
-                android:inputType="textMultiLine" >
+                android:hint="لطفا عنوان را وارد نمایید" />
 
-                <requestFocus />
-            </EditText>
+            <requestFocus />
         </RelativeLayout>
 
         <RelativeLayout

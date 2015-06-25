@@ -188,10 +188,10 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 				.findViewById(R.id.date_commented_in_froum);
 
 		TextView countOfReply = (TextView) convertView
-				.findViewById(R.id.countofreplyFroum);
+				.findViewById(R.id.numberOfCommentTopic);
 
-		ImageButton addreply = (ImageButton) convertView
-				.findViewById(R.id.replyToComment);
+		LinearLayout addreply = (LinearLayout) convertView
+				.findViewById(R.id.addCommentToTopic);
 
 		ImageButton profileImage = (ImageButton) convertView
 				.findViewById(R.id.icon_froum_profile);
@@ -233,14 +233,14 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 		mainComment.setText(comment.getDesk());
 		dateCommenter.setText(util.getPersianDate(comment.getDatetime()));
-		if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) == 0) {
-			LinearLayout lrr = (LinearLayout) convertView
-					.findViewById(R.id.linearShowcountofRepply);
-			lrr.setVisibility(View.GONE);
-
-		} else
-			countOfReply.setText(adapter.getCountOfReplyInFroum(froumID,
-					comment.getId()).toString());
+		// if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) == 0) {
+		// LinearLayout lrr = (LinearLayout) convertView
+		// .findViewById(R.id.linearShowcountofRepply);
+		// lrr.setVisibility(View.GONE);
+		//
+		// } else
+		countOfReply.setText(adapter.getCountOfReplyInFroum(froumID,
+				comment.getId()).toString());
 
 		if (x != null) {
 			nameCommenter.setText(x.getName());
@@ -391,6 +391,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 							params.put("IsLike", String.valueOf(0));
 							params.put("CommentId", String.valueOf(id));
+							params.put("IsUpdate", "0");
+							params.put("Id", "0");
 
 							saving.execute(params);
 
@@ -567,8 +569,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 			}
 		});
-		final SharedPreferences expanding = context.getSharedPreferences("Id",
-				0);
+
 		addreply.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -592,13 +593,15 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 							commentid = listItem.getId();
 						}
 					}
-					expanding.edit().putInt("main_Id", 1).commit();
+					final SharedPreferences groupId = context
+							.getSharedPreferences("Id", 0);
+
+					groupId.edit().putInt("main_Id", groupPosition).commit();
 
 					DialogcmtInfroum dialog = new DialogcmtInfroum(f,
 							commentid, context, froumID,
-							R.layout.dialog_addcomment);
+							R.layout.dialog_addcomment, 3);
 					dialog.show();
-					f.expandingList(groupPosition);
 
 					adapter.close();
 				}
@@ -609,12 +612,15 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 			@Override
 			public void onClick(View arg0) {
+				mExpandableListView.setSelectedGroup(groupPosition);
+
 				if (isExpanded) {
 					mExpandableListView.collapseGroup(groupPosition);
 					notifyDataSetChanged();
 
 				} else
 					mExpandableListView.expandGroup(groupPosition);
+
 				notifyDataSetChanged();
 
 			}

@@ -8,6 +8,7 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -15,11 +16,13 @@ import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +31,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.adapter.ExpandableCommentFroum;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.LikeInFroum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -49,6 +53,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 	ImageButton sharebtn;
 	ImageView profileImg;
 	int froumid;
+	RelativeLayout count, commentcounter;
 
 	Froum topics;
 
@@ -114,6 +119,10 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		profileImg = (ImageView) header.findViewById(R.id.iconfroumtitle);
 		exlistview = (ExpandableListView) view.findViewById(R.id.commentlist);
 
+		count = (RelativeLayout) header.findViewById(R.id.countLike);
+		commentcounter = (RelativeLayout) header
+				.findViewById(R.id.countComment);
+
 		// end find view
 
 		if (getArguments().getString("Id") != null)
@@ -176,8 +185,10 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 							Toast.LENGTH_SHORT).show();
 
 				} else {
+
 					dialog = new DialogcmtInfroum(FroumFragment.this, 0,
-							getActivity(), froumid, R.layout.dialog_addcomment);
+							getActivity(), froumid, R.layout.dialog_addcomment,
+							2);
 					dialog.show();
 					exadapter.notifyDataSetChanged();
 				}
@@ -205,15 +216,46 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		exlistview.setAdapter(exadapter);
 
 		if (CurrentUser == null) {
-			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+			likeTopic.setBackgroundResource(R.drawable.like_off);
+			count.setBackgroundResource(R.drawable.count_like_off);
 		} else {
-			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid))
-				likeTopic.setBackgroundResource(R.drawable.like_froum);
-			else
+			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid)) {
+				likeTopic.setBackgroundResource(R.drawable.like_on);
+				count.setBackgroundResource(R.drawable.count_like);
 
-				likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+			} else {
+
+				likeTopic.setBackgroundResource(R.drawable.like_off);
+				count.setBackgroundResource(R.drawable.count_like_off);
+
+			}
 		}
 		adapter.close();
+		count.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				adapter.open();
+				ArrayList<LikeInFroum> likedist = adapter
+						.getLikefroumLikeInFroumByFroumId(froumid);
+
+				adapter.close();
+				if (likedist.size() == 0) {
+					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
+							.show();
+				} else {
+					DialogPersonLiked dia = new DialogPersonLiked(
+							getActivity(), froumid, likedist);
+					dia.show();
+				}
+			}
+		});
+		SharedPreferences realizeIdComment = getActivity()
+				.getSharedPreferences("Id", 0);
+		int destinyId = realizeIdComment.getInt("main_Id", -1);
+		if (destinyId == 1371) {
+			updateList();
+		}
 
 		likeTopic.setOnClickListener(new View.OnClickListener() {
 
@@ -294,19 +336,47 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		exadapter.notifyDataSetChanged();
 
 		exlistview.setAdapter(exadapter);
+		exlistview.setSelectedGroup(mapCollection.size() - 1);
+
 		adapter.close();
 
 	}
 
-	public void expandingList(int position) {
-		if (exlistview.isGroupExpanded(position)) {
+	public void setcount() {
+		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
 
-			Toast.makeText(getActivity(), "collapse", 0).show();
+	}
 
-		} else
-			exlistview.expandGroup(position);
+	public void expanding(int groupPosition) {
+		adapter.open();
 
+		commentGroup = adapter.getCommentInFroumbyPaperid(froumid, 0);
+
+		mapCollection = new LinkedHashMap<CommentInFroum, List<CommentInFroum>>();
+
+		List<CommentInFroum> reply = null;
+		for (CommentInFroum comment : commentGroup) {
+			reply = adapter
+					.getReplyCommentbyCommentID(froumid, comment.getId());
+			mapCollection.put(comment, reply);
+		}
+
+		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
+
+		exadapter = new ExpandableCommentFroum(getActivity(),
+				(ArrayList<CommentInFroum>) commentGroup, mapCollection, this,
+				froumid);
 		exadapter.notifyDataSetChanged();
+		exlistview.setAdapter(exadapter);
+		// int c = mapCollection.get(reply.get(groupPosition)).size();
+
+		// exlistview.setSelectedGroup(groupPosition);
+		// exlistview.setSelectedChild(groupPosition, 10, true);
+		exlistview.expandGroup(groupPosition);
+		adapter.close();
+
+		// exlistview.setSelectedChild(groupPosition, 1, condition);
+		exlistview.setSelectedGroup(groupPosition);
 
 	}
 
@@ -323,7 +393,8 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 			adapter.open();
 			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid)) {
 				adapter.deleteLikeFromFroum(CurrentUser.getId(), froumid);
-				likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+				likeTopic.setBackgroundResource(R.drawable.like_off);
+				count.setBackgroundResource(R.drawable.count_like_off);
 
 				countLike
 						.setText(adapter.LikeInFroum_count(froumid).toString());
@@ -331,7 +402,8 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 			} else {
 				adapter.insertLikeInFroumToDb(CurrentUser.getId(), froumid,
 						serverDate, 0);
-				likeTopic.setBackgroundResource(R.drawable.like_froum);
+				likeTopic.setBackgroundResource(R.drawable.like_on);
+				count.setBackgroundResource(R.drawable.count_like);
 
 				countLike
 						.setText(adapter.LikeInFroum_count(froumid).toString());

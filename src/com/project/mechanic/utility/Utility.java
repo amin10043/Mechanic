@@ -72,7 +72,8 @@ public class Utility implements AsyncInterface {
 	Settings settings;
 	PersianDate pDate;
 	static boolean flag = false;
-	private final int NUMBER_OF_RECORD_RECEIVED = 4;
+	public static final int NUMBER_OF_RECORD_RECEIVED = 5;
+	public static final int NUMBER_OF_RECORD_RECEIVED_D = 50;
 
 	public Utility(Context context) {
 		this.context = context;
@@ -292,7 +293,7 @@ public class Utility implements AsyncInterface {
 			boolean flag = false;
 			String[] cols = strs[1].split(","); // column
 			int row = 0;
-			String[][] values = new String[cols.length][];
+			String[][] values = new String[strs.length - 2][];
 			for (int j = 2; j < strs.length; j++, row++) {
 				values[row] = strs[j].split(",");
 				flag = true;
@@ -437,25 +438,30 @@ public class Utility implements AsyncInterface {
 	@Override
 	public void processFinish(String output) {
 
-		if (flag) {
+		if (output != null
+				&& !(output.contains("Exception") || output.contains("java"))) {
 
-			SharedPreferences pref = context.getSharedPreferences("update", 0);
-			SharedPreferences.Editor editor = pref.edit();
+			if (flag) {
 
-			int from = pref.getInt("fromD", 0);
-			int to = pref.getInt("toD", 0);
+				SharedPreferences pref = context.getSharedPreferences("update",
+						0);
+				SharedPreferences.Editor editor = pref.edit();
 
-			serviceUpdateD = new UpdatingAllDetail(context);
-			serviceUpdateD.delegate = this;
-			serviceUpdateD.execute(
-					settings != null ? settings.getServerDate_Users() : "",
-					String.valueOf(from), String.valueOf(to));
+				int from = pref.getInt("fromD", 0);
+				int to = pref.getInt("toD", 0);
 
-			editor.putInt("fromD", from + NUMBER_OF_RECORD_RECEIVED);
-			editor.putInt("toD", to + NUMBER_OF_RECORD_RECEIVED);
+				serviceUpdateD = new UpdatingAllDetail(context);
+				serviceUpdateD.delegate = this;
+				serviceUpdateD.execute(
+						settings != null ? settings.getServerDate_Users() : "",
+						String.valueOf(from), String.valueOf(to));
+
+				editor.putInt("fromD", from + NUMBER_OF_RECORD_RECEIVED_D);
+				editor.putInt("toD", to + NUMBER_OF_RECORD_RECEIVED_D);
+				flag = false;
+			}
+			parseQuery(output);
 		}
-		parseQuery(output);
-
 	}
 
 	public Typeface setFont() {
