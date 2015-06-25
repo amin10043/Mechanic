@@ -215,7 +215,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 		if (userItemId < mylist.size() && getActivity() != null) {
 			Users u = mdb.getUserById(mylist.get(userItemId).getUserId());
-			if (!ids.contains(u.getId())) {
+			if (u != null && !ids.contains(u.getId())) {
 				ids.add(u.getId());
 				updating = new UpdatingImage(getActivity());
 				updating.delegate = this;

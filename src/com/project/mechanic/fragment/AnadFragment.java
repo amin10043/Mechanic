@@ -174,12 +174,14 @@ public class AnadFragment extends Fragment {
 							} else {
 								j += 10;
 							}
-							tempList = mylist.subList(i, j);
-							for (Ticket p : tempList) {
-								if (!subList.contains(p))
-									subList.add(p);
+							if (i <= j) {
+								tempList = mylist.subList(i, j);
+								for (Ticket p : tempList) {
+									if (!subList.contains(p))
+										subList.add(p);
+								}
+								new LoadMoreDataTask().execute();
 							}
-							new LoadMoreDataTask().execute();
 						}
 					});
 		}
