@@ -12,9 +12,11 @@ import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.ListView.PullAndLoadListView;
 import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
 import com.project.mechanic.ListView.PullToRefreshListView.OnRefreshListener;
@@ -39,6 +41,7 @@ public class TitlepaperFragment extends Fragment {
 	public static final int DIALOG_FRAGMENT = 1;
 	Utility utility;
 	Users CurrentUser;
+	FloatingActionButton action;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -47,7 +50,11 @@ public class TitlepaperFragment extends Fragment {
 
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.News);
 		view = inflater.inflate(R.layout.fragment_titlepaper, null);
+		action = (FloatingActionButton) view.findViewById(R.id.fab);
+
 		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
+		RelativeLayout header = (RelativeLayout) view
+				.findViewById(R.id.headerTitleArticle);
 
 		mdb = new DataBaseAdapter(getActivity());
 		utility = new Utility(getActivity());
@@ -228,7 +235,7 @@ public class TitlepaperFragment extends Fragment {
 		ListAdapter = new PapertitleListAdapter(getActivity(),
 				R.layout.raw_froumtitle, mylist);
 		ListAdapter.notifyDataSetChanged();
-		lst.setAdapter(ListAdapter);
+		lstNews.setAdapter(ListAdapter);
 
 	}
 

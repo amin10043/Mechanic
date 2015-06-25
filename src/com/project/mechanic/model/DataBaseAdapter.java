@@ -464,6 +464,7 @@ public class DataBaseAdapter {
 			uc.put("UserId", UserId);
 			uc.put("PaperId", PaperId);
 			uc.put("Date", Date);
+			uc.put("Seen", 1);
 
 			long res = mDb.insert(TableLikeInPaper, null, uc);
 			long res2 = res;
@@ -520,6 +521,8 @@ public class DataBaseAdapter {
 		cv.put("UserId", userid);
 		cv.put("PaperID", Paperid);
 		cv.put("Date", datetime);
+		cv.put("Seen", 1);
+
 		mDb.insert(TableCommentInPaper, null, cv);
 	}
 

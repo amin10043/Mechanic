@@ -1,6 +1,10 @@
 package com.project.mechanic.fragment;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,10 +17,13 @@ import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
-public class DialogcmtInPaper extends Dialog {
+public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 
 	private ImageButton btncmt;
 	private EditText Cmttxt;
@@ -26,8 +33,15 @@ public class DialogcmtInPaper extends Dialog {
 	Fragment f;
 	int paperId;
 	Utility util;
-	Users user;
-	PersianDate p;
+	Users currentuser;
+	// PersianDate p;
+
+	Saving saving;
+	Map<String, String> params;
+	ProgressDialog ringProgressDialog;
+
+	String serverDate = "";
+	ServerDate date;
 
 	public DialogcmtInPaper(Fragment f, Context context, int resourceId,
 			int paperId) {
@@ -36,8 +50,8 @@ public class DialogcmtInPaper extends Dialog {
 		this.f = f;
 		this.paperId = paperId;
 		util = new Utility(context);
-		user = util.getCurrentUser();
-		p = new PersianDate();
+		currentuser = util.getCurrentUser();
+		// p = new PersianDate();
 		dbadapter = new DataBaseAdapter(context);
 	}
 
@@ -63,18 +77,16 @@ public class DialogcmtInPaper extends Dialog {
 							Toast.LENGTH_LONG)).show();
 				else {
 
-					if (user == null) {
+					if (currentuser == null) {
 						(Toast.makeText(context,
 								"برای ثبت نظر ابتدا باید وارد شوید.",
 								Toast.LENGTH_LONG)).show();
 					} else {
 
-						dbadapter.open();
-						dbadapter.insertCommentInPapertoDb(Cmttxt.getText()
-								.toString(), paperId, user.getId(), p
-								.todayShamsi());
-						dbadapter.close();
-						((PaperFragment) f).updateView();
+						date = new ServerDate(context);
+						date.delegate = DialogcmtInPaper.this;
+						date.execute("");
+
 					}
 					DialogcmtInPaper.this.dismiss();
 				}
@@ -89,6 +101,75 @@ public class DialogcmtInPaper extends Dialog {
 
 	public void setDialogResult(OnMyDialogResult dialogResult) {
 		mDialogResult = dialogResult;
+	}
+
+	@Override
+	public void processFinish(String output) {
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
+
+		if (!"".equals(output) && output != null
+				&& !(output.contains("Exception") || output.contains("java"))) {
+			int id = -1;
+
+			try {
+				id = Integer.valueOf(output);
+				dbadapter.open();
+				dbadapter.insertCommentInPapertoDb(Cmttxt.getText().toString(),
+						paperId, currentuser.getId(), serverDate);
+				dbadapter.close();
+				((PaperFragment) f).updateView();
+
+			} catch (NumberFormatException e) {
+
+				if (!"".equals(output)
+						&& output != null
+						&& !(output.contains("Exception") || output
+								.contains("java"))) {
+
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(context);
+					saving.delegate = DialogcmtInPaper.this;
+
+					params.put("TableName", "CommentInPaper");
+
+					params.put("Desk", Cmttxt.getText().toString());
+					params.put("PaperId", String.valueOf(paperId));
+					params.put("UserId", String.valueOf(currentuser.getId()));
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+					serverDate = output;
+
+					saving.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(context, "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
+
+				}
+				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
+						Toast.LENGTH_SHORT).show();
+			}
+
+		} else
+			Toast.makeText(context, "خطا در ثبت", 0).show();
+
 	}
 
 }

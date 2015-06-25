@@ -130,7 +130,6 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 			lp.width = util.getScreenwidth() / 7;
 			lp.height = util.getScreenwidth() / 7;
-			lp.setMargins(5, 5, 5, 5);
 			profileImg.setLayoutParams(lp);
 
 			if (u.getImage() == null) {

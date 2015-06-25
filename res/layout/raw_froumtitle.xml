@@ -105,9 +105,8 @@
             android:id="@+id/authorname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/iconfroumtitle"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/iconfroumtitle"
+            android:layout_alignRight="@+id/iconfroumtitle"
+            android:layout_below="@+id/iconfroumtitle"
             android:text="author"
             android:textColor="@color/transparent" />
 
@@ -116,7 +115,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:layout_gravity="right"
             android:background="@android:color/transparent"
             android:scaleType="fitXY"
