@@ -202,6 +202,9 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 							"لطفا منتظر بمانید.");
 				}
 			} else {
+				Toast.makeText(context, "آگهی شما با موفقیت ثبت شد",
+						Toast.LENGTH_SHORT).show();
+				((AnadFragment) fragment).updateView();
 				this.dismiss();
 			}
 			//

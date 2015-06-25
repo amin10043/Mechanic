@@ -235,16 +235,13 @@ public class Ticket implements Comparable<Ticket> {
 
 	@Override
 	public int compareTo(Ticket compareTicket) {
-		// TODO Auto-generated method stub
-		// String s=getDate();
-		// Double va=Convert.ToDouble(s);
-		long temp = Long.valueOf(getDate());
+		try {
+			long temp = Long.valueOf(getDate());
+			long comparetemp = Long.valueOf(compareTicket.getDate());
+			return (int) (comparetemp - temp);
+		} catch (Exception ex) {
+			return 0;
+		}
 
-		// number = temp.doubleValue();
-		Long comparetemp = Long.valueOf(compareTicket.getDate());
-
-		// return this.Count - compareCount;
-
-		return (int) (comparetemp - Long.valueOf(getDate()));
 	}
 }

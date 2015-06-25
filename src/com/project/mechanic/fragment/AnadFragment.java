@@ -62,7 +62,7 @@ public class AnadFragment extends Fragment {
 	int ticketTypeid = 0;
 	private static int RESULT_LOAD_IMAGE = 1;
 	public static String picturePath;
-	int proID = -1;
+	int proID = 0;
 	int ticket;
 	private LinearLayout verticalOuterLayout;
 	List<Anad> list;
@@ -234,8 +234,6 @@ public class AnadFragment extends Fragment {
 							clickTimer = null;
 						}
 						clickedButton = (ImageButton) arg0;
-						Toast.makeText(getActivity(), position + "",
-								Toast.LENGTH_LONG).show();
 
 						stopAutoScrolling();
 						clickedButton.startAnimation(scaleFaceUpAnimation());
@@ -344,7 +342,7 @@ public class AnadFragment extends Fragment {
 						case 31:
 							a = position + 1200 + 1;
 							break;
-						case -1:
+						case 0:
 							a = position + 1250 + 1;
 							break;
 						case 2:

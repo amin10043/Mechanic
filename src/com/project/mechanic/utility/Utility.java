@@ -278,22 +278,24 @@ public class Utility implements AsyncInterface {
 		String[] allStr = q.split("&&&"); // each Table
 
 		for (int i = 0; i < allStr.length; ++i) {
-			String[] strs = allStr[i].split(Pattern.quote("***")); // each
-																	// Record
-			String tableName = strs[0];
-			boolean flag = false;
-			String[] cols = strs[1].split(","); // column
-			int row = 0;
-			String[][] values = new String[strs.length - 2][];
-			for (int j = 2; j < strs.length; j++, row++) {
-				values[row] = strs[j].split(",");
-				flag = true;
-			}
-			adapter.open();
-			if (values != null && values.length > 0 && flag)
-				adapter.updateTables(tableName, cols, values);
+			if (allStr[i] != null && !"".equals(allStr[i])) {
+				String[] strs = allStr[i].split(Pattern.quote("***")); // each
+																		// Record
+				String tableName = strs[0];
+				boolean flag = false;
+				String[] cols = strs[1].split(","); // column
+				int row = 0;
+				String[][] values = new String[strs.length - 2][];
+				for (int j = 2; j < strs.length; j++, row++) {
+					values[row] = strs[j].split(",");
+					flag = true;
+				}
+				adapter.open();
+				if (values != null && values.length > 0 && flag)
+					adapter.updateTables(tableName, cols, values);
 
-			adapter.close();
+				adapter.close();
+			}
 		}
 	}
 
@@ -441,9 +443,12 @@ public class Utility implements AsyncInterface {
 			String h = test.substring(8, 10);
 			String M = test.substring(10, 12);
 			String s = test.substring(12, 14);
-			ret = pDate.Shamsi(Integer.valueOf(y), Integer.valueOf(m),
-					Integer.valueOf(d))
-					+ "  " + h + ":" + M + ":" + s;
+			try {
+				ret = pDate.Shamsi(Integer.valueOf(y), Integer.valueOf(m),
+						Integer.valueOf(d)) + "  " + h + ":" + M + ":" + s;
+			} catch (Exception ex) {
+				ret = "";
+			}
 		}
 		return ret;
 	}
