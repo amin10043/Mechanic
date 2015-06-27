@@ -3144,4 +3144,22 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<LikeInPaper> getLikePaperByPaperId(int PaperID) {
+		ArrayList<LikeInPaper> result = new ArrayList<LikeInPaper>();
+		Cursor cursor = mDb.rawQuery(
+				"select * from LikeInPaper where PaperId =  " + PaperID, null);
+
+		LikeInPaper like;
+		while (cursor.moveToNext()) {
+			like = new LikeInPaper(cursor.getInt(0), cursor.getInt(1),
+					cursor.getInt(2), cursor.getString(3), cursor.getInt(4),
+					cursor.getInt(5));
+
+			result.add(like);
+		}
+
+		return result;
+
+	}
+
 }

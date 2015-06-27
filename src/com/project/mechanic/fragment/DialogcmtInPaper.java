@@ -6,15 +6,18 @@ import java.util.Map;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
@@ -43,14 +46,18 @@ public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 	String serverDate = "";
 	ServerDate date;
 
+	// متغیر کد برای پیدا کردن مبدا ارسالی برای آپدیت کردن لیست می باشد
+	int code;
+
 	public DialogcmtInPaper(Fragment f, Context context, int resourceId,
-			int paperId) {
+			int paperId, int code) {
 		super(context);
 		this.context = context;
 		this.f = f;
 		this.paperId = paperId;
 		util = new Utility(context);
 		currentuser = util.getCurrentUser();
+		this.code = code;
 		// p = new PersianDate();
 		dbadapter = new DataBaseAdapter(context);
 	}
@@ -119,7 +126,33 @@ public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 				dbadapter.insertCommentInPapertoDb(Cmttxt.getText().toString(),
 						paperId, currentuser.getId(), serverDate);
 				dbadapter.close();
-				((PaperFragment) f).updateView();
+
+				final SharedPreferences realizeIdPaper = context
+						.getSharedPreferences("Id", 0);
+
+				if (code == 1) {
+					// az PaperWithoutComment vared shod
+					((PaperWithoutComment) f).setCountComment();
+
+					realizeIdPaper.edit().putInt("main_Id", 1378).commit();
+
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					PaperFragment fragment = new PaperFragment();
+					trans.setCustomAnimations(R.anim.pull_in_left,
+							R.anim.push_out_right);
+					Bundle b = new Bundle();
+					b.putString("Id", String.valueOf(paperId));
+					fragment.setArguments(b);
+
+					trans.replace(R.id.content_frame, fragment);
+					trans.commit();
+				}
+				if (code == 2) {
+					// az paper fragment vard shode
+					((PaperFragment) f).updateView();
+
+				}
 
 			} catch (NumberFormatException e) {
 

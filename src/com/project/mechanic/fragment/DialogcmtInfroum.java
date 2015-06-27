@@ -126,9 +126,14 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 						"0", "0");
 
 				dbadapter.close();
+				// از پرینفسس استفده شده در زیر برای پیدا کردن آیدی گروه کامنت
+				// ثبت شده در صفحه فروم استفاده می شود
 				SharedPreferences groupId = context.getSharedPreferences("Id",
 						0);
 				int IdGroup = groupId.getInt("main_Id", -1);
+
+				// از پریفرنسس استفاده شده در زیر برای رفتن به صفحه فروم استفاده
+				// می شود تا در انجا با شناسایی مبدا ارسالی صفحه را آپدیت کرد
 
 				final SharedPreferences realizeIdComment = context
 						.getSharedPreferences("Id", 0);

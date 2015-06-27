@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -56,12 +57,37 @@ public class TitlepaperFragment extends Fragment {
 		RelativeLayout header = (RelativeLayout) view
 				.findViewById(R.id.headerTitleArticle);
 
+		header.setVisibility(View.GONE);
+
 		mdb = new DataBaseAdapter(getActivity());
 		utility = new Utility(getActivity());
 		CurrentUser = utility.getCurrentUser();
 		mdb.open();
 		mylist = mdb.getAllPaper();
 		mdb.close();
+
+		FloatingActionButton action = (FloatingActionButton) view
+				.findViewById(R.id.fab);
+		action.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if (CurrentUser == null)
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+				else {
+
+					dialog = new DialogPaperTitle(getActivity(),
+							R.layout.dialog_addtitle, TitlepaperFragment.this);
+					dialog.getWindow()
+							.setSoftInputMode(
+									WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+					dialog.show();
+
+				}
+
+			}
+		});
 		if (mylist != null && !mylist.isEmpty()) {
 
 			if (mylist.size() < j) {

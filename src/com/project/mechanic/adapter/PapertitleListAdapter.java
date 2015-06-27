@@ -28,6 +28,7 @@ import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogcmtInPaper;
 import com.project.mechanic.fragment.PaperFragment;
+import com.project.mechanic.fragment.PaperWithoutComment;
 import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -59,6 +60,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 	ServerDate date;
 	int paperNumber;
 	ProgressDialog ringProgressDialog;
+	LinearLayout commentBtn;
 
 	public PapertitleListAdapter(Context context, int resource,
 			List<Paper> objects) {
@@ -99,6 +101,8 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 		likePaper = (LinearLayout) convertView
 				.findViewById(R.id.liketitleTopic);
 
+		commentBtn = (LinearLayout) convertView.findViewById(R.id.l1cm);
+
 		// end find view
 		adapter.open();
 		currentUser = util.getCurrentUser();
@@ -106,11 +110,23 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 		Paper person1 = mylist.get(position);
 
 		Users x = adapter.getUserbyid(person1.getUserId());
+
+		RelativeLayout rl = (RelativeLayout) convertView
+				.findViewById(R.id.topicTitleFroum);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				rl.getLayoutParams());
+
+		lp.width = util.getScreenwidth() / 7;
+		lp.height = util.getScreenwidth() / 7;
+		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		lp.setMargins(5, 5, 5, 5);
+
 		if (x != null) {
 
 			if (x.getImage() == null) {
-				Toast.makeText(context, "no picture", 0).show();
 				iconProile.setImageResource(R.drawable.no_img_profile);
+				iconProile.setLayoutParams(lp);
+
 			} else {
 
 				byte[] byteImg = x.getImage();
@@ -119,15 +135,6 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
 						50));
 
-				RelativeLayout rl = (RelativeLayout) convertView
-						.findViewById(R.id.topicTitleFroum);
-				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-						rl.getLayoutParams());
-
-				lp.width = util.getScreenwidth() / 7;
-				lp.height = util.getScreenwidth() / 7;
-				lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-				lp.setMargins(5, 5, 5, 5);
 				iconProile.setLayoutParams(lp);
 				adapter.close();
 			}
@@ -193,16 +200,50 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 			}
 		});
-
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
-				LinearLayout parentlayout = (LinearLayout) v;
+				// LinearLayout parentlayout = (LinearLayout) v;
 
-				String item = ((TextView) parentlayout
-						.findViewById(R.id.rowtitlepaper)).getText().toString();
+				String item = txt1.getText().toString();
+
+				for (Paper listItem : mylist) {
+					if (item.equals(listItem.getTitle())) {
+						// check authentication and authorization
+						id = listItem.getId();
+					}
+				}
+				Toast.makeText(context, "send = " + id, Toast.LENGTH_SHORT)
+						.show();
+
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				PaperWithoutComment fragment = new PaperWithoutComment();
+				Bundle bundle = new Bundle();
+				bundle.putString("Id", String.valueOf(id));
+				fragment.setArguments(bundle);
+
+				// DialogcmtInPaper dialog = new DialogcmtInPaper(null, context,
+				// R.layout.dialog_addcomment, id, 2);
+				// Bundle bundle2 = new Bundle();
+				// bundle.putString("Id", String.valueOf(id));
+				// fragment.setArguments(bundle);
+
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+			}
+
+		});
+		commentBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				// LinearLayout parentlayout = (LinearLayout) v;
+
+				String item = txt1.getText().toString();
 
 				for (Paper listItem : mylist) {
 					if (item.equals(listItem.getTitle())) {
@@ -221,7 +262,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				fragment.setArguments(bundle);
 
 				DialogcmtInPaper dialog = new DialogcmtInPaper(null, context,
-						R.layout.dialog_addcomment, id);
+						R.layout.dialog_addcomment, id, 3);
 				Bundle bundle2 = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
 				fragment.setArguments(bundle);
