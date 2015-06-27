@@ -10,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -66,7 +68,7 @@ public class TitlepaperFragment extends Fragment {
 		mylist = mdb.getAllPaper();
 		mdb.close();
 
-		FloatingActionButton action = (FloatingActionButton) view
+		final FloatingActionButton action = (FloatingActionButton) view
 				.findViewById(R.id.fab);
 		action.setOnClickListener(new OnClickListener() {
 
@@ -165,6 +167,29 @@ public class TitlepaperFragment extends Fragment {
 						}
 					});
 		}
+
+		lstNews.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView arg0, int arg1) {
+				// TODO Auto-generated method stub
+				switch (arg1) {
+				case SCROLL_STATE_FLING:
+					action.hide(true);
+					break;
+				case SCROLL_STATE_TOUCH_SCROLL:
+					action.show(true);
+					break;
+				}
+
+			}
+
+			@Override
+			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 
 		/*
 		 * lst.setOnItemClickListener(new OnItemClickListener() {
