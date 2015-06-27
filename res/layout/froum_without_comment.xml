@@ -61,7 +61,7 @@
                 android:id="@+id/cmffff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/profileLinearcommenterinContinue"
+                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
                 android:layout_marginRight="5dp"
                 android:orientation="horizontal" >
 
@@ -97,12 +97,12 @@
                 android:id="@+id/lll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/profileLinearcommenterinContinue"
+                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
                 android:layout_toRightOf="@+id/cmffff"
                 android:orientation="horizontal" >
 
                 <RelativeLayout
-                    android:id="@+id/countLike"
+                    android:id="@+id/countLiketext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -133,7 +133,7 @@
                 android:id="@+id/sharefroumicon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/profileLinearcommenterinContinue"
+                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/lll"
                 android:background="@android:color/transparent"

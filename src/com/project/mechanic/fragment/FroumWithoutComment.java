@@ -83,7 +83,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 		sharebtn = (ImageButton) view.findViewById(R.id.sharefroumicon);
 		profileImg = (ImageView) view.findViewById(R.id.iconfroumtitle);
 
-		count = (RelativeLayout) view.findViewById(R.id.countLike);
+		count = (RelativeLayout) view.findViewById(R.id.countLiketext);
 		commentcounter = (RelativeLayout) view.findViewById(R.id.countComment);
 
 		final SharedPreferences froumId = getActivity().getSharedPreferences(
@@ -194,7 +194,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
 							.show();
 				} else {
-					DialogPersonLiked dia = new DialogPersonLiked(
+					DialogPersonLikedFroum dia = new DialogPersonLikedFroum(
 							getActivity(), idFroum, likedist);
 					dia.show();
 				}

@@ -243,12 +243,17 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
 							.show();
 				} else {
-					DialogPersonLiked dia = new DialogPersonLiked(
+					DialogPersonLikedFroum dia = new DialogPersonLikedFroum(
 							getActivity(), froumid, likedist);
 					dia.show();
 				}
 			}
 		});
+
+		// این کد ها برای مشخص شدن مبدا ارسالی برای آپدیت کردن لیست می باشد
+		// وقتی کاربر در صفحه فروم بدون کامنت ، نظری ثبت می کند به این صفحه
+		// منتقل می شود و این کد ها برای مشخص کردن مبدا و انجام عمل آپدیت کردن
+		// استفاده می شود
 		SharedPreferences realizeIdComment = getActivity()
 				.getSharedPreferences("Id", 0);
 		int destinyId = realizeIdComment.getInt("main_Id", -1);

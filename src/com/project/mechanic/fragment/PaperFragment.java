@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -30,6 +31,7 @@ import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
 import com.project.mechanic.ListView.PullToRefreshListView.OnRefreshListener;
 import com.project.mechanic.adapter.PaperListAdapter;
 import com.project.mechanic.entity.CommentInPaper;
+import com.project.mechanic.entity.LikeInPaper;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
@@ -73,8 +75,6 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 	Deleting deleting;
 	Map<String, String> params;
 
-	RelativeLayout count;
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -103,8 +103,6 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 
 		icon = (ImageView) header.findViewById(R.id.iconfroumtitle);
 		sharebtn = (ImageView) header.findViewById(R.id.sharefroumicon);
-
-		count = (RelativeLayout) view.findViewById(R.id.countLike);
 
 		adapter = new DataBaseAdapter(getActivity());
 		adapter.open();
@@ -158,7 +156,7 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 
 		txttitle.setText(p.getTitle());
 		txttitleDes.setText(p.getContext());
-		txtdate.setText(p.getDate());
+		txtdate.setText(util.getPersianDate(p.getDate()));
 
 		if (u.getImage() == null) {
 			icon.setImageResource(R.drawable.no_img_profile);
@@ -176,7 +174,7 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 			lp.width = util.getScreenwidth() / 7;
 			lp.height = util.getScreenwidth() / 7;
 			lp.setMargins(5, 5, 5, 5);
-			icon.setImageBitmap(bmp);
+			icon.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
 			icon.setLayoutParams(lp);
 		}
 		adapter.close();
@@ -235,6 +233,36 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 					});
 		}
 
+		final SharedPreferences realizeIdPaper = getActivity()
+				.getSharedPreferences("Id", 0);
+		int destinyId = realizeIdPaper.getInt("main_Id", -1);
+
+		if (destinyId == 1378) {
+			// lstNews.setSelection(PaperListadapter.getCount() - 1);
+
+			updateView();
+		}
+
+		countLike.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				adapter.open();
+				ArrayList<LikeInPaper> likedist = adapter
+						.getLikePaperByPaperId(paperID);
+
+				adapter.close();
+				if (likedist.size() == 0) {
+					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
+							.show();
+				} else {
+					DialogPersonLikedPaper dia = new DialogPersonLikedPaper(
+							getActivity(), paperID, likedist);
+					dia.show();
+				}
+			}
+		});
+
 		sharebtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -281,7 +309,8 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 					return;
 				} else {
 					dialog = new DialogcmtInPaper(PaperFragment.this,
-							getActivity(), R.layout.dialog_addcomment, paperID);
+							getActivity(), R.layout.dialog_addcomment, paperID,
+							2);
 					dialog.show();
 
 				}
@@ -374,10 +403,14 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 
 		lstNews = (PullAndLoadListView) view
 				.findViewById(R.id.listViewnewspaper);
+
 		PaperListadapter = new PaperListAdapter(getActivity(),
 				R.layout.raw_papercmt, subList, PaperFragment.this);
 
 		lstNews.setAdapter(PaperListadapter);
+		lstNews.setSelection(15);
+		Toast.makeText(getActivity(), subList.size() - 1 + "", 0).show();
+
 		adapter.close();
 	}
 
@@ -394,8 +427,8 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 			adapter.open();
 			if (adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
 				adapter.deleteLikeFromPaper(CurrentUser.getId(), paperID);
-				countLike.setBackgroundResource(R.drawable.like_off);
-				count.setBackgroundResource(R.drawable.count_like_off);
+				Like.setBackgroundResource(R.drawable.like_off);
+				countLike.setBackgroundResource(R.drawable.count_like_off);
 
 				NumofLike
 						.setText(adapter.LikeInPaper_count(paperID).toString());
@@ -403,8 +436,8 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 			} else {
 				adapter.insertLikeInPaperToDb(CurrentUser.getId(), paperID,
 						serverDate);
-				countLike.setBackgroundResource(R.drawable.like_on);
-				count.setBackgroundResource(R.drawable.count_like);
+				Like.setBackgroundResource(R.drawable.like_on);
+				countLike.setBackgroundResource(R.drawable.count_like);
 
 				NumofLike
 						.setText(adapter.LikeInPaper_count(paperID).toString());
