@@ -125,10 +125,12 @@ public class TitlepaperFragment extends Fragment {
 							} else {
 								j += 10;
 							}
-							tempList = mylist.subList(i, j);
-							for (Paper p : tempList) {
-								if (!subList.contains(p))
-									subList.add(p);
+							if (i <= j) {
+								tempList = mylist.subList(i, j);
+								for (Paper p : tempList) {
+									if (!subList.contains(p))
+										subList.add(p);
+								}
 							}
 							// Toast.makeText(getActivity(), String.valueOf(i),
 							// Toast.LENGTH_SHORT).show();

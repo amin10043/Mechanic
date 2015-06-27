@@ -28,6 +28,8 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -98,7 +100,7 @@ public class AnadFragment extends Fragment {
 		view = inflater.inflate(R.layout.fragment_anad, null);
 
 		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
-		FloatingActionButton createItem = (FloatingActionButton) view
+		final FloatingActionButton createItem = (FloatingActionButton) view
 				.findViewById(R.id.fabAnad);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
@@ -192,6 +194,42 @@ public class AnadFragment extends Fragment {
 				.findViewById(R.id.vertical_outer_layout_id);
 		addImagesToView(anadlist);
 
+		if (lstTicket != null) {
+
+			lstTicket.setOnScrollListener(new OnScrollListener() {
+
+				@Override
+				public void onScrollStateChanged(AbsListView arg0, int arg1) {
+
+					// final int currentFirstVisibleItem = lst
+					// .getFirstVisiblePosition();
+					// if (currentFirstVisibleItem > mLastFirstVisibleItem) {
+					// action.hide(true);
+					// } else if (currentFirstVisibleItem <
+					// mLastFirstVisibleItem) {
+					// action.show(true);
+					// }
+					//
+					// mLastFirstVisibleItem = currentFirstVisibleItem;
+
+					switch (arg1) {
+					case SCROLL_STATE_FLING:
+						createItem.hide(true);
+						break;
+					case SCROLL_STATE_TOUCH_SCROLL:
+						createItem.show(true);
+						break;
+					}
+
+				}
+
+				@Override
+				public void onScroll(AbsListView arg0, int arg1, int arg2,
+						int arg3) {
+
+				}
+			});
+		}
 		ViewTreeObserver vto = verticalOuterLayout.getViewTreeObserver();
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@SuppressWarnings("deprecation")

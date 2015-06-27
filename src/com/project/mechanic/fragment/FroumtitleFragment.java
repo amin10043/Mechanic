@@ -152,30 +152,24 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			@Override
 			public void onScrollStateChanged(AbsListView arg0, int arg1) {
 
-				final int currentFirstVisibleItem = lst
-						.getFirstVisiblePosition();
-				if (currentFirstVisibleItem > mLastFirstVisibleItem) {
-					action.hide(true);
-				} else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
-					action.show(true);
-				}
-
-				mLastFirstVisibleItem = currentFirstVisibleItem;
-
-				// switch (arg1) {
-				// case SCROLL_STATE_FLING:
+				// final int currentFirstVisibleItem = lst
+				// .getFirstVisiblePosition();
+				// if (currentFirstVisibleItem > mLastFirstVisibleItem) {
 				// action.hide(true);
-				// // action.setVisibility(View.GONE);
-				// break;
-				// case SCROLL_STATE_IDLE:
+				// } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
 				// action.show(true);
-				// // action.setVisibility(View.VISIBLE);
-				// break;
-				// case SCROLL_STATE_TOUCH_SCROLL:
-				// action.hide(true);
-				// // action.setVisibility(View.GONE);
-				// break;
 				// }
+				//
+				// mLastFirstVisibleItem = currentFirstVisibleItem;
+
+				switch (arg1) {
+				case SCROLL_STATE_FLING:
+					action.hide(true);
+					break;
+				case SCROLL_STATE_TOUCH_SCROLL:
+					action.show(true);
+					break;
+				}
 
 			}
 
