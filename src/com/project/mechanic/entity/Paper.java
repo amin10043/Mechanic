@@ -10,6 +10,15 @@ public class Paper {
 	int Submit;
 	int UserId;
 	String Date;
+	int seenBefore;
+
+	public int getSeenBefore() {
+		return seenBefore;
+	}
+
+	public void setSeenBefore(int seenBefore) {
+		this.seenBefore = seenBefore;
+	}
 
 	public int getId() {
 		return Id;
@@ -76,7 +85,8 @@ public class Paper {
 	}
 
 	public Paper(int id, String title, String context, int seen,
-			String serversate, int submit, int userId, String date) {
+			String serversate, int submit, int userId, String date,
+			int seenBefore) {
 		super();
 		Id = id;
 		Title = title;
@@ -86,6 +96,7 @@ public class Paper {
 		Submit = submit;
 		UserId = userId;
 		Date = date;
+		this.seenBefore = seenBefore;
 	}
 
 }

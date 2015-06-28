@@ -44,6 +44,7 @@ public class TitlepaperFragment extends Fragment {
 	public static final int DIALOG_FRAGMENT = 1;
 	Utility utility;
 	Users CurrentUser;
+	int mLastFirstVisibleItem = 0;
 	FloatingActionButton action;
 
 	@SuppressLint("InflateParams")
@@ -160,12 +161,16 @@ public class TitlepaperFragment extends Fragment {
 										subList.add(p);
 								}
 							}
-							// Toast.makeText(getActivity(), String.valueOf(i),
-							// Toast.LENGTH_SHORT).show();
-							// ListAdapter.notifyDataSetChanged();
 							new LoadMoreDataTask().execute();
 						}
 					});
+
+			if (getArguments() != null) {
+
+				mLastFirstVisibleItem = getArguments().getInt("Froum_List_Id");
+				lstNews.setSelection(mLastFirstVisibleItem);
+			}
+
 		}
 
 		lstNews.setOnScrollListener(new OnScrollListener() {
@@ -190,18 +195,6 @@ public class TitlepaperFragment extends Fragment {
 
 			}
 		});
-
-		/*
-		 * lst.setOnItemClickListener(new OnItemClickListener() {
-		 * 
-		 * @Override public void onItemClick(AdapterView<?> arg0, View arg1, int
-		 * arg2, long arg3) {
-		 * 
-		 * FragmentTransaction trans = getActivity()
-		 * .getSupportFragmentManager().beginTransaction();
-		 * trans.replace(R.id.content_frame, new PaperFragment());
-		 * trans.commit(); } });
-		 */
 		return view;
 	}
 

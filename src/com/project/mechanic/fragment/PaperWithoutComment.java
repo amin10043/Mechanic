@@ -124,36 +124,38 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 		final Paper p = adapter.getPaperItembyid(paperID);
 		Users u = adapter.getUserbyid(p.getUserId());
 
-		txtname.setText(u.getName());
+		if (u != null) {
+			txtname.setText(u.getName());
+			LinearLayout rl = (LinearLayout) view
+					.findViewById(R.id.profileLinearcommenterinContinue);
 
-		titletxt.setText(p.getTitle());
-		descriptiontxt.setText(p.getContext());
-		dateTopic.setText(util.getPersianDate(p.getDate()));
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+					rl.getLayoutParams());
 
-		LinearLayout rl = (LinearLayout) view
-				.findViewById(R.id.profileLinearcommenterinContinue);
+			lp.width = util.getScreenwidth() / 7;
+			lp.height = util.getScreenwidth() / 7;
+			lp.setMargins(5, 5, 5, 5);
 
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-				rl.getLayoutParams());
+			if (u.getImage() == null) {
+				profileImg.setImageResource(R.drawable.no_img_profile);
+				profileImg.setLayoutParams(lp);
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
-		lp.setMargins(5, 5, 5, 5);
+			} else {
+				byte[] bytepic = u.getImage();
 
-		if (u.getImage() == null) {
-			profileImg.setImageResource(R.drawable.no_img_profile);
-			profileImg.setLayoutParams(lp);
+				Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0,
+						bytepic.length);
 
-		} else {
-			byte[] bytepic = u.getImage();
+				profileImg.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
+				profileImg.setLayoutParams(lp);
+			}
 
-			Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0,
-					bytepic.length);
-
-			profileImg.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
-			profileImg.setLayoutParams(lp);
 		}
-
+		if (p != null) {
+			titletxt.setText(p.getTitle());
+			descriptiontxt.setText(p.getContext());
+			dateTopic.setText(util.getPersianDate(p.getDate()));
+		}
 		addComment.setOnClickListener(new View.OnClickListener() {
 
 			@Override
