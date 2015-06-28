@@ -85,7 +85,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 		final TextView txt1 = (TextView) convertView
 				.findViewById(R.id.rowtitlepaper);
-		TextView txt2 = (TextView) convertView
+		final TextView txt2 = (TextView) convertView
 				.findViewById(R.id.rowdescriptionpaper);
 		TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
 		TextView countcommentfroum = (TextView) convertView
@@ -116,7 +116,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 		}
 		txt1.setText(person1.getTitle());
-		txt2.setText(person1.getDescription() + "mmmmm");
+		// txt2.setText(person1.getDescription() + " ...");
 
 		txt2.setText(person1.getDescription());
 		if (x != null)
@@ -128,10 +128,10 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 		dateTopic.setText(util.getPersianDate(person1.getDate()));
 
-		String item = txt1.getText().toString();
+		String item = txt2.getText().toString();
 		int ItemId = 0;
 		for (Froum listItem : mylist) {
-			if (item.equals(listItem.getTitle())) {
+			if (item.equals(listItem.getDescription())) {
 				froumNumber = ItemId = listItem.getId();
 			}
 		}
@@ -187,10 +187,10 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 							Toast.LENGTH_SHORT).show();
 				} else {
 
-					String item = txt1.getText().toString();
+					String item = txt2.getText().toString();
 					int ItemId = 0;
 					for (Froum listItem : mylist) {
-						if (item.equals(listItem.getTitle())) {
+						if (item.equals(listItem.getDescription())) {
 							// check authentication and authorization
 							froumNumber = ItemId = listItem.getId();
 						}
@@ -214,10 +214,10 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			public void onClick(View v) {
 				LinearLayout parentlayout = (LinearLayout) v;
 
-				String item = txt1.getText().toString();
+				String item = txt2.getText().toString();
 				int ItemId = 0;
 				for (Froum listItem : mylist) {
-					if (item.equals(listItem.getTitle())) {
+					if (item.equals(listItem.getDescription())) {
 						// check authentication and authorization
 						ItemId = listItem.getId();
 					}
@@ -255,10 +255,10 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				LinearLayout parentlayout = (LinearLayout) v;
 
-				String item = txt1.getText().toString();
+				String item = txt2.getText().toString();
 				int ItemId = 0;
 				for (Froum listItem : mylist) {
-					if (item.equals(listItem.getTitle())) {
+					if (item.equals(listItem.getDescription())) {
 						// check authentication and authorization
 						ItemId = listItem.getId();
 					}

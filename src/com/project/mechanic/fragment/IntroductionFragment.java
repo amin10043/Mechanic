@@ -12,7 +12,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -79,7 +78,6 @@ public class IntroductionFragment extends Fragment {
 	byte[] headerbyte, profilebyte, footerbyte;
 
 	SharedPreferences sendDataID;
-	GradientDrawable gdDefault;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -188,9 +186,9 @@ public class IntroductionFragment extends Fragment {
 		} else {
 			if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
 					ObjectID))
-				AddLike.setBackgroundResource(R.drawable.like_froum);
+				AddLike.setBackgroundResource(R.drawable.like_on);
 			else
-				AddLike.setBackgroundResource(R.drawable.like_froum_off);
+				AddLike.setBackgroundResource(R.drawable.like_off);
 		}
 		adapter.close();
 
@@ -202,9 +200,6 @@ public class IntroductionFragment extends Fragment {
 		profileParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
 		profileImage.setLayoutParams(profileParams);
-		gdDefault = new GradientDrawable();
-		gdDefault.setCornerRadius(50);
-		profileImage.setBackgroundDrawable(gdDefault);
 
 		headerParams = new LinearLayout.LayoutParams(
 				headImageLinear.getLayoutParams());
@@ -376,13 +371,10 @@ public class IntroductionFragment extends Fragment {
 					bytepro.length);
 
 			profileImage.setImageBitmap(bmp2);
-			gdDefault.setCornerRadius(10);
-			profileImage.setBackgroundDrawable(gdDefault);
 
 		} else {
 			profileImage.setImageResource(R.drawable.no_img_profile);
-			gdDefault.setCornerRadius(10);
-			profileImage.setBackgroundDrawable(gdDefault);
+
 		}
 		// ///////////////////////
 		bytefoot = object.getImage3();
@@ -727,7 +719,7 @@ public class IntroductionFragment extends Fragment {
 				} else {
 					if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
 							ObjectID)) {
-						AddLike.setBackgroundResource(R.drawable.like_froum_off);
+						AddLike.setBackgroundResource(R.drawable.like_off);
 						adapter.deleteLikeIntroduction(CurrentUser.getId(),
 								ObjectID);
 						int countlike = adapter.LikeInObject_count(ObjectID);
@@ -735,7 +727,7 @@ public class IntroductionFragment extends Fragment {
 					} else {
 						adapter.insertLikeInObjectToDb(CurrentUser.getId(),
 								ObjectID, currentDate, 0);
-						AddLike.setBackgroundResource(R.drawable.like_froum);
+						AddLike.setBackgroundResource(R.drawable.like_on);
 
 						int countlike = adapter.LikeInObject_count(ObjectID);
 						CountLikeIntroduction.setText(String.valueOf(countlike));

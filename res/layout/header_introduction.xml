@@ -13,7 +13,7 @@
         <ImageView
             android:id="@+id/imgvadvertise_Object"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="10dp"
             android:scaleType="fitXY"
             android:src="@drawable/no_image_header" />
     </LinearLayout>
@@ -22,7 +22,7 @@
         android:id="@+id/linear_id_profile_introduction_page"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="25dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp" >
 
         <ImageView
@@ -54,28 +54,48 @@
             android:id="@+id/RelativeLayout11"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp" >
 
+            <!-- ////////////////////////////////////////////////////// -->
+
             <LinearLayout
-                android:id="@+id/AddcommentIntroductionLinear"
+                android:id="@+id/lll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:background="@drawable/ic_cmt_froum"
-                android:gravity="center" >
+                android:layout_toLeftOf="@+id/shareIntroduction"
+                android:orientation="horizontal" >
 
-                <TextView
-                    android:id="@+id/CountCommentIntroduction"
+                <RelativeLayout
+                    android:id="@+id/countLiketext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="n"
-                    android:textColor="@color/transparent" />
+                    android:background="@drawable/count_like" >
+
+                    <TextView
+                        android:id="@+id/countLikeIntroduction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="nlike"
+                        android:textColor="@color/transparent" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/AddLikeIntroductionLinear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/AddcommentIntroductionLinear"
+                    android:background="@drawable/like_on"
+                    android:gravity="center" >
+                </LinearLayout>
             </LinearLayout>
+
+            <!-- ////////////////////////////////////////////////////// -->
 
             <LinearLayout
                 android:id="@+id/AddLikeIntroductionLinear"
@@ -83,7 +103,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@+id/AddcommentIntroductionLinear"
                 android:background="@drawable/like_froum"
                 android:gravity="center" >
 
@@ -94,6 +113,26 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:text="nlike"
+                    android:textColor="@color/transparent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/showCountPost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/ic_post"
+                android:gravity="center_horizontal" >
+
+                <TextView
+                    android:id="@+id/countPost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="0"
                     android:textColor="@color/transparent" />
             </LinearLayout>
 
@@ -111,8 +150,25 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@+id/AddLikeIntroductionLinear"
+                android:layout_toLeftOf="@+id/countView"
                 android:background="@drawable/ic_share_froum" />
+
+            <RelativeLayout
+                android:id="@+id/countView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/showCountPost"
+                android:background="@drawable/ic_view" >
+
+                <TextView
+                    android:id="@+id/showCountView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="0"
+                    android:textColor="@color/transparent" />
+            </RelativeLayout>
         </RelativeLayout>
 
         <LinearLayout
@@ -125,8 +181,8 @@
                 android:id="@+id/LinearLayout14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp" >
 
                 <ImageButton
@@ -184,8 +240,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/brand_list_item_shape"
                 android:paddingBottom="5dp"
@@ -218,8 +274,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/brand_list_item_shape"
                 android:paddingBottom="5dp"
@@ -249,8 +305,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/brand_list_item_shape"
                 android:paddingBottom="5dp"
@@ -290,8 +346,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/brand_list_item_shape"
                 android:paddingBottom="5dp"
@@ -339,8 +395,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/brand_list_item_shape"
                 android:paddingBottom="5dp"
@@ -383,8 +439,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/brand_list_item_shape"
                 android:paddingBottom="5dp"
@@ -423,8 +479,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/brand_list_item_shape"
                 android:paddingBottom="5dp"
@@ -465,8 +521,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/brand_list_item_shape"
                 android:paddingBottom="5dp"
@@ -498,8 +554,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/brand_list_item_shape"
                 android:gravity="center" >
@@ -545,9 +601,14 @@
 
     <LinearLayout
         android:id="@+id/footerint"
+        style="@style/brandStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
+        android:background="@drawable/brand_list_item_shape"
+        android:gravity="right"
         android:orientation="vertical" >
 
         <ImageView
@@ -556,25 +617,6 @@
             android:layout_height="160dp"
             android:scaleType="fitXY"
             android:src="@drawable/gf" />
-    </LinearLayout>
-
-    <RelativeLayout
-        style="@style/brandStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/brand_list_item_shape"
-        android:orientation="horizontal" >
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/ic_blank" />
 
         <TextView
             android:id="@+id/txtDesc_Object"
@@ -582,8 +624,97 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_margin="10dp"
             android:text="توضیحات"
             android:textColor="@color/transparent" />
-    </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:gravity="left" >
+
+            <LinearLayout
+                android:id="@+id/cmffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
+                android:layout_marginRight="5dp"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:id="@+id/countComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/count_comment" >
+
+                    <TextView
+                        android:id="@+id/CountCommentIntroduction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="nlike"
+                        android:textColor="@color/transparent" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/AddcommentIntroductionLinear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/comment_fr"
+                    android:gravity="center" >
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
+                android:layout_toRightOf="@+id/cmffff"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:id="@+id/countLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/count_like" >
+
+                    <TextView
+                        android:id="@+id/countlllllll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="2dp"
+                        android:text="nlike"
+                        android:textColor="@color/transparent" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/likePostIntroduction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/like_on"
+                    android:gravity="center" >
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/sharePostIntroduction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/lll"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_share_froum" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
