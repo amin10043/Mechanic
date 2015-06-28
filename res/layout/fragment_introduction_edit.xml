@@ -88,6 +88,31 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/save" />
+
+                    <RelativeLayout
+                        android:id="@+id/linkPage"
+                        style="@style/brandStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@+id/btnsave"
+                        android:background="@drawable/brand_list_item_shape"
+                        android:gravity="right" >
+
+                        <TextView
+                            android:id="@+id/linkPage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="right"
+                            android:text="لینک صفحه : "
+                            android:textColor="@color/transparent" />
+                    </RelativeLayout>
                 </RelativeLayout>
 
                 <LinearLayout
@@ -178,6 +203,51 @@
                                 android:text="ویرایش لینک شبکه های اجتماعی"
                                 android:textColor="@color/transparent" />
                         </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="horizontal" >
+
+                            <RelativeLayout
+                                android:id="@+id/listAdmin"
+                                style="@style/brandStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/brand_list_item_shape" >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="10dp"
+                                    android:text="ویرایش مدیران صفحه"
+                                    android:textColor="@color/transparent" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/starsEdition"
+                                style="@style/brandStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:background="@drawable/brand_list_item_shape" >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="10dp"
+                                    android:text="فعال کردن ستاره های صفحه"
+                                    android:textColor="@color/transparent" />
+                            </RelativeLayout>
+                        </LinearLayout>
 
                         <RelativeLayout
                             android:id="@+id/Layoutlink1"

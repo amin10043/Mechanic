@@ -58,31 +58,13 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp" >
 
-            <LinearLayout
-                android:id="@+id/AddcommentIntroductionLinear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/showCountPost"
-                android:background="@drawable/ic_cmt_froum"
-                android:gravity="center" >
-
-                <TextView
-                    android:id="@+id/CountCommentIntroduction"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="n"
-                    android:textColor="@color/transparent" />
-            </LinearLayout>
-
             <!-- ////////////////////////////////////////////////////// -->
 
             <LinearLayout
                 android:id="@+id/lll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/AddcommentIntroductionLinear"
+                android:layout_toLeftOf="@+id/shareIntroduction"
                 android:orientation="horizontal" >
 
                 <RelativeLayout
@@ -168,8 +150,25 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@+id/lll"
+                android:layout_toLeftOf="@+id/countView"
                 android:background="@drawable/ic_share_froum" />
+
+            <RelativeLayout
+                android:id="@+id/countView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/showCountPost"
+                android:background="@drawable/ic_view" >
+
+                <TextView
+                    android:id="@+id/showCountView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="0"
+                    android:textColor="@color/transparent" />
+            </RelativeLayout>
         </RelativeLayout>
 
         <LinearLayout
@@ -628,6 +627,94 @@
             android:layout_margin="10dp"
             android:text="توضیحات"
             android:textColor="@color/transparent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:gravity="left" >
+
+            <LinearLayout
+                android:id="@+id/cmffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
+                android:layout_marginRight="5dp"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:id="@+id/countComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/count_comment" >
+
+                    <TextView
+                        android:id="@+id/CountCommentIntroduction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:text="nlike"
+                        android:textColor="@color/transparent" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/AddcommentIntroductionLinear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/comment_fr"
+                    android:gravity="center" >
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
+                android:layout_toRightOf="@+id/cmffff"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:id="@+id/countLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/count_like" >
+
+                    <TextView
+                        android:id="@+id/countlllllll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="2dp"
+                        android:text="nlike"
+                        android:textColor="@color/transparent" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/likePostIntroduction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/like_on"
+                    android:gravity="center" >
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/sharePostIntroduction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/lll"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_share_froum" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
