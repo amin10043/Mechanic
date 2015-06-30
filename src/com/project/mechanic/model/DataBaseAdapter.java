@@ -138,7 +138,7 @@ public class DataBaseAdapter {
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
 			"ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress",
-			"UImage", "UMobile", "Seen", "Submit" };
+			"UImage", "UMobile", "Seen", "Submit", "seenBefore" };
 
 	private String[] TicketType = { "ID", "desc" };
 
@@ -1384,7 +1384,8 @@ public class DataBaseAdapter {
 				cursor.getInt(11), cursor.getInt(12), cursor.getString(13),
 				cursor.getString(14), cursor.getString(15),
 				cursor.getString(16), cursor.getString(17), cursor.getBlob(18),
-				cursor.getString(19), cursor.getInt(20), cursor.getInt(21));
+				cursor.getString(19), cursor.getInt(20), cursor.getInt(21),
+				cursor.getInt(22));
 
 		return tempTicket;
 

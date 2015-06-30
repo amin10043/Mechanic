@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -68,6 +69,13 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 		txtName.setText(tempItem.getTitle());
 		txtDesc.setText(tempItem.getDesc());
 		byte[] bitmapbyte = tempItem.getImage();
+		if (tempItem.getSeenBefore() > 0) {
+			txtName.setTextColor(Color.GRAY);
+			txtDesc.setTextColor(Color.GRAY);
+			txtdate.setTextColor(Color.GRAY);
+
+		}
+
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 					bitmapbyte.length);
@@ -105,6 +113,10 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				trans.replace(R.id.content_frame, fragment);
 				trans.addToBackStack(null);
 				trans.commit();
+
+				adapter.open();
+				adapter.SetSeen("Ticket", id, "1");
+				adapter.close();
 
 			}
 		});
