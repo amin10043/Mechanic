@@ -25,6 +25,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -142,6 +143,8 @@ public class AnadFragment extends Fragment {
 				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,
 						AnadFragment.this, ticketTypeid, proID);
 				dialog.setTitle(R.string.txtanad);
+				dialog.getWindow().setSoftInputMode(
+						WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
 				dialog.show();
 			}

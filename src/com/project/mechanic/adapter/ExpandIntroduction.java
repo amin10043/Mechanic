@@ -120,7 +120,6 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 		nameReplyer.setText(y.getName());
 		adapter.close();
 
-		notifyDataSetChanged();
 		return convertView;
 	}
 
@@ -174,7 +173,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 
 		final TextView countLike = (TextView) convertView
 				.findViewById(R.id.countCommentFroum);
-		TextView countdisLike = (TextView) convertView
+		final TextView countdisLike = (TextView) convertView
 				.findViewById(R.id.countdislikecommentFroum);
 
 		TextView dateCommenter = (TextView) convertView
@@ -207,14 +206,14 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 			imglikeComment.setImageResource((R.drawable.positive_off));
 			imgdislikeComment.setImageResource((R.drawable.negative_off));
 		} else {
-			if (adapter.isUserLikedComment(Currentuser.getId(),
+			if (adapter.isUserLikedCommentBrandPage(Currentuser.getId(),
 					comment.getId(), 1)) {
 				imglikeComment.setImageResource((R.drawable.positive));
 			} else {
 				imglikeComment.setImageResource((R.drawable.positive_off));
 
 			}
-			if (adapter.isUserLikedComment(Currentuser.getId(),
+			if (adapter.isUserLikedCommentBrandPage(Currentuser.getId(),
 					comment.getId(), 0)) {
 				imgdislikeComment.setImageResource((R.drawable.negative));
 			} else {
@@ -271,81 +270,70 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 
 		// end set variable
 
-		notifyDataSetChanged();
+		imgdislikeComment.setOnClickListener(new View.OnClickListener() {
 
-		// imgdislikeComment.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View t) {
-		//
-		// adapter.open();
-		// if (Currentuser == null) {
-		// Toast.makeText(context, "ابتدا باید وارد شوید",
-		// Toast.LENGTH_SHORT).show();
-		// return;
-		// } else {
-		// int intCureentDisLike = Integer.valueOf(comment.getId());
-		// int newCountDisLike = intCureentDisLike + 1;
-		// String stringNewcountDisLike = String
-		// .valueOf(newCountDisLike);
-		//
-		// //
-		// // // peyda kardan id comment sabt shode
-		//
-		// RelativeLayout parentlayout = (RelativeLayout) t
-		// .getParent().getParent().getParent();
-		// View viewMaincmt = parentlayout.findViewById(R.id.peygham);
-		// TextView txtMaincmt = (TextView) viewMaincmt;
-		//
-		// View viewnumDislike = parentlayout
-		// .findViewById(R.id.countdislikecommentFroum);
-		// TextView txtdislike = (TextView) viewnumDislike;
-		//
-		// int id = 0;
-		//
-		// for (CommentInObject listItem : CommentList) {
-		// if (txtMaincmt.getText().toString().equals(listItem)) {
-		//
-		// id = listItem.getId();
-		//
-		// }
-		// }
-		//
-		// // send to database
-		//
-		// if (adapter.isUserLikedComment(Currentuser.getId(), id, 0)) {
-		//
-		// int b = intCureentDisLike - 1;
-		// String c = String.valueOf(b);
-		// adapter.deleteLikeFromCommentInFroum(id,
-		// Currentuser.getId(), 0);
-		//
-		// adapter.insertCmtDisLikebyid(id, c, Currentuser.getId());
-		// f.updateList();
-		//
-		// txtdislike.setText(comment.getId());
-		// notifyDataSetChanged();
-		// imgdislikeComment
-		// .setImageResource((R.drawable.negative));
-		//
-		// } else {
-		// adapter.insertCmtDisLikebyid(id, stringNewcountDisLike,
-		// Currentuser.getId());
-		// adapter.insertLikeInCommentToDb(Currentuser.getId(), 0,
-		// id);
-		// f.updateList();
-		//
-		// txtdislike.setText(comment.getId());
-		// imgdislikeComment
-		// .setImageResource((R.drawable.negative_off));
-		// notifyDataSetChanged();
-		//
-		// }
-		// adapter.close();
-		// }
-		// }
-		// });
-		//
+			@Override
+			public void onClick(View v) {
+				// khandan meghdar ghabli tedad like ha
+				// tabdil be int
+				// ezafe kardan 1 vahed be meghdar ghabli
+				// tabdil be String
+				adapter.open();
+
+				if (Currentuser == null) {
+					Toast.makeText(context, "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+					return;
+				} else {
+
+					RelativeLayout parentlayout = (RelativeLayout) v
+							.getParent().getParent();
+					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
+					TextView txtMaincmt = (TextView) viewMaincmt;
+
+					View viewnumlike = parentlayout
+							.findViewById(R.id.countCommentFroum);
+					TextView txtlike = (TextView) viewnumlike;
+
+					int CommentId = 0;
+
+					for (CommentInObject listItem : CommentList) {
+						if (txtMaincmt.getText().toString()
+								.equals(listItem.getDescription())) {
+
+							CommentId = listItem.getId();
+
+						}
+					}
+
+					// send to database
+
+					if (adapter.isUserLikedCommentBrandPage(
+							Currentuser.getId(), CommentId, 0)) {
+
+						adapter.deleteLikeCommentBrandPage(CommentId,
+								Currentuser.getId(), 0);
+						countdisLike.setText(String.valueOf(adapter
+								.NumberOfLikeOrDisLikeBrandPage(CommentId, 0)));
+
+						imgdislikeComment
+								.setImageResource(R.drawable.negative_off);
+						Toast.makeText(context, "دیس لایک پاک شد", 0).show();
+
+					} else {
+
+						adapter.InsertLikeCommentFromObject(
+								Currentuser.getId(), 0, CommentId);
+						countdisLike.setText(String.valueOf(adapter
+								.NumberOfLikeOrDisLikeBrandPage(CommentId, 0)));
+						imgdislikeComment.setImageResource(R.drawable.negative);
+						Toast.makeText(context, "دیس لایک اضافه شد", 0).show();
+
+					}
+
+				}
+			}
+		});
 		imglikeComment.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -362,14 +350,8 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 					return;
 				} else {
 
-					int intCureentLike = Integer.valueOf(comment.getId());
-					int newCountLike = intCureentLike + 1;
-					String stringNewcountLike = String.valueOf(newCountLike);
-
-					// // peyda kardan id comment sabt shode
-
 					RelativeLayout parentlayout = (RelativeLayout) v
-							.getParent().getParent().getParent();
+							.getParent().getParent();
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
 					TextView txtMaincmt = (TextView) viewMaincmt;
 
@@ -377,55 +359,39 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 							.findViewById(R.id.countCommentFroum);
 					TextView txtlike = (TextView) viewnumlike;
 
-					int id = 0;
+					int CommentId = 0;
 
 					for (CommentInObject listItem : CommentList) {
-						if (txtMaincmt.getText().toString().equals(listItem)) {
+						if (txtMaincmt.getText().toString()
+								.equals(listItem.getDescription())) {
 
-							id = listItem.getId();
+							CommentId = listItem.getId();
 
 						}
 					}
 
 					// send to database
 
-					if (adapter.isUserLikedComment(Currentuser.getId(), id, 1)) {
+					if (adapter.isUserLikedCommentBrandPage(
+							Currentuser.getId(), CommentId, 1)) {
 
-						adapter.deleteLikeFromCommentInFroum(id,
+						adapter.deleteLikeCommentBrandPage(CommentId,
 								Currentuser.getId(), 1);
-
-						int b = intCureentLike - 1;
-						String c = String.valueOf(b);
-
-						adapter.insertCmtLikebyid(id, c, Currentuser.getId());
-						f.updateList();
-
-						txtlike.setText(String.valueOf(adapter
-								.getCountofCommentinFroumObject(ObjectID, id)));
-
-						adapter.close();
-						notifyDataSetChanged();
+						countLike.setText(String.valueOf(adapter
+								.NumberOfLikeOrDisLikeBrandPage(CommentId, 1)));
 
 						imglikeComment
-								.setBackgroundResource(R.drawable.positive_off);
+								.setImageResource(R.drawable.positive_off);
+						Toast.makeText(context, "لایک پاک شد", 0).show();
 
 					} else {
 
-						adapter.insertCmtLikebyid(id, stringNewcountLike,
-								Currentuser.getId());
-						// adapter.insertLikeInCommentToDb(Currentuser.getId(),
-						// 1,
-						// id);
-
-						f.updateList();
-
-						txtlike.setText(String.valueOf(adapter
-								.getCountofCommentinFroumObject(ObjectID, id)));
-
-						adapter.close();
-						notifyDataSetChanged();
-						imglikeComment
-								.setBackgroundResource(R.drawable.positive);
+						adapter.InsertLikeCommentFromObject(
+								Currentuser.getId(), 1, CommentId);
+						countLike.setText(String.valueOf(adapter
+								.NumberOfLikeOrDisLikeBrandPage(CommentId, 1)));
+						imglikeComment.setImageResource(R.drawable.positive);
+						Toast.makeText(context, "لایک اضافه شد", 0).show();
 
 					}
 
@@ -465,7 +431,6 @@ public class ExpandIntroduction extends BaseExpandableListAdapter {
 							commentid);
 					dialog.show();
 
-					notifyDataSetChanged();
 					adapter.close();
 				}
 			}

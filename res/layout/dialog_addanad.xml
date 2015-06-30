@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/List_Item_Style"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/shiri"
+        android:background="@drawable/list_item"
         android:baselineAligned="true"
         android:orientation="vertical"
         android:weightSum="9" >
@@ -55,7 +56,7 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <EditText
+            <TextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -63,51 +64,121 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="نام و نام خانوادگی"
-                android:lines="1" />
+                android:lines="1"
+                android:text="mmmmmmmm"
+                android:textColor="@color/transparent"
+                android:textSize="15dp" />
 
-            <EditText
-                android:id="@+id/email"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
-                android:ems="10"
-                android:hint="ایمیل" />
+                android:gravity="right"
+                android:orientation="horizontal" >
 
-            <EditText
-                android:id="@+id/phone"
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/lableEmail"
+                    android:ems="10"
+                    android:hint="ایمیل" />
+
+                <ImageView
+                    android:id="@+id/lableEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/email" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
-                android:ems="10"
-                android:hint="05100000000"
-                android:inputType="number" />
+                android:gravity="right"
+                android:orientation="horizontal" >
 
-            <EditText
-                android:id="@+id/mobile"
+                <EditText
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/lablephone"
+                    android:ems="10"
+                    android:hint="تلفن"
+                    android:inputType="number" />
+
+                <ImageView
+                    android:id="@+id/lablephone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/phone" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
-                android:ems="10"
-                android:hint="09150000000"
-                android:inputType="number" />
+                android:gravity="right"
+                android:orientation="horizontal" >
 
-            <EditText
-                android:id="@+id/fax"
+                <ImageView
+                    android:id="@+id/lableMobile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/cphone" />
+
+                <EditText
+                    android:id="@+id/mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/lableMobile"
+                    android:ems="10"
+                    android:hint="موبایل"
+                    android:inputType="number" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
-                android:ems="10"
-                android:hint="051000000"
-                android:inputType="number" />
+                android:gravity="right"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/lablefax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/fax" />
+
+                <EditText
+                    android:id="@+id/fax"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/lablefax"
+                    android:ems="10"
+                    android:hint="دور نگار"
+                    android:inputType="number" />
+            </RelativeLayout>
         </LinearLayout>
 
         <RelativeLayout
@@ -123,6 +194,32 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="10dp"
                 android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="روز"
+                        android:textColor="@color/transparent" />
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:hint="تعداد "
+                        android:inputType="number" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="اعتبار آگهی"
+                        android:textColor="@color/transparent" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/dialog_img2"
@@ -146,7 +243,8 @@
                     android:layout_width="130dp"
                     android:layout_height="60dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@drawable/i13" />
+                    android:background="@drawable/i13"
+                    android:scaleType="fitXY" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

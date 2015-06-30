@@ -82,6 +82,7 @@ public class DataBaseAdapter {
 	private String TableCommentInPaper = "CmtInPaper";
 
 	private String TableObjectBrandType = "ObjectBrandType";
+	private String TableLikeInCommentObject = "LikeInCommentObject";
 
 	private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
@@ -151,6 +152,9 @@ public class DataBaseAdapter {
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url", "ServerDate",
 			"HtmlString " };
 	private String[] ObjectBrandType = { "ID", "Description" };
+
+	private String[] LikeInCommentObject = { "Id", "CommentId", "UserId",
+			"IsLike" };
 
 	private final Context mContext;
 	private SQLiteDatabase mDb;
@@ -2444,7 +2448,7 @@ public class DataBaseAdapter {
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
 			String LinkTweitter, int userId, int parentId, int MainObjectId,
-			int ObjectId) {
+			int ObjectId, int ObjectBrandTypeId) {
 
 		ContentValues cv = new ContentValues();
 
@@ -2490,6 +2494,7 @@ public class DataBaseAdapter {
 			cv.put("Twitter", LinkTweitter);
 
 		cv.put("userId", userId);
+		cv.put("ObjectBrandTypeId", ObjectBrandTypeId);
 
 		if (MainObjectId == 1 || parentId != -1)
 			cv.put("ParentId", parentId);
@@ -2979,7 +2984,8 @@ public class DataBaseAdapter {
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
-			String LinkTweitter, int userId, int MainObjectId) {
+			String LinkTweitter, int userId, int MainObjectId,
+			int ObjectBrandTypeId) {
 
 		ContentValues cv = new ContentValues();
 
@@ -3032,6 +3038,8 @@ public class DataBaseAdapter {
 		cv.put("IsActive", 0);
 		cv.put("rate", 0);
 		cv.put("Seen", 1);
+
+		cv.put("ObjectBrandTypeId", ObjectBrandTypeId);
 
 		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT)
 				.show();
@@ -3160,6 +3168,54 @@ public class DataBaseAdapter {
 
 		return result;
 
+	}
+
+	public void InsertLikeCommentFromObject(int UserId, int ISLike,
+			int CommentId) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("UserId", UserId);
+		uc.put("CommentId", CommentId);
+		uc.put("IsLike", ISLike);
+
+		long res = mDb.insert(TableLikeInCommentObject, null, uc);
+		long res2 = res;
+	}
+
+	public boolean isUserLikedCommentBrandPage(int userId, int CommentId,
+			int isLike) {
+
+		Cursor curs = mDb
+				.rawQuery("SELECT COUNT(*) AS NUM FROM "
+						+ TableLikeInCommentObject + " WHERE UserId= " + userId
+						+ " AND CommentId=" + CommentId + " AND IsLike="
+						+ isLike, null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
+	public void deleteLikeCommentBrandPage(int CommentID, int userID, int isLike) {
+		String[] t = { String.valueOf(CommentID), String.valueOf(userID),
+				String.valueOf(isLike) };
+		mDb.delete(TableLikeInCommentObject,
+				"CommentId=? and UserId =? and IsLike =?", t);
+	}
+
+	public Integer NumberOfLikeOrDisLikeBrandPage(int commentID, int isLike) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInCommentObject + " WHERE CommentID=" + commentID
+				+ " AND isLike = " + isLike, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
 	}
 
 }
