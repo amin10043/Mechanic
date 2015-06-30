@@ -90,9 +90,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 					dialog.show();
 
 					realize.edit().putInt("main_Id", 1).commit();
-
 				}
-
 			}
 		});
 

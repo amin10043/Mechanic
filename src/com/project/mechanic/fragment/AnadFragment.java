@@ -112,6 +112,12 @@ public class AnadFragment extends Fragment {
 			proID = Integer.valueOf(getArguments().getString("ProID"));
 		}
 
+		// if (getArguments() != null) {
+		//
+		// mLastFirstVisibleItem = getArguments().getInt("Froum_List_Id");
+		// lst.setSelection(mLastFirstVisibleItem);
+		// }
+
 		dbAdapter.open();
 
 		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
@@ -123,11 +129,13 @@ public class AnadFragment extends Fragment {
 			if (mylist.size() < j) {
 				j = mylist.size();
 			}
-			List<Ticket> tmpList = mylist.subList(i, j);
-			subList = new ArrayList<Ticket>();
-			for (Ticket p : tmpList) {
-				if (!subList.contains(p))
-					subList.add(p);
+			if (i <= j) {
+				List<Ticket> tmpList = mylist.subList(i, j);
+				subList = new ArrayList<Ticket>();
+				for (Ticket p : tmpList) {
+					if (!subList.contains(p))
+						subList.add(p);
+				}
 			}
 		}
 
