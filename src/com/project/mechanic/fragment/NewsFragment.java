@@ -19,14 +19,16 @@ import com.project.mechanic.model.DataBaseAdapter;
 public class NewsFragment extends Fragment {
 
 	DataBaseAdapter dbAdapter;
-	int id = 166;
+	int id = 5;
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		id = Integer.valueOf(getArguments().getString("Id"));
+		if (getArguments() != null && getArguments().getString("Id") != null) {
+			id = Integer.valueOf(getArguments().getString("Id"));
+		}
 
 		// SharedPreferences getData = getActivity().getSharedPreferences("Id",
 		// Context.MODE_PRIVATE);

@@ -126,7 +126,7 @@ public class DataBaseAdapter {
 	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	private String[] ObjectType = { "ID", "Name" };
 	private String[] Paper = { "ID", "Title", "Context", "Seen", "ServerDate",
-			"Submit", "UserId", "Date" };
+			"Submit", "UserId", "Date", "SeenBefore" };
 	private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name", "Count" };
 	private String[] Settings = { "Id", "ServerDate_Users", "ServerDate_Paper",
@@ -1344,7 +1344,8 @@ public class DataBaseAdapter {
 	private Paper CursorToPaper(Cursor cursor) {
 		Paper tempPaper = new Paper(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getInt(3), cursor.getString(4),
-				cursor.getInt(5), cursor.getInt(6), cursor.getString(7));
+				cursor.getInt(5), cursor.getInt(6), cursor.getString(7),
+				cursor.getInt(8));
 		return tempPaper;
 
 	}
@@ -1500,7 +1501,8 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			tempObject = new Paper(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getInt(3), cursor.getString(4),
-					cursor.getInt(5), cursor.getInt(6), cursor.getString(7));
+					cursor.getInt(5), cursor.getInt(6), cursor.getString(7),
+					cursor.getInt(8));
 			result.add(tempObject);
 		}
 

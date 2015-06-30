@@ -51,10 +51,13 @@ import com.project.mechanic.fragment.MainBrandFragment;
 import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.fragment.ObjectFragment;
+import com.project.mechanic.fragment.PaperFragment;
+import com.project.mechanic.fragment.PaperWithoutComment;
 import com.project.mechanic.fragment.Province2Fragment;
 import com.project.mechanic.fragment.Province3Fragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.fragment.SearchFragment;
+import com.project.mechanic.fragment.TitlepaperFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.PeriodicTask;
 import com.project.mechanic.utility.Utility;
@@ -481,6 +484,26 @@ public class MainActivity extends FragmentActivity {
 				trans.setCustomAnimations(R.anim.push_out_right,
 						R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			} else if (f instanceof NewsFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new MainFragment());
+				trans.commit();
+			} else if (f instanceof TitlepaperFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new NewsFragment());
+				trans.commit();
+			} else if (f instanceof PaperWithoutComment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new TitlepaperFragment());
+				trans.commit();
+			} else if (f instanceof PaperFragment) {
+				trans.setCustomAnimations(R.anim.push_out_right,
+						R.anim.pull_in_left);
+				trans.replace(R.id.content_frame, new TitlepaperFragment());
 				trans.commit();
 			} else {
 				super.onBackPressed();

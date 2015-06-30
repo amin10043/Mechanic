@@ -7,8 +7,10 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,7 +78,8 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 	@SuppressLint("ViewHolder")
 	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView,
+			final ViewGroup parent) {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -108,6 +112,14 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 		currentUser = util.getCurrentUser();
 
 		Paper person1 = mylist.get(position);
+
+		if (person1.getSeenBefore() > 0) {
+			txt1.setTextColor(Color.GRAY);
+			txt2.setTextColor(Color.GRAY);
+			txt3.setTextColor(Color.GRAY);
+			DateView.setTextColor(Color.GRAY);
+
+		}
 
 		Users x = adapter.getUserbyid(person1.getUserId());
 
@@ -173,6 +185,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				.setText(adapter.LikeInPaper_count(person1.getId()).toString());
 		adapter.close();
 
+		final SharedPreferences abc = context.getSharedPreferences("Id", 0);
 		likePaper.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -215,9 +228,6 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 						id = listItem.getId();
 					}
 				}
-				Toast.makeText(context, "send = " + id, Toast.LENGTH_SHORT)
-						.show();
-
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				PaperWithoutComment fragment = new PaperWithoutComment();
@@ -225,14 +235,18 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				bundle.putString("Id", String.valueOf(id));
 				fragment.setArguments(bundle);
 
-				// DialogcmtInPaper dialog = new DialogcmtInPaper(null, context,
-				// R.layout.dialog_addcomment, id, 2);
-				// Bundle bundle2 = new Bundle();
-				// bundle.putString("Id", String.valueOf(id));
-				// fragment.setArguments(bundle);
+				abc.edit()
+						.putInt("Froum_List_Id",
+								((ListView) parent).getFirstVisiblePosition())
+						.commit();
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
+
+				adapter.open();
+				adapter.SetSeen("Paper", id, "1");
+				adapter.close();
+
 			}
 
 		});
