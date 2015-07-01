@@ -49,6 +49,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 	DialogcmtInPaper dialog;
 
 	ListView lst;
+	int userId;
 	ArrayList<CommentInPaper> mylist;
 	PaperListAdapter PaperListadapter;
 	int like = 0;
@@ -123,8 +124,9 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 		mylist = adapter.getCommentInPaperbyPaperid(paperID);
 		final Paper p = adapter.getPaperItembyid(paperID);
 		Users u = adapter.getUserbyid(p.getUserId());
-
+        
 		if (u != null) {
+			userId=u.getId();
 			txtname.setText(u.getName());
 			LinearLayout rl = (LinearLayout) view
 					.findViewById(R.id.profileLinearcommenterinContinue);
@@ -160,6 +162,14 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 			
 			@Override
 			public void onClick(View arg0) {
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
 				Toast.makeText(getActivity(), "PaperWithoutComment",
 						Toast.LENGTH_SHORT).show();
 				

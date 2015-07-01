@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
@@ -46,6 +47,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 	Settings setting;
 	String serverDate;
 	ServerDate date;
+	int userId;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,13 +57,31 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		utile1 = new Utility(getActivity());
 		service = new ServiceComm(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
-
+		
+		if (getArguments().getInt("0") == 0){
+		Bundle bundle = this.getArguments();
+		userId = bundle.getInt("0", 0);
+		}
+		
+		 if (getArguments().getInt("userId") != 0){
+			Bundle bundle = this.getArguments();
+		userId = bundle.getInt("userId", 0);}
+	    if(userId!=0)	{
+		
+		  Toast.makeText(getActivity(),""+userId,Toast.LENGTH_SHORT).show();
+		   dbAdapter.open();
+		   u= dbAdapter.getUserById(userId);
+		   dbAdapter.close();
+		
+		
+    	 }else{
 		u = utile1.getCurrentUser();
+    	 }
 		if (u == null) {
 			// خطا . نباید این اتفاق بیفتد!
 			return view;
 		}
-
+    	
 		date = new ServerDate(getActivity());
 		date.delegate = this;
 		date.execute("");

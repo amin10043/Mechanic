@@ -6,6 +6,8 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +17,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.LikeInFroum;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DialogAnad;
+import com.project.mechanic.fragment.DialogPersonLikedFroum;
+import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -27,6 +33,7 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 	DataBaseAdapter adapter;
 	Utility util;
 	Users user;
+	int userId;
 
 	public PersonLikedAdapter(Context context, int resource,
 			ArrayList<LikeInFroum> objects) {
@@ -98,8 +105,18 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 				adapter.open();
 				 user = adapter.getUserById(likes.getUserid());
 				adapter.close();
+				userId= user.getId();
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
 				Toast.makeText(context, user.getName(),
 						Toast.LENGTH_SHORT).show();
+			
 				
 			}
 		});
