@@ -414,8 +414,11 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertLikeInObjectToDb(int UserId, int PaperId, String Date,
-			int CommentId) {
+	public void insertLikeInObjectToDb(int id, int UserId, int PaperId,
+			String Date, int CommentId) {
+
+		// if CommentId==0 >>>>>> like page sabt shode
+		// if CommentId==1 >>>>>> like post sabt shode
 
 		ContentValues uc = new ContentValues();
 
@@ -424,6 +427,7 @@ public class DataBaseAdapter {
 		uc.put("CommentId", CommentId);
 		uc.put("Date", Date);
 		uc.put("Seen", 1);
+		uc.put("Id", id);
 
 		long res = mDb.insert(TableLikeInObject, null, uc);
 		long res2 = res;
@@ -530,8 +534,8 @@ public class DataBaseAdapter {
 		mDb.insert(TableCommentInPaper, null, cv);
 	}
 
-	public void insertCommentObjecttoDb(String description, int Objectid,
-			int userid, String datetime, int commentid) {
+	public void insertCommentObjecttoDb(int id, String description,
+			int Objectid, int userid, String datetime, int commentid) {
 
 		ContentValues cv = new ContentValues();
 
@@ -543,6 +547,7 @@ public class DataBaseAdapter {
 		cv.put("Seen", 1);
 		cv.put("NumofLike", 0);
 		cv.put("NumofDisLike", 0);
+		cv.put("Id", id);
 
 		mDb.insert(TableCommentInObject, null, cv);
 	}
@@ -1537,10 +1542,11 @@ public class DataBaseAdapter {
 
 	}
 
-	public Integer LikeInObject_count(int ObjectId) {
+	public Integer LikeInObject_count(int ObjectId, int CommentId) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
-				+ TableLikeInObject + " WHERE PaperId= " + ObjectId, null);
+				+ TableLikeInObject + " WHERE PaperId= " + ObjectId
+				+ " And CommentId = " + CommentId, null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -2836,12 +2842,14 @@ public class DataBaseAdapter {
 
 	}
 
-	public boolean isUserLikeIntroductionPage(int userId, int ObjectId) {
+	public boolean isUserLikeIntroductionPage(int userId, int ObjectId,
+			int CommentId) {
 
 		Cursor curs = mDb.rawQuery(
 				"SELECT COUNT(*) AS NUM FROM " + TableLikeInObject
 						+ " WHERE UserId= " + String.valueOf(userId)
-						+ " AND PaperId= " + String.valueOf(ObjectId), null);
+						+ " AND PaperId= " + String.valueOf(ObjectId)
+						+ " AND CommentId= " + String.valueOf(CommentId), null);
 		if (curs.moveToNext()) {
 			int number = curs.getInt(0);
 			if (number > 0)
@@ -2850,9 +2858,11 @@ public class DataBaseAdapter {
 		return false;
 	}
 
-	public void deleteLikeIntroduction(int userID, int ObjectId) {
-		String[] t = { String.valueOf(userID), String.valueOf(ObjectId) };
-		mDb.delete(TableLikeInObject, "UserId =? AND PaperId=?", t);
+	public void deleteLikeIntroduction(int userID, int ObjectId, int CommentId) {
+		String[] t = { String.valueOf(userID), String.valueOf(ObjectId),
+				String.valueOf(CommentId) };
+		mDb.delete(TableLikeInObject,
+				"UserId =? AND PaperId=? AND CommentId=?", t);
 	}
 
 	public ArrayList<CommentInObject> getReplyCommentIntroduction(int ObjectId,
@@ -3173,10 +3183,11 @@ public class DataBaseAdapter {
 
 	}
 
-	public void InsertLikeCommentFromObject(int UserId, int ISLike,
+	public void InsertLikeCommentFromObject(int id, int UserId, int ISLike,
 			int CommentId) {
 
 		ContentValues uc = new ContentValues();
+		uc.put("Id", id);
 
 		uc.put("UserId", UserId);
 		uc.put("CommentId", CommentId);
@@ -3219,6 +3230,38 @@ public class DataBaseAdapter {
 			res = cu.getInt(0);
 		}
 		return res;
+	}
+
+	public Integer getCountOfReplyBrandPage(int ObjectId, int commentID) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInObject + " WHERE ObjectId=" + ObjectId
+				+ " AND CommentID= " + commentID, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public ArrayList<LikeInObject> getAllLikeFromObject(int ObjectId,
+			int CommentId) {
+		ArrayList<LikeInObject> result = new ArrayList<LikeInObject>();
+		Cursor cursor = mDb.rawQuery(
+				"select * from LikeInObject where PaperId =  " + ObjectId
+						+ " And CommentId = " + CommentId, null);
+
+		LikeInObject like;
+		while (cursor.moveToNext()) {
+			like = new LikeInObject(cursor.getInt(0), cursor.getInt(1),
+					cursor.getInt(2), cursor.getString(3), cursor.getInt(4),
+					cursor.getInt(5));
+
+			result.add(like);
+		}
+
+		return result;
+
 	}
 
 }

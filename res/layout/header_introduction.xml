@@ -98,25 +98,6 @@
             <!-- ////////////////////////////////////////////////////// -->
 
             <LinearLayout
-                android:id="@+id/AddLikeIntroductionLinear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/like_froum"
-                android:gravity="center" >
-
-                <TextView
-                    android:id="@+id/countLikeIntroduction"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="nlike"
-                    android:textColor="@color/transparent" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/showCountPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -135,14 +116,6 @@
                     android:text="0"
                     android:textColor="@color/transparent" />
             </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/ImgbtnEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="2dp"
-                android:background="@drawable/ic_edit" />
 
             <ImageButton
                 android:id="@+id/shareIntroduction"
@@ -169,6 +142,14 @@
                     android:text="0"
                     android:textColor="@color/transparent" />
             </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/ImgbtnEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/ic_edit" />
         </RelativeLayout>
 
         <LinearLayout
@@ -678,7 +659,7 @@
                 android:orientation="horizontal" >
 
                 <RelativeLayout
-                    android:id="@+id/countLike"
+                    android:id="@+id/countLikeqqz"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

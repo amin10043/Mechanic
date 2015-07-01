@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/txtsize10"
             android:layout_weight="1"
-            android:background="@drawable/headershape"
+            android:background="#568bdd"
             android:orientation="horizontal" >
 
             <TextView
@@ -214,10 +214,10 @@
             <Button
                 android:id="@+id/btncancle2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginRight="@dimen/txtsize5"
                 android:layout_weight="1"
-                android:background="@drawable/buttonshape"
+                android:background="#568bdd"
                 android:enabled="true"
                 android:text="انصراف"
                 android:textColor="@color/white" />
@@ -225,9 +225,9 @@
             <Button
                 android:id="@+id/btnreg2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@drawable/buttonshape"
+                android:background="#568bdd"
                 android:enabled="true"
                 android:text="ثبت نام"
                 android:textColor="@color/white" />
