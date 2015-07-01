@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInPaper;
@@ -92,7 +93,15 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 			profilepic.setLayoutParams(lp);
 		}
 		adapter.close();
-
+		profilepic.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Toast.makeText(context, "PaperListAdapter",
+						Toast.LENGTH_SHORT).show();
+				
+			}
+		});
 		txtcmt.setText(comment.getDescription());
 		txtuser.setText(user.getName());
 		txtdate.setText(util.getPersianDate(comment.getDatetime()));

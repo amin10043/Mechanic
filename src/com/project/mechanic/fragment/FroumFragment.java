@@ -172,7 +172,15 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
 		countLike.setText(adapter.LikeInFroum_count(froumid).toString());
 		dateTopic.setText(util.getPersianDate(topics.getDate()));
-
+		profileImg.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Toast.makeText(getActivity(),"FroumFragment",
+						Toast.LENGTH_SHORT).show();
+				
+			}
+		});
 		addComment.setOnClickListener(new View.OnClickListener() {
 
 			@Override

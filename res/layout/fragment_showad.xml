@@ -66,11 +66,33 @@
                     android:background="@drawable/ic_edit"
                     android:visibility="visible" />
 
-                <ImageButton
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_anad_credit"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/textDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="15dp"
+                        android:text="000"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/transparent" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_anad_credit" />
+                    android:layout_marginLeft="5dp"
+                    android:text="1"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/transparent" />
             </LinearLayout>
 
             <RelativeLayout

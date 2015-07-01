@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.LikeInPaper;
@@ -37,7 +38,7 @@ public class PersonLikedPaperAdapter extends ArrayAdapter<LikeInPaper> {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		if (convertView == null) {
 			LayoutInflater myInflater = (LayoutInflater) context
@@ -88,6 +89,15 @@ public class PersonLikedPaperAdapter extends ArrayAdapter<LikeInPaper> {
 			peronImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
 			peronImage.setLayoutParams(lp);
 		}
+		peronImage.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Toast.makeText(context, "PersonLikedPaperAdapter",
+						Toast.LENGTH_SHORT).show();
+				
+			}
+		});
 
 		return convertView;
 	}

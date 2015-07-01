@@ -154,7 +154,16 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 			txt3.setText(x.getName());
 		}
 		adapter.close();
-
+		iconProile.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Toast.makeText(context,
+						"PapertitleListAdapter",
+						Toast.LENGTH_SHORT).show();
+				
+			}
+		});
 		txt1.setText(person1.getTitle());
 		txt2.setText(person1.getContext());
 

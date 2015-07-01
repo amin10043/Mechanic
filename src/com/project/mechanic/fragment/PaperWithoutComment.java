@@ -156,6 +156,15 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 			descriptiontxt.setText(p.getContext());
 			dateTopic.setText(util.getPersianDate(p.getDate()));
 		}
+		profileImg.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Toast.makeText(getActivity(), "PaperWithoutComment",
+						Toast.LENGTH_SHORT).show();
+				
+			}
+		});
 		addComment.setOnClickListener(new View.OnClickListener() {
 
 			@Override

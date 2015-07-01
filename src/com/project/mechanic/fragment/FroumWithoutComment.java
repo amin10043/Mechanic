@@ -148,7 +148,16 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 				profileImg.setLayoutParams(lp);
 			}
 		}
-
+		profileImg.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Toast.makeText(getActivity(),
+						"FroumWithoutComment",
+						Toast.LENGTH_SHORT).show();
+				
+			}
+		});
 		titletxt.setText(topics.getTitle());
 		descriptiontxt.setText(topics.getDescription());
 		countComment.setText(adapter.CommentInFroum_count(idFroum).toString());

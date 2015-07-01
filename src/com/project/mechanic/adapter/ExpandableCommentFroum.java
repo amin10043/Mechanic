@@ -129,7 +129,14 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 			ReplyerPic.setLayoutParams(lp);
 
 		}
-
+		ReplyerPic.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Toast.makeText(context,"ExpandableCommentFroum",Toast.LENGTH_LONG).show();
+				
+			}
+		});
 		mainReply.setText(reply.getDesk());
 		dateReply.setText(util.getPersianDate(reply.getDatetime()));
 		nameReplyer.setText(y.getName());
@@ -267,6 +274,15 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
 		profileImage.setLayoutParams(lp);
+		profileImage.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Toast.makeText(context, "ExpandableCommentFroum",
+						Toast.LENGTH_SHORT).show();
+				
+			}
+		});
 
 		// end... this code for set image of profile
 		int c = 0;

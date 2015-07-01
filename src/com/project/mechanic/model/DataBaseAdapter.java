@@ -139,7 +139,7 @@ public class DataBaseAdapter {
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
 			"ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress",
-			"UImage", "UMobile", "Seen", "Submit", "seenBefore" };
+			"UImage", "UMobile", "Seen", "Submit", "seenBefore","Day" };
 
 	private String[] TicketType = { "ID", "desc" };
 
@@ -327,7 +327,7 @@ public class DataBaseAdapter {
 
 	public void UpdateTicketToDb(int id, String title, String desc,
 			byte[] image, String name, String date, String email, String phone,
-			String fax, String mobile) {
+			String fax, String mobile,int day) {
 
 		ContentValues uc = new ContentValues();
 		// uc.put("Name", name);
@@ -342,6 +342,7 @@ public class DataBaseAdapter {
 		uc.put("UFax", fax);
 		uc.put("UMobile", mobile);
 		uc.put("Date", date);
+		uc.put("Day", day);
 
 		// uc.put("ServiceId", serviceid);
 		mDb.update(TableTicket, uc, "Id=" + id, null);
@@ -596,7 +597,7 @@ public class DataBaseAdapter {
 	public void insertTickettoDbemptyImage(int id, String Title, String Desc,
 			int userId, String date, int typeId, int provinceId, String uname,
 			String uemail, String uphonnumber, String ufax, String uadress,
-			String umobile) {
+			String umobile,int day) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Id", id);
@@ -612,6 +613,7 @@ public class DataBaseAdapter {
 		cv.put("UFax", ufax);
 		cv.put("UAdress", uadress);
 		cv.put("UMobile", umobile);
+		cv.put("Day", day);
 
 		mDb.insert(TableTicket, null, cv);
 
@@ -1389,7 +1391,7 @@ public class DataBaseAdapter {
 				cursor.getString(14), cursor.getString(15),
 				cursor.getString(16), cursor.getString(17), cursor.getBlob(18),
 				cursor.getString(19), cursor.getInt(20), cursor.getInt(21),
-				cursor.getInt(22));
+				cursor.getInt(22),cursor.getInt(23));
 
 		return tempTicket;
 
