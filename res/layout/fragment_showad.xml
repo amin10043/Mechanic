@@ -78,7 +78,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="16dp"
                         android:layout_marginTop="15dp"
                         android:text="000"
                         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -87,10 +87,15 @@
 
                 <TextView
                     android:id="@+id/textdate"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="1"
+                    android:background="@drawable/list_item1"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:maxLines="2"
+                    android:text="1394/04/10 18:10:25"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/transparent" />
             </LinearLayout>
