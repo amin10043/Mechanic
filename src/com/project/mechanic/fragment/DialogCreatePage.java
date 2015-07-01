@@ -43,7 +43,7 @@ public class DialogCreatePage extends Dialog {
 
 		setContentView(R.layout.dialog_create);
 		create = (ImageButton) findViewById(R.id.createDialogPage);
-		TextView main = (TextView) findViewById(R.id.textView1);
+		TextView main = (TextView) findViewById(R.id.textDay);
 		Currentser = util.getCurrentUser();
 
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),

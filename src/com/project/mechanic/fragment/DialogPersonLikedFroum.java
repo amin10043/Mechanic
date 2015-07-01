@@ -31,6 +31,12 @@ public class DialogPersonLikedFroum extends Dialog {
 		this.likedist = list;
 		adapter = new DataBaseAdapter(context);
 	}
+	
+	public DialogPersonLikedFroum(Context context) {
+		super(context);
+
+			adapter = new DataBaseAdapter(context);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,4 +54,5 @@ public class DialogPersonLikedFroum extends Dialog {
 		lv.setAdapter(listadapter);
 
 	}
+	
 }

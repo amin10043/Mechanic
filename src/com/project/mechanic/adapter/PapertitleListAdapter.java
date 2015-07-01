@@ -30,6 +30,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogcmtInPaper;
+import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.PaperWithoutComment;
 import com.project.mechanic.fragment.PersianDate;
@@ -54,6 +55,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 	Utility util;
 	LinearLayout likePaper;
 	Users currentUser;
+	int userId;
 
 	Saving saving;
 	Deleting deleting;
@@ -122,7 +124,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 		}
 
 		Users x = adapter.getUserbyid(person1.getUserId());
-
+        //userId=x.getId();
 		RelativeLayout rl = (RelativeLayout) convertView
 				.findViewById(R.id.topicTitleFroum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
@@ -154,7 +156,28 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 			txt3.setText(x.getName());
 		}
 		adapter.close();
-
+		iconProile.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				adapter.open();
+				Paper person1 = mylist.get(position);
+				Users x = adapter.getUserbyid(person1.getUserId());
+		        userId=x.getId();
+			FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+			    trans.commit();
+				Toast.makeText(context,
+						"PapertitleListAdapter",
+						Toast.LENGTH_SHORT).show();
+				
+			}
+		});
 		txt1.setText(person1.getTitle());
 		txt2.setText(person1.getContext());
 

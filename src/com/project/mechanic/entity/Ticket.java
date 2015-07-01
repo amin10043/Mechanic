@@ -25,6 +25,7 @@ public class Ticket implements Comparable<Ticket> {
 	int Seen;
 	int Submit;
 	int seenBefore;
+	int Day;
 
 	public int getSeenBefore() {
 		return seenBefore;
@@ -211,12 +212,19 @@ public class Ticket implements Comparable<Ticket> {
 	public void setSubmit(int submit) {
 		Submit = submit;
 	}
+	public int getDay() {
+		return Day;
+	}
+
+	public void setDay(int day) {
+		Day = day;
+	}
 
 	public Ticket(int id, String title, String desc, int Userid, byte[] imge,
 			String date, int Typeid, int name, int email, int mobile,
 			int phone, int fax, int provinceid, String uname, String uemail,
 			String uphone, String ufax, String uadress, byte[] uimage,
-			String umobile, int seen, int submit, int seenBefore) {
+			String umobile, int seen, int submit, int seenBefore,int day) {
 		super();
 		Id = id;
 		Title = title;
@@ -240,6 +248,7 @@ public class Ticket implements Comparable<Ticket> {
 		UMobile = umobile;
 		Seen = seen;
 		Submit = submit;
+		Day=day;
 		this.seenBefore = seenBefore;
 	}
 

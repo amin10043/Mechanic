@@ -29,6 +29,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.FroumWithoutComment;
 import com.project.mechanic.inter.AsyncInterface;
@@ -61,6 +62,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 	String serverDate = "";
 	ServerDate date;
+	int userId;
 
 	public FroumtitleListadapter(Context context, int resource,
 			List<Froum> objects) {
@@ -107,6 +109,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 		Users x = adapter.getUserbyid(person1.getUserId());
 		CurrentUser = util.getCurrentUser();
+		
 
 		if (person1.getSeenBefore() > 0) {
 			txt1.setTextColor(Color.GRAY);
@@ -174,7 +177,29 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			}
 		}
 		adapter.close();
-
+//////////////////////////////////////
+		profileImg.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				adapter.open();
+				Froum person1 = mylist.get(position);
+				Users x = adapter.getUserbyid(person1.getUserId());
+				userId=x.getId();
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+				Toast.makeText(context,
+						"FroumtitleListadapter",
+						Toast.LENGTH_SHORT).show();
+				
+			}
+		});
 		LikeTitle.setOnClickListener(new OnClickListener() {
 
 			@Override

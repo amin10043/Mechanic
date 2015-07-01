@@ -42,7 +42,7 @@ public class ShowAdFragment extends Fragment {
 	int userTicket;
 	DataBaseAdapter dbAdapter;
 	TextView desc, name, email, phone, mobile, fax, showname, showfax,
-			showemail, showphone, showmobile;
+			showemail, showphone, showmobile, day,date;
 	ImageView img;
 	Button btnreport, btnCancel;
 	List mylist;
@@ -85,6 +85,8 @@ public class ShowAdFragment extends Fragment {
 		showfax = (TextView) view.findViewById(R.id.fragment_showad_fax);
 		btnreport = (Button) view.findViewById(R.id.btn_report);
 		btnCancel = (Button) view.findViewById(R.id.btn_cancel);
+		day = (TextView) view.findViewById(R.id.textDay);
+		date = (TextView) view.findViewById(R.id.textdate);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 
@@ -251,6 +253,8 @@ public class ShowAdFragment extends Fragment {
 		});
 
 		desc.setText(t.getDesc());
+		day.setText(""+t.getDay());
+		date.setText(util.getPersianDate(t.getDate()));
 
 		if ("".equals(t.getUName())) {
 			showname.setVisibility(View.GONE);
@@ -355,6 +359,8 @@ public class ShowAdFragment extends Fragment {
 		dbAdapter.open();
 
 		desc.setText(t.getDesc());
+		day.setText(""+t.getDay());
+		date.setText(util.getPersianDate(t.getDate()));
 
 		if ("".equals(t.getUName())) {
 			showname.setVisibility(View.GONE);

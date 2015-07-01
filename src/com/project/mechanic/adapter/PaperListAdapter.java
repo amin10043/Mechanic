@@ -7,6 +7,8 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +16,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
@@ -30,6 +35,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 	Fragment f;
 	Utility util;
 	private PaperFragment Paperfragment;
+	int userId;
 
 	public PaperListAdapter(Context context, int resource,
 			List<CommentInPaper> objects, PaperFragment f) {
@@ -45,7 +51,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 
 	@SuppressLint("ViewHolder")
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -76,6 +82,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
 		Users user = adapter.getUserbyid(comment.getUserid());
+		//userId=user.getId();
 		if (user.getImage() == null) {
 			profilepic.setImageResource(R.drawable.no_img_profile);
 			profilepic.setLayoutParams(lp);
@@ -92,7 +99,27 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 			profilepic.setLayoutParams(lp);
 		}
 		adapter.close();
-
+		profilepic.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				adapter.open();
+				CommentInPaper comment = list.get(position);
+				Users user = adapter.getUserbyid(comment.getUserid());
+				userId=user.getId();
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+				Toast.makeText(context, "PaperListAdapter",
+						Toast.LENGTH_SHORT).show();
+				
+			}
+		});
 		txtcmt.setText(comment.getDescription());
 		txtuser.setText(user.getName());
 		txtdate.setText(util.getPersianDate(comment.getDatetime()));
