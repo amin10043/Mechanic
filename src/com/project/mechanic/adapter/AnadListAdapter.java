@@ -79,7 +79,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 					bitmapbyte.length);
-			img2.setImageBitmap(bmp);
+			img2.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
 		}
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BROYA.TTF");

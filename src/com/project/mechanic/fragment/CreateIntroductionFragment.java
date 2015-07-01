@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -37,6 +38,7 @@ public class CreateIntroductionFragment extends Fragment {
 	private static int HeaderCode = 2;
 	private static int FooterCode = 3;
 	int Object;
+	int ObjectBrandTypeId;
 
 	DataBaseAdapter DBAdapter;
 	ImageButton btnSave;
@@ -54,6 +56,7 @@ public class CreateIntroductionFragment extends Fragment {
 	RelativeLayout.LayoutParams profilParams, nameParams;
 	DialogNetworkSocial dialognetwork;
 	DialogLinkDownload dialogDownload;
+	CheckBox checkAgency, checkService;
 
 	Bitmap bitmapHeader, bitmapProfil, bitmapFooter;
 
@@ -97,6 +100,9 @@ public class CreateIntroductionFragment extends Fragment {
 		namayendegi = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
 		khadamat = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
 
+		checkAgency = (CheckBox) view.findViewById(R.id.checkAgency);
+		checkService = (CheckBox) view.findViewById(R.id.checkService);
+
 		namayendegi.setVisibility(View.GONE);
 		khadamat.setVisibility(View.GONE);
 
@@ -115,6 +121,7 @@ public class CreateIntroductionFragment extends Fragment {
 				"Id", 0);
 		final int parentId = sendParentID.getInt("ParentId", -1);
 		final int mainItem = sendParentID.getInt("mainObject", -1);
+
 		final int objectIdItem1 = sendParentID.getInt("objectId", -1);
 		Toast.makeText(
 				getActivity(),
@@ -244,6 +251,20 @@ public class CreateIntroductionFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
+				// if (checkAgency.isChecked())
+				// globalMainObjectId = 3;
+				// if (checkService.isChecked())
+				// globalMainObjectId = 4;
+
+				if (checkAgency.isChecked() && checkService.isChecked())
+					ObjectBrandTypeId = 1;
+				else if (checkAgency.isChecked())
+					ObjectBrandTypeId = 3;
+				else if (checkService.isChecked())
+					ObjectBrandTypeId = 4;
+				else
+					ObjectBrandTypeId = 2;
+
 				bitmapHeader = ((BitmapDrawable) btnHeader.getDrawable())
 						.getBitmap();
 				bitmapProfil = ((BitmapDrawable) btnProfile.getDrawable())
@@ -285,7 +306,8 @@ public class CreateIntroductionFragment extends Fragment {
 								byteFooter, Lcatalog, Lprice, Lpdf, Lvideo,
 								addressValue, mobileValue, Lfacebook,
 								Linstagram, Llinkedin, Lgoogle, Lwebsite,
-								Ltwitter, currentUser.getId(), mainID);
+								Ltwitter, currentUser.getId(), mainID,
+								ObjectBrandTypeId);
 
 						DBAdapter.insertObjectInCity(LastObjectId, CityId);
 
@@ -300,7 +322,8 @@ public class CreateIntroductionFragment extends Fragment {
 										mobileValue, Lfacebook, Linstagram,
 										Llinkedin, Lgoogle, Lwebsite, Ltwitter,
 										currentUser.getId(), parentId,
-										mainItem, objectIdItem1);
+										mainItem, objectIdItem1,
+										ObjectBrandTypeId);
 						if (objectIdItem1 > 4)
 							DBAdapter.insertObjectInCity(LastObjectId, CityId);
 
@@ -315,7 +338,7 @@ public class CreateIntroductionFragment extends Fragment {
 										mobileValue, Lfacebook, Linstagram,
 										Llinkedin, Lgoogle, Lwebsite, Ltwitter,
 										currentUser.getId(), 0, MainObjectId,
-										objectId);
+										objectId, ObjectBrandTypeId);
 						if (objectIdItem1 > 4)
 							DBAdapter.insertObjectInCity(LastObjectId, CityId);
 

@@ -9,13 +9,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
@@ -39,8 +42,8 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 
 	private ImageView dialog_img1;
 	private Button dialog_img2;
-	private EditText dialog_anad_et1, dialog_anad_et2, UName, UMobile,
-			UPhonnumber, UFax, UEmail;
+	private EditText dialog_anad_et1, dialog_anad_et2, UMobile, UPhonnumber,
+			UFax, UEmail;
 	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
 	int resourceId;
@@ -64,6 +67,8 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	byte[] image;
 	int gId = -1;
 
+	TextView UName;
+
 	int ProvinceId;
 	Users u;
 	protected byte[] img;
@@ -86,13 +91,16 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setBackgroundDrawable(
+				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		setContentView(resourceId);
 		dialog_img1 = (ImageView) findViewById(R.id.dialog_img1);
 		dialog_img2 = (Button) findViewById(R.id.dialog_img2);
 		dialog_anad_et1 = (EditText) findViewById(R.id.dialog_anad_et1);
 		dialog_anad_et2 = (EditText) findViewById(R.id.dialog_anad_et2);
 		Lheader = (LinearLayout) findViewById(R.id.linDialogImg);
-		UName = (EditText) findViewById(R.id.name);
+		UName = (TextView) findViewById(R.id.name);
 		UMobile = (EditText) findViewById(R.id.mobile);
 		UEmail = (EditText) findViewById(R.id.email);
 		UFax = (EditText) findViewById(R.id.fax);
@@ -172,6 +180,11 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 		try {
 			gId = Integer.valueOf(output);
 			dbadapter.open();
+			String email = UEmail.getText().toString();
+			String phonenumber = UPhonnumber.getText().toString();
+			String fax = UFax.getText().toString();
+			String mobile = UMobile.getText().toString();
+
 			dbadapter.insertTickettoDbemptyImage(gId, dialog_anad_et1.getText()
 					.toString(), dialog_anad_et2.getText().toString(), u
 					.getId(), gServerDate, ticketTypeID, ProvinceId, UName

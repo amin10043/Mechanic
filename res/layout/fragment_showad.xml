@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EAEAEA"
-    android:orientation="vertical"
-    android:paddingTop="10dp" >
+    android:orientation="vertical" >
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -39,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
+                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:orientation="horizontal" >
 
@@ -65,6 +65,12 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_edit"
                     android:visibility="visible" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_anad_credit" />
             </LinearLayout>
 
             <RelativeLayout
@@ -78,8 +84,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/headershape"
+                android:layout_marginTop="5dp"
+                android:background="@color/blue3"
                 android:orientation="vertical" >
 
                 <TextView
@@ -101,7 +107,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="right"
-                        android:textColor="@color/blue" />
+                        android:textColor="@color/transparent" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -111,7 +117,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/headershape"
+                android:background="@color/blue3"
                 android:orientation="vertical" >
 
                 <TextView
@@ -148,7 +154,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/blue" />
+                        android:textColor="@color/transparent" />
 
                     <TextView
                         android:id="@+id/fragment_showad_email"
@@ -168,7 +174,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/blue" />
+                        android:textColor="@color/transparent" />
 
                     <TextView
                         android:id="@+id/fragment_showad_phone"
@@ -188,7 +194,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/blue" />
+                        android:textColor="@color/transparent" />
 
                     <TextView
                         android:id="@+id/fragment_showad_mobile"
@@ -208,7 +214,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/blue" />
+                        android:textColor="@color/transparent" />
 
                     <TextView
                         android:id="@+id/fragment_showad_fax"
@@ -228,7 +234,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/blue" />
+                        android:textColor="@color/transparent" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -238,7 +244,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/headershape"
+                android:background="@color/blue3"
                 android:orientation="vertical" >
 
                 <LinearLayout
@@ -274,7 +280,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
-                        android:text="قبل  از انجام معامله از صحت آگهی مطمئن شوید. این نرم افزار هیچگونه مسئولیتی در قبال این آگهی ندارد."
+                        android:text="کاربر گرامی از صحت آگهی مطمئن شوید  این برنامه هیچ مسئولیتی در قبال این آگهی ندارد"
                         android:textColor="#000000" />
                 </LinearLayout>
             </LinearLayout>
@@ -286,7 +292,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/headershape"
+                android:background="@color/blue3"
                 android:orientation="vertical" >
 
                 <TextView

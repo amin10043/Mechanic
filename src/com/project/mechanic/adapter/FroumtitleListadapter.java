@@ -212,16 +212,16 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 			@Override
 			public void onClick(View v) {
-				LinearLayout parentlayout = (LinearLayout) v;
 
-				String item = txt2.getText().toString();
+				// در تمام صفحات از این کد ها استفاده شود
 				int ItemId = 0;
-				for (Froum listItem : mylist) {
-					if (item.equals(listItem.getDescription())) {
-						// check authentication and authorization
-						ItemId = listItem.getId();
-					}
+				ListView listView = (ListView) v.getParent();
+				int position = listView.getPositionForView(v);
+				Froum f = getItem(position);
+				if (f != null) {
+					ItemId = f.getId();
 				}
+				// تا اینجا
 
 				adapter.open();
 				adapter.SetSeen("Froum", ItemId, "1");

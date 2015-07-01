@@ -1,5 +1,6 @@
 package com.project.mechanic.fragment;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -22,11 +23,15 @@ import android.widget.Toast;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class LoginFragment extends Fragment implements AsyncInterface {
+public class LoginFragment extends Fragment implements AsyncInterface,
+		GetAsyncInterface {
 
 	ServiceComm service;
 	Utility util;
@@ -44,6 +49,8 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 	final int progress_bar_type = 0;
 	ViewGroup toastlayout;
 	private Toast toast;
+	String serverDate = "";
+	boolean dateFlag = false;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -73,8 +80,6 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 				mobile = editmobile.getText().toString();
 				pass = editpass.getText().toString();
-				// Toast.makeText(getActivity(), mobile, Toast.LENGTH_SHORT)
-				// .show();
 				dbAdapter.close();
 				if (!util.isNetworkConnected()) {
 					util.showOkDialog(getActivity(), "خطا در ارتباط",
@@ -82,10 +87,6 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 				}
 
 				else if ("".equals(mobile) || "".equals(pass)) {
-					// Toast.makeText(getActivity(),
-					// "تلفن همراه و کلمه عبور نمی تواند خالی باشد.",
-					// Toast.LENGTH_SHORT).show();
-
 					LayoutInflater inflater4 = getLayoutInflater(getArguments());
 					View view4 = inflater4.inflate(R.layout.toast_define,
 							toastlayout);
@@ -104,15 +105,10 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 				else {
 
-					// String[] params = new String[] { "login", mobile, pass };
-					service = new ServiceComm(getActivity());
-					service.delegate = LoginFragment.this;
-					Map<String, String> items = new LinkedHashMap<String, String>();
-					items.put("login", "login");
-					items.put("phone", mobile);
-					items.put("password", pass);
+					ServerDate date = new ServerDate(getActivity());
+					date.delegate = LoginFragment.this;
+					date.execute("");
 
-					service.execute(items);
 					mobileNumber = mobile;
 
 					ringProgressDialog = ProgressDialog.show(getActivity(), "",
@@ -186,7 +182,8 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 				0);
 		SharedPreferences.Editor editor = settings.edit();
 
-		if (output == null || "".equals(output)) {
+		if (output == null || "anyType{}".equals(output)
+				|| output.contains("Exception") || output.contains("java")) {
 			Toast.makeText(getActivity(),
 					"نام کاربری و یا کلمه عبور به درستی وارد نشده است.",
 					Toast.LENGTH_SHORT).show();
@@ -204,43 +201,79 @@ public class LoginFragment extends Fragment implements AsyncInterface {
 
 		} else {
 
-			dbAdapter.open();
-			u = dbAdapter.getUserbymobailenumber(mobileNumber);
-			dbAdapter.close();
-			if (u == null) {
-				util.parseQuery(output);
-			}
-			dbAdapter.open();
-			u = dbAdapter.getUserbymobailenumber(mobileNumber);
-			dbAdapter.close();
+			if (!dateFlag) {
+				serverDate = output;
+				service = new ServiceComm(getActivity());
+				service.delegate = LoginFragment.this;
+				Map<String, String> items = new LinkedHashMap<String, String>();
+				items.put("login", "login");
+				items.put("phone", mobile);
+				items.put("password", pass);
 
-			if (u == null) {
-				Toast.makeText(getActivity(),
-						"خطایی در دریافت اطلاعات از سرور رخ داده است.",
-						Toast.LENGTH_SHORT).show();
+				service.execute(items);
+
+				dateFlag = true;
 			} else {
-				int id = u.getId();
-				int admin = 1;
-				dbAdapter.open();
-				dbAdapter.UpdateAdminUserToDb(id, admin);
-				dbAdapter.close();
-				Toast.makeText(getActivity(), "شما وارد شده اید.",
-						Toast.LENGTH_SHORT).show();
-				TextView txtlike = (TextView) (getActivity())
-						.findViewById(R.id.txtlike);
-				txtlike.setVisibility(View.VISIBLE);
-				TextView txtcm1 = (TextView) (getActivity())
-						.findViewById(R.id.txtcm);
-				txtcm1.setVisibility(View.VISIBLE);
-				editor.putBoolean("isLogin", true);
 
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new MainFragment());
-				trans.commit();
+				dbAdapter.open();
+				u = dbAdapter.getUserbymobailenumber(mobileNumber);
+				if (u == null) {
+					util.parseQuery(output);
+				}
+				u = dbAdapter.getUserbymobailenumber(mobileNumber);
+				dbAdapter.close();
+
+				if (u == null) {
+					Toast.makeText(getActivity(),
+							"خطایی در دریافت اطلاعات از سرور رخ داده است.",
+							Toast.LENGTH_SHORT).show();
+				} else {
+					int id = u.getId();
+					int admin = 1;
+					dbAdapter.open();
+					dbAdapter.UpdateAdminUserToDb(id, admin);
+					dbAdapter.close();
+					Toast.makeText(getActivity(), "شما وارد شده اید.",
+							Toast.LENGTH_SHORT).show();
+					TextView txtlike = (TextView) (getActivity())
+							.findViewById(R.id.txtlike);
+					txtlike.setVisibility(View.VISIBLE);
+					TextView txtcm1 = (TextView) (getActivity())
+							.findViewById(R.id.txtcm);
+					txtcm1.setVisibility(View.VISIBLE);
+					editor.putBoolean("isLogin", true);
+					UpdatingImage updating = new UpdatingImage(getActivity());
+					updating.delegate = this;
+					HashMap<String, String> maps = new LinkedHashMap<String, String>();
+					maps.put("tableName", "Users");
+					maps.put("Id", String.valueOf(u.getId()));
+					maps.put("fromDate", u.getImageServerDate());
+					updating.execute(maps);
+					ringProgressDialog = ProgressDialog.show(getActivity(), "",
+							"لطفا منتظر بمانید...", true);
+				}
 			}
 		}
 
 		editor.commit();
+	}
+
+	@Override
+	public void processFinish(byte[] output) {
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
+
+		if (output != null) {
+			dbAdapter.open();
+			dbAdapter.UpdateUserImage(u.getId(), output, serverDate);
+			dbAdapter.close();
+		}
+
+		FragmentTransaction trans = getActivity().getSupportFragmentManager()
+				.beginTransaction();
+		trans.replace(R.id.content_frame, new MainFragment());
+		trans.commit();
+
 	}
 }

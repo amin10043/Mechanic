@@ -394,14 +394,27 @@ public class IntroductionFragment extends Fragment {
 		txtAddress.setText(object.getAddress());
 		txtDesc.setText(object.getDescription());
 
-		if (object.getMainObjectId() == 2) {
-			agency.setVisibility(View.GONE);
-			service.setVisibility(View.GONE);
+		// if mainObjectId =1 >>>>>> namayandegi va khadamat faal hast
+		// if mainObjectId =2 >>>>>> namayandegi va khadamat gheyr faal hast
+		// if MainObjectId =3 >>>>>> namayandegi faal hast
+		// if MainObjectId =4 >>>>>> khadamat faal hast
+
+		if (object.getObjectBrandTypeId() == 1) {
+			agency.setVisibility(View.VISIBLE);
+			service.setVisibility(View.VISIBLE);
 
 		}
-		if (object.getMainObjectId() == 3) {
+		if (object.getObjectBrandTypeId() == 2) {
 			agency.setVisibility(View.GONE);
 			service.setVisibility(View.GONE);
+		}
+		if (object.getObjectBrandTypeId() == 3) {
+			agency.setVisibility(View.VISIBLE);
+			service.setVisibility(View.GONE);
+		}
+		if (object.getObjectBrandTypeId() == 4) {
+			agency.setVisibility(View.GONE);
+			service.setVisibility(View.VISIBLE);
 		}
 
 		if (object.getFacebook() != null)

@@ -178,6 +178,26 @@
                                 android:textColor="@color/transparent" />
                         </RelativeLayout>
 
+                        <CheckBox
+                            android:id="@+id/checkAgency"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:button="@null"
+                            android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                            android:text="ایجاد لینک نمایندگی"
+                            android:textColor="@color/transparent" />
+
+                        <CheckBox
+                            android:id="@+id/checkService"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:button="@null"
+                            android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                            android:text="ایجاد لینک خدمات پس از فروش"
+                            android:textColor="@color/transparent" />
+
                         <RelativeLayout
                             android:id="@+id/Layoutlink1"
                             style="@style/brandStyle"
