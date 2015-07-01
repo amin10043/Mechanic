@@ -178,7 +178,15 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 			icon.setLayoutParams(lp);
 		}
 		adapter.close();
-
+		icon.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Toast.makeText(getActivity(), "PaperFragment",
+						Toast.LENGTH_SHORT).show();
+				
+			}
+		});
 		// lst.addHeaderView(header);
 		// paperListAdapterHeder = new PaperListAdapterHeder(getActivity(),
 		// R.layout.raw_papercmt, mylist2, PaperFragment.this);

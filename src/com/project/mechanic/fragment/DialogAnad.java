@@ -43,7 +43,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	private ImageView dialog_img1;
 	private Button dialog_img2;
 	private EditText dialog_anad_et1, dialog_anad_et2, UMobile, UPhonnumber,
-			UFax, UEmail;
+			UFax, UEmail, Day;
 	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
 	int resourceId;
@@ -105,6 +105,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 		UEmail = (EditText) findViewById(R.id.email);
 		UFax = (EditText) findViewById(R.id.fax);
 		UPhonnumber = (EditText) findViewById(R.id.phone);
+		Day = (EditText) findViewById(R.id.EditDay);
 
 		util = new Utility(context);
 		headerEditParams = new LinearLayout.LayoutParams(
@@ -174,6 +175,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	public void processFinish(String output) {
 		String title = dialog_anad_et1.getText().toString();
 		String desc = dialog_anad_et2.getText().toString();
+		int roz = Integer.parseInt(Day.getText().toString());
 		if (ringProgressDialog != null) {
 			ringProgressDialog.dismiss();
 		}
@@ -191,7 +193,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 					.getText().toString(), UEmail.getText().toString(),
 					UPhonnumber.getText().toString(),
 					UFax.getText().toString(), null, UMobile.getText()
-							.toString());
+							.toString(), roz);
 
 			if (dialog_img1.getDrawable() != null) {
 

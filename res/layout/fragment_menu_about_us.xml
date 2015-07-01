@@ -10,7 +10,7 @@
         android:layout_height="wrap_content" >
 
         <ImageView
-            android:id="@+id/about_us_01"
+            android:id="@+id/EditDay"
             android:layout_width="0dip"
             android:layout_height="100dip"
             android:layout_margin="2dip"

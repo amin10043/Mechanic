@@ -29,6 +29,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.FroumWithoutComment;
 import com.project.mechanic.inter.AsyncInterface;
@@ -174,7 +175,23 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			}
 		}
 		adapter.close();
-
+///////////////////////////////////
+		profileImg.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+				Toast.makeText(context,
+						"FroumtitleListadapter",
+						Toast.LENGTH_SHORT).show();
+				
+			}
+		});
 		LikeTitle.setOnClickListener(new OnClickListener() {
 
 			@Override

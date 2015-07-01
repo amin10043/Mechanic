@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.LikeInFroum;
@@ -25,6 +26,7 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 	List<LikeInFroum> myList;
 	DataBaseAdapter adapter;
 	Utility util;
+	Users user;
 
 	public PersonLikedAdapter(Context context, int resource,
 			ArrayList<LikeInFroum> objects) {
@@ -36,7 +38,7 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		if (convertView == null) {
 			LayoutInflater myInflater = (LayoutInflater) context
@@ -57,7 +59,7 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 		LikeInFroum likes = myList.get(position);
 
 		adapter.open();
-		Users user = adapter.getUserById(likes.getUserid());
+		 user = adapter.getUserById(likes.getUserid());
 		adapter.close();
 
 		namePerson.setText(user.getName());
@@ -87,6 +89,20 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 			peronImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
 			peronImage.setLayoutParams(lp);
 		}
+		peronImage.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				LikeInFroum likes = myList.get(position);
+
+				adapter.open();
+				 user = adapter.getUserById(likes.getUserid());
+				adapter.close();
+				Toast.makeText(context, user.getName(),
+						Toast.LENGTH_SHORT).show();
+				
+			}
+		});
 
 		return convertView;
 	}

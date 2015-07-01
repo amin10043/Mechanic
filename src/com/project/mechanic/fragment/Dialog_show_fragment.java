@@ -40,7 +40,7 @@ public class Dialog_show_fragment extends Dialog {
 	Utility util;
 	int resourceId;
 	private EditText dialog_anad_1, dialog_anad_2, Name, Mobile, Phonnumber,
-			Fax, Email;
+			Fax, Email,Day;
 	LinearLayout Lheader;
 	private ImageView dialog_img1;
 	private Button dialog_btn;
@@ -84,6 +84,8 @@ public class Dialog_show_fragment extends Dialog {
 		Email = (EditText) findViewById(R.id.Email);
 		Fax = (EditText) findViewById(R.id.Fax);
 		Phonnumber = (EditText) findViewById(R.id.Phone);
+		Day=(EditText) findViewById(R.id.EditDay);
+		
 
 		// util = new Utility(context);
 		// headerEditParams = new LinearLayout.LayoutParams(
@@ -108,6 +110,7 @@ public class Dialog_show_fragment extends Dialog {
 			public void onClick(View arg0) {
 				String title = dialog_anad_1.getText().toString();
 				String desc = dialog_anad_2.getText().toString();
+				int roz= Integer.parseInt(Day.getText().toString());
 				String date = new SimpleDateFormat("yyyy-MM-dd")
 						.format(new Date());
 				// if(!"".equals(dialog_anad_1.setText(text);))
@@ -123,7 +126,7 @@ public class Dialog_show_fragment extends Dialog {
 										.getText().toString(), Phonnumber
 										.getText().toString(), Fax.getText()
 										.toString(), Mobile.getText()
-										.toString());
+										.toString(),roz);
 					} else {
 
 						Bitmap bitmap = ((BitmapDrawable) dialog_img1
@@ -138,7 +141,7 @@ public class Dialog_show_fragment extends Dialog {
 									date, Email.getText().toString(),
 									Phonnumber.getText().toString(), Fax
 											.getText().toString(), Mobile
-											.getText().toString());
+											.getText().toString(),roz);
 
 						} else {
 							byte[] bytes = getBitmapAsByteArray(bitmap);
@@ -147,7 +150,7 @@ public class Dialog_show_fragment extends Dialog {
 									date, Email.getText().toString(),
 									Phonnumber.getText().toString(), Fax
 											.getText().toString(), Mobile
-											.getText().toString());
+											.getText().toString(),roz);
 
 						}
 
