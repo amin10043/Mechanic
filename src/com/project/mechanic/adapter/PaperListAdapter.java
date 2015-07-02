@@ -115,8 +115,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				Toast.makeText(context, "PaperListAdapter",
-						Toast.LENGTH_SHORT).show();
+			
 				
 			}
 		});

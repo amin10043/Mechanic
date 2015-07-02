@@ -172,9 +172,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 			    trans.commit();
-				Toast.makeText(context,
-						"PapertitleListAdapter",
-						Toast.LENGTH_SHORT).show();
+			
 				
 			}
 		});

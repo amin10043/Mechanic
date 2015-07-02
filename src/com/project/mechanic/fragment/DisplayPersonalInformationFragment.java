@@ -68,7 +68,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		userId = bundle.getInt("userId", 0);}
 	    if(userId!=0)	{
 		
-		  Toast.makeText(getActivity(),""+userId,Toast.LENGTH_SHORT).show();
+		 
 		   dbAdapter.open();
 		   u= dbAdapter.getUserById(userId);
 		   dbAdapter.close();

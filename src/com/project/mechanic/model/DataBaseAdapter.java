@@ -139,7 +139,7 @@ public class DataBaseAdapter {
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
 			"ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress",
-			"UImage", "UMobile", "Seen", "Submit", "seenBefore","Day" };
+			"UImage", "UMobile", "Seen", "Submit","seenBefore", "Day" };
 
 	private String[] TicketType = { "ID", "desc" };
 

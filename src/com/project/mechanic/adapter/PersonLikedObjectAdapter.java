@@ -6,6 +6,8 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +16,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -25,6 +29,7 @@ public class PersonLikedObjectAdapter extends ArrayAdapter<LikeInObject> {
 	List<LikeInObject> myList;
 	DataBaseAdapter adapter;
 	Utility util;
+	int userId;
 
 	public PersonLikedObjectAdapter(Context context, int resource,
 			ArrayList<LikeInObject> objects) {
@@ -36,7 +41,7 @@ public class PersonLikedObjectAdapter extends ArrayAdapter<LikeInObject> {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		if (convertView == null) {
 			LayoutInflater myInflater = (LayoutInflater) context
@@ -59,7 +64,25 @@ public class PersonLikedObjectAdapter extends ArrayAdapter<LikeInObject> {
 		adapter.open();
 		Users user = adapter.getUserById(likes.getUserId());
 		adapter.close();
-
+		peronImage.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				adapter.open();
+				LikeInObject likes = myList.get(position);
+				Users user = adapter.getUserById(likes.getUserId());
+				userId= user.getId();
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+				
+			}
+		});
 		namePerson.setText(user.getName());
 		DateLiked.setText(util.getPersianDate(likes.getDatetime()));
 

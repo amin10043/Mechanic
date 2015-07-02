@@ -194,9 +194,6 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				Toast.makeText(context,
-						"FroumtitleListadapter",
-						Toast.LENGTH_SHORT).show();
 				
 			}
 		});

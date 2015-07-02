@@ -147,7 +147,6 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				Toast.makeText(context,"ExpandableCommentFroum",Toast.LENGTH_LONG).show();
 			
 				
 			}
@@ -306,8 +305,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 						fragment.setArguments(bundle);
 						trans.replace(R.id.content_frame, fragment);
 						trans.commit();
-				Toast.makeText(context, "ExpandableCommentFroum",
-						Toast.LENGTH_SHORT).show();
+			
 			
 				
 			}

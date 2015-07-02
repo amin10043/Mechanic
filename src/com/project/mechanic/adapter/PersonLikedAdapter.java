@@ -114,8 +114,7 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				Toast.makeText(context, user.getName(),
-						Toast.LENGTH_SHORT).show();
+				
 			
 				
 			}
