@@ -10,6 +10,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +23,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogcmtInobject;
+import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -47,6 +51,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 	boolean flag;
 
 	int GlobalId;
+	int userId;
 
 	Saving saving;
 	Deleting deleting;
@@ -128,7 +133,27 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 			lp.setMargins(5, 5, 5, 5);
 			ReplyerPic.setLayoutParams(lp);
 		}
-
+		ReplyerPic.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				adapter.open();
+				 CommentInObject comment = CommentList.get(groupPosition);
+				Users y = adapter.getUserbyid(comment.getUserid());
+				userId=y.getId();
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+				Toast.makeText(context, "hi",
+						Toast.LENGTH_SHORT).show();
+				
+			}
+		});
 		mainReply.setText(reply.getDescription());
 		dateReply.setText(util.getPersianDate(reply.getDatetime()));
 		nameReplyer.setText(y.getName());
@@ -237,7 +262,29 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 			}
 
 		}
+   profileImage.setOnClickListener(new View.OnClickListener() {
+	
+	@Override
+	public void onClick(View arg0) {
+		adapter.open();
 
+	 CommentInObject comment = CommentList.get(groupPosition);
+		Users x = adapter.getUserbyid(comment.getUserid());
+		userId=x.getId();
+
+		FragmentTransaction trans = ((MainActivity) context)
+				.getSupportFragmentManager().beginTransaction();
+		DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt("userId", userId);
+		fragment.setArguments(bundle);
+		trans.replace(R.id.content_frame, fragment);
+		trans.commit();
+		Toast.makeText(context, "hi2",
+				Toast.LENGTH_SHORT).show();
+		
+	}
+});
 		mainComment.setText(comment.getDescription());
 		nameCommenter.setText(x.getName());
 		dateCommenter.setText(util.getPersianDate(comment.getDatetime()));
