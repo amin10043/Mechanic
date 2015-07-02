@@ -112,8 +112,7 @@ public class PersonLikedPaperAdapter extends ArrayAdapter<LikeInPaper> {
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				Toast.makeText(context, "PersonLikedPaperAdapter",
-						Toast.LENGTH_SHORT).show();
+				
 				
 			}
 		});

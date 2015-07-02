@@ -188,8 +188,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				Toast.makeText(getActivity(),"FroumFragment",
-						Toast.LENGTH_SHORT).show();
 				
 			}
 		});

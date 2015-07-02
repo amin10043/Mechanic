@@ -161,9 +161,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				Toast.makeText(getActivity(),
-						"FroumWithoutComment",
-						Toast.LENGTH_SHORT).show();
+				
 				
 			}
 		});

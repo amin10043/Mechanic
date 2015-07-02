@@ -149,8 +149,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				Toast.makeText(context, "hi",
-						Toast.LENGTH_SHORT).show();
+			
 				
 			}
 		});
@@ -280,8 +279,6 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 		fragment.setArguments(bundle);
 		trans.replace(R.id.content_frame, fragment);
 		trans.commit();
-		Toast.makeText(context, "hi2",
-				Toast.LENGTH_SHORT).show();
 		
 	}
 });

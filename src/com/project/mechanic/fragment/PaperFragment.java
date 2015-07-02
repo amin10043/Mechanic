@@ -193,8 +193,6 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				Toast.makeText(getActivity(), "PaperFragment",
-						Toast.LENGTH_SHORT).show();
 				
 			}
 		});
