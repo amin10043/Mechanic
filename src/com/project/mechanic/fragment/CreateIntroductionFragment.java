@@ -1,6 +1,7 @@
 package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.app.Activity;
@@ -32,14 +33,16 @@ import android.widget.Toast;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.SavingImage3Picture;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
 public class CreateIntroductionFragment extends Fragment implements
-		AsyncInterface {
+		AsyncInterface, SaveAsyncInterface {
 
 	private static int RESULT_LOAD_IMAGE = 1;
 	private static int HeaderCode = 2;
@@ -65,6 +68,8 @@ public class CreateIntroductionFragment extends Fragment implements
 	DialogLinkDownload dialogDownload;
 	CheckBox checkAgency, checkService;
 
+	int mainID;
+
 	Bitmap bitmapHeader, bitmapProfil, bitmapFooter;
 
 	public String Lfacebook, Llinkedin, Ltwitter, Lwebsite, Lgoogle,
@@ -80,6 +85,15 @@ public class CreateIntroductionFragment extends Fragment implements
 	Saving saving;
 	Deleting deleting;
 	Map<String, String> params;
+	int CityId;
+	int mainItem;
+	int objectIdItem1;
+	int parentId;
+	int MainObjectId;
+	int objectId;
+	SavingImage3Picture savingImage;
+
+	byte[] byteHeader, byteProfil, byteFooter;
 
 	// EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle,
 	// inInstagram;
@@ -126,19 +140,19 @@ public class CreateIntroductionFragment extends Fragment implements
 
 		SharedPreferences sendToCreate = getActivity().getSharedPreferences(
 				"Id", 0);
-		final int MainObjectId = sendToCreate.getInt("MainObjectId", -1);
-		final int CityId = sendToCreate.getInt("CityId", -1);
-		final int objectId = sendToCreate.getInt("objectId", -1);
+		MainObjectId = sendToCreate.getInt("MainObjectId", -1);
+		CityId = sendToCreate.getInt("CityId", -1);
+		objectId = sendToCreate.getInt("objectId", -1);
 
 		/* ********** end: come from create of object fragment ********** */
 
 		/* ********** start: come from create of main brand fragment ********** */
 		SharedPreferences sendParentID = getActivity().getSharedPreferences(
 				"Id", 0);
-		final int parentId = sendParentID.getInt("ParentId", -1);
-		final int mainItem = sendParentID.getInt("mainObject", -1);
+		parentId = sendParentID.getInt("ParentId", -1);
+		mainItem = sendParentID.getInt("mainObject", -1);
 
-		final int objectIdItem1 = sendParentID.getInt("objectId", -1);
+		objectIdItem1 = sendParentID.getInt("objectId", -1);
 		Toast.makeText(
 				getActivity(),
 				" parentId recieve = " + parentId + "\n ObjectBrandTypeId = "
@@ -149,7 +163,7 @@ public class CreateIntroductionFragment extends Fragment implements
 		/* ********** start: come from main fragment ********** */
 		SharedPreferences sendData = getActivity()
 				.getSharedPreferences("Id", 0);
-		final int mainID = sendData.getInt("main_Id", -1);
+		mainID = sendData.getInt("main_Id", -1);
 
 		/* ********** end: come from main fragment ********** */
 
@@ -321,55 +335,6 @@ public class CreateIntroductionFragment extends Fragment implements
 					ringProgressDialog = ProgressDialog.show(getActivity(),
 							null, "لطفا منتظر بمانید.");
 
-					DBAdapter.open();
-					if (mainID == 2 || mainID == 3 || mainID == 4) {
-						int LastObjectId = DBAdapter.CreatePageInShopeObject(
-								nameValue, phoneValue, emailValue, faxValue,
-								descriptionValue, byteHeader, byteProfil,
-								byteFooter, Lcatalog, Lprice, Lpdf, Lvideo,
-								addressValue, mobileValue, Lfacebook,
-								Linstagram, Llinkedin, Lgoogle, Lwebsite,
-								Ltwitter, currentUser.getId(), mainID,
-								ObjectBrandTypeId);
-
-						DBAdapter.insertObjectInCity(LastObjectId, CityId);
-
-					} else if (mainID == 1) {
-
-						int LastObjectId = DBAdapter
-								.InsertInformationNewObject(nameValue,
-										phoneValue, emailValue, faxValue,
-										descriptionValue, byteHeader,
-										byteProfil, byteFooter, Lcatalog,
-										Lprice, Lpdf, Lvideo, addressValue,
-										mobileValue, Lfacebook, Linstagram,
-										Llinkedin, Lgoogle, Lwebsite, Ltwitter,
-										currentUser.getId(), parentId,
-										mainItem, objectIdItem1,
-										ObjectBrandTypeId);
-						if (objectIdItem1 > 4)
-							DBAdapter.insertObjectInCity(LastObjectId, CityId);
-
-					} else {
-
-						int LastObjectId = DBAdapter
-								.InsertInformationNewObject(nameValue,
-										phoneValue, emailValue, faxValue,
-										descriptionValue, byteHeader,
-										byteProfil, byteFooter, Lcatalog,
-										Lprice, Lpdf, Lvideo, addressValue,
-										mobileValue, Lfacebook, Linstagram,
-										Llinkedin, Lgoogle, Lwebsite, Ltwitter,
-										currentUser.getId(), 0, MainObjectId,
-										objectId, ObjectBrandTypeId);
-						if (objectIdItem1 > 4)
-							DBAdapter.insertObjectInCity(LastObjectId, CityId);
-
-					}
-
-					DBAdapter.close();
-					getActivity().getSupportFragmentManager().popBackStack();
-
 				}
 
 			}
@@ -465,11 +430,336 @@ public class CreateIntroductionFragment extends Fragment implements
 			ringProgressDialog.dismiss();
 		}
 
+		int id = -1;
+
 		try {
 
+			id = Integer.valueOf(output);
+			DBAdapter.open();
+
+			if (mainID == 2 || mainID == 3 || mainID == 4) {
+
+				int LastObjectId = DBAdapter.CreatePageInShopeObject(nameValue,
+						phoneValue, emailValue, faxValue, descriptionValue,
+						Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
+						mobileValue, Lfacebook, Linstagram, Llinkedin, Lgoogle,
+						Lwebsite, Ltwitter, currentUser.getId(), mainID,
+						ObjectBrandTypeId);
+
+				DBAdapter.insertObjectInCity(LastObjectId, CityId);
+
+				byteHeader = Utility.CompressBitmap(bitmapHeader);
+				byteProfil = Utility.CompressBitmap(bitmapProfil);
+				byteFooter = Utility.CompressBitmap(bitmapFooter);
+
+				savingImage = new SavingImage3Picture(getActivity());
+				savingImage.delegate = this;
+				Map<String, Object> it = new LinkedHashMap<String, Object>();
+
+				it.put("tableName", "Object");
+				it.put("fieldName1", "Image1");
+				it.put("fieldName2", "Image2");
+				it.put("fieldName3", "Image3");
+
+				it.put("id", id);
+
+				it.put("Image1", byteHeader);
+				it.put("Image2", byteProfil);
+				it.put("Image3", byteFooter);
+
+				savingImage.execute(it);
+				ringProgressDialog = ProgressDialog.show(getActivity(), null,
+						"لطفا منتظر بمانید.");
+
+			} else if (mainID == 1) {
+
+				int LastObjectId = DBAdapter.InsertInformationNewObject(
+						nameValue, phoneValue, emailValue, faxValue,
+						descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo,
+						addressValue, mobileValue, Lfacebook, Linstagram,
+						Llinkedin, Lgoogle, Lwebsite, Ltwitter,
+						currentUser.getId(), parentId, mainItem, objectIdItem1,
+						ObjectBrandTypeId);
+
+				if (objectIdItem1 > 4)
+					DBAdapter.insertObjectInCity(LastObjectId, CityId);
+
+				byteHeader = Utility.CompressBitmap(bitmapHeader);
+				byteProfil = Utility.CompressBitmap(bitmapProfil);
+				byteFooter = Utility.CompressBitmap(bitmapFooter);
+
+				savingImage = new SavingImage3Picture(getActivity());
+				savingImage.delegate = this;
+				Map<String, Object> it = new LinkedHashMap<String, Object>();
+
+				it.put("tableName", "Object");
+				it.put("fieldName1", "Image1");
+				it.put("fieldName2", "Image2");
+				it.put("fieldName3", "Image3");
+
+				it.put("id", id);
+
+				it.put("Image1", byteHeader);
+				it.put("Image2", byteProfil);
+				it.put("Image3", byteFooter);
+
+				savingImage.execute(it);
+				ringProgressDialog = ProgressDialog.show(getActivity(), null,
+						"لطفا منتظر بمانید.");
+
+			} else {
+				int LastObjectId = DBAdapter.InsertInformationNewObject(
+						nameValue, phoneValue, emailValue, faxValue,
+						descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo,
+						addressValue, mobileValue, Lfacebook, Linstagram,
+						Llinkedin, Lgoogle, Lwebsite, Ltwitter,
+						currentUser.getId(), 0, MainObjectId, objectId,
+						ObjectBrandTypeId);
+				if (objectIdItem1 > 4)
+					DBAdapter.insertObjectInCity(LastObjectId, CityId);
+
+				byteHeader = Utility.CompressBitmap(bitmapHeader);
+				byteProfil = Utility.CompressBitmap(bitmapProfil);
+				byteFooter = Utility.CompressBitmap(bitmapFooter);
+
+				savingImage = new SavingImage3Picture(getActivity());
+				savingImage.delegate = this;
+				Map<String, Object> it = new LinkedHashMap<String, Object>();
+
+				it.put("tableName", "Object");
+				it.put("fieldName1", "Image1");
+				it.put("fieldName2", "Image2");
+				it.put("fieldName3", "Image3");
+
+				it.put("id", id);
+
+				it.put("Image1", byteHeader);
+				it.put("Image2", byteProfil);
+				it.put("Image3", byteFooter);
+
+				savingImage.execute(it);
+				ringProgressDialog = ProgressDialog.show(getActivity(), null,
+						"لطفا منتظر بمانید.");
+			}
+
 		} catch (NumberFormatException e) {
-			// TODO: handle exception
+			if (output != null
+					&& !(output.contains("Exception") || output
+							.contains("java"))) {
+
+				DBAdapter.open();
+				if (mainID == 2 || mainID == 3 || mainID == 4) {
+
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(getActivity());
+					saving.delegate = CreateIntroductionFragment.this;
+
+					params.put("TableName", "Object");
+
+					params.put("Name", nameValue);
+					params.put("Phone", phoneValue);
+					params.put("Email", emailValue);
+					params.put("Fax", faxValue);
+					params.put("Description", descriptionValue);
+					params.put("Cellphone", mobileValue);
+					params.put("Address", addressValue);
+					params.put("Pdf1", Lcatalog);
+					params.put("Pdf2", Lprice);
+					params.put("Pdf3", Lpdf);
+					params.put("Pdf4", Lvideo);
+					params.put("ObjectBrandTypeId",
+							String.valueOf(ObjectBrandTypeId));
+					params.put("Facebook", Lfacebook);
+					params.put("Instagram", Linstagram);
+					params.put("LinkedIn", Llinkedin);
+					params.put("Google", Lgoogle);
+					params.put("Site", Lwebsite);
+					params.put("Twitter", Ltwitter);
+					params.put("UserId", String.valueOf(currentUser.getId()));
+					params.put("Twitter", Ltwitter);
+					params.put("MainObjectId", String.valueOf(mainID));
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+					serverDate = output;
+
+					saving.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(getActivity(), "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
+
+					getActivity().getSupportFragmentManager().popBackStack();
+
+				} else if (mainID == 1) {
+
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(getActivity());
+					saving.delegate = CreateIntroductionFragment.this;
+
+					params.put("TableName", "Object");
+
+					params.put("Name", nameValue);
+					params.put("Phone", phoneValue);
+					params.put("Email", emailValue);
+					params.put("Fax", faxValue);
+					params.put("Description", descriptionValue);
+					params.put("Cellphone", mobileValue);
+					params.put("Address", addressValue);
+					params.put("Pdf1", Lcatalog);
+					params.put("Pdf2", Lprice);
+					params.put("Pdf3", Lpdf);
+					params.put("Pdf4", Lvideo);
+					params.put("Facebook", Lfacebook);
+					params.put("Instagram", Linstagram);
+					params.put("LinkedIn", Llinkedin);
+					params.put("Google", Lgoogle);
+					params.put("Site", Lwebsite);
+					params.put("Twitter", Ltwitter);
+					params.put("ObjectBrandTypeId",
+							String.valueOf(ObjectBrandTypeId));
+					params.put("UserId", String.valueOf(currentUser.getId()));
+					params.put("ParentId", String.valueOf(parentId));
+					params.put("MainObjectId", String.valueOf(mainItem));
+					params.put("ObjectId", String.valueOf(objectIdItem1));
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+					serverDate = output;
+
+					saving.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(getActivity(), "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
+
+					getActivity().getSupportFragmentManager().popBackStack();
+
+				} else {
+
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(getActivity());
+					saving.delegate = CreateIntroductionFragment.this;
+
+					params.put("TableName", "Object");
+
+					params.put("Name", nameValue);
+					params.put("Phone", phoneValue);
+					params.put("Email", emailValue);
+					params.put("Fax", faxValue);
+					params.put("Description", descriptionValue);
+
+					params.put("Pdf1", Lcatalog);
+					params.put("Pdf2", Lprice);
+					params.put("Pdf3", Lpdf);
+					params.put("Pdf4", Lvideo);
+
+					params.put("Cellphone", mobileValue);
+					params.put("Address", addressValue);
+
+					params.put("Facebook", Lfacebook);
+					params.put("Instagram", Linstagram);
+					params.put("LinkedIn", Llinkedin);
+					params.put("Google", Lgoogle);
+					params.put("Site", Lwebsite);
+					params.put("Twitter", Ltwitter);
+
+					params.put("UserId", String.valueOf(currentUser.getId()));
+					params.put("ParentId", String.valueOf(0));
+
+					params.put("MainObjectId", String.valueOf(MainObjectId));
+					params.put("ObjectId", String.valueOf(objectId));
+					params.put("ObjectBrandTypeId",
+							String.valueOf(ObjectBrandTypeId));
+					serverDate = output;
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+					saving.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(getActivity(), "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
+
+					getActivity().getSupportFragmentManager().popBackStack();
+
+				}
+
+			} else {
+				Toast.makeText(getActivity(),
+						"خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT)
+						.show();
+			}
+
+		} catch (Exception e) {
+
+			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
+					.show();
 		}
 	}
 
+	@Override
+	public void processFinishSaveImage(String output) {
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
+
+		try {
+
+			DBAdapter.open();
+			DBAdapter.insertImageObjectToDatabase(byteHeader, byteProfil,
+					byteFooter);
+
+			DBAdapter.close();
+
+		} catch (Exception e) {
+			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
+					.show();
+		}
+	}
 }
