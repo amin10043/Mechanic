@@ -125,7 +125,7 @@ public class ShowAdFragment extends Fragment {
 		headerParams = new RelativeLayout.LayoutParams(
 				headerRelative.getLayoutParams());
 		headerParams.width = util.getScreenwidth();
-		headerParams.height = (int) (util.getScreenHeight() / 2.5);
+		headerParams.height = util.getScreenwidth();
 		headerParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
 		// iconRelative = (RelativeLayout) view.findViewById(R.id.iconAnad);
