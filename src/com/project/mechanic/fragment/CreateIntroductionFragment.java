@@ -1,8 +1,10 @@
 package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Map;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -29,10 +31,15 @@ import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Deleting;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
-public class CreateIntroductionFragment extends Fragment {
+public class CreateIntroductionFragment extends Fragment implements
+		AsyncInterface {
 
 	private static int RESULT_LOAD_IMAGE = 1;
 	private static int HeaderCode = 2;
@@ -64,6 +71,15 @@ public class CreateIntroductionFragment extends Fragment {
 			Linstagram;
 	public String Lcatalog, Lprice, Lpdf, Lvideo;
 	Users currentUser;
+
+	String serverDate = "";
+	ServerDate date;
+
+	ProgressDialog ringProgressDialog;
+
+	Saving saving;
+	Deleting deleting;
+	Map<String, String> params;
 
 	// EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle,
 	// inInstagram;
@@ -298,6 +314,13 @@ public class CreateIntroductionFragment extends Fragment {
 
 				else {
 
+					date = new ServerDate(getActivity());
+					date.delegate = CreateIntroductionFragment.this;
+					date.execute("");
+
+					ringProgressDialog = ProgressDialog.show(getActivity(),
+							null, "لطفا منتظر بمانید.");
+
 					DBAdapter.open();
 					if (mainID == 2 || mainID == 3 || mainID == 4) {
 						int LastObjectId = DBAdapter.CreatePageInShopeObject(
@@ -434,6 +457,19 @@ public class CreateIntroductionFragment extends Fragment {
 
 		}
 
+	}
+
+	@Override
+	public void processFinish(String output) {
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
+
+		try {
+
+		} catch (NumberFormatException e) {
+			// TODO: handle exception
+		}
 	}
 
 }
