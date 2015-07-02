@@ -176,6 +176,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	public void processFinish(String output) {
 		String title = dialog_anad_et1.getText().toString();
 		String desc = dialog_anad_et2.getText().toString();
+		
 		if(Day.getText()!= null){
 	    roz=Integer.parseInt(Day.getText().toString());}
 		 
@@ -235,7 +236,11 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 							" عنوان آگهی .شرح آگهی.اعتبار آگهی نمی تواند خالی باشد",
 							Toast.LENGTH_LONG).show();
 					
-				} else {
+				} else if("".equals(UEmail.getText().toString())&&"".equals(UPhonnumber.getText().toString())  &&"".equals(UFax.getText().toString())   && "".equals(UMobile.getText().toString())) {
+					Toast.makeText(context,
+							"یکی از فیلد های تطلاعات تماس اجباریست",
+							Toast.LENGTH_LONG).show();}
+				else{
 					params = new LinkedHashMap<String, String>();
 					saving = new Saving(context);
 					saving.delegate = DialogAnad.this;
