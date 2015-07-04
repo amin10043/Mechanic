@@ -68,7 +68,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	int gId = -1;
 
 	TextView UName;
-	int roz;
+	int roz=0;
 
 	int ProvinceId;
 	Users u;
@@ -177,7 +177,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 		String title = dialog_anad_et1.getText().toString();
 		String desc = dialog_anad_et2.getText().toString();
 		
-		if(Day.getText()!= null){
+		if(!"".equals(Day.getText().toString())){
 	    roz=Integer.parseInt(Day.getText().toString());}
 		 
 		if (ringProgressDialog != null) {
@@ -230,7 +230,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 
 		} catch (NumberFormatException ex) {
 			if (!output.contains("java") || !output.contains("Exception")) {
-				if ("".equals(title) || "".equals(desc) || roz==0) {
+				if ("".equals(title) || "".equals(desc) || roz<=0) {
 					
 					Toast.makeText(context,
 							" عنوان آگهی .شرح آگهی.اعتبار آگهی نمی تواند خالی باشد",
