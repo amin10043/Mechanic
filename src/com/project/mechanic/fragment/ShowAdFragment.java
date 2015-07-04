@@ -4,10 +4,13 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -88,10 +91,12 @@ public class ShowAdFragment extends Fragment {
 		day = (TextView) view.findViewById(R.id.textDay);
 		date = (TextView) view.findViewById(R.id.textdate);
 
+		
+	
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
-
+	
 		 t = dbAdapter.getTicketById(id);
 		a = t.getId();
 		userTicket = t.getUserId();
@@ -120,7 +125,24 @@ public class ShowAdFragment extends Fragment {
 
 			// edite.setVisibility(1);
 		}
-
+		if(u.getId() != t.getUserId()){
+		if (!util.isNetworkConnected()) {
+			Toast.makeText(getActivity(), "Flse",
+					Toast.LENGTH_SHORT).show();
+			dbAdapter.open();
+			dbAdapter.insertVisitToDb(u.getId(), 3, t.getId());
+			dbAdapter.close();
+		}
+		else if((util.isNetworkConnected())) {
+			Toast.makeText(getActivity(), "True",
+					Toast.LENGTH_SHORT).show();
+		dbAdapter.open();
+           //ارسال اطلاعات به جدول ویزیت سرور
+		   //ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
+         dbAdapter.deleteVisit();	
+         dbAdapter.close();
+		}
+		}
 		headerRelative = (RelativeLayout) view.findViewById(R.id.headerAnad);
 		headerParams = new RelativeLayout.LayoutParams(
 				headerRelative.getLayoutParams());
@@ -304,6 +326,7 @@ public class ShowAdFragment extends Fragment {
 		dbAdapter.close();
 
 		return view;
+		
 	}
 
 	@Override
@@ -330,6 +353,20 @@ public class ShowAdFragment extends Fragment {
 			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
 		}
+	}
+
+//	private boolean isNetworkConnected() { 
+//		ConnectivityManager cm = (ConnectivityManager) getSystemService(getActivity().CONNECTIVITY_SERVICE);
+//		NetworkInfo ni = cm.getActiveNetworkInfo();
+//		if (ni == null) {
+//		    // There are no active networks.
+//		    return false;
+//		} else
+//		    return true;
+//		}
+	private ConnectivityManager getSystemService(String connectivityService) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public void updateView() {

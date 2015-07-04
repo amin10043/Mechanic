@@ -78,6 +78,7 @@ public class DataBaseAdapter {
 	private String TableCommentInObject = "CommentInObject";
 	private String TableCommentInFroum = "CommentInFroum";
 	private String TableLikeInComment = "LikeInComment";
+	private String TableVisit = "Visit";
 
 	private String TableCommentInPaper = "CmtInPaper";
 
@@ -156,6 +157,8 @@ public class DataBaseAdapter {
 	private String[] LikeInCommentObject = { "Id", "CommentId", "UserId",
 			"IsLike" };
 
+	private String[] Visit = { "UserId", "ObjectId", "TypeId" };
+
 	private final Context mContext;
 	private SQLiteDatabase mDb;
 	private DataBaseHelper mDbHelper;
@@ -231,6 +234,18 @@ public class DataBaseAdapter {
 		uc.put("ProvinceId", provinceId);
 		uc.put("Seen", seen);
 		long res = mDb.insert(TableAnad, null, uc);
+		long res2 = res;
+
+	}
+	
+	public void insertVisitToDb(int userid,int typeId,int objectId) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("UserId", userid);
+		uc.put("TypeId", typeId);
+		uc.put("ObjectId", objectId);
+		long res = mDb.insert(TableVisit, null, uc);
 		long res2 = res;
 
 	}
@@ -1247,6 +1262,7 @@ public class DataBaseAdapter {
 		return Users;
 
 	}
+	
 
 	@SuppressWarnings("unused")
 	private LikeInObject CursorToLikeInObject(Cursor cursor) {
@@ -1344,6 +1360,13 @@ public class DataBaseAdapter {
 				cursor.getString(5), cursor.getInt(6), cursor.getString(7),
 				cursor.getInt(8));
 		return tempForum;
+
+	}
+	
+	private com.project.mechanic.entity.Visit CursorToVisit(Cursor cursor) {
+		com.project.mechanic.entity.Visit tempVisit = new com.project.mechanic.entity.Visit(cursor.getInt(0), cursor.getInt(1),
+				cursor.getInt(2));
+		return tempVisit;
 
 	}
 
@@ -2241,6 +2264,12 @@ public class DataBaseAdapter {
 	public void deletebyIdTicket(int id) {
 
 		mDb.execSQL("delete from [Favorite] where IdTicket = " + id);
+
+	}
+	
+	public void deleteVisit() {
+
+		mDb.execSQL("delete from [Visit]");
 
 	}
 
