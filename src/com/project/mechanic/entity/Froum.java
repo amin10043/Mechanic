@@ -99,24 +99,9 @@ public class Froum implements Comparable<Froum> {
 		this.seenBefore = seenBefore;
 	}
 
-	@Override
-	// public int compareTo(Froum d1) {
-	// TODO Auto-generated method stub
-	// double value = Double.parseDouble( Date.replace(",",".") );
-	// if (getDate() == null || d1.getDate() == null)
-	// return 0;
-	// return getDate().compareTo(d1.getDate());
 	public int compareTo(Froum compareFroum) {
-		// TODO Auto-generated method stub
-		// String s=getDate();
-		// Double va=Convert.ToDouble(s);
 		long temp = Long.valueOf(getDate());
-
-		// number = temp.doubleValue();
 		Long comparetemp = Long.valueOf(compareFroum.getDate());
-
-		// return this.Count - compareCount;
-
-		return (int) (comparetemp - Long.valueOf(getDate()));
+		return (int) (comparetemp - temp);
 	}
 }
