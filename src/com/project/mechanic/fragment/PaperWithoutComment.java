@@ -158,6 +158,25 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 			descriptiontxt.setText(p.getContext());
 			dateTopic.setText(util.getPersianDate(p.getDate()));
 		}
+		
+		if(util.getCurrentUser().getId() != paperID){
+		if (!util.isNetworkConnected()) {
+			Toast.makeText(getActivity(), "Flse",
+					Toast.LENGTH_SHORT).show();
+			adapter.open();
+			adapter.insertVisitToDb(util.getCurrentUser().getId(),2, paperID);
+			adapter.close();
+		}
+		else if((util.isNetworkConnected())) {
+			Toast.makeText(getActivity(), "True",
+					Toast.LENGTH_SHORT).show();
+			adapter.open();
+           //ارسال اطلاعات به جدول ویزیت سرور
+		   //ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
+			adapter.deleteVisit();	
+			adapter.close();
+		}
+		}
 		profileImg.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
