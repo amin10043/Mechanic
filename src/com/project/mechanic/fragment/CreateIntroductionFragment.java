@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -49,6 +48,7 @@ public class CreateIntroductionFragment extends Fragment implements
 	private static int FooterCode = 3;
 	int Object;
 	int ObjectBrandTypeId;
+	int serverId = -1;
 
 	DataBaseAdapter DBAdapter;
 	ImageButton btnSave;
@@ -345,7 +345,8 @@ public class CreateIntroductionFragment extends Fragment implements
 
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		bitmap.compress(CompressFormat.PNG, 50, outputStream);
+		// bitmap.compress(CompressFormat.PNG, 50, outputStream);
+
 		return outputStream.toByteArray();
 	}
 
@@ -430,11 +431,9 @@ public class CreateIntroductionFragment extends Fragment implements
 			ringProgressDialog.dismiss();
 		}
 
-		int id = -1;
-
 		try {
 
-			id = Integer.valueOf(output);
+			serverId = Integer.valueOf(output);
 			DBAdapter.open();
 
 			if (mainID == 2 || mainID == 3 || mainID == 4) {
@@ -461,7 +460,7 @@ public class CreateIntroductionFragment extends Fragment implements
 				it.put("fieldName2", "Image2");
 				it.put("fieldName3", "Image3");
 
-				it.put("id", id);
+				it.put("id", serverId);
 
 				it.put("Image1", byteHeader);
 				it.put("Image2", byteProfil);
@@ -497,7 +496,7 @@ public class CreateIntroductionFragment extends Fragment implements
 				it.put("fieldName2", "Image2");
 				it.put("fieldName3", "Image3");
 
-				it.put("id", id);
+				it.put("id", serverId);
 
 				it.put("Image1", byteHeader);
 				it.put("Image2", byteProfil);
@@ -531,7 +530,7 @@ public class CreateIntroductionFragment extends Fragment implements
 				it.put("fieldName2", "Image2");
 				it.put("fieldName3", "Image3");
 
-				it.put("id", id);
+				it.put("id", serverId);
 
 				it.put("Image1", byteHeader);
 				it.put("Image2", byteProfil);
@@ -752,8 +751,8 @@ public class CreateIntroductionFragment extends Fragment implements
 		try {
 
 			DBAdapter.open();
-			DBAdapter.insertImageObjectToDatabase(byteHeader, byteProfil,
-					byteFooter);
+			DBAdapter.UpdateImageObjectToDatabase(serverId, byteHeader,
+					byteProfil, byteFooter);
 
 			DBAdapter.close();
 

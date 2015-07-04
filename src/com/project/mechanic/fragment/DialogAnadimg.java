@@ -9,16 +9,18 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.view.View;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -80,7 +82,11 @@ public class DialogAnadimg extends Dialog {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setBackgroundDrawable(
+				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		// setContentView(R.layout.dialog_addcomment);
 		// id = Integer.valueOf(getArguments().getString("Id"));
 
@@ -88,19 +94,19 @@ public class DialogAnadimg extends Dialog {
 
 		TextView txtdesc = (TextView) findViewById(R.id.txtdescdialog);
 		CheckBox checkshart = (CheckBox) findViewById(R.id.checkBoxshart);
-		final Button btndarj = (Button) findViewById(R.id.darjtabligh);
+		final LinearLayout btndarj = (LinearLayout) findViewById(R.id.darjtabligh);
 
 		txtdesc.setText(Html
-				.fromHtml("<html>1-شرط اول <br>2-شرط دوم <br>3-شرط سوم <br>4-شرط چهارم  <br>5-شرط پنجم <br></html>"));
+				.fromHtml("<html>1-انتخاب عکس جهت آگهی باید مناسب و هماهنگ با فعالیت شما باشد <br><br>2-سایر کاربران با لمس کردن آگهی مربوطه شما مستقیما به لینک صفحه شما در این نرم افزار هدایت می شوند <br><br>3-این آگهی در 6 تالار مربوطه این لینک همزمان اجرا می شود <br><br>4-هزینه این آگهی به مبلغ 5.000.000 ریال و از تاریخ ثبت به مدت  یک سال می باشد <br><br></html>"));
 
-		checkshart.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				btndarj.setVisibility(1);
-
-			}
-		});
+		// checkshart.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// btndarj.setVisibility(1);
+		//
+		// }
+		// });
 		btndarj.setOnClickListener(new View.OnClickListener() {
 
 			@Override

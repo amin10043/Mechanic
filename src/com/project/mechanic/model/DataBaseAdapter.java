@@ -3252,7 +3252,7 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertImageObjectToDatabase(byte[] HeaderImage,
+	public void UpdateImageObjectToDatabase(int id, byte[] HeaderImage,
 			byte[] ProfileImage, byte[] FooterImage) {
 
 		ContentValues cv = new ContentValues();
@@ -3266,7 +3266,6 @@ public class DataBaseAdapter {
 
 		Toast.makeText(mContext, "تصویر با موفقیت ثبت شد", Toast.LENGTH_SHORT)
 				.show();
-		mDb.insert(TableObject, null, cv);
+		mDb.update(TableObject, cv, "Id=?", new String[] { String.valueOf(id) });
 	}
-
 }

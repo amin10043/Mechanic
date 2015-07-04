@@ -1,47 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/shiri"
-    android:baselineAligned="true"
-    android:orientation="vertical"
-    android:weightSum="9" >
+    android:layout_height="wrap_content" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:background="@drawable/list_item"
+        android:baselineAligned="true"
+        android:orientation="vertical"
+        android:weightSum="9" >
 
-        <TextView
-            android:id="@+id/txtdescdialog"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:textColor="@color/transparent" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/txtdescdialog"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:gravity="right"
+                android:lineSpacingExtra="10dp"
+                android:textColor="@color/transparent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <CheckBox
+                android:id="@+id/checkBoxshart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_margin="10dp"
+                android:text="شرایط را قبول دارم"
+                android:textColor="@color/transparent"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/darjtabligh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#568bdd"
+                android:enabled="true"
+                android:textColor="@color/white" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="قبول شرایط و رزرو آگهی"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <CheckBox
-            android:id="@+id/checkBoxshart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="شرایط را قبول دارم"
-            android:textColor="@color/transparent" />
-
-        <Button
-            android:id="@+id/darjtabligh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/buttonshape"
-            android:enabled="true"
-            android:text="درج تبلیغات"
-            android:visibility="invisible" />
-    </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

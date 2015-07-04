@@ -24,7 +24,7 @@
                 <ImageView
                     android:id="@+id/hh1"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="10dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/gf2" />
             </LinearLayout>
@@ -582,6 +582,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:background="@drawable/brand_list_item_shape"
                     android:orientation="vertical" >
 
                     <ImageView
@@ -590,6 +591,13 @@
                         android:layout_height="160dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/gf" />
+
+                    <EditText
+                        android:id="@+id/descriptionpageedit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:hint="توضیحات بیشتر" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -607,13 +615,6 @@
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:background="#CCCCCC" >
-
-                        <EditText
-                            android:id="@+id/descriptionpageedit"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:hint="توضیحات بیشتر" />
                     </RelativeLayout>
                 </LinearLayout>
 

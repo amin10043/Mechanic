@@ -61,7 +61,7 @@ public class IntroductionEditFragment extends Fragment {
 	RelativeLayout.LayoutParams profileEditParams;
 
 	RelativeLayout editnetLink, editDNlink, namayendegi, khadamat,
-			Linearprofile;
+			Linearprofile, AdminsPage;
 
 	LinearLayout Linearheader, Linearfooter;
 
@@ -97,6 +97,7 @@ public class IntroductionEditFragment extends Fragment {
 		editDNlink = (RelativeLayout) view.findViewById(R.id.editpagedownload);
 		namayendegi = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
 		khadamat = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
+		AdminsPage = (RelativeLayout) view.findViewById(R.id.listAdmin);
 
 		namayendegi.setVisibility(View.GONE);
 		khadamat.setVisibility(View.GONE);
@@ -108,7 +109,7 @@ public class IntroductionEditFragment extends Fragment {
 
 		headerEditParams = new LinearLayout.LayoutParams(
 				Linearheader.getLayoutParams());
-		headerEditParams.height = (int) (util.getScreenHeight() / 3);
+		headerEditParams.height = (int) (util.getScreenwidth());
 
 		profileEditParams = new RelativeLayout.LayoutParams(
 				Linearprofile.getLayoutParams());
@@ -118,7 +119,7 @@ public class IntroductionEditFragment extends Fragment {
 
 		footerEditParams = new LinearLayout.LayoutParams(
 				Linearfooter.getLayoutParams());
-		footerEditParams.height = util.getScreenHeight() / 3;
+		footerEditParams.height = util.getScreenwidth();
 
 		editnameParams = new LinearLayout.LayoutParams(
 				Linearprofile.getLayoutParams());
@@ -199,6 +200,16 @@ public class IntroductionEditFragment extends Fragment {
 				getActivity().startActivityFromFragment(
 						IntroductionEditFragment.this, i, headerLoadCode);
 
+			}
+		});
+
+		AdminsPage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				DialogAdminsPage adminDialog = new DialogAdminsPage(
+						getActivity(), id);
+				adminDialog.show();
 			}
 		});
 

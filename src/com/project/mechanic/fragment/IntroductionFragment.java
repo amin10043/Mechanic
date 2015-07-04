@@ -241,11 +241,11 @@ public class IntroductionFragment extends Fragment implements AsyncInterface {
 
 		headerParams = new LinearLayout.LayoutParams(
 				headImageLinear.getLayoutParams());
-		headerParams.height = ut.getScreenHeight() / 3;
+		headerParams.height = ut.getScreenwidth();
 
 		footerParams = new LinearLayout.LayoutParams(
 				footerLinear.getLayoutParams());
-		footerParams.height = ut.getScreenHeight() / 3;
+		footerParams.height = ut.getScreenwidth();
 
 		adapter.open();
 		int countcmt = adapter.CommentInObject_count(ObjectID);
