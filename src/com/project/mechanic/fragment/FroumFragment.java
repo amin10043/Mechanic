@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,6 +72,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 	Utility util;
 	int id;
 	Users user;
+	int userId;
 
 	Saving saving;
 	Deleting deleting;
@@ -140,6 +142,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		topics = adapter.getFroumItembyid(froumid);
 		Users u = adapter.getUserbyid(topics.getUserId());
 		if (u != null) {
+			userId= u.getId();
 
 			nametxt.setText(u.getName());
 			LinearLayout rl = (LinearLayout) header
@@ -176,8 +179,15 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 			
 			@Override
 			public void onClick(View arg0) {
-				Toast.makeText(getActivity(),"FroumFragment",
-						Toast.LENGTH_SHORT).show();
+				
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
 				
 			}
 		});

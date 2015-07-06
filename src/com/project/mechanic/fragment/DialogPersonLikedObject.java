@@ -10,32 +10,26 @@ import android.view.Window;
 import android.widget.ListView;
 
 import com.project.mechanic.R;
-import com.project.mechanic.adapter.PersonLikedAdapter;
-import com.project.mechanic.entity.LikeInFroum;
+import com.project.mechanic.adapter.PersonLikedObjectAdapter;
+import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class DialogPersonLikedFroum extends Dialog {
+public class DialogPersonLikedObject extends Dialog {
 
 	Context context;
 	DataBaseAdapter adapter;
-	int FroumId;
+	int ObjectId;
 	ListView lv;
-	ArrayList<LikeInFroum> likedist;
+	ArrayList<LikeInObject> likedist;
 
-	public DialogPersonLikedFroum(Context context, int FroumId,
-			ArrayList<LikeInFroum> list) {
+	public DialogPersonLikedObject(Context context, int ObjectId,
+			ArrayList<LikeInObject> list) {
 		super(context);
 
 		this.context = context;
-		this.FroumId = FroumId;
+		this.ObjectId = ObjectId;
 		this.likedist = list;
 		adapter = new DataBaseAdapter(context);
-	}
-	
-	public DialogPersonLikedFroum(Context context) {
-		super(context);
-
-			adapter = new DataBaseAdapter(context);
 	}
 
 	@Override
@@ -49,10 +43,9 @@ public class DialogPersonLikedFroum extends Dialog {
 		setContentView(R.layout.dialog_person_liked);
 		lv = (ListView) findViewById(R.id.listPeronLiked);
 
-		PersonLikedAdapter listadapter = new PersonLikedAdapter(context,
-				R.layout.row_person_liked, likedist);
+		PersonLikedObjectAdapter listadapter = new PersonLikedObjectAdapter(
+				context, R.layout.row_person_liked, likedist);
 		lv.setAdapter(listadapter);
 
 	}
-	
 }

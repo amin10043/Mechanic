@@ -64,7 +64,7 @@ public class LoginFragment extends Fragment implements AsyncInterface,
 		Button btnlog = (Button) view.findViewById(R.id.btnlogin);
 		Button btncancle = (Button) view.findViewById(R.id.btncancle);
 		// Button launchRingDialog= (Button) view.findViewById(R.id.btnring);
-		TextView btnreg = (TextView) view.findViewById(R.id.btnreg1);
+		Button btnreg = (Button) view.findViewById(R.id.btnreg1);
 		TextView btnforgot = (TextView) view.findViewById(R.id.btnforgot);
 		editmobile = (EditText) view.findViewById(R.id.editTextmobile);
 		final EditText editpass = (EditText) view

@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.ListView.PullAndLoadListView;
 import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
@@ -66,6 +68,7 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 	View view;
 	PullAndLoadListView lstNews;
 	RelativeLayout countLike;
+	int userId;
 
 	String serverDate = "";
 	ServerDate date;
@@ -132,7 +135,7 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 		Users u = adapter.getUserbyid(p.getUserId());
 		// lstNews.addHeaderView(header);
 		// lstNews.addHeaderView(header);
-
+        userId=u.getId();
 		lstNews.setAdapter(PaperListadapter);
 		if (mylist != null && !mylist.isEmpty()) {
 
@@ -177,13 +180,37 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 			icon.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
 			icon.setLayoutParams(lp);
 		}
+		if(util.getCurrentUser().getId() != paperID){
+			if (!util.isNetworkConnected()) {
+				Toast.makeText(getActivity(), "Flse",
+						Toast.LENGTH_SHORT).show();
+				adapter.open();
+				adapter.insertVisitToDb(util.getCurrentUser().getId(),2, paperID);
+				adapter.close();
+			}
+			else if((util.isNetworkConnected())) {
+				Toast.makeText(getActivity(), "True",
+						Toast.LENGTH_SHORT).show();
+				adapter.open();
+	           //ارسال اطلاعات به جدول ویزیت سرور
+			   //ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
+				adapter.deleteVisit();	
+				adapter.close();
+			}
+			}
 		adapter.close();
 		icon.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
-				Toast.makeText(getActivity(), "PaperFragment",
-						Toast.LENGTH_SHORT).show();
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
 				
 			}
 		});

@@ -60,6 +60,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 	ServerDate date;
 	RelativeLayout count, commentcounter;
 	FroumFragment ff;
+	int userId;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,7 +101,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 		topics = adapter.getFroumItembyid(idFroum);
 		Users u = adapter.getUserbyid(topics.getUserId());
-
+        userId=u.getId();
 		if (CurrentUser == null) {
 			likeTopic.setBackgroundResource(R.drawable.like_off);
 			count.setBackgroundResource(R.drawable.count_like_off);
@@ -152,9 +153,15 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 			
 			@Override
 			public void onClick(View arg0) {
-				Toast.makeText(getActivity(),
-						"FroumWithoutComment",
-						Toast.LENGTH_SHORT).show();
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+				
 				
 			}
 		});

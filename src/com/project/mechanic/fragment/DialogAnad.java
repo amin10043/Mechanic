@@ -68,6 +68,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	int gId = -1;
 
 	TextView UName;
+	int roz = 0;
 
 	int ProvinceId;
 	Users u;
@@ -176,6 +177,10 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 		String title = dialog_anad_et1.getText().toString();
 		String desc = dialog_anad_et2.getText().toString();
 		int roz = Integer.parseInt(Day.getText().toString());
+		if (!"".equals(Day.getText().toString())) {
+			roz = Integer.parseInt(Day.getText().toString());
+		}
+
 		if (ringProgressDialog != null) {
 			ringProgressDialog.dismiss();
 		}
@@ -222,13 +227,22 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 				((AnadFragment) fragment).updateView();
 				this.dismiss();
 			}
-			//
 
 		} catch (NumberFormatException ex) {
 			if (!output.contains("java") || !output.contains("Exception")) {
-				if ("".equals(title) || "".equals(desc)) {
+				if ("".equals(title) || "".equals(desc) || roz <= 0) {
+
+					Toast.makeText(
+							context,
+							" عنوان آگهی .شرح آگهی.اعتبار آگهی نمی تواند خالی باشد",
+							Toast.LENGTH_LONG).show();
+
+				} else if ("".equals(UEmail.getText().toString())
+						&& "".equals(UPhonnumber.getText().toString())
+						&& "".equals(UFax.getText().toString())
+						&& "".equals(UMobile.getText().toString())) {
 					Toast.makeText(context,
-							" عنوان آگهی یا شرح آگهی نمی تواند خالی باشد",
+							"یکی از فیلد های تطلاعات تماس اجباریست",
 							Toast.LENGTH_LONG).show();
 				} else {
 					params = new LinkedHashMap<String, String>();
@@ -248,6 +262,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 					params.put("UMobile", UMobile.getText().toString());
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
+					params.put("Day", String.valueOf(roz));
 					gServerDate = output;
 					saving.execute(params);
 					ringProgressDialog = ProgressDialog.show(context, "",

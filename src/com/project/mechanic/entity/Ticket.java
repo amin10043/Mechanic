@@ -248,8 +248,9 @@ public class Ticket implements Comparable<Ticket> {
 		UMobile = umobile;
 		Seen = seen;
 		Submit = submit;
-		Day=day;
 		this.seenBefore = seenBefore;
+		Day=day;
+		
 	}
 
 	@Override

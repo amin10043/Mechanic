@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +24,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogcmtInfroum;
+import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -52,6 +56,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 	int GlobalId;
 	TextView countLike, countdisLike;
 	ProgressDialog ringProgressDialog;
+	int userId;
 
 	public ExpandableCommentFroum(Context context,
 			ArrayList<CommentInFroum> laptops,
@@ -102,6 +107,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 		// final CommentInFroum comment = cmt.get(groupPosition);
 		Users y = adapter.getUserbyid(reply.getUserid());
+		userId=y.getId();
 		RelativeLayout rl = (RelativeLayout) convertView
 				.findViewById(R.id.main_icon_reply);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
@@ -133,7 +139,15 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 			
 			@Override
 			public void onClick(View arg0) {
-				Toast.makeText(context,"ExpandableCommentFroum",Toast.LENGTH_LONG).show();
+				FragmentTransaction trans = ((MainActivity) context)
+				.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+			
 				
 			}
 		});
@@ -170,8 +184,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 		adapter.open();
 
 		final CommentInFroum comment = cmt.get(groupPosition);
-		Users x = adapter.getUserbyid(comment.getUserid());
-
+		final Users x = adapter.getUserbyid(comment.getUserid());
+       // userId= x.getId();
 		adapter.close();
 
 		if (convertView == null) {
@@ -278,8 +292,21 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 			
 			@Override
 			public void onClick(View arg0) {
-				Toast.makeText(context, "ExpandableCommentFroum",
-						Toast.LENGTH_SHORT).show();
+				adapter.open();
+				final CommentInFroum comment = cmt.get(groupPosition);
+				final Users x = adapter.getUserbyid(comment.getUserid());
+		        userId= x.getId();
+				
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+						DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+						Bundle bundle = new Bundle();
+						bundle.putInt("userId", userId);
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.commit();
+			
+			
 				
 			}
 		});

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -31,28 +32,34 @@ import android.widget.Toast;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.ExpandIntroduction;
 import com.project.mechanic.entity.CommentInObject;
+import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Deleting;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
-public class IntroductionFragment extends Fragment {
+public class IntroductionFragment extends Fragment implements AsyncInterface {
 
 	Utility ut;
 	Users CurrentUser;
 	PersianDate datePersian;
-	String currentDate;
+	// String currentDate;
 	View header;
 	ExpandableListView exListView;
 	ExpandIntroduction exadapter;
 	int ObjectID;
+	DialogPersonLikedObject ListLiked;
 
 	ArrayList<CommentInObject> commentGroup, ReplyGroup;
 	Map<CommentInObject, List<CommentInObject>> mapCollection;
 
 	private ImageView peykan6, peykan5;
 	public RelativeLayout agency, service, sendSMS, addressRelative,
-			emailRelative, profileLinear;
+			emailRelative, profileLinear, personPage, personPost;
 
 	public DialogcmtInobject dialog;
 	Fragment fragment;
@@ -66,10 +73,11 @@ public class IntroductionFragment extends Fragment {
 
 	ArrayList<CommentInObject> mylist;
 	DataBaseAdapter adapter;
-	LinearLayout headImageLinear, footerLinear;
+	LinearLayout headImageLinear, footerLinear, likePost;
 
 	TextView txtFax, txtAddress, txtPhone, txtCellphone, txtEmail, txtDesc,
-			CountLikeIntroduction, CountCommentIntroduction, namePage;
+			CountLikeIntroduction, CountCommentIntroduction, namePage,
+			countLikePost;
 
 	ImageView headerImage, advertise2, profileImage;
 	ImageButton Facebook, Instagram, LinkedIn, Google, Site, Twitter, Pdf1,
@@ -78,6 +86,16 @@ public class IntroductionFragment extends Fragment {
 	byte[] headerbyte, profilebyte, footerbyte;
 
 	SharedPreferences sendDataID;
+
+	Saving saving;
+	Deleting deleting;
+	Map<String, String> params;
+
+	ProgressDialog ringProgressDialog;
+
+	String serverDate = "";
+	ServerDate date;
+	boolean flag;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -89,8 +107,8 @@ public class IntroductionFragment extends Fragment {
 
 		adapter = new DataBaseAdapter(getActivity());
 		ut = new Utility(getActivity());
-		datePersian = new PersianDate();
-		currentDate = datePersian.todayShamsi();
+		// datePersian = new PersianDate();
+		// currentDate = datePersian.todayShamsi();
 		header = getActivity().getLayoutInflater().inflate(
 				R.layout.header_introduction, null);
 		CurrentUser = ut.getCurrentUser();
@@ -157,9 +175,15 @@ public class IntroductionFragment extends Fragment {
 				.findViewById(R.id.linear_id_profile_introduction_page);
 		footerLinear = (LinearLayout) header.findViewById(R.id.footerint);
 		EditPage = (ImageButton) header.findViewById(R.id.ImgbtnEdit);
+		likePost = (LinearLayout) header
+				.findViewById(R.id.likePostIntroduction);
+
+		countLikePost = (TextView) header.findViewById(R.id.countlllllll);
+		personPage = (RelativeLayout) header.findViewById(R.id.countLiketext);
+		personPost = (RelativeLayout) header.findViewById(R.id.countLikeqqz);
 
 		sendDataID = getActivity().getSharedPreferences("Id", 0);
-		final int ObjectID = sendDataID.getInt("main_Id", -1);
+		ObjectID = sendDataID.getInt("main_Id", -1);
 
 		adapter.open();
 		commentGroup = adapter.getAllCommentInObjectById(ObjectID, 0);
@@ -185,10 +209,24 @@ public class IntroductionFragment extends Fragment {
 		if (CurrentUser == null) {
 		} else {
 			if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
-					ObjectID))
+					ObjectID, 0)) {
 				AddLike.setBackgroundResource(R.drawable.like_on);
-			else
+				personPage.setBackgroundResource(R.drawable.count_like);
+			} else {
 				AddLike.setBackgroundResource(R.drawable.like_off);
+				personPage.setBackgroundResource(R.drawable.count_like_off);
+
+			}
+			if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
+					ObjectID, 1)) {
+				likePost.setBackgroundResource(R.drawable.like_on);
+				personPost.setBackgroundResource(R.drawable.count_like);
+
+			} else {
+				likePost.setBackgroundResource(R.drawable.like_off);
+				personPost.setBackgroundResource(R.drawable.count_like_off);
+
+			}
 		}
 		adapter.close();
 
@@ -213,8 +251,11 @@ public class IntroductionFragment extends Fragment {
 		int countcmt = adapter.CommentInObject_count(ObjectID);
 		CountCommentIntroduction.setText(String.valueOf(countcmt));
 
-		int countlike = adapter.LikeInObject_count(ObjectID);
+		int countlike = adapter.LikeInObject_count(ObjectID, 0);
 		CountLikeIntroduction.setText(String.valueOf(countlike));
+
+		int countlikePo = adapter.LikeInObject_count(ObjectID, 1);
+		countLikePost.setText(String.valueOf(countlikePo));
 
 		object = adapter.getObjectbyid(ObjectID);
 		adapter.close();
@@ -325,7 +366,7 @@ public class IntroductionFragment extends Fragment {
 			// this view is created for check active or inactive introduction
 			// page
 
-			// return t;
+			return t;
 
 		}
 
@@ -482,6 +523,50 @@ public class IntroductionFragment extends Fragment {
 		// }
 
 		// advertise.setimage
+
+		personPage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				adapter.open();
+
+				ArrayList<LikeInObject> likedist = adapter
+						.getAllLikeFromObject(ObjectID, 0);
+
+				adapter.close();
+				if (likedist.size() == 0) {
+					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
+							.show();
+				} else {
+					DialogPersonLikedObject dia = new DialogPersonLikedObject(
+							getActivity(), ObjectID, likedist);
+					dia.show();
+				}
+			}
+		});
+
+		personPost.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				adapter.open();
+				ArrayList<LikeInObject> likedist = adapter
+						.getAllLikeFromObject(ObjectID, 1);
+
+				adapter.close();
+				if (likedist.size() == 0) {
+					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
+							.show();
+				} else {
+					DialogPersonLikedObject dia = new DialogPersonLikedObject(
+							getActivity(), ObjectID, likedist);
+					dia.show();
+				}
+			}
+		});
+
 		Facebook.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -718,36 +803,101 @@ public class IntroductionFragment extends Fragment {
 			}
 		});
 
+		likePost.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				if (CurrentUser == null) {
+					Toast.makeText(getActivity(),
+							"برای درج لایک ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+				} else {
+
+					date = new ServerDate(getActivity());
+					date.delegate = IntroductionFragment.this;
+					date.execute("");
+
+					flag = false;
+
+				}
+
+				// ////
+				// if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
+				// ObjectID, 1)) {
+				// likePost.setBackgroundResource(R.drawable.like_off);
+				// personPost
+				// .setBackgroundResource(R.drawable.count_like_off);
+				//
+				// adapter.deleteLikeIntroduction(CurrentUser.getId(),
+				// ObjectID, 1);
+				// int countlike = adapter.LikeInObject_count(ObjectID, 1);
+				// countLikePost.setText(String.valueOf(countlike));
+				// } else {
+				// // adapter.insertLikeInObjectToDb(CurrentUser.getId(),
+				// // ObjectID, serverDate, 1);
+				// likePost.setBackgroundResource(R.drawable.like_on);
+				// personPost.setBackgroundResource(R.drawable.count_like);
+				//
+				// int countlike = adapter.LikeInObject_count(ObjectID, 1);
+				// countLikePost.setText(String.valueOf(countlike));
+				// }
+				//
+				// }
+				// adapter.close();
+			}
+
+		});
+
 		AddLike.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				adapter.open();
 
 				if (CurrentUser == null) {
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+					Toast.makeText(getActivity(),
+							"برای درج لایک ابتدا باید وارد شوید",
 							Toast.LENGTH_SHORT).show();
-					return;
-
 				} else {
-					if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
-							ObjectID)) {
-						AddLike.setBackgroundResource(R.drawable.like_off);
-						adapter.deleteLikeIntroduction(CurrentUser.getId(),
-								ObjectID);
-						int countlike = adapter.LikeInObject_count(ObjectID);
-						CountLikeIntroduction.setText(String.valueOf(countlike));
-					} else {
-						adapter.insertLikeInObjectToDb(CurrentUser.getId(),
-								ObjectID, currentDate, 0);
-						AddLike.setBackgroundResource(R.drawable.like_on);
 
-						int countlike = adapter.LikeInObject_count(ObjectID);
-						CountLikeIntroduction.setText(String.valueOf(countlike));
-					}
+					date = new ServerDate(getActivity());
+					date.delegate = IntroductionFragment.this;
+					date.execute("");
+
+					flag = true;
 
 				}
-				adapter.close();
+				// //////////////////////////////////////////////////
+
+				// adapter.open();
+				//
+				// if (CurrentUser == null) {
+				// Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+				// Toast.LENGTH_SHORT).show();
+				// return;
+				//
+				// } else {
+				// if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
+				// ObjectID, 0)) {
+				// AddLike.setBackgroundResource(R.drawable.like_off);
+				// personPage
+				// .setBackgroundResource(R.drawable.count_like_off);
+				// adapter.deleteLikeIntroduction(CurrentUser.getId(),
+				// ObjectID, 0);
+				// int countlike = adapter.LikeInObject_count(ObjectID, 0);
+				// CountLikeIntroduction.setText(String.valueOf(countlike));
+				// } else {
+				// adapter.insertLikeInObjectToDb(CurrentUser.getId(),
+				// ObjectID, currentDate, 0);
+				// AddLike.setBackgroundResource(R.drawable.like_on);
+				// personPage.setBackgroundResource(R.drawable.count_like);
+				//
+				// int countlike = adapter.LikeInObject_count(ObjectID, 0);
+				// CountLikeIntroduction.setText(String.valueOf(countlike));
+				// }
+				//
+				// }
+				// adapter.close();
 			}
 
 		});
@@ -952,18 +1102,177 @@ public class IntroductionFragment extends Fragment {
 
 	}
 
-	// public void updateView3() {
-	// adapter.open();
-	// sendDataID = getActivity().getSharedPreferences("Id", 0);
-	// final int cid = sendDataID.getInt("main_Id", -1);
-	// mylist = adapter.getAllCommentInObjectById(cid);
-	// CountCommentIntroduction.setText(adapter.CommentInObject_count()
-	// .toString());
-	// adapter.close();
-	// IntroductionListAdapter x = new IntroductionListAdapter(getActivity(),
-	// R.layout.raw_froumcmt, mylist);
-	// x.notifyDataSetChanged();
-	// // lst.setAdapter(x);
-	// }
+	@Override
+	public void processFinish(String output) {
+		if (ringProgressDialog != null)
+			ringProgressDialog.dismiss();
+
+		int id = -1;
+		try {
+			id = Integer.valueOf(output);
+			// این متغیر مشخص کنندهلایک صفحه و لایک پست می بایشد
+			int comId;
+			if (flag)
+				// لایک صفحه
+				comId = 0;
+			else
+				// لایک پست
+				comId = 1;
+
+			adapter.open();
+
+			if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
+					ObjectID, comId)) {
+
+				adapter.deleteLikeIntroduction(CurrentUser.getId(), ObjectID,
+						comId);
+				int countlike = adapter.LikeInObject_count(ObjectID, comId);
+
+				if (flag) {
+					AddLike.setBackgroundResource(R.drawable.like_off);
+					personPage.setBackgroundResource(R.drawable.count_like_off);
+					CountLikeIntroduction.setText(String.valueOf(countlike));
+				} else {
+					likePost.setBackgroundResource(R.drawable.like_off);
+					personPost.setBackgroundResource(R.drawable.count_like_off);
+					countLikePost.setText(String.valueOf(countlike));
+				}
+
+			} else {
+				adapter.insertLikeInObjectToDb(id, CurrentUser.getId(),
+						ObjectID, serverDate, comId);
+				int countlike = adapter.LikeInObject_count(ObjectID, comId);
+
+				if (flag) {
+					AddLike.setBackgroundResource(R.drawable.like_on);
+					personPage.setBackgroundResource(R.drawable.count_like);
+					CountLikeIntroduction.setText(String.valueOf(countlike));
+				} else {
+					likePost.setBackgroundResource(R.drawable.like_on);
+					personPost.setBackgroundResource(R.drawable.count_like);
+					countLikePost.setText(String.valueOf(countlike));
+				}
+
+			}
+			adapter.close();
+
+		} catch (NumberFormatException e) {
+			if (output != null
+					&& !(output.contains("Exception") || output
+							.contains("java"))) {
+				// این متغیر مشخص کنندهلایک صفحه و لایک پست می بایشد
+				int comId;
+				if (flag)
+					// لایک صفحه
+					comId = 0;
+				else
+					// لایک پست
+					comId = 1;
+				adapter.open();
+				if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
+						ObjectID, comId)) {
+
+					params = new LinkedHashMap<String, String>();
+					deleting = new Deleting(getActivity());
+					deleting.delegate = IntroductionFragment.this;
+
+					params.put("TableName", "LikeInObject");
+					params.put("UserId", String.valueOf(CurrentUser.getId()));
+					params.put("PaperId", String.valueOf(ObjectID));
+					params.put("CommentId", String.valueOf(comId));
+
+					deleting.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(getActivity(), "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
+					adapter.close();
+
+				} else {
+					adapter.open();
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(getActivity());
+					saving.delegate = IntroductionFragment.this;
+
+					params.put("TableName", "LikeInObject");
+
+					params.put("UserId", String.valueOf(CurrentUser.getId()));
+					params.put("PaperId", String.valueOf(ObjectID));
+					params.put("Date", output);
+					params.put("CommentId", String.valueOf(comId));
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+
+					serverDate = output;
+
+					saving.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(getActivity(), "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
+					adapter.close();
+
+				}
+				adapter.close();
+
+			} else {
+				Toast.makeText(getActivity(),
+						"خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT)
+						.show();
+			}
+		}
+
+		catch (Exception e) {
+
+			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
+					.show();
+		}
+	}
 
 }
+
+// public void updateView3() {
+// adapter.open();
+// sendDataID = getActivity().getSharedPreferences("Id", 0);
+// final int cid = sendDataID.getInt("main_Id", -1);
+// mylist = adapter.getAllCommentInObjectById(cid);
+// CountCommentIntroduction.setText(adapter.CommentInObject_count()
+// .toString());
+// adapter.close();
+// IntroductionListAdapter x = new IntroductionListAdapter(getActivity(),
+// R.layout.raw_froumcmt, mylist);
+// x.notifyDataSetChanged();
+// // lst.setAdapter(x);
+// }
+

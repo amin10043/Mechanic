@@ -3,8 +3,6 @@ package com.project.mechanic.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,29 +15,24 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.entity.LikeInFroum;
+import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.DialogAnad;
-import com.project.mechanic.fragment.DialogPersonLikedFroum;
-import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
-public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
+public class PersonLikedObjectAdapter extends ArrayAdapter<LikeInObject> {
 	Context context;
-	List<LikeInFroum> myList;
+	List<LikeInObject> myList;
 	DataBaseAdapter adapter;
 	Utility util;
-	Users user;
 	int userId;
 
-	public PersonLikedAdapter(Context context, int resource,
-			ArrayList<LikeInFroum> objects) {
+	public PersonLikedObjectAdapter(Context context, int resource,
+			ArrayList<LikeInObject> objects) {
 		super(context, resource, objects);
 		this.context = context;
 		myList = objects;
@@ -66,12 +59,30 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 		TextView DateLiked = (TextView) convertView
 				.findViewById(R.id.dateLiked);
 
-		LikeInFroum likes = myList.get(position);
+		LikeInObject likes = myList.get(position);
 
 		adapter.open();
-		 user = adapter.getUserById(likes.getUserid());
+		Users user = adapter.getUserById(likes.getUserId());
 		adapter.close();
-
+		peronImage.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				adapter.open();
+				LikeInObject likes = myList.get(position);
+				Users user = adapter.getUserById(likes.getUserId());
+				userId= user.getId();
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+				
+			}
+		});
 		namePerson.setText(user.getName());
 		DateLiked.setText(util.getPersianDate(likes.getDatetime()));
 
@@ -99,27 +110,6 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 			peronImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
 			peronImage.setLayoutParams(lp);
 		}
-		
-		peronImage.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				LikeInFroum likes = myList.get(position);
-				adapter.open();
-				 user = adapter.getUserById(likes.getUserid());
-				adapter.close();
-				userId= user.getId();
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
-				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
-				Bundle bundle = new Bundle();
-				bundle.putInt("userId", userId);
-				fragment.setArguments(bundle);
-				trans.replace(R.id.content_frame, fragment);
-				trans.commit();
-				
-			}
-		});
 
 		return convertView;
 	}

@@ -49,6 +49,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 	DialogcmtInPaper dialog;
 
 	ListView lst;
+	int userId;
 	ArrayList<CommentInPaper> mylist;
 	PaperListAdapter PaperListadapter;
 	int like = 0;
@@ -123,8 +124,9 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 		mylist = adapter.getCommentInPaperbyPaperid(paperID);
 		final Paper p = adapter.getPaperItembyid(paperID);
 		Users u = adapter.getUserbyid(p.getUserId());
-
+        
 		if (u != null) {
+			userId=u.getId();
 			txtname.setText(u.getName());
 			LinearLayout rl = (LinearLayout) view
 					.findViewById(R.id.profileLinearcommenterinContinue);
@@ -156,12 +158,38 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 			descriptiontxt.setText(p.getContext());
 			dateTopic.setText(util.getPersianDate(p.getDate()));
 		}
+		
+		if(util.getCurrentUser().getId() != paperID){
+		if (!util.isNetworkConnected()) {
+			Toast.makeText(getActivity(), "Flse",
+					Toast.LENGTH_SHORT).show();
+			adapter.open();
+			adapter.insertVisitToDb(util.getCurrentUser().getId(),2, paperID);
+			adapter.close();
+		}
+		else if((util.isNetworkConnected())) {
+			Toast.makeText(getActivity(), "True",
+					Toast.LENGTH_SHORT).show();
+			adapter.open();
+           //ارسال اطلاعات به جدول ویزیت سرور
+		   //ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
+			adapter.deleteVisit();	
+			adapter.close();
+		}
+		}
 		profileImg.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
-				Toast.makeText(getActivity(), "PaperWithoutComment",
-						Toast.LENGTH_SHORT).show();
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+				
 				
 			}
 		});
