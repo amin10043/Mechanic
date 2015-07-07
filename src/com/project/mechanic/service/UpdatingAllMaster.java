@@ -10,7 +10,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.project.mechanic.inter.AsyncInterface;
-import com.project.mechanic.utility.Utility;
 
 public class UpdatingAllMaster extends AsyncTask<String, Integer, String> {
 
@@ -23,14 +22,10 @@ public class UpdatingAllMaster extends AsyncTask<String, Integer, String> {
 	public final String SOAP_ADDRESS = "http://srv.mechanical0098.com/MyService.asmx";
 
 	public String response = "";
-	private Context context;
-	private Utility util;
 
 	public AsyncInterface delegate = null;
 
 	public UpdatingAllMaster(Context context) {
-		this.context = context;
-		util = new Utility(context);
 	}
 
 	@Override
