@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="11"
         android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -100,10 +100,11 @@
 
         <receiver android:name="com.project.mechanic.service.MyReceiver" />
 
-        <activity
-            android:name="com.project.mechanic.CropingOptionAdapter"
-            android:label="@string/title_activity_croping_option_adapter" >
-        </activity>
+        <activity android:name="com.project.mechanic.crop.CropImage" />
+        <provider
+            android:name="InternalStorageContentProvider"
+            android:authorities="eu.janmuller.android.simplecropimage.example"
+            android:exported="true" />
     </application>
 
 </manifest>

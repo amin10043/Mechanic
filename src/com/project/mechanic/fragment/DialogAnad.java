@@ -13,7 +13,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -92,7 +91,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setBackgroundDrawable(
 				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		setContentView(resourceId);
@@ -187,10 +186,6 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 		try {
 			gId = Integer.valueOf(output);
 			dbadapter.open();
-			String email = UEmail.getText().toString();
-			String phonenumber = UPhonnumber.getText().toString();
-			String fax = UFax.getText().toString();
-			String mobile = UMobile.getText().toString();
 
 			dbadapter.insertTickettoDbemptyImage(gId, dialog_anad_et1.getText()
 					.toString(), dialog_anad_et2.getText().toString(), u
@@ -229,7 +224,8 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 			}
 
 		} catch (NumberFormatException ex) {
-			if (!output.contains("java") || !output.contains("Exception")) {
+			if (!output.contains("SoapFault") || !output.contains("java")
+					|| !output.contains("Exception")) {
 				if ("".equals(title) || "".equals(desc) || roz <= 0) {
 
 					Toast.makeText(
@@ -299,4 +295,5 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 		}
 
 	}
+
 }
