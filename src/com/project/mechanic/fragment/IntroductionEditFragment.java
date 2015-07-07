@@ -207,8 +207,9 @@ public class IntroductionEditFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
+				int AdminId = object.getUserId();
 				DialogAdminsPage adminDialog = new DialogAdminsPage(
-						getActivity(), id);
+						getActivity(), id, AdminId);
 				adminDialog.show();
 			}
 		});

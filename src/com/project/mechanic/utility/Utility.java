@@ -364,7 +364,7 @@ public class Utility implements AsyncInterface {
 			e.printStackTrace();
 		}
 
-		bitmap.recycle();
+		// bitmap.recycle();
 		return str.toByteArray();
 	}
 

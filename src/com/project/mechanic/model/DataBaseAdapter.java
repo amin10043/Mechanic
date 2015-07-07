@@ -33,6 +33,7 @@ import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Settings;
+import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.TicketType;
 import com.project.mechanic.entity.Users;
@@ -84,6 +85,7 @@ public class DataBaseAdapter {
 
 	private String TableObjectBrandType = "ObjectBrandType";
 	private String TableLikeInCommentObject = "LikeInCommentObject";
+	private String TableSubAdmin = "SubAdmin";
 
 	private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
@@ -158,6 +160,7 @@ public class DataBaseAdapter {
 			"IsLike" };
 
 	private String[] Visit = { "UserId", "ObjectId", "TypeId" };
+	private String[] SubAdmin = { "Id", "ObjectId", "UserId", "AdminID" };
 
 	private final Context mContext;
 	private SQLiteDatabase mDb;
@@ -237,8 +240,8 @@ public class DataBaseAdapter {
 		long res2 = res;
 
 	}
-	
-	public void insertVisitToDb(int userid,int typeId,int objectId) {
+
+	public void insertVisitToDb(int userid, int typeId, int objectId) {
 
 		ContentValues uc = new ContentValues();
 
@@ -1262,7 +1265,6 @@ public class DataBaseAdapter {
 		return Users;
 
 	}
-	
 
 	@SuppressWarnings("unused")
 	private LikeInObject CursorToLikeInObject(Cursor cursor) {
@@ -1362,10 +1364,10 @@ public class DataBaseAdapter {
 		return tempForum;
 
 	}
-	
+
 	private com.project.mechanic.entity.Visit CursorToVisit(Cursor cursor) {
-		com.project.mechanic.entity.Visit tempVisit = new com.project.mechanic.entity.Visit(cursor.getInt(0), cursor.getInt(1),
-				cursor.getInt(2));
+		com.project.mechanic.entity.Visit tempVisit = new com.project.mechanic.entity.Visit(
+				cursor.getInt(0), cursor.getInt(1), cursor.getInt(2));
 		return tempVisit;
 
 	}
@@ -2266,7 +2268,7 @@ public class DataBaseAdapter {
 		mDb.execSQL("delete from [Favorite] where IdTicket = " + id);
 
 	}
-	
+
 	public void deleteVisit() {
 
 		mDb.execSQL("delete from [Visit]");
@@ -3297,4 +3299,52 @@ public class DataBaseAdapter {
 				.show();
 		mDb.update(TableObject, cv, "Id=?", new String[] { String.valueOf(id) });
 	}
+
+	public ArrayList<com.project.mechanic.entity.SubAdmin> getAllAdmin(
+			int ObjectId) {
+		ArrayList<com.project.mechanic.entity.SubAdmin> result = new ArrayList<com.project.mechanic.entity.SubAdmin>();
+		Cursor cursor = mDb.query(TableSubAdmin, SubAdmin, "ObjectId = "
+				+ ObjectId, null, null, null, null);
+		com.project.mechanic.entity.SubAdmin tempObject;
+		while (cursor.moveToNext()) {
+			tempObject = new com.project.mechanic.entity.SubAdmin(
+					cursor.getInt(0), cursor.getInt(1), cursor.getInt(2),
+					cursor.getInt(3));
+			result.add(tempObject);
+		}
+
+		return result;
+
+	}
+
+	public void insertSubAdminPage(int ObjectId, int UserId, int AdminId) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("ObjectId", ObjectId);
+		uc.put("UserId", UserId);
+		uc.put("AdminId", AdminId);
+
+		mDb.insert(TableSubAdmin, null, uc);
+	}
+
+	public ArrayList<SubAdmin> getAdmin(int ObjectId) {
+		ArrayList<SubAdmin> result = new ArrayList<SubAdmin>();
+		Cursor cursor = mDb.rawQuery("select *from SubAdmin where ObjectId = "
+				+ ObjectId, null);
+		SubAdmin tempNews;
+		while (cursor.moveToNext()) {
+			tempNews = new SubAdmin(cursor.getInt(0), cursor.getInt(1),
+					cursor.getInt(2), cursor.getInt(3));
+			result.add(tempNews);
+		}
+
+		return result;
+	}
+
+	public void deleteAdmin(int id) {
+		String[] t = { String.valueOf(id) };
+		mDb.delete(TableSubAdmin, "UserId=?", t);
+	}
+
 }
