@@ -101,7 +101,7 @@ public class MainBrandFragment extends Fragment {
 
 		FloatingActionButton createItem = (FloatingActionButton) view
 				.findViewById(R.id.fab);
-		final String message = "کاربر گرامی اگر برند یا مجموعه تولیدی را در اختیار دارید یا در بازار ایران نسبت به آن شناخت دارید که در این نرم افزار قید نشده لطفا مشخصات مورد نظر را برای ما ارسال نمایید   با تشکر";
+		final String message = "کاربر گرامی اگر مشخصات برند یا فعالیت شما در این نرم افزار ثبت نشده می توانید با ایجاد صفحه،  فعالیت خود را به سایر کاربران این نرم افزار معرفی نمایید ";
 		createItem.setOnClickListener(new OnClickListener() {
 
 			@Override

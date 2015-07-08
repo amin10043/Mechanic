@@ -33,6 +33,7 @@ import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Settings;
+import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.TicketType;
 import com.project.mechanic.entity.Users;
@@ -81,6 +82,7 @@ public class DataBaseAdapter {
 
 	// private String TableObjectBrandType = "ObjectBrandType";
 	private String TableLikeInCommentObject = "LikeInCommentObject";
+	private String TableSubAdmin = "SubAdmin";
 
 	// private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
@@ -139,6 +141,7 @@ public class DataBaseAdapter {
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
 			"ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress",
 			"UImage", "UMobile", "Seen", "Submit", "seenBefore", "Day" };
+
 	private String[] TicketType = { "ID", "desc" };
 
 	private String[] Users = { "ID", "Name", "Email", "Password",
@@ -154,7 +157,8 @@ public class DataBaseAdapter {
 	// private String[] LikeInCommentObject = { "Id", "CommentId", "UserId",
 	// "IsLike" };
 
-	// private String[] Visit = { "UserId", "ObjectId", "TypeId" };
+	private String[] Visit = { "UserId", "ObjectId", "TypeId" };
+	private String[] SubAdmin = { "Id", "ObjectId", "UserId", "AdminID" };
 
 	private final Context mContext;
 	private SQLiteDatabase mDb;
@@ -2478,8 +2482,7 @@ public class DataBaseAdapter {
 	}
 
 	public int InsertInformationNewObject(String name, String Phone,
-			String Email, String fax, String description, byte[] HeaderImage,
-			byte[] ProfileImage, byte[] FooterImage, String LinkCatalog,
+			String Email, String fax, String description, String LinkCatalog,
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
@@ -2498,12 +2501,6 @@ public class DataBaseAdapter {
 			cv.put("Fax", fax);
 		if (!"".equals(description))
 			cv.put("Description", description);
-		if (HeaderImage != null)
-			cv.put("Image1", HeaderImage);
-		if (ProfileImage != null)
-			cv.put("Image2", ProfileImage);
-		if (FooterImage != null)
-			cv.put("Image3", FooterImage);
 		if (!"".equals(LinkCatalog))
 			cv.put("Pdf1", LinkCatalog);
 		if (!"".equals(LinkPrice))
@@ -3019,8 +3016,7 @@ public class DataBaseAdapter {
 	}
 
 	public int CreatePageInShopeObject(String name, String Phone, String Email,
-			String fax, String description, byte[] HeaderImage,
-			byte[] ProfileImage, byte[] FooterImage, String LinkCatalog,
+			String fax, String description, String LinkCatalog,
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
@@ -3039,12 +3035,6 @@ public class DataBaseAdapter {
 			cv.put("Fax", fax);
 		if (!"".equals(description))
 			cv.put("Description", description);
-		if (HeaderImage != null)
-			cv.put("Image1", HeaderImage);
-		if (ProfileImage != null)
-			cv.put("Image2", ProfileImage);
-		if (FooterImage != null)
-			cv.put("Image3", FooterImage);
 		if (!"".equals(LinkCatalog))
 			cv.put("Pdf1", LinkCatalog);
 		if (!"".equals(LinkPrice))
@@ -3288,6 +3278,91 @@ public class DataBaseAdapter {
 		}
 
 		return result;
+
+	}
+
+	public void UpdateImageObjectToDatabase(int id, byte[] HeaderImage,
+			byte[] ProfileImage, byte[] FooterImage) {
+
+		ContentValues cv = new ContentValues();
+
+		if (HeaderImage != null)
+			cv.put("Image1", HeaderImage);
+		if (ProfileImage != null)
+			cv.put("Image2", ProfileImage);
+		if (FooterImage != null)
+			cv.put("Image3", FooterImage);
+
+		Toast.makeText(mContext, "تصویر با موفقیت ثبت شد", Toast.LENGTH_SHORT)
+				.show();
+		mDb.update(TableObject, cv, "Id=?", new String[] { String.valueOf(id) });
+	}
+
+	public ArrayList<com.project.mechanic.entity.SubAdmin> getAllAdmin(
+			int ObjectId) {
+		ArrayList<com.project.mechanic.entity.SubAdmin> result = new ArrayList<com.project.mechanic.entity.SubAdmin>();
+		Cursor cursor = mDb.query(TableSubAdmin, SubAdmin, "ObjectId = "
+				+ ObjectId, null, null, null, null);
+		com.project.mechanic.entity.SubAdmin tempObject;
+		while (cursor.moveToNext()) {
+			tempObject = new com.project.mechanic.entity.SubAdmin(
+					cursor.getInt(0), cursor.getInt(1), cursor.getInt(2),
+					cursor.getInt(3));
+			result.add(tempObject);
+		}
+
+		return result;
+
+	}
+
+	public void insertSubAdminPage(int ObjectId, int UserId, int AdminId) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("ObjectId", ObjectId);
+		uc.put("UserId", UserId);
+		uc.put("AdminId", AdminId);
+
+		mDb.insert(TableSubAdmin, null, uc);
+	}
+
+	public ArrayList<SubAdmin> getAdmin(int ObjectId) {
+		ArrayList<SubAdmin> result = new ArrayList<SubAdmin>();
+		Cursor cursor = mDb.rawQuery("select *from SubAdmin where ObjectId = "
+				+ ObjectId, null);
+		SubAdmin tempNews;
+		while (cursor.moveToNext()) {
+			tempNews = new SubAdmin(cursor.getInt(0), cursor.getInt(1),
+					cursor.getInt(2), cursor.getInt(3));
+			result.add(tempNews);
+		}
+
+		return result;
+	}
+
+	public void deleteAdmin(int id) {
+		String[] t = { String.valueOf(id) };
+		mDb.delete(TableSubAdmin, "UserId=?", t);
+	}
+
+	public boolean IsUserAdmin(int userId, int objectId) {
+
+		Cursor curs = mDb.rawQuery("SELECT COUNT(*) AS NUM FROM "
+				+ TableSubAdmin + " WHERE UserId= " + String.valueOf(userId)
+				+ " AND ObjectId =" + String.valueOf(objectId), null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
+	public void updateRatingObject(int rating, int Id) {
+
+		ContentValues uc = new ContentValues();
+		uc.put("rate", rating);
+		mDb.update(TableObject, uc, "Id = " + Id, null);
 
 	}
 

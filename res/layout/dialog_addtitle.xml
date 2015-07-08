@@ -16,8 +16,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:text="نظریات و تجارب خود را با سایر کاربران به اشتراک بگذارید       با تشکر"
-            android:textColor="@color/transparent" />
+            android:lineSpacingExtra="10dp"
+            android:text="نظرات  و تجارب خود را با سایر کاربران به اشتراک بگذارید                با تشکر"
+            android:textColor="@color/transparent"
+            android:textSize="30dp" />
 
         <ImageButton
             android:id="@+id/createicondialog"

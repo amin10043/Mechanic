@@ -24,18 +24,21 @@
                 <ImageView
                     android:id="@+id/hh1"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="10dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/gf2" />
             </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/linearEditProfil"
+                style="@style/brandStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
-                android:layout_marginTop="10dp" >
+                android:layout_marginTop="10dp"
+                android:background="@drawable/brand_list_item_shape" >
 
                 <EditText
                     android:id="@+id/nameEdit"
@@ -54,6 +57,17 @@
                     android:layout_centerVertical="true"
                     android:scaleType="fitXY"
                     android:src="@drawable/no_img_profile" />
+
+                <TextView
+                    android:id="@+id/linkPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/pp1"
+                    android:layout_marginTop="30dp"
+                    android:gravity="right"
+                    android:text="لینک صفحه : "
+                    android:textColor="@color/transparent" />
             </RelativeLayout>
 
             <FrameLayout
@@ -88,31 +102,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/save" />
-
-                    <RelativeLayout
-                        android:id="@+id/linkPage"
-                        style="@style/brandStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@+id/btnsave"
-                        android:background="@drawable/brand_list_item_shape"
-                        android:gravity="right" >
-
-                        <TextView
-                            android:id="@+id/linkPage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginTop="10dp"
-                            android:gravity="right"
-                            android:text="لینک صفحه : "
-                            android:textColor="@color/transparent" />
-                    </RelativeLayout>
                 </RelativeLayout>
 
                 <LinearLayout
@@ -129,80 +118,90 @@
                         android:weightSum="7" >
 
                         <LinearLayout
-                            android:id="@+id/LinearLayout1"
+                            android:id="@+id/editpageNetwork"
+                            style="@style/brandStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="25dp"
                             android:layout_marginRight="25dp"
                             android:layout_marginTop="10dp"
-                            android:layout_weight="1" >
+                            android:layout_weight="1"
+                            android:background="@drawable/brand_list_item_shape"
+                            android:orientation="vertical" >
 
-                            <ImageButton
-                                android:id="@+id/imgbtnFacebook_Object"
+                            <LinearLayout
+                                android:id="@+id/LinearLayout1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="25dp"
+                                android:layout_marginRight="25dp"
+                                android:layout_marginTop="10dp" >
+
+                                <ImageButton
+                                    android:id="@+id/imgbtnFacebook_Object"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="#0000"
+                                    android:src="@drawable/facebook" />
+
+                                <ImageButton
+                                    android:id="@+id/imgbtnInsta_Object"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="#0000"
+                                    android:src="@drawable/lnkin" />
+
+                                <ImageButton
+                                    android:id="@+id/imgbtnLinkedin_Object"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="#0000"
+                                    android:src="@drawable/twtr" />
+
+                                <ImageButton
+                                    android:id="@+id/imgbtnGoogle_Object"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="#0000"
+                                    android:src="@drawable/internet" />
+
+                                <ImageButton
+                                    android:id="@+id/imgbtnSite_Object"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="#0000"
+                                    android:src="@drawable/google" />
+
+                                <ImageButton
+                                    android:id="@+id/imgbtnTwitter_Object"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="#0000"
+                                    android:src="@drawable/insta" />
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/editpageNetwork"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="#0000"
-                                android:src="@drawable/facebook" />
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp" >
 
-                            <ImageButton
-                                android:id="@+id/imgbtnInsta_Object"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="#0000"
-                                android:src="@drawable/lnkin" />
-
-                            <ImageButton
-                                android:id="@+id/imgbtnLinkedin_Object"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="#0000"
-                                android:src="@drawable/twtr" />
-
-                            <ImageButton
-                                android:id="@+id/imgbtnGoogle_Object"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="#0000"
-                                android:src="@drawable/internet" />
-
-                            <ImageButton
-                                android:id="@+id/imgbtnSite_Object"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="#0000"
-                                android:src="@drawable/google" />
-
-                            <ImageButton
-                                android:id="@+id/imgbtnTwitter_Object"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="#0000"
-                                android:src="@drawable/insta" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:layout_margin="10dp"
+                                    android:text="ویرایش لینک شبکه های اجتماعی"
+                                    android:textColor="@color/transparent" />
+                            </RelativeLayout>
                         </LinearLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/editpageNetwork"
-                            style="@style/brandStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/brand_list_item_shape" >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_margin="10dp"
-                                android:text="ویرایش لینک شبکه های اجتماعی"
-                                android:textColor="@color/transparent" />
-                        </RelativeLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -239,13 +238,35 @@
                                 android:layout_margin="10dp"
                                 android:background="@drawable/brand_list_item_shape" >
 
+                                <RatingBar
+                                    android:layout_centerHorizontal="true"
+                                    android:id="@+id/ratingBar1"
+                                    style="?android:attr/ratingBarStyleIndicator"
+                                    android:layout_width="wrap_content"
+                                    android:isIndicator="false"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignBottom="@+id/icon_object"
+                                    android:layout_toRightOf="@+id/icon_object"
+                                    android:numStars="5"
+                                    android:stepSize="1" />
+
                                 <TextView
+                                    android:id="@+id/labelrate"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_below="@+id/ratingBar1"
                                     android:layout_centerInParent="true"
                                     android:layout_margin="10dp"
                                     android:text="فعال کردن ستاره های صفحه"
                                     android:textColor="@color/transparent" />
+
+                                <ImageView
+                                    android:id="@+id/btnPay"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/labelrate"
+                                    android:layout_centerHorizontal="true"
+                                    android:src="@drawable/ic_pay" />
                             </RelativeLayout>
                         </LinearLayout>
 
@@ -582,6 +603,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:background="@drawable/brand_list_item_shape"
                     android:orientation="vertical" >
 
                     <ImageView
@@ -590,6 +612,13 @@
                         android:layout_height="160dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/gf" />
+
+                    <EditText
+                        android:id="@+id/descriptionpageedit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:hint="توضیحات بیشتر" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -607,13 +636,6 @@
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:background="#CCCCCC" >
-
-                        <EditText
-                            android:id="@+id/descriptionpageedit"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:hint="توضیحات بیشتر" />
                     </RelativeLayout>
                 </LinearLayout>
 

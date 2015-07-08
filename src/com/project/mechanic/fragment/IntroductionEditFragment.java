@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -60,13 +61,15 @@ public class IntroductionEditFragment extends Fragment {
 
 	RelativeLayout.LayoutParams profileEditParams;
 
-	RelativeLayout editnetLink, editDNlink, namayendegi, khadamat,
-			Linearprofile;
+	RelativeLayout editDNlink, namayendegi, khadamat, Linearprofile,
+			AdminsPage;
 
-	LinearLayout Linearheader, Linearfooter;
+	LinearLayout editnetLink, Linearheader, Linearfooter;
 
 	public String Dcatalog, Dprice, Dpdf, Dvideo;
 	public String Dface, Dlink, Dtwt, Dweb, Dgoogle, Dinstagram;
+	RatingBar rating;
+	ImageView payBtn;
 
 	Bitmap bmpHeader, bmpProfil, bmpFooter;
 
@@ -93,10 +96,13 @@ public class IntroductionEditFragment extends Fragment {
 		descriptionEnter = (EditText) view
 				.findViewById(R.id.descriptionpageedit);
 
-		editnetLink = (RelativeLayout) view.findViewById(R.id.editpageNetwork);
+		editnetLink = (LinearLayout) view.findViewById(R.id.editpageNetwork);
 		editDNlink = (RelativeLayout) view.findViewById(R.id.editpagedownload);
 		namayendegi = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
 		khadamat = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
+		AdminsPage = (RelativeLayout) view.findViewById(R.id.listAdmin);
+		rating = (RatingBar) view.findViewById(R.id.ratingBar1);
+		payBtn = (ImageView) view.findViewById(R.id.btnPay);
 
 		namayendegi.setVisibility(View.GONE);
 		khadamat.setVisibility(View.GONE);
@@ -108,7 +114,7 @@ public class IntroductionEditFragment extends Fragment {
 
 		headerEditParams = new LinearLayout.LayoutParams(
 				Linearheader.getLayoutParams());
-		headerEditParams.height = (int) (util.getScreenHeight() / 3);
+		headerEditParams.height = (int) (util.getScreenwidth());
 
 		profileEditParams = new RelativeLayout.LayoutParams(
 				Linearprofile.getLayoutParams());
@@ -118,7 +124,7 @@ public class IntroductionEditFragment extends Fragment {
 
 		footerEditParams = new LinearLayout.LayoutParams(
 				Linearfooter.getLayoutParams());
-		footerEditParams.height = util.getScreenHeight() / 3;
+		footerEditParams.height = util.getScreenwidth();
 
 		editnameParams = new LinearLayout.LayoutParams(
 				Linearprofile.getLayoutParams());
@@ -199,6 +205,41 @@ public class IntroductionEditFragment extends Fragment {
 				getActivity().startActivityFromFragment(
 						IntroductionEditFragment.this, i, headerLoadCode);
 
+			}
+		});
+
+		payBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				int rat = (int) rating.getRating();
+				if (rat >= 0) {
+					DBAdapter.open();
+
+					DBAdapter.updateRatingObject(rat, id);
+
+					Toast.makeText(getActivity(), "ثبت درگاه انجام شود ", 0)
+							.show();
+
+					Toast.makeText(getActivity(), rat + "", 0).show();
+
+					DBAdapter.close();
+
+				} else {
+					Toast.makeText(getActivity(), "انتخاب ستاره ها الزامی است",
+							0).show();
+				}
+			}
+		});
+
+		AdminsPage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				int AdminId = object.getUserId();
+				DialogAdminsPage adminDialog = new DialogAdminsPage(
+						getActivity(), id, AdminId);
+				adminDialog.show();
 			}
 		});
 

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_item" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:id="@+id/mainAdminLinear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#568bdd" >
+
+            <ImageView
+                android:id="@+id/mainAdminPagepic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:src="@drawable/no_img_profile" />
+
+            <TextView
+                android:id="@+id/nameMainAdmin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:layout_toLeftOf="@+id/mainAdminPagepic"
+                android:text="admin"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/adminssubs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mainAdminLinear"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/list_item1" >
+
+            <RelativeLayout
+                android:id="@+id/phonesubAdminRelative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+
+                <EditText
+                    android:id="@+id/inputPhoneSubAdmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:hint="شماره همراه کاربر مورد نظر"
+                    android:inputType="number" />
+
+                <ImageView
+                    android:id="@+id/addBtnPhoneNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="10dp"
+                    android:layout_toLeftOf="@+id/inputPhoneSubAdmin"
+                    android:src="@drawable/add" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/listRelativeSubAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/phonesubAdminRelative" >
+
+                <ListView
+                    android:id="@+id/listSubAdmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@null" >
+                </ListView>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/adminssubs"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp" >
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

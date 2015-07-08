@@ -11,238 +11,240 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.MainListAdapter;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
-
 public class MainFragment extends Fragment {
 
-    DataBaseAdapter dbAdapter;
-    MainListAdapter ListAdapter;
-    LinearLayout    footer_layLayout;
-    Utility         util;
-    RelativeLayout  mainRow1, mainRow2, mainRow3, mainRow4, mainRow5, mainRow6,
-                    mainRow7, mainRow8;
-    RelativeLayout.LayoutParams r1, r2, r3, r4, r5, r6, r7, r8;
-    ImageView                   img1, img2, img3, img4, img5, img6, img7;
+	DataBaseAdapter dbAdapter;
+	MainListAdapter ListAdapter;
+	LinearLayout footer_layLayout;
+	Utility util;
+	RelativeLayout mainRow1, mainRow2, mainRow3, mainRow4, mainRow5, mainRow6,
+			mainRow7, mainRow8;
+	RelativeLayout.LayoutParams r1, r2, r3, r4, r5, r6, r7, r8;
+	ImageView img1, img2, img3, img4, img5, img6, img7;
 
+	TextView tite1;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
-        util = new Utility(getActivity());
-        View view = inflater.inflate(R.layout.fragment_main_page, null);
+		util = new Utility(getActivity());
+		View view = inflater.inflate(R.layout.fragment_main_page, null);
 
-        mainRow1 = (RelativeLayout) view.findViewById(R.id.relative_item1);
-        mainRow2 = (RelativeLayout) view.findViewById(R.id.relative_item2);
-        mainRow3 = (RelativeLayout) view.findViewById(R.id.relative_item3);
-        mainRow4 = (RelativeLayout) view.findViewById(R.id.relative_item4);
-        mainRow5 = (RelativeLayout) view.findViewById(R.id.relative_item5);
-        mainRow6 = (RelativeLayout) view.findViewById(R.id.relative_item6);
-        mainRow7 = (RelativeLayout) view.findViewById(R.id.relative_item7);
-        mainRow8 = (RelativeLayout) view.findViewById(R.id.relative_item8);
+		mainRow1 = (RelativeLayout) view.findViewById(R.id.relative_item1);
+		mainRow2 = (RelativeLayout) view.findViewById(R.id.relative_item2);
+		mainRow3 = (RelativeLayout) view.findViewById(R.id.relative_item3);
+		mainRow4 = (RelativeLayout) view.findViewById(R.id.relative_item4);
+		mainRow5 = (RelativeLayout) view.findViewById(R.id.relative_item5);
+		mainRow6 = (RelativeLayout) view.findViewById(R.id.relative_item6);
+		mainRow7 = (RelativeLayout) view.findViewById(R.id.relative_item7);
+		mainRow8 = (RelativeLayout) view.findViewById(R.id.relative_item8);
 
-        r1 = new RelativeLayout.LayoutParams(mainRow1.getLayoutParams());
-        r2 = new RelativeLayout.LayoutParams(mainRow2.getLayoutParams());
-        r3 = new RelativeLayout.LayoutParams(mainRow3.getLayoutParams());
-        r4 = new RelativeLayout.LayoutParams(mainRow4.getLayoutParams());
-        r5 = new RelativeLayout.LayoutParams(mainRow5.getLayoutParams());
-        r6 = new RelativeLayout.LayoutParams(mainRow6.getLayoutParams());
-        r7 = new RelativeLayout.LayoutParams(mainRow7.getLayoutParams());
-        r8 = new RelativeLayout.LayoutParams(mainRow8.getLayoutParams());
+		r1 = new RelativeLayout.LayoutParams(mainRow1.getLayoutParams());
+		r2 = new RelativeLayout.LayoutParams(mainRow2.getLayoutParams());
+		r3 = new RelativeLayout.LayoutParams(mainRow3.getLayoutParams());
+		r4 = new RelativeLayout.LayoutParams(mainRow4.getLayoutParams());
+		r5 = new RelativeLayout.LayoutParams(mainRow5.getLayoutParams());
+		r6 = new RelativeLayout.LayoutParams(mainRow6.getLayoutParams());
+		r7 = new RelativeLayout.LayoutParams(mainRow7.getLayoutParams());
+		r8 = new RelativeLayout.LayoutParams(mainRow8.getLayoutParams());
 
-        img1 = (ImageView) view.findViewById(R.id.icon_item1);
-        img2 = (ImageView) view.findViewById(R.id.icon_item2);
-        img3 = (ImageView) view.findViewById(R.id.icon_item3);
-        img4 = (ImageView) view.findViewById(R.id.icon_item4);
-        img5 = (ImageView) view.findViewById(R.id.icon_item5);
-        img6 = (ImageView) view.findViewById(R.id.icon_item6);
-        img7 = (ImageView) view.findViewById(R.id.icon_item7);
+		img1 = (ImageView) view.findViewById(R.id.icon_item1);
+		img2 = (ImageView) view.findViewById(R.id.icon_item2);
+		img3 = (ImageView) view.findViewById(R.id.icon_item3);
+		img4 = (ImageView) view.findViewById(R.id.icon_item4);
+		img5 = (ImageView) view.findViewById(R.id.icon_item5);
+		img6 = (ImageView) view.findViewById(R.id.icon_item6);
+		img7 = (ImageView) view.findViewById(R.id.icon_item7);
 
-        r1.width = util.getScreenwidth() / 10;
-        r1.height = util.getScreenwidth() / 10;
-        img1.setLayoutParams(r1);
+		r1.width = util.getScreenwidth() / 10;
+		r1.height = util.getScreenwidth() / 10;
+		img1.setLayoutParams(r1);
 
-        r2.width = util.getScreenwidth() / 10;
-        r2.height = util.getScreenwidth() / 10;
-        img2.setLayoutParams(r2);
+		r2.width = util.getScreenwidth() / 10;
+		r2.height = util.getScreenwidth() / 10;
+		img2.setLayoutParams(r2);
 
-        r3.width = util.getScreenwidth() / 10;
-        r3.height = util.getScreenwidth() / 10;
-        img3.setLayoutParams(r3);
+		r3.width = util.getScreenwidth() / 10;
+		r3.height = util.getScreenwidth() / 10;
+		img3.setLayoutParams(r3);
 
-        r4.width = util.getScreenwidth() / 10;
-        r4.height = util.getScreenwidth() / 10;
-        img4.setLayoutParams(r4);
+		r4.width = util.getScreenwidth() / 10;
+		r4.height = util.getScreenwidth() / 10;
+		img4.setLayoutParams(r4);
 
-        r5.width = util.getScreenwidth() / 10;
-        r5.height = util.getScreenwidth() / 10;
-        img5.setLayoutParams(r5);
+		r5.width = util.getScreenwidth() / 10;
+		r5.height = util.getScreenwidth() / 10;
+		img5.setLayoutParams(r5);
 
-        r6.width = util.getScreenwidth() / 10;
-        r6.height = util.getScreenwidth() / 10;
-        img6.setLayoutParams(r6);
+		r6.width = util.getScreenwidth() / 10;
+		r6.height = util.getScreenwidth() / 10;
+		img6.setLayoutParams(r6);
 
-        r7.width = util.getScreenwidth() / 10;
-        r7.height = util.getScreenwidth() / 10;
-        img7.setLayoutParams(r7);
+		r7.width = util.getScreenwidth() / 10;
+		r7.height = util.getScreenwidth() / 10;
+		img7.setLayoutParams(r7);
 
-        final SharedPreferences sendData = getActivity().getSharedPreferences(
-                "Id", 0);
+		final SharedPreferences sendData = getActivity().getSharedPreferences(
+				"Id", 0);
 
-        mainRow1.setOnClickListener(new OnClickListener() {
+		mainRow1.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                int id = 1;
-                FragmentTransaction trans = ((MainActivity) getActivity())
-                        .getSupportFragmentManager().beginTransaction();
-                BerandFragment fragment = new BerandFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("Id", String.valueOf(id));
-                fragment.setArguments(bundle);
+			@Override
+			public void onClick(View arg0) {
+				int id = 1;
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				BerandFragment fragment = new BerandFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString("Id", String.valueOf(id));
+				fragment.setArguments(bundle);
 
-                sendData.edit().putInt("main_Id", id).commit();
+				sendData.edit().putInt("main_Id", id).commit();
 
-                trans.replace(R.id.content_frame, fragment);
-                trans.addToBackStack(null);
-                trans.commit();
-            }
-        });
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+			}
+		});
 
-        mainRow2.setOnClickListener(new OnClickListener() {
+		mainRow2.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                int id = 2;
+			@Override
+			public void onClick(View arg0) {
+				int id = 2;
 
-                FragmentTransaction trans = ((MainActivity) getActivity())
-                        .getSupportFragmentManager().beginTransaction();
-                Fragment ostan = new ProvinceFragment();
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				Fragment ostan = new ProvinceFragment();
 
-                sendData.edit().putInt("main_Id", id).commit();
+				sendData.edit().putInt("main_Id", id).commit();
 
-                trans.addToBackStack(null);
-                trans.replace(R.id.content_frame, ostan);
+				trans.addToBackStack(null);
+				trans.replace(R.id.content_frame, ostan);
 
-                trans.commit();
-            }
-        });
+				trans.commit();
+			}
+		});
 
-        mainRow3.setOnClickListener(new OnClickListener() {
+		mainRow3.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                // TODO Auto-generated method stub
-                int id = 3;
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				int id = 3;
 
-                FragmentTransaction trans = ((MainActivity) getActivity())
-                        .getSupportFragmentManager().beginTransaction();
-                trans.replace(R.id.content_frame, new Province2Fragment());
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new Province2Fragment());
 
-                sendData.edit().putInt("main_Id", id).commit();
+				sendData.edit().putInt("main_Id", id).commit();
 
-                trans.addToBackStack(null);
-                trans.commit();
+				trans.addToBackStack(null);
+				trans.commit();
 
-            }
-        });
+			}
+		});
 
-        mainRow4.setOnClickListener(new OnClickListener() {
+		mainRow4.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                int id = 4;
+			@Override
+			public void onClick(View arg0) {
+				int id = 4;
 
-                FragmentTransaction trans = ((MainActivity) getActivity())
-                        .getSupportFragmentManager().beginTransaction();
-                trans.replace(R.id.content_frame, new Province3Fragment());
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new Province3Fragment());
 
-                sendData.edit().putInt("main_Id", id).commit();
+				sendData.edit().putInt("main_Id", id).commit();
 
-                trans.addToBackStack(null);
-                trans.commit();
+				trans.addToBackStack(null);
+				trans.commit();
 
-            }
-        });
-        mainRow5.setOnClickListener(new OnClickListener() {
+			}
+		});
+		mainRow5.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                int id = 5;
-                FragmentTransaction trans = ((MainActivity) getActivity())
-                        .getSupportFragmentManager().beginTransaction();
-                NewsFragment fragment = new NewsFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("Id", String.valueOf(id));
-                fragment.setArguments(bundle);
+			@Override
+			public void onClick(View arg0) {
+				int id = 5;
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				NewsFragment fragment = new NewsFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString("Id", String.valueOf(id));
+				fragment.setArguments(bundle);
 
-                sendData.edit().putInt("main_Id", id).commit();
+				sendData.edit().putInt("main_Id", id).commit();
 
-                trans.replace(R.id.content_frame, fragment);
-                trans.addToBackStack(null);
-                trans.commit();
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
 
-            }
-        });
+			}
+		});
 
-        mainRow6.setOnClickListener(new OnClickListener() {
+		mainRow6.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                int id = 6;
+			@Override
+			public void onClick(View arg0) {
+				int id = 6;
 
-                FragmentTransaction trans = ((MainActivity) getActivity())
-                        .getSupportFragmentManager().beginTransaction();
-                CountryFragment fragment = new CountryFragment();
-                // Bundle bundle = new Bundle();
-                // bundle.putString("Id", String.valueOf(id));
-                // fragment.setArguments(bundle);
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				CountryFragment fragment = new CountryFragment();
+				// Bundle bundle = new Bundle();
+				// bundle.putString("Id", String.valueOf(id));
+				// fragment.setArguments(bundle);
 
-                sendData.edit().putInt("main_Id", id).commit();
+				sendData.edit().putInt("main_Id", id).commit();
 
-                trans.replace(R.id.content_frame, fragment);
-                trans.addToBackStack(null);
-                trans.commit();
-            }
-        });
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+			}
+		});
 
-        mainRow7.setOnClickListener(new OnClickListener() {
+		mainRow7.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                int id = 7;
-                FragmentTransaction trans = ((MainActivity) getActivity())
-                        .getSupportFragmentManager().beginTransaction();
-                trans.replace(R.id.content_frame, new FroumtitleFragment());
+			@Override
+			public void onClick(View arg0) {
+				int id = 7;
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new FroumtitleFragment());
 
-                sendData.edit().putInt("main_Id", id).commit();
+				sendData.edit().putInt("main_Id", id).commit();
 
-                trans.addToBackStack(null);
-                trans.commit();
-            }
-        });
+				trans.addToBackStack(null);
+				trans.commit();
+			}
+		});
 
-        // dbAdapter = new DataBaseAdapter(getActivity());
-        //
-        // dbAdapter.open();
-        // List<ListItem> mylist = dbAdapter.getListItemsById(0);
-        // dbAdapter.close();
-        //
-        // ListView lstMain = (ListView) view.findViewById(R.id.lstMain);
-        // ListAdapter = new MainListAdapter(getActivity(),
-        // R.layout.main_item_list, mylist);
-        //
-        // lstMain.setAdapter(ListAdapter);
-        // ImageView v = (ImageView) view.findViewById(R.id.imgAdverst);
-        // v.getLayoutParams().height = util.getScreenHeightWithPadding() / 9;
-        // v.requestLayout();
+		// dbAdapter = new DataBaseAdapter(getActivity());
+		//
+		// dbAdapter.open();
+		// List<ListItem> mylist = dbAdapter.getListItemsById(0);
+		// dbAdapter.close();
+		//
+		// ListView lstMain = (ListView) view.findViewById(R.id.lstMain);
+		// ListAdapter = new MainListAdapter(getActivity(),
+		// R.layout.main_item_list, mylist);
+		//
+		// lstMain.setAdapter(ListAdapter);
+		// ImageView v = (ImageView) view.findViewById(R.id.imgAdverst);
+		// v.getLayoutParams().height = util.getScreenHeightWithPadding() / 9;
+		// v.requestLayout();
 
-        return view;
-    }
+		return view;
+	}
 
 }
