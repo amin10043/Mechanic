@@ -49,13 +49,13 @@ import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.SavingImage;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class RegisterFragment extends Fragment implements AsyncInterface,
 		SaveAsyncInterface {
 
-	protected static final Context Contaxt = null;
 	int resourceId;
 
 	Fragment fragment;
@@ -225,24 +225,10 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 
 					comregtxt.setVisibility(View.VISIBLE);
 					btnreg.setEnabled(false);
-					// btnreg.setBackgroundColor(R.drawable.buttonshape2);
-					// //////////////////////////////////////////////////////////////////
 
-					// //////////////////////////
-					Map<String, String> items = new HashMap<String, String>();
-					items.put("register", "register");
-					items.put("username", Name);
-					items.put("email", "");
-					items.put("password", Pass);
-					items.put("phone", "");
-					items.put("mobile", Mobile);
-					items.put("fax", "0");
-					items.put("address", "");
-					items.put("date", txtdate);
-
-					service.delegate = RegisterFragment.this;
-					service.execute(items);
-
+					ServerDate date = new ServerDate(getActivity());
+					date.delegate = RegisterFragment.this;
+					date.execute("");
 				}
 
 			}
@@ -337,8 +323,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	@SuppressWarnings("unchecked")
 	@Override
 	public void processFinish(String output) {
-		ringProgressDialog.dismiss();
 
+		ringProgressDialog.dismiss();
 		try {
 			serverId = Integer.valueOf(output);
 
@@ -368,6 +354,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 						it.put("id", serverId);
 						it.put("Image", Image);
 
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								"", "لطفا منتظر بمانید...", true);
 						savingImage.delegate = this;
 						savingImage.execute(it);
 						dbAdapter.inserUserToDb(serverId, Name, null, Pass,
@@ -403,10 +391,24 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 				toast.show();
 			}
 		} catch (Exception ex) {
-			Toast.makeText(getActivity(), " :خطا " + ex, Toast.LENGTH_SHORT)
-					.show();
-		}
 
+			Map<String, String> items = new HashMap<String, String>();
+			items.put("register", "register");
+			items.put("username", Name);
+			items.put("email", "");
+			items.put("password", Pass);
+			items.put("phone", "");
+			items.put("mobile", Mobile);
+			items.put("fax", "0");
+			items.put("address", "");
+			items.put("date", output);
+
+			ringProgressDialog = ProgressDialog.show(getActivity(), "",
+					"لطفا منتظر بمانید...", true);
+
+			service.delegate = RegisterFragment.this;
+			service.execute(items);
+		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -541,6 +543,9 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "خطا در ثبت عکس", Toast.LENGTH_SHORT)
 					.show();
+		}
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
 		}
 	}
 }

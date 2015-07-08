@@ -309,10 +309,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			ringProgressDialog.dismiss();
 		}
 
-		int id = -1;
-
 		try {
-			id = Integer.valueOf(output);
+			Integer.valueOf(output);
 			adapter.open();
 			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
 				adapter.deleteLikeFromFroum(CurrentUser.getId(), froumNumber);
@@ -339,9 +337,6 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
 					adapter.open();
-					// int c = adapter.LikeInFroum_count(ItemId) - 1;
-					// countLikeFroum.setText(String.valueOf(c));
-
 					params = new LinkedHashMap<String, String>();
 					deleting = new Deleting(context);
 					deleting.delegate = FroumtitleListadapter.this;
