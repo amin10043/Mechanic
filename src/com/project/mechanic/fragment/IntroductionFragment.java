@@ -822,29 +822,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface {
 
 				}
 
-				// ////
-				// if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
-				// ObjectID, 1)) {
-				// likePost.setBackgroundResource(R.drawable.like_off);
-				// personPost
-				// .setBackgroundResource(R.drawable.count_like_off);
-				//
-				// adapter.deleteLikeIntroduction(CurrentUser.getId(),
-				// ObjectID, 1);
-				// int countlike = adapter.LikeInObject_count(ObjectID, 1);
-				// countLikePost.setText(String.valueOf(countlike));
-				// } else {
-				// // adapter.insertLikeInObjectToDb(CurrentUser.getId(),
-				// // ObjectID, serverDate, 1);
-				// likePost.setBackgroundResource(R.drawable.like_on);
-				// personPost.setBackgroundResource(R.drawable.count_like);
-				//
-				// int countlike = adapter.LikeInObject_count(ObjectID, 1);
-				// countLikePost.setText(String.valueOf(countlike));
-				// }
-				//
-				// }
-				// adapter.close();
 			}
 
 		});
@@ -867,37 +844,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface {
 					flag = true;
 
 				}
-				// //////////////////////////////////////////////////
-
-				// adapter.open();
-				//
-				// if (CurrentUser == null) {
-				// Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-				// Toast.LENGTH_SHORT).show();
-				// return;
-				//
-				// } else {
-				// if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
-				// ObjectID, 0)) {
-				// AddLike.setBackgroundResource(R.drawable.like_off);
-				// personPage
-				// .setBackgroundResource(R.drawable.count_like_off);
-				// adapter.deleteLikeIntroduction(CurrentUser.getId(),
-				// ObjectID, 0);
-				// int countlike = adapter.LikeInObject_count(ObjectID, 0);
-				// CountLikeIntroduction.setText(String.valueOf(countlike));
-				// } else {
-				// adapter.insertLikeInObjectToDb(CurrentUser.getId(),
-				// ObjectID, currentDate, 0);
-				// AddLike.setBackgroundResource(R.drawable.like_on);
-				// personPage.setBackgroundResource(R.drawable.count_like);
-				//
-				// int countlike = adapter.LikeInObject_count(ObjectID, 0);
-				// CountLikeIntroduction.setText(String.valueOf(countlike));
-				// }
-				//
-				// }
-				// adapter.close();
 			}
 
 		});
