@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -90,27 +91,27 @@ public class SubAdminAdapter extends ArrayAdapter<SubAdmin> {
 			public void onClick(View t) {
 
 				adapter.open();
-				RelativeLayout parentlayout = (RelativeLayout) t.getParent();
-				View name = parentlayout.findViewById(R.id.nameSubAdmin1);
-				TextView x = (TextView) name;
 
-				SubAdmin cc = myList.get(position);
-				int i = cc.getUserId();
-				Users h = adapter.getUserbyid(i);
-				int id = 0;
-				for (SubAdmin r : myList) {
-					if (x.getText().toString().equals(h.getName())) {
-
-						id = cc.getId();
-
-					}
+				int ItemId = 0;
+				ListView listView = (ListView) t.getParent().getParent()
+						.getParent();
+				int b = listView.getPositionForView(t);
+				SubAdmin f = getItem(b);
+				if (f != null) {
+					ItemId = f.getUserId();
 				}
 
-				adapter.deleteAdmin(id);
+				Users h = adapter.getUserbyid(ItemId);
+				adapter.deleteAdmin(h.getId());
+
+				myList.remove(b);
 				notifyDataSetChanged();
 				adapter.close();
+
 			}
 		});
+
+		notifyDataSetChanged();
 
 		adapter.close();
 

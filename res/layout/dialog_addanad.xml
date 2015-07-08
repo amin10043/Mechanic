@@ -213,8 +213,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:hint="تعداد "
-                        android:inputType="number"
-                        android:text="0" />
+                        android:inputType="number" />
 
                     <TextView
                         android:layout_width="wrap_content"

@@ -2,6 +2,8 @@ package com.project.mechanic.utility;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -115,6 +117,16 @@ public class Utility implements AsyncInterface {
 								dialog.dismiss();
 							}
 						}).setIcon(android.R.drawable.ic_dialog_alert).show();
+	}
+
+	public static void copyStream(InputStream input, OutputStream output)
+			throws IOException {
+
+		byte[] buffer = new byte[1024];
+		int bytesRead;
+		while ((bytesRead = input.read(buffer)) != -1) {
+			output.write(buffer, 0, bytesRead);
+		}
 	}
 
 	public void showtoast(View view, int picture, String massage, String Title) {

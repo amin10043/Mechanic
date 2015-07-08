@@ -1,6 +1,8 @@
 package com.project.mechanic.fragment;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -110,53 +112,76 @@ public class DialogAdminsPage extends Dialog implements AsyncInterface {
 
 				if (!"".equals(phoneInput)) {
 
-					adapter.open();
-					Users u = adapter.getUserbymobailenumber(phoneInput);
-
-					adapter.insertSubAdminPage(ObjectId, u.getId(), AdminId);
-
-					ArrayList<SubAdmin> listAdmin = adapter.getAdmin(ObjectId);
-
-					SubAdminAdapter listadapter = new SubAdminAdapter(context,
-							R.layout.row_sub_admin, listAdmin, ObjectId);
-					listSubAdmin.setAdapter(listadapter);
-					listadapter.notifyDataSetChanged();
-					adapter.close();
-					in.setText("");
-					// service = new ServiceComm(context);
-					// service.delegate = DialogAdminsPage.this;
-					// Map<String, String> items = new LinkedHashMap<String,
-					// String>();
-					// items.put("login", "login");
-					// items.put("phone", phoneInput);
+					// adapter.open();
+					// Users u = adapter.getUserbymobailenumber(phoneInput);
+					// if (u == null)
+					// Toast.makeText(context,
+					// "شماره مورد نظر شما در نرم افزار ثبت نشده است",
+					// 0).show();
+					// else {
 					//
-					// service.execute(items);
+					// adapter.insertSubAdminPage(ObjectId, u.getId(), AdminId);
 					//
-					// ringProgressDialog = ProgressDialog.show(context, "",
-					// "لطفا منتظر بمانید...", true);
+					// ArrayList<SubAdmin> listAdmin = adapter
+					// .getAdmin(ObjectId);
 					//
-					// ringProgressDialog.setCancelable(true);
-					//
-					// new Thread(new Runnable() {
-					//
-					// @Override
-					// public void run() {
-					//
-					// try {
-					//
-					// Thread.sleep(10000);
-					//
-					// } catch (Exception e) {
-					//
+					// SubAdminAdapter listadapter = new SubAdminAdapter(
+					// context, R.layout.row_sub_admin, listAdmin,
+					// ObjectId);
+					// listSubAdmin.setAdapter(listadapter);
+					// listadapter.notifyDataSetChanged();
+					// adapter.close();
+					// in.setText("");
 					// }
-					// }
-					// }).start();
+					service = new ServiceComm(context);
+					service.delegate = DialogAdminsPage.this;
+					Map<String, String> items = new LinkedHashMap<String, String>();
+					items.put("login", "login");
+					items.put("phone", phoneInput);
 
+					service.execute(items);
+
+					ringProgressDialog = ProgressDialog.show(context, "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
+
+				} else {
+					Toast.makeText(context, "وارد کردن شماره همراه اجباری است",
+							0).show();
 				}
 			}
 		});
 		adapter.close();
 
+	}
+
+	public void updatingList() {
+		// Users u = adapter.getUserbymobailenumber(phoneInput);
+		//
+		// adapter.insertSubAdminPage(ObjectId, u.getId(), AdminId);
+
+		ArrayList<SubAdmin> listAdmin = adapter.getAdmin(ObjectId);
+
+		SubAdminAdapter listadapter = new SubAdminAdapter(context,
+				R.layout.row_sub_admin, listAdmin, ObjectId);
+		listSubAdmin.setAdapter(listadapter);
+		adapter.close();
 	}
 
 	@Override
@@ -169,16 +194,32 @@ public class DialogAdminsPage extends Dialog implements AsyncInterface {
 					Toast.LENGTH_SHORT).show();
 		} else {
 			adapter.open();
+			page = adapter.getObjectbyid(ObjectId);
+			mainAdmin = adapter.getUserbyid(page.getUserId());
 			Users u = adapter.getUserbymobailenumber(phoneInput);
+			if (u == null)
+				Toast.makeText(context,
+						"شماره مورد نظر شما در نرم افزار ثبت نشده است", 0)
+						.show();
+			else {
+				if (adapter.IsUserAdmin(u.getId(), (ObjectId))
+						|| phoneInput.equals(mainAdmin.getMobailenumber())) {
+					Toast.makeText(context, "این شماره قبلا استفاده شده است", 0)
+							.show();
+				} else {
 
-			adapter.insertSubAdminPage(ObjectId, u.getId(), AdminId);
+					adapter.insertSubAdminPage(ObjectId, u.getId(), AdminId);
 
-			ArrayList<SubAdmin> listAdmin = adapter.getAllAdmin(ObjectId);
+					ArrayList<SubAdmin> listAdmin = adapter.getAdmin(ObjectId);
 
-			SubAdminAdapter listadapter = new SubAdminAdapter(context,
-					R.layout.row_sub_admin, listAdmin, ObjectId);
-			adapter.close();
-
+					SubAdminAdapter listadapter = new SubAdminAdapter(context,
+							R.layout.row_sub_admin, listAdmin, ObjectId);
+					listSubAdmin.setAdapter(listadapter);
+					listadapter.notifyDataSetChanged();
+					adapter.close();
+					in.setText("");
+				}
+			}
 		}
 
 	}

@@ -76,7 +76,8 @@
                 <ListView
                     android:id="@+id/listSubAdmin"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="wrap_content"
+                    android:divider="@null" >
                 </ListView>
             </RelativeLayout>
         </RelativeLayout>
@@ -87,11 +88,6 @@
             android:layout_below="@+id/adminssubs"
             android:layout_centerHorizontal="true"
             android:layout_margin="10dp" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/save" />
         </RelativeLayout>
     </RelativeLayout>
 

@@ -446,7 +446,7 @@ public class MainActivity extends FragmentActivity {
 			} else if (f instanceof Province3Fragment) {
 				trans.setCustomAnimations(R.anim.push_out_right,
 						R.anim.pull_in_left);
-				trans.replace(R.id.content_frame, new Province3Fragment());
+				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
 			} else if (f instanceof City3Fragment) {
 				trans.setCustomAnimations(R.anim.push_out_right,
