@@ -2134,7 +2134,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			result.add(CursorToTicket(cursor));
 		}
-		// Collections.sort(result);
+		Collections.sort(result);
 
 		return result;
 
@@ -2403,8 +2403,7 @@ public class DataBaseAdapter {
 	}
 
 	public void UpdateObjectProperties(int id, String name, String Phone,
-			String Email, String fax, String description, byte[] HeaderImage,
-			byte[] ProfileImage, byte[] FooterImage, String LinkCatalog,
+			String Email, String fax, String description, String LinkCatalog,
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
@@ -2422,12 +2421,7 @@ public class DataBaseAdapter {
 			uc.put("Fax", fax);
 		if (!"".equals(description) && description != null)
 			uc.put("Description", description);
-		if (HeaderImage != null)
-			uc.put("Image1", HeaderImage);
-		if (ProfileImage != null)
-			uc.put("Image2", ProfileImage);
-		if (FooterImage != null)
-			uc.put("Image3", FooterImage);
+
 		if (!"".equals(LinkCatalog) && LinkCatalog != null)
 			uc.put("Pdf1", LinkCatalog);
 		if (!"".equals(LinkPrice) && LinkPrice != null)
@@ -3363,6 +3357,21 @@ public class DataBaseAdapter {
 		ContentValues uc = new ContentValues();
 		uc.put("rate", rating);
 		mDb.update(TableObject, uc, "Id = " + Id, null);
+
+	}
+
+	public void updateAllImageIntroductionPage(int id, byte[] HeaderImage,
+			byte[] ProfileImage, byte[] FooterImage) {
+		ContentValues uc = new ContentValues();
+
+		if (HeaderImage != null)
+			uc.put("Image1", HeaderImage);
+		if (ProfileImage != null)
+			uc.put("Image2", ProfileImage);
+		if (FooterImage != null)
+			uc.put("Image3", FooterImage);
+
+		mDb.update(TableObject, uc, "Id=" + id, null);
 
 	}
 

@@ -109,9 +109,6 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
 
 		if (!"".equals(output) && output != null
 				&& !(output.contains("Exception") || output.contains("java"))) {
@@ -155,16 +152,25 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 					trans.replace(R.id.content_frame, fragment);
 					trans.commit();
+					if (ringProgressDialog != null) {
+						ringProgressDialog.dismiss();
+					}
 				}
 				if (code == 2) {
 					// az froumFragment vared shode
 
 					((FroumFragment) f).updateList();
+					if (ringProgressDialog != null) {
+						ringProgressDialog.dismiss();
+					}
 				}
 				if (code == 3) {
 					// az expandableCommentFroum vared shode
 
 					((FroumFragment) f).expanding(IdGroup);
+					if (ringProgressDialog != null) {
+						ringProgressDialog.dismiss();
+					}
 
 				}
 

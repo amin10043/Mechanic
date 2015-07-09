@@ -17,6 +17,14 @@ public class SubAdmin {
 		return Id;
 	}
 
+	public int getAdminID() {
+		return AdminID;
+	}
+
+	public void setAdminID(int adminID) {
+		AdminID = adminID;
+	}
+
 	public void setId(int id) {
 		Id = id;
 	}

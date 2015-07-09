@@ -124,7 +124,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 		}
 
 		Users x = adapter.getUserbyid(person1.getUserId());
-        //userId=x.getId();
+		// userId=x.getId();
 		RelativeLayout rl = (RelativeLayout) convertView
 				.findViewById(R.id.topicTitleFroum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
@@ -157,23 +157,22 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 		}
 		adapter.close();
 		iconProile.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				adapter.open();
 				Paper person1 = mylist.get(position);
 				Users x = adapter.getUserbyid(person1.getUserId());
-		        userId=x.getId();
-			FragmentTransaction trans = ((MainActivity) context)
+				userId = x.getId();
+				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
-			    trans.commit();
-			
-				
+				trans.commit();
+
 			}
 		});
 		txt1.setText(person1.getTitle());
@@ -313,9 +312,6 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 	@Override
 	public void processFinish(String output) {
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
 
 		int id = -1;
 
@@ -328,14 +324,18 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 				NumofLike.setText(adapter.LikeInPaper_count(paperNumber)
 						.toString());
-
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 			} else {
 				adapter.insertLikeInPaperToDb(currentUser.getId(), paperNumber,
 						serverDate);
 				likePaper.setBackgroundResource(R.drawable.like_froum);
 				NumofLike.setText(adapter.LikeInPaper_count(paperNumber)
 						.toString());
-
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 			}
 			adapter.close();
 

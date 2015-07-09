@@ -1,8 +1,11 @@
 package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -28,11 +31,15 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
-import com.project.mechanic.entity.Object;
+import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.SavingImage3Picture;
 import com.project.mechanic.utility.Utility;
 
-public class IntroductionEditFragment extends Fragment {
+public class IntroductionEditFragment extends Fragment implements
+		AsyncInterface, SaveAsyncInterface {
 	private static int headerLoadCode = 1;
 	private static int profileLoadCode = 2;
 	private static int footerLoadcode = 3;
@@ -40,7 +47,7 @@ public class IntroductionEditFragment extends Fragment {
 	DataBaseAdapter DBAdapter;
 	Utility util;
 
-	Object object;
+	com.project.mechanic.entity.Object object;
 
 	DialogEditDownloadIntroduction diadown;
 
@@ -72,6 +79,11 @@ public class IntroductionEditFragment extends Fragment {
 	ImageView payBtn;
 
 	Bitmap bmpHeader, bmpProfil, bmpFooter;
+	Saving saving;
+	Map<String, String> params;
+	int PageId;
+	ProgressDialog ringProgressDialog;
+	SavingImage3Picture savingImage;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -147,9 +159,9 @@ public class IntroductionEditFragment extends Fragment {
 
 		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id",
 				0);
-		final int id = sendDataID.getInt("main_Id", -1);
+		PageId = sendDataID.getInt("main_Id", -1);
 
-		Toast.makeText(getActivity(), "introduction id =" + id,
+		Toast.makeText(getActivity(), "introduction id =" + PageId,
 				Toast.LENGTH_SHORT).show();
 
 		// /////////display information///////////////////////
@@ -158,7 +170,7 @@ public class IntroductionEditFragment extends Fragment {
 		// "Id", 0);
 		// final int cid = sendDataID1.getInt("main_Id", -1);
 		DBAdapter.open();
-		object = DBAdapter.getObjectbyid(id);
+		object = DBAdapter.getObjectbyid(PageId);
 
 		byte[] bitmapbyte = object.getImage2();
 		if (bitmapbyte != null) {
@@ -216,7 +228,7 @@ public class IntroductionEditFragment extends Fragment {
 				if (rat >= 0) {
 					DBAdapter.open();
 
-					DBAdapter.updateRatingObject(rat, id);
+					DBAdapter.updateRatingObject(rat, PageId);
 
 					Toast.makeText(getActivity(), "ثبت درگاه انجام شود ", 0)
 							.show();
@@ -238,7 +250,7 @@ public class IntroductionEditFragment extends Fragment {
 			public void onClick(View arg0) {
 				int AdminId = object.getUserId();
 				DialogAdminsPage adminDialog = new DialogAdminsPage(
-						getActivity(), id, AdminId);
+						getActivity(), PageId, AdminId);
 				adminDialog.show();
 			}
 		});
@@ -298,25 +310,6 @@ public class IntroductionEditFragment extends Fragment {
 			@Override
 			public void onClick(View arg0) {
 
-				bmpHeader = ((BitmapDrawable) headerImageEdit.getDrawable())
-						.getBitmap();
-				bmpProfil = ((BitmapDrawable) profileImageEdit.getDrawable())
-						.getBitmap();
-				bmpFooter = ((BitmapDrawable) footerImageEdit.getDrawable())
-						.getBitmap();
-
-				final byte[] byteHeader = getBitmapAsByteArray(bmpHeader);
-				final byte[] byteProfil = getBitmapAsByteArray(bmpProfil);
-				final byte[] byteFooter = getBitmapAsByteArray(bmpFooter);
-
-				if (headerImageEdit.getDrawable() == null
-						&& profileImageEdit.getDrawable() == null
-						&& footerImageEdit.getDrawable() == null) {
-
-					Toast.makeText(getActivity(), "Empty ByteArray",
-							Toast.LENGTH_SHORT).show();
-				}
-
 				nameValue = nameEnter.getText().toString();
 				phoneValue = phoneEnter.getText().toString();
 				faxValue = faxEnter.getText().toString();
@@ -330,17 +323,35 @@ public class IntroductionEditFragment extends Fragment {
 							"پر کردن فیلد نام الزامی است", Toast.LENGTH_SHORT)
 							.show();
 				} else {
+					ringProgressDialog = ProgressDialog.show(getActivity(),
+							"در حال بروزرسانی", "لطفا منتظر بمانید...");
+					saving = new Saving(getActivity());
+					saving.delegate = IntroductionEditFragment.this;
+					params = new LinkedHashMap<String, String>();
 
-					DBAdapter.open();
-					DBAdapter.UpdateObjectProperties(id, nameValue, phoneValue,
-							emailValue, faxValue, descriptionValue, byteHeader,
-							byteProfil, byteFooter,
+					params.put("tableName", "Object");
 
-							Dcatalog, Dprice, Dpdf, Dvideo, addressValue,
-							mobileValue, Dface, Dinstagram, Dlink, Dgoogle,
-							Dweb, Dtwt);
+					params.put("Name", nameValue);
+					params.put("Phone", phoneValue);
+					params.put("Email", emailValue);
+					params.put("Fax", faxValue);
+					params.put("Description", descriptionValue);
+					params.put("Pdf1", Dcatalog);
+					params.put("Pdf2", Dprice);
+					params.put("Pdf3", Dpdf);
+					params.put("Pdf4", Dvideo);
+					params.put("Address", addressValue);
+					params.put("Cellphone", mobileValue);
+					params.put("Facebook", Dface);
+					params.put("Instagram", Dinstagram);
+					params.put("LinkedIn", Dlink);
+					params.put("Google", Dgoogle);
+					params.put("Site", Dweb);
+					params.put("Twitter", Dtwt);
 
-					DBAdapter.close();
+					params.put("IsUpdate", "1");
+					params.put("Id", String.valueOf(PageId));
+					saving.execute(params);
 
 					getActivity().getSupportFragmentManager().popBackStack();
 				}
@@ -428,6 +439,121 @@ public class IntroductionEditFragment extends Fragment {
 					android.R.color.transparent));
 			footerImageEdit.setLayoutParams(footerEditParams);
 
+		}
+	}
+
+	@Override
+	public void processFinish(String output) {
+
+		int id = -1;
+		try {
+			if (ringProgressDialog != null) {
+				ringProgressDialog.dismiss();
+			}
+			if (getActivity() != null) {
+
+				bmpHeader = ((BitmapDrawable) headerImageEdit.getDrawable())
+						.getBitmap();
+				bmpProfil = ((BitmapDrawable) profileImageEdit.getDrawable())
+						.getBitmap();
+				bmpFooter = ((BitmapDrawable) footerImageEdit.getDrawable())
+						.getBitmap();
+
+				byte[] byteHeader = getBitmapAsByteArray(bmpHeader);
+				byte[] byteProfil = getBitmapAsByteArray(bmpProfil);
+				byte[] byteFooter = getBitmapAsByteArray(bmpFooter);
+
+				if (headerImageEdit.getDrawable() == null
+						&& profileImageEdit.getDrawable() == null
+						&& footerImageEdit.getDrawable() == null) {
+
+					Toast.makeText(getActivity(), "Empty ByteArray",
+							Toast.LENGTH_SHORT).show();
+				}
+
+				byteHeader = Utility.CompressBitmap(bmpHeader);
+				byteProfil = Utility.CompressBitmap(bmpProfil);
+				byteFooter = Utility.CompressBitmap(bmpFooter);
+
+				savingImage = new SavingImage3Picture(getActivity());
+				savingImage.delegate = this;
+				Map<String, Object> it = new LinkedHashMap<String, Object>();
+
+				it.put("tableName", "Object");
+				it.put("fieldName1", "Image1");
+				it.put("fieldName2", "Image2");
+				it.put("fieldName3", "Image3");
+
+				it.put("id", String.valueOf(PageId));
+
+				it.put("Image1", byteHeader);
+				it.put("Image2", byteProfil);
+				it.put("Image3", byteFooter);
+
+				savingImage.execute(it);
+				ringProgressDialog = ProgressDialog.show(getActivity(), null,
+						"لطفا منتظر بمانید.");
+
+			} else {
+				DBAdapter.open();
+				DBAdapter.UpdateObjectProperties(PageId, nameValue, phoneValue,
+						emailValue, faxValue, descriptionValue, Dcatalog,
+						Dprice, Dpdf, Dvideo, addressValue, mobileValue, Dface,
+						Dinstagram, Dlink, Dgoogle, Dweb, Dtwt);
+
+				DBAdapter.close();
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
+
+			}
+
+		} catch (NumberFormatException ex) {
+			Toast.makeText(getActivity(), "خطا در بروز رسانی",
+					Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	@Override
+	public void processFinishSaveImage(String output) {
+
+		if (output != null && "".equals(output)) {
+			try {
+				bmpHeader = ((BitmapDrawable) headerImageEdit.getDrawable())
+						.getBitmap();
+				bmpProfil = ((BitmapDrawable) profileImageEdit.getDrawable())
+						.getBitmap();
+				bmpFooter = ((BitmapDrawable) footerImageEdit.getDrawable())
+						.getBitmap();
+
+				byte[] byteHeader = getBitmapAsByteArray(bmpHeader);
+				byte[] byteProfil = getBitmapAsByteArray(bmpProfil);
+				byte[] byteFooter = getBitmapAsByteArray(bmpFooter);
+
+				if (headerImageEdit.getDrawable() == null
+						&& profileImageEdit.getDrawable() == null
+						&& footerImageEdit.getDrawable() == null) {
+
+					Toast.makeText(getActivity(), "Empty ByteArray",
+							Toast.LENGTH_SHORT).show();
+				}
+
+				byteHeader = Utility.CompressBitmap(bmpHeader);
+				byteProfil = Utility.CompressBitmap(bmpProfil);
+				byteFooter = Utility.CompressBitmap(bmpFooter);
+
+				DBAdapter.open();
+				DBAdapter.updateAllImageIntroductionPage(PageId, byteHeader,
+						byteProfil, byteFooter);
+				DBAdapter.close();
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
+
+			} catch (NumberFormatException e) {
+				Toast.makeText(getActivity(), "  خطا در بروز رسانی تصویر",
+						Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 

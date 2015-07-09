@@ -142,7 +142,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		topics = adapter.getFroumItembyid(froumid);
 		Users u = adapter.getUserbyid(topics.getUserId());
 		if (u != null) {
-			userId= u.getId();
+			userId = u.getId();
 
 			nametxt.setText(u.getName());
 			LinearLayout rl = (LinearLayout) header
@@ -176,10 +176,10 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		countLike.setText(adapter.LikeInFroum_count(froumid).toString());
 		dateTopic.setText(util.getPersianDate(topics.getDate()));
 		profileImg.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
-				
+
 				FragmentTransaction trans = ((MainActivity) getActivity())
 						.getSupportFragmentManager().beginTransaction();
 				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
@@ -188,7 +188,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				
+
 			}
 		});
 		addComment.setOnClickListener(new View.OnClickListener() {
@@ -404,9 +404,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
 
 		int id = -1;
 
@@ -420,6 +417,9 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 				countLike
 						.setText(adapter.LikeInFroum_count(froumid).toString());
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 
 			} else {
 				adapter.insertLikeInFroumToDb(CurrentUser.getId(), froumid,
@@ -429,6 +429,9 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 				countLike
 						.setText(adapter.LikeInFroum_count(froumid).toString());
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 			}
 			adapter.close();
 

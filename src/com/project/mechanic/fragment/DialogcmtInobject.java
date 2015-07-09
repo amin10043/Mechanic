@@ -95,8 +95,6 @@ public class DialogcmtInobject extends Dialog implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
-		if (ringProgressDialog != null)
-			ringProgressDialog.dismiss();
 
 		int id = -1;
 
@@ -108,6 +106,8 @@ public class DialogcmtInobject extends Dialog implements AsyncInterface {
 
 			dbadapter.close();
 			f.updateList();
+			if (ringProgressDialog != null)
+				ringProgressDialog.dismiss();
 			DialogcmtInobject.this.dismiss();
 
 		} catch (NumberFormatException e) {

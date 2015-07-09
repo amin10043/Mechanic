@@ -1050,8 +1050,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
-		if (ringProgressDialog != null)
-			ringProgressDialog.dismiss();
 
 		int id = -1;
 		try {
@@ -1078,10 +1076,14 @@ public class IntroductionFragment extends Fragment implements AsyncInterface {
 					AddLike.setBackgroundResource(R.drawable.like_off);
 					personPage.setBackgroundResource(R.drawable.count_like_off);
 					CountLikeIntroduction.setText(String.valueOf(countlike));
+					if (ringProgressDialog != null)
+						ringProgressDialog.dismiss();
 				} else {
 					likePost.setBackgroundResource(R.drawable.like_off);
 					personPost.setBackgroundResource(R.drawable.count_like_off);
 					countLikePost.setText(String.valueOf(countlike));
+					if (ringProgressDialog != null)
+						ringProgressDialog.dismiss();
 				}
 
 			} else {
@@ -1093,10 +1095,14 @@ public class IntroductionFragment extends Fragment implements AsyncInterface {
 					AddLike.setBackgroundResource(R.drawable.like_on);
 					personPage.setBackgroundResource(R.drawable.count_like);
 					CountLikeIntroduction.setText(String.valueOf(countlike));
+					if (ringProgressDialog != null)
+						ringProgressDialog.dismiss();
 				} else {
 					likePost.setBackgroundResource(R.drawable.like_on);
 					personPost.setBackgroundResource(R.drawable.count_like);
 					countLikePost.setText(String.valueOf(countlike));
+					if (ringProgressDialog != null)
+						ringProgressDialog.dismiss();
 				}
 
 			}
