@@ -305,9 +305,6 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 	@Override
 	public void processFinish(String output) {
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
 
 		try {
 			Integer.valueOf(output);
@@ -318,6 +315,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
 						.toString());
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 
 			} else {
 				adapter.insertLikeInFroumToDb(CurrentUser.getId(), froumNumber,
@@ -326,6 +326,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
 						.toString());
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 			}
 			adapter.close();
 

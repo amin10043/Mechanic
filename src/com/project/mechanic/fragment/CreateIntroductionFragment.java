@@ -427,11 +427,12 @@ public class CreateIntroductionFragment extends Fragment implements
 
 	@Override
 	public void processFinish(String output) {
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
 
 		try {
+
+			if (ringProgressDialog != null) {
+				ringProgressDialog.dismiss();
+			}
 
 			serverId = Integer.valueOf(output);
 			DBAdapter.open();
@@ -446,6 +447,10 @@ public class CreateIntroductionFragment extends Fragment implements
 						ObjectBrandTypeId);
 
 				DBAdapter.insertObjectInCity(LastObjectId, CityId);
+
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 
 				byteHeader = Utility.CompressBitmap(bitmapHeader);
 				byteProfil = Utility.CompressBitmap(bitmapProfil);
@@ -467,8 +472,9 @@ public class CreateIntroductionFragment extends Fragment implements
 				it.put("Image3", byteFooter);
 
 				savingImage.execute(it);
-				ringProgressDialog = ProgressDialog.show(getActivity(), null,
-						"لطفا منتظر بمانید.");
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 
 			} else if (mainID == 1) {
 
@@ -482,6 +488,10 @@ public class CreateIntroductionFragment extends Fragment implements
 
 				if (objectIdItem1 > 4)
 					DBAdapter.insertObjectInCity(LastObjectId, CityId);
+
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 
 				byteHeader = Utility.CompressBitmap(bitmapHeader);
 				byteProfil = Utility.CompressBitmap(bitmapProfil);
@@ -517,6 +527,10 @@ public class CreateIntroductionFragment extends Fragment implements
 				if (objectIdItem1 > 4)
 					DBAdapter.insertObjectInCity(LastObjectId, CityId);
 
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
+
 				byteHeader = Utility.CompressBitmap(bitmapHeader);
 				byteProfil = Utility.CompressBitmap(bitmapProfil);
 				byteFooter = Utility.CompressBitmap(bitmapFooter);
@@ -537,8 +551,9 @@ public class CreateIntroductionFragment extends Fragment implements
 				it.put("Image3", byteFooter);
 
 				savingImage.execute(it);
-				ringProgressDialog = ProgressDialog.show(getActivity(), null,
-						"لطفا منتظر بمانید.");
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 			}
 
 		} catch (NumberFormatException e) {
@@ -747,7 +762,6 @@ public class CreateIntroductionFragment extends Fragment implements
 		if (ringProgressDialog != null) {
 			ringProgressDialog.dismiss();
 		}
-
 		try {
 
 			DBAdapter.open();
@@ -755,6 +769,9 @@ public class CreateIntroductionFragment extends Fragment implements
 					byteProfil, byteFooter);
 
 			DBAdapter.close();
+			if (ringProgressDialog != null) {
+				ringProgressDialog.dismiss();
+			}
 
 		} catch (Exception e) {
 			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)

@@ -112,27 +112,6 @@ public class DialogAdminsPage extends Dialog implements AsyncInterface {
 
 				if (!"".equals(phoneInput)) {
 
-					// adapter.open();
-					// Users u = adapter.getUserbymobailenumber(phoneInput);
-					// if (u == null)
-					// Toast.makeText(context,
-					// "شماره مورد نظر شما در نرم افزار ثبت نشده است",
-					// 0).show();
-					// else {
-					//
-					// adapter.insertSubAdminPage(ObjectId, u.getId(), AdminId);
-					//
-					// ArrayList<SubAdmin> listAdmin = adapter
-					// .getAdmin(ObjectId);
-					//
-					// SubAdminAdapter listadapter = new SubAdminAdapter(
-					// context, R.layout.row_sub_admin, listAdmin,
-					// ObjectId);
-					// listSubAdmin.setAdapter(listadapter);
-					// listadapter.notifyDataSetChanged();
-					// adapter.close();
-					// in.setText("");
-					// }
 					service = new ServiceComm(context);
 					service.delegate = DialogAdminsPage.this;
 					Map<String, String> items = new LinkedHashMap<String, String>();
@@ -172,10 +151,6 @@ public class DialogAdminsPage extends Dialog implements AsyncInterface {
 	}
 
 	public void updatingList() {
-		// Users u = adapter.getUserbymobailenumber(phoneInput);
-		//
-		// adapter.insertSubAdminPage(ObjectId, u.getId(), AdminId);
-
 		ArrayList<SubAdmin> listAdmin = adapter.getAdmin(ObjectId);
 
 		SubAdminAdapter listadapter = new SubAdminAdapter(context,

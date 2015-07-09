@@ -107,7 +107,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 		// final CommentInFroum comment = cmt.get(groupPosition);
 		Users y = adapter.getUserbyid(reply.getUserid());
-		userId=y.getId();
+		userId = y.getId();
 		RelativeLayout rl = (RelativeLayout) convertView
 				.findViewById(R.id.main_icon_reply);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
@@ -136,19 +136,18 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 		}
 		ReplyerPic.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				FragmentTransaction trans = ((MainActivity) context)
-				.getSupportFragmentManager().beginTransaction();
+						.getSupportFragmentManager().beginTransaction();
 				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-			
-				
+
 			}
 		});
 		mainReply.setText(reply.getDesk());
@@ -185,7 +184,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 		final CommentInFroum comment = cmt.get(groupPosition);
 		final Users x = adapter.getUserbyid(comment.getUserid());
-       // userId= x.getId();
+		// userId= x.getId();
 		adapter.close();
 
 		if (convertView == null) {
@@ -289,25 +288,23 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 		lp.setMargins(5, 5, 5, 5);
 		profileImage.setLayoutParams(lp);
 		profileImage.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				adapter.open();
 				final CommentInFroum comment = cmt.get(groupPosition);
 				final Users x = adapter.getUserbyid(comment.getUserid());
-		        userId= x.getId();
-				
+				userId = x.getId();
+
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-						DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
-						Bundle bundle = new Bundle();
-						bundle.putInt("userId", userId);
-						fragment.setArguments(bundle);
-						trans.replace(R.id.content_frame, fragment);
-						trans.commit();
-			
-			
-				
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+
 			}
 		});
 
@@ -683,10 +680,6 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 	@Override
 	public void processFinish(String output) {
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-
-		}
 
 		if (!"".equals(output) && output != null
 				&& !(output.contains("Exception") || output.contains("java"))) {
@@ -709,12 +702,20 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 								Currentuser.getId(), 1);
 
 						notifyDataSetChanged();
+						if (ringProgressDialog != null) {
+							ringProgressDialog.dismiss();
+
+						}
 
 					} else {
 						adapter.InsertLikeCommentFroumToDatabase(id,
 								Currentuser.getId(), 1, GlobalId);
 
 						notifyDataSetChanged();
+						if (ringProgressDialog != null) {
+							ringProgressDialog.dismiss();
+
+						}
 
 					}
 				} else {
@@ -727,12 +728,20 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 						adapter.deleteLikeFromCommentInFroum(GlobalId,
 								Currentuser.getId(), 0);
 						notifyDataSetChanged();
+						if (ringProgressDialog != null) {
+							ringProgressDialog.dismiss();
+
+						}
 
 					} else {
 						adapter.InsertLikeCommentFroumToDatabase(id,
 								Currentuser.getId(), 0, GlobalId);
 
 						notifyDataSetChanged();
+						if (ringProgressDialog != null) {
+							ringProgressDialog.dismiss();
+
+						}
 
 					}
 				}
