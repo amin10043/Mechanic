@@ -42,7 +42,7 @@ public class SavingImage3Picture extends
 	@Override
 	protected String doInBackground(Map<String, Object>... action) {
 
-		OPERATION_NAME = "savingImage";
+		OPERATION_NAME = "savingImage3";
 		SOAP_ACTION += OPERATION_NAME;
 		SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,
 				OPERATION_NAME);
@@ -122,7 +122,10 @@ public class SavingImage3Picture extends
 		} catch (Exception e) {
 			response = e.getMessage();
 		}
-		return response.toString();
+		if (response != null)
+			return response.toString();
+		else
+			return "";
 	}
 
 	protected void onPostExecute(String res) {

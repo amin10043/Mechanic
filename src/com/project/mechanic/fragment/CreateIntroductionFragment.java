@@ -455,7 +455,7 @@ public class CreateIntroductionFragment extends Fragment implements
 				savingImage.delegate = this;
 				Map<String, Object> it = new LinkedHashMap<String, Object>();
 
-				it.put("tableName", "Object");
+				it.put("tableName", "[Object]");
 				it.put("fieldName1", "Image1");
 				it.put("fieldName2", "Image2");
 				it.put("fieldName3", "Image3");
