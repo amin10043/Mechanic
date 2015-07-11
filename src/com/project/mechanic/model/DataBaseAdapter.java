@@ -122,7 +122,7 @@ public class DataBaseAdapter {
 			"Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId",
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
 			"Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
-			"Submit", "MainObjectId", "IsActive", "UserId", "ObjectId" };
+			"Submit", "MainObjectId", "IsActive", "UserId", "ObjectId", "Date" };
 	// private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	// private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	// private String[] ObjectType = { "ID", "Name" };
@@ -721,7 +721,7 @@ public class DataBaseAdapter {
 					cursor.getString(23), cursor.getInt(24), cursor.getInt(25),
 					cursor.getInt(26), cursor.getString(27), cursor.getInt(28),
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
-					cursor.getInt(32));
+					cursor.getInt(32), cursor.getString(33));
 
 			result.add(tempObject);
 		}
@@ -1328,7 +1328,7 @@ public class DataBaseAdapter {
 				cursor.getString(22), cursor.getString(23), cursor.getInt(24),
 				cursor.getInt(25), cursor.getInt(26), cursor.getString(27),
 				cursor.getInt(28), cursor.getInt(29), cursor.getInt(30),
-				cursor.getInt(31), cursor.getInt(32));
+				cursor.getInt(31), cursor.getInt(32), cursor.getString(33));
 		return tempObject;
 	}
 
@@ -2381,7 +2381,7 @@ public class DataBaseAdapter {
 					cursor.getString(23), cursor.getInt(24), cursor.getInt(25),
 					cursor.getInt(26), cursor.getString(27), cursor.getInt(28),
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
-					cursor.getInt(32));
+					cursor.getInt(32), cursor.getString(33));
 
 			result.add(tempObject);
 		}
@@ -3133,7 +3133,7 @@ public class DataBaseAdapter {
 					cursor.getString(23), cursor.getInt(24), cursor.getInt(25),
 					cursor.getInt(26), cursor.getString(27), cursor.getInt(28),
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
-					cursor.getInt(32));
+					cursor.getInt(32), cursor.getString(33));
 
 			result.add(tempObject);
 		}
