@@ -218,7 +218,6 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 		// paperListAdapterHeder = new PaperListAdapterHeder(getActivity(),
 		// R.layout.raw_papercmt, mylist2, PaperFragment.this);
 		// lst.setAdapter(paperListAdapterHeder);
-
 		// lst.addHeaderView(header);
 		if (mylist != null && !mylist.isEmpty()) {
 			// lstNews.addHeaderView(header);

@@ -1879,7 +1879,7 @@ public class DataBaseAdapter {
 			item = CursorToCommentInPaper(mCur);
 			result.add(item);
 		}
-
+		
 		return result;
 
 	}
@@ -2062,7 +2062,7 @@ public class DataBaseAdapter {
 			item = CursorToPaper(mCur);
 
 		}
-
+		
 		return item;
 
 	}
