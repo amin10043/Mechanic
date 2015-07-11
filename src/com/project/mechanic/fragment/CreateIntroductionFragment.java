@@ -460,7 +460,7 @@ public class CreateIntroductionFragment extends Fragment implements
 				savingImage.delegate = this;
 				Map<String, Object> it = new LinkedHashMap<String, Object>();
 
-				it.put("tableName", "Object");
+				it.put("tableName", "[Object]");
 				it.put("fieldName1", "Image1");
 				it.put("fieldName2", "Image2");
 				it.put("fieldName3", "Image3");
@@ -592,7 +592,8 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("UserId", String.valueOf(currentUser.getId()));
 					params.put("Twitter", Ltwitter);
 					params.put("MainObjectId", String.valueOf(mainID));
-
+					params.put("Date", output);
+					params.put("IsActive", "1");
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 					serverDate = output;
@@ -651,7 +652,8 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("ParentId", String.valueOf(parentId));
 					params.put("MainObjectId", String.valueOf(mainItem));
 					params.put("ObjectId", String.valueOf(objectIdItem1));
-
+					params.put("Date", output);
+					params.put("IsActive", "1");
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 					serverDate = output;
@@ -716,7 +718,8 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("ObjectBrandTypeId",
 							String.valueOf(ObjectBrandTypeId));
 					serverDate = output;
-
+					params.put("Date", output);
+					params.put("IsActive", "1");
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 					saving.execute(params);
