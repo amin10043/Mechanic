@@ -50,7 +50,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 	// PersianDate date;
 	int IdGglobal;
 	DialogcmtInfroum dialog;
-
+	DialogPersonLikedFroum dia;
 	Saving saving;
 	Deleting deleting;
 	Map<String, String> params;
@@ -61,6 +61,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 	RelativeLayout count, commentcounter;
 	FroumFragment ff;
 	int userId;
+	int diss=0;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -209,13 +210,16 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
 							.show();
 				} else {
+					
 					DialogPersonLikedFroum dia = new DialogPersonLikedFroum(
 							getActivity(), idFroum, likedist);
 					dia.show();
+					
+					
+					
 				}
 			}
 		});
-
 		addComment.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -246,6 +250,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 					// trans.commit();
 					// ff = new FroumFragment();
 					// ff.updateList();
+					
 				}
 			}
 		});

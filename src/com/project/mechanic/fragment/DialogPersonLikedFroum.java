@@ -20,6 +20,7 @@ public class DialogPersonLikedFroum extends Dialog {
 	DataBaseAdapter adapter;
 	int FroumId;
 	ListView lv;
+	DialogPersonLikedFroum dia;
 	ArrayList<LikeInFroum> likedist;
 
 	public DialogPersonLikedFroum(Context context, int FroumId,
@@ -51,7 +52,7 @@ public class DialogPersonLikedFroum extends Dialog {
 
 		PersonLikedAdapter listadapter = new PersonLikedAdapter(context,
 				R.layout.row_person_liked, likedist);
-		lv.setAdapter(listadapter);
+		lv.setAdapter(listadapter);	
 
 	}
 	

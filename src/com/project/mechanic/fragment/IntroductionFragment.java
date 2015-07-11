@@ -259,6 +259,25 @@ public class IntroductionFragment extends Fragment implements AsyncInterface {
 
 		object = adapter.getObjectbyid(ObjectID);
 		adapter.close();
+		
+		if (ut.getCurrentUser().getId() != object.getId()) {
+			if (!ut.isNetworkConnected()) {
+				Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT)
+						.show();
+				adapter.open();
+				adapter.insertVisitToDb(ut.getCurrentUser().getId(), 2,
+						object.getId());
+				adapter.close();
+			} else if ((ut.isNetworkConnected())) {
+				Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT)
+						.show();
+				adapter.open();
+				// ارسال اطلاعات به جدول ویزیت سرور
+				// ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
+				adapter.deleteVisit();
+				adapter.close();
+			}
+		}
 		if (object == null) {
 			return view;
 		}
