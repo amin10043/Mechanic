@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -99,9 +101,9 @@ public class MainBrandFragment extends Fragment {
 				.findViewById(R.id.iconCreateTabligh);
 		iconCreateTabligh.setLayoutParams(lp);
 
-		FloatingActionButton createItem = (FloatingActionButton) view
+		final FloatingActionButton createItem = (FloatingActionButton) view
 				.findViewById(R.id.fab);
-		final String message = "کاربر گرامی اگر برند یا مجموعه تولیدی را در اختیار دارید یا در بازار ایران نسبت به آن شناخت دارید که در این نرم افزار قید نشده لطفا مشخصات مورد نظر را برای ما ارسال نمایید   با تشکر";
+		final String message = "کاربر گرامی اگر مشخصات برند یا فعالیت شما در این نرم افزار ثبت نشده می توانید با ایجاد صفحه،  فعالیت خود را به سایر کاربران این نرم افزار معرفی نمایید ";
 		createItem.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -124,6 +126,27 @@ public class MainBrandFragment extends Fragment {
 				R.layout.row_object, mylist);
 
 		lstObject.setAdapter(ListAdapter);
+		lstObject.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView arg0, int arg1) {
+				switch (arg1) {
+				case SCROLL_STATE_FLING:
+					createItem.hide(true);
+					break;
+				case SCROLL_STATE_TOUCH_SCROLL:
+					createItem.show(true);
+					break;
+				}
+
+			}
+
+			@Override
+			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 
 		return view;
 	}

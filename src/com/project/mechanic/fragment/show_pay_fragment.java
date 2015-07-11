@@ -23,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -70,7 +69,7 @@ public class show_pay_fragment extends Fragment {
 		Lheader = (LinearLayout) view.findViewById(R.id.linImg);
 		img_pay = (ImageView) view.findViewById(R.id.img_pay);
 		sp_pay = (Spinner) view.findViewById(R.id.sp_pay);
-		Button btn_pay = (Button) view.findViewById(R.id.btn_pay);
+		LinearLayout btn_pay = (LinearLayout) view.findViewById(R.id.btn_pay);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());

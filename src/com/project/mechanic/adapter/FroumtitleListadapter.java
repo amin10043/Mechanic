@@ -109,7 +109,6 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 		Users x = adapter.getUserbyid(person1.getUserId());
 		CurrentUser = util.getCurrentUser();
-		
 
 		if (person1.getSeenBefore() > 0) {
 			txt1.setTextColor(Color.GRAY);
@@ -177,15 +176,15 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			}
 		}
 		adapter.close();
-//////////////////////////////////////
+		// ////////////////////////////////////
 		profileImg.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				adapter.open();
 				Froum person1 = mylist.get(position);
 				Users x = adapter.getUserbyid(person1.getUserId());
-				userId=x.getId();
+				userId = x.getId();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
@@ -194,14 +193,13 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				
+
 			}
 		});
 		LikeTitle.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				adapter.open();
 
 				if (CurrentUser == null) {
 					Toast.makeText(context,
@@ -217,13 +215,10 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 							froumNumber = ItemId = listItem.getId();
 						}
 					}
-
+					date = new ServerDate(context);
+					date.delegate = FroumtitleListadapter.this;
+					date.execute("");
 				}
-				date = new ServerDate(context);
-				date.delegate = FroumtitleListadapter.this;
-				date.execute("");
-				adapter.close();
-
 			}
 
 		});
@@ -234,16 +229,16 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 			@Override
 			public void onClick(View v) {
-				LinearLayout parentlayout = (LinearLayout) v;
 
-				String item = txt2.getText().toString();
+				// در تمام صفحات از این کد ها استفاده شود
 				int ItemId = 0;
-				for (Froum listItem : mylist) {
-					if (item.equals(listItem.getDescription())) {
-						// check authentication and authorization
-						ItemId = listItem.getId();
-					}
+				ListView listView = (ListView) v.getParent();
+				int position = listView.getPositionForView(v);
+				Froum f = getItem(position);
+				if (f != null) {
+					ItemId = f.getId();
 				}
+				// تا اینجا
 
 				adapter.open();
 				adapter.SetSeen("Froum", ItemId, "1");
@@ -310,14 +305,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 	@Override
 	public void processFinish(String output) {
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
-
-		int id = -1;
 
 		try {
-			id = Integer.valueOf(output);
+			Integer.valueOf(output);
 			adapter.open();
 			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
 				adapter.deleteLikeFromFroum(CurrentUser.getId(), froumNumber);
@@ -325,6 +315,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
 						.toString());
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 
 			} else {
 				adapter.insertLikeInFroumToDb(CurrentUser.getId(), froumNumber,
@@ -333,6 +326,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
 						.toString());
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 			}
 			adapter.close();
 
@@ -344,9 +340,6 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
 					adapter.open();
-					// int c = adapter.LikeInFroum_count(ItemId) - 1;
-					// countLikeFroum.setText(String.valueOf(c));
-
 					params = new LinkedHashMap<String, String>();
 					deleting = new Deleting(context);
 					deleting.delegate = FroumtitleListadapter.this;

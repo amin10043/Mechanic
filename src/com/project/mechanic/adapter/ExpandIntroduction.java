@@ -134,13 +134,13 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 			ReplyerPic.setLayoutParams(lp);
 		}
 		ReplyerPic.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				adapter.open();
-				 CommentInObject comment = CommentList.get(groupPosition);
+				CommentInObject comment = CommentList.get(groupPosition);
 				Users y = adapter.getUserbyid(comment.getUserid());
-				userId=y.getId();
+				userId = y.getId();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
@@ -149,8 +149,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-			
-				
+
 			}
 		});
 		mainReply.setText(reply.getDescription());
@@ -261,27 +260,27 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 			}
 
 		}
-   profileImage.setOnClickListener(new View.OnClickListener() {
-	
-	@Override
-	public void onClick(View arg0) {
-		adapter.open();
+		profileImage.setOnClickListener(new View.OnClickListener() {
 
-	 CommentInObject comment = CommentList.get(groupPosition);
-		Users x = adapter.getUserbyid(comment.getUserid());
-		userId=x.getId();
+			@Override
+			public void onClick(View arg0) {
+				adapter.open();
 
-		FragmentTransaction trans = ((MainActivity) context)
-				.getSupportFragmentManager().beginTransaction();
-		DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
-		Bundle bundle = new Bundle();
-		bundle.putInt("userId", userId);
-		fragment.setArguments(bundle);
-		trans.replace(R.id.content_frame, fragment);
-		trans.commit();
-		
-	}
-});
+				CommentInObject comment = CommentList.get(groupPosition);
+				Users x = adapter.getUserbyid(comment.getUserid());
+				userId = x.getId();
+
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+
+			}
+		});
 		mainComment.setText(comment.getDescription());
 		nameCommenter.setText(x.getName());
 		dateCommenter.setText(util.getPersianDate(comment.getDatetime()));
@@ -725,10 +724,6 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 	@Override
 	public void processFinish(String output) {
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-
-		}
 
 		if (!"".equals(output) && output != null
 				&& !(output.contains("Exception") || output.contains("java"))) {
@@ -745,11 +740,19 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 						adapter.deleteLikeCommentBrandPage(GlobalId,
 								Currentuser.getId(), 1);
 						notifyDataSetChanged();
+						if (ringProgressDialog != null) {
+							ringProgressDialog.dismiss();
+
+						}
 					} else {
 
 						adapter.InsertLikeCommentFromObject(id,
 								Currentuser.getId(), 1, GlobalId);
 						notifyDataSetChanged();
+						if (ringProgressDialog != null) {
+							ringProgressDialog.dismiss();
+
+						}
 
 					}
 
@@ -760,10 +763,18 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 						adapter.deleteLikeCommentBrandPage(GlobalId,
 								Currentuser.getId(), 0);
 						notifyDataSetChanged();
+						if (ringProgressDialog != null) {
+							ringProgressDialog.dismiss();
+
+						}
 					} else {
 						adapter.InsertLikeCommentFromObject(id,
 								Currentuser.getId(), 0, GlobalId);
 						notifyDataSetChanged();
+						if (ringProgressDialog != null) {
+							ringProgressDialog.dismiss();
+
+						}
 					}
 
 				}

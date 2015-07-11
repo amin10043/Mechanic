@@ -170,4 +170,8 @@ public class Settings implements Comparable<Settings> {
 		IMEI = iMEI;
 	}
 
+	public Settings() {
+
+	}
+
 }

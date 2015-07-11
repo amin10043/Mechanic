@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,7 +55,6 @@ import com.project.mechanic.fragment.PaperWithoutComment;
 import com.project.mechanic.fragment.Province2Fragment;
 import com.project.mechanic.fragment.Province3Fragment;
 import com.project.mechanic.fragment.ProvinceFragment;
-import com.project.mechanic.fragment.SearchFragment;
 import com.project.mechanic.fragment.TitlepaperFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.PeriodicTask;
@@ -202,34 +200,34 @@ public class MainActivity extends FragmentActivity {
 
 		ImageButton iBtnMenu = (ImageButton) findViewById(R.id.iBtnMenu);
 		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
-		ImageView search = (ImageView) findViewById(R.id.sedarch_v);
+		// ImageView search = (ImageView) findViewById(R.id.sedarch_v);
 
-		search.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				Fragment f = getSupportFragmentManager().findFragmentById(
-						R.id.content_frame);
-
-				String tableName = "";
-				if (f instanceof ProvinceFragment) {
-					tableName = "Province";
-				} else if (f instanceof CityFragment) {
-					tableName = "City";
-				} else if (f instanceof ObjectFragment) {
-					tableName = "Object";
-				}
-
-				Fragment fragment;
-				FragmentManager fragmentManager;
-				fragment = new SearchFragment();
-				fragmentManager = getSupportFragmentManager();
-				fragmentManager.beginTransaction()
-						.replace(R.id.content_frame, fragment).commit();
-
-			}
-		});
+		// search.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		//
+		// Fragment f = getSupportFragmentManager().findFragmentById(
+		// R.id.content_frame);
+		//
+		// String tableName = "";
+		// if (f instanceof ProvinceFragment) {
+		// tableName = "Province";
+		// } else if (f instanceof CityFragment) {
+		// tableName = "City";
+		// } else if (f instanceof ObjectFragment) {
+		// tableName = "Object";
+		// }
+		//
+		// Fragment fragment;
+		// FragmentManager fragmentManager;
+		// fragment = new SearchFragment();
+		// fragmentManager = getSupportFragmentManager();
+		// fragmentManager.beginTransaction()
+		// .replace(R.id.content_frame, fragment).commit();
+		//
+		// }
+		// });
 
 		iBtnMenu.setOnClickListener(new OnClickListener() {
 
@@ -271,8 +269,7 @@ public class MainActivity extends FragmentActivity {
 		// pendingIntent);
 		// Second Service
 
-		PeriodicTask task = new PeriodicTask(this);
-		// task.startAlert();
+		new PeriodicTask(this);
 	}
 
 	public void setActivityTitle(int title) {
@@ -378,9 +375,9 @@ public class MainActivity extends FragmentActivity {
 		FragmentTransaction trans = fm.beginTransaction();
 		Fragment f = fm.findFragmentById(R.id.content_frame);
 
-		String page = "";
+		// String page = "";
 		if (f instanceof MainFragment) {
-			page = "FragmentOne";
+			// page = "FragmentOne";
 			ConfirmAlert();
 		}
 
@@ -446,7 +443,7 @@ public class MainActivity extends FragmentActivity {
 			} else if (f instanceof Province3Fragment) {
 				trans.setCustomAnimations(R.anim.push_out_right,
 						R.anim.pull_in_left);
-				trans.replace(R.id.content_frame, new Province3Fragment());
+				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
 			} else if (f instanceof City3Fragment) {
 				trans.setCustomAnimations(R.anim.push_out_right,

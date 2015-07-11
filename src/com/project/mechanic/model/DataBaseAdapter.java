@@ -33,6 +33,7 @@ import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Settings;
+import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.TicketType;
 import com.project.mechanic.entity.Users;
@@ -43,38 +44,35 @@ import com.project.mechanic.row_items.RowMain;
 public class DataBaseAdapter {
 
 	protected static final String TAG = "DataAdapter";
-
-	private static final String id = null;
-
 	private String TableCity = "City";
-	private String TableACL = "ACL";
+	// private String TableACL = "ACL";
 	private String TableAdvisorType = "AdvisorType";
 	private String TableAnad = "Anad";
-	private String TableCityColumn = "CityColumn";
+	// private String TableCityColumn = "CityColumn";
 	private String TableComment = "Comment";
 	private String TableExecutertype = "Executertype";
 	private String TableFavorite = "Favorite";
 	private String TableFroum = "Froum";
-	private String TableLike = "Like";
+	// private String TableLike = "Like";
 	private String TableLikeInObject = "LikeInObject";
 	private String TableLikeInFroum = "LikeInFroum";
 	private String TableLikeInPaper = "LikeInPaper";
-	private String TableList = "List";
+	// private String TableList = "List";
 	private String TableListItem = "ListItem";
 	private String TableNews = "News";
 	private String TableNewsPaper = "NewsPaper";
 	private String TableObject = "Object";
 	private String TableObjectInCity = "ObjectInCity";
-	private String TableObjectInProvince = "ObjectInProvince";
-	private String TableObjectType = "ObjectType";
+	// private String TableObjectInProvince = "ObjectInProvince";
+	// private String TableObjectType = "ObjectType";
 	private String TablePaper = "Paper";
-	private String TablePaperType = "PaperType";
+	// private String TablePaperType = "PaperType";
 	private String TableProvince = "Province";
 	private String TableSettings = "Settings";
 	private String TableTicket = "Ticket";
 	private String TableTicketType = "TicketType";
 	private String TableUsers = "Users";
-	private String TableWorkmanType = "WorkmanType";
+	// private String TableWorkmanType = "WorkmanType";
 	private String TableCommentInObject = "CommentInObject";
 	private String TableCommentInFroum = "CommentInFroum";
 	private String TableLikeInComment = "LikeInComment";
@@ -82,16 +80,17 @@ public class DataBaseAdapter {
 
 	private String TableCommentInPaper = "CmtInPaper";
 
-	private String TableObjectBrandType = "ObjectBrandType";
+	// private String TableObjectBrandType = "ObjectBrandType";
 	private String TableLikeInCommentObject = "LikeInCommentObject";
+	private String TableSubAdmin = "SubAdmin";
 
-	private String[] ACL = { "ID", "UserId", "ListItemId" };
+	// private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] Anad = { "Id", "Image", "ObjectId", "Date", "TypeId",
 			"ProvinceId", "Seen", "Submit" };
 	private String[] CityColumn = { "ID", "Name", "ProvinceId", "Count" };
 
-	private String[] Comment = { "ID", "UserId", "paperId", "Description" };
+	// private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] CommentInObject = { "Id", "Desk", "ObjectId", "UserId",
 			"Date", "CommentId", "NumofLike", "NumofDisLike ", "Seen" };
 	private String[] CommentInFroum = { "ID", "Desk", "FroumId", "UserId",
@@ -105,15 +104,16 @@ public class DataBaseAdapter {
 	private String[] Favorite = { "ID", "ObjectId", "UserId", "IdTicket" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen",
 			"ServerDate", "Submit", "Date", "SeenBefore" };
-	private String[] Like = { "ID", "UserId", "PaperId" };
+	// private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date",
 			"CommentId", "Seen" };
 	private String[] LikeInFroum = { "Id", "UserId", "FroumId", "Date",
 			"CommentId", "Seen" };
-	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike" };
+	// private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike"
+	// };
 	private String[] LikeInPaper = { "Id", "UserId", "PaperId", "Date",
 			"CommentId", "Seen" };
-	private String[] List = { "ID", "Name", "ParentId" };
+	// private String[] List = { "ID", "Name", "ParentId" };
 	private String[] ListItem = { "Id", "Name", "ListId" };
 	private String[] News = { "ID", "Title", "Description", "ServerDate",
 			"Submit" };
@@ -123,12 +123,12 @@ public class DataBaseAdapter {
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
 			"Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
 			"Submit", "MainObjectId", "IsActive", "UserId", "ObjectId" };
-	private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
-	private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
-	private String[] ObjectType = { "ID", "Name" };
+	// private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
+	// private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
+	// private String[] ObjectType = { "ID", "Name" };
 	private String[] Paper = { "ID", "Title", "Context", "Seen", "ServerDate",
 			"Submit", "UserId", "Date", "SeenBefore" };
-	private String[] PaperType = { "ID", "Name" };
+	// private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name", "Count" };
 	private String[] Settings = { "Id", "ServerDate_Users", "ServerDate_Paper",
 			"ServerDate_Object", "ServerDate_News", "ServerDate_Froum",
@@ -140,7 +140,7 @@ public class DataBaseAdapter {
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
 			"ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress",
-			"UImage", "UMobile", "Seen", "Submit","seenBefore", "Day" };
+			"UImage", "UMobile", "Seen", "Submit", "seenBefore", "Day" };
 
 	private String[] TicketType = { "ID", "desc" };
 
@@ -149,15 +149,16 @@ public class DataBaseAdapter {
 			"ServiceId", "ServerDate", "Date", "Submit", "Admin",
 			"ImageServerDate" };
 
-	private String[] WorkmanType = { "ID", "Name" };
+	// private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url", "ServerDate",
 			"HtmlString " };
-	private String[] ObjectBrandType = { "ID", "Description" };
+	// private String[] ObjectBrandType = { "ID", "Description" };
 
-	private String[] LikeInCommentObject = { "Id", "CommentId", "UserId",
-			"IsLike" };
+	// private String[] LikeInCommentObject = { "Id", "CommentId", "UserId",
+	// "IsLike" };
 
 	private String[] Visit = { "UserId", "ObjectId", "TypeId" };
+	private String[] SubAdmin = { "Id", "ObjectId", "UserId", "AdminID" };
 
 	private final Context mContext;
 	private SQLiteDatabase mDb;
@@ -237,8 +238,8 @@ public class DataBaseAdapter {
 		long res2 = res;
 
 	}
-	
-	public void insertVisitToDb(int userid,int typeId,int objectId) {
+
+	public void insertVisitToDb(int userid, int typeId, int objectId) {
 
 		ContentValues uc = new ContentValues();
 
@@ -342,7 +343,7 @@ public class DataBaseAdapter {
 
 	public void UpdateTicketToDb(int id, String title, String desc,
 			byte[] image, String name, String date, String email, String phone,
-			String fax, String mobile,int day) {
+			String fax, String mobile, int day) {
 
 		ContentValues uc = new ContentValues();
 		// uc.put("Name", name);
@@ -617,7 +618,7 @@ public class DataBaseAdapter {
 	public void insertTickettoDbemptyImage(int id, String Title, String Desc,
 			int userId, String date, int typeId, int provinceId, String uname,
 			String uemail, String uphonnumber, String ufax, String uadress,
-			String umobile,int day) {
+			String umobile, int day) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Id", id);
@@ -1262,7 +1263,6 @@ public class DataBaseAdapter {
 		return Users;
 
 	}
-	
 
 	@SuppressWarnings("unused")
 	private LikeInObject CursorToLikeInObject(Cursor cursor) {
@@ -1362,10 +1362,10 @@ public class DataBaseAdapter {
 		return tempForum;
 
 	}
-	
+
 	private com.project.mechanic.entity.Visit CursorToVisit(Cursor cursor) {
-		com.project.mechanic.entity.Visit tempVisit = new com.project.mechanic.entity.Visit(cursor.getInt(0), cursor.getInt(1),
-				cursor.getInt(2));
+		com.project.mechanic.entity.Visit tempVisit = new com.project.mechanic.entity.Visit(
+				cursor.getInt(0), cursor.getInt(1), cursor.getInt(2));
 		return tempVisit;
 
 	}
@@ -1419,7 +1419,7 @@ public class DataBaseAdapter {
 				cursor.getString(14), cursor.getString(15),
 				cursor.getString(16), cursor.getString(17), cursor.getBlob(18),
 				cursor.getString(19), cursor.getInt(20), cursor.getInt(21),
-				cursor.getInt(22),cursor.getInt(23));
+				cursor.getInt(22), cursor.getInt(23));
 
 		return tempTicket;
 
@@ -1536,7 +1536,7 @@ public class DataBaseAdapter {
 					cursor.getInt(8));
 			result.add(tempObject);
 		}
-
+		Collections.sort(result);
 		return result;
 
 	}
@@ -2134,7 +2134,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			result.add(CursorToTicket(cursor));
 		}
-		// Collections.sort(result);
+		Collections.sort(result);
 
 		return result;
 
@@ -2266,7 +2266,7 @@ public class DataBaseAdapter {
 		mDb.execSQL("delete from [Favorite] where IdTicket = " + id);
 
 	}
-	
+
 	public void deleteVisit() {
 
 		mDb.execSQL("delete from [Visit]");
@@ -2403,8 +2403,7 @@ public class DataBaseAdapter {
 	}
 
 	public void UpdateObjectProperties(int id, String name, String Phone,
-			String Email, String fax, String description, byte[] HeaderImage,
-			byte[] ProfileImage, byte[] FooterImage, String LinkCatalog,
+			String Email, String fax, String description, String LinkCatalog,
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
@@ -2422,12 +2421,7 @@ public class DataBaseAdapter {
 			uc.put("Fax", fax);
 		if (!"".equals(description) && description != null)
 			uc.put("Description", description);
-		if (HeaderImage != null)
-			uc.put("Image1", HeaderImage);
-		if (ProfileImage != null)
-			uc.put("Image2", ProfileImage);
-		if (FooterImage != null)
-			uc.put("Image3", FooterImage);
+
 		if (!"".equals(LinkCatalog) && LinkCatalog != null)
 			uc.put("Pdf1", LinkCatalog);
 		if (!"".equals(LinkPrice) && LinkPrice != null)
@@ -2482,8 +2476,7 @@ public class DataBaseAdapter {
 	}
 
 	public int InsertInformationNewObject(String name, String Phone,
-			String Email, String fax, String description, byte[] HeaderImage,
-			byte[] ProfileImage, byte[] FooterImage, String LinkCatalog,
+			String Email, String fax, String description, String LinkCatalog,
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
@@ -2502,12 +2495,6 @@ public class DataBaseAdapter {
 			cv.put("Fax", fax);
 		if (!"".equals(description))
 			cv.put("Description", description);
-		if (HeaderImage != null)
-			cv.put("Image1", HeaderImage);
-		if (ProfileImage != null)
-			cv.put("Image2", ProfileImage);
-		if (FooterImage != null)
-			cv.put("Image3", FooterImage);
 		if (!"".equals(LinkCatalog))
 			cv.put("Pdf1", LinkCatalog);
 		if (!"".equals(LinkPrice))
@@ -3023,8 +3010,7 @@ public class DataBaseAdapter {
 	}
 
 	public int CreatePageInShopeObject(String name, String Phone, String Email,
-			String fax, String description, byte[] HeaderImage,
-			byte[] ProfileImage, byte[] FooterImage, String LinkCatalog,
+			String fax, String description, String LinkCatalog,
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
@@ -3043,12 +3029,6 @@ public class DataBaseAdapter {
 			cv.put("Fax", fax);
 		if (!"".equals(description))
 			cv.put("Description", description);
-		if (HeaderImage != null)
-			cv.put("Image1", HeaderImage);
-		if (ProfileImage != null)
-			cv.put("Image2", ProfileImage);
-		if (FooterImage != null)
-			cv.put("Image3", FooterImage);
 		if (!"".equals(LinkCatalog))
 			cv.put("Pdf1", LinkCatalog);
 		if (!"".equals(LinkPrice))
@@ -3292,6 +3272,106 @@ public class DataBaseAdapter {
 		}
 
 		return result;
+
+	}
+
+	public void UpdateImageObjectToDatabase(int id, byte[] HeaderImage,
+			byte[] ProfileImage, byte[] FooterImage) {
+
+		ContentValues cv = new ContentValues();
+
+		if (HeaderImage != null)
+			cv.put("Image1", HeaderImage);
+		if (ProfileImage != null)
+			cv.put("Image2", ProfileImage);
+		if (FooterImage != null)
+			cv.put("Image3", FooterImage);
+
+		Toast.makeText(mContext, "تصویر با موفقیت ثبت شد", Toast.LENGTH_SHORT)
+				.show();
+		mDb.update(TableObject, cv, "Id=?", new String[] { String.valueOf(id) });
+	}
+
+	public ArrayList<com.project.mechanic.entity.SubAdmin> getAllAdmin(
+			int ObjectId) {
+		ArrayList<com.project.mechanic.entity.SubAdmin> result = new ArrayList<com.project.mechanic.entity.SubAdmin>();
+		Cursor cursor = mDb.query(TableSubAdmin, SubAdmin, "ObjectId = "
+				+ ObjectId, null, null, null, null);
+		com.project.mechanic.entity.SubAdmin tempObject;
+		while (cursor.moveToNext()) {
+			tempObject = new com.project.mechanic.entity.SubAdmin(
+					cursor.getInt(0), cursor.getInt(1), cursor.getInt(2),
+					cursor.getInt(3));
+			result.add(tempObject);
+		}
+
+		return result;
+
+	}
+
+	public void insertSubAdminPage(int ObjectId, int UserId, int AdminId) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("ObjectId", ObjectId);
+		uc.put("UserId", UserId);
+		uc.put("AdminId", AdminId);
+
+		mDb.insert(TableSubAdmin, null, uc);
+	}
+
+	public ArrayList<SubAdmin> getAdmin(int ObjectId) {
+		ArrayList<SubAdmin> result = new ArrayList<SubAdmin>();
+		Cursor cursor = mDb.rawQuery("select *from SubAdmin where ObjectId = "
+				+ ObjectId, null);
+		SubAdmin tempNews;
+		while (cursor.moveToNext()) {
+			tempNews = new SubAdmin(cursor.getInt(0), cursor.getInt(1),
+					cursor.getInt(2), cursor.getInt(3));
+			result.add(tempNews);
+		}
+
+		return result;
+	}
+
+	public void deleteAdmin(int id) {
+		String[] t = { String.valueOf(id) };
+		mDb.delete(TableSubAdmin, "UserId=?", t);
+	}
+
+	public boolean IsUserAdmin(int userId, int objectId) {
+
+		Cursor curs = mDb.rawQuery("SELECT COUNT(*) AS NUM FROM "
+				+ TableSubAdmin + " WHERE UserId= " + String.valueOf(userId)
+				+ " AND ObjectId =" + String.valueOf(objectId), null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
+	public void updateRatingObject(int rating, int Id) {
+
+		ContentValues uc = new ContentValues();
+		uc.put("rate", rating);
+		mDb.update(TableObject, uc, "Id = " + Id, null);
+
+	}
+
+	public void updateAllImageIntroductionPage(int id, byte[] HeaderImage,
+			byte[] ProfileImage, byte[] FooterImage) {
+		ContentValues uc = new ContentValues();
+
+		if (HeaderImage != null)
+			uc.put("Image1", HeaderImage);
+		if (ProfileImage != null)
+			uc.put("Image2", ProfileImage);
+		if (FooterImage != null)
+			uc.put("Image3", FooterImage);
+
+		mDb.update(TableObject, uc, "Id=" + id, null);
 
 	}
 

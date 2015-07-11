@@ -4,13 +4,11 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -44,9 +42,8 @@ public class ShowAdFragment extends Fragment {
 	int favorite = 0;
 	int userTicket;
 	DataBaseAdapter dbAdapter;
-	TextView desc, name, email, phone, mobile, fax, showname, showfax,
-			showemail, showphone, showmobile, day,date;
-	ImageView img;
+	TextView desc, name, email, phone, mobile, fax, day, date;
+	ImageView img, showname, showfax, showemail, showphone, showmobile;
 	Button btnreport, btnCancel;
 	List mylist;
 	ImageButton share, edite, like;
@@ -81,23 +78,21 @@ public class ShowAdFragment extends Fragment {
 		phone = (TextView) view.findViewById(R.id.fragment_showad_tx3);
 		mobile = (TextView) view.findViewById(R.id.fragment_showad_tx4);
 		fax = (TextView) view.findViewById(R.id.fragment_showad_tx5);
-		showname = (TextView) view.findViewById(R.id.fragment_showad_name);
-		showemail = (TextView) view.findViewById(R.id.fragment_showad_email);
-		showphone = (TextView) view.findViewById(R.id.fragment_showad_phone);
-		showmobile = (TextView) view.findViewById(R.id.fragment_showad_mobile);
-		showfax = (TextView) view.findViewById(R.id.fragment_showad_fax);
+		showname = (ImageView) view.findViewById(R.id.lableName);
+		showemail = (ImageView) view.findViewById(R.id.lableEmail);
+		showphone = (ImageView) view.findViewById(R.id.lablephone);
+		showmobile = (ImageView) view.findViewById(R.id.lableMobile);
+		showfax = (ImageView) view.findViewById(R.id.lablefax);
 		btnreport = (Button) view.findViewById(R.id.btn_report);
 		btnCancel = (Button) view.findViewById(R.id.btn_cancel);
 		day = (TextView) view.findViewById(R.id.textDay);
 		date = (TextView) view.findViewById(R.id.textdate);
 
-		
-	
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		dbAdapter.open();
-	
-		 t = dbAdapter.getTicketById(id);
+
+		t = dbAdapter.getTicketById(id);
 		a = t.getId();
 		userTicket = t.getUserId();
 		boolean check = dbAdapter.isUserFavorite(userTicket, a);
@@ -125,23 +120,22 @@ public class ShowAdFragment extends Fragment {
 
 			// edite.setVisibility(1);
 		}
-		if(u.getId() != t.getUserId()){
-		if (!util.isNetworkConnected()) {
-			Toast.makeText(getActivity(), "Flse",
-					Toast.LENGTH_SHORT).show();
-			dbAdapter.open();
-			dbAdapter.insertVisitToDb(u.getId(), 3, t.getId());
-			dbAdapter.close();
-		}
-		else if((util.isNetworkConnected())) {
-			Toast.makeText(getActivity(), "True",
-					Toast.LENGTH_SHORT).show();
-		dbAdapter.open();
-           //ارسال اطلاعات به جدول ویزیت سرور
-		   //ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
-         dbAdapter.deleteVisit();	
-         dbAdapter.close();
-		}
+		if (u.getId() != t.getUserId()) {
+			if (!util.isNetworkConnected()) {
+				Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT)
+						.show();
+				dbAdapter.open();
+				dbAdapter.insertVisitToDb(u.getId(), 3, t.getId());
+				dbAdapter.close();
+			} else if ((util.isNetworkConnected())) {
+				Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT)
+						.show();
+				dbAdapter.open();
+				// ارسال اطلاعات به جدول ویزیت سرور
+				// ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
+				dbAdapter.deleteVisit();
+				dbAdapter.close();
+			}
 		}
 		headerRelative = (RelativeLayout) view.findViewById(R.id.headerAnad);
 		headerParams = new RelativeLayout.LayoutParams(
@@ -275,7 +269,7 @@ public class ShowAdFragment extends Fragment {
 		});
 
 		desc.setText(t.getDesc());
-		day.setText(""+t.getDay());
+		day.setText("" + t.getDay());
 		date.setText(util.getPersianDate(t.getDate()));
 
 		if ("".equals(t.getUName())) {
@@ -326,7 +320,7 @@ public class ShowAdFragment extends Fragment {
 		dbAdapter.close();
 
 		return view;
-		
+
 	}
 
 	@Override
@@ -355,15 +349,16 @@ public class ShowAdFragment extends Fragment {
 		}
 	}
 
-//	private boolean isNetworkConnected() { 
-//		ConnectivityManager cm = (ConnectivityManager) getSystemService(getActivity().CONNECTIVITY_SERVICE);
-//		NetworkInfo ni = cm.getActiveNetworkInfo();
-//		if (ni == null) {
-//		    // There are no active networks.
-//		    return false;
-//		} else
-//		    return true;
-//		}
+	// private boolean isNetworkConnected() {
+	// ConnectivityManager cm = (ConnectivityManager)
+	// getSystemService(getActivity().CONNECTIVITY_SERVICE);
+	// NetworkInfo ni = cm.getActiveNetworkInfo();
+	// if (ni == null) {
+	// // There are no active networks.
+	// return false;
+	// } else
+	// return true;
+	// }
 	private ConnectivityManager getSystemService(String connectivityService) {
 		// TODO Auto-generated method stub
 		return null;
@@ -396,7 +391,7 @@ public class ShowAdFragment extends Fragment {
 		dbAdapter.open();
 
 		desc.setText(t.getDesc());
-		day.setText(""+t.getDay());
+		day.setText("" + t.getDay());
 		date.setText(util.getPersianDate(t.getDate()));
 
 		if ("".equals(t.getUName())) {

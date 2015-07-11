@@ -61,8 +61,9 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:src="@drawable/fab_add"
+            app:fab_colorNormal="#7ac5cd"
             app:fab_hideAnimation="@anim/fab_scale_down"
-            app:fab_shadowColor="#66000000"
+            app:fab_shadowColor="#3366FF"
             app:fab_shadowRadius="4dp"
             app:fab_shadowXOffset="1dp"
             app:fab_shadowYOffset="3dp"
@@ -76,8 +77,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
         android:background="@drawable/buttonshape" >
 
         <ImageButton

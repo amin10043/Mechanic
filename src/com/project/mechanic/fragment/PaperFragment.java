@@ -135,7 +135,7 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 		Users u = adapter.getUserbyid(p.getUserId());
 		// lstNews.addHeaderView(header);
 		// lstNews.addHeaderView(header);
-        userId=u.getId();
+		userId = u.getId();
 		lstNews.setAdapter(PaperListadapter);
 		if (mylist != null && !mylist.isEmpty()) {
 
@@ -180,27 +180,27 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 			icon.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
 			icon.setLayoutParams(lp);
 		}
-		if(util.getCurrentUser().getId() != paperID){
+		if (util.getCurrentUser().getId() != paperID) {
 			if (!util.isNetworkConnected()) {
-				Toast.makeText(getActivity(), "Flse",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT)
+						.show();
 				adapter.open();
-				adapter.insertVisitToDb(util.getCurrentUser().getId(),2, paperID);
+				adapter.insertVisitToDb(util.getCurrentUser().getId(), 2,
+						paperID);
+				adapter.close();
+			} else if ((util.isNetworkConnected())) {
+				Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT)
+						.show();
+				adapter.open();
+				// ارسال اطلاعات به جدول ویزیت سرور
+				// ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
+				adapter.deleteVisit();
 				adapter.close();
 			}
-			else if((util.isNetworkConnected())) {
-				Toast.makeText(getActivity(), "True",
-						Toast.LENGTH_SHORT).show();
-				adapter.open();
-	           //ارسال اطلاعات به جدول ویزیت سرور
-			   //ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
-				adapter.deleteVisit();	
-				adapter.close();
-			}
-			}
+		}
 		adapter.close();
 		icon.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				FragmentTransaction trans = ((MainActivity) getActivity())
@@ -211,7 +211,7 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				
+
 			}
 		});
 		// lst.addHeaderView(header);
@@ -450,9 +450,6 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
 
 		int id = -1;
 
@@ -466,7 +463,9 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 
 				NumofLike
 						.setText(adapter.LikeInPaper_count(paperID).toString());
-
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 			} else {
 				adapter.insertLikeInPaperToDb(CurrentUser.getId(), paperID,
 						serverDate);
@@ -475,7 +474,9 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 
 				NumofLike
 						.setText(adapter.LikeInPaper_count(paperID).toString());
-
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 			}
 			adapter.close();
 

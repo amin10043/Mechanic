@@ -2,6 +2,8 @@ package com.project.mechanic.utility;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -51,6 +53,7 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.UpdatingAllDetail;
 import com.project.mechanic.service.UpdatingAllMaster;
 import com.project.mechanic.utility.Roozh.SolarCalendar;
@@ -68,13 +71,19 @@ public class Utility implements AsyncInterface {
 	Settings settings;
 	PersianDate pDate;
 	static boolean flag = false;
-	public static final int NUMBER_OF_RECORD_RECEIVED = 5;
+	static boolean flag2 = false;
+	int state = 0;
+	public static final int NUMBER_OF_RECORD_RECEIVED = 10;
 	public static final int NUMBER_OF_RECORD_RECEIVED_D = 50;
+	ServerDate date;
 
 	public Utility(Context context) {
 		this.context = context;
 		adapter = new DataBaseAdapter(context);
 		pDate = new PersianDate();
+		adapter.open();
+		settings = adapter.getSettings();
+		adapter.close();
 	}
 
 	public boolean isNetworkConnected() {
@@ -115,6 +124,16 @@ public class Utility implements AsyncInterface {
 								dialog.dismiss();
 							}
 						}).setIcon(android.R.drawable.ic_dialog_alert).show();
+	}
+
+	public static void copyStream(InputStream input, OutputStream output)
+			throws IOException {
+
+		byte[] buffer = new byte[1024];
+		int bytesRead;
+		while ((bytesRead = input.read(buffer)) != -1) {
+			output.write(buffer, 0, bytesRead);
+		}
 	}
 
 	public void showtoast(View view, int picture, String massage, String Title) {
@@ -205,6 +224,7 @@ public class Utility implements AsyncInterface {
 		return paddingIcon;
 	}
 
+	@SuppressWarnings("deprecation")
 	public int getScreenwidth() {
 		int columnWidth;
 		WindowManager wm = (WindowManager) context
@@ -276,6 +296,10 @@ public class Utility implements AsyncInterface {
 	public void parseQuery(String q) {
 
 		String[] allStr = q.split("&&&"); // each Table
+
+		if (allStr == null || allStr.length < 1 || !q.contains("&&&")) {
+			return;
+		}
 
 		for (int i = 0; i < allStr.length; ++i) {
 			if (allStr[i] != null && !"".equals(allStr[i])) {
@@ -364,26 +388,16 @@ public class Utility implements AsyncInterface {
 			e.printStackTrace();
 		}
 
-		bitmap.recycle();
+		// bitmap.recycle();
 		return str.toByteArray();
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void Updating() {
 
-		SharedPreferences pref = context.getSharedPreferences("update", 0);
-		SharedPreferences.Editor editor = pref.edit();
-		int from = pref.getInt("fromM", 0);
-		int to = pref.getInt("toM", 0);
-		serviceUpdate = new UpdatingAllMaster(context);
-		serviceUpdate.delegate = this;
-		serviceUpdate.execute(settings != null ? settings.getServerDate_Users()
-				: "", String.valueOf(from), String.valueOf(to));
-		flag = true;
-		editor.putInt("fromM", from + NUMBER_OF_RECORD_RECEIVED);
-		editor.putInt("toM", to + NUMBER_OF_RECORD_RECEIVED);
-
-		editor.commit();
+		date = new ServerDate(context);
+		date.delegate = this;
+		date.execute("");
 
 	}
 
@@ -404,17 +418,36 @@ public class Utility implements AsyncInterface {
 	public void processFinish(String output) {
 
 		if (output != null
-				&& !(output.contains("Exception") || output.contains("java"))) {
+				&& !(output.contains("Exception") || output.contains("java"))) { // soap
+			SharedPreferences pref = context.getSharedPreferences("update", 0);
+			SharedPreferences.Editor editor = pref.edit();
+			int from = pref.getInt("fromM", 0);
+			int to = pref.getInt("toM", 0); // fault
 
-			if (flag) {
+			switch (state) {
 
-				SharedPreferences pref = context.getSharedPreferences("update",
-						0);
-				SharedPreferences.Editor editor = pref.edit();
+			case 0: // return date
+				serviceUpdate = new UpdatingAllMaster(context);
+				serviceUpdate.delegate = this;
+				serviceUpdate
+						.execute(
+								settings != null ? settings
+										.getServerDate_Object() : "", String
+										.valueOf(from), String.valueOf(to));
+				flag = true;
+				editor.putInt("fromM", from + NUMBER_OF_RECORD_RECEIVED);
+				editor.putInt("toM", to + NUMBER_OF_RECORD_RECEIVED);
 
-				int from = pref.getInt("fromD", 0);
-				int to = pref.getInt("toD", 0);
-
+				adapter.open();
+				adapter.setServerDate("ServerDate_Users", output);
+				adapter.close();
+				editor.commit();
+				state = 1;
+				break;
+			case 1: // master
+				parseQuery(output);
+				from = pref.getInt("fromD", 0);
+				to = pref.getInt("toD", 0);
 				serviceUpdateD = new UpdatingAllDetail(context);
 				serviceUpdateD.delegate = this;
 				serviceUpdateD.execute(
@@ -423,9 +456,14 @@ public class Utility implements AsyncInterface {
 
 				editor.putInt("fromD", from + NUMBER_OF_RECORD_RECEIVED_D);
 				editor.putInt("toD", to + NUMBER_OF_RECORD_RECEIVED_D);
-				flag = false;
+				editor.apply();
+				state = 2;
+				break;
+			case 2: // detail
+				parseQuery(output);
+				state = 0;
+				break;
 			}
-			parseQuery(output);
 		}
 	}
 

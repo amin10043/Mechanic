@@ -2,6 +2,7 @@ package com.project.mechanic.fragment;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -17,8 +20,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -40,18 +43,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.SavingImage;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class RegisterFragment extends Fragment implements AsyncInterface,
 		SaveAsyncInterface {
 
-	protected static final Context Contaxt = null;
 	int resourceId;
 
 	Fragment fragment;
@@ -72,7 +76,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	String number;
 	SharedPreferences server;
 	int serverId = 0;
-	protected static final int RESULT_LOAD_IMAGE = 1;
+	protected static final int RESULT_LOAD_IMAGE = 2;
 	DataBaseAdapter dbAdapter;
 	TextView txtclickpic;
 	private Toast toast;
@@ -80,15 +84,14 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	Users u;
 	SavingImage savingImage;
 	private boolean firstTime = true;
+	private File mFileTemp;
 
 	View view2;
-	// ////////////
 	Uri selectedImage;
 	private Uri picUri;
 	ProgressDialog imageloadprogressdialog;
 	private static final int PICK_FROM_CAMERA = 1;
-	private static final int PICK_FROM_GALLERY = 2;
-	final int CROP_PIC = 3;
+	final int PIC_CROP = 3;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -128,6 +131,15 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		lp.height = utile.getScreenwidth() / 4;
 		btnaddpic1.setLayoutParams(lp);
 		// ///////////////////////////////////////////////////
+
+		String state = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			mFileTemp = new File(Environment.getExternalStorageDirectory(),
+					AnadFragment.TEMP_PHOTO_FILE_NAME);
+		} else {
+			mFileTemp = new File(getActivity().getFilesDir(),
+					AnadFragment.TEMP_PHOTO_FILE_NAME);
+		}
 
 		server = getActivity().getSharedPreferences("sId", 0);
 
@@ -213,24 +225,10 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 
 					comregtxt.setVisibility(View.VISIBLE);
 					btnreg.setEnabled(false);
-					// btnreg.setBackgroundColor(R.drawable.buttonshape2);
-					// //////////////////////////////////////////////////////////////////
 
-					// //////////////////////////
-					Map<String, String> items = new HashMap<String, String>();
-					items.put("register", "register");
-					items.put("username", Name);
-					items.put("email", "");
-					items.put("password", Pass);
-					items.put("phone", "");
-					items.put("mobile", Mobile);
-					items.put("fax", "0");
-					items.put("address", "");
-					items.put("date", txtdate);
-
-					service.delegate = RegisterFragment.this;
-					service.execute(items);
-
+					ServerDate date = new ServerDate(getActivity());
+					date.delegate = RegisterFragment.this;
+					date.execute("");
 				}
 
 			}
@@ -299,9 +297,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		return view;
 	}
 
-	// ////////////////////////////////////////////////////crop
-	// image////////////////
-
 	public void do_cam_work() {
 		imageloadprogressdialog = ProgressDialog.show(getActivity(), "",
 				"در حال باز کردن دوربین. لطفا منتظر بمانید...");
@@ -318,33 +313,18 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	}
 
 	public void do_gallery_work() {
-		imageloadprogressdialog = ProgressDialog.show(getActivity(), "",
-				"در حال باز کردن گالری تصاویر. لطفا منتظر بمانید...");
-		Intent intent = new Intent();
-		// call android default gallery
-		intent.setType("image/*");
-		intent.setAction(Intent.ACTION_GET_CONTENT);
-		// ******** code for crop image
-		intent.putExtra("crop", "true");
-		intent.putExtra("aspectX", 1);
-		intent.putExtra("aspectY", 1);
-		intent.putExtra("outputX", 128);
-		intent.putExtra("outputY", 128);
-		try {
-			intent.putExtra("return-data", true);
-			startActivityForResult(
-					Intent.createChooser(intent, "تکمیل این کار توسط..."),
-					PICK_FROM_GALLERY);
-		} catch (ActivityNotFoundException e) {
-		}
+		Intent i = new Intent(Intent.ACTION_PICK,
+				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+		startActivityForResult(i, RESULT_LOAD_IMAGE);
 	}
 
-	// /////////
+	@SuppressLint("NewApi")
 	@SuppressWarnings("unchecked")
 	@Override
 	public void processFinish(String output) {
-		ringProgressDialog.dismiss();
 
+		ringProgressDialog.dismiss();
 		try {
 			serverId = Integer.valueOf(output);
 
@@ -374,6 +354,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 						it.put("id", serverId);
 						it.put("Image", Image);
 
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								"", "لطفا منتظر بمانید...", true);
 						savingImage.delegate = this;
 						savingImage.execute(it);
 						dbAdapter.inserUserToDb(serverId, Name, null, Pass,
@@ -409,19 +391,33 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 				toast.show();
 			}
 		} catch (Exception ex) {
-			Toast.makeText(getActivity(), " :خطا " + ex, Toast.LENGTH_SHORT)
-					.show();
-		}
 
+			Map<String, String> items = new HashMap<String, String>();
+			items.put("register", "register");
+			items.put("username", Name);
+			items.put("email", "");
+			items.put("password", Pass);
+			items.put("phone", "");
+			items.put("mobile", Mobile);
+			items.put("fax", "0");
+			items.put("address", "");
+			items.put("date", output);
+
+			ringProgressDialog = ProgressDialog.show(getActivity(), "",
+					"لطفا منتظر بمانید...", true);
+
+			service.delegate = RegisterFragment.this;
+			service.execute(items);
+		}
 	}
 
 	@SuppressWarnings("deprecation")
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == 0) {
-			imageloadprogressdialog.dismiss();
-		} else if (requestCode == PICK_FROM_CAMERA) {
+		if (resultCode != Activity.RESULT_OK) {
+			return;
+		}
+		if (requestCode == PICK_FROM_CAMERA) {
 			picUri = data.getData();
 			try {
 				Intent cropIntent = new Intent("com.android.camera.action.CROP");
@@ -446,42 +442,55 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 
 		}
 
-		else if (requestCode == PICK_FROM_GALLERY) {
-			Bundle extras = data.getExtras();
-			Bitmap photo2 = null;
-			if (extras != null) {
-				photo2 = extras.getParcelable("data");
-				btnaddpic1.setImageBitmap(photo2);
+		else if (requestCode == RESULT_LOAD_IMAGE) {
+			try {
 
-				imageloadprogressdialog.dismiss();
-				try {
-					Drawable myDrawable = Drawable.createFromXml(
-							getResources(),
-							getResources().getXml(R.drawable.facebook));
-					btnaddpic1.setBackgroundDrawable(myDrawable);
-				} catch (Exception ex) {
-					System.out.println("exception gallery" + ex);
-				}
-				btnaddpic1.setPadding(3, 3, 3, 3);
-				String extStorageDirectory = Environment
-						.getExternalStorageDirectory().toString();
-				FileOutputStream outStream = null;
-				File file = new File(extStorageDirectory, "tmp.jpg");
-				try {
-					outStream = new FileOutputStream(file);
-					photo2.compress(Bitmap.CompressFormat.JPEG, 72, outStream);
-					outStream.flush();
-					outStream.close();
-				} catch (Exception e) {
-				}
+				InputStream inputStream = getActivity().getContentResolver()
+						.openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(
+						mFileTemp);
+				Utility.copyStream(inputStream, fileOutputStream);
+				fileOutputStream.close();
+				inputStream.close();
 
+				startCropImage();
+
+			} catch (Exception e) {
+
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
+						.show();
 			}
+
+		} else if (requestCode == PIC_CROP) {
+			String path = data.getStringExtra(CropImage.IMAGE_PATH);
+			if (path == null) {
+				return;
+			}
+
+			Bitmap bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
+			btnaddpic1.setImageBitmap(bitmap);
 		} else {
 			Toast.makeText(getActivity(), "Picture NOt taken",
 					Toast.LENGTH_LONG).show();
 		}
 		btnaddpic1.setLayoutParams(lp);
 
+		if (imageloadprogressdialog != null) {
+			imageloadprogressdialog.dismiss();
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void startCropImage() {
+
+		Intent intent = new Intent(getActivity(), CropImage.class);
+		intent.putExtra(CropImage.IMAGE_PATH, mFileTemp.getPath());
+		intent.putExtra(CropImage.SCALE, true);
+
+		intent.putExtra(CropImage.ASPECT_X, 3);
+		intent.putExtra(CropImage.ASPECT_Y, 3);
+
+		startActivityForResult(intent, PIC_CROP);
 	}
 
 	private boolean isValidName(String name) {
@@ -493,7 +502,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		return matcher.matches();
 	}
 
-	// validating password with retype password
 	private boolean isValidPassword(String pass) {
 		if (pass.length() > 5) {
 			return true;
@@ -501,17 +509,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 
 		return false;
 	}
-
-	// private boolean isValidEmail(String email) {
-	// String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-	// + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-	//
-	// Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-	// Matcher matcher = pattern.matcher(email);
-	// return matcher.matches();
-	// }
-
-	// ///////////////////////////////crop/////////
 
 	@Override
 	public void processFinishSaveImage(String output) {
@@ -546,6 +543,9 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "خطا در ثبت عکس", Toast.LENGTH_SHORT)
 					.show();
+		}
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
 		}
 	}
 }

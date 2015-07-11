@@ -1,6 +1,6 @@
 package com.project.mechanic.entity;
 
-public class Paper {
+public class Paper implements Comparable<Paper> {
 
 	int Id;
 	String Title;
@@ -107,6 +107,12 @@ public class Paper {
 			return 0;
 		}
 
+	}
+
+	public int compareTo(Paper comparePaper) {
+		long temp = Long.valueOf(getDate());
+		Long comparetemp = Long.valueOf(comparePaper.getDate());
+		return (int) (comparetemp - temp);
 	}
 
 }

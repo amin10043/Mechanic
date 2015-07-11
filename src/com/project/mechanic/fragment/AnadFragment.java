@@ -1,5 +1,8 @@
 package com.project.mechanic.fragment;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -8,15 +11,14 @@ import java.util.TimerTask;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -47,6 +49,7 @@ import com.project.mechanic.ListView.PullAndLoadListView;
 import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
 import com.project.mechanic.ListView.PullToRefreshListView.OnRefreshListener;
 import com.project.mechanic.adapter.AnadListAdapter;
+import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
@@ -90,9 +93,14 @@ public class AnadFragment extends Fragment {
 	Users u;
 	Utility util;
 	int i = 0, j = 9;
+	final int PIC_CROP = 2;
 
+	ImageView imageView;
 	AnadListAdapter ListAdapter;
 	private ScrollView verticalScrollview;
+
+	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
+	private File mFileTemp;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -111,13 +119,6 @@ public class AnadFragment extends Fragment {
 		if (getArguments().getString("ProID") != null) {
 			proID = Integer.valueOf(getArguments().getString("ProID"));
 		}
-
-		// if (getArguments() != null) {
-		//
-		// mLastFirstVisibleItem = getArguments().getInt("Froum_List_Id");
-		// lst.setSelection(mLastFirstVisibleItem);
-		// }
-
 		dbAdapter.open();
 
 		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
@@ -150,13 +151,23 @@ public class AnadFragment extends Fragment {
 				}
 				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,
 						AnadFragment.this, ticketTypeid, proID);
-				dialog.setTitle(R.string.txtanad);
+				// dialog.setTitle(R.string.txtanad);
 				dialog.getWindow().setSoftInputMode(
 						WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
 				dialog.show();
+				imageView = (ImageView) dialog.findViewById(R.id.dialog_img1);
 			}
 		});
+
+		String state = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			mFileTemp = new File(Environment.getExternalStorageDirectory(),
+					TEMP_PHOTO_FILE_NAME);
+		} else {
+			mFileTemp = new File(getActivity().getFilesDir(),
+					TEMP_PHOTO_FILE_NAME);
+		}
 
 		if (mylist != null && !mylist.isEmpty()) {
 			lstTicket = (PullAndLoadListView) view.findViewById(R.id.listVanad);
@@ -524,28 +535,53 @@ public class AnadFragment extends Fragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode != Activity.RESULT_OK) {
+			return;
+		}
+		if (requestCode == RESULT_LOAD_IMAGE && null != data) {
+			try {
 
-		if (requestCode == RESULT_LOAD_IMAGE
-				&& resultCode == Activity.RESULT_OK && null != data) {
-			Uri selectedImage = data.getData();
+				InputStream inputStream = getActivity().getContentResolver()
+						.openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(
+						mFileTemp);
+				Utility.copyStream(inputStream, fileOutputStream);
+				fileOutputStream.close();
+				inputStream.close();
 
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+				startCropImage();
 
-			Cursor cursor = getActivity().getContentResolver().query(
-					selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
+			} catch (Exception e) {
 
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
-			cursor.close();
-
-			ImageView imageView = (ImageView) dialog
-					.findViewById(R.id.dialog_img1);
-			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
+						.show();
+			}
 
 		}
+		if (requestCode == PIC_CROP) {
+			String path = data.getStringExtra(CropImage.IMAGE_PATH);
+			if (path == null) {
 
+				return;
+			}
+
+			Bitmap bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
+			imageView.setImageBitmap(bitmap);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+
+	}
+
+	private void startCropImage() {
+
+		Intent intent = new Intent(getActivity(), CropImage.class);
+		intent.putExtra(CropImage.IMAGE_PATH, mFileTemp.getPath());
+		intent.putExtra(CropImage.SCALE, true);
+
+		intent.putExtra(CropImage.ASPECT_X, 3);
+		intent.putExtra(CropImage.ASPECT_Y, 3);
+
+		startActivityForResult(intent, PIC_CROP);
 	}
 
 	public void getScrollMaxAmount() {

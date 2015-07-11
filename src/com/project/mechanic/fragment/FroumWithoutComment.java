@@ -101,7 +101,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 		topics = adapter.getFroumItembyid(idFroum);
 		Users u = adapter.getUserbyid(topics.getUserId());
-        userId=u.getId();
+		userId = u.getId();
 		if (CurrentUser == null) {
 			likeTopic.setBackgroundResource(R.drawable.like_off);
 			count.setBackgroundResource(R.drawable.count_like_off);
@@ -150,7 +150,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 			}
 		}
 		profileImg.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				FragmentTransaction trans = ((MainActivity) getActivity())
@@ -161,8 +161,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				
-				
+
 			}
 		});
 		titletxt.setText(topics.getTitle());
@@ -301,9 +300,6 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
 
 		int id = -1;
 
@@ -317,6 +313,9 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 				countLike.setText(adapter.LikeInFroum_count(IdGglobal)
 						.toString());
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 
 			} else {
 				adapter.insertLikeInFroumToDb(CurrentUser.getId(), IdGglobal,
@@ -326,6 +325,9 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 				countLike.setText(adapter.LikeInFroum_count(IdGglobal)
 						.toString());
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 			}
 			adapter.close();
 

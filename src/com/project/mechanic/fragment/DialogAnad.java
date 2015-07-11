@@ -13,7 +13,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,7 +42,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	private ImageView dialog_img1;
 	private Button dialog_img2;
 	private EditText dialog_anad_et1, dialog_anad_et2, UMobile, UPhonnumber,
-			UFax, UEmail,Day;
+			UFax, UEmail, Day;
 	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
 	int resourceId;
@@ -68,7 +67,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	int gId = -1;
 
 	TextView UName;
-	int roz=0;
+	int roz = 0;
 
 	int ProvinceId;
 	Users u;
@@ -92,7 +91,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setBackgroundDrawable(
 				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		setContentView(resourceId);
@@ -106,7 +105,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 		UEmail = (EditText) findViewById(R.id.email);
 		UFax = (EditText) findViewById(R.id.fax);
 		UPhonnumber = (EditText) findViewById(R.id.phone);
-		Day=(EditText) findViewById(R.id.EditDay);
+		Day = (EditText) findViewById(R.id.EditDay);
 
 		util = new Utility(context);
 		headerEditParams = new LinearLayout.LayoutParams(
@@ -135,7 +134,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 
 			@Override
 			public void onClick(View arg0) {
-				
+
 				serverDate = new ServerDate(context);
 				serverDate.delegate = DialogAnad.this;
 				serverDate.execute("");
@@ -176,20 +175,17 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	public void processFinish(String output) {
 		String title = dialog_anad_et1.getText().toString();
 		String desc = dialog_anad_et2.getText().toString();
-		
-		if(!"".equals(Day.getText().toString())){
-	    roz=Integer.parseInt(Day.getText().toString());}
-		 
+		int roz = Integer.parseInt(Day.getText().toString());
+		if (!"".equals(Day.getText().toString())) {
+			roz = Integer.parseInt(Day.getText().toString());
+		}
+
 		if (ringProgressDialog != null) {
 			ringProgressDialog.dismiss();
 		}
 		try {
 			gId = Integer.valueOf(output);
 			dbadapter.open();
-			String email = UEmail.getText().toString();
-			String phonenumber = UPhonnumber.getText().toString();
-			String fax = UFax.getText().toString();
-			String mobile = UMobile.getText().toString();
 
 			dbadapter.insertTickettoDbemptyImage(gId, dialog_anad_et1.getText()
 					.toString(), dialog_anad_et2.getText().toString(), u
@@ -197,7 +193,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 					.getText().toString(), UEmail.getText().toString(),
 					UPhonnumber.getText().toString(),
 					UFax.getText().toString(), null, UMobile.getText()
-							.toString(),roz);
+							.toString(), roz);
 
 			if (dialog_img1.getDrawable() != null) {
 
@@ -226,21 +222,25 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 				((AnadFragment) fragment).updateView();
 				this.dismiss();
 			}
-			
 
 		} catch (NumberFormatException ex) {
-			if (!output.contains("java") || !output.contains("Exception")) {
-				if ("".equals(title) || "".equals(desc) || roz<=0) {
-					
-					Toast.makeText(context,
+			if (!output.contains("SoapFault") || !output.contains("java")
+					|| !output.contains("Exception")) {
+				if ("".equals(title) || "".equals(desc) || roz <= 0) {
+
+					Toast.makeText(
+							context,
 							" عنوان آگهی .شرح آگهی.اعتبار آگهی نمی تواند خالی باشد",
 							Toast.LENGTH_LONG).show();
-					
-				} else if("".equals(UEmail.getText().toString())&&"".equals(UPhonnumber.getText().toString())  &&"".equals(UFax.getText().toString())   && "".equals(UMobile.getText().toString())) {
+
+				} else if ("".equals(UEmail.getText().toString())
+						&& "".equals(UPhonnumber.getText().toString())
+						&& "".equals(UFax.getText().toString())
+						&& "".equals(UMobile.getText().toString())) {
 					Toast.makeText(context,
 							"یکی از فیلد های تطلاعات تماس اجباریست",
-							Toast.LENGTH_LONG).show();}
-				else{
+							Toast.LENGTH_LONG).show();
+				} else {
 					params = new LinkedHashMap<String, String>();
 					saving = new Saving(context);
 					saving.delegate = DialogAnad.this;
@@ -295,4 +295,5 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 		}
 
 	}
+
 }
