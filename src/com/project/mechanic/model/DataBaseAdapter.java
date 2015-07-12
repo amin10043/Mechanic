@@ -574,6 +574,7 @@ public class DataBaseAdapter {
 
 		ContentValues cv = new ContentValues();
 
+		cv.put("Id", id);
 		cv.put("Title", Title);
 		cv.put("Description", description);
 		cv.put("UserId", userId);
@@ -1879,7 +1880,7 @@ public class DataBaseAdapter {
 			item = CursorToCommentInPaper(mCur);
 			result.add(item);
 		}
-		
+
 		return result;
 
 	}
@@ -2062,7 +2063,7 @@ public class DataBaseAdapter {
 			item = CursorToPaper(mCur);
 
 		}
-		
+
 		return item;
 
 	}
@@ -3385,6 +3386,27 @@ public class DataBaseAdapter {
 			res = cu.getInt(0);
 		}
 		return res;
+	}
+
+	public void deleteFroumTitle(int FroumeId) {
+
+		mDb.execSQL("delete from [Froum] where Id = " + FroumeId);
+
+	}
+
+	public void deleteCommentFroum(int FroumId) {
+		mDb.execSQL("delete from [CommentInFroum] where FroumId = " + FroumId);
+
+	}
+
+	public void deleteLikeFroum(int FroumId) {
+		mDb.execSQL("delete from [LikeInFroum] where FroumId = " + FroumId);
+
+	}
+
+	public void deleteTicketItem(int ticketId) {
+		mDb.execSQL("delete from [Ticket] where Id = " + ticketId);
+
 	}
 
 }

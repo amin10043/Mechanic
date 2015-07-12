@@ -136,7 +136,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		});
 
 		ListAdapter = new FroumtitleListadapter(getActivity(),
-				R.layout.raw_froumtitle, mylist);
+				R.layout.raw_froumtitle, mylist, FroumtitleFragment.this);
 		lst.setAdapter(ListAdapter);
 
 		if (getArguments() != null) {
@@ -144,6 +144,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			mLastFirstVisibleItem = getArguments().getInt("Froum_List_Id");
 			lst.setSelection(mLastFirstVisibleItem);
 		}
+
+		registerForContextMenu(lst);
 
 		lst.setOnScrollListener(new OnScrollListener() {
 
@@ -180,12 +182,37 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		return view;
 	}
 
+	// @Override
+	// public void onCreateContextMenu(ContextMenu menu, View v,
+	// ContextMenuInfo menuInfo) {
+	// super.onCreateContextMenu(menu, v, menuInfo);
+	//
+	// menu.setHeaderTitle("Select The Action");
+	// menu.add(0, v.getId(), 0, "Call");// groupId, itemId, order, title
+	// menu.add(0, v.getId(), 0, "SMS");
+	// }
+	//
+	// @Override
+	// public boolean onContextItemSelected(MenuItem item) {
+	// if (item.getTitle() == "Call") {
+	// Toast.makeText(getActivity(), "calling code", Toast.LENGTH_LONG)
+	// .show();
+	// } else if (item.getTitle() == "SMS") {
+	// Toast.makeText(getActivity(), "sending sms code", Toast.LENGTH_LONG)
+	// .show();
+	// } else {
+	// return false;
+	// }
+	// return true;
+	//
+	// }
+
 	public void updateView() {
 		mdb.open();
 		mylist = mdb.getAllFroum();
 		mdb.close();
 		ListAdapter = new FroumtitleListadapter(getActivity(),
-				R.layout.raw_froumtitle, mylist);
+				R.layout.raw_froumtitle, mylist, FroumtitleFragment.this);
 		ListAdapter.notifyDataSetChanged();
 		lst.setAdapter(ListAdapter);
 

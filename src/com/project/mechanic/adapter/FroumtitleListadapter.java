@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.FroumWithoutComment;
@@ -63,14 +65,16 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 	String serverDate = "";
 	ServerDate date;
 	int userId;
+	Fragment fragment;
 
 	public FroumtitleListadapter(Context context, int resource,
-			List<Froum> objects) {
+			List<Froum> objects, Fragment fragment) {
 		super(context, resource, objects);
 		this.context = context;
 		this.mylist = objects;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
+		this.fragment = fragment;
 	}
 
 	@SuppressLint("ViewHolder")
@@ -224,6 +228,28 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		});
 		final SharedPreferences abc = context.getSharedPreferences("Id", 0);
 		final SharedPreferences froumId = context.getSharedPreferences("Id", 0);
+
+		convertView.setOnLongClickListener(new View.OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View v) {
+
+				int ItemId = 0;
+				ListView listView = (ListView) v.getParent();
+				int position = listView.getPositionForView(v);
+				Froum f = getItem(position);
+				if (f != null) {
+					ItemId = f.getUserId();
+				}
+
+				DialogLongClick dia = new DialogLongClick(context, 1, ItemId, f
+						.getId(), fragment);
+				Toast.makeText(context, ItemId + "", 0).show();
+				dia.show();
+
+				return true;
+			}
+		});
 
 		convertView.setOnClickListener(new OnClickListener() {
 
