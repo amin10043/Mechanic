@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAEAEA" >
+    android:background="@android:color/transparent" >
 
     <LinearLayout
         android:layout_width="100dp"
@@ -15,9 +15,9 @@
             android:id="@+id/img_anad"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@drawable/propagand"
-            android:scaleType="fitXY" />
-
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/propagand" />
     </LinearLayout>
 
 </RelativeLayout>

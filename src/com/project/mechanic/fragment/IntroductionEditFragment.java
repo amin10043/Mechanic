@@ -555,6 +555,9 @@ public class IntroductionEditFragment extends Fragment implements
 						Toast.LENGTH_SHORT).show();
 			}
 		}
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
 	}
 
 }

@@ -26,10 +26,11 @@ import com.project.mechanic.ListView.PullToRefreshListView.OnRefreshListener;
 import com.project.mechanic.adapter.PapertitleListAdapter;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
-public class TitlepaperFragment extends Fragment {
+public class TitlepaperFragment extends Fragment implements AsyncInterface {
 	private ImageButton addtitle;
 	private DialogPaperTitle dialog;
 	DataBaseAdapter mdb;
@@ -173,28 +174,29 @@ public class TitlepaperFragment extends Fragment {
 
 		}
 
-		lstNews.setOnScrollListener(new OnScrollListener() {
+		if (lstNews != null) {
 
-			@Override
-			public void onScrollStateChanged(AbsListView arg0, int arg1) {
-				// TODO Auto-generated method stub
-				switch (arg1) {
-				case SCROLL_STATE_FLING:
-					action.hide(true);
-					break;
-				case SCROLL_STATE_TOUCH_SCROLL:
-					action.show(true);
-					break;
+			lstNews.setOnScrollListener(new OnScrollListener() {
+
+				@Override
+				public void onScrollStateChanged(AbsListView arg0, int arg1) {
+					switch (arg1) {
+					case SCROLL_STATE_FLING:
+						action.hide(true);
+						break;
+					case SCROLL_STATE_TOUCH_SCROLL:
+						action.show(true);
+						break;
+					}
+
 				}
 
-			}
-
-			@Override
-			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
-				// TODO Auto-generated method stub
-
-			}
-		});
+				@Override
+				public void onScroll(AbsListView arg0, int arg1, int arg2,
+						int arg3) {
+				}
+			});
+		}
 		return view;
 	}
 
@@ -281,7 +283,14 @@ public class TitlepaperFragment extends Fragment {
 		ListAdapter = new PapertitleListAdapter(getActivity(),
 				R.layout.raw_froumtitle, mylist);
 		ListAdapter.notifyDataSetChanged();
+		lstNews = (PullAndLoadListView) view.findViewById(R.id.lstComment);
 		lstNews.setAdapter(ListAdapter);
+
+	}
+
+	@Override
+	public void processFinish(String output) {
+		// TODO Auto-generated method stub
 
 	}
 

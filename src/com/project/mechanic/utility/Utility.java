@@ -418,11 +418,12 @@ public class Utility implements AsyncInterface {
 	public void processFinish(String output) {
 
 		if (output != null
-				&& !(output.contains("Exception") || output.contains("java"))) { // soap
+				&& !(output.contains("Exception") || output.contains("java") || output
+						.contains("SoapFault"))) {
 			SharedPreferences pref = context.getSharedPreferences("update", 0);
 			SharedPreferences.Editor editor = pref.edit();
 			int from = pref.getInt("fromM", 0);
-			int to = pref.getInt("toM", 0); // fault
+			int to = pref.getInt("toM", 0);
 
 			switch (state) {
 

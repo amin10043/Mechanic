@@ -39,7 +39,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 	ServiceComm service;
 	Utility utile1;
 	UpdatingImage serviceImage;
-
+	DialogPersonLikedFroum dia;
 	ImageView img;
 	Ticket tempItem;
 	Users u;
@@ -85,7 +85,8 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		date = new ServerDate(getActivity());
 		date.delegate = this;
 		date.execute("");
-
+	
+	
 		TextView txtaddress = (TextView) view.findViewById(R.id.address);
 		TextView txtcellphone = (TextView) view.findViewById(R.id.cellphone);
 		TextView txtphone = (TextView) view.findViewById(R.id.phone);
@@ -209,7 +210,10 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 				serviceImage = new UpdatingImage(context);
 				serviceImage.delegate = this;
 				serviceImage.execute(params);
+				
 			}
 		}
+		
+	
 	}
 }
