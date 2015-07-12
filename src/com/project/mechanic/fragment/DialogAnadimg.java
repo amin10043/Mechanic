@@ -117,7 +117,7 @@ public class DialogAnadimg extends Dialog {
 				Bundle bundle = new Bundle();
 				Bundle bundlei = new Bundle();
 				// bundle.putString("Id", String.valueOf(id));
-				// if (ProvinceId >= 0)
+				 if (ProvinceId >= 0)
 				// bundle.putString("ProID", String.valueOf(ProvinceId));
 				bundlei.putString("I", String.valueOf(i));
 				fragment.setArguments(bundle);

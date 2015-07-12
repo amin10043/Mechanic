@@ -101,7 +101,7 @@ public class show_pay_fragment extends Fragment {
 						.format(new Date());
 				SharedPreferences sendIdpro = getActivity()
 						.getSharedPreferences("Id", 0);
-				int id = sendIdpro.getInt("main_Id", -1);
+				int id = sendIdpro.getInt("main_Id", 0);
 				Toast.makeText(getActivity(), i + "do", Toast.LENGTH_SHORT)
 						.show();
 				Bitmap bitmap = ((BitmapDrawable) img_pay.getDrawable())

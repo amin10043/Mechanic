@@ -21,7 +21,7 @@ import com.project.mechanic.model.DataBaseAdapter;
 public class AdvertisementFragment extends Fragment {
 
 	DataBaseAdapter dbAdapter;
-	int provinceId = -1;
+	int provinceId = 0;
 
 	@SuppressLint("InflateParams")
 	@Override
