@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
@@ -30,8 +31,8 @@ import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class LoginFragment extends Fragment implements AsyncInterface,
-		GetAsyncInterface {
+public class LoginFragment extends Fragment implements CommInterface,
+		AsyncInterface, GetAsyncInterface {
 
 	ServiceComm service;
 	Utility util;
@@ -274,6 +275,11 @@ public class LoginFragment extends Fragment implements AsyncInterface,
 				.beginTransaction();
 		trans.replace(R.id.content_frame, new MainFragment());
 		trans.commit();
+
+	}
+
+	@Override
+	public void CommProcessFinish(String output) {
 
 	}
 }

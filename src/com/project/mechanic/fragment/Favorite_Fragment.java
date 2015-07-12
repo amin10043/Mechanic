@@ -15,12 +15,10 @@ import com.project.mechanic.adapter.FavoriteListAdapter;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class Favorite_Fragment extends Fragment {
 
-	ServiceComm service;
 	Utility util;
 	Dialogeml dialog;
 	ListView listFavorite;
@@ -35,7 +33,6 @@ public class Favorite_Fragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		service = new ServiceComm(getActivity());
 		util = new Utility(getActivity());
 
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.favorite);

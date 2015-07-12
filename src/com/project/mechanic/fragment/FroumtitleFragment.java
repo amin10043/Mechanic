@@ -28,6 +28,7 @@ import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.UpdatingImage;
+import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
@@ -55,6 +56,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	int mLastFirstVisibleItem = 0;
 	ArrayList<Integer> ids;
 	ArrayList<Integer> missedIds;
+	ServiceComm service;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -113,6 +115,15 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			}
 		}
 		mdb.close();
+
+		// service = new ServiceComm(getActivity());
+		// service.delegate = this;
+		// Map<String, String> items = new LinkedHashMap<String, String>();
+		// items.put("login", "getUserById");
+		// items.put("Id", mobile);
+		// items.put("password", pass);
+
+		// service.execute(items);
 
 		date = new ServerDate(getActivity());
 		date.delegate = this;

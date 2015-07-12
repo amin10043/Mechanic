@@ -46,7 +46,6 @@ import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.SavingImage;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class EditPersonalFragment extends Fragment implements AsyncInterface,
@@ -55,7 +54,6 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 			CROPING_CODE = 301;
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
-	ServiceComm service;
 	ImageView img2, imagecamera;
 	Utility util;
 	LinearLayout.LayoutParams lp2;
@@ -84,7 +82,6 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				android.os.Environment.getExternalStorageDirectory(),
 				"temp.jpg");
 
-		service = new ServiceComm(getActivity());
 		context = getActivity();
 
 		ut = new Utility(getActivity());

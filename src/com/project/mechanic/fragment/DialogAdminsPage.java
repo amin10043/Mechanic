@@ -25,12 +25,12 @@ import com.project.mechanic.adapter.SubAdminAdapter;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class DialogAdminsPage extends Dialog implements AsyncInterface {
+public class DialogAdminsPage extends Dialog implements CommInterface {
 	Context context;
 	int ObjectId;
 	Utility util;
@@ -160,7 +160,7 @@ public class DialogAdminsPage extends Dialog implements AsyncInterface {
 	}
 
 	@Override
-	public void processFinish(String output) {
+	public void CommProcessFinish(String output) {
 		ringProgressDialog.dismiss();
 		if (output == null || "".equals(output)) {
 			Toast.makeText(

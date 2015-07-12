@@ -3,14 +3,12 @@ package com.project.mechanic.fragment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -48,9 +46,9 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.SavingImage;
 import com.project.mechanic.service.ServerDate;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class RegisterFragment extends Fragment implements AsyncInterface,
@@ -65,7 +63,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	List<Users> list;
 	Utility utile;
 	LinearLayout.LayoutParams lp;
-	ServiceComm service;
 	ProgressDialog ringProgressDialog;
 	String Name;
 	String Mobile;
@@ -99,7 +96,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		View view = inflater.inflate(R.layout.fragment_register, null);
 
 		utile = new Utility(getActivity());
-		service = new ServiceComm(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
 		date = new PersianDate();
 		tm = (TelephonyManager) getActivity().getSystemService(
@@ -130,7 +126,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		lp.width = utile.getScreenwidth() / 4;
 		lp.height = utile.getScreenwidth() / 4;
 		btnaddpic1.setLayoutParams(lp);
-		// ///////////////////////////////////////////////////
 
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -319,98 +314,6 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		startActivityForResult(i, RESULT_LOAD_IMAGE);
 	}
 
-	@SuppressLint("NewApi")
-	@SuppressWarnings("unchecked")
-	@Override
-	public void processFinish(String output) {
-
-		ringProgressDialog.dismiss();
-		try {
-			serverId = Integer.valueOf(output);
-
-			// saveImage
-			if (serverId > 0) {
-
-				server.edit().putInt("srv_id", serverId).commit();
-
-				dbAdapter.open();
-
-				if ((btnaddpic1.getDrawable() != null) && firstTime) {
-
-					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
-							.getBitmap();
-
-					Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
-							bitmap.getHeight(), bitmap.getConfig());
-
-					firstTime = false;
-					if (!bitmap.sameAs(emptyBitmap)) {
-
-						byte[] Image = Utility.CompressBitmap(bitmap);
-						savingImage = new SavingImage(getActivity());
-						Map<String, Object> it = new LinkedHashMap<String, Object>();
-						it.put("tableName", "Users");
-						it.put("fieldName", "Image");
-						it.put("id", serverId);
-						it.put("Image", Image);
-
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								"", "لطفا منتظر بمانید...", true);
-						savingImage.delegate = this;
-						savingImage.execute(it);
-						dbAdapter.inserUserToDb(serverId, Name, null, Pass,
-								null, Mobile, null, null, Image, 0, txtdate);
-					}
-				} else {
-					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
-							null, Mobile, null, null, 0, txtdate);
-					LayoutInflater inflater4 = getLayoutInflater(getArguments());
-					View view4 = inflater4.inflate(R.layout.toast_define,
-							toastlayout);
-					utile.showtoast(view4, R.drawable.massage,
-							"اطلاعات مورد نظر ثبت شد", "پیغام");
-
-					toast = new Toast(getActivity());
-					toast.setGravity(Gravity.CENTER, 0, 0);
-					toast.setDuration(Toast.LENGTH_LONG);
-					toast.setView(view4);
-					toast.show();
-				}
-				dbAdapter.close();
-			} else {
-				LayoutInflater inflater5 = getLayoutInflater(getArguments());
-				View view5 = inflater5.inflate(R.layout.toast_define,
-						toastlayout);
-				utile.showtoast(view5, R.drawable.errormassage,
-						"شما به سرویس متصل نشده اید", "خطا");
-
-				toast = new Toast(getActivity());
-				toast.setGravity(Gravity.CENTER, 0, 0);
-				toast.setDuration(Toast.LENGTH_LONG);
-				toast.setView(view5);
-				toast.show();
-			}
-		} catch (Exception ex) {
-
-			Map<String, String> items = new HashMap<String, String>();
-			items.put("register", "register");
-			items.put("username", Name);
-			items.put("email", "");
-			items.put("password", Pass);
-			items.put("phone", "");
-			items.put("mobile", Mobile);
-			items.put("fax", "0");
-			items.put("address", "");
-			items.put("date", output);
-
-			ringProgressDialog = ProgressDialog.show(getActivity(), "",
-					"لطفا منتظر بمانید...", true);
-
-			service.delegate = RegisterFragment.this;
-			service.execute(items);
-		}
-	}
-
 	@SuppressWarnings("deprecation")
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -548,4 +451,96 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			ringProgressDialog.dismiss();
 		}
 	}
+
+	@Override
+	public void processFinish(String output) {
+		ringProgressDialog.dismiss();
+		try {
+			serverId = Integer.valueOf(output);
+
+			// saveImage
+			if (serverId > 0) {
+
+				server.edit().putInt("srv_id", serverId).commit();
+
+				dbAdapter.open();
+
+				if ((btnaddpic1.getDrawable() != null) && firstTime) {
+
+					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
+							.getBitmap();
+
+					Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+							bitmap.getHeight(), bitmap.getConfig());
+
+					firstTime = false;
+					if (!bitmap.sameAs(emptyBitmap)) {
+
+						byte[] Image = Utility.CompressBitmap(bitmap);
+						savingImage = new SavingImage(getActivity());
+						Map<String, Object> it = new LinkedHashMap<String, Object>();
+						it.put("tableName", "Users");
+						it.put("fieldName", "Image");
+						it.put("id", serverId);
+						it.put("Image", Image);
+
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								"", "لطفا منتظر بمانید...", true);
+						savingImage.delegate = this;
+						savingImage.execute(it);
+						dbAdapter.inserUserToDb(serverId, Name, null, Pass,
+								null, Mobile, null, null, Image, 0, txtdate);
+					}
+				} else {
+					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
+							null, Mobile, null, null, 0, txtdate);
+					LayoutInflater inflater4 = getLayoutInflater(getArguments());
+					View view4 = inflater4.inflate(R.layout.toast_define,
+							toastlayout);
+					utile.showtoast(view4, R.drawable.massage,
+							"اطلاعات مورد نظر ثبت شد", "پیغام");
+
+					toast = new Toast(getActivity());
+					toast.setGravity(Gravity.CENTER, 0, 0);
+					toast.setDuration(Toast.LENGTH_LONG);
+					toast.setView(view4);
+					toast.show();
+				}
+				dbAdapter.close();
+			} else {
+				LayoutInflater inflater5 = getLayoutInflater(getArguments());
+				View view5 = inflater5.inflate(R.layout.toast_define,
+						toastlayout);
+				utile.showtoast(view5, R.drawable.errormassage,
+						"شما به سرویس متصل نشده اید", "خطا");
+
+				toast = new Toast(getActivity());
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.setDuration(Toast.LENGTH_LONG);
+				toast.setView(view5);
+				toast.show();
+			}
+		} catch (Exception ex) {
+
+			Saving saving = new Saving(getActivity());
+			Map<String, String> items = new LinkedHashMap<String, String>();
+			saving.delegate = this;
+
+			items.put("register", "register");
+			items.put("username", Name);
+			items.put("email", "");
+			items.put("password", Pass);
+			items.put("phone", "");
+			items.put("mobile", Mobile);
+			items.put("fax", "0");
+			items.put("address", "");
+			items.put("date", output);
+			ringProgressDialog = ProgressDialog.show(getActivity(), "",
+					"لطفا منتظر بمانید...", true);
+			saving.delegate = RegisterFragment.this;
+			saving.execute(items);
+		}
+
+	}
+
 }

@@ -29,14 +29,12 @@ import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.UpdatingImage;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class DisplayPersonalInformationFragment extends Fragment implements
 		GetAsyncInterface, AsyncInterface {
 
 	DataBaseAdapter dbAdapter;
-	ServiceComm service;
 	Utility utile1;
 	UpdatingImage serviceImage;
 
@@ -54,7 +52,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		View view = inflater.inflate(
 				R.layout.fragment_displaypersonalinformation, null);
 		utile1 = new Utility(getActivity());
-		service = new ServiceComm(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		if (getArguments() != null) {

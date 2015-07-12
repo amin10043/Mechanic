@@ -13,7 +13,7 @@ import org.ksoap2.transport.HttpTransportSE;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
 
 public class ServiceComm extends
 		AsyncTask<Map<String, String>, Integer, String> {
@@ -30,7 +30,7 @@ public class ServiceComm extends
 
 	private Context context;
 
-	public AsyncInterface delegate = null;
+	public CommInterface delegate = null;
 
 	public ServiceComm(Context context) {
 		this.context = context;
@@ -80,7 +80,7 @@ public class ServiceComm extends
 	protected void onPostExecute(String res) {
 
 		if (delegate != null)
-			delegate.processFinish(res);
+			delegate.CommProcessFinish(res);
 	}
 
 	@Override
