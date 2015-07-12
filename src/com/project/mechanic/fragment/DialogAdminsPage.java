@@ -27,6 +27,7 @@ import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Saving;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
@@ -48,6 +49,10 @@ public class DialogAdminsPage extends Dialog implements AsyncInterface {
 	ProgressDialog ringProgressDialog;
 	ArrayList<Users> listu;
 	int AdminId;
+	int GlobalSubId;
+
+	Saving saving;
+	Map<String, String> params;
 
 	public DialogAdminsPage(Context context, int ObjectId, int AdminId) {
 		super(context);
@@ -111,11 +116,12 @@ public class DialogAdminsPage extends Dialog implements AsyncInterface {
 				phoneInput = in.getText().toString();
 
 				if (!"".equals(phoneInput)) {
+					// /// save date
 
 					service = new ServiceComm(context);
 					service.delegate = DialogAdminsPage.this;
 					Map<String, String> items = new LinkedHashMap<String, String>();
-					items.put("login", "login");
+					items.put("login", "regPhone");
 					items.put("phone", phoneInput);
 
 					service.execute(items);
@@ -162,40 +168,120 @@ public class DialogAdminsPage extends Dialog implements AsyncInterface {
 	@Override
 	public void processFinish(String output) {
 		ringProgressDialog.dismiss();
-		if (output == null || "".equals(output)) {
-			Toast.makeText(
-					context,
-					"شماره مورد نظر شما یافت نشد و یا ممکن است شماره را اشتباه وارد کرده باشید",
-					Toast.LENGTH_SHORT).show();
-		} else {
-			adapter.open();
-			page = adapter.getObjectbyid(ObjectId);
-			mainAdmin = adapter.getUserbyid(page.getUserId());
-			Users u = adapter.getUserbymobailenumber(phoneInput);
-			if (u == null)
-				Toast.makeText(context,
-						"شماره مورد نظر شما در نرم افزار ثبت نشده است", 0)
-						.show();
-			else {
-				if (adapter.IsUserAdmin(u.getId(), (ObjectId))
-						|| phoneInput.equals(mainAdmin.getMobailenumber())) {
-					Toast.makeText(context, "این شماره قبلا استفاده شده است", 0)
+		int id = -1;
+
+		try {
+
+			if (output == null || "".equals(output)
+					|| "anyType{}".equals(output)) {
+				Toast.makeText(
+						context,
+						"شماره مورد نظر شما یافت نشد و یا ممکن است شماره را اشتباه وارد کرده باشید",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				id = Integer.valueOf(output);
+
+				adapter.open();
+
+				if (adapter.countSubAdminPage(ObjectId) < 4) {
+					util.parseQuery(output);
+
+					Users ux = adapter.getUserbymobailenumber(phoneInput);
+
+					page = adapter.getObjectbyid(ObjectId);
+					mainAdmin = adapter.getUserbyid(page.getUserId());
+
+					if (adapter.IsUserAdmin(ux.getId(), (ObjectId))
+							|| phoneInput.equals(mainAdmin.getMobailenumber())) {
+						Toast.makeText(context,
+								"این شماره قبلا استفاده شده است", 0).show();
+					} else
+
+					{
+						adapter.insertSubAdminPage(id, ObjectId, ux.getId(),
+								AdminId);
+						ArrayList<SubAdmin> listAdmin = adapter
+								.getAdmin(ObjectId);
+
+						SubAdminAdapter listadapter = new SubAdminAdapter(
+								context, R.layout.row_sub_admin, listAdmin,
+								ObjectId);
+						listSubAdmin.setAdapter(listadapter);
+						listadapter.notifyDataSetChanged();
+						in.setText("");
+					}
+
+				} else
+					Toast.makeText(context,
+							"حداکثر تعداد مدیران یک صفحه 4 کاربر می باشد", 0)
 							.show();
-				} else {
+			}
+		} catch (NumberFormatException e) {
 
-					adapter.insertSubAdminPage(ObjectId, u.getId(), AdminId);
+			if (output == null || "".equals(output)
+					|| "anyType{}".equals(output)) {
+				Toast.makeText(
+						context,
+						"شماره مورد نظر شما یافت نشد و یا ممکن است شماره را اشتباه وارد کرده باشید",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				adapter.open();
 
-					ArrayList<SubAdmin> listAdmin = adapter.getAdmin(ObjectId);
+				if (adapter.countSubAdminPage(ObjectId) < 4) {
 
-					SubAdminAdapter listadapter = new SubAdminAdapter(context,
-							R.layout.row_sub_admin, listAdmin, ObjectId);
-					listSubAdmin.setAdapter(listadapter);
-					listadapter.notifyDataSetChanged();
-					adapter.close();
-					in.setText("");
+					util.parseQuery(output);
+					Users u = adapter.getUserbymobailenumber(phoneInput);
+
+					if (adapter.IsUserAdmin(u.getId(), (ObjectId))
+							|| phoneInput.equals(mainAdmin.getMobailenumber())) {
+						Toast.makeText(context,
+								"این شماره قبلا استفاده شده است", 0).show();
+					} else
+
+					{
+
+						params = new LinkedHashMap<String, String>();
+						saving = new Saving(context);
+						saving.delegate = DialogAdminsPage.this;
+
+						params.put("TableName", "SubAdmin");
+
+						params.put("ObjectId", String.valueOf(ObjectId));
+
+						params.put("UserId", String.valueOf(u.getId()));
+						GlobalSubId = u.getId();
+						params.put("AdminId", String.valueOf(AdminId));
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+						saving.execute(params);
+						ringProgressDialog = ProgressDialog.show(context, "",
+								"لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+					}
 				}
+
+				else
+					Toast.makeText(context,
+							"حداکثر تعداد مدیران یک صفحه 4 کاربر می باشد", 0)
+							.show();
+				adapter.close();
 			}
 		}
-
 	}
 }

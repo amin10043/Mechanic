@@ -5,12 +5,22 @@ public class SubAdmin {
 	int ObjectId;
 	int UserId;
 	int AdminID;
+	String date;
 
-	public SubAdmin(int Id, int ObjectId, int UserId, int AdminID) {
+	public SubAdmin(int Id, int ObjectId, int UserId, int AdminID, String date) {
 		this.Id = Id;
 		this.ObjectId = ObjectId;
 		this.UserId = UserId;
 		this.AdminID = AdminID;
+		this.date = date;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	public int getId() {

@@ -13,10 +13,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,10 +60,12 @@ public class LoginFragment extends Fragment implements AsyncInterface,
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
 		View view = inflater.inflate(R.layout.fragment_login, null);
 
-		Button btnlog = (Button) view.findViewById(R.id.btnlogin);
-		Button btncancle = (Button) view.findViewById(R.id.btncancle);
+		RelativeLayout btnlog = (RelativeLayout) view
+				.findViewById(R.id.btnlogin);
+		// Button btncancle = (Button) view.findViewById(R.id.btncancle);
 		// Button launchRingDialog= (Button) view.findViewById(R.id.btnring);
-		Button btnreg = (Button) view.findViewById(R.id.btnreg1);
+		RelativeLayout btnreg = (RelativeLayout) view
+				.findViewById(R.id.btnreg1);
 		TextView btnforgot = (TextView) view.findViewById(R.id.btnforgot);
 		editmobile = (EditText) view.findViewById(R.id.editTextmobile);
 		final EditText editpass = (EditText) view
@@ -148,16 +149,16 @@ public class LoginFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
-		btncancle.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new MainFragment());
-				trans.commit();
-			}
-		});
+		// btncancle.setOnClickListener(new OnClickListener() {
+		//
+		// public void onClick(View arg0) {
+		// // TODO Auto-generated method stub
+		// FragmentTransaction trans = getActivity()
+		// .getSupportFragmentManager().beginTransaction();
+		// trans.replace(R.id.content_frame, new MainFragment());
+		// trans.commit();
+		// }
+		// });
 
 		btnforgot.setOnClickListener(new View.OnClickListener() {
 
