@@ -1,7 +1,9 @@
 package com.project.mechanic.fragment;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -26,11 +28,12 @@ import com.project.mechanic.ListView.PullToRefreshListView.OnRefreshListener;
 import com.project.mechanic.adapter.PapertitleListAdapter;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class TitlepaperFragment extends Fragment implements AsyncInterface {
+public class TitlepaperFragment extends Fragment implements CommInterface {
 	private ImageButton addtitle;
 	private DialogPaperTitle dialog;
 	DataBaseAdapter mdb;
@@ -47,6 +50,7 @@ public class TitlepaperFragment extends Fragment implements AsyncInterface {
 	Users CurrentUser;
 	int mLastFirstVisibleItem = 0;
 	FloatingActionButton action;
+	ServiceComm service;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -69,6 +73,19 @@ public class TitlepaperFragment extends Fragment implements AsyncInterface {
 		mdb.open();
 		mylist = mdb.getAllPaper();
 		mdb.close();
+
+		// for Missed IDS
+		String strIdes = getMissedIds();
+		if (!"".equals(strIdes)) {
+			service = new ServiceComm(getActivity());
+			service.delegate = this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+			items.put("tableName", "getUserById");
+			items.put("Id", strIdes);
+
+			service.execute(items);
+		}
+		// for Missed IDS
 
 		final FloatingActionButton action = (FloatingActionButton) view
 				.findViewById(R.id.fab);
@@ -288,9 +305,35 @@ public class TitlepaperFragment extends Fragment implements AsyncInterface {
 
 	}
 
+	public String getMissedIds() {
+		String strIdes = "";
+		mdb.open();
+		if (mylist != null) {
+			Users uId;
+			for (int i = 0; i < mylist.size(); ++i) {
+				int uidd = mylist.get(i).getUserId();
+				uId = mdb.getUserById(uidd);
+				if (uId == null) {
+					strIdes += uidd + "-";
+				}
+			}
+		}
+		mdb.close();
+		return strIdes;
+	}
+
 	@Override
-	public void processFinish(String output) {
-		// TODO Auto-generated method stub
+	public void CommProcessFinish(String output) {
+		if (!"".equals(output)
+				&& output != null
+				&& !(output.contains("Exception") || output.contains("java") || output
+						.contains("soap"))) {
+			utility.parseQuery(output);
+			updateView();
+		} else {
+			Toast.makeText(getActivity(), "خطا در بروز رسانی داده های سرور",
+					Toast.LENGTH_SHORT).show();
+		}
 
 	}
 

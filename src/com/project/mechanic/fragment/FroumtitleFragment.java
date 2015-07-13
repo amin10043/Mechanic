@@ -24,6 +24,7 @@ import com.project.mechanic.adapter.FroumtitleListadapter;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
@@ -32,7 +33,7 @@ import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
-		AsyncInterface {
+		CommInterface, AsyncInterface {
 	private ImageButton addtitle;
 	private DialogfroumTitle dialog;
 	DialogcmtInfroum dialog2;
@@ -104,6 +105,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		mdb.open();
 		mylist = mdb.getAllFroum();
 
+		String strIdes = "";
 		if (mylist != null) {
 			Users uId;
 			for (int i = 0; i < mylist.size(); ++i) {
@@ -111,20 +113,21 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 				uId = mdb.getUserById(uidd);
 				if (uId == null) {
 					missedIds.add(uidd);
+					strIdes += uidd + "-";
 				}
 			}
 		}
 		mdb.close();
 
-		// service = new ServiceComm(getActivity());
-		// service.delegate = this;
-		// Map<String, String> items = new LinkedHashMap<String, String>();
-		// items.put("login", "getUserById");
-		// items.put("Id", mobile);
-		// items.put("password", pass);
+		if (!"".equals(strIdes)) {
+			service = new ServiceComm(getActivity());
+			service.delegate = this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+			items.put("tableName", "getUserById");
+			items.put("Id", strIdes);
 
-		// service.execute(items);
-
+			service.execute(items);
+		}
 		date = new ServerDate(getActivity());
 		date.delegate = this;
 		date.execute("");
@@ -160,17 +163,6 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 			@Override
 			public void onScrollStateChanged(AbsListView arg0, int arg1) {
-
-				// final int currentFirstVisibleItem = lst
-				// .getFirstVisiblePosition();
-				// if (currentFirstVisibleItem > mLastFirstVisibleItem) {
-				// action.hide(true);
-				// } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
-				// action.show(true);
-				// }
-				//
-				// mLastFirstVisibleItem = currentFirstVisibleItem;
-
 				switch (arg1) {
 				case SCROLL_STATE_FLING:
 					action.hide(true);
@@ -238,8 +230,10 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	@SuppressWarnings("unchecked")
 	@Override
 	public void processFinish(String output) {
-		if (!"".equals(output) && output != null
-				&& !(output.contains("Exception") || output.contains("java"))) {
+		if (!"".equals(output)
+				&& output != null
+				&& !(output.contains("Exception") || output.contains("java") || output
+						.contains("soap"))) {
 			if (mylist != null && mylist.size() > 0) {
 				mdb.open();
 				if (mylist.size() > userItemId) {
@@ -266,5 +260,20 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 			}
 		}
+	}
+
+	@Override
+	public void CommProcessFinish(String output) {
+		if (!"".equals(output)
+				&& output != null
+				&& !(output.contains("Exception") || output.contains("java") || output
+						.contains("soap"))) {
+			util.parseQuery(output);
+			updateView();
+		} else {
+			Toast.makeText(getActivity(), "خطا در بروز رسانی داده های سرور",
+					Toast.LENGTH_SHORT).show();
+		}
+
 	}
 }

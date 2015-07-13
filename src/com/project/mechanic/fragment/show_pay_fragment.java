@@ -1,21 +1,28 @@
 package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -30,6 +37,7 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -47,6 +55,11 @@ public class show_pay_fragment extends Fragment {
 	Utility util;
 	LinearLayout.LayoutParams headerEditParams;
 	LinearLayout Lheader;
+	private File mFileTemp;
+	private Uri picUri;
+	ProgressDialog imageloadprogressdialog;
+	private static final int PICK_FROM_CAMERA = 2;
+	final int PIC_CROP = 3;
 
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -92,6 +105,15 @@ public class show_pay_fragment extends Fragment {
 		sp_pay.setAdapter(dataAdapter);
 
 		dbAdapter.close();
+
+		String state = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			mFileTemp = new File(Environment.getExternalStorageDirectory(),
+					AnadFragment.TEMP_PHOTO_FILE_NAME);
+		} else {
+			mFileTemp = new File(getActivity().getFilesDir(),
+					AnadFragment.TEMP_PHOTO_FILE_NAME);
+		}
 
 		btn_pay.setOnClickListener(new View.OnClickListener() {
 
@@ -141,12 +163,19 @@ public class show_pay_fragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				Intent i = new Intent(
-						Intent.ACTION_PICK,
-						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-				getActivity().startActivityFromFragment(show_pay_fragment.this,
-						i, RESULT_LOAD_IMAGE);
+				final CharSequence[] items = { "گالری تصاویر", "دوربین" };
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						getActivity());
+				builder.setItems(items, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int item) {
+						if (item == 0) {
+							do_gallery_work();
+						} else {
+							do_cam_work();
+						}
+					}
+				});
+				builder.show();
 
 			}
 		});
@@ -154,29 +183,108 @@ public class show_pay_fragment extends Fragment {
 		return view;
 	}
 
+	public void do_cam_work() {
+		imageloadprogressdialog = ProgressDialog.show(getActivity(), "",
+				"در حال باز کردن دوربین. لطفا منتظر بمانید...");
+		try {
+			Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			startActivityForResult(captureIntent, PICK_FROM_CAMERA);
+		} catch (ActivityNotFoundException anfe) {
+			Toast toast = Toast.makeText(getActivity(),
+					"این دستگاه از برش تصویر پشتیبانی نمی کند.",
+					Toast.LENGTH_SHORT);
+			toast.show();
+		}
+
+	}
+
+	public void do_gallery_work() {
+		Intent i = new Intent(Intent.ACTION_PICK,
+				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+		startActivityForResult(i, RESULT_LOAD_IMAGE);
+	}
+
+	private void startCropImage() {
+
+		Intent intent = new Intent(getActivity(), CropImage.class);
+		intent.putExtra(CropImage.IMAGE_PATH, mFileTemp.getPath());
+		intent.putExtra(CropImage.SCALE, true);
+
+		intent.putExtra(CropImage.ASPECT_X, 3);
+		intent.putExtra(CropImage.ASPECT_Y, 3);
+
+		startActivityForResult(intent, PIC_CROP);
+	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-		super.onActivityResult(requestCode, resultCode, data);
-
-		if (requestCode == RESULT_LOAD_IMAGE
-				&& resultCode == Activity.RESULT_OK && null != data) {
-			Uri selectedImage = data.getData();
-
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-			Cursor cursor = getActivity().getContentResolver().query(
-					selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
-
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
-			cursor.close();
-
-			// ImageView imageView = (ImageView) dialog
-			// .findViewById(R.id.dialog_img1);
-			img_pay.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+		if (resultCode != Activity.RESULT_OK) {
+			return;
+		}
+		if (requestCode == PICK_FROM_CAMERA) {
+			picUri = data.getData();
+			try {
+				Intent cropIntent = new Intent("com.android.camera.action.CROP");
+				cropIntent.setDataAndType(picUri, "image/*");
+				cropIntent.putExtra("scale", "true");
+				cropIntent.putExtra("aspectX", 1);
+				cropIntent.putExtra("aspectY", 1);
+				cropIntent.putExtra("outputX", 256);
+				cropIntent.putExtra("outputY", 256);
+				cropIntent.putExtra("return-data", true);
+				Bundle extras = data.getExtras();
+				Bitmap thePic = extras.getParcelable("data");
+				img_pay.setImageBitmap(thePic);
+				if (imageloadprogressdialog != null)
+					imageloadprogressdialog.dismiss();
+			} catch (ActivityNotFoundException anfe) {
+				Toast toast = Toast.makeText(getActivity(),
+						"این دستگاه از برش تصویر پشتیبانی نمی کند.",
+						Toast.LENGTH_SHORT);
+				toast.show();
+			}
 
 		}
+
+		else if (requestCode == RESULT_LOAD_IMAGE) {
+			try {
+
+				InputStream inputStream = getActivity().getContentResolver()
+						.openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(
+						mFileTemp);
+				Utility.copyStream(inputStream, fileOutputStream);
+				fileOutputStream.close();
+				inputStream.close();
+
+				startCropImage();
+
+			} catch (Exception e) {
+
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
+						.show();
+			}
+
+		} else if (requestCode == PIC_CROP) {
+			String path = data.getStringExtra(CropImage.IMAGE_PATH);
+			if (path == null) {
+				return;
+			}
+
+			Bitmap bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
+			img_pay.setImageBitmap(bitmap);
+		} else {
+			Toast.makeText(getActivity(), "Picture NOt taken",
+					Toast.LENGTH_LONG).show();
+		}
+		img_pay.setLayoutParams(headerEditParams);
+
+		if (imageloadprogressdialog != null) {
+			imageloadprogressdialog.dismiss();
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+
 	}
 }
