@@ -173,7 +173,7 @@ public class AnadFragment extends Fragment {
 			lstTicket = (PullAndLoadListView) view.findViewById(R.id.listVanad);
 
 			ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
-					subList, proID);
+					subList, proID, AnadFragment.this);
 
 			lstTicket.setAdapter(ListAdapter);
 
@@ -524,7 +524,7 @@ public class AnadFragment extends Fragment {
 
 		ListView lstAnad = (ListView) view.findViewById(R.id.listVanad);
 		AnadListAdapter ListAdapter = new AnadListAdapter(getActivity(),
-				R.layout.row_anad, mylist, proID);
+				R.layout.row_anad, mylist, proID, AnadFragment.this);
 		ListAdapter.notifyDataSetChanged();
 		lstAnad.setAdapter(ListAdapter);
 

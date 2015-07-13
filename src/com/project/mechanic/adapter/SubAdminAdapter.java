@@ -1,7 +1,10 @@
 package com.project.mechanic.adapter;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,20 +16,29 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Deleting;
 import com.project.mechanic.utility.Utility;
 
-public class SubAdminAdapter extends ArrayAdapter<SubAdmin> {
+public class SubAdminAdapter extends ArrayAdapter<SubAdmin> implements
+		AsyncInterface {
 	Context context;
 	ArrayList<SubAdmin> myList;
 	DataBaseAdapter adapter;
 	Utility util;
 	int ObjectId;
 	String phoneInput;
+
+	Deleting deleting;
+	Map<String, String> params;
+	ProgressDialog ringProgressDialog;
+	int ItemId, b;
 
 	public SubAdminAdapter(Context context, int resource,
 			ArrayList<SubAdmin> list, int ObjectId) {
@@ -92,21 +104,46 @@ public class SubAdminAdapter extends ArrayAdapter<SubAdmin> {
 
 				adapter.open();
 
-				int ItemId = 0;
+				ItemId = 0;
 				ListView listView = (ListView) t.getParent().getParent()
 						.getParent();
-				int b = listView.getPositionForView(t);
+				b = listView.getPositionForView(t);
 				SubAdmin f = getItem(b);
 				if (f != null) {
 					ItemId = f.getUserId();
 				}
 
-				Users h = adapter.getUserbyid(ItemId);
-				adapter.deleteAdmin(h.getId());
-
-				myList.remove(b);
-				notifyDataSetChanged();
 				adapter.close();
+
+				params = new LinkedHashMap<String, String>();
+				deleting = new Deleting(context);
+				deleting.delegate = SubAdminAdapter.this;
+
+				params.put("TableName", "SubAdmin");
+
+				params.put("UserId", String.valueOf(ItemId));
+
+				deleting.execute(params);
+
+				ringProgressDialog = ProgressDialog.show(context, "",
+						"لطفا منتظر بمانید...", true);
+
+				ringProgressDialog.setCancelable(true);
+
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+
+						try {
+
+							Thread.sleep(10000);
+
+						} catch (Exception e) {
+
+						}
+					}
+				}).start();
 
 			}
 		});
@@ -116,5 +153,32 @@ public class SubAdminAdapter extends ArrayAdapter<SubAdmin> {
 		adapter.close();
 
 		return convertView;
+	}
+
+	@Override
+	public void processFinish(String output) {
+
+		int id = -1;
+
+		try {
+			id = Integer.valueOf(output);
+			adapter.open();
+
+			Users h = adapter.getUserbyid(ItemId);
+			adapter.deleteAdmin(h.getId());
+
+			myList.remove(b);
+			notifyDataSetChanged();
+			adapter.close();
+
+			if (ringProgressDialog != null) {
+				ringProgressDialog.dismiss();
+
+			}
+
+		} catch (Exception e) {
+			Toast.makeText(context, "خطا در ثبت", 0).show();
+		}
+
 	}
 }

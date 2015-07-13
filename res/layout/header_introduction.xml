@@ -13,9 +13,9 @@
         <ImageView
             android:id="@+id/imgvadvertise_Object"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/no_image_header" />
+            android:layout_height="160dp"
+            android:background="@drawable/no_image_header"
+            android:scaleType="fitXY" />
     </LinearLayout>
 
     <RelativeLayout
@@ -31,8 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/no_img_profile" />
+            android:background="@drawable/no_img_profile"
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/namePage"
@@ -596,8 +596,8 @@
             android:id="@+id/imgvadvertise2_Object"
             android:layout_width="match_parent"
             android:layout_height="160dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/gf" />
+            android:background="@drawable/gf"
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/txtDesc_Object"

@@ -24,9 +24,9 @@
                 <ImageView
                     android:id="@+id/hh1"
                     android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/gf2" />
+                    android:layout_height="160dp"
+                    android:background="@drawable/gf2"
+                    android:scaleType="fitXY" />
             </LinearLayout>
 
             <RelativeLayout
@@ -55,8 +55,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/no_img_profile" />
+                    android:background="@drawable/no_img_profile"
+                    android:scaleType="fitXY" />
 
                 <TextView
                     android:id="@+id/linkPage"
@@ -69,18 +69,6 @@
                     android:text="لینک صفحه : "
                     android:textColor="@color/transparent" />
             </RelativeLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical" >
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-                </RelativeLayout>
-            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -239,14 +227,14 @@
                                 android:background="@drawable/brand_list_item_shape" >
 
                                 <RatingBar
-                                    android:layout_centerHorizontal="true"
                                     android:id="@+id/ratingBar1"
                                     style="?android:attr/ratingBarStyleIndicator"
                                     android:layout_width="wrap_content"
-                                    android:isIndicator="false"
                                     android:layout_height="wrap_content"
                                     android:layout_alignBottom="@+id/icon_object"
+                                    android:layout_centerHorizontal="true"
                                     android:layout_toRightOf="@+id/icon_object"
+                                    android:isIndicator="false"
                                     android:numStars="5"
                                     android:stepSize="1" />
 
@@ -610,8 +598,8 @@
                         android:id="@+id/ft1"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/gf" />
+                        android:background="@drawable/gf"
+                        android:scaleType="fitXY" />
 
                     <EditText
                         android:id="@+id/descriptionpageedit"

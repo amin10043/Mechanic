@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +19,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Ticket;
+import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.ShowAdFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
@@ -35,9 +38,10 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 	DataBaseAdapter adapter;
 	int ProvinceId;
 	Utility util;
+	Fragment fragment;
 
 	public AnadListAdapter(Context context, int resource, List<Ticket> objact,
-			int ProvinceId) {
+			int ProvinceId, Fragment fragment) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -45,6 +49,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 		this.ProvinceId = ProvinceId;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
+		this.fragment = fragment;
 
 	}
 
@@ -118,6 +123,35 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				adapter.SetSeen("Ticket", id, "1");
 				adapter.close();
 
+			}
+		});
+
+		convertView.setOnLongClickListener(new View.OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View v) {
+
+				RelativeLayout parentlayout = (RelativeLayout) v;
+				TextView txtName = (TextView) parentlayout
+						.findViewById(R.id.row_favorite_title);
+				String item = txtName.getText().toString();
+				int id = 0;
+				int u = 0;
+				for (Ticket Ticket : list) {
+
+					if (item.equals(Ticket.getTitle())) {
+						// check authentication and authorization
+						id = Ticket.getId();
+						u = Ticket.getUserId();
+
+					}
+				}
+
+				DialogLongClick dia = new DialogLongClick(context, 3, u, id,
+						fragment);
+				Toast.makeText(context, id + "", 0).show();
+				dia.show();
+				return true;
 			}
 		});
 

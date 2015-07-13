@@ -3,8 +3,10 @@ package com.project.mechanic.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,6 +39,7 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 	Utility util;
 	Users user;
 	int userId;
+	DialogPersonLikedFroum dia;
 
 	public PersonLikedAdapter(Context context, int resource,
 			ArrayList<LikeInFroum> objects) {
@@ -71,8 +74,7 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 		adapter.open();
 		 user = adapter.getUserById(likes.getUserid());
 		adapter.close();
-
-		namePerson.setText(user.getName());
+				namePerson.setText(user.getName());
 		DateLiked.setText(util.getPersianDate(likes.getDatetime()));
 
 		RelativeLayout rl = (RelativeLayout) convertView
@@ -99,7 +101,7 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 			peronImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
 			peronImage.setLayoutParams(lp);
 		}
-		
+	
 		peronImage.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -117,10 +119,11 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				
 			}
 		});
+		
 
 		return convertView;
 	}
+
 }

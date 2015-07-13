@@ -7,7 +7,8 @@
             android:shape="rectangle" >
             <corners
                 android:bottomLeftRadius="25dp"
-                android:bottomRightRadius="25dp" />
+                android:bottomRightRadius="25dp"
+                android:radius="20dp" />
 
             <solid android:color="#000" />
         </shape>

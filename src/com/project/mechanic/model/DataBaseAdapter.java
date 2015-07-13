@@ -158,7 +158,7 @@ public class DataBaseAdapter {
 	// "IsLike" };
 
 	private String[] Visit = { "UserId", "ObjectId", "TypeId" };
-	private String[] SubAdmin = { "Id", "ObjectId", "UserId", "AdminID" };
+	private String[] SubAdmin = { "Id", "ObjectId", "UserId", "AdminID", "Date" };
 
 	private final Context mContext;
 	private SQLiteDatabase mDb;
@@ -574,6 +574,7 @@ public class DataBaseAdapter {
 
 		ContentValues cv = new ContentValues();
 
+		cv.put("Id", id);
 		cv.put("Title", Title);
 		cv.put("Description", description);
 		cv.put("UserId", userId);
@@ -3301,7 +3302,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			tempObject = new com.project.mechanic.entity.SubAdmin(
 					cursor.getInt(0), cursor.getInt(1), cursor.getInt(2),
-					cursor.getInt(3));
+					cursor.getInt(3), cursor.getString(4));
 			result.add(tempObject);
 		}
 
@@ -3309,10 +3310,11 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertSubAdminPage(int ObjectId, int UserId, int AdminId) {
+	public void insertSubAdminPage(int Id, int ObjectId, int UserId, int AdminId) {
 
 		ContentValues uc = new ContentValues();
 
+		uc.put("Id", Id);
 		uc.put("ObjectId", ObjectId);
 		uc.put("UserId", UserId);
 		uc.put("AdminId", AdminId);
@@ -3327,7 +3329,7 @@ public class DataBaseAdapter {
 		SubAdmin tempNews;
 		while (cursor.moveToNext()) {
 			tempNews = new SubAdmin(cursor.getInt(0), cursor.getInt(1),
-					cursor.getInt(2), cursor.getInt(3));
+					cursor.getInt(2), cursor.getInt(3), cursor.getString(4));
 			result.add(tempNews);
 		}
 
@@ -3372,6 +3374,38 @@ public class DataBaseAdapter {
 			uc.put("Image3", FooterImage);
 
 		mDb.update(TableObject, uc, "Id=" + id, null);
+
+	}
+
+	public Integer countSubAdminPage(int ObjectID) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TableSubAdmin
+				+ " WHERE ObjectId=" + ObjectID, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public void deleteFroumTitle(int FroumeId) {
+
+		mDb.execSQL("delete from [Froum] where Id = " + FroumeId);
+
+	}
+
+	public void deleteCommentFroum(int FroumId) {
+		mDb.execSQL("delete from [CommentInFroum] where FroumId = " + FroumId);
+
+	}
+
+	public void deleteLikeFroum(int FroumId) {
+		mDb.execSQL("delete from [LikeInFroum] where FroumId = " + FroumId);
+
+	}
+
+	public void deleteTicketItem(int ticketId) {
+		mDb.execSQL("delete from [Ticket] where Id = " + ticketId);
 
 	}
 
