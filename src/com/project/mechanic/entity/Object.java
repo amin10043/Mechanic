@@ -36,6 +36,33 @@ public class Object implements Comparable<Object> {
 	int UserId;
 	int ObjectId;
 	String Date;
+	String image1ServerDate;
+	String image2ServerDate;
+	String image3ServerDate;
+
+	public String getImage1ServerDate() {
+		return image1ServerDate;
+	}
+
+	public void setImage1ServerDate(String image1ServerDate) {
+		this.image1ServerDate = image1ServerDate;
+	}
+
+	public String getImage2ServerDate() {
+		return image2ServerDate;
+	}
+
+	public void setImage2ServerDate(String image2ServerDate) {
+		this.image2ServerDate = image2ServerDate;
+	}
+
+	public String getImage3ServerDate() {
+		return image3ServerDate;
+	}
+
+	public void setImage3ServerDate(String image3ServerDate) {
+		this.image3ServerDate = image3ServerDate;
+	}
 
 	public String getFacebook() {
 		return Facebook;
@@ -294,7 +321,8 @@ public class Object implements Comparable<Object> {
 			String linkedIn, String google, String site, String twitter,
 			int parentid, int rate, int seen, String serverdate, int submit,
 			int mainObjectid, int IsActive, int UserId, int ObjectId,
-			String Date) {
+			String Date, String img1ServerDate, String img2ServerDate,
+			String img3ServerDate) {
 
 		super();
 		Id = id;
@@ -331,6 +359,9 @@ public class Object implements Comparable<Object> {
 		this.UserId = UserId;
 		this.ObjectId = ObjectId;
 		this.Date = Date;
+		image1ServerDate = img1ServerDate;
+		image2ServerDate = img2ServerDate;
+		image3ServerDate = img3ServerDate;
 	}
 
 	public String getDate() {

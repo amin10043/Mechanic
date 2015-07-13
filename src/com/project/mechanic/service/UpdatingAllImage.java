@@ -1,6 +1,8 @@
 package com.project.mechanic.service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -16,11 +18,12 @@ import org.ksoap2.transport.HttpTransportSE;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.project.mechanic.inter.GetAsyncInterface;
+import com.project.mechanic.inter.GetAllAsyncInterface;
 import com.project.mechanic.utility.Utility;
 
-public class UpdatingImage extends
-		AsyncTask<Map<String, String>, Integer, byte[]> {
+public class UpdatingAllImage extends
+		AsyncTask<Map<String, String>, Integer, List<byte[]>> {
+
 	public String SOAP_ACTION = "http://tempuri.org/";
 
 	public String OPERATION_NAME = "";
@@ -32,17 +35,17 @@ public class UpdatingImage extends
 	public String response = "";
 	private Context context;
 	private Utility util;
-	byte[] res = null;
+	List<byte[]> res = null;
 
-	public GetAsyncInterface delegate = null;
+	public GetAllAsyncInterface delegate = null;
 
-	public UpdatingImage(Context context) {
+	public UpdatingAllImage(Context context) {
 		this.context = context;
 		util = new Utility(context);
 	}
 
 	@Override
-	protected byte[] doInBackground(Map<String, String>... action) {
+	protected List<byte[]> doInBackground(Map<String, String>... action) {
 		try {
 			Iterator<Entry<String, String>> it = action[0].entrySet()
 					.iterator();
@@ -85,18 +88,27 @@ public class UpdatingImage extends
 			HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS);
 			httpTransport.call(SOAP_ACTION, envelope);
 
-			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
-			res = Base64.decode(response.toString());
+			// for array Image
+			SoapObject response = (SoapObject) envelope.getResponse();
+			// SoapObject obj2 = (SoapObject) response.getProperty(0);
+			// for array Image
+
+			res = new ArrayList<byte[]>();
+
+			for (int i = 0; i < response.getPropertyCount(); i++) {
+				SoapPrimitive obj3 = (SoapPrimitive) response.getProperty(i);
+				res.add(Base64.decode(obj3.toString()));
+			}
 		} catch (Exception e) {
 			response = e.toString();
 		}
 		return res;
-
 	}
 
-	protected void onPostExecute(byte[] res) {
+	protected void onPostExecute(List<byte[]> res) {
 
 		if (delegate != null)
 			delegate.processFinish(res);
 	}
+
 }

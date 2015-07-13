@@ -73,51 +73,15 @@ public class DialogLongClick extends Dialog implements AsyncInterface {
 			@Override
 			public void onClick(View arg0) {
 				if (source == 1) {
-
-					if (source == 1) {
-
-						service = new ServiceComm(context);
-						service.delegate = DialogLongClick.this;
-						Map<String, String> items = new LinkedHashMap<String, String>();
-						items.put("DeletingRecord", "DeletingRecord");
-
-						items.put("tableName", "Froum");
-						items.put("Id", String.valueOf(Item));
-
-						service.execute(items);
-
-						ringProgressDialog = ProgressDialog.show(context, "",
-								"لطفا منتظر بمانید...", true);
-
-						ringProgressDialog.setCancelable(true);
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
-							}
-						}).start();
-					}
-
-				}
-
-				if (source == 3) {
-					params = new LinkedHashMap<String, String>();
-
 					deleting = new Deleting(context);
 					deleting.delegate = DialogLongClick.this;
+					Map<String, String> items = new LinkedHashMap<String, String>();
+					items.put("DeletingRecord", "DeletingRecord");
 
-					params.put("TableName", "Ticket");
-					params.put("Id", String.valueOf(Item));
+					items.put("tableName", "Froum");
+					items.put("Id", String.valueOf(Item));
 
-					deleting.execute(params);
+					service.execute(items);
 
 					ringProgressDialog = ProgressDialog.show(context, "",
 							"لطفا منتظر بمانید...", true);
@@ -137,11 +101,39 @@ public class DialogLongClick extends Dialog implements AsyncInterface {
 							}
 						}
 					}).start();
+				}
 
+				if (source == 3) {
+					params = new LinkedHashMap<String, String>();
+
+					deleting = new Deleting(context);
+					deleting.delegate = DialogLongClick.this;
+
+					params.put("tableName", "Ticket");
+					params.put("Id", String.valueOf(Item));
+
+					deleting.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(context, "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
 				}
 			}
 		});
-
 	}
 
 	@Override

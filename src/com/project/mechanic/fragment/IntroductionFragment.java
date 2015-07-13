@@ -1,6 +1,5 @@
 package com.project.mechanic.fragment;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,7 +10,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,13 +34,16 @@ import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.GetAllAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.UpdatingAllImage;
 import com.project.mechanic.utility.Utility;
 
-public class IntroductionFragment extends Fragment implements AsyncInterface {
+public class IntroductionFragment extends Fragment implements AsyncInterface,
+		GetAllAsyncInterface {
 
 	Utility ut;
 	Users CurrentUser;
@@ -53,6 +54,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface {
 	ExpandIntroduction exadapter;
 	int ObjectID;
 	DialogPersonLikedObject ListLiked;
+	UpdatingAllImage updating;
+	Map<String, String> maps;
 
 	ArrayList<CommentInObject> commentGroup, ReplyGroup;
 	Map<CommentInObject, List<CommentInObject>> mapCollection;
@@ -204,6 +207,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface {
 		exListView.addHeaderView(header);
 
 		exListView.setAdapter(exadapter);
+
 		adapter.open();
 
 		if (CurrentUser == null) {
@@ -259,25 +263,41 @@ public class IntroductionFragment extends Fragment implements AsyncInterface {
 
 		object = adapter.getObjectbyid(ObjectID);
 		adapter.close();
-		
-		if (ut.getCurrentUser().getId() != object.getId()) {
-			if (!ut.isNetworkConnected()) {
-				Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT)
-						.show();
-				adapter.open();
-				adapter.insertVisitToDb(ut.getCurrentUser().getId(), 2,
-						object.getId());
-				adapter.close();
-			} else if ((ut.isNetworkConnected())) {
-				Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT)
-						.show();
-				adapter.open();
-				// ارسال اطلاعات به جدول ویزیت سرور
-				// ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
-				adapter.deleteVisit();
-				adapter.close();
-			}
-		}
+
+		updating = new UpdatingAllImage(getActivity());
+		updating.delegate = this;
+		maps = new LinkedHashMap<String, String>();
+		// maps.put("tableName", "Object1");
+		maps.put("tableName", "All");
+		maps.put("Id", String.valueOf(ObjectID));
+		maps.put("fromDate1", object.getImage1ServerDate());
+		maps.put("fromDate2", object.getImage2ServerDate());
+		maps.put("fromDate3", object.getImage3ServerDate());
+		updating.execute(maps);
+
+		// اینها که همش خطا داره. خوب برادر یکبار تست کن بعد کدها رو بفرست
+		// !!!!!!!!!
+		// if (ut.getCurrentUser().getId() != object.getId()) {
+		// if (!ut.isNetworkConnected()) {
+		// Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT)
+		// .show();
+		// adapter.open();
+		// adapter.insertVisitToDb(ut.getCurrentUser().getId(), 2,
+		// object.getId());
+		// adapter.close();
+		// } else if ((ut.isNetworkConnected())) {
+		// Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT)
+		// .show();
+		// adapter.open();
+		// // ارسال اطلاعات به جدول ویزیت سرور
+		// // ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
+		// adapter.deleteVisit();
+		// adapter.close();
+		// }
+		// }
+		// اینها که همش خطا داره. خوب برادر یکبار تست کن بعد کدها رو بفرست
+		// !!!!!!!!!
+
 		if (object == null) {
 			return view;
 		}
@@ -1030,16 +1050,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface {
 
 	}
 
-	//
-
-	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		bitmap.compress(CompressFormat.PNG, 50, outputStream);
-
-		return outputStream.toByteArray();
-
-	}
-
 	public void updateList() {
 		sendDataID = getActivity().getSharedPreferences("Id", 0);
 		final int ObjectID = sendDataID.getInt("main_Id", -1);
@@ -1231,19 +1241,36 @@ public class IntroductionFragment extends Fragment implements AsyncInterface {
 		}
 	}
 
+	@Override
+	public void processFinish(List<byte[]> output) {
+
+		if (output != null && output.size() > 0) {
+
+			adapter.open();
+
+			if (output.get(0) != null) {
+				adapter.UpdateHeaderImageObject(ObjectID, output.get(0));
+				headerImage.setImageBitmap(BitmapFactory.decodeByteArray(
+						output.get(0), 0, output.get(0).length));
+				adapter.updateObjectImage1ServerDate(ObjectID, serverDate);
+			}
+			if (output.get(1) != null) {
+				adapter.UpdateHeaderImageObject(ObjectID, output.get(1));
+				profileImage.setImageBitmap(BitmapFactory.decodeByteArray(
+						output.get(1), 0, output.get(1).length));
+				adapter.updateObjectImage2ServerDate(ObjectID, serverDate);
+			}
+
+			if (output.get(2) != null) {
+				adapter.UpdateHeaderImageObject(ObjectID, output.get(2));
+				advertise2.setImageBitmap(BitmapFactory.decodeByteArray(
+						output.get(2), 0, output.get(2).length));
+				adapter.updateObjectImage3ServerDate(ObjectID, serverDate);
+
+			}
+			adapter.close();
+
+		}
+	}
+
 }
-
-// public void updateView3() {
-// adapter.open();
-// sendDataID = getActivity().getSharedPreferences("Id", 0);
-// final int cid = sendDataID.getInt("main_Id", -1);
-// mylist = adapter.getAllCommentInObjectById(cid);
-// CountCommentIntroduction.setText(adapter.CommentInObject_count()
-// .toString());
-// adapter.close();
-// IntroductionListAdapter x = new IntroductionListAdapter(getActivity(),
-// R.layout.raw_froumcmt, mylist);
-// x.notifyDataSetChanged();
-// // lst.setAdapter(x);
-// }
-

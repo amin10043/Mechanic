@@ -122,7 +122,8 @@ public class DataBaseAdapter {
 			"Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId",
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
 			"Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
-			"Submit", "MainObjectId", "IsActive", "UserId", "ObjectId", "Date" };
+			"Submit", "MainObjectId", "IsActive", "UserId", "ObjectId", "Date",
+			"Image1ServerDate", "Image2ServerDate", "Image3ServerDate" };
 	// private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
 	// private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	// private String[] ObjectType = { "ID", "Name" };
@@ -722,7 +723,9 @@ public class DataBaseAdapter {
 					cursor.getString(23), cursor.getInt(24), cursor.getInt(25),
 					cursor.getInt(26), cursor.getString(27), cursor.getInt(28),
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
-					cursor.getInt(32), cursor.getString(33));
+					cursor.getInt(32), cursor.getString(33),
+					cursor.getString(34), cursor.getString(35),
+					cursor.getString(36));
 
 			result.add(tempObject);
 		}
@@ -1329,7 +1332,9 @@ public class DataBaseAdapter {
 				cursor.getString(22), cursor.getString(23), cursor.getInt(24),
 				cursor.getInt(25), cursor.getInt(26), cursor.getString(27),
 				cursor.getInt(28), cursor.getInt(29), cursor.getInt(30),
-				cursor.getInt(31), cursor.getInt(32), cursor.getString(33));
+				cursor.getInt(31), cursor.getInt(32), cursor.getString(33),
+				cursor.getString(34), cursor.getString(35),
+				cursor.getString(36));
 		return tempObject;
 	}
 
@@ -2382,7 +2387,9 @@ public class DataBaseAdapter {
 					cursor.getString(23), cursor.getInt(24), cursor.getInt(25),
 					cursor.getInt(26), cursor.getString(27), cursor.getInt(28),
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
-					cursor.getInt(32), cursor.getString(33));
+					cursor.getInt(32), cursor.getString(33),
+					cursor.getString(34), cursor.getString(35),
+					cursor.getString(36));
 
 			result.add(tempObject);
 		}
@@ -3134,7 +3141,9 @@ public class DataBaseAdapter {
 					cursor.getString(23), cursor.getInt(24), cursor.getInt(25),
 					cursor.getInt(26), cursor.getString(27), cursor.getInt(28),
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
-					cursor.getInt(32), cursor.getString(33));
+					cursor.getInt(32), cursor.getString(33),
+					cursor.getString(34), cursor.getString(35),
+					cursor.getString(36));
 
 			result.add(tempObject);
 		}
@@ -3293,6 +3302,42 @@ public class DataBaseAdapter {
 		mDb.update(TableObject, cv, "Id=?", new String[] { String.valueOf(id) });
 	}
 
+	public void UpdateHeaderImageObject(int id, byte[] HeaderImage) {
+
+		ContentValues cv = new ContentValues();
+
+		if (HeaderImage != null)
+			cv.put("Image1", HeaderImage);
+
+		Toast.makeText(mContext, "تصویر با موفقیت ثبت شد", Toast.LENGTH_SHORT)
+				.show();
+		mDb.update(TableObject, cv, "Id=?", new String[] { String.valueOf(id) });
+	}
+
+	public void UpdateProfileImageObject(int id, byte[] profile) {
+
+		ContentValues cv = new ContentValues();
+
+		if (profile != null)
+			cv.put("Image2", profile);
+
+		Toast.makeText(mContext, "تصویر با موفقیت ثبت شد", Toast.LENGTH_SHORT)
+				.show();
+		mDb.update(TableObject, cv, "Id=?", new String[] { String.valueOf(id) });
+	}
+
+	public void UpdateFooterImageObject(int id, byte[] footer) {
+
+		ContentValues cv = new ContentValues();
+
+		if (footer != null)
+			cv.put("Image3", footer);
+
+		Toast.makeText(mContext, "تصویر با موفقیت ثبت شد", Toast.LENGTH_SHORT)
+				.show();
+		mDb.update(TableObject, cv, "Id=?", new String[] { String.valueOf(id) });
+	}
+
 	public ArrayList<com.project.mechanic.entity.SubAdmin> getAllAdmin(
 			int ObjectId) {
 		ArrayList<com.project.mechanic.entity.SubAdmin> result = new ArrayList<com.project.mechanic.entity.SubAdmin>();
@@ -3407,6 +3452,24 @@ public class DataBaseAdapter {
 	public void deleteTicketItem(int ticketId) {
 		mDb.execSQL("delete from [Ticket] where Id = " + ticketId);
 
+	}
+
+	public void updateObjectImage1ServerDate(int objectId, String serverDate) {
+		ContentValues cv = new ContentValues();
+		cv.put("Image1ServerDate", serverDate);
+		mDb.update("Object", cv, "Id=" + objectId, null);
+	}
+
+	public void updateObjectImage2ServerDate(int objectId, String serverDate) {
+		ContentValues cv = new ContentValues();
+		cv.put("Image2ServerDate", serverDate);
+		mDb.update("Object", cv, "Id=" + objectId, null);
+	}
+
+	public void updateObjectImage3ServerDate(int objectId, String serverDate) {
+		ContentValues cv = new ContentValues();
+		cv.put("Image3ServerDate", serverDate);
+		mDb.update("Object", cv, "Id=" + objectId, null);
 	}
 
 }
