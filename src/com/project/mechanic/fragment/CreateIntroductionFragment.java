@@ -439,7 +439,7 @@ public class CreateIntroductionFragment extends Fragment implements
 
 			if (mainID == 2 || mainID == 3 || mainID == 4) {
 
-				int LastObjectId = DBAdapter.CreatePageInShopeObject(nameValue,
+				int LastObjectId = DBAdapter.CreatePageInShopeObject(serverId ,nameValue,
 						phoneValue, emailValue, faxValue, descriptionValue,
 						Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
 						mobileValue, Lfacebook, Linstagram, Llinkedin, Lgoogle,
@@ -479,7 +479,7 @@ public class CreateIntroductionFragment extends Fragment implements
 			} else if (mainID == 1) {
 
 				int LastObjectId = DBAdapter.InsertInformationNewObject(
-						nameValue, phoneValue, emailValue, faxValue,
+						serverId, nameValue, phoneValue, emailValue, faxValue,
 						descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo,
 						addressValue, mobileValue, Lfacebook, Linstagram,
 						Llinkedin, Lgoogle, Lwebsite, Ltwitter,
@@ -518,7 +518,7 @@ public class CreateIntroductionFragment extends Fragment implements
 
 			} else {
 				int LastObjectId = DBAdapter.InsertInformationNewObject(
-						nameValue, phoneValue, emailValue, faxValue,
+						serverId, nameValue, phoneValue, emailValue, faxValue,
 						descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo,
 						addressValue, mobileValue, Lfacebook, Linstagram,
 						Llinkedin, Lgoogle, Lwebsite, Ltwitter,

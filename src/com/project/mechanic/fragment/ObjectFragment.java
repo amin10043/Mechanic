@@ -33,6 +33,7 @@ public class ObjectFragment extends Fragment {
 	Utility util;
 	DialogCreatePage dialog;
 	ListView lstObject;
+	int city_id , m;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -45,7 +46,8 @@ public class ObjectFragment extends Fragment {
 		SharedPreferences sendData = getActivity()
 				.getSharedPreferences("Id", 0);
 		final int id = sendData.getInt("main_Id", -1);
-		final int city_id = Integer.valueOf(getArguments().getString("cityId"));
+		m = id;
+		city_id = Integer.valueOf(getArguments().getString("cityId"));
 
 		adapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
@@ -64,7 +66,7 @@ public class ObjectFragment extends Fragment {
 			ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(id,
 					city_id);
 			ObjectListAdapter ListAdapter = new ObjectListAdapter(
-					getActivity(), R.layout.row_object, mylist);
+					getActivity(), R.layout.row_object, mylist , ObjectFragment.this);
 			lstObject.setAdapter(ListAdapter);
 
 		} else {
@@ -77,7 +79,7 @@ public class ObjectFragment extends Fragment {
 			ArrayList<Object> mylist = adapter.subBrandObject(brand, city_id);
 
 			ObjectListAdapter ListAdapter = new ObjectListAdapter(
-					getActivity(), R.layout.row_object, mylist);
+					getActivity(), R.layout.row_object, mylist , ObjectFragment.this);
 			lstObject.setAdapter(ListAdapter);
 
 		}
@@ -160,6 +162,21 @@ public class ObjectFragment extends Fragment {
 		// });
 
 		return view;
+	}
+	
+	public void UpdateList() {
+		adapter.open();
+		
+		ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(m,
+				city_id);
+		ObjectListAdapter ListAdapter = new ObjectListAdapter(
+				getActivity(), R.layout.row_object, mylist , ObjectFragment.this);
+		lstObject.setAdapter(ListAdapter);
+
+		ListAdapter.notifyDataSetChanged();
+
+
+		adapter.close();
 	}
 
 }
