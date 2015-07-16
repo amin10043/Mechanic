@@ -146,6 +146,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 				int i = 0;
 				int u = 0;
+				String t = "";
 				// برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
 				// شود
 
@@ -154,12 +155,13 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 				if (w != null) {
 					i = w.getId();
 					u = w.getUserid();
+					t = w.getDesk();
 				}
 				Toast.makeText(context, "id = "+ i + "Userid = " + u , 0).show();
 				// //////////////////////////
 
 				DialogLongClick dia = new DialogLongClick(context, 5, u, i,
-						f);
+						f , t);
 				dia.show();
 				
 				return true;
@@ -686,11 +688,13 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 				int u = 0;
 				int i = 0;
+				String t = "";
 				
 				int dd = (int) getGroupId(groupPosition);
 				CommentInFroum ww = (CommentInFroum) getGroup(dd);
 				if (ww != null) {
 					u = ww.getUserid();
+					t = ww.getDesk();
 				}
 				adapter.open();
 
@@ -698,7 +702,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 					i = -1;
 
 					DialogLongClick dia = new DialogLongClick(context, 5, u, i,
-							f);
+							f , t);
 					dia.show();
 					adapter.close();
 
@@ -712,12 +716,14 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 					if (w != null) {
 						i = w.getId();
 						u = w.getUserid();
+						t = ww.getDesk();
+
 					}
 
 					// //////////////////////////
 
 					DialogLongClick dia = new DialogLongClick(context, 5, u, i,
-							f);
+							f , t);
 					dia.show();
 
 				}

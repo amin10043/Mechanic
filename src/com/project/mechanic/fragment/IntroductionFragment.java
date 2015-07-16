@@ -84,7 +84,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	ImageView headerImage, advertise2, profileImage;
 	ImageButton Facebook, Instagram, LinkedIn, Google, Site, Twitter, Pdf1,
-			Pdf2, Pdf3, Pdf4, phone, cphone, map, email, EditPage, shareBtn;
+			Pdf2, Pdf3, Pdf4,    EditPage, shareBtn;
 	Object object;
 	byte[] headerbyte, profilebyte, footerbyte;
 
@@ -99,6 +99,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	String serverDate = "";
 	ServerDate date;
 	boolean flag;
+	
+	RelativeLayout phone , cphone , email , map  ;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -154,7 +156,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		addressRelative = (RelativeLayout) header
 				.findViewById(R.id.addressRelative);
 		emailRelative = (RelativeLayout) header
-				.findViewById(R.id.emailRelative);
+				.findViewById(R.id.emailsRelative);
 
 		Facebook = (ImageButton) header.findViewById(R.id.nfacebook);
 		Instagram = (ImageButton) header.findViewById(R.id.ninstagram);
@@ -163,10 +165,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		Site = (ImageButton) header.findViewById(R.id.nsite);
 		Twitter = (ImageButton) header.findViewById(R.id.ntwtert);
 
-		phone = (ImageButton) header.findViewById(R.id.phonebtn);
-		cphone = (ImageButton) header.findViewById(R.id.cphonebtn);
-		map = (ImageButton) header.findViewById(R.id.mapbtn);
-		email = (ImageButton) header.findViewById(R.id.emailbtn);
+		phone = (RelativeLayout) header.findViewById(R.id.fixedPhone);
+		cphone = (RelativeLayout) header.findViewById(R.id.personalMobile);
+		map = (RelativeLayout) header.findViewById(R.id.addressRelative);
+		email = (RelativeLayout) header.findViewById(R.id.emailsRelative);
 		shareBtn = (ImageButton) header.findViewById(R.id.shareIntroduction);
 
 		Pdf1 = (ImageButton) header.findViewById(R.id.btnPdf1_Object);

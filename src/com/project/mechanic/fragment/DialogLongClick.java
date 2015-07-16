@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -19,16 +20,19 @@ import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class DialogLongClick extends Dialog implements CommInterface,
-		AsyncInterface {
+public class DialogLongClick extends Dialog implements AsyncInterface,
+		CommInterface {
 	Context context;
 	int source;
 	int UserIdObject;
 	Utility util;
-	RelativeLayout delete, report;
+	RelativeLayout delete;
+	ImageView report;
 	DataBaseAdapter adapter;
 	int Item;
 	ServiceComm service;
@@ -37,9 +41,12 @@ public class DialogLongClick extends Dialog implements CommInterface,
 	ProgressDialog ringProgressDialog;
 
 	Fragment fragment;
+	Saving saving;
+	String desc;
+	ServerDate date;
 
 	public DialogLongClick(Context context, int source, int UserIdObject,
-			int item, Fragment fragment) {
+			int item, Fragment fragment, String desc) {
 		super(context);
 		this.context = context;
 		this.source = source;
@@ -48,6 +55,7 @@ public class DialogLongClick extends Dialog implements CommInterface,
 		adapter = new DataBaseAdapter(context);
 		this.Item = item;
 		this.fragment = fragment;
+		this.desc = desc;
 
 	}
 
@@ -61,10 +69,13 @@ public class DialogLongClick extends Dialog implements CommInterface,
 
 		setContentView(R.layout.dialog_long_click);
 		delete = (RelativeLayout) findViewById(R.id.delete_item);
-		report = (RelativeLayout) findViewById(R.id.report_item);
+		report = (ImageView) findViewById(R.id.report_item);
 
-		if (util.getCurrentUser().getId() != UserIdObject)
+		if (util.getCurrentUser() == null) {
+			dismiss();
+		} else if (util.getCurrentUser().getId() != UserIdObject)
 			delete.setVisibility(View.GONE);
+
 		// source == 1 >>>> froum
 		// source == 2 >>>> paper
 		// source == 3 >>>> ticket
@@ -77,182 +88,51 @@ public class DialogLongClick extends Dialog implements CommInterface,
 
 			@Override
 			public void onClick(View arg0) {
-				if (source == 1) {
+				if (util.getCurrentUser() != null) {
 
-					service = new ServiceComm(context);
-					service.delegate = DialogLongClick.this;
-					Map<String, String> items = new LinkedHashMap<String, String>();
-					items.put("DeletingRecord", "DeletingRecord");
+					if (source == 1) {
 
-					items.put("tableName", "Froum");
-					items.put("Id", String.valueOf(Item));
+						service = new ServiceComm(context);
+						service.delegate = DialogLongClick.this;
+						Map<String, String> items = new LinkedHashMap<String, String>();
+						items.put("DeletingRecord", "DeletingRecord");
 
-					service.execute(items);
+						items.put("tableName", "Froum");
+						items.put("Id", String.valueOf(Item));
 
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
+						service.execute(items);
 
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
+						ringProgressDialog = ProgressDialog.show(context, "",
+								"لطفا منتظر بمانید...", true);
 
-						@Override
-						public void run() {
+						ringProgressDialog.setCancelable(true);
+						new Thread(new Runnable() {
 
-							try {
+							@Override
+							public void run() {
 
-								Thread.sleep(10000);
+								try {
 
-							} catch (Exception e) {
+									Thread.sleep(10000);
 
+								} catch (Exception e) {
+
+								}
 							}
-						}
-					}).start();
-				}
+						}).start();
+					}
 
-				if (source == 2) {
+					if (source == 2) {
 
-					service = new ServiceComm(context);
-					service.delegate = DialogLongClick.this;
-					Map<String, String> items = new LinkedHashMap<String, String>();
-					items.put("DeletingRecord", "DeletingRecord");
+						service = new ServiceComm(context);
+						service.delegate = DialogLongClick.this;
+						Map<String, String> items = new LinkedHashMap<String, String>();
+						items.put("DeletingRecord", "DeletingRecord");
 
-					items.put("tableName", "Paper");
-					items.put("Id", String.valueOf(Item));
+						items.put("tableName", "Paper");
+						items.put("Id", String.valueOf(Item));
 
-					service.execute(items);
-
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-
-				}
-				if (source == 3) {
-					params = new LinkedHashMap<String, String>();
-
-					deleting = new Deleting(context);
-					deleting.delegate = DialogLongClick.this;
-					Map<String, String> items = new LinkedHashMap<String, String>();
-					items.put("DeletingRecord", "DeletingRecord");
-
-					items.put("tableName", "Froum");
-					items.put("Id", String.valueOf(Item));
-
-					service.execute(items);
-
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-				}
-
-				if (source == 3) {
-					params = new LinkedHashMap<String, String>();
-
-					deleting = new Deleting(context);
-					deleting.delegate = DialogLongClick.this;
-
-					params.put("tableName", "Ticket");
-					params.put("Id", String.valueOf(Item));
-
-					deleting.execute(params);
-
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-				}
-
-				if (source == 4) {
-
-					service = new ServiceComm(context);
-					service.delegate = DialogLongClick.this;
-					Map<String, String> items = new LinkedHashMap<String, String>();
-					items.put("DeletingRecord", "DeletingRecord");
-
-					items.put("tableName", "Object");
-					items.put("Id", String.valueOf(Item));
-
-					service.execute(items);
-
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-				}
-
-				if (source == 5) {
-					if (Item == -1) {
-						Toast.makeText(
-								context,
-								"نظر ثبت شده دارای پاسخ می باشد لذا امکان حذف میسر نمی باشد",
-								0).show();
-
-					} else {
-						params = new LinkedHashMap<String, String>();
-
-						deleting = new Deleting(context);
-						deleting.delegate = DialogLongClick.this;
-
-						params.put("TableName", "CommentInFroum");
-						params.put("ID", String.valueOf(Item));
-
-						deleting.execute(params);
+						service.execute(items);
 
 						ringProgressDialog = ProgressDialog.show(context, "",
 								"لطفا منتظر بمانید...", true);
@@ -274,54 +154,13 @@ public class DialogLongClick extends Dialog implements CommInterface,
 						}).start();
 
 					}
-				}
-
-				if (source == 6) {
-					params = new LinkedHashMap<String, String>();
-
-					deleting = new Deleting(context);
-					deleting.delegate = DialogLongClick.this;
-
-					params.put("TableName", "CommentInPaper");
-					params.put("Id", String.valueOf(Item));
-
-					deleting.execute(params);
-
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-
-				}
-
-				if (source == 7) {
-					if (Item == -1) {
-						Toast.makeText(
-								context,
-								"نظر ثبت شده دارای پاسخ می باشد لذا امکان حذف میسر نمی باشد",
-								0).show();
-
-					} else {
+					if (source == 3) {
 						params = new LinkedHashMap<String, String>();
 
 						deleting = new Deleting(context);
 						deleting.delegate = DialogLongClick.this;
 
-						params.put("TableName", "CommentInObject");
+						params.put("TableName", "Ticket");
 						params.put("Id", String.valueOf(Item));
 
 						deleting.execute(params);
@@ -346,15 +185,205 @@ public class DialogLongClick extends Dialog implements CommInterface,
 						}).start();
 
 					}
-				}
+
+					if (source == 4) {
+
+						if (Item == -1) {
+							Toast.makeText(
+									context,
+									"این صفحه دارای زیر مجموعه ای از نماینگی ها می باشد لذا امکان حذف میسر نمی باشد",
+									0).show();
+
+						} else {
+
+							service = new ServiceComm(context);
+							service.delegate = DialogLongClick.this;
+							Map<String, String> items = new LinkedHashMap<String, String>();
+							items.put("DeletingRecord", "DeletingRecord");
+
+							items.put("tableName", "Object");
+							items.put("Id", String.valueOf(Item));
+
+							service.execute(items);
+
+							ringProgressDialog = ProgressDialog.show(context,
+									"", "لطفا منتظر بمانید...", true);
+
+							ringProgressDialog.setCancelable(true);
+							new Thread(new Runnable() {
+
+								@Override
+								public void run() {
+
+									try {
+
+										Thread.sleep(10000);
+
+									} catch (Exception e) {
+
+									}
+								}
+							}).start();
+						}
+					}
+
+					if (source == 5) {
+						if (Item == -1) {
+							Toast.makeText(
+									context,
+									"نظر ثبت شده دارای پاسخ می باشد لذا امکان حذف میسر نمی باشد",
+									0).show();
+
+						} else {
+							params = new LinkedHashMap<String, String>();
+
+							deleting = new Deleting(context);
+							deleting.delegate = DialogLongClick.this;
+
+							params.put("TableName", "CommentInFroum");
+							params.put("ID", String.valueOf(Item));
+
+							deleting.execute(params);
+
+							ringProgressDialog = ProgressDialog.show(context,
+									"", "لطفا منتظر بمانید...", true);
+
+							ringProgressDialog.setCancelable(true);
+							new Thread(new Runnable() {
+
+								@Override
+								public void run() {
+
+									try {
+
+										Thread.sleep(10000);
+
+									} catch (Exception e) {
+
+									}
+								}
+							}).start();
+
+						}
+					}
+
+					if (source == 6) {
+						params = new LinkedHashMap<String, String>();
+
+						deleting = new Deleting(context);
+						deleting.delegate = DialogLongClick.this;
+
+						params.put("TableName", "CommentInPaper");
+						params.put("Id", String.valueOf(Item));
+
+						deleting.execute(params);
+
+						ringProgressDialog = ProgressDialog.show(context, "",
+								"لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+
+					}
+
+					if (source == 7) {
+						if (Item == -1) {
+							Toast.makeText(
+									context,
+									"نظر ثبت شده دارای پاسخ می باشد لذا امکان حذف میسر نمی باشد",
+									0).show();
+
+						} else {
+							params = new LinkedHashMap<String, String>();
+
+							deleting = new Deleting(context);
+							deleting.delegate = DialogLongClick.this;
+
+							params.put("TableName", "CommentInObject");
+							params.put("Id", String.valueOf(Item));
+
+							deleting.execute(params);
+
+							ringProgressDialog = ProgressDialog.show(context,
+									"", "لطفا منتظر بمانید...", true);
+
+							ringProgressDialog.setCancelable(true);
+							new Thread(new Runnable() {
+
+								@Override
+								public void run() {
+
+									try {
+
+										Thread.sleep(10000);
+
+									} catch (Exception e) {
+
+									}
+								}
+							}).start();
+
+						}
+					}
+
+				} else
+					Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
+			}
+		});
+
+		report.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				date = new ServerDate(context);
+				date.delegate = DialogLongClick.this;
+				date.execute("");
+
+				ringProgressDialog = ProgressDialog.show(context, "",
+						"لطفا منتظر بمانید...", true);
+
+				ringProgressDialog.setCancelable(true);
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+
+						try {
+
+							Thread.sleep(10000);
+
+						} catch (Exception e) {
+
+						}
+					}
+				}).start();
 
 			}
 		});
+
 	}
 
 	@Override
-	public void CommProcessFinish(String output) {
+	public void processFinish(String output) {
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
 		int id = -1;
+
 		try {
 
 			id = Integer.valueOf(output);
@@ -470,6 +499,45 @@ public class DialogLongClick extends Dialog implements CommInterface,
 					&& !(output.contains("Exception") || output
 							.contains("java"))) {
 
+				params = new LinkedHashMap<String, String>();
+				saving = new Saving(context);
+				saving.delegate = DialogLongClick.this;
+
+				params.put("TableName", "Report");
+
+				params.put("Desc", desc);
+				params.put("UserIdSender", String.valueOf(UserIdObject));
+				params.put("UserIdReporter",
+						String.valueOf(util.getCurrentUser().getId()));
+				params.put("SourceId", String.valueOf(Item));
+				params.put("TypeId", String.valueOf(source));
+				params.put("Date", output);
+				params.put("ModifyDate", output);
+
+				params.put("IsUpdate", "0");
+				params.put("Id", "0");
+
+				saving.execute(params);
+
+				ringProgressDialog = ProgressDialog.show(context, "",
+						"لطفا منتظر بمانید...", true);
+
+				ringProgressDialog.setCancelable(true);
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+
+						try {
+
+							Thread.sleep(10000);
+
+						} catch (Exception e) {
+
+						}
+					}
+				}).start();
+
 			} else {
 				Toast.makeText(context,
 						"خطا در ثبت. پاسخ نا مشخص از سرور" + e + " ",
@@ -482,8 +550,8 @@ public class DialogLongClick extends Dialog implements CommInterface,
 	}
 
 	@Override
-	public void processFinish(String output) {
-		CommProcessFinish(output);
+	public void CommProcessFinish(String output) {
+		processFinish(output);
 	}
 
 }

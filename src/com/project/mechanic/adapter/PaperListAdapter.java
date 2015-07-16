@@ -109,18 +109,20 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 			public boolean onLongClick(View arg0) {
 				int i = 0;
 				int us = 0;
+				String t = "";
 				
 				int d = (int) getItemId(position);
 				CommentInPaper w = getItem(d);
 				if (w != null) {
 					i = w.getId();
 					us = w.getUserid();
+					t = w.getDescription();
 					Toast.makeText(context, "id = " + i + " Userid = "+ us, 0).show();
 				}
 				
 				
 
-				DialogLongClick dia = new DialogLongClick(context, 6, us, i, Paperfragment);
+				DialogLongClick dia = new DialogLongClick(context, 6, us, i, Paperfragment , t);
 				dia.show();
 				return true;
 			}

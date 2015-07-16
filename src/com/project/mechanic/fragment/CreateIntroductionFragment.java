@@ -320,14 +320,20 @@ public class CreateIntroductionFragment extends Fragment implements
 				addressValue = addressEnter.getText().toString();
 				descriptionValue = DescriptionEnter.getText().toString();
 
-				if (nameValue.equals("") || mobileValue.equals("")) {
+				if (nameValue.equals("")) {
 					Toast.makeText(getActivity(),
-							"پر کردن فیلدهای نام وموبایل الزامی است",
+							"پر کردن فیلد نام اجباری است",
 							Toast.LENGTH_SHORT).show();
+											
 				}
 
-				else {
-
+				else if (phoneValue.equals("") && mobileValue.equals("")
+						& emailValue.equals("") && faxValue.equals("")) {
+					
+					Toast.makeText(getActivity(),
+							"پر کردن حداقل یکی از فیلدهای تماس الزامی است",
+							Toast.LENGTH_SHORT).show();
+				}else{
 					date = new ServerDate(getActivity());
 					date.delegate = CreateIntroductionFragment.this;
 					date.execute("");
@@ -439,12 +445,12 @@ public class CreateIntroductionFragment extends Fragment implements
 
 			if (mainID == 2 || mainID == 3 || mainID == 4) {
 
-				int LastObjectId = DBAdapter.CreatePageInShopeObject(serverId ,nameValue,
-						phoneValue, emailValue, faxValue, descriptionValue,
-						Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
-						mobileValue, Lfacebook, Linstagram, Llinkedin, Lgoogle,
-						Lwebsite, Ltwitter, currentUser.getId(), mainID,
-						ObjectBrandTypeId);
+				int LastObjectId = DBAdapter.CreatePageInShopeObject(serverId,
+						nameValue, phoneValue, emailValue, faxValue,
+						descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo,
+						addressValue, mobileValue, Lfacebook, Linstagram,
+						Llinkedin, Lgoogle, Lwebsite, Ltwitter,
+						currentUser.getId(), mainID, ObjectBrandTypeId);
 
 				DBAdapter.insertObjectInCity(LastObjectId, CityId);
 

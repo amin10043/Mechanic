@@ -283,6 +283,7 @@
 
             <RelativeLayout
                 style="@style/brandStyle"
+                android:id="@+id/fixedPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -373,6 +374,7 @@
 
             <RelativeLayout
                 style="@style/brandStyle"
+                android:id="@+id/personalMobile"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -415,7 +417,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/emailRelative"
+                android:id="@+id/emailsRelative"
                 style="@style/brandStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

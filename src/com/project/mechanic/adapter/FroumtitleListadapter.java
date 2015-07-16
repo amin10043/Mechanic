@@ -235,15 +235,17 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			public boolean onLongClick(View v) {
 
 				int ItemId = 0;
+				String t = "";
 				ListView listView = (ListView) v.getParent();
 				int position = listView.getPositionForView(v);
 				Froum f = getItem(position);
 				if (f != null) {
 					ItemId = f.getUserId();
+					t = f.getDescription();
 				}
 
 				DialogLongClick dia = new DialogLongClick(context, 1, ItemId, f
-						.getId(), fragment);
+						.getId(), fragment , t);
 				Toast.makeText(context, ItemId + "", 0).show();
 				dia.show();
 
