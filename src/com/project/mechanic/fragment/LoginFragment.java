@@ -213,7 +213,8 @@ public class LoginFragment extends Fragment implements CommInterface,
 				items.put("password", pass);
 
 				service.execute(items);
-
+				ringProgressDialog = ProgressDialog.show(getActivity(), "",
+						"لطفا منتظر بمانید...", true);
 				dateFlag = true;
 			} else {
 

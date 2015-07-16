@@ -307,16 +307,17 @@ public class Utility implements AsyncInterface {
 																		// Record
 				String tableName = strs[0];
 				boolean flag = false;
-				String[] cols = strs[1].split(","); // column
+				String[] cols = strs[1].split("^^^"); // column
+				String ModifyDate = strs[2];
 				int row = 0;
 				String[][] values = new String[strs.length - 2][];
-				for (int j = 2; j < strs.length; j++, row++) {
-					values[row] = strs[j].split(",");
+				for (int j = 3; j < strs.length; j++, row++) {
+					values[row] = strs[j].split("^^^");
 					flag = true;
 				}
 				adapter.open();
 				if (values != null && values.length > 0 && flag)
-					adapter.updateTables(tableName, cols, values);
+					adapter.updateTables(tableName, cols, values, ModifyDate);
 
 				adapter.close();
 			}
@@ -430,11 +431,18 @@ public class Utility implements AsyncInterface {
 			case 0: // return date
 				serviceUpdate = new UpdatingAllMaster(context);
 				serviceUpdate.delegate = this;
-				serviceUpdate
-						.execute(
-								settings != null ? settings
-										.getServerDate_Object() : "", String
-										.valueOf(from), String.valueOf(to));
+				if (settings == null)
+					settings = new Settings();
+
+				String mDatesMaster = settings.getServerDate_Anad() + "-"
+						+ settings.getServerDate_Froum() + "-" + "-"
+						+ settings.getServerDate_News() + "-"
+						+ settings.getServerDate_Object() + "-"
+						+ settings.getServerDate_Paper() + "-"
+						+ settings.getServerDate_Ticket() + "-"
+						+ settings.getServerDate_Users() + "-";
+				serviceUpdate.execute(mDatesMaster, String.valueOf(from),
+						String.valueOf(to));
 				flag = true;
 				editor.putInt("fromM", from + NUMBER_OF_RECORD_RECEIVED);
 				editor.putInt("toM", to + NUMBER_OF_RECORD_RECEIVED);
@@ -449,11 +457,18 @@ public class Utility implements AsyncInterface {
 				parseQuery(output);
 				from = pref.getInt("fromD", 0);
 				to = pref.getInt("toD", 0);
+				if (settings == null)
+					settings = new Settings();
+				String mDatesDetail = settings.getServerDate_CmtInPaper() + "-"
+						+ settings.getServerDate_CommentInFroum() + "-"
+						+ settings.getServerDate_CommentInObject() + "-"
+						+ settings.getServerDate_LikeInFroum() + "-"
+						+ settings.getServerDate_LikeInObject() + "-"
+						+ settings.getServerDate_LikeInPaper() + "-";
 				serviceUpdateD = new UpdatingAllDetail(context);
 				serviceUpdateD.delegate = this;
-				serviceUpdateD.execute(
-						settings != null ? settings.getServerDate_Users() : "",
-						String.valueOf(from), String.valueOf(to));
+				serviceUpdateD.execute(mDatesDetail, String.valueOf(from),
+						String.valueOf(to));
 
 				editor.putInt("fromD", from + NUMBER_OF_RECORD_RECEIVED_D);
 				editor.putInt("toD", to + NUMBER_OF_RECORD_RECEIVED_D);

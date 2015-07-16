@@ -2965,7 +2965,8 @@ public class DataBaseAdapter {
 		mDb.delete(TableLikeInPaper, "UserId=? and PaperId=?", t);
 	}
 
-	public void updateTables(String tableName, String[] cols, String[][] values) {
+	public void updateTables(String tableName, String[] cols,
+			String[][] values, String modifyDate) {
 
 		ContentValues cv = null;
 		for (int i = 0; i < values.length; i++) {
@@ -2978,6 +2979,9 @@ public class DataBaseAdapter {
 			try {
 				mDb.insertWithOnConflict(tableName, null, cv,
 						SQLiteDatabase.CONFLICT_ABORT);
+				String query = "Update Settings set ServerDate_" + tableName
+						+ " = " + modifyDate;
+				mDb.rawQuery(query, null);
 			} catch (Exception ex) {
 			}
 		}
