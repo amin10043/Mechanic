@@ -2365,7 +2365,7 @@ public class DataBaseAdapter {
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
@@ -2483,7 +2483,7 @@ public class DataBaseAdapter {
 
 	}
 
-	public int InsertInformationNewObject(String name, String Phone,
+	public int InsertInformationNewObject(int id, String name, String Phone,
 			String Email, String fax, String description, String LinkCatalog,
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
@@ -2492,6 +2492,7 @@ public class DataBaseAdapter {
 			int ObjectId, int ObjectBrandTypeId) {
 
 		ContentValues cv = new ContentValues();
+		cv.put("Id", id);
 
 		if (!"".equals(name))
 			cv.put("Name", name);
@@ -2973,16 +2974,21 @@ public class DataBaseAdapter {
 			cv = new ContentValues();
 			for (int j = 0; values[i] != null && j < values[i].length; j++) {
 
-				if (values[i][j] != null)
+				if (values[i][j] != null && !"".equals(values[i][j]))
 					cv.put(cols[j], values[i][j]);
 			}
 			try {
-				mDb.insertWithOnConflict(tableName, null, cv,
-						SQLiteDatabase.CONFLICT_ABORT);
-				String query = "Update Settings set ServerDate_" + tableName
-						+ " = " + modifyDate;
-				mDb.rawQuery(query, null);
+				if (cv.size() > 0) {
+					mDb.insertWithOnConflict(tableName, null, cv,
+							SQLiteDatabase.CONFLICT_ABORT);
+				}
+				if (modifyDate != null && !"".equals(modifyDate)) {
+					String query = "Update Settings set ServerDate_"
+							+ tableName + " = " + modifyDate;
+					mDb.rawQuery(query, null);
+				}
 			} catch (Exception ex) {
+				Log.d("test", ex.getMessage());
 			}
 		}
 	}
@@ -3021,8 +3027,8 @@ public class DataBaseAdapter {
 
 	}
 
-	public int CreatePageInShopeObject(String name, String Phone, String Email,
-			String fax, String description, String LinkCatalog,
+	public int CreatePageInShopeObject(int id, String name, String Phone,
+			String Email, String fax, String description, String LinkCatalog,
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
@@ -3031,6 +3037,7 @@ public class DataBaseAdapter {
 
 		ContentValues cv = new ContentValues();
 
+		cv.put("Id", id);
 		if (!"".equals(name))
 			cv.put("Name", name);
 		if (!"".equals(Phone))
@@ -3474,6 +3481,52 @@ public class DataBaseAdapter {
 		ContentValues cv = new ContentValues();
 		cv.put("Image3ServerDate", serverDate);
 		mDb.update("Object", cv, "Id=" + objectId, null);
+	}
+
+	public void deleteOnlyCommentFroum(int id) {
+		mDb.execSQL("delete from [CommentInFroum] where Id = " + id);
+
+	}
+
+	public void deletePaperTitle(int PaperId) {
+
+		mDb.execSQL("delete from [Paper] where Id = " + PaperId);
+
+	}
+
+	public void deleteCommentPaper(int paperId) {
+		mDb.execSQL("delete from [CmtInPaper] where PaperId = " + paperId);
+
+	}
+
+	public void deleteOnlyCommentPaper(int id) {
+		mDb.execSQL("delete from [CmtInPaper] where Id = " + id);
+
+	}
+
+	public void deleteReplyFroum(int id) {
+		mDb.execSQL("delete from [CommentInFroum] where CommentId = " + id);
+
+	}
+
+	public void deleteObjectTitle(int id) {
+
+		mDb.execSQL("delete from [Object] where Id = " + id);
+
+	}
+
+	public void deleteCommentObject(int id) {
+		mDb.execSQL("delete from [CommentInObject] where ObjectId = " + id);
+
+	}
+
+	public void deleteLikeObject(int id) {
+		mDb.execSQL("delete from [LikeInObject] where PaperId = " + id);
+
+	}
+
+	public void deleteOnlyCommentObject(int id) {
+		mDb.execSQL("delete from [CommentInObject] where Id = " + id);
 	}
 
 }

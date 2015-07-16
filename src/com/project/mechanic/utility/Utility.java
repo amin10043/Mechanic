@@ -307,17 +307,18 @@ public class Utility implements AsyncInterface {
 																		// Record
 				String tableName = strs[0];
 				boolean flag = false;
-				String[] cols = strs[1].split("^^^"); // column
+				String[] cols = strs[1].split(Pattern.quote("^^^")); // column
 				String ModifyDate = strs[2];
 				int row = 0;
 				String[][] values = new String[strs.length - 2][];
 				for (int j = 3; j < strs.length; j++, row++) {
-					values[row] = strs[j].split("^^^");
+					values[row] = strs[j].split(Pattern.quote("^^^"));
 					flag = true;
 				}
 				adapter.open();
 				if (values != null && values.length > 0 && flag)
-					adapter.updateTables(tableName, cols, values, ModifyDate);
+					adapter.updateTables(tableName.trim(), cols, values,
+							ModifyDate);
 
 				adapter.close();
 			}

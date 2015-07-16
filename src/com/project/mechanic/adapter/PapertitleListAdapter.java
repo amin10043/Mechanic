@@ -12,10 +12,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -27,8 +29,12 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.ListView.PullAndLoadListView;
+import com.project.mechanic.entity.CommentInFroum;
+import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.DialogcmtInPaper;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.PaperFragment;
@@ -66,15 +72,17 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 	int paperNumber;
 	ProgressDialog ringProgressDialog;
 	LinearLayout commentBtn;
+	Fragment fr;
 
 	public PapertitleListAdapter(Context context, int resource,
-			List<Paper> objects) {
+			List<Paper> objects, Fragment fr) {
 		super(context, resource, objects);
 		this.context = context;
 		this.mylist = objects;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
 		p = new PersianDate();
+		this.fr = fr;
 
 	}
 
@@ -233,6 +241,30 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 			}
 		});
+		convertView.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View v) {
+
+				int i = 0;
+				int us = 0;
+				
+				int d = (int) getItemId(position);
+				Paper w = getItem(d);
+				if (w != null) {
+					i = w.getId();
+					us = w.getUserId();
+					Toast.makeText(context, "id = " + i + " Userid = "+ us, 0).show();
+				}
+				
+				
+
+				DialogLongClick dia = new DialogLongClick(context, 2, us, i, fr);
+				dia.show();
+				return true;
+			}
+		});
+
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override

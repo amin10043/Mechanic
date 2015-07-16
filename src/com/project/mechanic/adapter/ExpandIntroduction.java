@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -25,8 +26,10 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.DialogcmtInobject;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.IntroductionFragment;
@@ -133,6 +136,31 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 			lp.setMargins(5, 5, 5, 5);
 			ReplyerPic.setLayoutParams(lp);
 		}
+
+		convertView.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View arg0) {
+				int i = 0;
+				int u = 0;
+				// برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
+				// شود
+
+				int d = (int) getGroupId(groupPosition);
+				CommentInObject w = (CommentInObject) getChild(d, childPosition);
+				if (w != null) {
+					i = w.getId();
+					u = w.getUserid();
+				}
+				Toast.makeText(context, "id = " + i + "Userid = " + u, 0)
+						.show();
+				
+				DialogLongClick dia = new DialogLongClick(context, 7, u, i,
+						f);
+				dia.show();
+				return true;
+			}
+		});
 		ReplyerPic.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -690,6 +718,53 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 					adapter.close();
 				}
+			}
+		});
+
+		convertView.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View v) {
+
+				int u = 0;
+				int i = 0;
+
+				adapter.open();
+
+				if (adapter.getCountOfReplyBrandPage(ObjectID, comment.getId()) > 0) {
+					i = -1;
+					int dd = (int) getGroupId(groupPosition);
+					CommentInObject ww = (CommentInObject) getGroup(dd);
+					if (ww != null) {
+						u = ww.getUserid();
+					}
+					adapter.close();
+
+					DialogLongClick dia = new DialogLongClick(context, 7, u, i,
+							f);
+					dia.show();
+
+				} else {
+
+					// برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
+					// شود
+
+					int d = (int) getGroupId(groupPosition);
+					CommentInObject w = (CommentInObject) getGroup(d);
+					if (w != null) {
+						i = w.getId();
+						u = w.getUserid();
+					}
+
+					// //////////////////////////
+
+					DialogLongClick dia = new DialogLongClick(context, 7, u, i,
+							f);
+					dia.show();
+
+				}
+
+				return true;
 			}
 		});
 

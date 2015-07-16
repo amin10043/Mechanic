@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.graphics.Shader.TileMode;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -146,7 +147,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface {
 
 			lstNews = (PullAndLoadListView) view.findViewById(R.id.lstComment);
 			ListAdapter = new PapertitleListAdapter(getActivity(),
-					R.layout.raw_froumtitle, subList);
+					R.layout.raw_froumtitle, subList , TitlepaperFragment.this);
 			lstNews.setAdapter(ListAdapter);
 			((PullAndLoadListView) lstNews)
 					.setOnRefreshListener(new OnRefreshListener() {
@@ -298,7 +299,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface {
 		mdb.close();
 
 		ListAdapter = new PapertitleListAdapter(getActivity(),
-				R.layout.raw_froumtitle, mylist);
+				R.layout.raw_froumtitle, mylist , TitlepaperFragment.this);
 		ListAdapter.notifyDataSetChanged();
 		lstNews = (PullAndLoadListView) view.findViewById(R.id.lstComment);
 		lstNews.setAdapter(ListAdapter);

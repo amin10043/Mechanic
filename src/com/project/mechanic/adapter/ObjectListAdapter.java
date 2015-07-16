@@ -8,22 +8,28 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Object;
+import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -37,14 +43,16 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 	DataBaseAdapter adapter;
 	RatingBar rating;
 	Utility util;
+	Fragment fr;
 
-	public ObjectListAdapter(Context context, int resource, List<Object> objact) {
+	public ObjectListAdapter(Context context, int resource, List<Object> objact , Fragment fr) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
+		this.fr = fr;
 
 	}
 
@@ -105,7 +113,25 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 			profileIco.setLayoutParams(lp);
 		}
-
+		convertView.setOnLongClickListener(new OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				int i = 0 ;
+				int u = 0;
+				ListView listView = (ListView) v.getParent();
+				int position = listView.getPositionForView(v);
+				Object f = getItem(position);
+				if (f != null) {
+					u = f.getUserId();
+					i = f.getId();
+				}
+				DialogLongClick dia = new DialogLongClick(context, 4, u, i, fr);
+				Toast.makeText(context, "object id = "  + i + " userId = " + u, 0).show();
+				dia.show();
+				return true;
+			}
+		});
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override

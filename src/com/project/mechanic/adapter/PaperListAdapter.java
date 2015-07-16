@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -21,7 +22,9 @@ import android.widget.Toast;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInPaper;
+import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -82,7 +85,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
 		Users user = adapter.getUserbyid(comment.getUserid());
-		//userId=user.getId();
+		// userId=user.getId();
 		if (user.getImage() == null) {
 			profilepic.setImageResource(R.drawable.no_img_profile);
 			profilepic.setLayoutParams(lp);
@@ -99,14 +102,38 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 			profilepic.setLayoutParams(lp);
 		}
 		adapter.close();
+
+		convertView.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View arg0) {
+				int i = 0;
+				int us = 0;
+				
+				int d = (int) getItemId(position);
+				CommentInPaper w = getItem(d);
+				if (w != null) {
+					i = w.getId();
+					us = w.getUserid();
+					Toast.makeText(context, "id = " + i + " Userid = "+ us, 0).show();
+				}
+				
+				
+
+				DialogLongClick dia = new DialogLongClick(context, 6, us, i, Paperfragment);
+				dia.show();
+				return true;
+			}
+		});
+
 		profilepic.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				adapter.open();
 				CommentInPaper comment = list.get(position);
 				Users user = adapter.getUserbyid(comment.getUserid());
-				userId=user.getId();
+				userId = user.getId();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
@@ -115,8 +142,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-			
-				
+
 			}
 		});
 		txtcmt.setText(comment.getDescription());

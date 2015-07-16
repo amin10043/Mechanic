@@ -282,6 +282,6 @@ public class LoginFragment extends Fragment implements CommInterface,
 
 	@Override
 	public void CommProcessFinish(String output) {
-
+		processFinish(output);
 	}
 }

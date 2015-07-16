@@ -110,8 +110,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		adapter = new DataBaseAdapter(getActivity());
 		ut = new Utility(getActivity());
-		// datePersian = new PersianDate();
-		// currentDate = datePersian.todayShamsi();
+		
 		header = getActivity().getLayoutInflater().inflate(
 				R.layout.header_introduction, null);
 		CurrentUser = ut.getCurrentUser();
@@ -405,7 +404,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			// this view is created for check active or inactive introduction
 			// page
 
-			return t;
+//			return t;
 
 		}
 
@@ -1159,7 +1158,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 					params.put("TableName", "LikeInObject");
 					params.put("UserId", String.valueOf(CurrentUser.getId()));
-					params.put("PaperId", String.valueOf(ObjectID));
+					params.put("ObjectId", String.valueOf(ObjectID));
 					params.put("CommentId", String.valueOf(comId));
 
 					deleting.execute(params);
@@ -1193,7 +1192,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					params.put("TableName", "LikeInObject");
 
 					params.put("UserId", String.valueOf(CurrentUser.getId()));
-					params.put("PaperId", String.valueOf(ObjectID));
+					params.put("ObjectId", String.valueOf(ObjectID));
 					params.put("Date", output);
 					params.put("CommentId", String.valueOf(comId));
 

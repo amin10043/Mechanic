@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -27,7 +28,9 @@ import android.widget.Toast;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInFroum;
+import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.FroumFragment;
@@ -135,6 +138,34 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 			ReplyerPic.setLayoutParams(lp);
 
 		}
+		
+		convertView.setOnLongClickListener(new OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View arg0) {
+
+				int i = 0;
+				int u = 0;
+				// برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
+				// شود
+
+				int d = (int) getGroupId(groupPosition);
+				CommentInFroum w = (CommentInFroum) getChild(d, childPosition);
+				if (w != null) {
+					i = w.getId();
+					u = w.getUserid();
+				}
+				Toast.makeText(context, "id = "+ i + "Userid = " + u , 0).show();
+				// //////////////////////////
+
+				DialogLongClick dia = new DialogLongClick(context, 5, u, i,
+						f);
+				dia.show();
+				
+				return true;
+			}
+		});
+		
 		ReplyerPic.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -646,6 +677,53 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 					adapter.close();
 				}
 			}
+		});
+
+		convertView.setOnLongClickListener(new View.OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View cc) {
+
+				int u = 0;
+				int i = 0;
+				
+				int dd = (int) getGroupId(groupPosition);
+				CommentInFroum ww = (CommentInFroum) getGroup(dd);
+				if (ww != null) {
+					u = ww.getUserid();
+				}
+				adapter.open();
+
+				if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) > 0) {
+					i = -1;
+
+					DialogLongClick dia = new DialogLongClick(context, 5, u, i,
+							f);
+					dia.show();
+					adapter.close();
+
+				} else {
+
+					// برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
+					// شود
+
+					int d = (int) getGroupId(groupPosition);
+					CommentInFroum w = (CommentInFroum) getGroup(d);
+					if (w != null) {
+						i = w.getId();
+						u = w.getUserid();
+					}
+
+					// //////////////////////////
+
+					DialogLongClick dia = new DialogLongClick(context, 5, u, i,
+							f);
+					dia.show();
+
+				}
+				return true;
+			}
+
 		});
 
 		convertView.setOnClickListener(new View.OnClickListener() {

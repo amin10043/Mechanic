@@ -31,6 +31,7 @@ public class MainBrandFragment extends Fragment {
 	Users CurrentUser;
 	Utility util;
 	DialogCreatePage dialog;
+	ListView lstObject;
 
 	// List<Object> objectList = null;
 
@@ -120,10 +121,9 @@ public class MainBrandFragment extends Fragment {
 			}
 		});
 
-		ListView lstObject = (ListView) view
-				.findViewById(R.id.listvCmt_Introduction);
+		lstObject = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(),
-				R.layout.row_object, mylist);
+				R.layout.row_object, mylist, MainBrandFragment.this);
 
 		lstObject.setAdapter(ListAdapter);
 		lstObject.setOnScrollListener(new OnScrollListener() {
@@ -149,5 +149,17 @@ public class MainBrandFragment extends Fragment {
 		});
 
 		return view;
+	}
+
+	public void UpdateList() {
+		adapter.open();
+		ArrayList<Object> mylist = adapter.getObjectbyParentId(parentId);
+		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(),
+				R.layout.row_object, mylist, MainBrandFragment.this);
+		ListAdapter.notifyDataSetChanged();
+
+		lstObject.setAdapter(ListAdapter);
+
+		adapter.close();
 	}
 }

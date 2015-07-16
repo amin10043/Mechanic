@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -231,7 +232,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		exadapter.notifyDataSetChanged();
 
 		exlistview.setAdapter(exadapter);
-
+		
 		if (CurrentUser == null) {
 			likeTopic.setBackgroundResource(R.drawable.like_off);
 			count.setBackgroundResource(R.drawable.count_like_off);
