@@ -3114,7 +3114,7 @@ public class DataBaseAdapter {
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
@@ -3456,6 +3456,17 @@ public class DataBaseAdapter {
 	public void deleteOnlyCommentObject(int id) {
 		mDb.execSQL("delete from [CommentInObject] where Id = " + id);
 
+	}
+	
+	public Integer countSubAgencyBrand(int ObjectID) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TableObject
+				+ " WHERE ObjectId=" + ObjectID, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
 	}
 
 }

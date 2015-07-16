@@ -248,18 +248,20 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 				int i = 0;
 				int us = 0;
+				String t = "";
 				
 				int d = (int) getItemId(position);
 				Paper w = getItem(d);
 				if (w != null) {
 					i = w.getId();
 					us = w.getUserId();
+					 t= w.getContext();
 					Toast.makeText(context, "id = " + i + " Userid = "+ us, 0).show();
 				}
 				
 				
 
-				DialogLongClick dia = new DialogLongClick(context, 2, us, i, fr);
+				DialogLongClick dia = new DialogLongClick(context, 2, us, i, fr , t);
 				dia.show();
 				return true;
 			}

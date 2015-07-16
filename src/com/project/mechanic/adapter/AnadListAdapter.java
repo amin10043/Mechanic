@@ -137,18 +137,20 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				String item = txtName.getText().toString();
 				int id = 0;
 				int u = 0;
+				String t = "";
 				for (Ticket Ticket : list) {
 
 					if (item.equals(Ticket.getTitle())) {
 						// check authentication and authorization
 						id = Ticket.getId();
 						u = Ticket.getUserId();
+						t = Ticket.getDesc();
 
 					}
 				}
 
 				DialogLongClick dia = new DialogLongClick(context, 3, u, id,
-						fragment);
+						fragment , t);
 				Toast.makeText(context, id + "", 0).show();
 				dia.show();
 				return true;

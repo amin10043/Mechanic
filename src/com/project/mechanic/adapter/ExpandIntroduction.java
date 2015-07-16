@@ -143,6 +143,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 			public boolean onLongClick(View arg0) {
 				int i = 0;
 				int u = 0;
+				String t = "";
 				// برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
 				// شود
 
@@ -151,12 +152,13 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 				if (w != null) {
 					i = w.getId();
 					u = w.getUserid();
+					t = w.getDescription();
 				}
 				Toast.makeText(context, "id = " + i + "Userid = " + u, 0)
 						.show();
 				
 				DialogLongClick dia = new DialogLongClick(context, 7, u, i,
-						f);
+						f , t);
 				dia.show();
 				return true;
 			}
@@ -728,6 +730,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 				int u = 0;
 				int i = 0;
+				String t = "";
 
 				adapter.open();
 
@@ -737,11 +740,12 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 					CommentInObject ww = (CommentInObject) getGroup(dd);
 					if (ww != null) {
 						u = ww.getUserid();
+						 t= ww.getDescription();
 					}
 					adapter.close();
 
 					DialogLongClick dia = new DialogLongClick(context, 7, u, i,
-							f);
+							f , t);
 					dia.show();
 
 				} else {
@@ -754,12 +758,14 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 					if (w != null) {
 						i = w.getId();
 						u = w.getUserid();
+						 t= w.getDescription();
+
 					}
 
 					// //////////////////////////
 
 					DialogLongClick dia = new DialogLongClick(context, 7, u, i,
-							f);
+							f , t);
 					dia.show();
 
 				}

@@ -45,7 +45,8 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 	Utility util;
 	Fragment fr;
 
-	public ObjectListAdapter(Context context, int resource, List<Object> objact , Fragment fr) {
+	public ObjectListAdapter(Context context, int resource,
+			List<Object> objact, Fragment fr) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -114,23 +115,45 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 			profileIco.setLayoutParams(lp);
 		}
 		convertView.setOnLongClickListener(new OnLongClickListener() {
-			
+
 			@Override
 			public boolean onLongClick(View v) {
-				int i = 0 ;
+
+				int i = 0;
 				int u = 0;
+				String t = "";
 				ListView listView = (ListView) v.getParent();
 				int position = listView.getPositionForView(v);
 				Object f = getItem(position);
 				if (f != null) {
 					u = f.getUserId();
 					i = f.getId();
+					t = f.getDescription();
 				}
-				DialogLongClick dia = new DialogLongClick(context, 4, u, i, fr);
-				Toast.makeText(context, "object id = "  + i + " userId = " + u, 0).show();
-				dia.show();
+				adapter.open();
+				int sumAgency = adapter.countSubAgencyBrand(f.getId());
+				Toast.makeText(
+						context,
+						"sum agency = "
+								+ adapter.countSubAgencyBrand(f.getId())
+								+ "object id = " + i , 0).show();
+				if (sumAgency > 0) {
+					DialogLongClick dia = new DialogLongClick(context, 4, u, -1,
+							fr , t);
+					dia.show();
+
+				} else {
+
+					adapter.close();
+					DialogLongClick dia = new DialogLongClick(context, 4, u, i,
+							fr , t);
+					Toast.makeText(context,
+							"object id = " + i + " userId = " + u, 0).show();
+					dia.show();
+				}
 				return true;
 			}
+
 		});
 		convertView.setOnClickListener(new OnClickListener() {
 
