@@ -414,7 +414,7 @@ public class AnadFragment extends Fragment {
 						}
 
 						Anad t = dbAdapter.getAnadByid(a);
-						t.getObjectId();
+						int objectId = t.getObjectId();
 						clickTimer.schedule(clickSchedule, 1500);
 						if (u == null) {
 							Toast.makeText(getActivity(),
@@ -422,7 +422,7 @@ public class AnadFragment extends Fragment {
 									.show();
 							return;
 						} else {
-							if (t.getObjectId() == 0) {
+							if (objectId == 0) {
 								dialog1 = new DialogAnadimg(getActivity(),
 										R.layout.dialog_imganad,
 										AnadFragment.this, ticketTypeid, proID,

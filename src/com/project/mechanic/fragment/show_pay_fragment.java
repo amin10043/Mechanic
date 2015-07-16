@@ -1,6 +1,5 @@
 package com.project.mechanic.fragment;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -17,7 +16,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -61,11 +59,11 @@ public class show_pay_fragment extends Fragment {
 	private static final int PICK_FROM_CAMERA = 2;
 	final int PIC_CROP = 3;
 
-	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		bitmap.compress(CompressFormat.PNG, 0, outputStream);
-		return outputStream.toByteArray();
-	}
+	// public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+	// ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	// bitmap.compress(CompressFormat.PNG, 0, outputStream);
+	// return outputStream.toByteArray();
+	// }
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -73,10 +71,6 @@ public class show_pay_fragment extends Fragment {
 			Bundle savedInstanceState) {
 		((MainActivity) getActivity()).setActivityTitle(R.string.showad);
 		i = Integer.valueOf(getArguments().getString("I"));
-
-		// if (getArguments().getString("ProID") != null) {
-		// proID = Integer.valueOf(getArguments().getString("ProID"));
-		// }
 
 		View view = inflater.inflate(R.layout.fragment_pay, null);
 		Lheader = (LinearLayout) view.findViewById(R.id.linImg);
@@ -94,7 +88,6 @@ public class show_pay_fragment extends Fragment {
 
 		dbAdapter.open();
 		List<String> mylist = dbAdapter.getAllObjectname();
-		// List<String> myid = dbAdapter.getAllObjectid();
 
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
 				getActivity(), android.R.layout.simple_spinner_item, mylist);
@@ -128,7 +121,7 @@ public class show_pay_fragment extends Fragment {
 						.show();
 				Bitmap bitmap = ((BitmapDrawable) img_pay.getDrawable())
 						.getBitmap();
-				byte[] bytes = getBitmapAsByteArray(bitmap);
+				byte[] bytes = Utility.CompressBitmap(bitmap);
 				String b = String.valueOf(sp_pay.getSelectedItem());
 
 				// ************شرط پرداخت اینترنتی باید ذکر شود*************

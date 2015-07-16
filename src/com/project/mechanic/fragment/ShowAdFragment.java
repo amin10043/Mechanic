@@ -120,23 +120,25 @@ public class ShowAdFragment extends Fragment {
 
 			// edite.setVisibility(1);
 		}
-		if (u.getId() != t.getUserId()) {
-			if (!util.isNetworkConnected()) {
-				Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT)
-						.show();
-				dbAdapter.open();
-				dbAdapter.insertVisitToDb(u.getId(), 3, t.getId());
-				dbAdapter.close();
-			} else if ((util.isNetworkConnected())) {
-				Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT)
-						.show();
-				dbAdapter.open();
-				// ارسال اطلاعات به جدول ویزیت سرور
-				// ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
-				dbAdapter.deleteVisit();
-				dbAdapter.close();
-			}
-		}
+
+		// خطا در ثبت بازدید ها
+		// if (u.getId() != t.getUserId()) {
+		// if (!util.isNetworkConnected()) {
+		// Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT)
+		// .show();
+		// dbAdapter.open();
+		// dbAdapter.insertVisitToDb(u.getId(), 3, t.getId());
+		// dbAdapter.close();
+		// } else if ((util.isNetworkConnected())) {
+		// Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT)
+		// .show();
+		// dbAdapter.open();
+		// // ارسال اطلاعات به جدول ویزیت سرور
+		// // ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
+		// dbAdapter.deleteVisit();
+		// dbAdapter.close();
+		// }
+		// }
 		headerRelative = (RelativeLayout) view.findViewById(R.id.headerAnad);
 		headerParams = new RelativeLayout.LayoutParams(
 				headerRelative.getLayoutParams());
