@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -112,6 +113,8 @@ public class DialogAnadimg extends Dialog {
 				trans.addToBackStack(null);
 				trans.commit();
 				DialogAnadimg.this.dismiss();
+				
+				Toast.makeText(context, "here = " + i + "\n ostan = "+ ProvinceId, 0).show();
 
 			}
 		});

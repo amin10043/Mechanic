@@ -5,7 +5,9 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -36,10 +38,16 @@ import android.widget.Toast;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.crop.CropImage;
+import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.SavingImage;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
-public class show_pay_fragment extends Fragment {
+public class show_pay_fragment extends Fragment implements AsyncInterface,
+		SaveAsyncInterface {
 
 	private static int RESULT_LOAD_IMAGE = 1;
 	ImageView img_pay;
@@ -58,6 +66,15 @@ public class show_pay_fragment extends Fragment {
 	ProgressDialog imageloadprogressdialog;
 	private static final int PICK_FROM_CAMERA = 2;
 	final int PIC_CROP = 3;
+
+	String serverDate = "";
+	ServerDate server;
+
+	SavingImage saveImage;
+	Map<String, Object> imageParams;
+	ProgressDialog ringProgressDialog;
+	Saving saving;
+	Map<String, String> params;
 
 	// public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 	// ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -112,17 +129,13 @@ public class show_pay_fragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				String date = new SimpleDateFormat("yyyy-MM-dd")
-						.format(new Date());
+				// String date = new SimpleDateFormat("yyyy-MM-dd")
+				// .format(new Date());
 				SharedPreferences sendIdpro = getActivity()
 						.getSharedPreferences("Id", 0);
-				int id = sendIdpro.getInt("main_Id", 0);
+				id = sendIdpro.getInt("main_Id", 0);
 				Toast.makeText(getActivity(), i + "do", Toast.LENGTH_SHORT)
 						.show();
-				Bitmap bitmap = ((BitmapDrawable) img_pay.getDrawable())
-						.getBitmap();
-				byte[] bytes = Utility.CompressBitmap(bitmap);
-				String b = String.valueOf(sp_pay.getSelectedItem());
 
 				// ************شرط پرداخت اینترنتی باید ذکر شود*************
 				// ************شرط پرداخت اینترنتی باید ذکر شود*************
@@ -132,22 +145,12 @@ public class show_pay_fragment extends Fragment {
 				// ************شرط پرداخت اینترنتی باید ذکر شود*************
 				// ************شرط پرداخت اینترنتی باید ذکر شود*************
 				// ************شرط پرداخت اینترنتی باید ذکر شود*************
-				dbAdapter.open();
-				com.project.mechanic.entity.Object o = dbAdapter
-						.getObjectByName(b);
-				dbAdapter.UpdateAnadToDb(i, bytes, o.getId(), date, 0, id);
-				dbAdapter.close();
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
-				AnadFragment fragment = new AnadFragment();
-				Bundle bundle = new Bundle();
-				bundle.putString("Id", String.valueOf(id));
-				if (id >= 0)
-					bundle.putString("ProID", String.valueOf(id));
-				fragment.setArguments(bundle);
-				trans.replace(R.id.content_frame, fragment);
-				trans.addToBackStack(null);
-				trans.commit();
+
+				// start syncing
+
+				server = new ServerDate(getActivity());
+				server.delegate = show_pay_fragment.this;
+				server.execute("");
 
 			}
 		});
@@ -278,6 +281,122 @@ public class show_pay_fragment extends Fragment {
 			imageloadprogressdialog.dismiss();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+
+	}
+
+	@Override
+	public void processFinishSaveImage(String output) {
+
+		if (output != null && !"".equals(output)) {
+			try {
+				Bitmap bitmap = ((BitmapDrawable) img_pay.getDrawable())
+						.getBitmap();
+				byte[] bytes = Utility.CompressBitmap(bitmap);
+
+				dbAdapter.open();
+				dbAdapter.updateImageAnad(i, bytes);
+
+				dbAdapter.close();
+
+				if (ringProgressDialog != null)
+					ringProgressDialog.dismiss();
+
+			} catch (NumberFormatException e) {
+				Toast.makeText(getActivity(), "  خطا در بروز رسانی تصویر",
+						Toast.LENGTH_SHORT).show();
+			}
+		}
+
+	}
+
+	@Override
+	public void processFinish(String output) {
+		int serverId = -1;
+		if (ringProgressDialog != null)
+			ringProgressDialog.dismiss();
+		try {
+			serverId = Integer.valueOf(output);
+
+			dbAdapter.open();
+
+			String b = String.valueOf(sp_pay.getSelectedItem());
+
+			com.project.mechanic.entity.Object o = dbAdapter.getObjectByName(b);
+
+			dbAdapter.UpdateAnadToDb(i, o.getId(), serverDate, 0, id);
+			dbAdapter.close();
+
+			FragmentTransaction trans = ((MainActivity) getActivity())
+					.getSupportFragmentManager().beginTransaction();
+			AnadFragment fragment = new AnadFragment();
+			Bundle bundle = new Bundle();
+			bundle.putString("Id", String.valueOf(id));
+			if (id >= 0)
+				bundle.putString("ProID", String.valueOf(id));
+			fragment.setArguments(bundle);
+			trans.replace(R.id.content_frame, fragment);
+			trans.addToBackStack(null);
+			trans.commit();
+
+			if (ringProgressDialog != null)
+				ringProgressDialog.dismiss();
+
+			Bitmap bitmap = ((BitmapDrawable) img_pay.getDrawable())
+					.getBitmap();
+			byte[] bytes = Utility.CompressBitmap(bitmap);
+
+			saveImage = new SavingImage(getActivity());
+			saveImage.delegate = this;
+			imageParams = new LinkedHashMap<String, Object>();
+			imageParams.put("tableName", "Anad");
+			imageParams.put("fieldName", "Image");
+			imageParams.put("Id", i);
+			imageParams.put("Image", bytes);
+
+			saveImage.execute(imageParams);
+
+			ringProgressDialog = ProgressDialog.show(getActivity(), null,
+					"لطفا منتظر بمانید.");
+
+			Toast.makeText(getActivity(), "i = " + i + "\n ostan = " + id, 0).show();
+		} catch (NumberFormatException e) {
+
+			if (!"".equals(output)
+					&& output != null
+					&& !(output.contains("Exception") || output
+							.contains("java"))) {
+
+				String b = String.valueOf(sp_pay.getSelectedItem());
+				dbAdapter.open();
+				com.project.mechanic.entity.Object o = dbAdapter
+						.getObjectByName(b);
+
+				dbAdapter.close();
+				saving = new Saving(getActivity());
+				saving.delegate = show_pay_fragment.this;
+				params = new LinkedHashMap<String, String>();
+
+				params.put("tableName", "Anad");
+
+				params.put("ObjectId", String.valueOf(o.getId()));
+//				params.put("Date", output);
+				params.put("ModifyDate", output);
+
+				params.put("TypeId", "0");
+
+				params.put("IsUpdate", "1");
+				params.put("Id", String.valueOf(i));
+				saving.execute(params);
+
+				serverDate = output;
+				ringProgressDialog = ProgressDialog.show(getActivity(), null,
+						"لطفا منتظر بمانید.");
+
+			} else
+				Toast.makeText(getActivity(),
+						"خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT)
+						.show();
+		}
 
 	}
 }

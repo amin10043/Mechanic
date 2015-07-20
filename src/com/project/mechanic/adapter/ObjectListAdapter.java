@@ -128,29 +128,15 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 				if (f != null) {
 					u = f.getUserId();
 					i = f.getId();
-					t = f.getDescription();
+					t = f.getName();
 				}
-				adapter.open();
-				int sumAgency = adapter.countSubAgencyBrand(f.getId());
-				Toast.makeText(
-						context,
-						"sum agency = "
-								+ adapter.countSubAgencyBrand(f.getId())
-								+ "object id = " + i , 0).show();
-				if (sumAgency > 0) {
-					DialogLongClick dia = new DialogLongClick(context, 4, u, -1,
-							fr , t);
-					dia.show();
 
-				} else {
+				DialogLongClick dia = new DialogLongClick(context, 4, u, i, fr,
+						t);
+				Toast.makeText(context, "object id = " + i + " userId = " + u,
+						0).show();
+				dia.show();
 
-					adapter.close();
-					DialogLongClick dia = new DialogLongClick(context, 4, u, i,
-							fr , t);
-					Toast.makeText(context,
-							"object id = " + i + " userId = " + u, 0).show();
-					dia.show();
-				}
 				return true;
 			}
 

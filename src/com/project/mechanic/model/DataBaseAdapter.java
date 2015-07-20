@@ -365,15 +365,14 @@ public class DataBaseAdapter {
 		mDb.update(TableTicket, uc, "Id=" + id, null);
 	}
 
-	public void UpdateAnadToDb(int id, byte[] image, int objectId, String date,
-			int typeId, int provinceId) {
+	public void UpdateAnadToDb(int id, int objectId, String date, int typeId,
+			int provinceId) {
 
 		ContentValues uc = new ContentValues();
 		// uc.put("Name", name);
 		// uc.put("Email", email);
 		// uc.put("Password", password);
 		uc.put("Id", id);
-		uc.put("Image", image);
 		uc.put("ObjectId", objectId);
 		uc.put("Date", date);
 		uc.put("TypeId", typeId);
@@ -381,6 +380,13 @@ public class DataBaseAdapter {
 
 		// uc.put("ServiceId", serviceid);
 		mDb.update(TableAnad, uc, "Id=" + id, null);
+	}
+
+	public void updateImageAnad(int id  , byte[] image) {
+		ContentValues uc = new ContentValues();
+		uc.put("Image", image);
+		mDb.update(TableAnad, uc, "Id=" + id, null);
+
 	}
 
 	// /////////////////
@@ -3528,7 +3534,7 @@ public class DataBaseAdapter {
 	public void deleteOnlyCommentObject(int id) {
 		mDb.execSQL("delete from [CommentInObject] where Id = " + id);
 	}
-	
+
 	public Integer countSubAgencyBrand(int ObjectID) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TableObject
