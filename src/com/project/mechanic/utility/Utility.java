@@ -448,7 +448,7 @@ public class Utility implements AsyncInterface {
 				editor.putInt("toM", to + NUMBER_OF_RECORD_RECEIVED);
 
 				adapter.open();
-				adapter.setServerDate("ServerDate_Users", output);
+				// adapter.setServerDate("ServerDate_Users", output);
 				adapter.close();
 				editor.commit();
 				state = 1;
