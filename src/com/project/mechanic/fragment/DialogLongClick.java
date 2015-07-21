@@ -187,14 +187,20 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 					}
 
 					if (source == 4) {
+						adapter.open();
+						int sumAgency = adapter.countSubAgencyBrand(Item);
+						adapter.close();
 
-						if (Item == -1) {
+						if (sumAgency > 0) {
 							Toast.makeText(
 									context,
 									"این صفحه دارای زیر مجموعه ای از نماینگی ها می باشد لذا امکان حذف میسر نمی باشد",
 									0).show();
+						}
 
-						} else {
+						
+
+						 else {
 
 							service = new ServiceComm(context);
 							service.delegate = DialogLongClick.this;
@@ -505,14 +511,13 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 				params.put("TableName", "Report");
 
-				params.put("Desc", desc);
+				params.put("[Desc]", desc);
 				params.put("UserIdSender", String.valueOf(UserIdObject));
 				params.put("UserIdReporter",
 						String.valueOf(util.getCurrentUser().getId()));
 				params.put("SourceId", String.valueOf(Item));
 				params.put("TypeId", String.valueOf(source));
 				params.put("Date", output);
-				params.put("ModifyDate", output);
 
 				params.put("IsUpdate", "0");
 				params.put("Id", "0");

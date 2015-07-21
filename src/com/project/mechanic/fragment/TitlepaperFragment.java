@@ -153,8 +153,9 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 							updating.delegate = TitlepaperFragment.this;
 							String[] params = new String[4];
 							params[0] = "Paper";
-							params[1] = setting.getServerDate_Paper() != null ? setting
-									.getServerDate_Paper() : "";
+							// params[1] = setting.getServerDate_Paper() != null
+							// ? setting
+							// .getServerDate_Paper() : "";
 							params[2] = "0";
 							params[3] = "5";
 
@@ -172,8 +173,9 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 							updating.delegate = TitlepaperFragment.this;
 							String[] params = new String[4];
 							params[0] = "Paper";
-							params[1] = setting.getServerDate_Paper() != null ? setting
-									.getServerDate_Paper() : "";
+							// params[1] = setting.getServerDate_Paper() != null
+							// ? setting
+							// .getServerDate_Paper() : "";
 							params[2] = "0";
 							params[3] = "5";
 

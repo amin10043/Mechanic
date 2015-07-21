@@ -131,12 +131,23 @@ public class DataBaseAdapter {
 			"Submit", "UserId", "Date", "SeenBefore" };
 	// private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name", "Count" };
-	private String[] Settings = { "Id", "ServerDate_Users", "ServerDate_Paper",
-			"ServerDate_Object", "ServerDate_News", "ServerDate_Froum",
-			"ServerDate_Anad", "ServerDate_Ticket",
-			"ServerDate_CommentInObject", "ServerDate_CommentInFroum",
-			"ServerDate_CmtInPaper", "ServerDate_LikeInPaper",
-			"ServerDate_LikeInFroum", "ServerDate_LikeInObject", "IMEI" };
+	private String[] Settings = { "Id", "IMEI", "ServerDate_Start_Object",
+			"ServerDate_End_Object", "ServerDate_Start_News",
+			"ServerDate_End_News", "ServerDate_Start_Paper",
+			"ServerDate_End_Paper", "ServerDate_Start_Froum",
+			"ServerDate_End_Froum", "ServerDate_Start_Anad",
+			"ServerDate_End_Anad", "ServerDate_Start_Ticket",
+			"ServerDate_End_Ticket", "ServerDate_Start_CommentInObject",
+			"ServerDate_End_CommentInObject",
+			"ServerDate_Start_CommentInFroum", "ServerDate_End_CommentInFroum",
+			"ServerDate_Start_CmtInPaper", "ServerDate_End_CmtInPaper",
+			"ServerDate_Start_LikeInPaper", "ServerDate_End_LikeInPaper",
+			"ServerDate_Start_LikeInFroum", "ServerDate_End_LikeInFroum",
+			"ServerDate_Start_LikeInObject", "ServerDate_End_LikeInObject",
+			"ServerDate_Start_LikeInComment", "ServerDate_End_LikeInComment",
+			"ServerDate_Start_LikeInCommentObject",
+			"ServerDate_End_LikeInCommentObject", "ServerDate_Start_Users",
+			"ServerDate_End_Users" };
 
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
@@ -365,15 +376,14 @@ public class DataBaseAdapter {
 		mDb.update(TableTicket, uc, "Id=" + id, null);
 	}
 
-	public void UpdateAnadToDb(int id, byte[] image, int objectId, String date,
-			int typeId, int provinceId) {
+	public void UpdateAnadToDb(int id, int objectId, String date, int typeId,
+			int provinceId) {
 
 		ContentValues uc = new ContentValues();
 		// uc.put("Name", name);
 		// uc.put("Email", email);
 		// uc.put("Password", password);
 		uc.put("Id", id);
-		uc.put("Image", image);
 		uc.put("ObjectId", objectId);
 		uc.put("Date", date);
 		uc.put("TypeId", typeId);
@@ -381,6 +391,13 @@ public class DataBaseAdapter {
 
 		// uc.put("ServiceId", serviceid);
 		mDb.update(TableAnad, uc, "Id=" + id, null);
+	}
+
+	public void updateImageAnad(int id, byte[] image) {
+		ContentValues uc = new ContentValues();
+		uc.put("Image", image);
+		mDb.update(TableAnad, uc, "Id=" + id, null);
+
 	}
 
 	// /////////////////
@@ -1400,7 +1417,15 @@ public class DataBaseAdapter {
 				cursor.getString(7), cursor.getString(8), cursor.getString(9),
 				cursor.getString(10), cursor.getString(11),
 				cursor.getString(12), cursor.getString(13),
-				cursor.getString(14));
+				cursor.getString(14), cursor.getString(15),
+				cursor.getString(16), cursor.getString(17),
+				cursor.getString(18), cursor.getString(19),
+				cursor.getString(20), cursor.getString(21),
+				cursor.getString(22), cursor.getString(23),
+				cursor.getString(24), cursor.getString(25),
+				cursor.getString(26), cursor.getString(27),
+				cursor.getString(28), cursor.getString(29),
+				cursor.getString(30), cursor.getString(31));
 		return tempSettings;
 
 	}

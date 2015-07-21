@@ -1,23 +1,54 @@
 package com.project.mechanic.entity;
 
-public class Settings implements Comparable<Settings> {
+public class Settings {
 
 	int Id;
-	String ServerDate_Object = "";
-	String ServerDate_News = "";
-	String ServerDate_Paper = "";
-	String ServerDate_Froum = "";
-	String ServerDate_Anad = "";
-	String ServerDate_Ticket = "";
-	String ServerDate_CommentInObject = "";
-	String ServerDate_CommentInFroum = "";
-	String ServerDate_CmtInPaper = "";
-	String ServerDate_LikeInPaper = "";
-	String ServerDate_LikeInFroum = "";
-	String ServerDate_LikeInObject = "";
-	String ServerDate_Users;
-
 	String IMEI;
+
+	String ServerDate_Start_Object;
+	String ServerDate_End_Object;
+
+	String ServerDate_Start_News;
+	String ServerDate_End_News;
+
+	String ServerDate_Start_Paper;
+	String ServerDate_End_Paper;
+
+	String ServerDate_Start_Froum;
+	String ServerDate_End_Froum;
+
+	String ServerDate_Start_Anad;
+	String ServerDate_End_Anad;
+
+	String ServerDate_Start_Ticket;
+	String ServerDate_End_Ticket;
+
+	String ServerDate_Start_CommentInObject;
+	String ServerDate_End_CommentInObject;
+
+	String ServerDate_Start_CommentInFroum;
+	String ServerDate_End_CommentInFroum;
+
+	String ServerDate_Start_CmtInPaper;
+	String ServerDate_End_CmtInPaper;
+
+	String ServerDate_Start_LikeInPaper;
+	String ServerDate_End_LikeInPaper;
+
+	String ServerDate_Start_LikeInFroum;
+	String ServerDate_End_LikeInFroum;
+
+	String ServerDate_Start_LikeInObject;
+	String ServerDate_End_LikeInObject;
+
+	String ServerDate_Start_LikeInComment;
+	String ServerDate_End_LikeInComment;
+
+	String ServerDate_Start_LikeInCommentObject;
+	String ServerDate_End_LikeInCommentObject;
+
+	String ServerDate_Start_Users;
+	String ServerDate_End_Users;
 
 	public int getId() {
 		return Id;
@@ -35,139 +66,333 @@ public class Settings implements Comparable<Settings> {
 		IMEI = iMEI;
 	}
 
-	@Override
-	public int compareTo(Settings arg0) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String getServerDate_Start_Object() {
+		return ServerDate_Start_Object;
 	}
 
-	public String getServerDate_Object() {
-		return ServerDate_Object;
+	public void setServerDate_Start_Object(String serverDate_Start_Object) {
+		ServerDate_Start_Object = serverDate_Start_Object;
 	}
 
-	public void setServerDate_Object(String serverDate_Object) {
-		ServerDate_Object = serverDate_Object;
+	public String getServerDate_End_Object() {
+		return ServerDate_End_Object;
 	}
 
-	public String getServerDate_News() {
-		return ServerDate_News;
+	public void setServerDate_End_Object(String serverDate_End_Object) {
+		ServerDate_End_Object = serverDate_End_Object;
 	}
 
-	public void setServerDate_News(String serverDate_News) {
-		ServerDate_News = serverDate_News;
+	public String getServerDate_Start_News() {
+		return ServerDate_Start_News;
 	}
 
-	public String getServerDate_Paper() {
-		return ServerDate_Paper;
+	public void setServerDate_Start_News(String serverDate_Start_News) {
+		ServerDate_Start_News = serverDate_Start_News;
 	}
 
-	public void setServerDate_Paper(String serverDate_Paper) {
-		ServerDate_Paper = serverDate_Paper;
+	public String getServerDate_End_News() {
+		return ServerDate_End_News;
 	}
 
-	public String getServerDate_Froum() {
-		return ServerDate_Froum;
+	public void setServerDate_End_News(String serverDate_End_News) {
+		ServerDate_End_News = serverDate_End_News;
 	}
 
-	public void setServerDate_Froum(String serverDate_Froum) {
-		ServerDate_Froum = serverDate_Froum;
+	public String getServerDate_Start_Paper() {
+		return ServerDate_Start_Paper;
 	}
 
-	public String getServerDate_Anad() {
-		return ServerDate_Anad;
+	public void setServerDate_Start_Paper(String serverDate_Start_Paper) {
+		ServerDate_Start_Paper = serverDate_Start_Paper;
 	}
 
-	public void setServerDate_Anad(String serverDate_Anad) {
-		ServerDate_Anad = serverDate_Anad;
+	public String getServerDate_End_Paper() {
+		return ServerDate_End_Paper;
 	}
 
-	public String getServerDate_Ticket() {
-		return ServerDate_Ticket;
+	public void setServerDate_End_Paper(String serverDate_End_Paper) {
+		ServerDate_End_Paper = serverDate_End_Paper;
 	}
 
-	public void setServerDate_Ticket(String serverDate_Ticket) {
-		ServerDate_Ticket = serverDate_Ticket;
+	public String getServerDate_Start_Froum() {
+		return ServerDate_Start_Froum;
 	}
 
-	public String getServerDate_CommentInObject() {
-		return ServerDate_CommentInObject;
+	public void setServerDate_Start_Froum(String serverDate_Start_Froum) {
+		ServerDate_Start_Froum = serverDate_Start_Froum;
 	}
 
-	public void setServerDate_CommentInObject(String serverDate_CommentInObject) {
-		ServerDate_CommentInObject = serverDate_CommentInObject;
+	public String getServerDate_End_Froum() {
+		return ServerDate_End_Froum;
 	}
 
-	public String getServerDate_CommentInFroum() {
-		return ServerDate_CommentInFroum;
+	public void setServerDate_End_Froum(String serverDate_End_Froum) {
+		ServerDate_End_Froum = serverDate_End_Froum;
 	}
 
-	public void setServerDate_CommentInFroum(String serverDate_CommentInFroum) {
-		ServerDate_CommentInFroum = serverDate_CommentInFroum;
+	public String getServerDate_Start_Anad() {
+		return ServerDate_Start_Anad;
 	}
 
-	public String getServerDate_CmtInPaper() {
-		return ServerDate_CmtInPaper;
+	public void setServerDate_Start_Anad(String serverDate_Start_Anad) {
+		ServerDate_Start_Anad = serverDate_Start_Anad;
 	}
 
-	public void setServerDate_CmtInPaper(String serverDate_CmtInPaper) {
-		ServerDate_CmtInPaper = serverDate_CmtInPaper;
+	public String getServerDate_End_Anad() {
+		return ServerDate_End_Anad;
 	}
 
-	public String getServerDate_LikeInPaper() {
-		return ServerDate_LikeInPaper;
+	public void setServerDate_End_Anad(String serverDate_End_Anad) {
+		ServerDate_End_Anad = serverDate_End_Anad;
 	}
 
-	public void setServerDate_LikeInPaper(String serverDate_LikeInPaper) {
-		ServerDate_LikeInPaper = serverDate_LikeInPaper;
+	public String getServerDate_Start_Ticket() {
+		return ServerDate_Start_Ticket;
 	}
 
-	public String getServerDate_LikeInFroum() {
-		return ServerDate_LikeInFroum;
+	public void setServerDate_Start_Ticket(String serverDate_Start_Ticket) {
+		ServerDate_Start_Ticket = serverDate_Start_Ticket;
 	}
 
-	public void setServerDate_LikeInFroum(String serverDate_LikeInFroum) {
-		ServerDate_LikeInFroum = serverDate_LikeInFroum;
+	public String getServerDate_End_Ticket() {
+		return ServerDate_End_Ticket;
 	}
 
-	public String getServerDate_LikeInObject() {
-		return ServerDate_LikeInObject;
+	public void setServerDate_End_Ticket(String serverDate_End_Ticket) {
+		ServerDate_End_Ticket = serverDate_End_Ticket;
 	}
 
-	public void setServerDate_LikeInObject(String serverDate_LikeInObject) {
-		ServerDate_LikeInObject = serverDate_LikeInObject;
+	public String getServerDate_Start_CommentInObject() {
+		return ServerDate_Start_CommentInObject;
 	}
 
-	public String getServerDate_Users() {
-		return ServerDate_Users;
+	public void setServerDate_Start_CommentInObject(
+			String serverDate_Start_CommentInObject) {
+		ServerDate_Start_CommentInObject = serverDate_Start_CommentInObject;
 	}
 
-	public void setServerDate_Users(String serverDate_Users) {
-		ServerDate_Users = serverDate_Users;
+	public String getServerDate_End_CommentInObject() {
+		return ServerDate_End_CommentInObject;
 	}
 
-	public Settings(int id, String serverDate_Users, String serverDate_Paper,
-			String serverDate_Object, String serverDate_News,
-			String serverDate_Froum, String serverDate_Anad,
-			String serverDate_Ticket, String serverDate_CommentInObject,
-			String serverDate_CommentInFroum, String serverDate_CmtInPaper,
-			String serverDate_LikeInPaper, String serverDate_LikeInFroum,
-			String serverDate_LikeInObject, String iMEI) {
+	public void setServerDate_End_CommentInObject(
+			String serverDate_End_CommentInObject) {
+		ServerDate_End_CommentInObject = serverDate_End_CommentInObject;
+	}
+
+	public String getServerDate_Start_CommentInFroum() {
+		return ServerDate_Start_CommentInFroum;
+	}
+
+	public void setServerDate_Start_CommentInFroum(
+			String serverDate_Start_CommentInFroum) {
+		ServerDate_Start_CommentInFroum = serverDate_Start_CommentInFroum;
+	}
+
+	public String getServerDate_End_CommentInFroum() {
+		return ServerDate_End_CommentInFroum;
+	}
+
+	public void setServerDate_End_CommentInFroum(
+			String serverDate_End_CommentInFroum) {
+		ServerDate_End_CommentInFroum = serverDate_End_CommentInFroum;
+	}
+
+	public String getServerDate_Start_CmtInPaper() {
+		return ServerDate_Start_CmtInPaper;
+	}
+
+	public void setServerDate_Start_CmtInPaper(
+			String serverDate_Start_CmtInPaper) {
+		ServerDate_Start_CmtInPaper = serverDate_Start_CmtInPaper;
+	}
+
+	public String getServerDate_End_CmtInPaper() {
+		return ServerDate_End_CmtInPaper;
+	}
+
+	public void setServerDate_End_CmtInPaper(String serverDate_End_CmtInPaper) {
+		ServerDate_End_CmtInPaper = serverDate_End_CmtInPaper;
+	}
+
+	public String getServerDate_Start_LikeInPaper() {
+		return ServerDate_Start_LikeInPaper;
+	}
+
+	public void setServerDate_Start_LikeInPaper(
+			String serverDate_Start_LikeInPaper) {
+		ServerDate_Start_LikeInPaper = serverDate_Start_LikeInPaper;
+	}
+
+	public String getServerDate_End_LikeInPaper() {
+		return ServerDate_End_LikeInPaper;
+	}
+
+	public void setServerDate_End_LikeInPaper(String serverDate_End_LikeInPaper) {
+		ServerDate_End_LikeInPaper = serverDate_End_LikeInPaper;
+	}
+
+	public String getServerDate_Start_LikeInFroum() {
+		return ServerDate_Start_LikeInFroum;
+	}
+
+	public void setServerDate_Start_LikeInFroum(
+			String serverDate_Start_LikeInFroum) {
+		ServerDate_Start_LikeInFroum = serverDate_Start_LikeInFroum;
+	}
+
+	public String getServerDate_End_LikeInFroum() {
+		return ServerDate_End_LikeInFroum;
+	}
+
+	public void setServerDate_End_LikeInFroum(String serverDate_End_LikeInFroum) {
+		ServerDate_End_LikeInFroum = serverDate_End_LikeInFroum;
+	}
+
+	public String getServerDate_Start_LikeInObject() {
+		return ServerDate_Start_LikeInObject;
+	}
+
+	public void setServerDate_Start_LikeInObject(
+			String serverDate_Start_LikeInObject) {
+		ServerDate_Start_LikeInObject = serverDate_Start_LikeInObject;
+	}
+
+	public String getServerDate_End_LikeInObject() {
+		return ServerDate_End_LikeInObject;
+	}
+
+	public void setServerDate_End_LikeInObject(
+			String serverDate_End_LikeInObject) {
+		ServerDate_End_LikeInObject = serverDate_End_LikeInObject;
+	}
+
+	public String getServerDate_Start_LikeInComment() {
+		return ServerDate_Start_LikeInComment;
+	}
+
+	public void setServerDate_Start_LikeInComment(
+			String serverDate_Start_LikeInComment) {
+		ServerDate_Start_LikeInComment = serverDate_Start_LikeInComment;
+	}
+
+	public String getServerDate_End_LikeInComment() {
+		return ServerDate_End_LikeInComment;
+	}
+
+	public void setServerDate_End_LikeInComment(
+			String serverDate_End_LikeInComment) {
+		ServerDate_End_LikeInComment = serverDate_End_LikeInComment;
+	}
+
+	public String getServerDate_Start_LikeInCommentObject() {
+		return ServerDate_Start_LikeInCommentObject;
+	}
+
+	public void setServerDate_Start_LikeInCommentObject(
+			String serverDate_Start_LikeInCommentObject) {
+		ServerDate_Start_LikeInCommentObject = serverDate_Start_LikeInCommentObject;
+	}
+
+	public String getServerDate_End_LikeInCommentObject() {
+		return ServerDate_End_LikeInCommentObject;
+	}
+
+	public void setServerDate_End_LikeInCommentObject(
+			String serverDate_End_LikeInCommentObject) {
+		ServerDate_End_LikeInCommentObject = serverDate_End_LikeInCommentObject;
+	}
+
+	public String getServerDate_Start_Users() {
+		return ServerDate_Start_Users;
+	}
+
+	public void setServerDate_Start_Users(String serverDate_Start_Users) {
+		ServerDate_Start_Users = serverDate_Start_Users;
+	}
+
+	public String getServerDate_End_Users() {
+		return ServerDate_End_Users;
+	}
+
+	public void setServerDate_End_Users(String serverDate_End_Users) {
+		ServerDate_End_Users = serverDate_End_Users;
+	}
+
+	public Settings(int id, String IMEI, String ServerDate_Start_Object,
+			String ServerDate_End_Object, String ServerDate_Start_News,
+			String ServerDate_End_News, String ServerDate_Start_Paper,
+			String ServerDate_End_Paper, String ServerDate_Start_Froum,
+			String ServerDate_End_Froum, String ServerDate_Start_Anad,
+			String ServerDate_End_Anad, String ServerDate_Start_Ticket,
+			String ServerDate_End_Ticket,
+			String ServerDate_Start_CommentInObject,
+			String ServerDate_End_CommentInObject,
+			String ServerDate_Start_CommentInFroum,
+			String ServerDate_End_CommentInFroum,
+			String ServerDate_Start_CmtInPaper,
+			String ServerDate_End_CmtInPaper,
+			String ServerDate_Start_LikeInPaper,
+			String ServerDate_End_LikeInPaper,
+			String ServerDate_Start_LikeInFroum,
+			String ServerDate_End_LikeInFroum,
+			String ServerDate_Start_LikeInObject,
+			String ServerDate_End_LikeInObject,
+			String ServerDate_Start_LikeInComment,
+			String ServerDate_End_LikeInComment,
+			String ServerDate_Start_LikeInCommentObject,
+			String ServerDate_End_LikeInCommentObject,
+			String ServerDate_Start_Users, String ServerDate_End_Users) {
+
 		super();
 		Id = id;
-		ServerDate_Object = serverDate_Object;
-		ServerDate_News = serverDate_News;
-		ServerDate_Paper = serverDate_Paper;
-		ServerDate_Froum = serverDate_Froum;
-		ServerDate_Anad = serverDate_Anad;
-		ServerDate_Ticket = serverDate_Ticket;
-		ServerDate_CommentInObject = serverDate_CommentInObject;
-		ServerDate_CommentInFroum = serverDate_CommentInFroum;
-		ServerDate_CmtInPaper = serverDate_CmtInPaper;
-		ServerDate_LikeInPaper = serverDate_LikeInPaper;
-		ServerDate_LikeInFroum = serverDate_LikeInFroum;
-		ServerDate_LikeInObject = serverDate_LikeInObject;
-		ServerDate_Users = serverDate_Users;
-		IMEI = iMEI;
+		this.IMEI = IMEI;
+
+		this.ServerDate_Start_Object = ServerDate_Start_Object;
+		this.ServerDate_End_Object = ServerDate_End_Object;
+
+		this.ServerDate_Start_News = ServerDate_Start_News;
+		this.ServerDate_End_News = ServerDate_End_News;
+
+		this.ServerDate_Start_Paper = ServerDate_Start_Paper;
+		this.ServerDate_End_Paper = ServerDate_End_Paper;
+
+		this.ServerDate_Start_Froum = ServerDate_Start_Froum;
+		this.ServerDate_End_Froum = ServerDate_End_Froum;
+
+		this.ServerDate_Start_Anad = ServerDate_Start_Anad;
+		this.ServerDate_End_Anad = ServerDate_End_Anad;
+
+		this.ServerDate_Start_Ticket = ServerDate_Start_Ticket;
+		this.ServerDate_End_Ticket = ServerDate_End_Ticket;
+
+		this.ServerDate_Start_CommentInObject = ServerDate_Start_CommentInObject;
+		this.ServerDate_End_CommentInObject = ServerDate_End_CommentInObject;
+
+		this.ServerDate_Start_CommentInFroum = ServerDate_Start_CommentInFroum;
+		this.ServerDate_End_CommentInFroum = ServerDate_End_CommentInFroum;
+
+		this.ServerDate_Start_CmtInPaper = ServerDate_Start_CmtInPaper;
+		this.ServerDate_End_CmtInPaper = ServerDate_End_CmtInPaper;
+
+		this.ServerDate_Start_LikeInPaper = ServerDate_Start_LikeInPaper;
+		this.ServerDate_End_LikeInPaper = ServerDate_End_LikeInPaper;
+
+		this.ServerDate_Start_LikeInFroum = ServerDate_Start_LikeInFroum;
+		this.ServerDate_End_LikeInFroum = ServerDate_End_LikeInFroum;
+
+		this.ServerDate_Start_LikeInObject = ServerDate_Start_LikeInObject;
+		this.ServerDate_End_LikeInObject = ServerDate_End_LikeInObject;
+
+		this.ServerDate_Start_LikeInComment = ServerDate_Start_LikeInComment;
+		this.ServerDate_End_LikeInComment = ServerDate_End_LikeInComment;
+
+		this.ServerDate_Start_LikeInCommentObject = ServerDate_Start_LikeInCommentObject;
+		this.ServerDate_End_LikeInCommentObject = ServerDate_End_LikeInCommentObject;
+
+		this.ServerDate_Start_Users = ServerDate_Start_Users;
+		this.ServerDate_End_Users = ServerDate_End_Users;
+
 	}
 
 	public Settings() {
