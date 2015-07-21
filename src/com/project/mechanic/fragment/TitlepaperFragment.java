@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
-import android.graphics.Shader.TileMode;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,13 +27,17 @@ import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
 import com.project.mechanic.ListView.PullToRefreshListView.OnRefreshListener;
 import com.project.mechanic.adapter.PapertitleListAdapter;
 import com.project.mechanic.entity.Paper;
+import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Updating;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class TitlepaperFragment extends Fragment implements CommInterface {
+public class TitlepaperFragment extends Fragment implements CommInterface,
+		AsyncInterface {
 	private ImageButton addtitle;
 	private DialogPaperTitle dialog;
 	DataBaseAdapter mdb;
@@ -52,13 +55,14 @@ public class TitlepaperFragment extends Fragment implements CommInterface {
 	int mLastFirstVisibleItem = 0;
 	FloatingActionButton action;
 	ServiceComm service;
+	Updating updating;
+	Settings setting;
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(android.view.LayoutInflater inflater,
 			android.view.ViewGroup container, Bundle savedInstanceState) {
 
-		// ((MainActivity) getActivity()).setActivityTitle(R.string.News);
 		view = inflater.inflate(R.layout.fragment_titlepaper, null);
 		action = (FloatingActionButton) view.findViewById(R.id.fab);
 
@@ -70,9 +74,11 @@ public class TitlepaperFragment extends Fragment implements CommInterface {
 
 		mdb = new DataBaseAdapter(getActivity());
 		utility = new Utility(getActivity());
+
 		CurrentUser = utility.getCurrentUser();
 		mdb.open();
 		mylist = mdb.getAllPaper();
+		setting = mdb.getSettings();
 		mdb.close();
 
 		// for Missed IDS
@@ -110,18 +116,6 @@ public class TitlepaperFragment extends Fragment implements CommInterface {
 
 			}
 		});
-		if (mylist != null && !mylist.isEmpty()) {
-
-			if (mylist.size() < j) {
-				j = mylist.size();
-			}
-			List<Paper> tmpList = mylist.subList(i, j);
-			subList = new ArrayList<Paper>();
-			for (Paper p : tmpList) {
-				if (!subList.contains(p))
-					subList.add(p);
-			}
-		}
 		if (CurrentUser == null) {
 			addtitle.setImageResource(R.drawable.ic_create_off);
 		}
@@ -147,7 +141,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface {
 
 			lstNews = (PullAndLoadListView) view.findViewById(R.id.lstComment);
 			ListAdapter = new PapertitleListAdapter(getActivity(),
-					R.layout.raw_froumtitle, subList , TitlepaperFragment.this);
+					R.layout.raw_froumtitle, mylist, TitlepaperFragment.this);
 			lstNews.setAdapter(ListAdapter);
 			((PullAndLoadListView) lstNews)
 					.setOnRefreshListener(new OnRefreshListener() {
@@ -155,7 +149,17 @@ public class TitlepaperFragment extends Fragment implements CommInterface {
 						public void onRefresh() {
 							// Do work to refresh the list here.
 
-							new PullToRefreshDataTask().execute();
+							updating = new Updating(getActivity());
+							updating.delegate = TitlepaperFragment.this;
+							String[] params = new String[4];
+							params[0] = "Paper";
+							params[1] = setting.getServerDate_Paper() != null ? setting
+									.getServerDate_Paper() : "";
+							params[2] = "0";
+							params[3] = "5";
+
+							updating.execute(params);
+							// REFRESSH !!!!!
 						}
 					});
 			((PullAndLoadListView) lstNews)
@@ -164,23 +168,17 @@ public class TitlepaperFragment extends Fragment implements CommInterface {
 						public void onLoadMore() {
 							// Do the work to load more items at the end of list
 							// here
-							if (mylist.size() < j + 1) {
-								i = j + 1;
-							}
+							updating = new Updating(getActivity());
+							updating.delegate = TitlepaperFragment.this;
+							String[] params = new String[4];
+							params[0] = "Paper";
+							params[1] = setting.getServerDate_Paper() != null ? setting
+									.getServerDate_Paper() : "";
+							params[2] = "0";
+							params[3] = "5";
 
-							if (mylist.size() < j + 10) {
-								j = mylist.size() - 1;
-							} else {
-								j += 10;
-							}
-							if (i <= j) {
-								tempList = mylist.subList(i, j);
-								for (Paper p : tempList) {
-									if (!subList.contains(p))
-										subList.add(p);
-								}
-							}
-							new LoadMoreDataTask().execute();
+							updating.execute(params);
+
 						}
 					});
 
@@ -189,7 +187,6 @@ public class TitlepaperFragment extends Fragment implements CommInterface {
 				mLastFirstVisibleItem = getArguments().getInt("Froum_List_Id");
 				lstNews.setSelection(mLastFirstVisibleItem);
 			}
-
 		}
 
 		if (lstNews != null) {
@@ -227,14 +224,10 @@ public class TitlepaperFragment extends Fragment implements CommInterface {
 				return null;
 			}
 
-			// Simulates a background task
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 			}
-			//
-			// for (int i = 0; i < mNames.length; i++)
-			// mListItems.add(mNames[i]);
 
 			return null;
 		}
@@ -244,6 +237,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface {
 
 			// We need notify the adapter that the data have been changed
 			((BaseAdapter) ListAdapter).notifyDataSetChanged();
+			ListAdapter.notifyDataSetChanged();
 
 			// Call onLoadMoreComplete when the LoadMore task, has finished
 			((PullAndLoadListView) lstNews).onLoadMoreComplete();
@@ -299,7 +293,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface {
 		mdb.close();
 
 		ListAdapter = new PapertitleListAdapter(getActivity(),
-				R.layout.raw_froumtitle, mylist , TitlepaperFragment.this);
+				R.layout.raw_froumtitle, mylist, TitlepaperFragment.this);
 		ListAdapter.notifyDataSetChanged();
 		lstNews = (PullAndLoadListView) view.findViewById(R.id.lstComment);
 		lstNews.setAdapter(ListAdapter);
@@ -338,4 +332,19 @@ public class TitlepaperFragment extends Fragment implements CommInterface {
 
 	}
 
+	@Override
+	public void processFinish(String output) {
+		((PullAndLoadListView) lstNews).onLoadMoreComplete();
+		if (output != null
+				&& !(output.contains("Exception") || output.contains("java")
+						|| output.contains("SoapFault") || output
+							.contains("anyType"))) {
+			utility.parseQuery(output);
+			mylist.clear();
+			mdb.open();
+			mylist.addAll(mdb.getAllPaper());
+			mdb.close();
+			ListAdapter.notifyDataSetChanged();
+		}
+	}
 }

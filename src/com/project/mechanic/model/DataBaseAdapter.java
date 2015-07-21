@@ -2967,7 +2967,7 @@ public class DataBaseAdapter {
 	}
 
 	public void updateTables(String tableName, String[] cols,
-			String[][] values, String modifyDate) {
+			String[][] values, String startModifyDate, String endModifyDate) {
 
 		ContentValues cv = null;
 		for (int i = 0; i < values.length; i++) {
@@ -2982,15 +2982,22 @@ public class DataBaseAdapter {
 					mDb.insertWithOnConflict(tableName, null, cv,
 							SQLiteDatabase.CONFLICT_ABORT);
 				}
-				if (modifyDate != null && !"".equals(modifyDate)) {
-					String query = "Update Settings set ServerDate_"
-							+ tableName + " = " + modifyDate;
-					mDb.rawQuery(query, null);
-				}
+
 			} catch (Exception ex) {
 				Log.d("test", ex.getMessage());
 			}
 		}
+		// if (startModifyDate != null && !"".equals(startModifyDate)) {
+		// ContentValues cv2 = new ContentValues();
+		// cv2.put("ServerDate_Start_" + tableName, startModifyDate);
+		// mDb.update(TableSettings, cv2, null, null);
+		// }
+		//
+		// if (endModifyDate != null && !"".equals(endModifyDate)) {
+		// ContentValues cv2 = new ContentValues();
+		// cv2.put("ServerDate_End_" + tableName, endModifyDate);
+		// mDb.update(TableSettings, cv2, null, null);
+		// }
 	}
 
 	public Settings getSettings() {
@@ -3528,7 +3535,7 @@ public class DataBaseAdapter {
 	public void deleteOnlyCommentObject(int id) {
 		mDb.execSQL("delete from [CommentInObject] where Id = " + id);
 	}
-	
+
 	public Integer countSubAgencyBrand(int ObjectID) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TableObject

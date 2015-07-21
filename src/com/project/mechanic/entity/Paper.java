@@ -99,12 +99,15 @@ public class Paper implements Comparable<Paper> {
 		this.seenBefore = seenBefore;
 	}
 
-
-	
-
 	public int compareTo(Paper comparePaper) {
-		long temp = Long.valueOf(getDate());
-		Long comparetemp = Long.valueOf(comparePaper.getDate());
+
+		long temp = 0;
+		if (getDate() != null)
+			temp = Long.valueOf(getDate());
+		long comparetemp = 0;
+		if (comparePaper != null && comparePaper.getDate() != null)
+			comparetemp = Long.valueOf(comparePaper.getDate());
+
 		return (int) (comparetemp - temp);
 	}
 

@@ -298,29 +298,29 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
 		// "Release to refresh..." and flip the arrow drawable.
 		if (mCurrentScrollState == SCROLL_STATE_TOUCH_SCROLL
 				&& mRefreshState != REFRESHING) {
-//			if (firstVisibleItem == 0) {
-//				mRefreshViewImage.setVisibility(View.VISIBLE);
-//				if ((mRefreshView.getBottom() >= mRefreshViewHeight + 20 || mRefreshView
-//						.getTop() >= 0) && mRefreshState != RELEASE_TO_REFRESH) {
-//					mRefreshViewText
-//							.setText("برای بروز رسانی به پایین هل بدهید.");
-//					mRefreshViewImage.clearAnimation();
-//					mRefreshViewImage.startAnimation(mFlipAnimation);
-//					mRefreshState = RELEASE_TO_REFRESH;
-//				} else if (mRefreshView.getBottom() < mRefreshViewHeight + 20
-//						&& mRefreshState != PULL_TO_REFRESH) {
-//					mRefreshViewText
-//							.setText("برای بروز رسانی به پایین هل بدهید.");
-//					if (mRefreshState != TAP_TO_REFRESH) {
-//						mRefreshViewImage.clearAnimation();
-//						mRefreshViewImage.startAnimation(mReverseFlipAnimation);
-//					}
-//					mRefreshState = PULL_TO_REFRESH;
-//				}
-//			} else {
-//				mRefreshViewImage.setVisibility(View.GONE);
-//				resetHeader();
-//			}
+			if (firstVisibleItem == 0) {
+				mRefreshViewImage.setVisibility(View.VISIBLE);
+				if ((mRefreshView.getBottom() >= mRefreshViewHeight + 20 || mRefreshView
+						.getTop() >= 0) && mRefreshState != RELEASE_TO_REFRESH) {
+					mRefreshViewText
+							.setText("برای بروز رسانی به پایین هل بدهید.");
+					mRefreshViewImage.clearAnimation();
+					mRefreshViewImage.startAnimation(mFlipAnimation);
+					mRefreshState = RELEASE_TO_REFRESH;
+				} else if (mRefreshView.getBottom() < mRefreshViewHeight + 20
+						&& mRefreshState != PULL_TO_REFRESH) {
+					mRefreshViewText
+							.setText("برای بروز رسانی به پایین هل بدهید.");
+					if (mRefreshState != TAP_TO_REFRESH) {
+						mRefreshViewImage.clearAnimation();
+						mRefreshViewImage.startAnimation(mReverseFlipAnimation);
+					}
+					mRefreshState = PULL_TO_REFRESH;
+				}
+			} else {
+				mRefreshViewImage.setVisibility(View.GONE);
+				resetHeader();
+			}
 		} else if (mCurrentScrollState == SCROLL_STATE_FLING
 				&& firstVisibleItem == 0 && mRefreshState != REFRESHING) {
 			setSelection(1);
@@ -357,7 +357,7 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
 		mRefreshViewProgress.setVisibility(View.VISIBLE);
 
 		// Set refresh view text to the refreshing label
-        //mRefreshViewText.setText("برای بروز رسانی به پایین هل بدهید.");
+		mRefreshViewText.setText("برای بروز رسانی به پایین هل بدهید.");
 
 		mRefreshState = REFRESHING;
 	}

@@ -3,18 +3,18 @@ package com.project.mechanic.entity;
 public class Settings implements Comparable<Settings> {
 
 	int Id;
-	String ServerDate_Object;
-	String ServerDate_News;
-	String ServerDate_Paper;
-	String ServerDate_Froum;
-	String ServerDate_Anad;
-	String ServerDate_Ticket;
-	String ServerDate_CommentInObject;
-	String ServerDate_CommentInFroum;
-	String ServerDate_CmtInPaper;
-	String ServerDate_LikeInPaper;
-	String ServerDate_LikeInFroum;
-	String ServerDate_LikeInObject;
+	String ServerDate_Object = "";
+	String ServerDate_News = "";
+	String ServerDate_Paper = "";
+	String ServerDate_Froum = "";
+	String ServerDate_Anad = "";
+	String ServerDate_Ticket = "";
+	String ServerDate_CommentInObject = "";
+	String ServerDate_CommentInFroum = "";
+	String ServerDate_CmtInPaper = "";
+	String ServerDate_LikeInPaper = "";
+	String ServerDate_LikeInFroum = "";
+	String ServerDate_LikeInObject = "";
 	String ServerDate_Users;
 
 	String IMEI;
@@ -145,13 +145,13 @@ public class Settings implements Comparable<Settings> {
 		ServerDate_Users = serverDate_Users;
 	}
 
-	public Settings(int id, String serverDate_Object, String serverDate_News,
-			String serverDate_Paper, String serverDate_Froum,
-			String serverDate_Anad, String serverDate_Ticket,
-			String serverDate_CommentInObject,
+	public Settings(int id, String serverDate_Users, String serverDate_Paper,
+			String serverDate_Object, String serverDate_News,
+			String serverDate_Froum, String serverDate_Anad,
+			String serverDate_Ticket, String serverDate_CommentInObject,
 			String serverDate_CommentInFroum, String serverDate_CmtInPaper,
 			String serverDate_LikeInPaper, String serverDate_LikeInFroum,
-			String serverDate_LikeInObject, String serverDate_Users, String iMEI) {
+			String serverDate_LikeInObject, String iMEI) {
 		super();
 		Id = id;
 		ServerDate_Object = serverDate_Object;

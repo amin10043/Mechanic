@@ -12,7 +12,6 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -34,7 +33,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
-import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -73,8 +71,8 @@ public class Utility implements AsyncInterface {
 	static boolean flag = false;
 	static boolean flag2 = false;
 	int state = 0;
-	public static final int NUMBER_OF_RECORD_RECEIVED = 10;
-	public static final int NUMBER_OF_RECORD_RECEIVED_D = 50;
+	public static final int NUMBER_OF_RECORD_RECEIVED = 5;
+	public static final int NUMBER_OF_RECORD_RECEIVED_D = 20;
 	ServerDate date;
 
 	public Utility(Context context) {
@@ -297,7 +295,7 @@ public class Utility implements AsyncInterface {
 
 		String[] allStr = q.split("&&&"); // each Table
 
-		if (allStr == null || allStr.length < 1 || !q.contains("&&&")) {
+		if (allStr == null || allStr.length < 1) {
 			return;
 		}
 
@@ -308,7 +306,8 @@ public class Utility implements AsyncInterface {
 				String tableName = strs[0];
 				boolean flag = false;
 				String[] cols = strs[1].split(Pattern.quote("^^^")); // column
-				String ModifyDate = strs[2];
+				String startModifyDate = strs[2];
+				String endModifyDate = strs[3];
 				int row = 0;
 				String[][] values = new String[strs.length - 2][];
 				for (int j = 3; j < strs.length; j++, row++) {
@@ -318,7 +317,7 @@ public class Utility implements AsyncInterface {
 				adapter.open();
 				if (values != null && values.length > 0 && flag)
 					adapter.updateTables(tableName.trim(), cols, values,
-							ModifyDate);
+							startModifyDate, endModifyDate);
 
 				adapter.close();
 			}
@@ -394,7 +393,6 @@ public class Utility implements AsyncInterface {
 		return str.toByteArray();
 	}
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void Updating() {
 
 		date = new ServerDate(context);
@@ -435,13 +433,26 @@ public class Utility implements AsyncInterface {
 				if (settings == null)
 					settings = new Settings();
 
-				String mDatesMaster = settings.getServerDate_Anad() + "-"
-						+ settings.getServerDate_Froum() + "-" + "-"
-						+ settings.getServerDate_News() + "-"
-						+ settings.getServerDate_Object() + "-"
-						+ settings.getServerDate_Paper() + "-"
-						+ settings.getServerDate_Ticket() + "-"
-						+ settings.getServerDate_Users() + "-";
+				String mDatesMaster = (settings.getServerDate_Anad() != null ? settings
+						.getServerDate_Anad() : "")
+						+ "-"
+						+ (settings.getServerDate_Froum() != null ? settings
+								.getServerDate_Froum() : "")
+						+ "-"
+						+ (settings.getServerDate_News() != null ? settings
+								.getServerDate_News() : "")
+						+ "-"
+						+ (settings.getServerDate_Object() != null ? settings
+								.getServerDate_Object() : "")
+						+ "-"
+						+ (settings.getServerDate_Paper() != null ? settings
+								.getServerDate_Paper() : "")
+						+ "-"
+						+ (settings.getServerDate_Ticket() != null ? settings
+								.getServerDate_Ticket() : "")
+						+ "-"
+						+ (settings.getServerDate_Users() != null ? settings
+								.getServerDate_Users() : "") + "-";
 				serviceUpdate.execute(mDatesMaster, String.valueOf(from),
 						String.valueOf(to));
 				flag = true;
@@ -461,11 +472,24 @@ public class Utility implements AsyncInterface {
 				if (settings == null)
 					settings = new Settings();
 				String mDatesDetail = settings.getServerDate_CmtInPaper() + "-"
-						+ settings.getServerDate_CommentInFroum() + "-"
-						+ settings.getServerDate_CommentInObject() + "-"
-						+ settings.getServerDate_LikeInFroum() + "-"
-						+ settings.getServerDate_LikeInObject() + "-"
-						+ settings.getServerDate_LikeInPaper() + "-";
+						+ settings.getServerDate_CommentInFroum() != null ? settings
+						.getServerDate_CommentInFroum()
+						: "" + "-" + settings.getServerDate_CommentInObject() != null ? settings
+								.getServerDate_CommentInObject()
+								: "" + "-"
+										+ settings.getServerDate_LikeInFroum() != null ? settings
+										.getServerDate_LikeInFroum()
+										: ""
+												+ "-"
+												+ settings
+														.getServerDate_LikeInObject() != null ? settings
+												.getServerDate_LikeInObject()
+												: ""
+														+ "-"
+														+ settings
+																.getServerDate_LikeInPaper() != null ? settings
+														.getServerDate_LikeInPaper()
+														: "" + "-";
 				serviceUpdateD = new UpdatingAllDetail(context);
 				serviceUpdateD.delegate = this;
 				serviceUpdateD.execute(mDatesDetail, String.valueOf(from),
