@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -72,6 +73,7 @@ public class UrlNewsPaperFragment extends Fragment {
 		final NewsPaper newsPaper = dbAdapter.getNewsPaperId(id);
 
 		if (util.isNetworkConnected()) {
+			Toast.makeText(getActivity(), "network connected", 0).show();
 			if (newsPaper != null) {
 				/* JavaScript must be enabled if you want it to work, obviously */
 				// webview.getSettings().setJavaScriptEnabled(true);
@@ -112,7 +114,8 @@ public class UrlNewsPaperFragment extends Fragment {
 				});
 
 			}
-		} else if (!util.isNetworkConnected()) {
+		} else {
+			Toast.makeText(getActivity(), "faild in connect to internet", 0).show();
 			if (newsPaper != null) {
 				// rei=ad db html
 				//

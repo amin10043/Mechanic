@@ -434,14 +434,14 @@ public class Utility implements AsyncInterface {
 				serviceUpdate.delegate = this;
 				if (settings == null)
 					settings = new Settings();
-
-				String mDatesMaster = settings.getServerDate_Anad() + "-"
-						+ settings.getServerDate_Froum() + "-" + "-"
-						+ settings.getServerDate_News() + "-"
-						+ settings.getServerDate_Object() + "-"
-						+ settings.getServerDate_Paper() + "-"
-						+ settings.getServerDate_Ticket() + "-"
-						+ settings.getServerDate_Users() + "-";
+				String mDatesMaster ="";
+//				String mDatesMaster = settings.getServerDate_Anad() + "-"
+//						+ settings.getServerDate_Froum() + "-" + "-"
+//						+ settings.getServerDate_News() + "-"
+//						+ settings.getServerDate_Object() + "-"
+//						+ settings.getServerDate_Paper() + "-"
+//						+ settings.getServerDate_Ticket() + "-"
+//						+ settings.getServerDate_Users() + "-";
 				serviceUpdate.execute(mDatesMaster, String.valueOf(from),
 						String.valueOf(to));
 				flag = true;
@@ -460,12 +460,13 @@ public class Utility implements AsyncInterface {
 				to = pref.getInt("toD", 0);
 				if (settings == null)
 					settings = new Settings();
-				String mDatesDetail = settings.getServerDate_CmtInPaper() + "-"
-						+ settings.getServerDate_CommentInFroum() + "-"
-						+ settings.getServerDate_CommentInObject() + "-"
-						+ settings.getServerDate_LikeInFroum() + "-"
-						+ settings.getServerDate_LikeInObject() + "-"
-						+ settings.getServerDate_LikeInPaper() + "-";
+				String mDatesDetail ="";
+//				String mDatesDetail = settings.getServerDate_CmtInPaper() + "-"
+//						+ settings.getServerDate_CommentInFroum() + "-"
+//						+ settings.getServerDate_CommentInObject() + "-"
+//						+ settings.getServerDate_LikeInFroum() + "-"
+//						+ settings.getServerDate_LikeInObject() + "-"
+//						+ settings.getServerDate_LikeInPaper() + "-";
 				serviceUpdateD = new UpdatingAllDetail(context);
 				serviceUpdateD.delegate = this;
 				serviceUpdateD.execute(mDatesDetail, String.valueOf(from),
