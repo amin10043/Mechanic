@@ -3,6 +3,7 @@ package com.project.mechanic.model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.regex.Pattern;
 
 import android.R.string;
 import android.content.ContentValues;
@@ -22,7 +23,6 @@ import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.Executertype;
 import com.project.mechanic.entity.Favorite;
 import com.project.mechanic.entity.Froum;
-import com.project.mechanic.entity.LikeInComment;
 import com.project.mechanic.entity.LikeInFroum;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.LikeInPaper;
@@ -169,7 +169,7 @@ public class DataBaseAdapter {
 	// private String[] LikeInCommentObject = { "Id", "CommentId", "UserId",
 	// "IsLike" };
 
-	private String[] Visit = { "UserId", "ObjectId", "TypeId" };
+	// private String[] Visit = { "UserId", "ObjectId", "TypeId" };
 	private String[] SubAdmin = { "Id", "ObjectId", "UserId", "AdminID", "Date" };
 
 	private final Context mContext;
@@ -230,8 +230,7 @@ public class DataBaseAdapter {
 		uc.put("ServiceId", serviceid);
 
 		uc.put("Date", date);
-		long res = mDb.insert(TableUsers, null, uc);
-		long res2 = res;
+		mDb.insert(TableUsers, null, uc);
 
 	}
 
@@ -246,9 +245,7 @@ public class DataBaseAdapter {
 		uc.put("TypeId", tyoeId);
 		uc.put("ProvinceId", provinceId);
 		uc.put("Seen", seen);
-		long res = mDb.insert(TableAnad, null, uc);
-		long res2 = res;
-
+		mDb.insert(TableAnad, null, uc);
 	}
 
 	public void insertVisitToDb(int userid, int typeId, int objectId) {
@@ -258,9 +255,7 @@ public class DataBaseAdapter {
 		uc.put("UserId", userid);
 		uc.put("TypeId", typeId);
 		uc.put("ObjectId", objectId);
-		long res = mDb.insert(TableVisit, null, uc);
-		long res2 = res;
-
+		mDb.insert(TableVisit, null, uc);
 	}
 
 	public void inserUsernonpicToDb(int Id, String name, String email,
@@ -281,58 +276,20 @@ public class DataBaseAdapter {
 		uc.put("ServiceId", serviceid);
 
 		uc.put("Date", date);
-		long res = mDb.insert(TableUsers, null, uc);
-		long res2 = res;
-
+		mDb.insert(TableUsers, null, uc);
 	}
-
-	// ///////////
-	// public Cursor getAllUsers() {
-	// return mDb.query(TableUsers, new String[] { KEY_ROWID, KEY_NAME,
-	// KEY_EMAIL }, null, null, null, null, null);
-	// }
-	//
-	// public Cursor getUsers(long ID) throws SQLException {
-	// Cursor mCursor = mDb.query(true, TableUsers, new String[] {
-	// KEY_ROWID, KEY_NAME, KEY_EMAIL }, id + "=" + ID,
-	// null, null, null, null, null);
-	// if (mCursor != null) {
-	// mCursor.moveToFirst();
-	// }
-	// return mCursor;
-	// }
-	// ///////////////
 
 	public void UpdateAdminAllUser(int admin) {
 
 		ContentValues uc = new ContentValues();
-		// uc.put("Name", name);
-		// uc.put("Email", email);
-		// uc.put("Password", password);
-		// uc.put("Phonenumber", phonenumber);
-		//
-		// uc.put("Mobailenumber", mobailenumber);
-		// uc.put("Faxnumber", faxnumber);
 		uc.put("Admin", admin);
-
-		// uc.put("ServiceId", serviceid);
 		mDb.update(TableUsers, uc, null, null);
-
 	}
 
 	public void UpdateAdminUserToDb(int id, int admin) {
 
 		ContentValues uc = new ContentValues();
-		// uc.put("Name", name);
-		// uc.put("Email", email);
-		// uc.put("Password", password);
-		// uc.put("Phonenumber", phonenumber);
-		//
-		// uc.put("Mobailenumber", mobailenumber);
-		// uc.put("Faxnumber", faxnumber);
 		uc.put("Admin", admin);
-
-		// uc.put("ServiceId", serviceid);
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
@@ -340,16 +297,10 @@ public class DataBaseAdapter {
 			String faxnumber, String address) {
 
 		ContentValues uc = new ContentValues();
-		// uc.put("Name", name);
 		uc.put("Email", email);
-		// uc.put("Password", password);
 		uc.put("Phonenumber", phonenumber);
-
-		// uc.put("Mobailenumber", mobailenumber);
 		uc.put("Faxnumber", faxnumber);
 		uc.put("Address", address);
-
-		// uc.put("ServiceId", serviceid);
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
@@ -358,9 +309,6 @@ public class DataBaseAdapter {
 			String fax, String mobile, int day) {
 
 		ContentValues uc = new ContentValues();
-		// uc.put("Name", name);
-		// uc.put("Email", email);
-		// uc.put("Password", password);
 		uc.put("Title", title);
 		uc.put("Desc", desc);
 		uc.put("Image", image);
@@ -371,8 +319,6 @@ public class DataBaseAdapter {
 		uc.put("UMobile", mobile);
 		uc.put("Date", date);
 		uc.put("Day", day);
-
-		// uc.put("ServiceId", serviceid);
 		mDb.update(TableTicket, uc, "Id=" + id, null);
 	}
 
@@ -380,16 +326,11 @@ public class DataBaseAdapter {
 			int provinceId) {
 
 		ContentValues uc = new ContentValues();
-		// uc.put("Name", name);
-		// uc.put("Email", email);
-		// uc.put("Password", password);
 		uc.put("Id", id);
 		uc.put("ObjectId", objectId);
 		uc.put("Date", date);
 		uc.put("TypeId", typeId);
 		uc.put("ProvinceId", provinceId);
-
-		// uc.put("ServiceId", serviceid);
 		mDb.update(TableAnad, uc, "Id=" + id, null);
 	}
 
@@ -397,26 +338,20 @@ public class DataBaseAdapter {
 		ContentValues uc = new ContentValues();
 		uc.put("Image", image);
 		mDb.update(TableAnad, uc, "Id=" + id, null);
-
 	}
-
-	// /////////////////
 
 	public void UpdateAllUserToDb(int id, String email, String password,
 			String phonenumber, String mobailenumber, String faxnumber,
 			String address, byte[] image) {
 
 		ContentValues uc = new ContentValues();
-		// uc.put("Name", name);
 		uc.put("Email", email);
 		uc.put("Password", password);
 		uc.put("Phonenumber", phonenumber);
-
 		uc.put("Mobailenumber", mobailenumber);
 		uc.put("Faxnumber", faxnumber);
 		uc.put("Address", address);
 		uc.put("Image", image);
-		// uc.put("ServiceId", serviceid);
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
@@ -425,28 +360,21 @@ public class DataBaseAdapter {
 			String address) {
 
 		ContentValues uc = new ContentValues();
-		// uc.put("Name", name);
 		uc.put("Email", email);
 		uc.put("Password", password);
 		uc.put("Phonenumber", phonenumber);
-
 		uc.put("Mobailenumber", mobailenumber);
 		uc.put("Faxnumber", faxnumber);
 		uc.put("Address", address);
-
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
-
-	// ///////////////////////////////////
 
 	public void UpdateHtmlStringInNewspaper(int id, String htmlstring) {
 
 		ContentValues uc = new ContentValues();
 		uc.put("Id", id);
 		uc.put("HtmlString", htmlstring);
-
-		long res = mDb.update(TableNewsPaper, uc, "ID=" + id, null);
-
+		mDb.update(TableNewsPaper, uc, "ID=" + id, null);
 	}
 
 	public void insertLikeInObjectToDb(int id, int UserId, int PaperId,
@@ -464,8 +392,7 @@ public class DataBaseAdapter {
 		uc.put("Seen", 1);
 		uc.put("Id", id);
 
-		long res = mDb.insert(TableLikeInObject, null, uc);
-		long res2 = res;
+		mDb.insert(TableLikeInObject, null, uc);
 
 	}
 
@@ -480,8 +407,7 @@ public class DataBaseAdapter {
 			uc.put("Date", Date);
 			uc.put("Seen", 1);
 
-			long res = mDb.insert(TableLikeInFroum, null, uc);
-			long res2 = res;
+			mDb.insert(TableLikeInFroum, null, uc);
 		}
 
 	}
@@ -509,8 +435,8 @@ public class DataBaseAdapter {
 			uc.put("Date", Date);
 			uc.put("Seen", 1);
 
-			long res = mDb.insert(TableLikeInPaper, null, uc);
-			long res2 = res;
+			mDb.insert(TableLikeInPaper, null, uc);
+			;
 		}
 
 	}
@@ -603,37 +529,6 @@ public class DataBaseAdapter {
 
 	}
 
-	// public void insertTickettoDb(String Title, String desc, int userId,
-	//
-	// byte[] bytes, String date, int typeId, int name, int email, int mobile,
-	// int phone, int fax, int provinceId, String uname, String uemail,
-	// String uphonnumber, String ufax, String uadress, byte[] uimage,
-	// String umobile) {
-	//
-	// ContentValues cv = new ContentValues();
-	// cv.put("Title", Title);
-	// cv.put("Desc", desc);
-	// cv.put("UserId", userId);
-	// cv.put("Image", bytes);
-	// cv.put("Date", date);
-	// cv.put("TypeId", typeId);
-	// cv.put("Name", name);
-	// cv.put("Email", email);
-	// cv.put("Mobile", mobile);
-	// cv.put("Phone", phone);
-	// cv.put("Fax", fax);
-	// cv.put("ProvinceId", provinceId);
-	// cv.put("UName", uname);
-	// cv.put("UEmail", uemail);
-	// cv.put("UPhonnumber", uphonnumber);
-	// cv.put("UFax", ufax);
-	// cv.put("UAdress", uadress);
-	// cv.put("UImage", uimage);
-	// cv.put("UMobile", umobile);
-	// mDb.insert(TableTicket, null, cv);
-	//
-	// }
-
 	public void insertTickettoDbemptyImage(int id, String Title, String Desc,
 			int userId, String date, int typeId, int provinceId, String uname,
 			String uemail, String uphonnumber, String ufax, String uadress,
@@ -682,7 +577,6 @@ public class DataBaseAdapter {
 		cv.put("Date", date);
 
 		mDb.insert(TablePaper, null, cv);
-
 	}
 
 	public Integer Tablecommentcount() {
@@ -705,7 +599,6 @@ public class DataBaseAdapter {
 
 		Collections.sort(result);
 		return result;
-
 	}
 
 	public ArrayList<City> getAllCity() {
@@ -825,11 +718,6 @@ public class DataBaseAdapter {
 
 		return result;
 
-	}
-
-	private SQLiteDatabase getReadableDatabase() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	// /////////////// ListItems ////////////////
@@ -1129,7 +1017,6 @@ public class DataBaseAdapter {
 	public ArrayList<CommentNotiItem> getUnseencomment(int userId) {
 
 		ArrayList<CommentNotiItem> result = new ArrayList<CommentNotiItem>();
-		com.project.mechanic.entity.LikeInFroum item = null;
 		Cursor mCur = mDb
 				.rawQuery(
 						"select f.Id,u.Name || '  بر روی ' || f.Title || '  در تاریخ ' || l.[Date]  || ' کامنت گذاشت ',l.Desk from CommentInFroum l inner join Froum f on l.FroumId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
@@ -1151,7 +1038,6 @@ public class DataBaseAdapter {
 	public ArrayList<CommentNotiItem> getUnseencommentobject(int userId) {
 
 		ArrayList<CommentNotiItem> result = new ArrayList<CommentNotiItem>();
-		com.project.mechanic.entity.LikeInFroum item = null;
 		Cursor mCur = mDb
 				.rawQuery(
 						"select f.Id,u.Name || '  بر روی ' || f.Name || '  در تاریخ ' || l.[Date]  || ' کامنت گذاشت ',l.Desk from CommentInObject l inner join Object f on l.ObjectId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
@@ -1174,7 +1060,6 @@ public class DataBaseAdapter {
 	public ArrayList<CommentNotiItem> getUnseencommentpaper(int userId) {
 
 		ArrayList<CommentNotiItem> result = new ArrayList<CommentNotiItem>();
-		com.project.mechanic.entity.LikeInFroum item = null;
 		Cursor mCur = mDb
 				.rawQuery(
 						"select f.Id,u.Name || '  بر روی ' || f.Title || '  در تاریخ ' || l.[Date]  || ' کامنت گذاشت:  ',l.Desk from CmtInPaper l inner join Paper f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
@@ -1197,7 +1082,6 @@ public class DataBaseAdapter {
 	public ArrayList<LikeNotiItem> getUnseenlike(int userId) {
 
 		ArrayList<LikeNotiItem> result = new ArrayList<LikeNotiItem>();
-		com.project.mechanic.entity.LikeInFroum item = null;
 		Cursor mCur = mDb
 				.rawQuery(
 						"select f.Id,u.Name + '  پست ' || f.Name || ' را در تاریخ ' || l.[Date]  || ' پسندید ' from LikeInObject l inner join Object f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
@@ -1217,7 +1101,6 @@ public class DataBaseAdapter {
 	public ArrayList<LikeNotiItem> getUnseenlikeInFroum(int userId) {
 
 		ArrayList<LikeNotiItem> result = new ArrayList<LikeNotiItem>();
-		com.project.mechanic.entity.LikeInFroum item = null;
 		Cursor mCur = mDb
 				.rawQuery(
 						"select f.Id,u.Name || '  پست ' || f.Title || ' را در تاریخ ' || l.[Date]  || ' پسندید ' from LikeInFroum l inner join Froum f on l.FroumId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
@@ -1237,7 +1120,6 @@ public class DataBaseAdapter {
 	// ///////////////////////////////////////////////////////////////////////////////////
 	public ArrayList<LikeNotiItem> getUnseenlikeInPaper(int userId) {
 		ArrayList<LikeNotiItem> result = new ArrayList<LikeNotiItem>();
-		com.project.mechanic.entity.LikeInFroum item = null;
 		Cursor mCur = mDb
 				.rawQuery(
 						"select f.Id,u.Name || '  پست ' || f.Title || ' را در تاریخ ' || l.[Date]  || ' پسندید ' from LikeInPaper l inner join Paper f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
@@ -1272,7 +1154,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private Users CursorToUsers(Cursor cursor) {
 
 		Users Users = new Users(cursor.getInt(0), cursor.getString(1),
@@ -1285,7 +1166,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private LikeInObject CursorToLikeInObject(Cursor cursor) {
 		LikeInObject tempProvince = new LikeInObject(cursor.getInt(0),
 				cursor.getInt(1), cursor.getInt(2), cursor.getString(3),
@@ -1294,7 +1174,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private LikeInFroum CursorToLikeInFroum(Cursor cursor) {
 		com.project.mechanic.entity.LikeInFroum temp = new com.project.mechanic.entity.LikeInFroum(
 				cursor.getInt(0), cursor.getInt(1), cursor.getInt(2),
@@ -1303,20 +1182,11 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private LikeInPaper CursorToLikeInPaper(Cursor cursor) {
 		LikeInPaper temp = new LikeInPaper(cursor.getInt(0), cursor.getInt(1),
 				cursor.getInt(2), cursor.getString(3), cursor.getInt(4),
 				cursor.getInt(5));
 
-		return temp;
-
-	}
-
-	@SuppressWarnings("unused")
-	private LikeInComment CursorToLikeInComment(Cursor cursor) {
-		LikeInComment temp = new LikeInComment(cursor.getInt(0),
-				cursor.getInt(1), cursor.getInt(2), cursor.getInt(3));
 		return temp;
 
 	}
@@ -1355,7 +1225,6 @@ public class DataBaseAdapter {
 		return tempObject;
 	}
 
-	@SuppressWarnings("unused")
 	private NewsPaper CursorToNewsPaper(Cursor cursor) {
 		NewsPaper tempNewsPaper = new NewsPaper(cursor.getInt(0),
 				cursor.getString(1), cursor.getInt(2), cursor.getString(3),
@@ -1370,13 +1239,6 @@ public class DataBaseAdapter {
 
 	}
 
-	private Executertype CursorToExecutertype(Cursor cursor) {
-		Executertype tempExecutertype = new Executertype(cursor.getInt(0),
-				cursor.getString(1));
-		return tempExecutertype;
-
-	}
-
 	private Froum CursorToFroum(Cursor cursor) {
 		Froum tempForum = new Froum(cursor.getInt(0), cursor.getInt(1),
 				cursor.getString(2), cursor.getString(3), cursor.getInt(4),
@@ -1386,14 +1248,6 @@ public class DataBaseAdapter {
 
 	}
 
-	private com.project.mechanic.entity.Visit CursorToVisit(Cursor cursor) {
-		com.project.mechanic.entity.Visit tempVisit = new com.project.mechanic.entity.Visit(
-				cursor.getInt(0), cursor.getInt(1), cursor.getInt(2));
-		return tempVisit;
-
-	}
-
-	@SuppressWarnings("unused")
 	private Paper CursorToPaper(Cursor cursor) {
 		Paper tempPaper = new Paper(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getInt(3), cursor.getString(4),
@@ -1430,17 +1284,14 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private CommentInObject CursorToCommentInObject(Cursor cursor) {
 		CommentInObject tempNews = new CommentInObject(cursor.getInt(0),
 				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
 				cursor.getString(4), cursor.getInt(5), cursor.getInt(6),
 				cursor.getInt(7), cursor.getInt(8));
 		return tempNews;
-
 	}
 
-	@SuppressWarnings("unused")
 	private Ticket CursorToTicket(Cursor cursor) {
 		Ticket tempTicket = new Ticket(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getInt(3), cursor.getBlob(4),
@@ -1456,7 +1307,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private Favorite CursorFavorite(Cursor cursor) {
 		Favorite tempFavorite = new Favorite(cursor.getInt(0),
 				cursor.getInt(1), cursor.getInt(2), cursor.getInt(3));
@@ -1465,7 +1315,6 @@ public class DataBaseAdapter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private TicketType CursorToTicketType(Cursor cursor) {
 		TicketType tempTicket = new TicketType(cursor.getInt(0),
 				cursor.getString(1));
@@ -1580,14 +1429,6 @@ public class DataBaseAdapter {
 		return s;
 	}
 
-	// ///////////
-	// public Integer Image(String table) {
-	//
-	// Cursor cu = mDb.rawQuery("select * from " + table + " group by Name",
-	// null);
-	// int s = cu.getCount();
-	// return s;
-	// }
 	public byte[] Anad_Image(String table) {
 
 		Cursor cu = mDb.rawQuery("select * from " + table + "", null);
@@ -1761,39 +1602,6 @@ public class DataBaseAdapter {
 		return s;
 	}
 
-	/*
-	 * public String getUseridFroum(){ ArrayList<Froum> result = new
-	 * ArrayList<Froum>(); String[] s = new String[1]; s[0] = "UserId"; Cursor
-	 * cursor = mDb.query(TableFroum,s , null,null , null, null, null); Froum
-	 * tempFroum; if(cursor.moveToNext()){ tempFroum = new
-	 * Froum(cursor.getInt(0), cursor.getInt(3),
-	 * cursor.getString(2),cursor.getString(1) ); result.add(tempFroum); }
-	 * 
-	 * 
-	 * return result;
-	 * 
-	 * }
-	 */
-
-	/*
-	 * public ArrayList<Comment> getAllComment() { ArrayList<Comment> result =
-	 * new ArrayList<Comment>(); Cursor cursor = mDb.query(TableComment,
-	 * Comment, null, null, null, null, null); Comment tempComment; while
-	 * (cursor.moveToNext()) { result.add(CursorToComment(cursor)); }
-	 * 
-	 * return result;
-	 * 
-	 * }
-	 */
-
-	/*
-	 * public ArrayList<Comment> getAllCommentByPapaerId(int paperId) {
-	 * ArrayList<Comment> result = new ArrayList<Comment>(); Cursor cursor =
-	 * mDb.query(TableComment, Comment, null, null, null, null, null); Comment
-	 * tempComment; while (cursor.moveToNext()) {
-	 * result.add(CursorToComment(cursor)); } return result; }
-	 */
-
 	public ArrayList<CommentInObject> getAllCommentInObjectById(int ObjectID,
 			int CommentID) {
 		ArrayList<CommentInObject> result = new ArrayList<CommentInObject>();
@@ -1803,7 +1611,6 @@ public class DataBaseAdapter {
 				" ObjectId=? AND CommentId=?",
 				new String[] { String.valueOf(ObjectID),
 						String.valueOf(CommentID) }, null, null, null);
-		CommentInObject tempComment;
 		while (cursor.moveToNext()) {
 			result.add(CursorToCommentInObject(cursor));
 		}
@@ -1839,10 +1646,6 @@ public class DataBaseAdapter {
 		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
 		CommentInFroum item = null;
 
-		// Cursor tCur = mDb.rawQuery("Select FroumId From " +
-		// TableCommentInFroum + " Where FroumId=" +String.valueOf(Froumid),null
-		// );
-
 		Cursor mCur = mDb.query(
 				TableCommentInFroum,
 				CommentInFroum,
@@ -1865,12 +1668,6 @@ public class DataBaseAdapter {
 		ArrayList<CommentInFroum> result = new ArrayList<CommentInFroum>();
 		CommentInFroum item = null;
 
-		/*
-		 * Cursor tCur = mDb.rawQuery("Select FroumId From " +
-		 * TableCommentInFroum + " Where FroumId=" +String.valueOf(Froumid),null
-		 * );
-		 */
-
 		Cursor mCur = mDb.query(
 				TableCommentInFroum,
 				CommentInFroum,
@@ -1886,16 +1683,6 @@ public class DataBaseAdapter {
 		return result;
 
 	}
-
-	/*
-	 * public boolean isUserLikedComment(int userId, int CommentId) {
-	 * 
-	 * Cursor curs = mDb.rawQuery( "SELECT COUNT(*) AS NUM FROM " +
-	 * TableLikeInComment + " WHERE UserId= " + String.valueOf(userId) +
-	 * " AND CommentId=" + String.valueOf(CommentId) + " AND IsLike=" + "1",
-	 * null); if (curs.moveToNext()) { int number = curs.getInt(0); if (number >
-	 * 0) return true; } return false; }
-	 */
 
 	public ArrayList<CommentInPaper> getCommentInPaperbyPaperid(int Paperid) {
 
@@ -1918,15 +1705,13 @@ public class DataBaseAdapter {
 	public ArrayList<CommentInPaper> getCommentInPaperbyPaperid2(int Paperid) {
 
 		ArrayList<CommentInPaper> result = new ArrayList<CommentInPaper>();
-		CommentInPaper item = null;
 
 		Cursor mCur = mDb.query(TableCommentInPaper, CommentInPaper,
 				"PaperId=?", new String[] { String.valueOf(Paperid) }, null,
 				null, null);
 
 		while (mCur.moveToNext()) {
-			item = CursorToCommentInPaper(mCur);
-			// result.add(item);
+			result.add(CursorToCommentInPaper(mCur));
 		}
 
 		return result;
@@ -1936,10 +1721,6 @@ public class DataBaseAdapter {
 	public CommentInFroum getCommentInFroumbyID(int ID) {
 
 		CommentInFroum item = null;
-
-		// Cursor tCur = mDb.rawQuery("Select FroumId From " +
-		// TableCommentInFroum + " Where FroumId=" +String.valueOf(Froumid),null
-		// );
 
 		Cursor mCur = mDb.query(TableCommentInFroum, CommentInFroum, "ID=?",
 				new String[] { String.valueOf(ID) }, null, null, null);
@@ -1970,11 +1751,9 @@ public class DataBaseAdapter {
 		uc.put("CommentId", CommentId);
 		uc.put("IsLike", ISLike);
 
-		long res = mDb.insert(TableLikeInComment, null, uc);
-		long res2 = res;
+		mDb.insert(TableLikeInComment, null, uc);
 	}
 
-	// ///////////////////////////////////////////////////////////////////
 	public boolean isUserLikedComment(int userId, int CommentId, int isLike) {
 
 		Cursor curs = mDb.rawQuery(
@@ -2039,10 +1818,6 @@ public class DataBaseAdapter {
 		return result;
 
 	}
-
-	// ////////////
-
-	// /////////////////////
 
 	public Users getUserbyid(int id) {
 
@@ -2113,27 +1888,10 @@ public class DataBaseAdapter {
 
 	}
 
-	// ////////
-	// public Object getobjectbyid(int id){
-	//
-	// Object it=null;
-	//
-	// Cursor mCur = mDb.query(TableObject, Object, "Id=?", new
-	// String[]{String.valueOf(id)}, null, null, null);
-	// if (mCur.moveToNext()) {
-	// it = CursorToObject(mCur);
-	// }
-	//
-	// return it;
-	//
-	//
-	// }
-
 	public ArrayList<Froum> getAllFroum() {
 		ArrayList<Froum> result = new ArrayList<Froum>();
 		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
 				null);
-		Froum tempFroum;
 		while (cursor.moveToNext()) {
 			result.add(CursorToFroum(cursor));
 		}
@@ -2161,7 +1919,6 @@ public class DataBaseAdapter {
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
 		Cursor cursor = mDb.query(TableTicket, Ticket, null, null, null, null,
 				null);
-		Ticket tempTicket;
 		while (cursor.moveToNext()) {
 			result.add(CursorToTicket(cursor));
 		}
@@ -2211,7 +1968,6 @@ public class DataBaseAdapter {
 		ArrayList<Anad> result = new ArrayList<Anad>();
 		Cursor cursor = mDb
 				.query(TableAnad, Anad, null, null, null, null, null);
-		Anad tempAnad;
 		while (cursor.moveToNext()) {
 			result.add(CursorToAnad(cursor));
 		}
@@ -2219,20 +1975,6 @@ public class DataBaseAdapter {
 		return result;
 
 	}
-
-	/*
-	 * public String getUseridFroum(){ ArrayList<Froum> result = new
-	 * ArrayList<Froum>(); String[] s = new String[1]; s[0] = "UserId"; Cursor
-	 * cursor = mDb.query(TableFroum,s , null,null , null, null, null); Froum
-	 * tempFroum; if(cursor.moveToNext()){ tempFroum = new
-	 * Froum(cursor.getInt(0), cursor.getInt(3),
-	 * cursor.getString(2),cursor.getString(1) ); result.add(tempFroum); }
-	 * 
-	 * 
-	 * return result;
-	 * 
-	 * }
-	 */
 
 	public ArrayList<Integer> getUSeridComment() {
 		ArrayList<Integer> result = new ArrayList<Integer>();
@@ -2295,13 +2037,11 @@ public class DataBaseAdapter {
 	public void deletebyIdTicket(int id) {
 
 		mDb.execSQL("delete from [Favorite] where IdTicket = " + id);
-
 	}
 
 	public void deleteVisit() {
 
 		mDb.execSQL("delete from [Visit]");
-
 	}
 
 	private CommentInFroum CursorToCommentInFroum(Cursor cursor) {
@@ -2429,7 +2169,6 @@ public class DataBaseAdapter {
 
 		if (mCur.moveToNext()) {
 			item = CursorToUsers(mCur);
-
 		}
 
 		return item;
@@ -2485,20 +2224,11 @@ public class DataBaseAdapter {
 				Toast.LENGTH_SHORT).show();
 	}
 
-	// /////////////////////////////////////ÈÏÓÊ ÂæÑÏä ÊÚÏÇÏ ÓØÑåÇ
-	// ///////////////
-	// /////////////////////////////////////ÈÏÓÊ ÂæÑÏä ÊÚÏÇÏ ÓØÑåÇ
-	// ///////////////
 	public int getcount() {
-		int item = 0;
-
-		// return item=mDb.rawQuery("Select Count(*) From " + TableUsers,
-		// null).getCount();
 
 		Cursor cursor = mDb
 				.rawQuery("select count(*) from " + TableUsers, null);
 
-		// ensure there is at least one row and one column
 		cursor.moveToFirst();
 		if (cursor.getCount() > 0 && cursor.getColumnCount() > 0) {
 			return cursor.getInt(0);
@@ -2576,20 +2306,15 @@ public class DataBaseAdapter {
 
 	}
 
-	// //////////////////////////
 	public void UpdateProvinceToDb(int id, int count) {
 
 		ContentValues uc = new ContentValues();
-		// uc.put("Name", name);
-		// uc.put("Email", email);
-		// uc.put("Password", password);
 		uc.put("Count", count);
 
 		mDb.update(TableProvince, uc, "ID =" + id, null);
 
 	}
 
-	// ///////////////////////////////////////////////////////
 	public City getCityById(int id) {
 		City item = null;
 		Cursor mCur = mDb.query(TableCity, CityColumn, " Id=?",
@@ -2597,25 +2322,18 @@ public class DataBaseAdapter {
 
 		if (mCur.moveToNext()) {
 			item = CursorToCity(mCur);
-
 		}
-
 		return item;
 	}
 
-	// /////////////////////////////////////////////////////////////
 	public void UpdateCityToDb(int id, int count) {
 
 		ContentValues uc = new ContentValues();
-		// uc.put("Name", name);
-		// uc.put("Email", email);
-		// uc.put("Password", password);
 		uc.put("Count", count);
 
 		mDb.update(TableCity, uc, "ID =" + id, null);
 	}
 
-	// ///////////////////////////////////////////////////
 	public Province getProvinceById(int id) {
 		Province item = null;
 		Cursor mCur = mDb.query(TableCity, Province, " Id=?",
@@ -2623,7 +2341,6 @@ public class DataBaseAdapter {
 
 		if (mCur.moveToNext()) {
 			item = CursorToProvince(mCur);
-
 		}
 
 		return item;
@@ -2698,19 +2415,6 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	// ////////////////////////////////////////////////////////
-	// public int NumOfNewLikeInObject1() {
-	// int res = 0;
-	// Cursor cu = mDb.rawQuery("Select count(*) as co from "
-	// + TableObject + " WHERE Seen=0", null);
-	// if (cu.moveToNext()) {
-	// res = cu.getInt(0);
-	// }
-	// return res;
-	// }
-	// //////////////////////////////////////////////////////////
-
-	// ////////////////////////////////////////////////////////
 	public int NumOfNewLikeInObject1(int userId) {
 		int res = 0;
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
@@ -2722,8 +2426,6 @@ public class DataBaseAdapter {
 		}
 		return res;
 	}
-
-	// //////////////////////////////////////////////////////////
 
 	public int NumOfNewCmtInObject(int userId) {
 		int res = 0;
@@ -2835,7 +2537,6 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	// //////////////////////////////////////////////////////////////
 	public void updatecmseentodb(int seen, int userId) {
 
 		ContentValues uc = new ContentValues();
@@ -2872,7 +2573,6 @@ public class DataBaseAdapter {
 
 	}
 
-	// ////////////////////////////////////////////////////////////////////
 	public void updatecmobjectseentodb(int seen, int userId) {
 
 		ContentValues uc = new ContentValues();
@@ -2922,12 +2622,6 @@ public class DataBaseAdapter {
 
 		ArrayList<CommentInObject> result = new ArrayList<CommentInObject>();
 		CommentInObject item = null;
-
-		/*
-		 * Cursor tCur = mDb.rawQuery("Select FroumId From " +
-		 * TableCommentInFroum + " Where FroumId=" +String.valueOf(Froumid),null
-		 * );
-		 */
 
 		Cursor mCur = mDb.query(
 				TableCommentInObject,
@@ -3012,17 +2706,17 @@ public class DataBaseAdapter {
 				Log.d("test", ex.getMessage());
 			}
 		}
-		// if (startModifyDate != null && !"".equals(startModifyDate)) {
-		// ContentValues cv2 = new ContentValues();
-		// cv2.put("ServerDate_Start_" + tableName, startModifyDate);
-		// mDb.update(TableSettings, cv2, null, null);
-		// }
-		//
-		// if (endModifyDate != null && !"".equals(endModifyDate)) {
-		// ContentValues cv2 = new ContentValues();
-		// cv2.put("ServerDate_End_" + tableName, endModifyDate);
-		// mDb.update(TableSettings, cv2, null, null);
-		// }
+		if (startModifyDate != null && !"".equals(startModifyDate)) {
+			ContentValues cv2 = new ContentValues();
+			cv2.put("ServerDate_Start_" + tableName, startModifyDate);
+			mDb.update(TableSettings, cv2, null, null);
+		}
+
+		if (endModifyDate != null && !"".equals(endModifyDate)) {
+			ContentValues cv2 = new ContentValues();
+			cv2.put("ServerDate_End_" + tableName, endModifyDate);
+			mDb.update(TableSettings, cv2, null, null);
+		}
 	}
 
 	public Settings getSettings() {
@@ -3035,10 +2729,60 @@ public class DataBaseAdapter {
 
 	}
 
-	public void setServerDate(String tableNameFiled, String value) {
-		ContentValues cv = new ContentValues();
-		cv.put(tableNameFiled, value);
-		mDb.update(TableSettings, cv, null, null);
+	public void setServerDateMaster(String start, String end) {
+		if (!"".equals(start) && start != null) {
+
+			ContentValues cv = new ContentValues();
+			String[] startDate = start.split(Pattern.quote("-"));
+			String[] endDate = end.split(Pattern.quote("-"));
+
+			cv.put("ServerDate_Start_Anad", startDate[0]);
+			cv.put("ServerDate_Start_Froum", startDate[1]);
+			cv.put("ServerDate_Start_News", startDate[2]);
+			cv.put("ServerDate_Start_Object", startDate[3]);
+			cv.put("ServerDate_Start_Paper", startDate[4]);
+			cv.put("ServerDate_Start_Ticket", startDate[5]);
+			cv.put("ServerDate_Start_Users", startDate[6]);
+
+			cv.put("ServerDate_End_Anad", endDate[0]);
+			cv.put("ServerDate_End_Froum", endDate[1]);
+			cv.put("ServerDate_End_News", endDate[2]);
+			cv.put("ServerDate_End_Object", endDate[3]);
+			cv.put("ServerDate_End_Paper", endDate[4]);
+			cv.put("ServerDate_End_Ticket", endDate[5]);
+			cv.put("ServerDate_End_Users", endDate[6]);
+
+			mDb.update(TableSettings, cv, null, null);
+		}
+	}
+
+	public void setServerDateDetail(String start, String end) {
+		if (!"".equals(start) && start != null) {
+
+			ContentValues cv = new ContentValues();
+			String[] startDate = start.split(Pattern.quote("-"));
+			String[] endDate = end.split(Pattern.quote("-"));
+
+			cv.put("ServerDate_Start_CmtInPaper", startDate[0]);
+			cv.put("ServerDate_Start_CommentInFroum", startDate[1]);
+			cv.put("ServerDate_Start_CommentInObject", startDate[2]);
+			cv.put("ServerDate_Start_LikeInFroum", startDate[3]);
+			cv.put("ServerDate_Start_LikeInObject", startDate[4]);
+			cv.put("ServerDate_Start_LikeInPaper", startDate[5]);
+			cv.put("ServerDate_Start_LikeInComment", startDate[6]);
+			cv.put("ServerDate_Start_LikeInCommentObject", endDate[7]);
+
+			cv.put("ServerDate_End_CmtInPaper", endDate[0]);
+			cv.put("ServerDate_End_CommentInFroum", endDate[1]);
+			cv.put("ServerDate_End_CommentInObject", endDate[2]);
+			cv.put("ServerDate_End_LikeInFroum", endDate[3]);
+			cv.put("ServerDate_End_LikeInObject", endDate[4]);
+			cv.put("ServerDate_End_LikeInPaper", endDate[5]);
+			cv.put("ServerDate_End_LikeInComment", endDate[6]);
+			cv.put("ServerDate_End_LikeInCommentObject", endDate[7]);
+
+			mDb.update(TableSettings, cv, null, null);
+		}
 	}
 
 	public void UpdateUserImage(int userId, byte[] image, String fromDate) {
@@ -3141,8 +2885,7 @@ public class DataBaseAdapter {
 		uc.put("CommentId", CommentId);
 		uc.put("IsLike", ISLike);
 
-		long res = mDb.insert(TableLikeInComment, null, uc);
-		long res2 = res;
+		mDb.insert(TableLikeInComment, null, uc);
 	}
 
 	public Integer NumberOfLikeOrDisLikeFroum(int commentID, int isLike) {
@@ -3257,8 +3000,7 @@ public class DataBaseAdapter {
 		uc.put("CommentId", CommentId);
 		uc.put("IsLike", ISLike);
 
-		long res = mDb.insert(TableLikeInCommentObject, null, uc);
-		long res2 = res;
+		mDb.insert(TableLikeInCommentObject, null, uc);
 	}
 
 	public boolean isUserLikedCommentBrandPage(int userId, int CommentId,

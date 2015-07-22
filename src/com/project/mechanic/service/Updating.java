@@ -54,14 +54,8 @@ public class Updating extends AsyncTask<String, Integer, String> {
 			request.addProperty(pi);
 
 			pi = new PropertyInfo();
-			pi.setName("from");
+			pi.setName("endDate");
 			pi.setValue(arg0[2]);
-			pi.setType(String.class);
-			request.addProperty(pi);
-
-			pi = new PropertyInfo();
-			pi.setName("to");
-			pi.setValue(arg0[3]);
 			pi.setType(String.class);
 			request.addProperty(pi);
 
