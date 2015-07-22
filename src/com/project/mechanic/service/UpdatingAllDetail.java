@@ -50,16 +50,11 @@ public class UpdatingAllDetail extends AsyncTask<String, Integer, String> {
 			request.addProperty(pi);
 
 			pi = new PropertyInfo();
-			pi.setName("from");
+			pi.setName("endDate");
 			pi.setValue(arg0[1]);
 			pi.setType(Integer.class);
 			request.addProperty(pi);
 
-			pi = new PropertyInfo();
-			pi.setName("to");
-			pi.setValue(arg0[2]);
-			pi.setType(Integer.class);
-			request.addProperty(pi);
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 					SoapEnvelope.VER11);
 			envelope.dotNet = true;

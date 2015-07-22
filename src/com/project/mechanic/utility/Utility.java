@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -71,8 +70,6 @@ public class Utility implements AsyncInterface {
 	static boolean flag = false;
 	static boolean flag2 = false;
 	int state = 0;
-	public static final int NUMBER_OF_RECORD_RECEIVED = 5;
-	public static final int NUMBER_OF_RECORD_RECEIVED_D = 20;
 	ServerDate date;
 
 	public Utility(Context context) {
@@ -310,7 +307,7 @@ public class Utility implements AsyncInterface {
 				String endModifyDate = strs[3];
 				int row = 0;
 				String[][] values = new String[strs.length - 2][];
-				for (int j = 3; j < strs.length; j++, row++) {
+				for (int j = 4; j < strs.length; j++, row++) {
 					values[row] = strs[j].split(Pattern.quote("^^^"));
 					flag = true;
 				}
@@ -324,25 +321,13 @@ public class Utility implements AsyncInterface {
 		}
 	}
 
-	public String getCuurentDateTime() {
-		java.text.DateFormat dateFormat = new SimpleDateFormat(
-				"yyyy/MM/dd HH:mm:ss");
-		Date date = new Date();
-
-		return dateFormat.format(date);
-
-	}
-
 	public static boolean isAppRunning(Context context) {
-		// check with the first task(task in the foreground)
-		// in the returned list of tasks
 		ActivityManager activityManager = (ActivityManager) context
 				.getSystemService(Context.ACTIVITY_SERVICE);
 		List<RunningTaskInfo> services = activityManager
 				.getRunningTasks(Integer.MAX_VALUE);
 		if (services.get(0).topActivity.getPackageName().toString()
 				.equalsIgnoreCase(context.getPackageName().toString())) {
-			// your application is running in the background
 			return true;
 		}
 		return false;
@@ -418,13 +403,9 @@ public class Utility implements AsyncInterface {
 	public void processFinish(String output) {
 
 		if (output != null
-				&& !(output.contains("Exception") || output.contains("java") || output
-						.contains("SoapFault"))) {
-			SharedPreferences pref = context.getSharedPreferences("update", 0);
-			SharedPreferences.Editor editor = pref.edit();
-			int from = pref.getInt("fromM", 0);
-			int to = pref.getInt("toM", 0);
-
+				&& !(output.contains("Exception") || output.contains("anyType")
+						|| output.contains("java") || output
+							.contains("SoapFault"))) {
 			switch (state) {
 
 			case 0: // return date
@@ -432,50 +413,127 @@ public class Utility implements AsyncInterface {
 				serviceUpdate.delegate = this;
 				if (settings == null)
 					settings = new Settings();
-				String mDatesMaster = "";
-				// String mDatesMaster = settings.getServerDate_Anad() + "-"
-				// + settings.getServerDate_Froum() + "-" + "-"
-				// + settings.getServerDate_News() + "-"
-				// + settings.getServerDate_Object() + "-"
-				// + settings.getServerDate_Paper() + "-"
-				// + settings.getServerDate_Ticket() + "-"
-				// + settings.getServerDate_Users() + "-";
+				String mStartDatesMaster = "";
+				String mEndDatesMaster = "";
+				mStartDatesMaster = (settings.getServerDate_Start_Anad() != null ? settings
+						.getServerDate_Start_Anad() : "")
+						+ "-"
+						+ (settings.getServerDate_Start_Froum() != null ? settings
+								.getServerDate_Start_Froum() : "")
+						+ "-"
+						+ (settings.getServerDate_Start_News() != null ? settings
+								.getServerDate_Start_News() : "")
+						+ "-"
+						+ (settings.getServerDate_Start_Object() != null ? settings
+								.getServerDate_Start_Object() : "")
+						+ "-"
+						+ (settings.getServerDate_Start_Paper() != null ? settings
+								.getServerDate_Start_Paper() : "")
+						+ "-"
+						+ (settings.getServerDate_Start_Ticket() != null ? settings
+								.getServerDate_Start_Ticket() : "")
+						+ "-"
+						+ (settings.getServerDate_Start_Users() != null ? settings
+								.getServerDate_Start_Users() : "") + "-";
 
-				serviceUpdate.execute(mDatesMaster, String.valueOf(from),
-						String.valueOf(to));
+				mEndDatesMaster = (settings.getServerDate_End_Anad() != null ? settings
+						.getServerDate_End_Anad() : "")
+						+ "-"
+						+ (settings.getServerDate_End_Froum() != null ? settings
+								.getServerDate_End_Froum() : "")
+						+ "-"
+						+ (settings.getServerDate_End_News() != null ? settings
+								.getServerDate_End_News() : "")
+						+ "-"
+						+ (settings.getServerDate_End_Object() != null ? settings
+								.getServerDate_End_Object() : "")
+						+ "-"
+						+ (settings.getServerDate_End_Paper() != null ? settings
+								.getServerDate_End_Paper() : "")
+						+ "-"
+						+ (settings.getServerDate_End_Ticket() != null ? settings
+								.getServerDate_End_Ticket() : "")
+						+ "-"
+						+ (settings.getServerDate_End_Users() != null ? settings
+								.getServerDate_End_Users() : "") + "-";
+
+				serviceUpdate.execute(mStartDatesMaster, mEndDatesMaster);
 				flag = true;
-				editor.putInt("fromM", from + NUMBER_OF_RECORD_RECEIVED);
-				editor.putInt("toM", to + NUMBER_OF_RECORD_RECEIVED);
-
-				adapter.open();
-				// adapter.setServerDate("ServerDate_Users", output);
-				adapter.close();
-				editor.commit();
+				// adapter.open();
+				// adapter.setServerDateMaster(mStartDatesMaster,
+				// mEndDatesMaster);
+				// adapter.close();
 				state = 1;
 				break;
 			case 1: // master
 				parseQuery(output);
-				from = pref.getInt("fromD", 0);
-				to = pref.getInt("toD", 0);
 				if (settings == null)
 					settings = new Settings();
 
-				String mDatesDetail = "";
-				// String mDatesDetail = settings.getServerDate_CmtInPaper() +
-				// "-"
-				// + settings.getServerDate_CommentInFroum() + "-"
-				// + settings.getServerDate_CommentInObject() + "-"
-				// + settings.getServerDate_LikeInFroum() + "-"
-				// + settings.getServerDate_LikeInObject() + "-"
-				// + settings.getServerDate_LikeInPaper() + "-";
+				String mStartDatesDetail = "";
+				String mEndDatesDetail = "";
+				mStartDatesDetail = (settings.getServerDate_Start_CmtInPaper() != null ? settings
+						.getServerDate_Start_CmtInPaper() : "")
+						+ "-"
+						+ (settings.getServerDate_Start_CommentInFroum() != null ? settings
+								.getServerDate_Start_CommentInFroum() : "")
+						+ "-"
+						+ (settings.getServerDate_Start_CommentInObject() != null ? settings
+								.getServerDate_Start_CommentInObject() : "")
+						+ "-"
+						+ (settings.getServerDate_Start_LikeInFroum() != null ? settings
+								.getServerDate_Start_LikeInFroum() : "")
+						+ "-"
+						+ (settings.getServerDate_Start_LikeInObject() != null ? settings
+								.getServerDate_Start_LikeInObject() : "")
+						+ "-"
+						+ (settings.getServerDate_Start_LikeInPaper() != null ? settings
+								.getServerDate_Start_LikeInPaper() : "")
+						+ "-"
+						+ (settings.getServerDate_Start_LikeInComment() != null ? settings
+								.getServerDate_Start_LikeInComment() : "")
+						+ "-"
+						+ (settings.getServerDate_Start_LikeInCommentObject() != null ? settings
+								.getServerDate_Start_LikeInCommentObject() : "")
+						+ "-";
+
+				mEndDatesDetail = settings.getServerDate_End_CmtInPaper() != null ? settings
+						.getServerDate_End_CmtInPaper()
+						: ""
+								+ "-"
+								+ (settings.getServerDate_End_CommentInFroum() != null ? settings
+										.getServerDate_End_CommentInFroum()
+										: "")
+								+ "-"
+								+ (settings.getServerDate_End_CommentInObject() != null ? settings
+										.getServerDate_End_CommentInObject()
+										: "")
+								+ "-"
+								+ (settings.getServerDate_End_LikeInFroum() != null ? settings
+										.getServerDate_End_LikeInFroum() : "")
+								+ "-"
+								+ (settings.getServerDate_End_LikeInObject() != null ? settings
+										.getServerDate_End_LikeInObject() : "")
+								+ "-"
+								+ (settings.getServerDate_End_LikeInPaper() != null ? settings
+										.getServerDate_End_LikeInPaper() : "")
+								+ "-"
+								+ (settings.getServerDate_End_LikeInComment() != null ? settings
+										.getServerDate_End_LikeInComment() : "")
+								+ "-"
+								+ (settings
+										.getServerDate_End_LikeInCommentObject() != null ? settings
+										.getServerDate_End_LikeInCommentObject()
+										: "") + "-";
+
 				serviceUpdateD = new UpdatingAllDetail(context);
 				serviceUpdateD.delegate = this;
-				serviceUpdateD.execute(mDatesDetail, String.valueOf(from),
-						String.valueOf(to));
+				serviceUpdateD.execute(mStartDatesDetail, mEndDatesDetail);
+				// adapter.open();
+				// adapter.setServerDateDetail(mStartDatesDetail,
+				// mEndDatesDetail);
+				// adapter.close();
 
-				editor.putInt("fromD", from + NUMBER_OF_RECORD_RECEIVED_D);
-				editor.putInt("toD", to + NUMBER_OF_RECORD_RECEIVED_D);
-				editor.apply();
 				state = 2;
 				break;
 			case 2: // detail

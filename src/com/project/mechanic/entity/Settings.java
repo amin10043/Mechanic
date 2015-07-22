@@ -158,7 +158,7 @@ public class Settings {
 		return ServerDate_End_Ticket;
 	}
 
-	public void setServerDate_End_Ticket(String serverDate_End_Ticket) {
+	public void getServerDate_End_Ticket(String serverDate_End_Ticket) {
 		ServerDate_End_Ticket = serverDate_End_Ticket;
 	}
 
