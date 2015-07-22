@@ -48,4 +48,9 @@ public class BerandFragment extends Fragment {
 
 		return view;
 	}
+
+	public int getCurrentId() {
+		return id;
+	}
+
 }

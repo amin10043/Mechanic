@@ -33,7 +33,7 @@ public class ObjectFragment extends Fragment {
 	Utility util;
 	DialogCreatePage dialog;
 	ListView lstObject;
-	int city_id , m;
+	int city_id, m;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -66,7 +66,8 @@ public class ObjectFragment extends Fragment {
 			ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(id,
 					city_id);
 			ObjectListAdapter ListAdapter = new ObjectListAdapter(
-					getActivity(), R.layout.row_object, mylist , ObjectFragment.this);
+					getActivity(), R.layout.row_object, mylist,
+					ObjectFragment.this);
 			lstObject.setAdapter(ListAdapter);
 
 		} else {
@@ -79,7 +80,8 @@ public class ObjectFragment extends Fragment {
 			ArrayList<Object> mylist = adapter.subBrandObject(brand, city_id);
 
 			ObjectListAdapter ListAdapter = new ObjectListAdapter(
-					getActivity(), R.layout.row_object, mylist , ObjectFragment.this);
+					getActivity(), R.layout.row_object, mylist,
+					ObjectFragment.this);
 			lstObject.setAdapter(ListAdapter);
 
 		}
@@ -163,20 +165,21 @@ public class ObjectFragment extends Fragment {
 
 		return view;
 	}
-	
+
 	public void UpdateList() {
 		adapter.open();
-		
-		ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(m,
-				city_id);
-		ObjectListAdapter ListAdapter = new ObjectListAdapter(
-				getActivity(), R.layout.row_object, mylist , ObjectFragment.this);
+
+		ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(m, city_id);
+		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(),
+				R.layout.row_object, mylist, ObjectFragment.this);
 		lstObject.setAdapter(ListAdapter);
 
 		ListAdapter.notifyDataSetChanged();
 
-
 		adapter.close();
 	}
 
+	public int getCityId() {
+		return city_id;
+	}
 }

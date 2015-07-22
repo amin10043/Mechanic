@@ -33,13 +33,6 @@ public class MainBrandFragment extends Fragment {
 	DialogCreatePage dialog;
 	ListView lstObject;
 
-	// List<Object> objectList = null;
-
-	// public MainBrandFragment(List<Object> allob) {
-	// super();
-	// objectList = allob;
-	// }
-
 	public MainBrandFragment() {
 		super();
 	}
@@ -161,5 +154,9 @@ public class MainBrandFragment extends Fragment {
 		lstObject.setAdapter(ListAdapter);
 
 		adapter.close();
+	}
+
+	public int getParentId() {
+		return parentId;
 	}
 }

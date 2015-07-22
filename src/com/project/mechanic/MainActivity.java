@@ -24,7 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.adapter.SlideMenuAdapter;
+import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.CommentInFroum;
+import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.AdvisorTypeFragment;
 import com.project.mechanic.fragment.BerandFragment;
@@ -414,26 +416,81 @@ public class MainActivity extends FragmentActivity {
 			} else if (f instanceof BerandFragment) {
 				trans.setCustomAnimations(R.anim.push_out_right,
 						R.anim.pull_in_left);
-				trans.replace(R.id.content_frame, new MainFragment());
+				int Id = ((BerandFragment) f).getCurrentId();
+				adapter.open();
+				ListItem li = adapter.getListItemById(Id);
+				int parentId = li.getListId();
+				if (parentId <= 0) {
+					trans.replace(R.id.content_frame, new MainFragment());
+				} else {
+					BerandFragment bf = new BerandFragment();
+					Bundle b = new Bundle();
+					b.putInt("Id", parentId);
+					bf.setArguments(b);
+					trans.replace(R.id.content_frame, bf);
+				}
+				adapter.close();
+
 				trans.commit();
 			} else if (f instanceof MainBrandFragment) {
 				trans.setCustomAnimations(R.anim.push_out_right,
 						R.anim.pull_in_left);
+				int parentID = ((MainBrandFragment) f).getParentId();
+				adapter.open();
+				int jadID = adapter.getListItemById(parentID).getListId();
+				adapter.close();
+
 				BerandFragment fragment = new BerandFragment();
-				// Bundle b = new Bundle();
-				// b.putString("Id", "1");
-				// fragment.setArguments(b);
+				Bundle b = new Bundle();
+				b.putString("Id", String.valueOf(jadID));
+				fragment.setArguments(b);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
 			} else if (f instanceof IntroductionFragment) {
+				int objId = ((IntroductionFragment) f).getObjectId();
+
 				trans.setCustomAnimations(R.anim.push_out_right,
 						R.anim.pull_in_left);
-				trans.replace(R.id.content_frame, new MainBrandFragment());
+				adapter.open();
+				com.project.mechanic.entity.Object o = adapter
+						.getObjectbyid(objId);
+				adapter.close();
+				if (o.getObjectBrandTypeId() == 0) {
+
+					MainBrandFragment mf = new MainBrandFragment();
+					Bundle b = new Bundle();
+					b.putString("Id", String.valueOf(o.getParentId()));
+					mf.setArguments(b);
+					trans.replace(R.id.content_frame, mf);
+
+				} else {
+					BerandFragment bf = new BerandFragment();
+					Bundle b = new Bundle();
+					b.putString("Id", String.valueOf(o.getParentId()));
+					bf.setArguments(b);
+					trans.replace(R.id.content_frame, bf);
+				}
 				trans.commit();
+
 			} else if (f instanceof ProvinceFragment) {
+
 				trans.setCustomAnimations(R.anim.push_out_right,
 						R.anim.pull_in_left);
-				trans.replace(R.id.content_frame, new MainFragment());
+				final SharedPreferences pageId = getSharedPreferences("Id", 0);
+				int res = pageId.getInt("IsAgency", -1);
+				switch (res) {
+				case 0:
+					trans.replace(R.id.content_frame, new MainFragment());
+					break;
+				case 1:
+					trans.replace(R.id.content_frame,
+							new IntroductionFragment());
+					break;
+				case -1:
+					Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show();
+					break;
+				}
+
 				trans.commit();
 			} else if (f instanceof Province2Fragment) {
 				trans.setCustomAnimations(R.anim.push_out_right,
@@ -463,7 +520,14 @@ public class MainActivity extends FragmentActivity {
 			} else if (f instanceof ObjectFragment) {
 				trans.setCustomAnimations(R.anim.push_out_right,
 						R.anim.pull_in_left);
-				trans.replace(R.id.content_frame, new CityFragment());
+				int cityId = ((ObjectFragment) f).getCityId();
+				adapter.open();
+				City c = adapter.getCityById(cityId);
+				List<City> allCity = adapter.getCitysByProvinceId(c
+						.getProvinceId());
+				CityFragment cf = new CityFragment(allCity);
+				adapter.close();
+				trans.replace(R.id.content_frame, cf);
 				trans.commit();
 			} else if (f instanceof AdvisorTypeFragment) {
 				trans.setCustomAnimations(R.anim.push_out_right,
