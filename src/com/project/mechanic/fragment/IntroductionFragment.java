@@ -84,7 +84,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	ImageView headerImage, advertise2, profileImage;
 	ImageButton Facebook, Instagram, LinkedIn, Google, Site, Twitter, Pdf1,
-			Pdf2, Pdf3, Pdf4,    EditPage, shareBtn;
+			Pdf2, Pdf3, Pdf4, EditPage, shareBtn;
 	Object object;
 	byte[] headerbyte, profilebyte, footerbyte;
 
@@ -99,8 +99,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	String serverDate = "";
 	ServerDate date;
 	boolean flag;
-	
-	RelativeLayout phone , cphone , email , map  ;
+
+	RelativeLayout phone, cphone, email, map;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -112,7 +112,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		adapter = new DataBaseAdapter(getActivity());
 		ut = new Utility(getActivity());
-		
+
 		header = getActivity().getLayoutInflater().inflate(
 				R.layout.header_introduction, null);
 		CurrentUser = ut.getCurrentUser();
@@ -406,7 +406,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			// this view is created for check active or inactive introduction
 			// page
 
-//			return t;
+			// return t;
 
 		}
 
@@ -813,13 +813,11 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new ProvinceFragment());
 				trans.commit();
-				Toast.makeText(getActivity(), "brand id = " + object.getId(), 0)
-						.show();
 				pageId.edit().putInt("brandID", object.getId()).commit();
+				pageId.edit().putInt("IsAgency", 1).commit();
 				pageId.edit()
 						.putInt("main object id", object.getMainObjectId())
 						.commit();
-
 			}
 		});
 
@@ -1274,4 +1272,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		}
 	}
 
+	public int getObjectId() {
+		return ObjectID;
+	}
 }

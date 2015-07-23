@@ -737,6 +737,20 @@ public class DataBaseAdapter {
 
 	}
 
+	public ListItem getListItemById(int ListId) {
+
+		ListItem item = null;
+		Cursor mCur = mDb.query("ListItem", ListItem, "Id=?",
+				new String[] { String.valueOf(ListId) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToListItem(mCur);
+		}
+
+		return item;
+
+	}
+
 	public ArrayList<Anad> getAnadById(int ProvinceId) {
 
 		ArrayList<Anad> result = new ArrayList<Anad>();

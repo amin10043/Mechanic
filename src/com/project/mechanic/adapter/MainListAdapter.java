@@ -146,6 +146,9 @@ public class MainListAdapter extends ArrayAdapter<ListItem> {
 							.getSupportFragmentManager().beginTransaction();
 					trans.setCustomAnimations(R.anim.pull_in_left,
 							R.anim.push_out_right);
+					final SharedPreferences pageId = context
+							.getSharedPreferences("Id", 0);
+					pageId.edit().putInt("IsAgency", 0).commit();
 					Fragment ostan = new ProvinceFragment();
 					trans.addToBackStack(null);
 					trans.replace(R.id.content_frame, ostan);
