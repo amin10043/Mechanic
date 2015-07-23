@@ -38,14 +38,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <com.project.mechanic.ListView.PullAndLoadListView
+        <ListView
             android:id="@+id/lstComment"
             style="@style/second_item_style"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/headerTitleArticle"
             android:dividerHeight="10dp" >
-        </com.project.mechanic.ListView.PullAndLoadListView>
+        </ListView>
 
         <com.project.mechanic.Action.FloatingActionButton
             android:id="@+id/fab"
