@@ -9,7 +9,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.project.mechanic.inter.AsyncInterface;
-import com.project.mechanic.utility.Utility;
 
 //import org.ksoap2.transport.HttpTransportSE;
 //import org.ksoap2.transport.HttpTransportSE;
@@ -25,16 +24,10 @@ public class Updating extends AsyncTask<String, Integer, String> {
 	public final String SOAP_ADDRESS = "http://srv.mechanical0098.com/MyService.asmx";
 
 	public String response = "";
-	private Context context;
-	private Utility util;
-
-	// private Context context;
 
 	public AsyncInterface delegate = null;
 
 	public Updating(Context context) {
-		this.context = context;
-		util = new Utility(context);
 	}
 
 	@Override
@@ -57,6 +50,12 @@ public class Updating extends AsyncTask<String, Integer, String> {
 			pi.setName("endDate");
 			pi.setValue(arg0[2]);
 			pi.setType(String.class);
+			request.addProperty(pi);
+
+			pi = new PropertyInfo();
+			pi.setName("isRefresh");
+			pi.setValue(arg0[3]);
+			pi.setType(Integer.class);
 			request.addProperty(pi);
 
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
