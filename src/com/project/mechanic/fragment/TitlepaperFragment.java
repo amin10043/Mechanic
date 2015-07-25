@@ -9,12 +9,13 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -59,9 +60,9 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 	ServiceComm service;
 	Updating updating;
 	Settings setting;
-	View headerMore, footerMore;
+	// View headerMore, footerMore;
 	ProgressDialog ringProgressDialog;
-
+	SwipeRefreshLayout swipeLayout;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -101,14 +102,38 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 
 		lst = (ListView) view.findViewById(R.id.lstComment);
 
-		headerMore = getActivity().getLayoutInflater().inflate(
-				R.layout.header_load_more, null);
-
-		footerMore = getActivity().getLayoutInflater().inflate(
-				R.layout.footer_load_more, null);
+		// headerMore = getActivity().getLayoutInflater().inflate(
+		// R.layout.header_load_more, null);
+		//
+		// footerMore = getActivity().getLayoutInflater().inflate(
+		// R.layout.footer_load_more, null);
 
 		final FloatingActionButton action = (FloatingActionButton) view
 				.findViewById(R.id.fab);
+
+		swipeLayout = (SwipeRefreshLayout) view
+				.findViewById(R.id.swipe_container);
+		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
+
+			@Override
+			public void onRefresh() {
+				updating = new Updating(getActivity());
+				updating.delegate = TitlepaperFragment.this;
+				String[] params = new String[4];
+				params[0] = "Paper";
+				params[1] = setting.getServerDate_Start_Paper() != null ? setting
+						.getServerDate_Start_Paper() : "";
+				params[2] = setting.getServerDate_End_Paper() != null ? setting
+						.getServerDate_End_Paper() : "";
+
+				updating.execute(params);
+			}
+		});
+		swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+				android.R.color.holo_green_light,
+				android.R.color.holo_orange_light,
+				android.R.color.holo_red_light);
+
 		action.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -153,16 +178,16 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 		ListAdapter = new PapertitleListAdapter(getActivity(),
 				R.layout.raw_froumtitle, mylist, TitlepaperFragment.this);
 
-		lst.addHeaderView(headerMore);
-		lst.addFooterView(footerMore);
-		//
-		headerMore.setVisibility(View.GONE);
-		footerMore.setVisibility(View.GONE);
+		// lst.addHeaderView(headerMore);
+		// lst.addFooterView(footerMore);
+		// //
+		// headerMore.setVisibility(View.GONE);
+		// footerMore.setVisibility(View.GONE);
 
 		lst.setAdapter(ListAdapter);
 
 		int countList = ListAdapter.getCount();
-		Toast.makeText(getActivity(), "count = " + countList, 0).show();
+		Toast.makeText(getActivity(), "تعداد مقالات = " + countList, 0).show();
 
 		lst.setOnScrollListener(new OnScrollListener() {
 
@@ -193,49 +218,49 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 				int lastInScreen = firstVisibleItem + visibleItemCount;
 
 				if (mLastFirstVisibleItem < firstVisibleItem) {
-//					Toast.makeText(getActivity(), "down", 0).show();
+					// Toast.makeText(getActivity(), "down", 0).show();
 					Log.i("SCROLLING DOWN", "TRUE");
 				}
 				if (mLastFirstVisibleItem > firstVisibleItem) {
-//					Toast.makeText(getActivity(), "up", 0).show();
+					// Toast.makeText(getActivity(), "up", 0).show();
 
 					Log.i("SCROLLING UP", "TRUE");
 				}
 				mLastFirstVisibleItem = firstVisibleItem;
 
-				if ((lastInScreen == totalItemCount)) {
-					footerMore.setVisibility(View.VISIBLE);
-				}
-				if (lst.getFirstVisiblePosition() == visibleItemCount) {
-					headerMore.setVisibility(View.VISIBLE);
-
-				}
+				// if ((lastInScreen == totalItemCount)) {
+				// footerMore.setVisibility(View.VISIBLE);
+				// }
+				// if (lst.getFirstVisiblePosition() == visibleItemCount) {
+				// headerMore.setVisibility(View.VISIBLE);
+				//
+				// }
 			}
 		});
 
-		Button otherBtn = (Button) footerMore.findViewById(R.id.otherBtn);
+		// Button otherBtn = (Button) footerMore.findViewById(R.id.otherBtn);
 
-		otherBtn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				updating = new Updating(getActivity());
-				updating.delegate = TitlepaperFragment.this;
-				String[] params = new String[4];
-				params[0] = "Paper";
-				params[1] = setting.getServerDate_Start_Paper() != null ? setting
-						.getServerDate_Start_Paper() : "";
-				params[2] = setting.getServerDate_End_Paper() != null ? setting
-						.getServerDate_End_Paper() : "";
-
-				updating.execute(params);
-				
-				ringProgressDialog = ProgressDialog.show(getActivity(), "",
-						"لطفا منتظر بمانید...", true);
-
-			}
-		});
+		// otherBtn.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		//
+		// updating = new Updating(getActivity());
+		// updating.delegate = TitlepaperFragment.this;
+		// String[] params = new String[4];
+		// params[0] = "Paper";
+		// params[1] = setting.getServerDate_Start_Paper() != null ? setting
+		// .getServerDate_Start_Paper() : "";
+		// params[2] = setting.getServerDate_End_Paper() != null ? setting
+		// .getServerDate_End_Paper() : "";
+		//
+		// updating.execute(params);
+		//
+		// ringProgressDialog = ProgressDialog.show(getActivity(), "",
+		// "لطفا منتظر بمانید...", true);
+		//
+		// }
+		// });
 
 		// lst.setOnScrollListener(new OnScrollListener() {
 		//
@@ -492,21 +517,28 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 				&& !(output.contains("Exception") || output.contains("java")
 						|| output.contains("SoapFault") || output
 							.contains("anyType"))) {
+
 			utility.parseQuery(output);
 			mylist.clear();
 			mdb.open();
 			mylist.addAll(mdb.getAllPaper());
 			mdb.close();
 
-					
 			ListAdapter = new PapertitleListAdapter(getActivity(),
 					R.layout.raw_froumtitle, mylist, TitlepaperFragment.this);
 			lst.setAdapter(ListAdapter);
 			ListAdapter.notifyDataSetChanged();
-			if (ringProgressDialog != null) {
-				ringProgressDialog.dismiss();
-			}
 
+			if (swipeLayout != null) {
+
+				swipeLayout.setRefreshing(false);
+				// if (ringProgressDialog != null) {
+				// ringProgressDialog.dismiss();
+			}
+			int countList = ListAdapter.getCount();
+
+			Toast.makeText(getActivity(), "به روز رسانی با موفقیت انجام شد \n  تعداد مقالات  = " + countList , Toast.LENGTH_LONG)
+					.show();
 
 		}
 	}
