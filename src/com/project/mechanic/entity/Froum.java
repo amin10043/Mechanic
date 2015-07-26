@@ -102,6 +102,11 @@ public class Froum implements Comparable<Froum> {
 	public int compareTo(Froum compareFroum) {
 		long temp = Long.valueOf(getDate());
 		Long comparetemp = Long.valueOf(compareFroum.getDate());
-		return (int) (comparetemp - temp);
+		if (comparetemp > temp)
+			return 1;
+		else if (comparetemp < temp)
+			return -1;
+		else
+			return 0;
 	}
 }
