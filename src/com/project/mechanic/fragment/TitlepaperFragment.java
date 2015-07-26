@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -46,7 +45,6 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 	ArrayList<Paper> mylist;
 	List<Paper> subList;
 	List<Paper> tempList;
-	// PullAndLoadListView lstNews;
 	int i = 0, j = 9;
 	ListView lst;
 	PapertitleListAdapter ListAdapter;
@@ -58,7 +56,6 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 	ServiceComm service;
 	Updating updating;
 	Settings setting;
-	// View headerMore, footerMore;
 	ProgressDialog ringProgressDialog;
 	SwipeRefreshLayout swipeLayout;
 
@@ -100,12 +97,6 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 		// for Missed IDS
 
 		lst = (ListView) view.findViewById(R.id.lstComment);
-
-		// headerMore = getActivity().getLayoutInflater().inflate(
-		// R.layout.header_load_more, null);
-		//
-		// footerMore = getActivity().getLayoutInflater().inflate(
-		// R.layout.footer_load_more, null);
 
 		final FloatingActionButton action = (FloatingActionButton) view
 				.findViewById(R.id.fab);
@@ -178,12 +169,6 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 		ListAdapter = new PapertitleListAdapter(getActivity(),
 				R.layout.raw_froumtitle, mylist, TitlepaperFragment.this);
 
-		// lst.addHeaderView(headerMore);
-		// lst.addFooterView(footerMore);
-		// //
-		// headerMore.setVisibility(View.GONE);
-		// footerMore.setVisibility(View.GONE);
-
 		lst.setAdapter(ListAdapter);
 
 		int countList = ListAdapter.getCount();
@@ -195,17 +180,12 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 			public void onScrollStateChanged(AbsListView arg0, int scrollState) {
 				switch (scrollState) {
 				case SCROLL_STATE_TOUCH_SCROLL:
-					// headerMore.setVisibility(View.VISIBLE);
 					action.setVisibility(View.GONE);
-					//
 					break;
-				//
 				case SCROLL_STATE_IDLE:
-					// headerMore.setVisibility(View.GONE);
 					action.setVisibility(View.VISIBLE);
 
 					break;
-				//
 				default:
 					break;
 				}
@@ -218,199 +198,13 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 				int lastInScreen = firstVisibleItem + visibleItemCount;
 
 				if (mLastFirstVisibleItem < firstVisibleItem) {
-					// Toast.makeText(getActivity(), "down", 0).show();
-					Log.i("SCROLLING DOWN", "TRUE");
 				}
 				if (mLastFirstVisibleItem > firstVisibleItem) {
-					// Toast.makeText(getActivity(), "up", 0).show();
-
-					Log.i("SCROLLING UP", "TRUE");
 				}
 				mLastFirstVisibleItem = firstVisibleItem;
-
-				// if ((lastInScreen == totalItemCount)) {
-				// footerMore.setVisibility(View.VISIBLE);
-				// }
-				// if (lst.getFirstVisiblePosition() == visibleItemCount) {
-				// headerMore.setVisibility(View.VISIBLE);
-				//
-				// }
 			}
 		});
 
-		// Button otherBtn = (Button) footerMore.findViewById(R.id.otherBtn);
-
-		// otherBtn.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		//
-		// updating = new Updating(getActivity());
-		// updating.delegate = TitlepaperFragment.this;
-		// String[] params = new String[4];
-		// params[0] = "Paper";
-		// params[1] = setting.getServerDate_Start_Paper() != null ? setting
-		// .getServerDate_Start_Paper() : "";
-		// params[2] = setting.getServerDate_End_Paper() != null ? setting
-		// .getServerDate_End_Paper() : "";
-		// params[3] = "0"; // load more
-		//
-		// updating.execute(params);
-		//
-		// ringProgressDialog = ProgressDialog.show(getActivity(), "",
-		// "لطفا منتظر بمانید...", true);
-		//
-		// }
-		// });
-		// =======
-		// otherBtn.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		//
-		// updating = new Updating(getActivity());
-		// updating.delegate = TitlepaperFragment.this;
-		// String[] params = new String[4];
-		// params[0] = "Paper";
-		// params[1] = setting.getServerDate_Start_Paper() != null ? setting
-		// .getServerDate_Start_Paper() : "";
-		// params[2] = setting.getServerDate_End_Paper() != null ? setting
-		// .getServerDate_End_Paper() : "";
-		//
-		// updating.execute(params);
-		//
-		// ringProgressDialog = ProgressDialog.show(getActivity(), "",
-		// "لطفا منتظر بمانید...", true);
-		//
-		// }
-		// });
-
-		// lst.setOnScrollListener(new OnScrollListener() {
-		//
-		// @Override
-		// public void onScrollStateChanged(AbsListView arg0, int arg1) {
-		//
-		// switch (key) {
-		// case value:
-		//
-		// break;
-		//
-		// default:
-		// break;
-		// }
-		// }
-		//
-		// @Override
-		// public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3)
-		// {
-		// // TODO Auto-generated method stub
-		//
-		// }
-		// })
-		// if (lst.getSelectedItemPosition() == countList)
-		// Toast.makeText(getActivity(), "yes" + countList, 0).show();
-
-		// if (lst != null) {
-		// lst.setOnScrollListener(new OnScrollListener() {
-		//
-		// @Override
-		// public void onScrollStateChanged(AbsListView arg0, int arg1) {
-		// switch (arg1) {
-		// case SCROLL_STATE_FLING:
-		// action.hide(true);
-		//
-		// break;
-		// case SCROLL_STATE_TOUCH_SCROLL: {
-		// action.show(true);
-		// break;
-		// }
-		// }
-		//
-		// }
-		//
-		// @Override
-		// public void onScroll(AbsListView arg0, int arg1, int arg2,
-		// int arg3) {
-		// }
-		// });
-		// }
-
-		// if (mylist != null && !mylist.isEmpty()) {
-
-		// lstNews = (PullAndLoadListView) view.findViewById(R.id.lstComment);
-
-		// lstNews.setAdapter(ListAdapter);
-		// ((PullAndLoadListView) lstNews)
-		// .setOnRefreshListener(new OnRefreshListener() {
-		//
-		// public void onRefresh() {
-		// // Do work to refresh the list here.
-		//
-		// updating = new Updating(getActivity());
-		// updating.delegate = TitlepaperFragment.this;
-		// String[] params = new String[4];
-		// params[0] = "Paper";
-		// // params[1] = setting.getServerDate_Paper() != null
-		// // ? setting
-		// // .getServerDate_Paper() : "";
-		// params[2] = "0";
-		// params[3] = "5";
-		//
-		// updating.execute(params);
-		// // REFRESSH !!!!!
-		// }
-		// });
-		// ((PullAndLoadListView) lstNews)
-		// .setOnLoadMoreListener(new OnLoadMoreListener() {
-		//
-		// public void onLoadMore() {
-		// // Do the work to load more items at the end of list
-		// // here
-		// updating = new Updating(getActivity());
-		// updating.delegate = TitlepaperFragment.this;
-		// String[] params = new String[4];
-		// params[0] = "Paper";
-		// // params[1] = setting.getServerDate_Paper() != null
-		// // ? setting
-		// // .getServerDate_Paper() : "";
-		// params[2] = "0";
-		// params[3] = "5";
-		//
-		// updating.execute(params);
-		//
-		// }
-		// });
-
-		// if (getArguments() != null) {
-
-		// mLastFirstVisibleItem = getArguments().getInt("Froum_List_Id");
-		// lstNews.setSelection(mLastFirstVisibleItem);
-		// }
-		// }
-
-		// if (lstNews != null) {
-		//
-		// lstNews.setOnScrollListener(new OnScrollListener() {
-		//
-		// @Override
-		// public void onScrollStateChanged(AbsListView arg0, int arg1) {
-		// switch (arg1) {
-		// case SCROLL_STATE_FLING:
-		// action.hide(true);
-		// break;
-		// case SCROLL_STATE_TOUCH_SCROLL:
-		// action.show(true);
-		// break;
-		// }
-		//
-		// }
-		//
-		// @Override
-		// public void onScroll(AbsListView arg0, int arg1, int arg2,
-		// int arg3) {
-		// }
-		// });
-		// }
 		return view;
 	}
 
@@ -496,9 +290,6 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 		lst.setAdapter(ListAdapter);
 
 		ListAdapter.notifyDataSetChanged();
-		// lstNews = (PullAndLoadListView) view.findViewById(R.id.lstComment);
-		// lstNews.setAdapter(ListAdapter);
-		// lstNews.addHeaderView(headerMore);
 	}
 
 	public String getMissedIds() {
@@ -535,7 +326,12 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 
 	@Override
 	public void processFinish(String output) {
-		// ((PullAndLoadListView) lstNews).onLoadMoreComplete();
+
+		if (swipeLayout != null) {
+
+			swipeLayout.setRefreshing(false);
+		}
+
 		if (output != null
 				&& !(output.contains("Exception") || output.contains("java")
 						|| output.contains("SoapFault") || output
@@ -553,13 +349,6 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 			ListAdapter.notifyDataSetChanged();
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
-			}
-
-			if (swipeLayout != null) {
-
-				swipeLayout.setRefreshing(false);
-				// if (ringProgressDialog != null) {
-				// ringProgressDialog.dismiss();
 			}
 			int countList = ListAdapter.getCount();
 

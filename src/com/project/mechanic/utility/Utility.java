@@ -457,7 +457,7 @@ public class Utility implements AsyncInterface {
 						+ (settings.getServerDate_End_Users() != null ? settings
 								.getServerDate_End_Users() : "") + "-";
 
-				serviceUpdate.execute(mStartDatesMaster, mEndDatesMaster, "1");
+				serviceUpdate.execute(mStartDatesMaster, mEndDatesMaster, "0");
 				flag = true;
 				// adapter.open();
 				// adapter.setServerDateMaster(mStartDatesMaster,
@@ -528,7 +528,7 @@ public class Utility implements AsyncInterface {
 
 				serviceUpdateD = new UpdatingAllDetail(context);
 				serviceUpdateD.delegate = this;
-				serviceUpdateD.execute(mStartDatesDetail, mEndDatesDetail, "1");
+				serviceUpdateD.execute(mStartDatesDetail, mEndDatesDetail, "0");
 				// adapter.open();
 				// adapter.setServerDateDetail(mStartDatesDetail,
 				// mEndDatesDetail);
