@@ -67,6 +67,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	Settings setting;
 
 	SwipeRefreshLayout swipeLayout;
+	View LoadMoreFooter;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -161,7 +162,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 						.getServerDate_Start_Froum() : "";
 				params[2] = setting.getServerDate_End_Froum() != null ? setting
 						.getServerDate_End_Froum() : "";
-
+				params[3] = "1";
 				update.execute(params);
 			}
 		});
@@ -187,6 +188,10 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			}
 		});
 
+		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
+				R.layout.load_more_footer, null);
+		lst.addFooterView(LoadMoreFooter);
+		LoadMoreFooter.setVisibility(View.INVISIBLE);
 		ListAdapter = new FroumtitleListadapter(getActivity(),
 				R.layout.raw_froumtitle, mylist, FroumtitleFragment.this);
 		lst.setAdapter(ListAdapter);
@@ -217,8 +222,26 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 			}
 
-			@Override
-			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+			public void onScroll(AbsListView arg0, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+
+				int lastInScreen = firstVisibleItem + visibleItemCount;
+
+				if (lastInScreen == totalItemCount) {
+
+					LoadMoreFooter.setVisibility(View.VISIBLE);
+					update = new Updating(getActivity());
+					update.delegate = FroumtitleFragment.this;
+					String[] params = new String[4];
+					params[0] = "Froum";
+					params[1] = setting.getServerDate_Start_Froum() != null ? setting
+							.getServerDate_Start_Froum() : "";
+					params[2] = setting.getServerDate_End_Froum() != null ? setting
+							.getServerDate_End_Froum() : "";
+					params[3] = "0";
+					update.execute(params);
+
+				}
 
 			}
 		});
@@ -259,6 +282,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 				R.layout.raw_froumtitle, mylist, FroumtitleFragment.this);
 		ListAdapter.notifyDataSetChanged();
 		lst.setAdapter(ListAdapter);
+		LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 	}
 
@@ -317,7 +341,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 							maps.put("Id", String.valueOf(u.getId()));
 							maps.put("fromDate", u.getImageServerDate());
 							updating.execute(maps);
-							
+
 							if (swipeLayout != null)
 								swipeLayout.setRefreshing(false);
 						}
@@ -330,13 +354,16 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 				mdb.close();
 
 			}
+			if (output.contains("anyType")) {
+				LoadMoreFooter.setVisibility(View.INVISIBLE);
+				// lst.removeFooterView(LoadMoreFooter);
+
+			}
 			if (swipeLayout != null)
 				swipeLayout.setRefreshing(false);
-			int countList = ListAdapter.getCount();
-			Toast.makeText(getActivity(), "تعداد فروم ها = " + countList, 0).show();
-
+			
 		}
-		
+
 	}
 
 	@Override
@@ -356,7 +383,6 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			Toast.makeText(getActivity(), "خطا در بروز رسانی داده های سرور",
 					Toast.LENGTH_SHORT).show();
 		}
-		
 
 	}
 }

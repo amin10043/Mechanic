@@ -10,7 +10,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.project.mechanic.inter.AsyncInterface;
-import com.project.mechanic.utility.Utility;
 
 public class UpdatingAllDetail extends AsyncTask<String, Integer, String> {
 
@@ -23,14 +22,10 @@ public class UpdatingAllDetail extends AsyncTask<String, Integer, String> {
 	public final String SOAP_ADDRESS = "http://srv.mechanical0098.com/MyService.asmx";
 
 	public String response = "";
-	private Context context;
-	private Utility util;
 
 	public AsyncInterface delegate = null;
 
 	public UpdatingAllDetail(Context context) {
-		this.context = context;
-		util = new Utility(context);
 	}
 
 	@Override
@@ -52,6 +47,12 @@ public class UpdatingAllDetail extends AsyncTask<String, Integer, String> {
 			pi = new PropertyInfo();
 			pi.setName("endDate");
 			pi.setValue(arg0[1]);
+			pi.setType(Integer.class);
+			request.addProperty(pi);
+
+			pi = new PropertyInfo();
+			pi.setName("isRefresh");
+			pi.setValue(arg0[2]);
 			pi.setType(Integer.class);
 			request.addProperty(pi);
 

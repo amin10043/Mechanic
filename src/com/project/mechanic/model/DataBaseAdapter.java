@@ -2717,13 +2717,22 @@ public class DataBaseAdapter {
 				}
 
 			} catch (Exception ex) {
-				Log.d("test", ex.getMessage());
+				String Id = "";
+				if (cv.containsKey("Id")) {
+					Id = cv.getAsString("Id");
+				} else {
+					Id = cv.getAsString("ID");
+				}
+				mDb.update(tableName, cv, "Id=" + Id, null);
 			}
 		}
 		if (startModifyDate != null && !"".equals(startModifyDate)) {
+
 			ContentValues cv2 = new ContentValues();
 			cv2.put("ServerDate_Start_" + tableName, startModifyDate);
-			mDb.update(TableSettings, cv2, null, null);
+			mDb.update(TableSettings, cv2,
+					"ServerDate_Start_" + tableName + " IS NULL OR "
+							+ "ServerDate_Start_" + tableName + " =''", null);
 		}
 
 		if (endModifyDate != null && !"".equals(endModifyDate)) {

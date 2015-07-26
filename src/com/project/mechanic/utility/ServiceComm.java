@@ -28,12 +28,9 @@ public class ServiceComm extends
 
 	public String response = "";
 
-	private Context context;
-
 	public CommInterface delegate = null;
 
 	public ServiceComm(Context context) {
-		this.context = context;
 	}
 
 	protected String doInBackground(Map<String, String>... action) {

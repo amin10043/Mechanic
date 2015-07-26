@@ -50,6 +50,12 @@ public class UpdatingAllMaster extends AsyncTask<String, Integer, String> {
 			pi.setType(Integer.class);
 			request.addProperty(pi);
 
+			pi = new PropertyInfo();
+			pi.setName("isRefresh");
+			pi.setValue(arg0[2]);
+			pi.setType(Integer.class);
+			request.addProperty(pi);
+
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 					SoapEnvelope.VER11);
 			envelope.dotNet = true;

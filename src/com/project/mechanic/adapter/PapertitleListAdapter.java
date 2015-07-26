@@ -29,13 +29,9 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.ListView.PullAndLoadListView;
-import com.project.mechanic.entity.CommentInFroum;
-import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
-import com.project.mechanic.fragment.DialogcmtInPaper;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.PaperWithoutComment;
@@ -187,10 +183,9 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 		txt2.setText(person1.getContext());
 
 		String item = txt1.getText().toString();
-		int ItemId = 0;
 		for (Paper listItem : mylist) {
 			if (item.equals(listItem.getTitle())) {
-				paperNumber = ItemId = listItem.getId();
+				paperNumber = listItem.getId();
 			}
 		}
 
@@ -226,11 +221,10 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				} else {
 
 					String item = txt1.getText().toString();
-					int ItemId = 0;
 					for (Paper listItem : mylist) {
 						if (item.equals(listItem.getTitle())) {
 							// check authentication and authorization
-							paperNumber = ItemId = listItem.getId();
+							paperNumber = listItem.getId();
 						}
 					}
 
@@ -249,19 +243,17 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				int i = 0;
 				int us = 0;
 				String t = "";
-				
+
 				int d = (int) getItemId(position);
 				Paper w = getItem(d);
 				if (w != null) {
 					i = w.getId();
 					us = w.getUserId();
-					 t= w.getContext();
-					Toast.makeText(context, "id = " + i + " Userid = "+ us, 0).show();
+					t = w.getContext();
 				}
-				
-				
 
-				DialogLongClick dia = new DialogLongClick(context, 2, us, i, fr , t);
+				DialogLongClick dia = new DialogLongClick(context, 2, us, i,
+						fr, t);
 				dia.show();
 				return true;
 			}
@@ -328,13 +320,6 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
 				fragment.setArguments(bundle);
-
-				DialogcmtInPaper dialog = new DialogcmtInPaper(null, context,
-						R.layout.dialog_addcomment, id, 3);
-				Bundle bundle2 = new Bundle();
-				bundle.putString("Id", String.valueOf(id));
-				fragment.setArguments(bundle);
-
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
 			}
@@ -344,13 +329,12 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 		return convertView;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void processFinish(String output) {
 
-		int id = -1;
-
 		try {
-			id = Integer.valueOf(output);
+			Integer.valueOf(output);
 			adapter.open();
 			if (adapter.isUserLikedPaper(currentUser.getId(), paperNumber)) {
 				adapter.deleteLikeFromPaper(currentUser.getId(), paperNumber);
@@ -380,8 +364,6 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				adapter.open();
 				if (adapter.isUserLikedPaper(currentUser.getId(), paperNumber)) {
 					adapter.open();
-					// int c = adapter.LikeInFroum_count(ItemId) - 1;
-					// countLikeFroum.setText(String.valueOf(c));
 
 					params = new LinkedHashMap<String, String>();
 					deleting = new Deleting(context);
