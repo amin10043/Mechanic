@@ -537,9 +537,14 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 			}
 			int countList = ListAdapter.getCount();
 
-			Toast.makeText(getActivity(), "به روز رسانی با موفقیت انجام شد \n  تعداد مقالات  = " + countList , Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(
+					getActivity(),
+					"به روز رسانی با موفقیت انجام شد \n  تعداد مقالات  = "
+							+ countList, Toast.LENGTH_LONG).show();
 
 		}
+		if (swipeLayout != null)
+			swipeLayout.setRefreshing(false);
+
 	}
 }
