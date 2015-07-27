@@ -251,6 +251,8 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 					params.put("TypeId", String.valueOf(ticketTypeID));
 					params.put("ProvinceId", String.valueOf(ProvinceId));
 					params.put("Date", output);
+					params.put("ModifyDate", output);
+
 					params.put("UName", UName.getText().toString());
 					params.put("UEmail", UEmail.getText().toString());
 					params.put("UPhonnumber", UPhonnumber.getText().toString());

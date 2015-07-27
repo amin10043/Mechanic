@@ -18,6 +18,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -56,6 +57,12 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 	Settings setting;
 	ProgressDialog ringProgressDialog;
 	SwipeRefreshLayout swipeLayout;
+	View LoadMoreFooter;
+
+	boolean FindPosition;
+	int beforePosition;
+
+	ProgressBar progress;
 
 	@SuppressWarnings("unchecked")
 	@SuppressLint("InflateParams")
@@ -99,6 +106,10 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 		final FloatingActionButton action = (FloatingActionButton) view
 				.findViewById(R.id.fab);
 
+		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
+				R.layout.load_more_footer, null);
+		lst.addFooterView(LoadMoreFooter);
+		LoadMoreFooter.setVisibility(View.INVISIBLE);
 		swipeLayout = (SwipeRefreshLayout) view
 				.findViewById(R.id.swipe_container);
 		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -194,11 +205,31 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 			public void onScroll(AbsListView arg0, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 
-				if (mLastFirstVisibleItem < firstVisibleItem) {
+				int lastInScreen = firstVisibleItem + visibleItemCount;
+				//
+				if (lastInScreen == totalItemCount) {
+					// lst.addFooterView(LoadMoreFooter);
+
+					LoadMoreFooter.setVisibility(View.VISIBLE);
+					//
+					updating = new Updating(getActivity());
+					updating.delegate = TitlepaperFragment.this;
+					String[] params = new String[4];
+					params[0] = "Paper";
+					params[1] = setting.getServerDate_Start_Paper() != null ? setting
+							.getServerDate_Start_Paper() : "";
+					params[2] = setting.getServerDate_End_Paper() != null ? setting
+							.getServerDate_End_Paper() : "";
+
+					params[3] = "0";
+					updating.execute(params);
+
+					int countList = ListAdapter.getCount();
+					beforePosition = countList;
+
+					FindPosition = false;
+
 				}
-				if (mLastFirstVisibleItem > firstVisibleItem) {
-				}
-				mLastFirstVisibleItem = firstVisibleItem;
 			}
 		});
 
@@ -209,12 +240,13 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 		mdb.open();
 		mylist = mdb.getAllPaper();
 		mdb.close();
-
 		ListAdapter = new PapertitleListAdapter(getActivity(),
 				R.layout.raw_froumtitle, mylist, TitlepaperFragment.this);
 		lst.setAdapter(ListAdapter);
 
 		ListAdapter.notifyDataSetChanged();
+		LoadMoreFooter.setVisibility(View.INVISIBLE);
+
 	}
 
 	public String getMissedIds() {
@@ -251,11 +283,18 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 
 	@Override
 	public void processFinish(String output) {
+		if (output.contains("anyType")) {
+			LoadMoreFooter.setVisibility(View.INVISIBLE);
+			// lst.removeFooterView(LoadMoreFooter);
 
+		}
 		if (swipeLayout != null) {
 
 			swipeLayout.setRefreshing(false);
 		}
+		// lst.removeHeaderView(LoadMoreFooter);
+
+		// LoadMoreFooter.setVisibility(View.GONE);
 
 		if (output != null
 				&& !(output.contains("Exception") || output.contains("java")
@@ -270,18 +309,25 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 
 			ListAdapter = new PapertitleListAdapter(getActivity(),
 					R.layout.raw_froumtitle, mylist, TitlepaperFragment.this);
+
 			lst.setAdapter(ListAdapter);
+
+			if (FindPosition == false) {
+				lst.setSelection(beforePosition);
+
+			}
+			LoadMoreFooter.setVisibility(View.INVISIBLE);
+
 			ListAdapter.notifyDataSetChanged();
+
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
-			int countList = ListAdapter.getCount();
 
-			Toast.makeText(
-					getActivity(),
-					"به روز رسانی با موفقیت انجام شد \n  تعداد مقالات  = "
-							+ countList, Toast.LENGTH_LONG).show();
+			// Toast.makeText(getActivity(), "به روز رسانی با موفقیت انجام شد ",
+			// Toast.LENGTH_LONG).show();
 
 		}
+
 	}
 }

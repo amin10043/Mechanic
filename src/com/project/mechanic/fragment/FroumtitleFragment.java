@@ -8,6 +8,8 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -22,12 +24,14 @@ import com.project.mechanic.R;
 import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.FroumtitleListadapter;
 import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
@@ -58,6 +62,12 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	ArrayList<Integer> ids;
 	ArrayList<Integer> missedIds;
 	ServiceComm service;
+
+	Updating update;
+	Settings setting;
+
+	SwipeRefreshLayout swipeLayout;
+	View LoadMoreFooter;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -117,6 +127,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 				}
 			}
 		}
+		setting = mdb.getSettings();
+
 		mdb.close();
 
 		if (!"".equals(strIdes)) {
@@ -131,6 +143,33 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		date = new ServerDate(getActivity());
 		date.delegate = this;
 		date.execute("");
+
+		swipeLayout = (SwipeRefreshLayout) view
+				.findViewById(R.id.swipe_container);
+		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
+
+			@Override
+			public void onRefresh() {
+				// Toast.makeText(getActivity(), "کد آپدیت اضافه شود",
+				// 0).show();
+				//
+				// swipeLayout.setRefreshing(false);
+				update = new Updating(getActivity());
+				update.delegate = FroumtitleFragment.this;
+				String[] params = new String[4];
+				params[0] = "Froum";
+				params[1] = setting.getServerDate_Start_Froum() != null ? setting
+						.getServerDate_Start_Froum() : "";
+				params[2] = setting.getServerDate_End_Froum() != null ? setting
+						.getServerDate_End_Froum() : "";
+				params[3] = "1";
+				update.execute(params);
+			}
+		});
+		swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+				android.R.color.holo_green_light,
+				android.R.color.holo_orange_light,
+				android.R.color.holo_red_light);
 
 		addtitle.setOnClickListener(new OnClickListener() {
 
@@ -149,9 +188,16 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			}
 		});
 
+		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
+				R.layout.load_more_footer, null);
+		lst.addFooterView(LoadMoreFooter);
+		LoadMoreFooter.setVisibility(View.INVISIBLE);
 		ListAdapter = new FroumtitleListadapter(getActivity(),
 				R.layout.raw_froumtitle, mylist, FroumtitleFragment.this);
 		lst.setAdapter(ListAdapter);
+
+		int countList = ListAdapter.getCount();
+		Toast.makeText(getActivity(), "تعداد فروم ها = " + countList, 0).show();
 
 		if (getArguments() != null) {
 
@@ -176,8 +222,26 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 			}
 
-			@Override
-			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+			public void onScroll(AbsListView arg0, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+
+				int lastInScreen = firstVisibleItem + visibleItemCount;
+
+				if (lastInScreen == totalItemCount) {
+
+					LoadMoreFooter.setVisibility(View.VISIBLE);
+					update = new Updating(getActivity());
+					update.delegate = FroumtitleFragment.this;
+					String[] params = new String[4];
+					params[0] = "Froum";
+					params[1] = setting.getServerDate_Start_Froum() != null ? setting
+							.getServerDate_Start_Froum() : "";
+					params[2] = setting.getServerDate_End_Froum() != null ? setting
+							.getServerDate_End_Froum() : "";
+					params[3] = "0";
+					update.execute(params);
+
+				}
 
 			}
 		});
@@ -218,6 +282,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 				R.layout.raw_froumtitle, mylist, FroumtitleFragment.this);
 		ListAdapter.notifyDataSetChanged();
 		lst.setAdapter(ListAdapter);
+		LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 	}
 
@@ -276,6 +341,9 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 							maps.put("Id", String.valueOf(u.getId()));
 							maps.put("fromDate", u.getImageServerDate());
 							updating.execute(maps);
+
+							if (swipeLayout != null)
+								swipeLayout.setRefreshing(false);
 						}
 					} else {
 
@@ -286,7 +354,16 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 				mdb.close();
 
 			}
+			if (output.contains("anyType")) {
+				LoadMoreFooter.setVisibility(View.INVISIBLE);
+				// lst.removeFooterView(LoadMoreFooter);
+
+			}
+			if (swipeLayout != null)
+				swipeLayout.setRefreshing(false);
+			
 		}
+
 	}
 
 	@Override
@@ -297,7 +374,12 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 						.contains("soap"))) {
 			util.parseQuery(output);
 			updateView();
+			if (swipeLayout != null)
+				swipeLayout.setRefreshing(false);
+
 		} else {
+			if (swipeLayout != null)
+				swipeLayout.setRefreshing(false);
 			Toast.makeText(getActivity(), "خطا در بروز رسانی داده های سرور",
 					Toast.LENGTH_SHORT).show();
 		}

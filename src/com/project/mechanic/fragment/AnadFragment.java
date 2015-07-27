@@ -21,6 +21,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,17 +50,19 @@ import com.project.mechanic.R;
 import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.ListView.PullAndLoadListView;
 import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
-import com.project.mechanic.ListView.PullToRefreshListView.OnRefreshListener;
 import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Anad;
+import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Updating;
 import com.project.mechanic.utility.Utility;
 
 @SuppressLint("HandlerLeak")
-public class AnadFragment extends Fragment {
+public class AnadFragment extends Fragment implements AsyncInterface {
 
 	DataBaseAdapter dbAdapter;
 	View view;
@@ -72,7 +77,7 @@ public class AnadFragment extends Fragment {
 	int ticket;
 	private LinearLayout verticalOuterLayout;
 	List<Anad> list;
-	List<Ticket> subList;
+	// List<Ticket> subList;
 	List<Ticket> tempList;
 	Anad tempItem;
 	int position;
@@ -80,7 +85,7 @@ public class AnadFragment extends Fragment {
 	int I;
 	int gridePadding = 1;
 	private int verticalScrollMax;
-	PullAndLoadListView lstTicket;
+	// PullAndLoadListView lstTicket;
 	private Timer scrollTimer = null;
 	private TimerTask clickSchedule;
 	private TimerTask scrollerSchedule;
@@ -92,7 +97,7 @@ public class AnadFragment extends Fragment {
 	private ImageButton clickedButton = null;
 	Users u;
 	Utility util;
-	int i = 0, j = 9;
+	// int i = 0, j = 9;
 	final int PIC_CROP = 2;
 
 	ImageView imageView;
@@ -101,6 +106,14 @@ public class AnadFragment extends Fragment {
 
 	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
 	private File mFileTemp;
+	ListView listviewanad;;
+	SwipeRefreshLayout swipeLayout;
+	Updating updating;
+	Settings setting;
+	View LoadMoreFooter;
+
+	boolean FindPosition;
+	int beforePosition;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -123,22 +136,24 @@ public class AnadFragment extends Fragment {
 
 		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
 		anadlist = dbAdapter.getAnadtByTypeIdProId(proID);
+		setting = dbAdapter.getSettings();
 
 		dbAdapter.close();
 
-		if (mylist != null && !mylist.isEmpty()) {
-			if (mylist.size() < j) {
-				j = mylist.size();
-			}
-			if (i <= j) {
-				List<Ticket> tmpList = mylist.subList(i, j);
-				subList = new ArrayList<Ticket>();
-				for (Ticket p : tmpList) {
-					if (!subList.contains(p))
-						subList.add(p);
-				}
-			}
-		}
+		// if (mylist != null && !mylist.isEmpty()) {
+		// if (mylist.size() < j) {
+		// j = mylist.size();
+		// }
+		// if (i <= j) {
+		// List<Ticket> tmpList = mylist.subList(i, j);
+		// subList = new ArrayList<Ticket>();
+		// for (Ticket p : tmpList) {
+		// if (!subList.contains(p))
+		// subList.add(p);
+		// }
+		// }
+		// }
+		listviewanad = (ListView) view.findViewById(R.id.listVanad);
 
 		createItem.setOnClickListener(new OnClickListener() {
 
@@ -169,46 +184,79 @@ public class AnadFragment extends Fragment {
 					TEMP_PHOTO_FILE_NAME);
 		}
 
-		if (mylist != null && !mylist.isEmpty()) {
-			lstTicket = (PullAndLoadListView) view.findViewById(R.id.listVanad);
+		// if (mylist != null && !mylist.isEmpty()) {
+		// lstTicket = (PullAndLoadListView) view.findViewById(R.id.listVanad);
 
-			ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
-					subList, proID, AnadFragment.this);
+		ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
+				mylist, proID, AnadFragment.this);
+		// if (mylist != null && !mylist.isEmpty())
+		listviewanad.setAdapter(ListAdapter);
 
-			lstTicket.setAdapter(ListAdapter);
+		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
+				R.layout.load_more_footer, null);
+		listviewanad.addFooterView(LoadMoreFooter);
+		LoadMoreFooter.setVisibility(View.INVISIBLE);
 
-			((PullAndLoadListView) lstTicket)
-					.setOnRefreshListener(new OnRefreshListener() {
+		swipeLayout = (SwipeRefreshLayout) view
+				.findViewById(R.id.swipe_container);
 
-						public void onRefresh() {
-							new PullToRefreshDataTask().execute();
-						}
-					});
+		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
 
-			((PullAndLoadListView) lstTicket)
-					.setOnLoadMoreListener(new OnLoadMoreListener() {
+			@Override
+			public void onRefresh() {
+				updating = new Updating(getActivity());
 
-						public void onLoadMore() {
-							if (mylist.size() < j + 1) {
-								i = j + 1;
-							}
+				updating.delegate = AnadFragment.this;
+				String[] params = new String[4];
+				params[0] = "Ticket";
+				params[1] = setting.getServerDate_Start_Ticket() != null ? setting
+						.getServerDate_Start_Ticket() : "";
+				params[2] = setting.getServerDate_End_Ticket() != null ? setting
+						.getServerDate_End_Ticket() : "";
 
-							if (mylist.size() < j + 10) {
-								j = mylist.size() - 1;
-							} else {
-								j += 10;
-							}
-							if (i <= j) {
-								tempList = mylist.subList(i, j);
-								for (Ticket p : tempList) {
-									if (!subList.contains(p))
-										subList.add(p);
-								}
-								new LoadMoreDataTask().execute();
-							}
-						}
-					});
-		}
+				params[3] = "1";
+				updating.execute(params);
+
+			}
+		});
+
+		swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+				android.R.color.holo_green_light,
+				android.R.color.holo_orange_light,
+				android.R.color.holo_red_light);
+
+		// ((PullAndLoadListView) lstTicket)
+		// .setOnRefreshListener(new OnRefreshListener() {
+		//
+		// public void onRefresh() {
+		// new PullToRefreshDataTask().execute();
+		// }
+		// });
+
+		// ((PullAndLoadListView) lstTicket)
+		// .setOnLoadMoreListener(new OnLoadMoreListener() {
+		//
+		// public void onLoadMore() {
+		// if (mylist.size() < j + 1) {
+		// i = j + 1;
+		// }
+		//
+		// if (mylist.size() < j + 10) {
+		// j = mylist.size() - 1;
+		// } else {
+		// j += 10;
+		// }
+		// if (i <= j) {
+		// tempList = mylist.subList(i, j);
+		// for (Ticket p : tempList) {
+		// if (!subList.contains(p))
+		// subList.add(p);
+		// }
+		// new LoadMoreDataTask().execute();
+		// }
+		// }
+		// });
+		// }
 
 		verticalScrollview = (ScrollView) view
 				.findViewById(R.id.vertical_scrollview_id);
@@ -216,9 +264,9 @@ public class AnadFragment extends Fragment {
 				.findViewById(R.id.vertical_outer_layout_id);
 		addImagesToView(anadlist);
 
-		if (lstTicket != null) {
+		if (listviewanad != null) {
 
-			lstTicket.setOnScrollListener(new OnScrollListener() {
+			listviewanad.setOnScrollListener(new OnScrollListener() {
 
 				@Override
 				public void onScrollStateChanged(AbsListView arg0, int arg1) {
@@ -246,9 +294,34 @@ public class AnadFragment extends Fragment {
 				}
 
 				@Override
-				public void onScroll(AbsListView arg0, int arg1, int arg2,
-						int arg3) {
+				public void onScroll(AbsListView arg0, int firstVisibleItem,
+						int visibleItemCount, int totalItemCount) {
 
+					int lastInScreen = firstVisibleItem + visibleItemCount;
+
+					if (lastInScreen == totalItemCount) {
+						// lst.addFooterView(LoadMoreFooter);
+
+						LoadMoreFooter.setVisibility(View.VISIBLE);
+
+						updating = new Updating(getActivity());
+
+						updating.delegate = AnadFragment.this;
+						String[] params = new String[4];
+						params[0] = "Ticket";
+						params[1] = setting.getServerDate_Start_Ticket() != null ? setting
+								.getServerDate_Start_Paper() : "";
+						params[2] = setting.getServerDate_End_Ticket() != null ? setting
+								.getServerDate_End_Ticket() : "";
+
+						params[3] = "0";
+						updating.execute(params);
+						
+						int countList = ListAdapter.getCount();
+						beforePosition = countList;
+
+						FindPosition = false;
+					}
 				}
 			});
 		}
@@ -462,71 +535,71 @@ public class AnadFragment extends Fragment {
 		}
 	}
 
-	private class LoadMoreDataTask extends AsyncTask<Void, Void, Void> {
+	// private class LoadMoreDataTask extends AsyncTask<Void, Void, Void> {
+	//
+	// @Override
+	// protected Void doInBackground(Void... params) {
+	//
+	// if (isCancelled()) {
+	// return null;
+	// }
+	// try {
+	// Thread.sleep(1000);
+	// } catch (InterruptedException e) {
+	// }
+	// return null;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute(Void result) {
+	// ((BaseAdapter) ListAdapter).notifyDataSetChanged();
+	// ((PullAndLoadListView) lstTicket).onLoadMoreComplete();
+	// super.onPostExecute(result);
+	// }
+	//
+	// @Override
+	// protected void onCancelled() {
+	// ((PullAndLoadListView) lstTicket).onLoadMoreComplete();
+	// }
+	// }
 
-		@Override
-		protected Void doInBackground(Void... params) {
-
-			if (isCancelled()) {
-				return null;
-			}
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			((BaseAdapter) ListAdapter).notifyDataSetChanged();
-			((PullAndLoadListView) lstTicket).onLoadMoreComplete();
-			super.onPostExecute(result);
-		}
-
-		@Override
-		protected void onCancelled() {
-			((PullAndLoadListView) lstTicket).onLoadMoreComplete();
-		}
-	}
-
-	private class PullToRefreshDataTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-
-			if (isCancelled()) {
-				return null;
-			}
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			((BaseAdapter) ListAdapter).notifyDataSetChanged();
-			((PullAndLoadListView) lstTicket).onRefreshComplete();
-			super.onPostExecute(result);
-		}
-
-		@Override
-		protected void onCancelled() {
-			((PullAndLoadListView) lstTicket).onLoadMoreComplete();
-		}
-	}
+	// private class PullToRefreshDataTask extends AsyncTask<Void, Void, Void> {
+	//
+	// @Override
+	// protected Void doInBackground(Void... params) {
+	//
+	// if (isCancelled()) {
+	// return null;
+	// }
+	// try {
+	// Thread.sleep(1000);
+	// } catch (InterruptedException e) {
+	// }
+	// return null;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute(Void result) {
+	// ((BaseAdapter) ListAdapter).notifyDataSetChanged();
+	// ((PullAndLoadListView) lstTicket).onRefreshComplete();
+	// super.onPostExecute(result);
+	// }
+	//
+	// @Override
+	// protected void onCancelled() {
+	// ((PullAndLoadListView) lstTicket).onLoadMoreComplete();
+	// }
+	// }
 
 	public void updateView() {
 		dbAdapter.open();
 		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
 
-		ListView lstAnad = (ListView) view.findViewById(R.id.listVanad);
+		// ListView lstAnad = (ListView) view.findViewById(R.id.listVanad);
 		AnadListAdapter ListAdapter = new AnadListAdapter(getActivity(),
 				R.layout.row_anad, mylist, proID, AnadFragment.this);
 		ListAdapter.notifyDataSetChanged();
-		lstAnad.setAdapter(ListAdapter);
+		listviewanad.setAdapter(ListAdapter);
 
 		dbAdapter.close();
 
@@ -741,6 +814,45 @@ public class AnadFragment extends Fragment {
 		if (timerTask != null) {
 			timerTask.cancel();
 			timerTask = null;
+		}
+	}
+
+	@Override
+	public void processFinish(String output) {
+		if (output.contains("anyType")) {
+			LoadMoreFooter.setVisibility(View.INVISIBLE);
+			// lst.removeFooterView(LoadMoreFooter);
+		}
+		if (swipeLayout != null) {
+
+			swipeLayout.setRefreshing(false);
+		}
+
+		if (output != null
+				&& !(output.contains("Exception") || output.contains("java")
+						|| output.contains("SoapFault") || output
+							.contains("anyType"))) {
+			util.parseQuery(output);
+			mylist.clear();
+
+			dbAdapter.open();
+			mylist.addAll(dbAdapter.getAllTicket());
+			dbAdapter.close();
+
+			ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
+					mylist, proID, AnadFragment.this);
+
+			// if (mylist != null && !mylist.isEmpty())
+			listviewanad.setAdapter(ListAdapter);
+
+			if (FindPosition == false) {
+				listviewanad.setSelection(beforePosition);
+
+			}
+			LoadMoreFooter.setVisibility(View.INVISIBLE);
+
+			ListAdapter.notifyDataSetChanged();
+
 		}
 	}
 
