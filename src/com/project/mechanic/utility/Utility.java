@@ -81,6 +81,16 @@ public class Utility implements AsyncInterface {
 		adapter.close();
 	}
 
+	public boolean first_time_check() {
+		SharedPreferences uPreferences = context.getSharedPreferences(
+				"firstTime", 0);
+		String first = uPreferences.getString("first", null);
+		if ((first == null)) {
+			return false;
+		} else
+			return true;
+	}
+
 	public boolean isNetworkConnected() {
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);

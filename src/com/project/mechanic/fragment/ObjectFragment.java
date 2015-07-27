@@ -3,7 +3,6 @@ package com.project.mechanic.fragment;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,7 +27,6 @@ import com.project.mechanic.utility.Utility;
 public class ObjectFragment extends Fragment {
 
 	DataBaseAdapter adapter;
-	private Intent intent;
 	Users currentUser;
 	Utility util;
 	DialogCreatePage dialog;
