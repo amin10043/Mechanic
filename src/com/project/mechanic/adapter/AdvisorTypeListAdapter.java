@@ -16,10 +16,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.AdvisorType;
+import com.project.mechanic.fragment.AdvisorTypeFragment;
 import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.ObjectFragment;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -30,13 +32,15 @@ public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 	List<AdvisorType> list;
 	DataBaseAdapter adapter;
 	protected Object item;
+	int cityId;
 
 	public AdvisorTypeListAdapter(Context context, int resource,
-			List<AdvisorType> objact) {
+			List<AdvisorType> objact, int CityId) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
+		this.cityId = CityId;
 		adapter = new DataBaseAdapter(context);
 	}
 
@@ -94,19 +98,34 @@ public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 					trans.addToBackStack(null);
 					Fragment move = new ObjectFragment();
 					Bundle bundle = new Bundle();
-					bundle.putString("cityId",
+					bundle.putString("cityId", String.valueOf(cityId));
+					bundle.putString("advisorId",
 							String.valueOf(AdvisorType.getId()));
 					move.setArguments(bundle);
 					trans.replace(R.id.content_frame, move);
 					trans.commit();
 
+					Toast.makeText(getContext(),
+							"advosiorType Id = " + AdvisorType.getId(), 0)
+							.show();
+
 				} else if (id == 3) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame,
-							new ExecutertypeFragment());
+
+					Fragment move = new ExecutertypeFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("cityId", String.valueOf(cityId));
+					bundle.putString("advisorId",
+							String.valueOf(AdvisorType.getId()));
+					move.setArguments(bundle);
+					trans.replace(R.id.content_frame, move);
 					trans.addToBackStack(null);
 					trans.commit();
+					Toast.makeText(getContext(),
+							"advosiorType Id = " + AdvisorType.getId(), 0)
+							.show();
+
 				}
 
 			}

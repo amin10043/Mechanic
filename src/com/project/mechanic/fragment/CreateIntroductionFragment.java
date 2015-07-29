@@ -92,8 +92,13 @@ public class CreateIntroductionFragment extends Fragment implements
 	int MainObjectId;
 	int objectId;
 	SavingImage3Picture savingImage;
+	int ObjectTypeId;
 
 	byte[] byteHeader, byteProfil, byteFooter;
+	boolean flag = true;
+	int lastItem = 0;
+
+	String d = "";
 
 	// EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle,
 	// inInstagram;
@@ -143,6 +148,7 @@ public class CreateIntroductionFragment extends Fragment implements
 		MainObjectId = sendToCreate.getInt("MainObjectId", -1);
 		CityId = sendToCreate.getInt("CityId", -1);
 		objectId = sendToCreate.getInt("objectId", -1);
+		ObjectTypeId = sendToCreate.getInt("ObjectTypeId", -1);
 
 		/* ********** end: come from create of object fragment ********** */
 
@@ -155,7 +161,7 @@ public class CreateIntroductionFragment extends Fragment implements
 		objectIdItem1 = sendParentID.getInt("objectId", -1);
 		Toast.makeText(
 				getActivity(),
-				" parentId recieve = " + parentId + "\n ObjectBrandTypeId = "
+				" parentId recieve = " + parentId + "\n mainObjectId = "
 						+ mainItem, Toast.LENGTH_SHORT).show();
 
 		/* ********** end: come from create of main brand fragment ********** */
@@ -206,6 +212,13 @@ public class CreateIntroductionFragment extends Fragment implements
 		btnProfile.setLayoutParams(profilParams);
 		btnFooter.setLayoutParams(headerParams);
 		// NameEnter.setLayoutParams(nameParams);
+		
+		if (mainID!=1)
+		{
+			checkAgency.setVisibility(View.GONE);
+			checkService.setVisibility(View.GONE);
+		}
+			
 
 		btnProfile.setOnClickListener(new OnClickListener() {
 
@@ -322,18 +335,18 @@ public class CreateIntroductionFragment extends Fragment implements
 
 				if (nameValue.equals("")) {
 					Toast.makeText(getActivity(),
-							"پر کردن فیلد نام اجباری است",
-							Toast.LENGTH_SHORT).show();
-											
+							"پر کردن فیلد نام اجباری است", Toast.LENGTH_SHORT)
+							.show();
+
 				}
 
 				else if (phoneValue.equals("") && mobileValue.equals("")
 						& emailValue.equals("") && faxValue.equals("")) {
-					
+
 					Toast.makeText(getActivity(),
 							"پر کردن حداقل یکی از فیلدهای تماس الزامی است",
 							Toast.LENGTH_SHORT).show();
-				}else{
+				} else {
 					date = new ServerDate(getActivity());
 					date.delegate = CreateIntroductionFragment.this;
 					date.execute("");
@@ -441,22 +454,97 @@ public class CreateIntroductionFragment extends Fragment implements
 			}
 
 			serverId = Integer.valueOf(output);
-			DBAdapter.open();
 
 			if (mainID == 2 || mainID == 3 || mainID == 4) {
+				if (flag == true) {
+					DBAdapter.open();
 
-				int LastObjectId = DBAdapter.CreatePageInShopeObject(serverId,
-						nameValue, phoneValue, emailValue, faxValue,
-						descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo,
-						addressValue, mobileValue, Lfacebook, Linstagram,
-						Llinkedin, Lgoogle, Lwebsite, Ltwitter,
-						currentUser.getId(), mainID, ObjectBrandTypeId);
+					DBAdapter.CreatePageInShopeObject(serverId, nameValue,
+							phoneValue, emailValue, faxValue, descriptionValue,
+							Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
+							mobileValue, Lfacebook, Linstagram, Llinkedin,
+							Lgoogle, Lwebsite, Ltwitter, currentUser.getId(),
+							mainID, ObjectBrandTypeId , ObjectTypeId);
+					DBAdapter.close();
 
-				DBAdapter.insertObjectInCity(LastObjectId, CityId);
+					flag = false;
 
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
+					lastItem = serverId;
+
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(getActivity());
+					saving.delegate = CreateIntroductionFragment.this;
+
+					params.put("TableName", "ObjectInCity");
+
+					params.put("ObjectId", String.valueOf(lastItem));
+					params.put("CityId", String.valueOf(CityId));
+					params.put("Date", serverDate);
+					params.put("ModifyDate", serverDate);
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+					serverDate = output;
+
+					saving.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(getActivity(),
+							null, "لطفا منتظر بمانید.");
+
+				} else {
+
+					if (ringProgressDialog != null) {
+						ringProgressDialog.dismiss();
+					}
+					DBAdapter.open();
+					DBAdapter.insertObjectInCity(serverId, lastItem, CityId, d);
+					DBAdapter.close();
+
+					if (ringProgressDialog != null) {
+						ringProgressDialog.dismiss();
+					}
+
+					byteHeader = Utility.CompressBitmap(bitmapHeader);
+					byteProfil = Utility.CompressBitmap(bitmapProfil);
+					byteFooter = Utility.CompressBitmap(bitmapFooter);
+
+					savingImage = new SavingImage3Picture(getActivity());
+					savingImage.delegate = this;
+					Map<String, Object> it = new LinkedHashMap<String, Object>();
+
+					it.put("tableName", "[Object]");
+					it.put("fieldName1", "Image1");
+					it.put("fieldName2", "Image2");
+					it.put("fieldName3", "Image3");
+
+					it.put("id", serverId);
+
+					it.put("Image1", byteHeader);
+					it.put("Image2", byteProfil);
+					it.put("Image3", byteFooter);
+
+					savingImage.execute(it);
+					if (ringProgressDialog != null) {
+						ringProgressDialog.dismiss();
+					}
 				}
+
+			}
+			if (mainID == 1 && flag) {
+				DBAdapter.open();
+				DBAdapter.InsertInformationNewObject(serverId, nameValue,
+						phoneValue, emailValue, faxValue, descriptionValue,
+						Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
+						mobileValue, Lfacebook, Linstagram, Llinkedin, Lgoogle,
+						Lwebsite, Ltwitter, currentUser.getId(), parentId,
+						1, objectIdItem1, ObjectBrandTypeId);
+				DBAdapter.close();
+				// lastItem = serverId;
+
+				// if (objectIdItem1 > 4) {
+				//
+
+				flag = false;
 
 				byteHeader = Utility.CompressBitmap(bitmapHeader);
 				byteProfil = Utility.CompressBitmap(bitmapProfil);
@@ -482,92 +570,125 @@ public class CreateIntroductionFragment extends Fragment implements
 					ringProgressDialog.dismiss();
 				}
 
-			} else if (mainID == 1) {
+			} else {
 
-				int LastObjectId = DBAdapter.InsertInformationNewObject(
-						serverId, nameValue, phoneValue, emailValue, faxValue,
-						descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo,
-						addressValue, mobileValue, Lfacebook, Linstagram,
-						Llinkedin, Lgoogle, Lwebsite, Ltwitter,
-						currentUser.getId(), parentId, mainItem, objectIdItem1,
-						ObjectBrandTypeId);
+			}
+			// else {
+			//
+			// if (objectIdItem1 > 4)
 
-				if (objectIdItem1 > 4)
-					DBAdapter.insertObjectInCity(LastObjectId, CityId);
+			// if (ringProgressDialog != null) {
+			// ringProgressDialog.dismiss();
+			// }
+			//
+			// byteHeader = Utility.CompressBitmap(bitmapHeader);
+			// byteProfil = Utility.CompressBitmap(bitmapProfil);
+			// byteFooter = Utility.CompressBitmap(bitmapFooter);
+			//
+			// savingImage = new SavingImage3Picture(getActivity());
+			// savingImage.delegate = this;
+			// Map<String, Object> it = new LinkedHashMap<String, Object>();
+			//
+			// it.put("tableName", "Object");
+			// it.put("fieldName1", "Image1");
+			// it.put("fieldName2", "Image2");
+			// it.put("fieldName3", "Image3");
+			//
+			// it.put("id", serverId);
+			//
+			// it.put("Image1", byteHeader);
+			// it.put("Image2", byteProfil);
+			// it.put("Image3", byteFooter);
+			//
+			// savingImage.execute(it);
+			// ringProgressDialog = ProgressDialog.show(getActivity(), null,
+			// "لطفا منتظر بمانید.");
+			//
+			// }
 
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
-				}
+			if (mainID > 4) {
+				if (flag){
+				DBAdapter.open();
+				DBAdapter.InsertInformationNewObject(serverId, nameValue,
+						phoneValue, emailValue, faxValue, descriptionValue,
+						Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
+						mobileValue, Lfacebook, Linstagram, Llinkedin, Lgoogle,
+						Lwebsite, Ltwitter, currentUser.getId(), 0,
+						MainObjectId, objectId, ObjectBrandTypeId);
+				
+				DBAdapter.close();
 
-				byteHeader = Utility.CompressBitmap(bitmapHeader);
-				byteProfil = Utility.CompressBitmap(bitmapProfil);
-				byteFooter = Utility.CompressBitmap(bitmapFooter);
+				flag = false;
 
-				savingImage = new SavingImage3Picture(getActivity());
-				savingImage.delegate = this;
-				Map<String, Object> it = new LinkedHashMap<String, Object>();
+				lastItem = serverId;
 
-				it.put("tableName", "Object");
-				it.put("fieldName1", "Image1");
-				it.put("fieldName2", "Image2");
-				it.put("fieldName3", "Image3");
+				params = new LinkedHashMap<String, String>();
+				saving = new Saving(getActivity());
+				saving.delegate = CreateIntroductionFragment.this;
 
-				it.put("id", serverId);
+				params.put("TableName", "ObjectInCity");
 
-				it.put("Image1", byteHeader);
-				it.put("Image2", byteProfil);
-				it.put("Image3", byteFooter);
+				params.put("ObjectId", String.valueOf(lastItem));
+				params.put("CityId", String.valueOf(CityId));
+				params.put("Date", serverDate);
+				params.put("ModifyDate", serverDate);
 
-				savingImage.execute(it);
+				params.put("IsUpdate", "0");
+				params.put("Id", "0");
+				serverDate = output;
+
+				saving.execute(params);
+
 				ringProgressDialog = ProgressDialog.show(getActivity(), null,
 						"لطفا منتظر بمانید.");
-
 			} else {
-				int LastObjectId = DBAdapter.InsertInformationNewObject(
-						serverId, nameValue, phoneValue, emailValue, faxValue,
-						descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo,
-						addressValue, mobileValue, Lfacebook, Linstagram,
-						Llinkedin, Lgoogle, Lwebsite, Ltwitter,
-						currentUser.getId(), 0, MainObjectId, objectId,
-						ObjectBrandTypeId);
-				if (objectIdItem1 > 4)
-					DBAdapter.insertObjectInCity(LastObjectId, CityId);
-
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
-				}
-
-				byteHeader = Utility.CompressBitmap(bitmapHeader);
-				byteProfil = Utility.CompressBitmap(bitmapProfil);
-				byteFooter = Utility.CompressBitmap(bitmapFooter);
-
-				savingImage = new SavingImage3Picture(getActivity());
-				savingImage.delegate = this;
-				Map<String, Object> it = new LinkedHashMap<String, Object>();
-
-				it.put("tableName", "Object");
-				it.put("fieldName1", "Image1");
-				it.put("fieldName2", "Image2");
-				it.put("fieldName3", "Image3");
-
-				it.put("id", serverId);
-
-				it.put("Image1", byteHeader);
-				it.put("Image2", byteProfil);
-				it.put("Image3", byteFooter);
-
-				savingImage.execute(it);
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
-				}
+				DBAdapter.open();
+				DBAdapter.insertObjectInCity(serverId, lastItem, CityId,
+						serverDate);
+				DBAdapter.close();
 			}
+			}
+			// } else {
+			//
+			// if (ringProgressDialog != null) {
+			// ringProgressDialog.dismiss();
+			// }
+			// if (objectId != 0) {
+			//
+			// DBAdapter.insertObjectInCity(serverId, lastItem, CityId,
+			// serverDate);
+			//
+			// byteHeader = Utility.CompressBitmap(bitmapHeader);
+			// byteProfil = Utility.CompressBitmap(bitmapProfil);
+			// byteFooter = Utility.CompressBitmap(bitmapFooter);
+			//
+			// savingImage = new SavingImage3Picture(getActivity());
+			// savingImage.delegate = this;
+			// Map<String, Object> it = new LinkedHashMap<String, Object>();
+			//
+			// it.put("tableName", "Object");
+			// it.put("fieldName1", "Image1");
+			// it.put("fieldName2", "Image2");
+			// it.put("fieldName3", "Image3");
+			//
+			// it.put("id", serverId);
+			//
+			// it.put("Image1", byteHeader);
+			// it.put("Image2", byteProfil);
+			// it.put("Image3", byteFooter);
+			//
+			// savingImage.execute(it);
+			// if (ringProgressDialog != null) {
+			// ringProgressDialog.dismiss();
+			// }
+			// }
+			// }
 
 		} catch (NumberFormatException e) {
 			if (output != null
 					&& !(output.contains("Exception") || output
 							.contains("java"))) {
 
-				DBAdapter.open();
 				if (mainID == 2 || mainID == 3 || mainID == 4) {
 
 					params = new LinkedHashMap<String, String>();
@@ -598,11 +719,15 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("UserId", String.valueOf(currentUser.getId()));
 					params.put("Twitter", Ltwitter);
 					params.put("MainObjectId", String.valueOf(mainID));
+					params.put("ObjectTypeId", String.valueOf(ObjectTypeId));
+
 					params.put("Date", output);
+					params.put("ModifyDate", output);
+
 					params.put("IsActive", "1");
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
-					serverDate = output;
+					d = serverDate = output;
 
 					saving.execute(params);
 
@@ -656,9 +781,11 @@ public class CreateIntroductionFragment extends Fragment implements
 							String.valueOf(ObjectBrandTypeId));
 					params.put("UserId", String.valueOf(currentUser.getId()));
 					params.put("ParentId", String.valueOf(parentId));
-					params.put("MainObjectId", String.valueOf(mainItem));
+					params.put("MainObjectId", String.valueOf(1));
 					params.put("ObjectId", String.valueOf(objectIdItem1));
 					params.put("Date", output);
+					params.put("ModifyDate", output);
+
 					params.put("IsActive", "1");
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
@@ -725,6 +852,8 @@ public class CreateIntroductionFragment extends Fragment implements
 							String.valueOf(ObjectBrandTypeId));
 					serverDate = output;
 					params.put("Date", output);
+					params.put("ModifyDate", output);
+
 					params.put("IsActive", "1");
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");

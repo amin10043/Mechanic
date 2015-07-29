@@ -16,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -83,6 +84,7 @@ public class City3ListAdapter extends ArrayAdapter<City> {
 				move.setArguments(bundle);
 				trans.replace(R.id.content_frame, move);
 				trans.commit();
+				Toast.makeText(context, "city Id = " + city.getId(), 0).show();
 			}
 		});
 		return convertView;

@@ -30,14 +30,16 @@ public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
 	List<Executertype> list;
 	DataBaseAdapter adapter;
 	int lastPosition = 0;
+	int cityId;
 
 	public ExecutertypeListAdapter(Context context, int resource,
-			List<Executertype> objact) {
+			List<Executertype> objact, int cityId) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
+		this.cityId = cityId;
 	}
 
 	@SuppressLint("ViewHolder")
@@ -85,7 +87,10 @@ public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
 				trans.addToBackStack(null);
 				Fragment move = new ObjectFragment();
 				Bundle bundle = new Bundle();
-				bundle.putString("cityId", String.valueOf(Executertype.getId()));
+				bundle.putString("advisorId",
+						String.valueOf(Executertype.getId()+"4"));
+
+				bundle.putString("cityId", String.valueOf(cityId));
 				move.setArguments(bundle);
 				trans.replace(R.id.content_frame, move);
 				trans.commit();

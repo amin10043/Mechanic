@@ -50,6 +50,9 @@ public class Settings {
 	String ServerDate_Start_Users;
 	String ServerDate_End_Users;
 
+	String ServerDate_Start_ObjectInCity;
+	String ServerDate_End_ObjectInCity;
+
 	public int getId() {
 		return Id;
 	}
@@ -342,7 +345,9 @@ public class Settings {
 			String ServerDate_End_LikeInComment,
 			String ServerDate_Start_LikeInCommentObject,
 			String ServerDate_End_LikeInCommentObject,
-			String ServerDate_Start_Users, String ServerDate_End_Users) {
+			String ServerDate_Start_Users, String ServerDate_End_Users,
+			String ServerDate_Start_ObjectInCity,
+			String ServerDate_End_ObjectInCity) {
 
 		super();
 		Id = id;
@@ -393,6 +398,26 @@ public class Settings {
 		this.ServerDate_Start_Users = ServerDate_Start_Users;
 		this.ServerDate_End_Users = ServerDate_End_Users;
 
+		this.ServerDate_Start_ObjectInCity = ServerDate_Start_ObjectInCity;
+		this.ServerDate_End_ObjectInCity = ServerDate_End_ObjectInCity;
+
+	}
+
+	public String getServerDate_Start_ObjectInCity() {
+		return ServerDate_Start_ObjectInCity;
+	}
+
+	public void setServerDate_Start_ObjectInCity(
+			String serverDate_Start_ObjectInCity) {
+		ServerDate_Start_ObjectInCity = serverDate_Start_ObjectInCity;
+	}
+
+	public String getServerDate_End_ObjectInCity() {
+		return ServerDate_End_ObjectInCity;
+	}
+
+	public void setServerDate_End_ObjectInCity(String serverDate_End_ObjectInCity) {
+		ServerDate_End_ObjectInCity = serverDate_End_ObjectInCity;
 	}
 
 	public Settings() {
