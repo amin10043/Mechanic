@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,11 +23,14 @@ import com.project.mechanic.R;
 import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.entity.Object;
+import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Updating;
 import com.project.mechanic.utility.Utility;
 
-public class ObjectFragment extends Fragment {
+public class ObjectFragment extends Fragment implements AsyncInterface {
 
 	DataBaseAdapter adapter;
 	private Intent intent;
@@ -34,6 +39,19 @@ public class ObjectFragment extends Fragment {
 	DialogCreatePage dialog;
 	ListView lstObject;
 	int city_id, m;
+	ObjectListAdapter ListAdapter;
+
+	SwipeRefreshLayout swipeLayout;
+	View LoadMoreFooter;
+
+	Updating updating;
+	Settings setting;
+
+	boolean FindPosition;
+	int beforePosition;
+
+	ArrayList<Object> mylist;
+	int typeList;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -48,6 +66,8 @@ public class ObjectFragment extends Fragment {
 		final int id = sendData.getInt("main_Id", -1);
 		m = id;
 		city_id = Integer.valueOf(getArguments().getString("cityId"));
+		if (getArguments().getString("advisorId") != null)
+			typeList = Integer.valueOf(getArguments().getString("advisorId"));
 
 		adapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
@@ -61,13 +81,18 @@ public class ObjectFragment extends Fragment {
 		// final int ObjectId = sendData.getInt("main_Id", -1);
 
 		adapter.open();
+		setting = adapter.getSettings();
+
 		if (id == 2 || id == 3 || id == 4) {
-			Toast.makeText(getActivity(), "come from main", 0).show();
-			ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(id,
-					city_id);
-			ObjectListAdapter ListAdapter = new ObjectListAdapter(
-					getActivity(), R.layout.row_object, mylist,
-					ObjectFragment.this);
+
+			if (id == 2)
+				typeList = 0;
+
+			mylist = adapter.getObjectBy_BTId_CityId(id, city_id, typeList);
+
+			if (mylist != null || !mylist.isEmpty())
+				ListAdapter = new ObjectListAdapter(getActivity(),
+						R.layout.row_object, mylist, ObjectFragment.this);
 			lstObject.setAdapter(ListAdapter);
 
 		} else {
@@ -75,18 +100,45 @@ public class ObjectFragment extends Fragment {
 					0);
 			int brand = pageId.getInt("brandID", -1);
 
-			Toast.makeText(getActivity(), "come from agency", 0).show();
+			Toast.makeText(getActivity(), "agency", 0).show();
+			mylist = adapter.subBrandObject(brand, city_id);
 
-			ArrayList<Object> mylist = adapter.subBrandObject(brand, city_id);
+			if (mylist != null || !mylist.isEmpty()) {
 
-			ObjectListAdapter ListAdapter = new ObjectListAdapter(
-					getActivity(), R.layout.row_object, mylist,
-					ObjectFragment.this);
-			lstObject.setAdapter(ListAdapter);
-
+				ListAdapter = new ObjectListAdapter(getActivity(),
+						R.layout.row_object, mylist, ObjectFragment.this);
+				lstObject.setAdapter(ListAdapter);
+			}
 		}
 
 		adapter.close();
+		swipeLayout = (SwipeRefreshLayout) view
+				.findViewById(R.id.swipe_container);
+		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
+
+			@Override
+			public void onRefresh() {
+				updating = new Updating(getActivity());
+				updating.delegate = ObjectFragment.this;
+				String[] params = new String[4];
+				params[0] = "Object";
+				params[1] = setting.getServerDate_Start_Object() != null ? setting
+						.getServerDate_Start_Object() : "";
+				params[2] = setting.getServerDate_End_Object() != null ? setting
+						.getServerDate_End_Object() : "";
+
+				params[3] = "1";
+				updating.execute(params);
+			}
+		});
+		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
+				R.layout.load_more_footer, null);
+		lstObject.addFooterView(LoadMoreFooter);
+		LoadMoreFooter.setVisibility(View.INVISIBLE);
+		swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+				android.R.color.holo_green_light,
+				android.R.color.holo_orange_light,
+				android.R.color.holo_red_light);
 
 		final FloatingActionButton createItem = (FloatingActionButton) view
 				.findViewById(R.id.fab);
@@ -108,8 +160,33 @@ public class ObjectFragment extends Fragment {
 			}
 
 			@Override
-			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
-				// TODO Auto-generated method stub
+			public void onScroll(AbsListView arg0, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+
+				int lastInScreen = firstVisibleItem + visibleItemCount;
+
+				if (lastInScreen == totalItemCount) {
+
+					LoadMoreFooter.setVisibility(View.VISIBLE);
+					//
+					updating = new Updating(getActivity());
+					updating.delegate = ObjectFragment.this;
+					String[] params = new String[4];
+					params[0] = "Object";
+					params[1] = setting.getServerDate_Start_Object() != null ? setting
+							.getServerDate_Start_Object() : "";
+					params[2] = setting.getServerDate_End_Object() != null ? setting
+							.getServerDate_End_Object() : "";
+
+					params[3] = "1";
+					updating.execute(params);
+
+					int countList = ListAdapter.getCount();
+					beforePosition = countList;
+
+					FindPosition = false;
+
+				}
 
 			}
 		});
@@ -125,9 +202,14 @@ public class ObjectFragment extends Fragment {
 
 				if (id == 2 || id == 3 || id == 4) {
 
+					if (id == 2)
+						typeList = 0;
+
 					sendToCreate.edit().putInt("MainObjectId", id).commit();
 					sendToCreate.edit().putInt("CityId", city_id).commit();
 					sendToCreate.edit().putInt("objectId", 0).commit();
+					sendToCreate.edit().putInt("ObjectTypeId", typeList)
+							.commit();
 
 					Toast.makeText(getActivity(), "main id  = " + id,
 							Toast.LENGTH_SHORT).show();
@@ -168,18 +250,62 @@ public class ObjectFragment extends Fragment {
 
 	public void UpdateList() {
 		adapter.open();
+		if (mylist != null || !mylist.isEmpty()) {
 
-		ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(m, city_id);
-		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(),
-				R.layout.row_object, mylist, ObjectFragment.this);
-		lstObject.setAdapter(ListAdapter);
+			ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(m,
+					city_id, typeList);
+			ObjectListAdapter ListAdapter = new ObjectListAdapter(
+					getActivity(), R.layout.row_object, mylist,
+					ObjectFragment.this);
+			lstObject.setAdapter(ListAdapter);
 
-		ListAdapter.notifyDataSetChanged();
-
+			ListAdapter.notifyDataSetChanged();
+		}
 		adapter.close();
 	}
 
 	public int getCityId() {
 		return city_id;
+	}
+
+	@Override
+	public void processFinish(String output) {
+		if (output.contains("anyType")) {
+			LoadMoreFooter.setVisibility(View.INVISIBLE);
+			// lst.removeFooterView(LoadMoreFooter);
+
+		}
+		if (swipeLayout != null) {
+			//
+			// swipeLayout.setRefreshing(false);
+			// }
+			//
+			// if (output != null
+			// && !(output.contains("Exception") || output.contains("java")
+			// || output.contains("SoapFault") || output
+			// .contains("anyType"))) {
+			//
+			// util.parseQuery(output);
+			// mylist.clear();
+			// adapter.open();
+			// mylist = adapter.getObjectBy_BTId_CityId(m, city_id);
+			// // mylist.addAll(adapter.getAllObject());
+			// adapter.close();
+			// if (mylist != null || !mylist.isEmpty())
+			// ListAdapter = new ObjectListAdapter(getActivity(),
+			// R.layout.row_object, mylist, ObjectFragment.this);
+			//
+			// lstObject.setAdapter(ListAdapter);
+			//
+			// // if (FindPosition == false) {
+			// // lstObject.setSelection(beforePosition);
+			// //
+			// // }
+			// LoadMoreFooter.setVisibility(View.INVISIBLE);
+			//
+			// ListAdapter.notifyDataSetChanged();
+
+		}
+
 	}
 }

@@ -495,7 +495,9 @@ public class Utility implements AsyncInterface {
 						+ "-"
 						+ (settings.getServerDate_Start_LikeInCommentObject() != null ? settings
 								.getServerDate_Start_LikeInCommentObject() : "")
-						+ "-";
+						+ "-"
+						+ (settings.getServerDate_Start_ObjectInCity() != null ? settings
+								.getServerDate_Start_ObjectInCity() : "");
 
 				mEndDatesDetail = settings.getServerDate_End_CmtInPaper() != null ? settings
 						.getServerDate_End_CmtInPaper()
@@ -524,7 +526,10 @@ public class Utility implements AsyncInterface {
 								+ (settings
 										.getServerDate_End_LikeInCommentObject() != null ? settings
 										.getServerDate_End_LikeInCommentObject()
-										: "") + "-";
+										: "")
+								+ "-"
+								+ (settings.getServerDate_End_ObjectInCity() != null ? settings
+										.getServerDate_End_ObjectInCity() : "");
 
 				serviceUpdateD = new UpdatingAllDetail(context);
 				serviceUpdateD.delegate = this;

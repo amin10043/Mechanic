@@ -124,7 +124,7 @@ public class DataBaseAdapter {
 			"Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
 			"Submit", "MainObjectId", "IsActive", "UserId", "ObjectId", "Date",
 			"Image1ServerDate", "Image2ServerDate", "Image3ServerDate" };
-	// private String[] ObjectInCity = { "ID", "ObjectId", "CityId" };
+	 private String[] ObjectInCity = { "Id", "ObjectId", "CityId" , "Date" };
 	// private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	// private String[] ObjectType = { "ID", "Name" };
 	private String[] Paper = { "ID", "Title", "Context", "Seen", "ServerDate",
@@ -147,7 +147,7 @@ public class DataBaseAdapter {
 			"ServerDate_Start_LikeInComment", "ServerDate_End_LikeInComment",
 			"ServerDate_Start_LikeInCommentObject",
 			"ServerDate_End_LikeInCommentObject", "ServerDate_Start_Users",
-			"ServerDate_End_Users" };
+			"ServerDate_End_Users" , "ServerDate_Start_ObjectInCity " , "ServerDate_End_ObjectInCity" };
 
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
@@ -1293,7 +1293,7 @@ public class DataBaseAdapter {
 				cursor.getString(24), cursor.getString(25),
 				cursor.getString(26), cursor.getString(27),
 				cursor.getString(28), cursor.getString(29),
-				cursor.getString(30), cursor.getString(31));
+				cursor.getString(30), cursor.getString(31) , cursor.getString(32), cursor.getString(33));
 		return tempSettings;
 
 	}
@@ -2139,17 +2139,17 @@ public class DataBaseAdapter {
 
 	}
 
-	public ArrayList<Object> getObjectBy_BTId_CityId(int MainId, int CityId) {
+	public ArrayList<Object> getObjectBy_BTId_CityId(int MainId, int CityId, int TypeList) {
 		ArrayList<Object> result = new ArrayList<Object>();
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
 								+ " as C On O.Id = C.ObjectId Where O.MainObjectId = "
-								+ MainId + " and C.CityId = " + CityId, null);
+								+ MainId + " and C.CityId = " + CityId + " and O.ObjectTypeId = " + TypeList, null);
 		Object tempObject;
 
 		while (cursor.moveToNext()) {
@@ -2252,7 +2252,7 @@ public class DataBaseAdapter {
 
 	}
 
-	public int InsertInformationNewObject(int id, String name, String Phone,
+	public void InsertInformationNewObject(int id, String name, String Phone,
 			String Email, String fax, String description, String LinkCatalog,
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
@@ -2316,7 +2316,7 @@ public class DataBaseAdapter {
 
 		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT)
 				.show();
-		return (int) mDb.insert(TableObject, null, cv);
+		mDb.insert(TableObject, null, cv);
 
 	}
 
@@ -2816,23 +2816,26 @@ public class DataBaseAdapter {
 		mDb.update(TableUsers, uc, "ID=" + userId, null);
 	}
 
-	public void insertObjectInCity(int objectId, int cityId) {
+	public void insertObjectInCity(int id , int objectId, int cityId , String Date ) {
 		ContentValues cv = new ContentValues();
+		
+		cv.put("Id", id);
 
 		cv.put("ObjectId", objectId);
 		cv.put("CityId", cityId);
+		cv.put("Date", Date);
 
 		mDb.insert(TableObjectInCity, null, cv);
 
 	}
 
-	public int CreatePageInShopeObject(int id, String name, String Phone,
+	public void CreatePageInShopeObject(int id, String name, String Phone,
 			String Email, String fax, String description, String LinkCatalog,
 			String LinkPrice, String LinkPDF, String LinkVideo, String Address,
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
 			String LinkTweitter, int userId, int MainObjectId,
-			int ObjectBrandTypeId) {
+			int ObjectBrandTypeId , int AdvisorTypeId) {
 
 		ContentValues cv = new ContentValues();
 
@@ -2882,10 +2885,14 @@ public class DataBaseAdapter {
 		cv.put("Seen", 1);
 
 		cv.put("ObjectBrandTypeId", ObjectBrandTypeId);
+		cv.put("ObjectTypeId", AdvisorTypeId);
+
 
 		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT)
 				.show();
-		return (int) mDb.insert(TableObject, null, cv);
+		
+		mDb.insert(TableObject, null, cv);
+//		return (int) mDb.insert(TableObject, null, cv);
 	}
 
 	public LikeInFroum getLikeInFroumById(int id) {
@@ -2928,7 +2935,7 @@ public class DataBaseAdapter {
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity

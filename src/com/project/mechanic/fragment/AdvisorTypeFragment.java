@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -35,11 +36,13 @@ public class AdvisorTypeFragment extends Fragment {
 		ArrayList<AdvisorType> mylist = adapter.getAllAdvisorTypeName();
 		adapter.close();
 
+		int cityId = Integer.valueOf(getArguments().getString("cityId"));
+
 		ListView lstadvisortype = (ListView) view
 				.findViewById(R.id.listVadvisortype);
 		AdvisorTypeListAdapter ListAdapter = new AdvisorTypeListAdapter(
-				getActivity(), R.layout.row_advisortype, mylist);
-
+				getActivity(), R.layout.row_advisortype, mylist, cityId);
+//		Toast.makeText(getActivity(), "city Id = "+cityId, 0).show();
 		lstadvisortype.setAdapter(ListAdapter);
 
 		return view;

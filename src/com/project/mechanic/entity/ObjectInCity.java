@@ -5,6 +5,7 @@ public class ObjectInCity {
 	int Id;
 	int ObjectId;
 	int CityId;
+	String Date;
 
 	public int getId() {
 		return Id;
@@ -29,12 +30,21 @@ public class ObjectInCity {
 	public void setCityId(int cityId) {
 		CityId = cityId;
 	}
+	
+	public String getDate() {
+		return Date;
+	}
 
-	public ObjectInCity(int id, int objectId, int cityId) {
+	public void setDate(String Date) {
+		this.Date = Date;
+	}
+
+	public ObjectInCity(int id, int objectId, int cityId , String Date) {
 		super();
 		Id = id;
 		ObjectId = objectId;
 		CityId = cityId;
+		this.Date = Date;
 	}
 
 }

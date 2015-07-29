@@ -21,6 +21,7 @@ import com.project.mechanic.model.DataBaseAdapter;
 public class ExecutertypeFragment extends Fragment {
 
 	DataBaseAdapter adapter;
+	int cityId;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -36,10 +37,13 @@ public class ExecutertypeFragment extends Fragment {
 
 		ArrayList<Executertype> mylist = adapter.getAllExecutertypeName();
 		adapter.close();
+		
+		cityId = Integer.valueOf(getArguments().getString("cityId"));
+
 
 		ListView lstExecutertype = (ListView) view.findViewById(R.id.listVexecutertype);
 		ExecutertypeListAdapter ListAdapter = new ExecutertypeListAdapter(
-				getActivity(), R.layout.row_executertype, mylist);
+				getActivity(), R.layout.row_executertype, mylist , cityId);
 
 		lstExecutertype.setAdapter(ListAdapter);
 
