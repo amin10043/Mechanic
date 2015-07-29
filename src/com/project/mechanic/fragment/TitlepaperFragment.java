@@ -149,9 +149,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 							.setSoftInputMode(
 									WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 					dialog.show();
-
 				}
-
 			}
 		});
 		if (CurrentUser == null) {
@@ -208,7 +206,6 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 				int lastInScreen = firstVisibleItem + visibleItemCount;
 				//
 				if (lastInScreen == totalItemCount) {
-					// lst.addFooterView(LoadMoreFooter);
 
 					LoadMoreFooter.setVisibility(View.VISIBLE);
 					//
@@ -228,7 +225,6 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 					beforePosition = countList;
 
 					FindPosition = false;
-
 				}
 			}
 		});

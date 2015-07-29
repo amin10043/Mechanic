@@ -52,15 +52,9 @@ public class ObjectFragment extends Fragment {
 		currentUser = util.getCurrentUser();
 
 		lstObject = (ListView) view.findViewById(R.id.listvCmt_Introduction);
-		// RelativeLayout createPage = (RelativeLayout) view
-		// .findViewById(R.id.relative);
-		// SharedPreferences sendObjectId = getActivity().getSharedPreferences(
-		// "Id", 0);
-		// final int ObjectId = sendData.getInt("main_Id", -1);
-
 		adapter.open();
 		if (id == 2 || id == 3 || id == 4) {
-			Toast.makeText(getActivity(), "come from main", 0).show();
+			// Toast.makeText(getActivity(), "come from main", 0).show();
 			ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(id,
 					city_id);
 			ObjectListAdapter ListAdapter = new ObjectListAdapter(
@@ -73,7 +67,7 @@ public class ObjectFragment extends Fragment {
 					0);
 			int brand = pageId.getInt("brandID", -1);
 
-			Toast.makeText(getActivity(), "come from agency", 0).show();
+			// Toast.makeText(getActivity(), "come from agency", 0).show();
 
 			ArrayList<Object> mylist = adapter.subBrandObject(brand, city_id);
 
@@ -102,13 +96,10 @@ public class ObjectFragment extends Fragment {
 					createItem.show(true);
 					break;
 				}
-
 			}
 
 			@Override
 			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 
@@ -149,17 +140,6 @@ public class ObjectFragment extends Fragment {
 
 			}
 		});
-
-		// createPage.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		//
-		// dialog = new DialogCreatePage(getActivity());
-		// dialog.show();
-		//
-		// }
-		// });
 
 		return view;
 	}

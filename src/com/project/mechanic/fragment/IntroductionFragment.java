@@ -48,7 +48,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	Utility ut;
 	Users CurrentUser;
 	PersianDate datePersian;
-	// String currentDate;
 	View header;
 	ExpandableListView exListView;
 	ExpandIntroduction exadapter;
@@ -278,24 +277,26 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		// اینها که همش خطا داره. خوب برادر یکبار تست کن بعد کدها رو بفرست
 		// !!!!!!!!!
-		// if (ut.getCurrentUser().getId() != object.getId()) {
-		// if (!ut.isNetworkConnected()) {
-		// Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT)
-		// .show();
-		// adapter.open();
-		// adapter.insertVisitToDb(ut.getCurrentUser().getId(), 2,
-		// object.getId());
-		// adapter.close();
-		// } else if ((ut.isNetworkConnected())) {
-		// Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT)
-		// .show();
-		// adapter.open();
-		// // ارسال اطلاعات به جدول ویزیت سرور
-		// // ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
-		// adapter.deleteVisit();
-		// adapter.close();
-		// }
-		// }
+		if (ut.getCurrentUser() != null) {
+			if (ut.getCurrentUser().getId() != object.getId()) {
+				if (!ut.isNetworkConnected()) {
+					// Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT)
+					// .show();
+					adapter.open();
+					adapter.insertVisitToDb(ut.getCurrentUser().getId(), 2,
+							object.getId());
+					adapter.close();
+				} else if ((ut.isNetworkConnected())) {
+					// Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT)
+					// .show();
+					adapter.open();
+					// ارسال اطلاعات به جدول ویزیت سرور
+					// ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
+					adapter.deleteVisit();
+					adapter.close();
+				}
+			}
+		}
 		// اینها که همش خطا داره. خوب برادر یکبار تست کن بعد کدها رو بفرست
 		// !!!!!!!!!
 
