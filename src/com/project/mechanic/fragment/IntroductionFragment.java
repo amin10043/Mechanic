@@ -276,6 +276,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		maps.put("fromDate3", object.getImage3ServerDate());
 		updating.execute(maps);
 
+		ringProgressDialog = ProgressDialog.show(getActivity(), "",
+				"به روز رسانی تصاویر...", true);
+
 		// اینها که همش خطا داره. خوب برادر یکبار تست کن بعد کدها رو بفرست
 		// !!!!!!!!!
 		// if (ut.getCurrentUser().getId() != object.getId()) {
@@ -333,7 +336,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 						bitHeader.length);
 				HeaderActive.setImageBitmap(bmp1);
 			} else
-				HeaderActive.setImageResource(R.drawable.no_image_header);
+				HeaderActive.setBackgroundResource(R.drawable.no_image_header);
 			RelativeLayout profileActiveRelative = (RelativeLayout) t
 					.findViewById(R.id.linear_id_profile_introduction_page);
 
@@ -352,7 +355,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				profileActive.setLayoutParams(ll);
 
 			} else {
-				profileActive.setImageResource(R.drawable.no_img_profile);
+				profileActive.setBackgroundResource(R.drawable.no_img_profile);
 				profileActive.setLayoutParams(ll);
 
 			}
@@ -444,7 +447,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 			headerImage.setImageBitmap(bmp1);
 		} else
-			headerImage.setImageResource(R.drawable.no_image_header);
+
+			headerImage.setBackgroundResource(R.drawable.no_image_header);
 		// /////////////////////
 		bytepro = object.getImage2();
 		if (bytepro != null) {
@@ -454,7 +458,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			profileImage.setImageBitmap(bmp2);
 
 		} else {
-			profileImage.setImageResource(R.drawable.no_img_profile);
+			profileImage.setBackgroundResource(R.drawable.no_img_profile);
 
 		}
 		// ///////////////////////
@@ -466,7 +470,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			advertise2.setImageBitmap(bmp3);
 
 		} else
-			advertise2.setImageResource(R.drawable.no_image_header);
+			advertise2.setBackgroundResource(R.drawable.no_image_header);
 
 		txtFax.setText(object.getFax());
 		txtPhone.setText(object.getPhone());
@@ -896,6 +900,12 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				trans.replace(R.id.content_frame, new ProvinceFragment());
 				trans.commit();
 
+				pageId.edit().putInt("brandID", object.getId()).commit();
+				pageId.edit().putInt("IsAgency", 0).commit();
+				pageId.edit()
+						.putInt("main object id", object.getMainObjectId())
+						.commit();
+
 			}
 		});
 
@@ -1267,9 +1277,18 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				adapter.updateObjectImage3ServerDate(ObjectID, serverDate);
 
 			}
+			Toast.makeText(getActivity(),
+					"به روز رسانی تصاویر با موفقیت انجام شد",
+					Toast.LENGTH_SHORT).show();
+			if (ringProgressDialog != null)
+				ringProgressDialog.dismiss();
 			adapter.close();
 
 		}
+
+		if (ringProgressDialog != null)
+			ringProgressDialog.dismiss();
+
 	}
 
 	public int getObjectId() {

@@ -97,6 +97,8 @@ public class CreateIntroductionFragment extends Fragment implements
 	byte[] byteHeader, byteProfil, byteFooter;
 	boolean flag = true;
 	int lastItem = 0;
+	
+	int AgencyService;
 
 	String d = "";
 
@@ -149,6 +151,7 @@ public class CreateIntroductionFragment extends Fragment implements
 		CityId = sendToCreate.getInt("CityId", -1);
 		objectId = sendToCreate.getInt("objectId", -1);
 		ObjectTypeId = sendToCreate.getInt("ObjectTypeId", -1);
+		AgencyService = sendToCreate.getInt("IsAgency", -1);
 
 		/* ********** end: come from create of object fragment ********** */
 
@@ -531,13 +534,15 @@ public class CreateIntroductionFragment extends Fragment implements
 
 			}
 			if (mainID == 1 && flag) {
+				int m = (Integer) null;
+				
 				DBAdapter.open();
 				DBAdapter.InsertInformationNewObject(serverId, nameValue,
 						phoneValue, emailValue, faxValue, descriptionValue,
 						Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
 						mobileValue, Lfacebook, Linstagram, Llinkedin, Lgoogle,
 						Lwebsite, Ltwitter, currentUser.getId(), parentId,
-						1, objectIdItem1, ObjectBrandTypeId);
+						1, objectIdItem1, ObjectBrandTypeId, m , serverDate );
 				DBAdapter.close();
 				// lastItem = serverId;
 
@@ -614,7 +619,7 @@ public class CreateIntroductionFragment extends Fragment implements
 						Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
 						mobileValue, Lfacebook, Linstagram, Llinkedin, Lgoogle,
 						Lwebsite, Ltwitter, currentUser.getId(), 0,
-						MainObjectId, objectId, ObjectBrandTypeId);
+						MainObjectId, objectId, ObjectBrandTypeId , AgencyService , serverDate);
 				
 				DBAdapter.close();
 
@@ -724,7 +729,7 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("Date", output);
 					params.put("ModifyDate", output);
 
-					params.put("IsActive", "1");
+					params.put("IsActive", "0");
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 					d = serverDate = output;
@@ -786,7 +791,7 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("Date", output);
 					params.put("ModifyDate", output);
 
-					params.put("IsActive", "1");
+					params.put("IsActive", "0");
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 					serverDate = output;
@@ -850,11 +855,15 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("ObjectId", String.valueOf(objectId));
 					params.put("ObjectBrandTypeId",
 							String.valueOf(ObjectBrandTypeId));
+					
+					params.put("AgencyService", String.valueOf(AgencyService));
+
 					serverDate = output;
 					params.put("Date", output);
 					params.put("ModifyDate", output);
 
-					params.put("IsActive", "1");
+					params.put("IsActive", "0");
+					
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 					saving.execute(params);
@@ -890,7 +899,7 @@ public class CreateIntroductionFragment extends Fragment implements
 
 		} catch (Exception e) {
 
-			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
+			Toast.makeText(getActivity(), "خطا در ثبت" + e, Toast.LENGTH_SHORT)
 					.show();
 		}
 	}
@@ -912,7 +921,7 @@ public class CreateIntroductionFragment extends Fragment implements
 			}
 
 		} catch (Exception e) {
-			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
+			Toast.makeText(getActivity(), "خطا در ثبت" + e, Toast.LENGTH_SHORT)
 					.show();
 		}
 	}

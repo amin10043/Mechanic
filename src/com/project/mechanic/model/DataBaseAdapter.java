@@ -123,8 +123,9 @@ public class DataBaseAdapter {
 			"ObjectBrandTypeId", "Facebook", "Instagram", "LinkedIn", "Google",
 			"Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
 			"Submit", "MainObjectId", "IsActive", "UserId", "ObjectId", "Date",
-			"Image1ServerDate", "Image2ServerDate", "Image3ServerDate" };
-	 private String[] ObjectInCity = { "Id", "ObjectId", "CityId" , "Date" };
+			"Image1ServerDate", "Image2ServerDate", "Image3ServerDate",
+			"AgencyService" };
+	private String[] ObjectInCity = { "Id", "ObjectId", "CityId", "Date" };
 	// private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	// private String[] ObjectType = { "ID", "Name" };
 	private String[] Paper = { "ID", "Title", "Context", "Seen", "ServerDate",
@@ -147,7 +148,8 @@ public class DataBaseAdapter {
 			"ServerDate_Start_LikeInComment", "ServerDate_End_LikeInComment",
 			"ServerDate_Start_LikeInCommentObject",
 			"ServerDate_End_LikeInCommentObject", "ServerDate_Start_Users",
-			"ServerDate_End_Users" , "ServerDate_Start_ObjectInCity " , "ServerDate_End_ObjectInCity" };
+			"ServerDate_End_Users", "ServerDate_Start_ObjectInCity ",
+			"ServerDate_End_ObjectInCity" };
 
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
@@ -1293,7 +1295,8 @@ public class DataBaseAdapter {
 				cursor.getString(24), cursor.getString(25),
 				cursor.getString(26), cursor.getString(27),
 				cursor.getString(28), cursor.getString(29),
-				cursor.getString(30), cursor.getString(31) , cursor.getString(32), cursor.getString(33));
+				cursor.getString(30), cursor.getString(31),
+				cursor.getString(32), cursor.getString(33));
 		return tempSettings;
 
 	}
@@ -2139,17 +2142,21 @@ public class DataBaseAdapter {
 
 	}
 
-	public ArrayList<Object> getObjectBy_BTId_CityId(int MainId, int CityId, int TypeList) {
+	public ArrayList<Object> getObjectBy_BTId_CityId(int MainId, int CityId,
+			int TypeList) {
 		ArrayList<Object> result = new ArrayList<Object>();
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate , O.AgencyService From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
 								+ " as C On O.Id = C.ObjectId Where O.MainObjectId = "
-								+ MainId + " and C.CityId = " + CityId + " and O.ObjectTypeId = " + TypeList, null);
+								+ MainId
+								+ " and C.CityId = "
+								+ CityId
+								+ " and O.ObjectTypeId = " + TypeList, null);
 		Object tempObject;
 
 		while (cursor.moveToNext()) {
@@ -2258,7 +2265,7 @@ public class DataBaseAdapter {
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
 			String LinkTweitter, int userId, int parentId, int MainObjectId,
-			int ObjectId, int ObjectBrandTypeId) {
+			int ObjectId, int ObjectBrandTypeId, int AgencyService, String Date) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Id", id);
@@ -2309,6 +2316,11 @@ public class DataBaseAdapter {
 		cv.put("IsActive", 0);
 		cv.put("rate", 0);
 		cv.put("Seen", 1);
+
+		cv.put("AgencyService", AgencyService);
+
+		cv.put("Date", Date);
+
 		if (ObjectId != -1)
 			cv.put("ObjectID", ObjectId);
 		else
@@ -2816,9 +2828,9 @@ public class DataBaseAdapter {
 		mDb.update(TableUsers, uc, "ID=" + userId, null);
 	}
 
-	public void insertObjectInCity(int id , int objectId, int cityId , String Date ) {
+	public void insertObjectInCity(int id, int objectId, int cityId, String Date) {
 		ContentValues cv = new ContentValues();
-		
+
 		cv.put("Id", id);
 
 		cv.put("ObjectId", objectId);
@@ -2835,7 +2847,7 @@ public class DataBaseAdapter {
 			String Mobile, String LinkFaceBook, String LinkInstagram,
 			String LinkLinkedin, String LinkGoogle, String LinkSite,
 			String LinkTweitter, int userId, int MainObjectId,
-			int ObjectBrandTypeId , int AdvisorTypeId) {
+			int ObjectBrandTypeId, int AdvisorTypeId) {
 
 		ContentValues cv = new ContentValues();
 
@@ -2887,12 +2899,11 @@ public class DataBaseAdapter {
 		cv.put("ObjectBrandTypeId", ObjectBrandTypeId);
 		cv.put("ObjectTypeId", AdvisorTypeId);
 
-
 		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT)
 				.show();
-		
+
 		mDb.insert(TableObject, null, cv);
-//		return (int) mDb.insert(TableObject, null, cv);
+		// return (int) mDb.insert(TableObject, null, cv);
 	}
 
 	public LikeInFroum getLikeInFroumById(int id) {
@@ -2930,17 +2941,22 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	public ArrayList<Object> subBrandObject(int ObjectId, int CityId) {
+	public ArrayList<Object> subBrandObject(int ObjectId, int CityId,
+			int AgencyService) {
 		ArrayList<Object> result = new ArrayList<Object>();
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate , O.AgencyService From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
 								+ " as C On O.Id = C.ObjectId Where O.ObjectId = "
-								+ ObjectId + " and C.CityId = " + CityId, null);
+								+ ObjectId
+								+ " and C.CityId = "
+								+ CityId
+								+ " and O.AgencyService = " + AgencyService,
+						null);
 		Object tempObject;
 
 		while (cursor.moveToNext()) {
@@ -3112,8 +3128,6 @@ public class DataBaseAdapter {
 		if (FooterImage != null)
 			cv.put("Image3", FooterImage);
 
-		Toast.makeText(mContext, "تصویر با موفقیت ثبت شد", Toast.LENGTH_SHORT)
-				.show();
 		mDb.update(TableObject, cv, "Id=?", new String[] { String.valueOf(id) });
 	}
 
@@ -3124,8 +3138,6 @@ public class DataBaseAdapter {
 		if (HeaderImage != null)
 			cv.put("Image1", HeaderImage);
 
-		Toast.makeText(mContext, "تصویر با موفقیت ثبت شد", Toast.LENGTH_SHORT)
-				.show();
 		mDb.update(TableObject, cv, "Id=?", new String[] { String.valueOf(id) });
 	}
 
@@ -3136,8 +3148,6 @@ public class DataBaseAdapter {
 		if (profile != null)
 			cv.put("Image2", profile);
 
-		Toast.makeText(mContext, "تصویر با موفقیت ثبت شد", Toast.LENGTH_SHORT)
-				.show();
 		mDb.update(TableObject, cv, "Id=?", new String[] { String.valueOf(id) });
 	}
 

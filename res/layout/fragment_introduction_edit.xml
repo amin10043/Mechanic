@@ -25,7 +25,6 @@
                     android:id="@+id/hh1"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
-                    android:background="@drawable/gf2"
                     android:scaleType="fitXY" />
             </LinearLayout>
 
