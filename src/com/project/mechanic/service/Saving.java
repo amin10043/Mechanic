@@ -10,7 +10,6 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import android.R.integer;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -79,13 +78,13 @@ public class Saving extends AsyncTask<Map<String, String>, Integer, String> {
 			pi = new PropertyInfo();
 			pi.setName("IsUpdate");
 			pi.setValue(isUpdate);
-			pi.setType(integer.class);
+			pi.setType(String.class);
 			request.addProperty(pi);
 
 			pi = new PropertyInfo();
 			pi.setName("Id");
 			pi.setValue(Id);
-			pi.setType(integer.class);
+			pi.setType(String.class);
 			request.addProperty(pi);
 
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
