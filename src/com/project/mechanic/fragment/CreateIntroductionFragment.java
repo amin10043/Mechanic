@@ -70,7 +70,8 @@ public class CreateIntroductionFragment extends Fragment implements
 
 	int mainID;
 
-	Bitmap bitmapHeader, bitmapProfil, bitmapFooter;
+	Bitmap bitmapHeader, bitmapProfil, bitmapFooter, emptyHeader, emptyProfile,
+			emptyFooter;
 
 	public String Lfacebook, Llinkedin, Ltwitter, Lwebsite, Lgoogle,
 			Linstagram;
@@ -97,10 +98,12 @@ public class CreateIntroductionFragment extends Fragment implements
 	byte[] byteHeader, byteProfil, byteFooter;
 	boolean flag = true;
 	int lastItem = 0;
-	
+
 	int AgencyService;
 
 	String d = "";
+	
+	boolean f1 , f2 , f3;
 
 	// EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle,
 	// inInstagram;
@@ -190,11 +193,11 @@ public class CreateIntroductionFragment extends Fragment implements
 
 		headerParams = new LinearLayout.LayoutParams(
 				headerLinear.getLayoutParams());
-		headerParams.height = util.getScreenHeight() / 3;
+		headerParams.height = util.getScreenHeight();
 
 		footerParams = new LinearLayout.LayoutParams(
 				footerLinear.getLayoutParams());
-		footerParams.height = util.getScreenHeight() / 3;
+		footerParams.height = util.getScreenHeight();
 
 		nameParams = new RelativeLayout.LayoutParams(
 				linearCreateProfil.getLayoutParams());
@@ -215,13 +218,11 @@ public class CreateIntroductionFragment extends Fragment implements
 		btnProfile.setLayoutParams(profilParams);
 		btnFooter.setLayoutParams(headerParams);
 		// NameEnter.setLayoutParams(nameParams);
-		
-		if (mainID!=1)
-		{
+
+		if (mainID != 1) {
 			checkAgency.setVisibility(View.GONE);
 			checkService.setVisibility(View.GONE);
 		}
-			
 
 		btnProfile.setOnClickListener(new OnClickListener() {
 
@@ -311,12 +312,43 @@ public class CreateIntroductionFragment extends Fragment implements
 				else
 					ObjectBrandTypeId = 2;
 
-				bitmapHeader = ((BitmapDrawable) btnHeader.getDrawable())
-						.getBitmap();
-				bitmapProfil = ((BitmapDrawable) btnProfile.getDrawable())
-						.getBitmap();
-				bitmapFooter = ((BitmapDrawable) btnFooter.getDrawable())
-						.getBitmap();
+				if (btnHeader.getDrawable() != null) {
+					bitmapHeader = ((BitmapDrawable) btnHeader.getDrawable())
+							.getBitmap();
+
+					emptyHeader = Bitmap.createBitmap(bitmapHeader.getWidth(),
+							bitmapHeader.getHeight(), bitmapHeader.getConfig());
+
+					byteHeader = Utility.CompressBitmap(bitmapHeader);
+					
+					f1 = true;
+					
+
+				}
+
+				if (btnProfile.getDrawable() != null) {
+					bitmapProfil = ((BitmapDrawable) btnProfile.getDrawable())
+							.getBitmap();
+
+					emptyProfile = Bitmap.createBitmap(bitmapProfil.getWidth(),
+							bitmapProfil.getHeight(), bitmapProfil.getConfig());
+					byteProfil = Utility.CompressBitmap(bitmapProfil);
+					 f2 = true;
+
+				}
+
+				if (btnFooter.getDrawable() != null) {
+					bitmapFooter = ((BitmapDrawable) btnFooter.getDrawable())
+							.getBitmap();
+
+					emptyFooter = Bitmap.createBitmap(bitmapFooter.getWidth(),
+							bitmapFooter.getHeight(), bitmapFooter.getConfig());
+
+					byteFooter = Utility.CompressBitmap(bitmapFooter);
+					
+					f3 = true;
+
+				}
 
 				if (bitmapHeader == null & bitmapProfil == null
 						& bitmapFooter == null)
@@ -324,9 +356,9 @@ public class CreateIntroductionFragment extends Fragment implements
 					Toast.makeText(getActivity(), "Empty ByteArray",
 							Toast.LENGTH_SHORT).show();
 
-				final byte[] byteHeader = getBitmapAsByteArray(bitmapHeader);
-				final byte[] byteProfil = getBitmapAsByteArray(bitmapProfil);
-				final byte[] byteFooter = getBitmapAsByteArray(bitmapFooter);
+				// final byte[] byteHeader = getBitmapAsByteArray(bitmapHeader);
+				// final byte[] byteProfil = getBitmapAsByteArray(bitmapProfil);
+				// final byte[] byteFooter = getBitmapAsByteArray(bitmapFooter);
 
 				nameValue = NameEnter.getText().toString();
 				phoneValue = phoneEnter.getText().toString();
@@ -457,18 +489,17 @@ public class CreateIntroductionFragment extends Fragment implements
 			}
 
 			serverId = Integer.valueOf(output);
+			DBAdapter.open();
 
 			if (mainID == 2 || mainID == 3 || mainID == 4) {
 				if (flag == true) {
-					DBAdapter.open();
 
 					DBAdapter.CreatePageInShopeObject(serverId, nameValue,
 							phoneValue, emailValue, faxValue, descriptionValue,
 							Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
 							mobileValue, Lfacebook, Linstagram, Llinkedin,
 							Lgoogle, Lwebsite, Ltwitter, currentUser.getId(),
-							mainID, ObjectBrandTypeId , ObjectTypeId);
-					DBAdapter.close();
+							mainID, ObjectBrandTypeId, ObjectTypeId);
 
 					flag = false;
 
@@ -499,51 +530,56 @@ public class CreateIntroductionFragment extends Fragment implements
 					if (ringProgressDialog != null) {
 						ringProgressDialog.dismiss();
 					}
-					DBAdapter.open();
 					DBAdapter.insertObjectInCity(serverId, lastItem, CityId, d);
-					DBAdapter.close();
 
 					if (ringProgressDialog != null) {
 						ringProgressDialog.dismiss();
 					}
 
-					byteHeader = Utility.CompressBitmap(bitmapHeader);
-					byteProfil = Utility.CompressBitmap(bitmapProfil);
-					byteFooter = Utility.CompressBitmap(bitmapFooter);
-
 					savingImage = new SavingImage3Picture(getActivity());
 					savingImage.delegate = this;
 					Map<String, Object> it = new LinkedHashMap<String, Object>();
 
-					it.put("tableName", "[Object]");
+					it.put("tableName", "Object");
 					it.put("fieldName1", "Image1");
 					it.put("fieldName2", "Image2");
 					it.put("fieldName3", "Image3");
 
 					it.put("id", serverId);
 
-					it.put("Image1", byteHeader);
-					it.put("Image2", byteProfil);
-					it.put("Image3", byteFooter);
+					if (!bitmapHeader.sameAs(emptyHeader)) {
+						byteHeader = Utility.CompressBitmap(bitmapHeader);
+						it.put("Image1", byteHeader);
+
+					}
+
+					if (!bitmapProfil.sameAs(emptyProfile)) {
+						byteProfil = Utility.CompressBitmap(bitmapProfil);
+						it.put("Image2", byteProfil);
+
+					}
+
+					if (!bitmapFooter.sameAs(emptyFooter)) {
+						byteFooter = Utility.CompressBitmap(bitmapFooter);
+						it.put("Image3", byteFooter);
+
+					}
 
 					savingImage.execute(it);
-					if (ringProgressDialog != null) {
-						ringProgressDialog.dismiss();
-					}
+					ringProgressDialog = ProgressDialog.show(getActivity(),
+							null, "لطفا منتظر بمانید.");
 				}
 
 			}
 			if (mainID == 1 && flag) {
-				int m = (Integer) null;
-				
-				DBAdapter.open();
+				// int m = (Integer) null;
+
 				DBAdapter.InsertInformationNewObject(serverId, nameValue,
 						phoneValue, emailValue, faxValue, descriptionValue,
 						Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
 						mobileValue, Lfacebook, Linstagram, Llinkedin, Lgoogle,
-						Lwebsite, Ltwitter, currentUser.getId(), parentId,
-						1, objectIdItem1, ObjectBrandTypeId, m , serverDate );
-				DBAdapter.close();
+						Lwebsite, Ltwitter, currentUser.getId(), parentId, 1,
+						objectIdItem1, ObjectBrandTypeId, 100, serverDate);
 				// lastItem = serverId;
 
 				// if (objectIdItem1 > 4) {
@@ -551,31 +587,35 @@ public class CreateIntroductionFragment extends Fragment implements
 
 				flag = false;
 
-				byteHeader = Utility.CompressBitmap(bitmapHeader);
-				byteProfil = Utility.CompressBitmap(bitmapProfil);
-				byteFooter = Utility.CompressBitmap(bitmapFooter);
+				if (btnHeader.getDrawable() != null
+						|| btnProfile.getDrawable() != null
+						|| btnFooter.getDrawable() != null) {
+					savingImage = new SavingImage3Picture(getActivity());
+					savingImage.delegate = this;
+					Map<String, Object> it = new LinkedHashMap<String, Object>();
 
-				savingImage = new SavingImage3Picture(getActivity());
-				savingImage.delegate = this;
-				Map<String, Object> it = new LinkedHashMap<String, Object>();
+					it.put("tableName", "Object");
+					it.put("fieldName1", "Image1");
+					it.put("fieldName2", "Image2");
+					it.put("fieldName3", "Image3");
 
-				it.put("tableName", "[Object]");
-				it.put("fieldName1", "Image1");
-				it.put("fieldName2", "Image2");
-				it.put("fieldName3", "Image3");
+					it.put("id", serverId);
 
-				it.put("id", serverId);
+					it.put("Image1", byteHeader);
 
-				it.put("Image1", byteHeader);
-				it.put("Image2", byteProfil);
-				it.put("Image3", byteFooter);
+					it.put("Image2", byteProfil);
 
-				savingImage.execute(it);
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
+					it.put("Image3", byteFooter);
+
+					savingImage.execute(it);
+					ringProgressDialog = ProgressDialog.show(getActivity(),
+							null, "لطفا منتظر بمانید.");
+
 				}
-
 			} else {
+				// DBAdapter.UpdateHeaderImageObject(serverId, byteHeader);
+				// DBAdapter.UpdateProfileImageObject(serverId, byteProfil);
+				// DBAdapter.UpdateFooterImageObject(serverId, byteFooter);
 
 			}
 			// else {
@@ -612,46 +652,42 @@ public class CreateIntroductionFragment extends Fragment implements
 			// }
 
 			if (mainID > 4) {
-				if (flag){
-				DBAdapter.open();
-				DBAdapter.InsertInformationNewObject(serverId, nameValue,
-						phoneValue, emailValue, faxValue, descriptionValue,
-						Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
-						mobileValue, Lfacebook, Linstagram, Llinkedin, Lgoogle,
-						Lwebsite, Ltwitter, currentUser.getId(), 0,
-						MainObjectId, objectId, ObjectBrandTypeId , AgencyService , serverDate);
-				
-				DBAdapter.close();
+				if (flag) {
+					DBAdapter.InsertInformationNewObject(serverId, nameValue,
+							phoneValue, emailValue, faxValue, descriptionValue,
+							Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
+							mobileValue, Lfacebook, Linstagram, Llinkedin,
+							Lgoogle, Lwebsite, Ltwitter, currentUser.getId(),
+							0, MainObjectId, objectId, ObjectBrandTypeId,
+							AgencyService, serverDate);
 
-				flag = false;
+					flag = false;
 
-				lastItem = serverId;
+					lastItem = serverId;
 
-				params = new LinkedHashMap<String, String>();
-				saving = new Saving(getActivity());
-				saving.delegate = CreateIntroductionFragment.this;
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(getActivity());
+					saving.delegate = CreateIntroductionFragment.this;
 
-				params.put("TableName", "ObjectInCity");
+					params.put("TableName", "ObjectInCity");
 
-				params.put("ObjectId", String.valueOf(lastItem));
-				params.put("CityId", String.valueOf(CityId));
-				params.put("Date", serverDate);
-				params.put("ModifyDate", serverDate);
+					params.put("ObjectId", String.valueOf(lastItem));
+					params.put("CityId", String.valueOf(CityId));
+					params.put("Date", serverDate);
+					params.put("ModifyDate", serverDate);
 
-				params.put("IsUpdate", "0");
-				params.put("Id", "0");
-				serverDate = output;
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+					serverDate = output;
 
-				saving.execute(params);
+					saving.execute(params);
 
-				ringProgressDialog = ProgressDialog.show(getActivity(), null,
-						"لطفا منتظر بمانید.");
-			} else {
-				DBAdapter.open();
-				DBAdapter.insertObjectInCity(serverId, lastItem, CityId,
-						serverDate);
-				DBAdapter.close();
-			}
+					ringProgressDialog = ProgressDialog.show(getActivity(),
+							null, "لطفا منتظر بمانید.");
+				} else {
+					DBAdapter.insertObjectInCity(serverId, lastItem, CityId,
+							serverDate);
+				}
 			}
 			// } else {
 			//
@@ -688,6 +724,8 @@ public class CreateIntroductionFragment extends Fragment implements
 			// }
 			// }
 			// }
+
+			DBAdapter.close();
 
 		} catch (NumberFormatException e) {
 			if (output != null
@@ -855,7 +893,7 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("ObjectId", String.valueOf(objectId));
 					params.put("ObjectBrandTypeId",
 							String.valueOf(ObjectBrandTypeId));
-					
+
 					params.put("AgencyService", String.valueOf(AgencyService));
 
 					serverDate = output;
@@ -863,7 +901,7 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("ModifyDate", output);
 
 					params.put("IsActive", "0");
-					
+
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 					saving.execute(params);
@@ -914,14 +952,25 @@ public class CreateIntroductionFragment extends Fragment implements
 			DBAdapter.open();
 			DBAdapter.UpdateImageObjectToDatabase(serverId, byteHeader,
 					byteProfil, byteFooter);
+			
+			if (f1)
+			DBAdapter.updateObjectImage1ServerDate(serverId, output);
+			if (f2)
+				DBAdapter.updateObjectImage2ServerDate(serverId, output);
+			if (f3)
+				DBAdapter.updateObjectImage3ServerDate(serverId, output);			
 
 			DBAdapter.close();
+
+			Toast.makeText(getActivity(),
+					"ذخیره سازی تصاویر با موفقیت انجا م شد", 0).show();
+
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
 
 		} catch (Exception e) {
-			Toast.makeText(getActivity(), "خطا در ثبت" + e, Toast.LENGTH_SHORT)
+			Toast.makeText(getActivity(), "خطا در ذخیره سازی تصاویر" + e, Toast.LENGTH_SHORT)
 					.show();
 		}
 	}

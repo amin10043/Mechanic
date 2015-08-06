@@ -2317,7 +2317,8 @@ public class DataBaseAdapter {
 		cv.put("rate", 0);
 		cv.put("Seen", 1);
 
-		cv.put("AgencyService", AgencyService);
+		if (AgencyService != 100)
+			cv.put("AgencyService", AgencyService);
 
 		cv.put("Date", Date);
 

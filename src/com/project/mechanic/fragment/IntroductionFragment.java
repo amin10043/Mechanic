@@ -1,9 +1,11 @@
 package com.project.mechanic.fragment;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -39,6 +41,7 @@ import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingAllImage;
 import com.project.mechanic.utility.Utility;
 
@@ -101,6 +104,12 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	boolean flag;
 
 	RelativeLayout phone, cphone, email, map;
+
+	Updating update;
+
+	boolean f1;
+	boolean f2;
+	boolean f3;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -265,16 +274,25 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		object = adapter.getObjectbyid(ObjectID);
 		adapter.close();
 
-		updating = new UpdatingAllImage(getActivity());
-		updating.delegate = this;
-		maps = new LinkedHashMap<String, String>();
-		// maps.put("tableName", "Object1");
-		maps.put("tableName", "All");
-		maps.put("Id", String.valueOf(ObjectID));
-		maps.put("fromDate1", object.getImage1ServerDate());
-		maps.put("fromDate2", object.getImage2ServerDate());
-		maps.put("fromDate3", object.getImage3ServerDate());
-		updating.execute(maps);
+		update = new Updating(getActivity());
+		update.delegate = IntroductionFragment.this;
+		String[] para = new String[4];
+		para[0] = "ImageServerDate";
+		para[1] = String.valueOf(object.getId());
+		para[2] = "masoud";
+		para[3] = "0";
+		update.execute(para);
+
+		// updating = new UpdatingAllImage(getActivity());
+		// updating.delegate = this;
+		// maps = new LinkedHashMap<String, String>();
+		// // maps.put("tableName", "Object1");
+		// maps.put("tableName", "All");
+		// maps.put("Id", String.valueOf(ObjectID));
+		// maps.put("fromDate1", object.getImage1ServerDate());
+		// maps.put("fromDate2", object.getImage2ServerDate());
+		// maps.put("fromDate3", object.getImage3ServerDate());
+		// updating.execute(maps);
 
 		ringProgressDialog = ProgressDialog.show(getActivity(), "",
 				"به روز رسانی تصاویر...", true);
@@ -1089,67 +1107,55 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	@Override
 	public void processFinish(String output) {
 
-		int id = -1;
-		try {
-			id = Integer.valueOf(output);
-			// این متغیر مشخص کنندهلایک صفحه و لایک پست می بایشد
-			int comId;
-			if (flag)
-				// لایک صفحه
-				comId = 0;
-			else
-				// لایک پست
-				comId = 1;
+		if (output.contains("---")) {
+			if (ringProgressDialog != null)
+				ringProgressDialog.dismiss();
+			return;
+		} else if (output.contains("-")) {
+			String[] strs = output.split(Pattern.quote("-")); // each
 
-			adapter.open();
+			String s1, s2, s3;
 
-			if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
-					ObjectID, comId)) {
+			serverDate = s1 = strs[0];
+			s2 = strs[1];
+			s3 = strs[2];
 
-				adapter.deleteLikeIntroduction(CurrentUser.getId(), ObjectID,
-						comId);
-				int countlike = adapter.LikeInObject_count(ObjectID, comId);
-
-				if (flag) {
-					AddLike.setBackgroundResource(R.drawable.like_off);
-					personPage.setBackgroundResource(R.drawable.count_like_off);
-					CountLikeIntroduction.setText(String.valueOf(countlike));
-					if (ringProgressDialog != null)
-						ringProgressDialog.dismiss();
-				} else {
-					likePost.setBackgroundResource(R.drawable.like_off);
-					personPost.setBackgroundResource(R.drawable.count_like_off);
-					countLikePost.setText(String.valueOf(countlike));
-					if (ringProgressDialog != null)
-						ringProgressDialog.dismiss();
-				}
-
-			} else {
-				adapter.insertLikeInObjectToDb(id, CurrentUser.getId(),
-						ObjectID, serverDate, comId);
-				int countlike = adapter.LikeInObject_count(ObjectID, comId);
-
-				if (flag) {
-					AddLike.setBackgroundResource(R.drawable.like_on);
-					personPage.setBackgroundResource(R.drawable.count_like);
-					CountLikeIntroduction.setText(String.valueOf(countlike));
-					if (ringProgressDialog != null)
-						ringProgressDialog.dismiss();
-				} else {
-					likePost.setBackgroundResource(R.drawable.like_on);
-					personPost.setBackgroundResource(R.drawable.count_like);
-					countLikePost.setText(String.valueOf(countlike));
-					if (ringProgressDialog != null)
-						ringProgressDialog.dismiss();
-				}
-
+			if (object.getImage1ServerDate() == null
+					|| !object.getImage1ServerDate().equals(s1)) {
+				object.setImage1ServerDate(s1);
+				f1 = true;
 			}
-			adapter.close();
+			if (object.getImage2ServerDate() == null
+					|| !object.getImage2ServerDate().equals(s2)) {
+				object.setImage2ServerDate(s2);
+				f2 = true;
+			}
 
-		} catch (NumberFormatException e) {
-			if (output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			if (object.getImage3ServerDate() == null
+					|| !object.getImage3ServerDate().equals(s3)) {
+				object.setImage3ServerDate(s3);
+				f3 = true;
+			}
+
+			if (f1 || f2 || f3) {
+				updating = new UpdatingAllImage(getActivity());
+				updating.delegate = this;
+				maps = new LinkedHashMap<String, String>();
+				// maps.put("tableName", "Object1");
+				maps.put("tableName", "All");
+				maps.put("Id", String.valueOf(ObjectID));
+				maps.put("fromDate1", object.getImage1ServerDate());
+				maps.put("fromDate2", object.getImage2ServerDate());
+				maps.put("fromDate3", object.getImage3ServerDate());
+				updating.execute(maps);
+
+			} else if (ringProgressDialog != null)
+				ringProgressDialog.dismiss();
+
+		} else {
+			int id = -1;
+			try {
+				id = Integer.valueOf(output);
 				// این متغیر مشخص کنندهلایک صفحه و لایک پست می بایشد
 				int comId;
 				if (flag)
@@ -1158,95 +1164,160 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				else
 					// لایک پست
 					comId = 1;
+
 				adapter.open();
+
 				if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
 						ObjectID, comId)) {
 
-					params = new LinkedHashMap<String, String>();
-					deleting = new Deleting(getActivity());
-					deleting.delegate = IntroductionFragment.this;
+					adapter.deleteLikeIntroduction(CurrentUser.getId(),
+							ObjectID, comId);
+					int countlike = adapter.LikeInObject_count(ObjectID, comId);
 
-					params.put("TableName", "LikeInObject");
-					params.put("UserId", String.valueOf(CurrentUser.getId()));
-					params.put("ObjectId", String.valueOf(ObjectID));
-					params.put("CommentId", String.valueOf(comId));
-
-					deleting.execute(params);
-
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-					adapter.close();
+					if (flag) {
+						AddLike.setBackgroundResource(R.drawable.like_off);
+						personPage
+								.setBackgroundResource(R.drawable.count_like_off);
+						CountLikeIntroduction
+								.setText(String.valueOf(countlike));
+						if (ringProgressDialog != null)
+							ringProgressDialog.dismiss();
+					} else {
+						likePost.setBackgroundResource(R.drawable.like_off);
+						personPost
+								.setBackgroundResource(R.drawable.count_like_off);
+						countLikePost.setText(String.valueOf(countlike));
+						if (ringProgressDialog != null)
+							ringProgressDialog.dismiss();
+					}
 
 				} else {
-					adapter.open();
-					params = new LinkedHashMap<String, String>();
-					saving = new Saving(getActivity());
-					saving.delegate = IntroductionFragment.this;
+					adapter.insertLikeInObjectToDb(id, CurrentUser.getId(),
+							ObjectID, serverDate, comId);
+					int countlike = adapter.LikeInObject_count(ObjectID, comId);
 
-					params.put("TableName", "LikeInObject");
-
-					params.put("UserId", String.valueOf(CurrentUser.getId()));
-					params.put("ObjectId", String.valueOf(ObjectID));
-					params.put("Date", output);
-					params.put("CommentId", String.valueOf(comId));
-
-					params.put("IsUpdate", "0");
-					params.put("Id", "0");
-
-					serverDate = output;
-
-					saving.execute(params);
-
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-					adapter.close();
+					if (flag) {
+						AddLike.setBackgroundResource(R.drawable.like_on);
+						personPage.setBackgroundResource(R.drawable.count_like);
+						CountLikeIntroduction
+								.setText(String.valueOf(countlike));
+						if (ringProgressDialog != null)
+							ringProgressDialog.dismiss();
+					} else {
+						likePost.setBackgroundResource(R.drawable.like_on);
+						personPost.setBackgroundResource(R.drawable.count_like);
+						countLikePost.setText(String.valueOf(countlike));
+						if (ringProgressDialog != null)
+							ringProgressDialog.dismiss();
+					}
 
 				}
 				adapter.close();
 
-			} else {
-				Toast.makeText(getActivity(),
-						"خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT)
+			} catch (NumberFormatException e) {
+				if (output != null
+						&& !(output.contains("Exception") || output
+								.contains("java"))) {
+					// این متغیر مشخص کنندهلایک صفحه و لایک پست می بایشد
+					int comId;
+					if (flag)
+						// لایک صفحه
+						comId = 0;
+					else
+						// لایک پست
+						comId = 1;
+					adapter.open();
+					if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
+							ObjectID, comId)) {
+
+						params = new LinkedHashMap<String, String>();
+						deleting = new Deleting(getActivity());
+						deleting.delegate = IntroductionFragment.this;
+
+						params.put("TableName", "LikeInObject");
+						params.put("UserId",
+								String.valueOf(CurrentUser.getId()));
+						params.put("ObjectId", String.valueOf(ObjectID));
+						params.put("CommentId", String.valueOf(comId));
+
+						deleting.execute(params);
+
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								"", "لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+						adapter.close();
+
+					} else {
+						adapter.open();
+						params = new LinkedHashMap<String, String>();
+						saving = new Saving(getActivity());
+						saving.delegate = IntroductionFragment.this;
+
+						params.put("TableName", "LikeInObject");
+
+						params.put("UserId",
+								String.valueOf(CurrentUser.getId()));
+						params.put("ObjectId", String.valueOf(ObjectID));
+						params.put("Date", output);
+						params.put("CommentId", String.valueOf(comId));
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						serverDate = output;
+
+						saving.execute(params);
+
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								"", "لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+						adapter.close();
+
+					}
+					adapter.close();
+
+				} else {
+					Toast.makeText(getActivity(),
+							"خطا در ثبت. پاسخ نا مشخص از سرور",
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+
+			catch (Exception e) {
+
+				Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
 						.show();
 			}
-		}
-
-		catch (Exception e) {
-
-			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
-					.show();
 		}
 	}
 
@@ -1256,22 +1327,24 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		if (output != null && output.size() > 0) {
 
 			adapter.open();
-
+//			 if (f1 )
 			if (output.get(0) != null) {
 				adapter.UpdateHeaderImageObject(ObjectID, output.get(0));
 				headerImage.setImageBitmap(BitmapFactory.decodeByteArray(
 						output.get(0), 0, output.get(0).length));
 				adapter.updateObjectImage1ServerDate(ObjectID, serverDate);
 			}
+//			 if (f2)
 			if (output.get(1) != null) {
-				adapter.UpdateHeaderImageObject(ObjectID, output.get(1));
+				adapter.UpdateProfileImageObject(ObjectID, output.get(1));
 				profileImage.setImageBitmap(BitmapFactory.decodeByteArray(
 						output.get(1), 0, output.get(1).length));
 				adapter.updateObjectImage2ServerDate(ObjectID, serverDate);
 			}
 
+			// if (f3)
 			if (output.get(2) != null) {
-				adapter.UpdateHeaderImageObject(ObjectID, output.get(2));
+				adapter.UpdateFooterImageObject(ObjectID, output.get(2));
 				advertise2.setImageBitmap(BitmapFactory.decodeByteArray(
 						output.get(2), 0, output.get(2).length));
 				adapter.updateObjectImage3ServerDate(ObjectID, serverDate);

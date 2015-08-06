@@ -66,6 +66,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 	ServerDate date;
 	int userId;
 	Fragment fragment;
+	ImageView report;
 
 	public FroumtitleListadapter(Context context, int resource,
 			List<Froum> objects, Fragment fragment) {
@@ -106,6 +107,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				.findViewById(R.id.l1cm);
 		LikeTitle = (LinearLayout) convertView
 				.findViewById(R.id.liketitleTopic);
+
+		report = (ImageView) convertView.findViewById(R.id.reportImage);
 
 		Froum person1 = mylist.get(position);
 
@@ -229,14 +232,14 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		final SharedPreferences abc = context.getSharedPreferences("Id", 0);
 		final SharedPreferences froumId = context.getSharedPreferences("Id", 0);
 
-		convertView.setOnLongClickListener(new View.OnLongClickListener() {
+		report.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public boolean onLongClick(View v) {
+			public void onClick(View v) {
 
 				int ItemId = 0;
 				String t = "";
-				ListView listView = (ListView) v.getParent();
+				ListView listView = (ListView) v.getParent().getParent().getParent().getParent();
 				int position = listView.getPositionForView(v);
 				Froum f = getItem(position);
 				if (f != null) {
@@ -245,11 +248,10 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				}
 
 				DialogLongClick dia = new DialogLongClick(context, 1, ItemId, f
-						.getId(), fragment , t);
+						.getId(), fragment, t);
 				Toast.makeText(context, ItemId + "", 0).show();
 				dia.show();
 
-				return true;
 			}
 		});
 

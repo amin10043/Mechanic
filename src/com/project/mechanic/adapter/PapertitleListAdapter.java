@@ -69,6 +69,8 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 	ProgressDialog ringProgressDialog;
 	LinearLayout commentBtn;
 	Fragment fr;
+	ImageView report;
+
 
 	public PapertitleListAdapter(Context context, int resource,
 			List<Paper> objects, Fragment fr) {
@@ -112,6 +114,8 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				.findViewById(R.id.liketitleTopic);
 
 		commentBtn = (LinearLayout) convertView.findViewById(R.id.l1cm);
+		report = (ImageView) convertView.findViewById(R.id.reportImage);
+
 
 		// end find view
 		adapter.open();
@@ -235,10 +239,10 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 			}
 		});
-		convertView.setOnLongClickListener(new OnLongClickListener() {
+		report.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public boolean onLongClick(View v) {
+			public void onClick(View v) {
 
 				int i = 0;
 				int us = 0;
@@ -255,7 +259,6 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				DialogLongClick dia = new DialogLongClick(context, 2, us, i,
 						fr, t);
 				dia.show();
-				return true;
 			}
 		});
 

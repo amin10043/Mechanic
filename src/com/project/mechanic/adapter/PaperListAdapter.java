@@ -11,10 +11,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +41,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 	Utility util;
 	private PaperFragment Paperfragment;
 	int userId;
+	ImageView report;
 
 	public PaperListAdapter(Context context, int resource,
 			List<CommentInPaper> objects, PaperFragment f) {
@@ -74,6 +77,8 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 
 		CommentInPaper comment = list.get(position);
 
+		report = (ImageView) convertView.findViewById(R.id.reportImagereply);
+
 		adapter.open();
 		RelativeLayout rl = (RelativeLayout) convertView
 				.findViewById(R.id.main_icon_reply);
@@ -103,28 +108,27 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 		}
 		adapter.close();
 
-		convertView.setOnLongClickListener(new OnLongClickListener() {
+		report.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public boolean onLongClick(View arg0) {
+			public void onClick(View v) {
 				int i = 0;
 				int us = 0;
 				String t = "";
-				
+
 				int d = (int) getItemId(position);
 				CommentInPaper w = getItem(d);
 				if (w != null) {
 					i = w.getId();
 					us = w.getUserid();
 					t = w.getDescription();
-					Toast.makeText(context, "id = " + i + " Userid = "+ us, 0).show();
+					Toast.makeText(context, "id = " + i + " Userid = " + us, 0)
+							.show();
 				}
-				
-				
 
-				DialogLongClick dia = new DialogLongClick(context, 6, us, i, Paperfragment , t);
+				DialogLongClick dia = new DialogLongClick(context, 6, us, i,
+						Paperfragment, t);
 				dia.show();
-				return true;
 			}
 		});
 

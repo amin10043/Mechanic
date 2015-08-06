@@ -15,11 +15,13 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -60,6 +62,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 	TextView countLike, countdisLike;
 	ProgressDialog ringProgressDialog;
 	int userId;
+	ImageView reportComment , reportReply;
+
 
 	public ExpandableCommentFroum(Context context,
 			ArrayList<CommentInFroum> laptops,
@@ -106,6 +110,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 		ImageButton ReplyerPic = (ImageButton) convertView
 				.findViewById(R.id.icon_reply_comment);
+		
+		reportReply = (ImageView)convertView.findViewById(R.id.reportImagereply);
 		adapter.open();
 
 		// final CommentInFroum comment = cmt.get(groupPosition);
@@ -139,10 +145,10 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 		}
 		
-		convertView.setOnLongClickListener(new OnLongClickListener() {
+		reportReply.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public boolean onLongClick(View arg0) {
+			public void onClick(View arg0) {
 
 				int i = 0;
 				int u = 0;
@@ -164,7 +170,6 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 						f , t);
 				dia.show();
 				
-				return true;
 			}
 		});
 		
@@ -219,6 +224,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 		final Users x = adapter.getUserbyid(comment.getUserid());
 		// userId= x.getId();
 		adapter.close();
+		
 
 		if (convertView == null) {
 			LayoutInflater infalInflater = (LayoutInflater) context
@@ -256,6 +262,9 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 				.findViewById(R.id.negative_img);
 
 		final ExpandableListView mExpandableListView = (ExpandableListView) parent;
+		
+		reportComment = (ImageView) convertView.findViewById(R.id.reportImage);
+
 
 		// end find view
 
@@ -681,10 +690,10 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 			}
 		});
 
-		convertView.setOnLongClickListener(new View.OnLongClickListener() {
+		reportComment.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public boolean onLongClick(View cc) {
+			public void onClick(View cc) {
 
 				int u = 0;
 				int i = 0;
@@ -727,7 +736,6 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 					dia.show();
 
 				}
-				return true;
 			}
 
 		});

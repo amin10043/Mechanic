@@ -31,14 +31,30 @@
             android:text="Name"
             android:textColor="@color/transparent" />
 
-        <TextView
-            android:id="@+id/date_replyed"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/icon_reply_comment"
-            android:text="Date"
-            android:textColor="@color/transparent" />
+            android:layout_gravity="left"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/reportImagereply"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="left"
+                android:background="@drawable/down_arrow" />
+
+            <TextView
+                android:id="@+id/date_replyed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:gravity="left"
+                android:text="Date"
+                android:textColor="@color/transparent" />
+        </LinearLayout>
     </RelativeLayout>
 
     <TextView
