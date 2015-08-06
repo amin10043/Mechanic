@@ -389,28 +389,8 @@ public class Object implements Comparable<Object> {
 	}
 
 	public int compareTo(Object compareObject) {
-		// TODO Auto-generated method stub
 		int compareRate = compareObject.getRate();
-
-		// return this.Rate - compareRate;
-
 		return compareRate - this.Rate;
 	}
 
 }
-// public static Comparator<Object>
-// = new Comparator<Object>() {
-//
-//
-// public int compare(Object object1, Object object2) {
-//
-// String objectName1 = object1.getName().toUpperCase();
-// String objectName2 = object2.getName().toUpperCase();
-//
-// // ascending order
-// return objectName1.compareTo(objectName2);
-//
-// //descending order
-// return objectName2.compareTo(objectName1);
-// }
-

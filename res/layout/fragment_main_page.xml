@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="5dp"
             android:text="تولیدکنندگان داخلی ، برندهای وارداتی ، نمایندگی ها "
             android:textColor="@color/transparent" />
 
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="5dp"
             android:text="فروشگاهها و شرکت کننده های عرضه کننده محصولات"
             android:textColor="@color/transparent" />
 
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="5dp"
             android:text="مشاوران ، ناظران و شرکت های مجری تأسیسات مکانیکی "
             android:textColor="@color/transparent" />
 
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="5dp"
             android:text="اشخاص حقیقی (استادکاران)تاسیسات مکانیکی"
             android:textColor="@color/transparent" />
 
@@ -119,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="5dp"
             android:text="نشریات ، مقالات و اخبار تاسیسات مکانیکی"
             android:textColor="@color/transparent" />
 
@@ -144,7 +144,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="5dp"
             android:text="آگهی و تبلیغات"
             android:textColor="@color/transparent" />
 
@@ -169,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="5dp"
             android:text="تالار گفتگو"
             android:textColor="@color/transparent" />
 

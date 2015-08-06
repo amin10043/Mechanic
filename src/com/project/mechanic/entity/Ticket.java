@@ -212,6 +212,7 @@ public class Ticket implements Comparable<Ticket> {
 	public void setSubmit(int submit) {
 		Submit = submit;
 	}
+
 	public int getDay() {
 		return Day;
 	}
@@ -224,7 +225,7 @@ public class Ticket implements Comparable<Ticket> {
 			String date, int Typeid, int name, int email, int mobile,
 			int phone, int fax, int provinceid, String uname, String uemail,
 			String uphone, String ufax, String uadress, byte[] uimage,
-			String umobile, int seen, int submit, int seenBefore,int day) {
+			String umobile, int seen, int submit, int seenBefore, int day) {
 		super();
 		Id = id;
 		Title = title;
@@ -249,19 +250,20 @@ public class Ticket implements Comparable<Ticket> {
 		Seen = seen;
 		Submit = submit;
 		this.seenBefore = seenBefore;
-		Day=day;
-		
+		Day = day;
+
 	}
 
 	@Override
 	public int compareTo(Ticket compareTicket) {
-		try {
-			long temp = Long.valueOf(getDate());
-			long comparetemp = Long.valueOf(compareTicket.getDate());
-			return (int) (comparetemp - temp);
-		} catch (Exception ex) {
+		long temp = Long.valueOf(getDate());
+		long comparetemp = Long.valueOf(compareTicket.getDate());
+		if (comparetemp > temp)
+			return 1;
+		else if (comparetemp < temp)
+			return -1;
+		else
 			return 0;
-		}
 
 	}
 }

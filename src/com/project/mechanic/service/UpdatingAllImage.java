@@ -96,8 +96,13 @@ public class UpdatingAllImage extends
 			res = new ArrayList<byte[]>();
 
 			for (int i = 0; i < response.getPropertyCount(); i++) {
-				SoapPrimitive obj3 = (SoapPrimitive) response.getProperty(i);
-				res.add(Base64.decode(obj3.toString()));
+				try {
+					SoapPrimitive obj3 = (SoapPrimitive) response
+							.getProperty(i);
+					res.add(Base64.decode(obj3.toString()));
+				} catch (Exception ex) {
+					res.add(new byte[0]);
+				}
 			}
 		} catch (Exception e) {
 			response = e.toString();

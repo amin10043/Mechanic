@@ -108,7 +108,12 @@ public class Paper implements Comparable<Paper> {
 		if (comparePaper != null && comparePaper.getDate() != null)
 			comparetemp = Long.valueOf(comparePaper.getDate());
 
-		return (int) (comparetemp - temp);
+		if (comparetemp > temp)
+			return 1;
+		else if (comparetemp < temp)
+			return -1;
+		else
+			return 0;
 	}
 
 }

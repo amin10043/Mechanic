@@ -3,7 +3,6 @@ package com.project.mechanic.fragment;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,7 +32,6 @@ import com.project.mechanic.utility.Utility;
 public class ObjectFragment extends Fragment implements AsyncInterface {
 
 	DataBaseAdapter adapter;
-	private Intent intent;
 	Users currentUser;
 	Utility util;
 	DialogCreatePage dialog;
@@ -52,7 +50,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 
 	ArrayList<Object> mylist;
 	int typeList;
-	
+
 	SharedPreferences pageId;
 	int AgencyService;
 
@@ -63,12 +61,10 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 		((MainActivity) getActivity()).setTitle(R.string.object);
 
 		View view = inflater.inflate(R.layout.fragment_object, null);
-		
-		pageId = getActivity().getSharedPreferences("Id",
-				0);
-		
-		AgencyService = pageId.getInt("IsAgency", -1);
 
+		pageId = getActivity().getSharedPreferences("Id", 0);
+
+		AgencyService = pageId.getInt("IsAgency", -1);
 
 		SharedPreferences sendData = getActivity()
 				.getSharedPreferences("Id", 0);
@@ -83,17 +79,10 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 		currentUser = util.getCurrentUser();
 
 		lstObject = (ListView) view.findViewById(R.id.listvCmt_Introduction);
-		// RelativeLayout createPage = (RelativeLayout) view
-		// .findViewById(R.id.relative);
-		// SharedPreferences sendObjectId = getActivity().getSharedPreferences(
-		// "Id", 0);
-		// final int ObjectId = sendData.getInt("main_Id", -1);
-
 		adapter.open();
 		setting = adapter.getSettings();
 
 		if (id == 2 || id == 3 || id == 4) {
-
 			if (id == 2)
 				typeList = 0;
 
@@ -105,11 +94,11 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 			lstObject.setAdapter(ListAdapter);
 
 		} else {
-		
+
 			int brand = pageId.getInt("brandID", -1);
 
 			Toast.makeText(getActivity(), "agency", 0).show();
-			mylist = adapter.subBrandObject(brand, city_id , AgencyService);
+			mylist = adapter.subBrandObject(brand, city_id, AgencyService);
 
 			if (mylist != null || !mylist.isEmpty()) {
 
@@ -164,7 +153,6 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 					createItem.show(true);
 					break;
 				}
-
 			}
 
 			@Override
@@ -195,7 +183,6 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 					FindPosition = false;
 
 				}
-
 			}
 		});
 
@@ -232,7 +219,8 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 							.commit();
 					sendToCreate.edit().putInt("CityId", city_id).commit();
 					sendToCreate.edit().putInt("objectId", brandId).commit();
-					sendToCreate.edit().putInt("IsAgency", AgencyService).commit();
+					sendToCreate.edit().putInt("IsAgency", AgencyService)
+							.commit();
 
 					Toast.makeText(getActivity(), "brand id  = " + brandId,
 							Toast.LENGTH_SHORT).show();
@@ -242,17 +230,6 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 
 			}
 		});
-
-		// createPage.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		//
-		// dialog = new DialogCreatePage(getActivity());
-		// dialog.show();
-		//
-		// }
-		// });
 
 		return view;
 	}

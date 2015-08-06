@@ -7,7 +7,6 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,7 +16,6 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -151,9 +149,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 							.setSoftInputMode(
 									WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 					dialog.show();
-
 				}
-
 			}
 		});
 		if (CurrentUser == null) {
@@ -183,7 +179,8 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 		lst.setAdapter(ListAdapter);
 
 		int countList = ListAdapter.getCount();
-		Toast.makeText(getActivity(), "تعداد مقالات = " + countList, 0).show();
+		Toast.makeText(getActivity(), "تعداد مقالات = " + countList,
+				Toast.LENGTH_SHORT).show();
 
 		lst.setOnScrollListener(new OnScrollListener() {
 
@@ -209,7 +206,6 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 				int lastInScreen = firstVisibleItem + visibleItemCount;
 				//
 				if (lastInScreen == totalItemCount) {
-					// lst.addFooterView(LoadMoreFooter);
 
 					LoadMoreFooter.setVisibility(View.VISIBLE);
 					//
@@ -229,84 +225,11 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 					beforePosition = countList;
 
 					FindPosition = false;
-
 				}
 			}
 		});
 
 		return view;
-	}
-
-	private class LoadMoreDataTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-
-			if (isCancelled()) {
-				return null;
-			}
-
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-			}
-
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-
-			// We need notify the adapter that the data have been changed
-			((BaseAdapter) ListAdapter).notifyDataSetChanged();
-			ListAdapter.notifyDataSetChanged();
-
-			// Call onLoadMoreComplete when the LoadMore task, has finished
-			// ((PullAndLoadListView) lstNews).onLoadMoreComplete();
-
-			super.onPostExecute(result);
-		}
-
-		@Override
-		protected void onCancelled() {
-			// Notify the loading more operation has finished
-			// ((PullAndLoadListView) lstNews).onLoadMoreComplete();
-		}
-	}
-
-	private class PullToRefreshDataTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-
-			if (isCancelled()) {
-				return null;
-			}
-
-			// Simulates a background task
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-			}
-
-			// for (int i = 0; i < mAnimals.length; i++)
-			// mListItems.addFirst(mAnimals[i]);
-
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-
-			// We need notify the adapter that the data have been changed
-			((BaseAdapter) ListAdapter).notifyDataSetChanged();
-
-			// Call onLoadMoreComplete when the LoadMore task, has finished
-			// ((PullAndLoadListView) lstNews).onRefreshComplete();
-
-			super.onPostExecute(result);
-		}
-
 	}
 
 	public void updateView() {
@@ -357,7 +280,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 	@Override
 	public void processFinish(String output) {
 		if (output.contains("anyType")) {
-			 LoadMoreFooter.setVisibility(View.INVISIBLE);
+			LoadMoreFooter.setVisibility(View.INVISIBLE);
 			// lst.removeFooterView(LoadMoreFooter);
 
 		}

@@ -487,7 +487,7 @@ public class MainActivity extends FragmentActivity {
 							new IntroductionFragment());
 					break;
 				case -1:
-					Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show();
+					trans.replace(R.id.content_frame, new MainFragment());
 					break;
 				}
 

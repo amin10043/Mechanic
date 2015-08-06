@@ -9,6 +9,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
@@ -105,6 +107,7 @@ public class WelcomeScreen extends Activity {
 			}
 		});
 
+		storeSharedPrefs("1"); // Is First Time ?????
 	}
 
 	@SuppressWarnings("deprecation")
@@ -127,6 +130,15 @@ public class WelcomeScreen extends Activity {
 
 	}
 
+	protected void storeSharedPrefs(String value) {
+
+		SharedPreferences uPreferences = getSharedPreferences("firstTime", 0);
+		Editor editor = uPreferences.edit();
+		editor.putString("first", value);
+		editor.commit();
+
+	}
+
 	private void initialize() {
 		row1 = (LinearLayout) findViewById(R.id.row1_linear);
 		row2 = (LinearLayout) findViewById(R.id.row2_linear);
@@ -140,6 +152,7 @@ public class WelcomeScreen extends Activity {
 		row10 = (LinearLayout) findViewById(R.id.row10_linear);
 
 		row_Displacement = (LinearLayout) findViewById(R.id.row_Displacement);
+
 		row_network = (LinearLayout) findViewById(R.id.row_network);
 
 		img1 = new ImageButton(WelcomeScreen.this);
