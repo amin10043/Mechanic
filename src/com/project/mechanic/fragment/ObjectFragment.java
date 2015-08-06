@@ -51,6 +51,9 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 	ArrayList<Object> mylist;
 	int typeList;
 
+	SharedPreferences pageId;
+	int AgencyService;
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +61,10 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 		((MainActivity) getActivity()).setTitle(R.string.object);
 
 		View view = inflater.inflate(R.layout.fragment_object, null);
+
+		pageId = getActivity().getSharedPreferences("Id", 0);
+
+		AgencyService = pageId.getInt("IsAgency", -1);
 
 		SharedPreferences sendData = getActivity()
 				.getSharedPreferences("Id", 0);
@@ -87,11 +94,11 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 			lstObject.setAdapter(ListAdapter);
 
 		} else {
-			SharedPreferences pageId = getActivity().getSharedPreferences("Id",
-					0);
+
 			int brand = pageId.getInt("brandID", -1);
 
-			mylist = adapter.subBrandObject(brand, city_id);
+			Toast.makeText(getActivity(), "agency", 0).show();
+			mylist = adapter.subBrandObject(brand, city_id, AgencyService);
 
 			if (mylist != null || !mylist.isEmpty()) {
 
@@ -212,6 +219,8 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 							.commit();
 					sendToCreate.edit().putInt("CityId", city_id).commit();
 					sendToCreate.edit().putInt("objectId", brandId).commit();
+					sendToCreate.edit().putInt("IsAgency", AgencyService)
+							.commit();
 
 					Toast.makeText(getActivity(), "brand id  = " + brandId,
 							Toast.LENGTH_SHORT).show();

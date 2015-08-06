@@ -307,6 +307,7 @@ public class IntroductionEditFragment extends Fragment implements
 
 		btnSave.setOnClickListener(new OnClickListener() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void onClick(View arg0) {
 
@@ -323,8 +324,7 @@ public class IntroductionEditFragment extends Fragment implements
 							"پر کردن فیلد نام الزامی است", Toast.LENGTH_SHORT)
 							.show();
 				} else {
-					ringProgressDialog = ProgressDialog.show(getActivity(),
-							"در حال بروزرسانی", "لطفا منتظر بمانید...");
+					
 					saving = new Saving(getActivity());
 					saving.delegate = IntroductionEditFragment.this;
 					params = new LinkedHashMap<String, String>();
@@ -352,6 +352,9 @@ public class IntroductionEditFragment extends Fragment implements
 					params.put("IsUpdate", "1");
 					params.put("Id", String.valueOf(PageId));
 					saving.execute(params);
+					
+					ringProgressDialog = ProgressDialog.show(getActivity(),
+							"در حال بروزرسانی", "لطفا منتظر بمانید...");
 
 					getActivity().getSupportFragmentManager().popBackStack();
 				}
@@ -450,7 +453,7 @@ public class IntroductionEditFragment extends Fragment implements
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
-			if (getActivity() != null) {
+//			if (getActivity() != null) {
 
 				bmpHeader = ((BitmapDrawable) headerImageEdit.getDrawable())
 						.getBitmap();
@@ -494,7 +497,7 @@ public class IntroductionEditFragment extends Fragment implements
 				ringProgressDialog = ProgressDialog.show(getActivity(), null,
 						"لطفا منتظر بمانید.");
 
-			} else {
+//			} else {
 				DBAdapter.open();
 				DBAdapter.UpdateObjectProperties(PageId, nameValue, phoneValue,
 						emailValue, faxValue, descriptionValue, Dcatalog,
@@ -502,11 +505,11 @@ public class IntroductionEditFragment extends Fragment implements
 						Dinstagram, Dlink, Dgoogle, Dweb, Dtwt);
 
 				DBAdapter.close();
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
-				}
+//				if (ringProgressDialog != null) {
+//					ringProgressDialog.dismiss();
+//				}
 
-			}
+//			}
 
 		} catch (NumberFormatException ex) {
 			Toast.makeText(getActivity(), "خطا در بروز رسانی",

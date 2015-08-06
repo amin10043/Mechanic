@@ -101,17 +101,17 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 
 			@Override
 			public void onRefresh() {
-				updating = new Updating(getActivity());
-				updating.delegate = MainBrandFragment.this;
-				String[] params = new String[4];
-				params[0] = "Object";
-				params[1] = setting.getServerDate_Start_Object() != null ? setting
-						.getServerDate_Start_Object() : "";
-				params[2] = setting.getServerDate_End_Object() != null ? setting
-						.getServerDate_End_Object() : "";
-
-				params[3] = "1";
-				updating.execute(params);
+//				updating = new Updating(getActivity());
+//				updating.delegate = MainBrandFragment.this;
+//				String[] params = new String[4];
+//				params[0] = "Object";
+//				params[1] = setting.getServerDate_Start_Object() != null ? setting
+//						.getServerDate_Start_Object() : "";
+//				params[2] = setting.getServerDate_End_Object() != null ? setting
+//						.getServerDate_End_Object() : "";
+//
+//				params[3] = "1";
+//				updating.execute(params);
 			}
 		});
 
@@ -193,22 +193,22 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 				
 					LoadMoreFooter.setVisibility(View.VISIBLE);
 					//
-					updating = new Updating(getActivity());
-					updating.delegate = MainBrandFragment.this;
-					String[] params = new String[4];
-					params[0] = "Object";
-					params[1] = setting.getServerDate_Start_Object() != null ? setting
-							.getServerDate_Start_Object() : "";
-					params[2] = setting.getServerDate_End_Object() != null ? setting
-							.getServerDate_End_Object() : "";
-
-					params[3] = "1";
-					updating.execute(params);
-
-					int countList = ListAdapter.getCount();
-					beforePosition = countList;
-
-					FindPosition = false;
+//					updating = new Updating(getActivity());
+//					updating.delegate = MainBrandFragment.this;
+//					String[] params = new String[4];
+//					params[0] = "Object";
+//					params[1] = setting.getServerDate_Start_Object() != null ? setting
+//							.getServerDate_Start_Object() : "";
+//					params[2] = setting.getServerDate_End_Object() != null ? setting
+//							.getServerDate_End_Object() : "";
+//
+//					params[3] = "1";
+//					updating.execute(params);
+//
+//					int countList = ListAdapter.getCount();
+//					beforePosition = countList;
+//
+//					FindPosition = false;
 					
 
 				}

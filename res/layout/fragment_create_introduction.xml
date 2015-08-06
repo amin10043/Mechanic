@@ -27,7 +27,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/no_image_header" />
+                    android:background="@drawable/no_image_header" />
             </LinearLayout>
 
             <RelativeLayout
@@ -53,7 +53,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:scaleType="fitXY"
-                    android:src="@drawable/no_img_profile" />
+                    android:background="@drawable/no_img_profile" />
             </RelativeLayout>
 
             <LinearLayout
@@ -528,7 +528,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/no_image_header" />
+                        android:background="@drawable/no_image_header" />
                 </LinearLayout>
 
                 <LinearLayout

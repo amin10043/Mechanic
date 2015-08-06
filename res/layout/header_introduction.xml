@@ -14,7 +14,6 @@
             android:id="@+id/imgvadvertise_Object"
             android:layout_width="match_parent"
             android:layout_height="160dp"
-            android:background="@drawable/no_image_header"
             android:scaleType="fitXY" />
     </LinearLayout>
 
@@ -27,11 +26,10 @@
 
         <ImageView
             android:id="@+id/icon_pro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/no_img_profile"
             android:scaleType="fitXY" />
 
         <TextView
