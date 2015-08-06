@@ -1328,29 +1328,44 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		if (output != null && output.size() > 0) {
 
 			adapter.open();
-//			 if (f1 )
-			if (output.get(0) != null) {
-				adapter.UpdateHeaderImageObject(ObjectID, output.get(0));
-				headerImage.setImageBitmap(BitmapFactory.decodeByteArray(
-						output.get(0), 0, output.get(0).length));
-				adapter.updateObjectImage1ServerDate(ObjectID, serverDate);
-			}
-//			 if (f2)
-			if (output.get(1) != null) {
-				adapter.UpdateProfileImageObject(ObjectID, output.get(1));
-				profileImage.setImageBitmap(BitmapFactory.decodeByteArray(
-						output.get(1), 0, output.get(1).length));
-				adapter.updateObjectImage2ServerDate(ObjectID, serverDate);
-			}
+			if (f1)
+				if (output.get(0) != null) {
+					adapter.UpdateHeaderImageObject(ObjectID, output.get(0));
+					Bitmap b = BitmapFactory.decodeByteArray(output.get(0), 0,
+							output.get(0).length);
+					if (b != null)
+						headerImage.setImageBitmap(b);
+					else
+						headerImage.setBackgroundResource(R.drawable.no_image_header);
+					adapter.updateObjectImage1ServerDate(ObjectID, serverDate);
+				}
+			if (f2)
+				if (output.get(1) != null) {
+					adapter.UpdateProfileImageObject(ObjectID, output.get(1));
+					Bitmap b = BitmapFactory.decodeByteArray(output.get(1), 0,
+							output.get(1).length);
+					if (b != null)
+						profileImage.setImageBitmap(b);
+					else
+						profileImage
+								.setBackgroundResource(R.drawable.no_img_profile);
+					adapter.updateObjectImage2ServerDate(ObjectID, serverDate);
+				}
 
-			// if (f3)
-			if (output.get(2) != null) {
-				adapter.UpdateFooterImageObject(ObjectID, output.get(2));
-				advertise2.setImageBitmap(BitmapFactory.decodeByteArray(
-						output.get(2), 0, output.get(2).length));
-				adapter.updateObjectImage3ServerDate(ObjectID, serverDate);
+			if (f3)
+				if (output.get(2) != null) {
+					adapter.UpdateFooterImageObject(ObjectID, output.get(2));
+					Bitmap b = BitmapFactory.decodeByteArray(output.get(2), 0,
+							output.get(2).length);
+					if (b != null)
+						advertise2.setImageBitmap(b);
+					else
+						advertise2
+								.setBackgroundResource(R.drawable.no_image_header);
 
-			}
+					adapter.updateObjectImage3ServerDate(ObjectID, serverDate);
+
+				}
 			Toast.makeText(getActivity(),
 					"به روز رسانی تصاویر با موفقیت انجام شد",
 					Toast.LENGTH_SHORT).show();

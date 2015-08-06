@@ -25,6 +25,7 @@
                     android:id="@+id/hh1"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
+                    android:background="@drawable/no_image_header"
                     android:scaleType="fitXY" />
             </LinearLayout>
 
@@ -597,7 +598,7 @@
                         android:id="@+id/ft1"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
-                        android:background="@drawable/gf"
+                        android:background="@drawable/no_image_header"
                         android:scaleType="fitXY" />
 
                     <EditText

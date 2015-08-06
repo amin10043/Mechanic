@@ -14,6 +14,7 @@
             android:id="@+id/imgvadvertise_Object"
             android:layout_width="match_parent"
             android:layout_height="160dp"
+            android:background="@drawable/no_image_header"
             android:scaleType="fitXY" />
     </LinearLayout>
 
@@ -30,6 +31,7 @@
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:background="@drawable/no_img_profile"
             android:scaleType="fitXY" />
 
         <TextView
@@ -280,8 +282,8 @@
             </RelativeLayout>
 
             <RelativeLayout
-                style="@style/brandStyle"
                 android:id="@+id/fixedPhone"
+                style="@style/brandStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -371,8 +373,8 @@
             </RelativeLayout>
 
             <RelativeLayout
-                style="@style/brandStyle"
                 android:id="@+id/personalMobile"
+                style="@style/brandStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -596,7 +598,7 @@
             android:id="@+id/imgvadvertise2_Object"
             android:layout_width="match_parent"
             android:layout_height="160dp"
-            android:background="@drawable/gf"
+            android:background="@drawable/no_image_header"
             android:scaleType="fitXY" />
 
         <TextView

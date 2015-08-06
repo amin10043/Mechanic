@@ -85,6 +85,8 @@ public class IntroductionEditFragment extends Fragment implements
 	ProgressDialog ringProgressDialog;
 	SavingImage3Picture savingImage;
 
+	byte[] byteHeader, byteProfil, byteFooter;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -324,7 +326,7 @@ public class IntroductionEditFragment extends Fragment implements
 							"پر کردن فیلد نام الزامی است", Toast.LENGTH_SHORT)
 							.show();
 				} else {
-					
+
 					saving = new Saving(getActivity());
 					saving.delegate = IntroductionEditFragment.this;
 					params = new LinkedHashMap<String, String>();
@@ -352,7 +354,7 @@ public class IntroductionEditFragment extends Fragment implements
 					params.put("IsUpdate", "1");
 					params.put("Id", String.valueOf(PageId));
 					saving.execute(params);
-					
+
 					ringProgressDialog = ProgressDialog.show(getActivity(),
 							"در حال بروزرسانی", "لطفا منتظر بمانید...");
 
@@ -453,63 +455,73 @@ public class IntroductionEditFragment extends Fragment implements
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
-//			if (getActivity() != null) {
+			// if (getActivity() != null) {
 
+			//
+			// byte[] byteHeader = util.CompressBitmap(bmpHeader);
+			// byte[] byteProfil = util.CompressBitmap(bmpProfil);
+			// byte[] byteFooter = util.CompressBitmap(bmpFooter);
+
+			if (headerImageEdit.getDrawable() == null
+					&& profileImageEdit.getDrawable() == null
+					&& footerImageEdit.getDrawable() == null) {
+
+				Toast.makeText(getActivity(), "Empty ByteArray",
+						Toast.LENGTH_SHORT).show();
+			}
+
+			if (headerImageEdit.getDrawable() != null) {
 				bmpHeader = ((BitmapDrawable) headerImageEdit.getDrawable())
 						.getBitmap();
+				if (bmpHeader != null)
+					byteHeader = Utility.CompressBitmap(bmpHeader);
+
+			}
+			if (profileImageEdit.getDrawable() != null) {
 				bmpProfil = ((BitmapDrawable) profileImageEdit.getDrawable())
 						.getBitmap();
+				if (bmpProfil != null)
+					byteProfil = Utility.CompressBitmap(bmpProfil);
+			}
+			if (footerImageEdit.getDrawable() != null) {
 				bmpFooter = ((BitmapDrawable) footerImageEdit.getDrawable())
 						.getBitmap();
+				if (bmpFooter != null)
+					byteFooter = Utility.CompressBitmap(bmpFooter);
+			}
 
-				byte[] byteHeader = getBitmapAsByteArray(bmpHeader);
-				byte[] byteProfil = getBitmapAsByteArray(bmpProfil);
-				byte[] byteFooter = getBitmapAsByteArray(bmpFooter);
+			savingImage = new SavingImage3Picture(getActivity());
+			savingImage.delegate = IntroductionEditFragment.this;
+			Map<String, Object> it = new LinkedHashMap<String, Object>();
 
-				if (headerImageEdit.getDrawable() == null
-						&& profileImageEdit.getDrawable() == null
-						&& footerImageEdit.getDrawable() == null) {
+			it.put("tableName", "Object");
+			it.put("fieldName1", "Image1");
+			it.put("fieldName2", "Image2");
+			it.put("fieldName3", "Image3");
 
-					Toast.makeText(getActivity(), "Empty ByteArray",
-							Toast.LENGTH_SHORT).show();
-				}
+			it.put("id", String.valueOf(PageId));
 
-				byteHeader = Utility.CompressBitmap(bmpHeader);
-				byteProfil = Utility.CompressBitmap(bmpProfil);
-				byteFooter = Utility.CompressBitmap(bmpFooter);
+			it.put("Image1", byteHeader);
+			it.put("Image2", byteProfil);
+			it.put("Image3", byteFooter);
 
-				savingImage = new SavingImage3Picture(getActivity());
-				savingImage.delegate = this;
-				Map<String, Object> it = new LinkedHashMap<String, Object>();
+			savingImage.execute(it);
+			ringProgressDialog = ProgressDialog.show(getActivity(), null,
+					"به منظور به روز رسانی تصاویر لطفا چند لحظه منتظر بمانید.");
 
-				it.put("tableName", "Object");
-				it.put("fieldName1", "Image1");
-				it.put("fieldName2", "Image2");
-				it.put("fieldName3", "Image3");
+			// } else {
+			DBAdapter.open();
+			DBAdapter.UpdateObjectProperties(PageId, nameValue, phoneValue,
+					emailValue, faxValue, descriptionValue, Dcatalog, Dprice,
+					Dpdf, Dvideo, addressValue, mobileValue, Dface, Dinstagram,
+					Dlink, Dgoogle, Dweb, Dtwt);
 
-				it.put("id", String.valueOf(PageId));
+			DBAdapter.close();
+			// if (ringProgressDialog != null) {
+			// ringProgressDialog.dismiss();
+			// }
 
-				it.put("Image1", byteHeader);
-				it.put("Image2", byteProfil);
-				it.put("Image3", byteFooter);
-
-				savingImage.execute(it);
-				ringProgressDialog = ProgressDialog.show(getActivity(), null,
-						"لطفا منتظر بمانید.");
-
-//			} else {
-				DBAdapter.open();
-				DBAdapter.UpdateObjectProperties(PageId, nameValue, phoneValue,
-						emailValue, faxValue, descriptionValue, Dcatalog,
-						Dprice, Dpdf, Dvideo, addressValue, mobileValue, Dface,
-						Dinstagram, Dlink, Dgoogle, Dweb, Dtwt);
-
-				DBAdapter.close();
-//				if (ringProgressDialog != null) {
-//					ringProgressDialog.dismiss();
-//				}
-
-//			}
+			// }
 
 		} catch (NumberFormatException ex) {
 			Toast.makeText(getActivity(), "خطا در بروز رسانی",
@@ -519,44 +531,45 @@ public class IntroductionEditFragment extends Fragment implements
 
 	@Override
 	public void processFinishSaveImage(String output) {
+		Toast.makeText(getActivity(), "output = " + output, 0).show();
 
-		if (output != null && "".equals(output)) {
-			try {
-				bmpHeader = ((BitmapDrawable) headerImageEdit.getDrawable())
-						.getBitmap();
-				bmpProfil = ((BitmapDrawable) profileImageEdit.getDrawable())
-						.getBitmap();
-				bmpFooter = ((BitmapDrawable) footerImageEdit.getDrawable())
-						.getBitmap();
+		if (output != null) {
+			// try {
+			// bmpHeader = ((BitmapDrawable) headerImageEdit.getDrawable())
+			// .getBitmap();
+			// bmpProfil = ((BitmapDrawable) profileImageEdit.getDrawable())
+			// .getBitmap();
+			// bmpFooter = ((BitmapDrawable) footerImageEdit.getDrawable())
+			// .getBitmap();
 
-				byte[] byteHeader = getBitmapAsByteArray(bmpHeader);
-				byte[] byteProfil = getBitmapAsByteArray(bmpProfil);
-				byte[] byteFooter = getBitmapAsByteArray(bmpFooter);
+			// byte[] byteHeader = getBitmapAsByteArray(bmpHeader);
+			// byte[] byteProfil = getBitmapAsByteArray(bmpProfil);
+			// byte[] byteFooter = getBitmapAsByteArray(bmpFooter);
 
-				if (headerImageEdit.getDrawable() == null
-						&& profileImageEdit.getDrawable() == null
-						&& footerImageEdit.getDrawable() == null) {
+			if (headerImageEdit.getDrawable() == null
+					&& profileImageEdit.getDrawable() == null
+					&& footerImageEdit.getDrawable() == null) {
 
-					Toast.makeText(getActivity(), "Empty ByteArray",
-							Toast.LENGTH_SHORT).show();
-				}
-
-				byteHeader = Utility.CompressBitmap(bmpHeader);
-				byteProfil = Utility.CompressBitmap(bmpProfil);
-				byteFooter = Utility.CompressBitmap(bmpFooter);
-
-				DBAdapter.open();
-				DBAdapter.updateAllImageIntroductionPage(PageId, byteHeader,
-						byteProfil, byteFooter);
-				DBAdapter.close();
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
-				}
-
-			} catch (NumberFormatException e) {
-				Toast.makeText(getActivity(), "  خطا در بروز رسانی تصویر",
+				Toast.makeText(getActivity(), "Empty ByteArray",
 						Toast.LENGTH_SHORT).show();
 			}
+
+			// byteHeader = Utility.CompressBitmap(bmpHeader);
+			// byteProfil = Utility.CompressBitmap(bmpProfil);
+			// byteFooter = Utility.CompressBitmap(bmpFooter);
+
+			DBAdapter.open();
+			DBAdapter.updateAllImageIntroductionPage(PageId, byteHeader,
+					byteProfil, byteFooter);
+			DBAdapter.close();
+			if (ringProgressDialog != null) {
+				ringProgressDialog.dismiss();
+			}
+
+			// } catch (NumberFormatException e) {
+			// Toast.makeText(getActivity(), "  خطا در بروز رسانی تصویر",
+			// Toast.LENGTH_SHORT).show();
+			// }
 		}
 		if (ringProgressDialog != null) {
 			ringProgressDialog.dismiss();

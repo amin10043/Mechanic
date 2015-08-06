@@ -518,7 +518,6 @@ public class CreateIntroductionFragment extends Fragment implements
 
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
-					serverDate = output;
 
 					saving.execute(params);
 
@@ -536,38 +535,31 @@ public class CreateIntroductionFragment extends Fragment implements
 						ringProgressDialog.dismiss();
 					}
 
-					savingImage = new SavingImage3Picture(getActivity());
-					savingImage.delegate = this;
-					Map<String, Object> it = new LinkedHashMap<String, Object>();
+					if (btnHeader.getDrawable() != null
+							|| btnProfile.getDrawable() != null
+							|| btnFooter.getDrawable() != null) {
+						savingImage = new SavingImage3Picture(getActivity());
+						savingImage.delegate = this;
+						Map<String, Object> it = new LinkedHashMap<String, Object>();
 
-					it.put("tableName", "Object");
-					it.put("fieldName1", "Image1");
-					it.put("fieldName2", "Image2");
-					it.put("fieldName3", "Image3");
+						it.put("tableName", "Object");
+						it.put("fieldName1", "Image1");
+						it.put("fieldName2", "Image2");
+						it.put("fieldName3", "Image3");
 
-					it.put("id", serverId);
+						it.put("id", lastItem);
 
-					if (!bitmapHeader.sameAs(emptyHeader)) {
-						byteHeader = Utility.CompressBitmap(bitmapHeader);
 						it.put("Image1", byteHeader);
 
-					}
-
-					if (!bitmapProfil.sameAs(emptyProfile)) {
-						byteProfil = Utility.CompressBitmap(bitmapProfil);
 						it.put("Image2", byteProfil);
 
-					}
-
-					if (!bitmapFooter.sameAs(emptyFooter)) {
-						byteFooter = Utility.CompressBitmap(bitmapFooter);
 						it.put("Image3", byteFooter);
 
-					}
+						savingImage.execute(it);
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								null, "به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
 
-					savingImage.execute(it);
-					ringProgressDialog = ProgressDialog.show(getActivity(),
-							null, "لطفا منتظر بمانید.");
+					}
 				}
 
 			}
@@ -580,12 +572,8 @@ public class CreateIntroductionFragment extends Fragment implements
 						mobileValue, Lfacebook, Linstagram, Llinkedin, Lgoogle,
 						Lwebsite, Ltwitter, currentUser.getId(), parentId, 1,
 						objectIdItem1, ObjectBrandTypeId, 100, serverDate);
-				// lastItem = serverId;
-
-				// if (objectIdItem1 > 4) {
-				//
-
-				flag = false;
+				
+				lastItem = serverId;
 
 				if (btnHeader.getDrawable() != null
 						|| btnProfile.getDrawable() != null
@@ -609,48 +597,10 @@ public class CreateIntroductionFragment extends Fragment implements
 
 					savingImage.execute(it);
 					ringProgressDialog = ProgressDialog.show(getActivity(),
-							null, "لطفا منتظر بمانید.");
+							null, "به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
 
 				}
-			} else {
-				// DBAdapter.UpdateHeaderImageObject(serverId, byteHeader);
-				// DBAdapter.UpdateProfileImageObject(serverId, byteProfil);
-				// DBAdapter.UpdateFooterImageObject(serverId, byteFooter);
-
 			}
-			// else {
-			//
-			// if (objectIdItem1 > 4)
-
-			// if (ringProgressDialog != null) {
-			// ringProgressDialog.dismiss();
-			// }
-			//
-			// byteHeader = Utility.CompressBitmap(bitmapHeader);
-			// byteProfil = Utility.CompressBitmap(bitmapProfil);
-			// byteFooter = Utility.CompressBitmap(bitmapFooter);
-			//
-			// savingImage = new SavingImage3Picture(getActivity());
-			// savingImage.delegate = this;
-			// Map<String, Object> it = new LinkedHashMap<String, Object>();
-			//
-			// it.put("tableName", "Object");
-			// it.put("fieldName1", "Image1");
-			// it.put("fieldName2", "Image2");
-			// it.put("fieldName3", "Image3");
-			//
-			// it.put("id", serverId);
-			//
-			// it.put("Image1", byteHeader);
-			// it.put("Image2", byteProfil);
-			// it.put("Image3", byteFooter);
-			//
-			// savingImage.execute(it);
-			// ringProgressDialog = ProgressDialog.show(getActivity(), null,
-			// "لطفا منتظر بمانید.");
-			//
-			// }
-
 			if (mainID > 4) {
 				if (flag) {
 					DBAdapter.InsertInformationNewObject(serverId, nameValue,
@@ -678,7 +628,7 @@ public class CreateIntroductionFragment extends Fragment implements
 
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
-					serverDate = output;
+//					serverDate = output;
 
 					saving.execute(params);
 
@@ -687,6 +637,34 @@ public class CreateIntroductionFragment extends Fragment implements
 				} else {
 					DBAdapter.insertObjectInCity(serverId, lastItem, CityId,
 							serverDate);
+					
+					if (btnHeader.getDrawable() != null
+							|| btnProfile.getDrawable() != null
+							|| btnFooter.getDrawable() != null) {
+						savingImage = new SavingImage3Picture(getActivity());
+						savingImage.delegate = this;
+						Map<String, Object> it = new LinkedHashMap<String, Object>();
+
+						it.put("tableName", "Object");
+						it.put("fieldName1", "Image1");
+						it.put("fieldName2", "Image2");
+						it.put("fieldName3", "Image3");
+
+						it.put("id", lastItem);
+
+						it.put("Image1", byteHeader);
+
+						it.put("Image2", byteProfil);
+
+						it.put("Image3", byteFooter);
+
+						savingImage.execute(it);
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								null, "به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
+
+					}
+					
+					
 				}
 			}
 			// } else {
@@ -950,15 +928,15 @@ public class CreateIntroductionFragment extends Fragment implements
 		try {
 
 			DBAdapter.open();
-			DBAdapter.UpdateImageObjectToDatabase(serverId, byteHeader,
+			DBAdapter.UpdateImageObjectToDatabase(lastItem, byteHeader,
 					byteProfil, byteFooter);
 			
 			if (f1)
-			DBAdapter.updateObjectImage1ServerDate(serverId, output);
+			DBAdapter.updateObjectImage1ServerDate(lastItem, output);
 			if (f2)
-				DBAdapter.updateObjectImage2ServerDate(serverId, output);
+				DBAdapter.updateObjectImage2ServerDate(lastItem, output);
 			if (f3)
-				DBAdapter.updateObjectImage3ServerDate(serverId, output);			
+				DBAdapter.updateObjectImage3ServerDate(lastItem, output);			
 
 			DBAdapter.close();
 
