@@ -1,6 +1,9 @@
 package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -15,6 +18,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -86,6 +91,15 @@ public class IntroductionEditFragment extends Fragment implements
 	SavingImage3Picture savingImage;
 
 	byte[] byteHeader, byteProfil, byteFooter;
+	private File mFileTemp;
+	
+	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
+	final int PIC_CROP = 10;
+	
+	boolean t1 = false;
+	boolean t2 = false;
+	boolean t3 = false;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -158,6 +172,16 @@ public class IntroductionEditFragment extends Fragment implements
 		headerImageEdit.setLayoutParams(headerEditParams);
 		profileImageEdit.setLayoutParams(profileEditParams);
 		footerImageEdit.setLayoutParams(footerEditParams);
+		
+		String state = Environment.getExternalStorageState();
+
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			mFileTemp = new File(Environment.getExternalStorageDirectory(),
+					TEMP_PHOTO_FILE_NAME);
+		} else {
+			mFileTemp = new File(getActivity().getFilesDir(),
+					TEMP_PHOTO_FILE_NAME);
+		}
 
 		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id",
 				0);
@@ -377,76 +401,122 @@ public class IntroductionEditFragment extends Fragment implements
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == headerLoadCode && resultCode == Activity.RESULT_OK
-				&& null != data) {
-			Uri selectedImage = data.getData();
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+		if (requestCode == profileLoadCode) {
+			try {
 
-			Cursor cursor = getActivity().getContentResolver().query(
-					selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
+				InputStream inputStream = getActivity().getContentResolver()
+						.openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(
+						mFileTemp);
+				Utility.copyStream(inputStream, fileOutputStream);
+				fileOutputStream.close();
+				inputStream.close();
+				t1 = true;
 
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
-			cursor.close();
+				startCropImage();
 
-			// ImageView btnaddpic1 = (ImageView) view
-			// .findViewById(R.id.btnaddpic);
-			headerImageEdit.setImageBitmap(BitmapFactory
-					.decodeFile(picturePath));
-			headerImageEdit.setBackgroundColor(getResources().getColor(
-					android.R.color.transparent));
-			headerImageEdit.setLayoutParams(headerEditParams);
+			} catch (Exception e) {
+
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
+						.show();
+			}
+			profileImageEdit.setLayoutParams(profileEditParams);
+
 
 		}
-		if (requestCode == profileLoadCode && resultCode == Activity.RESULT_OK
+		if (requestCode == PIC_CROP && data != null) {
+			String path = data.getStringExtra(CropImage.IMAGE_PATH);
+			if (path == null) {
+				return;
+			}
+			Bitmap bitmap = null;
+			if (mFileTemp.getPath() != null)
+				bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
+			if (bitmap != null && t1) {
+				profileImageEdit.setImageBitmap(bitmap);
+				profileImageEdit.setLayoutParams(profileEditParams);
+				t1=false;
+
+			}
+			if (bitmap != null && t2) {
+				headerImageEdit.setImageBitmap(bitmap);
+				headerImageEdit.setLayoutParams(headerEditParams);
+				t2 = false;
+
+			}
+			if (bitmap != null && t3) {
+				footerImageEdit.setImageBitmap(bitmap);
+				footerImageEdit.setLayoutParams(footerEditParams);
+				t3 = false;
+
+			}
+
+		}
+
+	
+		if (requestCode == headerLoadCode && resultCode == Activity.RESULT_OK
 				&& null != data) {
-			Uri selectedImage = data.getData();
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+			try {
 
-			Cursor cursor = getActivity().getContentResolver().query(
-					selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
+				InputStream inputStream = getActivity().getContentResolver()
+						.openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(
+						mFileTemp);
+				Utility.copyStream(inputStream, fileOutputStream);
+				fileOutputStream.close();
+				inputStream.close();
+				t2 = true;
 
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
-			cursor.close();
+				startCropImage();
 
-			// ImageView btnaddpic1 = (ImageView) view
-			// .findViewById(R.id.btnaddpic);
-			profileImageEdit.setImageBitmap(BitmapFactory
-					.decodeFile(picturePath));
-			profileImageEdit.setBackgroundColor(getResources().getColor(
-					android.R.color.transparent));
-			profileImageEdit.setLayoutParams(profileEditParams);
+			} catch (Exception e) {
+
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
+						.show();
+			}
+			 headerImageEdit.setLayoutParams(headerEditParams);
 
 		}
 		if (requestCode == footerLoadcode && resultCode == Activity.RESULT_OK
 				&& null != data) {
-			Uri selectedImage = data.getData();
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+			try {
 
-			Cursor cursor = getActivity().getContentResolver().query(
-					selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
+				InputStream inputStream = getActivity().getContentResolver()
+						.openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(
+						mFileTemp);
+				Utility.copyStream(inputStream, fileOutputStream);
+				fileOutputStream.close();
+				inputStream.close();
+				t3 = true;
 
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
-			cursor.close();
+				startCropImage();
 
-			// ImageView btnaddpic1 = (ImageView) view
-			// .findViewById(R.id.btnaddpic);
-			footerImageEdit.setImageBitmap(BitmapFactory
-					.decodeFile(picturePath));
-			footerImageEdit.setBackgroundColor(getResources().getColor(
-					android.R.color.transparent));
-			footerImageEdit.setLayoutParams(footerEditParams);
+			} catch (Exception e) {
+
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
+						.show();
+			}
+		
+			 footerImageEdit.setLayoutParams(footerEditParams);
 
 		}
-	}
+		super.onActivityResult(requestCode, resultCode, data);
 
+	}
+	
+	private void startCropImage() {
+
+		Intent intent = new Intent(getActivity(), CropImage.class);
+		intent.putExtra(CropImage.IMAGE_PATH, mFileTemp.getPath());
+		intent.putExtra(CropImage.SCALE, true);
+
+		intent.putExtra(CropImage.ASPECT_X, 3);
+		intent.putExtra(CropImage.ASPECT_Y, 3);
+
+		startActivityForResult(intent, PIC_CROP);
+	}
 	@Override
 	public void processFinish(String output) {
 

@@ -84,7 +84,7 @@ public class MainActivity extends FragmentActivity {
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
 				.permitAll().build();
 		StrictMode.setThreadPolicy(policy);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		adapter = new DataBaseAdapter(this);
 		slideadapter = new SlideMenuAdapter(this);
 		final ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);

@@ -1,6 +1,9 @@
 package com.project.mechanic.fragment;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -14,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -30,6 +34,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.SaveAsyncInterface;
@@ -49,6 +54,8 @@ public class CreateIntroductionFragment extends Fragment implements
 	int Object;
 	int ObjectBrandTypeId;
 	int serverId = -1;
+	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
+	final int PIC_CROP = 10;
 
 	DataBaseAdapter DBAdapter;
 	ImageButton btnSave;
@@ -102,8 +109,14 @@ public class CreateIntroductionFragment extends Fragment implements
 	int AgencyService;
 
 	String d = "";
-	
-	boolean f1 , f2 , f3;
+
+	boolean f1, f2, f3;
+
+	private File mFileTemp;
+
+	boolean t1 = false;
+	boolean t2 = false;
+	boolean t3 = false;
 
 	// EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle,
 	// inInstagram;
@@ -187,17 +200,19 @@ public class CreateIntroductionFragment extends Fragment implements
 
 		profilParams = new RelativeLayout.LayoutParams(
 				linearCreateProfil.getLayoutParams());
-		profilParams.width = (util.getScreenwidth() / 8);
-		profilParams.height = (util.getScreenwidth() / 8);
+		profilParams.width = (util.getScreenwidth() / 5);
+		profilParams.height = (util.getScreenwidth() / 5);
 		profilParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
 		headerParams = new LinearLayout.LayoutParams(
 				headerLinear.getLayoutParams());
-		headerParams.height = util.getScreenHeight();
+		headerParams.height = util.getScreenwidth();
+		headerParams.width = util.getScreenwidth();
 
 		footerParams = new LinearLayout.LayoutParams(
 				footerLinear.getLayoutParams());
-		footerParams.height = util.getScreenHeight();
+		footerParams.height = util.getScreenwidth();
+		footerParams.width = util.getScreenwidth();
 
 		nameParams = new RelativeLayout.LayoutParams(
 				linearCreateProfil.getLayoutParams());
@@ -222,6 +237,16 @@ public class CreateIntroductionFragment extends Fragment implements
 		if (mainID != 1) {
 			checkAgency.setVisibility(View.GONE);
 			checkService.setVisibility(View.GONE);
+		}
+
+		String state = Environment.getExternalStorageState();
+
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			mFileTemp = new File(Environment.getExternalStorageDirectory(),
+					TEMP_PHOTO_FILE_NAME);
+		} else {
+			mFileTemp = new File(getActivity().getFilesDir(),
+					TEMP_PHOTO_FILE_NAME);
 		}
 
 		btnProfile.setOnClickListener(new OnClickListener() {
@@ -320,9 +345,8 @@ public class CreateIntroductionFragment extends Fragment implements
 							bitmapHeader.getHeight(), bitmapHeader.getConfig());
 
 					byteHeader = Utility.CompressBitmap(bitmapHeader);
-					
+
 					f1 = true;
-					
 
 				}
 
@@ -333,7 +357,7 @@ public class CreateIntroductionFragment extends Fragment implements
 					emptyProfile = Bitmap.createBitmap(bitmapProfil.getWidth(),
 							bitmapProfil.getHeight(), bitmapProfil.getConfig());
 					byteProfil = Utility.CompressBitmap(bitmapProfil);
-					 f2 = true;
+					f2 = true;
 
 				}
 
@@ -345,7 +369,7 @@ public class CreateIntroductionFragment extends Fragment implements
 							bitmapFooter.getHeight(), bitmapFooter.getConfig());
 
 					byteFooter = Utility.CompressBitmap(bitmapFooter);
-					
+
 					f3 = true;
 
 				}
@@ -406,77 +430,121 @@ public class CreateIntroductionFragment extends Fragment implements
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == RESULT_LOAD_IMAGE
-				&& resultCode == Activity.RESULT_OK && null != data) {
-			Uri selectedImage = data.getData();
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+		if (requestCode == RESULT_LOAD_IMAGE) {
+			try {
 
-			Cursor cursor = getActivity().getContentResolver().query(
-					selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
+				InputStream inputStream = getActivity().getContentResolver()
+						.openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(
+						mFileTemp);
+				Utility.copyStream(inputStream, fileOutputStream);
+				fileOutputStream.close();
+				inputStream.close();
+				t1 = true;
 
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
-			cursor.close();
+				startCropImage();
 
-			// ImageView btnaddpic1 = (ImageView) view
-			// .findViewById(R.id.btnaddpic);
-			btnProfile.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-			btnProfile.setBackgroundColor(getResources().getColor(
-					android.R.color.transparent));
+			} catch (Exception e) {
+
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
+						.show();
+			}
 			btnProfile.setLayoutParams(profilParams);
-			// NameEnter.setLayoutParams(nameParams);
+
 
 		}
+		if (requestCode == PIC_CROP && data != null) {
+			String path = data.getStringExtra(CropImage.IMAGE_PATH);
+			if (path == null) {
+				return;
+			}
+			Bitmap bitmap = null;
+			if (mFileTemp.getPath() != null)
+				bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
+			if (bitmap != null && t1) {
+				btnProfile.setImageBitmap(bitmap);
+				btnProfile.setLayoutParams(profilParams);
+				t1=false;
+
+			}
+			if (bitmap != null && t2) {
+				btnHeader.setImageBitmap(bitmap);
+				btnHeader.setLayoutParams(headerParams);
+				t2 = false;
+
+			}
+			if (bitmap != null && t3) {
+				btnFooter.setImageBitmap(bitmap);
+				btnFooter.setLayoutParams(footerParams);
+				t3 = false;
+
+			}
+
+		}
+
+	
 		if (requestCode == HeaderCode && resultCode == Activity.RESULT_OK
 				&& null != data) {
-			Uri selectedImage = data.getData();
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+			try {
 
-			Cursor cursor = getActivity().getContentResolver().query(
-					selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
+				InputStream inputStream = getActivity().getContentResolver()
+						.openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(
+						mFileTemp);
+				Utility.copyStream(inputStream, fileOutputStream);
+				fileOutputStream.close();
+				inputStream.close();
+				t2 = true;
 
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
-			cursor.close();
+				startCropImage();
 
-			// ImageView btnaddpic1 = (ImageView) view
-			// .findViewById(R.id.btnaddpic);
+			} catch (Exception e) {
 
-			btnHeader.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-			btnHeader.setBackgroundColor(getResources().getColor(
-					android.R.color.transparent));
-			btnHeader.setLayoutParams(headerParams);
-			// NameEnter.setLayoutParams(nameParams);
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
+						.show();
+			}
+			 btnHeader.setLayoutParams(headerParams);
 
 		}
 		if (requestCode == FooterCode && resultCode == Activity.RESULT_OK
 				&& null != data) {
-			Uri selectedImage = data.getData();
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+			try {
 
-			Cursor cursor = getActivity().getContentResolver().query(
-					selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
+				InputStream inputStream = getActivity().getContentResolver()
+						.openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(
+						mFileTemp);
+				Utility.copyStream(inputStream, fileOutputStream);
+				fileOutputStream.close();
+				inputStream.close();
+				t3 = true;
 
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
-			cursor.close();
+				startCropImage();
 
-			// ImageView btnaddpic1 = (ImageView) view
-			// .findViewById(R.id.btnaddpic);
+			} catch (Exception e) {
 
-			btnFooter.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-			btnFooter.setBackgroundColor(getResources().getColor(
-					android.R.color.transparent));
-			btnFooter.setLayoutParams(headerParams);
-			// NameEnter.setLayoutParams(nameParams);
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
+						.show();
+			}
+		
+			 btnFooter.setLayoutParams(footerParams);
 
 		}
+		super.onActivityResult(requestCode, resultCode, data);
 
+	}
+
+	private void startCropImage() {
+
+		Intent intent = new Intent(getActivity(), CropImage.class);
+		intent.putExtra(CropImage.IMAGE_PATH, mFileTemp.getPath());
+		intent.putExtra(CropImage.SCALE, true);
+
+		intent.putExtra(CropImage.ASPECT_X, 3);
+		intent.putExtra(CropImage.ASPECT_Y, 3);
+
+		startActivityForResult(intent, PIC_CROP);
 	}
 
 	@Override
@@ -556,8 +624,9 @@ public class CreateIntroductionFragment extends Fragment implements
 						it.put("Image3", byteFooter);
 
 						savingImage.execute(it);
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								null, "به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
+						ringProgressDialog = ProgressDialog
+								.show(getActivity(), null,
+										"به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
 
 					}
 				}
@@ -572,7 +641,7 @@ public class CreateIntroductionFragment extends Fragment implements
 						mobileValue, Lfacebook, Linstagram, Llinkedin, Lgoogle,
 						Lwebsite, Ltwitter, currentUser.getId(), parentId, 1,
 						objectIdItem1, ObjectBrandTypeId, 100, serverDate);
-				
+
 				lastItem = serverId;
 
 				if (btnHeader.getDrawable() != null
@@ -596,8 +665,9 @@ public class CreateIntroductionFragment extends Fragment implements
 					it.put("Image3", byteFooter);
 
 					savingImage.execute(it);
-					ringProgressDialog = ProgressDialog.show(getActivity(),
-							null, "به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
+					ringProgressDialog = ProgressDialog
+							.show(getActivity(), null,
+									"به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
 
 				}
 			}
@@ -628,7 +698,7 @@ public class CreateIntroductionFragment extends Fragment implements
 
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
-//					serverDate = output;
+					// serverDate = output;
 
 					saving.execute(params);
 
@@ -637,7 +707,7 @@ public class CreateIntroductionFragment extends Fragment implements
 				} else {
 					DBAdapter.insertObjectInCity(serverId, lastItem, CityId,
 							serverDate);
-					
+
 					if (btnHeader.getDrawable() != null
 							|| btnProfile.getDrawable() != null
 							|| btnFooter.getDrawable() != null) {
@@ -659,12 +729,12 @@ public class CreateIntroductionFragment extends Fragment implements
 						it.put("Image3", byteFooter);
 
 						savingImage.execute(it);
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								null, "به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
+						ringProgressDialog = ProgressDialog
+								.show(getActivity(), null,
+										"به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
 
 					}
-					
-					
+
 				}
 			}
 			// } else {
@@ -930,13 +1000,13 @@ public class CreateIntroductionFragment extends Fragment implements
 			DBAdapter.open();
 			DBAdapter.UpdateImageObjectToDatabase(lastItem, byteHeader,
 					byteProfil, byteFooter);
-			
+
 			if (f1)
-			DBAdapter.updateObjectImage1ServerDate(lastItem, output);
+				DBAdapter.updateObjectImage1ServerDate(lastItem, output);
 			if (f2)
 				DBAdapter.updateObjectImage2ServerDate(lastItem, output);
 			if (f3)
-				DBAdapter.updateObjectImage3ServerDate(lastItem, output);			
+				DBAdapter.updateObjectImage3ServerDate(lastItem, output);
 
 			DBAdapter.close();
 
@@ -948,8 +1018,8 @@ public class CreateIntroductionFragment extends Fragment implements
 			}
 
 		} catch (Exception e) {
-			Toast.makeText(getActivity(), "خطا در ذخیره سازی تصاویر" + e, Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(getActivity(), "خطا در ذخیره سازی تصاویر" + e,
+					Toast.LENGTH_SHORT).show();
 		}
 	}
 }

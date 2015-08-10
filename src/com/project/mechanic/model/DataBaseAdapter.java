@@ -637,7 +637,7 @@ public class DataBaseAdapter {
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
 					cursor.getInt(32), cursor.getString(33),
 					cursor.getString(34), cursor.getString(35),
-					cursor.getString(36));
+					cursor.getString(36) , cursor.getInt(37));
 
 			result.add(tempObject);
 		}
@@ -1237,7 +1237,7 @@ public class DataBaseAdapter {
 				cursor.getInt(28), cursor.getInt(29), cursor.getInt(30),
 				cursor.getInt(31), cursor.getInt(32), cursor.getString(33),
 				cursor.getString(34), cursor.getString(35),
-				cursor.getString(36));
+				cursor.getString(36) , cursor.getInt(37));
 		return tempObject;
 	}
 
@@ -2175,7 +2175,7 @@ public class DataBaseAdapter {
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
 					cursor.getInt(32), cursor.getString(33),
 					cursor.getString(34), cursor.getString(35),
-					cursor.getString(36));
+					cursor.getString(36) , cursor.getInt(37));
 
 			result.add(tempObject);
 		}
@@ -2976,7 +2976,7 @@ public class DataBaseAdapter {
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
 					cursor.getInt(32), cursor.getString(33),
 					cursor.getString(34), cursor.getString(35),
-					cursor.getString(36));
+					cursor.getString(36) , cursor.getInt(37));
 
 			result.add(tempObject);
 		}

@@ -39,6 +39,7 @@ public class Object implements Comparable<Object> {
 	String image1ServerDate;
 	String image2ServerDate;
 	String image3ServerDate;
+	int AgencyService;
 
 	public String getImage1ServerDate() {
 		return image1ServerDate;
@@ -322,7 +323,7 @@ public class Object implements Comparable<Object> {
 			int parentid, int rate, int seen, String serverdate, int submit,
 			int mainObjectid, int IsActive, int UserId, int ObjectId,
 			String Date, String img1ServerDate, String img2ServerDate,
-			String img3ServerDate) {
+			String img3ServerDate, int AgencyService) {
 
 		super();
 		Id = id;
@@ -362,6 +363,15 @@ public class Object implements Comparable<Object> {
 		image1ServerDate = img1ServerDate;
 		image2ServerDate = img2ServerDate;
 		image3ServerDate = img3ServerDate;
+		this.AgencyService = AgencyService;
+	}
+
+	public int getAgencyService() {
+		return AgencyService;
+	}
+
+	public void setAgencyService(int agencyService) {
+		AgencyService = agencyService;
 	}
 
 	public String getDate() {

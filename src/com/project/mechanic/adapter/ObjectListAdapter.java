@@ -15,10 +15,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -44,6 +46,9 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 	RatingBar rating;
 	Utility util;
 	Fragment fr;
+	RelativeLayout followLayout , visitLayout;
+	RelativeLayout.LayoutParams paramsfollow , paramsVisit;
+
 
 	public ObjectListAdapter(Context context, int resource,
 			List<Object> objact, Fragment fr) {
@@ -95,9 +100,9 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				rl.getLayoutParams());
 
-		lp.width = (util.getScreenwidth() / 8);
-		lp.height = (util.getScreenwidth() / 8);
-		lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		lp.width = (util.getScreenwidth() / 4);
+		lp.height = (util.getScreenwidth() / 4);
+		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
 
 		if (person.getImage2() == null) {
@@ -114,6 +119,31 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 			profileIco.setLayoutParams(lp);
 		}
+		
+		
+		followLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayout1);
+		visitLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayout2);
+
+		paramsfollow = new RelativeLayout.LayoutParams(followLayout.getLayoutParams());
+		paramsVisit = new RelativeLayout.LayoutParams(visitLayout.getLayoutParams());
+
+		paramsfollow.width = (util.getScreenwidth() / 16);
+		paramsfollow.height = (util.getScreenwidth() / 16);
+		paramsfollow.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		
+		paramsVisit.width = (util.getScreenwidth() / 16);
+		paramsVisit.height = (util.getScreenwidth() / 16);
+		paramsVisit.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		
+		ImageView followIcon = (ImageView) convertView.findViewById(R.id.iconNumberLike);
+		ImageView visitIcon = (ImageView) convertView.findViewById(R.id.iconNumberVisit);
+
+		followIcon.setLayoutParams(paramsfollow);
+		visitIcon.setLayoutParams(paramsfollow);
+		
+		
+		
+		
 		convertView.setOnLongClickListener(new OnLongClickListener() {
 
 			@Override

@@ -5,45 +5,85 @@
     android:background="#EAEAEA"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/headerlinerpageintroduction"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <ImageView
-            android:id="@+id/imgvadvertise_Object"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:background="@drawable/no_image_header"
-            android:scaleType="fitXY" />
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/linear_id_profile_introduction_page"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp" >
+        android:layout_gravity="right" >
 
-        <ImageView
-            android:id="@+id/icon_pro"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/no_img_profile"
-            android:scaleType="fitXY" />
+        <LinearLayout
+            android:id="@+id/headerlinerpageintroduction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
 
-        <TextView
-            android:id="@+id/namePage"
+            <ImageView
+                android:id="@+id/imgvadvertise_Object"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="@drawable/no_image_header"
+                android:scaleType="fitXY" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/header_progress_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:layout_toLeftOf="@+id/icon_pro"
-            android:text="name"
-            android:textColor="#000" />
-    </RelativeLayout>
+            android:layout_gravity="right"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:id="@+id/linear_id_profile_introduction_page"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp" >
+            
+            <TextView
+                android:id="@+id/namePage"
+                android:layout_width="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignRight="@+id/icon_pro"
+                android:layout_height="wrap_content"
+                android:text="name"
+                android:textColor="#000" />
+
+            <ImageView
+                android:id="@+id/icon_pro"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/namePage"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/no_img_profile"
+                android:scaleType="fitXY" />
+
+            
+
+            <Button
+                android:id="@+id/followPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#64bc2c"
+                android:layout_below="@+id/icon_pro"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:text="دنبال کردن" />
+        </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/profile_progress_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="40dp" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -582,122 +622,135 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/footerint"
-        style="@style/brandStyle"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/brand_list_item_shape"
-        android:gravity="right"
-        android:orientation="vertical" >
-
-        <ImageView
-            android:id="@+id/imgvadvertise2_Object"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:background="@drawable/no_image_header"
-            android:scaleType="fitXY" />
-
-        <TextView
-            android:id="@+id/txtDesc_Object"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            android:text="توضیحات"
-            android:textColor="@color/transparent" />
+        android:layout_height="wrap_content" >
 
         <LinearLayout
+            android:id="@+id/footerint"
+            style="@style/brandStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/brand_list_item_shape"
+            android:gravity="right"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/imgvadvertise2_Object"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:background="@drawable/no_image_header"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/txtDesc_Object"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:text="توضیحات"
+                android:textColor="@color/transparent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left" >
+
+                <LinearLayout
+                    android:id="@+id/cmffff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
+                    android:layout_marginRight="5dp"
+                    android:orientation="horizontal" >
+
+                    <RelativeLayout
+                        android:id="@+id/countComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/count_comment" >
+
+                        <TextView
+                            android:id="@+id/CountCommentIntroduction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="5dp"
+                            android:text="nlike"
+                            android:textColor="@color/transparent" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/AddcommentIntroductionLinear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/comment_fr"
+                        android:gravity="center" >
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
+                    android:layout_toRightOf="@+id/cmffff"
+                    android:orientation="horizontal" >
+
+                    <RelativeLayout
+                        android:id="@+id/countLikeqqz"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/count_like" >
+
+                        <TextView
+                            android:id="@+id/countlllllll"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_margin="2dp"
+                            android:text="nlike"
+                            android:textColor="@color/transparent" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/likePostIntroduction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/like_on"
+                        android:gravity="center" >
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/sharePostIntroduction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/lll"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_share_froum" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/footer_progress_footer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:gravity="left" >
-
-            <LinearLayout
-                android:id="@+id/cmffff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
-                android:layout_marginRight="5dp"
-                android:orientation="horizontal" >
-
-                <RelativeLayout
-                    android:id="@+id/countComment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/count_comment" >
-
-                    <TextView
-                        android:id="@+id/CountCommentIntroduction"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="5dp"
-                        android:text="nlike"
-                        android:textColor="@color/transparent" />
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:id="@+id/AddcommentIntroductionLinear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/comment_fr"
-                    android:gravity="center" >
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
-                android:layout_toRightOf="@+id/cmffff"
-                android:orientation="horizontal" >
-
-                <RelativeLayout
-                    android:id="@+id/countLikeqqz"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/count_like" >
-
-                    <TextView
-                        android:id="@+id/countlllllll"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_margin="2dp"
-                        android:text="nlike"
-                        android:textColor="@color/transparent" />
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:id="@+id/likePostIntroduction"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/like_on"
-                    android:gravity="center" >
-                </LinearLayout>
-            </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/sharePostIntroduction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/lll"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_share_froum" />
-        </LinearLayout>
-    </LinearLayout>
+            android:layout_gravity="right"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="10dp" />
+    </FrameLayout>
 
 </LinearLayout>

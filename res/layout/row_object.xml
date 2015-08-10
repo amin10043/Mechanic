@@ -3,13 +3,16 @@
     android:id="@+id/main_icon_reply"
     style="@style/List_Item_Style"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/list_item" >
+    android:layout_height="wrap_content"
+    android:background="#d3dff9" >
 
     <ImageView
         android:id="@+id/icon_object"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
         android:scaleType="fitXY"
         android:src="@drawable/profile_account" />
 
@@ -17,17 +20,69 @@
         android:id="@+id/Rowobjecttxt"
         style="@style/row_text"
         android:layout_width="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/icon_object"
         android:text="Large Text" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Rowobjecttxt"
+        android:layout_toLeftOf="@+id/icon_object" >
+
+        <ImageView
+            android:id="@+id/iconNumberLike"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/numberlike" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="3dp"
+            android:layout_toLeftOf="@+id/iconNumberLike"
+            android:text="20"
+            android:textColor="@color/transparent"
+            android:textSize="10dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/icon_object"
+        android:layout_below="@+id/relativeLayout1"
+        android:gravity="right" >
+
+        <ImageView
+            android:id="@+id/iconNumberVisit"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/numberview" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/iconNumberVisit"
+            android:layout_marginRight="3dp"
+            android:text="18"
+            android:textColor="@color/transparent"
+            android:textSize="10dp" />
+    </RelativeLayout>
 
     <RatingBar
         android:id="@+id/ratingBar1"
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/icon_object"
-        android:layout_toRightOf="@+id/icon_object" />
+        android:layout_marginRight="1dp"
+        android:layout_toLeftOf="@+id/icon_object"
+        android:layout_alignBottom="@+id/icon_object" />
 
 </RelativeLayout>

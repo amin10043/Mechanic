@@ -1,6 +1,5 @@
 package com.project.mechanic.fragment;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,11 +20,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,7 +76,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	byte[] bitHeader, bytepro, bytefoot;
 
 	LinearLayout.LayoutParams headerParams, footerParams;
-	RelativeLayout.LayoutParams addressParams, emailParams, profileParams;
+	RelativeLayout.LayoutParams addressParams, emailParams, profileParams,
+			followParams;
 
 	ArrayList<CommentInObject> mylist;
 	DataBaseAdapter adapter;
@@ -109,6 +112,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	boolean f1;
 	boolean f2;
 	boolean f3;
+
+	ProgressBar loadingProgressHeader, loadingProgressProfile,
+			loadingProgressFooter;
+	Button followPage;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -194,6 +201,16 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		personPage = (RelativeLayout) header.findViewById(R.id.countLiketext);
 		personPost = (RelativeLayout) header.findViewById(R.id.countLikeqqz);
 
+		loadingProgressHeader = (ProgressBar) header
+				.findViewById(R.id.header_progress_header);
+
+		loadingProgressProfile = (ProgressBar) header
+				.findViewById(R.id.profile_progress_profile);
+		loadingProgressFooter = (ProgressBar) header
+				.findViewById(R.id.footer_progress_footer);
+
+		followPage = (Button) header.findViewById(R.id.followPage);
+
 		sendDataID = getActivity().getSharedPreferences("Id", 0);
 		ObjectID = sendDataID.getInt("main_Id", -1);
 
@@ -246,9 +263,13 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		profileParams = new RelativeLayout.LayoutParams(
 				profileLinear.getLayoutParams());
 
-		profileParams.height = ut.getScreenwidth() / 8;
-		profileParams.width = ut.getScreenwidth() / 8;
+		profileParams.height = ut.getScreenwidth() / 4;
+		profileParams.width = ut.getScreenwidth() / 4;
 		profileParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		profileParams.addRule(RelativeLayout.BELOW , R.id.namePage);
+		profileParams.setMargins(0, 10, 0, 0);
+
+
 
 		profileImage.setLayoutParams(profileParams);
 
@@ -259,6 +280,17 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		footerParams = new LinearLayout.LayoutParams(
 				footerLinear.getLayoutParams());
 		footerParams.height = ut.getScreenwidth();
+
+		followParams = new RelativeLayout.LayoutParams(
+				profileLinear.getLayoutParams());
+
+		followParams.width = ut.getScreenwidth() / 4;
+		followParams.height = ut.getScreenwidth() / 10;
+		followParams.setMargins(0, 10, 0, 0);
+		followParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		followParams.addRule(RelativeLayout.BELOW , R.id.icon_pro);
+
+		followPage.setLayoutParams(followParams);
 
 		adapter.open();
 		int countcmt = adapter.CommentInObject_count(ObjectID);
@@ -293,8 +325,12 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		// maps.put("fromDate3", object.getImage3ServerDate());
 		// updating.execute(maps);
 
-		ringProgressDialog = ProgressDialog.show(getActivity(), "",
-				"به روز رسانی تصاویر...", true);
+		// ringProgressDialog = ProgressDialog.show(getActivity(), "",
+		// "به روز رسانی تصاویر...", true);
+
+		loadingProgressHeader.setVisibility(View.VISIBLE);
+		loadingProgressProfile.setVisibility(View.VISIBLE);
+		loadingProgressFooter.setVisibility(View.VISIBLE);
 
 		// اینها که همش خطا داره. خوب برادر یکبار تست کن بعد کدها رو بفرست
 		// !!!!!!!!!
@@ -841,6 +877,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				pageId.edit()
 						.putInt("main object id", object.getMainObjectId())
 						.commit();
+				Toast.makeText(
+						getActivity(),
+						"mainObjectId send brand = " + object.getMainObjectId()
+								+ " agency ", 0).show();
 			}
 		});
 
@@ -924,6 +964,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				pageId.edit()
 						.putInt("main object id", object.getMainObjectId())
 						.commit();
+				Toast.makeText(
+						getActivity(),
+						"MainObjectId = " + object.getMainObjectId()
+								+ "service", 0).show();
 
 			}
 		});
@@ -1111,6 +1155,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		if (output.contains("---")) {
 			if (ringProgressDialog != null)
 				ringProgressDialog.dismiss();
+
+			loadingProgressHeader.setVisibility(View.GONE);
+			loadingProgressProfile.setVisibility(View.GONE);
+			loadingProgressFooter.setVisibility(View.GONE);
 			return;
 		} else if (output.contains("-")) {
 			String[] strs = output.split(Pattern.quote("-")); // each
@@ -1150,8 +1198,14 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				maps.put("fromDate3", object.getImage3ServerDate());
 				updating.execute(maps);
 
-			} else if (ringProgressDialog != null)
-				ringProgressDialog.dismiss();
+			} else {
+				loadingProgressHeader.setVisibility(View.GONE);
+				loadingProgressProfile.setVisibility(View.GONE);
+				loadingProgressFooter.setVisibility(View.GONE);
+				Toast.makeText(getActivity(),
+						"به روز رسانی تصاویر با موفقیت انجام شد",
+						Toast.LENGTH_SHORT).show();
+			}
 
 		} else {
 			int id = -1;
@@ -1183,6 +1237,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 								.setText(String.valueOf(countlike));
 						if (ringProgressDialog != null)
 							ringProgressDialog.dismiss();
+
 					} else {
 						likePost.setBackgroundResource(R.drawable.like_off);
 						personPost
@@ -1311,6 +1366,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					Toast.makeText(getActivity(),
 							"خطا در ثبت. پاسخ نا مشخص از سرور",
 							Toast.LENGTH_SHORT).show();
+					loadingProgressHeader.setVisibility(View.GONE);
+					loadingProgressProfile.setVisibility(View.GONE);
+					loadingProgressFooter.setVisibility(View.GONE);
 				}
 			}
 
@@ -1318,6 +1376,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 				Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
 						.show();
+				loadingProgressHeader.setVisibility(View.GONE);
+				loadingProgressProfile.setVisibility(View.GONE);
+				loadingProgressFooter.setVisibility(View.GONE);
 			}
 		}
 	}
@@ -1336,7 +1397,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					if (b != null)
 						headerImage.setImageBitmap(b);
 					else
-						headerImage.setBackgroundResource(R.drawable.no_image_header);
+						headerImage
+								.setBackgroundResource(R.drawable.no_image_header);
 					adapter.updateObjectImage1ServerDate(ObjectID, serverDate);
 				}
 			if (f2)
@@ -1369,8 +1431,11 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			Toast.makeText(getActivity(),
 					"به روز رسانی تصاویر با موفقیت انجام شد",
 					Toast.LENGTH_SHORT).show();
-			if (ringProgressDialog != null)
-				ringProgressDialog.dismiss();
+
+			loadingProgressHeader.setVisibility(View.GONE);
+			loadingProgressProfile.setVisibility(View.GONE);
+			loadingProgressFooter.setVisibility(View.GONE);
+
 			adapter.close();
 
 		}

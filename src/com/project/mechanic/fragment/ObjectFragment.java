@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
@@ -81,6 +82,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 		lstObject = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 		adapter.open();
 		setting = adapter.getSettings();
+		
 
 		if (id == 2 || id == 3 || id == 4) {
 			if (id == 2)
@@ -224,7 +226,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 
 					Toast.makeText(getActivity(), "brand id  = " + brandId,
 							Toast.LENGTH_SHORT).show();
-					Toast.makeText(getActivity(), "main object = " + MainObjID,
+					Toast.makeText(getActivity(), "mainObejct recive = " + MainObjID,
 							Toast.LENGTH_SHORT).show();
 				}
 
@@ -261,37 +263,37 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 			// lst.removeFooterView(LoadMoreFooter);
 
 		}
-		if (swipeLayout != null) {
-			//
-			// swipeLayout.setRefreshing(false);
-			// }
-			//
-			// if (output != null
-			// && !(output.contains("Exception") || output.contains("java")
-			// || output.contains("SoapFault") || output
-			// .contains("anyType"))) {
-			//
-			// util.parseQuery(output);
-			// mylist.clear();
-			// adapter.open();
-			// mylist = adapter.getObjectBy_BTId_CityId(m, city_id);
-			// // mylist.addAll(adapter.getAllObject());
-			// adapter.close();
-			// if (mylist != null || !mylist.isEmpty())
-			// ListAdapter = new ObjectListAdapter(getActivity(),
-			// R.layout.row_object, mylist, ObjectFragment.this);
-			//
-			// lstObject.setAdapter(ListAdapter);
-			//
-			// // if (FindPosition == false) {
-			// // lstObject.setSelection(beforePosition);
-			// //
-			// // }
-			// LoadMoreFooter.setVisibility(View.INVISIBLE);
-			//
-			// ListAdapter.notifyDataSetChanged();
-
-		}
-
+//		if (swipeLayout != null) {
+//			//
+//			 swipeLayout.setRefreshing(false);
+//			 }
+//			
+//			 if (output != null
+//			 && !(output.contains("Exception") || output.contains("java")
+//			 || output.contains("SoapFault") || output
+//			 .contains("anyType"))) {
+//			
+//			 util.parseQuery(output);
+//			 mylist.clear();
+//			 adapter.open();
+//			 mylist = adapter.getObjectBy_BTId_CityId(m, city_id, typeList);
+//			 // mylist.addAll(adapter.getAllObject());
+//			 adapter.close();
+//			 if (mylist != null || !mylist.isEmpty())
+//			 ListAdapter = new ObjectListAdapter(getActivity(),
+//			 R.layout.row_object, mylist, ObjectFragment.this);
+//			
+//			 lstObject.setAdapter(ListAdapter);
+//			
+//			 // if (FindPosition == false) {
+//			 // lstObject.setSelection(beforePosition);
+//			 //
+//			 // }
+//			 LoadMoreFooter.setVisibility(View.INVISIBLE);
+//			
+//			 ListAdapter.notifyDataSetChanged();
+//
+//		}
+//
 	}
 }

@@ -61,6 +61,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 
 		if (getArguments() != null && getArguments().getString("Id") != null) {
 			parentId = Integer.valueOf(getArguments().getString("Id"));
+			Toast.makeText(getActivity(), "parent Id = " + parentId, 0).show();
 		}
 
 		((MainActivity) getActivity()).setTitle(R.string.object);
@@ -101,17 +102,17 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 
 			@Override
 			public void onRefresh() {
-//				updating = new Updating(getActivity());
-//				updating.delegate = MainBrandFragment.this;
-//				String[] params = new String[4];
-//				params[0] = "Object";
-//				params[1] = setting.getServerDate_Start_Object() != null ? setting
-//						.getServerDate_Start_Object() : "";
-//				params[2] = setting.getServerDate_End_Object() != null ? setting
-//						.getServerDate_End_Object() : "";
-//
-//				params[3] = "1";
-//				updating.execute(params);
+				updating = new Updating(getActivity());
+				updating.delegate = MainBrandFragment.this;
+				String[] params = new String[4];
+				params[0] = "Object";
+				params[1] = setting.getServerDate_Start_Object() != null ? setting
+						.getServerDate_Start_Object() : "";
+				params[2] = setting.getServerDate_End_Object() != null ? setting
+						.getServerDate_End_Object() : "";
+
+				params[3] = "1";
+				updating.execute(params);
 			}
 		});
 
@@ -193,22 +194,22 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 				
 					LoadMoreFooter.setVisibility(View.VISIBLE);
 					//
-//					updating = new Updating(getActivity());
-//					updating.delegate = MainBrandFragment.this;
-//					String[] params = new String[4];
-//					params[0] = "Object";
-//					params[1] = setting.getServerDate_Start_Object() != null ? setting
-//							.getServerDate_Start_Object() : "";
-//					params[2] = setting.getServerDate_End_Object() != null ? setting
-//							.getServerDate_End_Object() : "";
-//
-//					params[3] = "1";
-//					updating.execute(params);
-//
-//					int countList = ListAdapter.getCount();
-//					beforePosition = countList;
-//
-//					FindPosition = false;
+					updating = new Updating(getActivity());
+					updating.delegate = MainBrandFragment.this;
+					String[] params = new String[4];
+					params[0] = "Object";
+					params[1] = setting.getServerDate_Start_Object() != null ? setting
+							.getServerDate_Start_Object() : "";
+					params[2] = setting.getServerDate_End_Object() != null ? setting
+							.getServerDate_End_Object() : "";
+
+					params[3] = "1";
+					updating.execute(params);
+
+					int countList = ListAdapter.getCount();
+					beforePosition = countList;
+
+					FindPosition = false;
 					
 
 				}
@@ -238,44 +239,44 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 	@Override
 	public void processFinish(String output) {
 
-		if (output.contains("anyType")) {
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
-			// lst.removeFooterView(LoadMoreFooter);
-
-		}
-		if (swipeLayout != null) {
-
-			swipeLayout.setRefreshing(false);
-		}
-
-		if (output != null
-				&& !(output.contains("Exception") || output.contains("java")
-						|| output.contains("SoapFault") || output
-							.contains("anyType"))) {
-
-			util.parseQuery(output);
-			mylist.clear();
-			adapter.open();
-			mylist = adapter.getObjectbyParentId(parentId);
-
-			// mylist.addAll(adapter.getAllObject());
-			adapter.close();
-
-			ListAdapter = new ObjectListAdapter(
-					getActivity(), R.layout.row_object, mylist,
-					MainBrandFragment.this);
-
-			lstObject.setAdapter(ListAdapter);
-
-//			if (FindPosition == false) {
-//				lstObject.setSelection(beforePosition);
+//		if (output.contains("anyType")) {
+//			LoadMoreFooter.setVisibility(View.INVISIBLE);
+//			// lst.removeFooterView(LoadMoreFooter);
 //
-//			}
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
+//		}
+//		if (swipeLayout != null) {
+//
+//			swipeLayout.setRefreshing(false);
+//		}
+//
+//		if (output != null
+//				&& !(output.contains("Exception") || output.contains("java")
+//						|| output.contains("SoapFault") || output
+//							.contains("anyType"))) {
+//
+//			util.parseQuery(output);
+//			mylist.clear();
+//			adapter.open();
+//			mylist = adapter.getObjectbyParentId(parentId);
+//
+//			// mylist.addAll(adapter.getAllObject());
+//			adapter.close();
+//
+//			ListAdapter = new ObjectListAdapter(
+//					getActivity(), R.layout.row_object, mylist,
+//					MainBrandFragment.this);
+//
+//			lstObject.setAdapter(ListAdapter);
+//
+////			if (FindPosition == false) {
+////				lstObject.setSelection(beforePosition);
+////
+			}
+//			LoadMoreFooter.setVisibility(View.INVISIBLE);
+//
+//			ListAdapter.notifyDataSetChanged();
 
-			ListAdapter.notifyDataSetChanged();
+//		}
 
-		}
-
-	}
+//	}
 }
