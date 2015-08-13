@@ -14,7 +14,8 @@
             android:id="@+id/headerlinerpageintroduction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center" >
+            android:gravity="center"
+            android:weightSum="2" >
 
             <ImageView
                 android:id="@+id/imgvadvertise_Object"
@@ -32,58 +33,169 @@
             android:visibility="gone" />
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
-        <RelativeLayout
-            android:id="@+id/linear_id_profile_introduction_page"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp" >
-            
-            <TextView
-                android:id="@+id/namePage"
-                android:layout_width="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignRight="@+id/icon_pro"
-                android:layout_height="wrap_content"
-                android:text="name"
-                android:textColor="#000" />
-
-            <ImageView
-                android:id="@+id/icon_pro"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/namePage"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/no_img_profile"
-                android:scaleType="fitXY" />
-
-            
-
-            <Button
-                android:id="@+id/followPage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#64bc2c"
-                android:layout_below="@+id/icon_pro"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/white"
-                android:text="دنبال کردن" />
-        </RelativeLayout>
-
-        <ProgressBar
-            android:id="@+id/profile_progress_profile"
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="12dp"
-            android:layout_marginTop="40dp" />
-    </FrameLayout>
+            android:layout_height="wrap_content" >
+
+            <RelativeLayout
+                android:id="@+id/linear_id_profile_introduction_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" >
+
+                <TextView
+                    android:id="@+id/namePage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignRight="@+id/icon_pro"
+                    android:text="name"
+                    android:textColor="#000" />
+
+                <ImageView
+                    android:id="@+id/icon_pro"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/namePage"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/no_img_profile"
+                    android:scaleType="fitXY" />
+
+                <Button
+                    android:id="@+id/followPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/icon_pro"
+                    android:layout_marginTop="10dp"
+                    android:background="#64bc2c"
+                    android:text="دنبال کردن"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/ImgbtnEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/followPage"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#64bc2c"
+                    android:text="ویرایش"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/shareIntroduction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/ImgbtnEdit"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/blue2"
+                    android:textSize="15dp"
+                    android:text="اشتراک گذاری"
+                    android:textColor="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="horizontal" >
+
+                    <RelativeLayout
+                        android:id="@+id/countLiketext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp" >
+
+                        <TextView
+                            android:id="@+id/labelPoepleFollowed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="دنبال کنندگان"
+                            android:textColor="@color/transparent" />
+
+                        <TextView
+                            android:id="@+id/countLikeIntroduction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/labelPoepleFollowed"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:text="12"
+                            android:textColor="@color/transparent" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp" >
+
+                        <TextView
+                            android:id="@+id/labelviewObject"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="بازدید"
+                            android:textColor="@color/transparent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/labelviewObject"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:text="70"
+                            android:textColor="@color/transparent" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/labelpostObject"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/icon_pro"
+                            android:text="مطلب"
+                            android:textColor="@color/transparent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/labelpostObject"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:text="45"
+                            android:textColor="@color/transparent" />
+                    </RelativeLayout>
+
+                    <ImageButton
+                        android:id="@+id/shareIntroduction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_share_froum"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ProgressBar
+                android:id="@+id/profile_progress_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="40dp" />
+        </FrameLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -96,7 +208,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp" >
+            android:layout_marginTop="10dp"
+            android:visibility="gone" >
 
             <!-- ////////////////////////////////////////////////////// -->
 
@@ -111,7 +224,8 @@
                     android:id="@+id/countLiketext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/count_like" >
+                    android:background="@drawable/count_like"
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/countLikeIntroduction"
@@ -131,7 +245,8 @@
                     android:layout_marginRight="5dp"
                     android:layout_toLeftOf="@+id/AddcommentIntroductionLinear"
                     android:background="@drawable/like_on"
-                    android:gravity="center" >
+                    android:gravity="center"
+                    android:visibility="gone" >
                 </LinearLayout>
             </LinearLayout>
 
@@ -146,7 +261,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/ic_post"
-                android:gravity="center_horizontal" >
+                android:gravity="center_horizontal"
+                android:visibility="gone" >
 
                 <TextView
                     android:id="@+id/countPost"
@@ -157,21 +273,13 @@
                     android:textColor="@color/transparent" />
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/shareIntroduction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@+id/countView"
-                android:background="@drawable/ic_share_froum" />
-
             <RelativeLayout
                 android:id="@+id/countView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/showCountPost"
-                android:background="@drawable/ic_view" >
+                android:background="@drawable/ic_view"
+                android:visibility="gone" >
 
                 <TextView
                     android:id="@+id/showCountView"
@@ -189,7 +297,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:background="@drawable/ic_edit" />
+                android:background="@drawable/ic_edit"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <LinearLayout

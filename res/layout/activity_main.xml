@@ -42,7 +42,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginRight="10dp"
-                   
                     android:orientation="horizontal" >
 
                     <TextView
@@ -52,7 +51,7 @@
                         android:layout_gravity="bottom|left"
                         android:layout_marginLeft="1dp"
                         android:layout_marginRight="1dp"
-                         android:background="@drawable/circle_notification"
+                        android:background="@drawable/circle_notification"
                         android:text=""
                         android:textColor="@color/white"
                         android:textSize="@dimen/txtsize10" />
@@ -136,14 +135,16 @@
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" > 
+        android:layout_height="match_parent"
+        >
 
         <!-- The main content view -->
 
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+           />
 
         <!-- The navigation drawer -->
 
@@ -155,10 +156,10 @@
             android:layout_width="180dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
-            android:background="@color/transparent"
+            android:background="#484747"
             android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="10dp" />
+            android:divider="#000000"
+            android:dividerHeight="1dp" />
     </android.support.v4.widget.DrawerLayout>
 
 </LinearLayout>

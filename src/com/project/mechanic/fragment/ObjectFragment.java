@@ -46,7 +46,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 	Updating updating;
 	Settings setting;
 
-	boolean FindPosition;
+	boolean FindPosition, IsRunning = true;
 	int beforePosition;
 
 	ArrayList<Object> mylist;
@@ -82,7 +82,6 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 		lstObject = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 		adapter.open();
 		setting = adapter.getSettings();
-		
 
 		if (id == 2 || id == 3 || id == 4) {
 			if (id == 2)
@@ -99,7 +98,6 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 
 			int brand = pageId.getInt("brandID", -1);
 
-			Toast.makeText(getActivity(), "agency", 0).show();
 			mylist = adapter.subBrandObject(brand, city_id, AgencyService);
 
 			if (mylist != null || !mylist.isEmpty()) {
@@ -176,13 +174,15 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 					params[2] = setting.getServerDate_End_Object() != null ? setting
 							.getServerDate_End_Object() : "";
 
-					params[3] = "1";
+					params[3] = "0";
 					updating.execute(params);
 
 					int countList = ListAdapter.getCount();
 					beforePosition = countList;
 
 					FindPosition = false;
+					IsRunning = false;
+					
 
 				}
 			}
@@ -208,9 +208,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 					sendToCreate.edit().putInt("ObjectTypeId", typeList)
 							.commit();
 
-					Toast.makeText(getActivity(), "main id  = " + id,
-							Toast.LENGTH_SHORT).show();
-
+				
 				} else {
 					SharedPreferences pageId = getActivity()
 							.getSharedPreferences("Id", 0);
@@ -224,10 +222,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 					sendToCreate.edit().putInt("IsAgency", AgencyService)
 							.commit();
 
-					Toast.makeText(getActivity(), "brand id  = " + brandId,
-							Toast.LENGTH_SHORT).show();
-					Toast.makeText(getActivity(), "mainObejct recive = " + MainObjID,
-							Toast.LENGTH_SHORT).show();
+				
 				}
 
 			}
@@ -258,42 +253,58 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
+
+
 		if (output.contains("anyType")) {
+			Toast.makeText(getActivity(), "صفحه جدیدی یافت نشد", 0).show();
 			LoadMoreFooter.setVisibility(View.INVISIBLE);
-			// lst.removeFooterView(LoadMoreFooter);
+
+			if (swipeLayout != null) {
+
+				swipeLayout.setRefreshing(false);
+			}
+			return;
 
 		}
-//		if (swipeLayout != null) {
-//			//
-//			 swipeLayout.setRefreshing(false);
-//			 }
-//			
-//			 if (output != null
-//			 && !(output.contains("Exception") || output.contains("java")
-//			 || output.contains("SoapFault") || output
-//			 .contains("anyType"))) {
-//			
-//			 util.parseQuery(output);
-//			 mylist.clear();
-//			 adapter.open();
-//			 mylist = adapter.getObjectBy_BTId_CityId(m, city_id, typeList);
-//			 // mylist.addAll(adapter.getAllObject());
-//			 adapter.close();
-//			 if (mylist != null || !mylist.isEmpty())
-//			 ListAdapter = new ObjectListAdapter(getActivity(),
-//			 R.layout.row_object, mylist, ObjectFragment.this);
-//			
-//			 lstObject.setAdapter(ListAdapter);
-//			
-//			 // if (FindPosition == false) {
-//			 // lstObject.setSelection(beforePosition);
-//			 //
-//			 // }
-//			 LoadMoreFooter.setVisibility(View.INVISIBLE);
-//			
-//			 ListAdapter.notifyDataSetChanged();
-//
-//		}
-//
+		if (swipeLayout != null) {
+			//
+			swipeLayout.setRefreshing(false);
+		}
+
+		if (output != null
+				&& !(output.contains("Exception") || output.contains("java")
+						|| output.contains("SoapFault") || output
+							.contains("anyType"))) {
+
+			util.parseQuery(output);
+			mylist.clear();
+			adapter.open();
+			mylist = adapter.getObjectBy_BTId_CityId(m, city_id, typeList);
+			// mylist.addAll(adapter.getAllObject());
+			adapter.close();
+			if (mylist.size() > 0) {
+
+				ListAdapter = new ObjectListAdapter(getActivity(),
+						R.layout.row_object, mylist, ObjectFragment.this);
+
+				lstObject.setAdapter(ListAdapter);
+
+				LoadMoreFooter.setVisibility(View.INVISIBLE);
+
+				updating.cancel(true);
+				IsRunning = true;
+
+			}
+			if (mylist.size() > beforePosition && FindPosition == false) {
+				lstObject.setSelection(beforePosition);
+				updating.cancel(true);
+				IsRunning = true;
+				return;
+
+			}
+
+		} else
+			LoadMoreFooter.setVisibility(View.INVISIBLE);
+
 	}
 }
