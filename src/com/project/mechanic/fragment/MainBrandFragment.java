@@ -47,7 +47,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 	Updating updating;
 	Settings setting;
 
-	boolean FindPosition;
+	boolean FindPosition, IsRunning = true;
 	int beforePosition;
 
 	public MainBrandFragment() {
@@ -87,8 +87,8 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 		adapter.close();
 
 		lstObject = (ListView) view.findViewById(R.id.listvCmt_Introduction);
-		ListAdapter = new ObjectListAdapter(getActivity(),
-				R.layout.row_object, mylist, MainBrandFragment.this);
+		ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object,
+				mylist, MainBrandFragment.this);
 
 		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
 				R.layout.load_more_footer, null);
@@ -113,6 +113,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 
 				params[3] = "1";
 				updating.execute(params);
+
 			}
 		});
 
@@ -190,8 +191,9 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 
 				int lastInScreen = firstVisibleItem + visibleItemCount;
 
-				if (lastInScreen == totalItemCount) {
-				
+				if (lastInScreen == totalItemCount
+						&& OnScrollListener.SCROLL_STATE_TOUCH_SCROLL == 1) {
+
 					LoadMoreFooter.setVisibility(View.VISIBLE);
 					//
 					updating = new Updating(getActivity());
@@ -203,14 +205,14 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 					params[2] = setting.getServerDate_End_Object() != null ? setting
 							.getServerDate_End_Object() : "";
 
-					params[3] = "1";
+					params[3] = "0";
 					updating.execute(params);
 
 					int countList = ListAdapter.getCount();
 					beforePosition = countList;
 
 					FindPosition = false;
-					
+					IsRunning = false;
 
 				}
 
@@ -239,44 +241,59 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 	@Override
 	public void processFinish(String output) {
 
-//		if (output.contains("anyType")) {
-//			LoadMoreFooter.setVisibility(View.INVISIBLE);
-//			// lst.removeFooterView(LoadMoreFooter);
-//
-//		}
-//		if (swipeLayout != null) {
-//
-//			swipeLayout.setRefreshing(false);
-//		}
-//
-//		if (output != null
-//				&& !(output.contains("Exception") || output.contains("java")
-//						|| output.contains("SoapFault") || output
-//							.contains("anyType"))) {
-//
-//			util.parseQuery(output);
-//			mylist.clear();
-//			adapter.open();
-//			mylist = adapter.getObjectbyParentId(parentId);
-//
-//			// mylist.addAll(adapter.getAllObject());
-//			adapter.close();
-//
-//			ListAdapter = new ObjectListAdapter(
-//					getActivity(), R.layout.row_object, mylist,
-//					MainBrandFragment.this);
-//
-//			lstObject.setAdapter(ListAdapter);
-//
-////			if (FindPosition == false) {
-////				lstObject.setSelection(beforePosition);
-////
+		if (output.contains("anyType")) {
+			
+			Toast.makeText(getActivity(), "صفحه جدیدی یافت نشد", 0).show();
+			LoadMoreFooter.setVisibility(View.INVISIBLE);
+			
+			if (swipeLayout != null) {
+
+				swipeLayout.setRefreshing(false);
 			}
-//			LoadMoreFooter.setVisibility(View.INVISIBLE);
-//
-//			ListAdapter.notifyDataSetChanged();
+			return;
 
-//		}
+		}
+		if (swipeLayout != null) {
 
-//	}
+			swipeLayout.setRefreshing(false);
+		}
+
+		if (output != null
+				&& !(output.contains("Exception") || output.contains("java")
+						|| output.contains("SoapFault") || output
+							.contains("anyType"))) {
+
+			util.parseQuery(output);
+			mylist.clear();
+			adapter.open();
+			mylist = adapter.getObjectbyParentId(parentId);
+
+			// mylist.addAll(adapter.getAllObject());
+			adapter.close();
+
+			if (mylist.size() > 0) {
+
+				ListAdapter = new ObjectListAdapter(getActivity(),
+						R.layout.row_object, mylist, MainBrandFragment.this);
+
+				lstObject.setAdapter(ListAdapter);
+
+				LoadMoreFooter.setVisibility(View.INVISIBLE);
+
+				updating.cancel(true);
+				IsRunning = true;
+
+			}
+
+			if (mylist.size() > beforePosition && FindPosition == false) {
+				lstObject.setSelection(beforePosition);
+				updating.cancel(true);
+				IsRunning = true;
+				return;
+
+			}
+		} else
+			LoadMoreFooter.setVisibility(View.INVISIBLE);
+
+	}
 }

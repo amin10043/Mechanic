@@ -166,7 +166,7 @@ public class MainActivity extends FragmentActivity {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
+		mDrawerList.setDivider(getResources().getDrawable(R.drawable.custom_drawable));
 		mDrawerList.setAdapter(slideadapter);
 
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());

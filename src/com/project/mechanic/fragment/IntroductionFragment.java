@@ -77,7 +77,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	LinearLayout.LayoutParams headerParams, footerParams;
 	RelativeLayout.LayoutParams addressParams, emailParams, profileParams,
-			followParams;
+			followParams, shareParams;
 
 	ArrayList<CommentInObject> mylist;
 	DataBaseAdapter adapter;
@@ -89,7 +89,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	ImageView headerImage, advertise2, profileImage;
 	ImageButton Facebook, Instagram, LinkedIn, Google, Site, Twitter, Pdf1,
-			Pdf2, Pdf3, Pdf4, EditPage, shareBtn;
+			Pdf2, Pdf3, Pdf4;
 	Object object;
 	byte[] headerbyte, profilebyte, footerbyte;
 
@@ -115,7 +115,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	ProgressBar loadingProgressHeader, loadingProgressProfile,
 			loadingProgressFooter;
-	Button followPage;
+	Button followPage, EditPage, shareBtn;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -184,7 +184,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		cphone = (RelativeLayout) header.findViewById(R.id.personalMobile);
 		map = (RelativeLayout) header.findViewById(R.id.addressRelative);
 		email = (RelativeLayout) header.findViewById(R.id.emailsRelative);
-		shareBtn = (ImageButton) header.findViewById(R.id.shareIntroduction);
+		shareBtn = (Button) header.findViewById(R.id.shareIntroduction);
 
 		Pdf1 = (ImageButton) header.findViewById(R.id.btnPdf1_Object);
 		Pdf2 = (ImageButton) header.findViewById(R.id.btnPdf2_Object);
@@ -193,7 +193,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		profileLinear = (RelativeLayout) header
 				.findViewById(R.id.linear_id_profile_introduction_page);
 		footerLinear = (LinearLayout) header.findViewById(R.id.footerint);
-		EditPage = (ImageButton) header.findViewById(R.id.ImgbtnEdit);
+		EditPage = (Button) header.findViewById(R.id.ImgbtnEdit);
 		likePost = (LinearLayout) header
 				.findViewById(R.id.likePostIntroduction);
 
@@ -240,11 +240,13 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		} else {
 			if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
 					ObjectID, 0)) {
-				AddLike.setBackgroundResource(R.drawable.like_on);
-				personPage.setBackgroundResource(R.drawable.count_like);
+				followPage.setBackgroundColor(getResources().getColor(
+						R.color.green));
+				// personPage.setBackgroundResource(R.drawable.count_like);
 			} else {
-				AddLike.setBackgroundResource(R.drawable.like_off);
-				personPage.setBackgroundResource(R.drawable.count_like_off);
+				followPage.setBackgroundColor(getResources().getColor(
+						R.color.gray));
+				// personPage.setBackgroundResource(R.drawable.count_like_off);
 
 			}
 			if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
@@ -266,10 +268,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		profileParams.height = ut.getScreenwidth() / 4;
 		profileParams.width = ut.getScreenwidth() / 4;
 		profileParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		profileParams.addRule(RelativeLayout.BELOW , R.id.namePage);
+		profileParams.addRule(RelativeLayout.BELOW, R.id.namePage);
 		profileParams.setMargins(0, 10, 0, 0);
-
-
 
 		profileImage.setLayoutParams(profileParams);
 
@@ -288,9 +288,32 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		followParams.height = ut.getScreenwidth() / 10;
 		followParams.setMargins(0, 10, 0, 0);
 		followParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		followParams.addRule(RelativeLayout.BELOW , R.id.icon_pro);
+		followParams.addRule(RelativeLayout.BELOW, R.id.icon_pro);
 
 		followPage.setLayoutParams(followParams);
+
+		shareParams = new RelativeLayout.LayoutParams(
+				profileLinear.getLayoutParams());
+
+		shareParams.height = ut.getScreenwidth() / 10;
+		shareParams.width = ut.getScreenwidth() / 4;
+		shareParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		shareParams.addRule(RelativeLayout.BELOW, R.id.ImgbtnEdit);
+		shareParams.setMargins(0, 10, 0, 0);
+
+		shareBtn.setLayoutParams(shareParams);
+
+		RelativeLayout.LayoutParams shareParams2 = new RelativeLayout.LayoutParams(
+				profileLinear.getLayoutParams());
+
+		shareParams2.height = ut.getScreenwidth() / 10;
+		shareParams2.width = ut.getScreenwidth() / 4;
+		shareParams2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		shareParams2.addRule(RelativeLayout.BELOW, R.id.followPage);
+		shareParams2.setMargins(0, 10, 0, 0);
+
+		shareBtn.setLayoutParams(shareParams);
+		shareBtn.setTextSize(12);
 
 		adapter.open();
 		int countcmt = adapter.CommentInObject_count(ObjectID);
@@ -476,10 +499,15 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			Toast.makeText(getActivity(),
 					"userid dar database sqlite be soorat dasti 0 save shode",
 					Toast.LENGTH_LONG).show();
+			shareBtn.setLayoutParams(shareParams2);
 		} else {
 			EditPage.setVisibility(View.VISIBLE);
+			EditPage.setLayoutParams(followParams);
 
 		}
+
+		if (user != null && object.getUserId() == user.getId())
+			followPage.setVisibility(View.GONE);
 		addressParams = new RelativeLayout.LayoutParams(
 				addressRelative.getLayoutParams());
 
@@ -927,7 +955,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		});
 
-		AddLike.setOnClickListener(new View.OnClickListener() {
+		followPage.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -1230,9 +1258,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					int countlike = adapter.LikeInObject_count(ObjectID, comId);
 
 					if (flag) {
-						AddLike.setBackgroundResource(R.drawable.like_off);
-						personPage
-								.setBackgroundResource(R.drawable.count_like_off);
+						followPage.setBackgroundColor(getResources().getColor(
+								R.color.gray));
+						// personPage
+						// .setBackgroundResource(R.drawable.count_like_off);
 						CountLikeIntroduction
 								.setText(String.valueOf(countlike));
 						if (ringProgressDialog != null)
@@ -1253,8 +1282,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					int countlike = adapter.LikeInObject_count(ObjectID, comId);
 
 					if (flag) {
-						AddLike.setBackgroundResource(R.drawable.like_on);
-						personPage.setBackgroundResource(R.drawable.count_like);
+						followPage.setBackgroundColor(getResources().getColor(
+								R.color.green));
+						// personPage.setBackgroundResource(R.drawable.count_like);
 						CountLikeIntroduction
 								.setText(String.valueOf(countlike));
 						if (ringProgressDialog != null)
