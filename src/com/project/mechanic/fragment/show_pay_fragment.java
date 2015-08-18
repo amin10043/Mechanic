@@ -378,7 +378,7 @@ public class show_pay_fragment extends Fragment implements AsyncInterface,
 				params.put("tableName", "Anad");
 
 				params.put("ObjectId", String.valueOf(o.getId()));
-				// params.put("Date", output);
+				 params.put("Date", output);
 				params.put("ModifyDate", output);
 
 				params.put("TypeId", "0");
