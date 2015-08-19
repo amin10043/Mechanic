@@ -20,5 +20,6 @@
     <color name="background_dialog_color">#50597b</color>
     <color name="background_header_color">#11a8ab</color>
     <color name="green">#69ce29</color>
-    
+    <color name="gr">#e8e8e8</color>
+
 </resources>

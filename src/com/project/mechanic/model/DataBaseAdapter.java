@@ -87,7 +87,7 @@ public class DataBaseAdapter {
 	// private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] Anad = { "Id", "Image", "ObjectId", "Date", "TypeId",
-			"ProvinceId", "Seen", "Submit" };
+			"ProvinceId", "Seen", "Submit", "ImagePath" };
 	private String[] CityColumn = { "ID", "Name", "ProvinceId", "Count" };
 
 	// private String[] Comment = { "ID", "UserId", "paperId", "Description" };
@@ -637,7 +637,7 @@ public class DataBaseAdapter {
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
 					cursor.getInt(32), cursor.getString(33),
 					cursor.getString(34), cursor.getString(35),
-					cursor.getString(36) , cursor.getInt(37));
+					cursor.getString(36), cursor.getInt(37));
 
 			result.add(tempObject);
 		}
@@ -1216,7 +1216,8 @@ public class DataBaseAdapter {
 	private Anad CursorToAnad(Cursor cursor) {
 		Anad tempAnad = new Anad(cursor.getInt(0), cursor.getInt(2),
 				cursor.getBlob(1), cursor.getString(3), cursor.getInt(4),
-				cursor.getInt(5), cursor.getInt(6), cursor.getInt(7));
+				cursor.getInt(5), cursor.getInt(6), cursor.getInt(7),
+				cursor.getString(8));
 
 		return tempAnad;
 	}
@@ -1237,7 +1238,7 @@ public class DataBaseAdapter {
 				cursor.getInt(28), cursor.getInt(29), cursor.getInt(30),
 				cursor.getInt(31), cursor.getInt(32), cursor.getString(33),
 				cursor.getString(34), cursor.getString(35),
-				cursor.getString(36) , cursor.getInt(37));
+				cursor.getString(36), cursor.getInt(37));
 		return tempObject;
 	}
 
@@ -2175,7 +2176,7 @@ public class DataBaseAdapter {
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
 					cursor.getInt(32), cursor.getString(33),
 					cursor.getString(34), cursor.getString(35),
-					cursor.getString(36) , cursor.getInt(37));
+					cursor.getString(36), cursor.getInt(37));
 
 			result.add(tempObject);
 		}
@@ -2976,7 +2977,7 @@ public class DataBaseAdapter {
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
 					cursor.getInt(32), cursor.getString(33),
 					cursor.getString(34), cursor.getString(35),
-					cursor.getString(36) , cursor.getInt(37));
+					cursor.getString(36), cursor.getInt(37));
 
 			result.add(tempObject);
 		}
@@ -3353,6 +3354,16 @@ public class DataBaseAdapter {
 			res = cu.getInt(0);
 		}
 		return res;
+	}
+
+	public void UpdateImagePathToDb(int id, String path) {
+		ContentValues uc = new ContentValues();
+
+		if (!"".equals(path) && path != null)
+			uc.put("ImagePath", path);
+
+		mDb.update(TableAnad, uc, "Id=" + id, null);
+
 	}
 
 }

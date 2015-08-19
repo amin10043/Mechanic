@@ -9,19 +9,19 @@
         <item name="android:textSize">20sp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@drawable/selector_crop_button</item>
-    </style>    <style name="AppBaseTheme" parent="android:Theme.Light">
     </style>
+
+    <style name="AppBaseTheme" parent="android:Theme.Light"></style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
-    <style name="ListView" parent="@android:style/Widget.ListView">
+    <style name="ListView" >
         <item name="android:background">@color/shiri</item>
         <item name="android:cacheColorHint">@android:color/transparent</item>
-        <item name="android:divider">@android:color/transparent</item>
-        <item name="android:dividerHeight">10dp</item>
+        <item name="android:layout_marginBottom">10dip</item>
         <item name="android:listSelector">@drawable/list_item</item>
     </style>
 
@@ -87,6 +87,11 @@
     <style name="bottom_corner">
         <item name="android:background">#ccc</item>
         <item name="android:listSelector">@drawable/bottom_corner</item>
+    </style>
+    
+    <style name="anad_style">
+        <item name="android:layout_marginBottom">10dip</item>
+     
     </style>
 
 </resources>

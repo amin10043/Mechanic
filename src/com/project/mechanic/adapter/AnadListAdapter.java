@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,8 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 	int ProvinceId;
 	Utility util;
 	Fragment fragment;
+	LinearLayout.LayoutParams params;
+
 
 	public AnadListAdapter(Context context, int resource, List<Ticket> objact,
 			int ProvinceId, Fragment fragment) {
@@ -61,6 +64,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_anad, parent, false);
+		
 		TextView txtdate = (TextView) convertView
 				.findViewById(R.id.text_favorite_desc);
 		TextView txtName = (TextView) convertView
@@ -80,12 +84,22 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 			txtdate.setTextColor(Color.GRAY);
 
 		}
+		
+		LinearLayout llkj = (LinearLayout)convertView.findViewById(R.id.layoutmnb);
+		params = new LinearLayout.LayoutParams(llkj.getLayoutParams());
+		params.width = util.getScreenwidth()/5;
+		params.height = util.getScreenwidth()/5;
 
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 					bitmapbyte.length);
 			img2.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
+			img2.setLayoutParams(params);
 		}
+		
+		
+		
+		
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BROYA.TTF");
 		txtName.setTypeface(typeFace);

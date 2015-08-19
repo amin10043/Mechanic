@@ -1180,6 +1180,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	@Override
 	public void processFinish(String output) {
 
+
 		if (output.contains("---")) {
 			if (ringProgressDialog != null)
 				ringProgressDialog.dismiss();
