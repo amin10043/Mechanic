@@ -702,9 +702,9 @@ public class Utility implements AsyncInterface {
 
 		if (retval == false) {
 
-			byte[] array = byteImage;
+			//byte[] array = byteImage;
 
-			BitmapFactory.decodeByteArray(array, 0, array.length);
+			//BitmapFactory.decodeByteArray(array, 0, array.length);
 
 			// you can create a new file name "test.jpg" in sdcard folder.
 			File f = new File(agahiDirectory + File.separator + nameFile
