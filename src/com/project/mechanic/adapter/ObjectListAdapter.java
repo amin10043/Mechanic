@@ -105,20 +105,39 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
 
-		if (person.getImage2() == null) {
+		
+		String pathProfile=person.getImagePath2();
+		
+		Bitmap profileImage = BitmapFactory.decodeFile(pathProfile);
+		
+		
+		if (profileImage !=null){		
+			
+			profileIco.setImageBitmap(profileImage);
+			profileIco.setLayoutParams(lp);
+			
+		}else
+		{
 			profileIco.setImageResource(R.drawable.no_img_profile);
 			profileIco.setLayoutParams(lp);
-
-		} else {
-			byte[] byteImageProfile = person.getImage2();
-
-			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
-					byteImageProfile.length);
-
-			profileIco.setImageBitmap(bmp);
-
-			profileIco.setLayoutParams(lp);
 		}
+
+		
+		
+		
+		
+//		if (person.getImage2() == null) {
+//		
+//
+//		} else {
+//			byte[] byteImageProfile = person.getImage2();
+//
+//			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
+//					byteImageProfile.length);
+//
+//			profileIco.setImageBitmap(bmp);
+//
+//		}
 		
 		
 		followLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayout1);
