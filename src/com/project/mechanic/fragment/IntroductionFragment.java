@@ -521,36 +521,45 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		emailParams.width = (int) (ut.getScreenwidth() / 2.5);
 		emailParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		txtEmail.setLayoutParams(emailParams);
+		
+		String PathHeader = object.getImagePath1();
+		String PathProfile = object.getImagePath2();
+		String PathFooter = object.getImagePath3();
+		
+		Bitmap bmpHeader = BitmapFactory.decodeFile(PathHeader);
+		Bitmap bmpProfile = BitmapFactory.decodeFile(PathProfile);
+		Bitmap bmpfooter = BitmapFactory.decodeFile(PathFooter);
 
-		bitHeader = object.getImage1();
 
-		if (bitHeader != null) {
-			Bitmap bmp1 = BitmapFactory.decodeByteArray(bitHeader, 0,
-					bitHeader.length);
+//		bitHeader = object.getImage1();
 
-			headerImage.setImageBitmap(bmp1);
+		if (bmpHeader != null) {
+//			Bitmap bmp1 = BitmapFactory.decodeByteArray(bitHeader, 0,
+//					bitHeader.length);
+
+			headerImage.setImageBitmap(bmpHeader);
 		} else
 
 			headerImage.setBackgroundResource(R.drawable.no_image_header);
 		// /////////////////////
-		bytepro = object.getImage2();
-		if (bytepro != null) {
-			Bitmap bmp2 = BitmapFactory.decodeByteArray(bytepro, 0,
-					bytepro.length);
+//		bytepro = object.getImage2();
+		if (bmpProfile != null) {
+//			Bitmap bmp2 = BitmapFactory.decodeByteArray(bytepro, 0,
+//					bytepro.length);
 
-			profileImage.setImageBitmap(bmp2);
+			profileImage.setImageBitmap(bmpProfile);
 
 		} else {
 			profileImage.setBackgroundResource(R.drawable.no_img_profile);
 
 		}
 		// ///////////////////////
-		bytefoot = object.getImage3();
-		if (bytefoot != null) {
-			Bitmap bmp3 = BitmapFactory.decodeByteArray(bytefoot, 0,
-					bytefoot.length);
+//		bytefoot = object.getImage3();
+		if (bmpfooter != null) {
+//			Bitmap bmp3 = BitmapFactory.decodeByteArray(bytefoot, 0,
+//					bytefoot.length);
 
-			advertise2.setImageBitmap(bmp3);
+			advertise2.setImageBitmap(bmpfooter);
 
 		} else
 			advertise2.setBackgroundResource(R.drawable.no_image_header);
@@ -1419,12 +1428,21 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		if (output != null && output.size() > 0) {
 
+
 			adapter.open();
+			
+
 			if (f1)
 				if (output.get(0) != null) {
-					adapter.UpdateHeaderImageObject(ObjectID, output.get(0));
-					Bitmap b = BitmapFactory.decodeByteArray(output.get(0), 0,
-							output.get(0).length);
+					ut.CreateFile(output.get(0), object.getId(), "Mechanical", "Profile", "header", "Object");
+					
+					//adapter.UpdateHeaderImageObject(ObjectID, output.get(0));
+					object = adapter.getObjectbyid(ObjectID);
+
+					String PathImageHeader="";
+					PathImageHeader = object.getImagePath1();
+					Bitmap b = BitmapFactory.decodeFile(PathImageHeader);
+
 					if (b != null)
 						headerImage.setImageBitmap(b);
 					else
@@ -1434,9 +1452,14 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				}
 			if (f2)
 				if (output.get(1) != null) {
-					adapter.UpdateProfileImageObject(ObjectID, output.get(1));
-					Bitmap b = BitmapFactory.decodeByteArray(output.get(1), 0,
-							output.get(1).length);
+					ut.CreateFile(output.get(1), object.getId(), "Mechanical", "Profile", "profile", "Object");
+					object = adapter.getObjectbyid(ObjectID);
+
+					String PathImageProfile="";
+					PathImageProfile = object.getImagePath2();
+//					adapter.UpdateProfileImageObject(ObjectID, output.get(1));
+					Bitmap b = BitmapFactory.decodeFile(PathImageProfile);
+
 					if (b != null)
 						profileImage.setImageBitmap(b);
 					else
@@ -1447,9 +1470,16 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 			if (f3)
 				if (output.get(2) != null) {
-					adapter.UpdateFooterImageObject(ObjectID, output.get(2));
-					Bitmap b = BitmapFactory.decodeByteArray(output.get(2), 0,
-							output.get(2).length);
+					ut.CreateFile(output.get(2), object.getId(), "Mechanical", "Profile", "footer", "Object");
+					object = adapter.getObjectbyid(ObjectID);
+
+					String PathImageFooter="";
+					PathImageFooter = object.getImagePath3();
+					
+
+//					adapter.UpdateFooterImageObject(ObjectID, output.get(2));
+					Bitmap b = BitmapFactory.decodeFile(PathImageFooter);
+
 					if (b != null)
 						advertise2.setImageBitmap(b);
 					else

@@ -124,7 +124,7 @@ public class DataBaseAdapter {
 			"Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
 			"Submit", "MainObjectId", "IsActive", "UserId", "ObjectId", "Date",
 			"Image1ServerDate", "Image2ServerDate", "Image3ServerDate",
-			"AgencyService" };
+			"AgencyService", "ImagePath1", "ImagePath2", "ImagePath3" };
 	private String[] ObjectInCity = { "Id", "ObjectId", "CityId", "Date" };
 	// private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	// private String[] ObjectType = { "ID", "Name" };
@@ -637,7 +637,9 @@ public class DataBaseAdapter {
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
 					cursor.getInt(32), cursor.getString(33),
 					cursor.getString(34), cursor.getString(35),
-					cursor.getString(36), cursor.getInt(37));
+					cursor.getString(36), cursor.getInt(37),
+					cursor.getString(38), cursor.getString(39),
+					cursor.getString(40));
 
 			result.add(tempObject);
 		}
@@ -1238,7 +1240,8 @@ public class DataBaseAdapter {
 				cursor.getInt(28), cursor.getInt(29), cursor.getInt(30),
 				cursor.getInt(31), cursor.getInt(32), cursor.getString(33),
 				cursor.getString(34), cursor.getString(35),
-				cursor.getString(36), cursor.getInt(37));
+				cursor.getString(36), cursor.getInt(37), cursor.getString(38),
+				cursor.getString(39), cursor.getString(40));
 		return tempObject;
 	}
 
@@ -2149,7 +2152,7 @@ public class DataBaseAdapter {
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate , O.AgencyService From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate , O.AgencyService , O.ImagePath1 , O.ImagePath2 , O.ImagePath3 From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
@@ -2176,7 +2179,9 @@ public class DataBaseAdapter {
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
 					cursor.getInt(32), cursor.getString(33),
 					cursor.getString(34), cursor.getString(35),
-					cursor.getString(36), cursor.getInt(37));
+					cursor.getString(36), cursor.getInt(37),
+					cursor.getString(38), cursor.getString(39),
+					cursor.getString(40));
 
 			result.add(tempObject);
 		}
@@ -2949,7 +2954,7 @@ public class DataBaseAdapter {
 		Cursor cursor = mDb
 				.rawQuery(
 
-						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate , O.AgencyService From "
+						"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate , O.AgencyService , O.ImagePath1 , O.ImagePath2 , O.ImagePath3  From "
 								+ TableObject
 								+ " as O inner join "
 								+ TableObjectInCity
@@ -2977,7 +2982,9 @@ public class DataBaseAdapter {
 					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
 					cursor.getInt(32), cursor.getString(33),
 					cursor.getString(34), cursor.getString(35),
-					cursor.getString(36), cursor.getInt(37));
+					cursor.getString(36), cursor.getInt(37),
+					cursor.getString(38), cursor.getString(39),
+					cursor.getString(40));
 
 			result.add(tempObject);
 		}
@@ -3364,6 +3371,18 @@ public class DataBaseAdapter {
 
 		mDb.update(TableAnad, uc, "Id=" + id, null);
 
+	}
+	
+	public void UpdateImagePathObject(int id, String ImagePath , int IdPath) {
+
+		// IdPath moshakhas konnandeh setoon imagePath mibashad va shamel  1 ,2 , 3 ast
+		ContentValues cv = new ContentValues();
+
+		if (ImagePath != null)
+		
+			cv.put("ImagePath" + IdPath, ImagePath);
+
+		mDb.update(TableObject, cv, "Id=?", new String[] { String.valueOf(id) });
 	}
 
 }

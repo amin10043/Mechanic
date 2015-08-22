@@ -750,6 +750,20 @@ public class Utility implements AsyncInterface {
 				adapter.UpdateImagePathToDb(ImageId, f.getPath());
 				adapter.close();
 			}
+			if (TableName.equals("Object")) {
+				int PathId=0;
+				
+				if(nameFile.contains("header"))
+						PathId=1;
+				if(nameFile.contains("profile"))
+					PathId=2;
+				if(nameFile.contains("footer"))
+					PathId=3;
+
+				adapter.open();
+				adapter.UpdateImagePathObject(ImageId, f.getPath(), PathId);
+				adapter.close();
+			}
 			return ImageId;
 
 		}

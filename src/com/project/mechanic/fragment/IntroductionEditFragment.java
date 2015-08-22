@@ -198,26 +198,39 @@ public class IntroductionEditFragment extends Fragment implements
 		DBAdapter.open();
 		object = DBAdapter.getObjectbyid(PageId);
 
-		byte[] bitmapbyte = object.getImage2();
-		if (bitmapbyte != null) {
-			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-					bitmapbyte.length);
-			profileImageEdit.setImageBitmap(bmp);
+		
+		String pathHeader = object.getImagePath1();
+		String pathProfile = object.getImagePath2();
+		String pathFooter = object.getImagePath3();
+		
+		Bitmap bmpHeader = BitmapFactory.decodeFile(pathHeader);
+		Bitmap bmpPrifile = BitmapFactory.decodeFile(pathProfile);
+		Bitmap bmpfooter = BitmapFactory.decodeFile(pathFooter);
+		
+		
+		
+		
+//		byte[] bitmapbyte = OBJECT.getImage2();
+		
+		if (bmpHeader != null) {
+//			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
+//					bitmapbyte.length);
+			profileImageEdit.setImageBitmap(bmpHeader);
 		} else
-			profileImageEdit.setImageResource(R.drawable.no_img_profile);
+			profileImageEdit.setImageResource(R.drawable.no_image_header);
 
-		byte[] bitmap = object.getImage1();
-		if (bitmap != null) {
-			Bitmap bmp = BitmapFactory
-					.decodeByteArray(bitmap, 0, bitmap.length);
-			headerImageEdit.setImageBitmap(bmp);
+//		byte[] bitmap = object.getImage1();
+		if (bmpPrifile != null) {
+//			Bitmap bmp = BitmapFactory
+//					.decodeByteArray(bitmap, 0, bitmap.length);
+			headerImageEdit.setImageBitmap(bmpPrifile);
 		} else
-			headerImageEdit.setImageResource(R.drawable.no_image_header);
+			headerImageEdit.setImageResource(R.drawable.no_img_profile);
 
-		byte[] bitm = object.getImage3();
-		if (bitm != null) {
-			Bitmap bmp = BitmapFactory.decodeByteArray(bitm, 0, bitm.length);
-			footerImageEdit.setImageBitmap(bmp);
+//		byte[] bitm = object.getImage3();
+		if (bmpfooter != null) {
+//			Bitmap bmp = BitmapFactory.decodeByteArray(bitm, 0, bitm.length);
+			footerImageEdit.setImageBitmap(bmpfooter);
 		} else
 			footerImageEdit.setImageResource(R.drawable.no_image_header);
 

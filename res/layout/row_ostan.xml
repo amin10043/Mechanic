@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="right"
-    android:background="@drawable/list_item"
+    android:background="#d3dff9"
     android:gravity="right" >
 
     <ImageView
@@ -14,11 +14,11 @@
 
     <TextView
         android:id="@+id/RowOstantxt"
-        style="@style/row_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:textColor="@color/transparent"
         android:layout_margin="10dp"
         android:text="Large Text" />
 

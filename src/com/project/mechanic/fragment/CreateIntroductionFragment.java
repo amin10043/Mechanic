@@ -737,41 +737,7 @@ public class CreateIntroductionFragment extends Fragment implements
 
 				}
 			}
-			// } else {
-			//
-			// if (ringProgressDialog != null) {
-			// ringProgressDialog.dismiss();
-			// }
-			// if (objectId != 0) {
-			//
-			// DBAdapter.insertObjectInCity(serverId, lastItem, CityId,
-			// serverDate);
-			//
-			// byteHeader = Utility.CompressBitmap(bitmapHeader);
-			// byteProfil = Utility.CompressBitmap(bitmapProfil);
-			// byteFooter = Utility.CompressBitmap(bitmapFooter);
-			//
-			// savingImage = new SavingImage3Picture(getActivity());
-			// savingImage.delegate = this;
-			// Map<String, Object> it = new LinkedHashMap<String, Object>();
-			//
-			// it.put("tableName", "Object");
-			// it.put("fieldName1", "Image1");
-			// it.put("fieldName2", "Image2");
-			// it.put("fieldName3", "Image3");
-			//
-			// it.put("id", serverId);
-			//
-			// it.put("Image1", byteHeader);
-			// it.put("Image2", byteProfil);
-			// it.put("Image3", byteFooter);
-			//
-			// savingImage.execute(it);
-			// if (ringProgressDialog != null) {
-			// ringProgressDialog.dismiss();
-			// }
-			// }
-			// }
+		
 
 			DBAdapter.close();
 
@@ -996,10 +962,15 @@ public class CreateIntroductionFragment extends Fragment implements
 			ringProgressDialog.dismiss();
 		}
 		try {
+			
+			util.CreateFile(byteHeader, lastItem, "Mechanical", "Profile", "header", "Object");
+			util.CreateFile(byteProfil, lastItem, "Mechanical", "Profile", "profile", "Object");
+			util.CreateFile(byteFooter, lastItem, "Mechanical", "Profile", "footer", "Object");
 
-			DBAdapter.open();
-			DBAdapter.UpdateImageObjectToDatabase(lastItem, byteHeader,
-					byteProfil, byteFooter);
+
+//			DBAdapter.open();
+//			DBAdapter.UpdateImageObjectToDatabase(lastItem, byteHeader,
+//					byteProfil, byteFooter);
 
 			if (f1)
 				DBAdapter.updateObjectImage1ServerDate(lastItem, output);
