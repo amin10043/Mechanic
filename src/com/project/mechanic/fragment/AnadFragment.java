@@ -135,14 +135,17 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 	List<Integer> listId;
 
-	ImageButton imageButton;
+	ImageView imageButton;
 	LinearLayout.LayoutParams params;
 
 	String serverDate = "";
 	ServerDate date;
 	int DateCurrentDay;
 	int code = 100;
-	
+	int icode = 0;
+
+	boolean flag , IsFinish=false;
+
 	RelativeLayout timeLayoutTimeLine;
 
 	// int ic =1 ;
@@ -165,23 +168,29 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 			proID = Integer.valueOf(getArguments().getString("ProID"));
 			Toast.makeText(getActivity(), "pro Id = " + proID, 0).show();
 		}
+		
+		verticalScrollview = (ScrollView) view
+				.findViewById(R.id.vertical_scrollview_id);
+		verticalOuterLayout = (LinearLayout) view
+				.findViewById(R.id.vertical_outer_layout_id);
 		dbAdapter.open();
 
 		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
 		anadlist = dbAdapter.getAnadtByTypeIdProId(proID);
 		setting = dbAdapter.getSettings();
-
+		
 		dbAdapter.close();
-
-		date = new ServerDate(getActivity());
-		date.delegate = this;
-		date.execute("");
-
-		// start get inad image from server
-
 		params = new LinearLayout.LayoutParams(util.getScreenwidth() / 3,
 				util.getScreenwidth() / 3);
 		
+		// start get inad image from server
+
+		date = new ServerDate(getActivity());
+		date.delegate = AnadFragment.this;
+		date.execute("");
+
+		
+
 		timeLayoutTimeLine = (RelativeLayout) view.findViewById(R.id.searchV);
 
 		// end get inad image from server
@@ -304,13 +313,9 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 		// });
 		// }
 
-		verticalScrollview = (ScrollView) view
-				.findViewById(R.id.vertical_scrollview_id);
-		verticalOuterLayout = (LinearLayout) view
-				.findViewById(R.id.vertical_outer_layout_id);
+		
 		// addImagesToView(anadlist);
-		
-		
+		// displayImageAnad(anadlist, I);
 
 		if (listviewanad != null) {
 
@@ -334,7 +339,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 					case SCROLL_STATE_FLING:
 						createItem.hide(true);
 						break;
-					case SCROLL_STATE_TOUCH_SCROLL:{
+					case SCROLL_STATE_TOUCH_SCROLL: {
 						createItem.show(true);
 						timeLayoutTimeLine.setVisibility(View.GONE);
 						break;
@@ -382,11 +387,48 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 			public void onGlobalLayout() {
 				verticalOuterLayout.getViewTreeObserver()
 						.removeGlobalOnLayoutListener(this);
-				getScrollMaxAmount();
-				startAutoScrolling();
+				// getScrollMaxAmount();
+				// startAutoScrolling();
 			}
 		});
 		return view;
+	}
+
+	@SuppressLint("ResourceAsColor")
+	private void displayImageAnad(List<Anad> anadlist, int index) {
+		Anad anadItem;
+		String path = "";
+		Bitmap bmp;
+		int objId, countEmptyPath = 0;
+		while (index < anadlist.size()) {
+			imageButton = new ImageView(getActivity());
+
+			anadItem = anadlist.get(index);
+			path = anadItem.getImagePath();
+			objId = anadItem.getObjectId();
+
+			if (path != null) {
+				bmp = BitmapFactory.decodeFile(path);
+				imageButton.setImageBitmap(bmp);
+				imageButton.setLayoutParams(params);
+				imageButton.setScaleType(ScaleType.FIT_XY);
+
+			} else {
+				imageButton.setBackgroundResource(R.drawable.propagand);
+				imageButton.setLayoutParams(params);
+				imageButton.setScaleType(ScaleType.FIT_XY);
+				if (String.valueOf(objId) == null)
+					countEmptyPath++;
+
+			}
+			verticalOuterLayout.addView(imageButton);
+			index++;
+
+		}
+		if (countEmptyPath != 0) {
+
+		}
+
 	}
 
 	private void click() {
@@ -562,34 +604,34 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 	}
 
-	@SuppressLint("ResourceAsColor") public void addImagesToView(final List<Anad> lst, int ImageId, int I,
-			boolean expiryDate) {
+	@SuppressLint("ResourceAsColor")
+	public void addImagesToView(final List<Anad> lst, int ImageId, int I) {
 
-		imageButton = new ImageButton(getActivity());
+		imageButton = new ImageView(getActivity());
 		imageButton.setBackgroundColor(android.R.color.transparent);
 		Anad anadItem = lst.get(I);
 		String path = "";
-		if (anadItem.getId() == ImageId && expiryDate == true) {
+		if (anadItem.getId() == ImageId) {
 
 			path = anadItem.getImagePath();
 			Bitmap bmp = BitmapFactory.decodeFile(path);
 			imageButton.setImageBitmap(bmp);
 
-		} else
+		} 
+		else
 			imageButton.setBackgroundResource(R.drawable.propagand);
-		
-		if (expiryDate == false) {
-			
-			Toast.makeText(getActivity(), "تاریخ انقضا عکس شماره " + ImageId + " به پایان رسیده است", 0).show()	;
-			
-			
-		}
 
 		imageButton.setLayoutParams(params);
 		imageButton.setScaleType(ScaleType.CENTER_CROP);
 		verticalOuterLayout.addView(imageButton);
 
 		// imageButton.setTag(I);
+		ImageCode++;
+		icode++;
+		getAnadImageFromServer(lst, icode, false);
+		
+		if (icode == lst.size())
+			IsFinish = true;
 
 	}
 
@@ -877,116 +919,197 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 		}
 	}
 
-	private void getAnadImageFromServer() {
+	private void getAnadImageFromServer(List<Anad> anadlist, int icode,
+			boolean IsFirst) {
 
-		switch (proID) {
+		if (IsFirst == true) {
 
-		case 1:
-			ImageCode = 1;
-			break;
-		case 3:
-			ImageCode = 51;
-			break;
-		case 4:
-			ImageCode = 81;
-			break;
-		case 5:
-			ImageCode = 151;
-			break;
-		case 6:
-			ImageCode = 201;
-			break;
-		case 7:
-			ImageCode = 231;
-			break;
-		case 8:
-			ImageCode = 261;
-			break;
-		case 9:
-			ImageCode = 361;
-			break;
-		case 10:
-			ImageCode = 391;
-			break;
-		case 11:
-			ImageCode = 421;
-			break;
-		case 12:
-			ImageCode = 471;
-			break;
-		case 13:
-			ImageCode = 501;
-			break;
-		case 14:
-			ImageCode = 531;
-			break;
-		case 15:
-			ImageCode = 561;
-			break;
-		case 16:
-			ImageCode = 591;
-			break;
-		case 17:
-			ImageCode = 621;
-			break;
-		case 18:
-			ImageCode = 671;
-			break;
-		case 19:
-			ImageCode = 701;
-			break;
-		case 20:
-			ImageCode = 751;
-			break;
-		case 21:
-			ImageCode = 781;
-			break;
-		case 22:
-			ImageCode = 831;
-			break;
-		case 23:
-			ImageCode = 861;
-			break;
-		case 24:
-			ImageCode = 891;
-			break;
-		case 25:
-			ImageCode = 921;
-			break;
-		case 26:
-			ImageCode = 971;
-			break;
-		case 27:
-			ImageCode = 1021;
-			break;
-		case 28:
-			ImageCode = 1071;
-			break;
-		case 29:
-			ImageCode = 1121;
-			break;
-		case 30:
-			ImageCode = 1171;
-			break;
-		case 31:
-			ImageCode = 1201;
-			break;
-		case 0:
-			ImageCode = 1251;
-			break;
-		case 2:
-			ImageCode = 1351;
-			break;
-		default:
+			switch (proID) {
+
+			case 1:
+				ImageCode = 1;
+				break;
+			case 3:
+				ImageCode = 51;
+				break;
+			case 4:
+				ImageCode = 81;
+				break;
+			case 5:
+				ImageCode = 151;
+				break;
+			case 6:
+				ImageCode = 201;
+				break;
+			case 7:
+				ImageCode = 231;
+				break;
+			case 8:
+				ImageCode = 261;
+				break;
+			case 9:
+				ImageCode = 361;
+				break;
+			case 10:
+				ImageCode = 391;
+				break;
+			case 11:
+				ImageCode = 421;
+				break;
+			case 12:
+				ImageCode = 471;
+				break;
+			case 13:
+				ImageCode = 501;
+				break;
+			case 14:
+				ImageCode = 531;
+				break;
+			case 15:
+				ImageCode = 561;
+				break;
+			case 16:
+				ImageCode = 591;
+				break;
+			case 17:
+				ImageCode = 621;
+				break;
+			case 18:
+				ImageCode = 671;
+				break;
+			case 19:
+				ImageCode = 701;
+				break;
+			case 20:
+				ImageCode = 751;
+				break;
+			case 21:
+				ImageCode = 781;
+				break;
+			case 22:
+				ImageCode = 831;
+				break;
+			case 23:
+				ImageCode = 861;
+				break;
+			case 24:
+				ImageCode = 891;
+				break;
+			case 25:
+				ImageCode = 921;
+				break;
+			case 26:
+				ImageCode = 971;
+				break;
+			case 27:
+				ImageCode = 1021;
+				break;
+			case 28:
+				ImageCode = 1071;
+				break;
+			case 29:
+				ImageCode = 1121;
+				break;
+			case 30:
+				ImageCode = 1171;
+				break;
+			case 31:
+				ImageCode = 1201;
+				break;
+			case 0:
+				ImageCode = 1251;
+				break;
+			case 2:
+				ImageCode = 1351;
+				break;
+			default:
+			}
+		}
+		Anad anadItem;
+		String commiteDate, pathImage;
+		boolean allowShow = true;
+		int objId;
+		
+		if (icode == anadlist.size())
+			IsFinish =true;
+			
+
+		if (icode < anadlist.size()) {
+			anadItem = anadlist.get(icode);
+
+			commiteDate = anadItem.getDate();
+			pathImage = anadItem.getImagePath();
+			objId = anadItem.getObjectId();
+
+			Bitmap bmp;
+
+			if (commiteDate == null)
+				commiteDate = "20150000000000";
+
+			int AnadYear = Integer.valueOf(commiteDate.substring(0, 4));
+			int thisYear = Integer.valueOf(serverDate.substring(0, 4));
+
+			if (thisYear < AnadYear + 1)
+				allowShow = true;
+			else
+				allowShow = false;
+
+			if (allowShow == false) {
+				Toast.makeText(getActivity(),
+						" آگهی شماره " + ImageCode + "منقضی شده است", 0).show();
+				dbAdapter.open();
+				dbAdapter.UpdateAnadToDb(ImageCode, -1, "", -1, proID);
+				dbAdapter.close();
+
+				update = new UpdatingImage(getActivity());
+				update.delegate = AnadFragment.this;
+				maps = new LinkedHashMap<String, String>();
+				maps.put("tableName", "Anad");
+				maps.put("Id", String.valueOf(ImageCode));
+				maps.put("fromDate", "a");
+				update.execute(maps);
+			} else {
+				if (pathImage != null) {
+
+					imageButton = new ImageView(getActivity());
+
+					bmp = BitmapFactory.decodeFile(pathImage);
+					imageButton.setImageBitmap(bmp);
+					imageButton.setLayoutParams(params);
+					imageButton.setScaleType(ScaleType.FIT_XY);
+
+					verticalOuterLayout.addView(imageButton);
+
+					icode++;
+					getAnadImageFromServer(anadlist, icode, false);
+
+				}
+//				if (objId == 0 && pathImage == null ) {
+//
+//				addImagesToView(anadlist, ImageCode, icode);
+//				}
+
+				if (String.valueOf(objId) != null && pathImage == null) {
+
+					update = new UpdatingImage(getActivity());
+					update.delegate = AnadFragment.this;
+					maps = new LinkedHashMap<String, String>();
+					maps.put("tableName", "Anad");
+					maps.put("Id", String.valueOf(ImageCode));
+					maps.put("fromDate", "a");
+					update.execute(maps);
+				}
+
+			}
 		}
 
-		update = new UpdatingImage(getActivity());
-		update.delegate = AnadFragment.this;
-		maps = new LinkedHashMap<String, String>();
-		maps.put("tableName", "Anad");
-		maps.put("Id", String.valueOf(ImageCode));
-		maps.put("fromDate", "a");
-		update.execute(maps);
+		// update = new UpdatingImage(getActivity());
+		// update.delegate = AnadFragment.this;
+		// maps = new LinkedHashMap<String, String>();
+		// maps.put("tableName", "Anad");
+		// maps.put("Id", String.valueOf(ImageCode));
+		// maps.put("fromDate", "a");
+		// update.execute(maps);
 
 	}
 
@@ -995,7 +1118,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 		if (output.length() == 18 && code == 100) {
 			serverDate = output;
-			getAnadImageFromServer();
+			getAnadImageFromServer(anadlist, icode, true);
 
 		}
 
@@ -1051,142 +1174,12 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 			dbAdapter.close();
 
-			Anad ad = anadlist.get(I);
-
-			String commitDate = ad.getDate();
-			if (commitDate == null)
-				commitDate = "20150000000000";
-			
-			int AnadYear = Integer.valueOf(commitDate.substring(0, 4));
-			int thisYear = Integer.valueOf(serverDate.substring(0, 4));
-
-			boolean flagYear;
-
-			if (thisYear < AnadYear+1)
-				flagYear = true;
-			else
-				flagYear = false;
-
-			addImagesToView(anadlist, iz, I, flagYear);
+		
+			addImagesToView(anadlist, iz, icode);
 
 			I++;
-			// dbAdapter.updateImageAnad(ImageCode, output);
-			// ListAdapter.notifyDataSetChanged();
-
 		}
 
-		ImageCode++;
-
-		// Anad f = dbAdapter.getAnadByid(ImageCode);
-		// if (f.getImage() == null) {
-
-		update = new UpdatingImage(getActivity());
-		update.delegate = AnadFragment.this;
-		maps = new LinkedHashMap<String, String>();
-		maps.put("tableName", "Anad");
-
-		if (proID == 1 && ImageCode < 51)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 3 && ImageCode < 81)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 4 && ImageCode < 151)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 5 && ImageCode < 201)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 6 && ImageCode < 231)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 7 && ImageCode < 261)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 8 && ImageCode < 361)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 9 && ImageCode < 391)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 10 && ImageCode < 421)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 11 && ImageCode < 471)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 12 && ImageCode < 501)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 13 && ImageCode < 531)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 14 && ImageCode < 561)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 15 && ImageCode < 591)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 16 && ImageCode < 621)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 17 && ImageCode < 671)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 18 && ImageCode < 701)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 19 && ImageCode < 751)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 20 && ImageCode < 781)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 21 && ImageCode < 831)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 22 && ImageCode < 861)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 23 && ImageCode < 891)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 24 && ImageCode < 921)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 25 && ImageCode < 971)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 26 && ImageCode < 1021)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 27 && ImageCode < 1071)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 28 && ImageCode < 1121)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 29 && ImageCode < 1171)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 30 && ImageCode < 1201)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 31 && ImageCode < 1251)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 0 && ImageCode < 1351)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		if (proID == 2 && ImageCode < 1401)
-			maps.put("Id", String.valueOf(ImageCode));
-
-		maps.put("fromDate", "a");
-		update.execute(maps);
-		// } else {
-		// byte[] b = null;
-		// processFinish(b);
-		// }
 
 		dbAdapter.close();
 

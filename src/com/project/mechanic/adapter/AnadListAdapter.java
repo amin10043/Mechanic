@@ -42,7 +42,6 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 	Fragment fragment;
 	LinearLayout.LayoutParams params;
 
-
 	public AnadListAdapter(Context context, int resource, List<Ticket> objact,
 			int ProvinceId, Fragment fragment) {
 		super(context, resource, objact);
@@ -64,7 +63,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_anad, parent, false);
-		
+
 		TextView txtdate = (TextView) convertView
 				.findViewById(R.id.text_favorite_desc);
 		TextView txtName = (TextView) convertView
@@ -84,22 +83,24 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 			txtdate.setTextColor(Color.GRAY);
 
 		}
-		
-		LinearLayout llkj = (LinearLayout)convertView.findViewById(R.id.layoutmnb);
+
+		LinearLayout llkj = (LinearLayout) convertView
+				.findViewById(R.id.layoutmnb);
 		params = new LinearLayout.LayoutParams(llkj.getLayoutParams());
-		params.width = util.getScreenwidth()/5;
-		params.height = util.getScreenwidth()/5;
+		params.width = util.getScreenwidth() / 5;
+		params.height = util.getScreenwidth() / 5;
 
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 					bitmapbyte.length);
 			img2.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
 			img2.setLayoutParams(params);
+		} else {
+			img2.setBackgroundResource(R.drawable.no_img_profile);
+			img2.setLayoutParams(params);
+
 		}
-		
-		
-		
-		
+
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BROYA.TTF");
 		txtName.setTypeface(typeFace);
@@ -164,7 +165,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				}
 
 				DialogLongClick dia = new DialogLongClick(context, 3, u, id,
-						fragment , t);
+						fragment, t);
 				Toast.makeText(context, id + "", 0).show();
 				dia.show();
 				return true;

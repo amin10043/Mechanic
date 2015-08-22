@@ -22,41 +22,39 @@
                 android:id="@+id/row_favorite_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scaleType="fitXY"
                 android:layout_margin="4dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/no_img_profile" />
 
             <RelativeLayout
                 android:id="@+id/relativeLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
-                android:layout_below="@+id/row_favorite_img"
-                android:layout_toLeftOf="@+id/icon_object" >
+                android:gravity="bottom" >
 
                 <ImageView
                     android:id="@+id/iconNumberLike"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:layout_alignParentLeft="true"
                     android:background="@drawable/numberview" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:layout_alignBottom="@+id/iconNumberLike"
+                    android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/iconNumberLike"
                     android:text="20"
-                    android:textColor="@color/transparent"
-                    android:textSize="10dp" />
+                    
+                    android:layout_alignBottom="@+id/iconNumberLike"
+                    android:textColor="@color/transparent" />
             </RelativeLayout>
 
             <TextView
                 android:id="@+id/text_favorite_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 android:text="TextView"

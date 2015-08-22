@@ -106,6 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
+                android:fillViewport="true"
                 android:background="#e8e8e8"
                 android:fadingEdge="none"
                 android:scrollbars="none" >
