@@ -1,13 +1,8 @@
 package com.project.mechanic.fragment;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,18 +15,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.ListViewAutoScrollHelper;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -44,7 +35,6 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -57,12 +47,9 @@ import android.widget.Toast;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.Action.FloatingActionButton;
-import com.project.mechanic.ListView.PullAndLoadListView;
-import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
 import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Anad;
-import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
@@ -144,7 +131,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 	int code = 100;
 	int icode = 0;
 
-	boolean flag , IsFinish=false;
+	boolean flag, IsFinish = false;
 
 	RelativeLayout timeLayoutTimeLine;
 
@@ -166,9 +153,9 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 		if (getArguments().getString("ProID") != null) {
 			proID = Integer.valueOf(getArguments().getString("ProID"));
-			Toast.makeText(getActivity(), "pro Id = " + proID, 0).show();
+			// Toast.makeText(getActivity(), "pro Id = " + proID, 0).show();
 		}
-		
+
 		verticalScrollview = (ScrollView) view
 				.findViewById(R.id.vertical_scrollview_id);
 		verticalOuterLayout = (LinearLayout) view
@@ -178,18 +165,16 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
 		anadlist = dbAdapter.getAnadtByTypeIdProId(proID);
 		setting = dbAdapter.getSettings();
-		
+
 		dbAdapter.close();
 		params = new LinearLayout.LayoutParams(util.getScreenwidth() / 3,
 				util.getScreenwidth() / 3);
-		
+
 		// start get inad image from server
 
 		date = new ServerDate(getActivity());
 		date.delegate = AnadFragment.this;
 		date.execute("");
-
-		
 
 		timeLayoutTimeLine = (RelativeLayout) view.findViewById(R.id.searchV);
 
@@ -280,60 +265,12 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 				android.R.color.holo_orange_light,
 				android.R.color.holo_red_light);
 
-		// ((PullAndLoadListView) lstTicket)
-		// .setOnRefreshListener(new OnRefreshListener() {
-		//
-		// public void onRefresh() {
-		// new PullToRefreshDataTask().execute();
-		// }
-		// });
-
-		// ((PullAndLoadListView) lstTicket)
-		// .setOnLoadMoreListener(new OnLoadMoreListener() {
-		//
-		// public void onLoadMore() {
-		// if (mylist.size() < j + 1) {
-		// i = j + 1;
-		// }
-		//
-		// if (mylist.size() < j + 10) {
-		// j = mylist.size() - 1;
-		// } else {
-		// j += 10;
-		// }
-		// if (i <= j) {
-		// tempList = mylist.subList(i, j);
-		// for (Ticket p : tempList) {
-		// if (!subList.contains(p))
-		// subList.add(p);
-		// }
-		// new LoadMoreDataTask().execute();
-		// }
-		// }
-		// });
-		// }
-
-		
-		// addImagesToView(anadlist);
-		// displayImageAnad(anadlist, I);
-
 		if (listviewanad != null) {
 
 			listviewanad.setOnScrollListener(new OnScrollListener() {
 
 				@Override
 				public void onScrollStateChanged(AbsListView arg0, int arg1) {
-
-					// final int currentFirstVisibleItem = lst
-					// .getFirstVisiblePosition();
-					// if (currentFirstVisibleItem > mLastFirstVisibleItem) {
-					// action.hide(true);
-					// } else if (currentFirstVisibleItem <
-					// mLastFirstVisibleItem) {
-					// action.show(true);
-					// }
-					//
-					// mLastFirstVisibleItem = currentFirstVisibleItem;
 
 					switch (arg1) {
 					case SCROLL_STATE_FLING:
@@ -345,7 +282,6 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 						break;
 					}
 					}
-
 				}
 
 				@Override
@@ -604,11 +540,13 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 	}
 
-	@SuppressLint("ResourceAsColor")
 	public void addImagesToView(final List<Anad> lst, int ImageId, int I) {
 
+		if (getActivity() == null)
+			return;
 		imageButton = new ImageView(getActivity());
-		imageButton.setBackgroundColor(android.R.color.transparent);
+		imageButton.setBackgroundColor(getResources().getColor(
+				R.color.transparent));
 		Anad anadItem = lst.get(I);
 		String path = "";
 		if (anadItem.getId() == ImageId) {
@@ -617,8 +555,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 			Bitmap bmp = BitmapFactory.decodeFile(path);
 			imageButton.setImageBitmap(bmp);
 
-		} 
-		else
+		} else
 			imageButton.setBackgroundResource(R.drawable.propagand);
 
 		imageButton.setLayoutParams(params);
@@ -629,69 +566,11 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 		ImageCode++;
 		icode++;
 		getAnadImageFromServer(lst, icode, false);
-		
+
 		if (icode == lst.size())
 			IsFinish = true;
 
 	}
-
-	// }
-
-	// private class LoadMoreDataTask extends AsyncTask<Void, Void, Void> {
-	//
-	// @Override
-	// protected Void doInBackground(Void... params) {
-	//
-	// if (isCancelled()) {
-	// return null;
-	// }
-	// try {
-	// Thread.sleep(1000);
-	// } catch (InterruptedException e) {
-	// }
-	// return null;
-	// }
-	//
-	// @Override
-	// protected void onPostExecute(Void result) {
-	// ((BaseAdapter) ListAdapter).notifyDataSetChanged();
-	// ((PullAndLoadListView) lstTicket).onLoadMoreComplete();
-	// super.onPostExecute(result);
-	// }
-	//
-	// @Override
-	// protected void onCancelled() {
-	// ((PullAndLoadListView) lstTicket).onLoadMoreComplete();
-	// }
-	// }
-
-	// private class PullToRefreshDataTask extends AsyncTask<Void, Void, Void> {
-	//
-	// @Override
-	// protected Void doInBackground(Void... params) {
-	//
-	// if (isCancelled()) {
-	// return null;
-	// }
-	// try {
-	// Thread.sleep(1000);
-	// } catch (InterruptedException e) {
-	// }
-	// return null;
-	// }
-	//
-	// @Override
-	// protected void onPostExecute(Void result) {
-	// ((BaseAdapter) ListAdapter).notifyDataSetChanged();
-	// ((PullAndLoadListView) lstTicket).onRefreshComplete();
-	// super.onPostExecute(result);
-	// }
-	//
-	// @Override
-	// protected void onCancelled() {
-	// ((PullAndLoadListView) lstTicket).onLoadMoreComplete();
-	// }
-	// }
 
 	public void updateView() {
 		dbAdapter.open();
@@ -1029,10 +908,9 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 		String commiteDate, pathImage;
 		boolean allowShow = true;
 		int objId;
-		
+
 		if (icode == anadlist.size())
-			IsFinish =true;
-			
+			IsFinish = true;
 
 		if (icode < anadlist.size()) {
 			anadItem = anadlist.get(icode);
@@ -1071,6 +949,8 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 			} else {
 				if (pathImage != null) {
 
+					if (getActivity() == null)
+						return;
 					imageButton = new ImageView(getActivity());
 
 					bmp = BitmapFactory.decodeFile(pathImage);
@@ -1084,10 +964,10 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 					getAnadImageFromServer(anadlist, icode, false);
 
 				}
-//				if (objId == 0 && pathImage == null ) {
-//
-//				addImagesToView(anadlist, ImageCode, icode);
-//				}
+				// if (objId == 0 && pathImage == null ) {
+				//
+				// addImagesToView(anadlist, ImageCode, icode);
+				// }
 
 				if (String.valueOf(objId) != null && pathImage == null) {
 
@@ -1102,36 +982,27 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 			}
 		}
-
-		// update = new UpdatingImage(getActivity());
-		// update.delegate = AnadFragment.this;
-		// maps = new LinkedHashMap<String, String>();
-		// maps.put("tableName", "Anad");
-		// maps.put("Id", String.valueOf(ImageCode));
-		// maps.put("fromDate", "a");
-		// update.execute(maps);
-
 	}
 
 	@Override
 	public void processFinish(String output) {
 
-		if (output.length() == 18 && code == 100) {
-			serverDate = output;
-			getAnadImageFromServer(anadlist, icode, true);
-
-		}
-
-		if (output.contains("anyType")) {
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
-			// lst.removeFooterView(LoadMoreFooter);
-		}
 		if (swipeLayout != null) {
 
 			swipeLayout.setRefreshing(false);
 		}
 
-		if (output != null
+		if (output.length() == 18 && code == 100) {
+			serverDate = output;
+			getAnadImageFromServer(anadlist, icode, true);
+		}
+
+		else if (output.contains("anyType")) {
+			LoadMoreFooter.setVisibility(View.INVISIBLE);
+			// lst.removeFooterView(LoadMoreFooter);
+		}
+
+		else if (output != null
 				&& !(output.contains("Exception") || output.contains("java")
 						|| output.contains("SoapFault") || output
 							.contains("anyType")) && code == -1) {
@@ -1161,7 +1032,6 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 	@Override
 	public void processFinish(byte[] output) {
-		dbAdapter.open();
 
 		if (output != null) {
 
@@ -1174,14 +1044,9 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 			dbAdapter.close();
 
-		
 			addImagesToView(anadlist, iz, icode);
 
 			I++;
 		}
-
-
-		dbAdapter.close();
-
 	}
 }
