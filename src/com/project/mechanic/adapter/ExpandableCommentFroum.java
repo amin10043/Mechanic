@@ -11,10 +11,12 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
@@ -168,7 +170,18 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 				DialogLongClick dia = new DialogLongClick(context, 5, u, i,
 						f , t);
+
+				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+				lp.copyFrom(dia.getWindow().getAttributes());
+				lp.width = (int) (util.getScreenwidth() / 1.5);
+				lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+				;
 				dia.show();
+
+				dia.getWindow().setAttributes(lp);
+				dia.getWindow().setBackgroundDrawable(
+						new ColorDrawable(
+								android.graphics.Color.TRANSPARENT));
 				
 			}
 		});
@@ -733,8 +746,17 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 					DialogLongClick dia = new DialogLongClick(context, 5, u, i,
 							f , t);
+					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+					lp.copyFrom(dia.getWindow().getAttributes());
+					lp.width = (int) (util.getScreenwidth() / 1.5);
+					lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+					;
 					dia.show();
 
+					dia.getWindow().setAttributes(lp);
+					dia.getWindow().setBackgroundDrawable(
+							new ColorDrawable(
+									android.graphics.Color.TRANSPARENT));
 				}
 			}
 

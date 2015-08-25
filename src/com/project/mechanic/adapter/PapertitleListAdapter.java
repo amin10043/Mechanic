@@ -11,11 +11,13 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
@@ -71,7 +73,6 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 	Fragment fr;
 	ImageView report;
 
-
 	public PapertitleListAdapter(Context context, int resource,
 			List<Paper> objects, Fragment fr) {
 		super(context, resource, objects);
@@ -115,7 +116,6 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 		commentBtn = (LinearLayout) convertView.findViewById(R.id.l1cm);
 		report = (ImageView) convertView.findViewById(R.id.reportImage);
-
 
 		// end find view
 		adapter.open();
@@ -244,21 +244,36 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 			@Override
 			public void onClick(View v) {
 
-				int i = 0;
-				int us = 0;
-				String t = "";
+				if (currentUser == null) {
+					Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
+				} else {
 
-				int d = (int) getItemId(position);
-				Paper w = getItem(d);
-				if (w != null) {
-					i = w.getId();
-					us = w.getUserId();
-					t = w.getContext();
-				}
+					int i = 0;
+					int us = 0;
+					String t = "";
 
-				DialogLongClick dia = new DialogLongClick(context, 2, us, i,
-						fr, t);
-				dia.show();
+					int d = (int) getItemId(position);
+					Paper w = getItem(d);
+					if (w != null) {
+						i = w.getId();
+						us = w.getUserId();
+						t = w.getContext();
+					}
+
+					DialogLongClick dia = new DialogLongClick(context, 2, us,
+							i, fr, t);
+					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+					lp.copyFrom(dia.getWindow().getAttributes());
+					lp.width = (int) (util.getScreenwidth() / 1.5);
+					lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+					;
+					dia.show();
+
+					dia.getWindow().setAttributes(lp);
+					dia.getWindow().setBackgroundDrawable(
+							new ColorDrawable(
+									android.graphics.Color.TRANSPARENT));
+			}
 			}
 		});
 

@@ -73,12 +73,6 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 		view = inflater.inflate(R.layout.fragment_titlepaper, null);
 		action = (FloatingActionButton) view.findViewById(R.id.fab);
 
-		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
-		RelativeLayout header = (RelativeLayout) view
-				.findViewById(R.id.headerTitleArticle);
-
-		header.setVisibility(View.GONE);
-
 		mdb = new DataBaseAdapter(getActivity());
 		utility = new Utility(getActivity());
 
@@ -152,26 +146,6 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 				}
 			}
 		});
-		if (CurrentUser == null) {
-			addtitle.setImageResource(R.drawable.ic_create_off);
-		}
-
-		addtitle.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				if (CurrentUser == null) {
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
-					return;
-				} else {
-					dialog = new DialogPaperTitle(getActivity(),
-							R.layout.dialog_addtitle, TitlepaperFragment.this);
-					dialog.show();
-				}
-
-			}
-		});
 
 		ListAdapter = new PapertitleListAdapter(getActivity(),
 				R.layout.raw_froumtitle, mylist, TitlepaperFragment.this);
@@ -182,17 +156,23 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 		Toast.makeText(getActivity(), "تعداد مقالات = " + countList,
 				Toast.LENGTH_SHORT).show();
 
+		final RelativeLayout timeline = utility.timeLineDrawing(getActivity());
+
 		lst.setOnScrollListener(new OnScrollListener() {
 
 			@Override
 			public void onScrollStateChanged(AbsListView arg0, int scrollState) {
 				switch (scrollState) {
-				case SCROLL_STATE_TOUCH_SCROLL:
+				case SCROLL_STATE_TOUCH_SCROLL: {
 					action.setVisibility(View.GONE);
+					timeline.setVisibility(View.GONE);
+				}
 					break;
-				case SCROLL_STATE_IDLE:
+				case SCROLL_STATE_IDLE: {
 					action.setVisibility(View.VISIBLE);
+					timeline.setVisibility(View.VISIBLE);
 
+				}
 					break;
 				default:
 					break;

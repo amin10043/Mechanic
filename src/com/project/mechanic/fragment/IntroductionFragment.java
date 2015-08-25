@@ -20,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -27,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -112,6 +113,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	boolean f1;
 	boolean f2;
 	boolean f3;
+	// RelativeLayout timeLayoutTimeLine;
 
 	ProgressBar loadingProgressHeader, loadingProgressProfile,
 			loadingProgressFooter;
@@ -227,6 +229,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		adapter.close();
 
+		final RelativeLayout timeLine = ut.timeLineDrawing(getActivity());
+
 		exadapter = new ExpandIntroduction(getActivity(),
 				(ArrayList<CommentInObject>) commentGroup, mapCollection, this,
 				ObjectID);
@@ -234,6 +238,30 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		exListView.setAdapter(exadapter);
 
+		exListView.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView arg0, int arg1) {
+				switch (arg1) {
+				case SCROLL_STATE_IDLE:
+
+					timeLine.setVisibility(View.VISIBLE);
+					break;
+
+				case SCROLL_STATE_TOUCH_SCROLL:
+					timeLine.setVisibility(View.GONE);
+
+				default:
+					break;
+				}
+			}
+
+			@Override
+			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 		adapter.open();
 
 		if (CurrentUser == null) {
@@ -521,31 +549,30 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		emailParams.width = (int) (ut.getScreenwidth() / 2.5);
 		emailParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		txtEmail.setLayoutParams(emailParams);
-		
+
 		String PathHeader = object.getImagePath1();
 		String PathProfile = object.getImagePath2();
 		String PathFooter = object.getImagePath3();
-		
+
 		Bitmap bmpHeader = BitmapFactory.decodeFile(PathHeader);
 		Bitmap bmpProfile = BitmapFactory.decodeFile(PathProfile);
 		Bitmap bmpfooter = BitmapFactory.decodeFile(PathFooter);
 
-
-//		bitHeader = object.getImage1();
+		// bitHeader = object.getImage1();
 
 		if (bmpHeader != null) {
-//			Bitmap bmp1 = BitmapFactory.decodeByteArray(bitHeader, 0,
-//					bitHeader.length);
+			// Bitmap bmp1 = BitmapFactory.decodeByteArray(bitHeader, 0,
+			// bitHeader.length);
 
 			headerImage.setImageBitmap(bmpHeader);
 		} else
 
 			headerImage.setBackgroundResource(R.drawable.no_image_header);
 		// /////////////////////
-//		bytepro = object.getImage2();
+		// bytepro = object.getImage2();
 		if (bmpProfile != null) {
-//			Bitmap bmp2 = BitmapFactory.decodeByteArray(bytepro, 0,
-//					bytepro.length);
+			// Bitmap bmp2 = BitmapFactory.decodeByteArray(bytepro, 0,
+			// bytepro.length);
 
 			profileImage.setImageBitmap(bmpProfile);
 
@@ -554,10 +581,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		}
 		// ///////////////////////
-//		bytefoot = object.getImage3();
+		// bytefoot = object.getImage3();
 		if (bmpfooter != null) {
-//			Bitmap bmp3 = BitmapFactory.decodeByteArray(bytefoot, 0,
-//					bytefoot.length);
+			// Bitmap bmp3 = BitmapFactory.decodeByteArray(bytefoot, 0,
+			// bytefoot.length);
 
 			advertise2.setImageBitmap(bmpfooter);
 
@@ -570,6 +597,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		txtEmail.setText(object.getEmail());
 		txtAddress.setText(object.getAddress());
 		txtDesc.setText(object.getDescription());
+
+		if (object.getDescription() == null)
+			txtDesc.setVisibility(View.GONE);
 
 		// if mainObjectId =1 >>>>>> namayandegi va khadamat faal hast
 		// if mainObjectId =2 >>>>>> namayandegi va khadamat gheyr faal hast
@@ -594,53 +624,56 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			service.setVisibility(View.VISIBLE);
 		}
 
-		if (object.getFacebook() != null)
+		if (object.getFacebook() != null
+				&& !object.getFacebook().equals("null"))
 			Facebook.setImageResource(R.drawable.facebook);
 		else
 			Facebook.setImageResource(R.drawable.facebook_off);
 
-		if (object.getInstagram() != null)
+		if (object.getInstagram() != null
+				&& !object.getInstagram().equals("null"))
 			Instagram.setImageResource(R.drawable.insta);
 		else
 			Instagram.setImageResource(R.drawable.insta_off);
 
-		if (object.getLinkedIn() != null)
+		if (object.getLinkedIn() != null
+				&& !object.getLinkedIn().equals("null"))
 			LinkedIn.setImageResource(R.drawable.lnkin);
 		else
 			LinkedIn.setImageResource(R.drawable.lnkin_off);
 
-		if (object.getGoogle() != null)
+		if (object.getGoogle() != null && !object.getGoogle().equals("null"))
 			Google.setImageResource(R.drawable.google);
 		else
 			Google.setImageResource(R.drawable.google_off);
 
-		if (object.getSite() != null)
+		if (object.getSite() != null && !object.getSite().equals("null"))
 			Site.setImageResource(R.drawable.internet);
 		else
 			Site.setImageResource(R.drawable.internet_off);
 
-		if (object.getTwitter() != null)
+		if (object.getTwitter() != null && !object.getTwitter().equals("null"))
 			Twitter.setImageResource(R.drawable.twtr);
 		else
 			Twitter.setImageResource(R.drawable.twtr_off);
 
-		if (object.getPdf1() != null)
+		if (object.getPdf1() != null && !object.getPdf1().equals("null"))
 			Pdf1.setImageResource(R.drawable.ic_catalog);
 		else
 			Pdf1.setImageResource(R.drawable.ic_catalog_off);
 
-		if (object.getPdf2() != null)
+		if (object.getPdf2() != null && !object.getPdf2().equals("null"))
 			Pdf2.setImageResource(R.drawable.ic_price);
 
 		else
 			Pdf2.setImageResource(R.drawable.ic_price_off);
 
-		if (object.getPdf3() != null)
+		if (object.getPdf3() != null && !object.getPdf3().equals("null"))
 			Pdf3.setImageResource(R.drawable.ic_pdf);
 		else
 			Pdf3.setImageResource(R.drawable.ic_pdf_off);
 
-		if (object.getPdf4() != null)
+		if (object.getPdf4() != null && !object.getPdf4().equals("null"))
 			Pdf4.setImageResource(R.drawable.ic_video);
 		else
 			Pdf4.setImageResource(R.drawable.ic_video_off);
@@ -1189,7 +1222,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	@Override
 	public void processFinish(String output) {
 
-
 		if (output.contains("---")) {
 			if (ringProgressDialog != null)
 				ringProgressDialog.dismiss();
@@ -1428,18 +1460,17 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		if (output != null && output.size() > 0) {
 
-
 			adapter.open();
-			
 
 			if (f1)
 				if (output.get(0) != null) {
-					ut.CreateFile(output.get(0), object.getId(), "Mechanical", "Profile", "header", "Object");
-					
-					//adapter.UpdateHeaderImageObject(ObjectID, output.get(0));
+					ut.CreateFile(output.get(0), object.getId(), "Mechanical",
+							"Profile", "header", "Object");
+
+					// adapter.UpdateHeaderImageObject(ObjectID, output.get(0));
 					object = adapter.getObjectbyid(ObjectID);
 
-					String PathImageHeader="";
+					String PathImageHeader = "";
 					PathImageHeader = object.getImagePath1();
 					Bitmap b = BitmapFactory.decodeFile(PathImageHeader);
 
@@ -1452,12 +1483,14 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				}
 			if (f2)
 				if (output.get(1) != null) {
-					ut.CreateFile(output.get(1), object.getId(), "Mechanical", "Profile", "profile", "Object");
+					ut.CreateFile(output.get(1), object.getId(), "Mechanical",
+							"Profile", "profile", "Object");
 					object = adapter.getObjectbyid(ObjectID);
 
-					String PathImageProfile="";
+					String PathImageProfile = "";
 					PathImageProfile = object.getImagePath2();
-//					adapter.UpdateProfileImageObject(ObjectID, output.get(1));
+					// adapter.UpdateProfileImageObject(ObjectID,
+					// output.get(1));
 					Bitmap b = BitmapFactory.decodeFile(PathImageProfile);
 
 					if (b != null)
@@ -1470,14 +1503,14 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 			if (f3)
 				if (output.get(2) != null) {
-					ut.CreateFile(output.get(2), object.getId(), "Mechanical", "Profile", "footer", "Object");
+					ut.CreateFile(output.get(2), object.getId(), "Mechanical",
+							"Profile", "footer", "Object");
 					object = adapter.getObjectbyid(ObjectID);
 
-					String PathImageFooter="";
+					String PathImageFooter = "";
 					PathImageFooter = object.getImagePath3();
-					
 
-//					adapter.UpdateFooterImageObject(ObjectID, output.get(2));
+					// adapter.UpdateFooterImageObject(ObjectID, output.get(2));
 					Bitmap b = BitmapFactory.decodeFile(PathImageFooter);
 
 					if (b != null)

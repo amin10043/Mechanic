@@ -166,7 +166,8 @@ public class MainActivity extends FragmentActivity {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-		mDrawerList.setDivider(getResources().getDrawable(R.drawable.custom_drawable));
+		mDrawerList.setDivider(getResources().getDrawable(
+				R.drawable.custom_drawable));
 		mDrawerList.setAdapter(slideadapter);
 
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -310,16 +311,20 @@ public class MainActivity extends FragmentActivity {
 		switch (position) {
 		case 0:
 
+			break;
+
+		case 1:
+			// main page 0
 			fragment = new MainFragment();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
+
 			break;
 
-		case 1:
+		case 2:
 
-			// ////////////////////////////////////////////////
-
+			// personal page 1
 			if (util.getCurrentUser() != null) {
 				fragment = new DisplayPersonalInformationFragment();
 				fragmentManager = getSupportFragmentManager();
@@ -339,31 +344,34 @@ public class MainActivity extends FragmentActivity {
 			}
 			break;
 
-		case 2:
-
-			fragment = new Favorite_Fragment();
-			fragmentManager = getSupportFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
-
-			break;
-
 		case 3:
-			fragment = new FragmentAboutUs();
+			// favorite 2
+			fragment = new Favorite_Fragment();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
 			break;
 
 		case 4:
+			// about us 3
+			fragment = new FragmentAboutUs();
+			fragmentManager = getSupportFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.content_frame, fragment).commit();
+
+			break;
+		case 5:
+			// contact us 4
 			fragment = new FragmentContactUs();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
+
 			break;
-		case 5:
+
+		case 6:
+			// contact us 5
 			ConfirmAlert();
-			break;
 		}
 
 		mDrawerList.setItemChecked(position, true);

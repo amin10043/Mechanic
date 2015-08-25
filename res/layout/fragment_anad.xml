@@ -3,95 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
-    android:background="@color/white"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="@color/white" >
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
-
-        <RelativeLayout
-            android:id="@+id/searchV"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/header" >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:weightSum="3" >
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" >
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" >
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginRight="10dp"
-                        android:gravity="bottom"
-                        android:orientation="vertical" >
-
-                        <TextView
-                            android:id="@+id/txtlike"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="bottom"
-                            android:layout_marginLeft="1dp"
-                            android:layout_marginRight="1dp"
-                            android:background="@drawable/circle_notification"
-                            android:gravity="left|bottom"
-                            android:text=""
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/txtsize10" />
-                    </LinearLayout>
-                </FrameLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="@dimen/txtsize10"
-                    android:layout_weight="1" >
-
-                    <ImageButton
-                        android:id="@+id/timeline_btn"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@drawable/timeline_icon" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/txtTitleP"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#002230"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:id="@+id/sedarch_v"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:src="@drawable/ic_search" />
-        </RelativeLayout>
-
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -106,9 +24,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:fillViewport="true"
                 android:background="#e8e8e8"
                 android:fadingEdge="none"
+                android:fillViewport="true"
                 android:scrollbars="none" >
 
                 <LinearLayout
@@ -161,5 +79,5 @@
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
-    </LinearLayout>
-    
+
+</LinearLayout>

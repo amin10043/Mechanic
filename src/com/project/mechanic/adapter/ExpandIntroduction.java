@@ -10,15 +10,19 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,7 +30,6 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
@@ -59,6 +62,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 	Saving saving;
 	Deleting deleting;
 	Map<String, String> params;
+	ImageView reportComment, reportReply;
 
 	public ExpandIntroduction(Context context,
 			ArrayList<CommentInObject> CommentList,
@@ -109,6 +113,9 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 		ImageButton ReplyerPic = (ImageButton) convertView
 				.findViewById(R.id.icon_reply_comment);
+
+		reportReply = (ImageView) convertView
+				.findViewById(R.id.reportImagereply);
 		adapter.open();
 
 		final CommentInObject comment = CommentList.get(groupPosition);
@@ -137,10 +144,10 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 			ReplyerPic.setLayoutParams(lp);
 		}
 
-		convertView.setOnLongClickListener(new OnLongClickListener() {
+		reportReply.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public boolean onLongClick(View arg0) {
+			public void onClick(View arg0) {
 				int i = 0;
 				int u = 0;
 				String t = "";
@@ -156,13 +163,22 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 				}
 				Toast.makeText(context, "id = " + i + "Userid = " + u, 0)
 						.show();
-				
-				DialogLongClick dia = new DialogLongClick(context, 7, u, i,
-						f , t);
+
+				DialogLongClick dia = new DialogLongClick(context, 7, u, i, f,
+						t);
+				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+				lp.copyFrom(dia.getWindow().getAttributes());
+				lp.width = (int) (util.getScreenwidth() / 1.5);
+				lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+				;
 				dia.show();
-				return true;
+
+				dia.getWindow().setAttributes(lp);
+				dia.getWindow().setBackgroundDrawable(
+						new ColorDrawable(android.graphics.Color.TRANSPARENT));
 			}
 		});
+
 		ReplyerPic.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -255,6 +271,8 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 		ImageButton profileImage = (ImageButton) convertView
 				.findViewById(R.id.icon_froum_profile);
+
+		reportComment = (ImageView) convertView.findViewById(R.id.reportImage);
 
 		final ImageButton imglikeComment = (ImageButton) convertView
 				.findViewById(R.id.positive_img);
@@ -723,11 +741,10 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 			}
 		});
 
-		convertView.setOnLongClickListener(new OnLongClickListener() {
+		reportComment.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public boolean onLongClick(View v) {
-
+			public void onClick(View arg0) {
 				int u = 0;
 				int i = 0;
 				String t = "";
@@ -740,12 +757,12 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 					CommentInObject ww = (CommentInObject) getGroup(dd);
 					if (ww != null) {
 						u = ww.getUserid();
-						 t= ww.getDescription();
+						t = ww.getDescription();
 					}
 					adapter.close();
 
 					DialogLongClick dia = new DialogLongClick(context, 7, u, i,
-							f , t);
+							f, t);
 					dia.show();
 
 				} else {
@@ -758,19 +775,26 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 					if (w != null) {
 						i = w.getId();
 						u = w.getUserid();
-						 t= w.getDescription();
+						t = w.getDescription();
 
 					}
 
 					// //////////////////////////
 
 					DialogLongClick dia = new DialogLongClick(context, 7, u, i,
-							f , t);
+							f, t);
+					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+					lp.copyFrom(dia.getWindow().getAttributes());
+					lp.width = (int) (util.getScreenwidth() / 1.5);
+					lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+					;
 					dia.show();
 
+					dia.getWindow().setAttributes(lp);
+					dia.getWindow().setBackgroundDrawable(
+							new ColorDrawable(
+									android.graphics.Color.TRANSPARENT));
 				}
-
-				return true;
 			}
 		});
 

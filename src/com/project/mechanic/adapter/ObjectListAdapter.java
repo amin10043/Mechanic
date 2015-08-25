@@ -8,10 +8,12 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
@@ -46,9 +48,8 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 	RatingBar rating;
 	Utility util;
 	Fragment fr;
-	RelativeLayout followLayout , visitLayout;
-	RelativeLayout.LayoutParams paramsfollow , paramsVisit;
-
+	RelativeLayout followLayout;
+	RelativeLayout.LayoutParams paramsfollow, paramsVisit;
 
 	public ObjectListAdapter(Context context, int resource,
 			List<Object> objact, Fragment fr) {
@@ -105,64 +106,61 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
 
-		
-		String pathProfile=person.getImagePath2();
-		
+		String pathProfile = person.getImagePath2();
+
 		Bitmap profileImage = BitmapFactory.decodeFile(pathProfile);
-		
-		
-		if (profileImage !=null){		
-			
+
+		if (profileImage != null) {
+
 			profileIco.setImageBitmap(profileImage);
 			profileIco.setLayoutParams(lp);
-			
-		}else
-		{
+
+		} else {
 			profileIco.setImageResource(R.drawable.no_img_profile);
 			profileIco.setLayoutParams(lp);
 		}
 
-		
-		
-		
-		
-//		if (person.getImage2() == null) {
-//		
-//
-//		} else {
-//			byte[] byteImageProfile = person.getImage2();
-//
-//			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
-//					byteImageProfile.length);
-//
-//			profileIco.setImageBitmap(bmp);
-//
-//		}
-		
-		
-		followLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayout1);
-		visitLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayout2);
+		// if (person.getImage2() == null) {
+		//
+		//
+		// } else {
+		// byte[] byteImageProfile = person.getImage2();
+		//
+		// Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
+		// byteImageProfile.length);
+		//
+		// profileIco.setImageBitmap(bmp);
+		//
+		// }
 
-		paramsfollow = new RelativeLayout.LayoutParams(followLayout.getLayoutParams());
-		paramsVisit = new RelativeLayout.LayoutParams(visitLayout.getLayoutParams());
+		followLayout = (RelativeLayout) convertView
+				.findViewById(R.id.propertiesObject);
+		// visitLayout = (RelativeLayout)
+		// convertView.findViewById(R.id.relativeLayout2);
 
-		paramsfollow.width = (util.getScreenwidth() / 16);
-		paramsfollow.height = (util.getScreenwidth() / 16);
-		paramsfollow.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		
+		paramsfollow = new RelativeLayout.LayoutParams(
+				followLayout.getLayoutParams());
+		paramsVisit = new RelativeLayout.LayoutParams(
+				followLayout.getLayoutParams());
+
+		paramsfollow.width = (util.getScreenwidth());
+		paramsfollow.height = (util.getScreenwidth() / 4);
+		paramsfollow.addRule(RelativeLayout.LEFT_OF, R.id.icon_object);
+
 		paramsVisit.width = (util.getScreenwidth() / 16);
 		paramsVisit.height = (util.getScreenwidth() / 16);
 		paramsVisit.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		
-		ImageView followIcon = (ImageView) convertView.findViewById(R.id.iconNumberLike);
-		ImageView visitIcon = (ImageView) convertView.findViewById(R.id.iconNumberVisit);
 
-		followIcon.setLayoutParams(paramsfollow);
-		visitIcon.setLayoutParams(paramsfollow);
-		
-		
-		
-		
+		ImageView followIcon = (ImageView) convertView
+				.findViewById(R.id.iconNumberLike);
+		ImageView visitIcon = (ImageView) convertView
+				.findViewById(R.id.iconNumberVisit);
+
+		followLayout.setLayoutParams(paramsfollow);
+
+		followIcon.setLayoutParams(paramsVisit);
+		visitIcon.setLayoutParams(paramsVisit);
+
 		convertView.setOnLongClickListener(new OnLongClickListener() {
 
 			@Override
@@ -184,8 +182,16 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 						t);
 				Toast.makeText(context, "object id = " + i + " userId = " + u,
 						0).show();
+				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+				lp.copyFrom(dia.getWindow().getAttributes());
+				lp.width = (int) (util.getScreenwidth() / 1.5);
+				lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+				;
 				dia.show();
 
+				dia.getWindow().setAttributes(lp);
+				dia.getWindow().setBackgroundDrawable(
+						new ColorDrawable(android.graphics.Color.TRANSPARENT));
 				return true;
 			}
 

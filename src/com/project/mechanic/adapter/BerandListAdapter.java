@@ -68,7 +68,7 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
         txtName.setText(tempItem.getName());
 
         Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-                "fonts/BROYA.TTF");
+                "fonts/BYekan.TTF");
         txtName.setTypeface(typeFace);
 
         String item = txtName.getText().toString();

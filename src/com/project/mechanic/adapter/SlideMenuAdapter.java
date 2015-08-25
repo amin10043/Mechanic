@@ -7,7 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
@@ -24,11 +28,11 @@ public class SlideMenuAdapter extends BaseAdapter {
 
 	Context context;
 
-	String[] slideitem = { "صفحه اصلی", "صفحه شخصی", "پسند شده ها",
+	String[] slideitem = { "", "صفحه اصلی", "صفحه شخصی", "پسند شده ها",
 			"درباره ما", "تماس با ما", "خروج" };
-	int[] icon = { R.drawable.ic_home, R.drawable.ic_personal,
-			R.drawable.ic_bookmark, R.drawable.ic_about_us, R.drawable.phone2,
-			R.drawable.exit };
+	int[] icon = { R.drawable.mechanical_logo, R.drawable.ic_home,
+			R.drawable.ic_personal, R.drawable.ic_bookmark,
+			R.drawable.ic_about_us, R.drawable.phone2, R.drawable.exit };
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -46,13 +50,28 @@ public class SlideMenuAdapter extends BaseAdapter {
 		TextView nametxt = (TextView) convertView.findViewById(R.id.namemenu);
 
 		Users u = util.getCurrentUser();
-		if (position == 1 && u != null && u.getImage() != null) {
+		if (position == 2 && u != null && u.getImage() != null) {
 			iconImg.setImageBitmap(Utility.getRoundedCornerBitmap(BitmapFactory
 					.decodeByteArray(u.getImage(), 0, u.getImage().length), 100));
 
 		} else {
 			iconImg.setImageResource(icon[position]);
 
+		}
+
+		if (position == 0) {
+			RelativeLayout layout = (RelativeLayout) convertView
+					.findViewById(R.id.item_list_slide_menu);
+			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+					layout.getLayoutParams());
+			lp.width = 140;
+			lp.height = 140;
+			lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+			iconImg.setLayoutParams(lp);
+			iconImg.setImageResource(R.drawable.mechanical_logo);
+			
+			nametxt.setVisibility(View.GONE);
 		}
 
 		nametxt.setText(slideitem[position]);

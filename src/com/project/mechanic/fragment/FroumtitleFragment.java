@@ -57,7 +57,6 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	ServerDate date;
 	Users u;
 	FloatingActionButton action;
-	RelativeLayout header;
 	int mLastFirstVisibleItem = 0;
 	ArrayList<Integer> ids;
 	ArrayList<Integer> missedIds;
@@ -77,8 +76,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		view = inflater.inflate(R.layout.fragment_titlefrm, null);
 		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 		action = (FloatingActionButton) view.findViewById(R.id.fab);
-		header = (RelativeLayout) view.findViewById(R.id.re);
-		header.setVisibility(View.GONE);
+
 		lst = (ListView) view.findViewById(R.id.lstComment);
 		ids = new ArrayList<Integer>();
 		missedIds = new ArrayList<Integer>();
@@ -171,23 +169,6 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 				android.R.color.holo_orange_light,
 				android.R.color.holo_red_light);
 
-		addtitle.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				if (Currentuser == null)
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
-				else {
-
-					dialog = new DialogfroumTitle(getActivity(),
-							R.layout.dialog_addtitle, FroumtitleFragment.this);
-					dialog.show();
-				}
-			}
-		});
-
 		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
 				R.layout.load_more_footer, null);
 		lst.addFooterView(LoadMoreFooter);
@@ -207,17 +188,25 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 		registerForContextMenu(lst);
 
+		final RelativeLayout timeline = util.timeLineDrawing(getActivity());
+
 		lst.setOnScrollListener(new OnScrollListener() {
 
 			@Override
 			public void onScrollStateChanged(AbsListView arg0, int arg1) {
 				switch (arg1) {
-				case SCROLL_STATE_FLING:
+				case SCROLL_STATE_TOUCH_SCROLL: {
+					timeline.setVisibility(View.GONE);
+
 					action.hide(true);
+				}
 					break;
-				case SCROLL_STATE_TOUCH_SCROLL:
+				case SCROLL_STATE_IDLE: {
 					action.show(true);
+					timeline.setVisibility(View.VISIBLE);
+
 					break;
+				}
 				}
 
 			}
@@ -361,7 +350,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			}
 			if (swipeLayout != null)
 				swipeLayout.setRefreshing(false);
-			
+
 		}
 
 	}

@@ -67,32 +67,55 @@ public class MainFragment extends Fragment {
 
 		r1.width = util.getScreenwidth() / 10;
 		r1.height = util.getScreenwidth() / 10;
+		r1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		r1.setMargins(5, 0, 1, 0);
+		r1.addRule(RelativeLayout.CENTER_VERTICAL);
 		img1.setLayoutParams(r1);
 
 		r2.width = util.getScreenwidth() / 10;
 		r2.height = util.getScreenwidth() / 10;
+		r2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		r2.setMargins(5, 0, 1, 0);
+		r2.addRule(RelativeLayout.CENTER_VERTICAL);
 		img2.setLayoutParams(r2);
 
 		r3.width = util.getScreenwidth() / 10;
 		r3.height = util.getScreenwidth() / 10;
+		r3.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		r3.setMargins(5, 0, 1, 0);
+		r3.addRule(RelativeLayout.CENTER_VERTICAL);
 		img3.setLayoutParams(r3);
 
 		r4.width = util.getScreenwidth() / 10;
 		r4.height = util.getScreenwidth() / 10;
+		r4.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		r4.setMargins(5, 0, 1, 0);
+		r4.addRule(RelativeLayout.CENTER_VERTICAL);
 		img4.setLayoutParams(r4);
 
 		r5.width = util.getScreenwidth() / 10;
 		r5.height = util.getScreenwidth() / 10;
+		r5.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		r5.setMargins(5, 0, 1, 0);
+		r5.addRule(RelativeLayout.CENTER_VERTICAL);
 		img5.setLayoutParams(r5);
 
 		r6.width = util.getScreenwidth() / 10;
 		r6.height = util.getScreenwidth() / 10;
+		r6.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		r6.setMargins(5, 0, 1, 0);
+		r6.addRule(RelativeLayout.CENTER_VERTICAL);
 		img6.setLayoutParams(r6);
 
 		r7.width = util.getScreenwidth() / 10;
 		r7.height = util.getScreenwidth() / 10;
+		r7.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		r7.setMargins(5, 0, 1, 0);
+		r7.addRule(RelativeLayout.CENTER_VERTICAL);
 		img7.setLayoutParams(r7);
-
+		
+		RelativeLayout timeline = util.timeLineDrawing(getActivity());
+		timeline.setVisibility(View.GONE);
 		final SharedPreferences sendData = getActivity().getSharedPreferences(
 				"Id", 0);
 

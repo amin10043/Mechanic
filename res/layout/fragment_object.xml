@@ -9,42 +9,12 @@
     android:weightSum="6"
     tools:context="com.arabian.constitution_mechanic.City$PlaceholderFragment" >
 
-    <!-- <RelativeLayout -->
-    <!-- android:id="@+id/relative" -->
-    <!-- style="@style/brandStyle" -->
-    <!-- android:layout_width="match_parent" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:layout_margin="10dp" -->
-    <!-- android:layout_weight="0.5" -->
-    <!-- android:background="@drawable/shape_froum_reply" > -->
-
-
-    <!-- <ImageButton -->
-    <!-- android:id="@+id/imgBtnAddcmt_CmtFroum" -->
-    <!-- android:layout_width="40dp" -->
-    <!-- android:layout_height="40dp" -->
-    <!-- android:layout_alignParentRight="true" -->
-    <!-- android:layout_centerVertical="true" -->
-    <!-- android:layout_marginRight="14dp" -->
-    <!-- android:background="@drawable/ic_create" /> -->
-
-
-    <!-- <TextView -->
-    <!-- android:layout_width="match_parent" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:layout_centerInParent="true" -->
-    <!-- android:layout_toLeftOf="@+id/imgBtnAddcmt_CmtFroum" -->
-    <!-- android:gravity="center" -->
-    <!-- android:text="ایجاد صفحه جدید" -->
-    <!-- android:textColor="@color/transparent" /> -->
-
-
-    <!-- </RelativeLayout> -->
-
+   
     <RelativeLayout
         android:id="@+id/relativeList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        
         android:layout_weight="5" >
 
         <android.support.v4.widget.SwipeRefreshLayout

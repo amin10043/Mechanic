@@ -4,22 +4,105 @@
     android:layout_height="match_parent"
     android:background="#eaeaea"
     android:orientation="vertical"
-    android:padding="10dp"
     android:weightSum="8" >
+
+    <RelativeLayout
+        android:id="@+id/searchV"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/header_blue"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:weightSum="3" >
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginRight="10dp"
+                    android:gravity="bottom"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/txtlike"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+                        android:background="@drawable/circle_notification"
+                        android:gravity="left|bottom"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/txtsize10" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1" >
+
+                <ImageButton
+                    android:id="@+id/timeline_btn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/timeline_icon" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtTitleP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#002230"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/sedarch_v"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/ic_search" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/relative_item1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="1dp"
         android:layout_weight="1"
-        android:background="@drawable/list_item" >
+        android:background="#d3dff9" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/icon_item1"
+            android:gravity="right"
             android:text="تولیدکنندگان داخلی ، برندهای وارداتی ، نمایندگی ها "
             android:textColor="@color/transparent" />
 
@@ -27,6 +110,7 @@
             android:id="@+id/icon_item1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:background="@drawable/ic_main_item1" />
@@ -36,24 +120,28 @@
         android:id="@+id/relative_item2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="1dp"
         android:layout_weight="1"
-        android:background="@drawable/list_item" >
+        android:background="#d3dff9" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:text="فروشگاهها و شرکت کننده های عرضه کننده محصولات"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/icon_item2"
+            android:gravity="right"
+            android:text="فروشگاهها و شرکت های عرضه کننده محصولات"
             android:textColor="@color/transparent" />
 
         <ImageView
             android:id="@+id/icon_item2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
+            android:layout_marginRight="5dp"
             android:background="@drawable/ic_main_item2" />
     </RelativeLayout>
 
@@ -61,22 +149,25 @@
         android:id="@+id/relative_item3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="1dp"
         android:layout_weight="1"
-        android:background="@drawable/list_item" >
+        android:background="#d3dff9" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:text="مشاوران ، ناظران و شرکت های مجری تأسیسات مکانیکی "
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/icon_item3"
+            android:gravity="right"
+            android:text="مشاوران ، ناظران ، شرکت های مجری "
             android:textColor="@color/transparent" />
 
         <ImageView
             android:id="@+id/icon_item3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:background="@drawable/ic_main_item3" />
@@ -86,22 +177,25 @@
         android:id="@+id/relative_item4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="1dp"
         android:layout_weight="1"
-        android:background="@drawable/list_item" >
+        android:background="#d3dff9" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:text="اشخاص حقیقی (استادکاران)تاسیسات مکانیکی"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/icon_item4"
+            android:gravity="right"
+            android:text="اشخاص حقیقی (استادکاران)"
             android:textColor="@color/transparent" />
 
         <ImageView
             android:id="@+id/icon_item4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:background="@drawable/ic_main_item4" />
@@ -111,22 +205,25 @@
         android:id="@+id/relative_item5"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="1dp"
         android:layout_weight="1"
-        android:background="@drawable/list_item" >
+        android:background="#d3dff9" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:text="نشریات ، مقالات و اخبار تاسیسات مکانیکی"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/icon_item5"
+            android:gravity="right"
+            android:text="نشریات ، مقالات ، اخبار "
             android:textColor="@color/transparent" />
 
         <ImageView
             android:id="@+id/icon_item5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:background="@drawable/ic_main_item5" />
@@ -136,15 +233,16 @@
         android:id="@+id/relative_item6"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="1dp"
         android:layout_weight="1"
-        android:background="@drawable/list_item" >
+        android:background="#d3dff9" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/icon_item6"
             android:text="آگهی و تبلیغات"
             android:textColor="@color/transparent" />
 
@@ -152,6 +250,7 @@
             android:id="@+id/icon_item6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:background="@drawable/ic_main_item6" />
@@ -161,15 +260,17 @@
         android:id="@+id/relative_item7"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="1dp"
         android:layout_weight="1"
-        android:background="@drawable/list_item" >
+        android:background="#d3dff9" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/icon_item7"
+            android:gravity="right"
             android:text="تالار گفتگو"
             android:textColor="@color/transparent" />
 
@@ -177,6 +278,7 @@
             android:id="@+id/icon_item7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:background="@drawable/ic_main_item7" />
@@ -187,9 +289,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/buttonshape" >
-
-       
+        android:background="#306098" >
 
         <TextView
             android:layout_width="wrap_content"
