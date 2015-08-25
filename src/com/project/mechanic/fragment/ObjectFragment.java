@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
@@ -45,8 +46,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 	Updating updating;
 	Settings setting;
 
-	boolean FindPosition, IsRunning = true;
-	int beforePosition;
+	int totalItemCountBeforeSwipe = 0;
 
 	ArrayList<Object> mylist;
 	int typeList;
@@ -88,18 +88,18 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 
 			mylist = adapter.getObjectBy_BTId_CityId(id, city_id, typeList);
 
-			if (mylist != null || !mylist.isEmpty())
+			if (mylist != null && !mylist.isEmpty()) {
 				ListAdapter = new ObjectListAdapter(getActivity(),
 						R.layout.row_object, mylist, ObjectFragment.this);
-			lstObject.setAdapter(ListAdapter);
-
+				lstObject.setAdapter(ListAdapter);
+			}
 		} else {
 
 			int brand = pageId.getInt("brandID", -1);
 
 			mylist = adapter.subBrandObject(brand, city_id, AgencyService);
 
-			if (mylist != null || !mylist.isEmpty()) {
+			if (mylist != null && !mylist.isEmpty()) {
 
 				ListAdapter = new ObjectListAdapter(getActivity(),
 						R.layout.row_object, mylist, ObjectFragment.this);
@@ -140,21 +140,20 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 				.findViewById(R.id.fab);
 		final String message = "کاربر گرامی اگر مشخصات برند یا فعالیت شما در این نرم افزار ثبت نشده می توانید با ایجاد صفحه،  فعالیت خود را به سایر کاربران این نرم افزار معرفی نمایید ";
 
-		
 		final RelativeLayout timeline = util.timeLineDrawing(getActivity());
-		
+
 		lstObject.setOnScrollListener(new OnScrollListener() {
 
 			@Override
 			public void onScrollStateChanged(AbsListView arg0, int arg1) {
 				switch (arg1) {
-				case SCROLL_STATE_IDLE:{
+				case SCROLL_STATE_IDLE: {
 					createItem.hide(true);
 					timeline.setVisibility(View.VISIBLE);
 
 				}
 					break;
-				case SCROLL_STATE_TOUCH_SCROLL:{
+				case SCROLL_STATE_TOUCH_SCROLL: {
 					createItem.show(true);
 					timeline.setVisibility(View.GONE);
 				}
@@ -165,6 +164,10 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 			@Override
 			public void onScroll(AbsListView arg0, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
+
+				if (totalItemCount == visibleItemCount) {
+					return;
+				}
 
 				int lastInScreen = firstVisibleItem + visibleItemCount;
 
@@ -183,13 +186,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 
 					params[3] = "0";
 					updating.execute(params);
-
-					int countList = ListAdapter.getCount();
-					beforePosition = countList;
-
-					FindPosition = false;
-					IsRunning = false;
-
+					totalItemCountBeforeSwipe = totalItemCount;
 				}
 			}
 		});
@@ -280,34 +277,19 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 							.contains("anyType"))) {
 
 			util.parseQuery(output);
-			mylist.clear();
+
 			adapter.open();
 			mylist = adapter.getObjectBy_BTId_CityId(m, city_id, typeList);
-			// mylist.addAll(adapter.getAllObject());
 			adapter.close();
-			if (mylist.size() > 0) {
 
-				ListAdapter = new ObjectListAdapter(getActivity(),
-						R.layout.row_object, mylist, ObjectFragment.this);
-
-				lstObject.setAdapter(ListAdapter);
-
-				LoadMoreFooter.setVisibility(View.INVISIBLE);
-
-				updating.cancel(true);
-				IsRunning = true;
-
+			if (totalItemCountBeforeSwipe != mylist.size()) {
+				mylist.clear();
+				if (mylist.size() > 0) {
+					ListAdapter = new ObjectListAdapter(getActivity(),
+							R.layout.row_object, mylist, ObjectFragment.this);
+					lstObject.setAdapter(ListAdapter);
+				}
 			}
-			if (mylist.size() > beforePosition && FindPosition == false) {
-				lstObject.setSelection(beforePosition);
-				updating.cancel(true);
-				IsRunning = true;
-				return;
-
-			}
-
-		} else
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
-
+		}
 	}
 }

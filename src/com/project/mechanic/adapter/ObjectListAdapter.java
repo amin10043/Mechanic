@@ -13,16 +13,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -31,7 +27,6 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.IntroductionFragment;
@@ -72,10 +67,10 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 		convertView = myInflater.inflate(R.layout.row_object, parent, false);
 
-		Animation animation = AnimationUtils.loadAnimation(getContext(),
-				(position > lastPosition) ? R.anim.up_from_bottom
-						: R.anim.down_from_top);
-		convertView.startAnimation(animation);
+		// Animation animation = AnimationUtils.loadAnimation(getContext(),
+		// (position > lastPosition) ? R.anim.up_from_bottom
+		// : R.anim.down_from_top);
+		// convertView.startAnimation(animation);
 		lastPosition = position;
 
 		final TextView txt1 = (TextView) convertView

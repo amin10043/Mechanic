@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -55,10 +53,10 @@ public class MainBrandListAdapter extends ArrayAdapter<Object> {
 
 		convertView = myInflater.inflate(R.layout.row_object, parent, false);
 
-		Animation animation = AnimationUtils.loadAnimation(getContext(),
-				(position > lastPosition) ? R.anim.up_from_bottom
-						: R.anim.down_from_top);
-		convertView.startAnimation(animation);
+		// Animation animation = AnimationUtils.loadAnimation(getContext(),
+		// (position > lastPosition) ? R.anim.up_from_bottom
+		// : R.anim.down_from_top);
+		// convertView.startAnimation(animation);
 		lastPosition = position;
 
 		final TextView txt1 = (TextView) convertView

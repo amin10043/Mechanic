@@ -46,9 +46,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 
 	Updating updating;
 	Settings setting;
-
-	boolean FindPosition, IsRunning = true;
-	int beforePosition;
+	int totalItemCountBeforeSwipe = 0;
 
 	public MainBrandFragment() {
 		super();
@@ -121,7 +119,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 				android.R.color.holo_green_light,
 				android.R.color.holo_orange_light,
 				android.R.color.holo_red_light);
-		
+
 		RelativeLayout rl = (RelativeLayout) view
 				.findViewById(R.id.tablighRelative);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
@@ -134,10 +132,9 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 		ImageButton iconCreateTabligh = (ImageButton) view
 				.findViewById(R.id.iconCreateTabligh);
 		iconCreateTabligh.setLayoutParams(lp);
-		
-		
+
 		final RelativeLayout timeLine = util.timeLineDrawing(getActivity());
-		
+
 		final FloatingActionButton createItem = (FloatingActionButton) view
 				.findViewById(R.id.fab);
 		final String message = "کاربر گرامی اگر مشخصات برند یا فعالیت شما در این نرم افزار ثبت نشده می توانید با ایجاد صفحه،  فعالیت خود را به سایر کاربران این نرم افزار معرفی نمایید ";
@@ -163,13 +160,13 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 			@Override
 			public void onScrollStateChanged(AbsListView arg0, int arg1) {
 				switch (arg1) {
-				case SCROLL_STATE_IDLE:{
+				case SCROLL_STATE_IDLE: {
 					createItem.hide(true);
 					timeLine.setVisibility(View.VISIBLE);
 
 				}
 					break;
-				case SCROLL_STATE_TOUCH_SCROLL:{
+				case SCROLL_STATE_TOUCH_SCROLL: {
 					createItem.show(true);
 					timeLine.setVisibility(View.GONE);
 				}
@@ -181,6 +178,10 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 			@Override
 			public void onScroll(AbsListView arg0, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
+
+				if (totalItemCount == visibleItemCount) {
+					return;
+				}
 
 				int lastInScreen = firstVisibleItem + visibleItemCount;
 
@@ -200,15 +201,8 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 
 					params[3] = "0";
 					updating.execute(params);
-
-					int countList = ListAdapter.getCount();
-					beforePosition = countList;
-
-					FindPosition = false;
-					IsRunning = false;
-
+					totalItemCountBeforeSwipe = totalItemCount;
 				}
-
 			}
 		});
 
@@ -234,11 +228,14 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 	@Override
 	public void processFinish(String output) {
 
+		LoadMoreFooter.setVisibility(View.INVISIBLE);
+		updating.cancel(true);
+
 		if (output.contains("anyType")) {
-			
+
 			Toast.makeText(getActivity(), "صفحه جدیدی یافت نشد", 0).show();
 			LoadMoreFooter.setVisibility(View.INVISIBLE);
-			
+
 			if (swipeLayout != null) {
 
 				swipeLayout.setRefreshing(false);
@@ -257,36 +254,18 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 							.contains("anyType"))) {
 
 			util.parseQuery(output);
-			mylist.clear();
 			adapter.open();
 			mylist = adapter.getObjectbyParentId(parentId);
-
-			// mylist.addAll(adapter.getAllObject());
 			adapter.close();
 
-			if (mylist.size() > 0) {
-
-				ListAdapter = new ObjectListAdapter(getActivity(),
-						R.layout.row_object, mylist, MainBrandFragment.this);
-
-				lstObject.setAdapter(ListAdapter);
-
-				LoadMoreFooter.setVisibility(View.INVISIBLE);
-
-				updating.cancel(true);
-				IsRunning = true;
-
+			if (totalItemCountBeforeSwipe != mylist.size()) {
+				mylist.clear();
+				if (mylist.size() > 0) {
+					ListAdapter = new ObjectListAdapter(getActivity(),
+							R.layout.row_object, mylist, MainBrandFragment.this);
+					lstObject.setAdapter(ListAdapter);
+				}
 			}
-
-			if (mylist.size() > beforePosition && FindPosition == false) {
-				lstObject.setSelection(beforePosition);
-				updating.cancel(true);
-				IsRunning = true;
-				return;
-
-			}
-		} else
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
-
+		}
 	}
 }
