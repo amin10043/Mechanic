@@ -12,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -44,6 +46,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 	Saving saving;
 	String desc;
 	ServerDate date;
+	LinearLayout reaportLayout;
 
 	public DialogLongClick(Context context, int source, int UserIdObject,
 			int item, Fragment fragment, String desc) {
@@ -69,6 +72,8 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 		setContentView(R.layout.dialog_long_click);
 		delete = (RelativeLayout) findViewById(R.id.delete_item);
+		reaportLayout = (LinearLayout)findViewById(R.id.report_item_click);
+		
 		report = (ImageView) findViewById(R.id.report_item);
 
 		if (util.getCurrentUser() == null) {
@@ -347,6 +352,17 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 				} else
 					Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
+			}
+		});
+		
+		final RadioGroup rdGroup = (RadioGroup)findViewById(R.id.rb1);
+		
+		reaportLayout.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				rdGroup.setVisibility(View.VISIBLE);
+				report.setVisibility(View.VISIBLE);
 			}
 		});
 

@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -18,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -237,21 +239,38 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			@Override
 			public void onClick(View v) {
 
-				int ItemId = 0;
-				String t = "";
-				ListView listView = (ListView) v.getParent().getParent().getParent().getParent();
-				int position = listView.getPositionForView(v);
-				Froum f = getItem(position);
-				if (f != null) {
-					ItemId = f.getUserId();
-					t = f.getDescription();
+				if (CurrentUser == null) {
+					Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
+				} else {
+
+					int ItemId = 0;
+					String t = "";
+					ListView listView = (ListView) v.getParent().getParent()
+							.getParent().getParent();
+					int position = listView.getPositionForView(v);
+					Froum f = getItem(position);
+					if (f != null) {
+						ItemId = f.getUserId();
+						t = f.getDescription();
+					}
+
+					DialogLongClick dia = new DialogLongClick(context, 1,
+							ItemId, f.getId(), fragment, t);
+					Toast.makeText(context, ItemId + "", 0).show();
+					
+					
+					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+				    lp.copyFrom(dia.getWindow().getAttributes());
+				    lp.width = (int) (util.getScreenwidth()/1.5) ;
+				    lp.height = WindowManager.LayoutParams.WRAP_CONTENT;;
+					dia.show();
+					
+					dia.getWindow().setAttributes(lp);
+					dia.getWindow().setBackgroundDrawable(
+							new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+
 				}
-
-				DialogLongClick dia = new DialogLongClick(context, 1, ItemId, f
-						.getId(), fragment, t);
-				Toast.makeText(context, ItemId + "", 0).show();
-				dia.show();
-
 			}
 		});
 

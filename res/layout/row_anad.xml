@@ -30,6 +30,7 @@
                 android:id="@+id/relativeLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 android:gravity="bottom" >
 
@@ -42,12 +43,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/iconNumberLike"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/iconNumberLike"
                     android:text="20"
-                    
-                    android:layout_alignBottom="@+id/iconNumberLike"
-                    android:textColor="@color/transparent" />
+                    android:textColor="@color/transparent"
+                    android:textSize="10dp" />
             </RelativeLayout>
 
             <TextView
@@ -66,6 +67,13 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/reportImage"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="right"
+                android:background="@drawable/down_arrow" />
 
             <TextView
                 android:id="@+id/row_favorite_title"

@@ -20,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -111,6 +113,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	boolean f1;
 	boolean f2;
 	boolean f3;
+	// RelativeLayout timeLayoutTimeLine;
 
 	ProgressBar loadingProgressHeader, loadingProgressProfile,
 			loadingProgressFooter;
@@ -226,6 +229,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		adapter.close();
 
+		final RelativeLayout timeLine = ut.timeLineDrawing(getActivity());
+
 		exadapter = new ExpandIntroduction(getActivity(),
 				(ArrayList<CommentInObject>) commentGroup, mapCollection, this,
 				ObjectID);
@@ -233,6 +238,30 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		exListView.setAdapter(exadapter);
 
+		exListView.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView arg0, int arg1) {
+				switch (arg1) {
+				case SCROLL_STATE_IDLE:
+
+					timeLine.setVisibility(View.VISIBLE);
+					break;
+
+				case SCROLL_STATE_TOUCH_SCROLL:
+					timeLine.setVisibility(View.GONE);
+
+				default:
+					break;
+				}
+			}
+
+			@Override
+			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 		adapter.open();
 
 		if (CurrentUser == null) {
@@ -561,6 +590,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		txtAddress.setText(object.getAddress());
 		txtDesc.setText(object.getDescription());
 
+		if (object.getDescription() == null)
+			txtDesc.setVisibility(View.GONE);
+
 		// if mainObjectId =1 >>>>>> namayandegi va khadamat faal hast
 		// if mainObjectId =2 >>>>>> namayandegi va khadamat gheyr faal hast
 		// if MainObjectId =3 >>>>>> namayandegi faal hast
@@ -584,53 +616,56 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			service.setVisibility(View.VISIBLE);
 		}
 
-		if (object.getFacebook() != null)
+		if (object.getFacebook() != null
+				&& !object.getFacebook().equals("null"))
 			Facebook.setImageResource(R.drawable.facebook);
 		else
 			Facebook.setImageResource(R.drawable.facebook_off);
 
-		if (object.getInstagram() != null)
+		if (object.getInstagram() != null
+				&& !object.getInstagram().equals("null"))
 			Instagram.setImageResource(R.drawable.insta);
 		else
 			Instagram.setImageResource(R.drawable.insta_off);
 
-		if (object.getLinkedIn() != null)
+		if (object.getLinkedIn() != null
+				&& !object.getLinkedIn().equals("null"))
 			LinkedIn.setImageResource(R.drawable.lnkin);
 		else
 			LinkedIn.setImageResource(R.drawable.lnkin_off);
 
-		if (object.getGoogle() != null)
+		if (object.getGoogle() != null && !object.getGoogle().equals("null"))
 			Google.setImageResource(R.drawable.google);
 		else
 			Google.setImageResource(R.drawable.google_off);
 
-		if (object.getSite() != null)
+		if (object.getSite() != null && !object.getSite().equals("null"))
 			Site.setImageResource(R.drawable.internet);
 		else
 			Site.setImageResource(R.drawable.internet_off);
 
-		if (object.getTwitter() != null)
+		if (object.getTwitter() != null && !object.getTwitter().equals("null"))
 			Twitter.setImageResource(R.drawable.twtr);
 		else
 			Twitter.setImageResource(R.drawable.twtr_off);
 
-		if (object.getPdf1() != null)
+		if (object.getPdf1() != null && !object.getPdf1().equals("null"))
 			Pdf1.setImageResource(R.drawable.ic_catalog);
 		else
 			Pdf1.setImageResource(R.drawable.ic_catalog_off);
 
-		if (object.getPdf2() != null)
+		if (object.getPdf2() != null && !object.getPdf2().equals("null"))
 			Pdf2.setImageResource(R.drawable.ic_price);
 
 		else
 			Pdf2.setImageResource(R.drawable.ic_price_off);
 
-		if (object.getPdf3() != null)
+		if (object.getPdf3() != null && !object.getPdf3().equals("null"))
 			Pdf3.setImageResource(R.drawable.ic_pdf);
 		else
 			Pdf3.setImageResource(R.drawable.ic_pdf_off);
 
-		if (object.getPdf4() != null)
+		if (object.getPdf4() != null && !object.getPdf4().equals("null"))
 			Pdf4.setImageResource(R.drawable.ic_video);
 		else
 			Pdf4.setImageResource(R.drawable.ic_video_off);

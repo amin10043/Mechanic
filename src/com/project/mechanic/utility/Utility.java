@@ -46,6 +46,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -770,5 +771,14 @@ public class Utility implements AsyncInterface {
 		else
 			return 0 ;
 
+	}
+	
+	public RelativeLayout timeLineDrawing(Activity activity) {
+		
+		final RelativeLayout timeLine = (RelativeLayout)activity.findViewById(R.id.timeline);
+		timeLine.setVisibility(View.VISIBLE);
+		
+		return timeLine;
+		
 	}
 }

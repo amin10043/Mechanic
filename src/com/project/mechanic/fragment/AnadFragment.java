@@ -176,7 +176,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 		date.delegate = AnadFragment.this;
 		date.execute("");
 
-		timeLayoutTimeLine = (RelativeLayout) view.findViewById(R.id.searchV);
+		timeLayoutTimeLine = util.timeLineDrawing(getActivity());
 
 		// end get inad image from server
 
@@ -273,8 +273,11 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 				public void onScrollStateChanged(AbsListView arg0, int arg1) {
 
 					switch (arg1) {
-					case SCROLL_STATE_FLING:
+					case SCROLL_STATE_IDLE:{
 						createItem.hide(true);
+						timeLayoutTimeLine.setVisibility(View.VISIBLE);
+
+					}
 						break;
 					case SCROLL_STATE_TOUCH_SCROLL: {
 						createItem.show(true);

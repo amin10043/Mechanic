@@ -7,33 +7,6 @@
     android:layout_height="match_parent"
     android:background="#EAEAEA" >
 
-    <RelativeLayout
-        android:id="@+id/re"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/buttonshape" >
-
-        <ImageButton
-            android:id="@+id/imgBtnAddcmt_CmtFroum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_create" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_toLeftOf="@+id/imgBtnAddcmt_CmtFroum"
-            android:gravity="center"
-            android:text="نظرات و تجربیات خود را  به اشتراک بگذارید"
-            android:textColor="@color/transparent" />
-    </RelativeLayout>
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"
         android:layout_width="match_parent"

@@ -3,13 +3,16 @@
     style="@style/List_Item_Style"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_item"
+    android:background="#d3dff9"
     android:orientation="horizontal" >
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/ic_blank" />
 
     <TextView
@@ -17,6 +20,7 @@
         style="@style/row_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:text="Large Text" />

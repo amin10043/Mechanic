@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="right"
-    android:background="@drawable/list_item"
+    android:background="#d3dff9"
     android:gravity="right"
     android:orientation="vertical" >
 
@@ -23,16 +23,17 @@
 
             <ImageView
                 android:id="@+id/reportImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_gravity="left"
-                android:background="@drawable/down_arrow" />
+                android:background="@drawable/down_arrow"
+                 />
 
             <TextView
                 android:id="@+id/datetopicinFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="20dp"
                 android:gravity="left"
@@ -134,6 +135,26 @@
             android:background="@android:color/transparent"
             android:scaleType="fitXY"
             android:src="@drawable/google" />
+
+        <ImageView
+            android:id="@+id/iconNumberVisit"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignLeft="@+id/l1cm"
+            android:layout_below="@+id/l1cm"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/numberview" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/iconNumberVisit"
+            android:layout_toRightOf="@+id/iconNumberVisit"
+            android:gravity="bottom"
+            android:text="18"
+            android:textColor="@color/transparent"
+            android:textSize="10dp" />
     </RelativeLayout>
 
 </LinearLayout>

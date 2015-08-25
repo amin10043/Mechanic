@@ -8,11 +8,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -104,6 +106,10 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BROYA.TTF");
 		txtName.setTypeface(typeFace);
+
+		ImageView reaport = (ImageView) convertView
+				.findViewById(R.id.reportImage);
+
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -141,12 +147,12 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 			}
 		});
 
-		convertView.setOnLongClickListener(new View.OnLongClickListener() {
+		reaport.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public boolean onLongClick(View v) {
-
-				RelativeLayout parentlayout = (RelativeLayout) v;
+			public void onClick(View v) {
+				RelativeLayout parentlayout = (RelativeLayout) v.getParent()
+						.getParent().getParent();
 				TextView txtName = (TextView) parentlayout
 						.findViewById(R.id.row_favorite_title);
 				String item = txtName.getText().toString();
@@ -167,8 +173,17 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				DialogLongClick dia = new DialogLongClick(context, 3, u, id,
 						fragment, t);
 				Toast.makeText(context, id + "", 0).show();
+				
+				
+				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+			    lp.copyFrom(dia.getWindow().getAttributes());
+			    lp.width = (int) (util.getScreenwidth()/1.5) ;
+			    lp.height = WindowManager.LayoutParams.WRAP_CONTENT;;
 				dia.show();
-				return true;
+				
+				dia.getWindow().setAttributes(lp);
+				dia.getWindow().setBackgroundDrawable(
+						new ColorDrawable(android.graphics.Color.TRANSPARENT));
 			}
 		});
 

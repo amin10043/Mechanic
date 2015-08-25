@@ -21,5 +21,6 @@
     <color name="background_header_color">#11a8ab</color>
     <color name="green">#69ce29</color>
     <color name="gr">#e8e8e8</color>
+    <color name="header_blue">#517ab6</color>
 
 </resources>

@@ -140,16 +140,24 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 				.findViewById(R.id.fab);
 		final String message = "کاربر گرامی اگر مشخصات برند یا فعالیت شما در این نرم افزار ثبت نشده می توانید با ایجاد صفحه،  فعالیت خود را به سایر کاربران این نرم افزار معرفی نمایید ";
 
+		
+		final RelativeLayout timeline = util.timeLineDrawing(getActivity());
+		
 		lstObject.setOnScrollListener(new OnScrollListener() {
 
 			@Override
 			public void onScrollStateChanged(AbsListView arg0, int arg1) {
 				switch (arg1) {
-				case SCROLL_STATE_FLING:
+				case SCROLL_STATE_IDLE:{
 					createItem.hide(true);
+					timeline.setVisibility(View.VISIBLE);
+
+				}
 					break;
-				case SCROLL_STATE_TOUCH_SCROLL:
+				case SCROLL_STATE_TOUCH_SCROLL:{
 					createItem.show(true);
+					timeline.setVisibility(View.GONE);
+				}
 					break;
 				}
 			}

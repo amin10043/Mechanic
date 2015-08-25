@@ -121,22 +121,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 				android.R.color.holo_green_light,
 				android.R.color.holo_orange_light,
 				android.R.color.holo_red_light);
-		// createPage.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-
-		// dialog = new DialogCreatePage(getActivity());
-		// dialog.show();
-		//
-		// SharedPreferences sendParentID = getActivity()
-		// .getSharedPreferences("Id", 0);
-		// sendParentID.edit().putInt("ParentId", id).commit();
-		// Toast.makeText(getActivity(), "ParentId send = " + id,
-		// Toast.LENGTH_SHORT).show();
-		// }
-		//
-		// });
+		
 		RelativeLayout rl = (RelativeLayout) view
 				.findViewById(R.id.tablighRelative);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
@@ -149,7 +134,10 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 		ImageButton iconCreateTabligh = (ImageButton) view
 				.findViewById(R.id.iconCreateTabligh);
 		iconCreateTabligh.setLayoutParams(lp);
-
+		
+		
+		final RelativeLayout timeLine = util.timeLineDrawing(getActivity());
+		
 		final FloatingActionButton createItem = (FloatingActionButton) view
 				.findViewById(R.id.fab);
 		final String message = "کاربر گرامی اگر مشخصات برند یا فعالیت شما در این نرم افزار ثبت نشده می توانید با ایجاد صفحه،  فعالیت خود را به سایر کاربران این نرم افزار معرفی نمایید ";
@@ -175,11 +163,16 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 			@Override
 			public void onScrollStateChanged(AbsListView arg0, int arg1) {
 				switch (arg1) {
-				case SCROLL_STATE_FLING:
+				case SCROLL_STATE_IDLE:{
 					createItem.hide(true);
+					timeLine.setVisibility(View.VISIBLE);
+
+				}
 					break;
-				case SCROLL_STATE_TOUCH_SCROLL:
+				case SCROLL_STATE_TOUCH_SCROLL:{
 					createItem.show(true);
+					timeLine.setVisibility(View.GONE);
+				}
 					break;
 				}
 
