@@ -3372,14 +3372,15 @@ public class DataBaseAdapter {
 		mDb.update(TableAnad, uc, "Id=" + id, null);
 
 	}
-	
-	public void UpdateImagePathObject(int id, String ImagePath , int IdPath) {
 
-		// IdPath moshakhas konnandeh setoon imagePath mibashad va shamel  1 ,2 , 3 ast
+	public void UpdateImagePathObject(int id, String ImagePath, int IdPath) {
+
+		// IdPath moshakhas konnandeh setoon imagePath mibashad va shamel 1 ,2 ,
+		// 3 ast
 		ContentValues cv = new ContentValues();
 
 		if (ImagePath != null)
-		
+
 			cv.put("ImagePath" + IdPath, ImagePath);
 
 		mDb.update(TableObject, cv, "Id=?", new String[] { String.valueOf(id) });

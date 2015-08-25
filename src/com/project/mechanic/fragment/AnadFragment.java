@@ -965,6 +965,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 				}
 				// if (objId == 0 && pathImage == null ) {
+
 				//
 				// addImagesToView(anadlist, ImageCode, icode);
 				// }

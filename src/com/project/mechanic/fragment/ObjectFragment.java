@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
@@ -182,7 +181,6 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 
 					FindPosition = false;
 					IsRunning = false;
-					
 
 				}
 			}
@@ -208,7 +206,6 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 					sendToCreate.edit().putInt("ObjectTypeId", typeList)
 							.commit();
 
-				
 				} else {
 					SharedPreferences pageId = getActivity()
 							.getSharedPreferences("Id", 0);
@@ -222,7 +219,6 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 					sendToCreate.edit().putInt("IsAgency", AgencyService)
 							.commit();
 
-				
 				}
 
 			}
@@ -253,7 +249,6 @@ public class ObjectFragment extends Fragment implements AsyncInterface {
 
 	@Override
 	public void processFinish(String output) {
-
 
 		if (output.contains("anyType")) {
 			Toast.makeText(getActivity(), "صفحه جدیدی یافت نشد", 0).show();

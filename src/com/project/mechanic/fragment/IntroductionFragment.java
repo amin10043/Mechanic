@@ -27,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -355,20 +354,14 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		loadingProgressProfile.setVisibility(View.VISIBLE);
 		loadingProgressFooter.setVisibility(View.VISIBLE);
 
-		// اینها که همش خطا داره. خوب برادر یکبار تست کن بعد کدها رو بفرست
-		// !!!!!!!!!
 		if (ut.getCurrentUser() != null) {
 			if (ut.getCurrentUser().getId() != object.getId()) {
 				if (!ut.isNetworkConnected()) {
-					// Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT)
-					// .show();
 					adapter.open();
 					adapter.insertVisitToDb(ut.getCurrentUser().getId(), 2,
 							object.getId());
 					adapter.close();
 				} else if ((ut.isNetworkConnected())) {
-					// Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT)
-					// .show();
 					adapter.open();
 					// ارسال اطلاعات به جدول ویزیت سرور
 					// ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
@@ -377,8 +370,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				}
 			}
 		}
-		// اینها که همش خطا داره. خوب برادر یکبار تست کن بعد کدها رو بفرست
-		// !!!!!!!!!
 
 		if (object == null) {
 			return view;
@@ -521,31 +512,30 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		emailParams.width = (int) (ut.getScreenwidth() / 2.5);
 		emailParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		txtEmail.setLayoutParams(emailParams);
-		
+
 		String PathHeader = object.getImagePath1();
 		String PathProfile = object.getImagePath2();
 		String PathFooter = object.getImagePath3();
-		
+
 		Bitmap bmpHeader = BitmapFactory.decodeFile(PathHeader);
 		Bitmap bmpProfile = BitmapFactory.decodeFile(PathProfile);
 		Bitmap bmpfooter = BitmapFactory.decodeFile(PathFooter);
 
-
-//		bitHeader = object.getImage1();
+		// bitHeader = object.getImage1();
 
 		if (bmpHeader != null) {
-//			Bitmap bmp1 = BitmapFactory.decodeByteArray(bitHeader, 0,
-//					bitHeader.length);
+			// Bitmap bmp1 = BitmapFactory.decodeByteArray(bitHeader, 0,
+			// bitHeader.length);
 
 			headerImage.setImageBitmap(bmpHeader);
 		} else
 
 			headerImage.setBackgroundResource(R.drawable.no_image_header);
 		// /////////////////////
-//		bytepro = object.getImage2();
+		// bytepro = object.getImage2();
 		if (bmpProfile != null) {
-//			Bitmap bmp2 = BitmapFactory.decodeByteArray(bytepro, 0,
-//					bytepro.length);
+			// Bitmap bmp2 = BitmapFactory.decodeByteArray(bytepro, 0,
+			// bytepro.length);
 
 			profileImage.setImageBitmap(bmpProfile);
 
@@ -554,10 +544,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		}
 		// ///////////////////////
-//		bytefoot = object.getImage3();
+		// bytefoot = object.getImage3();
 		if (bmpfooter != null) {
-//			Bitmap bmp3 = BitmapFactory.decodeByteArray(bytefoot, 0,
-//					bytefoot.length);
+			// Bitmap bmp3 = BitmapFactory.decodeByteArray(bytefoot, 0,
+			// bytefoot.length);
 
 			advertise2.setImageBitmap(bmpfooter);
 
@@ -1189,7 +1179,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	@Override
 	public void processFinish(String output) {
 
-
 		if (output.contains("---")) {
 			if (ringProgressDialog != null)
 				ringProgressDialog.dismiss();
@@ -1428,18 +1417,17 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		if (output != null && output.size() > 0) {
 
-
 			adapter.open();
-			
 
 			if (f1)
 				if (output.get(0) != null) {
-					ut.CreateFile(output.get(0), object.getId(), "Mechanical", "Profile", "header", "Object");
-					
-					//adapter.UpdateHeaderImageObject(ObjectID, output.get(0));
+					ut.CreateFile(output.get(0), object.getId(), "Mechanical",
+							"Profile", "header", "Object");
+
+					// adapter.UpdateHeaderImageObject(ObjectID, output.get(0));
 					object = adapter.getObjectbyid(ObjectID);
 
-					String PathImageHeader="";
+					String PathImageHeader = "";
 					PathImageHeader = object.getImagePath1();
 					Bitmap b = BitmapFactory.decodeFile(PathImageHeader);
 
@@ -1452,12 +1440,14 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				}
 			if (f2)
 				if (output.get(1) != null) {
-					ut.CreateFile(output.get(1), object.getId(), "Mechanical", "Profile", "profile", "Object");
+					ut.CreateFile(output.get(1), object.getId(), "Mechanical",
+							"Profile", "profile", "Object");
 					object = adapter.getObjectbyid(ObjectID);
 
-					String PathImageProfile="";
+					String PathImageProfile = "";
 					PathImageProfile = object.getImagePath2();
-//					adapter.UpdateProfileImageObject(ObjectID, output.get(1));
+					// adapter.UpdateProfileImageObject(ObjectID,
+					// output.get(1));
 					Bitmap b = BitmapFactory.decodeFile(PathImageProfile);
 
 					if (b != null)
@@ -1470,14 +1460,14 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 			if (f3)
 				if (output.get(2) != null) {
-					ut.CreateFile(output.get(2), object.getId(), "Mechanical", "Profile", "footer", "Object");
+					ut.CreateFile(output.get(2), object.getId(), "Mechanical",
+							"Profile", "footer", "Object");
 					object = adapter.getObjectbyid(ObjectID);
 
-					String PathImageFooter="";
+					String PathImageFooter = "";
 					PathImageFooter = object.getImagePath3();
-					
 
-//					adapter.UpdateFooterImageObject(ObjectID, output.get(2));
+					// adapter.UpdateFooterImageObject(ObjectID, output.get(2));
 					Bitmap b = BitmapFactory.decodeFile(PathImageFooter);
 
 					if (b != null)
