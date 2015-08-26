@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -16,6 +17,7 @@ import com.project.mechanic.adapter.ProvinceListAdapter;
 import com.project.mechanic.adapter.ShopListAdapter;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class ShopFragment extends Fragment {
 
@@ -35,6 +37,10 @@ public class ShopFragment extends Fragment {
 
 		ArrayList<Province> mylist = adapter.getAllProvinceName();
 		adapter.close();
+		
+		Utility util = new Utility(getActivity());
+		RelativeLayout timeLine = util.timeLineDrawing(getActivity());
+		timeLine.setVisibility(View.GONE);
 
 		ListView lstProvince = (ListView) view.findViewById(R.id.listVshop);
 		ShopListAdapter ListAdapter = new ShopListAdapter(

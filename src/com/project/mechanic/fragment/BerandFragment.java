@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.BerandListAdapter;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class BerandFragment extends Fragment {
 
@@ -45,6 +47,11 @@ public class BerandFragment extends Fragment {
 				R.layout.row_berand, mylist, id);
 
 		lstBerand.setAdapter(ListAdapter);
+		
+		Utility utility = new Utility(getActivity());
+		
+		RelativeLayout timeLine = utility.timeLineDrawing(getActivity());
+		timeLine.setVisibility(View.GONE);
 
 		return view;
 	}

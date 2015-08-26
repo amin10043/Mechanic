@@ -4,15 +4,14 @@
     style="@style/List_Item_Style"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#d3dff9" >
+    android:background="#fff" >
 
     <ImageView
         android:id="@+id/icon_object"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_margin="10dp"
         android:scaleType="fitXY"
         android:src="@drawable/profile_account" />
 

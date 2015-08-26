@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
@@ -17,6 +18,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.adapter.AdvertisementListAdapter;
 import com.project.mechanic.entity.TicketType;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class AdvertisementFragment extends Fragment {
 
@@ -48,6 +50,11 @@ public class AdvertisementFragment extends Fragment {
 
 		//((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
 		View view = inflater.inflate(R.layout.fragment_shop, null);
+		
+		Utility util = new Utility(getActivity());
+		RelativeLayout timeLine = util.timeLineDrawing(getActivity());
+		timeLine.setVisibility(View.GONE);
+		
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 

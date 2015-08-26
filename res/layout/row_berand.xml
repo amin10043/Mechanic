@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-   android:background="#d3dff9" >
+    android:background="#d3dff9" >
 
     <ImageView
         android:id="@+id/icon_item"
@@ -12,15 +12,6 @@
         android:layout_margin="20dp"
         android:background="@drawable/ic_blank" />
 
-    <LinearLayout
-        android:id="@+id/linear_star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/icon_item"
-        android:layout_toRightOf="@+id/icon_item"
-        android:orientation="horizontal" >
-    </LinearLayout>
-
     <TextView
         android:id="@+id/row_berand_txt"
         style="@style/row_text"
@@ -28,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
         android:text="Large Text" />
 
 </RelativeLayout>

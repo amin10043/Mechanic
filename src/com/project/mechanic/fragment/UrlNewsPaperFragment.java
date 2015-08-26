@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
@@ -72,6 +73,9 @@ import com.project.mechanic.utility.Utility;
 		dbAdapter.open();
 
 		final NewsPaper newsPaper = dbAdapter.getNewsPaperId(id);
+		
+		RelativeLayout timeLine = util.timeLineDrawing(getActivity());
+		timeLine.setVisibility(View.VISIBLE);
 
 		if (util.isNetworkConnected()) {
 			Toast.makeText(getActivity(), "network connected", 0).show();

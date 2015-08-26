@@ -243,7 +243,7 @@ public class MainFragment extends Fragment {
 				int id = 7;
 				FragmentTransaction trans = ((MainActivity) getActivity())
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new FroumtitleFragment());
+				trans.replace(R.id.content_frame, new TypeFroum());
 
 				sendData.edit().putInt("main_Id", id).commit();
 

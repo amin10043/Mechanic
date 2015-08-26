@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.CountryListAdapter;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class CountryFragment extends Fragment {
 
@@ -32,6 +34,10 @@ public class CountryFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_city, null);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
+		
+		Utility utility = new Utility(getActivity());
+		RelativeLayout timeLine = utility.timeLineDrawing(getActivity());
+		timeLine.setVisibility(View.GONE);
 
 		dbAdapter.open();
 		List<ListItem> mylist = dbAdapter.getListItemsById(2);

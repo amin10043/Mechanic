@@ -99,7 +99,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		lp.width = (util.getScreenwidth() / 4);
 		lp.height = (util.getScreenwidth() / 4);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		lp.setMargins(5, 5, 5, 5);
+		lp.setMargins(5, 0, 0, 0);
 
 		String pathProfile = person.getImagePath2();
 

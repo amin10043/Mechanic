@@ -4,17 +4,15 @@
     xmlns:app1="http://schemas.android.com/apk/res/com.project.mechanic"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#EAEAEA"
+    android:background="#e9eaed"
     android:orientation="vertical"
     android:weightSum="6"
     tools:context="com.arabian.constitution_mechanic.City$PlaceholderFragment" >
 
-   
     <RelativeLayout
         android:id="@+id/relativeList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        
         android:layout_weight="5" >
 
         <android.support.v4.widget.SwipeRefreshLayout

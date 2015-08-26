@@ -13,6 +13,7 @@ import com.project.mechanic.adapter.NewsListAdapter;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.NewsPaper;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 
 public class NewsBuildingFragment extends Fragment {
@@ -44,6 +46,10 @@ public class NewsBuildingFragment extends Fragment {
 		dbAdapter.open();
 		List<NewsPaper> mylist = dbAdapter.getNewsPaperTypeId(id);
 		dbAdapter.close();
+		
+		Utility util = new Utility(getActivity());
+		RelativeLayout timeLine = util.timeLineDrawing(getActivity());
+		timeLine.setVisibility(View.GONE);
 
 		ListView lstNewsPaper = (ListView) view.findViewById(R.id.lstVnews);
 		
