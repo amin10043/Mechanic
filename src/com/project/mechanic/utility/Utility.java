@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +31,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff.Mode;
-import android.graphics.BitmapFactory;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -317,23 +315,25 @@ public class Utility implements AsyncInterface {
 			if (allStr[i] != null && !"".equals(allStr[i])) {
 				String[] strs = allStr[i].split(Pattern.quote("***")); // each
 																		// Record
-				String tableName = strs[0];
-				boolean flag = false;
-				String[] cols = strs[1].split(Pattern.quote("^^^")); // column
-				String startModifyDate = strs[2];
-				String endModifyDate = strs[3];
-				int row = 0;
-				String[][] values = new String[strs.length - 2][];
-				for (int j = 4; j < strs.length; j++, row++) {
-					values[row] = strs[j].split(Pattern.quote("^^^"));
-					flag = true;
-				}
-				adapter.open();
-				if (values != null && values.length > 0 && flag)
-					adapter.updateTables(tableName.trim(), cols, values,
-							startModifyDate, endModifyDate);
+				if (strs != null && strs.length > 3) {
+					String tableName = strs[0];
+					boolean flag = false;
+					String[] cols = strs[1].split(Pattern.quote("^^^")); // column
+					String startModifyDate = strs[2];
+					String endModifyDate = strs[3];
+					int row = 0;
+					String[][] values = new String[strs.length - 2][];
+					for (int j = 4; j < strs.length; j++, row++) {
+						values[row] = strs[j].split(Pattern.quote("^^^"));
+						flag = true;
+					}
+					adapter.open();
+					if (values != null && values.length > 0 && flag)
+						adapter.updateTables(tableName.trim(), cols, values,
+								startModifyDate, endModifyDate);
 
-				adapter.close();
+					adapter.close();
+				}
 			}
 		}
 	}
@@ -703,9 +703,9 @@ public class Utility implements AsyncInterface {
 
 		if (retval == false) {
 
-			//byte[] array = byteImage;
+			// byte[] array = byteImage;
 
-			//BitmapFactory.decodeByteArray(array, 0, array.length);
+			// BitmapFactory.decodeByteArray(array, 0, array.length);
 
 			// you can create a new file name "test.jpg" in sdcard folder.
 			File f = new File(agahiDirectory + File.separator + nameFile
@@ -752,14 +752,14 @@ public class Utility implements AsyncInterface {
 				adapter.close();
 			}
 			if (TableName.equals("Object")) {
-				int PathId=0;
-				
-				if(nameFile.contains("header"))
-						PathId=1;
-				if(nameFile.contains("profile"))
-					PathId=2;
-				if(nameFile.contains("footer"))
-					PathId=3;
+				int PathId = 0;
+
+				if (nameFile.contains("header"))
+					PathId = 1;
+				if (nameFile.contains("profile"))
+					PathId = 2;
+				if (nameFile.contains("footer"))
+					PathId = 3;
 
 				adapter.open();
 				adapter.UpdateImagePathObject(ImageId, f.getPath(), PathId);
@@ -767,18 +767,18 @@ public class Utility implements AsyncInterface {
 			}
 			return ImageId;
 
-		}
-		else
-			return 0 ;
+		} else
+			return 0;
 
 	}
-	
+
 	public RelativeLayout timeLineDrawing(Activity activity) {
-		
-		final RelativeLayout timeLine = (RelativeLayout)activity.findViewById(R.id.timeline);
+
+		final RelativeLayout timeLine = (RelativeLayout) activity
+				.findViewById(R.id.timeline);
 		timeLine.setVisibility(View.VISIBLE);
-		
+
 		return timeLine;
-		
+
 	}
 }

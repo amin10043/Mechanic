@@ -281,7 +281,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 		Froum f;
 		mdb.open();
-		if (output != null) {
+		if (output != null && mylist != null && mylist.size() > userItemId) {
 			f = mylist.get(userItemId);
 			mdb.UpdateUserImage(f.getUserId(), output, serverDate);
 			ListAdapter.notifyDataSetChanged();

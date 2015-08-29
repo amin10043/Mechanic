@@ -117,22 +117,6 @@ public class LoginFragment extends Fragment implements CommInterface,
 							"لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
-
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-
 				}
 			}
 		});
@@ -149,17 +133,6 @@ public class LoginFragment extends Fragment implements CommInterface,
 
 			}
 		});
-
-		// btncancle.setOnClickListener(new OnClickListener() {
-		//
-		// public void onClick(View arg0) {
-		// // TODO Auto-generated method stub
-		// FragmentTransaction trans = getActivity()
-		// .getSupportFragmentManager().beginTransaction();
-		// trans.replace(R.id.content_frame, new MainFragment());
-		// trans.commit();
-		// }
-		// });
 
 		btnforgot.setOnClickListener(new View.OnClickListener() {
 
@@ -186,8 +159,7 @@ public class LoginFragment extends Fragment implements CommInterface,
 
 		if (output == null || "anyType{}".equals(output)
 				|| output.contains("Exception") || output.contains("java")) {
-			Toast.makeText(getActivity(),
-					"نام کاربری و یا کلمه عبور به درستی وارد نشده است.",
+			Toast.makeText(getActivity(), "خطا در ارتباط با سرور.",
 					Toast.LENGTH_SHORT).show();
 			editor.putBoolean("isLogin", false);
 
