@@ -1,6 +1,8 @@
 package com.project.mechanic.fragment;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
@@ -27,11 +29,14 @@ import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Updating;
+import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.Utility;
 
-public class MainBrandFragment extends Fragment implements AsyncInterface {
+public class MainBrandFragment extends Fragment implements AsyncInterface,
+		GetAsyncInterface {
 	DataBaseAdapter adapter;
 	int parentId;
 	Users CurrentUser;
@@ -47,6 +52,12 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 	Updating updating;
 	Settings setting;
 	int totalItemCountBeforeSwipe = 0;
+
+	int userItemId = 0;
+	Object obj;
+	UpdatingImage ImageUpdating;
+
+	Map<String, String> maps;
 
 	public MainBrandFragment() {
 		super();
@@ -80,13 +91,26 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 		// objectList = adapter.getObjectbyParentId(id);
 		mylist = adapter.getObjectbyParentId(parentId);
 
+		// start code get image profile from server
+
+		obj = adapter.getObjectbyid(mylist.get(userItemId).getId());
+
+		ImageUpdating = new UpdatingImage(getActivity());
+		ImageUpdating.delegate = MainBrandFragment.this;
+		maps = new LinkedHashMap<String, String>();
+		maps.put("tableName", "Object2");
+		maps.put("Id", String.valueOf(obj.getId()));
+		maps.put("fromDate", obj.getImage2ServerDate());
+		ImageUpdating.execute(maps);
+
+		// end code for get image from server
 		setting = adapter.getSettings();
 
 		adapter.close();
 
 		lstObject = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 		ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object,
-				mylist, MainBrandFragment.this);
+				mylist, MainBrandFragment.this , true);
 
 		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
 				R.layout.load_more_footer, null);
@@ -133,8 +157,6 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 				.findViewById(R.id.iconCreateTabligh);
 		iconCreateTabligh.setLayoutParams(lp);
 
-		final RelativeLayout timeLine = util.timeLineDrawing(getActivity());
-
 		final FloatingActionButton createItem = (FloatingActionButton) view
 				.findViewById(R.id.fab);
 		final String message = "کاربر گرامی اگر مشخصات برند یا فعالیت شما در این نرم افزار ثبت نشده می توانید با ایجاد صفحه،  فعالیت خود را به سایر کاربران این نرم افزار معرفی نمایید ";
@@ -161,14 +183,13 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 			public void onScrollStateChanged(AbsListView arg0, int arg1) {
 				switch (arg1) {
 				case SCROLL_STATE_IDLE: {
-					createItem.hide(true);
-					timeLine.setVisibility(View.VISIBLE);
+					createItem.show(true);
 
 				}
 					break;
 				case SCROLL_STATE_TOUCH_SCROLL: {
-					createItem.show(true);
-					timeLine.setVisibility(View.GONE);
+					createItem.hide(true);
+
 				}
 					break;
 				}
@@ -213,7 +234,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 		adapter.open();
 		ArrayList<Object> mylist = adapter.getObjectbyParentId(parentId);
 		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(),
-				R.layout.row_object, mylist, MainBrandFragment.this);
+				R.layout.row_object, mylist, MainBrandFragment.this , true);
 		ListAdapter.notifyDataSetChanged();
 
 		lstObject.setAdapter(ListAdapter);
@@ -262,10 +283,51 @@ public class MainBrandFragment extends Fragment implements AsyncInterface {
 				mylist.clear();
 				if (mylist.size() > 0) {
 					ListAdapter = new ObjectListAdapter(getActivity(),
-							R.layout.row_object, mylist, MainBrandFragment.this);
+							R.layout.row_object, mylist, MainBrandFragment.this , true);
 					lstObject.setAdapter(ListAdapter);
 				}
 			}
 		}
+	}
+
+	@Override
+	public void processFinish(byte[] output) {
+
+		if (output != null) {
+
+			util.CreateFile(output, obj.getId(), "Mechanical", "Profile",
+					"profile", "Object");
+		}
+		userItemId++;
+
+		if (userItemId < mylist.size()) {
+			adapter.open();
+			mylist = adapter.getObjectbyParentId(parentId);
+
+			obj = adapter.getObjectbyid(mylist.get(userItemId).getId());
+
+			adapter.close();
+
+			ImageUpdating = new UpdatingImage(getActivity());
+			ImageUpdating.delegate = this;
+			maps = new LinkedHashMap<String, String>();
+			maps.put("tableName", "Object2");
+			maps.put("Id", String.valueOf(obj.getId()));
+			maps.put("fromDate", obj.getImage2ServerDate());
+			ImageUpdating.execute(maps);
+		}else
+		{
+			mylist.clear();
+			adapter.open();
+			mylist = adapter.getObjectbyParentId(parentId);
+			adapter.close();
+						
+			ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object,
+					mylist, MainBrandFragment.this , false);
+			lstObject.setAdapter(ListAdapter);
+			
+
+		}
+
 	}
 }

@@ -188,7 +188,6 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 		registerForContextMenu(lst);
 
-		final RelativeLayout timeline = util.timeLineDrawing(getActivity());
 
 		lst.setOnScrollListener(new OnScrollListener() {
 
@@ -196,14 +195,12 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			public void onScrollStateChanged(AbsListView arg0, int arg1) {
 				switch (arg1) {
 				case SCROLL_STATE_TOUCH_SCROLL: {
-					timeline.setVisibility(View.GONE);
 
 					action.hide(true);
 				}
 					break;
 				case SCROLL_STATE_IDLE: {
 					action.show(true);
-					timeline.setVisibility(View.VISIBLE);
 
 					break;
 				}
@@ -281,10 +278,17 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 		Froum f;
 		mdb.open();
-		if (output != null) {
+		if (output != null && userItemId < mylist.size()) {
 			f = mylist.get(userItemId);
-			mdb.UpdateUserImage(f.getUserId(), output, serverDate);
+			
+			util.CreateFile(output, f.getUserId(), "Mechanical", "Users", "user",
+					"Users");
+			mdb.UpdateImageServerDate(f.getUserId(), "Users", serverDate);
+			
+			//mdb.UpdateUserImage(f.getUserId(), output, serverDate);
 			ListAdapter.notifyDataSetChanged();
+			LoadMoreFooter.setVisibility(View.INVISIBLE);
+
 		}
 
 		userItemId++;
@@ -305,6 +309,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 				processFinish(b);
 			}
 		}
+		LoadMoreFooter.setVisibility(View.INVISIBLE);
+
 		mdb.close();
 	}
 
@@ -333,6 +339,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 							if (swipeLayout != null)
 								swipeLayout.setRefreshing(false);
+							LoadMoreFooter.setVisibility(View.INVISIBLE);
+
 						}
 					} else {
 
@@ -350,6 +358,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			}
 			if (swipeLayout != null)
 				swipeLayout.setRefreshing(false);
+			LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 		}
 

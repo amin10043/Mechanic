@@ -184,7 +184,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 			}
 		});
 		txt1.setText(person1.getTitle());
-		txt2.setText(person1.getContext());
+		txt2.setText(person1.getContext()+" ... ");
 
 		String item = txt1.getText().toString();
 		for (Paper listItem : mylist) {

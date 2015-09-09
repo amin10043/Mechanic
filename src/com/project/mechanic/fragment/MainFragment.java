@@ -113,9 +113,7 @@ public class MainFragment extends Fragment {
 		r7.setMargins(5, 0, 1, 0);
 		r7.addRule(RelativeLayout.CENTER_VERTICAL);
 		img7.setLayoutParams(r7);
-		
-		RelativeLayout timeline = util.timeLineDrawing(getActivity());
-		timeline.setVisibility(View.GONE);
+
 		final SharedPreferences sendData = getActivity().getSharedPreferences(
 				"Id", 0);
 

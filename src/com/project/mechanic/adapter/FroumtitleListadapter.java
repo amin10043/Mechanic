@@ -36,6 +36,7 @@ import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.FroumWithoutComment;
+import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
@@ -127,9 +128,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 		}
 		txt1.setText(person1.getTitle());
-		// txt2.setText(person1.getDescription() + " ...");
+		txt2.setText(person1.getDescription() + " ...");
 
-		txt2.setText(person1.getDescription());
+		// txt2.setText(person1.getDescription());
 		if (x != null)
 			txt3.setText(x.getName());
 		countcommentfroum.setText(adapter.CommentInFroum_count(person1.getId())
@@ -138,11 +139,16 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				.toString());
 
 		dateTopic.setText(util.getPersianDate(person1.getDate()));
+		
+		
+		String item = txt2.getText().toString(); ;
+		int sizeDescription = item.length();
+		String subItem;
+		subItem = item.subSequence(0, sizeDescription-4).toString();
 
-		String item = txt2.getText().toString();
 		int ItemId = 0;
 		for (Froum listItem : mylist) {
-			if (item.equals(listItem.getDescription())) {
+			if (subItem.equals(listItem.getDescription())) {
 				froumNumber = ItemId = listItem.getId();
 			}
 		}
@@ -168,15 +174,14 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		if (x != null) {
 
-			if (x.getImage() == null) {
+			if (x.getImagePath() == null) {
 				profileImg.setImageResource(R.drawable.no_img_profile);
 
 				profileImg.setLayoutParams(lp);
 			} else {
 
-				byte[] byteImg = x.getImage();
-				Bitmap bmp = BitmapFactory.decodeByteArray(byteImg, 0,
-						byteImg.length);
+				//byte[] byteImg = x.getImage();
+				Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
 				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
 						50));
 
@@ -196,7 +201,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				userId = x.getId();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
 				fragment.setArguments(bundle);
@@ -257,18 +262,18 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 					DialogLongClick dia = new DialogLongClick(context, 1,
 							ItemId, f.getId(), fragment, t);
 					Toast.makeText(context, ItemId + "", 0).show();
-					
-					
+
 					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-				    lp.copyFrom(dia.getWindow().getAttributes());
-				    lp.width = (int) (util.getScreenwidth()/1.5) ;
-				    lp.height = WindowManager.LayoutParams.WRAP_CONTENT;;
+					lp.copyFrom(dia.getWindow().getAttributes());
+					lp.width = (int) (util.getScreenwidth() / 1.5);
+					lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+					;
 					dia.show();
-					
+
 					dia.getWindow().setAttributes(lp);
 					dia.getWindow().setBackgroundDrawable(
-							new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
+							new ColorDrawable(
+									android.graphics.Color.TRANSPARENT));
 
 				}
 			}
@@ -321,10 +326,14 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				LinearLayout parentlayout = (LinearLayout) v;
 
-				String item = txt2.getText().toString();
+				
+				String item = txt2.getText().toString(); ;
+				int sizeDescription = item.length();
+				String subItem;
+				subItem = item.subSequence(0, sizeDescription-4).toString();
 				int ItemId = 0;
 				for (Froum listItem : mylist) {
-					if (item.equals(listItem.getDescription())) {
+					if (subItem.equals(listItem.getDescription())) {
 						// check authentication and authorization
 						ItemId = listItem.getId();
 					}
@@ -356,7 +365,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 	public void processFinish(String output) {
 
 		try {
-			Integer.valueOf(output);
+			int id = Integer.valueOf(output);
 			adapter.open();
 			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
 				adapter.deleteLikeFromFroum(CurrentUser.getId(), froumNumber);
@@ -369,7 +378,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				}
 
 			} else {
-				adapter.insertLikeInFroumToDb(CurrentUser.getId(), froumNumber,
+				adapter.insertLikeInFroumToDb(id ,CurrentUser.getId(), froumNumber,
 						serverDate, 0);
 				LikeTitle.setBackgroundResource(R.drawable.like_froum);
 
@@ -431,6 +440,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 					params.put("FroumId", String.valueOf(froumNumber));
 					params.put("CommentId", "0");
 					params.put("Date", output);
+					params.put("ModifyDate", output);
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 

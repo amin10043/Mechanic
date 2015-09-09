@@ -2,6 +2,7 @@ package com.project.mechanic.fragment;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,10 +18,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.project.mechanic.R;
+import com.project.mechanic.adapter.ObjectListAdapter;
+import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
@@ -45,14 +50,27 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 	String serverDate;
 	ServerDate date;
 	int userId;
+	RelativeLayout phoneLayout, emailLayout, faxLayout, mobileLayout,
+			AddressLayout;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(
-				R.layout.fragment_displaypersonalinformation, null);
+
 		utile1 = new Utility(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
+
+		View rootView = inflater.inflate(R.layout.fragment_information_user,
+				null);
+
+		View header = inflater.inflate(
+				R.layout.fragment_displaypersonalinformation, null);
+
+		phoneLayout = (RelativeLayout) header.findViewById(R.id.laySabet);
+		mobileLayout = (RelativeLayout) header.findViewById(R.id.layHamrah);
+		AddressLayout = (RelativeLayout) header.findViewById(R.id.layaddress);
+		faxLayout = (RelativeLayout) header.findViewById(R.id.layfax);
+		emailLayout = (RelativeLayout) header.findViewById(R.id.layEmail);
 
 		if (getArguments() != null) {
 			if (getArguments().getInt("0") == 0) {
@@ -76,39 +94,77 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		}
 		if (u == null) {
 			// خطا . نباید این اتفاق بیفتد!
-			return view;
+			return rootView;
 		}
 
 		date = new ServerDate(getActivity());
 		date.delegate = this;
 		date.execute("");
-	
-	
-		TextView txtaddress = (TextView) view.findViewById(R.id.address);
-		TextView txtcellphone = (TextView) view.findViewById(R.id.cellphone);
-		TextView txtphone = (TextView) view.findViewById(R.id.phone);
-		TextView txtemail = (TextView) view.findViewById(R.id.email);
-		TextView txtname = (TextView) view.findViewById(R.id.displayname);
-		TextView txtfax = (TextView) view.findViewById(R.id.fax);
-		img = (ImageView) view.findViewById(R.id.img1);
-		ImageView logout = (ImageView) view.findViewById(R.id.logout);
-		Button btnedit = (Button) view.findViewById(R.id.btnedit);
 
-		TextView txtdate = (TextView) view.findViewById(R.id.txtdate);
+		TextView txtaddress = (TextView) header.findViewById(R.id.address);
+		TextView txtcellphone = (TextView) header.findViewById(R.id.cellphone);
+		TextView txtphone = (TextView) header.findViewById(R.id.phone);
+		TextView txtemail = (TextView) header.findViewById(R.id.email);
+		TextView txtname = (TextView) header.findViewById(R.id.displayname);
+		TextView txtfax = (TextView) header.findViewById(R.id.fax);
+		img = (ImageView) header.findViewById(R.id.img1);
+		ImageView logout = (ImageView) header.findViewById(R.id.logout);
+		Button btnedit = (Button) header.findViewById(R.id.btnedit);
 
-		final LinearLayout lin4 = (LinearLayout) view.findViewById(R.id.lin2);
+		TextView txtdate = (TextView) header.findViewById(R.id.txtdate);
 
-		LayoutParams lp1 = new LinearLayout.LayoutParams(lin4.getLayoutParams());
+		final LinearLayout lin2 = (LinearLayout) header.findViewById(R.id.lin2);
+
+		LayoutParams lp1 = new LinearLayout.LayoutParams(lin2.getLayoutParams());
 		lp1.width = utile1.getScreenwidth() / 4;
 		lp1.height = utile1.getScreenwidth() / 4;
+		lp1.setMargins(5, 5, 5, 5);
 		img.setLayoutParams(lp1);
 
-		byte[] bitmapbyte = u.getImage();
-		if (bitmapbyte != null) {
-			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-					bitmapbyte.length);
-			img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
+		// byte[] bitmapbyte = u.getImage();
+		String ImagePath = u.getImagePath();
+		if (ImagePath != null) {
+			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
+			img.setImageBitmap(bmp);
 		}
+
+		ListView lv = (ListView) rootView.findViewById(R.id.listPageUser);
+		lv.addHeaderView(header);
+
+		dbAdapter.open();
+		List<Object> listPage = dbAdapter.getAllObjectByUserId(u.getId());
+		dbAdapter.close();
+
+		ObjectListAdapter listAdapter = new ObjectListAdapter(getActivity(),
+				R.layout.row_object, listPage,
+				DisplayPersonalInformationFragment.this, false);
+
+		lv.setAdapter(listAdapter);
+
+		if (listPage.size() == 0) {
+
+			RelativeLayout rela = (RelativeLayout) header
+					.findViewById(R.id.noPage);
+
+			rela.setVisibility(View.VISIBLE);
+		}
+		
+		TextView namett = (TextView)header.findViewById(R.id.namepageList);
+		
+		namett.setText(u.getName());
+
+		img.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				String ImagePath = u.getImagePath();
+				String name = u.getName();
+
+				DialogShowImage showImage = new DialogShowImage(getActivity(),
+						ImagePath, name);
+				showImage.show();
+			}
+		});
 		String name = u.getName();
 		String email = u.getEmail();
 		String address = u.getAddress();
@@ -117,7 +173,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		String fax = u.getFaxnumber();
 		String d = u.getDate();
 
-		txtdate.setText(d);
+		txtdate.setText(utile1.getPersianDate(d));
 		txtname.setText(name);
 		txtemail.setText(email);
 		txtcellphone.setText(cellphone);
@@ -172,7 +228,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 			}
 		});
 
-		return view;
+		return rootView;
 	}
 
 	@Override
@@ -207,10 +263,9 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 				serviceImage = new UpdatingImage(context);
 				serviceImage.delegate = this;
 				serviceImage.execute(params);
-				
+
 			}
 		}
-		
-	
+
 	}
 }

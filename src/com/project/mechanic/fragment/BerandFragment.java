@@ -50,9 +50,7 @@ public class BerandFragment extends Fragment {
 		
 		Utility utility = new Utility(getActivity());
 		
-		RelativeLayout timeLine = utility.timeLineDrawing(getActivity());
-		timeLine.setVisibility(View.GONE);
-
+		
 		return view;
 	}
 

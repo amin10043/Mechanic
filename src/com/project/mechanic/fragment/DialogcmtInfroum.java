@@ -118,9 +118,9 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 				id = Integer.valueOf(output);
 				dbadapter.open();
 
-				dbadapter.insertCommentInFroumtoDb(Cmttxt.getText().toString(),
-						Froumid, currentUser.getId(), serverDate, Commentid,
-						"0", "0");
+				dbadapter.insertCommentInFroumtoDb(id, Cmttxt.getText()
+						.toString(), Froumid, currentUser.getId(), serverDate,
+						Commentid, "0", "0");
 
 				dbadapter.close();
 				// از پرینفسس استفده شده در زیر برای پیدا کردن آیدی گروه کامنت
@@ -195,7 +195,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 					params.put("NumofDisLike", String.valueOf(0));
 					params.put("NumofLike", String.valueOf(0));
 					params.put("Date", output);
-
+					params.put("ModifyDate", output);
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 					serverDate = output;

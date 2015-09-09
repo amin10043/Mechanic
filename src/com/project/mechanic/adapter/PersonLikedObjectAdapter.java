@@ -21,6 +21,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
+import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -74,7 +75,7 @@ public class PersonLikedObjectAdapter extends ArrayAdapter<LikeInObject> {
 				userId= user.getId();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
 				fragment.setArguments(bundle);

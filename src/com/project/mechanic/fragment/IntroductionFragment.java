@@ -20,6 +20,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
@@ -229,8 +232,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		adapter.close();
 
-		final RelativeLayout timeLine = ut.timeLineDrawing(getActivity());
-
 		exadapter = new ExpandIntroduction(getActivity(),
 				(ArrayList<CommentInObject>) commentGroup, mapCollection, this,
 				ObjectID);
@@ -245,11 +246,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				switch (arg1) {
 				case SCROLL_STATE_IDLE:
 
-					timeLine.setVisibility(View.VISIBLE);
 					break;
 
 				case SCROLL_STATE_TOUCH_SCROLL:
-					timeLine.setVisibility(View.GONE);
 
 				default:
 					break;
@@ -308,6 +307,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		footerParams = new LinearLayout.LayoutParams(
 				footerLinear.getLayoutParams());
 		footerParams.height = ut.getScreenwidth();
+		footerParams.width = ut.getScreenwidth();
 
 		followParams = new RelativeLayout.LayoutParams(
 				profileLinear.getLayoutParams());
@@ -684,6 +684,48 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		// }
 
 		// advertise.setimage
+		headerImage.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				String pathImage = object.getImagePath1();
+				String namePage = object.getName();
+				
+				DialogShowImage showImageDialog = new DialogShowImage(
+						getActivity(), pathImage , namePage);
+				showImageDialog.show();
+				
+			}
+		});
+
+		profileImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				String PathProfile = object.getImagePath2();
+				String namePage = object.getName();
+				DialogShowImage showImageDialog = new DialogShowImage(
+						getActivity(), PathProfile , namePage);
+				showImageDialog.show();
+				
+				
+
+			}
+		});
+		
+		advertise2.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				String pathImage = object.getImagePath3();
+				String namePage = object.getName();
+				
+				DialogShowImage showImageDialog = new DialogShowImage(
+						getActivity(), pathImage , namePage);
+				showImageDialog.show();				
+			}
+		});
 
 		personPage.setOnClickListener(new OnClickListener() {
 
@@ -703,6 +745,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					DialogPersonLikedObject dia = new DialogPersonLikedObject(
 							getActivity(), ObjectID, likedist);
 					dia.show();
+
 				}
 			}
 		});

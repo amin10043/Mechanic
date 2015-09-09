@@ -207,7 +207,7 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 			public void onClick(View arg0) {
 				FragmentTransaction trans = ((MainActivity) getActivity())
 						.getSupportFragmentManager().beginTransaction();
-				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
 				fragment.setArguments(bundle);

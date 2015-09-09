@@ -28,6 +28,7 @@ import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
+import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
@@ -142,7 +143,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 				userId = user.getId();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
 				fragment.setArguments(bundle);

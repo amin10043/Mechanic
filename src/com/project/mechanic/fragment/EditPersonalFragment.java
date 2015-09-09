@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
@@ -30,6 +31,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -55,7 +57,6 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
 	ImageView img2, imagecamera;
-	Utility util;
 	LinearLayout.LayoutParams lp2;
 	Utility ut;
 	int id;
@@ -73,6 +74,8 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 	String Fax;
 	Context context;
 	int gId;
+	String[] viewItemArray = new String[5];
+	String infoItem = "";
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -97,16 +100,62 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		Button btnregedit = (Button) view.findViewById(R.id.btnregedit);
 		Button btnback = (Button) view.findViewById(R.id.btnbackdisplay);
 		LinearLayout lin3 = (LinearLayout) view.findViewById(R.id.lin5);
+
+		final CheckBox checkPhone = (CheckBox) view
+				.findViewById(R.id.showPhoneValue);
+		final CheckBox checkMobile = (CheckBox) view
+				.findViewById(R.id.showmobileValue);
+		final CheckBox checkEmail = (CheckBox) view
+				.findViewById(R.id.showEmailValue);
+		final CheckBox checkFax = (CheckBox) view
+				.findViewById(R.id.showFaxValue);
+		final CheckBox checkAddress = (CheckBox) view
+				.findViewById(R.id.showAddressValue);
+		Users u = ut.getCurrentUser();
+		gId = u.getId();
+		id = u.getId();
+		byte[] bitmapbyte = u.getImage();
+
+		String v = "";
+		String information = u.getShowInfoItem();
+		if (information != null) {
+
+			for (int i = 0; i < information.length(); i++) {
+				v = (String) information.subSequence(i, i + 1);
+				if (i == 0) {
+					if (v.equals("1"))
+						checkPhone.setChecked(true);
+				}
+
+				if (i == 1) {
+					if (v.equals("1"))
+						checkMobile.setChecked(true);
+				}
+
+				if (i == 2) {
+					if (v.equals("1"))
+						checkEmail.setChecked(true);
+				}
+
+				if (i == 3) {
+					if (v.equals("1"))
+						checkFax.setChecked(true);
+				}
+
+				if (i == 4) {
+					if (v.equals("1"))
+						checkAddress.setVisibility(View.INVISIBLE);
+				}
+
+			}
+		}
+
 		lp2 = new LinearLayout.LayoutParams(lin3.getLayoutParams());
 		lp2.height = ut.getScreenwidth() / 4;
 		lp2.width = ut.getScreenwidth() / 4;
 		img2.setLayoutParams(lp2);
 		dbAdapter = new DataBaseAdapter(getActivity());
 
-		Users u = ut.getCurrentUser();
-		gId = u.getId();
-		id = u.getId();
-		byte[] bitmapbyte = u.getImage();
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 					bitmapbyte.length);
@@ -134,25 +183,62 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				Email = txtemail.getText().toString();
 				Fax = txtfax.getText().toString();
 
-				saving = new Saving(getActivity());
-				saving.delegate = EditPersonalFragment.this;
-				params = new LinkedHashMap<String, String>();
-				params.put("tableName", "Users");
-				params.put("Email", Email);
-				params.put("Phonenumber", Cellphone);
-				params.put("Faxnumber", Fax);
-				params.put("Address", Address);
-				params.put("IsUpdate", "1");
-				params.put("Id", String.valueOf(id));
-				saving.execute(params);
+				if (checkPhone.isChecked())
+					viewItemArray[0] = "1";
+				else
+					viewItemArray[0] = "0";
 
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame,
-						new DisplayPersonalInformationFragment());
-				trans.commit();
+				if (checkMobile.isChecked())
+					viewItemArray[1] = "1";
+				else
+					viewItemArray[1] = "0";
 
+				if (checkEmail.isChecked())
+					viewItemArray[2] = "1";
+				else
+					viewItemArray[2] = "0";
+
+				if (checkFax.isChecked())
+					viewItemArray[3] = "1";
+				else
+					viewItemArray[3] = "0";
+
+				if (checkAddress.isChecked())
+					viewItemArray[4] = "1";
+				else
+					viewItemArray[4] = "0";
+
+				for (int i = 0; i < viewItemArray.length; i++) {
+					infoItem = infoItem + viewItemArray[i];
+				}
+
+				if (checkPhone.isChecked() || checkMobile.isChecked()
+						|| checkEmail.isChecked() || checkFax.isChecked()
+						|| checkAddress.isChecked())
+
+				{
+
+					saving = new Saving(getActivity());
+					saving.delegate = EditPersonalFragment.this;
+					params = new LinkedHashMap<String, String>();
+					params.put("tableName", "Users");
+					params.put("Email", Email);
+					params.put("Phonenumber", Cellphone);
+					params.put("Faxnumber", Fax);
+					params.put("Address", Address);
+					params.put("IsUpdate", "1");
+					params.put("Id", String.valueOf(id));
+					params.put("ShowInfoItem", infoItem);
+					saving.execute(params);
+
+				
+
+				} else
+					Toast.makeText(getActivity(),
+							"حداقل یکی از موارد تماس باید انتخاب شده باشد", 0)
+							.show();
 			}
+
 		});
 
 		btnback.setOnClickListener(new OnClickListener() {
@@ -387,6 +473,12 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 
 			if (!emptyBitmap.equals(bitmap)) {
 				Image = Utility.CompressBitmap(bitmap);
+
+				dbAdapter.open();
+				dbAdapter.UpdateAllUserToDbNoPic(ut.getCurrentUser().getId(),
+						Email, null, Phone, Cellphone, Fax, Address, infoItem);
+
+				dbAdapter.close();
 			}
 
 			if (context != null) {
@@ -399,14 +491,13 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				imageParams.put("image", Image);
 
 				saveImage.execute(imageParams);
-			} else {
-				dbAdapter.open();
-				dbAdapter.UpdateAllUserToDbNoPic(id, Email, null, Phone,
-						Cellphone, Fax, Address);
-
-				dbAdapter.close();
-
 			}
+			
+			FragmentTransaction trans = getActivity()
+					.getSupportFragmentManager().beginTransaction();
+			trans.replace(R.id.content_frame,
+					new DisplayPersonalInformationFragment());
+			trans.commit();
 
 		} catch (NumberFormatException ex) {
 			Toast.makeText(context, "خطا در بروز رسانی", Toast.LENGTH_SHORT)
@@ -438,6 +529,12 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 						Fax, Address, Image);
 
 				dbAdapter.close();
+				
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame,
+						new DisplayPersonalInformationFragment());
+				trans.commit();
 
 			} catch (NumberFormatException ex) {
 				Toast.makeText(context, "  خطا در بروز رسانی تصویر",

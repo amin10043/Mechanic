@@ -3,7 +3,7 @@
     android:id="@+id/btncancle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAEAEA"
+    android:background="#e9eaed"
     android:orientation="vertical" >
 
     <ScrollView
@@ -14,6 +14,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -24,50 +26,153 @@
                 <ImageView
                     android:id="@+id/hh1"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="10dp"
                     android:background="@drawable/no_image_header"
                     android:scaleType="fitXY" />
             </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/linearEditProfil"
-                style="@style/brandStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/brand_list_item_shape" >
+                android:background="#fff"
+                android:paddingBottom="10dp" >
 
-                <EditText
-                    android:id="@+id/nameEdit"
+                <ImageButton
+                    android:id="@+id/btnsave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:layout_toLeftOf="@+id/pp1"
-                    android:hint="Name" />
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/save" />
 
                 <ImageView
                     android:id="@+id/pp1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
+                    android:layout_below="@+id/btnsave"
                     android:background="@drawable/no_img_profile"
                     android:scaleType="fitXY" />
 
-                <TextView
-                    android:id="@+id/linkPage"
+                <EditText
+                    android:id="@+id/nameEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/pp1"
+                    android:layout_marginRight="20dp"
+                    android:layout_toLeftOf="@+id/pp1"
+                    android:hint="Name" />
+
+                <LinearLayout
+                    android:id="@+id/editpageNetwork"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/pp1"
-                    android:layout_marginTop="30dp"
-                    android:gravity="right"
-                    android:text="لینک صفحه : "
-                    android:textColor="@color/transparent" />
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:text="ویرایش لینک شبکه های اجتماعی"
+                        android:textColor="@color/transparent" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/facebook" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/editpagedownload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/editpageNetwork"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:text="ویرایش لینک های دانلود"
+                        android:textColor="@color/transparent" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/ic_pdf" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/listAdmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/editpagedownload"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:text="ویرایش مدیران صفحه"
+                        android:textColor="@color/transparent" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/admin_icon" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/sepratorimage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/listAdmin"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/custom_drawable" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/sepratorimage"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/linkPage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/copyToClipboard"
+                        android:text="www.mechanical.ir/namePage"
+                        android:textColor="@color/transparent"
+                        android:textSize="15dp" />
+
+                    <ImageView
+                        android:id="@+id/copyToClipboard"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/copy_icon" />
+                </RelativeLayout>
             </RelativeLayout>
 
             <LinearLayout
@@ -84,12 +189,6 @@
                     android:layout_marginRight="25dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1" >
-
-                    <ImageButton
-                        android:id="@+id/btnsave"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/save" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -110,12 +209,13 @@
                             style="@style/brandStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:background="@drawable/brand_list_item_shape"
-                            android:orientation="vertical" >
+                            android:background="#fff"
+                            android:orientation="vertical"
+                            android:visibility="gone" >
 
                             <LinearLayout
                                 android:id="@+id/LinearLayout1"
@@ -192,48 +292,37 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:orientation="horizontal" >
 
                             <RelativeLayout
-                                android:id="@+id/listAdmin"
-                                style="@style/brandStyle"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/starsEdition"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_margin="10dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/brand_list_item_shape" >
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:background="#fff" >
 
                                 <TextView
+                                    android:id="@+id/lableSt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_centerInParent="true"
                                     android:layout_margin="10dp"
-                                    android:text="ویرایش مدیران صفحه"
+                                    android:gravity="right"
+                                    android:lineSpacingMultiplier="2"
+                                    android:text="به منظور ارتقا وضعیت نمایش صفحه خود در بین سایر صفحات می توانید با افزایش ستاره های صفحه ، جایگاه خود را بهبود بخشید  "
                                     android:textColor="@color/transparent" />
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:id="@+id/starsEdition"
-                                style="@style/brandStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_margin="10dp"
-                                android:background="@drawable/brand_list_item_shape" >
 
                                 <RatingBar
                                     android:id="@+id/ratingBar1"
                                     style="?android:attr/ratingBarStyleIndicator"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignBottom="@+id/icon_object"
+                                    android:layout_below="@+id/lableSt"
                                     android:layout_centerHorizontal="true"
-                                    android:layout_toRightOf="@+id/icon_object"
                                     android:isIndicator="false"
                                     android:numStars="5"
                                     android:stepSize="1" />
@@ -243,10 +332,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/ratingBar1"
-                                    android:layout_centerInParent="true"
                                     android:layout_margin="10dp"
                                     android:text="فعال کردن ستاره های صفحه"
-                                    android:textColor="@color/transparent" />
+                                    android:textColor="@color/transparent"
+                                    android:visibility="gone" />
 
                                 <ImageView
                                     android:id="@+id/btnPay"
@@ -264,11 +353,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:background="@drawable/brand_list_item_shape"
+                            android:background="#fff"
                             android:paddingBottom="5dp"
                             android:paddingTop="5dp" >
 
@@ -298,11 +387,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:background="@drawable/brand_list_item_shape"
+                            android:background="#fff"
                             android:paddingBottom="5dp"
                             android:paddingTop="5dp" >
 
@@ -329,11 +418,13 @@
                             style="@style/brandStyle"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:background="@drawable/brand_list_item_shape" >
+                            android:background="#fff"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="5dp" >
 
                             <ImageView
                                 android:id="@+id/showad_img2"
@@ -368,11 +459,11 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:background="@drawable/brand_list_item_shape"
+                            android:background="#fff"
                             android:paddingBottom="5dp"
                             android:paddingTop="5dp" >
 
@@ -414,11 +505,11 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:background="@drawable/brand_list_item_shape"
+                            android:background="#fff"
                             android:paddingBottom="5dp"
                             android:paddingTop="5dp" >
 
@@ -451,11 +542,11 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:background="@drawable/brand_list_item_shape"
+                            android:background="#fff"
                             android:paddingBottom="5dp"
                             android:paddingTop="5dp" >
 
@@ -486,11 +577,11 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:background="@drawable/brand_list_item_shape"
+                            android:background="#fff"
                             android:paddingBottom="5dp"
                             android:paddingTop="5dp" >
 
@@ -522,64 +613,73 @@
                         </RelativeLayout>
 
                         <RelativeLayout
-                            android:id="@+id/downloadLinear"
+                            android:id="@+id/editpagedownload"
                             style="@style/brandStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
-                            android:background="@drawable/brand_list_item_shape"
-                            android:gravity="center" >
+                            android:background="#fff"
+                            android:visibility="gone" >
 
-                            <Button
-                                android:id="@+id/btnPdf1_Object"
-                                android:layout_width="wrap_content"
+                            <RelativeLayout
+                                android:id="@+id/downloadLinear"
+                                style="@style/brandStyle"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
+                                android:layout_gravity="center"
                                 android:layout_marginLeft="5dp"
-                                android:background="@drawable/ic_catalog" />
+                                android:layout_marginRight="5dp"
+                                android:background="#fff"
+                                android:gravity="center" >
 
-                            <Button
-                                android:id="@+id/btnPdf2_Object"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_toLeftOf="@+id/btnPdf1_Object"
-                                android:background="@drawable/ic_price" />
+                                <Button
+                                    android:id="@+id/btnPdf1_Object"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@drawable/ic_catalog" />
 
-                            <Button
-                                android:id="@+id/btnPdf3_Object"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_toLeftOf="@+id/btnPdf2_Object"
-                                android:background="@drawable/ic_pdf" />
+                                <Button
+                                    android:id="@+id/btnPdf2_Object"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_toLeftOf="@+id/btnPdf1_Object"
+                                    android:background="@drawable/ic_price" />
 
-                            <Button
-                                android:id="@+id/btnPdf4_Object"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_toLeftOf="@+id/btnPdf3_Object"
-                                android:background="@drawable/ic_video" />
-                        </RelativeLayout>
+                                <Button
+                                    android:id="@+id/btnPdf3_Object"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_toLeftOf="@+id/btnPdf2_Object"
+                                    android:background="@drawable/ic_pdf" />
 
-                        <RelativeLayout
-                            android:id="@+id/editpagedownload"
-                            style="@style/brandStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/brand_list_item_shape" >
+                                <Button
+                                    android:id="@+id/btnPdf4_Object"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_toLeftOf="@+id/btnPdf3_Object"
+                                    android:background="@drawable/ic_video" />
+                            </RelativeLayout>
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
+                                android:layout_below="@+id/downloadLinear"
+                                android:layout_centerVertical="true"
                                 android:layout_margin="10dp"
+                                android:gravity="center_horizontal"
+                                android:paddingBottom="10dp"
                                 android:text="ویرایش لینک های دانلود"
                                 android:textColor="@color/transparent" />
                         </RelativeLayout>
@@ -591,7 +691,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/brand_list_item_shape"
                     android:orientation="vertical" >
 
                     <ImageView
@@ -601,12 +700,20 @@
                         android:background="@drawable/no_image_header"
                         android:scaleType="fitXY" />
 
-                    <EditText
-                        android:id="@+id/descriptionpageedit"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:hint="توضیحات بیشتر" />
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@color/white" >
+
+                        <EditText
+                            android:id="@+id/descriptionpageedit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:hint="توضیحات بیشتر" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout

@@ -17,6 +17,8 @@ public class Users {
 	int Submit;
 	int Admin;
 	String ImageServerDate;
+	String ImagePath;
+	String ShowInfoItem;
 
 	public int getId() {
 		return Id;
@@ -148,7 +150,8 @@ public class Users {
 	public Users(int id, String name, String email, String password,
 			String phonenumber, String mobailenumber, String faxnumber,
 			String address, byte[] image, int serviceid, String serverdate,
-			String date, int submit, int admin) {
+			String date, int submit, int admin, String ImageServerDate,
+			String ImagePath, String ShowInfoItem) {
 
 		super();
 
@@ -166,6 +169,25 @@ public class Users {
 		Submit = submit;
 		Date = date;
 		Admin = admin;
+		this.ImageServerDate = ImageServerDate;
+		this.ImagePath = ImagePath;
+		this.ShowInfoItem = ShowInfoItem;
+	}
+
+	public String getShowInfoItem() {
+		return ShowInfoItem;
+	}
+
+	public void setShowInfoItem(String showInfoItem) {
+		ShowInfoItem = showInfoItem;
+	}
+
+	public String getImagePath() {
+		return ImagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		ImagePath = imagePath;
 	}
 
 	public Users() {

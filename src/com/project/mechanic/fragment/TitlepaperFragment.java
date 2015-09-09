@@ -156,8 +156,6 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 		Toast.makeText(getActivity(), "تعداد مقالات = " + countList,
 				Toast.LENGTH_SHORT).show();
 
-		final RelativeLayout timeline = utility.timeLineDrawing(getActivity());
-
 		lst.setOnScrollListener(new OnScrollListener() {
 
 			@Override
@@ -165,12 +163,10 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 				switch (scrollState) {
 				case SCROLL_STATE_TOUCH_SCROLL: {
 					action.setVisibility(View.GONE);
-					timeline.setVisibility(View.GONE);
 				}
 					break;
 				case SCROLL_STATE_IDLE: {
 					action.setVisibility(View.VISIBLE);
-					timeline.setVisibility(View.VISIBLE);
 
 				}
 					break;

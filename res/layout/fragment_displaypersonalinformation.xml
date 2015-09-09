@@ -1,306 +1,275 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scrollview"
+    android:id="@+id/lin__register"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/txtsize10"
-    android:layout_marginRight="@dimen/txtsize10"
-    android:layout_marginTop="@dimen/txtsize10"
-    android:background="@color/light_grey"
-    android:fillViewport="true"
-    android:scrollbars="vertical" >
+    android:background="#e9eaed"
+    android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/lin__register"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/light_grey"
-        android:orientation="vertical"
-        android:weightSum="6.7" >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/white" >
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/txtsize10"
-            android:layout_marginRight="@dimen/txtsize10"
-            android:layout_marginTop="@dimen/txtsize10"
-            android:layout_weight="0.8"
-            android:background="@color/blue3" >
+            android:id="@+id/lin2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/txtsize10" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/txtsize10"
-                android:background="@drawable/color1"
-                android:orientation="horizontal"
-                android:weightSum="3" >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1" >
-
-                    <LinearLayout
-                        android:id="@+id/lin2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1" >
-
-                        <ImageView
-                            android:id="@+id/img1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/no_img_profile" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="1"
-                    android:gravity="bottom" >
-
-                    <TextView
-                        android:id="@+id/txtdate"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="bottom"
-                        android:gravity="bottom"
-                        android:text="TextView" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:weightSum="2" >
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|center"
-                        android:layout_weight="0.8" >
-
-                        <ImageView
-                            android:id="@+id/logout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:layout_weight="1"
-                            android:src="@drawable/logout" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.2" >
-
-                        <TextView
-                            android:id="@+id/displayname"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center|top"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="TextView"
-                            android:textColor="@color/transparent"
-                            android:textSize="@dimen/item_font_size" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/img1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/no_img_profile" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/txtsize10"
-            android:layout_marginRight="@dimen/txtsize10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@+id/lin2"
             android:layout_weight="1"
-            android:background="@color/blue3"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/email"
+                android:id="@+id/displayname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="TextView"
+                android:textColor="@color/transparent"
+                android:textSize="@dimen/item_font_size" />
+
+            <TextView
+                android:id="@+id/txtdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/txtsize10"
+                android:layout_marginBottom="10dp"
                 android:text="TextView"
                 android:textColor="@color/transparent" />
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="@dimen/txtsize10"
-                android:gravity="right"
-                android:text="ایمیل :"
-                android:textColor="@color/transparent"
-                android:textSize="@dimen/activity_horizontal_margin" />
+            <ImageView
+                android:id="@+id/logout"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/logout" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/txtsize10"
+        <Button
+            android:id="@+id/btnedit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/lin2"
+            android:background="@drawable/buttonshape"
+            android:text="ویرایش اطلاعات"
+            android:textColor="@color/white"
+            android:textSize="10dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="TextView"
+            android:textColor="@color/transparent" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="20dp"
             android:layout_marginRight="@dimen/txtsize10"
-            android:layout_weight="1"
-            android:background="@color/blue3" >
+            android:layout_marginTop="20dp"
+            android:text="ایمیل :"
+            android:textColor="@color/transparent" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/txtsize10"
-                android:text="TextView"
-                android:textColor="@color/transparent" />
+    <RelativeLayout
+        android:id="@+id/laySabet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/white" >
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/txtsize10"
-                android:gravity="right"
-                android:text="شماره ثابت :"
-                android:textColor="@color/transparent"
-                android:textSize="@dimen/activity_horizontal_margin" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="TextView"
+            android:textColor="@color/transparent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/txtsize10"
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="20dp"
             android:layout_marginRight="@dimen/txtsize10"
-            android:layout_weight="1"
-            android:background="@color/blue3" >
+            android:layout_marginTop="20dp"
+            android:text="شماره ثابت :"
+            android:textColor="@color/transparent" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/cellphone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginLeft="@dimen/txtsize10"
-                android:gravity="right"
-                android:text="TextView"
-                android:textColor="@color/transparent" />
+    <RelativeLayout
+        android:id="@+id/layHamrah"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/white" >
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/txtsize10"
-                android:gravity="right"
-                android:text="شماره همراه :"
-                android:textColor="@color/transparent"
-                android:textSize="@dimen/activity_horizontal_margin" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/cellphone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="TextView"
+            android:textColor="@color/transparent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/txtsize10"
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="20dp"
             android:layout_marginRight="@dimen/txtsize10"
-            android:layout_weight="1"
-            android:background="@color/blue3"
-            android:orientation="horizontal" >
+            android:layout_marginTop="20dp"
+            android:text="شماره همراه :"
+            android:textColor="@color/transparent" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/fax"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:layout_marginLeft="@dimen/txtsize10"
-                android:gravity="right"
-                android:text="TextView"
-                android:textColor="@color/transparent" />
+    <RelativeLayout
+        android:id="@+id/layfax"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/txtsize10"
-                android:gravity="right"
-                android:text="دورنما :"
-                android:textColor="@color/transparent"
-                android:textSize="@dimen/activity_horizontal_margin" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/fax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="TextView"
+            android:textColor="@color/transparent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/txtsize10"
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="20dp"
             android:layout_marginRight="@dimen/txtsize10"
-            android:layout_weight="0.9"
-            android:background="@color/blue3"
-            android:weightSum="2" >
+            android:layout_marginTop="20dp"
+            android:text="دورنما :"
+            android:textColor="@color/transparent" />
+    </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8"
-                android:orientation="vertical" >
+    <RelativeLayout
+        android:id="@+id/layaddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/white" >
 
-                <ScrollView
-                    android:id="@+id/scrollView1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="TextView"
+            android:textColor="@color/transparent"
+            android:textSize="@dimen/item_font_size" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical" >
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="@dimen/txtsize10"
+            android:layout_marginTop="20dp"
+            android:text="آدرس :"
+            android:textColor="@color/transparent" />
+    </RelativeLayout>
 
-                        <TextView
-                            android:id="@+id/address"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:layout_marginLeft="@dimen/txtsize10"
-                            android:gravity="right"
-                            android:text="TextView"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textColor="@color/transparent"
-                            android:textSize="@dimen/item_font_size" />
-                    </LinearLayout>
-                </ScrollView>
-            </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/t"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="#394264" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.2" >
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="@dimen/txtsize10"
+            android:layout_marginTop="20dp"
+            android:text="لینک صفحات "
+            android:textColor="@color/white" />
 
-                <TextView
-                    android:id="@+id/textView12"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/txtsize10"
-                    android:gravity="right"
-                    android:text="آدرس :"
-                    android:textColor="@color/transparent"
-                    android:textSize="@dimen/activity_horizontal_margin" />
-            </LinearLayout>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/namepageList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/textView12"
+            android:text="namePage"
+            android:textColor="@color/white" />
+    </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center" >
+    <RelativeLayout
+        android:id="@+id/noPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:visibility="gone" >
 
-            <Button
-                android:id="@+id/btnedit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/txtsize80"
-                android:layout_marginRight="@dimen/txtsize80"
-                android:background="@drawable/buttonshape"
-                android:text="ویرایش اطلاعات" />
-        </LinearLayout>
-    </LinearLayout>
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="@dimen/txtsize10"
+            android:layout_marginTop="20dp"
+            android:text="شما فاقد صفحه در برنامه می باشید"
+            android:textColor="@color/transparent" />
+    </RelativeLayout>
 
-</ScrollView>
+</LinearLayout>

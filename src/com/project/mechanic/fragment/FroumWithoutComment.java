@@ -134,15 +134,14 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 			lp.height = util.getScreenwidth() / 7;
 			profileImg.setLayoutParams(lp);
 
-			if (u.getImage() == null) {
+			if (u.getImagePath() == null) {
 				profileImg.setImageResource(R.drawable.no_img_profile);
 				profileImg.setLayoutParams(lp);
 
 			} else {
-				byte[] bytepic = u.getImage();
+				//byte[] bytepic = u.getImage();
 
-				Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0,
-						bytepic.length);
+				Bitmap bmp = BitmapFactory.decodeFile(u.getImagePath());
 
 				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
 						50));
@@ -156,7 +155,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 			public void onClick(View arg0) {
 				FragmentTransaction trans = ((MainActivity) getActivity())
 						.getSupportFragmentManager().beginTransaction();
-				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
 				fragment.setArguments(bundle);
@@ -323,7 +322,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 				}
 
 			} else {
-				adapter.insertLikeInFroumToDb(CurrentUser.getId(), IdGglobal,
+				adapter.insertLikeInFroumToDb(id,CurrentUser.getId(), IdGglobal,
 						serverDate, 0);
 				likeTopic.setBackgroundResource(R.drawable.like_on);
 				count.setBackgroundResource(R.drawable.count_like);
@@ -389,6 +388,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 					params.put("FroumId", String.valueOf(IdGglobal));
 					params.put("CommentId", "0");
 					params.put("Date", output);
+					params.put("ModifyDate", output);
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 

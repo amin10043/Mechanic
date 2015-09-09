@@ -17,9 +17,11 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.WebView.FindListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,9 +47,11 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 	Fragment fr;
 	RelativeLayout followLayout;
 	RelativeLayout.LayoutParams paramsfollow, paramsVisit;
+	ProgressBar LoadingProgress;
+	boolean IsShow;
 
 	public ObjectListAdapter(Context context, int resource,
-			List<Object> objact, Fragment fr) {
+			List<Object> objact, Fragment fr , boolean IsShow) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -55,6 +59,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
 		this.fr = fr;
+		this.IsShow = IsShow;
 
 	}
 
@@ -77,6 +82,8 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 				.findViewById(R.id.Rowobjecttxt);
 
 		final Object person = list.get(position);
+		
+		LoadingProgress = (ProgressBar)convertView.findViewById(R.id.progressBar1);
 
 		txt1.setText(person.getName());
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
@@ -109,11 +116,15 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 			profileIco.setImageBitmap(profileImage);
 			profileIco.setLayoutParams(lp);
+			LoadingProgress.setVisibility(View.GONE);
+
 
 		} else {
 			profileIco.setImageResource(R.drawable.no_img_profile);
 			profileIco.setLayoutParams(lp);
 		}
+		if (IsShow==false)
+		LoadingProgress.setVisibility(View.GONE);
 
 		// if (person.getImage2() == null) {
 		//

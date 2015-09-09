@@ -35,6 +35,7 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.DialogcmtInobject;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
+import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -189,7 +190,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 				userId = y.getId();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
 				fragment.setArguments(bundle);
@@ -320,7 +321,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
 				fragment.setArguments(bundle);

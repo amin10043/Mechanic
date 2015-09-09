@@ -9,7 +9,7 @@
         android:id="@+id/layout_group_chat_professional"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:background="#d3dff9" >
 
         <ImageView
@@ -27,7 +27,7 @@
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
             android:layout_toLeftOf="@+id/icon_group_chat"
-            android:text="گفتمان های تخصصی"
+            android:text="تالارهای تخصصی"
             android:textColor="@color/transparent" />
 
         <ImageView
@@ -44,7 +44,7 @@
         android:id="@+id/layout_public"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:background="#d3dff9" >
 
         <ImageView
@@ -62,7 +62,7 @@
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
             android:layout_toLeftOf="@+id/icon_group_chat_public"
-            android:text="گفتمان های عمومی"
+            android:text="تالار عمومی"
             android:textColor="@color/transparent" />
 
         <ImageView
@@ -79,7 +79,7 @@
         android:id="@+id/tabrid_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:background="#d3dff9"
         android:visibility="gone" >
 
@@ -115,7 +115,7 @@
         android:id="@+id/healing_cooling_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:background="#d3dff9"
         android:visibility="gone" >
 
@@ -151,7 +151,7 @@
         android:id="@+id/floor_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:background="#d3dff9"
         android:visibility="gone" >
 
@@ -187,7 +187,7 @@
         android:id="@+id/bms_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:background="#d3dff9"
         android:visibility="gone" >
 

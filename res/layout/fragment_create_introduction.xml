@@ -3,7 +3,7 @@
     android:id="@+id/btncancle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAEAEA"
+    android:background="#e9eaed"
     android:orientation="vertical" >
 
     <ScrollView
@@ -25,7 +25,7 @@
                 <ImageView
                     android:id="@+id/imgvadvertise_Object"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="50dp"
                     android:background="@drawable/no_image_header"
                     android:scaleType="fitXY" />
             </LinearLayout>
@@ -93,13 +93,13 @@
 
                         <RelativeLayout
                             android:id="@+id/editNetwork"
-                            style="@style/brandStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
+                            android:background="#fff"
                             android:paddingBottom="20dp" >
 
                             <LinearLayout
@@ -260,13 +260,14 @@
                         </RelativeLayout>
 
                         <RelativeLayout
-                            style="@style/brandStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
-                            android:layout_weight="1" >
+                           android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="#fff" >
 
                             <ImageView
                                 android:id="@+id/showad_img2"
@@ -274,9 +275,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
-                                android:layout_margin="10dp"
+                                android:layout_margin="5dp"
                                 android:background="@drawable/phone"
-                                android:textColor="#000" />
+                                 />
 
                             <EditText
                                 android:id="@+id/ephone"
@@ -295,16 +296,15 @@
                         </RelativeLayout>
 
                         <RelativeLayout
-                            style="@style/brandStyle"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
+                         android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:paddingBottom="5dp"
-                             >
+                            android:background="#fff"
+                            android:paddingBottom="5dp" >
 
                             <ImageView
                                 android:id="@+id/imageView3"
@@ -312,10 +312,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
-                                android:layout_gravity="left"
-                                android:layout_margin="10dp"
-                                android:layout_weight="0.1"
-                                android:src="@drawable/fax" />
+                                android:layout_margin="5dp"
+                                android:background="@drawable/fax" />
 
                             <TextView
                                 android:id="@+id/textView10"
@@ -338,16 +336,15 @@
                         </RelativeLayout>
 
                         <RelativeLayout
-                            style="@style/brandStyle"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
+                           android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:paddingBottom="5dp"
-                            >
+                            android:background="#fff"
+                            android:paddingBottom="5dp" >
 
                             <ImageView
                                 android:id="@+id/imageView4"
@@ -355,10 +352,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
-                                android:layout_margin="10dp"
-                                android:layout_weight="0.1"
-                                android:background="@drawable/cphone"
-                                android:textColor="#000" />
+                                android:layout_margin="5dp"
+                                android:background="@drawable/cphone" />
 
                             <EditText
                                 android:id="@+id/emobile"
@@ -373,16 +368,15 @@
                         </RelativeLayout>
 
                         <RelativeLayout
-                            style="@style/brandStyle"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
+                         android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:paddingBottom="5dp"
-                             >
+                            android:background="#fff"
+                            android:paddingBottom="5dp" >
 
                             <ImageView
                                 android:id="@+id/imageView5"
@@ -390,9 +384,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerInParent="true"
-                                android:layout_margin="10dp"
-                                android:src="@drawable/email"
-                                android:textColor="#000" />
+                                android:layout_margin="5dp"
+                                android:background="@drawable/email"
+                               />
 
                             <EditText
                                 android:id="@+id/eemail"
@@ -406,16 +400,15 @@
                         </RelativeLayout>
 
                         <RelativeLayout
-                            style="@style/brandStyle"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
+                             android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:paddingBottom="5dp"
-                             >
+                            android:background="#fff"
+                            android:paddingBottom="5dp" >
 
                             <ImageButton
                                 android:id="@+id/imageButton8"
@@ -423,10 +416,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
-                                android:layout_margin="10dp"
-                                android:layout_weight="0.1"
-                                android:background="#0000"
-                                android:src="@drawable/map" />
+                                android:layout_margin="5dp"
+                                android:background="@drawable/map" />
 
                             <EditText
                                 android:id="@+id/eaddress"
@@ -444,63 +435,64 @@
                         </RelativeLayout>
 
                         <RelativeLayout
-                            android:id="@+id/downloadLinear"
-                            style="@style/brandStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center" >
-
-                            <Button
-                                android:id="@+id/btnPdf1_Object"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_marginLeft="5dp"
-                                android:background="@drawable/ic_catalog" />
-
-                            <Button
-                                android:id="@+id/btnPdf2_Object"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_toLeftOf="@+id/btnPdf1_Object"
-                                android:background="@drawable/ic_price" />
-
-                            <Button
-                                android:id="@+id/btnPdf3_Object"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_toLeftOf="@+id/btnPdf2_Object"
-                                android:background="@drawable/ic_pdf" />
-
-                            <Button
-                                android:id="@+id/btnPdf4_Object"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_toLeftOf="@+id/btnPdf3_Object"
-                                android:background="@drawable/ic_video" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
                             android:id="@+id/editdownload"
                             style="@style/brandStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="25dp"
-                            android:layout_marginRight="25dp" >
+                           android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@color/white"
+                            android:paddingBottom="20dp"
+                            android:layout_marginTop="10dp" >
+
+                            <RelativeLayout
+                                android:id="@+id/downloadLinear"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center" >
+
+                                <Button
+                                    android:id="@+id/btnPdf1_Object"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginLeft="5dp"
+                                    android:background="@drawable/ic_catalog" />
+
+                                <Button
+                                    android:id="@+id/btnPdf2_Object"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_toLeftOf="@+id/btnPdf1_Object"
+                                    android:background="@drawable/ic_price" />
+
+                                <Button
+                                    android:id="@+id/btnPdf3_Object"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_toLeftOf="@+id/btnPdf2_Object"
+                                    android:background="@drawable/ic_pdf" />
+
+                                <Button
+                                    android:id="@+id/btnPdf4_Object"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_toLeftOf="@+id/btnPdf3_Object"
+                                    android:background="@drawable/ic_video" />
+                            </RelativeLayout>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
+                                android:layout_below="@+id/downloadLinear"
+                                android:layout_centerHorizontal="true"
                                 android:layout_margin="20dp"
+                                android:gravity="center"
                                 android:text="ویرایش لینک های دانلود"
                                 android:textColor="@color/transparent" />
                         </RelativeLayout>
@@ -518,7 +510,7 @@
                     <ImageView
                         android:id="@+id/imgvadvertise2_Object"
                         android:layout_width="match_parent"
-                        android:layout_height="160dp"
+                        android:layout_height="50dp"
                         android:background="@drawable/no_image_header"
                         android:scaleType="fitXY" />
                 </LinearLayout>
@@ -533,11 +525,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"
-                        android:layout_marginTop="10dp"
+                       android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:background="#CCCCCC" >
+                        android:background="#fff" >
 
                         <EditText
                             android:id="@+id/descriptionEdittext"
@@ -554,23 +545,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical" >
 
-                    <ScrollView
-                        android:id="@+id/scrollView2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical" >
-
-                            <ListView
-                                android:id="@+id/listvCmt_Introduction"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" >
-                            </ListView>
-                        </LinearLayout>
-                    </ScrollView>
+                    
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

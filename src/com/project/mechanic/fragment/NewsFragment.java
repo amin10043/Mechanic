@@ -40,10 +40,8 @@ public class NewsFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_news, null);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
-		
+
 		Utility utility = new Utility(getActivity());
-		RelativeLayout timeLine = utility.timeLineDrawing(getActivity());
-		timeLine.setVisibility(View.GONE);
 
 		dbAdapter.open();
 		List<ListItem> mylist = dbAdapter.getListItemsById(id);

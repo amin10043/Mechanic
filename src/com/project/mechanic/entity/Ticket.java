@@ -26,6 +26,8 @@ public class Ticket implements Comparable<Ticket> {
 	int Submit;
 	int seenBefore;
 	int Day;
+	String imagePath;
+	String ImageServerDate;
 
 	public int getSeenBefore() {
 		return seenBefore;
@@ -225,7 +227,8 @@ public class Ticket implements Comparable<Ticket> {
 			String date, int Typeid, int name, int email, int mobile,
 			int phone, int fax, int provinceid, String uname, String uemail,
 			String uphone, String ufax, String uadress, byte[] uimage,
-			String umobile, int seen, int submit, int seenBefore, int day) {
+			String umobile, int seen, int submit, int seenBefore, int day,
+			String imagePath, String ImageServerDate) {
 		super();
 		Id = id;
 		Title = title;
@@ -251,7 +254,25 @@ public class Ticket implements Comparable<Ticket> {
 		Submit = submit;
 		this.seenBefore = seenBefore;
 		Day = day;
+		this.imagePath = imagePath;
+		this.ImageServerDate = ImageServerDate;
 
+	}
+
+	public String getImageServerDate() {
+		return ImageServerDate;
+	}
+
+	public void setImageServerDate(String imageServerDate) {
+		ImageServerDate = imageServerDate;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 
 	@Override

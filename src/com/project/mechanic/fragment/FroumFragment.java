@@ -1,5 +1,6 @@
 package com.project.mechanic.fragment;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,15 +37,18 @@ import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.LikeInFroum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
+import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.UpdatingImage;
+import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class FroumFragment extends Fragment implements AsyncInterface {
-
-	// start defined by masoud
+public class FroumFragment extends Fragment implements AsyncInterface,
+		GetAsyncInterface, CommInterface {
 
 	DataBaseAdapter adapter;
 	ExpandableCommentFroum exadapter;
@@ -67,7 +71,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 	ExpandableListView exlistview;
 
 	View header;
-	Users CurrentUser;
+	Users CurrentUser, uu;
 	int IDcurrentUser;
 	// PersianDate date;
 	Utility util;
@@ -84,7 +88,14 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 	String serverDate = "";
 	ServerDate date;
 
-	// end defined by masoud
+	ArrayList<Integer> missedIds;
+	boolean check = false;
+	int controller = 0;
+	int iid;
+
+	ServiceComm service;
+	UpdatingImage updating;
+	Map<String, String> maps;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -99,8 +110,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 		user = new Users();
 
-		// date = new PersianDate();
-		// currentDate = date.todayShamsi();
+		missedIds = new ArrayList<Integer>();
 
 		header = getActivity().getLayoutInflater().inflate(
 				R.layout.header_expandable, null);
@@ -156,15 +166,14 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 			lp.height = util.getScreenwidth() / 7;
 			profileImg.setLayoutParams(lp);
 
-			if (u.getImage() == null) {
+			if (u.getImagePath() == null) {
 				profileImg.setImageResource(R.drawable.no_img_profile);
 				profileImg.setLayoutParams(lp);
 
 			} else {
-				byte[] bytepic = u.getImage();
+				// byte[] bytepic = u.getImage();
 
-				Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0,
-						bytepic.length);
+				Bitmap bmp = BitmapFactory.decodeFile(u.getImagePath());
 				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
 						50));
 
@@ -183,7 +192,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 
 				FragmentTransaction trans = ((MainActivity) getActivity())
 						.getSupportFragmentManager().beginTransaction();
-				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
 				fragment.setArguments(bundle);
@@ -224,6 +233,31 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 			mapCollection.put(comment, reply);
 		}
 
+		if (commentGroup != null) {
+			Users uId;
+			for (int i = 0; i < commentGroup.size(); i++) {
+
+				CommentInFroum cm = commentGroup.get(i);
+				int uidd = cm.getUserid();
+				uId = adapter.getUserById(uidd);
+
+				if (uId == null) {
+					missedIds.add(uidd);
+				}
+
+			}
+
+		}
+
+		if (missedIds.size() > 0) {
+
+			date = new ServerDate(getActivity());
+			date.delegate = FroumFragment.this;
+			date.execute("");
+			check = true;
+
+		}
+
 		exlistview.addHeaderView(header);
 		exadapter = new ExpandableCommentFroum(getActivity(),
 				(ArrayList<CommentInFroum>) commentGroup, mapCollection, this,
@@ -232,7 +266,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 		exadapter.notifyDataSetChanged();
 
 		exlistview.setAdapter(exadapter);
-		
+
 		if (CurrentUser == null) {
 			likeTopic.setBackgroundResource(R.drawable.like_off);
 			count.setBackgroundResource(R.drawable.count_like_off);
@@ -391,10 +425,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 				froumid);
 		exadapter.notifyDataSetChanged();
 		exlistview.setAdapter(exadapter);
-		// int c = mapCollection.get(reply.get(groupPosition)).size();
 
-		// exlistview.setSelectedGroup(groupPosition);
-		// exlistview.setSelectedChild(groupPosition, 10, true);
 		exlistview.expandGroup(groupPosition);
 		adapter.close();
 
@@ -423,7 +454,7 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 				}
 
 			} else {
-				adapter.insertLikeInFroumToDb(CurrentUser.getId(), froumid,
+				adapter.insertLikeInFroumToDb(id, CurrentUser.getId(), froumid,
 						serverDate, 0);
 				likeTopic.setBackgroundResource(R.drawable.like_on);
 				count.setBackgroundResource(R.drawable.count_like);
@@ -441,6 +472,13 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 					&& !(output.contains("Exception") || output
 							.contains("java"))) {
 				adapter.open();
+
+				serverDate = output;
+
+				if (check == true) {
+					getUserFromServer(missedIds, controller);
+					return;
+				}
 
 				if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid)) {
 					adapter.open();
@@ -492,8 +530,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 
-					serverDate = output;
-
 					saving.execute(params);
 
 					ringProgressDialog = ProgressDialog.show(getActivity(), "",
@@ -515,9 +551,6 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 						}
 					}).start();
 
-					// countLikeFroum.setText(adapter
-					// .LikeInFroum_count(ItemId).toString());
-
 					adapter.close();
 
 				}
@@ -535,6 +568,61 @@ public class FroumFragment extends Fragment implements AsyncInterface {
 			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
 					.show();
 		}
+	}
+
+	private void getUserFromServer(ArrayList<Integer> missedIds, int controller) {
+
+		if (controller < missedIds.size()) {
+
+			iid = missedIds.get(controller);
+
+			service = new ServiceComm(getActivity());
+			service.delegate = FroumFragment.this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+			items.put("tableName", "getUserById");
+			items.put("Id", String.valueOf(iid));
+			service.execute(items);
+
+		}
+
+	}
+
+	@Override
+	public void CommProcessFinish(String output) {
+
+		if (!"".equals(output)
+				&& output != null
+				&& !(output.contains("Exception") || output.contains("java") || output
+						.contains("soap"))) {
+			util.parseQuery(output);
+
+			adapter.open();
+
+			uu = adapter.getUserById(iid);
+
+			adapter.close();
+
+			updating = new UpdatingImage(getActivity());
+			updating.delegate = FroumFragment.this;
+			maps = new LinkedHashMap<String, String>();
+			maps.put("tableName", "Users");
+			maps.put("Id", String.valueOf(uu.getId()));
+			maps.put("fromDate", uu.getImageServerDate());
+			updating.execute(maps);
+
+		} else
+			Toast.makeText(getActivity(), "خطا در دریافت کاربران", 0).show();
+	}
+
+	@Override
+	public void processFinish(byte[] output) {
+
+		util.CreateFile(output, iid, "Mechanical", "Users", "user", "Users");
+		adapter.open();
+		adapter.UpdateImageServerDate(iid, "Users", serverDate);
+		adapter.close();
+
+		updateList();
 	}
 
 }

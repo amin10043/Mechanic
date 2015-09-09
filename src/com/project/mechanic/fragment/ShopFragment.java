@@ -27,7 +27,7 @@ public class ShopFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		//((MainActivity) getActivity()).setActivityTitle(R.string.ostan);
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.ostan);
 
 		View view = inflater.inflate(R.layout.fragment_shop, null);
 
@@ -37,14 +37,11 @@ public class ShopFragment extends Fragment {
 
 		ArrayList<Province> mylist = adapter.getAllProvinceName();
 		adapter.close();
-		
-		Utility util = new Utility(getActivity());
-		RelativeLayout timeLine = util.timeLineDrawing(getActivity());
-		timeLine.setVisibility(View.GONE);
 
+		Utility util = new Utility(getActivity());
 		ListView lstProvince = (ListView) view.findViewById(R.id.listVshop);
-		ShopListAdapter ListAdapter = new ShopListAdapter(
-				getActivity(), R.layout.row_ostan, mylist);
+		ShopListAdapter ListAdapter = new ShopListAdapter(getActivity(),
+				R.layout.row_ostan, mylist);
 
 		lstProvince.setAdapter(ListAdapter);
 

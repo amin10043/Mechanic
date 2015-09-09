@@ -273,7 +273,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:src="@drawable/ic_personal" />
+                            android:src="@drawable/ic_personal2" />
 
                         <TextView
                             android:id="@+id/fragment_showad_tx1"
@@ -288,6 +288,13 @@
                             android:lines="1"
                             android:text="mmmmmmmm"
                             android:textColor="@color/transparent" />
+                        
+                        <ImageView 
+                            android:layout_width="400dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/custom_drawable"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -319,6 +326,12 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/email" />
+                           <ImageView 
+                            android:layout_width="400dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/custom_drawable"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -350,6 +363,12 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/phone" />
+                           <ImageView 
+                            android:layout_width="400dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/custom_drawable"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -381,6 +400,13 @@
                             android:gravity="center"
                             android:text="mobile"
                             android:textColor="@color/transparent" />
+                           <ImageView 
+                            android:layout_width="400dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/custom_drawable"/>
+                        
                     </RelativeLayout>
 
                     <RelativeLayout

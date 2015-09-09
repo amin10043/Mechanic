@@ -1,6 +1,7 @@
 package com.project.mechanic.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,14 +51,14 @@ public class SlideMenuAdapter extends BaseAdapter {
 		TextView nametxt = (TextView) convertView.findViewById(R.id.namemenu);
 
 		Users u = util.getCurrentUser();
-		if (position == 2 && u != null && u.getImage() != null) {
-			iconImg.setImageBitmap(Utility.getRoundedCornerBitmap(BitmapFactory
-					.decodeByteArray(u.getImage(), 0, u.getImage().length), 100));
-
-		} else {
-			iconImg.setImageResource(icon[position]);
-
-		}
+		// if (/* position == 2 && */u != null && u.getImage() != null) {
+		// iconImg.setImageBitmap(Utility.getRoundedCornerBitmap(BitmapFactory
+		// .decodeByteArray(u.getImage(), 0, u.getImage().length), 100));
+		//
+		// } else {
+		iconImg.setImageResource(icon[position]);
+		//
+		// }
 
 		if (position == 0) {
 			RelativeLayout layout = (RelativeLayout) convertView
@@ -69,8 +70,15 @@ public class SlideMenuAdapter extends BaseAdapter {
 			lp.addRule(RelativeLayout.CENTER_IN_PARENT);
 
 			iconImg.setLayoutParams(lp);
-			iconImg.setImageResource(R.drawable.mechanical_logo);
-			
+			Bitmap ttb;
+			if (u != null && u.getImage() != null) {
+
+				ttb = BitmapFactory.decodeByteArray(u.getImage(), 0,
+						u.getImage().length);
+				iconImg.setImageBitmap(ttb);
+			}
+			// iconImg.setImageResource(R.drawable.mechanical_logo);
+
 			nametxt.setVisibility(View.GONE);
 		}
 

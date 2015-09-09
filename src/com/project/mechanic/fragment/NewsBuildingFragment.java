@@ -48,9 +48,7 @@ public class NewsBuildingFragment extends Fragment {
 		dbAdapter.close();
 		
 		Utility util = new Utility(getActivity());
-		RelativeLayout timeLine = util.timeLineDrawing(getActivity());
-		timeLine.setVisibility(View.GONE);
-
+		
 		ListView lstNewsPaper = (ListView) view.findViewById(R.id.lstVnews);
 		
 		NewspaperAdapter ListAdapter = new NewspaperAdapter(getActivity(),
