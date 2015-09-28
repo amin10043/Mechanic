@@ -9,6 +9,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
@@ -48,6 +50,8 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 	ServerDate date;
 	LinearLayout reaportLayout;
 
+	RelativeLayout SendMessage;
+
 	public DialogLongClick(Context context, int source, int UserIdObject,
 			int item, Fragment fragment, String desc) {
 		super(context);
@@ -66,15 +70,17 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setBackgroundDrawable(
-				new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//		requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		getWindow().setBackgroundDrawable(
+//				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 		setContentView(R.layout.dialog_long_click);
 		delete = (RelativeLayout) findViewById(R.id.delete_item);
-		reaportLayout = (LinearLayout)findViewById(R.id.report_item_click);
-		
+		reaportLayout = (LinearLayout) findViewById(R.id.report_item_click);
+
 		report = (ImageView) findViewById(R.id.report_item);
+
+		SendMessage = (RelativeLayout) findViewById(R.id.send_item);
 
 		if (util.getCurrentUser() == null) {
 			dismiss();
@@ -88,6 +94,24 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 		// source == 5 >>>> Comment froum
 		// source == 6 >>>> Comment paper
 		// source == 7 >>>> Comment object
+
+		SendMessage.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				CountryOrProvince fragment = new CountryOrProvince();
+
+				FragmentTransaction trans = ((MainActivity) context)
+						.getSupportFragmentManager().beginTransaction();
+
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+				
+				dismiss();
+
+			}
+		});
 
 		delete.setOnClickListener(new View.OnClickListener() {
 
@@ -203,9 +227,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 									0).show();
 						}
 
-						
-
-						 else {
+						else {
 
 							service = new ServiceComm(context);
 							service.delegate = DialogLongClick.this;
@@ -354,11 +376,11 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 					Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 			}
 		});
-		
-		final RadioGroup rdGroup = (RadioGroup)findViewById(R.id.rb1);
-		
+
+		final RadioGroup rdGroup = (RadioGroup) findViewById(R.id.rb1);
+
 		reaportLayout.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				rdGroup.setVisibility(View.VISIBLE);

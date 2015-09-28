@@ -29,10 +29,12 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.fragment.DialogLongClick;
+import com.project.mechanic.fragment.DialogManagementTicket;
 import com.project.mechanic.fragment.ShowAdFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
+@SuppressLint("ResourceAsColor")
 public class AnadListAdapter extends ArrayAdapter<Ticket> {
 
 	Context context;
@@ -49,7 +51,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 
 
 	public AnadListAdapter(Context context, int resource, List<Ticket> objact,
-			int ProvinceId, Fragment fragment , boolean IsShow) {
+			int ProvinceId, Fragment fragment, boolean IsShow) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -59,7 +61,6 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 		util = new Utility(context);
 		this.fragment = fragment;
 		this.IsShow = IsShow;
-
 
 	}
 
@@ -80,15 +81,16 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 				.findViewById(R.id.row_anad_txt2);
 		ImageView img2 = (ImageView) convertView
 				.findViewById(R.id.row_favorite_img);
-		
-		LoadingProgress = (ProgressBar)convertView.findViewById(R.id.progressBar1);
+
+		LoadingProgress = (ProgressBar) convertView
+				.findViewById(R.id.progressBar1);
 
 		tempItem = list.get(position);
 		txtdate.setText(util.getPersianDate(tempItem.getDate()));
 		txtName.setText(tempItem.getTitle());
-		if (tempItem.getDesc() !=null && !tempItem.getDesc().equals("null"))
+		if (tempItem.getDesc() != null && !tempItem.getDesc().equals("null"))
 			txtDesc.setText(tempItem.getDesc() + " ... ");
-		byte[] bitmapbyte = tempItem.getImage();
+		// byte[] bitmapbyte = tempItem.getImage();
 		if (tempItem.getSeenBefore() > 0) {
 			txtName.setTextColor(Color.GRAY);
 			txtDesc.setTextColor(Color.GRAY);
@@ -104,36 +106,58 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 		params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		params.setMargins(1, 1, 1, 1);
-		
-		
+
 		String pathProfile = tempItem.getImagePath();
 		Bitmap profileImage = BitmapFactory.decodeFile(pathProfile);
 
-		
 		if (profileImage != null) {
 
 			img2.setImageBitmap(profileImage);
 			img2.setLayoutParams(params);
 			LoadingProgress.setVisibility(View.GONE);
 
-
 		} else {
 			img2.setImageResource(R.drawable.no_img_profile);
 			img2.setLayoutParams(params);
 		}
-		if (IsShow==false)
+		if (IsShow == false)
 			LoadingProgress.setVisibility(View.GONE);
 
-//		if (bitmapbyte != null) {
-//			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-//					bitmapbyte.length);
-//			img2.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
-//			img2.setLayoutParams(params);
-//		} else {
-//			img2.setBackgroundResource(R.drawable.no_img_profile);
-//			img2.setLayoutParams(params);
-//
-//		}
+		String commitDate = tempItem.getDate();
+		int thisDay = 0;
+		int TicketDay = Integer.valueOf(commitDate.substring(0, 8));
+		if (util.todayDate != null)
+			thisDay = Integer.valueOf(util.todayDate.substring(0, 8));
+		LinearLayout TicketBackground = (LinearLayout) convertView
+				.findViewById(R.id.backgroundTicket);
+
+		if (thisDay <= TicketDay + tempItem.getDay()) {			
+			TicketBackground.setBackgroundColor(Color.WHITE);
+			if (tempItem.getSeenBefore() > 0) {
+				txtName.setTextColor(Color.GRAY);
+				txtDesc.setTextColor(Color.GRAY);
+				txtdate.setTextColor(Color.GRAY);
+			}
+		} else {
+			TicketBackground.setBackgroundResource(R.color.lightred);
+			if (tempItem.getSeenBefore() > 0) {
+				txtName.setTextColor(Color.WHITE);
+				txtDesc.setTextColor(Color.WHITE);
+				txtdate.setTextColor(Color.WHITE);
+
+			}
+		}
+
+		// if (bitmapbyte != null) {
+		// Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
+		// bitmapbyte.length);
+		// img2.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
+		// img2.setLayoutParams(params);
+		// } else {
+		// img2.setBackgroundResource(R.drawable.no_img_profile);
+		// img2.setLayoutParams(params);
+		//
+		// }
 
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BROYA.TTF");

@@ -442,19 +442,21 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 						 */
 
 						params = new LinkedHashMap<String, String>();
-						deleting = new Deleting(context);
-						deleting.delegate = ExpandIntroduction.this;
+						if (context != null) {
 
-						params.put("TableName", "LikeInCommentObject");
+							deleting = new Deleting(context);
+							deleting.delegate = ExpandIntroduction.this;
 
-						params.put("UserId",
-								String.valueOf(Currentuser.getId()));
+							params.put("TableName", "LikeInCommentObject");
 
-						params.put("IsLike", String.valueOf(0));
-						params.put("CommentId", String.valueOf(CommentId));
+							params.put("UserId",
+									String.valueOf(Currentuser.getId()));
 
-						deleting.execute(params);
+							params.put("IsLike", String.valueOf(0));
+							params.put("CommentId", String.valueOf(CommentId));
 
+							deleting.execute(params);
+						}
 						ringProgressDialog = ProgressDialog.show(context, "",
 								"لطفا منتظر بمانید...", true);
 
@@ -497,25 +499,29 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 							params = new LinkedHashMap<String, String>();
 
-							saving = new Saving(context);
-							saving.delegate = ExpandIntroduction.this;
+							if (context != null) {
 
-							params.put("TableName", "LikeInCommentObject");
+								saving = new Saving(context);
+								saving.delegate = ExpandIntroduction.this;
 
-							params.put("UserId",
-									String.valueOf(Currentuser.getId()));
+								params.put("TableName", "LikeInCommentObject");
 
-							params.put("IsLike", String.valueOf(0));
-							params.put("CommentId", String.valueOf(CommentId));
+								params.put("UserId",
+										String.valueOf(Currentuser.getId()));
 
-							params.put("IsUpdate", "0");
-							params.put("Id", "0");
+								params.put("IsLike", String.valueOf(0));
+								params.put("CommentId",
+										String.valueOf(CommentId));
 
-							saving.execute(params);
+								params.put("IsUpdate", "0");
+								params.put("Id", "0");
 
-							ringProgressDialog = ProgressDialog.show(context,
-									"", "لطفا منتظر بمانید...", true);
+								saving.execute(params);
 
+								ringProgressDialog = ProgressDialog.show(
+										context, "", "لطفا منتظر بمانید...",
+										true);
+							}
 							ringProgressDialog.setCancelable(true);
 
 							new Thread(new Runnable() {
@@ -599,19 +605,21 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 							Currentuser.getId(), CommentId, 1)) {
 
 						params = new LinkedHashMap<String, String>();
-						deleting = new Deleting(context);
-						deleting.delegate = ExpandIntroduction.this;
+						if (context != null) {
 
-						params.put("TableName", "LikeInCommentObject");
+							deleting = new Deleting(context);
+							deleting.delegate = ExpandIntroduction.this;
 
-						params.put("UserId",
-								String.valueOf(Currentuser.getId()));
+							params.put("TableName", "LikeInCommentObject");
 
-						params.put("IsLike", String.valueOf(1));
-						params.put("CommentId", String.valueOf(CommentId));
+							params.put("UserId",
+									String.valueOf(Currentuser.getId()));
 
-						deleting.execute(params);
+							params.put("IsLike", String.valueOf(1));
+							params.put("CommentId", String.valueOf(CommentId));
 
+							deleting.execute(params);
+						}
 						ringProgressDialog = ProgressDialog.show(context, "",
 								"لطفا منتظر بمانید...", true);
 
@@ -652,22 +660,25 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 							params = new LinkedHashMap<String, String>();
 
-							saving = new Saving(context);
-							saving.delegate = ExpandIntroduction.this;
+							if (context != null) {
 
-							params.put("TableName", "LikeInCommentObject");
+								saving = new Saving(context);
+								saving.delegate = ExpandIntroduction.this;
 
-							params.put("UserId",
-									String.valueOf(Currentuser.getId()));
+								params.put("TableName", "LikeInCommentObject");
 
-							params.put("IsLike", String.valueOf(1));
-							params.put("CommentId", String.valueOf(CommentId));
+								params.put("UserId",
+										String.valueOf(Currentuser.getId()));
 
-							params.put("IsUpdate", "0");
-							params.put("Id", "0");
+								params.put("IsLike", String.valueOf(1));
+								params.put("CommentId",
+										String.valueOf(CommentId));
 
-							saving.execute(params);
+								params.put("IsUpdate", "0");
+								params.put("Id", "0");
 
+								saving.execute(params);
+							}
 							ringProgressDialog = ProgressDialog.show(context,
 									"", "لطفا منتظر بمانید...", true);
 

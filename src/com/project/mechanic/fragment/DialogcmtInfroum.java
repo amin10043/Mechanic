@@ -89,10 +89,12 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 							"برای ثبت نظر ابتدا باید وارد شوید.",
 							Toast.LENGTH_LONG)).show();
 				} else {
-					date = new ServerDate(context);
-					date.delegate = DialogcmtInfroum.this;
-					date.execute("");
+					if (context != null) {
+						date = new ServerDate(context);
+						date.delegate = DialogcmtInfroum.this;
+						date.execute("");
 
+					}
 				}
 
 			}
@@ -183,25 +185,28 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 								.contains("java"))) {
 
 					params = new LinkedHashMap<String, String>();
-					saving = new Saving(context);
-					saving.delegate = DialogcmtInfroum.this;
 
-					params.put("TableName", "CommentInFroum");
+					if (context != null) {
+						saving = new Saving(context);
+						saving.delegate = DialogcmtInfroum.this;
 
-					params.put("Desk", Cmttxt.getText().toString());
-					params.put("FroumId", String.valueOf(Froumid));
-					params.put("UserId", String.valueOf(currentUser.getId()));
-					params.put("CommentId", String.valueOf(Commentid));
-					params.put("NumofDisLike", String.valueOf(0));
-					params.put("NumofLike", String.valueOf(0));
-					params.put("Date", output);
-					params.put("ModifyDate", output);
-					params.put("IsUpdate", "0");
-					params.put("Id", "0");
-					serverDate = output;
+						params.put("TableName", "CommentInFroum");
 
-					saving.execute(params);
+						params.put("Desk", Cmttxt.getText().toString());
+						params.put("FroumId", String.valueOf(Froumid));
+						params.put("UserId",
+								String.valueOf(currentUser.getId()));
+						params.put("CommentId", String.valueOf(Commentid));
+						params.put("NumofDisLike", String.valueOf(0));
+						params.put("NumofLike", String.valueOf(0));
+						params.put("Date", output);
+						params.put("ModifyDate", output);
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+						serverDate = output;
 
+						saving.execute(params);
+					}
 					ringProgressDialog = ProgressDialog.show(context, "",
 							"لطفا منتظر بمانید...", true);
 

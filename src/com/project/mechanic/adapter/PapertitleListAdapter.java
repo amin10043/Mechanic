@@ -142,18 +142,18 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 		lp.height = util.getScreenwidth() / 7;
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
+		String ImagePath = x.getImagePath();
 
 		if (x != null) {
 
-			if (x.getImage() == null) {
+			if (ImagePath == null) {
 				iconProile.setImageResource(R.drawable.no_img_profile);
 				iconProile.setLayoutParams(lp);
 
 			} else {
 
-				byte[] byteImg = x.getImage();
-				Bitmap bmp = BitmapFactory.decodeByteArray(byteImg, 0,
-						byteImg.length);
+				//byte[] byteImg = x.getImage();
+				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
 				iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
 						50));
 

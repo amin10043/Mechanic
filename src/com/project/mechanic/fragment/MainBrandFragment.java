@@ -110,7 +110,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 
 		lstObject = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 		ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object,
-				mylist, MainBrandFragment.this , true);
+				mylist, MainBrandFragment.this, true);
 
 		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
 				R.layout.load_more_footer, null);
@@ -124,18 +124,19 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 
 			@Override
 			public void onRefresh() {
-				updating = new Updating(getActivity());
-				updating.delegate = MainBrandFragment.this;
-				String[] params = new String[4];
-				params[0] = "Object";
-				params[1] = setting.getServerDate_Start_Object() != null ? setting
-						.getServerDate_Start_Object() : "";
-				params[2] = setting.getServerDate_End_Object() != null ? setting
-						.getServerDate_End_Object() : "";
+				if (getActivity() != null) {
+					updating = new Updating(getActivity());
+					updating.delegate = MainBrandFragment.this;
+					String[] params = new String[4];
+					params[0] = "Object";
+					params[1] = setting.getServerDate_Start_Object() != null ? setting
+							.getServerDate_Start_Object() : "";
+					params[2] = setting.getServerDate_End_Object() != null ? setting
+							.getServerDate_End_Object() : "";
 
-				params[3] = "1";
-				updating.execute(params);
-
+					params[3] = "1";
+					updating.execute(params);
+				}
 			}
 		});
 
@@ -210,19 +211,21 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 						&& OnScrollListener.SCROLL_STATE_TOUCH_SCROLL == 1) {
 
 					LoadMoreFooter.setVisibility(View.VISIBLE);
-					//
-					updating = new Updating(getActivity());
-					updating.delegate = MainBrandFragment.this;
-					String[] params = new String[4];
-					params[0] = "Object";
-					params[1] = setting.getServerDate_Start_Object() != null ? setting
-							.getServerDate_Start_Object() : "";
-					params[2] = setting.getServerDate_End_Object() != null ? setting
-							.getServerDate_End_Object() : "";
+					if (getActivity() != null) {
 
-					params[3] = "0";
-					updating.execute(params);
-					totalItemCountBeforeSwipe = totalItemCount;
+						updating = new Updating(getActivity());
+						updating.delegate = MainBrandFragment.this;
+						String[] params = new String[4];
+						params[0] = "Object";
+						params[1] = setting.getServerDate_Start_Object() != null ? setting
+								.getServerDate_Start_Object() : "";
+						params[2] = setting.getServerDate_End_Object() != null ? setting
+								.getServerDate_End_Object() : "";
+
+						params[3] = "0";
+						updating.execute(params);
+						totalItemCountBeforeSwipe = totalItemCount;
+					}
 				}
 			}
 		});
@@ -234,7 +237,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 		adapter.open();
 		ArrayList<Object> mylist = adapter.getObjectbyParentId(parentId);
 		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(),
-				R.layout.row_object, mylist, MainBrandFragment.this , true);
+				R.layout.row_object, mylist, MainBrandFragment.this, true);
 		ListAdapter.notifyDataSetChanged();
 
 		lstObject.setAdapter(ListAdapter);
@@ -283,7 +286,8 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 				mylist.clear();
 				if (mylist.size() > 0) {
 					ListAdapter = new ObjectListAdapter(getActivity(),
-							R.layout.row_object, mylist, MainBrandFragment.this , true);
+							R.layout.row_object, mylist,
+							MainBrandFragment.this, true);
 					lstObject.setAdapter(ListAdapter);
 				}
 			}
@@ -307,25 +311,25 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 			obj = adapter.getObjectbyid(mylist.get(userItemId).getId());
 
 			adapter.close();
+			if (getActivity() != null) {
 
-			ImageUpdating = new UpdatingImage(getActivity());
-			ImageUpdating.delegate = this;
-			maps = new LinkedHashMap<String, String>();
-			maps.put("tableName", "Object2");
-			maps.put("Id", String.valueOf(obj.getId()));
-			maps.put("fromDate", obj.getImage2ServerDate());
-			ImageUpdating.execute(maps);
-		}else
-		{
+				ImageUpdating = new UpdatingImage(getActivity());
+				ImageUpdating.delegate = this;
+				maps = new LinkedHashMap<String, String>();
+				maps.put("tableName", "Object2");
+				maps.put("Id", String.valueOf(obj.getId()));
+				maps.put("fromDate", obj.getImage2ServerDate());
+				ImageUpdating.execute(maps);
+			}
+		} else {
 			mylist.clear();
 			adapter.open();
 			mylist = adapter.getObjectbyParentId(parentId);
 			adapter.close();
-						
-			ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object,
-					mylist, MainBrandFragment.this , false);
+
+			ListAdapter = new ObjectListAdapter(getActivity(),
+					R.layout.row_object, mylist, MainBrandFragment.this, false);
 			lstObject.setAdapter(ListAdapter);
-			
 
 		}
 

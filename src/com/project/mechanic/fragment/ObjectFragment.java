@@ -101,7 +101,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 
 			if (mylist != null && !mylist.isEmpty()) {
 				ListAdapter = new ObjectListAdapter(getActivity(),
-						R.layout.row_object, mylist, ObjectFragment.this , true);
+						R.layout.row_object, mylist, ObjectFragment.this, true);
 				lstObject.setAdapter(ListAdapter);
 
 				// start code get image profile from server
@@ -127,7 +127,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 			if (mylist != null && !mylist.isEmpty()) {
 
 				ListAdapter = new ObjectListAdapter(getActivity(),
-						R.layout.row_object, mylist, ObjectFragment.this , true);
+						R.layout.row_object, mylist, ObjectFragment.this, true);
 				lstObject.setAdapter(ListAdapter);
 			}
 		}
@@ -139,17 +139,21 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 
 			@Override
 			public void onRefresh() {
-				updating = new Updating(getActivity());
-				updating.delegate = ObjectFragment.this;
-				String[] params = new String[4];
-				params[0] = "Object";
-				params[1] = setting.getServerDate_Start_Object() != null ? setting
-						.getServerDate_Start_Object() : "";
-				params[2] = setting.getServerDate_End_Object() != null ? setting
-						.getServerDate_End_Object() : "";
 
-				params[3] = "1";
-				updating.execute(params);
+				if (getActivity() != null) {
+
+					updating = new Updating(getActivity());
+					updating.delegate = ObjectFragment.this;
+					String[] params = new String[4];
+					params[0] = "Object";
+					params[1] = setting.getServerDate_Start_Object() != null ? setting
+							.getServerDate_Start_Object() : "";
+					params[2] = setting.getServerDate_End_Object() != null ? setting
+							.getServerDate_End_Object() : "";
+
+					params[3] = "1";
+					updating.execute(params);
+				}
 			}
 		});
 		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
@@ -261,7 +265,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 					city_id, typeList);
 			ObjectListAdapter ListAdapter = new ObjectListAdapter(
 					getActivity(), R.layout.row_object, mylist,
-					ObjectFragment.this , false);
+					ObjectFragment.this, false);
 			lstObject.setAdapter(ListAdapter);
 
 			ListAdapter.notifyDataSetChanged();
@@ -307,7 +311,8 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 				mylist.clear();
 				if (mylist.size() > 0) {
 					ListAdapter = new ObjectListAdapter(getActivity(),
-							R.layout.row_object, mylist, ObjectFragment.this , true);
+							R.layout.row_object, mylist, ObjectFragment.this,
+							true);
 					lstObject.setAdapter(ListAdapter);
 				}
 			}
@@ -333,13 +338,16 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 
 			obj = adapter.getObjectbyid(mylist.get(userItemId).getId());
 
-			ImageUpdating = new UpdatingImage(getActivity());
-			ImageUpdating.delegate = this;
-			maps = new LinkedHashMap<String, String>();
-			maps.put("tableName", "Object2");
-			maps.put("Id", String.valueOf(obj.getId()));
-			maps.put("fromDate", obj.getImage2ServerDate());
-			ImageUpdating.execute(maps);
+			if (getActivity() != null) {
+
+				ImageUpdating = new UpdatingImage(getActivity());
+				ImageUpdating.delegate = this;
+				maps = new LinkedHashMap<String, String>();
+				maps.put("tableName", "Object2");
+				maps.put("Id", String.valueOf(obj.getId()));
+				maps.put("fromDate", obj.getImage2ServerDate());
+				ImageUpdating.execute(maps);
+			}
 		} else {
 
 			mylist.clear();
@@ -350,7 +358,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 				mylist = adapter.subBrandObject(brand, city_id, AgencyService);
 
 			ListAdapter = new ObjectListAdapter(getActivity(),
-					R.layout.row_object, mylist, ObjectFragment.this , false);
+					R.layout.row_object, mylist, ObjectFragment.this, false);
 			lstObject.setAdapter(ListAdapter);
 
 		}

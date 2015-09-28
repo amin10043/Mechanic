@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -23,9 +25,12 @@ import android.widget.RelativeLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
+import com.project.mechanic.DialogManagmentPaper;
 import com.project.mechanic.R;
+import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.entity.Object;
+import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
@@ -53,6 +58,10 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 	RelativeLayout phoneLayout, emailLayout, faxLayout, mobileLayout,
 			AddressLayout;
 
+	AnadListAdapter anadGridAdapter;
+	RelativeLayout.LayoutParams followParams;
+
+	@SuppressLint("NewApi")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -60,8 +69,8 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		utile1 = new Utility(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
 
-		View rootView = inflater.inflate(R.layout.fragment_information_user,
-				null);
+		// View rootView = inflater.inflate(R.layout.fragment_information_user,
+		// null);
 
 		View header = inflater.inflate(
 				R.layout.fragment_displaypersonalinformation, null);
@@ -94,7 +103,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		}
 		if (u == null) {
 			// خطا . نباید این اتفاق بیفتد!
-			return rootView;
+			return header;
 		}
 
 		date = new ServerDate(getActivity());
@@ -107,9 +116,13 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		TextView txtemail = (TextView) header.findViewById(R.id.email);
 		TextView txtname = (TextView) header.findViewById(R.id.displayname);
 		TextView txtfax = (TextView) header.findViewById(R.id.fax);
+		TextView namePageTicket = (TextView) header.findViewById(R.id.name);
 		img = (ImageView) header.findViewById(R.id.img1);
 		ImageView logout = (ImageView) header.findViewById(R.id.logout);
-		Button btnedit = (Button) header.findViewById(R.id.btnedit);
+		RelativeLayout btnedit = (RelativeLayout) header
+				.findViewById(R.id.btnedit);
+		RelativeLayout birthDayUsers = (RelativeLayout) header
+				.findViewById(R.id.birthdayUsers);
 
 		TextView txtdate = (TextView) header.findViewById(R.id.txtdate);
 
@@ -120,7 +133,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		lp1.height = utile1.getScreenwidth() / 4;
 		lp1.setMargins(5, 5, 5, 5);
 		img.setLayoutParams(lp1);
-
 		// byte[] bitmapbyte = u.getImage();
 		String ImagePath = u.getImagePath();
 		if (ImagePath != null) {
@@ -128,29 +140,12 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 			img.setImageBitmap(bmp);
 		}
 
-		ListView lv = (ListView) rootView.findViewById(R.id.listPageUser);
-		lv.addHeaderView(header);
+		// ListView lv = (ListView) rootView.findViewById(R.id.listPageUser);
+		// lv.addHeaderView(header);
+		// lv.addFooterView(footer);
 
-		dbAdapter.open();
-		List<Object> listPage = dbAdapter.getAllObjectByUserId(u.getId());
-		dbAdapter.close();
+		TextView namett = (TextView) header.findViewById(R.id.namepageList);
 
-		ObjectListAdapter listAdapter = new ObjectListAdapter(getActivity(),
-				R.layout.row_object, listPage,
-				DisplayPersonalInformationFragment.this, false);
-
-		lv.setAdapter(listAdapter);
-
-		if (listPage.size() == 0) {
-
-			RelativeLayout rela = (RelativeLayout) header
-					.findViewById(R.id.noPage);
-
-			rela.setVisibility(View.VISIBLE);
-		}
-		
-		TextView namett = (TextView)header.findViewById(R.id.namepageList);
-		
 		namett.setText(u.getName());
 
 		img.setOnClickListener(new OnClickListener() {
@@ -180,6 +175,66 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		txtphone.setText(phone);
 		txtfax.setText(fax);
 		txtaddress.setText(address);
+		namePageTicket.setText(name);
+
+		dbAdapter.open();
+
+		final List<Ticket> mylist = dbAdapter.getAllAnadUser(u.getId());
+		final List<Paper> listPaper = dbAdapter.getAllPaperUser(u.getId());
+
+		final List<Object> listPage = dbAdapter.getAllObjectByUserId(u.getId());
+		dbAdapter.close();
+
+		RelativeLayout ManagePage = (RelativeLayout) header
+				.findViewById(R.id.manage_pages);
+		ManagePage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				DialogManagementPages dialog = new DialogManagementPages(
+						getActivity(), listPage,
+						DisplayPersonalInformationFragment.this);
+				dialog.show();
+			}
+		});
+
+		RelativeLayout manageTicket = (RelativeLayout) header
+				.findViewById(R.id.manage_ticket);
+
+		manageTicket.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				DialogManagementTicket dialog = new DialogManagementTicket(
+						getActivity(), mylist,
+						DisplayPersonalInformationFragment.this);
+				dialog.show();
+			}
+		});
+
+		followParams = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
+
+		followParams.width = utile1.getScreenwidth() / 4;
+		followParams.height = utile1.getScreenwidth() / 14;
+		followParams.setMargins(5, 5, 10, 10);
+		followParams.addRule(RelativeLayout.ALIGN_LEFT, R.id.lin2);
+		followParams.addRule(RelativeLayout.BELOW, R.id.lin2);
+
+		RelativeLayout manageArticle = (RelativeLayout) header
+				.findViewById(R.id.manage_paper);
+		manageArticle.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				DialogManagmentPaper dialog = new DialogManagmentPaper(
+						getActivity(), listPaper,
+						DisplayPersonalInformationFragment.this);
+				dialog.show();
+
+			}
+		});
 
 		logout.setOnClickListener(new OnClickListener() {
 
@@ -228,7 +283,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 			}
 		});
 
-		return rootView;
+		return header;
 	}
 
 	@Override

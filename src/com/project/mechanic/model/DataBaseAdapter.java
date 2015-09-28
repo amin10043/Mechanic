@@ -3436,7 +3436,7 @@ public class DataBaseAdapter {
 	}
 
 	public ArrayList<Object> getAllObjectByUserId(int id) {
-		
+
 		ArrayList<Object> result = new ArrayList<Object>();
 		Cursor cursor = mDb.query(TableObject, Object, "userId=?",
 				new String[] { String.valueOf(id) }, null, null, null);
@@ -3465,6 +3465,92 @@ public class DataBaseAdapter {
 		}
 
 		return result;
+	}
+
+	public ArrayList<Ticket> getAllAnadUser(int userId) {
+
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Cursor cursor = mDb.query(TableTicket, Ticket, "userId=?",
+				new String[] { String.valueOf(userId) }, null, null, null);
+		Ticket tempTicket;
+		while (cursor.moveToNext()) {
+			tempTicket = new Ticket(cursor.getInt(0), cursor.getString(1),
+					cursor.getString(2), cursor.getInt(3), cursor.getBlob(4),
+					cursor.getString(5), cursor.getInt(6), cursor.getInt(7),
+					cursor.getInt(8), cursor.getInt(9), cursor.getInt(10),
+					cursor.getInt(11), cursor.getInt(12), cursor.getString(13),
+					cursor.getString(14), cursor.getString(15),
+					cursor.getString(16), cursor.getString(17),
+					cursor.getBlob(18), cursor.getString(19),
+					cursor.getInt(20), cursor.getInt(21), cursor.getInt(22),
+					cursor.getInt(23), cursor.getString(24),
+					cursor.getString(25));
+
+			result.add(tempTicket);
+		}
+
+		return result;
+	}
+
+	public ArrayList<Paper> getAllPaperUser(int userId) {
+
+		ArrayList<Paper> result = new ArrayList<Paper>();
+		Cursor cursor = mDb.query(TablePaper, Paper, "userId=?",
+				new String[] { String.valueOf(userId) }, null, null, null);
+		Paper tempTicket;
+		while (cursor.moveToNext()) {
+			tempTicket = new Paper(cursor.getInt(0), cursor.getString(1),
+					cursor.getString(2), cursor.getInt(3), cursor.getString(4),
+					cursor.getInt(5), cursor.getInt(6), cursor.getString(7),
+					cursor.getInt(8));
+
+			result.add(tempTicket);
+		}
+
+		return result;
+	}
+
+	public Object getObjectByUserId(int id) {
+
+		Object item = null;
+		Cursor mCur = mDb.query(TableObject, Object, "userId=?",
+				new String[] { String.valueOf(id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToObject(mCur);
+		}
+
+		return item;
+
+	}
+	public ArrayList<Province> getAllProvinceNoSorting() {
+		ArrayList<Province> result = new ArrayList<Province>();
+		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
+				null, null);
+		Province tempProvince;
+		while (cursor.moveToNext()) {
+			tempProvince = new Province(cursor.getInt(0), cursor.getString(1),
+					cursor.getInt(2));
+			result.add(tempProvince);
+		}
+
+		return result;
+	}
+	
+	public ArrayList<City> getCitysByProvinceIdNoSort(int ProvinceId) {
+
+		ArrayList<City> result = new ArrayList<City>();
+		City item = null;
+		Cursor mCur = mDb.query("City", CityColumn, "ProvinceId=?",
+				new String[] { String.valueOf(ProvinceId) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCity(mCur);
+			result.add(item);
+		}
+
+		return result;
+
 	}
 
 }

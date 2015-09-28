@@ -432,22 +432,24 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 						 */
 
 						params = new LinkedHashMap<String, String>();
-						deleting = new Deleting(context);
-						deleting.delegate = ExpandableCommentFroum.this;
+						if (context != null) {
 
-						params.put("TableName", "LikeInComment");
+							deleting = new Deleting(context);
+							deleting.delegate = ExpandableCommentFroum.this;
 
-						params.put("UserId",
-								String.valueOf(Currentuser.getId()));
+							params.put("TableName", "LikeInComment");
 
-						params.put("IsLike", String.valueOf(0));
-						params.put("CommentId", String.valueOf(id));
+							params.put("UserId",
+									String.valueOf(Currentuser.getId()));
 
-						deleting.execute(params);
+							params.put("IsLike", String.valueOf(0));
+							params.put("CommentId", String.valueOf(id));
 
-						ringProgressDialog = ProgressDialog.show(context, "",
-								"لطفا منتظر بمانید...", true);
+							deleting.execute(params);
 
+							ringProgressDialog = ProgressDialog.show(context,
+									"", "لطفا منتظر بمانید...", true);
+						}
 						ringProgressDialog.setCancelable(true);
 
 						new Thread(new Runnable() {
@@ -481,11 +483,12 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 							/*
 							 * start >>>>> save dislike to server
 							 */
+							if (context != null) {
 
-							date = new ServerDate(context);
-							date.delegate = ExpandableCommentFroum.this;
-							date.execute("");
-
+								date = new ServerDate(context);
+								date.delegate = ExpandableCommentFroum.this;
+								date.execute("");
+							}
 							/*
 							 * end >>>>> save dislike to server
 							 */
@@ -540,22 +543,25 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 						 */
 
 						params = new LinkedHashMap<String, String>();
-						deleting = new Deleting(context);
-						deleting.delegate = ExpandableCommentFroum.this;
 
-						params.put("TableName", "LikeInComment");
+						if (context != null) {
 
-						params.put("UserId",
-								String.valueOf(Currentuser.getId()));
+							deleting = new Deleting(context);
+							deleting.delegate = ExpandableCommentFroum.this;
 
-						params.put("IsLike", String.valueOf(1));
-						params.put("CommentId", String.valueOf(cmtId));
+							params.put("TableName", "LikeInComment");
 
-						deleting.execute(params);
+							params.put("UserId",
+									String.valueOf(Currentuser.getId()));
 
-						ringProgressDialog = ProgressDialog.show(context, "",
-								"لطفا منتظر بمانید...", true);
+							params.put("IsLike", String.valueOf(1));
+							params.put("CommentId", String.valueOf(cmtId));
 
+							deleting.execute(params);
+
+							ringProgressDialog = ProgressDialog.show(context,
+									"", "لطفا منتظر بمانید...", true);
+						}
 						ringProgressDialog.setCancelable(true);
 
 						new Thread(new Runnable() {
@@ -813,25 +819,28 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 				if (flag == true) {
 					params = new LinkedHashMap<String, String>();
-					saving = new Saving(context);
-					saving.delegate = ExpandableCommentFroum.this;
+					if (context != null) {
 
-					params.put("TableName", "LikeInComment");
+						saving = new Saving(context);
+						saving.delegate = ExpandableCommentFroum.this;
 
-					params.put("UserId", String.valueOf(Currentuser.getId()));
-					params.put("IsLike", String.valueOf(1));
-					params.put("CommentId", String.valueOf(GlobalId));
-					params.put("ModifyDate", serverDate);
-					params.put("IsUpdate", "0");
-					params.put("Date", serverDate);
+						params.put("TableName", "LikeInComment");
 
-					params.put("Id", "0");
+						params.put("UserId",
+								String.valueOf(Currentuser.getId()));
+						params.put("IsLike", String.valueOf(1));
+						params.put("CommentId", String.valueOf(GlobalId));
+						params.put("ModifyDate", serverDate);
+						params.put("IsUpdate", "0");
+						params.put("Date", serverDate);
 
-					saving.execute(params);
+						params.put("Id", "0");
 
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
+						saving.execute(params);
 
+						ringProgressDialog = ProgressDialog.show(context, "",
+								"لطفا منتظر بمانید...", true);
+					}
 					ringProgressDialog.setCancelable(true);
 
 					new Thread(new Runnable() {
@@ -854,23 +863,27 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 				} else {
 
 					params = new LinkedHashMap<String, String>();
-					saving = new Saving(context);
-					saving.delegate = ExpandableCommentFroum.this;
 
-					params.put("TableName", "LikeInComment");
+					if (context != null) {
 
-					params.put("UserId", String.valueOf(Currentuser.getId()));
+						saving = new Saving(context);
+						saving.delegate = ExpandableCommentFroum.this;
 
-					params.put("IsLike", String.valueOf(0));
-					params.put("CommentId", String.valueOf(GlobalId));
-					params.put("ModifyDate", serverDate);
-					params.put("Date", serverDate);
+						params.put("TableName", "LikeInComment");
 
-					params.put("IsUpdate", "0");
-					params.put("Id", "0");
+						params.put("UserId",
+								String.valueOf(Currentuser.getId()));
 
-					saving.execute(params);
+						params.put("IsLike", String.valueOf(0));
+						params.put("CommentId", String.valueOf(GlobalId));
+						params.put("ModifyDate", serverDate);
+						params.put("Date", serverDate);
 
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						saving.execute(params);
+					}
 					ringProgressDialog = ProgressDialog.show(context, "",
 							"لطفا منتظر بمانید...", true);
 

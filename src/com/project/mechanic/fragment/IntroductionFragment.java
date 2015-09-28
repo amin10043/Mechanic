@@ -355,29 +355,17 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		object = adapter.getObjectbyid(ObjectID);
 		adapter.close();
+		if (getActivity() != null) {
 
-		update = new Updating(getActivity());
-		update.delegate = IntroductionFragment.this;
-		String[] para = new String[4];
-		para[0] = "ImageServerDate";
-		para[1] = String.valueOf(object.getId());
-		para[2] = "masoud";
-		para[3] = "0";
-		update.execute(para);
-
-		// updating = new UpdatingAllImage(getActivity());
-		// updating.delegate = this;
-		// maps = new LinkedHashMap<String, String>();
-		// // maps.put("tableName", "Object1");
-		// maps.put("tableName", "All");
-		// maps.put("Id", String.valueOf(ObjectID));
-		// maps.put("fromDate1", object.getImage1ServerDate());
-		// maps.put("fromDate2", object.getImage2ServerDate());
-		// maps.put("fromDate3", object.getImage3ServerDate());
-		// updating.execute(maps);
-
-		// ringProgressDialog = ProgressDialog.show(getActivity(), "",
-		// "به روز رسانی تصاویر...", true);
+			update = new Updating(getActivity());
+			update.delegate = IntroductionFragment.this;
+			String[] para = new String[4];
+			para[0] = "ImageServerDate";
+			para[1] = String.valueOf(object.getId());
+			para[2] = "masoud";
+			para[3] = "0";
+			update.execute(para);
+		}
 
 		loadingProgressHeader.setVisibility(View.VISIBLE);
 		loadingProgressProfile.setVisibility(View.VISIBLE);
@@ -685,16 +673,16 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		// advertise.setimage
 		headerImage.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				String pathImage = object.getImagePath1();
 				String namePage = object.getName();
-				
+
 				DialogShowImage showImageDialog = new DialogShowImage(
-						getActivity(), pathImage , namePage);
+						getActivity(), pathImage, namePage);
 				showImageDialog.show();
-				
+
 			}
 		});
 
@@ -706,24 +694,22 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				String PathProfile = object.getImagePath2();
 				String namePage = object.getName();
 				DialogShowImage showImageDialog = new DialogShowImage(
-						getActivity(), PathProfile , namePage);
+						getActivity(), PathProfile, namePage);
 				showImageDialog.show();
-				
-				
 
 			}
 		});
-		
+
 		advertise2.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				String pathImage = object.getImagePath3();
 				String namePage = object.getName();
-				
+
 				DialogShowImage showImageDialog = new DialogShowImage(
-						getActivity(), pathImage , namePage);
-				showImageDialog.show();				
+						getActivity(), pathImage, namePage);
+				showImageDialog.show();
 			}
 		});
 
@@ -1394,17 +1380,19 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 							ObjectID, comId)) {
 
 						params = new LinkedHashMap<String, String>();
-						deleting = new Deleting(getActivity());
-						deleting.delegate = IntroductionFragment.this;
+						if (getActivity() != null) {
 
-						params.put("TableName", "LikeInObject");
-						params.put("UserId",
-								String.valueOf(CurrentUser.getId()));
-						params.put("ObjectId", String.valueOf(ObjectID));
-						params.put("CommentId", String.valueOf(comId));
+							deleting = new Deleting(getActivity());
+							deleting.delegate = IntroductionFragment.this;
 
-						deleting.execute(params);
+							params.put("TableName", "LikeInObject");
+							params.put("UserId",
+									String.valueOf(CurrentUser.getId()));
+							params.put("ObjectId", String.valueOf(ObjectID));
+							params.put("CommentId", String.valueOf(comId));
 
+							deleting.execute(params);
+						}
 						ringProgressDialog = ProgressDialog.show(getActivity(),
 								"", "لطفا منتظر بمانید...", true);
 
@@ -1428,24 +1416,26 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					} else {
 						adapter.open();
 						params = new LinkedHashMap<String, String>();
-						saving = new Saving(getActivity());
-						saving.delegate = IntroductionFragment.this;
 
-						params.put("TableName", "LikeInObject");
+						if (getActivity() != null) {
+							saving = new Saving(getActivity());
+							saving.delegate = IntroductionFragment.this;
 
-						params.put("UserId",
-								String.valueOf(CurrentUser.getId()));
-						params.put("ObjectId", String.valueOf(ObjectID));
-						params.put("Date", output);
-						params.put("CommentId", String.valueOf(comId));
+							params.put("TableName", "LikeInObject");
 
-						params.put("IsUpdate", "0");
-						params.put("Id", "0");
+							params.put("UserId",
+									String.valueOf(CurrentUser.getId()));
+							params.put("ObjectId", String.valueOf(ObjectID));
+							params.put("Date", output);
+							params.put("CommentId", String.valueOf(comId));
 
-						serverDate = output;
+							params.put("IsUpdate", "0");
+							params.put("Id", "0");
 
-						saving.execute(params);
+							serverDate = output;
 
+							saving.execute(params);
+						}
 						ringProgressDialog = ProgressDialog.show(getActivity(),
 								"", "لطفا منتظر بمانید...", true);
 

@@ -250,12 +250,13 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 		}
 
 		if (missedIds.size() > 0) {
+			if (getActivity() != null) {
 
-			date = new ServerDate(getActivity());
-			date.delegate = FroumFragment.this;
-			date.execute("");
-			check = true;
-
+				date = new ServerDate(getActivity());
+				date.delegate = FroumFragment.this;
+				date.execute("");
+				check = true;
+			}
 		}
 
 		exlistview.addHeaderView(header);
@@ -486,18 +487,21 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 					// countLikeFroum.setText(String.valueOf(c));
 
 					params = new LinkedHashMap<String, String>();
-					deleting = new Deleting(getActivity());
-					deleting.delegate = FroumFragment.this;
+					if (getActivity() != null) {
 
-					params.put("TableName", "LikeInFroum");
-					params.put("UserId", String.valueOf(CurrentUser.getId()));
-					params.put("FroumId", String.valueOf(froumid));
+						deleting = new Deleting(getActivity());
+						deleting.delegate = FroumFragment.this;
 
-					deleting.execute(params);
+						params.put("TableName", "LikeInFroum");
+						params.put("UserId",
+								String.valueOf(CurrentUser.getId()));
+						params.put("FroumId", String.valueOf(froumid));
 
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
+						deleting.execute(params);
 
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								"", "لطفا منتظر بمانید...", true);
+					}
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
 
@@ -518,23 +522,26 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 				} else {
 					adapter.open();
 					params = new LinkedHashMap<String, String>();
-					saving = new Saving(getActivity());
-					saving.delegate = FroumFragment.this;
+					if (getActivity() != null) {
 
-					params.put("TableName", "LikeInFroum");
+						saving = new Saving(getActivity());
+						saving.delegate = FroumFragment.this;
 
-					params.put("UserId", String.valueOf(CurrentUser.getId()));
-					params.put("FroumId", String.valueOf(froumid));
-					params.put("CommentId", "0");
-					params.put("Date", output);
-					params.put("IsUpdate", "0");
-					params.put("Id", "0");
+						params.put("TableName", "LikeInFroum");
 
-					saving.execute(params);
+						params.put("UserId",
+								String.valueOf(CurrentUser.getId()));
+						params.put("FroumId", String.valueOf(froumid));
+						params.put("CommentId", "0");
+						params.put("Date", output);
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
 
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
+						saving.execute(params);
 
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								"", "لطفا منتظر بمانید...", true);
+					}
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
 
@@ -576,13 +583,16 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 			iid = missedIds.get(controller);
 
-			service = new ServiceComm(getActivity());
-			service.delegate = FroumFragment.this;
-			Map<String, String> items = new LinkedHashMap<String, String>();
-			items.put("tableName", "getUserById");
-			items.put("Id", String.valueOf(iid));
-			service.execute(items);
+			if (getActivity() != null) {
 
+				service = new ServiceComm(getActivity());
+				service.delegate = FroumFragment.this;
+				Map<String, String> items = new LinkedHashMap<String, String>();
+				items.put("tableName", "getUserById");
+				items.put("Id", String.valueOf(iid));
+				service.execute(items);
+
+			}
 		}
 
 	}
@@ -601,15 +611,16 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 			uu = adapter.getUserById(iid);
 
 			adapter.close();
+			if (getActivity() != null) {
 
-			updating = new UpdatingImage(getActivity());
-			updating.delegate = FroumFragment.this;
-			maps = new LinkedHashMap<String, String>();
-			maps.put("tableName", "Users");
-			maps.put("Id", String.valueOf(uu.getId()));
-			maps.put("fromDate", uu.getImageServerDate());
-			updating.execute(maps);
-
+				updating = new UpdatingImage(getActivity());
+				updating.delegate = FroumFragment.this;
+				maps = new LinkedHashMap<String, String>();
+				maps.put("tableName", "Users");
+				maps.put("Id", String.valueOf(uu.getId()));
+				maps.put("fromDate", uu.getImageServerDate());
+				updating.execute(maps);
+			}
 		} else
 			Toast.makeText(getActivity(), "خطا در دریافت کاربران", 0).show();
 	}

@@ -78,6 +78,7 @@ public class Utility implements AsyncInterface {
 	static boolean flag2 = false;
 	int state = 0;
 	ServerDate date;
+	public String todayDate;
 
 	public Utility(Context context) {
 		this.context = context;
@@ -423,6 +424,8 @@ public class Utility implements AsyncInterface {
 				&& !(output.contains("Exception") || output.contains("anyType")
 						|| output.contains("java") || output
 							.contains("SoapFault"))) {
+			if (output.length() == 18)
+				todayDate = output;
 			switch (state) {
 
 			case 0: // return date
@@ -742,12 +745,12 @@ public class Utility implements AsyncInterface {
 			if (TableName.equals("Anad")) {
 
 				adapter.open();
-				adapter.UpdateImagePathToDb(ImageId, f.getPath() , "Anad");
+				adapter.UpdateImagePathToDb(ImageId, f.getPath(), "Anad");
 				adapter.close();
 			}
 			if (TableName.equals("Ticket")) {
 				adapter.open();
-				adapter.UpdateImagePathToDb(ImageId, f.getPath() , "Ticket");
+				adapter.UpdateImagePathToDb(ImageId, f.getPath(), "Ticket");
 				adapter.close();
 
 			}
@@ -765,10 +768,10 @@ public class Utility implements AsyncInterface {
 				adapter.UpdateImagePathObject(ImageId, f.getPath(), PathId);
 				adapter.close();
 			}
-			
+
 			if (TableName.equals("Users")) {
 				adapter.open();
-				adapter.UpdateImagePathToDb(ImageId, f.getPath() , "Users");
+				adapter.UpdateImagePathToDb(ImageId, f.getPath(), "Users");
 				adapter.close();
 
 			}

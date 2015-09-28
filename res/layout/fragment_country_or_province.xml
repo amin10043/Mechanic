@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EAEAEA"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/countryItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="#d3dff9" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/ic_blank" />
+
+        <TextView
+            android:id="@+id/RowCitytxt"
+            style="@style/row_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="کشوری" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/cityItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="#d3dff9" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/ic_blank" />
+
+        <TextView
+            android:id="@+id/RowCitytxt"
+            style="@style/row_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:text="استانی" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/allUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        android:background="#d3dff9" >
+
+        <TextView
+            android:id="@+id/tre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="50dp"
+            android:text="همه کاربران نرم افزار"
+            android:textColor="@color/transparent" />
+
+        <TextView
+            android:id="@+id/RowCitytxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/tre"
+            android:text="(1000)"
+            android:textColor="@color/transparent" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/viewUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        android:background="#d3dff9" >
+
+        <TextView
+            android:id="@+id/tre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="50dp"
+            android:text="بازدیدکنندگان صفحه شما"
+            android:textColor="@color/transparent" />
+
+        <TextView
+            android:id="@+id/RowCitytxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/tre"
+            android:text="(320)"
+            android:textColor="@color/transparent" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/followUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        android:background="#d3dff9" >
+
+        <TextView
+            android:id="@+id/tre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="50dp"
+            android:text="دنبال کنندگان صفحه شما"
+            android:textColor="@color/transparent" />
+
+        <TextView
+            android:id="@+id/RowCitytxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/tre"
+            android:text="(278)"
+            android:textColor="@color/transparent" />
+    </RelativeLayout>
+
+</LinearLayout>

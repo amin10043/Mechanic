@@ -3,6 +3,7 @@ package com.project.mechanic.fragment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,16 +33,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.crop.CropImage;
+import com.project.mechanic.entity.City;
+import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.SaveAsyncInterface;
@@ -89,6 +97,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	ProgressDialog imageloadprogressdialog;
 	private static final int PICK_FROM_CAMERA = 1;
 	final int PIC_CROP = 3;
+	int ostanId;
+	int cityId;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -285,6 +295,78 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 					}
 				});
 				builder.show();
+
+			}
+		});
+
+		final Spinner ostanSpinner = (Spinner) view.findViewById(R.id.ostanSpinner);
+		final Spinner citySpinner = (Spinner) view
+				.findViewById(R.id.CitySpinner);
+
+		dbAdapter.open();
+
+		final ArrayList<Province> ostanList = dbAdapter
+				.getAllProvinceNoSorting();
+
+		dbAdapter.close();
+
+		ArrayList<String> NameOstan = new ArrayList<String>();
+		final ArrayList<String> NameCity = new ArrayList<String>();
+
+		for (int i = 0; i < ostanList.size(); i++) {
+
+			NameOstan.add(ostanList.get(i).getName());
+
+		}
+
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+				getActivity(), android.R.layout.simple_spinner_item, NameOstan);
+
+		dataAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		ostanSpinner.setAdapter(dataAdapter);
+		citySpinner.setEnabled(false);
+
+		ostanSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+				
+		        Toast.makeText(getActivity(), position +"", Toast.LENGTH_SHORT).show();
+
+				
+				int w = (int) ostanSpinner.getSelectedItemId();
+
+				ostanId = ostanList.get(w).getId();
+
+				dbAdapter.open();
+				final ArrayList<City> cityList = dbAdapter
+						.getCitysByProvinceIdNoSort(ostanId);
+				dbAdapter.close();
+
+				citySpinner.setEnabled(true);
+
+				NameCity.clear();
+				for (int i = 0; i < cityList.size(); i++) {
+
+					NameCity.add(cityList.get(i).getName());
+
+				}
+				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+						getActivity(), android.R.layout.simple_spinner_item,
+						NameCity);
+
+				dataAdapter
+						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+				citySpinner.setAdapter(dataAdapter);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
 
 			}
 		});
@@ -542,5 +624,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		}
 
 	}
+	
+	
 
 }

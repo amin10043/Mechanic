@@ -6,6 +6,7 @@
 
     <LinearLayout
         style="@style/anad_style"
+        android:id="@+id/backgroundTicket"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

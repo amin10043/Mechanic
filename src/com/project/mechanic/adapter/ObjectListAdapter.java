@@ -51,7 +51,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 	boolean IsShow;
 
 	public ObjectListAdapter(Context context, int resource,
-			List<Object> objact, Fragment fr , boolean IsShow) {
+			List<Object> objact, Fragment fr, boolean IsShow) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -82,8 +82,9 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 				.findViewById(R.id.Rowobjecttxt);
 
 		final Object person = list.get(position);
-		
-		LoadingProgress = (ProgressBar)convertView.findViewById(R.id.progressBar1);
+
+		LoadingProgress = (ProgressBar) convertView
+				.findViewById(R.id.progressBar1);
 
 		txt1.setText(person.getName());
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
@@ -118,13 +119,12 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 			profileIco.setLayoutParams(lp);
 			LoadingProgress.setVisibility(View.GONE);
 
-
 		} else {
 			profileIco.setImageResource(R.drawable.no_img_profile);
 			profileIco.setLayoutParams(lp);
 		}
-		if (IsShow==false)
-		LoadingProgress.setVisibility(View.GONE);
+		if (IsShow == false)
+			LoadingProgress.setVisibility(View.GONE);
 
 		// if (person.getImage2() == null) {
 		//
@@ -166,6 +166,25 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 		followIcon.setLayoutParams(paramsVisit);
 		visitIcon.setLayoutParams(paramsVisit);
+
+		TextView baghiMandeh = (TextView) convertView
+				.findViewById(R.id.dayBaghiMandeh);
+
+		String commitDate = person.getDate();
+		int thisDay = 0;
+		int objectYear = 0;
+		// int objectDay = Integer.valueOf(commitDate.substring(0, 8));
+		if (commitDate != null)
+
+			objectYear = Integer.valueOf(commitDate.substring(0, 4));
+
+//		String finishDate = String.valueOf(objectYear + 1)
+//				+ commitDate.substring(4, 14);
+//
+//		if (util.todayDate != null )
+//			thisDay = Integer.valueOf(util.todayDate.substring(0, 8));
+//
+//		baghiMandeh.setText(util.getPersianDate(finishDate));
 
 		convertView.setOnLongClickListener(new OnLongClickListener() {
 

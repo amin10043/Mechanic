@@ -80,17 +80,16 @@ public class DialogPersonLikedFroum extends Dialog implements CommInterface,
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+		//
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setBackgroundDrawable(
 				new ColorDrawable(android.graphics.Color.TRANSPARENT));
-		
+
 		lv = (ListView) findViewById(R.id.listPeronLiked);
 		progress = (ProgressBar) findViewById(R.id.progressBar1);
 		missedIds = new ArrayList<Integer>();
 
-		
 		adapter.open();
 
 		setContentView(R.layout.dialog_person_liked);
@@ -119,11 +118,12 @@ public class DialogPersonLikedFroum extends Dialog implements CommInterface,
 			progress.setVisibility(View.GONE);
 			lv.setVisibility(View.VISIBLE);
 		} else {
+			if (context != null) {
+				date = new ServerDate(context);
+				date.delegate = DialogPersonLikedFroum.this;
+				date.execute("");
 
-			date = new ServerDate(context);
-			date.delegate = DialogPersonLikedFroum.this;
-			date.execute("");
-
+			}
 		}
 
 	}
@@ -142,15 +142,16 @@ public class DialogPersonLikedFroum extends Dialog implements CommInterface,
 			uu = adapter.getUserById(iid);
 
 			adapter.close();
+			if (context != null) {
+				updating = new UpdatingImage(context);
+				updating.delegate = DialogPersonLikedFroum.this;
+				maps = new LinkedHashMap<String, String>();
+				maps.put("tableName", "Users");
+				maps.put("Id", String.valueOf(uu.getId()));
+				maps.put("fromDate", uu.getImageServerDate());
+				updating.execute(maps);
 
-			updating = new UpdatingImage(context);
-			updating.delegate = DialogPersonLikedFroum.this;
-			maps = new LinkedHashMap<String, String>();
-			maps.put("tableName", "Users");
-			maps.put("Id", String.valueOf(uu.getId()));
-			maps.put("fromDate", uu.getImageServerDate());
-			updating.execute(maps);
-
+			}
 		} else
 			Toast.makeText(context, "خطا در دریافت کاربران", 0).show();
 	}
@@ -165,12 +166,11 @@ public class DialogPersonLikedFroum extends Dialog implements CommInterface,
 		adapter.open();
 		adapter.UpdateImageServerDate(iid, "Users", serverDate);
 		adapter.close();
-		
-		
+
 		PersonLikedAdapter listadapter = new PersonLikedAdapter(context,
 				R.layout.row_person_liked, likedist);
 		lv.setAdapter(listadapter);
-		
+
 		listadapter.notifyDataSetChanged();
 
 		progress.setVisibility(View.GONE);
@@ -193,14 +193,15 @@ public class DialogPersonLikedFroum extends Dialog implements CommInterface,
 		if (controller < missedIds.size()) {
 
 			iid = missedIds.get(controller);
+			if (context != null) {
+				service = new ServiceComm(context);
+				service.delegate = DialogPersonLikedFroum.this;
+				Map<String, String> items = new LinkedHashMap<String, String>();
+				items.put("tableName", "getUserById");
+				items.put("Id", String.valueOf(iid));
+				service.execute(items);
 
-			service = new ServiceComm(context);
-			service.delegate = DialogPersonLikedFroum.this;
-			Map<String, String> items = new LinkedHashMap<String, String>();
-			items.put("tableName", "getUserById");
-			items.put("Id", String.valueOf(iid));
-			service.execute(items);
-
+			}
 		}
 
 	}

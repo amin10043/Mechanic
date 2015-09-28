@@ -28,7 +28,7 @@
             <TextView
                 android:id="@+id/txt_title_register"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:gravity="center"
                 android:text="ایجاد حساب کاربری"
@@ -147,6 +147,107 @@
                 android:textSize="@dimen/txtsize10" />
         </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginRight="@dimen/txtsize10"
+            android:layout_marginTop="5dp" >
+
+            <TextView
+                android:id="@+id/lables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="تاریخ تولد: (هجری شمسی)"
+                android:textColor="@color/transparent" />
+
+            <EditText
+                android:id="@+id/day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/month"
+                android:hint="روز"
+                android:maxLength="2"
+                android:textColor="@color/transparent"
+                android:textColorHint="@color/transparent" />
+
+            <EditText
+                android:id="@+id/month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/year"
+                android:hint="ماه"
+                android:maxLength="2"
+                android:textColor="@color/transparent"
+                android:textColorHint="@color/transparent" />
+
+            <EditText
+                android:id="@+id/year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/txtsize5"
+                android:hint="سال"
+                android:maxLength="4"
+                android:textColor="@color/transparent"
+                android:textColorHint="@color/transparent" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginRight="@dimen/txtsize10" >
+
+            <TextView
+                android:id="@+id/lables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="استان:(اجباری)"
+                android:textColor="@color/transparent"
+                android:textSize="15dp" />
+
+            <Spinner
+                android:id="@+id/ostanSpinner"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/txtsize5" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginRight="@dimen/txtsize10"
+            android:layout_marginTop="5dp"
+            android:gravity="right" >
+
+            <TextView
+                android:id="@+id/lables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="شهر: (اجباری)"
+                android:textColor="@color/transparent" />
+
+            <Spinner
+                android:id="@+id/CitySpinner"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/txtsize5" />
+        </RelativeLayout>
+
         <LinearLayout
             android:id="@+id/lin4_vertical_register"
             android:layout_width="match_parent"
@@ -198,15 +299,15 @@
                 android:text="اطلاعات تکمیلی جهت استفاده از تمامی امکانات نرم افزار"
                 android:textColor="@color/white"
                 android:textSize="@dimen/txtsize10"
-                android:visibility="invisible" />
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/lin6_vertical_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:layout_marginRight="@dimen/activity_vertical_margin"
+             android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginRight="@dimen/txtsize10"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal" >
@@ -215,6 +316,7 @@
                 android:id="@+id/btncancle2"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginRight="@dimen/txtsize5"
                 android:layout_weight="1"
                 android:background="#568bdd"
@@ -226,6 +328,7 @@
                 android:id="@+id/btnreg2"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:background="#568bdd"
                 android:enabled="true"

@@ -157,10 +157,11 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 				util.getScreenwidth() / 3);
 
 		dbAdapter.open();
-		date = new ServerDate(getActivity());
-		date.delegate = AnadFragment.this;
-		date.execute("");
-
+		if (getActivity() != null) {
+			date = new ServerDate(getActivity());
+			date.delegate = AnadFragment.this;
+			date.execute("");
+		}
 		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
 		anadlist = dbAdapter.getAnadtByTypeIdProId(proID);
 		setting = dbAdapter.getSettings();
@@ -215,8 +216,8 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 		// lstTicket = (PullAndLoadListView) view.findViewById(R.id.listVanad);
 
 		ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
-				mylist, proID, AnadFragment.this , true);
-		// if (mylist != null && !mylist.isEmpty())
+				mylist, proID, AnadFragment.this, true);
+		// // if (mylist != null && !mylist.isEmpty())
 		listviewanad.setAdapter(ListAdapter);
 
 		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
@@ -231,19 +232,22 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 			@Override
 			public void onRefresh() {
-				updating = new Updating(getActivity());
 
-				updating.delegate = AnadFragment.this;
-				String[] params = new String[4];
-				params[0] = "Ticket";
-				params[1] = setting.getServerDate_Start_Ticket() != null ? setting
-						.getServerDate_Start_Ticket() : "";
-				params[2] = setting.getServerDate_End_Ticket() != null ? setting
-						.getServerDate_End_Ticket() : "";
+				if (getActivity() != null) {
 
-				params[3] = "1";
-				updating.execute(params);
+					updating = new Updating(getActivity());
 
+					updating.delegate = AnadFragment.this;
+					String[] params = new String[4];
+					params[0] = "Ticket";
+					params[1] = setting.getServerDate_Start_Ticket() != null ? setting
+							.getServerDate_Start_Ticket() : "";
+					params[2] = setting.getServerDate_End_Ticket() != null ? setting
+							.getServerDate_End_Ticket() : "";
+
+					params[3] = "1";
+					updating.execute(params);
+				}
 			}
 		});
 
@@ -331,21 +335,23 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 						LoadMoreFooter.setVisibility(View.VISIBLE);
 
-						updating = new Updating(getActivity());
+						if (getActivity() != null) {
 
-						updating.delegate = AnadFragment.this;
-						String[] params = new String[4];
-						params[0] = "Ticket";
-						params[1] = setting.getServerDate_Start_Ticket() != null ? setting
-								.getServerDate_Start_Paper() : "";
-						params[2] = setting.getServerDate_End_Ticket() != null ? setting
-								.getServerDate_End_Ticket() : "";
+							updating = new Updating(getActivity());
 
-						params[3] = "0";
-						updating.execute(params);
+							updating.delegate = AnadFragment.this;
+							String[] params = new String[4];
+							params[0] = "Ticket";
+							params[1] = setting.getServerDate_Start_Ticket() != null ? setting
+									.getServerDate_Start_Paper() : "";
+							params[2] = setting.getServerDate_End_Ticket() != null ? setting
+									.getServerDate_End_Ticket() : "";
 
-						int countList = ListAdapter.getCount();
-						beforePosition = countList;
+							params[3] = "0";
+							updating.execute(params);
+						}
+						// int countList = ListAdapter.getCount();
+						// beforePosition = countList;
 
 						FindPosition = false;
 					}
@@ -624,7 +630,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 		// ListView lstAnad = (ListView) view.findViewById(R.id.listVanad);
 		AnadListAdapter ListAdapter = new AnadListAdapter(getActivity(),
-				R.layout.row_anad, mylist, proID, AnadFragment.this , false);
+				R.layout.row_anad, mylist, proID, AnadFragment.this, false);
 		ListAdapter.notifyDataSetChanged();
 		listviewanad.setAdapter(ListAdapter);
 
@@ -634,7 +640,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 	private void getTicketImageFromServer(List<Ticket> ticketList,
 			int counterTicketList) {
-		
+
 		Ticket ticketItem;
 
 		if (counterTicketList < ticketList.size()) {
@@ -642,25 +648,27 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 			ticketItem = ticketList.get(counterTicketList);
 			TicketId = ticketItem.getId();
 			String t = ticketItem.getImageServerDate();
-			if (ticketItem.getImageServerDate()==null || ticketItem.getImageServerDate().equals(""))
-				t="";
-				
+			if (ticketItem.getImageServerDate() == null
+					|| ticketItem.getImageServerDate().equals(""))
+				t = "";
+			if (getActivity() != null) {
 
-			update = new UpdatingImage(getActivity());
-			update.delegate = AnadFragment.this;
-			maps = new LinkedHashMap<String, String>();
-			maps.put("tableName", "Ticket");
-			maps.put("Id", String.valueOf(TicketId));
-			maps.put("fromDate", t);
-			update.execute(maps);
-			typeItem = "Ticket";
+				update = new UpdatingImage(getActivity());
+				update.delegate = AnadFragment.this;
+				maps = new LinkedHashMap<String, String>();
+				maps.put("tableName", "Ticket");
+				maps.put("Id", String.valueOf(TicketId));
+				maps.put("fromDate", t);
+				update.execute(maps);
+				typeItem = "Ticket";
+			}
 		} else {
 			mylist.clear();
 			dbAdapter.open();
 			mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
 			dbAdapter.close();
 			ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
-					mylist, proID, AnadFragment.this , false);
+					mylist, proID, AnadFragment.this, false);
 			// if (mylist != null && !mylist.isEmpty())
 			listviewanad.setAdapter(ListAdapter);
 			getAnadImageFromServer(anadlist, true);
@@ -773,17 +781,18 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 			default:
 			}
 		}
+		if (getActivity() != null) {
 
-		update = new UpdatingImage(getActivity());
-		update.delegate = AnadFragment.this;
-		maps = new LinkedHashMap<String, String>();
-		maps.put("tableName", "Anad");
-		maps.put("Id", String.valueOf(ImageCode));
-		maps.put("fromDate", "a");
-		update.execute(maps);
-		typeItem = "Anad";
-		LoadMoreFooter.setVisibility(View.INVISIBLE);
-
+			update = new UpdatingImage(getActivity());
+			update.delegate = AnadFragment.this;
+			maps = new LinkedHashMap<String, String>();
+			maps.put("tableName", "Anad");
+			maps.put("Id", String.valueOf(ImageCode));
+			maps.put("fromDate", "a");
+			update.execute(maps);
+			typeItem = "Anad";
+			LoadMoreFooter.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	@Override
@@ -1017,7 +1026,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 			LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 			getTicketImageFromServer(mylist, 0);
-//			getAnadImageFromServer(anadlist, true);
+			// getAnadImageFromServer(anadlist, true);
 		}
 
 		if (output != null
@@ -1034,7 +1043,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 			dbAdapter.close();
 
 			ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
-					mylist, proID, AnadFragment.this , false);
+					mylist, proID, AnadFragment.this, false);
 
 			// if (mylist != null && !mylist.isEmpty())
 			listviewanad.setAdapter(ListAdapter);
