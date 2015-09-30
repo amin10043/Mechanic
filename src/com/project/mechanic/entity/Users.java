@@ -19,6 +19,8 @@ public class Users {
 	String ImageServerDate;
 	String ImagePath;
 	String ShowInfoItem;
+	String BirthDay;
+	String ProvinceCity;
 
 	public int getId() {
 		return Id;
@@ -151,7 +153,8 @@ public class Users {
 			String phonenumber, String mobailenumber, String faxnumber,
 			String address, byte[] image, int serviceid, String serverdate,
 			String date, int submit, int admin, String ImageServerDate,
-			String ImagePath, String ShowInfoItem) {
+			String ImagePath, String ShowInfoItem, String Birthday,
+			String ProvinceCity) {
 
 		super();
 
@@ -172,6 +175,24 @@ public class Users {
 		this.ImageServerDate = ImageServerDate;
 		this.ImagePath = ImagePath;
 		this.ShowInfoItem = ShowInfoItem;
+		this.BirthDay = Birthday;
+		this.ProvinceCity = ProvinceCity;
+	}
+
+	public String getBirthDay() {
+		return BirthDay;
+	}
+
+	public void setBirthDay(String birthDay) {
+		BirthDay = birthDay;
+	}
+
+	public String getProvinceCity() {
+		return ProvinceCity;
+	}
+
+	public void setProvinceCity(String provinceCity) {
+		ProvinceCity = provinceCity;
 	}
 
 	public String getShowInfoItem() {

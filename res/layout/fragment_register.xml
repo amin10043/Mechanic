@@ -20,7 +20,8 @@
             android:id="@+id/relative1_vertical_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/txtsize10"
+            android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginRight="@dimen/txtsize10"
             android:layout_weight="1"
             android:background="#568bdd"
             android:orientation="horizontal" >
@@ -154,14 +155,29 @@
             android:layout_marginRight="@dimen/txtsize10"
             android:layout_marginTop="5dp" >
 
-            <TextView
-                android:id="@+id/lables"
-                android:layout_width="wrap_content"
+            <Spinner
+                android:id="@+id/yearSpinner"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="تاریخ تولد: (هجری شمسی)"
-                android:textColor="@color/transparent" />
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/activeBirthday"
+                android:layout_marginLeft="@dimen/txtsize5" />
+
+            <Spinner
+                android:id="@+id/monthSpinner"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activeBirthday"
+                android:layout_marginLeft="@dimen/txtsize5"
+                android:layout_toRightOf="@+id/yearSpinner" />
+
+            <Spinner
+                android:id="@+id/daySpinner"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activeBirthday"
+                android:layout_marginLeft="@dimen/txtsize5"
+                android:layout_toRightOf="@+id/monthSpinner" />
 
             <EditText
                 android:id="@+id/day"
@@ -169,9 +185,11 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/month"
                 android:hint="روز"
+                android:inputType="number"
                 android:maxLength="2"
                 android:textColor="@color/transparent"
-                android:textColorHint="@color/transparent" />
+                android:textColorHint="@color/transparent"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/month"
@@ -180,9 +198,11 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/year"
                 android:hint="ماه"
+                android:inputType="number"
                 android:maxLength="2"
                 android:textColor="@color/transparent"
-                android:textColorHint="@color/transparent" />
+                android:textColorHint="@color/transparent"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/year"
@@ -192,9 +212,43 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/txtsize5"
                 android:hint="سال"
+                android:inputType="number"
                 android:maxLength="4"
                 android:textColor="@color/transparent"
-                android:textColorHint="@color/transparent" />
+                android:textColorHint="@color/transparent"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/activeBirthday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/lables"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="تاریخ تولد: (هجری شمسی)"
+                    android:textColor="@color/transparent" />
+
+                <CheckBox
+                    android:id="@+id/checkBox1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:layout_toLeftOf="@+id/lables" />
+
+                <TextView
+                    android:id="@+id/cdas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/checkBox1"
+                    android:text="فعال شدن"
+                    android:textColor="@color/transparent"
+                    android:textSize="15dp" />
+            </RelativeLayout>
         </RelativeLayout>
 
         <RelativeLayout
@@ -204,7 +258,7 @@
             android:layout_marginRight="@dimen/txtsize10" >
 
             <TextView
-                android:id="@+id/lables"
+                android:id="@+id/lablesostan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -231,7 +285,7 @@
             android:gravity="right" >
 
             <TextView
-                android:id="@+id/lables"
+                android:id="@+id/lablescity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -306,7 +360,7 @@
             android:id="@+id/lin6_vertical_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-             android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginLeft="@dimen/txtsize10"
             android:layout_marginRight="@dimen/txtsize10"
             android:layout_weight="1"
             android:gravity="center"

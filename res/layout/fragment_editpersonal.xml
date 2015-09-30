@@ -35,18 +35,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="false"
-                    android:src="@drawable/i13" />
+                    android:src="@drawable/no_img_profile" />
 
-                <TextView
-                    android:id="@+id/textView2"
+                <RelativeLayout
+                    android:id="@+id/btnedit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/txtsize10"
-                    android:gravity="right"
-                    android:text="تغییر عکس"
-                    android:textColor="@color/transparent"
-                    android:textSize="15dp" />
+                    android:layout_alignLeft="@+id/lin2"
+                    android:layout_below="@+id/imgp"
+                    android:background="#64bc2c" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:background="#64bc2c"
+                        android:text="تغییر عکس"
+                        android:textColor="@color/white" />
+                </RelativeLayout>
             </LinearLayout>
 
             <RelativeLayout
@@ -91,13 +99,12 @@
                 android:layout_toLeftOf="@+id/lin5"
                 android:orientation="vertical" >
 
-                <TextView
+                <EditText
                     android:id="@+id/etxtname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginRight="@dimen/txtsize10"
-                    android:text="عکس"
                     android:textColor="@color/transparent"
                     android:textSize="15dp" />
             </LinearLayout>
@@ -303,31 +310,152 @@
             </RelativeLayout>
         </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginRight="@dimen/txtsize10"
+            android:layout_marginTop="5dp"
+            android:background="@color/blue3" >
+
+            <Spinner
+                android:id="@+id/yearSpinner"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/activeBirthday"
+                android:layout_marginLeft="@dimen/txtsize5" />
+
+            <Spinner
+                android:id="@+id/monthSpinner"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activeBirthday"
+                android:layout_marginLeft="@dimen/txtsize5"
+                android:layout_toRightOf="@+id/yearSpinner" />
+
+            <Spinner
+                android:id="@+id/daySpinner"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activeBirthday"
+                android:layout_marginLeft="@dimen/txtsize5"
+                android:layout_toRightOf="@+id/monthSpinner" />
+
+            <RelativeLayout
+                android:id="@+id/activeBirthday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/lables"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:text="تاریخ تولد: (هجری شمسی)"
+                    android:textColor="@color/transparent" />
+
+                <CheckBox
+                    android:id="@+id/checkBox1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:layout_toLeftOf="@+id/lables" />
+
+                <TextView
+                    android:id="@+id/cdas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/checkBox1"
+                    android:text="فعال شدن"
+                    android:textColor="@color/transparent"
+                    android:textSize="15dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginRight="@dimen/txtsize10"
+            android:background="@color/blue3" >
+
+            <TextView
+                android:id="@+id/lablesostan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:text="استان:(اجباری)"
+                android:textColor="@color/transparent"
+                android:textSize="15dp" />
+
+            <Spinner
+                android:id="@+id/ostanSpinner"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/txtsize5" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginRight="@dimen/txtsize10"
+            android:background="@color/blue3"
+            android:gravity="right" >
+
+            <TextView
+                android:id="@+id/lablescity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:text="شهر: (اجباری)"
+                android:textColor="@color/transparent" />
+
+            <Spinner
+                android:id="@+id/CitySpinner"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/txtsize5" />
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/txtsize40"
-            android:layout_marginRight="@dimen/txtsize40"
-            android:layout_marginTop="@dimen/txtsize10"
-            android:gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/txtsize10"
+            android:layout_marginRight="@dimen/txtsize10"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
             android:orientation="horizontal" >
 
             <Button
                 android:id="@+id/btnbackdisplay"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginRight="@dimen/txtsize5"
-                android:background="@drawable/buttonshape"
+                android:layout_weight="1"
+                android:background="#568bdd"
                 android:text="برگشت"
                 android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnregedit"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:background="@drawable/buttonshape"
+                android:layout_weight="1"
+                android:background="#568bdd"
                 android:gravity="center"
                 android:text="ثبت ویرایش"
                 android:textColor="@color/white" />

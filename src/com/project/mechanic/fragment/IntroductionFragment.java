@@ -12,12 +12,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -40,6 +42,7 @@ import com.project.mechanic.adapter.ExpandIntroduction;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.Object;
+import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.GetAllAsyncInterface;
@@ -73,7 +76,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			emailRelative, profileLinear, personPage, personPost;
 
 	public DialogcmtInobject dialog;
-	Fragment fragment;
+	//Fragment fragment;
 
 	public LinearLayout AddLike, AddComment;
 	public ImageButton Comment;
@@ -1208,6 +1211,42 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 						"اشتراک از طریق"));
 			}
 		});
+		
+		
+		ImageView reaport = (ImageView) header
+				.findViewById(R.id.reportImage);
+		
+		reaport.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+//				RelativeLayout parentlayout = (RelativeLayout) v.getParent();
+//				TextView txtName = (TextView) parentlayout
+//						.findViewById(R.id.row_favorite_title);
+//				String item = txtName.getText().toString();
+//				int id = 0;
+//				int u = 0;
+//				String t = "";
+			
+
+				DialogLongClick dia = new DialogLongClick(getActivity(), 4, ObjectID, -1,
+						IntroductionFragment.this,object.getDescription() );
+				Toast.makeText(getActivity(), ObjectID + "", 0).show();
+
+				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+				lp.copyFrom(dia.getWindow().getAttributes());
+				lp.width = (int) (ut.getScreenwidth() / 1.5);
+				lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+				;
+				dia.show();
+
+				dia.getWindow().setAttributes(lp);
+				dia.getWindow().setBackgroundDrawable(
+						new ColorDrawable(android.graphics.Color.TRANSPARENT));
+			}
+		});
+
+
 
 		return view;
 

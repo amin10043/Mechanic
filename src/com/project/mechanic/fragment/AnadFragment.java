@@ -1112,12 +1112,14 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 				} else {
 					if (imageAnad != null) {
-						imageButton = new ImageView(getActivity());
+						if (getActivity() != null) {
+							imageButton = new ImageView(getActivity());
 
-						imageButton
-								.setImageBitmap(BitmapFactory.decodeByteArray(
-										imageAnad, 0, imageAnad.length));
+							imageButton.setImageBitmap(BitmapFactory
+									.decodeByteArray(imageAnad, 0,
+											imageAnad.length));
 
+						}
 					} else {
 						imageButton = new ImageView(getActivity());
 

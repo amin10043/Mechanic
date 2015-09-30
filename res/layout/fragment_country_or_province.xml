@@ -6,6 +6,81 @@
     android:orientation="vertical" >
 
     <RelativeLayout
+        android:id="@+id/users"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fdcvb"
+        android:layout_margin="10dp"
+        android:background="@color/white"
+        android:visibility="visible" >
+
+        <TextView
+            android:id="@+id/ss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:text="انتخاب لینک فرستنده جهت ارسال : "
+            android:textColor="@color/transparent" />
+
+        <Spinner
+            android:id="@+id/pageSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ss"
+            android:layout_margin="5dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/messageBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/lablesd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:gravity="right"
+            android:text="متن پیام:"
+            android:textColor="@color/transparent" />
+
+        <LinearLayout
+            android:id="@+id/sbu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/lablesd"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/select_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/no_img_profile" />
+
+            <Button
+                android:id="@+id/sendNotification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/select_image"
+                android:text="ثبت" />
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:layout_toLeftOf="@+id/sbu" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/countryItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,7 +136,7 @@
             android:layout_margin="10dp"
             android:text="استانی" />
     </RelativeLayout>
-    
+
     <RelativeLayout
         android:id="@+id/allUser"
         android:layout_width="match_parent"
@@ -69,8 +144,8 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:visibility="gone"
-        android:background="#d3dff9" >
+        android:background="#d3dff9"
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/tre"
@@ -79,7 +154,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="50dp"
-            android:text="همه کاربران نرم افزار"
+            android:text="کاربرانی که نرم افزار را نصب  دارند"
             android:textColor="@color/transparent" />
 
         <TextView
@@ -100,8 +175,8 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:visibility="gone"
-        android:background="#d3dff9" >
+        android:background="#d3dff9"
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/tre"
@@ -110,7 +185,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="50dp"
-            android:text="بازدیدکنندگان صفحه شما"
+            android:text="کاربرانی که صفحه شما را بازدید کرده اند"
             android:textColor="@color/transparent" />
 
         <TextView
@@ -131,8 +206,8 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:visibility="gone"
-        android:background="#d3dff9" >
+        android:background="#d3dff9"
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/tre"
@@ -141,7 +216,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="50dp"
-            android:text="دنبال کنندگان صفحه شما"
+            android:text="کابرانی که صفحه شما را دنبال می کنند"
             android:textColor="@color/transparent" />
 
         <TextView

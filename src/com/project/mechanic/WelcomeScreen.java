@@ -513,8 +513,8 @@ public class WelcomeScreen extends Activity {
 				startActivity(intent);
 				finish();
 
-				overridePendingTransition(R.layout.splash_out,
-						R.layout.splash_in);
+//				overridePendingTransition(R.layout.splash_out,
+//						R.layout.splash_in);
 
 			}
 		});

@@ -1,4 +1,4 @@
-package com.project.mechanic.adapter;
+package com.project.mechanic.PushNotification;
 
 import java.util.List;
 
@@ -22,23 +22,24 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.fragment.City3Fragment;
-import com.project.mechanic.fragment.CitySelection;
 import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 
-public class ProVinceSelectionAdapter  extends ArrayAdapter<Province> {
+public class ProVinceSelectionAdapter extends ArrayAdapter<Province> {
 
 	Context context;
 	List<Province> list;
 	DataBaseAdapter adapter;
 	int lastPosition = 0;
+	String type;
 
 	public ProVinceSelectionAdapter(Context context, int resource,
-			List<Province> objact) {
+			List<Province> objact, String type) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
+		this.type = type;
 		adapter = new DataBaseAdapter(context);
 	}
 
@@ -68,10 +69,6 @@ public class ProVinceSelectionAdapter  extends ArrayAdapter<Province> {
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BROYA.TTF");
 		tx1.setTypeface(typeFace);
-		
-		final SharedPreferences send = context.getSharedPreferences(
-				"Id", 0);
-
 
 		convertView.setOnClickListener(new OnClickListener() {
 
@@ -80,7 +77,7 @@ public class ProVinceSelectionAdapter  extends ArrayAdapter<Province> {
 
 				Province province = list.get(position);
 				adapter.open();
-				
+
 				int count = province.getCount();
 				int id = province.getId();
 				count = count + 1;
@@ -90,13 +87,8 @@ public class ProVinceSelectionAdapter  extends ArrayAdapter<Province> {
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				
-				CitySelection fragment = new CitySelection();
-				
-				send.edit().putInt("ostan", id).commit();
 
-				
-				trans.replace(R.id.content_frame, new CitySelection());
+				trans.replace(R.id.content_frame, new CitySelection(type, id));
 
 				trans.addToBackStack(null);
 				trans.commit();

@@ -1,8 +1,9 @@
-package com.project.mechanic.fragment;
+package com.project.mechanic.PushNotification;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.SparseBooleanArray;
@@ -12,7 +13,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +55,8 @@ public class SelectUserFragment extends Fragment {
 		txtCount = (TextView) rootView.findViewById(R.id.mumberUser);
 		resultPrice = (TextView) rootView.findViewById(R.id.result);
 
+		
+		
 		CheckBox selectAll = (CheckBox) rootView.findViewById(R.id.checkBox1);
 
 		dbAdapter.open();
@@ -97,6 +103,28 @@ public class SelectUserFragment extends Fragment {
 
 			}
 		});
+		Spinner pageSpinner = (Spinner)rootView.findViewById(R.id.pageSpinner);
+		dbAdapter.open();
+//		// List<String> mylist = dbAdapter.getAllObjectname();
+//
+		Users CurrentUser = util.getCurrentUser();
+		ArrayList<String> namePage = new ArrayList<String>();
+		com.project.mechanic.entity.Object page;
+		List<com.project.mechanic.entity.Object> objectPage = dbAdapter
+				.getObjectByuserId(CurrentUser.getId());
+		for (int i = 0; i < objectPage.size(); i++) {
+			page = objectPage.get(i);
+			namePage.add(page.getName());
+		}
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+				getActivity(), android.R.layout.simple_spinner_item, namePage);
+
+		dataAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		pageSpinner.setAdapter(dataAdapter);
+
+		dbAdapter.close();
 		
 		
 

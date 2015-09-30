@@ -1,4 +1,4 @@
-package com.project.mechanic.adapter;
+package com.project.mechanic.PushNotification;
 
 import java.util.ArrayList;
 
@@ -16,10 +16,11 @@ import com.project.mechanic.entity.Province;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
-public class ProvinceSelection extends Fragment {
+@SuppressLint("ValidFragment") public class ProvinceSelection extends Fragment {
 
 	DataBaseAdapter adapter;
 	Utility util;
+	String type;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -29,8 +30,6 @@ public class ProvinceSelection extends Fragment {
 		util = new Utility(getActivity());
 
 		View view = inflater.inflate(R.layout.fragment_ostan, null);
-		
-	
 
 		adapter = new DataBaseAdapter(getActivity());
 
@@ -41,11 +40,15 @@ public class ProvinceSelection extends Fragment {
 
 		ListView lstProvince = (ListView) view.findViewById(R.id.listvOstan);
 		ProVinceSelectionAdapter ListAdapter = new ProVinceSelectionAdapter(
-				getActivity(), R.layout.row_ostan, mylist);
+				getActivity(), R.layout.row_ostan, mylist , type);
 
 		lstProvince.setAdapter(ListAdapter);
 
 		return view;
+	}
+
+	public ProvinceSelection(String type) {
+		this.type = type;
 	}
 
 }

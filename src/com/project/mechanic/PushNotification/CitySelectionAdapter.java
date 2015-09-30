@@ -1,4 +1,4 @@
-package com.project.mechanic.adapter;
+package com.project.mechanic.PushNotification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,12 +7,12 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.fragment.ExecutertypeFragment;
-import com.project.mechanic.fragment.SelectUserFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.RowMain;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,14 +33,16 @@ public class CitySelectionAdapter extends ArrayAdapter<City> {
 	List<City> list;
 	int lastPosition = 0;
 	DataBaseAdapter adapter;
+	String type;
 
-	public CitySelectionAdapter(Context context, int resource, List<City> objact) {
+	public CitySelectionAdapter(Context context, int resource,
+			List<City> objact, String type) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
-
+		this.type = type;
 	}
 
 	@SuppressLint("ViewHolder")
@@ -78,16 +80,31 @@ public class CitySelectionAdapter extends ArrayAdapter<City> {
 				adapter.UpdateCityToDb(id, count);
 				adapter.close();
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
-				trans.addToBackStack(null);
-				Fragment move = new SelectUserFragment();
-				Bundle bundle = new Bundle();
-				bundle.putString("cityId", String.valueOf(city.getId()));
-				move.setArguments(bundle);
-				trans.replace(R.id.content_frame, move);
-				trans.commit();
-				Toast.makeText(context, "city Id = " + city.getId(), 0).show();
+				if (type.equals("BirthDay")) {
+
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.addToBackStack(null);
+
+					MessageNotification move = new MessageNotification();
+
+					trans.replace(R.id.content_frame, move);
+
+					trans.commit();
+				} else {
+
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.addToBackStack(null);
+
+					Fragment move = new TypeUserNotification(type);
+
+					trans.replace(R.id.content_frame, move);
+
+					trans.commit();
+					Toast.makeText(context, "city Id = " + city.getId(), 0)
+							.show();
+				}
 			}
 		});
 		return convertView;

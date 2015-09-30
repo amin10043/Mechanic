@@ -17,11 +17,22 @@
             android:layout_marginTop="8dp"
             android:background="@color/white" >
 
+            <ImageView
+                android:id="@+id/logout"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/lin2"
+                android:layout_margin="2dp"
+                android:src="@drawable/logout" />
+
             <LinearLayout
                 android:id="@+id/lin2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/txtsize10" >
+                android:layout_margin="@dimen/txtsize10"
+                android:gravity="left"
+                android:orientation="vertical" >
 
                 <ImageView
                     android:id="@+id/img1"
@@ -29,47 +40,41 @@
                     android:layout_height="100dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/no_img_profile" />
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_toRightOf="@+id/lin2"
-                android:layout_weight="1"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/displayname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="TextView"
-                    android:textColor="@color/transparent"
-                    android:textSize="@dimen/item_font_size" />
-
-                <TextView
-                    android:id="@+id/txtdate"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="TextView"
-                    android:textColor="@color/transparent" />
+                    android:layout_gravity="left"
+                    android:gravity="left"
+                    android:orientation="vertical" >
 
-                <ImageView
-                    android:id="@+id/logout"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/logout" />
+                    <TextView
+                        android:id="@+id/displayname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:text="TextView"
+                        android:textColor="@color/transparent"
+                        android:textSize="@dimen/item_font_size" />
+
+                    <TextView
+                        android:id="@+id/txtdate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:text="TextView"
+                        android:textColor="@color/transparent" />
+                </LinearLayout>
             </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/btnedit"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/lin2"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
                 android:layout_below="@+id/lin2"
-                android:background="#64bc2c" >
+                android:background="#64bc2c"
+                android:gravity="center_horizontal" >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -84,22 +89,45 @@
 
             <RelativeLayout
                 android:id="@+id/birthdayUsers"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/btnedit"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:background="#ffc600" >
+                android:layout_below="@+id/btnedit"
+                android:background="#ef4444" >
+
+                <ImageView
+                    android:id="@+id/iconb"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/birthday_icon" />
 
                 <TextView
+                    android:id="@+id/lablesd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
                     android:layout_marginBottom="20dp"
+                    android:layout_marginRight="5dp"
                     android:layout_marginTop="20dp"
-                    android:text="زادروز کاربران"
-                    android:textColor="@color/transparent" />
+                    android:layout_toLeftOf="@+id/iconb"
+                    android:text="زاد روز"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/numberOfBirthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/lablesd"
+                    android:text="17"
+                    android:textColor="@color/white" />
             </RelativeLayout>
         </RelativeLayout>
 

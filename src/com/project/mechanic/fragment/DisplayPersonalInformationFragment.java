@@ -26,7 +26,9 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.project.mechanic.DialogManagmentPaper;
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.PushNotification.DomainSend;
 import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.entity.Object;
@@ -59,8 +61,9 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 			AddressLayout;
 
 	AnadListAdapter anadGridAdapter;
-	RelativeLayout.LayoutParams followParams;
+	RelativeLayout.LayoutParams followParams , paramsLayout;
 
+	
 	@SuppressLint("NewApi")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -131,7 +134,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		LayoutParams lp1 = new LinearLayout.LayoutParams(lin2.getLayoutParams());
 		lp1.width = utile1.getScreenwidth() / 4;
 		lp1.height = utile1.getScreenwidth() / 4;
-		lp1.setMargins(5, 5, 5, 5);
+//		lp1.setMargins(5, 5, 5, 5);
 		img.setLayoutParams(lp1);
 		// byte[] bitmapbyte = u.getImage();
 		String ImagePath = u.getImagePath();
@@ -215,11 +218,22 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 
 		followParams = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
 
-		followParams.width = utile1.getScreenwidth() / 4;
-		followParams.height = utile1.getScreenwidth() / 14;
-		followParams.setMargins(5, 5, 10, 10);
-		followParams.addRule(RelativeLayout.ALIGN_LEFT, R.id.lin2);
+		followParams.width = utile1.getScreenwidth() / 3;
+		followParams.setMargins(5, 5, 5, 5);
+		// followParams.addRule(RelativeLayout.ALIGN_LEFT, R.id.lin2);
+		followParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		followParams.addRule(RelativeLayout.BELOW, R.id.lin2);
+
+		btnedit.setLayoutParams(followParams);
+		
+		paramsLayout = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
+
+		paramsLayout.width = utile1.getScreenwidth() / 3;
+		paramsLayout.setMargins(5, 0, 5, 5);
+		paramsLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		paramsLayout.addRule(RelativeLayout.BELOW, R.id.btnedit);
+		birthDayUsers.setLayoutParams(paramsLayout);
+
 
 		RelativeLayout manageArticle = (RelativeLayout) header
 				.findViewById(R.id.manage_paper);
@@ -280,6 +294,28 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new EditPersonalFragment());
 				trans.commit();
+			}
+		});
+
+		final SharedPreferences tashkhis = getActivity().getSharedPreferences(
+				"Id", 0);
+
+		birthDayUsers.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				DomainSend fragment = new DomainSend("BirthDay");
+
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+
+				tashkhis.edit().putString("enter", "DisplayPersonal").commit();
+				tashkhis.edit().putString("FromTableName", "BirthDay").commit();
+
 			}
 		});
 

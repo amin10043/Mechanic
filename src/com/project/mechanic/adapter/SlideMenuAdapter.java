@@ -29,11 +29,11 @@ public class SlideMenuAdapter extends BaseAdapter {
 
 	Context context;
 
-	String[] slideitem = { "", "صفحه اصلی", "صفحه شخصی", "پسند شده ها",
-			"درباره ما", "تماس با ما", "خروج" };
+	String[] slideitem = { "", "صفحه اصلی", "صفحه شخصی", "علاقه مندی ها",
+			"پشتیبانی آنلاین", "درباره ما", "خروج" };
 	int[] icon = { R.drawable.mechanical_logo, R.drawable.ic_home,
-			R.drawable.ic_personal, R.drawable.ic_bookmark,
-			R.drawable.ic_about_us, R.drawable.phone2, R.drawable.exit };
+			R.drawable.ic_personal, R.drawable.ic_bookmark, R.drawable.phone2,
+			R.drawable.ic_about_us, R.drawable.exit };
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {

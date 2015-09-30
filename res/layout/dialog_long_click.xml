@@ -231,13 +231,13 @@
             </LinearLayout>
         </LinearLayout>
         
-        <ImageView
+        <Button
             android:id="@+id/report_item"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_gravity="left"
             android:layout_margin="10dp"
-            android:src="@drawable/save"
+            android:text="ارسال"
             android:visibility="gone" />
 
         <RelativeLayout

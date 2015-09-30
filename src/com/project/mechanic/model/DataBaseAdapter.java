@@ -162,7 +162,8 @@ public class DataBaseAdapter {
 	private String[] Users = { "ID", "Name", "Email", "Password",
 			"Phonenumber", "Mobailenumber", "Faxnumber", "Address", "Image",
 			"ServiceId", "ServerDate", "Date", "Submit", "Admin",
-			"ImageServerDate", "ImagePath", "ShowInfoItem" };
+			"ImageServerDate", "ImagePath", "ShowInfoItem", "BirthDay",
+			"ProvinceCity" };
 
 	// private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url", "ServerDate",
@@ -358,11 +359,13 @@ public class DataBaseAdapter {
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
-	public void UpdateAllUserToDbNoPic(int id, String email, String password,
-			String phonenumber, String mobailenumber, String faxnumber,
-			String address, String CheckInformation) {
+	public void UpdateAllUserToDbNoPic(String name, int id, String email,
+			String password, String phonenumber, String mobailenumber,
+			String faxnumber, String address, String CheckInformation,
+			String Birthday, String ProvinceCity) {
 
 		ContentValues uc = new ContentValues();
+		uc.put("Name", name);
 		uc.put("Email", email);
 		uc.put("Password", password);
 		uc.put("Phonenumber", phonenumber);
@@ -370,6 +373,9 @@ public class DataBaseAdapter {
 		uc.put("Faxnumber", faxnumber);
 		uc.put("Address", address);
 		uc.put("ShowInfoItem", CheckInformation);
+		uc.put("BirthDay", Birthday);
+		uc.put("ProvinceCity", ProvinceCity);
+
 		mDb.update(TableUsers, uc, "Id=" + id, null);
 	}
 
@@ -1181,7 +1187,8 @@ public class DataBaseAdapter {
 				cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
 				cursor.getString(11), cursor.getInt(12), cursor.getInt(13),
 				cursor.getString(14), cursor.getString(15),
-				cursor.getString(16));
+				cursor.getString(16), cursor.getString(17),
+				cursor.getString(18));
 
 		return Users;
 
@@ -2039,7 +2046,9 @@ public class DataBaseAdapter {
 					cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
 					cursor.getString(11), cursor.getInt(12), cursor.getInt(13),
 					cursor.getString(14), cursor.getString(15),
-					cursor.getString(16));
+					cursor.getString(16), cursor.getString(17),
+					cursor.getString(18));
+			;
 			result.add(tempusers);
 
 		}
@@ -2108,13 +2117,13 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
 					cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
 					cursor.getString(11), cursor.getInt(12), cursor.getInt(13),
 					cursor.getString(14), cursor.getString(15),
-					cursor.getString(16));
+					cursor.getString(16), cursor.getString(17),
+					cursor.getString(18));
 
 			result.add(tempusers);
 		}
@@ -3523,6 +3532,7 @@ public class DataBaseAdapter {
 		return item;
 
 	}
+
 	public ArrayList<Province> getAllProvinceNoSorting() {
 		ArrayList<Province> result = new ArrayList<Province>();
 		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
@@ -3536,7 +3546,7 @@ public class DataBaseAdapter {
 
 		return result;
 	}
-	
+
 	public ArrayList<City> getCitysByProvinceIdNoSort(int ProvinceId) {
 
 		ArrayList<City> result = new ArrayList<City>();

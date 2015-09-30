@@ -17,8 +17,8 @@ import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.project.mechanic.R;
+import com.project.mechanic.PushNotification.SelectUserFragment;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.SelectUserFragment;
 
 public class SelectUsersAdapter extends ArrayAdapter<Users> {
 	List<Users> usersList;
