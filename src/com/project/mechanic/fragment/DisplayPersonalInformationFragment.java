@@ -171,7 +171,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		String fax = u.getFaxnumber();
 		String d = u.getDate();
 
-		txtdate.setText(utile1.getPersianDate(d));
+		//txtdate.setText(utile1.getPersianDate(d));
 		txtname.setText(name);
 		txtemail.setText(email);
 		txtcellphone.setText(cellphone);

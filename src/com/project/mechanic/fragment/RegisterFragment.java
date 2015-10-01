@@ -102,7 +102,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	int ostanId, cityId, dayId, monthId, yearId;
 	ArrayList<City> cityList;
 	boolean flag;
-
+	String birthday;
+	byte[] Image;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -645,12 +646,28 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 						.getSharedPreferences("user", 0);
 				SharedPreferences.Editor editor = settings.edit();
 				editor.putBoolean("isLogin", true);
-
+				editor.commit();
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
+				
 				dbAdapter.open();
+				
+				dbAdapter.inserUserToDb(serverId, Name, null, Pass,
+						null, Mobile, null, null, null, 0, txtdate , birthday , cityId);
+				if (output != null) {
+
+					utile.CreateFile(Image, serverId, "Mechanical", "Users",
+							"user", "Users");
+				}
+				
+				
+				
+				
+//				dbAdapter.inserUserToDb(serverId, Name, null, Pass,
+//						null, Mobile, null, null, Image, 0, txtdate);
+				
 				u = dbAdapter.getUserbymobailenumber(Mobile);
 				if (u != null) {
 					int id = u.getId();
@@ -658,6 +675,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 					dbAdapter.UpdateAdminUserToDb(id, admin);
 				}
 				dbAdapter.close();
+				
 				Toast.makeText(getActivity(), "شما وارد شده اید.",
 						Toast.LENGTH_SHORT).show();
 			} else {
@@ -699,7 +717,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 					if (!bitmap.sameAs(emptyBitmap)) {
 						Map<String, Object> it = new LinkedHashMap<String, Object>();
 
-						byte[] Image = Utility.CompressBitmap(bitmap);
+						Image = Utility.CompressBitmap(bitmap);
 						if (getActivity() != null) {
 							savingImage = new SavingImage(getActivity());
 							it.put("tableName", "Users");
@@ -711,12 +729,13 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 								"", "لطفا منتظر بمانید...", true);
 						savingImage.delegate = this;
 						savingImage.execute(it);
-						dbAdapter.inserUserToDb(serverId, Name, null, Pass,
-								null, Mobile, null, null, Image, 0, txtdate);
+//						dbAdapter.inserUserToDb(serverId, Name, null, Pass,
+//								null, Mobile, null, null, Image, 0, txtdate);
 					}
 				} else {
 					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
-							null, Mobile, null, null, 0, txtdate);
+							null, Mobile, null, null, 0, txtdate, birthday,
+							cityId);
 					LayoutInflater inflater4 = getLayoutInflater(getArguments());
 					View view4 = inflater4.inflate(R.layout.toast_define,
 							toastlayout);
@@ -728,6 +747,26 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 					toast.setDuration(Toast.LENGTH_LONG);
 					toast.setView(view4);
 					toast.show();
+					
+					u = dbAdapter.getUserbymobailenumber(Mobile);
+					if (u != null) {
+						int id = u.getId();
+						int admin = 1;
+						dbAdapter.UpdateAdminUserToDb(id, admin);
+					}
+					SharedPreferences settings = getActivity()
+							.getSharedPreferences("user", 0);
+					SharedPreferences.Editor editor = settings.edit();
+					editor.putBoolean("isLogin", true);
+					editor.commit();
+
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new MainFragment());
+					trans.commit();
+					
+					
+					
 				}
 				dbAdapter.close();
 			} else {
@@ -751,20 +790,28 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 				Map<String, String> items = new LinkedHashMap<String, String>();
 				saving.delegate = this;
 
-				items.put("register", "register");
-				items.put("username", Name);
-//				items.put("email", "");
-				items.put("password", Pass);
-//				items.put("phone", "");
-				items.put("mobile", Mobile);
-//				items.put("fax", "0");
-//				items.put("address", "");
-				items.put("date", output);
+				items.put("Users", "Users");
+				items.put("Name", Name);
+				// items.put("email", "");
+				items.put("Password", Pass);
+				// items.put("phone", "");
+				items.put("Mobailenumber", Mobile);
+				// items.put("fax", "0");
+				// items.put("address", "");
+				items.put("Date", output);
+				items.put("ModifyDate", output);
 
-				if (flag == true)
-					items.put("BirthDay", yearId + "***" + monthId + "***"
-							+ dayId);
-				items.put("ProvinceCity", ostanId + "***" + cityId);
+				if (flag == true) {
+
+					birthday = yearId + "/" + monthId + "/" + dayId;
+					items.put("BirthDay", birthday);
+				} else
+					birthday = "";
+
+				items.put("CityId", String.valueOf(cityId));
+
+				items.put("IsUpdate", "0");
+				items.put("Id", "0");
 
 				ringProgressDialog = ProgressDialog.show(getActivity(), "",
 						"لطفا منتظر بمانید...", true);

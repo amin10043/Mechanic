@@ -504,7 +504,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 						}
 
 						ProvinceCity = ostanId + "***" + cityId;
-						params.put("ProvinceCity", ProvinceCity);
+						params.put("CityId", String.valueOf(cityId));
 
 						saving.execute(params);
 					}
@@ -824,7 +824,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				dbAdapter.UpdateAllUserToDbNoPic(txtname.getText().toString(),
 						ut.getCurrentUser().getId(), Email, null, Phone,
 						Cellphone, Fax, Address, infoItem, birthday,
-						ProvinceCity);
+						cityId);
 
 				dbAdapter.close();
 			}

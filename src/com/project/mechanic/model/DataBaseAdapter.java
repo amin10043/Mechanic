@@ -110,7 +110,7 @@ public class DataBaseAdapter {
 	private String[] LikeInFroum = { "Id", "UserId", "FroumId", "Date",
 			"CommentId", "Seen" };
 	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike",
-			"Date" };
+			"Date" , "ModifyDate" };
 	private String[] LikeInPaper = { "Id", "UserId", "PaperId", "Date",
 			"CommentId", "Seen" };
 	// private String[] List = { "ID", "Name", "ParentId" };
@@ -163,7 +163,7 @@ public class DataBaseAdapter {
 			"Phonenumber", "Mobailenumber", "Faxnumber", "Address", "Image",
 			"ServiceId", "ServerDate", "Date", "Submit", "Admin",
 			"ImageServerDate", "ImagePath", "ShowInfoItem", "BirthDay",
-			"ProvinceCity" };
+			"CityId" };
 
 	// private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url", "ServerDate",
@@ -217,7 +217,7 @@ public class DataBaseAdapter {
 	public void inserUserToDb(int id, String name, String email,
 			String password, String phonenumber, String mobailenumber,
 			String faxnumber, String address, byte[] image, int serviceid,
-			String date) {
+			String date , String BirthDay , int CityId) {
 
 		ContentValues uc = new ContentValues();
 
@@ -232,6 +232,9 @@ public class DataBaseAdapter {
 		uc.put("Address", address);
 		uc.put("Image", image);
 		uc.put("ServiceId", serviceid);
+		
+		uc.put("BirthDay", BirthDay);
+		uc.put("CityId", CityId);
 
 		uc.put("Date", date);
 		mDb.insert(TableUsers, null, uc);
@@ -264,7 +267,7 @@ public class DataBaseAdapter {
 
 	public void inserUsernonpicToDb(int Id, String name, String email,
 			String password, String phonenumber, String mobailenumber,
-			String faxnumber, String address, int serviceid, String date) {
+			String faxnumber, String address, int serviceid, String date , String BirthDay , int CityId) {
 
 		ContentValues uc = new ContentValues();
 		uc.put("Id", Id);
@@ -278,7 +281,8 @@ public class DataBaseAdapter {
 		uc.put("Address", address);
 
 		uc.put("ServiceId", serviceid);
-
+		uc.put("BirthDay", BirthDay);
+		uc.put("CityId", CityId);
 		uc.put("Date", date);
 		mDb.insert(TableUsers, null, uc);
 	}
@@ -362,7 +366,7 @@ public class DataBaseAdapter {
 	public void UpdateAllUserToDbNoPic(String name, int id, String email,
 			String password, String phonenumber, String mobailenumber,
 			String faxnumber, String address, String CheckInformation,
-			String Birthday, String ProvinceCity) {
+			String Birthday, int CityId) {
 
 		ContentValues uc = new ContentValues();
 		uc.put("Name", name);
@@ -374,7 +378,7 @@ public class DataBaseAdapter {
 		uc.put("Address", address);
 		uc.put("ShowInfoItem", CheckInformation);
 		uc.put("BirthDay", Birthday);
-		uc.put("ProvinceCity", ProvinceCity);
+		uc.put("CityId", CityId);
 
 		mDb.update(TableUsers, uc, "Id=" + id, null);
 	}
@@ -1188,7 +1192,7 @@ public class DataBaseAdapter {
 				cursor.getString(11), cursor.getInt(12), cursor.getInt(13),
 				cursor.getString(14), cursor.getString(15),
 				cursor.getString(16), cursor.getString(17),
-				cursor.getString(18));
+				cursor.getInt(18));
 
 		return Users;
 
@@ -2047,7 +2051,7 @@ public class DataBaseAdapter {
 					cursor.getString(11), cursor.getInt(12), cursor.getInt(13),
 					cursor.getString(14), cursor.getString(15),
 					cursor.getString(16), cursor.getString(17),
-					cursor.getString(18));
+					cursor.getInt(18));
 			;
 			result.add(tempusers);
 
@@ -2123,7 +2127,7 @@ public class DataBaseAdapter {
 					cursor.getString(11), cursor.getInt(12), cursor.getInt(13),
 					cursor.getString(14), cursor.getString(15),
 					cursor.getString(16), cursor.getString(17),
-					cursor.getString(18));
+					cursor.getInt(18));
 
 			result.add(tempusers);
 		}
