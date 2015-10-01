@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,10 +31,12 @@ import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.AdvisorTypeFragment;
 import com.project.mechanic.fragment.BerandFragment;
+import com.project.mechanic.fragment.TypeBestItemsFragment;
 import com.project.mechanic.fragment.City2Fragment;
 import com.project.mechanic.fragment.City3Fragment;
 import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.fragment.CountryFragment;
+import com.project.mechanic.fragment.DialogSettings;
 import com.project.mechanic.fragment.Dialog_notification;
 import com.project.mechanic.fragment.Dialog_notificationlike;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
@@ -77,6 +80,8 @@ public class MainActivity extends FragmentActivity {
 	int t1, t2, t3, t;
 	int r1, r2, r3, r;
 
+	ImageView Settings;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -102,6 +107,20 @@ public class MainActivity extends FragmentActivity {
 			EnterDialog dialogEnter = new EnterDialog(MainActivity.this);
 			dialogEnter.show();
 		}
+		Settings = (ImageView) findViewById(R.id.settings_icon);
+		Settings.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				FragmentTransaction trans = getSupportFragmentManager()
+						.beginTransaction();
+				trans.replace(R.id.content_frame, new DialogSettings());
+
+				trans.addToBackStack(null);
+				trans.commit();
+			}
+		});
 
 		iBtnmessage.setOnClickListener(new OnClickListener() {
 
@@ -353,8 +372,7 @@ public class MainActivity extends FragmentActivity {
 			break;
 
 		case 4:
-			// about us 3
-			fragment = new FragmentAboutUs();
+			fragment = new FragmentContactUs();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
@@ -362,7 +380,9 @@ public class MainActivity extends FragmentActivity {
 			break;
 		case 5:
 			// contact us 4
-			fragment = new FragmentContactUs();
+
+			// about us 3
+			fragment = new FragmentAboutUs();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();

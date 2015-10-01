@@ -26,7 +26,7 @@
                 <ImageView
                     android:id="@+id/fragment_anad_imgadd"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="10dp"
                     android:layout_centerInParent="true"
                     android:scaleType="fitXY"
                     android:src="@drawable/no_image_header" />
@@ -273,7 +273,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:src="@drawable/ic_personal" />
+                            android:src="@drawable/ic_personal2" />
 
                         <TextView
                             android:id="@+id/fragment_showad_tx1"
@@ -288,6 +288,13 @@
                             android:lines="1"
                             android:text="mmmmmmmm"
                             android:textColor="@color/transparent" />
+                        
+                        <ImageView 
+                            android:layout_width="400dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/custom_drawable"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -319,6 +326,12 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/email" />
+                           <ImageView 
+                            android:layout_width="400dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/custom_drawable"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -350,6 +363,12 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/phone" />
+                           <ImageView 
+                            android:layout_width="400dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/custom_drawable"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -381,6 +400,13 @@
                             android:gravity="center"
                             android:text="mobile"
                             android:textColor="@color/transparent" />
+                           <ImageView 
+                            android:layout_width="400dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/custom_drawable"/>
+                        
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -483,7 +509,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:gravity="center"
-                    android:text="گزارش آگهی"
+                    android:text="گزارش تخلف"
                     android:textColor="@color/transparent" />
 
                 <LinearLayout

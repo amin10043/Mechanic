@@ -2,7 +2,9 @@ package com.project.mechanic.fragment;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -15,12 +17,22 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
+import com.project.mechanic.DialogManagmentPaper;
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.PushNotification.DomainSend;
+import com.project.mechanic.adapter.AnadListAdapter;
+import com.project.mechanic.adapter.ObjectListAdapter;
+import com.project.mechanic.entity.Object;
+import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
@@ -45,14 +57,32 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 	String serverDate;
 	ServerDate date;
 	int userId;
+	RelativeLayout phoneLayout, emailLayout, faxLayout, mobileLayout,
+			AddressLayout;
 
+	AnadListAdapter anadGridAdapter;
+	RelativeLayout.LayoutParams followParams , paramsLayout;
+
+	
+	@SuppressLint("NewApi")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(
-				R.layout.fragment_displaypersonalinformation, null);
+
 		utile1 = new Utility(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
+
+		// View rootView = inflater.inflate(R.layout.fragment_information_user,
+		// null);
+
+		View header = inflater.inflate(
+				R.layout.fragment_displaypersonalinformation, null);
+
+		phoneLayout = (RelativeLayout) header.findViewById(R.id.laySabet);
+		mobileLayout = (RelativeLayout) header.findViewById(R.id.layHamrah);
+		AddressLayout = (RelativeLayout) header.findViewById(R.id.layaddress);
+		faxLayout = (RelativeLayout) header.findViewById(R.id.layfax);
+		emailLayout = (RelativeLayout) header.findViewById(R.id.layEmail);
 
 		if (getArguments() != null) {
 			if (getArguments().getInt("0") == 0) {
@@ -76,39 +106,63 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		}
 		if (u == null) {
 			// خطا . نباید این اتفاق بیفتد!
-			return view;
+			return header;
 		}
 
 		date = new ServerDate(getActivity());
 		date.delegate = this;
 		date.execute("");
-	
-	
-		TextView txtaddress = (TextView) view.findViewById(R.id.address);
-		TextView txtcellphone = (TextView) view.findViewById(R.id.cellphone);
-		TextView txtphone = (TextView) view.findViewById(R.id.phone);
-		TextView txtemail = (TextView) view.findViewById(R.id.email);
-		TextView txtname = (TextView) view.findViewById(R.id.displayname);
-		TextView txtfax = (TextView) view.findViewById(R.id.fax);
-		img = (ImageView) view.findViewById(R.id.img1);
-		ImageView logout = (ImageView) view.findViewById(R.id.logout);
-		Button btnedit = (Button) view.findViewById(R.id.btnedit);
 
-		TextView txtdate = (TextView) view.findViewById(R.id.txtdate);
+		TextView txtaddress = (TextView) header.findViewById(R.id.address);
+		TextView txtcellphone = (TextView) header.findViewById(R.id.cellphone);
+		TextView txtphone = (TextView) header.findViewById(R.id.phone);
+		TextView txtemail = (TextView) header.findViewById(R.id.email);
+		TextView txtname = (TextView) header.findViewById(R.id.displayname);
+		TextView txtfax = (TextView) header.findViewById(R.id.fax);
+		TextView namePageTicket = (TextView) header.findViewById(R.id.name);
+		img = (ImageView) header.findViewById(R.id.img1);
+		ImageView logout = (ImageView) header.findViewById(R.id.logout);
+		RelativeLayout btnedit = (RelativeLayout) header
+				.findViewById(R.id.btnedit);
+		RelativeLayout birthDayUsers = (RelativeLayout) header
+				.findViewById(R.id.birthdayUsers);
 
-		final LinearLayout lin4 = (LinearLayout) view.findViewById(R.id.lin2);
+		TextView txtdate = (TextView) header.findViewById(R.id.txtdate);
 
-		LayoutParams lp1 = new LinearLayout.LayoutParams(lin4.getLayoutParams());
+		final LinearLayout lin2 = (LinearLayout) header.findViewById(R.id.lin2);
+
+		LayoutParams lp1 = new LinearLayout.LayoutParams(lin2.getLayoutParams());
 		lp1.width = utile1.getScreenwidth() / 4;
 		lp1.height = utile1.getScreenwidth() / 4;
+//		lp1.setMargins(5, 5, 5, 5);
 		img.setLayoutParams(lp1);
-
-		byte[] bitmapbyte = u.getImage();
-		if (bitmapbyte != null) {
-			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-					bitmapbyte.length);
-			img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
+		// byte[] bitmapbyte = u.getImage();
+		String ImagePath = u.getImagePath();
+		if (ImagePath != null) {
+			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
+			img.setImageBitmap(bmp);
 		}
+
+		// ListView lv = (ListView) rootView.findViewById(R.id.listPageUser);
+		// lv.addHeaderView(header);
+		// lv.addFooterView(footer);
+
+		TextView namett = (TextView) header.findViewById(R.id.namepageList);
+
+		namett.setText(u.getName());
+
+		img.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				String ImagePath = u.getImagePath();
+				String name = u.getName();
+
+				DialogShowImage showImage = new DialogShowImage(getActivity(),
+						ImagePath, name);
+				showImage.show();
+			}
+		});
 		String name = u.getName();
 		String email = u.getEmail();
 		String address = u.getAddress();
@@ -117,13 +171,84 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		String fax = u.getFaxnumber();
 		String d = u.getDate();
 
-		txtdate.setText(d);
+		txtdate.setText(utile1.getPersianDate(d));
 		txtname.setText(name);
 		txtemail.setText(email);
 		txtcellphone.setText(cellphone);
 		txtphone.setText(phone);
 		txtfax.setText(fax);
 		txtaddress.setText(address);
+		namePageTicket.setText(name);
+
+		dbAdapter.open();
+
+		final List<Ticket> mylist = dbAdapter.getAllAnadUser(u.getId());
+		final List<Paper> listPaper = dbAdapter.getAllPaperUser(u.getId());
+
+		final List<Object> listPage = dbAdapter.getAllObjectByUserId(u.getId());
+		dbAdapter.close();
+
+		RelativeLayout ManagePage = (RelativeLayout) header
+				.findViewById(R.id.manage_pages);
+		ManagePage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				DialogManagementPages dialog = new DialogManagementPages(
+						getActivity(), listPage,
+						DisplayPersonalInformationFragment.this);
+				dialog.show();
+			}
+		});
+
+		RelativeLayout manageTicket = (RelativeLayout) header
+				.findViewById(R.id.manage_ticket);
+
+		manageTicket.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				DialogManagementTicket dialog = new DialogManagementTicket(
+						getActivity(), mylist,
+						DisplayPersonalInformationFragment.this);
+				dialog.show();
+			}
+		});
+
+		followParams = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
+
+		followParams.width = utile1.getScreenwidth() / 3;
+		followParams.setMargins(5, 5, 5, 5);
+		// followParams.addRule(RelativeLayout.ALIGN_LEFT, R.id.lin2);
+		followParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		followParams.addRule(RelativeLayout.BELOW, R.id.lin2);
+
+		btnedit.setLayoutParams(followParams);
+		
+		paramsLayout = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
+
+		paramsLayout.width = utile1.getScreenwidth() / 3;
+		paramsLayout.setMargins(5, 0, 5, 5);
+		paramsLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		paramsLayout.addRule(RelativeLayout.BELOW, R.id.btnedit);
+		birthDayUsers.setLayoutParams(paramsLayout);
+
+
+		RelativeLayout manageArticle = (RelativeLayout) header
+				.findViewById(R.id.manage_paper);
+		manageArticle.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				DialogManagmentPaper dialog = new DialogManagmentPaper(
+						getActivity(), listPaper,
+						DisplayPersonalInformationFragment.this);
+				dialog.show();
+
+			}
+		});
 
 		logout.setOnClickListener(new OnClickListener() {
 
@@ -172,7 +297,29 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 			}
 		});
 
-		return view;
+		final SharedPreferences tashkhis = getActivity().getSharedPreferences(
+				"Id", 0);
+
+		birthDayUsers.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				DomainSend fragment = new DomainSend("BirthDay");
+
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+
+				tashkhis.edit().putString("enter", "DisplayPersonal").commit();
+				tashkhis.edit().putString("FromTableName", "BirthDay").commit();
+
+			}
+		});
+
+		return header;
 	}
 
 	@Override
@@ -207,10 +354,9 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 				serviceImage = new UpdatingImage(context);
 				serviceImage.delegate = this;
 				serviceImage.execute(params);
-				
+
 			}
 		}
-		
-	
+
 	}
 }

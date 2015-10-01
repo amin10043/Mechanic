@@ -30,7 +30,8 @@ import com.project.mechanic.entity.NewsPaper;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
-@SuppressLint("SetJavaScriptEnabled") public class UrlNewsPaperFragment extends Fragment {
+@SuppressLint("SetJavaScriptEnabled")
+public class UrlNewsPaperFragment extends Fragment {
 
 	DataBaseAdapter dbAdapter;
 	int id;
@@ -73,9 +74,6 @@ import com.project.mechanic.utility.Utility;
 		dbAdapter.open();
 
 		final NewsPaper newsPaper = dbAdapter.getNewsPaperId(id);
-		
-		RelativeLayout timeLine = util.timeLineDrawing(getActivity());
-		timeLine.setVisibility(View.VISIBLE);
 
 		if (util.isNetworkConnected()) {
 			Toast.makeText(getActivity(), "network connected", 0).show();
@@ -120,7 +118,8 @@ import com.project.mechanic.utility.Utility;
 
 			}
 		} else {
-			Toast.makeText(getActivity(), "faild in connect to internet", 0).show();
+			Toast.makeText(getActivity(), "faild in connect to internet", 0)
+					.show();
 			if (newsPaper != null) {
 				// rei=ad db html
 				//

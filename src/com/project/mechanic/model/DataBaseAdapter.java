@@ -109,8 +109,8 @@ public class DataBaseAdapter {
 			"CommentId", "Seen" };
 	private String[] LikeInFroum = { "Id", "UserId", "FroumId", "Date",
 			"CommentId", "Seen" };
-	// private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike"
-	// };
+	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike",
+			"Date" };
 	private String[] LikeInPaper = { "Id", "UserId", "PaperId", "Date",
 			"CommentId", "Seen" };
 	// private String[] List = { "ID", "Name", "ParentId" };
@@ -154,22 +154,24 @@ public class DataBaseAdapter {
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image",
 			"date", "TypeId", "Name", "Email", "Mobile", "Phone", "Fax",
 			"ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress",
-			"UImage", "UMobile", "Seen", "Submit", "seenBefore", "Day" };
+			"UImage", "UMobile", "Seen", "Submit", "seenBefore", "Day",
+			"imagePath", "ImageServerDate" };
 
 	private String[] TicketType = { "ID", "desc" };
 
 	private String[] Users = { "ID", "Name", "Email", "Password",
 			"Phonenumber", "Mobailenumber", "Faxnumber", "Address", "Image",
 			"ServiceId", "ServerDate", "Date", "Submit", "Admin",
-			"ImageServerDate" };
+			"ImageServerDate", "ImagePath", "ShowInfoItem", "BirthDay",
+			"ProvinceCity" };
 
 	// private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url", "ServerDate",
 			"HtmlString " };
 	// private String[] ObjectBrandType = { "ID", "Description" };
 
-	// private String[] LikeInCommentObject = { "Id", "CommentId", "UserId",
-	// "IsLike" };
+	private String[] LikeInCommentObject = { "Id", "CommentId", "UserId",
+			"IsLike", "Date" };
 
 	// private String[] Visit = { "UserId", "ObjectId", "TypeId" };
 	private String[] SubAdmin = { "Id", "ObjectId", "UserId", "AdminID", "Date" };
@@ -357,18 +359,24 @@ public class DataBaseAdapter {
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
-	public void UpdateAllUserToDbNoPic(int id, String email, String password,
-			String phonenumber, String mobailenumber, String faxnumber,
-			String address) {
+	public void UpdateAllUserToDbNoPic(String name, int id, String email,
+			String password, String phonenumber, String mobailenumber,
+			String faxnumber, String address, String CheckInformation,
+			String Birthday, String ProvinceCity) {
 
 		ContentValues uc = new ContentValues();
+		uc.put("Name", name);
 		uc.put("Email", email);
 		uc.put("Password", password);
 		uc.put("Phonenumber", phonenumber);
 		uc.put("Mobailenumber", mobailenumber);
 		uc.put("Faxnumber", faxnumber);
 		uc.put("Address", address);
-		mDb.update(TableUsers, uc, "ID=" + id, null);
+		uc.put("ShowInfoItem", CheckInformation);
+		uc.put("BirthDay", Birthday);
+		uc.put("ProvinceCity", ProvinceCity);
+
+		mDb.update(TableUsers, uc, "Id=" + id, null);
 	}
 
 	public void UpdateHtmlStringInNewspaper(int id, String htmlstring) {
@@ -398,11 +406,11 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertLikeInFroumToDb(int UserId, int FroumId, String Date,
-			int CommentId) {
+	public void insertLikeInFroumToDb(int id, int UserId, int FroumId,
+			String Date, int CommentId) {
 		if (!isUserLikedFroum(UserId, FroumId)) {
 			ContentValues uc = new ContentValues();
-
+			uc.put("Id", id);
 			uc.put("UserId", UserId);
 			uc.put("FroumId", FroumId);
 			uc.put("CommentId", CommentId);
@@ -467,18 +475,17 @@ public class DataBaseAdapter {
 		mDb.insert(TableComment, null, cv);
 	}
 
-	public void insertCommentInFroumtoDb(String description, int Froumid,
-			int userid, String datetime, int commentid, String numofDisLike,
-			String numoflike) {
+	public void insertCommentInFroumtoDb(int id, String description,
+			int Froumid, int userid, String datetime, int commentid,
+			String numofDisLike, String numoflike) {
 
 		ContentValues cv = new ContentValues();
+		cv.put("Id", id);
 		cv.put("Desk", description);
 		cv.put("UserId", userid);
 		cv.put("FroumID", Froumid);
 		cv.put("Date", datetime);
 		cv.put("CommentId", commentid);
-		cv.put("NumOfDislike", numofDisLike);
-		cv.put("NumOfLike", numoflike);
 		cv.put("Seen", 1);
 
 		mDb.insert(TableCommentInFroum, null, cv);
@@ -1178,7 +1185,10 @@ public class DataBaseAdapter {
 				cursor.getString(2), cursor.getString(3), cursor.getString(4),
 				cursor.getString(5), cursor.getString(6), cursor.getString(7),
 				cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-				cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
+				cursor.getString(11), cursor.getInt(12), cursor.getInt(13),
+				cursor.getString(14), cursor.getString(15),
+				cursor.getString(16), cursor.getString(17),
+				cursor.getString(18));
 
 		return Users;
 
@@ -1322,7 +1332,8 @@ public class DataBaseAdapter {
 				cursor.getString(14), cursor.getString(15),
 				cursor.getString(16), cursor.getString(17), cursor.getBlob(18),
 				cursor.getString(19), cursor.getInt(20), cursor.getInt(21),
-				cursor.getInt(22), cursor.getInt(23));
+				cursor.getInt(22), cursor.getInt(23), cursor.getString(24),
+				cursor.getString(25));
 
 		return tempTicket;
 
@@ -2033,7 +2044,11 @@ public class DataBaseAdapter {
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
 					cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-					cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
+					cursor.getString(11), cursor.getInt(12), cursor.getInt(13),
+					cursor.getString(14), cursor.getString(15),
+					cursor.getString(16), cursor.getString(17),
+					cursor.getString(18));
+			;
 			result.add(tempusers);
 
 		}
@@ -2102,11 +2117,13 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			Users tempusers = new Users(cursor.getInt(0), cursor.getString(1),
 					cursor.getString(2), cursor.getString(3),
-
 					cursor.getString(4), cursor.getString(5),
 					cursor.getString(6), cursor.getString(7),
 					cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
-					cursor.getString(11), cursor.getInt(12), cursor.getInt(13));
+					cursor.getString(11), cursor.getInt(12), cursor.getInt(13),
+					cursor.getString(14), cursor.getString(15),
+					cursor.getString(16), cursor.getString(17),
+					cursor.getString(18));
 
 			result.add(tempusers);
 		}
@@ -2924,7 +2941,7 @@ public class DataBaseAdapter {
 	}
 
 	public void InsertLikeCommentFroumToDatabase(int id, int UserId,
-			int ISLike, int CommentId) {
+			int ISLike, int CommentId, String date) {
 
 		ContentValues uc = new ContentValues();
 
@@ -2932,6 +2949,7 @@ public class DataBaseAdapter {
 		uc.put("UserId", UserId);
 		uc.put("CommentId", CommentId);
 		uc.put("IsLike", ISLike);
+		uc.put("Date", date);
 
 		mDb.insert(TableLikeInComment, null, uc);
 	}
@@ -3363,13 +3381,13 @@ public class DataBaseAdapter {
 		return res;
 	}
 
-	public void UpdateImagePathToDb(int id, String path) {
+	public void UpdateImagePathToDb(int id, String ImagePath, String tableName) {
 		ContentValues uc = new ContentValues();
 
-		if (!"".equals(path) && path != null)
-			uc.put("ImagePath", path);
+		if (!"".equals(ImagePath) && ImagePath != null)
+			uc.put("ImagePath", ImagePath);
 
-		mDb.update(TableAnad, uc, "Id=" + id, null);
+		mDb.update(tableName, uc, "Id=" + id, null);
 
 	}
 
@@ -3384,6 +3402,165 @@ public class DataBaseAdapter {
 			cv.put("ImagePath" + IdPath, ImagePath);
 
 		mDb.update(TableObject, cv, "Id=?", new String[] { String.valueOf(id) });
+	}
+
+	public ArrayList<Object> getObjectByuserId(int id) {
+
+		ArrayList<Object> result = new ArrayList<Object>();
+
+		Object item = null;
+
+		Cursor mCur = mDb.query(TableObject, Object, "userId=?",
+				new String[] { String.valueOf(id) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToObject(mCur);
+			result.add(item);
+		}
+
+		Collections.sort(result);
+
+		return result;
+
+	}
+
+	public ArrayList<String> getNameObjectById(int userId) {
+		ArrayList<String> result = new ArrayList<String>();
+		Cursor mCur = mDb.query(TableObject, Object, "userId=?",
+				new String[] { String.valueOf(userId) }, null, null, null);
+		if (mCur.moveToNext()) {
+			CursorToObject(mCur).getName();
+		}
+		return result;
+
+	}
+
+	public void UpdateImageServerDate(int id, String TableName, String date) {
+
+		ContentValues cv = new ContentValues();
+
+		cv.put("ImageServerDate", date);
+
+		mDb.update(TableName, cv, "Id=?", new String[] { String.valueOf(id) });
+	}
+
+	public ArrayList<Object> getAllObjectByUserId(int id) {
+
+		ArrayList<Object> result = new ArrayList<Object>();
+		Cursor cursor = mDb.query(TableObject, Object, "userId=?",
+				new String[] { String.valueOf(id) }, null, null, null);
+		Object tempObject;
+		while (cursor.moveToNext()) {
+			tempObject = new Object(cursor.getInt(0), cursor.getString(1),
+					cursor.getString(2), cursor.getString(3),
+					cursor.getString(4), cursor.getString(5),
+					cursor.getBlob(6), cursor.getBlob(7), cursor.getBlob(8),
+					null, cursor.getString(10), cursor.getString(11),
+					cursor.getString(12), cursor.getString(13),
+					cursor.getString(14), cursor.getString(15),
+					cursor.getInt(16), cursor.getInt(17), cursor.getString(18),
+					cursor.getString(19), cursor.getString(20),
+					cursor.getString(21), cursor.getString(22),
+					cursor.getString(23), cursor.getInt(24), cursor.getInt(25),
+					cursor.getInt(26), cursor.getString(27), cursor.getInt(28),
+					cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
+					cursor.getInt(32), cursor.getString(33),
+					cursor.getString(34), cursor.getString(35),
+					cursor.getString(36), cursor.getInt(37),
+					cursor.getString(38), cursor.getString(39),
+					cursor.getString(40));
+
+			result.add(tempObject);
+		}
+
+		return result;
+	}
+
+	public ArrayList<Ticket> getAllAnadUser(int userId) {
+
+		ArrayList<Ticket> result = new ArrayList<Ticket>();
+		Cursor cursor = mDb.query(TableTicket, Ticket, "userId=?",
+				new String[] { String.valueOf(userId) }, null, null, null);
+		Ticket tempTicket;
+		while (cursor.moveToNext()) {
+			tempTicket = new Ticket(cursor.getInt(0), cursor.getString(1),
+					cursor.getString(2), cursor.getInt(3), cursor.getBlob(4),
+					cursor.getString(5), cursor.getInt(6), cursor.getInt(7),
+					cursor.getInt(8), cursor.getInt(9), cursor.getInt(10),
+					cursor.getInt(11), cursor.getInt(12), cursor.getString(13),
+					cursor.getString(14), cursor.getString(15),
+					cursor.getString(16), cursor.getString(17),
+					cursor.getBlob(18), cursor.getString(19),
+					cursor.getInt(20), cursor.getInt(21), cursor.getInt(22),
+					cursor.getInt(23), cursor.getString(24),
+					cursor.getString(25));
+
+			result.add(tempTicket);
+		}
+
+		return result;
+	}
+
+	public ArrayList<Paper> getAllPaperUser(int userId) {
+
+		ArrayList<Paper> result = new ArrayList<Paper>();
+		Cursor cursor = mDb.query(TablePaper, Paper, "userId=?",
+				new String[] { String.valueOf(userId) }, null, null, null);
+		Paper tempTicket;
+		while (cursor.moveToNext()) {
+			tempTicket = new Paper(cursor.getInt(0), cursor.getString(1),
+					cursor.getString(2), cursor.getInt(3), cursor.getString(4),
+					cursor.getInt(5), cursor.getInt(6), cursor.getString(7),
+					cursor.getInt(8));
+
+			result.add(tempTicket);
+		}
+
+		return result;
+	}
+
+	public Object getObjectByUserId(int id) {
+
+		Object item = null;
+		Cursor mCur = mDb.query(TableObject, Object, "userId=?",
+				new String[] { String.valueOf(id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToObject(mCur);
+		}
+
+		return item;
+
+	}
+
+	public ArrayList<Province> getAllProvinceNoSorting() {
+		ArrayList<Province> result = new ArrayList<Province>();
+		Cursor cursor = mDb.query(TableProvince, Province, null, null, null,
+				null, null);
+		Province tempProvince;
+		while (cursor.moveToNext()) {
+			tempProvince = new Province(cursor.getInt(0), cursor.getString(1),
+					cursor.getInt(2));
+			result.add(tempProvince);
+		}
+
+		return result;
+	}
+
+	public ArrayList<City> getCitysByProvinceIdNoSort(int ProvinceId) {
+
+		ArrayList<City> result = new ArrayList<City>();
+		City item = null;
+		Cursor mCur = mDb.query("City", CityColumn, "ProvinceId=?",
+				new String[] { String.valueOf(ProvinceId) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCity(mCur);
+			result.add(item);
+		}
+
+		return result;
+
 	}
 
 }

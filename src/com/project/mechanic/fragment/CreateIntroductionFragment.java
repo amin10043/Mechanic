@@ -222,7 +222,7 @@ public class CreateIntroductionFragment extends Fragment implements
 		RelativeLayout.LayoutParams edittextParams = new RelativeLayout.LayoutParams(
 				(int) (util.getScreenwidth() / 1.8), LayoutParams.WRAP_CONTENT);
 		edittextParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		edittextParams.addRule(RelativeLayout.CENTER_VERTICAL);
+		edittextParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 
 		phoneEnter.setLayoutParams(edittextParams);
 		faxEnter.setLayoutParams(edittextParams);

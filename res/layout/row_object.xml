@@ -13,7 +13,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:scaleType="fitXY"
-        android:src="@drawable/profile_account" />
+        android:src="@drawable/no_img_profile" />
 
     <RelativeLayout
         android:id="@+id/propertiesObject"
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/Rowobjecttxt"
             android:layout_toLeftOf="@+id/icon_object"
-            android:gravity="bottom" >
+            android:gravity="end" >
 
             <ImageView
                 android:id="@+id/iconNumberLike"
@@ -52,6 +52,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/iconNumberLike"
                 android:gravity="bottom"
+                android:paddingTop="1dp"
                 android:text="20"
                 android:textColor="@color/transparent"
                 android:textSize="10dp" />
@@ -92,6 +93,45 @@
             android:layout_marginRight="1dp"
             android:layout_marginTop="2dp"
             android:numStars="5" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="2dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="روز"
+                android:textColor="@color/transparent" />
+
+            <TextView
+                android:id="@+id/dayBaghiMandeh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:text="250"
+                android:textColor="@color/transparent" />
+
+            <TextView
+                android:id="@+id/lable_etebar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="اعتبار :"
+                android:textColor="@color/transparent" />
+        </LinearLayout>
     </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp" />
 
 </RelativeLayout>

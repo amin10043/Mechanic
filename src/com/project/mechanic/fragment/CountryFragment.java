@@ -36,9 +36,7 @@ public class CountryFragment extends Fragment {
 		dbAdapter = new DataBaseAdapter(getActivity());
 		
 		Utility utility = new Utility(getActivity());
-		RelativeLayout timeLine = utility.timeLineDrawing(getActivity());
-		timeLine.setVisibility(View.GONE);
-
+		
 		dbAdapter.open();
 		List<ListItem> mylist = dbAdapter.getListItemsById(2);
 		dbAdapter.close();

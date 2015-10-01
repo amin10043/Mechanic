@@ -1,6 +1,7 @@
 package com.project.mechanic.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +29,11 @@ public class SlideMenuAdapter extends BaseAdapter {
 
 	Context context;
 
-	String[] slideitem = { "", "صفحه اصلی", "صفحه شخصی", "پسند شده ها",
-			"درباره ما", "تماس با ما", "خروج" };
+	String[] slideitem = { "", "صفحه اصلی", "صفحه شخصی", "علاقه مندی ها",
+			"پشتیبانی آنلاین", "درباره ما", "خروج" };
 	int[] icon = { R.drawable.mechanical_logo, R.drawable.ic_home,
-			R.drawable.ic_personal, R.drawable.ic_bookmark,
-			R.drawable.ic_about_us, R.drawable.phone2, R.drawable.exit };
+			R.drawable.ic_personal, R.drawable.ic_bookmark, R.drawable.phone2,
+			R.drawable.ic_about_us, R.drawable.exit };
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -50,14 +51,14 @@ public class SlideMenuAdapter extends BaseAdapter {
 		TextView nametxt = (TextView) convertView.findViewById(R.id.namemenu);
 
 		Users u = util.getCurrentUser();
-		if (position == 2 && u != null && u.getImage() != null) {
-			iconImg.setImageBitmap(Utility.getRoundedCornerBitmap(BitmapFactory
-					.decodeByteArray(u.getImage(), 0, u.getImage().length), 100));
-
-		} else {
-			iconImg.setImageResource(icon[position]);
-
-		}
+		// if (/* position == 2 && */u != null && u.getImage() != null) {
+		// iconImg.setImageBitmap(Utility.getRoundedCornerBitmap(BitmapFactory
+		// .decodeByteArray(u.getImage(), 0, u.getImage().length), 100));
+		//
+		// } else {
+		iconImg.setImageResource(icon[position]);
+		//
+		// }
 
 		if (position == 0) {
 			RelativeLayout layout = (RelativeLayout) convertView
@@ -69,8 +70,15 @@ public class SlideMenuAdapter extends BaseAdapter {
 			lp.addRule(RelativeLayout.CENTER_IN_PARENT);
 
 			iconImg.setLayoutParams(lp);
-			iconImg.setImageResource(R.drawable.mechanical_logo);
-			
+			Bitmap ttb;
+			if (u != null && u.getImage() != null) {
+
+				ttb = BitmapFactory.decodeByteArray(u.getImage(), 0,
+						u.getImage().length);
+				iconImg.setImageBitmap(ttb);
+			}
+			// iconImg.setImageResource(R.drawable.mechanical_logo);
+
 			nametxt.setVisibility(View.GONE);
 		}
 

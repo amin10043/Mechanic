@@ -5,12 +5,15 @@ public class LikeInCommentObject {
 	int CommentId;
 	int UserId;
 	int IsLike;
+	String Date;
 
-	public LikeInCommentObject(int Id, int CommentId, int UserId, int IsLike) {
+	public LikeInCommentObject(int Id, int CommentId, int UserId, int IsLike,
+			String Date) {
 		this.Id = Id;
 		this.CommentId = CommentId;
 		this.UserId = UserId;
 		this.IsLike = IsLike;
+		this.Date = Date;
 
 	}
 

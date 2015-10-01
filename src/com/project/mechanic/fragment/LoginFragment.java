@@ -240,8 +240,14 @@ public class LoginFragment extends Fragment implements CommInterface,
 		}
 
 		if (output != null) {
+
 			dbAdapter.open();
-			dbAdapter.UpdateUserImage(u.getId(), output, serverDate);
+
+			util.CreateFile(output, u.getId(), "Mechanical", "Users", "user",
+					"Users");
+			dbAdapter.UpdateImageServerDate(u.getId(), "Users", serverDate);
+
+			// dbAdapter.UpdateUserImage(u.getId(), output, serverDate);
 			dbAdapter.close();
 		}
 

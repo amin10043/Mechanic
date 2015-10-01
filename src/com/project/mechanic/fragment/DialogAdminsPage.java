@@ -174,8 +174,8 @@ public class DialogAdminsPage extends Dialog implements CommInterface,
 		if (output == null || "".equals(output) || "anyType{}".equals(output)) {
 			Toast.makeText(
 					context,
-					"شماره مورد نظر شما یافت نشد و یا ممکن است شماره را اشتباه وارد کرده باشید",
-					Toast.LENGTH_SHORT).show();
+					"شماره مورد نظر در نرم افزار ثبت نام نکرده است و یا ممکن است شماره را اشتباه وارد کرده باشید ",
+					Toast.LENGTH_SHORT).setDuration(5000);
 		} else {
 			adapter.open();
 			if (adapter.countSubAdminPage(ObjectId) < 4) {

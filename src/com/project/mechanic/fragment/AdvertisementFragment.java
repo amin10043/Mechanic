@@ -52,9 +52,7 @@ public class AdvertisementFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_shop, null);
 		
 		Utility util = new Utility(getActivity());
-		RelativeLayout timeLine = util.timeLineDrawing(getActivity());
-		timeLine.setVisibility(View.GONE);
-		
+			
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 

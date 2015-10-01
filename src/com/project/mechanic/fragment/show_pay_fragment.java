@@ -3,10 +3,12 @@ package com.project.mechanic.fragment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.R.array;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -24,6 +26,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +39,7 @@ import android.widget.Toast;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.crop.CropImage;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -99,13 +103,23 @@ public class show_pay_fragment extends Fragment implements AsyncInterface,
 				Lheader.getLayoutParams());
 		headerEditParams.height = util.getScreenHeight() / 3;
 		headerEditParams.width = util.getScreenHeight() / 3;
+		headerEditParams.gravity = Gravity.CENTER_HORIZONTAL;
 		img_pay.setLayoutParams(headerEditParams);
 
 		dbAdapter.open();
-		List<String> mylist = dbAdapter.getAllObjectname();
+		// List<String> mylist = dbAdapter.getAllObjectname();
 
+		Users CurrentUser = util.getCurrentUser();
+		ArrayList<String> namePage = new ArrayList<String>();
+		com.project.mechanic.entity.Object page;
+		List<com.project.mechanic.entity.Object> objectPage = dbAdapter
+				.getObjectByuserId(CurrentUser.getId());
+		for (int i = 0; i < objectPage.size(); i++) {
+			page = objectPage.get(i);
+			namePage.add(page.getName());
+		}
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-				getActivity(), android.R.layout.simple_spinner_item, mylist);
+				getActivity(), android.R.layout.simple_spinner_item, namePage);
 
 		dataAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -378,7 +392,7 @@ public class show_pay_fragment extends Fragment implements AsyncInterface,
 				params.put("tableName", "Anad");
 
 				params.put("ObjectId", String.valueOf(o.getId()));
-				 params.put("Date", output);
+				params.put("Date", output);
 				params.put("ModifyDate", output);
 
 				params.put("TypeId", "0");

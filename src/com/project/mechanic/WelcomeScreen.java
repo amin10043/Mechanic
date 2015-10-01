@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver;
@@ -248,7 +249,7 @@ public class WelcomeScreen extends Activity {
 		img29.setBackgroundResource(R.drawable.on2);
 		img30.setBackgroundResource(R.drawable.or2);
 
-		next_btn.setBackgroundResource(R.drawable.next);
+		next_btn.setBackgroundResource(R.drawable.enter_icon);
 		pre_btn.setBackgroundResource(R.drawable.prev);
 
 		i1.setBackgroundResource(R.drawable.i4);
@@ -353,6 +354,7 @@ public class WelcomeScreen extends Activity {
 
 	}
 
+	@SuppressLint("ResourceAsColor")
 	private void Adding() {
 
 		row1.addView(img1);
@@ -395,15 +397,17 @@ public class WelcomeScreen extends Activity {
 		row10.addView(img29);
 		row10.addView(img30);
 
-		row_Displacement.addView(pre_btn);
-		row_Displacement.addView(next_btn);
+		// row_Displacement.addView(pre_btn);
+		//row_Displacement.addView(next_btn);
 
-		row_network.addView(i1);
-		row_network.addView(i2);
-		row_network.addView(i3);
-		row_network.addView(i4);
-		row_network.addView(i5);
-		row_network.addView(i6);
+		// row_Displacement.setBackgroundResource(R.drawable.header);
+
+		// row_network.addView(i1);
+		// row_network.addView(i2);
+		// row_network.addView(i3);
+		// row_network.addView(i4);
+		// row_network.addView(i5);
+		// row_network.addView(i6);
 
 	}
 
@@ -456,19 +460,20 @@ public class WelcomeScreen extends Activity {
 		img30.setLayoutParams(lp);
 
 		LinearLayout.LayoutParams ip = new LinearLayout.LayoutParams(
-				row_network.getLayoutParams());
-
-		ip.height = columnWidth / 2;
-		ip.setMargins(3, 0, 1, 0);
+				row_Displacement.getLayoutParams());
+		ip.width = LinearLayout.LayoutParams.MATCH_PARENT;
+		ip.setMargins(2, 2, 2, 2);
+		ip.gravity = Gravity.CENTER_HORIZONTAL;
 
 		row_Displacement.setLayoutParams(ip);
-		row_network.setLayoutParams(ip);
+		// row_network.setLayoutParams(ip);
 
 		LinearLayout.LayoutParams dd = new LinearLayout.LayoutParams(
 				row1.getLayoutParams());
 
 		dd.width = 3 * columnWidth / 2;
 		dd.height = columnWidth / 2;
+
 		next_btn.setLayoutParams(dd);
 		pre_btn.setLayoutParams(dd);
 
@@ -484,11 +489,21 @@ public class WelcomeScreen extends Activity {
 		i5.setLayoutParams(np);
 		i6.setLayoutParams(np);
 
+		i1.setVisibility(View.GONE);
+		i2.setVisibility(View.GONE);
+		i3.setVisibility(View.GONE);
+		i4.setVisibility(View.GONE);
+		i5.setVisibility(View.GONE);
+		i6.setVisibility(View.GONE);
+
+		pre_btn.setVisibility(View.GONE);
+		row_network.setVisibility(View.GONE);
+
 	}
 
 	private void clickItem() {
 
-		next_btn.setOnClickListener(new OnClickListener() {
+		row_Displacement.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -498,8 +513,8 @@ public class WelcomeScreen extends Activity {
 				startActivity(intent);
 				finish();
 
-				overridePendingTransition(R.layout.splash_out,
-						R.layout.splash_in);
+//				overridePendingTransition(R.layout.splash_out,
+//						R.layout.splash_in);
 
 			}
 		});

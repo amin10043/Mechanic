@@ -58,6 +58,7 @@ public class ShowAdFragment extends Fragment {
 	RelativeLayout headerRelative, iconRelative;
 	RelativeLayout.LayoutParams headerParams;
 
+	@SuppressWarnings("null")
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,12 +106,22 @@ public class ShowAdFragment extends Fragment {
 		edite.setVisibility(View.GONE);
 
 		like.setSelected(check);
-		byte[] bitmapbyte = t.getImage();
-		if (bitmapbyte != null) {
-			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-					bitmapbyte.length);
-			img.setImageBitmap(bmp);
+		String ImagePath = t.getImagePath();
+		Bitmap imgBitmap;
+		if ( ImagePath == null) {
+			img.setBackgroundResource(R.drawable.no_img_profile);
+
+		} else {
+			imgBitmap = BitmapFactory.decodeFile(t.getImagePath());
+			img.setImageBitmap(imgBitmap);
 		}
+
+		// byte[] bitmapbyte = t.getImage();
+		// if (bitmapbyte != null) {
+		// Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
+		// bitmapbyte.length);
+		// img.setImageBitmap(bmp);
+		// }
 		dbAdapter.close();
 		u = util.getCurrentUser();
 

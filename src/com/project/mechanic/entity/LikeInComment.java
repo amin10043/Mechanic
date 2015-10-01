@@ -6,13 +6,26 @@ public class LikeInComment {
 	int CommentId;
 	int UserId;
 	int IsLike;
-
-	public LikeInComment(int id, int commentId, int userId, int isLike) {
+	String Date;
+	public LikeInComment(int id, int commentId, int userId, int isLike , String Date) {
 		super();
 		Id = id;
 		CommentId = commentId;
 		UserId = userId;
 		IsLike = isLike;
+		this.Date = Date;
+	}
+
+	public String getDate() {
+		return Date;
+	}
+
+	public void setDate(String date) {
+		Date = date;
+	}
+
+	public int getIsLike() {
+		return IsLike;
 	}
 
 	public int getId() {

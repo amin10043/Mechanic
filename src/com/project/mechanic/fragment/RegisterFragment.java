@@ -3,6 +3,7 @@ package com.project.mechanic.fragment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,16 +33,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.crop.CropImage;
+import com.project.mechanic.entity.City;
+import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.SaveAsyncInterface;
@@ -89,6 +99,9 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	ProgressDialog imageloadprogressdialog;
 	private static final int PICK_FROM_CAMERA = 1;
 	final int PIC_CROP = 3;
+	int ostanId, cityId, dayId, monthId, yearId;
+	ArrayList<City> cityList;
+	boolean flag;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -288,6 +301,215 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 
 			}
 		});
+		final Spinner daySpinner = (Spinner) view.findViewById(R.id.daySpinner);
+		final Spinner monthSpinner = (Spinner) view
+				.findViewById(R.id.monthSpinner);
+		final Spinner yearSpinner = (Spinner) view
+				.findViewById(R.id.yearSpinner);
+
+		final ArrayList<String> dayList = new ArrayList<String>();
+		final ArrayList<String> monthList = new ArrayList<String>();
+		final ArrayList<String> yearList = new ArrayList<String>();
+
+		for (int i = 1; i <= 31; i++) {
+			dayList.add(i + "");
+		}
+		for (int i = 1; i <= 12; i++) {
+			monthList.add(i + "");
+		}
+		for (int i = 1300; i <= 1400; i++) {
+			yearList.add(i + "");
+		}
+
+		ArrayAdapter<String> dayadapter = new ArrayAdapter<String>(
+				getActivity(), android.R.layout.simple_spinner_item, dayList);
+
+		dayadapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		daySpinner.setAdapter(dayadapter);
+
+		ArrayAdapter<String> monthAdapter = new ArrayAdapter<String>(
+				getActivity(), android.R.layout.simple_spinner_item, monthList);
+
+		monthAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		monthSpinner.setAdapter(monthAdapter);
+
+		ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(
+				getActivity(), android.R.layout.simple_spinner_item, yearList);
+
+		yearAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		yearSpinner.setAdapter(yearAdapter);
+
+		daySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+
+				int day = (int) daySpinner.getSelectedItemId();
+
+				dayId = Integer.valueOf(dayList.get(day));
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				//
+
+			}
+		});
+
+		monthSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+
+				int month = (int) monthSpinner.getSelectedItemId();
+
+				monthId = Integer.valueOf(monthList.get(month));
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				//
+
+			}
+		});
+
+		yearSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+
+				int year = (int) yearSpinner.getSelectedItemId();
+
+				yearId = Integer.valueOf(yearList.get(year));
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				//
+
+			}
+		});
+
+		final Spinner ostanSpinner = (Spinner) view
+				.findViewById(R.id.ostanSpinner);
+		final Spinner citySpinner = (Spinner) view
+				.findViewById(R.id.CitySpinner);
+
+		dbAdapter.open();
+
+		final ArrayList<Province> ostanList = dbAdapter
+				.getAllProvinceNoSorting();
+
+		dbAdapter.close();
+
+		ArrayList<String> NameOstan = new ArrayList<String>();
+		final ArrayList<String> NameCity = new ArrayList<String>();
+
+		for (int i = 0; i < ostanList.size(); i++) {
+
+			NameOstan.add(ostanList.get(i).getName());
+
+		}
+
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+				getActivity(), android.R.layout.simple_spinner_item, NameOstan);
+
+		dataAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		ostanSpinner.setAdapter(dataAdapter);
+		citySpinner.setEnabled(false);
+
+		ostanSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+
+				int w = (int) ostanSpinner.getSelectedItemId();
+
+				ostanId = ostanList.get(w).getId();
+
+				dbAdapter.open();
+				cityList = dbAdapter.getCitysByProvinceIdNoSort(ostanId);
+				dbAdapter.close();
+
+				citySpinner.setEnabled(true);
+
+				NameCity.clear();
+				for (int i = 0; i < cityList.size(); i++) {
+
+					NameCity.add(cityList.get(i).getName());
+
+				}
+				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+						getActivity(), android.R.layout.simple_spinner_item,
+						NameCity);
+
+				dataAdapter
+						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+				citySpinner.setAdapter(dataAdapter);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				//
+
+			}
+		});
+
+		citySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+
+				int m = (int) citySpinner.getSelectedItemId();
+
+				cityId = cityList.get(m).getId();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				//
+
+			}
+		});
+		daySpinner.setEnabled(false);
+		monthSpinner.setEnabled(false);
+		yearSpinner.setEnabled(false);
+		final CheckBox isActiveBirthDay = (CheckBox) view
+				.findViewById(R.id.checkBox1);
+		isActiveBirthDay
+				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton arg0,
+							boolean arg1) {
+						if (isActiveBirthDay.isChecked()) {
+							daySpinner.setEnabled(true);
+							monthSpinner.setEnabled(true);
+							yearSpinner.setEnabled(true);
+
+							flag = true;
+						} else {
+							daySpinner.setEnabled(false);
+							monthSpinner.setEnabled(false);
+							yearSpinner.setEnabled(false);
+							flag = false;
+						}
+					}
+				});
 
 		return view;
 	}
@@ -475,15 +697,16 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 
 					firstTime = false;
 					if (!bitmap.sameAs(emptyBitmap)) {
+						Map<String, Object> it = new LinkedHashMap<String, Object>();
 
 						byte[] Image = Utility.CompressBitmap(bitmap);
-						savingImage = new SavingImage(getActivity());
-						Map<String, Object> it = new LinkedHashMap<String, Object>();
-						it.put("tableName", "Users");
-						it.put("fieldName", "Image");
-						it.put("id", serverId);
-						it.put("Image", Image);
-
+						if (getActivity() != null) {
+							savingImage = new SavingImage(getActivity());
+							it.put("tableName", "Users");
+							it.put("fieldName", "Image");
+							it.put("id", serverId);
+							it.put("Image", Image);
+						}
 						ringProgressDialog = ProgressDialog.show(getActivity(),
 								"", "لطفا منتظر بمانید...", true);
 						savingImage.delegate = this;
@@ -522,23 +745,32 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			}
 		} catch (Exception ex) {
 
-			Saving saving = new Saving(getActivity());
-			Map<String, String> items = new LinkedHashMap<String, String>();
-			saving.delegate = this;
+			if (getActivity() != null) {
 
-			items.put("register", "register");
-			items.put("username", Name);
-			items.put("email", "");
-			items.put("password", Pass);
-			items.put("phone", "");
-			items.put("mobile", Mobile);
-			items.put("fax", "0");
-			items.put("address", "");
-			items.put("date", output);
-			ringProgressDialog = ProgressDialog.show(getActivity(), "",
-					"لطفا منتظر بمانید...", true);
-			saving.delegate = RegisterFragment.this;
-			saving.execute(items);
+				Saving saving = new Saving(getActivity());
+				Map<String, String> items = new LinkedHashMap<String, String>();
+				saving.delegate = this;
+
+				items.put("register", "register");
+				items.put("username", Name);
+//				items.put("email", "");
+				items.put("password", Pass);
+//				items.put("phone", "");
+				items.put("mobile", Mobile);
+//				items.put("fax", "0");
+//				items.put("address", "");
+				items.put("date", output);
+
+				if (flag == true)
+					items.put("BirthDay", yearId + "***" + monthId + "***"
+							+ dayId);
+				items.put("ProvinceCity", ostanId + "***" + cityId);
+
+				ringProgressDialog = ProgressDialog.show(getActivity(), "",
+						"لطفا منتظر بمانید...", true);
+				saving.delegate = RegisterFragment.this;
+				saving.execute(items);
+			}
 		}
 
 	}

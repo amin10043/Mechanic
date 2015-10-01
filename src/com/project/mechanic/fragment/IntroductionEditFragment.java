@@ -9,6 +9,9 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -32,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
@@ -73,15 +77,14 @@ public class IntroductionEditFragment extends Fragment implements
 
 	RelativeLayout.LayoutParams profileEditParams;
 
-	RelativeLayout editDNlink, namayendegi, khadamat, Linearprofile,
-			AdminsPage;
+	RelativeLayout namayendegi, khadamat, Linearprofile;
 
-	LinearLayout editnetLink, Linearheader, Linearfooter;
+	LinearLayout editnetLink, Linearheader, Linearfooter , editDNlink , AdminsPage;
 
 	public String Dcatalog, Dprice, Dpdf, Dvideo;
 	public String Dface, Dlink, Dtwt, Dweb, Dgoogle, Dinstagram;
 	RatingBar rating;
-	ImageView payBtn;
+	ImageView payBtn , copyBtn;
 
 	Bitmap bmpHeader, bmpProfil, bmpFooter;
 	Saving saving;
@@ -99,6 +102,8 @@ public class IntroductionEditFragment extends Fragment implements
 	boolean t1 = false;
 	boolean t2 = false;
 	boolean t3 = false;
+	
+	TextView linkPage;
 
 
 	@Override
@@ -125,13 +130,16 @@ public class IntroductionEditFragment extends Fragment implements
 				.findViewById(R.id.descriptionpageedit);
 
 		editnetLink = (LinearLayout) view.findViewById(R.id.editpageNetwork);
-		editDNlink = (RelativeLayout) view.findViewById(R.id.editpagedownload);
+		editDNlink = (LinearLayout) view.findViewById(R.id.editpagedownload);
 		namayendegi = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
 		khadamat = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
-		AdminsPage = (RelativeLayout) view.findViewById(R.id.listAdmin);
+		AdminsPage = (LinearLayout) view.findViewById(R.id.listAdmin);
 		rating = (RatingBar) view.findViewById(R.id.ratingBar1);
 		payBtn = (ImageView) view.findViewById(R.id.btnPay);
-
+		
+		copyBtn = (ImageView)view.findViewById(R.id.copyToClipboard);
+		linkPage = (TextView)view.findViewById(R.id.linkPage);
+		
 		namayendegi.setVisibility(View.GONE);
 		khadamat.setVisibility(View.GONE);
 
@@ -146,9 +154,11 @@ public class IntroductionEditFragment extends Fragment implements
 
 		profileEditParams = new RelativeLayout.LayoutParams(
 				Linearprofile.getLayoutParams());
-		profileEditParams.width = util.getScreenwidth() / 8;
-		profileEditParams.height = util.getScreenwidth() / 8;
+		profileEditParams.width = util.getScreenwidth() / 4;
+		profileEditParams.height = util.getScreenwidth() / 4;
 		profileEditParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		profileEditParams.addRule(RelativeLayout.BELOW , R.id.btnsave);
+		profileEditParams.setMargins(5, 5, 5, 5);
 
 		footerEditParams = new LinearLayout.LayoutParams(
 				Linearfooter.getLayoutParams());
@@ -215,17 +225,17 @@ public class IntroductionEditFragment extends Fragment implements
 		if (bmpHeader != null) {
 //			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 //					bitmapbyte.length);
-			profileImageEdit.setImageBitmap(bmpHeader);
+			headerImageEdit.setImageBitmap(bmpHeader);
 		} else
-			profileImageEdit.setImageResource(R.drawable.no_image_header);
+			headerImageEdit.setImageResource(R.drawable.no_image_header);
 
 //		byte[] bitmap = object.getImage1();
 		if (bmpPrifile != null) {
 //			Bitmap bmp = BitmapFactory
 //					.decodeByteArray(bitmap, 0, bitmap.length);
-			headerImageEdit.setImageBitmap(bmpPrifile);
+			profileImageEdit.setImageBitmap(bmpPrifile);
 		} else
-			headerImageEdit.setImageResource(R.drawable.no_img_profile);
+			profileImageEdit.setImageResource(R.drawable.no_img_profile);
 
 //		byte[] bitm = object.getImage3();
 		if (bmpfooter != null) {
@@ -244,6 +254,19 @@ public class IntroductionEditFragment extends Fragment implements
 		DBAdapter.close();
 
 		// //////////////////////////////////////////////////
+		
+		copyBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+		        ClipboardManager clipMan = (ClipboardManager)getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData cData = ClipData.newPlainText("text", linkPage.getText().toString());
+                clipMan.setPrimaryClip(cData);
+                Toast.makeText(getActivity(), "آدرس صفحه کپی شد", 0).show();
+                
+			}
+		});
 
 		headerImageEdit.setOnClickListener(new OnClickListener() {
 
@@ -640,11 +663,20 @@ public class IntroductionEditFragment extends Fragment implements
 			// byteHeader = Utility.CompressBitmap(bmpHeader);
 			// byteProfil = Utility.CompressBitmap(bmpProfil);
 			// byteFooter = Utility.CompressBitmap(bmpFooter);
-
-			DBAdapter.open();
-			DBAdapter.updateAllImageIntroductionPage(PageId, byteHeader,
-					byteProfil, byteFooter);
-			DBAdapter.close();
+			
+			util.CreateFile(byteHeader, PageId, "Mechanical", "Profile",
+					"header", "Object");
+			
+			util.CreateFile(byteProfil, PageId, "Mechanical", "Profile",
+					"profile", "Object");
+			
+			util.CreateFile(byteFooter, PageId, "Mechanical", "Profile",
+					"footer", "Object");
+			
+//			DBAdapter.open();
+//			DBAdapter.updateAllImageIntroductionPage(PageId, byteHeader,
+//					byteProfil, byteFooter);
+//			DBAdapter.close();
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}

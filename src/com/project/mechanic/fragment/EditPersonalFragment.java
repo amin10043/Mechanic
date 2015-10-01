@@ -3,8 +3,11 @@ package com.project.mechanic.fragment;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
@@ -15,6 +18,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
@@ -22,6 +26,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -29,9 +35,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,7 +53,10 @@ import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.CropingOptionAdapter;
+import com.project.mechanic.crop.CropImage;
+import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.CropingOption;
+import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.SaveAsyncInterface;
@@ -54,8 +71,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 			CROPING_CODE = 301;
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
-	ImageView img2, imagecamera;
-	Utility util;
+	ImageView ImageProfile, imagecamera;
 	LinearLayout.LayoutParams lp2;
 	Utility ut;
 	int id;
@@ -70,9 +86,20 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 	String Cellphone;
 	String Phone;
 	String Email;
-	String Fax;
+	String Fax, birthday = "", ProvinceCity;
 	Context context;
 	int gId;
+	String[] viewItemArray = new String[5];
+	String infoItem = "";
+
+	int ostanId, cityId, dayId, monthId, yearId;
+	ArrayList<City> cityList;
+	boolean flag;
+	private File mFileTemp;
+	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
+	final int PIC_CROP = 10;
+
+	EditText txtname;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -83,7 +110,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				"temp.jpg");
 
 		context = getActivity();
-
+		dbAdapter = new DataBaseAdapter(getActivity());
 		ut = new Utility(getActivity());
 		final EditText txtaddress = (EditText) view
 				.findViewById(R.id.etxtaddress);
@@ -91,26 +118,297 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				.findViewById(R.id.etxtcellphone);
 		final EditText txtphone = (EditText) view.findViewById(R.id.etxtphone);
 		final EditText txtemail = (EditText) view.findViewById(R.id.etxtemail);
-		final TextView txtname = (TextView) view.findViewById(R.id.etxtname);
+		txtname = (EditText) view.findViewById(R.id.etxtname);
 		final EditText txtfax = (EditText) view.findViewById(R.id.etxtfax);
-		img2 = (ImageView) view.findViewById(R.id.imgp);
+		ImageProfile = (ImageView) view.findViewById(R.id.imgp);
 		Button btnregedit = (Button) view.findViewById(R.id.btnregedit);
 		Button btnback = (Button) view.findViewById(R.id.btnbackdisplay);
 		LinearLayout lin3 = (LinearLayout) view.findViewById(R.id.lin5);
-		lp2 = new LinearLayout.LayoutParams(lin3.getLayoutParams());
-		lp2.height = ut.getScreenwidth() / 4;
-		lp2.width = ut.getScreenwidth() / 4;
-		img2.setLayoutParams(lp2);
-		dbAdapter = new DataBaseAdapter(getActivity());
 
+		final CheckBox checkPhone = (CheckBox) view
+				.findViewById(R.id.showPhoneValue);
+		final CheckBox checkMobile = (CheckBox) view
+				.findViewById(R.id.showmobileValue);
+		final CheckBox checkEmail = (CheckBox) view
+				.findViewById(R.id.showEmailValue);
+		final CheckBox checkFax = (CheckBox) view
+				.findViewById(R.id.showFaxValue);
+		final CheckBox checkAddress = (CheckBox) view
+				.findViewById(R.id.showAddressValue);
 		Users u = ut.getCurrentUser();
 		gId = u.getId();
 		id = u.getId();
-		byte[] bitmapbyte = u.getImage();
-		if (bitmapbyte != null) {
-			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-					bitmapbyte.length);
-			img2.setImageBitmap(bmp);
+		// byte[] bitmapbyte = u.getImage();
+
+		String ImagePath = u.getImagePath();
+
+		String v = "";
+		String information = u.getShowInfoItem();
+		if (information != null) {
+
+			for (int i = 0; i < information.length(); i++) {
+				v = (String) information.subSequence(i, i + 1);
+				if (i == 0) {
+					if (v.equals("1"))
+						checkPhone.setChecked(true);
+				}
+
+				if (i == 1) {
+					if (v.equals("1"))
+						checkMobile.setChecked(true);
+				}
+
+				if (i == 2) {
+					if (v.equals("1"))
+						checkEmail.setChecked(true);
+				}
+
+				if (i == 3) {
+					if (v.equals("1"))
+						checkFax.setChecked(true);
+				}
+
+				if (i == 4) {
+					if (v.equals("1"))
+						checkAddress.setChecked(true);
+				}
+
+			}
+		}
+
+		String state = Environment.getExternalStorageState();
+
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			mFileTemp = new File(Environment.getExternalStorageDirectory(),
+					TEMP_PHOTO_FILE_NAME);
+		} else {
+			mFileTemp = new File(getActivity().getFilesDir(),
+					TEMP_PHOTO_FILE_NAME);
+		}
+
+		final Spinner daySpinner = (Spinner) view.findViewById(R.id.daySpinner);
+		final Spinner monthSpinner = (Spinner) view
+				.findViewById(R.id.monthSpinner);
+		final Spinner yearSpinner = (Spinner) view
+				.findViewById(R.id.yearSpinner);
+
+		final Spinner ostanSpinner = (Spinner) view
+				.findViewById(R.id.ostanSpinner);
+		final Spinner citySpinner = (Spinner) view
+				.findViewById(R.id.CitySpinner);
+
+		final ArrayList<String> dayList = new ArrayList<String>();
+		final ArrayList<String> monthList = new ArrayList<String>();
+		final ArrayList<String> yearList = new ArrayList<String>();
+
+		for (int i = 1; i <= 31; i++) {
+			dayList.add(i + "");
+		}
+		for (int i = 1; i <= 12; i++) {
+			monthList.add(i + "");
+		}
+		for (int i = 1300; i <= 1400; i++) {
+			yearList.add(i + "");
+		}
+
+		ArrayAdapter<String> dayadapter = new ArrayAdapter<String>(
+				getActivity(), android.R.layout.simple_spinner_item, dayList);
+
+		dayadapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		daySpinner.setAdapter(dayadapter);
+
+		ArrayAdapter<String> monthAdapter = new ArrayAdapter<String>(
+				getActivity(), android.R.layout.simple_spinner_item, monthList);
+
+		monthAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		monthSpinner.setAdapter(monthAdapter);
+
+		ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(
+				getActivity(), android.R.layout.simple_spinner_item, yearList);
+
+		yearAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		yearSpinner.setAdapter(yearAdapter);
+
+		daySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+
+				int day = (int) daySpinner.getSelectedItemId();
+
+				dayId = Integer.valueOf(dayList.get(day));
+
+				Toast.makeText(getActivity(), dayId + "", 0).show();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				//
+
+			}
+		});
+
+		monthSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+
+				int month = (int) monthSpinner.getSelectedItemId();
+
+				monthId = Integer.valueOf(monthList.get(month));
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				//
+
+			}
+		});
+
+		yearSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+
+				int year = (int) yearSpinner.getSelectedItemId();
+
+				yearId = Integer.valueOf(yearList.get(year));
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				//
+
+			}
+		});
+
+		dbAdapter.open();
+
+		final ArrayList<Province> ostanList = dbAdapter
+				.getAllProvinceNoSorting();
+
+		dbAdapter.close();
+
+		ArrayList<String> NameOstan = new ArrayList<String>();
+		final ArrayList<String> NameCity = new ArrayList<String>();
+
+		for (int i = 0; i < ostanList.size(); i++) {
+
+			NameOstan.add(ostanList.get(i).getName());
+
+		}
+
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+				getActivity(), android.R.layout.simple_spinner_item, NameOstan);
+
+		dataAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		ostanSpinner.setAdapter(dataAdapter);
+		citySpinner.setEnabled(false);
+
+		ostanSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+
+				int w = (int) ostanSpinner.getSelectedItemId();
+
+				ostanId = ostanList.get(w).getId();
+
+				dbAdapter.open();
+				cityList = dbAdapter.getCitysByProvinceIdNoSort(ostanId);
+				dbAdapter.close();
+
+				citySpinner.setEnabled(true);
+
+				NameCity.clear();
+				for (int i = 0; i < cityList.size(); i++) {
+
+					NameCity.add(cityList.get(i).getName());
+
+				}
+				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+						getActivity(), android.R.layout.simple_spinner_item,
+						NameCity);
+
+				dataAdapter
+						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+				citySpinner.setAdapter(dataAdapter);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				//
+
+			}
+		});
+
+		citySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+
+				int m = (int) citySpinner.getSelectedItemId();
+
+				cityId = cityList.get(m).getId();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				//
+
+			}
+		});
+		daySpinner.setEnabled(false);
+		monthSpinner.setEnabled(false);
+		yearSpinner.setEnabled(false);
+		final CheckBox isActiveBirthDay = (CheckBox) view
+				.findViewById(R.id.checkBox1);
+		isActiveBirthDay
+				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton arg0,
+							boolean arg1) {
+						if (isActiveBirthDay.isChecked()) {
+							daySpinner.setEnabled(true);
+							monthSpinner.setEnabled(true);
+							yearSpinner.setEnabled(true);
+
+							flag = true;
+						} else {
+							daySpinner.setEnabled(false);
+							monthSpinner.setEnabled(false);
+							yearSpinner.setEnabled(false);
+							flag = false;
+						}
+					}
+				});
+
+		lp2 = new LinearLayout.LayoutParams(lin3.getLayoutParams());
+		lp2.height = ut.getScreenwidth() / 4;
+		lp2.width = ut.getScreenwidth() / 4;
+		lp2.setMargins(5, 5, 5, 5);
+		ImageProfile.setLayoutParams(lp2);
+		dbAdapter = new DataBaseAdapter(getActivity());
+
+		if (ImagePath != null) {
+			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
+			if (bmp != null)
+				ImageProfile.setImageBitmap(bmp);
 		}
 
 		txtname.setText(u.getName());
@@ -119,6 +417,24 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		txtphone.setText(u.getPhonenumber());
 		txtfax.setText(u.getFaxnumber());
 		txtaddress.setText(u.getAddress());
+
+//		String ostanCity = u.getProvinceCity();
+//		String DateBirthDay = u.getBirthDay();
+//		String[] ff = new String[2];
+//		if (!ostanCity.equals("")) {
+//			ff = ostanCity.split("***");
+//			ostanSpinner.setSelection(Integer.valueOf(ff[0]));
+//			citySpinner.setSelection(Integer.valueOf(ff[1]));
+//
+//		}
+//		if (!DateBirthDay.equals("")) {
+//			String[] m = DateBirthDay.split("***");
+//			yearSpinner.setSelection(Integer.valueOf(m[0]));
+//			monthSpinner.setSelection(Integer.valueOf(m[1]));
+//			yearSpinner.setSelection(Integer.valueOf(m[2]));
+//
+//		}
+
 		btnregedit.setOnClickListener(new OnClickListener() {
 
 			@SuppressWarnings("unchecked")
@@ -134,25 +450,70 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				Email = txtemail.getText().toString();
 				Fax = txtfax.getText().toString();
 
-				saving = new Saving(getActivity());
-				saving.delegate = EditPersonalFragment.this;
-				params = new LinkedHashMap<String, String>();
-				params.put("tableName", "Users");
-				params.put("Email", Email);
-				params.put("Phonenumber", Cellphone);
-				params.put("Faxnumber", Fax);
-				params.put("Address", Address);
-				params.put("IsUpdate", "1");
-				params.put("Id", String.valueOf(id));
-				saving.execute(params);
+				if (checkPhone.isChecked())
+					viewItemArray[0] = "1";
+				else
+					viewItemArray[0] = "0";
 
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame,
-						new DisplayPersonalInformationFragment());
-				trans.commit();
+				if (checkMobile.isChecked())
+					viewItemArray[1] = "1";
+				else
+					viewItemArray[1] = "0";
 
+				if (checkEmail.isChecked())
+					viewItemArray[2] = "1";
+				else
+					viewItemArray[2] = "0";
+
+				if (checkFax.isChecked())
+					viewItemArray[3] = "1";
+				else
+					viewItemArray[3] = "0";
+
+				if (checkAddress.isChecked())
+					viewItemArray[4] = "1";
+				else
+					viewItemArray[4] = "0";
+
+				for (int i = 0; i < viewItemArray.length; i++) {
+					infoItem = infoItem + viewItemArray[i];
+				}
+
+				if (checkPhone.isChecked() || checkMobile.isChecked()
+						|| checkEmail.isChecked() || checkFax.isChecked()
+						|| checkAddress.isChecked())
+
+				{
+					if (getActivity() != null) {
+						saving = new Saving(getActivity());
+						saving.delegate = EditPersonalFragment.this;
+						params = new LinkedHashMap<String, String>();
+						params.put("tableName", "Users");
+						params.put("Name", txtname.getText().toString());
+
+						params.put("Email", Email);
+						params.put("Phonenumber", Cellphone);
+						params.put("Faxnumber", Fax);
+						params.put("Address", Address);
+						params.put("IsUpdate", "1");
+						params.put("Id", String.valueOf(id));
+						params.put("ShowInfoItem", infoItem);
+						if (flag == true) {
+							birthday = yearId + "***" + monthId + "***" + dayId;
+							params.put("BirthDay", birthday);
+						}
+
+						ProvinceCity = ostanId + "***" + cityId;
+						params.put("ProvinceCity", ProvinceCity);
+
+						saving.execute(params);
+					}
+				} else
+					Toast.makeText(getActivity(),
+							"حداقل یکی از موارد تماس باید انتخاب شده باشد", 0)
+							.show();
 			}
+
 		});
 
 		btnback.setOnClickListener(new OnClickListener() {
@@ -168,8 +529,15 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 
 			}
 		});
+		RelativeLayout btnedit = (RelativeLayout) view
+				.findViewById(R.id.btnedit);
+		LinearLayout.LayoutParams lp3 = new LinearLayout.LayoutParams(
+				lin3.getLayoutParams());
+		lp3.width = ut.getScreenwidth() / 4;
+		lp3.setMargins(5, 5, 5, 5);
 
-		img2.setOnClickListener(new OnClickListener() {
+		btnedit.setLayoutParams(lp3);
+		btnedit.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -204,16 +572,23 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 
 				} else if (items[item].equals("از گالری تصاویر")) {
 
-					Intent intent = new Intent();
-					intent.setType("image/*");
-					intent.setAction(Intent.ACTION_GET_CONTENT);
-					try {
-						intent.putExtra("return-data", true);
-						startActivityForResult(
-								Intent.createChooser(intent, "تکمیل کار با"),
-								GALLERY_CODE);
-					} catch (ActivityNotFoundException e) {
-					}
+					Intent i = new Intent(
+							Intent.ACTION_PICK,
+							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+					getActivity().startActivityFromFragment(
+							EditPersonalFragment.this, i, GALLERY_CODE);
+
+					// Intent intent = new Intent();
+					// intent.setType("image/*");
+					// intent.setAction(Intent.ACTION_GET_CONTENT);
+					// try {
+					// intent.putExtra("return-data", true);
+					// startActivityForResult(
+					// Intent.createChooser(intent, "تکمیل کار با"),
+					// GALLERY_CODE);
+					// } catch (ActivityNotFoundException e) {
+					// }
 
 				} else if (items[item].equals("انصراف")) {
 					dialog.dismiss();
@@ -224,44 +599,100 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		builder.show();
 	}
 
-	// ////////////////////////////////////////////////////////
-
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (requestCode == GALLERY_CODE) {
+			try {
+
+				InputStream inputStream = getActivity().getContentResolver()
+						.openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(
+						mFileTemp);
+				Utility.copyStream(inputStream, fileOutputStream);
+				fileOutputStream.close();
+				inputStream.close();
+
+				startCropImage();
+
+			} catch (Exception e) {
+
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
+						.show();
+			}
+			ImageProfile.setLayoutParams(lp2);
+
+		}
+		if (requestCode == PIC_CROP && data != null) {
+			String path = data.getStringExtra(CropImage.IMAGE_PATH);
+			if (path == null) {
+				return;
+			}
+			Bitmap bitmap = null;
+			if (mFileTemp.getPath() != null)
+				bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
+			if (bitmap != null) {
+				ImageProfile.setImageBitmap(bitmap);
+				ImageProfile.setLayoutParams(lp2);
+
+			}
+
+		}
 
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == GALLERY_CODE && null != data) {
-
-			mImageCaptureUri = data.getData();
-			CropingIMG();
-
-		} else if (requestCode == CAMERA_CODE
-				&& resultCode == Activity.RESULT_OK) {
-
-			System.out.println("Camera Image URI : " + mImageCaptureUri);
-			CropingIMG();
-
-		} else if (requestCode == CROPING_CODE) {
-
-			try {
-				if (outPutFile.exists()) {
-					Bitmap photo = decodeFile(outPutFile);
-					img2.setImageBitmap(photo);
-					// img2.setLayoutParams(lp2);
-					img2.setAdjustViewBounds(true);
-
-					// img2.setMaxHeight(maxHeight);
-					img2.setScaleType(ScaleType.CENTER_INSIDE);
-				} else {
-					Toast.makeText(getActivity().getApplicationContext(),
-							"Error while save image", Toast.LENGTH_SHORT)
-							.show();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 	}
+
+	private void startCropImage() {
+
+		Intent intent = new Intent(getActivity(), CropImage.class);
+		intent.putExtra(CropImage.IMAGE_PATH, mFileTemp.getPath());
+		intent.putExtra(CropImage.SCALE, true);
+
+		intent.putExtra(CropImage.ASPECT_X, 3);
+		intent.putExtra(CropImage.ASPECT_Y, 3);
+
+		startActivityForResult(intent, PIC_CROP);
+	}
+
+	// ////////////////////////////////////////////////////////
+
+	// public void onActivityResult(int requestCode, int resultCode, Intent
+	// data) {
+	//
+	// super.onActivityResult(requestCode, resultCode, data);
+	//
+	// if (requestCode == GALLERY_CODE && null != data) {
+	//
+	// mImageCaptureUri = data.getData();
+	// CropingIMG();
+	//
+	// } else if (requestCode == CAMERA_CODE
+	// && resultCode == Activity.RESULT_OK) {
+	//
+	// System.out.println("Camera Image URI : " + mImageCaptureUri);
+	// CropingIMG();
+	//
+	// } else if (requestCode == CROPING_CODE) {
+	//
+	// try {
+	// if (outPutFile.exists()) {
+	// Bitmap photo = decodeFile(outPutFile);
+	// ImageProfile.setImageBitmap(photo);
+	// // img2.setLayoutParams(lp2);
+	// ImageProfile.setAdjustViewBounds(true);
+	//
+	// // img2.setMaxHeight(maxHeight);
+	// ImageProfile.setScaleType(ScaleType.CENTER_INSIDE);
+	// } else {
+	// Toast.makeText(getActivity().getApplicationContext(),
+	// "Error while save image", Toast.LENGTH_SHORT)
+	// .show();
+	// }
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// }
 
 	private void CropingIMG() {
 
@@ -379,7 +810,8 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 
 			// id > 0 -> updating
 
-			Bitmap bitmap = ((BitmapDrawable) img2.getDrawable()).getBitmap();
+			Bitmap bitmap = ((BitmapDrawable) ImageProfile.getDrawable())
+					.getBitmap();
 
 			Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
 					bitmap.getHeight(), bitmap.getConfig());
@@ -387,6 +819,14 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 
 			if (!emptyBitmap.equals(bitmap)) {
 				Image = Utility.CompressBitmap(bitmap);
+
+				dbAdapter.open();
+				dbAdapter.UpdateAllUserToDbNoPic(txtname.getText().toString(),
+						ut.getCurrentUser().getId(), Email, null, Phone,
+						Cellphone, Fax, Address, infoItem, birthday,
+						ProvinceCity);
+
+				dbAdapter.close();
 			}
 
 			if (context != null) {
@@ -399,14 +839,13 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				imageParams.put("image", Image);
 
 				saveImage.execute(imageParams);
-			} else {
-				dbAdapter.open();
-				dbAdapter.UpdateAllUserToDbNoPic(id, Email, null, Phone,
-						Cellphone, Fax, Address);
-
-				dbAdapter.close();
-
 			}
+
+			FragmentTransaction trans = getActivity()
+					.getSupportFragmentManager().beginTransaction();
+			trans.replace(R.id.content_frame,
+					new DisplayPersonalInformationFragment());
+			trans.commit();
 
 		} catch (NumberFormatException ex) {
 			Toast.makeText(context, "خطا در بروز رسانی", Toast.LENGTH_SHORT)
@@ -423,7 +862,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 			try {
 				id = Integer.valueOf(output);
 
-				Bitmap bitmap = ((BitmapDrawable) img2.getDrawable())
+				Bitmap bitmap = ((BitmapDrawable) ImageProfile.getDrawable())
 						.getBitmap();
 
 				Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
@@ -438,6 +877,12 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 						Fax, Address, Image);
 
 				dbAdapter.close();
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame,
+						new DisplayPersonalInformationFragment());
+				trans.commit();
 
 			} catch (NumberFormatException ex) {
 				Toast.makeText(context, "  خطا در بروز رسانی تصویر",

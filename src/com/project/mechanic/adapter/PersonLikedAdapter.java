@@ -29,6 +29,7 @@ import com.project.mechanic.fragment.DialogAnad;
 import com.project.mechanic.fragment.DialogPersonLikedFroum;
 import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
+import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -88,18 +89,19 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
 
-		if (user.getImage() == null) {
+		if (user.getImagePath() != null) {
+			
+			Bitmap bmp = BitmapFactory.decodeFile(user.getImagePath());
+
+			peronImage.setImageBitmap(bmp);
+			peronImage.setLayoutParams(lp);
+			
+			
+		} else {
 			peronImage.setImageResource(R.drawable.no_img_profile);
 			peronImage.setLayoutParams(lp);
 
-		} else {
-			byte[] byteImageProfile = user.getImage();
-
-			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
-					byteImageProfile.length);
-
-			peronImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
-			peronImage.setLayoutParams(lp);
+			
 		}
 	
 		peronImage.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +115,7 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 				userId= user.getId();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
 				fragment.setArguments(bundle);

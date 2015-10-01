@@ -284,7 +284,11 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 		try {
 			Integer.valueOf(output);
 			dbadapter.open();
-			dbadapter.updateTicketImage(gId, image);
+			if (image != null)
+				util.CreateFile(image, gId, "Mechanical", "Ticket", "ticket",
+						"Ticket");
+			dbadapter.UpdateImageServerDate(gId, "Ticket", gServerDate);
+			// dbadapter.updateTicketImage(gId, image);
 			dbadapter.close();
 
 			Toast.makeText(context, "آگهی شما با موفقیت ثبت شد",

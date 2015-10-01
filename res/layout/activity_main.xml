@@ -22,51 +22,14 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <ImageButton
-                        android:id="@+id/iBtnmessage"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/ic_message" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginRight="10dp"
-                    android:orientation="horizontal" >
-
-                    <TextView
-                        android:id="@+id/txtcm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|left"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="1dp"
-                        android:background="@drawable/circle_notification"
-                        android:text=""
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/txtsize10" />
-                </LinearLayout>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:orientation="vertical" >
 
                     <ImageButton
@@ -101,6 +64,48 @@
                 </LinearLayout>
             </FrameLayout>
 
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <ImageButton
+                        android:id="@+id/iBtnmessage"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/ic_message" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/txtcm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|left"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+                        android:background="@drawable/circle_notification"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/txtsize10" />
+                </LinearLayout>
+            </FrameLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -124,7 +129,8 @@
             android:layout_centerVertical="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -140,95 +146,22 @@
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/settings_icon" />
 
-            <ImageView
-                android:id="@+id/private_chat"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+            <ImageButton
+                android:id="@+id/timeline_btn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
+                android:background="@drawable/timeline_icon" />
+
+            <ImageView
+                android:id="@+id/private_chat"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
                 android:background="@drawable/private_chat_icon" />
         </LinearLayout>
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/timeline"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:visibility="gone"
-        android:background="@color/header_blue" >
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:weightSum="3" >
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginRight="10dp"
-                    android:gravity="bottom"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/txtlike"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="bottom"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="1dp"
-                        android:background="@drawable/circle_notification"
-                        android:gravity="left|bottom"
-                        android:text=""
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/txtsize10" />
-                </LinearLayout>
-            </FrameLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1" >
-
-                <ImageButton
-                    android:id="@+id/timeline_btn"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/timeline_icon" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/txtTitleP"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#002230"
-            android:textSize="14sp" />
-
-        <ImageView
-            android:id="@+id/sedarch_v"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/ic_search" />
     </RelativeLayout>
 
     <android.support.v4.widget.DrawerLayout

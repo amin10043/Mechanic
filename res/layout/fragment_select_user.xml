@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal" >
+
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="40dp"
+            android:text="انتخاب همه کاربران"
+            android:textColor="@color/transparent" />
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/usersList"
+        style="@style/second_item_style"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header"
+        android:gravity="center"
+        android:horizontalSpacing="2dp"
+        android:numColumns="2"
+        android:verticalSpacing="2dp" >
+    </GridView>
+
+    <RelativeLayout
+        android:id="@+id/users"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fdcvb"
+        android:background="@color/white"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/ss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:text="انتخاب لینک فرستنده جهت ارسال : "
+            android:textColor="@color/transparent" />
+
+        <Spinner
+            android:id="@+id/pageSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ss"
+            android:layout_margin="5dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fdcvb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:gravity="center" >
+
+        <RelativeLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/users"
+            android:layout_centerVertical="true"
+            android:background="@color/white"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="پیام"
+                android:textColor="@color/transparent" />
+
+            <TextView
+                android:id="@+id/mumberUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_toRightOf="@+id/lable"
+                android:text="100"
+                android:textColor="@color/red2" />
+
+            <TextView
+                android:id="@+id/lable2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_toRightOf="@+id/mumberUser"
+                android:text="*"
+                android:textColor="@color/transparent"
+                android:textSize="15dp" />
+
+            <LinearLayout
+                android:id="@+id/num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_toRightOf="@+id/lable2"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="50"
+                    android:textColor="@color/red2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="هزینه هر پیام"
+                    android:textColor="@color/transparent" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/lable3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_toRightOf="@+id/num"
+                android:text=" = "
+                android:textColor="@color/transparent"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_toRightOf="@+id/lable3"
+                android:text="5000 "
+                android:textColor="@color/red2" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/bank_parsian" />
+    </RelativeLayout>
+
+</RelativeLayout>
