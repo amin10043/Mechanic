@@ -1,33 +1,51 @@
 package com.project.mechanic.row_items;
 
 public class CommentNotiItem {
-	int id;
-	String title;
-	String Desc;
-	String lastSeen;
-
 	public int getId() {
-		return id;
+		return Id;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		Id = id;
 	}
 
 	public String getTitle() {
-		return title;
+		return Title;
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		Title = title;
 	}
 
-	public String getDesc() {
-		return Desc;
+	int Id;
+	String Title;
+	String Name;
+	String Desk;
+	String Date;
+	String lastSeen;
+
+	public String getName() {
+		return Name;
 	}
 
-	public void setDesc(String desc) {
-		Desc = desc;
+	public void setName(String name) {
+		Name = name;
+	}
+
+	public String getDesk() {
+		return Desk;
+	}
+
+	public void setDesk(String desk) {
+		Desk = desk;
+	}
+
+	public String getDate() {
+		return Date;
+	}
+
+	public void setDate(String date) {
+		Date = date;
 	}
 
 	public String getLastSeen() {
@@ -38,11 +56,13 @@ public class CommentNotiItem {
 		this.lastSeen = lastSeen;
 	}
 
-	public CommentNotiItem(int id, String title, String desc, String lastSeen) {
+	public CommentNotiItem(int id, String title, String name, String desc,
+			String Date, String lastSeen) {
 		super();
-		this.id = id;
-		this.title = title;
-		Desc = desc;
+		this.Title = title;
+		this.Name = name;
+		this.Desk = desc;
+		this.Date = Date;
 		this.lastSeen = lastSeen;
 	}
 

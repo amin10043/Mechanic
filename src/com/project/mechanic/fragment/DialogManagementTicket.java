@@ -18,6 +18,7 @@ import com.project.mechanic.utility.Utility;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class DialogManagementTicket extends Dialog implements
-		GetAsyncInterface, AsyncInterface {
+		GetAsyncInterface {
 
 	Context context;
 	List<Ticket> listTicket;
@@ -45,7 +46,7 @@ public class DialogManagementTicket extends Dialog implements
 
 	ServerDate date;
 
-	String todayDate;
+	String time;
 
 	RelativeLayout noItem;
 
@@ -76,24 +77,37 @@ public class DialogManagementTicket extends Dialog implements
 		namePage = (TextView) findViewById(R.id.namepageList);
 		noItem = (RelativeLayout) findViewById(R.id.noPage);
 
+		final SharedPreferences currentTime = context.getSharedPreferences(
+				"time", 0);
+
+		time = currentTime.getString("time", "-1");
+
 		if (listTicket.size() == 0) {
 			noItem.setVisibility(View.VISIBLE);
 		} else {
 
 			anadGridAdapter = new AnadListAdapter(context, R.layout.row_anad,
-					listTicket, -1, fragment, true);
+					listTicket, -1, fragment, true, time, 0);
 
 			ticketGrid.setAdapter(anadGridAdapter);
 		}
 
 		Users currentUser = util.getCurrentUser();
 		namePage.setText(currentUser.getName());
+		anadGridAdapter = new AnadListAdapter(context, R.layout.row_anad,
+				listTicket, -1, fragment, true, time, 0);
+		anadGridAdapter.notifyDataSetChanged();
+		
+//		AnadListAdapter anadGriDADAPTER = NEW ANADLISTADAPTER(CONTEXT,
+//				R.LAYOUT.ROW_ANAd, listTicket,-1,this,true, time, 0);
 
-		if (context != null) {
-			date = new ServerDate(context);
-			date.delegate = DialogManagementTicket.this;
-			date.execute("");
-		}
+//
+		AnadListAdapter anadGridAdapter = new AnadListAdapter(context,
+				R.layout.row_anad, listTicket, -1, fragment, true, time, 0);
+
+		ticketGrid.setAdapter(anadGridAdapter);
+		getTicketImageFromServer(listTicket, 0);
+
 	}
 
 	private void getTicketImageFromServer(List<Ticket> ticketList,
@@ -122,7 +136,7 @@ public class DialogManagementTicket extends Dialog implements
 			}
 		} else {
 			AnadListAdapter anadGridAdapter = new AnadListAdapter(context,
-					R.layout.row_anad, listTicket, -1, fragment, false);
+					R.layout.row_anad, listTicket, -1, fragment, false, time, 0);
 
 			ticketGrid.setAdapter(anadGridAdapter);
 			anadGridAdapter.notifyDataSetChanged();
@@ -146,30 +160,4 @@ public class DialogManagementTicket extends Dialog implements
 
 	}
 
-	@Override
-	public void processFinish(String output) {
-
-		todayDate = output;
-		anadGridAdapter = new AnadListAdapter(context, R.layout.row_anad,
-				listTicket, -1, fragment, true);
-		anadGridAdapter.notifyDataSetChanged();
-
-		// if (listTicket.size() == 0) {
-		// noItem.setVisibility(View.VISIBLE);
-		// } else {
-		//
-		AnadListAdapter anadGridAdapter = new AnadListAdapter(context,
-				R.layout.row_anad, listTicket, -1, fragment, true);
-
-		ticketGrid.setAdapter(anadGridAdapter);
-		getTicketImageFromServer(listTicket, 0);
-
-		// }
-		//
-		// getTicketImageFromServer(listTicket, 0);
-		//
-		// Users currentUser = util.getCurrentUser();
-		// namePage.setText(currentUser.getName());
-		// }
-	}
 }

@@ -101,7 +101,8 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 
 			if (mylist != null && !mylist.isEmpty()) {
 				ListAdapter = new ObjectListAdapter(getActivity(),
-						R.layout.row_object, mylist, ObjectFragment.this, true);
+						R.layout.row_object, mylist, ObjectFragment.this, true,
+						null, 1);
 				lstObject.setAdapter(ListAdapter);
 
 				// start code get image profile from server
@@ -127,7 +128,8 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 			if (mylist != null && !mylist.isEmpty()) {
 
 				ListAdapter = new ObjectListAdapter(getActivity(),
-						R.layout.row_object, mylist, ObjectFragment.this, true);
+						R.layout.row_object, mylist, ObjectFragment.this, true,
+						null, 1);
 				lstObject.setAdapter(ListAdapter);
 			}
 		}
@@ -265,7 +267,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 					city_id, typeList);
 			ObjectListAdapter ListAdapter = new ObjectListAdapter(
 					getActivity(), R.layout.row_object, mylist,
-					ObjectFragment.this, false);
+					ObjectFragment.this, false, null, 1);
 			lstObject.setAdapter(ListAdapter);
 
 			ListAdapter.notifyDataSetChanged();
@@ -312,7 +314,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 				if (mylist.size() > 0) {
 					ListAdapter = new ObjectListAdapter(getActivity(),
 							R.layout.row_object, mylist, ObjectFragment.this,
-							true);
+							true, null, 1);
 					lstObject.setAdapter(ListAdapter);
 				}
 			}
@@ -358,7 +360,8 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 				mylist = adapter.subBrandObject(brand, city_id, AgencyService);
 
 			ListAdapter = new ObjectListAdapter(getActivity(),
-					R.layout.row_object, mylist, ObjectFragment.this, false);
+					R.layout.row_object, mylist, ObjectFragment.this, false,
+					null, 1);
 			lstObject.setAdapter(ListAdapter);
 
 		}

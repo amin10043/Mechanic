@@ -84,7 +84,7 @@ public class CommentPaperNotificationAdapter extends
 		CommentNotiItem d = mylist2.get(position);
 		txt.setText(d.getTitle());
 		TextView txt1 = (TextView) convertView.findViewById(R.id.Desc);
-		txt1.setText(d.getDesc());
+		txt1.setText(d.getDesk());
 		dbadapter.close();
 
 		return convertView;

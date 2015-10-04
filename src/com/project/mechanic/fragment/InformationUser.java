@@ -202,7 +202,7 @@ public class InformationUser extends Fragment {
 		dbadaAdapter.close();
 
 		listAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object,
-				listPage, InformationUser.this, false);
+				listPage, InformationUser.this, false , null , 1);
 
 		listViewPages.setAdapter(listAdapter);
 

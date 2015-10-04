@@ -72,7 +72,7 @@ public class commentnotificationAdapter extends ArrayAdapter<CommentNotiItem> {
 
 		txt.setText(c.getTitle());
 		TextView txt1 = (TextView) convertView.findViewById(R.id.Desc);
-		txt1.setText(c.getDesc());
+		txt1.setText(c.getDesk());
 		dbadapter.close();
 
 		return convertView;

@@ -584,10 +584,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		if (object.getDescription() == null)
 			txtDesc.setVisibility(View.GONE);
 
-		// if mainObjectId =1 >>>>>> namayandegi va khadamat faal hast
-		// if mainObjectId =2 >>>>>> namayandegi va khadamat gheyr faal hast
-		// if MainObjectId =3 >>>>>> namayandegi faal hast
-		// if MainObjectId =4 >>>>>> khadamat faal hast
+		// if ObjectBrandTypeId =1 >>>>>> namayandegi va khadamat faal hast
+		// if ObjectBrandTypeId =2 >>>>>> namayandegi va khadamat gheyr faal hast
+		// if ObjectBrandTypeId =3 >>>>>> namayandegi faal hast
+		// if ObjectBrandTypeId =4 >>>>>> khadamat faal hast
 
 		if (object.getObjectBrandTypeId() == 1) {
 			agency.setVisibility(View.VISIBLE);

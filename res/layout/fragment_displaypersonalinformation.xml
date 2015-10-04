@@ -40,31 +40,34 @@
                     android:layout_height="100dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/no_img_profile" />
+            </LinearLayout>
 
-                <LinearLayout
+            <LinearLayout
+                android:id="@+id/tgbnhy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/lin2"
+                android:layout_below="@+id/lin2"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/displayname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="TextView"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/item_font_size" />
+
+                <TextView
+                    android:id="@+id/txtdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:gravity="left"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/displayname"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:text="TextView"
-                        android:textColor="@color/transparent"
-                        android:textSize="@dimen/item_font_size" />
-
-                    <TextView
-                        android:id="@+id/txtdate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:text="TextView"
-                        android:textColor="@color/transparent" />
-                </LinearLayout>
+                    android:layout_marginBottom="10dp"
+                    android:text="TextView"
+                    android:textColor="@color/transparent" />
             </LinearLayout>
 
             <RelativeLayout
@@ -72,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/lin2"
+                android:layout_below="@+id/tgbnhy"
                 android:background="#64bc2c"
                 android:gravity="center_horizontal" >
 

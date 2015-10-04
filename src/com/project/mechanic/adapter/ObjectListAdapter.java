@@ -49,9 +49,12 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 	RelativeLayout.LayoutParams paramsfollow, paramsVisit;
 	ProgressBar LoadingProgress;
 	boolean IsShow;
+	String DateTime;
+	int Type;
 
 	public ObjectListAdapter(Context context, int resource,
-			List<Object> objact, Fragment fr, boolean IsShow) {
+			List<Object> objact, Fragment fr, boolean IsShow, String DateTime,
+			int Type) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -60,7 +63,8 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		util = new Utility(context);
 		this.fr = fr;
 		this.IsShow = IsShow;
-
+		this.DateTime = DateTime;
+		this.Type = Type;
 	}
 
 	@SuppressLint("ViewHolder")
@@ -126,19 +130,6 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		if (IsShow == false)
 			LoadingProgress.setVisibility(View.GONE);
 
-		// if (person.getImage2() == null) {
-		//
-		//
-		// } else {
-		// byte[] byteImageProfile = person.getImage2();
-		//
-		// Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
-		// byteImageProfile.length);
-		//
-		// profileIco.setImageBitmap(bmp);
-		//
-		// }
-
 		followLayout = (RelativeLayout) convertView
 				.findViewById(R.id.propertiesObject);
 		// visitLayout = (RelativeLayout)
@@ -171,20 +162,24 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 				.findViewById(R.id.dayBaghiMandeh);
 
 		String commitDate = person.getDate();
-		int thisDay = 0;
-		int objectYear = 0;
-		// int objectDay = Integer.valueOf(commitDate.substring(0, 8));
-		if (commitDate != null)
 
-			objectYear = Integer.valueOf(commitDate.substring(0, 4));
-
-//		String finishDate = String.valueOf(objectYear + 1)
-//				+ commitDate.substring(4, 14);
+//		if (commitDate != null) {
 //
-//		if (util.todayDate != null )
-//			thisDay = Integer.valueOf(util.todayDate.substring(0, 8));
+//			int thisDay = 0;
+//			int objectYear = 0;
 //
-//		baghiMandeh.setText(util.getPersianDate(finishDate));
+//			int subCommited = Integer.valueOf(commitDate.substring(0, 8));
+//			int subCurrent = Integer.valueOf(DateTime.substring(0, 8));
+//
+//			objectYear = Integer.valueOf(commitDate.substring(0, 4));
+//
+//			String finishDate = String.valueOf(objectYear + 1)
+//					+ commitDate.substring(4, 8);
+//			int a = Integer.valueOf(finishDate) - subCurrent;
+//			thisDay = Integer.valueOf(DateTime.substring(0, 8));
+//			baghiMandeh.setText(a + "");
+//
+//		}
 
 		convertView.setOnLongClickListener(new OnLongClickListener() {
 
@@ -243,11 +238,6 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 						// check authentication and authorization
 						id = object.getId();
 						sendDataID.edit().putInt("main_Id", id).commit();
-
-						//
-						// Toast.makeText(context,
-						// "parentId = " + object.getParentId(),
-						// Toast.LENGTH_SHORT).show();
 
 					}
 

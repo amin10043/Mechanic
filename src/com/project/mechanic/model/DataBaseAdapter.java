@@ -87,7 +87,7 @@ public class DataBaseAdapter {
 	// private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] Anad = { "Id", "Image", "ObjectId", "Date", "TypeId",
-			"ProvinceId", "Seen", "Submit", "ImagePath" };
+			"ProvinceId", "Seen", "Submit", "ImageServerDate" };
 	private String[] CityColumn = { "ID", "Name", "ProvinceId", "Count" };
 
 	// private String[] Comment = { "ID", "UserId", "paperId", "Description" };
@@ -110,7 +110,7 @@ public class DataBaseAdapter {
 	private String[] LikeInFroum = { "Id", "UserId", "FroumId", "Date",
 			"CommentId", "Seen" };
 	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike",
-			"Date" , "ModifyDate" };
+			"Date", "ModifyDate" };
 	private String[] LikeInPaper = { "Id", "UserId", "PaperId", "Date",
 			"CommentId", "Seen" };
 	// private String[] List = { "ID", "Name", "ParentId" };
@@ -217,7 +217,7 @@ public class DataBaseAdapter {
 	public void inserUserToDb(int id, String name, String email,
 			String password, String phonenumber, String mobailenumber,
 			String faxnumber, String address, byte[] image, int serviceid,
-			String date , String BirthDay , int CityId) {
+			String date, String BirthDay, int CityId) {
 
 		ContentValues uc = new ContentValues();
 
@@ -232,7 +232,7 @@ public class DataBaseAdapter {
 		uc.put("Address", address);
 		uc.put("Image", image);
 		uc.put("ServiceId", serviceid);
-		
+
 		uc.put("BirthDay", BirthDay);
 		uc.put("CityId", CityId);
 
@@ -267,7 +267,8 @@ public class DataBaseAdapter {
 
 	public void inserUsernonpicToDb(int Id, String name, String email,
 			String password, String phonenumber, String mobailenumber,
-			String faxnumber, String address, int serviceid, String date , String BirthDay , int CityId) {
+			String faxnumber, String address, int serviceid, String date,
+			String BirthDay, int CityId) {
 
 		ContentValues uc = new ContentValues();
 		uc.put("Id", Id);
@@ -1048,7 +1049,7 @@ public class DataBaseAdapter {
 		ArrayList<CommentNotiItem> result = new ArrayList<CommentNotiItem>();
 		Cursor mCur = mDb
 				.rawQuery(
-						"select f.Id,u.Name || '  بر روی ' || f.Title || '  در تاریخ ' || l.[Date]  || ' کامنت گذاشت ',l.Desk from CommentInFroum l inner join Froum f on l.FroumId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+						"select f.Id,u.Name, f.Title, l.Date,l.Desk from CommentInFroum l inner join Froum f on l.FroumId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
 								+ userId
 								+ " AND f.UserId != l.UserId AND l.seen=0",
 						null);
@@ -1056,7 +1057,8 @@ public class DataBaseAdapter {
 		CommentNotiItem noti;
 		while (mCur.moveToNext()) {
 			noti = new CommentNotiItem(mCur.getInt(0), mCur.getString(1),
-					mCur.getString(2), "");
+					mCur.getString(2), mCur.getString(3), mCur.getString(4),
+					mCur.getString(5));
 			result.add(noti);
 		}
 
@@ -1077,7 +1079,8 @@ public class DataBaseAdapter {
 		CommentNotiItem noti;
 		while (mCur.moveToNext()) {
 			noti = new CommentNotiItem(mCur.getInt(0), mCur.getString(1),
-					mCur.getString(2), "");
+					mCur.getString(2), mCur.getString(3), mCur.getString(4),
+					mCur.getString(5));
 			result.add(noti);
 		}
 
@@ -1099,7 +1102,8 @@ public class DataBaseAdapter {
 		CommentNotiItem noti;
 		while (mCur.moveToNext()) {
 			noti = new CommentNotiItem(mCur.getInt(0), mCur.getString(1),
-					mCur.getString(2), "");
+					mCur.getString(2), mCur.getString(3), mCur.getString(4),
+					mCur.getString(5));
 			result.add(noti);
 		}
 		return result;
@@ -1191,8 +1195,7 @@ public class DataBaseAdapter {
 				cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
 				cursor.getString(11), cursor.getInt(12), cursor.getInt(13),
 				cursor.getString(14), cursor.getString(15),
-				cursor.getString(16), cursor.getString(17),
-				cursor.getInt(18));
+				cursor.getString(16), cursor.getString(17), cursor.getInt(18));
 
 		return Users;
 
@@ -2390,7 +2393,7 @@ public class DataBaseAdapter {
 
 	public Province getProvinceById(int id) {
 		Province item = null;
-		Cursor mCur = mDb.query(TableCity, Province, " Id=?",
+		Cursor mCur = mDb.query(TableProvince, Province, " Id=?",
 				new String[] { String.valueOf(id) }, null, null, null);
 
 		if (mCur.moveToNext()) {

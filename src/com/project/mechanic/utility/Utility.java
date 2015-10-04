@@ -424,8 +424,14 @@ public class Utility implements AsyncInterface {
 				&& !(output.contains("Exception") || output.contains("anyType")
 						|| output.contains("java") || output
 							.contains("SoapFault"))) {
-			if (output.length() == 18)
+			if (output.length() == 18) {
 				todayDate = output;
+
+				final SharedPreferences currentTime = context
+						.getSharedPreferences("time", 0);
+				currentTime.edit().putString("time", todayDate).commit();
+
+			}
 			switch (state) {
 
 			case 0: // return date
@@ -737,11 +743,6 @@ public class Utility implements AsyncInterface {
 				e.printStackTrace();
 			}
 
-			Toast.makeText(
-					context,
-					"عکس شماره " + String.valueOf(ImageId)
-							+ "با موفقیت ثبت شد  ", 0).show();
-
 			if (TableName.equals("Anad")) {
 
 				adapter.open();
@@ -775,6 +776,8 @@ public class Utility implements AsyncInterface {
 				adapter.close();
 
 			}
+			Toast.makeText(context, nameFile + " " + ImageId + "ذخیره شد", 0)
+					.show();
 			return ImageId;
 
 		} else

@@ -61,9 +61,8 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 			AddressLayout;
 
 	AnadListAdapter anadGridAdapter;
-	RelativeLayout.LayoutParams followParams , paramsLayout;
+	RelativeLayout.LayoutParams followParams, paramsLayout;
 
-	
 	@SuppressLint("NewApi")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -134,7 +133,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		LayoutParams lp1 = new LinearLayout.LayoutParams(lin2.getLayoutParams());
 		lp1.width = utile1.getScreenwidth() / 4;
 		lp1.height = utile1.getScreenwidth() / 4;
-//		lp1.setMargins(5, 5, 5, 5);
+		// lp1.setMargins(5, 5, 5, 5);
 		img.setLayoutParams(lp1);
 		// byte[] bitmapbyte = u.getImage();
 		String ImagePath = u.getImagePath();
@@ -171,7 +170,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		String fax = u.getFaxnumber();
 		String d = u.getDate();
 
-		//txtdate.setText(utile1.getPersianDate(d));
+		txtdate.setText(utile1.getPersianDate(d));
 		txtname.setText(name);
 		txtemail.setText(email);
 		txtcellphone.setText(cellphone);
@@ -225,7 +224,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		followParams.addRule(RelativeLayout.BELOW, R.id.lin2);
 
 		btnedit.setLayoutParams(followParams);
-		
+
 		paramsLayout = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
 
 		paramsLayout.width = utile1.getScreenwidth() / 3;
@@ -233,7 +232,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		paramsLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		paramsLayout.addRule(RelativeLayout.BELOW, R.id.btnedit);
 		birthDayUsers.setLayoutParams(paramsLayout);
-
 
 		RelativeLayout manageArticle = (RelativeLayout) header
 				.findViewById(R.id.manage_paper);
@@ -293,6 +291,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new EditPersonalFragment());
+				trans.addToBackStack(null);
 				trans.commit();
 			}
 		});

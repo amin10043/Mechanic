@@ -250,21 +250,6 @@ public class MainFragment extends Fragment {
 			}
 		});
 
-		// dbAdapter = new DataBaseAdapter(getActivity());
-		//
-		// dbAdapter.open();
-		// List<ListItem> mylist = dbAdapter.getListItemsById(0);
-		// dbAdapter.close();
-		//
-		// ListView lstMain = (ListView) view.findViewById(R.id.lstMain);
-		// ListAdapter = new MainListAdapter(getActivity(),
-		// R.layout.main_item_list, mylist);
-		//
-		// lstMain.setAdapter(ListAdapter);
-		// ImageView v = (ImageView) view.findViewById(R.id.imgAdverst);
-		// v.getLayoutParams().height = util.getScreenHeightWithPadding() / 9;
-		// v.requestLayout();
-
 		return view;
 	}
 

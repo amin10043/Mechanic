@@ -628,7 +628,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 	@Override
 	public void processFinish(byte[] output) {
 
-		util.CreateFile(output, iid, "Mechanical", "Users", "user", "Users");
+		util.CreateFile(output, iid, "Mechanical", "Users", "user", "Users" );
 		adapter.open();
 		adapter.UpdateImageServerDate(iid, "Users", serverDate);
 		adapter.close();

@@ -39,7 +39,7 @@ public class CommentObjectNotificationAdapter extends
 		CommentNotiItem c = mylist1.get(position);
 		txt.setText(c.getTitle());
 		TextView txt1 = (TextView) convertView.findViewById(R.id.Desc);
-		txt1.setText(c.getDesc());
+		txt1.setText(c.getDesk());
 		return convertView;
 	}
 
