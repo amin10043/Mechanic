@@ -66,9 +66,9 @@ public class PersonLikedPaperAdapter extends ArrayAdapter<LikeInPaper> {
 		LikeInPaper likes = myList.get(position);
 
 		adapter.open();
-		 user = adapter.getUserById(likes.getUserid());
+		user = adapter.getUserById(likes.getUserid());
 		adapter.close();
-     
+
 		namePerson.setText(user.getName());
 		DateLiked.setText(util.getPersianDate(likes.getDatetime()));
 
@@ -82,7 +82,7 @@ public class PersonLikedPaperAdapter extends ArrayAdapter<LikeInPaper> {
 		lp.height = (util.getScreenwidth() / 8);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
-        
+
 		if (user.getImage() == null) {
 			peronImage.setImageResource(R.drawable.no_img_profile);
 			peronImage.setLayoutParams(lp);
@@ -96,15 +96,15 @@ public class PersonLikedPaperAdapter extends ArrayAdapter<LikeInPaper> {
 			peronImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
 			peronImage.setLayoutParams(lp);
 		}
-		peronImage.setOnClickListener(new View.OnClickListener() {
-			
+		convertView.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View arg0) {
 				LikeInPaper likes = myList.get(position);
 				adapter.open();
-				 user = adapter.getUserById(likes.getUserid());
+				user = adapter.getUserById(likes.getUserid());
 				adapter.close();
-				userId= user.getId();
+				userId = user.getId();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				InformationUser fragment = new InformationUser();
@@ -113,8 +113,7 @@ public class PersonLikedPaperAdapter extends ArrayAdapter<LikeInPaper> {
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				
-				
+
 			}
 		});
 

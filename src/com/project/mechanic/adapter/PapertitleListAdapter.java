@@ -143,7 +143,6 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
 
-
 		if (x != null) {
 			String ImagePath = x.getImagePath();
 			if (ImagePath == null) {
@@ -152,7 +151,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 			} else {
 
-				//byte[] byteImg = x.getImage();
+				// byte[] byteImg = x.getImage();
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
 				iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
 						50));
@@ -184,7 +183,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 			}
 		});
 		txt1.setText(person1.getTitle());
-		txt2.setText(person1.getContext()+" ... ");
+		txt2.setText(person1.getContext() + " ... ");
 
 		String item = txt1.getText().toString();
 		for (Paper listItem : mylist) {
@@ -231,11 +230,11 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 							paperNumber = listItem.getId();
 						}
 					}
-
+					date = new ServerDate(context);
+					date.delegate = PapertitleListAdapter.this;
+					date.execute("");
 				}
-				date = new ServerDate(context);
-				date.delegate = PapertitleListAdapter.this;
-				date.execute("");
+				
 
 			}
 		});
@@ -273,7 +272,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 					dia.getWindow().setBackgroundDrawable(
 							new ColorDrawable(
 									android.graphics.Color.TRANSPARENT));
-			}
+				}
 			}
 		});
 
@@ -380,7 +379,12 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 					&& !(output.contains("Exception") || output
 							.contains("java"))) {
 				adapter.open();
-				if (adapter.isUserLikedPaper(currentUser.getId(), paperNumber)) {
+				if (currentUser == null) {
+					Toast.makeText(context,
+							"برای درج لایک ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+				} else if (adapter.isUserLikedPaper(currentUser.getId(),
+						paperNumber)) {
 					adapter.open();
 
 					params = new LinkedHashMap<String, String>();
@@ -425,6 +429,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 					params.put("UserId", String.valueOf(currentUser.getId()));
 					params.put("PaperId", String.valueOf(paperNumber));
 					params.put("Date", output);
+					params.put("ModifyDate", output);
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 

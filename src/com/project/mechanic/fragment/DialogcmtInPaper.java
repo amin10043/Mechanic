@@ -175,6 +175,8 @@ public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 					params.put("UserId", String.valueOf(currentuser.getId()));
 					params.put("IsUpdate", "0");
 					params.put("Date", output);
+					params.put("ModifyDate", output);
+
 					params.put("Id", "0");
 					serverDate = output;
 

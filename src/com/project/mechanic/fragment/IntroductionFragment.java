@@ -59,7 +59,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	Utility ut;
 	Users CurrentUser;
-	PersianDate datePersian;
 	View header;
 	ExpandableListView exListView;
 	ExpandIntroduction exadapter;
@@ -219,8 +218,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		followPage = (Button) header.findViewById(R.id.followPage);
 
-		sendDataID = getActivity().getSharedPreferences("Id", 0);
-		ObjectID = sendDataID.getInt("main_Id", -1);
+		
+		
+		if (getArguments().getString("Id") != null)
+			ObjectID = Integer.valueOf(getArguments().getString("Id"));
 
 		adapter.open();
 		commentGroup = adapter.getAllCommentInObjectById(ObjectID, 0);
@@ -1344,7 +1345,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				// این متغیر مشخص کنندهلایک صفحه و لایک پست می بایشد
 				int comId;
 				if (flag)
-					// لایک صفحه
+					// دنبال کردن
 					comId = 0;
 				else
 					// لایک پست
@@ -1466,6 +1467,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 									String.valueOf(CurrentUser.getId()));
 							params.put("ObjectId", String.valueOf(ObjectID));
 							params.put("Date", output);
+							params.put("ModifyDate", output);
+
 							params.put("CommentId", String.valueOf(comId));
 
 							params.put("IsUpdate", "0");

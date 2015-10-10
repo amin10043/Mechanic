@@ -2,17 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/list_item"
+    android:background="@color/white"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_gravity="center"
+        android:background="#39619c"
         android:gravity="center"
         android:text="پسندها"
-        android:textColor="@color/transparent" />
+        android:textColor="@color/white" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,161 +26,165 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:weightSum="3" >
 
-            <FrameLayout
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="20dp" >
+                android:layout_weight="1"
+                android:orientation="vertical" >
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/soundFroum"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_sound_on" />
+
+                <ImageButton
+                    android:id="@+id/btnshowlikef"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical" >
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_notification_froum" />
 
-                    <ImageButton
-                        android:id="@+id/btnshowlikef"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_notification_froum" />
-
-                    <TextView
-                        android:id="@+id/textDay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="تالار گفتگو"
-                        android:textColor="@color/transparent"
-                        android:textSize="@dimen/txtsize10" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/textDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="تالار گفتگو"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/txtsize10" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical" >
+                    android:id="@+id/t00"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/circle_notification"
+                    android:gravity="center" >
 
                     <TextView
                         android:id="@+id/numlikef"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/circle_notification"
-                        android:gravity="top"
-                        android:text="" />
+                        android:text="20"
+                        android:textColor="@color/white" />
                 </LinearLayout>
-            </FrameLayout>
+            </LinearLayout>
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/soundpage"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_sound_on" />
+
+                <ImageButton
+                    android:id="@+id/btnshowlikeo"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="5dp"
-                    android:orientation="vertical" >
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:background="@drawable/ic_notification_object" />
 
-                    <ImageButton
-                        android:id="@+id/btnshowlikeo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginRight="3dp"
-                        android:background="@drawable/ic_notification_object" />
-
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="شخصی"
-                        android:textColor="@color/transparent"
-                        android:textSize="@dimen/txtsize10" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="صفحات"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/txtsize10" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical" >
+                    android:id="@+id/t2"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/circle_notification"
+                    android:gravity="center" >
 
                     <TextView
                         android:id="@+id/numlikeo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/circle_notification"
-                        android:text="" />
+                        android:text="1"
+                        android:textColor="@color/white" />
                 </LinearLayout>
-            </FrameLayout>
+            </LinearLayout>
 
-            <FrameLayout
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="20dp" >
+                android:layout_weight="1"
+                android:orientation="vertical" >
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/soundpaper"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_sound_on" />
+
+                <ImageButton
+                    android:id="@+id/btnshowlikep"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="0dp"
-                    android:orientation="vertical" >
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_main_item5" />
 
-                    <ImageButton
-                        android:id="@+id/btnshowlikep"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/ic_notification_news" />
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="مقالات"
-                        android:textColor="@color/transparent"
-                        android:textSize="@dimen/txtsize10" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="مقالات"
+                    android:textColor="@color/transparent"
+                    android:textSize="@dimen/txtsize10" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical" >
+                    android:id="@+id/t3"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/circle_notification"
+                    android:gravity="center" >
 
                     <TextView
                         android:id="@+id/numlikep"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/circle_notification"
-                        android:text="" />
+                        android:text="25"
+                        android:textColor="@color/white" />
                 </LinearLayout>
-            </FrameLayout>
+            </LinearLayout>
         </LinearLayout>
 
-        <FrameLayout
+        <ListView
+            android:id="@+id/listnewlikef"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <ListView
-                android:id="@+id/listnewlikef"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-            </ListView>
-
-            <ListView
-                android:id="@+id/listnewlikeo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-            </ListView>
-
-            <ListView
-                android:id="@+id/listnewlikep"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-            </ListView>
-        </FrameLayout>
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp" >
+        </ListView>
     </LinearLayout>
 
 </LinearLayout>

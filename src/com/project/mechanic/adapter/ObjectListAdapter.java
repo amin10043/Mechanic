@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -163,23 +164,23 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 		String commitDate = person.getDate();
 
-//		if (commitDate != null) {
-//
-//			int thisDay = 0;
-//			int objectYear = 0;
-//
-//			int subCommited = Integer.valueOf(commitDate.substring(0, 8));
-//			int subCurrent = Integer.valueOf(DateTime.substring(0, 8));
-//
-//			objectYear = Integer.valueOf(commitDate.substring(0, 4));
-//
-//			String finishDate = String.valueOf(objectYear + 1)
-//					+ commitDate.substring(4, 8);
-//			int a = Integer.valueOf(finishDate) - subCurrent;
-//			thisDay = Integer.valueOf(DateTime.substring(0, 8));
-//			baghiMandeh.setText(a + "");
-//
-//		}
+		// if (commitDate != null) {
+		//
+		// int thisDay = 0;
+		// int objectYear = 0;
+		//
+		// int subCommited = Integer.valueOf(commitDate.substring(0, 8));
+		// int subCurrent = Integer.valueOf(DateTime.substring(0, 8));
+		//
+		// objectYear = Integer.valueOf(commitDate.substring(0, 4));
+		//
+		// String finishDate = String.valueOf(objectYear + 1)
+		// + commitDate.substring(4, 8);
+		// int a = Integer.valueOf(finishDate) - subCurrent;
+		// thisDay = Integer.valueOf(DateTime.substring(0, 8));
+		// baghiMandeh.setText(a + "");
+		//
+		// }
 
 		convertView.setOnLongClickListener(new OnLongClickListener() {
 
@@ -223,12 +224,10 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 				SharedPreferences sendDataID = context.getSharedPreferences(
 						"Id", 0);
-
+				IntroductionFragment fragment = new IntroductionFragment();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new IntroductionFragment());
-				// trans.addToBackStack(null);
-				trans.commit();
+				trans.replace(R.id.content_frame, fragment);
 
 				String item = txt1.getText().toString();
 
@@ -243,6 +242,11 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 				}
 
+				Bundle bundle = new Bundle();
+				bundle.putString("Id", String.valueOf(id));
+				fragment.setArguments(bundle);
+				trans.addToBackStack(null);
+				trans.commit();
 			}
 
 		});

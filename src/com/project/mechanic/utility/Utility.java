@@ -841,4 +841,22 @@ public class Utility implements AsyncInterface {
 		return retval;
 	}
 
+	public String YearMonthDay(String timeStamp) {
+		String ret = "";
+		String test = timeStamp;
+		if (timeStamp != null && !"".equals(timeStamp)) {
+			String y = test.substring(0, 4);
+			String m = test.substring(4, 6);
+			String d = test.substring(6, 8);
+
+			try {
+				ret = pDate.Shamsi(Integer.valueOf(y), Integer.valueOf(m),
+						Integer.valueOf(d));
+			} catch (Exception ex) {
+				ret = "";
+			}
+		}
+		return ret;
+	}
+
 }

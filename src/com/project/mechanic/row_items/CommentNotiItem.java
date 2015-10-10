@@ -22,7 +22,7 @@ public class CommentNotiItem {
 	String Name;
 	String Desk;
 	String Date;
-	String lastSeen;
+	int CommentId;
 
 	public String getName() {
 		return Name;
@@ -48,22 +48,23 @@ public class CommentNotiItem {
 		Date = date;
 	}
 
-	public String getLastSeen() {
-		return lastSeen;
-	}
-
-	public void setLastSeen(String lastSeen) {
-		this.lastSeen = lastSeen;
-	}
-
-	public CommentNotiItem(int id, String title, String name, String desc,
-			String Date, String lastSeen) {
+	public CommentNotiItem(int commentId, int id, String name, String title,
+			String Date, String desc) {
 		super();
 		this.Title = title;
 		this.Name = name;
 		this.Desk = desc;
 		this.Date = Date;
-		this.lastSeen = lastSeen;
+		this.CommentId = commentId;
+
+	}
+
+	public int getCommentId() {
+		return CommentId;
+	}
+
+	public void setCommentId(int commentId) {
+		CommentId = commentId;
 	}
 
 }

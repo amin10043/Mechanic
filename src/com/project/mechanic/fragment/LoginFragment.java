@@ -296,6 +296,8 @@ public class LoginFragment extends Fragment implements CommInterface,
 				.beginTransaction();
 		trans.replace(R.id.content_frame, new MainFragment());
 		trans.commit();
+		
+		util.setNoti(getActivity(), util.getCurrentUser().getId());
 
 	}
 

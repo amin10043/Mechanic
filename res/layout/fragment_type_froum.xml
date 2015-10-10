@@ -9,6 +9,7 @@
         android:id="@+id/layout_group_chat_professional"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:background="#d3dff9" >
 
@@ -80,6 +81,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:background="#d3dff9"
         android:visibility="gone" >
 

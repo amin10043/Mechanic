@@ -139,12 +139,12 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				.toString());
 
 		dateTopic.setText(util.getPersianDate(person1.getDate()));
-		
-		
-		String item = txt2.getText().toString(); ;
+
+		String item = txt2.getText().toString();
+		;
 		int sizeDescription = item.length();
 		String subItem;
-		subItem = item.subSequence(0, sizeDescription-4).toString();
+		subItem = item.subSequence(0, sizeDescription - 4).toString();
 
 		int ItemId = 0;
 		for (Froum listItem : mylist) {
@@ -180,7 +180,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				profileImg.setLayoutParams(lp);
 			} else {
 
-				//byte[] byteImg = x.getImage();
+				// byte[] byteImg = x.getImage();
 				Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
 				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
 						50));
@@ -207,6 +207,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
+				adapter.close();
 
 			}
 		});
@@ -326,11 +327,11 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				LinearLayout parentlayout = (LinearLayout) v;
 
-				
-				String item = txt2.getText().toString(); ;
+				String item = txt2.getText().toString();
+				;
 				int sizeDescription = item.length();
 				String subItem;
-				subItem = item.subSequence(0, sizeDescription-4).toString();
+				subItem = item.subSequence(0, sizeDescription - 4).toString();
 				int ItemId = 0;
 				for (Froum listItem : mylist) {
 					if (subItem.equals(listItem.getDescription())) {
@@ -378,8 +379,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				}
 
 			} else {
-				adapter.insertLikeInFroumToDb(id ,CurrentUser.getId(), froumNumber,
-						serverDate, 0);
+				adapter.insertLikeInFroumToDb(id, CurrentUser.getId(),
+						froumNumber, serverDate, 0);
 				LikeTitle.setBackgroundResource(R.drawable.like_froum);
 
 				countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)

@@ -65,14 +65,14 @@ public class PersonLikedObjectAdapter extends ArrayAdapter<LikeInObject> {
 		adapter.open();
 		Users user = adapter.getUserById(likes.getUserId());
 		adapter.close();
-		peronImage.setOnClickListener(new View.OnClickListener() {
-			
+		convertView.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View arg0) {
 				adapter.open();
 				LikeInObject likes = myList.get(position);
 				Users user = adapter.getUserById(likes.getUserId());
-				userId= user.getId();
+				userId = user.getId();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				InformationUser fragment = new InformationUser();
@@ -81,7 +81,7 @@ public class PersonLikedObjectAdapter extends ArrayAdapter<LikeInObject> {
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				
+
 			}
 		});
 		namePerson.setText(user.getName());
