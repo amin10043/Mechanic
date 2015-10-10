@@ -6,9 +6,11 @@
 
     <ExpandableListView
         android:id="@+id/commentlist"
-        style="@style/second_item_style"
+        style="@style/sss"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:dividerHeight="0dp" />
+        android:background="#e8e8e8"
+        android:childDivider="#e8e8e8"
+        android:groupIndicator="@null" />
 
 </LinearLayout>

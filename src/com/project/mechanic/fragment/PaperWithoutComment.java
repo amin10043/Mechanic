@@ -9,11 +9,13 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -58,10 +60,8 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 	ImageView profileImg, sharebtn;
 	// String currentDate;
 	// PersianDate date;
-	int i = 0, j = 9;
 	List<CommentInPaper> subList;
 	List<CommentInPaper> tempList;
-	View view;
 	PullAndLoadListView lstNews;
 
 	String serverDate = "";
@@ -138,18 +138,15 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 			lp.height = util.getScreenwidth() / 7;
 			lp.setMargins(5, 5, 5, 5);
 
-			if (u.getImage() == null) {
-				profileImg.setImageResource(R.drawable.no_img_profile);
-				profileImg.setLayoutParams(lp);
+			Bitmap bitmap;
+			String ImagePath = u.getImagePath();
+			if (ImagePath != null) {
+				bitmap = BitmapFactory.decodeFile(ImagePath);
+				if (bitmap != null) {
+					profileImg.setImageBitmap(bitmap);
+					profileImg.setLayoutParams(lp);
 
-			} else {
-				byte[] bytepic = u.getImage();
-
-				Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0,
-						bytepic.length);
-
-				profileImg.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
-				profileImg.setLayoutParams(lp);
+				}
 			}
 
 		}
@@ -295,6 +292,35 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 		});
 
 		adapter.close();
+		
+		ImageView report = (ImageView) view.findViewById(R.id.reportImage);
+		report.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				if (CurrentUser == null) {
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", 0)
+							.show();
+				} else {
+
+					DialogLongClick dia = new DialogLongClick(getActivity(), 2,
+							p.getUserId(), p.getId(), PaperWithoutComment.this, p
+									.getContext());
+					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+					lp.copyFrom(dia.getWindow().getAttributes());
+					lp.width = (int) (util.getScreenwidth() / 1.5);
+					lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+					;
+					dia.show();
+
+					dia.getWindow().setAttributes(lp);
+					dia.getWindow().setBackgroundDrawable(
+							new ColorDrawable(
+									android.graphics.Color.TRANSPARENT));
+				}
+			}
+		});
 
 		return view;
 	}

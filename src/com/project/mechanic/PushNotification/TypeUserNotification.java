@@ -35,8 +35,8 @@ public class TypeUserNotification extends Fragment {
 				|| typeUser.equals("Ticket")) {
 
 			allUser.setVisibility(View.VISIBLE);
-			allView.setVisibility(View.GONE);
-			allLike.setVisibility(View.GONE);
+			allView.setVisibility(View.INVISIBLE);
+			allLike.setVisibility(View.INVISIBLE);
 		}
 		if (typeUser.equals("Object") || typeUser.equals("BirthDay")) {
 

@@ -288,13 +288,13 @@
                             android:lines="1"
                             android:text="mmmmmmmm"
                             android:textColor="@color/transparent" />
-                        
-                        <ImageView 
-                            android:layout_width="400dp"
+
+                        <ImageView
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
                             android:layout_alignParentBottom="true"
-                            android:background="@drawable/custom_drawable"/>
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/custom_drawable" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -326,12 +326,13 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/email" />
-                           <ImageView 
-                            android:layout_width="400dp"
+
+                        <ImageView
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
                             android:layout_alignParentBottom="true"
-                            android:background="@drawable/custom_drawable"/>
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/custom_drawable" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -363,12 +364,13 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/phone" />
-                           <ImageView 
-                            android:layout_width="400dp"
+
+                        <ImageView
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
                             android:layout_alignParentBottom="true"
-                            android:background="@drawable/custom_drawable"/>
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/custom_drawable" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -400,13 +402,13 @@
                             android:gravity="center"
                             android:text="mobile"
                             android:textColor="@color/transparent" />
-                           <ImageView 
-                            android:layout_width="400dp"
+
+                        <ImageView
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
                             android:layout_alignParentBottom="true"
-                            android:background="@drawable/custom_drawable"/>
-                        
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/custom_drawable" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -583,26 +585,34 @@
                         android:visibility="gone" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2" >
 
                         <Button
                             android:id="@+id/btn_report"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/headershape"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:background="#568bdd"
                             android:text="ارسال"
-                            android:textSize="@dimen/txtsize10"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
                             android:visibility="gone" />
 
                         <Button
                             android:id="@+id/btn_cancel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/headershape"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_weight="1"
+                            android:background="#568bdd"
                             android:text="انصراف"
-                            android:textSize="@dimen/txtsize10"
+                            android:textColor="@color/white"
+                            android:textSize="20dp"
                             android:visibility="gone" />
                     </LinearLayout>
                 </LinearLayout>

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -200,7 +202,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 					int countList = ListAdapter.getCount();
 					beforePosition = countList;
 
-					FindPosition = false;
+					// FindPosition = false;
 				}
 			}
 		});
@@ -284,13 +286,13 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 
 			lst.setAdapter(ListAdapter);
 
-			if (FindPosition == false) {
-				lst.setSelection(beforePosition);
-
-			}
+			// if (FindPosition == false) {
+			// lst.setSelection(beforePosition);
+			//
+			// }
 			LoadMoreFooter.setVisibility(View.INVISIBLE);
 
-			ListAdapter.notifyDataSetChanged();
+			// ListAdapter.notifyDataSetChanged();
 
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();

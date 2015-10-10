@@ -96,26 +96,26 @@ public class PersonLikedPaperAdapter extends ArrayAdapter<LikeInPaper> {
 			peronImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
 			peronImage.setLayoutParams(lp);
 		}
-		convertView.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				LikeInPaper likes = myList.get(position);
-				adapter.open();
-				user = adapter.getUserById(likes.getUserid());
-				adapter.close();
-				userId = user.getId();
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
-				InformationUser fragment = new InformationUser();
-				Bundle bundle = new Bundle();
-				bundle.putInt("userId", userId);
-				fragment.setArguments(bundle);
-				trans.replace(R.id.content_frame, fragment);
-				trans.commit();
-
-			}
-		});
+//		convertView.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				LikeInPaper likes = myList.get(position);
+//				adapter.open();
+//				user = adapter.getUserById(likes.getUserid());
+//				adapter.close();
+//				userId = user.getId();
+//				FragmentTransaction trans = ((MainActivity) context)
+//						.getSupportFragmentManager().beginTransaction();
+//				InformationUser fragment = new InformationUser();
+//				Bundle bundle = new Bundle();
+//				bundle.putInt("userId", userId);
+//				fragment.setArguments(bundle);
+//				trans.replace(R.id.content_frame, fragment);
+//				trans.commit();
+//
+//			}
+//		});
 
 		return convertView;
 	}
