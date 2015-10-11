@@ -64,7 +64,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater
-				.inflate(R.layout.row_child_item, parent, false);
+				.inflate(R.layout.row_paper, parent, false);
 		adapter = new DataBaseAdapter(context);
 
 		TextView txtcmt = (TextView) convertView
@@ -92,21 +92,18 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> {
 		lp.setMargins(5, 5, 5, 5);
 		Users user = adapter.getUserbyid(comment.getUserid());
 		// userId=user.getId();
-		if (user.getImage() == null) {
-			profilepic.setImageResource(R.drawable.no_img_profile);
-			profilepic.setLayoutParams(lp);
 
-		} else {
+		if (user.getImagePath() != null) {
 
-			byte[] byteImageProfile = user.getImage();
+			Bitmap bitmap = BitmapFactory.decodeFile(user.getImagePath());
 
-			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
-					byteImageProfile.length);
+			if (bitmap != null) {
+				profilepic.setImageBitmap(bitmap);
+				profilepic.setLayoutParams(lp);
 
-			profilepic.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
-
-			profilepic.setLayoutParams(lp);
+			}
 		}
+
 		adapter.close();
 
 		report.setOnClickListener(new OnClickListener() {

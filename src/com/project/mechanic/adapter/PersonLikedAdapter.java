@@ -101,27 +101,27 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 
 		}
 
-		convertView.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				LikeInFroum likes = myList.get(position);
-				adapter.open();
-				user = adapter.getUserById(likes.getUserid());
-				adapter.close();
-				userId = user.getId();
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
-				InformationUser fragment = new InformationUser();
-				Bundle bundle = new Bundle();
-				bundle.putInt("userId", userId);
-				fragment.setArguments(bundle);
-				trans.addToBackStack(null);
-				trans.replace(R.id.content_frame, fragment);
-				trans.commit();
-
-			}
-		});
+//		convertView.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+////				LikeInFroum likes = myList.get(position);
+////				adapter.open();
+////				user = adapter.getUserById(likes.getUserid());
+////				adapter.close();
+////				userId = user.getId();
+////				FragmentTransaction trans = ((MainActivity) context)
+////						.getSupportFragmentManager().beginTransaction();
+////				InformationUser fragment = new InformationUser();
+////				Bundle bundle = new Bundle();
+////				bundle.putInt("userId", userId);
+////				fragment.setArguments(bundle);
+////				trans.addToBackStack(null);
+////				trans.replace(R.id.content_frame, fragment);
+////				trans.commit();
+//
+//			}
+//		});
 
 		return convertView;
 	}

@@ -7,14 +7,11 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -39,7 +36,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 	int source;
 	int UserIdObject;
 	Utility util;
-	RelativeLayout delete;
+	RelativeLayout delete, addToFavorite;
 	Button report;
 	DataBaseAdapter adapter;
 	int Item;
@@ -81,6 +78,8 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 		setContentView(R.layout.dialog_long_click);
 		delete = (RelativeLayout) findViewById(R.id.delete_item);
+		addToFavorite = (RelativeLayout) findViewById(R.id.favorite_item);
+
 		reaportLayout = (LinearLayout) findViewById(R.id.report_item_click);
 
 		report = (Button) findViewById(R.id.report_item);
@@ -152,6 +151,32 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 				tashkhis.edit().putString("enter", "Dialog").commit();
 				tashkhis.edit().putString("FromTableName", tableName).commit();
 
+			}
+		});
+		addToFavorite.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				if (source == 3) {
+					adapter.open();
+
+					if (adapter.isUserFavoriteTicket(util.getCurrentUser()
+							.getId(), Item)) {
+						Toast.makeText(context, "این اگهی قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+
+//						adapter.deletebyIdTicket(Item);
+					} else {
+
+						adapter.insertFavoritetoDb(0, util.getCurrentUser()
+								.getId(), Item);
+						Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0).show();
+
+
+					}
+					adapter.close();
+
+				}
 			}
 		});
 

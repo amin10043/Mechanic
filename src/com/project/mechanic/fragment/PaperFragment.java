@@ -10,12 +10,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -62,11 +64,11 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 	ImageView icon, sharebtn;
 	// String currentDate;
 	// PersianDate date;
-	int i = 0, j = 9;
+	// int i = 0, j = 9;
 	List<CommentInPaper> subList;
 	List<CommentInPaper> tempList;
 	View view;
-	PullAndLoadListView lstNews;
+	ListView lstNews;
 	RelativeLayout countLike;
 	int userId;
 
@@ -85,16 +87,12 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 		header = getActivity().getLayoutInflater().inflate(
 				R.layout.header_expandable, null);
 		util = new Utility(getActivity());
-		// date = new PersianDate();
-		// currentDate = date.todayShamsi();
 
 		CurrentUser = util.getCurrentUser();
 
 		btnAddcmt = (LinearLayout) header.findViewById(R.id.addCommentToTopic);
 		Like = (LinearLayout) header.findViewById(R.id.LikeTopicLinear);
-		// lst=(ListView) view.findViewById(R.id.listViewHeder);
-		lstNews = (PullAndLoadListView) view
-				.findViewById(R.id.listViewnewspaper);
+		lstNews = (ListView) view.findViewById(R.id.listViewnewspaper);
 		NumofComment = (TextView) header
 				.findViewById(R.id.numberOfCommentTopic);
 		NumofLike = (TextView) header.findViewById(R.id.txtNumofLike_CmtFroum);
@@ -126,9 +124,6 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 
 		NumofLike.setText(adapter.LikeInPaper_count(paperID).toString());
 
-		// Bundle bundle = new Bundle();
-		// bundle.getString("Id", String.valueOf(id));
-		// id = Integer.valueOf(getArguments().getString("Id"));
 		mylist = adapter.getCommentInPaperbyPaperid(paperID);
 
 		final Paper p = adapter.getPaperItembyid(paperID);
@@ -136,24 +131,24 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 		// lstNews.addHeaderView(header);
 		// lstNews.addHeaderView(header);
 		userId = u.getId();
-		lstNews.setAdapter(PaperListadapter);
-		if (mylist != null && !mylist.isEmpty()) {
-
-			if (mylist.size() < j) {
-				j = mylist.size();
-			}
-			List<CommentInPaper> tmpList = mylist.subList(i, j);
-			subList = new ArrayList<CommentInPaper>();
-			for (CommentInPaper T : tmpList) {
-				if (!subList.contains(T))
-					subList.add(T);
-			}
-		}
-		lstNews.addHeaderView(header);
-		lstNews = (PullAndLoadListView) view
-				.findViewById(R.id.listViewnewspaper);
+		// if (mylist != null && !mylist.isEmpty()) {
+		//
+		// if (mylist.size() < j) {
+		// j = mylist.size();
+		// }
+		// List<CommentInPaper> tmpList = mylist.subList(i, j);
+		// subList = new ArrayList<CommentInPaper>();
+		// for (CommentInPaper T : tmpList) {
+		// if (!subList.contains(T))
+		// subList.add(T);
+		// }
+		// }
 		PaperListadapter = new PaperListAdapter(getActivity(),
-				R.layout.raw_papercmt, subList, PaperFragment.this);
+				R.layout.raw_papercmt, mylist, PaperFragment.this);
+
+		lstNews.addHeaderView(header);
+		lstNews.setAdapter(PaperListadapter);
+
 
 		txtname.setText(u.getName());
 
@@ -161,25 +156,27 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 		txttitleDes.setText(p.getContext());
 		txtdate.setText(util.getPersianDate(p.getDate()));
 
-		if (u.getImage() == null) {
-			icon.setImageResource(R.drawable.no_img_profile);
-		} else {
-			byte[] bytepic = u.getImage();
+		LinearLayout rl = (LinearLayout) header
+				.findViewById(R.id.profileLinearcommenterinContinue);
 
-			Bitmap bmp = BitmapFactory.decodeByteArray(bytepic, 0,
-					bytepic.length);
-			LinearLayout rl = (LinearLayout) header
-					.findViewById(R.id.profileLinearcommenterinContinue);
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+				rl.getLayoutParams());
 
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-					rl.getLayoutParams());
+		lp.width = util.getScreenwidth() / 7;
+		lp.height = util.getScreenwidth() / 7;
+		lp.setMargins(5, 5, 5, 5);
 
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
-			lp.setMargins(5, 5, 5, 5);
-			icon.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
-			icon.setLayoutParams(lp);
+		Bitmap bitmap;
+		String ImagePath = u.getImagePath();
+		if (ImagePath != null) {
+			bitmap = BitmapFactory.decodeFile(ImagePath);
+			if (bitmap != null) {
+				icon.setImageBitmap(bitmap);
+				icon.setLayoutParams(lp);
+
+			}
 		}
+
 		if (util.getCurrentUser() != null) {
 			if (util.getCurrentUser().getId() != paperID) {
 				if (!util.isNetworkConnected()) {
@@ -216,58 +213,16 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 
 			}
 		});
-		// lst.addHeaderView(header);
-		// paperListAdapterHeder = new PaperListAdapterHeder(getActivity(),
-		// R.layout.raw_papercmt, mylist2, PaperFragment.this);
-		// lst.setAdapter(paperListAdapterHeder);
-		// lst.addHeaderView(header);
-		if (mylist != null && !mylist.isEmpty()) {
-			// lstNews.addHeaderView(header);
-			lstNews = (PullAndLoadListView) view
-					.findViewById(R.id.listViewnewspaper);
-			PaperListadapter = new PaperListAdapter(getActivity(),
-					R.layout.raw_papercmt, subList, PaperFragment.this);
 
-			lstNews.setAdapter(PaperListadapter);
-			((PullAndLoadListView) lstNews)
-					.setOnRefreshListener(new OnRefreshListener() {
-
-						public void onRefresh() {
-							// Do work to refresh the list here.
-
-							new PullToRefreshDataTask().execute();
-						}
-					});
-			((PullAndLoadListView) lstNews)
-					.setOnLoadMoreListener(new OnLoadMoreListener() {
-
-						public void onLoadMore() {
-							// Do the work to load more items at the end of list
-							// here
-							if (mylist.size() < j) {
-								j = mylist.size();
-
-								if (mylist.size() < j + 1) {
-									i = j + 1;
-								}
-							}
-							if (mylist.size() < j + 10) {
-								j = mylist.size() - 1;
-							} else {
-								j += 10;
-							}
-							tempList = mylist.subList(i, j);
-							for (CommentInPaper p : tempList) {
-								if (!subList.contains(p))
-									subList.add(p);
-							}
-							// Toast.makeText(getActivity(), String.valueOf(i),
-							// Toast.LENGTH_SHORT).show();
-							// ListAdapter.notifyDataSetChanged();
-							new LoadMoreDataTask().execute();
-						}
-					});
-		}
+//		if (mylist != null && !mylist.isEmpty()) {
+//			// lstNews.addHeaderView(header);
+//			lstNews = (ListView) view.findViewById(R.id.listViewnewspaper);
+//			PaperListadapter = new PaperListAdapter(getActivity(),
+//					R.layout.raw_papercmt, subList, PaperFragment.this);
+//
+//			lstNews.setAdapter(PaperListadapter);
+//
+//		}
 
 		final SharedPreferences realizeIdPaper = getActivity()
 				.getSharedPreferences("Id", 0);
@@ -353,84 +308,114 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 
 			}
 		});
+
+		ImageView report = (ImageView) view.findViewById(R.id.reportImage);
+		report.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				if (CurrentUser == null) {
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", 0)
+							.show();
+				} else {
+
+					DialogLongClick dia = new DialogLongClick(getActivity(), 2,
+							p.getUserId(), p.getId(), PaperFragment.this, p
+									.getContext());
+					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+					lp.copyFrom(dia.getWindow().getAttributes());
+					lp.width = (int) (util.getScreenwidth() / 1.5);
+					lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+					;
+					dia.show();
+
+					dia.getWindow().setAttributes(lp);
+					dia.getWindow().setBackgroundDrawable(
+							new ColorDrawable(
+									android.graphics.Color.TRANSPARENT));
+				}
+			}
+		});
+
 		return view;
 
 	}
 
-	private class LoadMoreDataTask extends AsyncTask<Void, Void, Void> {
+	// private class LoadMoreDataTask extends AsyncTask<Void, Void, Void> {
+	//
+	// @Override
+	// protected Void doInBackground(Void... params) {
+	//
+	// if (isCancelled()) {
+	// return null;
+	// }
+	//
+	// // Simulates a background task
+	// try {
+	// Thread.sleep(5000);
+	// } catch (InterruptedException e) {
+	// }
+	// //
+	// // for (int i = 0; i < mNames.length; i++)
+	// // mListItems.add(mNames[i]);
+	//
+	// return null;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute(Void result) {
+	//
+	// // We need notify the adapter that the data have been changed
+	// ((BaseAdapter) PaperListadapter).notifyDataSetChanged();
+	//
+	// // Call onLoadMoreComplete when the LoadMore task, has finished
+	// ((PullAndLoadListView) lstNews).onLoadMoreComplete();
+	//
+	// super.onPostExecute(result);
+	// }
+	//
+	// @Override
+	// protected void onCancelled() {
+	// // Notify the loading more operation has finished
+	// ((PullAndLoadListView) lstNews).onLoadMoreComplete();
+	// }
+	// }
 
-		@Override
-		protected Void doInBackground(Void... params) {
-
-			if (isCancelled()) {
-				return null;
-			}
-
-			// Simulates a background task
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-			}
-			//
-			// for (int i = 0; i < mNames.length; i++)
-			// mListItems.add(mNames[i]);
-
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-
-			// We need notify the adapter that the data have been changed
-			((BaseAdapter) PaperListadapter).notifyDataSetChanged();
-
-			// Call onLoadMoreComplete when the LoadMore task, has finished
-			((PullAndLoadListView) lstNews).onLoadMoreComplete();
-
-			super.onPostExecute(result);
-		}
-
-		@Override
-		protected void onCancelled() {
-			// Notify the loading more operation has finished
-			((PullAndLoadListView) lstNews).onLoadMoreComplete();
-		}
-	}
-
-	private class PullToRefreshDataTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-
-			if (isCancelled()) {
-				return null;
-			}
-
-			// Simulates a background task
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-			}
-
-			// for (int i = 0; i < mAnimals.length; i++)
-			// mListItems.addFirst(mAnimals[i]);
-
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-
-			// We need notify the adapter that the data have been changed
-			((BaseAdapter) PaperListadapter).notifyDataSetChanged();
-
-			// Call onLoadMoreComplete when the LoadMore task, has finished
-			((PullAndLoadListView) lstNews).onRefreshComplete();
-
-			super.onPostExecute(result);
-		}
-
-	}
+	// private class PullToRefreshDataTask extends AsyncTask<Void, Void, Void> {
+	//
+	// @Override
+	// protected Void doInBackground(Void... params) {
+	//
+	// if (isCancelled()) {
+	// return null;
+	// }
+	//
+	// // Simulates a background task
+	// try {
+	// Thread.sleep(1000);
+	// } catch (InterruptedException e) {
+	// }
+	//
+	// // for (int i = 0; i < mAnimals.length; i++)
+	// // mListItems.addFirst(mAnimals[i]);
+	//
+	// return null;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute(Void result) {
+	//
+	// // We need notify the adapter that the data have been changed
+	// ((BaseAdapter) PaperListadapter).notifyDataSetChanged();
+	//
+	// // Call onLoadMoreComplete when the LoadMore task, has finished
+	// ((PullAndLoadListView) lstNews).onRefreshComplete();
+	//
+	// super.onPostExecute(result);
+	// }
+	//
+	// }
 
 	public void updateView() {
 		adapter.open();

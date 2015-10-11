@@ -12,12 +12,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
@@ -354,6 +356,35 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 						Html.fromHtml(body));
 				startActivity(Intent.createChooser(sharingIntent,
 						"اشتراک از طریق"));
+			}
+		});
+
+		ImageView report = (ImageView) view.findViewById(R.id.reportImage);
+		report.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				if (CurrentUser == null) {
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", 0)
+							.show();
+				} else {
+
+					DialogLongClick dia = new DialogLongClick(getActivity(), 1,
+							topics.getUserId(), topics.getId(),
+							FroumFragment.this, topics.getDescription());
+					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+					lp.copyFrom(dia.getWindow().getAttributes());
+					lp.width = (int) (util.getScreenwidth() / 1.5);
+					lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+					;
+					dia.show();
+
+					dia.getWindow().setAttributes(lp);
+					dia.getWindow().setBackgroundDrawable(
+							new ColorDrawable(
+									android.graphics.Color.TRANSPARENT));
+				}
 			}
 		});
 

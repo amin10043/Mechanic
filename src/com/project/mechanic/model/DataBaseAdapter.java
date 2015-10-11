@@ -3649,5 +3649,18 @@ public class DataBaseAdapter {
 
 		return item;
 	}
+	
+	public boolean isUserFavoriteTicket(int userId, int TicketId) {
+
+		Cursor curs = mDb.rawQuery("SELECT COUNT(*) AS NUM FROM "
+				+ TableFavorite + " WHERE UserId= " + String.valueOf(userId)
+				+ " AND IdTicket=" + String.valueOf(TicketId), null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
 
 }

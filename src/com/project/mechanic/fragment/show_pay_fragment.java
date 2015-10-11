@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.R.array;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,11 +28,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
@@ -101,9 +103,11 @@ public class show_pay_fragment extends Fragment implements AsyncInterface,
 		util = new Utility(getActivity());
 		headerEditParams = new LinearLayout.LayoutParams(
 				Lheader.getLayoutParams());
-		headerEditParams.height = util.getScreenHeight() / 3;
-		headerEditParams.width = util.getScreenHeight() / 3;
-		headerEditParams.gravity = Gravity.CENTER_HORIZONTAL;
+		headerEditParams.height = util.getScreenwidth() / 4;
+		headerEditParams.width = util.getScreenwidth() / 4;
+		headerEditParams.setMargins(5, 5, 5, 5);
+
+		headerEditParams.gravity = Gravity.LEFT;
 		img_pay.setLayoutParams(headerEditParams);
 
 		dbAdapter.open();
@@ -114,19 +118,60 @@ public class show_pay_fragment extends Fragment implements AsyncInterface,
 		com.project.mechanic.entity.Object page;
 		List<com.project.mechanic.entity.Object> objectPage = dbAdapter
 				.getObjectByuserId(CurrentUser.getId());
-		for (int i = 0; i < objectPage.size(); i++) {
-			page = objectPage.get(i);
-			namePage.add(page.getName());
+
+		if (objectPage.size() == 0) {
+			sp_pay.setVisibility(View.GONE);
+			TextView txr = (TextView) view.findViewById(R.id.lrt);
+			txr.setVisibility(View.VISIBLE);
+
+		} else {
+
+			for (int i = 0; i < objectPage.size(); i++) {
+				page = objectPage.get(i);
+				namePage.add(page.getName());
+			}
+			ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+					getActivity(), android.R.layout.simple_spinner_item,
+					namePage);
+
+			dataAdapter
+					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+			sp_pay.setAdapter(dataAdapter);
 		}
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-				getActivity(), android.R.layout.simple_spinner_item, namePage);
-
-		dataAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-		sp_pay.setAdapter(dataAdapter);
-
 		dbAdapter.close();
+
+		RelativeLayout EditPic = (RelativeLayout) view
+				.findViewById(R.id.btnedit);
+
+		LinearLayout.LayoutParams followParams = new LinearLayout.LayoutParams(
+				Lheader.getLayoutParams());
+
+		followParams.width = util.getScreenwidth() / 4;
+		followParams.setMargins(5, 5, 5, 5);
+		followParams.gravity = Gravity.LEFT;
+		EditPic.setLayoutParams(followParams);
+		
+		EditPic.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				final CharSequence[] items = { "گالری تصاویر", "دوربین" };
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						getActivity());
+				builder.setItems(items, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int item) {
+						if (item == 0) {
+							do_gallery_work();
+						} else {
+							do_cam_work();
+						}
+					}
+				});
+				builder.show();
+
+			}
+		});
 
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
