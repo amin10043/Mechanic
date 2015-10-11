@@ -678,7 +678,6 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 					DialogLongClick dia = new DialogLongClick(context, 5, u, i,
 							f, t);
 					dia.show();
-					adapter.close();
 
 				} else {
 
@@ -710,6 +709,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 							new ColorDrawable(
 									android.graphics.Color.TRANSPARENT));
 				}
+				adapter.close();
+
 			}
 
 		});

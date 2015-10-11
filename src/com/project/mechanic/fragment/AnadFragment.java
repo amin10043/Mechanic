@@ -487,11 +487,11 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 										.getSupportFragmentManager()
 										.beginTransaction();
 								IntroductionFragment fragment = new IntroductionFragment();
-								Bundle bundlei = new Bundle();
-								// bundle.putString("Id", String.valueOf(id));
-								bundlei.putString("I",
-										String.valueOf(t.getObjectId()));
-								fragment.setArguments(bundlei);
+								Bundle bundle = new Bundle();
+								 bundle.putString("Id", String.valueOf(t.getObjectId()));
+//								bundlei.putString("I",
+//										String.valueOf(t.getObjectId()));
+								fragment.setArguments(bundle);
 								trans.replace(R.id.content_frame, fragment);
 								trans.addToBackStack(null);
 								trans.commit();

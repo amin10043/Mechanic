@@ -1,5 +1,7 @@
 package com.project.mechanic.PushNotification;
 
+import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.project.mechanic.MainActivity;
@@ -17,8 +20,7 @@ import com.project.mechanic.R;
 public class TypeUserNotification extends Fragment {
 
 	String typeUser;
-	RelativeLayout allUser, allView, allLike;
-	int PageId;
+	int PageId, visibleValue;
 
 	@SuppressLint("ValidFragment")
 	@Override
@@ -27,41 +29,45 @@ public class TypeUserNotification extends Fragment {
 		View rootView = inflater.inflate(
 				R.layout.fragment_type_user_notification, null);
 
-		allUser = (RelativeLayout) rootView.findViewById(R.id.allUser);
-		allView = (RelativeLayout) rootView.findViewById(R.id.viewUsers);
-		allLike = (RelativeLayout) rootView.findViewById(R.id.followUsers);
+		ListView typeItem = (ListView) rootView
+				.findViewById(R.id.list_type_member);
+
+		ArrayList<String> titleList = new ArrayList<String>();
+		ArrayList<Integer> iconList = new ArrayList<Integer>();
+		ArrayList<Integer> numberMember = new ArrayList<Integer>();
+
+		titleList.add("کاربرانی که نرم افزار را نصب  دارند");
+		titleList.add("کاربرانی که صفحه شما را بازدید کرده اند");
+		titleList.add("کاربرانی که صفحه شما را دنبال می کنند");
+
+		iconList.add(R.drawable.numberview);
+		iconList.add(R.drawable.numberview);
+		iconList.add(R.drawable.numberlike);
+
+		numberMember.add(20);
+		numberMember.add(34);
+		numberMember.add(44);
 
 		if (typeUser.equals("Froum") || typeUser.equals("Paper")
 				|| typeUser.equals("Ticket")) {
 
-			allUser.setVisibility(View.VISIBLE);
-			allView.setVisibility(View.INVISIBLE);
-			allLike.setVisibility(View.INVISIBLE);
+			visibleValue = 1;
+
+			TypeUserNotificationAdapter listAdapter = new TypeUserNotificationAdapter(
+					getActivity(), R.layout.row_type_user, titleList, iconList,
+					numberMember, visibleValue);
+			typeItem.setAdapter(listAdapter);
+
 		}
 		if (typeUser.equals("Object") || typeUser.equals("BirthDay")) {
 
-			allUser.setVisibility(View.VISIBLE);
-			allView.setVisibility(View.VISIBLE);
-			allLike.setVisibility(View.VISIBLE);
+			visibleValue = 2;
+			TypeUserNotificationAdapter listAdapter = new TypeUserNotificationAdapter(
+					getActivity(), R.layout.row_type_user, titleList, iconList,
+					numberMember, visibleValue);
+
+			typeItem.setAdapter(listAdapter);
 		}
-
-		allLike.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				SelectUserFragment fr = new SelectUserFragment();
-
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
-
-				trans.replace(R.id.content_frame, fr);
-
-				trans.addToBackStack(null);
-				trans.commit();
-
-			}
-		});
 
 		return rootView;
 	}

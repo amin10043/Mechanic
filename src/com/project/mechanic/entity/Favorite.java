@@ -6,13 +6,23 @@ public class Favorite {
 	int ObjectId;
 	int UserId;
 	int IdTickte;
+	int Type;
 
-	public Favorite(int id, int objectId, int userId, int idTickte) {
+	public Favorite(int id, int objectId, int userId, int idTickte, int Type) {
 		super();
 		Id = id;
 		ObjectId = objectId;
 		UserId = userId;
 		IdTickte = idTickte;
+		this.Type = Type;
+	}
+
+	public int getType() {
+		return Type;
+	}
+
+	public void setType(int type) {
+		Type = type;
 	}
 
 	public int getId() {

@@ -7,10 +7,12 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -72,9 +74,9 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// getWindow().setBackgroundDrawable(
-		// new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setBackgroundDrawable(
+				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 		setContentView(R.layout.dialog_long_click);
 		delete = (RelativeLayout) findViewById(R.id.delete_item);
@@ -87,7 +89,6 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 		SendMessage = (RelativeLayout) findViewById(R.id.send_item);
 
 		if (util.getCurrentUser() == null) {
-			dismiss();
 		} else if (util.getCurrentUser().getId() != UserIdObject)
 			delete.setVisibility(View.GONE);
 
@@ -132,54 +133,153 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 			r1.setText("محتوا نامناسب است");
 			r5.setText("مطلب در دسته بندی نامربوط قرار گرفته است");
 		}
+		if (source == 5 || source == 6 || source == 7) {
+			addToFavorite.setVisibility(View.GONE);
+
+		}
 
 		SendMessage.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				DomainSend fr = new DomainSend(tableName);
+				if (util.getCurrentUser() != null) {
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+					DomainSend fr = new DomainSend(tableName);
 
-				trans.replace(R.id.content_frame, fr);
-				trans.addToBackStack(null);
-				trans.commit();
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
 
-				dismiss();
-				tashkhis.edit().putString("enter", "Dialog").commit();
-				tashkhis.edit().putString("FromTableName", tableName).commit();
+					trans.replace(R.id.content_frame, fr);
+					trans.addToBackStack(null);
+					trans.commit();
+
+					dismiss();
+					tashkhis.edit().putString("enter", "Dialog").commit();
+					tashkhis.edit().putString("FromTableName", tableName)
+							.commit();
+				} else
+					Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 
 			}
 		});
+
 		addToFavorite.setOnClickListener(new View.OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 
-				if (source == 3) {
-					adapter.open();
+				if (util.getCurrentUser() != null) {
 
-					if (adapter.isUserFavoriteTicket(util.getCurrentUser()
-							.getId(), Item)) {
-						Toast.makeText(context, "این اگهی قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+					switch (source) {
 
-//						adapter.deletebyIdTicket(Item);
-					} else {
+					case 1: {
+						adapter.open();
 
-						adapter.insertFavoritetoDb(0, util.getCurrentUser()
-								.getId(), Item);
-						Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0).show();
+						if (adapter.IsUserFavoriteItem(util.getCurrentUser()
+								.getId(), Item, source)) {
+							Toast.makeText(
+									context,
+									" قبلا در لیست علاقه مندی ها ذخیره شده است ",
+									0).show();
+						} else {
+							adapter.insertFavoritetoDb(0, util.getCurrentUser()
+									.getId(), Item, source);
+							Toast.makeText(context,
+									"به لیست علاقه مندی ها اضافه شد ", 0)
+									.show();
+						}
 
+						adapter.close();
+						dismiss();
+
+						break;
+					}
+
+					case 2: {
+						adapter.open();
+
+						if (adapter.IsUserFavoriteItem(util.getCurrentUser()
+								.getId(), Item, source)) {
+							Toast.makeText(
+									context,
+									" قبلا در لیست علاقه مندی ها ذخیره شده است ",
+									0).show();
+						} else {
+							adapter.insertFavoritetoDb(0, util.getCurrentUser()
+									.getId(), Item, source);
+							Toast.makeText(context,
+									"به لیست علاقه مندی ها اضافه شد ", 0)
+									.show();
+						}
+
+						adapter.close();
+						dismiss();
+
+						break;
 
 					}
-					adapter.close();
+					case 3: {
+						adapter.open();
 
-				}
+						if (adapter.isUserFavoriteTicket(util.getCurrentUser()
+								.getId(), Item)) {
+							Toast.makeText(
+									context,
+									"قبلا در لیست علاقه مندی ها ذخیره شده است ",
+									0).show();
+
+							// adapter.deletebyIdTicket(Item);
+						} else {
+
+							adapter.insertFavoritetoDb(0, util.getCurrentUser()
+									.getId(), Item, source);
+							Toast.makeText(context,
+									"به لیست علاقه مندی ها اضافه شد ", 0)
+									.show();
+
+						}
+						adapter.close();
+						dismiss();
+
+						break;
+					}
+
+					case 4: {
+						adapter.open();
+
+						if (adapter.isUserFavoriteTicket(util.getCurrentUser()
+								.getId(), Item)) {
+							Toast.makeText(
+									context,
+									"قبلا در لیست علاقه مندی ها ذخیره شده است ",
+									0).show();
+
+							// adapter.deletebyIdTicket(Item);
+						} else {
+
+							adapter.insertFavoritetoDb(0, util.getCurrentUser()
+									.getId(), Item, source);
+							Toast.makeText(context,
+									"به لیست علاقه مندی ها اضافه شد ", 0)
+									.show();
+
+						}
+						adapter.close();
+						dismiss();
+
+						break;
+					}
+
+					default:
+						break;
+					}
+
+				} else
+					Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
+
 			}
 		});
-
 		delete.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -460,28 +560,32 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 
-				date = new ServerDate(context);
-				date.delegate = DialogLongClick.this;
-				date.execute("");
+				if (util.getCurrentUser() != null) {
 
-				ringProgressDialog = ProgressDialog.show(context, "",
-						"لطفا منتظر بمانید...", true);
+					date = new ServerDate(context);
+					date.delegate = DialogLongClick.this;
+					date.execute("");
 
-				ringProgressDialog.setCancelable(true);
-				new Thread(new Runnable() {
+					ringProgressDialog = ProgressDialog.show(context, "",
+							"لطفا منتظر بمانید...", true);
 
-					@Override
-					public void run() {
+					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
 
-						try {
+						@Override
+						public void run() {
 
-							Thread.sleep(10000);
+							try {
 
-						} catch (Exception e) {
+								Thread.sleep(10000);
 
+							} catch (Exception e) {
+
+							}
 						}
-					}
-				}).start();
+					}).start();
+				} else
+					Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 
 			}
 		});

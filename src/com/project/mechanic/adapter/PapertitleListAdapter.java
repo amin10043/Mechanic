@@ -244,7 +244,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 			public void onClick(View v) {
 
 				if (currentUser == null) {
-					Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
+//					Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 				} else {
 
 					int i = 0;
