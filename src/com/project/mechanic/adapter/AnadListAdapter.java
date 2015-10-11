@@ -3,6 +3,7 @@ package com.project.mechanic.adapter;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Ticket;
+import com.project.mechanic.fragment.AnadFragment;
 import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.DialogManagementTicket;
 import com.project.mechanic.fragment.ShowAdFragment;
@@ -48,10 +50,13 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 	RelativeLayout.LayoutParams params;
 	boolean IsShow;
 	ProgressBar LoadingProgress;
-
+	String DateTime;
+	int Type;
+	DialogManagementTicket dia;
 
 	public AnadListAdapter(Context context, int resource, List<Ticket> objact,
-			int ProvinceId, Fragment fragment, boolean IsShow) {
+			int ProvinceId, Fragment fragment, boolean IsShow, String DateTime,
+			int Type) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -61,6 +66,10 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 		util = new Utility(context);
 		this.fragment = fragment;
 		this.IsShow = IsShow;
+		this.DateTime = DateTime;
+		this.Type = Type;
+
+		// if type==1 >>>> anadFragment
 
 	}
 
@@ -84,8 +93,8 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 
 		LoadingProgress = (ProgressBar) convertView
 				.findViewById(R.id.progressBar1);
-
-		tempItem = list.get(position);
+		if (!list.isEmpty())
+			tempItem = list.get(position);
 		txtdate.setText(util.getPersianDate(tempItem.getDate()));
 		txtName.setText(tempItem.getTitle());
 		if (tempItem.getDesc() != null && !tempItem.getDesc().equals("null"))
@@ -126,20 +135,25 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 		String commitDate = tempItem.getDate();
 		int thisDay = 0;
 		int TicketDay = Integer.valueOf(commitDate.substring(0, 8));
-		if (util.todayDate != null)
-			thisDay = Integer.valueOf(util.todayDate.substring(0, 8));
+		if (DateTime != null && !DateTime.equals(""))
+			thisDay = Integer.valueOf(DateTime.substring(0, 8));
 		LinearLayout TicketBackground = (LinearLayout) convertView
 				.findViewById(R.id.backgroundTicket);
 
-		if (thisDay <= TicketDay + tempItem.getDay()) {			
+		if (thisDay <= TicketDay + tempItem.getDay()) {
 			TicketBackground.setBackgroundColor(Color.WHITE);
 			if (tempItem.getSeenBefore() > 0) {
 				txtName.setTextColor(Color.GRAY);
 				txtDesc.setTextColor(Color.GRAY);
 				txtdate.setTextColor(Color.GRAY);
 			}
+
 		} else {
-			TicketBackground.setBackgroundResource(R.color.lightred);
+			if (Type == 1)
+				TicketBackground.setBackgroundColor(Color.WHITE);
+			else
+				TicketBackground.setBackgroundResource(R.color.lightred);
+
 			if (tempItem.getSeenBefore() > 0) {
 				txtName.setTextColor(Color.WHITE);
 				txtDesc.setTextColor(Color.WHITE);
@@ -147,17 +161,6 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 
 			}
 		}
-
-		// if (bitmapbyte != null) {
-		// Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-		// bitmapbyte.length);
-		// img2.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
-		// img2.setLayoutParams(params);
-		// } else {
-		// img2.setBackgroundResource(R.drawable.no_img_profile);
-		// img2.setLayoutParams(params);
-		//
-		// }
 
 		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
 				"fonts/BROYA.TTF");
@@ -241,6 +244,8 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 						new ColorDrawable(android.graphics.Color.TRANSPARENT));
 			}
 		});
+
+		// dia.dismiss();
 
 		return convertView;
 

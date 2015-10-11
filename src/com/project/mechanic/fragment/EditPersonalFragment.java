@@ -138,6 +138,8 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		Users u = ut.getCurrentUser();
 		gId = u.getId();
 		id = u.getId();
+		final int cityIduser = u.getCityId();
+
 		// byte[] bitmapbyte = u.getImage();
 
 		String ImagePath = u.getImagePath();
@@ -151,26 +153,41 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				if (i == 0) {
 					if (v.equals("1"))
 						checkPhone.setChecked(true);
+					else
+						checkPhone.setChecked(false);
+
 				}
 
 				if (i == 1) {
 					if (v.equals("1"))
 						checkMobile.setChecked(true);
+					else
+						checkMobile.setChecked(false);
+
 				}
 
 				if (i == 2) {
 					if (v.equals("1"))
 						checkEmail.setChecked(true);
+					else
+						checkEmail.setChecked(false);
+
 				}
 
 				if (i == 3) {
 					if (v.equals("1"))
 						checkFax.setChecked(true);
+					else
+						checkFax.setChecked(false);
+
 				}
 
 				if (i == 4) {
 					if (v.equals("1"))
 						checkAddress.setChecked(true);
+					else
+						checkAddress.setChecked(false);
+
 				}
 
 			}
@@ -245,7 +262,6 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 
 				dayId = Integer.valueOf(dayList.get(day));
 
-				Toast.makeText(getActivity(), dayId + "", 0).show();
 			}
 
 			@Override
@@ -346,6 +362,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 				citySpinner.setAdapter(dataAdapter);
+
 			}
 
 			@Override
@@ -364,6 +381,20 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				int m = (int) citySpinner.getSelectedItemId();
 
 				cityId = cityList.get(m).getId();
+
+				if (cityIduser != 0) {
+					for (int i = 0; i < cityList.size(); i++) {
+
+						City c = cityList.get(i);
+
+						if (c.getId() == cityIduser) {
+							citySpinner.setSelection(i);
+							break;
+
+						}
+					}
+
+				}
 			}
 
 			@Override
@@ -398,6 +429,29 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 					}
 				});
 
+		if (cityIduser != 0) {
+			dbAdapter.open();
+
+			City cityUser = dbAdapter.getCityById(cityIduser);
+			Province provinceUser = dbAdapter.getProvinceById(cityUser
+					.getProvinceId());
+			ostanSpinner.setSelection(provinceUser.getId() - 1);
+			cityList = dbAdapter.getCitysByProvinceIdNoSort(provinceUser
+					.getId());
+			for (int i = 0; i < cityList.size(); i++) {
+
+				City c = cityList.get(i);
+
+				if (c.getId() == cityUser.getId()) {
+					citySpinner.setSelection(i);
+					break;
+
+				}
+			}
+
+			dbAdapter.close();
+		}
+
 		lp2 = new LinearLayout.LayoutParams(lin3.getLayoutParams());
 		lp2.height = ut.getScreenwidth() / 4;
 		lp2.width = ut.getScreenwidth() / 4;
@@ -418,22 +472,20 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		txtfax.setText(u.getFaxnumber());
 		txtaddress.setText(u.getAddress());
 
-//		String ostanCity = u.getProvinceCity();
-//		String DateBirthDay = u.getBirthDay();
-//		String[] ff = new String[2];
-//		if (!ostanCity.equals("")) {
-//			ff = ostanCity.split("***");
-//			ostanSpinner.setSelection(Integer.valueOf(ff[0]));
-//			citySpinner.setSelection(Integer.valueOf(ff[1]));
-//
-//		}
-//		if (!DateBirthDay.equals("")) {
-//			String[] m = DateBirthDay.split("***");
-//			yearSpinner.setSelection(Integer.valueOf(m[0]));
-//			monthSpinner.setSelection(Integer.valueOf(m[1]));
-//			yearSpinner.setSelection(Integer.valueOf(m[2]));
-//
-//		}
+		String DateBirthDay = u.getBirthDay();
+		if (DateBirthDay != null) {
+			if (!DateBirthDay.equals("")) {
+				isActiveBirthDay.setChecked(true);
+				String[] m = DateBirthDay.split("/");
+
+				daySpinner.setSelection(Integer.valueOf(m[2]) - 1);
+				monthSpinner.setSelection(Integer.valueOf(m[1]) - 1);
+
+				int year = Integer.valueOf(m[0]) - 1300;
+				yearSpinner.setSelection(year);
+
+			}
+		}
 
 		btnregedit.setOnClickListener(new OnClickListener() {
 
@@ -499,12 +551,11 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 						params.put("Id", String.valueOf(id));
 						params.put("ShowInfoItem", infoItem);
 						if (flag == true) {
-							birthday = yearId + "***" + monthId + "***" + dayId;
+							birthday = yearId + "/" + monthId + "/" + dayId;
 							params.put("BirthDay", birthday);
 						}
 
-						ProvinceCity = ostanId + "***" + cityId;
-						params.put("ProvinceCity", ProvinceCity);
+						params.put("CityId", String.valueOf(cityId));
 
 						saving.execute(params);
 					}
@@ -823,8 +874,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				dbAdapter.open();
 				dbAdapter.UpdateAllUserToDbNoPic(txtname.getText().toString(),
 						ut.getCurrentUser().getId(), Email, null, Phone,
-						Cellphone, Fax, Address, infoItem, birthday,
-						ProvinceCity);
+						Cellphone, Fax, Address, infoItem, birthday, cityId);
 
 				dbAdapter.close();
 			}

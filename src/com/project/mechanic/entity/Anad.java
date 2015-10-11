@@ -10,7 +10,7 @@ public class Anad {
 	int ProvinceId;
 	int Seen;
 	int Submit;
-	String ImagePath;
+	String ImageServerDate;
 
 	public int getId() {
 		return Id;
@@ -77,7 +77,7 @@ public class Anad {
 	}
 
 	public Anad(int id, int Objectid, byte[] imge, String date, int typeid,
-			int provinceid, int seen, int submit, String ImagePath) {
+			int provinceid, int seen, int submit, String ImageServerDate) {
 
 		super();
 		Id = id;
@@ -88,15 +88,15 @@ public class Anad {
 		ProvinceId = provinceid;
 		Seen = seen;
 		Submit = submit;
-		this.ImagePath = ImagePath;
+		this.ImageServerDate = ImageServerDate;
 	}
 
-	public String getImagePath() {
-		return ImagePath;
+	public String getImageServerDate() {
+		return ImageServerDate;
 	}
 
-	public void setImagePath(String imagePath) {
-		ImagePath = imagePath;
+	public void setImageServerDate(String imageServerDate) {
+		ImageServerDate = imageServerDate;
 	}
 
 }

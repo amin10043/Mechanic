@@ -6,6 +6,7 @@ import java.util.Map;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,8 +28,7 @@ import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.Utility;
 
-public class DialogManagementPages extends Dialog implements AsyncInterface,
-		GetAsyncInterface {
+public class DialogManagementPages extends Dialog implements GetAsyncInterface {
 
 	Context context;
 	List<Object> listPage;
@@ -38,7 +38,7 @@ public class DialogManagementPages extends Dialog implements AsyncInterface,
 
 	ServerDate date;
 
-	String todayDate;
+	String time;
 	int controller = 0;
 
 	UpdatingImage ImageUpdating;
@@ -61,11 +61,15 @@ public class DialogManagementPages extends Dialog implements AsyncInterface,
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-//		getWindow().setBackgroundDrawable(
-//				new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		// getWindow().setBackgroundDrawable(
+		// new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 		setContentView(R.layout.dialog_managment_pages);
 
+		final SharedPreferences currentTime = context.getSharedPreferences(
+				"time", 0);
+
+		time = currentTime.getString("time", "-1");
 		lv = (ListView) findViewById(R.id.listPageUser);
 		namePage = (TextView) findViewById(R.id.namepageList);
 		RelativeLayout noItem = (RelativeLayout) findViewById(R.id.noPage);
@@ -75,26 +79,13 @@ public class DialogManagementPages extends Dialog implements AsyncInterface,
 		} else {
 
 			listAdapter = new ObjectListAdapter(context, R.layout.row_object,
-					listPage, fragment, false);
+					listPage, fragment, false, time, 0);
 			lv.setAdapter(listAdapter);
 		}
 
 		Utility util = new Utility(context);
 		Users currentUser = util.getCurrentUser();
 		namePage.setText(currentUser.getName());
-
-		if (context != null) {
-			date = new ServerDate(context);
-			date.delegate = DialogManagementPages.this;
-			date.execute("");
-		}
-	}
-
-	@Override
-	public void processFinish(String output) {
-
-		todayDate = output;
-
 		getImageProfile(listPage, controller);
 
 	}
@@ -130,7 +121,7 @@ public class DialogManagementPages extends Dialog implements AsyncInterface,
 		} else {
 
 			listAdapter = new ObjectListAdapter(context, R.layout.row_object,
-					listPage, fragment, false);
+					listPage, fragment, false, time, 0);
 			lv.setAdapter(listAdapter);
 
 			listAdapter.notifyDataSetChanged();

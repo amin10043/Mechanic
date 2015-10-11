@@ -7,13 +7,24 @@ public class LikeInComment {
 	int UserId;
 	int IsLike;
 	String Date;
-	public LikeInComment(int id, int commentId, int userId, int isLike , String Date) {
+	String ModifyDate;
+
+	public LikeInComment(int id, int commentId, int userId, int isLike , String Date , String ModifyDate) {
 		super();
 		Id = id;
 		CommentId = commentId;
 		UserId = userId;
 		IsLike = isLike;
 		this.Date = Date;
+		this.ModifyDate = ModifyDate;
+	}
+
+	public String getModifyDate() {
+		return ModifyDate;
+	}
+
+	public void setModifyDate(String modifyDate) {
+		ModifyDate = modifyDate;
 	}
 
 	public String getDate() {

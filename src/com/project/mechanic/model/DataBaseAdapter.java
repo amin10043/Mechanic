@@ -83,11 +83,14 @@ public class DataBaseAdapter {
 	// private String TableObjectBrandType = "ObjectBrandType";
 	private String TableLikeInCommentObject = "LikeInCommentObject";
 	private String TableSubAdmin = "SubAdmin";
+	private String TablePost = "Post";
+	private String TableLikeInPost = "LikeInPost";
+	private String TableCommentInPost = "CommentInPost";
 
 	// private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] Anad = { "Id", "Image", "ObjectId", "Date", "TypeId",
-			"ProvinceId", "Seen", "Submit", "ImagePath" };
+			"ProvinceId", "Seen", "Submit", "ImageServerDate" };
 	private String[] CityColumn = { "ID", "Name", "ProvinceId", "Count" };
 
 	// private String[] Comment = { "ID", "UserId", "paperId", "Description" };
@@ -110,7 +113,7 @@ public class DataBaseAdapter {
 	private String[] LikeInFroum = { "Id", "UserId", "FroumId", "Date",
 			"CommentId", "Seen" };
 	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike",
-			"Date" };
+			"Date", "ModifyDate" };
 	private String[] LikeInPaper = { "Id", "UserId", "PaperId", "Date",
 			"CommentId", "Seen" };
 	// private String[] List = { "ID", "Name", "ParentId" };
@@ -163,7 +166,7 @@ public class DataBaseAdapter {
 			"Phonenumber", "Mobailenumber", "Faxnumber", "Address", "Image",
 			"ServiceId", "ServerDate", "Date", "Submit", "Admin",
 			"ImageServerDate", "ImagePath", "ShowInfoItem", "BirthDay",
-			"ProvinceCity" };
+			"CityId" };
 
 	// private String[] WorkmanType = { "ID", "Name" };
 	private String[] NewsPaper = { "ID", "Name", "TypeId", "Url", "ServerDate",
@@ -175,6 +178,15 @@ public class DataBaseAdapter {
 
 	// private String[] Visit = { "UserId", "ObjectId", "TypeId" };
 	private String[] SubAdmin = { "Id", "ObjectId", "UserId", "AdminID", "Date" };
+
+	private String[] post = { "Id", "Desc", "ImagePath", "Date", "UserId",
+			"ModifyDate" };
+
+	private String[] likeInPost = { "Id", "PostId", "UserId", "IsLike", "Date",
+			"ModifyDate" };
+
+	private String[] commentInPost = { "Id", "Desc", "PostId", "UserId",
+			"Date", "CommentId", "Seen" };
 
 	private final Context mContext;
 	private SQLiteDatabase mDb;
@@ -217,7 +229,7 @@ public class DataBaseAdapter {
 	public void inserUserToDb(int id, String name, String email,
 			String password, String phonenumber, String mobailenumber,
 			String faxnumber, String address, byte[] image, int serviceid,
-			String date) {
+			String date, String BirthDay, int CityId) {
 
 		ContentValues uc = new ContentValues();
 
@@ -232,6 +244,9 @@ public class DataBaseAdapter {
 		uc.put("Address", address);
 		uc.put("Image", image);
 		uc.put("ServiceId", serviceid);
+
+		uc.put("BirthDay", BirthDay);
+		uc.put("CityId", CityId);
 
 		uc.put("Date", date);
 		mDb.insert(TableUsers, null, uc);
@@ -264,7 +279,8 @@ public class DataBaseAdapter {
 
 	public void inserUsernonpicToDb(int Id, String name, String email,
 			String password, String phonenumber, String mobailenumber,
-			String faxnumber, String address, int serviceid, String date) {
+			String faxnumber, String address, int serviceid, String date,
+			String BirthDay, int CityId) {
 
 		ContentValues uc = new ContentValues();
 		uc.put("Id", Id);
@@ -278,7 +294,8 @@ public class DataBaseAdapter {
 		uc.put("Address", address);
 
 		uc.put("ServiceId", serviceid);
-
+		uc.put("BirthDay", BirthDay);
+		uc.put("CityId", CityId);
 		uc.put("Date", date);
 		mDb.insert(TableUsers, null, uc);
 	}
@@ -362,7 +379,7 @@ public class DataBaseAdapter {
 	public void UpdateAllUserToDbNoPic(String name, int id, String email,
 			String password, String phonenumber, String mobailenumber,
 			String faxnumber, String address, String CheckInformation,
-			String Birthday, String ProvinceCity) {
+			String Birthday, int CityId) {
 
 		ContentValues uc = new ContentValues();
 		uc.put("Name", name);
@@ -374,7 +391,7 @@ public class DataBaseAdapter {
 		uc.put("Address", address);
 		uc.put("ShowInfoItem", CheckInformation);
 		uc.put("BirthDay", Birthday);
-		uc.put("ProvinceCity", ProvinceCity);
+		uc.put("CityId", CityId);
 
 		mDb.update(TableUsers, uc, "Id=" + id, null);
 	}
@@ -390,7 +407,7 @@ public class DataBaseAdapter {
 	public void insertLikeInObjectToDb(int id, int UserId, int PaperId,
 			String Date, int CommentId) {
 
-		// if CommentId==0 >>>>>> like page sabt shode
+		// if CommentId==0 >>>>>> follow page sabt shode
 		// if CommentId==1 >>>>>> like post sabt shode
 
 		ContentValues uc = new ContentValues();
@@ -399,7 +416,7 @@ public class DataBaseAdapter {
 		uc.put("PaperId", PaperId);
 		uc.put("CommentId", CommentId);
 		uc.put("Date", Date);
-		uc.put("Seen", 1);
+		uc.put("Seen", 0);
 		uc.put("Id", id);
 
 		mDb.insert(TableLikeInObject, null, uc);
@@ -443,7 +460,7 @@ public class DataBaseAdapter {
 			uc.put("UserId", UserId);
 			uc.put("PaperId", PaperId);
 			uc.put("Date", Date);
-			uc.put("Seen", 1);
+			uc.put("Seen", 0);
 
 			mDb.insert(TableLikeInPaper, null, uc);
 			;
@@ -499,7 +516,7 @@ public class DataBaseAdapter {
 		cv.put("UserId", userid);
 		cv.put("PaperID", Paperid);
 		cv.put("Date", datetime);
-		cv.put("Seen", 1);
+		cv.put("Seen", 0);
 
 		mDb.insert(TableCommentInPaper, null, cv);
 	}
@@ -514,7 +531,7 @@ public class DataBaseAdapter {
 		cv.put("ObjectID", Objectid);
 		cv.put("Date", datetime);
 		cv.put("CommentId", commentid);
-		cv.put("Seen", 1);
+		cv.put("Seen", 0);
 		cv.put("NumofLike", 0);
 		cv.put("NumofDisLike", 0);
 		cv.put("Id", id);
@@ -1044,15 +1061,16 @@ public class DataBaseAdapter {
 		ArrayList<CommentNotiItem> result = new ArrayList<CommentNotiItem>();
 		Cursor mCur = mDb
 				.rawQuery(
-						"select f.Id,u.Name || '  بر روی ' || f.Title || '  در تاریخ ' || l.[Date]  || ' کامنت گذاشت ',l.Desk from CommentInFroum l inner join Froum f on l.FroumId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+						"select l.Id as commentId , f.Id,u.Name, f.Title, l.Date,l.Desk from CommentInFroum l inner join Froum f on l.FroumId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
 								+ userId
 								+ " AND f.UserId != l.UserId AND l.seen=0",
 						null);
 
 		CommentNotiItem noti;
 		while (mCur.moveToNext()) {
-			noti = new CommentNotiItem(mCur.getInt(0), mCur.getString(1),
-					mCur.getString(2), "");
+			noti = new CommentNotiItem(mCur.getInt(0), mCur.getInt(1),
+					mCur.getString(2), mCur.getString(3), mCur.getString(4),
+					mCur.getString(5));
 			result.add(noti);
 		}
 
@@ -1065,15 +1083,16 @@ public class DataBaseAdapter {
 		ArrayList<CommentNotiItem> result = new ArrayList<CommentNotiItem>();
 		Cursor mCur = mDb
 				.rawQuery(
-						"select f.Id,u.Name || '  بر روی ' || f.Name || '  در تاریخ ' || l.[Date]  || ' کامنت گذاشت ',l.Desk from CommentInObject l inner join Object f on l.ObjectId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+						"select l.Id as commentId , f.Id,u.Name , f.Name , l.Date , l.Desk from CommentInObject l inner join Object f on l.ObjectId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
 								+ userId
 								+ " AND f.UserId != l.UserId AND l.seen=0",
 						null);
 
 		CommentNotiItem noti;
 		while (mCur.moveToNext()) {
-			noti = new CommentNotiItem(mCur.getInt(0), mCur.getString(1),
-					mCur.getString(2), "");
+			noti = new CommentNotiItem(mCur.getInt(0), mCur.getInt(1),
+					mCur.getString(2), mCur.getString(3), mCur.getString(4),
+					mCur.getString(5));
 			result.add(noti);
 		}
 
@@ -1087,15 +1106,16 @@ public class DataBaseAdapter {
 		ArrayList<CommentNotiItem> result = new ArrayList<CommentNotiItem>();
 		Cursor mCur = mDb
 				.rawQuery(
-						"select f.Id,u.Name || '  بر روی ' || f.Title || '  در تاریخ ' || l.[Date]  || ' کامنت گذاشت:  ',l.Desk from CmtInPaper l inner join Paper f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+						"select l.Id as commentId ,  f.Id,u.Name , f.Title , l.Date ,l.Desk from CmtInPaper l inner join Paper f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
 								+ userId
 								+ " AND f.UserId != l.UserId AND l.seen=0",
 						null);
 
 		CommentNotiItem noti;
 		while (mCur.moveToNext()) {
-			noti = new CommentNotiItem(mCur.getInt(0), mCur.getString(1),
-					mCur.getString(2), "");
+			noti = new CommentNotiItem(mCur.getInt(0), mCur.getInt(1),
+					mCur.getString(2), mCur.getString(3), mCur.getString(4),
+					mCur.getString(5));
 			result.add(noti);
 		}
 		return result;
@@ -1109,16 +1129,18 @@ public class DataBaseAdapter {
 		ArrayList<LikeNotiItem> result = new ArrayList<LikeNotiItem>();
 		Cursor mCur = mDb
 				.rawQuery(
-						"select f.Id,u.Name + '  پست ' || f.Name || ' را در تاریخ ' || l.[Date]  || ' پسندید ' from LikeInObject l inner join Object f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+						"select l.Id as likeId,f.Id,u.Name , f.Name , l.Date from LikeInObject l inner join Object f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
 								+ userId
 								+ " AND f.UserId != l.UserId AND l.seen=0",
 						null);
 
 		LikeNotiItem noti;
 		while (mCur.moveToNext()) {
-			noti = new LikeNotiItem(mCur.getInt(0), mCur.getString(1), "");
+			noti = new LikeNotiItem(mCur.getInt(0), mCur.getInt(1),
+					mCur.getString(2), mCur.getString(3), mCur.getString(4));
 			result.add(noti);
 		}
+
 		return result;
 	}
 
@@ -1128,14 +1150,15 @@ public class DataBaseAdapter {
 		ArrayList<LikeNotiItem> result = new ArrayList<LikeNotiItem>();
 		Cursor mCur = mDb
 				.rawQuery(
-						"select f.Id,u.Name || '  پست ' || f.Title || ' را در تاریخ ' || l.[Date]  || ' پسندید ' from LikeInFroum l inner join Froum f on l.FroumId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+						"select l.Id as likeId,  f.Id,u.Name , f.Title , l.Date  from LikeInFroum l inner join Froum f on l.FroumId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
 								+ userId
-								+ " AND f.UserId != l.UserId AND l.seen=0",
+								+ " AND f.UserId != l.UserId AND l.Seen=0",
 						null);
 
 		LikeNotiItem noti;
 		while (mCur.moveToNext()) {
-			noti = new LikeNotiItem(mCur.getInt(0), mCur.getString(1), "");
+			noti = new LikeNotiItem(mCur.getInt(0), mCur.getInt(1),
+					mCur.getString(2), mCur.getString(3), mCur.getString(4));
 			result.add(noti);
 		}
 
@@ -1147,14 +1170,14 @@ public class DataBaseAdapter {
 		ArrayList<LikeNotiItem> result = new ArrayList<LikeNotiItem>();
 		Cursor mCur = mDb
 				.rawQuery(
-						"select f.Id,u.Name || '  پست ' || f.Title || ' را در تاریخ ' || l.[Date]  || ' پسندید ' from LikeInPaper l inner join Paper f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
+						"select l.Id as likeId,f.Id,u.Name , f.Title , l.Date   from LikeInPaper l inner join Paper f on l.PaperId=f.Id inner join Users u on u.Id = l.UserId where f.UserId ="
 								+ userId
 								+ " AND f.UserId != l.UserId AND l.seen=0",
 						null);
-
 		LikeNotiItem noti;
 		while (mCur.moveToNext()) {
-			noti = new LikeNotiItem(mCur.getInt(0), mCur.getString(1), "");
+			noti = new LikeNotiItem(mCur.getInt(0), mCur.getInt(1),
+					mCur.getString(2), mCur.getString(3), mCur.getString(4));
 			result.add(noti);
 		}
 
@@ -1187,8 +1210,7 @@ public class DataBaseAdapter {
 				cursor.getBlob(8), cursor.getInt(9), cursor.getString(10),
 				cursor.getString(11), cursor.getInt(12), cursor.getInt(13),
 				cursor.getString(14), cursor.getString(15),
-				cursor.getString(16), cursor.getString(17),
-				cursor.getString(18));
+				cursor.getString(16), cursor.getString(17), cursor.getInt(18));
 
 		return Users;
 
@@ -1766,6 +1788,38 @@ public class DataBaseAdapter {
 
 	}
 
+	public CommentInObject getCommentInObjectbyID(int ID) {
+
+		CommentInObject item = null;
+
+		Cursor mCur = mDb.query(TableCommentInObject, CommentInObject, "Id=?",
+				new String[] { String.valueOf(ID) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInObject(mCur);
+
+		}
+
+		return item;
+
+	}
+
+	public CommentInPaper getCommentInPaperbyID(int ID) {
+
+		CommentInPaper item = null;
+
+		Cursor mCur = mDb.query(TableCommentInPaper, CommentInPaper, "Id=?",
+				new String[] { String.valueOf(ID) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInPaper(mCur);
+
+		}
+
+		return item;
+
+	}
+
 	public void insertCmtLikebyid(int id, String numofLike, int UserId) {
 		if (!isUserLikedComment(UserId, id, 1)) {
 			ContentValues uc = new ContentValues();
@@ -2047,7 +2101,7 @@ public class DataBaseAdapter {
 					cursor.getString(11), cursor.getInt(12), cursor.getInt(13),
 					cursor.getString(14), cursor.getString(15),
 					cursor.getString(16), cursor.getString(17),
-					cursor.getString(18));
+					cursor.getInt(18));
 			;
 			result.add(tempusers);
 
@@ -2123,7 +2177,7 @@ public class DataBaseAdapter {
 					cursor.getString(11), cursor.getInt(12), cursor.getInt(13),
 					cursor.getString(14), cursor.getString(15),
 					cursor.getString(16), cursor.getString(17),
-					cursor.getString(18));
+					cursor.getInt(18));
 
 			result.add(tempusers);
 		}
@@ -2386,7 +2440,7 @@ public class DataBaseAdapter {
 
 	public Province getProvinceById(int id) {
 		Province item = null;
-		Cursor mCur = mDb.query(TableCity, Province, " Id=?",
+		Cursor mCur = mDb.query(TableProvince, Province, " Id=?",
 				new String[] { String.valueOf(id) }, null, null, null);
 
 		if (mCur.moveToNext()) {
@@ -2608,9 +2662,8 @@ public class DataBaseAdapter {
 	public void updatelikefroumseentodb(int seen, int userId) {
 
 		ContentValues uc = new ContentValues();
-
 		uc.put("Seen", seen);
-		mDb.update(TableLikeInFroum, uc, "UserId=" + userId, null);
+		mDb.update(TableLikeInFroum, uc, "Id=" + userId, null);
 
 	}
 
@@ -2619,7 +2672,7 @@ public class DataBaseAdapter {
 		ContentValues uc = new ContentValues();
 
 		uc.put("Seen", seen);
-		mDb.update(TableLikeInPaper, uc, "UserId=" + userId, null);
+		mDb.update(TableLikeInPaper, uc, "Id=" + userId, null);
 
 	}
 
@@ -2628,7 +2681,7 @@ public class DataBaseAdapter {
 		ContentValues uc = new ContentValues();
 
 		uc.put("Seen", seen);
-		mDb.update(TableCommentInObject, uc, "userId=" + userId, null);
+		mDb.update(TableCommentInObject, uc, "Id=" + userId, null);
 
 	}
 
@@ -2936,6 +2989,26 @@ public class DataBaseAdapter {
 				new String[] { String.valueOf(id) }, null, null, null);
 		if (cur.moveToNext())
 			lk = CursorToLikeInFroum(cur);
+
+		return lk;
+	}
+
+	public LikeInObject getLikeInObjectById(int id) {
+		LikeInObject lk = null;
+		Cursor cur = mDb.query(TableLikeInObject, LikeInObject, "Id=?",
+				new String[] { String.valueOf(id) }, null, null, null);
+		if (cur.moveToNext())
+			lk = CursorToLikeInObject(cur);
+
+		return lk;
+	}
+
+	public LikeInPaper getLikeInPaperById(int id) {
+		LikeInPaper lk = null;
+		Cursor cur = mDb.query(TableLikeInPaper, LikeInPaper, "Id=?",
+				new String[] { String.valueOf(id) }, null, null, null);
+		if (cur.moveToNext())
+			lk = CursorToLikeInPaper(cur);
 
 		return lk;
 	}
@@ -3561,6 +3634,20 @@ public class DataBaseAdapter {
 
 		return result;
 
+	}
+
+	public Froum getFroumByUserId(int userId) {
+
+		Froum item = null;
+		Cursor mCur = mDb.query(TableFroum, Froum, " UserId=?",
+				new String[] { String.valueOf(userId) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToFroum(mCur);
+
+		}
+
+		return item;
 	}
 
 }

@@ -1,9 +1,11 @@
 package com.project.mechanic.service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.ksoap2.HeaderProperty;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
@@ -97,7 +99,10 @@ public class Saving extends AsyncTask<Map<String, String>, Integer, String> {
 			httpTransport
 					.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 			// Object response = null;
-			httpTransport.call(SOAP_ACTION, envelope);
+			ArrayList<HeaderProperty> headerPropertyArrayList = new ArrayList<HeaderProperty>();
+			headerPropertyArrayList.add(new HeaderProperty("Connection",
+					"close"));
+			httpTransport.call(SOAP_ACTION, envelope, headerPropertyArrayList);
 			Object response = envelope.getResponse();
 			return response.toString();
 		} catch (Exception e) {

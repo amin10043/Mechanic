@@ -1,49 +1,70 @@
 package com.project.mechanic.row_items;
 
 public class CommentNotiItem {
-	int id;
-	String title;
-	String Desc;
-	String lastSeen;
-
 	public int getId() {
-		return id;
+		return Id;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		Id = id;
 	}
 
 	public String getTitle() {
-		return title;
+		return Title;
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		Title = title;
 	}
 
-	public String getDesc() {
-		return Desc;
+	int Id;
+	String Title;
+	String Name;
+	String Desk;
+	String Date;
+	int CommentId;
+
+	public String getName() {
+		return Name;
 	}
 
-	public void setDesc(String desc) {
-		Desc = desc;
+	public void setName(String name) {
+		Name = name;
 	}
 
-	public String getLastSeen() {
-		return lastSeen;
+	public String getDesk() {
+		return Desk;
 	}
 
-	public void setLastSeen(String lastSeen) {
-		this.lastSeen = lastSeen;
+	public void setDesk(String desk) {
+		Desk = desk;
 	}
 
-	public CommentNotiItem(int id, String title, String desc, String lastSeen) {
+	public String getDate() {
+		return Date;
+	}
+
+	public void setDate(String date) {
+		Date = date;
+	}
+
+	public CommentNotiItem(int commentId, int id, String name, String title,
+			String Date, String desc) {
 		super();
-		this.id = id;
-		this.title = title;
-		Desc = desc;
-		this.lastSeen = lastSeen;
+		this.Title = title;
+		this.Name = name;
+		this.Desk = desc;
+		this.Date = Date;
+		this.CommentId = commentId;
+
+	}
+
+	public int getCommentId() {
+		return CommentId;
+	}
+
+	public void setCommentId(int commentId) {
+		CommentId = commentId;
 	}
 
 }

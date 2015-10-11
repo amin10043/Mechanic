@@ -344,7 +344,7 @@
 
             <RelativeLayout
                 android:id="@+id/activeBirthday"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
                 <TextView
@@ -437,11 +437,12 @@
             android:layout_marginRight="@dimen/txtsize10"
             android:layout_marginBottom="5dp"
             android:gravity="center"
+            android:weightSum="2"
             android:orientation="horizontal" >
 
             <Button
                 android:id="@+id/btnbackdisplay"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginRight="@dimen/txtsize5"
                 android:layout_weight="1"
@@ -451,7 +452,7 @@
 
             <Button
                 android:id="@+id/btnregedit"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"

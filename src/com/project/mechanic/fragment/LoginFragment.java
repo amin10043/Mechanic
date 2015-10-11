@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -118,7 +120,12 @@ public class LoginFragment extends Fragment implements CommInterface,
 
 					ringProgressDialog.setCancelable(true);
 				}
+
+				InputMethodManager imm = (InputMethodManager) getActivity()
+						.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 			}
+
 		});
 
 		btnreg.setOnClickListener(new View.OnClickListener() {
@@ -255,6 +262,8 @@ public class LoginFragment extends Fragment implements CommInterface,
 				.beginTransaction();
 		trans.replace(R.id.content_frame, new MainFragment());
 		trans.commit();
+
+		util.setNoti(getActivity(), util.getCurrentUser().getId());
 
 	}
 

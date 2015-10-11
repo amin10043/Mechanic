@@ -395,11 +395,11 @@ public class Utility implements AsyncInterface {
 		return str.toByteArray();
 	}
 
-	public void Updating() {
+	public void Updating(ServerDate task) {
 
-		date = new ServerDate(context);
-		date.delegate = this;
-		date.execute("");
+		// date = new ServerDate(context);
+		task.delegate = this;
+		task.execute("");
 
 	}
 
@@ -423,8 +423,14 @@ public class Utility implements AsyncInterface {
 				&& !(output.contains("Exception") || output.contains("anyType")
 						|| output.contains("java") || output
 							.contains("SoapFault"))) {
-			if (output.length() == 18)
+			if (output.length() == 18) {
 				todayDate = output;
+
+				final SharedPreferences currentTime = context
+						.getSharedPreferences("time", 0);
+				currentTime.edit().putString("time", todayDate).commit();
+
+			}
 			switch (state) {
 
 			case 0: // return date
@@ -736,11 +742,6 @@ public class Utility implements AsyncInterface {
 				e.printStackTrace();
 			}
 
-			Toast.makeText(
-					context,
-					"عکس شماره " + String.valueOf(ImageId)
-							+ "با موفقیت ثبت شد  ", 0).show();
-
 			if (TableName.equals("Anad")) {
 
 				adapter.open();
@@ -774,6 +775,8 @@ public class Utility implements AsyncInterface {
 				adapter.close();
 
 			}
+			Toast.makeText(context, nameFile + " " + ImageId + "ذخیره شد", 0)
+					.show();
 			return ImageId;
 
 		} else
@@ -835,5 +838,23 @@ public class Utility implements AsyncInterface {
 		boolean retval = Arrays.equals(ImageByte, zeroByte);
 		return retval;
 
+	}
+
+	public String YearMonthDay(String timeStamp) {
+		String ret = "";
+		String test = timeStamp;
+		if (timeStamp != null && !"".equals(timeStamp)) {
+			String y = test.substring(0, 4);
+			String m = test.substring(4, 6);
+			String d = test.substring(6, 8);
+
+			try {
+				ret = pDate.Shamsi(Integer.valueOf(y), Integer.valueOf(m),
+						Integer.valueOf(d));
+			} catch (Exception ex) {
+				ret = "";
+			}
+		}
+		return ret;
 	}
 }

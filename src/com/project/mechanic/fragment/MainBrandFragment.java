@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,14 +30,17 @@ import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingImage;
+import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class MainBrandFragment extends Fragment implements AsyncInterface,
-		GetAsyncInterface {
+		GetAsyncInterface, CommInterface {
 	DataBaseAdapter adapter;
 	int parentId;
 	Users CurrentUser;
@@ -58,6 +62,9 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 	UpdatingImage ImageUpdating;
 
 	Map<String, String> maps;
+	ServerDate date;
+	String serverDate;
+	int code = 100;
 
 	public MainBrandFragment() {
 		super();
@@ -95,13 +102,11 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 
 		obj = adapter.getObjectbyid(mylist.get(userItemId).getId());
 
-		ImageUpdating = new UpdatingImage(getActivity());
-		ImageUpdating.delegate = MainBrandFragment.this;
-		maps = new LinkedHashMap<String, String>();
-		maps.put("tableName", "Object2");
-		maps.put("Id", String.valueOf(obj.getId()));
-		maps.put("fromDate", obj.getImage2ServerDate());
-		ImageUpdating.execute(maps);
+		if (getActivity() != null) {
+			date = new ServerDate(getActivity());
+			date.delegate = MainBrandFragment.this;
+			date.execute("");
+		}
 
 		// end code for get image from server
 		setting = adapter.getSettings();
@@ -110,7 +115,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 
 		lstObject = (ListView) view.findViewById(R.id.listvCmt_Introduction);
 		ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object,
-				mylist, MainBrandFragment.this, true);
+				mylist, MainBrandFragment.this, true, null, 1);
 
 		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
 				R.layout.load_more_footer, null);
@@ -237,7 +242,8 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 		adapter.open();
 		ArrayList<Object> mylist = adapter.getObjectbyParentId(parentId);
 		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(),
-				R.layout.row_object, mylist, MainBrandFragment.this, true);
+				R.layout.row_object, mylist, MainBrandFragment.this, true,
+				null, 1);
 		ListAdapter.notifyDataSetChanged();
 
 		lstObject.setAdapter(ListAdapter);
@@ -253,7 +259,17 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 	public void processFinish(String output) {
 
 		LoadMoreFooter.setVisibility(View.INVISIBLE);
-		updating.cancel(true);
+
+		if (output.length() == 18 && code == 100) {
+			serverDate = output;
+			ImageUpdating = new UpdatingImage(getActivity());
+			ImageUpdating.delegate = MainBrandFragment.this;
+			maps = new LinkedHashMap<String, String>();
+			maps.put("tableName", "Object2");
+			maps.put("Id", String.valueOf(obj.getId()));
+			maps.put("fromDate", obj.getImage2ServerDate());
+			ImageUpdating.execute(maps);
+		}
 
 		if (output.contains("anyType")) {
 
@@ -275,7 +291,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 		if (output != null
 				&& !(output.contains("Exception") || output.contains("java")
 						|| output.contains("SoapFault") || output
-							.contains("anyType"))) {
+							.contains("anyType")) && code == -1) {
 
 			util.parseQuery(output);
 			adapter.open();
@@ -287,7 +303,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 				if (mylist.size() > 0) {
 					ListAdapter = new ObjectListAdapter(getActivity(),
 							R.layout.row_object, mylist,
-							MainBrandFragment.this, true);
+							MainBrandFragment.this, true, null, 1);
 					lstObject.setAdapter(ListAdapter);
 				}
 			}
@@ -301,7 +317,28 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 
 			util.CreateFile(output, obj.getId(), "Mechanical", "Profile",
 					"profile", "Object");
+
+			ServiceComm getDateService = new ServiceComm(getActivity());
+
+			getDateService.delegate = MainBrandFragment.this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+			items.put("tableName", "getObject2ImageDate");
+			items.put("Id", String.valueOf(obj.getId()));
+			getDateService.execute(items);
+
 		}
+
+	}
+
+	@Override
+	public void CommProcessFinish(String output) {
+		if (output.equals("java.lang.NullPointerException") || output.equals("anyType"))
+			output = "";
+
+		adapter.open();
+		adapter.updateObjectImage2ServerDate(obj.getId(), output);
+		adapter.close();
+
 		userItemId++;
 
 		if (userItemId < mylist.size()) {
@@ -328,10 +365,10 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 			adapter.close();
 
 			ListAdapter = new ObjectListAdapter(getActivity(),
-					R.layout.row_object, mylist, MainBrandFragment.this, false);
+					R.layout.row_object, mylist, MainBrandFragment.this, false,
+					null, 1);
 			lstObject.setAdapter(ListAdapter);
 
 		}
-
 	}
 }

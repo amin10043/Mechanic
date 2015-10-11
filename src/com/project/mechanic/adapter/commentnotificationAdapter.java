@@ -7,12 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.CommentNotiItem;
+import com.project.mechanic.row_items.LikeNotiItem;
+import com.project.mechanic.utility.Utility;
 
 public class commentnotificationAdapter extends ArrayAdapter<CommentNotiItem> {
 	Context context;
@@ -20,60 +24,47 @@ public class commentnotificationAdapter extends ArrayAdapter<CommentNotiItem> {
 	List<CommentInFroum> mylist1;
 	// List<Froum> mylist1;
 
-	List<CommentNotiItem> mylist;
+	List<CommentNotiItem> notificationList;
 
 	DataBaseAdapter dbadapter;
 
-	// Utility util;
+	Utility util;
 
 	public commentnotificationAdapter(Context context, int resource,
 			List<CommentNotiItem> list) {
 		super(context, resource, list);
 		// TODO Auto-generated constructor stub
 		this.context = context;
-		this.mylist = list;
+		this.notificationList = list;
 		dbadapter = new DataBaseAdapter(context);
-		// util = new Utility(context);
+		util = new Utility(context);
 	}
 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		convertView = myInflater.inflate(R.layout.row_notification_list, null);
 
-		TextView txt = (TextView) convertView
-				.findViewById(R.id.main_text_notification);
+		TextView name = (TextView) convertView.findViewById(R.id.name);
+		ImageView img = (ImageView) convertView
+				.findViewById(R.id.imagePersonNotificated);
+		RelativeLayout layout = (RelativeLayout) convertView
+				.findViewById(R.id.hhg);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				layout.getLayoutParams());
 
-		// Users u = util.getCurrentUser();
-		// int id = u.getId();
-		// Froum d = mylist1.get(position);
-		// CommentInFroum c = mylist.get(position);
-		// if (id == d.getUserId()) {
-		// CommentInFroum c1 = mylist1.get(position);
-		// String m = c1.getDesk();
-		// txt.setText(m);
-		// TextView txt1 = (TextView) convertView.findViewById(R.id.datenotif);
-		// String m1 = c1.getDatetime();
-		// txt1.setText(m1);
+		CommentNotiItem c1 = notificationList.get(position);
+		name.setText(c1.getName() + "\n" + " برای مطلب " + c1.getTitle()
+				+ " نظر گذاشت " + "\n"
+				+ util.YearMonthDay(c1.getDate()));
 
-		// TextView txt2 = (TextView) convertView.findViewById(R.id.namenotif);
+		lp.width = util.getScreenwidth() / 5;
+		lp.height = util.getScreenwidth() / 5;
+		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		lp.setMargins(2, 2, 2, 2);
 
-		// //int m2 = c1.getUserid();
-		// List<Users> mylist2=(List<Users>) dbadapter.getUserById(m2);
-
-		// Users u1 = dbadapter.getUserbyid(m2);
-
-		// txt2.setText(u1.getName());
-
-		// CommentInFroum comment = list.get(position);
-		// Users x = adapter.getUserbyid(comment.getUserid());
-		dbadapter.open();
-		CommentNotiItem c = mylist.get(position);
-
-		txt.setText(c.getTitle());
-		TextView txt1 = (TextView) convertView.findViewById(R.id.Desc);
-		txt1.setText(c.getDesc());
-		dbadapter.close();
+		img.setLayoutParams(lp);
 
 		return convertView;
 

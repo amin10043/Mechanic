@@ -33,7 +33,6 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
-import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.FroumWithoutComment;
 import com.project.mechanic.fragment.InformationUser;
@@ -70,6 +69,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 	int userId;
 	Fragment fragment;
 	ImageView report;
+	View Parent;
 
 	public FroumtitleListadapter(Context context, int resource,
 			List<Froum> objects, Fragment fragment) {
@@ -88,11 +88,11 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		adapter = new DataBaseAdapter(context);
 
 		convertView = myInflater
 				.inflate(R.layout.raw_froumtitle, parent, false);
 
+		Parent = parent;
 		final TextView txt1 = (TextView) convertView
 				.findViewById(R.id.rowtitlepaper);
 		final TextView txt2 = (TextView) convertView
@@ -139,12 +139,12 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				.toString());
 
 		dateTopic.setText(util.getPersianDate(person1.getDate()));
-		
-		
-		String item = txt2.getText().toString(); ;
+
+		String item = txt2.getText().toString();
+		;
 		int sizeDescription = item.length();
 		String subItem;
-		subItem = item.subSequence(0, sizeDescription-4).toString();
+		subItem = item.subSequence(0, sizeDescription - 4).toString();
 
 		int ItemId = 0;
 		for (Froum listItem : mylist) {
@@ -180,7 +180,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				profileImg.setLayoutParams(lp);
 			} else {
 
-				//byte[] byteImg = x.getImage();
+				// byte[] byteImg = x.getImage();
 				Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
 				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
 						50));
@@ -207,13 +207,14 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
+				adapter.close();
 
 			}
 		});
 		LikeTitle.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 
 				if (CurrentUser == null) {
 					Toast.makeText(context,
@@ -221,17 +222,18 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 							Toast.LENGTH_SHORT).show();
 				} else {
 
-					String item = txt2.getText().toString();
-					int ItemId = 0;
-					for (Froum listItem : mylist) {
-						if (item.equals(listItem.getDescription())) {
-							// check authentication and authorization
-							froumNumber = ItemId = listItem.getId();
-						}
-					}
+					LinearLayout parentlayout = (LinearLayout) v;
+					LinearLayout parent = (LinearLayout) parentlayout
+							.getParent().getParent();
+					int id = ((Integer) parent.getTag());
+					froumNumber = id;
 					date = new ServerDate(context);
 					date.delegate = FroumtitleListadapter.this;
 					date.execute("");
+					ringProgressDialog = ProgressDialog.show(context, "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
 				}
 			}
 
@@ -326,11 +328,11 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				LinearLayout parentlayout = (LinearLayout) v;
 
-				
-				String item = txt2.getText().toString(); ;
+				String item = txt2.getText().toString();
+				;
 				int sizeDescription = item.length();
 				String subItem;
-				subItem = item.subSequence(0, sizeDescription-4).toString();
+				subItem = item.subSequence(0, sizeDescription - 4).toString();
 				int ItemId = 0;
 				for (Froum listItem : mylist) {
 					if (subItem.equals(listItem.getDescription())) {
@@ -358,46 +360,53 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			}
 
 		});
+
+		convertView.setTag(person1.getId());
+		// Parent = convertView;
 		return convertView;
 	}
 
 	@Override
 	public void processFinish(String output) {
 
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
 		try {
 			int id = Integer.valueOf(output);
+			LinearLayout parentLayout = (LinearLayout) Parent
+					.findViewWithTag(froumNumber);
+			LinearLayout likeTitle = (LinearLayout) parentLayout
+					.findViewById(R.id.liketitleTopic);
+
 			adapter.open();
+			TextView likeCountFroum = (TextView) likeTitle
+					.findViewById(R.id.countLikeInFroumTitle);
+			likeCountFroum.setText(adapter.LikeInFroum_count(froumNumber)
+					.toString());
+
 			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
 				adapter.deleteLikeFromFroum(CurrentUser.getId(), froumNumber);
-				LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
 
-				countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
-						.toString());
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
-				}
+				likeTitle.setBackgroundResource(R.drawable.like_froum_off);
 
 			} else {
-				adapter.insertLikeInFroumToDb(id ,CurrentUser.getId(), froumNumber,
-						serverDate, 0);
-				LikeTitle.setBackgroundResource(R.drawable.like_froum);
+				adapter.insertLikeInFroumToDb(id, CurrentUser.getId(),
+						froumNumber, serverDate, 0);
 
-				countLikeFroum.setText(adapter.LikeInFroum_count(froumNumber)
-						.toString());
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
-				}
+				likeTitle.setBackgroundResource(R.drawable.like_froum);
 			}
 			adapter.close();
+			if (ringProgressDialog != null) {
+				ringProgressDialog.dismiss();
+			}
 
 		} catch (NumberFormatException ex) {
 			if (output != null
 					&& !(output.contains("Exception") || output
 							.contains("java"))) {
 				adapter.open();
-
 				if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
-					adapter.open();
 					params = new LinkedHashMap<String, String>();
 					deleting = new Deleting(context);
 					deleting.delegate = FroumtitleListadapter.this;
@@ -426,10 +435,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 							}
 						}
 					}).start();
-
-					adapter.close();
 				} else {
-					adapter.open();
 					params = new LinkedHashMap<String, String>();
 					saving = new Saving(context);
 					saving.delegate = FroumtitleListadapter.this;
@@ -469,9 +475,6 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 					// countLikeFroum.setText(adapter
 					// .LikeInFroum_count(ItemId).toString());
-
-					adapter.close();
-
 				}
 				adapter.close();
 
@@ -486,5 +489,4 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
 		}
 	}
-
 }

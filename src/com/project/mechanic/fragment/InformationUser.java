@@ -68,19 +68,18 @@ public class InformationUser extends Fragment {
 		listViewPages.addHeaderView(header);
 
 		allpageUser();
-		
+
 		profileImage.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
-				
+
 				String PathProfile = userPage.getImagePath();
 				String namePage = userPage.getName();
 				DialogShowImage showImageDialog = new DialogShowImage(
-						getActivity(), PathProfile , namePage);
+						getActivity(), PathProfile, namePage);
 				showImageDialog.show();
-				
-								
+
 			}
 		});
 
@@ -202,7 +201,7 @@ public class InformationUser extends Fragment {
 		dbadaAdapter.close();
 
 		listAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object,
-				listPage, InformationUser.this, false);
+				listPage, InformationUser.this, false, null, 1);
 
 		listViewPages.setAdapter(listAdapter);
 

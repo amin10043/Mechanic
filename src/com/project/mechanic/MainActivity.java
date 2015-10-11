@@ -139,12 +139,12 @@ public class MainActivity extends FragmentActivity {
 
 				dialog.show();
 
-				int seen = 1;
-				adapter.updatecmseentodb(seen, user.getId());
-				adapter.updatecmobjectseentodb(seen, user.getId());
-				adapter.updatecmpaperseentodb(seen, user.getId());
-				txtcm1.setVisibility(View.GONE);
-				iBtnmessage.setEnabled(false);
+//				int seen = 1;
+//				adapter.updatecmseentodb(seen, user.getId());
+//				adapter.updatecmobjectseentodb(seen, user.getId());
+//				adapter.updatecmpaperseentodb(seen, user.getId());
+//				txtcm1.setVisibility(View.GONE);
+//				iBtnmessage.setEnabled(false);
 
 				adapter.close();
 
@@ -169,12 +169,12 @@ public class MainActivity extends FragmentActivity {
 						t2);
 
 				dialog1.show();
-				int seen = 1;
-				adapter.updatelikeseentodb(seen, user.getId());
-				adapter.updatelikefroumseentodb(seen, user.getId());
-				adapter.updatelikepaperseentodb(seen, user.getId());
-				txtlike.setVisibility(View.GONE);
-				iBtnNotification.setEnabled(false);
+//				int seen = 1;
+//				adapter.updatelikeseentodb(seen, user.getId());
+//				adapter.updatelikefroumseentodb(seen, user.getId());
+//				adapter.updatelikepaperseentodb(seen, user.getId());
+//				txtlike.setVisibility(View.GONE);
+//				iBtnNotification.setEnabled(false);
 
 				adapter.close();
 

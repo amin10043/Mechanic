@@ -162,7 +162,7 @@ public class DialogPersonLikedFroum extends Dialog implements CommInterface,
 		lv = (ListView) findViewById(R.id.listPeronLiked);
 		progress = (ProgressBar) findViewById(R.id.progressBar1);
 
-		util.CreateFile(output, iid, "Mechanical", "Users", "user", "Users");
+		util.CreateFile(output, iid, "Mechanical", "Users", "user", "Users" );
 		adapter.open();
 		adapter.UpdateImageServerDate(iid, "Users", serverDate);
 		adapter.close();

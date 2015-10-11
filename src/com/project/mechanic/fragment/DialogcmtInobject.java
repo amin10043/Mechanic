@@ -127,6 +127,8 @@ public class DialogcmtInobject extends Dialog implements AsyncInterface {
 				params.put("ObjectId", String.valueOf(objectID));
 				params.put("UserId", String.valueOf(CurrentUser.getId()));
 				params.put("Date", output);
+				params.put("ModifyDate", output);
+
 				params.put("CommentId", String.valueOf(commentId));
 
 				serverDate = output;

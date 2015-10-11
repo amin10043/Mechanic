@@ -40,7 +40,6 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 	Utility util;
 	Users user;
 	int userId;
-	DialogPersonLikedFroum dia;
 
 	public PersonLikedAdapter(Context context, int resource,
 			ArrayList<LikeInFroum> objects) {
@@ -73,9 +72,9 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 		LikeInFroum likes = myList.get(position);
 
 		adapter.open();
-		 user = adapter.getUserById(likes.getUserid());
+		user = adapter.getUserById(likes.getUserid());
 		adapter.close();
-				namePerson.setText(user.getName());
+		namePerson.setText(user.getName());
 		DateLiked.setText(util.getPersianDate(likes.getDatetime()));
 
 		RelativeLayout rl = (RelativeLayout) convertView
@@ -90,40 +89,39 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 		lp.setMargins(5, 5, 5, 5);
 
 		if (user.getImagePath() != null) {
-			
+
 			Bitmap bmp = BitmapFactory.decodeFile(user.getImagePath());
 
 			peronImage.setImageBitmap(bmp);
 			peronImage.setLayoutParams(lp);
-			
-			
+
 		} else {
 			peronImage.setImageResource(R.drawable.no_img_profile);
 			peronImage.setLayoutParams(lp);
 
-			
 		}
-	
-		peronImage.setOnClickListener(new View.OnClickListener() {
-			
+
+		convertView.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View arg0) {
 				LikeInFroum likes = myList.get(position);
 				adapter.open();
-				 user = adapter.getUserById(likes.getUserid());
+				user = adapter.getUserById(likes.getUserid());
 				adapter.close();
-				userId= user.getId();
+				userId = user.getId();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
 				fragment.setArguments(bundle);
+				trans.addToBackStack(null);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
+
 			}
 		});
-		
 
 		return convertView;
 	}

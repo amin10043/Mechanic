@@ -7,29 +7,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.project.mechanic.R;
+import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.LikeNotiItem;
+import com.project.mechanic.utility.Utility;
 
 public class LikeFroumNotificationAdapter extends ArrayAdapter<LikeNotiItem> {
+
 	Context context;
-
-	List<LikeNotiItem> mylist1;
-
-	DataBaseAdapter dbadapter;
-
-	// Utility util;
+	List<LikeNotiItem> LikeList;
+	Utility util;
+	PersianDate pDate;
 
 	public LikeFroumNotificationAdapter(Context context, int resource,
 			List<LikeNotiItem> list) {
 		super(context, resource, list);
-		// TODO Auto-generated constructor stub
 		this.context = context;
-		this.mylist1 = list;
-		dbadapter = new DataBaseAdapter(context);
-		// util = new Utility(context);
+		this.LikeList = list;
+		util = new Utility(context);
+		pDate = new PersianDate();
+
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -37,34 +39,25 @@ public class LikeFroumNotificationAdapter extends ArrayAdapter<LikeNotiItem> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		convertView = myInflater.inflate(R.layout.row_notification_list, null);
 
-		// TextView txt = (TextView) convertView.findViewById(R.id.namenotif);
+		TextView name = (TextView) convertView.findViewById(R.id.name);
+		ImageView img = (ImageView) convertView
+				.findViewById(R.id.imagePersonNotificated);
+		RelativeLayout layout = (RelativeLayout) convertView
+				.findViewById(R.id.hhg);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				layout.getLayoutParams());
 
-		// Users u = util.getCurrentUser();
-		// int id = u.getId();
-		// Froum d = mylist1.get(position);
-		//
-		// if (id == d.getUserId()) {
-		// LikeInFroum c = mylist.get(position);
+		LikeNotiItem c1 = LikeList.get(position);
+		name.setText(c1.getName() + "\n" + " مطلب " + c1.getTitle()
+				+ "را پسندید " + "\n"
+				+ util.YearMonthDay(c1.getDate()));
 
-		// int m2 = c.getUserid();
-		// List<Users> mylist2=(List<Users>) dbadapter.getUserById(m2);
+		lp.width = util.getScreenwidth() / 5;
+		lp.height = util.getScreenwidth() / 5;
+		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		lp.setMargins(2, 2, 2, 2);
 
-		// Users u1 = dbadapter.getUserbyid(m2);
-
-		// txt.setText(u1.getName());
-
-		dbadapter.open();
-		TextView txt1 = (TextView) convertView
-				.findViewById(R.id.main_text_notification);
-
-		// LikeInFroum c1 = mylist.get(position);
-		// int m = c1.getFroumid();
-		// Froum f = dbadapter.getFroumItembyid(m);
-		// txt1.setText(f.getDescription());
-
-		LikeNotiItem c1 = mylist1.get(position);
-		txt1.setText(c1.getTitle());
-		dbadapter.close();
+		img.setLayoutParams(lp);
 
 		return convertView;
 	}
