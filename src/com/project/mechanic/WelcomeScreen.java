@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
 public class WelcomeScreen extends Activity {
@@ -67,6 +68,7 @@ public class WelcomeScreen extends Activity {
 	private Utility util;
 	private DataBaseAdapter adapter;
 	Settings settings;
+	private ServerDate task;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +82,8 @@ public class WelcomeScreen extends Activity {
 		settings = adapter.getSettings();
 		adapter.close();
 
-		util.Updating();
+		task = new ServerDate(this);
+		util.Updating(task);
 
 		initialize();
 		clickItem();
@@ -398,7 +401,7 @@ public class WelcomeScreen extends Activity {
 		row10.addView(img30);
 
 		// row_Displacement.addView(pre_btn);
-		//row_Displacement.addView(next_btn);
+		// row_Displacement.addView(next_btn);
 
 		// row_Displacement.setBackgroundResource(R.drawable.header);
 
@@ -513,8 +516,8 @@ public class WelcomeScreen extends Activity {
 				startActivity(intent);
 				finish();
 
-//				overridePendingTransition(R.layout.splash_out,
-//						R.layout.splash_in);
+				// overridePendingTransition(R.layout.splash_out,
+				// R.layout.splash_in);
 
 			}
 		});
@@ -674,7 +677,11 @@ public class WelcomeScreen extends Activity {
 		return scaleFace;
 	}
 
+	@Override
 	public void onDestroy() {
+
+		super.onDestroy();
+
 		clearTimerTaks(clickSchedule);
 		clearTimerTaks(scrollerSchedule);
 		clearTimerTaks(faceAnimationSchedule);
@@ -689,7 +696,8 @@ public class WelcomeScreen extends Activity {
 		clickTimer = null;
 		faceTimer = null;
 
-		super.onDestroy();
+		task.cancel(true);
+
 	}
 
 	private void clearTimers(Timer timer) {

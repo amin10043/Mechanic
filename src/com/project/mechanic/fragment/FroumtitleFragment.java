@@ -17,7 +17,6 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
@@ -292,7 +291,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 		Froum f;
 		mdb.open();
-		if (output != null && userItemId < mylist.size()) {
+		if (output != null && mylist != null && mylist.size() > userItemId) {
 			f = mylist.get(userItemId);
 
 			util.CreateFile(output, f.getUserId(), "Mechanical", "Users",

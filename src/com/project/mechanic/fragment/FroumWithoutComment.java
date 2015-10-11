@@ -15,9 +15,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -118,7 +118,6 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 				likeTopic.setBackgroundResource(R.drawable.like_off);
 				count.setBackgroundResource(R.drawable.count_like_off);
-
 			}
 		}
 
@@ -281,6 +280,9 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 							Toast.LENGTH_SHORT).show();
 				} else {
 					if (getActivity() != null) {
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								"", "لطفا منتظر بمانید...", true);
+						ringProgressDialog.setCancelable(false);
 						date = new ServerDate(getActivity());
 						date.delegate = FroumWithoutComment.this;
 						date.execute("");
@@ -288,7 +290,6 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 					}
 				}
 				adapter.close();
-
 			}
 
 		});
@@ -336,141 +337,100 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 	public void processFinish(String output) {
 
 		int id = -1;
-
 		try {
-			id = Integer.valueOf(output);
-			adapter.open();
-			if (adapter.isUserLikedFroum(CurrentUser.getId(), IdGglobal)) {
-				adapter.deleteLikeFromFroum(CurrentUser.getId(), IdGglobal);
-				likeTopic.setBackgroundResource(R.drawable.like_off);
-				count.setBackgroundResource(R.drawable.count_like_off);
-
-				countLike.setText(adapter.LikeInFroum_count(IdGglobal)
-						.toString());
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
-				}
-
-			} else {
-				adapter.insertLikeInFroumToDb(id, CurrentUser.getId(),
-						IdGglobal, serverDate, 0);
-				likeTopic.setBackgroundResource(R.drawable.like_on);
-				count.setBackgroundResource(R.drawable.count_like);
-
-				countLike.setText(adapter.LikeInFroum_count(IdGglobal)
-						.toString());
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
-				}
-			}
-			adapter.close();
-
-		} catch (NumberFormatException ex) {
-			if (output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			try {
+				id = Integer.valueOf(output);
 				adapter.open();
-
 				if (adapter.isUserLikedFroum(CurrentUser.getId(), IdGglobal)) {
-					adapter.open();
-					// int c = adapter.LikeInFroum_count(ItemId) - 1;
-					// countLikeFroum.setText(String.valueOf(c));
+					adapter.deleteLikeFromFroum(CurrentUser.getId(), IdGglobal);
+					likeTopic.setBackgroundResource(R.drawable.like_off);
+					count.setBackgroundResource(R.drawable.count_like_off);
 
-					params = new LinkedHashMap<String, String>();
-
-					if (getActivity() != null) {
-
-						deleting = new Deleting(getActivity());
-						deleting.delegate = FroumWithoutComment.this;
-
-						params.put("TableName", "LikeInFroum");
-						params.put("UserId",
-								String.valueOf(CurrentUser.getId()));
-						params.put("FroumId", String.valueOf(IdGglobal));
-
-						deleting.execute(params);
-
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								"", "لطفا منتظر بمانید...", true);
-					}
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-
-					adapter.close();
+					countLike.setText(adapter.LikeInFroum_count(IdGglobal)
+							.toString());
 				} else {
-					adapter.open();
-					params = new LinkedHashMap<String, String>();
+					adapter.insertLikeInFroumToDb(id, CurrentUser.getId(),
+							IdGglobal, serverDate, 0);
+					likeTopic.setBackgroundResource(R.drawable.like_on);
+					count.setBackgroundResource(R.drawable.count_like);
 
-					if (getActivity() != null) {
-						saving = new Saving(getActivity());
-						saving.delegate = FroumWithoutComment.this;
-
-						params.put("TableName", "LikeInFroum");
-
-						params.put("UserId",
-								String.valueOf(CurrentUser.getId()));
-						params.put("FroumId", String.valueOf(IdGglobal));
-						params.put("CommentId", "0");
-						params.put("Date", output);
-						params.put("ModifyDate", output);
-						params.put("IsUpdate", "0");
-						params.put("Id", "0");
-
-						serverDate = output;
-
-						saving.execute(params);
-					}
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-
-					// countLikeFroum.setText(adapter
-					// .LikeInFroum_count(ItemId).toString());
-
-					adapter.close();
-
+					countLike.setText(adapter.LikeInFroum_count(IdGglobal)
+							.toString());
 				}
 				adapter.close();
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 
-			} else {
-				Toast.makeText(getActivity(),
-						"خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT)
-						.show();
+			} catch (NumberFormatException ex) {
+				if (output != null
+						&& !(output.contains("Exception") || output
+								.contains("java"))) {
+					adapter.open();
+
+					if (adapter
+							.isUserLikedFroum(CurrentUser.getId(), IdGglobal)) {
+						adapter.open();
+						params = new LinkedHashMap<String, String>();
+
+						if (getActivity() != null) {
+
+							deleting = new Deleting(getActivity());
+							deleting.delegate = FroumWithoutComment.this;
+
+							params.put("TableName", "LikeInFroum");
+							params.put("UserId",
+									String.valueOf(CurrentUser.getId()));
+							params.put("FroumId", String.valueOf(IdGglobal));
+
+							deleting.execute(params);
+						}
+						adapter.close();
+					} else {
+						adapter.open();
+						params = new LinkedHashMap<String, String>();
+
+						if (getActivity() != null) {
+							saving = new Saving(getActivity());
+							saving.delegate = FroumWithoutComment.this;
+
+							params.put("TableName", "LikeInFroum");
+
+							params.put("UserId",
+									String.valueOf(CurrentUser.getId()));
+							params.put("FroumId", String.valueOf(IdGglobal));
+							params.put("CommentId", "0");
+							params.put("Date", output);
+							params.put("ModifyDate", output);
+							params.put("IsUpdate", "0");
+							params.put("Id", "0");
+
+							serverDate = output;
+
+							saving.execute(params);
+						}
+						adapter.close();
+
+					}
+					adapter.close();
+
+				} else {
+					Toast.makeText(getActivity(),
+							"خطا در ثبت. پاسخ نا مشخص از سرور",
+							Toast.LENGTH_SHORT).show();
+					if (ringProgressDialog != null) {
+						ringProgressDialog.dismiss();
+					}
+				}
 			}
-		}
 
-		catch (Exception e) {
+		} catch (Exception e) {
 
 			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
 					.show();
+			if (ringProgressDialog != null) {
+				ringProgressDialog.dismiss();
+			}
 		}
 	}
 }

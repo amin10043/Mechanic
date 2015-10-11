@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +31,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff.Mode;
-import android.graphics.BitmapFactory;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -46,7 +44,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -318,23 +315,25 @@ public class Utility implements AsyncInterface {
 			if (allStr[i] != null && !"".equals(allStr[i])) {
 				String[] strs = allStr[i].split(Pattern.quote("***")); // each
 																		// Record
-				String tableName = strs[0];
-				boolean flag = false;
-				String[] cols = strs[1].split(Pattern.quote("^^^")); // column
-				String startModifyDate = strs[2];
-				String endModifyDate = strs[3];
-				int row = 0;
-				String[][] values = new String[strs.length - 2][];
-				for (int j = 4; j < strs.length; j++, row++) {
-					values[row] = strs[j].split(Pattern.quote("^^^"));
-					flag = true;
-				}
-				adapter.open();
-				if (values != null && values.length > 0 && flag)
-					adapter.updateTables(tableName.trim(), cols, values,
-							startModifyDate, endModifyDate);
+				if (strs != null && strs.length > 3) {
+					String tableName = strs[0];
+					boolean flag = false;
+					String[] cols = strs[1].split(Pattern.quote("^^^")); // column
+					String startModifyDate = strs[2];
+					String endModifyDate = strs[3];
+					int row = 0;
+					String[][] values = new String[strs.length - 2][];
+					for (int j = 4; j < strs.length; j++, row++) {
+						values[row] = strs[j].split(Pattern.quote("^^^"));
+						flag = true;
+					}
+					adapter.open();
+					if (values != null && values.length > 0 && flag)
+						adapter.updateTables(tableName.trim(), cols, values,
+								startModifyDate, endModifyDate);
 
-				adapter.close();
+					adapter.close();
+				}
 			}
 		}
 	}
@@ -396,11 +395,11 @@ public class Utility implements AsyncInterface {
 		return str.toByteArray();
 	}
 
-	public void Updating() {
+	public void Updating(ServerDate task) {
 
-		date = new ServerDate(context);
-		date.delegate = this;
-		date.execute("");
+		// date = new ServerDate(context);
+		task.delegate = this;
+		task.execute("");
 
 	}
 
@@ -837,8 +836,8 @@ public class Utility implements AsyncInterface {
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 		boolean retval = Arrays.equals(ImageByte, zeroByte);
-
 		return retval;
+
 	}
 
 	public String YearMonthDay(String timeStamp) {
@@ -858,5 +857,4 @@ public class Utility implements AsyncInterface {
 		}
 		return ret;
 	}
-
 }

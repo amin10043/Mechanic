@@ -1,6 +1,5 @@
 package com.project.mechanic.fragment;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,15 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
-import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
@@ -123,29 +119,13 @@ public class LoginFragment extends Fragment implements CommInterface,
 							"لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
-
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-
 				}
-				
-				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-			    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+				InputMethodManager imm = (InputMethodManager) getActivity()
+						.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 			}
-			
-			
+
 		});
 
 		btnreg.setOnClickListener(new View.OnClickListener() {
@@ -160,19 +140,6 @@ public class LoginFragment extends Fragment implements CommInterface,
 
 			}
 		});
-		
-		
-
-		// btncancle.setOnClickListener(new OnClickListener() {
-		//
-		// public void onClick(View arg0) {
-		// // TODO Auto-generated method stub
-		// FragmentTransaction trans = getActivity()
-		// .getSupportFragmentManager().beginTransaction();
-		// trans.replace(R.id.content_frame, new MainFragment());
-		// trans.commit();
-		// }
-		// });
 
 		btnforgot.setOnClickListener(new View.OnClickListener() {
 
@@ -199,8 +166,7 @@ public class LoginFragment extends Fragment implements CommInterface,
 
 		if (output == null || "anyType{}".equals(output)
 				|| output.contains("Exception") || output.contains("java")) {
-			Toast.makeText(getActivity(),
-					"نام کاربری و یا کلمه عبور به درستی وارد نشده است.",
+			Toast.makeText(getActivity(), "خطا در ارتباط با سرور.",
 					Toast.LENGTH_SHORT).show();
 			editor.putBoolean("isLogin", false);
 
@@ -287,7 +253,7 @@ public class LoginFragment extends Fragment implements CommInterface,
 			util.CreateFile(output, u.getId(), "Mechanical", "Users", "user",
 					"Users");
 			dbAdapter.UpdateImageServerDate(u.getId(), "Users", serverDate);
-			
+
 			// dbAdapter.UpdateUserImage(u.getId(), output, serverDate);
 			dbAdapter.close();
 		}
@@ -296,7 +262,7 @@ public class LoginFragment extends Fragment implements CommInterface,
 				.beginTransaction();
 		trans.replace(R.id.content_frame, new MainFragment());
 		trans.commit();
-		
+
 		util.setNoti(getActivity(), util.getCurrentUser().getId());
 
 	}
