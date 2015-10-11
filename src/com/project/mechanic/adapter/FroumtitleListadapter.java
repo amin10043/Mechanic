@@ -276,7 +276,6 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 					dia.getWindow().setBackgroundDrawable(
 							new ColorDrawable(
 									android.graphics.Color.TRANSPARENT));
-
 				}
 			}
 		});
