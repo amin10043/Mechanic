@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
@@ -88,6 +89,42 @@ public class ShowAdFragment extends Fragment {
 		btnCancel = (Button) view.findViewById(R.id.btn_cancel);
 		day = (TextView) view.findViewById(R.id.textDay);
 		date = (TextView) view.findViewById(R.id.textdate);
+		
+		RelativeLayout lin1 = (RelativeLayout)view.findViewById(R.id.a1);
+		RelativeLayout lin2 = (RelativeLayout)view.findViewById(R.id.a2);
+		RelativeLayout lin3 = (RelativeLayout)view.findViewById(R.id.a3);
+		RelativeLayout lin4 = (RelativeLayout)view.findViewById(R.id.a4);
+
+		ImageView line1 = (ImageView)view.findViewById(R.id.i1);
+		ImageView line2 = (ImageView)view.findViewById(R.id.i2);
+		ImageView line3 = (ImageView)view.findViewById(R.id.i3);
+		ImageView line4 = (ImageView)view.findViewById(R.id.i4);
+
+		RelativeLayout.LayoutParams p1 = new RelativeLayout.LayoutParams(lin1.getLayoutParams());
+		RelativeLayout.LayoutParams p2 = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
+		RelativeLayout.LayoutParams p3 = new RelativeLayout.LayoutParams(lin3.getLayoutParams());
+		RelativeLayout.LayoutParams p4 = new RelativeLayout.LayoutParams(lin4.getLayoutParams());
+
+		p1.width = util.getScreenwidth()-100;
+		p1.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		p1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+		p2.width = util.getScreenwidth()-100;
+		p2.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		p2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		
+		p3.width = util.getScreenwidth()-100;
+		p3.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		p3.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		
+		p4.width = util.getScreenwidth()-100;
+		p4.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		p4.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+		line1.setLayoutParams(p1);
+		line2.setLayoutParams(p2);
+		line3.setLayoutParams(p3);
+		line4.setLayoutParams(p4);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 
@@ -116,12 +153,7 @@ public class ShowAdFragment extends Fragment {
 			img.setImageBitmap(imgBitmap);
 		}
 
-		// byte[] bitmapbyte = t.getImage();
-		// if (bitmapbyte != null) {
-		// Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-		// bitmapbyte.length);
-		// img.setImageBitmap(bmp);
-		// }
+		
 		dbAdapter.close();
 		u = util.getCurrentUser();
 
@@ -204,7 +236,7 @@ public class ShowAdFragment extends Fragment {
 
 				} else {
 					dbAdapter.open();
-					dbAdapter.insertFavoritetoDb(0, u.getId(), a);
+					dbAdapter.insertFavoritetoDb(0, u.getId(), a , 3);
 					dbAdapter.close();
 					like.setBackgroundResource(R.drawable.like_anad_on);
 					// like.setLayoutParams(likeParams);

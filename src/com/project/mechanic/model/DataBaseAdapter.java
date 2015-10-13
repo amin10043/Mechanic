@@ -104,7 +104,8 @@ public class DataBaseAdapter {
 			"Date", "CommentId", "Seen" };
 
 	private String[] Executertype = { "ID", "Name" };
-	private String[] Favorite = { "ID", "ObjectId", "UserId", "IdTicket" };
+	private String[] Favorite = { "ID", "ObjectId", "UserId", "IdTicket",
+			"Type" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen",
 			"ServerDate", "Submit", "Date", "SeenBefore" };
 	// private String[] Like = { "ID", "UserId", "PaperId" };
@@ -580,13 +581,20 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertFavoritetoDb(int ObjectId, int userId, int IdTicket) {
+	public void insertFavoritetoDb(int ObjectId, int userId, int IdTicket,
+			int Type) {
+
+		// type == 1 >>>>> Froum
+		// type == 2 >>>>> paper
+		// type == 3 >>>>> Ticket
+		// type == 4 >>>>> Object
 
 		ContentValues cv = new ContentValues();
 
 		cv.put("ObjectId", ObjectId);
 		cv.put("UserId", userId);
 		cv.put("IdTicket", IdTicket);
+		cv.put("Type", Type);
 
 		mDb.insert(TableFavorite, null, cv);
 
@@ -1363,7 +1371,8 @@ public class DataBaseAdapter {
 
 	private Favorite CursorFavorite(Cursor cursor) {
 		Favorite tempFavorite = new Favorite(cursor.getInt(0),
-				cursor.getInt(1), cursor.getInt(2), cursor.getInt(3));
+				cursor.getInt(1), cursor.getInt(2), cursor.getInt(3),
+				cursor.getInt(4));
 
 		return tempFavorite;
 
@@ -3649,12 +3658,26 @@ public class DataBaseAdapter {
 
 		return item;
 	}
-	
+
 	public boolean isUserFavoriteTicket(int userId, int TicketId) {
 
 		Cursor curs = mDb.rawQuery("SELECT COUNT(*) AS NUM FROM "
 				+ TableFavorite + " WHERE UserId= " + String.valueOf(userId)
 				+ " AND IdTicket=" + String.valueOf(TicketId), null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
+	public boolean IsUserFavoriteItem(int userId, int TicketId, int type) {
+
+		Cursor curs = mDb.rawQuery("SELECT COUNT(*) AS NUM FROM "
+				+ TableFavorite + " WHERE UserId= " + String.valueOf(userId)
+				+ " AND IdTicket=" + String.valueOf(TicketId) + " AND Type = "
+				+ String.valueOf(type), null);
 		if (curs.moveToNext()) {
 			int number = curs.getInt(0);
 			if (number > 0)
