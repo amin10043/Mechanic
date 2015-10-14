@@ -12,11 +12,13 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.News;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class NewsmoreFragment extends Fragment {
 
 	int id;
 	DataBaseAdapter adapter;
+	Utility util;
 
 	// @SuppressLint("InflateParams")
 	@Override
@@ -37,11 +39,11 @@ public class NewsmoreFragment extends Fragment {
 
 		titletxt.setText(x.getTitle());
 		destxt.setText(x.getDescription());
+		util = new Utility(getActivity());
 
-		Typeface typeFace = Typeface.createFromAsset(getActivity().getAssets(),
-				"fonts/BROYA.TTF");
-		titletxt.setTypeface(typeFace);
-		destxt.setTypeface(typeFace);
+		
+		titletxt.setTypeface(util.SetFontCasablanca());
+		destxt.setTypeface(util.SetFontCasablanca());
 
 		return view;
 

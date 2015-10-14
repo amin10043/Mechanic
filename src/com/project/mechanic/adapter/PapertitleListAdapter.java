@@ -185,6 +185,9 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 		txt1.setText(person1.getTitle());
 		txt2.setText(person1.getContext() + " ... ");
 
+		txt1.setTypeface(util.SetFontCasablanca());
+		txt2.setTypeface(util.SetFontCasablanca());
+		
 		String item = txt1.getText().toString();
 		for (Paper listItem : mylist) {
 			if (item.equals(listItem.getTitle())) {

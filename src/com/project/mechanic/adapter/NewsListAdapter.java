@@ -28,6 +28,7 @@ import com.project.mechanic.fragment.ShopFragment;
 import com.project.mechanic.fragment.TitlepaperFragment;
 import com.project.mechanic.fragment.UrlNewsPaperFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class NewsListAdapter extends ArrayAdapter<ListItem> {
 
@@ -37,6 +38,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 	DataBaseAdapter adapter;
 	int itemId;
 	int lastPosition = 0;
+	Utility util;
 
 	public NewsListAdapter(Context context, int resource,
 			List<ListItem> objact, int id) {
@@ -46,6 +48,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
 		this.itemId = id;
+		util = new Utility(context);
 
 	}
 
@@ -68,9 +71,8 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
 
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		txtName.setTypeface(typeFace);
+		
+		txtName.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
 

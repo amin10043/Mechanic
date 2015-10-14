@@ -22,6 +22,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.fragment.AdvisorTypeFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class City2ListAdapter extends ArrayAdapter<City> {
 
@@ -29,6 +30,7 @@ public class City2ListAdapter extends ArrayAdapter<City> {
 	List<City> list;
 	int lastPosition = 0;
 	DataBaseAdapter adapter;
+	Utility util;
 
 	public City2ListAdapter(Context context, int resource, List<City> objact) {
 		super(context, resource, objact);
@@ -47,6 +49,7 @@ public class City2ListAdapter extends ArrayAdapter<City> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_city, parent, false);
+		util = new Utility(context);
 
 		Animation animation = AnimationUtils.loadAnimation(getContext(),
 				(position > lastPosition) ? R.anim.up_from_bottom
@@ -59,9 +62,8 @@ public class City2ListAdapter extends ArrayAdapter<City> {
 		final City city = list.get(position);
 
 		txt1.setText(city.getName());
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		txt1.setTypeface(typeFace);
+	
+		txt1.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
 

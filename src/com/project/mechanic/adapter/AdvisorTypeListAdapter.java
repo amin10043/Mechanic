@@ -20,11 +20,13 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.crop.Util;
 import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.fragment.AdvisorTypeFragment;
 import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.ObjectFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 
@@ -33,6 +35,7 @@ public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 	DataBaseAdapter adapter;
 	protected Object item;
 	int cityId;
+	Utility util;
 
 	public AdvisorTypeListAdapter(Context context, int resource,
 			List<AdvisorType> objact, int CityId) {
@@ -42,6 +45,7 @@ public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 		this.list = objact;
 		this.cityId = CityId;
 		adapter = new DataBaseAdapter(context);
+		util = new Utility(context);
 	}
 
 	@SuppressLint("ViewHolder")
@@ -64,9 +68,8 @@ public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 
 		tx1.setText(AdvisorType.getName());
 
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		tx1.setTypeface(typeFace);
+		
+		tx1.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
 

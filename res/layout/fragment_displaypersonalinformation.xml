@@ -1,4 +1,4 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:visibility="gone"
             android:background="@color/white" >
 
             <ImageView
@@ -139,6 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:visibility="gone"
             android:background="@color/white" >
 
             <TextView
@@ -169,6 +171,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:visibility="gone"
             android:background="@color/white" >
 
             <TextView
@@ -198,6 +201,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:visibility="gone"
             android:background="@color/white" >
 
             <TextView
@@ -228,6 +232,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:visibility="gone"
             android:background="@color/white"
             android:orientation="horizontal" >
 
@@ -259,6 +264,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:visibility="gone"
             android:background="@color/white" >
 
             <TextView
@@ -315,11 +321,18 @@
                 android:textColor="@color/white" />
         </RelativeLayout>
 
+        <ExpandableListView
+            android:id="@+id/items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ExpandableListView>
+
         <RelativeLayout
             android:id="@+id/manage_ticket"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:visibility="gone"
             android:background="#394264" >
 
             <TextView
@@ -350,6 +363,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+                        android:visibility="gone"
+            
             android:background="#394264" >
 
             <TextView
@@ -380,6 +395,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+                        android:visibility="gone"
+            
             android:background="#394264" >
 
             <TextView
@@ -406,4 +423,4 @@
         </RelativeLayout>
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

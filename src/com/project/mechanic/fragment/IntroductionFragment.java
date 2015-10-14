@@ -307,6 +307,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		headerParams = new LinearLayout.LayoutParams(
 				headImageLinear.getLayoutParams());
 		headerParams.height = ut.getScreenwidth();
+		headerParams.width = ut.getScreenwidth();
 
 		footerParams = new LinearLayout.LayoutParams(
 				footerLinear.getLayoutParams());
@@ -1171,6 +1172,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame,
 						new IntroductionEditFragment());
+				trans.addToBackStack(null);
 				trans.commit();
 
 			}
@@ -1248,6 +1250,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		});
 
 
+		ut.ShowFooterAgahi(getActivity() , false);
 
 		return view;
 

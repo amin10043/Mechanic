@@ -62,6 +62,9 @@ public class AdvertisementFragment extends Fragment {
 				getActivity(), R.layout.row_shop, mylist, provinceId);
 
 		lstAdvertisement.setAdapter(ListAdapter);
+		
+		util.ShowFooterAgahi(getActivity() , false);
+
 
 		return view;
 	}

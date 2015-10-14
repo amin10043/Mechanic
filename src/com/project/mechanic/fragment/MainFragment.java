@@ -1,6 +1,7 @@
 package com.project.mechanic.fragment;
 
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -26,7 +27,7 @@ public class MainFragment extends Fragment {
 	LinearLayout footer_layLayout;
 	Utility util;
 	RelativeLayout mainRow1, mainRow2, mainRow3, mainRow4, mainRow5, mainRow6,
-			mainRow7, mainRow8;
+			mainRow7;
 	RelativeLayout.LayoutParams r1, r2, r3, r4, r5, r6, r7, r8;
 	ImageView img1, img2, img3, img4, img5, img6, img7;
 
@@ -46,7 +47,6 @@ public class MainFragment extends Fragment {
 		mainRow5 = (RelativeLayout) view.findViewById(R.id.relative_item5);
 		mainRow6 = (RelativeLayout) view.findViewById(R.id.relative_item6);
 		mainRow7 = (RelativeLayout) view.findViewById(R.id.relative_item7);
-		mainRow8 = (RelativeLayout) view.findViewById(R.id.relative_item8);
 
 		r1 = new RelativeLayout.LayoutParams(mainRow1.getLayoutParams());
 		r2 = new RelativeLayout.LayoutParams(mainRow2.getLayoutParams());
@@ -55,7 +55,6 @@ public class MainFragment extends Fragment {
 		r5 = new RelativeLayout.LayoutParams(mainRow5.getLayoutParams());
 		r6 = new RelativeLayout.LayoutParams(mainRow6.getLayoutParams());
 		r7 = new RelativeLayout.LayoutParams(mainRow7.getLayoutParams());
-		r8 = new RelativeLayout.LayoutParams(mainRow8.getLayoutParams());
 
 		img1 = (ImageView) view.findViewById(R.id.icon_item1);
 		img2 = (ImageView) view.findViewById(R.id.icon_item2);
@@ -64,7 +63,15 @@ public class MainFragment extends Fragment {
 		img5 = (ImageView) view.findViewById(R.id.icon_item5);
 		img6 = (ImageView) view.findViewById(R.id.icon_item6);
 		img7 = (ImageView) view.findViewById(R.id.icon_item7);
-
+		
+		TextView lable1 = (TextView) view.findViewById(R.id.lable1);
+		TextView lable2 = (TextView) view.findViewById(R.id.lable2);
+		TextView lable3 = (TextView) view.findViewById(R.id.lable3);
+		TextView lable4 = (TextView) view.findViewById(R.id.lable4);
+		TextView lable5 = (TextView) view.findViewById(R.id.lable5);
+		TextView lable6 = (TextView) view.findViewById(R.id.lable6);
+		TextView lable7 = (TextView) view.findViewById(R.id.lable7);
+		
 		r1.width = util.getScreenwidth() / 10;
 		r1.height = util.getScreenwidth() / 10;
 		r1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -113,6 +120,16 @@ public class MainFragment extends Fragment {
 		r7.setMargins(5, 0, 1, 0);
 		r7.addRule(RelativeLayout.CENTER_VERTICAL);
 		img7.setLayoutParams(r7);
+		
+	
+		lable1.setTypeface(util.SetFontCasablanca());
+		lable2.setTypeface(util.SetFontCasablanca());
+		lable3.setTypeface(util.SetFontCasablanca());
+		lable4.setTypeface(util.SetFontCasablanca());
+		lable5.setTypeface(util.SetFontCasablanca());
+		lable6.setTypeface(util.SetFontCasablanca());
+		lable7.setTypeface(util.SetFontCasablanca());
+
 
 		final SharedPreferences sendData = getActivity().getSharedPreferences(
 				"Id", 0);
@@ -249,6 +266,8 @@ public class MainFragment extends Fragment {
 				trans.commit();
 			}
 		});
+		
+		util.ShowFooterAgahi(getActivity() , true);
 
 		return view;
 	}

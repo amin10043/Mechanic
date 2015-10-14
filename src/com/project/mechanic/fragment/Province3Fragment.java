@@ -15,9 +15,10 @@ import com.project.mechanic.R;
 import com.project.mechanic.adapter.Province3ListAdapter;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class Province3Fragment extends Fragment {
-
+	Utility util;
 	DataBaseAdapter adapter;
 
 	@SuppressLint("InflateParams")
@@ -27,7 +28,7 @@ public class Province3Fragment extends Fragment {
 		((MainActivity) getActivity()).setActivityTitle(R.string.ostan);
 
 		View view = inflater.inflate(R.layout.fragment_ostan, null);
-
+		util = new Utility(getActivity());
 		adapter = new DataBaseAdapter(getActivity());
 
 		adapter.open();
@@ -40,6 +41,8 @@ public class Province3Fragment extends Fragment {
 				getActivity(), R.layout.row_ostan, mylist);
 
 		lstProvince3.setAdapter(ListAdapter);
+		util.ShowFooterAgahi(getActivity() , false);
+
 
 		return view;
 	}

@@ -49,7 +49,8 @@ public class BerandFragment extends Fragment {
 		lstBerand.setAdapter(ListAdapter);
 		
 		Utility utility = new Utility(getActivity());
-		
+		utility.ShowFooterAgahi(getActivity() , false);
+
 		
 		return view;
 	}

@@ -1,5 +1,6 @@
 package com.project.mechanic.fragment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,13 +17,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.GridView;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.project.mechanic.DialogManagmentPaper;
@@ -30,9 +30,10 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.PushNotification.DomainSend;
 import com.project.mechanic.adapter.AnadListAdapter;
-import com.project.mechanic.adapter.ObjectListAdapter;
+import com.project.mechanic.adapter.DataPersonalExpandAdapter;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Paper;
+import com.project.mechanic.entity.PersonalData;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
@@ -65,7 +66,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 
 	@SuppressLint("NewApi")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(final LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
 		utile1 = new Utility(getActivity());
@@ -74,7 +75,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		// View rootView = inflater.inflate(R.layout.fragment_information_user,
 		// null);
 
-		View header = inflater.inflate(
+		final View header = inflater.inflate(
 				R.layout.fragment_displaypersonalinformation, null);
 
 		phoneLayout = (RelativeLayout) header.findViewById(R.id.laySabet);
@@ -185,7 +186,59 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		final List<Paper> listPaper = dbAdapter.getAllPaperUser(u.getId());
 
 		final List<Object> listPage = dbAdapter.getAllObjectByUserId(u.getId());
+
+		List<PersonalData> pd = dbAdapter.getAllDataUser(u.getId());
+		
 		dbAdapter.close();
+
+		// final Animation animSideDown =
+		// AnimationUtils.loadAnimation(getActivity(),
+		// R.anim.slide_down);
+		// ListView pagesList = (ListView)header.findViewById(R.id.pages);
+		//
+		// ObjectListAdapter listAdapter = new ObjectListAdapter(getActivity(),
+		// R.layout.row_object,
+		// listPage, DisplayPersonalInformationFragment.this, false, "", 0);
+		//
+		// pagesList.setAdapter(listAdapter);
+		// pagesList.setAnimation(animSideDown);
+
+		// /////////////////////
+
+		ExpandableListView Expandview = (ExpandableListView) header
+				.findViewById(R.id.items);
+		
+		HashMap<String, List<PersonalData>> listDataChild = new HashMap<String, List<PersonalData>>();
+
+		ArrayList<String> parentItems = new ArrayList<String>();
+
+		Expandview.setDividerHeight(2);
+		Expandview.setGroupIndicator(null);
+		Expandview.setClickable(true);
+
+		parentItems.add("صفحات");
+		parentItems.add("آگهی ها");
+		parentItems.add("مقالات");
+		parentItems.add("تالار گفتگو");
+		
+		listDataChild.put(parentItems.get(0), pd); // Header, Child data
+		listDataChild.put(parentItems.get(1), pd);
+		listDataChild.put(parentItems.get(2), pd);
+		listDataChild.put(parentItems.get(3), pd);
+		
+		final DataPersonalExpandAdapter listAdapter = new DataPersonalExpandAdapter(getActivity(), parentItems, listDataChild);
+
+		// setting list adapter
+		Expandview.setAdapter(listAdapter);
+		
+		
+
+		
+		// ObjectListAdapter listAdapter = new ObjectListAdapter(getActivity(),
+		// R.layout.row_object,
+		// listPage, DisplayPersonalInformationFragment.this, false, "", 0);
+
+		// //////////////////////
 
 		RelativeLayout ManagePage = (RelativeLayout) header
 				.findViewById(R.id.manage_pages);
@@ -193,10 +246,13 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 
 			@Override
 			public void onClick(View arg0) {
-				DialogManagementPages dialog = new DialogManagementPages(
-						getActivity(), listPage,
-						DisplayPersonalInformationFragment.this);
-				dialog.show();
+				// DialogManagementPages dialog = new DialogManagementPages(
+				// getActivity(), listPage,
+				// DisplayPersonalInformationFragment.this);
+				// dialog.show();
+
+				// pagesList.setAnimation(animSideDown);
+
 			}
 		});
 
@@ -317,6 +373,9 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 
 			}
 		});
+		
+		 utile1.ShowFooterAgahi(getActivity(), false);
+
 
 		return header;
 	}

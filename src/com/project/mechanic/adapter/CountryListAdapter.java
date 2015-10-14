@@ -22,6 +22,7 @@ import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.fragment.AdvertisementFragment;
 import com.project.mechanic.fragment.ShopFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class CountryListAdapter extends ArrayAdapter<ListItem> {
 
@@ -31,6 +32,7 @@ public class CountryListAdapter extends ArrayAdapter<ListItem> {
 	DataBaseAdapter adapter;
 	int itemId;
 	int lastPosition = 0;
+	Utility util;
 
 	public CountryListAdapter(Context context, int resource,
 			List<ListItem> objact, int id) {
@@ -40,6 +42,7 @@ public class CountryListAdapter extends ArrayAdapter<ListItem> {
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
 		this.itemId = id;
+		util = new Utility(context);
 
 	}
 
@@ -60,9 +63,8 @@ public class CountryListAdapter extends ArrayAdapter<ListItem> {
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		txtName.setTypeface(typeFace);
+
+		txtName.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
 

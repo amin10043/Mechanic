@@ -46,28 +46,6 @@
             app:fab_size="normal" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/tablighRelative"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_weight="0.7"
-        android:background="@drawable/buttonshape" >
-
-        <ImageButton
-            android:id="@+id/iconCreateTabligh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/ic_blank" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="هوشمندانه تبلیغ کنید"
-            android:textColor="@color/white" />
-    </RelativeLayout>
+  
 
 </LinearLayout>

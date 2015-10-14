@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="bottom"
@@ -167,7 +167,9 @@
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_above="@+id/footerAgahi"
+        android:layout_below="@+id/searchV" >
 
         <!-- The main content view -->
 
@@ -192,4 +194,28 @@
             android:dividerHeight="1dp" />
     </android.support.v4.widget.DrawerLayout>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/footerAgahi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#306098"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/icon_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="20dp"
+            android:background="@drawable/ic_blank" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="هوشمندانه تبلیغ کنید"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+</RelativeLayout>

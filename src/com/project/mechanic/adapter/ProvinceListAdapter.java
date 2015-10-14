@@ -22,6 +22,7 @@ import com.project.mechanic.entity.Province;
 import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class ProvinceListAdapter extends ArrayAdapter<Province> {
 
@@ -30,6 +31,7 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 	DataBaseAdapter adapter;
 	int lastPosition = 0;
 	int i = 10;
+	Utility util;
 
 	public ProvinceListAdapter(Context context, int resource,
 			List<Province> objact) {
@@ -38,6 +40,7 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
+		util = new Utility(context);
 	}
 
 	@SuppressLint("ViewHolder")
@@ -63,9 +66,8 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 		Province province = list.get(position);
 
 		tx1.setText(province.getName());
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		tx1.setTypeface(typeFace);
+		
+		tx1.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
 

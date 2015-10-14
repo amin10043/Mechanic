@@ -53,7 +53,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 	ServerDate date;
 	LinearLayout reaportLayout;
 
-	RelativeLayout SendMessage;
+	RelativeLayout SendMessage , CopyItem;
 	String tableName;
 
 	public DialogLongClick(Context context, int source, int UserIdObject,
@@ -87,6 +87,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 		report = (Button) findViewById(R.id.report_item);
 
 		SendMessage = (RelativeLayout) findViewById(R.id.send_item);
+		CopyItem = (RelativeLayout) findViewById(R.id.copy_item);
 
 		if (util.getCurrentUser() == null) {
 		} else if (util.getCurrentUser().getId() != UserIdObject)
@@ -550,8 +551,20 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 			@Override
 			public void onClick(View arg0) {
+				SendMessage.setVisibility(View.GONE);
+				CopyItem.setVisibility(View.GONE);
+				delete.setVisibility(View.GONE);
+				addToFavorite.setVisibility(View.GONE);
+
 				rdGroup.setVisibility(View.VISIBLE);
 				report.setVisibility(View.VISIBLE);
+			}
+		});
+		CopyItem.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				
 			}
 		});
 

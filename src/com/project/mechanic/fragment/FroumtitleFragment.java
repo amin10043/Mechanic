@@ -365,6 +365,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 					}
 				}
 				mdb.close();
+			ListAdapter.notifyDataSetChanged();
 
 			}
 			if (output.contains("anyType")) {

@@ -8,27 +8,30 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.utility.Utility;
 
 public class TypeFroum extends Fragment {
-	RelativeLayout professionalChat, publicChat, tabridLayout, heatingLayout,
-			floorLayout, BMSlayout;
+	RelativeLayout professionalChat, publicChat;
+	Utility util;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_type_froum, null);
+		util = new Utility(getActivity());
 
 		professionalChat = (RelativeLayout) view
 				.findViewById(R.id.layout_group_chat_professional);
 		publicChat = (RelativeLayout) view.findViewById(R.id.layout_public);
-		tabridLayout = (RelativeLayout) view.findViewById(R.id.tabrid_layout);
-		heatingLayout = (RelativeLayout) view
-				.findViewById(R.id.healing_cooling_layout);
-		floorLayout = (RelativeLayout) view.findViewById(R.id.floor_layout);
-		BMSlayout = (RelativeLayout) view.findViewById(R.id.bms_layout);
+		TextView lab1 = (TextView) view.findViewById(R.id.lab1);
+		TextView lab2 = (TextView) view.findViewById(R.id.lab2);
+		
+		lab1.setTypeface(util.SetFontCasablanca());
+		lab2.setTypeface(util.SetFontCasablanca());
 
 		publicChat.setOnClickListener(new OnClickListener() {
 
@@ -39,7 +42,7 @@ public class TypeFroum extends Fragment {
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new FroumtitleFragment());
 
-				// trans.addToBackStack(null);
+				trans.addToBackStack(null);
 				trans.commit();
 
 			}
@@ -49,18 +52,16 @@ public class TypeFroum extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				publicChat.setVisibility(View.GONE);
-				professionalChat.setVisibility(View.GONE);
 
-				tabridLayout.setVisibility(View.VISIBLE);
-				heatingLayout.setVisibility(View.VISIBLE);
-				floorLayout.setVisibility(View.VISIBLE);
-				BMSlayout.setVisibility(View.VISIBLE);
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new TypeExpertFroum());
 
+				trans.addToBackStack(null);
+				trans.commit();
 			}
 		});
 
 		return view;
 	}
-
 }

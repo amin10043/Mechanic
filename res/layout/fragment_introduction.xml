@@ -9,6 +9,8 @@
         style="@style/second_item_style"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:dividerHeight="1dp" />
+        android:background="#e8e8e8"
+        android:childDivider="#e8e8e8"
+        android:groupIndicator="@null" />
 
 </LinearLayout>

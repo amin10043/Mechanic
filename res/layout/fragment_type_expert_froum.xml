@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eaeaea"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/tabrid_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="#d3dff9"
+        android:visibility="visible" >
+
+        <ImageView
+            android:id="@+id/icon_group_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/tabric_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:layout_toLeftOf="@+id/icon_group_chat"
+            android:text="تالار تبرید"
+            android:textColor="@color/transparent" />
+
+        <ImageView
+            android:id="@+id/icon_ostan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/ic_blank" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/healing_cooling_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="#d3dff9"
+        android:visibility="visible" >
+
+        <ImageView
+            android:id="@+id/icon_group_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/healing_cooling_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:layout_toLeftOf="@+id/icon_group_chat"
+            android:text="تالار گرمایش و سرمایش"
+            android:textColor="@color/transparent" />
+
+        <ImageView
+            android:id="@+id/icon_ostan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/ic_blank" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/floor_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="#d3dff9"
+        android:visibility="visible" >
+
+        <ImageView
+            android:id="@+id/icon_group_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/floor_heating_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:layout_toLeftOf="@+id/icon_group_chat"
+            android:text="تالار گرمایش از کف"
+            android:textColor="@color/transparent" />
+
+        <ImageView
+            android:id="@+id/icon_ostan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/ic_blank" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bms_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="#d3dff9"
+        android:visibility="visible" >
+
+        <ImageView
+            android:id="@+id/icon_group_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/bms_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:layout_toLeftOf="@+id/icon_group_chat"
+            android:text="تالار هوشمند سازی"
+            android:textColor="@color/transparent" />
+
+        <ImageView
+            android:id="@+id/icon_ostan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/ic_blank" />
+    </RelativeLayout>
+
+</LinearLayout>
