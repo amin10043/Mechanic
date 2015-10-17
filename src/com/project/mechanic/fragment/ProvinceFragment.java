@@ -43,7 +43,7 @@ public class ProvinceFragment extends Fragment {
 				getActivity(), R.layout.row_ostan, mylist);
 
 		lstProvince.setAdapter(ListAdapter);
-		util.ShowFooterAgahi(getActivity(), false);
+		util.ShowFooterAgahi(getActivity() , false , 1);
 
 		return view;
 	}

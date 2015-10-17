@@ -168,7 +168,7 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/footerAgahi"
+        android:layout_above="@+id/mainlayoutfooter"
         android:layout_below="@+id/searchV" >
 
         <!-- The main content view -->
@@ -195,27 +195,92 @@
     </android.support.v4.widget.DrawerLayout>
 
     <RelativeLayout
-        android:id="@+id/footerAgahi"
+        android:id="@+id/mainlayoutfooter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#306098"
-        android:visibility="gone" >
+        android:background="@color/bl" >
 
-        <ImageView
-            android:id="@+id/icon_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_margin="20dp"
-            android:background="@drawable/ic_blank" />
+        <RelativeLayout
+            android:id="@+id/replyLayout"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content" >
 
-        <TextView
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/deleteReply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ic_delete" />
+
+            <TextView
+                android:id="@+id/reply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/deleteReply"
+                android:maxLength="50"
+                android:text="reply"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/getCommentLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="هوشمندانه تبلیغ کنید"
-            android:textColor="@color/white" />
+            android:layout_below="@+id/replyLayout"
+            android:layout_margin="5dp"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <EditText
+                android:id="@+id/inputComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/sendComment"
+                android:hint="نظر خود را وارد کنید" />
+
+            <ImageView
+                android:id="@+id/sendComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/add" />
+        </RelativeLayout>
+
+        <ViewFlipper
+            android:id="@+id/footerAgahi"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_below="@+id/getCommentLayout"
+            android:background="@color/white"
+            android:visibility="gone" >
+
+            <ImageView
+                android:id="@+id/img1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/slide1" />
+
+            <ImageView
+                android:id="@+id/img2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/slide2" />
+
+            <ImageView
+                android:id="@+id/img3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/slide3" />
+        </ViewFlipper>
     </RelativeLayout>
 
 </RelativeLayout>

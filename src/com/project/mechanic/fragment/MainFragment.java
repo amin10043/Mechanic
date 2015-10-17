@@ -267,7 +267,7 @@ public class MainFragment extends Fragment {
 			}
 		});
 		
-		util.ShowFooterAgahi(getActivity() , true);
+		util.ShowFooterAgahi(getActivity() , true ,1);
 
 		return view;
 	}

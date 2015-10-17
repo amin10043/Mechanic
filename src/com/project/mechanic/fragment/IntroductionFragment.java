@@ -1250,7 +1250,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		});
 
 
-		ut.ShowFooterAgahi(getActivity() , false);
+		ut.ShowFooterAgahi(getActivity() , false , 1);
 
 		return view;
 

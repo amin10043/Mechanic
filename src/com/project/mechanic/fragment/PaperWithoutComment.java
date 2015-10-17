@@ -292,7 +292,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 		});
 
 		adapter.close();
-		
+
 		ImageView report = (ImageView) view.findViewById(R.id.reportImage);
 		report.setOnClickListener(new OnClickListener() {
 
@@ -305,8 +305,8 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 				} else {
 
 					DialogLongClick dia = new DialogLongClick(getActivity(), 2,
-							p.getUserId(), p.getId(), PaperWithoutComment.this, p
-									.getContext());
+							p.getUserId(), p.getId(), PaperWithoutComment.this,
+							p.getContext());
 					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 					lp.copyFrom(dia.getWindow().getAttributes());
 					lp.width = (int) (util.getScreenwidth() / 1.5);
@@ -321,6 +321,8 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 				}
 			}
 		});
+
+		util.ShowFooterAgahi(getActivity(), true, 4);
 
 		return view;
 	}

@@ -374,7 +374,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 			}
 		});
 		
-		 utile1.ShowFooterAgahi(getActivity(), false);
+		utile1.ShowFooterAgahi(getActivity() , false , 1);
 
 
 		return header;

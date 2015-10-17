@@ -89,6 +89,7 @@ public class DataBaseAdapter {
 	private String TablePost = "Post";
 	private String TableLikeInPost = "LikeInPost";
 	private String TableCommentInPost = "CommentInPost";
+	private String TableAnadFooter = "AnadFooter";
 
 	// private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
@@ -191,6 +192,9 @@ public class DataBaseAdapter {
 
 	private String[] commentInPost = { "Id", "Desc", "PostId", "UserId",
 			"Date", "CommentId", "Seen" };
+
+	private String[] AnadFooter = { "Id", "Image", "ObjectId", "Date",
+			"TypeId", "Seen", "Submit", "ImageServerDate" };
 
 	private final Context mContext;
 	private SQLiteDatabase mDb;
@@ -497,8 +501,7 @@ public class DataBaseAdapter {
 	}
 
 	public void insertCommentInFroumtoDb(int id, String description,
-			int Froumid, int userid, String datetime, int commentid,
-			String numofDisLike, String numoflike) {
+			int Froumid, int userid, String datetime, int commentid) {
 
 		ContentValues cv = new ContentValues();
 		cv.put("Id", id);

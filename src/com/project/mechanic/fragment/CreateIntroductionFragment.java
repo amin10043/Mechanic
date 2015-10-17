@@ -419,7 +419,7 @@ public class CreateIntroductionFragment extends Fragment implements
 			}
 		});
 		
-		util.ShowFooterAgahi(getActivity() , false);
+		util.ShowFooterAgahi(getActivity() , false , 1);
 
 
 		return view;

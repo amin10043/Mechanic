@@ -326,6 +326,8 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 			}
 		});
 
+		util.ShowFooterAgahi(getActivity(), true, 3);
+
 		return view;
 	}
 

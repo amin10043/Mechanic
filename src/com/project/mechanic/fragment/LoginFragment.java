@@ -152,7 +152,7 @@ public class LoginFragment extends Fragment implements CommInterface,
 			}
 		});
 		
-		 util.ShowFooterAgahi(getActivity(), false);
+		util.ShowFooterAgahi(getActivity() , false , 1);
 		 
 
 		return view;

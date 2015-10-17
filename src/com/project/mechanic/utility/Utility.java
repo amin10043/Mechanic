@@ -10,8 +10,12 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
@@ -21,6 +25,7 @@ import android.app.ActivityManager.RunningTaskInfo;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,25 +41,34 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.WelcomeScreen;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.UpdatingAllDetail;
 import com.project.mechanic.service.UpdatingAllMaster;
@@ -77,6 +91,11 @@ public class Utility implements AsyncInterface {
 	int state = 0;
 	ServerDate date;
 	public String todayDate;
+	int currentimageindex = 0;
+	Handler mHandler1, mHandler2;
+
+	Runnable run1;
+	int flagSlide;
 
 	public Utility(Context context) {
 		this.context = context;
@@ -859,14 +878,91 @@ public class Utility implements AsyncInterface {
 		return ret;
 	}
 
-	public void ShowFooterAgahi(Activity activity, boolean IsShow) {
-		RelativeLayout rl = (RelativeLayout) activity
-				.findViewById(R.id.footerAgahi);
-		if (IsShow == true)
-			rl.setVisibility(View.VISIBLE);
-		else
-			rl.setVisibility(View.GONE);
+	public ImageView ShowFooterAgahi(Activity activity, boolean IsShow,
+			final int Type) {
 
+		// type = 1 >>>>> main fragment
+		// type = 2 >>>>> main brand fragment & object fragment
+		// type = 3 >>>>> froum fragment
+		// type = 4 >>>>> paper fragment
+
+		ViewFlipper vf = (ViewFlipper) activity.findViewById(R.id.footerAgahi);
+		RelativeLayout la = (RelativeLayout) activity
+				.findViewById(R.id.getCommentLayout);
+
+		ImageView send = (ImageView) activity.findViewById(R.id.sendComment);
+		EditText comment = (EditText) activity.findViewById(R.id.inputComment);
+
+		ImageView img1 = (ImageView) activity.findViewById(R.id.img1);
+		ImageView img2 = (ImageView) activity.findViewById(R.id.img2);
+
+		ImageView img3 = (ImageView) activity.findViewById(R.id.img3);
+
+		if (IsShow == true) {
+			vf.setVisibility(View.VISIBLE);
+
+			switch (Type) {
+
+			case 1: {
+				la.setVisibility(View.GONE);
+
+				img1.setBackgroundResource(R.drawable.slide1);
+
+				img2.setBackgroundResource(R.drawable.slide2);
+
+				img3.setBackgroundResource(R.drawable.slide3);
+				break;
+			}
+			case 2: {
+				la.setVisibility(View.GONE);
+
+				img1.setBackgroundResource(R.drawable.slide4);
+
+				img2.setBackgroundResource(R.drawable.slide5);
+
+				img3.setBackgroundResource(R.drawable.slide6);
+				break;
+
+			}
+			case 3: {
+				if (getCurrentUser() != null)
+					la.setVisibility(View.VISIBLE);
+				vf.setVisibility(View.GONE);
+
+				// img1.setBackgroundResource(R.drawable.slide4);
+				//
+				// img2.setBackgroundResource(R.drawable.slide5);
+				//
+				// img3.setBackgroundResource(R.drawable.slide6);
+				break;
+
+			}
+			case 4: {
+				if (getCurrentUser() != null)
+					la.setVisibility(View.VISIBLE);
+				vf.setVisibility(View.GONE);
+
+				// img1.setBackgroundResource(R.drawable.slide4);
+				//
+				// img2.setBackgroundResource(R.drawable.slide5);
+				//
+				// img3.setBackgroundResource(R.drawable.slide6);
+				break;
+
+			}
+			default:
+				break;
+			}
+
+			vf.setAutoStart(true);
+			vf.setFlipInterval(4000);
+			vf.startFlipping();
+		} else {
+			vf.setVisibility(View.GONE);
+			la.setVisibility(View.GONE);
+
+		}
+		return send;
 	}
 
 	public Typeface SetFontCasablanca() {
@@ -876,5 +972,42 @@ public class Utility implements AsyncInterface {
 
 		return typeFace;
 
+	}
+
+	public String inputComment(Activity activity) {
+
+		EditText comment = (EditText) activity.findViewById(R.id.inputComment);
+		String content = comment.getText().toString();
+
+		return content;
+	}
+
+	public void ToEmptyComment(Activity activity) {
+
+		EditText comment = (EditText) activity.findViewById(R.id.inputComment);
+		comment.setText("");
+	}
+
+	public void ReplyLayout(Activity activity, String text, boolean isShow) {
+
+		TextView reply = (TextView) activity.findViewById(R.id.reply);
+		RelativeLayout layout = (RelativeLayout) activity
+				.findViewById(R.id.replyLayout);
+
+		if (isShow == true) {
+			layout.setVisibility(View.VISIBLE);
+			reply.setText(text);
+		} else {
+			reply.setText("");
+			layout.setVisibility(View.GONE);
+
+		}
+	}
+
+	public ImageView deleteReply(Activity activity) {
+
+		ImageView delete = (ImageView) activity.findViewById(R.id.deleteReply);
+
+		return delete;
 	}
 }

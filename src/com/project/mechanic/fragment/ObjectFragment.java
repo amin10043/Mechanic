@@ -255,7 +255,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 
 			}
 		});
-		util.ShowFooterAgahi(getActivity() , true);
+		util.ShowFooterAgahi(getActivity() , true , 2);
 
 
 		return view;

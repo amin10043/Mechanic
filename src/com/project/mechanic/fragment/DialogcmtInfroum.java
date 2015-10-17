@@ -122,7 +122,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 
 				dbadapter.insertCommentInFroumtoDb(id, Cmttxt.getText()
 						.toString(), Froumid, currentUser.getId(), serverDate,
-						Commentid, "0", "0");
+						Commentid);
 
 				dbadapter.close();
 				// از پرینفسس استفده شده در زیر برای پیدا کردن آیدی گروه کامنت

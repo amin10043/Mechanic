@@ -206,6 +206,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 				}
 			}
 		});
+		utility.ShowFooterAgahi(getActivity(), true, 1);
 
 		return view;
 	}

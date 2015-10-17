@@ -149,7 +149,6 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 		lstNews.addHeaderView(header);
 		lstNews.setAdapter(PaperListadapter);
 
-
 		txtname.setText(u.getName());
 
 		txttitle.setText(p.getTitle());
@@ -214,15 +213,15 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 			}
 		});
 
-//		if (mylist != null && !mylist.isEmpty()) {
-//			// lstNews.addHeaderView(header);
-//			lstNews = (ListView) view.findViewById(R.id.listViewnewspaper);
-//			PaperListadapter = new PaperListAdapter(getActivity(),
-//					R.layout.raw_papercmt, subList, PaperFragment.this);
-//
-//			lstNews.setAdapter(PaperListadapter);
-//
-//		}
+		// if (mylist != null && !mylist.isEmpty()) {
+		// // lstNews.addHeaderView(header);
+		// lstNews = (ListView) view.findViewById(R.id.listViewnewspaper);
+		// PaperListadapter = new PaperListAdapter(getActivity(),
+		// R.layout.raw_papercmt, subList, PaperFragment.this);
+		//
+		// lstNews.setAdapter(PaperListadapter);
+		//
+		// }
 
 		final SharedPreferences realizeIdPaper = getActivity()
 				.getSharedPreferences("Id", 0);
@@ -337,6 +336,8 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 				}
 			}
 		});
+
+		util.ShowFooterAgahi(getActivity(), true, 4);
 
 		return view;
 

@@ -58,7 +58,7 @@ public class City3Fragment extends Fragment {
 
 		lstCity3.setAdapter(ListAdapter);
 
-		util.ShowFooterAgahi(getActivity(), false);
+		util.ShowFooterAgahi(getActivity() , false , 1);
 
 		return view;
 	}

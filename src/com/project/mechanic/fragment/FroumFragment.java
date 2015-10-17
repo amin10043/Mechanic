@@ -75,9 +75,9 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 	int IDcurrentUser;
 	// PersianDate date;
 	Utility util;
-	int id;
+	int id, gp;
 	Users user;
-	int userId;
+	int userId, commentId = 0;
 
 	Saving saving;
 	Deleting deleting;
@@ -96,6 +96,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 	ServiceComm service;
 	UpdatingImage updating;
 	Map<String, String> maps;
+	boolean LikeOrComment; // like == true & comment == false
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -186,8 +187,8 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 		countLike.setText(adapter.LikeInFroum_count(froumid).toString());
 		dateTopic.setText(util.getPersianDate(topics.getDate()));
 
-//		titletxt.setTypeface(util.SetFontCasablanca());
-//		descriptiontxt.setTypeface(util.SetFontCasablanca());
+		// titletxt.setTypeface(util.SetFontCasablanca());
+		// descriptiontxt.setTypeface(util.SetFontCasablanca());
 
 		profileImg.setOnClickListener(new View.OnClickListener() {
 
@@ -341,6 +342,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 					date = new ServerDate(getActivity());
 					date.delegate = FroumFragment.this;
 					date.execute("");
+					LikeOrComment = true;
 
 				}
 				adapter.close();
@@ -397,11 +399,43 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
+		ImageView send = util.ShowFooterAgahi(getActivity(), true, 3);
+
+		send.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				date = new ServerDate(getActivity());
+				date.delegate = FroumFragment.this;
+				date.execute("");
+				LikeOrComment = false;
+
+				util.ReplyLayout(getActivity(), "", false);
+
+			}
+		});
+		ImageView delete = util.deleteReply(getActivity());
+
+		delete.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				util.ReplyLayout(getActivity(), "", false);
+
+			}
+		});
+
 		return view;
 	}
 
 	public int getFroumId() {
 		return id;
+	}
+
+	public int groupPosition(int groupPosition) {
+		gp = groupPosition;
+		return gp;
 	}
 
 	public int getDipsFromPixel(float pixels) {
@@ -445,6 +479,10 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 	}
 
+	public void CommentId(int Id) {
+		commentId = Id;
+	}
+
 	public void expanding(int groupPosition) {
 		adapter.open();
 
@@ -466,12 +504,14 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 				froumid);
 		exadapter.notifyDataSetChanged();
 		exlistview.setAdapter(exadapter);
+		if (groupPosition <= mapCollection.size()) {
+			exlistview.expandGroup(groupPosition);
+			exlistview.setSelectedGroup(groupPosition);
 
-		exlistview.expandGroup(groupPosition);
+		}
 		adapter.close();
 
 		// exlistview.setSelectedChild(groupPosition, 1, condition);
-		exlistview.setSelectedGroup(groupPosition);
 
 	}
 
@@ -482,23 +522,41 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 		int id = -1;
 		try {
 			id = Integer.valueOf(output);
-			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid)) {
-				adapter.deleteLikeFromFroum(CurrentUser.getId(), froumid);
-				likeTopic.setBackgroundResource(R.drawable.like_off);
-				count.setBackgroundResource(R.drawable.count_like_off);
 
-				countLike
-						.setText(adapter.LikeInFroum_count(froumid).toString());
+			if (LikeOrComment == true) {
+				if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid)) {
+					adapter.deleteLikeFromFroum(CurrentUser.getId(), froumid);
+					likeTopic.setBackgroundResource(R.drawable.like_off);
+					count.setBackgroundResource(R.drawable.count_like_off);
+
+					countLike.setText(adapter.LikeInFroum_count(froumid)
+							.toString());
+				} else {
+					adapter.insertLikeInFroumToDb(id, CurrentUser.getId(),
+							froumid, serverDate, 0);
+					likeTopic.setBackgroundResource(R.drawable.like_on);
+					count.setBackgroundResource(R.drawable.count_like);
+
+					countLike.setText(adapter.LikeInFroum_count(froumid)
+							.toString());
+				}
 			} else {
-				adapter.insertLikeInFroumToDb(id, CurrentUser.getId(), froumid,
-						serverDate, 0);
-				likeTopic.setBackgroundResource(R.drawable.like_on);
-				count.setBackgroundResource(R.drawable.count_like);
+				adapter.open();
 
-				countLike
-						.setText(adapter.LikeInFroum_count(froumid).toString());
+				adapter.insertCommentInFroumtoDb(id,
+						util.inputComment(getActivity()), froumid,
+						CurrentUser.getId(), serverDate, commentId);
+
+				adapter.close();
+				util.ToEmptyComment(getActivity());
+				if (commentId == 0)
+					expanding(exadapter.getGroupCount());
+				else {
+					expanding(gp);
+
+				}
+
 			}
-
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
@@ -509,47 +567,91 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 				serverDate = output;
 
-				if (check == true) {
-					getUserFromServer(missedIds, controller);
-					return;
-				}
+				if (LikeOrComment == false) {
 
-				if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid)) {
-
-					params = new LinkedHashMap<String, String>();
 					if (getActivity() != null) {
-
-						deleting = new Deleting(getActivity());
-						deleting.delegate = FroumFragment.this;
-
-						params.put("TableName", "LikeInFroum");
-						params.put("UserId",
-								String.valueOf(CurrentUser.getId()));
-						params.put("FroumId", String.valueOf(froumid));
-
-						deleting.execute(params);
-					}
-				} else {
-					params = new LinkedHashMap<String, String>();
-					if (getActivity() != null) {
+						params = new LinkedHashMap<String, String>();
 
 						saving = new Saving(getActivity());
 						saving.delegate = FroumFragment.this;
 
-						params.put("TableName", "LikeInFroum");
+						params.put("TableName", "CommentInFroum");
 
+						params.put("Desk", util.inputComment(getActivity()));
+						params.put("FroumId", String.valueOf(froumid));
 						params.put("UserId",
 								String.valueOf(CurrentUser.getId()));
-						params.put("FroumId", String.valueOf(froumid));
-						params.put("CommentId", "0");
+						params.put("CommentId", String.valueOf(commentId));
+
 						params.put("Date", output);
+						params.put("ModifyDate", output);
 						params.put("IsUpdate", "0");
 						params.put("Id", "0");
 
 						saving.execute(params);
 					}
-				}
+					ringProgressDialog = ProgressDialog.show(getActivity(), "",
+							"لطفا منتظر بمانید...", true);
 
+					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
+
+				} else {
+
+					if (check == true) {
+						getUserFromServer(missedIds, controller);
+						return;
+					}
+
+					if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid)) {
+
+						params = new LinkedHashMap<String, String>();
+						if (getActivity() != null) {
+
+							deleting = new Deleting(getActivity());
+							deleting.delegate = FroumFragment.this;
+
+							params.put("TableName", "LikeInFroum");
+							params.put("UserId",
+									String.valueOf(CurrentUser.getId()));
+							params.put("FroumId", String.valueOf(froumid));
+
+							deleting.execute(params);
+						}
+					} else {
+						params = new LinkedHashMap<String, String>();
+						if (getActivity() != null) {
+
+							saving = new Saving(getActivity());
+							saving.delegate = FroumFragment.this;
+
+							params.put("TableName", "LikeInFroum");
+
+							params.put("UserId",
+									String.valueOf(CurrentUser.getId()));
+							params.put("FroumId", String.valueOf(froumid));
+							params.put("CommentId", "0");
+							params.put("Date", output);
+							params.put("IsUpdate", "0");
+							params.put("Id", "0");
+
+							saving.execute(params);
+						}
+					}
+				}
 			} else {
 				Toast.makeText(getActivity(),
 						"خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT)

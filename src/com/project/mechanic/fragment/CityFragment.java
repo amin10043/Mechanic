@@ -61,7 +61,7 @@ public class CityFragment extends Fragment {
 		// SharedPreferences sendData = getActivity().getSharedPreferences(
 		// "Id", 0);
 		// int id = sendData.getInt("main_Id", -1);
-		util.ShowFooterAgahi(getActivity() , false);
+		util.ShowFooterAgahi(getActivity() , false , 1);
 
 		return view;
 	}

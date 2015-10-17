@@ -47,7 +47,7 @@ public class CountryFragment extends Fragment {
 
 		lstCountry.setAdapter(ListAdapter);
 		
-		utility.ShowFooterAgahi(getActivity() , false);
+		utility.ShowFooterAgahi(getActivity() , false , 1);
 
 		return view;
 	}

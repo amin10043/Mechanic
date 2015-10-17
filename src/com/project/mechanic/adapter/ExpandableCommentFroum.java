@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -72,7 +73,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 	ImageView reportComment, reportReply;
 	String serverDate = "";
 	ServerDate date;
-
+	CommentInFroum reply;
+	CommentInFroum comment;
 	public ExpandableCommentFroum(Context context,
 			ArrayList<CommentInFroum> laptops,
 			Map<CommentInFroum, List<CommentInFroum>> mapCollection,
@@ -100,8 +102,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 	public View getChildView(final int groupPosition, final int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
-		CommentInFroum reply = (CommentInFroum) getChild(groupPosition,
-				childPosition);
+		reply = (CommentInFroum) getChild(groupPosition, childPosition);
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		if (convertView == null) {
@@ -241,8 +242,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 			View convertView, ViewGroup parent) {
 
 		adapter.open();
-
-		final CommentInFroum comment = cmt.get(groupPosition);
+		if (groupPosition <= cmt.size())
+			comment = cmt.get(groupPosition);
 		final Users x = adapter.getUserbyid(comment.getUserid());
 		// userId= x.getId();
 		adapter.close();
@@ -640,15 +641,21 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 							commentid = listItem.getId();
 						}
 					}
-					final SharedPreferences groupId = context
-							.getSharedPreferences("Id", 0);
 
-					groupId.edit().putInt("main_Id", groupPosition).commit();
+					f.CommentId(commentid);
+					f.groupPosition(groupPosition);
+					util.ReplyLayout((Activity) context, mainComment.getText()
+							.toString(), true);
 
-					DialogcmtInfroum dialog = new DialogcmtInfroum(f,
-							commentid, context, froumID,
-							R.layout.dialog_addcomment, 3);
-					dialog.show();
+					// final SharedPreferences groupId = context
+					// .getSharedPreferences("Id", 0);
+					//
+					// groupId.edit().putInt("main_Id", groupPosition).commit();
+					//
+					// DialogcmtInfroum dialog = new DialogcmtInfroum(f,
+					// commentid, context, froumID,
+					// R.layout.dialog_addcomment, 3);
+					// dialog.show();
 
 					adapter.close();
 				}

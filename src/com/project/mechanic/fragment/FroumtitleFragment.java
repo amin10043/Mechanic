@@ -245,6 +245,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			}
 		});
 
+		util.ShowFooterAgahi(getActivity(), true, 1);
 		return view;
 	}
 
