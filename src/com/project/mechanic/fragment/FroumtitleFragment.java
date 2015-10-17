@@ -153,11 +153,6 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 			@Override
 			public void onRefresh() {
-				// Toast.makeText(getActivity(), "کد آپدیت اضافه شود",
-				// 0).show();
-				//
-				// swipeLayout.setRefreshing(false);
-
 				if (getActivity() != null) {
 
 					update = new Updating(getActivity());
@@ -204,13 +199,11 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			public void onScrollStateChanged(AbsListView arg0, int arg1) {
 				switch (arg1) {
 				case SCROLL_STATE_TOUCH_SCROLL: {
-
 					action.hide(true);
 				}
 					break;
 				case SCROLL_STATE_IDLE: {
 					action.show(true);
-
 					break;
 				}
 				}
@@ -248,31 +241,6 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		util.ShowFooterAgahi(getActivity(), true, 1);
 		return view;
 	}
-
-	// @Override
-	// public void onCreateContextMenu(ContextMenu menu, View v,
-	// ContextMenuInfo menuInfo) {
-	// super.onCreateContextMenu(menu, v, menuInfo);
-	//
-	// menu.setHeaderTitle("Select The Action");
-	// menu.add(0, v.getId(), 0, "Call");// groupId, itemId, order, title
-	// menu.add(0, v.getId(), 0, "SMS");
-	// }
-	//
-	// @Override
-	// public boolean onContextItemSelected(MenuItem item) {
-	// if (item.getTitle() == "Call") {
-	// Toast.makeText(getActivity(), "calling code", Toast.LENGTH_LONG)
-	// .show();
-	// } else if (item.getTitle() == "SMS") {
-	// Toast.makeText(getActivity(), "sending sms code", Toast.LENGTH_LONG)
-	// .show();
-	// } else {
-	// return false;
-	// }
-	// return true;
-	//
-	// }
 
 	public void updateView() {
 		mdb.open();
