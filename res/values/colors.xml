@@ -24,5 +24,6 @@
     <color name="header_blue">#517ab6</color>
     <color name="bl">#39619c</color>
     <color name="lightred">#f05656</color>
-
+    <color name="header">#306098</color>
+    
 </resources>

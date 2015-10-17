@@ -440,7 +440,7 @@ public class DataBaseAdapter {
 			uc.put("FroumId", FroumId);
 			uc.put("CommentId", CommentId);
 			uc.put("Date", Date);
-			uc.put("Seen", 1);
+			uc.put("Seen", 0);
 
 			mDb.insert(TableLikeInFroum, null, uc);
 		}
@@ -510,7 +510,7 @@ public class DataBaseAdapter {
 		cv.put("FroumID", Froumid);
 		cv.put("Date", datetime);
 		cv.put("CommentId", commentid);
-		cv.put("Seen", 1);
+		cv.put("Seen", 0);
 
 		mDb.insert(TableCommentInFroum, null, cv);
 	}
