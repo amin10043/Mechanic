@@ -332,13 +332,19 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 			@Override
 			public void onClick(View arg0) {
-				date = new ServerDate(getActivity());
-				date.delegate = FroumWithoutComment.this;
-				date.execute("");
-				LikeOrComment = false;
 
-				util.ReplyLayout(getActivity(), "", false);
+				if ("".equals(util.inputComment(getActivity()))) {
+					Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
+							.show();
+				} else {
+					date = new ServerDate(getActivity());
+					date.delegate = FroumWithoutComment.this;
+					date.execute("");
+					LikeOrComment = false;
 
+					util.ReplyLayout(getActivity(), "", false);
+
+				}
 			}
 		});
 		ImageView delete = util.deleteReply(getActivity());
@@ -414,7 +420,6 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 					final SharedPreferences realizeIdComment = getActivity()
 							.getSharedPreferences("Id", 0);
 					realizeIdComment.edit().putInt("main_Id", 1371).commit();
-
 
 				}
 
