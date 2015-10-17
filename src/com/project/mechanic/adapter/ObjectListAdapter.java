@@ -1,5 +1,6 @@
 package com.project.mechanic.adapter;
 
+import java.util.Calendar;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -7,7 +8,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,11 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.webkit.WebView.FindListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -54,6 +51,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 	boolean IsShow;
 	String DateTime;
 	int Type;
+	int etebarDay = 365; // constant for agahi
 
 	public ObjectListAdapter(Context context, int resource,
 			List<Object> objact, Fragment fr, boolean IsShow, String DateTime,
@@ -94,7 +92,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 				.findViewById(R.id.progressBar1);
 
 		txt1.setText(person.getName());
-	
+
 		txt1.setTypeface(util.SetFontCasablanca());
 		rating = (RatingBar) convertView.findViewById(R.id.ratingBar1);
 
@@ -161,28 +159,28 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		visitIcon.setLayoutParams(paramsVisit);
 
 		TextView baghiMandeh = (TextView) convertView
-				.findViewById(R.id.dayBaghiMandeh);
+				.findViewById(R.id.dayBaghiMandeh); // modate baghimande
 
-		String commitDate = person.getDate();
+		String commitDate = person.getDate(); // tarikhe ijad safhe
 
-		// if (commitDate != null) {
-		//
-		// int thisDay = 0;
-		// int objectYear = 0;
-		//
-		// int subCommited = Integer.valueOf(commitDate.substring(0, 8));
-		// int subCurrent = Integer.valueOf(DateTime.substring(0, 8));
-		//
-		// objectYear = Integer.valueOf(commitDate.substring(0, 4));
-		//
-		// String finishDate = String.valueOf(objectYear + 1)
-		// + commitDate.substring(4, 8);
-		// int a = Integer.valueOf(finishDate) - subCurrent;
-		// thisDay = Integer.valueOf(DateTime.substring(0, 8));
-		// baghiMandeh.setText(a + "");
-		//
-		// }
+		if (commitDate != null && !"".equals(commitDate)) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(Long.valueOf(commitDate));
+			calendar.add(Calendar.YEAR, 1);
 
+			final SharedPreferences currentTime = context.getSharedPreferences(
+					"time", 0);
+
+			String time = currentTime.getString("time", "-1");
+
+			Calendar calendarNow = Calendar.getInstance();
+			calendarNow.setTimeInMillis(Long.valueOf(time));
+			int diff = calendarNow.compareTo(calendar);
+
+			baghiMandeh.setText(String.valueOf(diff));
+		} else {
+			baghiMandeh.setText("نا معلوم");
+		}
 		convertView.setOnLongClickListener(new OnLongClickListener() {
 
 			@Override
@@ -251,10 +249,10 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 			}
 
 		});
-//		final Animation animSideDown = AnimationUtils.loadAnimation(context,
-//				R.anim.slide_down);
-//		
-//		convertView.setAnimation(animSideDown);
+		// final Animation animSideDown = AnimationUtils.loadAnimation(context,
+		// R.anim.slide_down);
+		//
+		// convertView.setAnimation(animSideDown);
 
 		return convertView;
 	}
