@@ -379,11 +379,6 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 					.findViewById(R.id.liketitleTopic);
 
 			adapter.open();
-			TextView likeCountFroum = (TextView) likeTitle
-					.findViewById(R.id.countLikeInFroumTitle);
-			likeCountFroum.setText(adapter.LikeInFroum_count(froumNumber)
-					.toString());
-
 			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
 				adapter.deleteLikeFromFroum(CurrentUser.getId(), froumNumber);
 
@@ -395,6 +390,12 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				likeTitle.setBackgroundResource(R.drawable.like_froum);
 			}
+
+			TextView likeCountFroum = (TextView) likeTitle
+					.findViewById(R.id.countLikeInFroumTitle);
+			likeCountFroum.setText(adapter.LikeInFroum_count(froumNumber)
+					.toString());
+
 			adapter.close();
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
