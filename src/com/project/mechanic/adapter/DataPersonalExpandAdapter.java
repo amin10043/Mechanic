@@ -31,7 +31,6 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public int getChildTypeCount() {
-		// TODO Auto-generated method stub
 		return 2;// super.getChildTypeCount();
 	}
 
