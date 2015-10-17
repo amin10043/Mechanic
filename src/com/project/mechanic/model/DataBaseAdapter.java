@@ -2,7 +2,6 @@ package com.project.mechanic.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -34,6 +33,7 @@ import com.project.mechanic.entity.NewsPaper;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.PersonalData;
+import com.project.mechanic.entity.Post;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.SubAdmin;
@@ -112,6 +112,10 @@ public class DataBaseAdapter {
 			"Type" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen",
 			"ServerDate", "Submit", "Date", "SeenBefore" };
+
+	private String[] Post = { "ID", "UserId", "Title", "Description", "Seen",
+			"ServerDate", "Submit", "Date", "SeenBefore" };
+
 	// private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date",
 			"CommentId", "Seen" };
@@ -1311,7 +1315,14 @@ public class DataBaseAdapter {
 				cursor.getString(5), cursor.getInt(6), cursor.getString(7),
 				cursor.getInt(8));
 		return tempForum;
+	}
 
+	private Post CursorToPost(Cursor cursor) {
+		Post tempPost = new Post(cursor.getInt(0), cursor.getInt(1),
+				cursor.getString(2), cursor.getString(3), cursor.getInt(4),
+				cursor.getString(5), cursor.getInt(6), cursor.getString(7),
+				cursor.getInt(8));
+		return tempPost;
 	}
 
 	private Paper CursorToPaper(Cursor cursor) {
@@ -1993,6 +2004,18 @@ public class DataBaseAdapter {
 		ArrayList<Froum> result = new ArrayList<Froum>();
 		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
 				null);
+		while (cursor.moveToNext()) {
+			result.add(CursorToFroum(cursor));
+		}
+
+		Collections.sort(result);
+		return result;
+	}
+
+	public ArrayList<Froum> getAllPost() {
+		ArrayList<Froum> result = new ArrayList<Froum>();
+		Cursor cursor = mDb
+				.query(TablePost, Post, null, null, null, null, null);
 		while (cursor.moveToNext()) {
 			result.add(CursorToFroum(cursor));
 		}
