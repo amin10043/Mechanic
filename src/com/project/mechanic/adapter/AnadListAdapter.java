@@ -162,9 +162,9 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 			}
 		}
 
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		txtName.setTypeface(typeFace);
+		
+		txtName.setTypeface(util.SetFontCasablanca());
+		txtDesc.setTypeface(util.SetFontCasablanca());
 
 		ImageView reaport = (ImageView) convertView
 				.findViewById(R.id.reportImage);

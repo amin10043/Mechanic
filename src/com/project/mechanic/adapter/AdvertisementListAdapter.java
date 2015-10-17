@@ -66,7 +66,7 @@ public class AdvertisementListAdapter extends ArrayAdapter<TicketType> {
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getDesc());
 
-		txtName.setTypeface(util.setFont());
+		txtName.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
 

@@ -23,6 +23,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class City3ListAdapter extends ArrayAdapter<City> {
 
@@ -30,6 +31,7 @@ public class City3ListAdapter extends ArrayAdapter<City> {
 	List<City> list;
 	int lastPosition = 0;
 	DataBaseAdapter adapter;
+	Utility util;
 
 	public City3ListAdapter(Context context, int resource, List<City> objact) {
 		super(context, resource, objact);
@@ -37,6 +39,7 @@ public class City3ListAdapter extends ArrayAdapter<City> {
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
+		util = new Utility(context);
 
 	}
 
@@ -60,9 +63,8 @@ public class City3ListAdapter extends ArrayAdapter<City> {
 		final City city = list.get(position);
 
 		txt1.setText(city.getName());
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		txt1.setTypeface(typeFace);
+		
+		txt1.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
 

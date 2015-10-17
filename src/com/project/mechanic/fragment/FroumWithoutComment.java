@@ -149,6 +149,9 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 				profileImg.setLayoutParams(lp);
 			}
 		}
+		
+//		titletxt.setTypeface(util.SetFontCasablanca());
+//		descriptiontxt.setTypeface(util.SetFontCasablanca());
 		profileImg.setOnClickListener(new View.OnClickListener() {
 
 			@Override

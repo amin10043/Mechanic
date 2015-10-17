@@ -22,6 +22,7 @@ import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.fragment.AdvertisementFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class ShopListAdapter extends ArrayAdapter<Province> {
 
@@ -29,6 +30,7 @@ public class ShopListAdapter extends ArrayAdapter<Province> {
 	List<Province> list;
 	DataBaseAdapter adapter;
 	int lastPosition = 0;
+	Utility util;
 
 	public ShopListAdapter(Context context, int resource, List<Province> objact) {
 		super(context, resource, objact);
@@ -36,6 +38,7 @@ public class ShopListAdapter extends ArrayAdapter<Province> {
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
+		util = new Utility(context);
 	}
 
 	@SuppressLint("ViewHolder")
@@ -61,9 +64,8 @@ public class ShopListAdapter extends ArrayAdapter<Province> {
 		Province province = list.get(position);
 
 		tx1.setText(province.getName());
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		tx1.setTypeface(typeFace);
+		
+		tx1.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
 

@@ -23,6 +23,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.NewsPaper;
 import com.project.mechanic.fragment.UrlNewsPaperFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class NewspaperAdapter extends ArrayAdapter<NewsPaper> {
 
@@ -33,6 +34,7 @@ public class NewspaperAdapter extends ArrayAdapter<NewsPaper> {
 	int lastPosition = 0;
 	int TypeId;
 	public ProgressDialog ringProgressDialog1;
+	Utility util;
 
 	public NewspaperAdapter(Context context, int resource,
 			List<NewsPaper> objact, int id) {
@@ -42,6 +44,7 @@ public class NewspaperAdapter extends ArrayAdapter<NewsPaper> {
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
 		this.TypeId = id;
+		util = new Utility(context);
 	}
 
 	@SuppressLint("ViewHolder")
@@ -73,9 +76,7 @@ public class NewspaperAdapter extends ArrayAdapter<NewsPaper> {
 		// tx1.setText(tempItem.getId());
 		// tx2.setText(tempItem.getId());
 
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		tx1.setTypeface(typeFace);
+		tx1.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
 

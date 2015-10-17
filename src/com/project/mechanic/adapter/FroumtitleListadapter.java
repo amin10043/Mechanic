@@ -114,10 +114,14 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		report = (ImageView) convertView.findViewById(R.id.reportImage);
 
 		Froum person1 = mylist.get(position);
+		
+		txt1.setTypeface(util.SetFontCasablanca());
+		txt2.setTypeface(util.SetFontCasablanca());
 
 		adapter.open();
-
 		Users x = adapter.getUserbyid(person1.getUserId());
+		adapter.close();
+
 		CurrentUser = util.getCurrentUser();
 
 		if (person1.getSeenBefore() > 0) {
@@ -131,12 +135,16 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		txt2.setText(person1.getDescription() + " ...");
 
 		// txt2.setText(person1.getDescription());
+		
+		adapter.open();
+
 		if (x != null)
 			txt3.setText(x.getName());
 		countcommentfroum.setText(adapter.CommentInFroum_count(person1.getId())
 				.toString());
 		countLikeFroum.setText(adapter.LikeInFroum_count(person1.getId())
 				.toString());
+		adapter.close();
 
 		dateTopic.setText(util.getPersianDate(person1.getDate()));
 
@@ -152,6 +160,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				froumNumber = ItemId = listItem.getId();
 			}
 		}
+		adapter.open();
+
 		countLikeFroum.setText(adapter.LikeInFroum_count(ItemId).toString());
 
 		if (CurrentUser == null) {
@@ -163,6 +173,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			} else
 				LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
 		}
+		adapter.close();
 
 		RelativeLayout rl = (RelativeLayout) convertView
 				.findViewById(R.id.topicTitleFroum);
@@ -186,10 +197,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 						50));
 
 				profileImg.setLayoutParams(lp);
-				adapter.close();
 			}
 		}
-		adapter.close();
 		// ////////////////////////////////////
 		profileImg.setOnClickListener(new View.OnClickListener() {
 

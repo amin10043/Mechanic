@@ -23,6 +23,7 @@ import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Executertype;
 import com.project.mechanic.fragment.ObjectFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
 
@@ -31,6 +32,7 @@ public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
 	DataBaseAdapter adapter;
 	int lastPosition = 0;
 	int cityId;
+	Utility util;
 
 	public ExecutertypeListAdapter(Context context, int resource,
 			List<Executertype> objact, int cityId) {
@@ -40,6 +42,7 @@ public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
 		this.cityId = cityId;
+		util = new Utility(context);
 	}
 
 	@SuppressLint("ViewHolder")
@@ -67,9 +70,8 @@ public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
 		Executertype Executertype = list.get(position);
 
 		tx1.setText(Executertype.getName());
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		tx1.setTypeface(typeFace);
+
+		tx1.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
 
@@ -88,7 +90,7 @@ public class ExecutertypeListAdapter extends ArrayAdapter<Executertype> {
 				Fragment move = new ObjectFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("advisorId",
-						String.valueOf(Executertype.getId()+"4"));
+						String.valueOf(Executertype.getId() + "4"));
 
 				bundle.putString("cityId", String.valueOf(cityId));
 				move.setArguments(bundle);

@@ -11,6 +11,7 @@ encoding//src/com/project/mechanic/WelcomeScreen.java=UTF-8
 encoding//src/com/project/mechanic/adapter/AnadImgListAdapter.java=UTF-8
 encoding//src/com/project/mechanic/adapter/CommentObjectNotificationAdapter.java=UTF-8
 encoding//src/com/project/mechanic/adapter/CommentPaperNotificationAdapter.java=UTF-8
+encoding//src/com/project/mechanic/adapter/DataPersonalExpandAdapter.java=UTF-8
 encoding//src/com/project/mechanic/adapter/ExpandIntroduction.java=UTF-8
 encoding//src/com/project/mechanic/adapter/ExpandableCommentFroum.java=UTF-8
 encoding//src/com/project/mechanic/adapter/FavoriteListAdapter.java=UTF-8

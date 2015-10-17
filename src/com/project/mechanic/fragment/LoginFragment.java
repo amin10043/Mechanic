@@ -151,6 +151,9 @@ public class LoginFragment extends Fragment implements CommInterface,
 				dialog.show();
 			}
 		});
+		
+		 util.ShowFooterAgahi(getActivity(), false);
+		 
 
 		return view;
 

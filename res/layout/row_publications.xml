@@ -6,143 +6,133 @@
     android:layout_height="fill_parent"
     android:background="#eeeeee"
     tools:context=".MainActivity" >
-  <ScrollView
+
+    <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_weight="1"        
         android:layout_marginBottom="5dp"
-        android:layout_marginTop="25dp">
+        android:layout_marginTop="25dp"
+        android:layout_weight="1" >
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1"        
+            android:layout_weight="1"
             android:orientation="vertical" >
-          <LinearLayout    
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal" > 
-                    
-             <LinearLayout
-                 android:layout_width="fill_parent"
-                 android:layout_height="fill_parent"
-                 android:layout_marginLeft="10dp"
-                 android:layout_marginRight="5dp"
-                 android:layout_marginTop="10dp"
-                 android:layout_marginBottom="5dp"
-                 android:layout_weight="1"
-                 android:background="@drawable/color1"
-                 android:orientation="vertical" >
 
-              <ImageButton
-               android:id="@+id/imageButton01"
-               android:layout_weight="1" 
-               android:background="#ffffff"
-               android:layout_marginLeft="5dp"
-               android:layout_marginRight="5dp"
-               android:layout_marginTop="5dp"
-               android:layout_marginBottom="5dp"
-               android:layout_width="fill_parent"
-               android:layout_height="fill_parent"
-               android:scaleType="fitXY"
-               android:src="@drawable/news1" /> 
-       
-             </LinearLayout>
-             
-               <LinearLayout
-                 android:layout_width="fill_parent"
-                 android:layout_height="fill_parent"
-                 android:layout_marginLeft="5dp"
-                 android:layout_marginRight="10dp"
-                 android:layout_marginTop="10dp"
-                 android:layout_marginBottom="5dp"
-                 android:layout_weight="1"
-                 android:background="@drawable/color1"
-                 android:orientation="vertical" >
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
 
-              <ImageButton
-               android:id="@+id/imageButton02"
-               android:layout_weight="1" 
-               android:background="#ffffff"
-               android:layout_marginLeft="5dp"
-               android:layout_marginRight="5dp"
-               android:layout_marginTop="5dp"
-               android:layout_marginBottom="5dp"
-               android:layout_width="fill_parent"
-               android:layout_height="fill_parent"
-               android:scaleType="fitXY"
-               android:src="@drawable/news2" /> 
-             </LinearLayout>
-               </LinearLayout>
-            <LinearLayout    
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal" > 
-                    
-             <LinearLayout
-                 android:layout_width="fill_parent"
-                 android:layout_height="fill_parent"
-                 android:layout_marginLeft="10dp"
-                 android:layout_marginRight="5dp"
-                 android:layout_marginTop="10dp"
-                 android:layout_marginBottom="5dp"
-                 android:layout_weight="1"
-                 android:background="@drawable/color1"
-                 android:orientation="vertical" >
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/color1"
+                    android:orientation="vertical" >
 
-              <ImageButton
-               android:id="@+id/imageButton03"
-               android:layout_weight="1" 
-               android:background="#ffffff"
-               android:layout_marginLeft="5dp"
-               android:layout_marginRight="5dp"
-               android:layout_marginTop="5dp"
-               android:layout_marginBottom="5dp"
-               android:layout_width="fill_parent"
-               android:layout_height="fill_parent"
-               android:scaleType="fitXY"
-               android:src="@drawable/news3" /> 
-             
-             </LinearLayout>
-             
-               <LinearLayout
-                 android:layout_width="fill_parent"
-                 android:layout_height="fill_parent"
-                 android:layout_marginLeft="5dp"
-                 android:layout_marginRight="10dp"
-                 android:layout_marginTop="10dp"
-                 android:layout_marginBottom="5dp"
-                 android:layout_weight="1"
-                 android:background="@drawable/color1"
-                 android:orientation="vertical" >
+                    <ImageButton
+                        android:id="@+id/imageButton01"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:background="#ffffff"
+                        android:scaleType="fitXY" />
+                </LinearLayout>
 
-              <ImageButton
-               android:id="@+id/imageButton04"
-               android:layout_weight="1" 
-               android:background="#ffffff"
-               android:layout_marginLeft="5dp"
-               android:layout_marginRight="5dp"
-               android:layout_marginTop="5dp"
-               android:layout_marginBottom="5dp"
-               android:layout_width="fill_parent"
-               android:layout_height="fill_parent"
-               android:scaleType="fitXY"
-               android:src="@drawable/news4" /> 
-       
-             </LinearLayout>
-               </LinearLayout>         
-            
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/color1"
+                    android:orientation="vertical" >
+
+                    <ImageButton
+                        android:id="@+id/imageButton02"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:background="#ffffff"
+                        android:scaleType="fitXY" />
+                </LinearLayout>
             </LinearLayout>
-            
 
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/color1"
+                    android:orientation="vertical" >
+
+                    <ImageButton
+                        android:id="@+id/imageButton03"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:background="#ffffff"
+                        android:scaleType="fitXY" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/color1"
+                    android:orientation="vertical" >
+
+                    <ImageButton
+                        android:id="@+id/imageButton04"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:background="#ffffff"
+                        android:scaleType="fitXY" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
-     
-    
-   </RelativeLayout>
-       
 
+</RelativeLayout>

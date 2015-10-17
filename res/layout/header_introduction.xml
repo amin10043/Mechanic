@@ -14,8 +14,7 @@
             android:id="@+id/headerlinerpageintroduction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:weightSum="2" >
+            android:gravity="center" >
 
             <ImageView
                 android:id="@+id/imgvadvertise_Object"
@@ -748,8 +747,6 @@
             android:id="@+id/footerint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:layout_marginTop="20dp"
             android:gravity="right"
             android:orientation="vertical" >

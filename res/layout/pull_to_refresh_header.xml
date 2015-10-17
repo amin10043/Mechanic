@@ -27,7 +27,6 @@
         android:layout_marginLeft="0dip"
         android:layout_marginRight="0dip"
         android:gravity="center"
-        android:src="@drawable/ic_pulltorefresh_arrow"
         android:visibility="gone" />
 
     <TextView

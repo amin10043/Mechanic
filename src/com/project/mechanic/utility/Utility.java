@@ -44,6 +44,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -856,5 +857,24 @@ public class Utility implements AsyncInterface {
 			}
 		}
 		return ret;
+	}
+
+	public void ShowFooterAgahi(Activity activity, boolean IsShow) {
+		RelativeLayout rl = (RelativeLayout) activity
+				.findViewById(R.id.footerAgahi);
+		if (IsShow == true)
+			rl.setVisibility(View.VISIBLE);
+		else
+			rl.setVisibility(View.GONE);
+
+	}
+
+	public Typeface SetFontCasablanca() {
+
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
+				"fonts/Casablanca.TTF");
+
+		return typeFace;
+
 	}
 }

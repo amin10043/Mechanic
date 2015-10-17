@@ -262,8 +262,8 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
 			// Set refresh view text to the pull label
 			mRefreshViewText.setText("برای بروز رسانی به پایین هل بدهید.");
 			// Replace refresh drawable with arrow drawable
-			mRefreshViewImage
-					.setImageResource(R.drawable.ic_pulltorefresh_arrow);
+//			mRefreshViewImage
+//					.setImageResource(R.drawable.ic_pulltorefresh_arrow);
 			// Clear the full rotation animation
 			mRefreshViewImage.clearAnimation();
 			// Hide progress bar and arrow.

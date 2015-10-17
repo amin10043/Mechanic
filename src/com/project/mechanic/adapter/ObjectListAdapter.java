@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebView.FindListener;
@@ -92,9 +94,8 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 				.findViewById(R.id.progressBar1);
 
 		txt1.setText(person.getName());
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		txt1.setTypeface(typeFace);
+	
+		txt1.setTypeface(util.SetFontCasablanca());
 		rating = (RatingBar) convertView.findViewById(R.id.ratingBar1);
 
 		rating.setRating(person.getRate());
@@ -250,6 +251,11 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 			}
 
 		});
+//		final Animation animSideDown = AnimationUtils.loadAnimation(context,
+//				R.anim.slide_down);
+//		
+//		convertView.setAnimation(animSideDown);
+
 		return convertView;
 	}
 

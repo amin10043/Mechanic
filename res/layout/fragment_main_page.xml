@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#eaeaea"
     android:orientation="vertical"
-    android:weightSum="8" >
+    android:weightSum="7" >
 
     <RelativeLayout
         android:id="@+id/searchV"
@@ -97,6 +97,7 @@
         android:background="#d3dff9" >
 
         <TextView
+            android:id="@+id/lable1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -125,6 +126,7 @@
         android:background="#d3dff9" >
 
         <TextView
+            android:id="@+id/lable2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -154,6 +156,7 @@
         android:background="#d3dff9" >
 
         <TextView
+            android:id="@+id/lable3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -182,6 +185,7 @@
         android:background="#d3dff9" >
 
         <TextView
+            android:id="@+id/lable4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -210,6 +214,7 @@
         android:background="#d3dff9" >
 
         <TextView
+            android:id="@+id/lable5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -238,6 +243,7 @@
         android:background="#d3dff9" >
 
         <TextView
+            android:id="@+id/lable6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -265,6 +271,7 @@
         android:background="#d3dff9" >
 
         <TextView
+            android:id="@+id/lable7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -282,21 +289,6 @@
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:background="@drawable/ic_main_item7" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/relative_item8"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#306098" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="هوشمندانه تبلیغ کنید"
-            android:textColor="@color/white" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -122,14 +122,13 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 		final CommentInObject comment = CommentList.get(groupPosition);
 		Users y = adapter.getUserbyid(comment.getUserid());
 
-		if (y.getImage() == null) {
+		if (y.getImagePath() == null) {
 			ReplyerPic.setImageResource(R.drawable.no_img_profile);
 		} else {
 
-			byte[] byteImageProfile = y.getImage();
+//			byte[] byteImageProfile = y.getImage();
 
-			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
-					byteImageProfile.length);
+			Bitmap bmp = BitmapFactory.decodeFile(y.getImagePath());
 
 			ReplyerPic.setImageBitmap(bmp);
 
@@ -365,14 +364,11 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 		// start... this code for set image of profile
 		adapter.open();
-		if (x.getImage() == null) {
+		if (x.getImagePath() == null) {
 			profileImage.setImageResource(R.drawable.no_img_profile);
 		} else {
 
-			byte[] byteImageProfile = x.getImage();
-
-			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
-					byteImageProfile.length);
+			Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
 
 			profileImage.setImageBitmap(bmp);
 		}

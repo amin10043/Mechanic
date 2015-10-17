@@ -18,12 +18,14 @@ import com.project.mechanic.adapter.CityListAdapter;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.RowMain;
+import com.project.mechanic.utility.Utility;
 
 @SuppressLint("ValidFragment")
 public class CityFragment extends Fragment {
 
 	DataBaseAdapter adapter;
 	List<City> cityList = null;
+	Utility util;
 
 	public CityFragment(List<City> allCity) {
 		super();
@@ -41,7 +43,7 @@ public class CityFragment extends Fragment {
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.city);
 		View view = inflater.inflate(R.layout.fragment_city, null);
-
+		util = new Utility(getActivity());
 		adapter = new DataBaseAdapter(getActivity());
 
 		if (cityList == null) {
@@ -59,6 +61,7 @@ public class CityFragment extends Fragment {
 		// SharedPreferences sendData = getActivity().getSharedPreferences(
 		// "Id", 0);
 		// int id = sendData.getInt("main_Id", -1);
+		util.ShowFooterAgahi(getActivity() , false);
 
 		return view;
 	}

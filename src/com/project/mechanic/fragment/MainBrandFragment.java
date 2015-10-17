@@ -150,19 +150,6 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 				android.R.color.holo_orange_light,
 				android.R.color.holo_red_light);
 
-		RelativeLayout rl = (RelativeLayout) view
-				.findViewById(R.id.tablighRelative);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				rl.getLayoutParams());
-
-		lp.width = (util.getScreenwidth() / 8);
-		lp.height = (util.getScreenwidth() / 8);
-		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		lp.setMargins(5, 5, 5, 5);
-		ImageButton iconCreateTabligh = (ImageButton) view
-				.findViewById(R.id.iconCreateTabligh);
-		iconCreateTabligh.setLayoutParams(lp);
-
 		final FloatingActionButton createItem = (FloatingActionButton) view
 				.findViewById(R.id.fab);
 		final String message = "کاربر گرامی اگر مشخصات برند یا فعالیت شما در این نرم افزار ثبت نشده می توانید با ایجاد صفحه،  فعالیت خود را به سایر کاربران این نرم افزار معرفی نمایید ";
@@ -234,6 +221,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 				}
 			}
 		});
+		util.ShowFooterAgahi(getActivity(), true);
 
 		return view;
 	}
@@ -332,7 +320,8 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 
 	@Override
 	public void CommProcessFinish(String output) {
-		if (output.equals("java.lang.NullPointerException") || output.equals("anyType"))
+		if (output.equals("java.lang.NullPointerException")
+				|| output.equals("anyType"))
 			output = "";
 
 		adapter.open();

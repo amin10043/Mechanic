@@ -61,6 +61,7 @@ import com.project.mechanic.fragment.Province2Fragment;
 import com.project.mechanic.fragment.Province3Fragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.fragment.TitlepaperFragment;
+import com.project.mechanic.fragment.TypeExpertFroum;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.PeriodicTask;
 import com.project.mechanic.utility.Utility;
@@ -95,6 +96,8 @@ public class MainActivity extends FragmentActivity {
 		final ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
 		final TextView txtcm1 = (TextView) findViewById(R.id.txtcm);
 		final TextView txtlike = (TextView) findViewById(R.id.txtlike);
+		
+		ImageView privateChat = (ImageView)findViewById(R.id.private_chat);
 
 		util = new Utility(MainActivity.this);
 		user = util.getCurrentUser();
@@ -116,6 +119,19 @@ public class MainActivity extends FragmentActivity {
 				FragmentTransaction trans = getSupportFragmentManager()
 						.beginTransaction();
 				trans.replace(R.id.content_frame, new DialogSettings());
+
+				trans.addToBackStack(null);
+				trans.commit();
+			}
+		});
+		
+		privateChat.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				FragmentTransaction trans = getSupportFragmentManager()
+						.beginTransaction();
+				trans.replace(R.id.content_frame, new TypeExpertFroum());
 
 				trans.addToBackStack(null);
 				trans.commit();

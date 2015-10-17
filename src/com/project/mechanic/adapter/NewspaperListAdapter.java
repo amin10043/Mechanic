@@ -22,6 +22,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.News;
 import com.project.mechanic.fragment.NewsmoreFragment;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class NewspaperListAdapter extends ArrayAdapter<News> {
 
@@ -30,6 +31,7 @@ public class NewspaperListAdapter extends ArrayAdapter<News> {
 	DataBaseAdapter adapter;
 	int lastPosition = 0;
 	protected char[] id;
+	Utility util;
 
 	public NewspaperListAdapter(Context context, int resource, List<News> objact) {
 		super(context, resource, objact);
@@ -37,6 +39,7 @@ public class NewspaperListAdapter extends ArrayAdapter<News> {
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
+		util = new Utility(context);
 	}
 
 	@SuppressLint("ViewHolder")
@@ -67,10 +70,9 @@ public class NewspaperListAdapter extends ArrayAdapter<News> {
 		tx1.setText(News.getTitle());
 		tx2.setText(News.getDescription());
 
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		tx1.setTypeface(typeFace);
-		tx2.setTypeface(typeFace);
+		
+		tx1.setTypeface(util.SetFontCasablanca());
+		tx2.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
 

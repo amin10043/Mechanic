@@ -2,7 +2,9 @@ package com.project.mechanic.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import android.R.string;
@@ -31,6 +33,7 @@ import com.project.mechanic.entity.News;
 import com.project.mechanic.entity.NewsPaper;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Paper;
+import com.project.mechanic.entity.PersonalData;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.SubAdmin;
@@ -3601,6 +3604,23 @@ public class DataBaseAdapter {
 		return result;
 	}
 
+	public ArrayList<Froum> getAllFroumUser(int userId) {
+
+		ArrayList<Froum> result = new ArrayList<Froum>();
+		Cursor cursor = mDb.query(TableFroum, Froum, "userId=?",
+				new String[] { String.valueOf(userId) }, null, null, null);
+		Froum temp;
+		while (cursor.moveToNext()) {
+			temp = new Froum(cursor.getInt(0), cursor.getInt(1),
+					cursor.getString(2), cursor.getString(3), cursor.getInt(4),
+					cursor.getString(5), cursor.getInt(6), cursor.getString(7),
+					cursor.getInt(8));
+			result.add(temp);
+		}
+
+		return result;
+	}
+
 	public Object getObjectByUserId(int id) {
 
 		Object item = null;
@@ -3686,4 +3706,94 @@ public class DataBaseAdapter {
 		return false;
 	}
 
+	// private PersonalData CursorToPersonalData(Cursor cursor) {
+	// PersonalData temp = new PersonalData(cursor.getInt(0),
+	// cursor.getInt(1), cursor.getString(2), cursor.getString(3),
+	// cursor.getString(4), cursor.getInt(5), cursor.getString(6),
+	// cursor.getString(7), cursor.getString(8), cursor.getString(9),
+	// cursor.getInt(10), cursor.getString(11), cursor.getString(12),
+	// cursor.getString(13), cursor.getString(14), cursor.getInt(15),
+	// cursor.getString(16), cursor.getString(17),
+	// cursor.getString(18), cursor.getString(19));
+	// return temp;
+	//
+	// }
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<PersonalData> getAllDataUser(int userId) {
+
+		ArrayList<PersonalData> result = new ArrayList<PersonalData>();
+
+		List<Object> listPage = getAllObjectByUserId(userId);
+		List<Froum> ListFroum = getAllFroumUser(userId);
+		List<Paper> listPaper = getAllPaperUser(userId);
+		List<Ticket> TicketList = getAllAnadUser(userId);
+
+		PersonalData prd = new PersonalData();
+
+		int count = FindMaximumNumber(listPage.size(), TicketList.size(),
+				listPaper.size(), ListFroum.size());
+
+		for (int i = 0; i <= count; i++) {
+
+			if (listPage.size() > i) {
+
+				Object o = listPage.get(i);
+
+				prd.setObjectId(o.getId());
+				prd.setNameObject(o.getName());
+				prd.setImagePathObject(o.getImagePath1());
+				prd.setDateObject(o.getDate());
+			}
+			if (ListFroum.size() > i) {
+
+				Froum f = ListFroum.get(i);
+
+				prd.setFroumId(f.getId());
+				prd.setNameFroum(f.getTitle());
+				prd.setDescriptionFroum(f.getDescription());
+				prd.setDateFroum(f.getDate());
+			}
+			if (listPaper.size() > i) {
+
+				Paper p = listPaper.get(i);
+
+				prd.setPaperId(p.getId());
+				prd.setNamePaper(p.getTitle());
+				prd.setDescriptonPaper(p.getContext());
+				prd.setDatePaper(p.getDate());
+			}
+
+			if (TicketList.size() > i) {
+
+				Ticket t = TicketList.get(i);
+
+				prd.setTicketId(t.getId());
+				prd.setNameTicket(t.getTitle());
+				prd.setDescriptonTicket(t.getDesc());
+				prd.setImagePathTicket(t.getImagePath());
+				prd.setDateTicket(t.getDate());
+
+			}
+			result.add(prd);
+
+			//
+		}
+
+		return result;
+	}
+
+	public int FindMaximumNumber(int a, int b, int c, int d) {
+		int max = a;
+
+		if (b > max)
+			max = b;
+		else if (c > max)
+			max = c;
+		else if (d > max)
+			max = d;
+
+		return max;
+
+	}
 }

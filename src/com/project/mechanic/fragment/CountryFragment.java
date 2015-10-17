@@ -46,6 +46,8 @@ public class CountryFragment extends Fragment {
 				R.layout.row_city, mylist, id);
 
 		lstCountry.setAdapter(ListAdapter);
+		
+		utility.ShowFooterAgahi(getActivity() , false);
 
 		return view;
 	}
