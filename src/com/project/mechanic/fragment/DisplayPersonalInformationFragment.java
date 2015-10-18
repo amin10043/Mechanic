@@ -18,20 +18,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.project.mechanic.DialogManagmentPaper;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.PushNotification.DomainSend;
 import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.adapter.DataPersonalExpandAdapter;
-import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.PersonalData;
 import com.project.mechanic.entity.Settings;
@@ -66,14 +63,13 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 
 	@SuppressLint("NewApi")
 	@Override
-	public View onCreateView(final LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(final LayoutInflater inflater,
+			ViewGroup container, Bundle savedInstanceState) {
 
 		utile1 = new Utility(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
 
-		// View rootView = inflater.inflate(R.layout.fragment_information_user,
-		// null);
+		View rootView = inflater.inflate(R.layout.fragment_personal_data, null);
 
 		final View header = inflater.inflate(
 				R.layout.fragment_displaypersonalinformation, null);
@@ -119,7 +115,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		TextView txtemail = (TextView) header.findViewById(R.id.email);
 		TextView txtname = (TextView) header.findViewById(R.id.displayname);
 		TextView txtfax = (TextView) header.findViewById(R.id.fax);
-		TextView namePageTicket = (TextView) header.findViewById(R.id.name);
 		img = (ImageView) header.findViewById(R.id.img1);
 		ImageView logout = (ImageView) header.findViewById(R.id.logout);
 		RelativeLayout btnedit = (RelativeLayout) header
@@ -134,22 +129,14 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		LayoutParams lp1 = new LinearLayout.LayoutParams(lin2.getLayoutParams());
 		lp1.width = utile1.getScreenwidth() / 4;
 		lp1.height = utile1.getScreenwidth() / 4;
-		// lp1.setMargins(5, 5, 5, 5);
 		img.setLayoutParams(lp1);
-		// byte[] bitmapbyte = u.getImage();
 		String ImagePath = u.getImagePath();
 		if (ImagePath != null) {
 			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
 			img.setImageBitmap(bmp);
 		}
 
-		// ListView lv = (ListView) rootView.findViewById(R.id.listPageUser);
-		// lv.addHeaderView(header);
-		// lv.addFooterView(footer);
-
-		TextView namett = (TextView) header.findViewById(R.id.namepageList);
-
-		namett.setText(u.getName());
+	
 
 		img.setOnClickListener(new OnClickListener() {
 
@@ -178,99 +165,56 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		txtphone.setText(phone);
 		txtfax.setText(fax);
 		txtaddress.setText(address);
-		namePageTicket.setText(name);
+
 
 		dbAdapter.open();
-
-		final List<Ticket> mylist = dbAdapter.getAllAnadUser(u.getId());
-		final List<Paper> listPaper = dbAdapter.getAllPaperUser(u.getId());
-
-		final List<Object> listPage = dbAdapter.getAllObjectByUserId(u.getId());
-
-		List<PersonalData> pd = dbAdapter.getAllDataUser(u.getId());
-		
+		List<PersonalData> ObejctData = dbAdapter.CustomFieldObjectByUser(u
+				.getId());
+		List<PersonalData> FroumData = dbAdapter.CustomFieldFroumByUser(u
+				.getId());
+		List<PersonalData> PaperData = dbAdapter.CustomFieldPaperByUser(u
+				.getId());
+		List<PersonalData> TicketData = dbAdapter.CustomFieldTicketByUser(u
+				.getId());
 		dbAdapter.close();
 
-		// final Animation animSideDown =
-		// AnimationUtils.loadAnimation(getActivity(),
-		// R.anim.slide_down);
-		// ListView pagesList = (ListView)header.findViewById(R.id.pages);
-		//
-		// ObjectListAdapter listAdapter = new ObjectListAdapter(getActivity(),
-		// R.layout.row_object,
-		// listPage, DisplayPersonalInformationFragment.this, false, "", 0);
-		//
-		// pagesList.setAdapter(listAdapter);
-		// pagesList.setAnimation(animSideDown);
 
-		// /////////////////////
-
-		ExpandableListView Expandview = (ExpandableListView) header
+		ExpandableListView Expandview = (ExpandableListView) rootView
 				.findViewById(R.id.items);
-		
+
 		HashMap<String, List<PersonalData>> listDataChild = new HashMap<String, List<PersonalData>>();
 
 		ArrayList<String> parentItems = new ArrayList<String>();
 
-		Expandview.setDividerHeight(2);
+		Expandview.setDividerHeight(5);
 		Expandview.setGroupIndicator(null);
 		Expandview.setClickable(true);
 
-		parentItems.add("صفحات");
-		parentItems.add("آگهی ها");
-		parentItems.add("مقالات");
-		parentItems.add("تالار گفتگو");
-		
-		listDataChild.put(parentItems.get(0), pd); // Header, Child data
-		listDataChild.put(parentItems.get(1), pd);
-		listDataChild.put(parentItems.get(2), pd);
-		listDataChild.put(parentItems.get(3), pd);
-		
-		final DataPersonalExpandAdapter listAdapter = new DataPersonalExpandAdapter(getActivity(), parentItems, listDataChild);
+		parentItems.add("مدیریت صفحات");
+		parentItems.add("مدیریت آگهی ها");
+		parentItems.add("مدیریت مقالات");
+		parentItems.add("مدیریت تالار گفتگو");
+
+		listDataChild.put(parentItems.get(0), ObejctData); // Header, Child data
+		listDataChild.put(parentItems.get(1), TicketData);
+		listDataChild.put(parentItems.get(2), PaperData);
+		listDataChild.put(parentItems.get(3), FroumData);
+
+		final SharedPreferences currentTime = getActivity()
+				.getSharedPreferences("time", 0);
+
+		String time = currentTime.getString("time", "-1");
+
+		final DataPersonalExpandAdapter listAdapter = new DataPersonalExpandAdapter(
+				getActivity(), parentItems, listDataChild, time,
+				DisplayPersonalInformationFragment.this);
 
 		// setting list adapter
+		Expandview.addHeaderView(header);
+
 		Expandview.setAdapter(listAdapter);
-		
-		
 
-		
-		// ObjectListAdapter listAdapter = new ObjectListAdapter(getActivity(),
-		// R.layout.row_object,
-		// listPage, DisplayPersonalInformationFragment.this, false, "", 0);
-
-		// //////////////////////
-
-		RelativeLayout ManagePage = (RelativeLayout) header
-				.findViewById(R.id.manage_pages);
-		ManagePage.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// DialogManagementPages dialog = new DialogManagementPages(
-				// getActivity(), listPage,
-				// DisplayPersonalInformationFragment.this);
-				// dialog.show();
-
-				// pagesList.setAnimation(animSideDown);
-
-			}
-		});
-
-		RelativeLayout manageTicket = (RelativeLayout) header
-				.findViewById(R.id.manage_ticket);
-
-		manageTicket.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				DialogManagementTicket dialog = new DialogManagementTicket(
-						getActivity(), mylist,
-						DisplayPersonalInformationFragment.this);
-				dialog.show();
-			}
-		});
-
+	
 		followParams = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
 
 		followParams.width = utile1.getScreenwidth() / 3;
@@ -288,21 +232,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		paramsLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		paramsLayout.addRule(RelativeLayout.BELOW, R.id.btnedit);
 		birthDayUsers.setLayoutParams(paramsLayout);
-
-		RelativeLayout manageArticle = (RelativeLayout) header
-				.findViewById(R.id.manage_paper);
-		manageArticle.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				DialogManagmentPaper dialog = new DialogManagmentPaper(
-						getActivity(), listPaper,
-						DisplayPersonalInformationFragment.this);
-				dialog.show();
-
-			}
-		});
 
 		logout.setOnClickListener(new OnClickListener() {
 
@@ -373,11 +302,10 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 
 			}
 		});
-		
-		utile1.ShowFooterAgahi(getActivity() , false , 1);
 
+		utile1.ShowFooterAgahi(getActivity(), false, 1);
 
-		return header;
+		return rootView;
 	}
 
 	@Override

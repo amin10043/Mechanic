@@ -1314,6 +1314,13 @@ public class DataBaseAdapter {
 
 	}
 
+	private Favorite CursorToFavorite(Cursor cursor) {
+		Favorite temp = new Favorite(cursor.getInt(0), cursor.getInt(1),
+				cursor.getInt(2), cursor.getInt(3), cursor.getInt(4));
+		return temp;
+
+	}
+
 	private Paper CursorToPaper(Cursor cursor) {
 		Paper tempPaper = new Paper(cursor.getInt(0), cursor.getString(1),
 				cursor.getString(2), cursor.getInt(3), cursor.getString(4),
@@ -3732,12 +3739,11 @@ public class DataBaseAdapter {
 		List<Paper> listPaper = getAllPaperUser(userId);
 		List<Ticket> TicketList = getAllAnadUser(userId);
 
-		PersonalData prd = new PersonalData();
-
 		int count = FindMaximumNumber(listPage.size(), TicketList.size(),
 				listPaper.size(), ListFroum.size());
 
 		for (int i = 0; i <= count; i++) {
+			PersonalData prd = new PersonalData();
 
 			if (listPage.size() > i) {
 
@@ -3756,6 +3762,7 @@ public class DataBaseAdapter {
 				prd.setNameFroum(f.getTitle());
 				prd.setDescriptionFroum(f.getDescription());
 				prd.setDateFroum(f.getDate());
+
 			}
 			if (listPaper.size() > i) {
 
@@ -3765,6 +3772,7 @@ public class DataBaseAdapter {
 				prd.setNamePaper(p.getTitle());
 				prd.setDescriptonPaper(p.getContext());
 				prd.setDatePaper(p.getDate());
+
 			}
 
 			if (TicketList.size() > i) {
@@ -3799,4 +3807,194 @@ public class DataBaseAdapter {
 		return max;
 
 	}
+
+	public ArrayList<PersonalData> CustomFieldObjectByUser(int userId) {
+
+		ArrayList<PersonalData> result = new ArrayList<PersonalData>();
+
+		List<Object> listPage = getAllObjectByUserId(userId);
+
+		for (int i = 0; i < listPage.size(); i++) {
+
+			PersonalData prd = new PersonalData();
+
+			Object o = listPage.get(i);
+
+			prd.setObjectId(o.getId());
+			prd.setNameObject(o.getName());
+			prd.setImagePathObject(o.getImagePath2());
+			prd.setDateObject(o.getDate());
+
+			result.add(prd);
+
+		}
+		return result;
+
+	}
+
+	public ArrayList<PersonalData> CustomFieldFroumByUser(int userId) {
+
+		ArrayList<PersonalData> result = new ArrayList<PersonalData>();
+
+		List<Froum> ListFroum = getAllFroumUser(userId);
+
+		for (int i = 0; i < ListFroum.size(); i++) {
+
+			PersonalData prd = new PersonalData();
+
+			Froum f = ListFroum.get(i);
+
+			prd.setFroumId(f.getId());
+			prd.setNameFroum(f.getTitle());
+			prd.setDescriptionFroum(f.getDescription());
+			prd.setDateFroum(f.getDate());
+
+			result.add(prd);
+
+		}
+		return result;
+
+	}
+
+	public ArrayList<PersonalData> CustomFieldPaperByUser(int userId) {
+
+		ArrayList<PersonalData> result = new ArrayList<PersonalData>();
+
+		List<Paper> listPaper = getAllPaperUser(userId);
+
+		for (int i = 0; i < listPaper.size(); i++) {
+
+			PersonalData prd = new PersonalData();
+			Paper p = listPaper.get(i);
+
+			prd.setPaperId(p.getId());
+			prd.setNamePaper(p.getTitle());
+			prd.setDescriptonPaper(p.getContext());
+			prd.setDatePaper(p.getDate());
+			prd.setSeenBeforePaper(p.getSeenBefore());
+
+			result.add(prd);
+
+		}
+		return result;
+
+	}
+
+	public ArrayList<PersonalData> CustomFieldTicketByUser(int userId) {
+
+		ArrayList<PersonalData> result = new ArrayList<PersonalData>();
+
+		List<Ticket> TicketList = getAllAnadUser(userId);
+
+		for (int i = 0; i < TicketList.size(); i++) {
+
+			PersonalData prd = new PersonalData();
+			Ticket t = TicketList.get(i);
+
+			prd.setTicketId(t.getId());
+			prd.setNameTicket(t.getTitle());
+			prd.setDescriptonTicket(t.getDesc());
+			prd.setImagePathTicket(t.getImagePath());
+			prd.setDateTicket(t.getDate());
+			prd.setDayTicket(t.getDay());
+
+			result.add(prd);
+
+		}
+		return result;
+
+	}
+
+	public ArrayList<Favorite> getFavoriteItem(int userId, int source) {
+
+		ArrayList<Favorite> result = new ArrayList<Favorite>();
+		Cursor cursor = mDb.query(TableFavorite, Favorite,
+				"UserId=? AND Type=?", new String[] { String.valueOf(userId),
+						String.valueOf(source) }, null, null, null);
+		Favorite temp;
+		while (cursor.moveToNext()) {
+			temp = CursorFavorite(cursor);
+
+			result.add(temp);
+		}
+
+		return result;
+
+	}
+
+	public ArrayList<PersonalData> CustomFieldFavorite(int userId, int source) {
+
+		ArrayList<PersonalData> result = new ArrayList<PersonalData>();
+
+		// List<Object> listObject = getObjectByuserId(userId);
+
+		List<Favorite> favList = getFavoriteItem(userId, source);
+
+		for (int i = 0; i < favList.size(); i++) {
+
+			PersonalData prd = new PersonalData();
+
+			Favorite fav = favList.get(i);
+
+			switch (source) {
+			case 1: {
+
+				Froum f = getFroumItembyid(fav.getIdTickte());
+
+				prd.setFroumId(f.getId());
+				prd.setNameFroum(f.getTitle());
+				prd.setDescriptionFroum(f.getDescription());
+				prd.setDateFroum(f.getDate());
+				break;
+			}
+
+			case 2: {
+
+				Paper p = getPaperItembyid(fav.getIdTickte());
+
+				prd.setPaperId(p.getId());
+				prd.setNamePaper(p.getTitle());
+				prd.setDescriptonPaper(p.getContext());
+				prd.setDatePaper(p.getDate());
+				prd.setSeenBeforePaper(p.getSeenBefore());
+				break;
+			}
+
+			case 3: {
+
+				Ticket t = getTicketById((fav.getIdTickte()));
+
+				prd.setTicketId(t.getId());
+				prd.setNameTicket(t.getTitle());
+				prd.setDescriptonTicket(t.getDesc());
+				prd.setImagePathTicket(t.getImagePath());
+				prd.setDateTicket(t.getDate());
+
+				break;
+			}
+
+			case 4: {
+
+				Object o = getObjectbyid(fav.getIdTickte());
+
+				prd.setObjectId(o.getId());
+				prd.setNameObject(o.getName());
+				prd.setImagePathObject(o.getImagePath2());
+				prd.setDateObject(o.getDate());
+
+				break;
+
+			}
+
+			default:
+				break;
+			}
+
+			result.add(prd);
+
+		}
+		return result;
+
+	}
+
 }
