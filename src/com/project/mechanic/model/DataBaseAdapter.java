@@ -21,12 +21,14 @@ import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.CommentInPaper;
+import com.project.mechanic.entity.CommentInPost;
 import com.project.mechanic.entity.Executertype;
 import com.project.mechanic.entity.Favorite;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.LikeInFroum;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.LikeInPaper;
+import com.project.mechanic.entity.LikeInPost;
 import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.News;
 import com.project.mechanic.entity.NewsPaper;
@@ -103,6 +105,10 @@ public class DataBaseAdapter {
 	private String[] CommentInFroum = { "ID", "Desk", "FroumId", "UserId",
 
 	"Date", "CommentId", "NumOfDislike", "NumOfLike", "Seen" };
+
+	private String[] CommentInPost = { "ID", "Desk", "PostId", "UserId",
+
+	"Date", "CommentId", "Seen" };
 
 	private String[] CommentInPaper = { "Id", "Desk", "PaperId", "UserId",
 			"Date", "CommentId", "Seen" };
@@ -456,6 +462,18 @@ public class DataBaseAdapter {
 		Cursor curs = mDb.rawQuery("SELECT COUNT(*) AS NUM FROM "
 				+ TableLikeInFroum + " WHERE UserId= " + String.valueOf(userId)
 				+ " AND FroumId=" + String.valueOf(FroumID), null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
+	public boolean isUserLikedPost(int userId, int PostID) {
+		Cursor curs = mDb.rawQuery("SELECT COUNT(*) AS NUM FROM "
+				+ TableLikeInPost + " WHERE PostId= " + String.valueOf(userId)
+				+ " AND PostId=" + String.valueOf(PostID), null);
 		if (curs.moveToNext()) {
 			int number = curs.getInt(0);
 			if (number > 0)
@@ -1542,6 +1560,16 @@ public class DataBaseAdapter {
 		return res;
 	}
 
+	public Integer LikeInPost_count(int postID) {
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInPost + " WHERE PostId=" + postID, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
 	public Integer LikeInPaper_count(int paperID) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
@@ -1569,6 +1597,17 @@ public class DataBaseAdapter {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
 				+ TableCommentInFroum + " WHERE FroumId=" + froumID
+				+ " AND CommentID=0", null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public Integer CommentInPost_count(int postID) {
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInPost + " WHERE PostId=" + postID
 				+ " AND CommentID=0", null);
 		int res = 0;
 		if (cu.moveToNext()) {
@@ -1742,6 +1781,28 @@ public class DataBaseAdapter {
 
 	}
 
+	public ArrayList<CommentInPost> getCommentInPostbyPaperid(int Postid,
+			int commentID) {
+
+		ArrayList<CommentInPost> result = new ArrayList<CommentInPost>();
+		CommentInPost item = null;
+
+		Cursor mCur = mDb.query(
+				TableCommentInPost,
+				CommentInPost,
+				"PostId=? AND CommentID=?",
+				new String[] { String.valueOf(Postid),
+						String.valueOf(commentID) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInPost(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
 	public ArrayList<CommentInFroum> getReplyCommentbyCommentID(int Froumid,
 			int Commentid) {
 
@@ -1757,6 +1818,28 @@ public class DataBaseAdapter {
 
 		while (mCur.moveToNext()) {
 			item = CursorToCommentInFroum(mCur);
+			result.add(item);
+		}
+
+		return result;
+
+	}
+
+	public ArrayList<CommentInPost> getReplyCommentbyCommentIDPost(int Postid,
+			int Commentid) {
+
+		ArrayList<CommentInPost> result = new ArrayList<CommentInPost>();
+		CommentInPost item = null;
+
+		Cursor mCur = mDb.query(
+				TableCommentInFroum,
+				CommentInFroum,
+				"FroumId=? AND CommentId=?",
+				new String[] { String.valueOf(Postid),
+						String.valueOf(Commentid) }, null, null, null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToCommentInPost(mCur);
 			result.add(item);
 		}
 
@@ -1957,6 +2040,20 @@ public class DataBaseAdapter {
 		return item;
 	}
 
+	public Post getPostItembyid(int Id) {
+
+		Post item = null;
+		Cursor mCur = mDb.query(TablePost, Post, " Id=?",
+				new String[] { String.valueOf(Id) }, null, null, null);
+
+		if (mCur.moveToNext()) {
+			item = CursorToPost(mCur);
+
+		}
+
+		return item;
+	}
+
 	public Froum getFroumTitlebyid(int Id) {
 
 		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null,
@@ -2012,15 +2109,15 @@ public class DataBaseAdapter {
 		return result;
 	}
 
-	public ArrayList<Froum> getAllPost() {
-		ArrayList<Froum> result = new ArrayList<Froum>();
+	public ArrayList<Post> getAllPost() {
+		ArrayList<Post> result = new ArrayList<Post>();
 		Cursor cursor = mDb
 				.query(TablePost, Post, null, null, null, null, null);
 		while (cursor.moveToNext()) {
-			result.add(CursorToFroum(cursor));
+			result.add(CursorToPost(cursor));
 		}
 
-		Collections.sort(result);
+		// Collections.sort(result);
 		return result;
 	}
 
@@ -2178,6 +2275,16 @@ public class DataBaseAdapter {
 
 				cursor.getString(4), cursor.getInt(5), cursor.getInt(6),
 				cursor.getInt(7), cursor.getInt(8));
+
+		return tempComment;
+
+	}
+
+	private CommentInPost CursorToCommentInPost(Cursor cursor) {
+		CommentInPost tempComment = new CommentInPost(cursor.getInt(0),
+				cursor.getString(1), cursor.getInt(2), cursor.getInt(3),
+
+				cursor.getString(4), cursor.getInt(5), cursor.getInt(6));
 
 		return tempComment;
 
@@ -2667,6 +2774,11 @@ public class DataBaseAdapter {
 		mDb.delete(TableLikeInFroum, "UserId=? and FroumId=?", t);
 	}
 
+	public void deleteLikePostPost(int userID, int FroumId) {
+		String[] t = { String.valueOf(userID), String.valueOf(FroumId) };
+		mDb.delete(TableLikeInFroum, "UserId=? and FroumId=?", t);
+	}
+
 	public Integer getCountOfReplyInFroum(int froumID, int commentID) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
@@ -3146,6 +3258,24 @@ public class DataBaseAdapter {
 		LikeInFroum like;
 		while (cursor.moveToNext()) {
 			like = new LikeInFroum(cursor.getInt(0), cursor.getInt(1),
+					cursor.getInt(2), cursor.getString(3), cursor.getInt(4),
+					cursor.getInt(5));
+
+			result.add(like);
+		}
+
+		return result;
+
+	}
+
+	public ArrayList<LikeInPost> getLikepostLikeInPostByPostId(int PostId) {
+		ArrayList<LikeInPost> result = new ArrayList<LikeInPost>();
+		Cursor cursor = mDb.rawQuery(
+				"select * from LikeInFroum where FroumId =  " + PostId, null);
+
+		LikeInPost like;
+		while (cursor.moveToNext()) {
+			like = new LikeInPost(cursor.getInt(0), cursor.getInt(1),
 					cursor.getInt(2), cursor.getString(3), cursor.getInt(4),
 					cursor.getInt(5));
 

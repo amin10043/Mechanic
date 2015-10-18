@@ -91,14 +91,12 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
 							Toast.LENGTH_SHORT).show();
 				else {
-
 					dialog = new DialogfroumTitle(getActivity(),
 							R.layout.dialog_addtitle, FroumtitleFragment.this);
 					dialog.getWindow()
 							.setSoftInputMode(
 									WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 					dialog.show();
-
 					realize.edit().putInt("main_Id", 1).commit();
 				}
 			}
@@ -186,7 +184,6 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		Toast.makeText(getActivity(), "تعداد فروم ها = " + countList, 0).show();
 
 		if (getArguments() != null) {
-
 			mLastFirstVisibleItem = getArguments().getInt("Froum_List_Id");
 			lst.setSelection(mLastFirstVisibleItem);
 		}
@@ -334,7 +331,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 					}
 				}
 				mdb.close();
-			ListAdapter.notifyDataSetChanged();
+				ListAdapter.notifyDataSetChanged();
 
 			}
 			if (output.contains("anyType")) {

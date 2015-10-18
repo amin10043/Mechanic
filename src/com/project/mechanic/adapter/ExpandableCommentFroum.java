@@ -8,7 +8,6 @@ import java.util.Map;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -17,10 +16,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -33,23 +31,15 @@ import android.widget.Toast;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInFroum;
-import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
-import com.project.mechanic.fragment.DialogPersonLikedFroum;
-import com.project.mechanic.fragment.DialogcmtInfroum;
-import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.inter.AsyncInterface;
-import com.project.mechanic.inter.CommInterface;
-import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
-import com.project.mechanic.service.UpdatingImage;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
@@ -75,6 +65,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 	ServerDate date;
 	CommentInFroum reply;
 	CommentInFroum comment;
+
 	public ExpandableCommentFroum(Context context,
 			ArrayList<CommentInFroum> laptops,
 			Map<CommentInFroum, List<CommentInFroum>> mapCollection,

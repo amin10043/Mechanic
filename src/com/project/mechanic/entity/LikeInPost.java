@@ -3,22 +3,21 @@ package com.project.mechanic.entity;
 public class LikeInPost {
 
 	int Id;
-	int PostId;
 	int UserId;
+	int PostId;
 	String Date;
+	int CommentId;
 	int Seen;
 
-	// String ModifyDate;
-
-	public LikeInPost(int Id, int PostId, int UserId, int Seen, String Date,
-			String ModifyDate) {
-		this.Id = Id;
-		this.PostId = PostId;
-		this.UserId = UserId;
-		this.Seen = Seen;
-		this.Date = Date;
-		// this.ModifyDate = ModifyDate;
-
+	public LikeInPost(int id, int userId, int postId, String date,
+			int commentId, int seen) {
+		super();
+		Id = id;
+		UserId = userId;
+		PostId = postId;
+		Date = date;
+		CommentId = commentId;
+		Seen = seen;
 	}
 
 	public int getId() {
@@ -29,14 +28,6 @@ public class LikeInPost {
 		Id = id;
 	}
 
-	public int getPostId() {
-		return PostId;
-	}
-
-	public void setPostId(int postId) {
-		PostId = postId;
-	}
-
 	public int getUserId() {
 		return UserId;
 	}
@@ -45,12 +36,12 @@ public class LikeInPost {
 		UserId = userId;
 	}
 
-	public int getSeen() {
-		return Seen;
+	public int getPostId() {
+		return PostId;
 	}
 
-	public void setIsLike(int seen) {
-		Seen = seen;
+	public void setPostId(int postId) {
+		PostId = postId;
 	}
 
 	public String getDate() {
@@ -61,10 +52,20 @@ public class LikeInPost {
 		Date = date;
 	}
 
-	/*
-	 * public String getModifyDate() { return ModifyDate; }
-	 * 
-	 * public void setModifyDate(String modifyDate) { ModifyDate = modifyDate; }
-	 */
+	public int getCommentId() {
+		return CommentId;
+	}
+
+	public void setCommentId(int commentId) {
+		CommentId = commentId;
+	}
+
+	public int getSeen() {
+		return Seen;
+	}
+
+	public void setSeen(int seen) {
+		Seen = seen;
+	}
 
 }
