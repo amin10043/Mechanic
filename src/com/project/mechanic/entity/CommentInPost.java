@@ -78,5 +78,4 @@ public class CommentInPost {
 	public void setSeen(int seen) {
 		Seen = seen;
 	}
-
 }

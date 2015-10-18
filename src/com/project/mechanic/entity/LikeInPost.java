@@ -5,18 +5,19 @@ public class LikeInPost {
 	int Id;
 	int PostId;
 	int UserId;
-	int IsLike;
 	String Date;
-	String ModifyDate;
+	int Seen;
 
-	public LikeInPost(int Id, int PostId, int UserId, int IsLike, String Date,
+	// String ModifyDate;
+
+	public LikeInPost(int Id, int PostId, int UserId, int Seen, String Date,
 			String ModifyDate) {
 		this.Id = Id;
 		this.PostId = PostId;
 		this.UserId = UserId;
-		this.IsLike = IsLike;
+		this.Seen = Seen;
 		this.Date = Date;
-		this.ModifyDate = ModifyDate;
+		// this.ModifyDate = ModifyDate;
 
 	}
 
@@ -44,12 +45,12 @@ public class LikeInPost {
 		UserId = userId;
 	}
 
-	public int getIsLike() {
-		return IsLike;
+	public int getSeen() {
+		return Seen;
 	}
 
-	public void setIsLike(int isLike) {
-		IsLike = isLike;
+	public void setIsLike(int seen) {
+		Seen = seen;
 	}
 
 	public String getDate() {
@@ -60,12 +61,10 @@ public class LikeInPost {
 		Date = date;
 	}
 
-	public String getModifyDate() {
-		return ModifyDate;
-	}
-
-	public void setModifyDate(String modifyDate) {
-		ModifyDate = modifyDate;
-	}
+	/*
+	 * public String getModifyDate() { return ModifyDate; }
+	 * 
+	 * public void setModifyDate(String modifyDate) { ModifyDate = modifyDate; }
+	 */
 
 }

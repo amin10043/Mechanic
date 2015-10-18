@@ -19,12 +19,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
@@ -42,7 +39,6 @@ import com.project.mechanic.adapter.ExpandIntroduction;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.Object;
-import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.GetAllAsyncInterface;
@@ -75,7 +71,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			emailRelative, profileLinear, personPage, personPost;
 
 	public DialogcmtInobject dialog;
-	//Fragment fragment;
+	// Fragment fragment;
 
 	public LinearLayout AddLike, AddComment;
 	public ImageButton Comment;
@@ -122,7 +118,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	ProgressBar loadingProgressHeader, loadingProgressProfile,
 			loadingProgressFooter;
-	Button followPage, EditPage, shareBtn;
+	Button followPage, EditPage, shareBtn, ShowPostBtn;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -218,8 +214,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		followPage = (Button) header.findViewById(R.id.followPage);
 
-		
-		
 		if (getArguments().getString("Id") != null)
 			ObjectID = Integer.valueOf(getArguments().getString("Id"));
 
@@ -587,7 +581,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			txtDesc.setVisibility(View.GONE);
 
 		// if ObjectBrandTypeId =1 >>>>>> namayandegi va khadamat faal hast
-		// if ObjectBrandTypeId =2 >>>>>> namayandegi va khadamat gheyr faal hast
+		// if ObjectBrandTypeId =2 >>>>>> namayandegi va khadamat gheyr faal
+		// hast
 		// if ObjectBrandTypeId =3 >>>>>> namayandegi faal hast
 		// if ObjectBrandTypeId =4 >>>>>> khadamat faal hast
 
@@ -1214,26 +1209,24 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 						"اشتراک از طریق"));
 			}
 		});
-		
-		
-		ImageView reaport = (ImageView) header
-				.findViewById(R.id.reportImage);
-		
+
+		ImageView reaport = (ImageView) header.findViewById(R.id.reportImage);
+
 		reaport.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-//				RelativeLayout parentlayout = (RelativeLayout) v.getParent();
-//				TextView txtName = (TextView) parentlayout
-//						.findViewById(R.id.row_favorite_title);
-//				String item = txtName.getText().toString();
-//				int id = 0;
-//				int u = 0;
-//				String t = "";
-			
+				// RelativeLayout parentlayout = (RelativeLayout) v.getParent();
+				// TextView txtName = (TextView) parentlayout
+				// .findViewById(R.id.row_favorite_title);
+				// String item = txtName.getText().toString();
+				// int id = 0;
+				// int u = 0;
+				// String t = "";
 
-				DialogLongClick dia = new DialogLongClick(getActivity(), 4, ObjectID, -1,
-						IntroductionFragment.this,object.getDescription() );
+				DialogLongClick dia = new DialogLongClick(getActivity(), 4,
+						ObjectID, -1, IntroductionFragment.this, object
+								.getDescription());
 				Toast.makeText(getActivity(), ObjectID + "", 0).show();
 
 				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
@@ -1249,8 +1242,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
-
-		ut.ShowFooterAgahi(getActivity() , false , 1);
+		ut.ShowFooterAgahi(getActivity(), false, 1);
 
 		return view;
 
@@ -1612,4 +1604,5 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	public int getObjectId() {
 		return ObjectID;
 	}
+
 }

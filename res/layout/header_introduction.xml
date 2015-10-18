@@ -103,6 +103,7 @@
                     android:textSize="15dp" />
 
                 <LinearLayout
+                    android:id="@+id/linearLayout1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -184,6 +185,15 @@
                         android:background="@drawable/ic_share_froum"
                         android:visibility="gone" />
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnShowPost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/linearLayout1"
+                    android:layout_below="@+id/namePage"
+                    android:layout_marginLeft="28dp"
+                    android:text="Button" />
             </RelativeLayout>
 
             <ProgressBar
