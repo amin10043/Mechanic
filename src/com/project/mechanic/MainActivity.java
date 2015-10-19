@@ -96,8 +96,8 @@ public class MainActivity extends FragmentActivity {
 		final ImageButton iBtnmessage = (ImageButton) findViewById(R.id.iBtnmessage);
 		final TextView txtcm1 = (TextView) findViewById(R.id.txtcm);
 		final TextView txtlike = (TextView) findViewById(R.id.txtlike);
-		
-		ImageView privateChat = (ImageView)findViewById(R.id.private_chat);
+
+		ImageView privateChat = (ImageView) findViewById(R.id.private_chat);
 
 		util = new Utility(MainActivity.this);
 		user = util.getCurrentUser();
@@ -124,9 +124,9 @@ public class MainActivity extends FragmentActivity {
 				trans.commit();
 			}
 		});
-		
+
 		privateChat.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				FragmentTransaction trans = getSupportFragmentManager()
@@ -155,12 +155,12 @@ public class MainActivity extends FragmentActivity {
 
 				dialog.show();
 
-//				int seen = 1;
-//				adapter.updatecmseentodb(seen, user.getId());
-//				adapter.updatecmobjectseentodb(seen, user.getId());
-//				adapter.updatecmpaperseentodb(seen, user.getId());
-//				txtcm1.setVisibility(View.GONE);
-//				iBtnmessage.setEnabled(false);
+				// int seen = 1;
+				// adapter.updatecmseentodb(seen, user.getId());
+				// adapter.updatecmobjectseentodb(seen, user.getId());
+				// adapter.updatecmpaperseentodb(seen, user.getId());
+				// txtcm1.setVisibility(View.GONE);
+				// iBtnmessage.setEnabled(false);
 
 				adapter.close();
 
@@ -185,12 +185,12 @@ public class MainActivity extends FragmentActivity {
 						t2);
 
 				dialog1.show();
-//				int seen = 1;
-//				adapter.updatelikeseentodb(seen, user.getId());
-//				adapter.updatelikefroumseentodb(seen, user.getId());
-//				adapter.updatelikepaperseentodb(seen, user.getId());
-//				txtlike.setVisibility(View.GONE);
-//				iBtnNotification.setEnabled(false);
+				// int seen = 1;
+				// adapter.updatelikeseentodb(seen, user.getId());
+				// adapter.updatelikefroumseentodb(seen, user.getId());
+				// adapter.updatelikepaperseentodb(seen, user.getId());
+				// txtlike.setVisibility(View.GONE);
+				// iBtnNotification.setEnabled(false);
 
 				adapter.close();
 
@@ -381,10 +381,15 @@ public class MainActivity extends FragmentActivity {
 
 		case 3:
 			// favorite 2
-			fragment = new Favorite_Fragment();
-			fragmentManager = getSupportFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
+
+			if (util.getCurrentUser() != null) {
+				fragment = new Favorite_Fragment();
+				fragmentManager = getSupportFragmentManager();
+				fragmentManager.beginTransaction()
+						.replace(R.id.content_frame, fragment).commit();
+			} else
+				Toast.makeText(MainActivity.this, "ابتدا باید وارد شوید", 0)
+						.show();
 			break;
 
 		case 4:

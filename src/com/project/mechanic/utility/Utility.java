@@ -885,6 +885,7 @@ public class Utility implements AsyncInterface {
 		// type = 2 >>>>> main brand fragment & object fragment
 		// type = 3 >>>>> froum fragment
 		// type = 4 >>>>> paper fragment
+		// type = 5 >>>>> favorite fragment
 
 		ViewFlipper vf = (ViewFlipper) activity.findViewById(R.id.footerAgahi);
 		RelativeLayout la = (RelativeLayout) activity

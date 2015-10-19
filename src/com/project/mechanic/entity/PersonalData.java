@@ -13,17 +13,23 @@ public class PersonalData {
 	String NameFroum;
 	String DescriptionFroum;
 	String DateFroum;
+	int seenBeforeFroum;
+	int UserIdFroum;
 
 	int PaperId;
 	String NamePaper;
 	String DescriptonPaper;
 	String DatePaper;
+	int seenBeforePaper;
+	int UserIdPaper;
 
 	int TicketId;
 	String NameTicket;
 	String DescriptonTicket;
 	String ImagePathTicket;
 	String DateTicket;
+	int SeenBefore;
+	int DayTicket;
 
 	public PersonalData(int Id, int ObjectId, String NameObject,
 			String ImagePathObject, String DateObject) {
@@ -40,7 +46,9 @@ public class PersonalData {
 			String NameFroum, String DescriptionFroum, String DateFroum,
 			int PaperId, String NamePaper, String DescriptonPaper,
 			String DatePaper, int TicketId, String NameTicket,
-			String DescriptonTicket, String ImagePathTicket, String DateTicket) {
+			String DescriptonTicket, String ImagePathTicket, String DateTicket,
+			int SeenBefore, int DayTicket, int seenBeforePaper,
+			int UserIdPaper, String DataPaper) {
 
 		this.Id = Id;
 
@@ -64,7 +72,60 @@ public class PersonalData {
 		this.DescriptonTicket = DescriptonTicket;
 		this.ImagePathTicket = ImagePathTicket;
 		this.DateTicket = DateTicket;
+		this.SeenBefore = SeenBefore;
+		this.DayTicket = DayTicket;
 
+		this.seenBeforePaper = seenBeforePaper;
+		this.UserIdPaper = UserIdPaper;
+
+	}
+
+	public int getSeenBeforeFroum() {
+		return seenBeforeFroum;
+	}
+
+	public void setSeenBeforeFroum(int seenBeforeFroum) {
+		this.seenBeforeFroum = seenBeforeFroum;
+	}
+
+	public int getUserIdFroum() {
+		return UserIdFroum;
+	}
+
+	public void setUserIdFroum(int userIdFroum) {
+		UserIdFroum = userIdFroum;
+	}
+
+	public int getUserIdPaper() {
+		return UserIdPaper;
+	}
+
+	public void setUserIdPaper(int userIdPaper) {
+		UserIdPaper = userIdPaper;
+	}
+
+	public int getSeenBeforePaper() {
+		return seenBeforePaper;
+	}
+
+	public void setSeenBeforePaper(int seenBeforePaper) {
+		this.seenBeforePaper = seenBeforePaper;
+	}
+
+	public int getDayTicket() {
+		return DayTicket;
+	}
+
+	public void setDayTicket(int dayTicket) {
+		DayTicket = dayTicket;
+	}
+
+	public int getSeenBefore() {
+		return SeenBefore;
+	}
+
+	public void setSeenBefore(int seenBefore) {
+		SeenBefore = seenBefore;
 	}
 
 	public PersonalData() {

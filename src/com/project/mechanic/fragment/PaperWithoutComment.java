@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
@@ -73,6 +74,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 	Map<String, String> params;
 
 	RelativeLayout countLikeRelative, commentcounter;
+	boolean LikeOrComment; // like == true & comment == false
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -286,6 +288,8 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 					date = new ServerDate(getActivity());
 					date.delegate = PaperWithoutComment.this;
 					date.execute("");
+					LikeOrComment = true;
+
 				}
 
 			}
@@ -322,8 +326,39 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 			}
 		});
 
-		util.ShowFooterAgahi(getActivity(), true, 4);
+		ImageView send = util.ShowFooterAgahi(getActivity(), true, 4);
 
+		send.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				if ("".equals(util.inputComment(getActivity()))) {
+					Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
+							.show();
+				} else {
+
+					date = new ServerDate(getActivity());
+					date.delegate = PaperWithoutComment.this;
+					date.execute("");
+					LikeOrComment = false;
+
+					util.ReplyLayout(getActivity(), "", false);
+
+				}
+			}
+		});
+		ImageView delete = util.deleteReply(getActivity());
+
+		delete.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				util.ReplyLayout(getActivity(), "", false);
+
+			}
+		});
 		return view;
 	}
 
@@ -342,87 +377,173 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 
 		try {
 			id = Integer.valueOf(output);
-			adapter.open();
-			if (adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
-				adapter.deleteLikeFromPaper(CurrentUser.getId(), paperID);
-				likeTopic.setBackgroundResource(R.drawable.like_off);
-				countLikeRelative
-						.setBackgroundResource(R.drawable.count_like_off);
 
-				countLike
-						.setText(adapter.LikeInPaper_count(paperID).toString());
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
+			if (LikeOrComment == true) {
+
+				adapter.open();
+				if (adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
+					adapter.deleteLikeFromPaper(CurrentUser.getId(), paperID);
+					likeTopic.setBackgroundResource(R.drawable.like_off);
+					countLikeRelative
+							.setBackgroundResource(R.drawable.count_like_off);
+
+					countLike.setText(adapter.LikeInPaper_count(paperID)
+							.toString());
+					if (ringProgressDialog != null) {
+						ringProgressDialog.dismiss();
+					}
+				} else {
+					adapter.insertLikeInPaperToDb(CurrentUser.getId(), paperID,
+							serverDate);
+					likeTopic.setBackgroundResource(R.drawable.like_on);
+					countLikeRelative
+							.setBackgroundResource(R.drawable.count_like);
+
+					countLike.setText(adapter.LikeInPaper_count(paperID)
+							.toString());
+					if (ringProgressDialog != null) {
+						ringProgressDialog.dismiss();
+					}
 				}
+				adapter.close();
+
 			} else {
-				adapter.insertLikeInPaperToDb(CurrentUser.getId(), paperID,
-						serverDate);
-				likeTopic.setBackgroundResource(R.drawable.like_on);
-				countLikeRelative.setBackgroundResource(R.drawable.count_like);
 
-				countLike
-						.setText(adapter.LikeInPaper_count(paperID).toString());
+				adapter.open();
+				adapter.insertCommentInPapertoDb(
+						util.inputComment(getActivity()), paperID,
+						CurrentUser.getId(), serverDate);
+				adapter.close();
+
+				util.ToEmptyComment(getActivity());
+
+				final SharedPreferences realizeIdPaper = getActivity()
+						.getSharedPreferences("Id", 0);
+
+				realizeIdPaper.edit().putInt("main_Id", 1378).commit();
+
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				PaperFragment fragment = new PaperFragment();
+				trans.setCustomAnimations(R.anim.pull_in_left,
+						R.anim.push_out_right);
+				Bundle b = new Bundle();
+				b.putString("Id", String.valueOf(paperID));
+				fragment.setArguments(b);
+
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
 				if (ringProgressDialog != null) {
 					ringProgressDialog.dismiss();
 				}
+
 			}
-			adapter.close();
 
 		} catch (NumberFormatException e) {
 			if (output != null
 					&& !(output.contains("Exception") || output
 							.contains("java"))) {
-				adapter.open();
-				if (adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
+
+				if (LikeOrComment == true) {
+
 					adapter.open();
-					// int c = adapter.LikeInFroum_count(ItemId) - 1;
-					// countLikeFroum.setText(String.valueOf(c));
+					if (adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
+						adapter.open();
+						// int c = adapter.LikeInFroum_count(ItemId) - 1;
+						// countLikeFroum.setText(String.valueOf(c));
 
-					params = new LinkedHashMap<String, String>();
-					deleting = new Deleting(getActivity());
-					deleting.delegate = PaperWithoutComment.this;
+						params = new LinkedHashMap<String, String>();
+						deleting = new Deleting(getActivity());
+						deleting.delegate = PaperWithoutComment.this;
 
-					params.put("TableName", "LikeInPaper");
-					params.put("UserId", String.valueOf(CurrentUser.getId()));
-					params.put("PaperId", String.valueOf(paperID));
+						params.put("TableName", "LikeInPaper");
+						params.put("UserId",
+								String.valueOf(CurrentUser.getId()));
+						params.put("PaperId", String.valueOf(paperID));
 
-					deleting.execute(params);
+						deleting.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								"", "لطفا منتظر بمانید...", true);
 
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
+						ringProgressDialog.setCancelable(true);
+						new Thread(new Runnable() {
 
-						@Override
-						public void run() {
+							@Override
+							public void run() {
 
-							try {
+								try {
 
-								Thread.sleep(10000);
+									Thread.sleep(10000);
 
-							} catch (Exception e) {
+								} catch (Exception e) {
 
+								}
 							}
-						}
-					}).start();
+						}).start();
 
+						adapter.close();
+
+					} else {
+						adapter.open();
+						params = new LinkedHashMap<String, String>();
+						saving = new Saving(getActivity());
+						saving.delegate = PaperWithoutComment.this;
+
+						params.put("TableName", "LikeInPaper");
+
+						params.put("UserId",
+								String.valueOf(CurrentUser.getId()));
+						params.put("PaperId", String.valueOf(paperID));
+						params.put("Date", output);
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						serverDate = output;
+
+						saving.execute(params);
+
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								"", "لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+
+						// countLikeFroum.setText(adapter
+						// .LikeInFroum_count(ItemId).toString());
+
+						adapter.close();
+					}
 					adapter.close();
-
 				} else {
-					adapter.open();
+
 					params = new LinkedHashMap<String, String>();
 					saving = new Saving(getActivity());
 					saving.delegate = PaperWithoutComment.this;
 
-					params.put("TableName", "LikeInPaper");
+					params.put("TableName", "CommentInPaper");
 
-					params.put("UserId", String.valueOf(CurrentUser.getId()));
+					params.put("Desk", util.inputComment(getActivity()));
 					params.put("PaperId", String.valueOf(paperID));
-					params.put("Date", output);
+					params.put("UserId", String.valueOf(CurrentUser.getId()));
 					params.put("IsUpdate", "0");
-					params.put("Id", "0");
+					params.put("Date", output);
+					params.put("ModifyDate", output);
 
+					params.put("Id", "0");
 					serverDate = output;
 
 					saving.execute(params);
@@ -446,12 +567,8 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 						}
 					}).start();
 
-					// countLikeFroum.setText(adapter
-					// .LikeInFroum_count(ItemId).toString());
-
-					adapter.close();
 				}
-				adapter.close();
+
 			} else {
 				Toast.makeText(getActivity(),
 						"خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT)
