@@ -17,6 +17,9 @@ public class Settings {
 	String ServerDate_Start_Froum;
 	String ServerDate_End_Froum;
 
+	String ServerDate_Start_Post;
+	String ServerDate_End_Post;
+
 	String ServerDate_Start_Anad;
 	String ServerDate_End_Anad;
 
@@ -121,16 +124,32 @@ public class Settings {
 		return ServerDate_Start_Froum;
 	}
 
+	public String getServerDate_Start_Post() {
+		return ServerDate_Start_Post;
+	}
+
 	public void setServerDate_Start_Froum(String serverDate_Start_Froum) {
 		ServerDate_Start_Froum = serverDate_Start_Froum;
+	}
+
+	public void setServerDate_Start_Post(String serverDate_Start_Post) {
+		ServerDate_Start_Post = serverDate_Start_Post;
 	}
 
 	public String getServerDate_End_Froum() {
 		return ServerDate_End_Froum;
 	}
 
+	public String getServerDate_End_Post() {
+		return ServerDate_End_Post;
+	}
+
 	public void setServerDate_End_Froum(String serverDate_End_Froum) {
 		ServerDate_End_Froum = serverDate_End_Froum;
+	}
+
+	public void setServerDate_End_Post(String serverDate_End_Post) {
+		ServerDate_End_Post = serverDate_End_Post;
 	}
 
 	public String getServerDate_Start_Anad() {
@@ -416,7 +435,8 @@ public class Settings {
 		return ServerDate_End_ObjectInCity;
 	}
 
-	public void setServerDate_End_ObjectInCity(String serverDate_End_ObjectInCity) {
+	public void setServerDate_End_ObjectInCity(
+			String serverDate_End_ObjectInCity) {
 		ServerDate_End_ObjectInCity = serverDate_End_ObjectInCity;
 	}
 

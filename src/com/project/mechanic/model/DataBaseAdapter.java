@@ -578,9 +578,25 @@ public class DataBaseAdapter {
 		cv.put("Description", description);
 		cv.put("UserId", userId);
 		cv.put("Date", date);
-		cv.put("Seen", 1);
+		cv.put("Seen", 0);
 
 		mDb.insert(TableFroum, null, cv);
+
+	}
+
+	public void insertPosttitletoDb(/* int id, */String Title,
+			String description, int userId, String date) {
+
+		ContentValues cv = new ContentValues();
+
+		// cv.put("Id", id);
+		cv.put("Title", Title);
+		cv.put("Description", description);
+		cv.put("UserId", userId);
+		cv.put("Date", date);
+		cv.put("Seen", 0);
+
+		mDb.insert(TablePost, null, cv);
 
 	}
 

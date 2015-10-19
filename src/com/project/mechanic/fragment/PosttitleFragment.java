@@ -38,7 +38,7 @@ import com.project.mechanic.utility.Utility;
 public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 		CommInterface, AsyncInterface {
 	private ImageButton addtitle;
-	private DialogfroumTitle dialog;
+	private DialogpostTitle dialog;
 	DialogcmtInfroum dialog2;
 	DataBaseAdapter mdb;
 	View view;
@@ -72,7 +72,7 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 	public View onCreateView(android.view.LayoutInflater inflater,
 			android.view.ViewGroup container, Bundle savedInstanceState) {
 
-		view = inflater.inflate(R.layout.fragment_titlefrm, null);
+		view = inflater.inflate(R.layout.fragment_titlepost, null);
 		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 		action = (FloatingActionButton) view.findViewById(R.id.fab);
 
@@ -91,7 +91,7 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
 							Toast.LENGTH_SHORT).show();
 				else {
-					dialog = new DialogfroumTitle(getActivity(),
+					dialog = new DialogpostTitle(getActivity(),
 							R.layout.dialog_addtitle, PosttitleFragment.this);
 					dialog.getWindow()
 							.setSoftInputMode(
@@ -156,11 +156,11 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 					update = new Updating(getActivity());
 					update.delegate = PosttitleFragment.this;
 					String[] params = new String[4];
-					params[0] = "Froum";
-					params[1] = setting.getServerDate_Start_Froum() != null ? setting
-							.getServerDate_Start_Froum() : "";
-					params[2] = setting.getServerDate_End_Froum() != null ? setting
-							.getServerDate_End_Froum() : "";
+					params[0] = "Post";
+					params[1] = setting.getServerDate_Start_Post() != null ? setting
+							.getServerDate_Start_Post() : "";
+					params[2] = setting.getServerDate_End_Post() != null ? setting
+							.getServerDate_End_Post() : "";
 					params[3] = "1";
 					update.execute(params);
 
@@ -184,7 +184,7 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 		Toast.makeText(getActivity(), "تعداد فروم ها = " + countList, 0).show();
 
 		if (getArguments() != null) {
-			mLastFirstVisibleItem = getArguments().getInt("Froum_List_Id");
+			mLastFirstVisibleItem = getArguments().getInt("Post_List_Id");
 			lst.setSelection(mLastFirstVisibleItem);
 		}
 
@@ -221,11 +221,11 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 						update = new Updating(getActivity());
 						update.delegate = PosttitleFragment.this;
 						String[] params = new String[4];
-						params[0] = "Froum";
-						params[1] = setting.getServerDate_Start_Froum() != null ? setting
-								.getServerDate_Start_Froum() : "";
-						params[2] = setting.getServerDate_End_Froum() != null ? setting
-								.getServerDate_End_Froum() : "";
+						params[0] = "Post";
+						params[1] = setting.getServerDate_Start_Post() != null ? setting
+								.getServerDate_Start_Post() : "";
+						params[2] = setting.getServerDate_End_Post() != null ? setting
+								.getServerDate_End_Post() : "";
 						params[3] = "0";
 						update.execute(params);
 
@@ -244,7 +244,7 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 		mylist = mdb.getAllPost();
 		mdb.close();
 		ListAdapter = new PosttitleListadapter(getActivity(),
-				R.layout.raw_froumtitle, mylist, PosttitleFragment.this);
+				R.layout.raw_posttitle, mylist, PosttitleFragment.this);
 		ListAdapter.notifyDataSetChanged();
 		lst.setAdapter(ListAdapter);
 		LoadMoreFooter.setVisibility(View.INVISIBLE);

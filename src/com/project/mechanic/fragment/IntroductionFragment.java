@@ -948,19 +948,26 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
-		/*
-		 * Button btnShowPost = (Button) view.findViewById(R.id.btnShowPost);
-		 * btnShowPost.setOnClickListener(new OnClickListener() {
-		 * 
-		 * @Override public void onClick(View arg0) { FragmentTransaction trans
-		 * = ((MainActivity) context)
-		 * .getSupportFragmentManager().beginTransaction(); PostFragment
-		 * fragment = new PostFragment();
-		 * 
-		 * Bundle bundle = new Bundle(); bundle.putInt("userId", userId);
-		 * fragment.setArguments(bundle); trans.replace(R.id.content_frame,
-		 * fragment); trans.commit(); } })
-		 */
+		Button btnShowPost = (Button) view.findViewById(R.id.btnShowPost);
+		btnShowPost.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				PosttitleFragment fragment = new PosttitleFragment();
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("Id", ObjectID);
+				fragment.setArguments(bundle);
+			}
+
+		});
 
 		// IntroductionListAdapter listAdapter = new IntroductionListAdapter(
 		// getActivity(), R.layout.raw_froumcmt, mylist);
