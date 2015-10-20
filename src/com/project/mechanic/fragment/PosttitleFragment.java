@@ -21,8 +21,8 @@ import android.widget.Toast;
 
 import com.project.mechanic.R;
 import com.project.mechanic.Action.FloatingActionButton;
-import com.project.mechanic.adapter.FroumtitleListadapter;
-import com.project.mechanic.entity.Froum;
+import com.project.mechanic.adapter.PosttitleListadapter;
+import com.project.mechanic.entity.Post;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
@@ -35,16 +35,16 @@ import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
+public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 		CommInterface, AsyncInterface {
 	private ImageButton addtitle;
-	private DialogfroumTitle dialog;
+	private DialogpostTitle dialog;
 	DialogcmtInfroum dialog2;
 	DataBaseAdapter mdb;
 	View view;
-	ArrayList<Froum> mylist;
+	ArrayList<Post> mylist;
 	ListView lst;
-	FroumtitleListadapter ListAdapter;
+	PosttitleListadapter ListAdapter;
 	ImageButton Replytocm;
 	public static final int DIALOG_FRAGMENT = 1;
 	Utility util;
@@ -72,7 +72,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	public View onCreateView(android.view.LayoutInflater inflater,
 			android.view.ViewGroup container, Bundle savedInstanceState) {
 
-		view = inflater.inflate(R.layout.fragment_titlefrm, null);
+		view = inflater.inflate(R.layout.fragment_titlepost, null);
 		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 		action = (FloatingActionButton) view.findViewById(R.id.fab);
 
@@ -91,8 +91,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
 							Toast.LENGTH_SHORT).show();
 				else {
-					dialog = new DialogfroumTitle(getActivity(),
-							R.layout.dialog_addtitle, FroumtitleFragment.this);
+					dialog = new DialogpostTitle(getActivity(),
+							R.layout.dialog_addtitle, PosttitleFragment.this);
 					dialog.getWindow()
 							.setSoftInputMode(
 									WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -108,7 +108,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		Currentuser = util.getCurrentUser();
 
 		mdb.open();
-		mylist = mdb.getAllFroum();
+		mylist = mdb.getAllPost();
 
 		String strIdes = "";
 		if (mylist != null) {
@@ -154,13 +154,13 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 				if (getActivity() != null) {
 
 					update = new Updating(getActivity());
-					update.delegate = FroumtitleFragment.this;
+					update.delegate = PosttitleFragment.this;
 					String[] params = new String[4];
-					params[0] = "Froum";
-					params[1] = setting.getServerDate_Start_Froum() != null ? setting
-							.getServerDate_Start_Froum() : "";
-					params[2] = setting.getServerDate_End_Froum() != null ? setting
-							.getServerDate_End_Froum() : "";
+					params[0] = "Post";
+					params[1] = setting.getServerDate_Start_Post() != null ? setting
+							.getServerDate_Start_Post() : "";
+					params[2] = setting.getServerDate_End_Post() != null ? setting
+							.getServerDate_End_Post() : "";
 					params[3] = "1";
 					update.execute(params);
 
@@ -176,15 +176,15 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 				R.layout.load_more_footer, null);
 		lst.addFooterView(LoadMoreFooter);
 		LoadMoreFooter.setVisibility(View.INVISIBLE);
-		ListAdapter = new FroumtitleListadapter(getActivity(),
-				R.layout.raw_froumtitle, mylist, FroumtitleFragment.this);
+		ListAdapter = new PosttitleListadapter(getActivity(),
+				R.layout.raw_froumtitle, mylist, PosttitleFragment.this);
 		lst.setAdapter(ListAdapter);
 
 		int countList = ListAdapter.getCount();
 		Toast.makeText(getActivity(), "تعداد فروم ها = " + countList, 0).show();
 
 		if (getArguments() != null) {
-			mLastFirstVisibleItem = getArguments().getInt("Froum_List_Id");
+			mLastFirstVisibleItem = getArguments().getInt("Post_List_Id");
 			lst.setSelection(mLastFirstVisibleItem);
 		}
 
@@ -219,13 +219,13 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 					if (getActivity() != null) {
 
 						update = new Updating(getActivity());
-						update.delegate = FroumtitleFragment.this;
+						update.delegate = PosttitleFragment.this;
 						String[] params = new String[4];
-						params[0] = "Froum";
-						params[1] = setting.getServerDate_Start_Froum() != null ? setting
-								.getServerDate_Start_Froum() : "";
-						params[2] = setting.getServerDate_End_Froum() != null ? setting
-								.getServerDate_End_Froum() : "";
+						params[0] = "Post";
+						params[1] = setting.getServerDate_Start_Post() != null ? setting
+								.getServerDate_Start_Post() : "";
+						params[2] = setting.getServerDate_End_Post() != null ? setting
+								.getServerDate_End_Post() : "";
 						params[3] = "0";
 						update.execute(params);
 
@@ -241,10 +241,10 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 	public void updateView() {
 		mdb.open();
-		mylist = mdb.getAllFroum();
+		mylist = mdb.getAllPost();
 		mdb.close();
-		ListAdapter = new FroumtitleListadapter(getActivity(),
-				R.layout.raw_froumtitle, mylist, FroumtitleFragment.this);
+		ListAdapter = new PosttitleListadapter(getActivity(),
+				R.layout.raw_posttitle, mylist, PosttitleFragment.this);
 		ListAdapter.notifyDataSetChanged();
 		lst.setAdapter(ListAdapter);
 		LoadMoreFooter.setVisibility(View.INVISIBLE);
@@ -255,7 +255,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	@Override
 	public void processFinish(byte[] output) {
 
-		Froum f;
+		Post f;
 		mdb.open();
 		if (output != null && mylist != null && mylist.size() > userItemId) {
 			f = mylist.get(userItemId);

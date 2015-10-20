@@ -1,14 +1,14 @@
 package com.project.mechanic.entity;
 
 public class LikeInFroum {
+
 	int Id;
 	int UserId;
 	int Froumid;
 	String Datetime;
 	int CommentId;
 	int Seen;
-	
-	
+
 	public LikeInFroum(int id, int userid, int froumid, String datetime,
 			int commentid, int seen) {
 		Id = id;
@@ -67,7 +67,5 @@ public class LikeInFroum {
 	public void setSeen(int seen) {
 		Seen = seen;
 	}
-
-	
 
 }

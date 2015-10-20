@@ -3,22 +3,14 @@ package com.project.mechanic.entity;
 public class Post {
 
 	int Id;
-	String Desc;
-	String ImagePath;
+	int UserId;
+	String Title;
+	String Description;
+	int Seen;
+	String ServerDate;
+	int Submit;
 	String Date;
-	String UserId;
-	String ModifyDate;
-
-	public Post(int Id, String ImagePath, String Date, String UserId,
-			String ModifyDate) {
-
-		this.Id = Id;
-		this.ImagePath = ImagePath;
-		this.Date = Date;
-		this.UserId = UserId;
-		this.ModifyDate = ModifyDate;
-
-	}
+	int seenBefore;
 
 	public int getId() {
 		return Id;
@@ -28,20 +20,52 @@ public class Post {
 		Id = id;
 	}
 
-	public String getDesc() {
-		return Desc;
+	public int getUserId() {
+		return UserId;
 	}
 
-	public void setDesc(String desc) {
-		Desc = desc;
+	public void setUserId(int userId) {
+		UserId = userId;
 	}
 
-	public String getImagePath() {
-		return ImagePath;
+	public String getTitle() {
+		return Title;
 	}
 
-	public void setImagePath(String imagePath) {
-		ImagePath = imagePath;
+	public void setTitle(String title) {
+		Title = title;
+	}
+
+	public String getDescription() {
+		return Description;
+	}
+
+	public void setDescription(String description) {
+		Description = description;
+	}
+
+	public int getSeen() {
+		return Seen;
+	}
+
+	public void setSeen(int seen) {
+		Seen = seen;
+	}
+
+	public String getServerDate() {
+		return ServerDate;
+	}
+
+	public void setServerDate(String serverDate) {
+		ServerDate = serverDate;
+	}
+
+	public int getSubmit() {
+		return Submit;
+	}
+
+	public void setSubmit(int submit) {
+		Submit = submit;
 	}
 
 	public String getDate() {
@@ -52,20 +76,37 @@ public class Post {
 		Date = date;
 	}
 
-	public String getUserId() {
-		return UserId;
+	public int getSeenBefore() {
+		return seenBefore;
 	}
 
-	public void setUserId(String userId) {
+	public void setSeenBefore(int seenBefore) {
+		this.seenBefore = seenBefore;
+	}
+
+	public Post(int id, int userId, String title, String description, int seen,
+			String serverDate, int submit, String date, int seenBefore) {
+		super();
+		Id = id;
 		UserId = userId;
+		Title = title;
+		Description = description;
+		Seen = seen;
+		ServerDate = serverDate;
+		Submit = submit;
+		Date = date;
+		this.seenBefore = seenBefore;
 	}
 
-	public String getModifyDate() {
-		return ModifyDate;
-	}
-
-	public void setModifyDate(String modifyDate) {
-		ModifyDate = modifyDate;
+	public int compareTo(Post comparePost) {
+		long temp = Long.valueOf(getDate());
+		Long comparetemp = Long.valueOf(comparePost.getDate());
+		if (comparetemp > temp)
+			return 1;
+		else if (comparetemp < temp)
+			return -1;
+		else
+			return 0;
 	}
 
 }

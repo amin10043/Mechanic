@@ -31,10 +31,10 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.adapter.ExpandableCommentFroum;
-import com.project.mechanic.entity.CommentInFroum;
-import com.project.mechanic.entity.Froum;
-import com.project.mechanic.entity.LikeInFroum;
+import com.project.mechanic.adapter.ExpandableCommentPost;
+import com.project.mechanic.entity.CommentInPost;
+import com.project.mechanic.entity.LikeInPost;
+import com.project.mechanic.entity.Post;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
@@ -47,27 +47,27 @@ import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class FroumFragment extends Fragment implements AsyncInterface,
+public class PostFragment extends Fragment implements AsyncInterface,
 		GetAsyncInterface, CommInterface {
 
 	DataBaseAdapter adapter;
-	ExpandableCommentFroum exadapter;
+	ExpandableCommentPost exadapter;
 
 	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike,
 			nametxt;
 	LinearLayout addComment, likeTopic;
 	ImageButton sharebtn;
 	ImageView profileImg;
-	int froumid;
+	int postid;
 	RelativeLayout count, commentcounter;
 
-	Froum topics;
+	Post topics;
 
 	DialogcmtInfroum dialog;
-	ArrayList<CommentInFroum> commentGroup, ReplyGroup;
+	ArrayList<CommentInPost> commentGroup, ReplyGroup;
 	// String currentDate;
 
-	Map<CommentInFroum, List<CommentInFroum>> mapCollection;
+	Map<CommentInPost, List<CommentInPost>> mapCollection;
 	ExpandableListView exlistview;
 
 	View header;
@@ -140,7 +140,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 		// end find view
 
 		if (getArguments().getString("Id") != null)
-			froumid = Integer.valueOf(getArguments().getString("Id"));
+			postid = Integer.valueOf(getArguments().getString("Id"));
 
 		adapter.open();
 		CurrentUser = util.getCurrentUser();
@@ -151,7 +151,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 		else
 			IDcurrentUser = CurrentUser.getId();
 
-		topics = adapter.getFroumItembyid(froumid);
+		topics = adapter.getPostItembyid(postid);
 		Users u = adapter.getUserbyid(topics.getUserId());
 		if (u != null) {
 			userId = u.getId();
@@ -172,6 +172,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 				profileImg.setLayoutParams(lp);
 
 			} else {
+				// byte[] bytepic = u.getImage();
 
 				Bitmap bmp = BitmapFactory.decodeFile(u.getImagePath());
 				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
@@ -182,8 +183,8 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 		}
 		titletxt.setText(topics.getTitle());
 		descriptiontxt.setText(topics.getDescription());
-		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
-		countLike.setText(adapter.LikeInFroum_count(froumid).toString());
+		countComment.setText(adapter.CommentInPost_count(postid).toString());
+		countLike.setText(adapter.LikeInPost_count(postid).toString());
 		dateTopic.setText(util.getPersianDate(topics.getDate()));
 
 		// titletxt.setTypeface(util.SetFontCasablanca());
@@ -217,8 +218,8 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 				} else {
 
-					dialog = new DialogcmtInfroum(FroumFragment.this, 0,
-							getActivity(), froumid, R.layout.dialog_addcomment,
+					dialog = new DialogcmtInfroum(PostFragment.this, 0,
+							getActivity(), postid, R.layout.dialog_addcomment,
 							2);
 					dialog.show();
 					exadapter.notifyDataSetChanged();
@@ -226,14 +227,14 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
-		commentGroup = adapter.getCommentInFroumbyPaperid(froumid, 0);
+		commentGroup = adapter.getCommentInPostbyPaperid(postid, 0);
 
-		mapCollection = new LinkedHashMap<CommentInFroum, List<CommentInFroum>>();
+		mapCollection = new LinkedHashMap<CommentInPost, List<CommentInPost>>();
 
-		List<CommentInFroum> reply = null;
-		for (CommentInFroum comment : commentGroup) {
-			reply = adapter
-					.getReplyCommentbyCommentID(froumid, comment.getId());
+		List<CommentInPost> reply = null;
+		for (CommentInPost comment : commentGroup) {
+			reply = adapter.getReplyCommentbyCommentIDPost(postid,
+					comment.getId());
 			mapCollection.put(comment, reply);
 		}
 
@@ -241,8 +242,8 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 			Users uId;
 			for (int i = 0; i < commentGroup.size(); i++) {
 
-				CommentInFroum cm = commentGroup.get(i);
-				int uidd = cm.getUserid();
+				CommentInPost cm = commentGroup.get(i);
+				int uidd = cm.getUserId();
 				uId = adapter.getUserById(uidd);
 
 				if (uId == null) {
@@ -260,7 +261,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 						"لطفا منتظر بمانید...", true);
 				ringProgressDialog.setCancelable(true);
 				date = new ServerDate(getActivity());
-				date.delegate = FroumFragment.this;
+				date.delegate = PostFragment.this;
 				date.execute("");
 				check = true;
 
@@ -268,9 +269,9 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 		}
 
 		exlistview.addHeaderView(header);
-		exadapter = new ExpandableCommentFroum(getActivity(),
-				(ArrayList<CommentInFroum>) commentGroup, mapCollection, this,
-				froumid);
+		exadapter = new ExpandableCommentPost(getActivity(),
+				(ArrayList<CommentInPost>) commentGroup, mapCollection, this,
+				postid);
 
 		exadapter.notifyDataSetChanged();
 
@@ -280,7 +281,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 			likeTopic.setBackgroundResource(R.drawable.like_off);
 			count.setBackgroundResource(R.drawable.count_like_off);
 		} else {
-			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid)) {
+			if (adapter.isUserLikedPost(CurrentUser.getId(), postid)) {
 				likeTopic.setBackgroundResource(R.drawable.like_on);
 				count.setBackgroundResource(R.drawable.count_like);
 
@@ -297,16 +298,16 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 				adapter.open();
-				ArrayList<LikeInFroum> likedist = adapter
-						.getLikefroumLikeInFroumByFroumId(froumid);
+				ArrayList<LikeInPost> likedist = adapter
+						.getLikepostLikeInPostByPostId(postid);
 
 				adapter.close();
 				if (likedist.size() == 0) {
 					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
 							.show();
 				} else {
-					DialogPersonLikedFroum dia = new DialogPersonLikedFroum(
-							getActivity(), froumid, likedist);
+					DialogPersonLikedPost dia = new DialogPersonLikedPost(
+							getActivity(), postid, likedist);
 					dia.show();
 				}
 			}
@@ -339,7 +340,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 							"لطفا منتظر بمانید...", true);
 					ringProgressDialog.setCancelable(true);
 					date = new ServerDate(getActivity());
-					date.delegate = FroumFragment.this;
+					date.delegate = PostFragment.this;
 					date.execute("");
 					LikeOrComment = true;
 
@@ -382,7 +383,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 					DialogLongClick dia = new DialogLongClick(getActivity(), 1,
 							topics.getUserId(), topics.getId(),
-							FroumFragment.this, topics.getDescription());
+							PostFragment.this, topics.getDescription());
 					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 					lp.copyFrom(dia.getWindow().getAttributes());
 					lp.width = (int) (util.getScreenwidth() / 1.5);
@@ -411,7 +412,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 				} else {
 
 					date = new ServerDate(getActivity());
-					date.delegate = FroumFragment.this;
+					date.delegate = PostFragment.this;
 					date.execute("");
 					LikeOrComment = false;
 
@@ -435,7 +436,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 		return view;
 	}
 
-	public int getFroumId() {
+	public int getPostId() {
 		return id;
 	}
 
@@ -454,22 +455,22 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 	public void updateList() {
 		adapter.open();
 
-		commentGroup = adapter.getCommentInFroumbyPaperid(froumid, 0);
+		commentGroup = adapter.getCommentInPostbyPaperid(postid, 0);
 
-		mapCollection = new LinkedHashMap<CommentInFroum, List<CommentInFroum>>();
+		mapCollection = new LinkedHashMap<CommentInPost, List<CommentInPost>>();
 
-		List<CommentInFroum> reply = null;
-		for (CommentInFroum comment : commentGroup) {
-			reply = adapter
-					.getReplyCommentbyCommentID(froumid, comment.getId());
+		List<CommentInPost> reply = null;
+		for (CommentInPost comment : commentGroup) {
+			reply = adapter.getReplyCommentbyCommentIDPost(postid,
+					comment.getId());
 			mapCollection.put(comment, reply);
 		}
 
-		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
+		countComment.setText(adapter.CommentInPost_count(postid).toString());
 
-		exadapter = new ExpandableCommentFroum(getActivity(),
-				(ArrayList<CommentInFroum>) commentGroup, mapCollection, this,
-				froumid);
+		exadapter = new ExpandableCommentPost(getActivity(),
+				(ArrayList<CommentInPost>) commentGroup, mapCollection, this,
+				postid);
 
 		exadapter.notifyDataSetChanged();
 
@@ -481,7 +482,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 	}
 
 	public void setcount() {
-		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
+		countComment.setText(adapter.CommentInFroum_count(postid).toString());
 
 	}
 
@@ -492,22 +493,22 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 	public void expanding(int groupPosition) {
 		adapter.open();
 
-		commentGroup = adapter.getCommentInFroumbyPaperid(froumid, 0);
+		commentGroup = adapter.getCommentInPostbyPaperid(postid, 0);
 
-		mapCollection = new LinkedHashMap<CommentInFroum, List<CommentInFroum>>();
+		mapCollection = new LinkedHashMap<CommentInPost, List<CommentInPost>>();
 
-		List<CommentInFroum> reply = null;
-		for (CommentInFroum comment : commentGroup) {
-			reply = adapter
-					.getReplyCommentbyCommentID(froumid, comment.getId());
+		List<CommentInPost> reply = null;
+		for (CommentInPost comment : commentGroup) {
+			reply = adapter.getReplyCommentbyCommentIDPost(postid,
+					comment.getId());
 			mapCollection.put(comment, reply);
 		}
 
-		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
+		countComment.setText(adapter.CommentInFroum_count(postid).toString());
 
-		exadapter = new ExpandableCommentFroum(getActivity(),
-				(ArrayList<CommentInFroum>) commentGroup, mapCollection, this,
-				froumid);
+		exadapter = new ExpandableCommentPost(getActivity(),
+				(ArrayList<CommentInPost>) commentGroup, mapCollection, this,
+				postid);
 		exadapter.notifyDataSetChanged();
 		exlistview.setAdapter(exadapter);
 		if (groupPosition <= mapCollection.size()) {
@@ -530,27 +531,27 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 			id = Integer.valueOf(output);
 
 			if (LikeOrComment == true) {
-				if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid)) {
-					adapter.deleteLikeFromFroum(CurrentUser.getId(), froumid);
+				if (adapter.isUserLikedFroum(CurrentUser.getId(), postid)) {
+					adapter.deleteLikeFromFroum(CurrentUser.getId(), postid);
 					likeTopic.setBackgroundResource(R.drawable.like_off);
 					count.setBackgroundResource(R.drawable.count_like_off);
 
-					countLike.setText(adapter.LikeInFroum_count(froumid)
+					countLike.setText(adapter.LikeInFroum_count(postid)
 							.toString());
 				} else {
 					adapter.insertLikeInFroumToDb(id, CurrentUser.getId(),
-							froumid, serverDate, 0);
+							postid, serverDate, 0);
 					likeTopic.setBackgroundResource(R.drawable.like_on);
 					count.setBackgroundResource(R.drawable.count_like);
 
-					countLike.setText(adapter.LikeInFroum_count(froumid)
+					countLike.setText(adapter.LikeInFroum_count(postid)
 							.toString());
 				}
 			} else {
 				adapter.open();
 
 				adapter.insertCommentInFroumtoDb(id,
-						util.inputComment(getActivity()), froumid,
+						util.inputComment(getActivity()), postid,
 						CurrentUser.getId(), serverDate, commentId);
 
 				adapter.close();
@@ -579,12 +580,12 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 						params = new LinkedHashMap<String, String>();
 
 						saving = new Saving(getActivity());
-						saving.delegate = FroumFragment.this;
+						saving.delegate = PostFragment.this;
 
 						params.put("TableName", "CommentInFroum");
 
 						params.put("Desk", util.inputComment(getActivity()));
-						params.put("FroumId", String.valueOf(froumid));
+						params.put("FroumId", String.valueOf(postid));
 						params.put("UserId",
 								String.valueOf(CurrentUser.getId()));
 						params.put("CommentId", String.valueOf(commentId));
@@ -622,18 +623,18 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 						return;
 					}
 
-					if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid)) {
+					if (adapter.isUserLikedFroum(CurrentUser.getId(), postid)) {
 
 						params = new LinkedHashMap<String, String>();
 						if (getActivity() != null) {
 
 							deleting = new Deleting(getActivity());
-							deleting.delegate = FroumFragment.this;
+							deleting.delegate = PostFragment.this;
 
 							params.put("TableName", "LikeInFroum");
 							params.put("UserId",
 									String.valueOf(CurrentUser.getId()));
-							params.put("FroumId", String.valueOf(froumid));
+							params.put("FroumId", String.valueOf(postid));
 
 							deleting.execute(params);
 						}
@@ -642,13 +643,13 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 						if (getActivity() != null) {
 
 							saving = new Saving(getActivity());
-							saving.delegate = FroumFragment.this;
+							saving.delegate = PostFragment.this;
 
 							params.put("TableName", "LikeInFroum");
 
 							params.put("UserId",
 									String.valueOf(CurrentUser.getId()));
-							params.put("FroumId", String.valueOf(froumid));
+							params.put("PostId", String.valueOf(postid));
 							params.put("CommentId", "0");
 							params.put("Date", output);
 							params.put("IsUpdate", "0");
@@ -689,7 +690,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 			if (getActivity() != null) {
 
 				service = new ServiceComm(getActivity());
-				service.delegate = FroumFragment.this;
+				service.delegate = PostFragment.this;
 				Map<String, String> items = new LinkedHashMap<String, String>();
 				items.put("tableName", "getUserById");
 				items.put("Id", String.valueOf(iid));
@@ -717,7 +718,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 			if (getActivity() != null) {
 
 				updating = new UpdatingImage(getActivity());
-				updating.delegate = FroumFragment.this;
+				updating.delegate = PostFragment.this;
 				maps = new LinkedHashMap<String, String>();
 				maps.put("tableName", "Users");
 				maps.put("Id", String.valueOf(uu.getId()));

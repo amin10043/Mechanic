@@ -10,7 +10,6 @@ public class Froum implements Comparable<Froum> {
 	String ServerDate;
 	int Submit;
 	String Date;
-
 	int seenBefore;
 
 	public int getId() {
