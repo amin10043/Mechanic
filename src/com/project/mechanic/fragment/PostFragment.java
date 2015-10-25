@@ -63,7 +63,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 	Post topics;
 
-	DialogcmtInfroum dialog;
+	DialogcmtInpost dialog;
 	ArrayList<CommentInPost> commentGroup, ReplyGroup;
 	// String currentDate;
 
@@ -99,12 +99,11 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	boolean LikeOrComment; // like == true & comment == false
 
 	@SuppressLint("InflateParams")
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceStdataate) {
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
-		View view = inflater.inflate(R.layout.fragment_froum, null);
+		View view = inflater.inflate(R.layout.fragment_post, null);
 
 		adapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
@@ -131,21 +130,22 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 		sharebtn = (ImageButton) header.findViewById(R.id.sharefroumicon);
 		profileImg = (ImageView) header.findViewById(R.id.iconfroumtitle);
-		exlistview = (ExpandableListView) view.findViewById(R.id.commentlist);
+		// exlistview = (ExpandableListView) view
+		// .findViewById(R.id.listvCmt_Introduction_post);
+		exlistview = (ExpandableListView) view
+				.findViewById(R.id.listvCmt_Introduction_post);
 
 		count = (RelativeLayout) header.findViewById(R.id.countLike);
 		commentcounter = (RelativeLayout) header
 				.findViewById(R.id.countComment);
 
 		// end find view
-
 		if (getArguments().getString("Id") != null)
 			postid = Integer.valueOf(getArguments().getString("Id"));
 
 		adapter.open();
 		CurrentUser = util.getCurrentUser();
 		if (CurrentUser == null) {
-
 		}
 
 		else
@@ -218,7 +218,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 				} else {
 
-					dialog = new DialogcmtInfroum(PostFragment.this, 0,
+					dialog = new DialogcmtInpost(PostFragment.this, 0,
 							getActivity(), postid, R.layout.dialog_addcomment,
 							2);
 					dialog.show();
@@ -269,6 +269,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 		}
 
 		exlistview.addHeaderView(header);
+
 		exadapter = new ExpandableCommentPost(getActivity(),
 				(ArrayList<CommentInPost>) commentGroup, mapCollection, this,
 				postid);
@@ -411,10 +412,18 @@ public class PostFragment extends Fragment implements AsyncInterface,
 							.show();
 				} else {
 
-					date = new ServerDate(getActivity());
-					date.delegate = PostFragment.this;
-					date.execute("");
-					LikeOrComment = false;
+					// date = new ServerDate(getActivity());
+					// date.delegate = PostFragment.this;
+					// date.execute("");
+					// LikeOrComment = false;
+					adapter.open();
+					adapter.insertCommentInPosttoDb(id,
+							util.inputComment(getActivity()), postid,
+							CurrentUser.getId(), serverDate, commentId);
+
+					adapter.close();
+
+					util.ToEmptyComment(getActivity());
 
 					util.ReplyLayout(getActivity(), "", false);
 
@@ -482,7 +491,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	}
 
 	public void setcount() {
-		countComment.setText(adapter.CommentInFroum_count(postid).toString());
+		countComment.setText(adapter.CommentInPost_count(postid).toString());
 
 	}
 
@@ -504,7 +513,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			mapCollection.put(comment, reply);
 		}
 
-		countComment.setText(adapter.CommentInFroum_count(postid).toString());
+		countComment.setText(adapter.CommentInPost_count(postid).toString());
 
 		exadapter = new ExpandableCommentPost(getActivity(),
 				(ArrayList<CommentInPost>) commentGroup, mapCollection, this,
@@ -531,31 +540,31 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			id = Integer.valueOf(output);
 
 			if (LikeOrComment == true) {
-				if (adapter.isUserLikedFroum(CurrentUser.getId(), postid)) {
-					adapter.deleteLikeFromFroum(CurrentUser.getId(), postid);
+				if (adapter.isUserLikedPost(CurrentUser.getId(), postid)) {
+					adapter.deleteLikeFromPost(CurrentUser.getId(), postid);
 					likeTopic.setBackgroundResource(R.drawable.like_off);
 					count.setBackgroundResource(R.drawable.count_like_off);
 
-					countLike.setText(adapter.LikeInFroum_count(postid)
+					countLike.setText(adapter.LikeInPost_count(postid)
 							.toString());
 				} else {
-					adapter.insertLikeInFroumToDb(id, CurrentUser.getId(),
+					adapter.insertLikeInPostToDb(id, CurrentUser.getId(),
 							postid, serverDate, 0);
 					likeTopic.setBackgroundResource(R.drawable.like_on);
 					count.setBackgroundResource(R.drawable.count_like);
 
-					countLike.setText(adapter.LikeInFroum_count(postid)
+					countLike.setText(adapter.LikeInPost_count(postid)
 							.toString());
 				}
 			} else {
 				adapter.open();
 
-				adapter.insertCommentInFroumtoDb(id,
-						util.inputComment(getActivity()), postid,
-						CurrentUser.getId(), serverDate, commentId);
-
-				adapter.close();
-				util.ToEmptyComment(getActivity());
+				// adapter.insertCommentInPosttoDb(id,
+				// util.inputComment(getActivity()), postid,
+				// CurrentUser.getId(), serverDate, commentId);
+				//
+				// adapter.close();
+				// util.ToEmptyComment(getActivity());
 				if (commentId == 0)
 					expanding(exadapter.getGroupCount());
 				else {
@@ -582,10 +591,10 @@ public class PostFragment extends Fragment implements AsyncInterface,
 						saving = new Saving(getActivity());
 						saving.delegate = PostFragment.this;
 
-						params.put("TableName", "CommentInFroum");
+						params.put("TableName", "CommentInPost");
 
 						params.put("Desk", util.inputComment(getActivity()));
-						params.put("FroumId", String.valueOf(postid));
+						params.put("PostId", String.valueOf(postid));
 						params.put("UserId",
 								String.valueOf(CurrentUser.getId()));
 						params.put("CommentId", String.valueOf(commentId));
@@ -623,7 +632,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 						return;
 					}
 
-					if (adapter.isUserLikedFroum(CurrentUser.getId(), postid)) {
+					if (adapter.isUserLikedPost(CurrentUser.getId(), postid)) {
 
 						params = new LinkedHashMap<String, String>();
 						if (getActivity() != null) {
@@ -631,10 +640,10 @@ public class PostFragment extends Fragment implements AsyncInterface,
 							deleting = new Deleting(getActivity());
 							deleting.delegate = PostFragment.this;
 
-							params.put("TableName", "LikeInFroum");
+							params.put("TableName", "LikeInPost");
 							params.put("UserId",
 									String.valueOf(CurrentUser.getId()));
-							params.put("FroumId", String.valueOf(postid));
+							params.put("PostId", String.valueOf(postid));
 
 							deleting.execute(params);
 						}
@@ -645,7 +654,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 							saving = new Saving(getActivity());
 							saving.delegate = PostFragment.this;
 
-							params.put("TableName", "LikeInFroum");
+							params.put("TableName", "LikeInPost");
 
 							params.put("UserId",
 									String.valueOf(CurrentUser.getId()));

@@ -33,9 +33,9 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.Post;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
-import com.project.mechanic.fragment.FroumWithoutComment;
 import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.fragment.PostFragment;
+import com.project.mechanic.fragment.PostWithoutComment;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
@@ -199,7 +199,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		}
 		// ////////////////////////////////////
 		profileImg.setOnClickListener(new View.OnClickListener() {
-			@Override
+
 			public void onClick(View arg0) {
 				adapter.open();
 				Post person1 = mylist.get(position);
@@ -245,7 +245,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 		});
 		final SharedPreferences abc = context.getSharedPreferences("Id", 0);
-		final SharedPreferences froumId = context.getSharedPreferences("Id", 0);
+		final SharedPreferences postId = context.getSharedPreferences("Id", 0);
 
 		report.setOnClickListener(new OnClickListener() {
 
@@ -302,12 +302,12 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				// تا اینجا
 
 				adapter.open();
-				adapter.SetSeen("Froum", ItemId, "1");
+				adapter.SetSeen("Post", ItemId, "1");
 				adapter.close();
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				FroumWithoutComment fragment = new FroumWithoutComment();
+				PostWithoutComment fragment = new PostWithoutComment();
 				trans.setCustomAnimations(R.anim.pull_in_left,
 						R.anim.push_out_right);
 				Bundle bundle = new Bundle();
@@ -319,10 +319,10 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				trans.commit();
 				abc.edit().putInt("main_Id", 1).commit();
 				abc.edit()
-						.putInt("Froum_List_Id",
+						.putInt("Post_List_Id",
 								((ListView) parent).getFirstVisiblePosition())
 						.commit();
-				froumId.edit().putInt("main_Id", ItemId).commit();
+				postId.edit().putInt("main_Id", ItemId).commit();
 
 			}
 		});
@@ -391,7 +391,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				likeTitle.setBackgroundResource(R.drawable.like_froum_off);
 
 			} else {
-				adapter.insertLikeInFroumToDb(id, CurrentUser.getId(),
+				adapter.insertLikeInPostToDb(id, CurrentUser.getId(),
 						postNumber, serverDate, 0);
 
 				likeTitle.setBackgroundResource(R.drawable.like_froum);
@@ -412,7 +412,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 					&& !(output.contains("Exception") || output
 							.contains("java"))) {
 				adapter.open();
-				if (adapter.isUserLikedFroum(CurrentUser.getId(), postNumber)) {
+				if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
 					params = new LinkedHashMap<String, String>();
 					deleting = new Deleting(context);
 					deleting.delegate = PosttitleListadapter.this;
