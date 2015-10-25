@@ -27,8 +27,8 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.entity.Froum;
-import com.project.mechanic.entity.LikeInFroum;
+import com.project.mechanic.entity.LikeInPost;
+import com.project.mechanic.entity.Post;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -37,21 +37,21 @@ import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
-public class FroumWithoutComment extends Fragment implements AsyncInterface {
+public class PostWithoutComment extends Fragment implements AsyncInterface {
 	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike,
 			nametxt;
 	LinearLayout addComment, likeTopic;
 	ImageButton sharebtn;
 	ImageView profileImg;
-	Froum topics;
+	Post topics;
 	DataBaseAdapter adapter;
 	Users CurrentUser;
 	Utility util;
 	int IDcurrentUser;
 
 	int IdGglobal;
-	DialogcmtInfroum dialog;
-	DialogPersonLikedFroum dia;
+	DialogcmtInpost dialog;
+	DialogPersonLikedPost dia;
 	Saving saving;
 	Deleting deleting;
 	Map<String, String> params;
@@ -60,15 +60,14 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 	String serverDate = "";
 	ServerDate date;
 	RelativeLayout count, commentcounter;
-	FroumFragment ff;
+	PostFragment ff;
 	int userId;
 	int diss = 0;
 	boolean LikeOrComment; // like == true & comment == false
 
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.froum_without_comment, null);
+		View view = inflater.inflate(R.layout.post_without_comment, null);
 		adapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
 		// date = new PersianDate();
@@ -90,10 +89,10 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 		count = (RelativeLayout) view.findViewById(R.id.countLiketext);
 		commentcounter = (RelativeLayout) view.findViewById(R.id.countComment);
 
-		final SharedPreferences froumId = getActivity().getSharedPreferences(
+		final SharedPreferences postId = getActivity().getSharedPreferences(
 				"Id", 0);
-		final int idFroum = froumId.getInt("main_Id", -1);
-		IdGglobal = idFroum;
+		final int idPost = postId.getInt("main_Id", -1);
+		IdGglobal = idPost;
 
 		adapter.open();
 		CurrentUser = util.getCurrentUser();
@@ -102,7 +101,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 		} else
 			IDcurrentUser = CurrentUser.getId();
 
-		topics = adapter.getFroumItembyid(idFroum);
+		topics = adapter.getPostItembyid(idPost);
 		Users u = adapter.getUserbyid(topics.getUserId());
 		userId = u.getId();
 		if (CurrentUser == null) {
@@ -111,7 +110,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 		} else {
 
-			if (adapter.isUserLikedFroum(CurrentUser.getId(), idFroum)) {
+			if (adapter.isUserLikedPost(CurrentUser.getId(), idPost)) {
 				likeTopic.setBackgroundResource(R.drawable.like_on);
 				count.setBackgroundResource(R.drawable.count_like);
 
@@ -170,8 +169,8 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 		});
 		titletxt.setText(topics.getTitle());
 		descriptiontxt.setText(topics.getDescription());
-		countComment.setText(adapter.CommentInFroum_count(idFroum).toString());
-		countLike.setText(adapter.LikeInFroum_count(idFroum).toString());
+		countComment.setText(adapter.CommentInPost_count(idPost).toString());
+		countLike.setText(adapter.LikeInPost_count(idPost).toString());
 		dateTopic.setText(util.getPersianDate(topics.getDate()));
 
 		adapter.close();
@@ -184,15 +183,15 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 			public void onClick(View arg0) {
 				FragmentTransaction trans = ((MainActivity) getActivity())
 						.getSupportFragmentManager().beginTransaction();
-				FroumFragment fragment = new FroumFragment();
+				PostFragment fragment = new PostFragment();
 				trans.setCustomAnimations(R.anim.pull_in_left,
 						R.anim.push_out_right);
 				Bundle bundle = new Bundle();
-				bundle.putString("Id", String.valueOf(idFroum));
+				bundle.putString("Id", String.valueOf(idPost));
 				fragment.setArguments(bundle);
 
-				bundle.putString("Id", String.valueOf(idFroum));
-				fragment.setArguments(bundle);
+				/*bundle.putString("Id", String.valueOf(idPost));
+				fragment.setArguments(bundle);*/
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
@@ -205,8 +204,8 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 			@Override
 			public void onClick(View arg0) {
 				adapter.open();
-				ArrayList<LikeInFroum> likedist = adapter
-						.getLikefroumLikeInFroumByFroumId(idFroum);
+				ArrayList<LikeInPost> likedist = adapter
+						.getLikepostLikeInPostByPostId(idPost);
 
 				adapter.close();
 				if (likedist.size() == 0) {
@@ -214,8 +213,8 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 							.show();
 				} else {
 
-					DialogPersonLikedFroum dia = new DialogPersonLikedFroum(
-							getActivity(), idFroum, likedist);
+					DialogPersonLikedPost dia = new DialogPersonLikedPost(
+							getActivity(), idPost, likedist);
 					dia.show();
 
 				}
@@ -232,8 +231,8 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 							Toast.LENGTH_SHORT).show();
 
 				} else {
-					dialog = new DialogcmtInfroum(FroumWithoutComment.this, 0,
-							getActivity(), idFroum, R.layout.dialog_addcomment,
+					dialog = new DialogcmtInpost(PostWithoutComment.this, 0,
+							getActivity(), idPost, R.layout.dialog_addcomment,
 							1);
 					dialog.show();
 
@@ -288,7 +287,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 								"", "لطفا منتظر بمانید...", true);
 						ringProgressDialog.setCancelable(false);
 						date = new ServerDate(getActivity());
-						date.delegate = FroumWithoutComment.this;
+						date.delegate = PostWithoutComment.this;
 						date.execute("");
 						LikeOrComment = true;
 					}
@@ -311,7 +310,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 					DialogLongClick dia = new DialogLongClick(getActivity(), 1,
 							topics.getUserId(), topics.getId(),
-							FroumWithoutComment.this, topics.getDescription());
+							PostWithoutComment.this, topics.getDescription());
 					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 					lp.copyFrom(dia.getWindow().getAttributes());
 					lp.width = (int) (util.getScreenwidth() / 1.5);
@@ -327,7 +326,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 			}
 		});
 
-		ImageView send = util.ShowFooterAgahi(getActivity(), true, 8);
+		ImageView send = util.ShowFooterAgahi(getActivity(), true, 3);
 		send.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -338,7 +337,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 							.show();
 				} else {
 					date = new ServerDate(getActivity());
-					date.delegate = FroumWithoutComment.this;
+					date.delegate = PostWithoutComment.this;
 					date.execute("");
 					LikeOrComment = false;
 
@@ -358,15 +357,13 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 			}
 		});
-
-		
 		return view;
 	}
 
 	public void setcount() {
 		adapter.open();
 		countComment
-				.setText(adapter.CommentInFroum_count(IdGglobal).toString());
+				.setText(adapter.CommentInPost_count(IdGglobal).toString());
 		adapter.close();
 	}
 
@@ -381,28 +378,28 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 				if (LikeOrComment == true) {
 
 					if (adapter
-							.isUserLikedFroum(CurrentUser.getId(), IdGglobal)) {
-						adapter.deleteLikeFromFroum(CurrentUser.getId(),
+							.isUserLikedPost(CurrentUser.getId(), IdGglobal)) {
+						adapter.deleteLikeFromPost(CurrentUser.getId(),
 								IdGglobal);
 						likeTopic.setBackgroundResource(R.drawable.like_off);
 						count.setBackgroundResource(R.drawable.count_like_off);
 
-						countLike.setText(adapter.LikeInFroum_count(IdGglobal)
+						countLike.setText(adapter.LikeInPost_count(IdGglobal)
 								.toString());
 					} else {
-						adapter.insertLikeInFroumToDb(id, CurrentUser.getId(),
+						adapter.insertLikeInPostToDb(id, CurrentUser.getId(),
 								IdGglobal, serverDate, 0);
 						likeTopic.setBackgroundResource(R.drawable.like_on);
 						count.setBackgroundResource(R.drawable.count_like);
 
-						countLike.setText(adapter.LikeInFroum_count(IdGglobal)
+						countLike.setText(adapter.LikeInPost_count(IdGglobal)
 								.toString());
 					}
 				} else {
 
 					adapter.open();
 
-					adapter.insertCommentInFroumtoDb(id,
+					adapter.insertCommentInPosttoDb(id,
 							util.inputComment(getActivity()), IdGglobal,
 							CurrentUser.getId(), serverDate, 0);
 
@@ -411,7 +408,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 					FragmentTransaction trans = ((MainActivity) getActivity())
 							.getSupportFragmentManager().beginTransaction();
-					FroumFragment fragment = new FroumFragment();
+					PostFragment fragment = new PostFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(IdGglobal));
 					fragment.setArguments(bundle);
@@ -441,12 +438,12 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 							params = new LinkedHashMap<String, String>();
 
 							saving = new Saving(getActivity());
-							saving.delegate = FroumWithoutComment.this;
+							saving.delegate = PostWithoutComment.this;
 
-							params.put("TableName", "CommentInFroum");
+							params.put("TableName", "CommentInPost");
 
 							params.put("Desk", util.inputComment(getActivity()));
-							params.put("FroumId", String.valueOf(IdGglobal));
+							params.put("PostId", String.valueOf(IdGglobal));
 							params.put("UserId",
 									String.valueOf(CurrentUser.getId()));
 							params.put("CommentId", String.valueOf(0));
@@ -483,7 +480,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 						adapter.open();
 
-						if (adapter.isUserLikedFroum(CurrentUser.getId(),
+						if (adapter.isUserLikedPost(CurrentUser.getId(),
 								IdGglobal)) {
 							adapter.open();
 							params = new LinkedHashMap<String, String>();
@@ -491,12 +488,12 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 							if (getActivity() != null) {
 
 								deleting = new Deleting(getActivity());
-								deleting.delegate = FroumWithoutComment.this;
+								deleting.delegate = PostWithoutComment.this;
 
-								params.put("TableName", "LikeInFroum");
+								params.put("TableName", "LikeInPost");
 								params.put("UserId",
 										String.valueOf(CurrentUser.getId()));
-								params.put("FroumId", String.valueOf(IdGglobal));
+								params.put("PostId", String.valueOf(IdGglobal));
 
 								deleting.execute(params);
 							}
@@ -507,13 +504,13 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 							if (getActivity() != null) {
 								saving = new Saving(getActivity());
-								saving.delegate = FroumWithoutComment.this;
+								saving.delegate = PostWithoutComment.this;
 
-								params.put("TableName", "LikeInFroum");
+								params.put("TableName", "LikeInPost");
 
 								params.put("UserId",
 										String.valueOf(CurrentUser.getId()));
-								params.put("FroumId", String.valueOf(IdGglobal));
+								params.put("PostId", String.valueOf(IdGglobal));
 								params.put("CommentId", "0");
 								params.put("Date", output);
 								params.put("ModifyDate", output);

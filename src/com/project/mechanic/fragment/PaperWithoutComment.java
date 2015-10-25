@@ -326,7 +326,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface {
 			}
 		});
 
-		ImageView send = util.ShowFooterAgahi(getActivity(), true, 4);
+		ImageView send = util.ShowFooterAgahi(getActivity(), true, 8);
 
 		send.setOnClickListener(new OnClickListener() {
 

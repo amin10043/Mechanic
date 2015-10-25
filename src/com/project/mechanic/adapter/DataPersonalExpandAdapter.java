@@ -241,7 +241,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 			LinearLayout TicketBackground = (LinearLayout) convertView
 					.findViewById(R.id.backgroundTicket);
 
-			if (thisDay <= TicketDay + pd.getDayTicket()){
+			if (thisDay <= TicketDay + pd.getDayTicket()) {
 				TicketBackground.setBackgroundColor(Color.WHITE);
 				if (pd.getSeenBefore() > 0) {
 					txtName.setTextColor(Color.GRAY);
@@ -512,8 +512,9 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 		}
 		TextView titleGroup = (TextView) convertView
 				.findViewById(R.id.row_berand_txt);
-		titleGroup.setText(parentItems.get(groupPosition) + " "
-				+ util.getCurrentUser().getName());
+		if (util.getCurrentUser() != null)
+			titleGroup.setText(parentItems.get(groupPosition) + " "
+					+ util.getCurrentUser().getName());
 
 		return convertView;
 	}

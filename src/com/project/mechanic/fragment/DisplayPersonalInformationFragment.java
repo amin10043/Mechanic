@@ -105,9 +105,9 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 			return header;
 		}
 
-		date = new ServerDate(getActivity());
-		date.delegate = this;
-		date.execute("");
+		// date = new ServerDate(getActivity());
+		// date.delegate = this;
+		// date.execute("");
 
 		TextView txtaddress = (TextView) header.findViewById(R.id.address);
 		TextView txtcellphone = (TextView) header.findViewById(R.id.cellphone);
@@ -135,8 +135,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
 			img.setImageBitmap(bmp);
 		}
-
-	
 
 		img.setOnClickListener(new OnClickListener() {
 
@@ -166,7 +164,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		txtfax.setText(fax);
 		txtaddress.setText(address);
 
-
 		dbAdapter.open();
 		List<PersonalData> ObejctData = dbAdapter.CustomFieldObjectByUser(u
 				.getId());
@@ -177,7 +174,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		List<PersonalData> TicketData = dbAdapter.CustomFieldTicketByUser(u
 				.getId());
 		dbAdapter.close();
-
 
 		ExpandableListView Expandview = (ExpandableListView) rootView
 				.findViewById(R.id.items);
@@ -214,7 +210,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 
 		Expandview.setAdapter(listAdapter);
 
-	
 		followParams = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
 
 		followParams.width = utile1.getScreenwidth() / 3;
@@ -277,7 +272,9 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new EditPersonalFragment());
 				trans.addToBackStack(null);
+
 				trans.commit();
+
 			}
 		});
 
@@ -310,20 +307,21 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 
 	@Override
 	public void processFinish(byte[] output) {
-		if (output != null) {
-			Bitmap bmp = BitmapFactory
-					.decodeByteArray(output, 0, output.length);
-			img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
-			dbAdapter.open();
-			dbAdapter.UpdateUserImage(u.getId(), output, serverDate);
-			dbAdapter.close();
-		} else {
-			if (u != null && u.getImage() != null) {
-				Bitmap bmp = BitmapFactory.decodeByteArray(u.getImage(), 0,
-						u.getImage().length);
-				img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
-			}
-		}
+		// if (output != null) {
+		// Bitmap bmp = BitmapFactory
+		// .decodeByteArray(output, 0, output.length);
+		// img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
+		// dbAdapter.open();
+		// dbAdapter.UpdateUserImage(u.getId(), output, serverDate);
+		// dbAdapter.close();
+		// }
+		// else {
+		// if (u != null && u.getImage() != null) {
+		// Bitmap bmp = BitmapFactory.decodeByteArray(u.getImage(), 0,
+		// u.getImage().length);
+		// img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
+		// }
+		// }
 	}
 
 	@Override
