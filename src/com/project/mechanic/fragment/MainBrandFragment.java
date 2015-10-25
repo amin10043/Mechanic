@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,9 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
@@ -221,7 +218,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 				}
 			}
 		});
-		util.ShowFooterAgahi(getActivity() , true , 2);
+		util.ShowFooterAgahi(getActivity(), true, 2);
 
 		return view;
 	}
@@ -353,10 +350,12 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 			mylist = adapter.getObjectbyParentId(parentId);
 			adapter.close();
 
-			ListAdapter = new ObjectListAdapter(getActivity(),
-					R.layout.row_object, mylist, MainBrandFragment.this, false,
-					null, 1);
-			lstObject.setAdapter(ListAdapter);
+			if (getActivity() != null) {
+				ListAdapter = new ObjectListAdapter(getActivity(),
+						R.layout.row_object, mylist, MainBrandFragment.this,
+						false, null, 1);
+				lstObject.setAdapter(ListAdapter);
+			}
 
 		}
 	}

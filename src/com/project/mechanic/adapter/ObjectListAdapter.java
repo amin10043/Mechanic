@@ -57,7 +57,6 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 			List<Object> objact, Fragment fr, boolean IsShow, String DateTime,
 			int Type) {
 		super(context, resource, objact);
-
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
