@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -53,6 +54,7 @@ import com.project.mechanic.utility.Utility;
 public class IntroductionFragment extends Fragment implements AsyncInterface,
 		GetAllAsyncInterface {
 
+	Context context;
 	Utility ut;
 	Users CurrentUser;
 	View header;
@@ -944,6 +946,27 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					ex.printStackTrace();
 				}
 			}
+		});
+
+		Button btnShowPost = (Button) view.findViewById(R.id.btnShowPost);
+		btnShowPost.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				PosttitleFragment fragment = new PosttitleFragment();
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("Id", ObjectID);
+				fragment.setArguments(bundle);
+			}
+
 		});
 
 		// IntroductionListAdapter listAdapter = new IntroductionListAdapter(

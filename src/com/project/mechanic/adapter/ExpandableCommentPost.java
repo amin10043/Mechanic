@@ -31,10 +31,11 @@ import android.widget.Toast;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInFroum;
+import com.project.mechanic.entity.CommentInPost;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
-import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.InformationUser;
+import com.project.mechanic.fragment.PostFragment;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
@@ -42,16 +43,16 @@ import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
-public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
+public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 		AsyncInterface {
 
 	Context context;
-	private Map<CommentInFroum, List<CommentInFroum>> mapCollection;
-	private ArrayList<CommentInFroum> cmt;
+	private Map<CommentInPost, List<CommentInPost>> mapCollection;
+	private ArrayList<CommentInPost> cmt;
 	DataBaseAdapter adapter;
 	Utility util;
-	FroumFragment f;
-	int froumID, userid, GlobalId, userId, iid;
+	PostFragment f;
+	int postID, userid, GlobalId, userId, iid;
 	Users Currentuser, uu;;
 	boolean flag;
 
@@ -63,20 +64,20 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 	ImageView reportComment, reportReply;
 	String serverDate = "";
 	ServerDate date;
-	CommentInFroum reply;
-	CommentInFroum comment;
+	CommentInPost reply;
+	CommentInPost comment;
 
-	public ExpandableCommentFroum(Context context,
-			ArrayList<CommentInFroum> laptops,
-			Map<CommentInFroum, List<CommentInFroum>> mapCollection,
-			FroumFragment f, int froumID) {
+	public ExpandableCommentPost(Context context,
+			ArrayList<CommentInPost> laptops,
+			Map<CommentInPost, List<CommentInPost>> mapCollection,
+			PostFragment f, int postID) {
 		this.context = context;
 		this.mapCollection = mapCollection;
 		this.cmt = laptops;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
 		this.f = f;
-		this.froumID = froumID;
+		this.postID = postID;
 		adapter.open();
 		Currentuser = util.getCurrentUser();
 		adapter.close();
@@ -93,7 +94,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 	public View getChildView(final int groupPosition, final int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
-		reply = (CommentInFroum) getChild(groupPosition, childPosition);
+		reply = (CommentInPost) getChild(groupPosition, childPosition);
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		if (convertView == null) {
@@ -116,7 +117,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 		adapter.open();
 
 		// final CommentInFroum comment = cmt.get(groupPosition);
-		Users y = adapter.getUserbyid(reply.getUserid());
+		Users y = adapter.getUserbyid(reply.getUserId());
 		userId = y.getId();
 		RelativeLayout rl = (RelativeLayout) convertView
 				.findViewById(R.id.main_icon_reply);
@@ -202,8 +203,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 			}
 		});
-		mainReply.setText(reply.getDesk());
-		dateReply.setText(util.getPersianDate(reply.getDatetime()));
+		mainReply.setText(reply.getDesc());
+		dateReply.setText(util.getPersianDate(reply.getDate()));
 		nameReplyer.setText(y.getName());
 		adapter.close();
 
@@ -235,7 +236,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 		adapter.open();
 		if (groupPosition <= cmt.size())
 			comment = cmt.get(groupPosition);
-		final Users x = adapter.getUserbyid(comment.getUserid());
+		final Users x = adapter.getUserbyid(comment.getUserId());
 		// userId= x.getId();
 		adapter.close();
 
@@ -305,15 +306,15 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 		}
 
-		mainComment.setText(comment.getDesk());
-		dateCommenter.setText(util.getPersianDate(comment.getDatetime()));
+		mainComment.setText(comment.getDesc());
+		dateCommenter.setText(util.getPersianDate(comment.getDate()));
 		// if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) == 0) {
 		// LinearLayout lrr = (LinearLayout) convertView
 		// .findViewById(R.id.linearShowcountofRepply);
 		// lrr.setVisibility(View.GONE);
 		//
 		// } else
-		countOfReply.setText(adapter.getCountOfReplyInFroum(froumID,
+		countOfReply.setText(adapter.getCountOfReplyInFroum(postID,
 				comment.getId()).toString());
 
 		if (x != null) {
@@ -345,8 +346,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 			@Override
 			public void onClick(View arg0) {
 				adapter.open();
-				final CommentInFroum comment = cmt.get(groupPosition);
-				final Users x = adapter.getUserbyid(comment.getUserid());
+				final CommentInPost comment = cmt.get(groupPosition);
+				final Users x = adapter.getUserbyid(comment.getUserId());
 				userId = x.getId();
 
 				FragmentTransaction trans = ((MainActivity) context)
@@ -364,8 +365,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 		// end... this code for set image of profile
 		int c = 0;
 
-		for (CommentInFroum listItem : cmt) {
-			if (mainComment.getText().toString().equals(listItem.getDesk())) {
+		for (CommentInPost listItem : cmt) {
+			if (mainComment.getText().toString().equals(listItem.getDesc())) {
 
 				c = listItem.getId();
 
@@ -406,9 +407,9 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 					int id = 0;
 
-					for (CommentInFroum listItem : cmt) {
+					for (CommentInPost listItem : cmt) {
 						if (txtMaincmt.getText().toString()
-								.equals(listItem.getDesk())) {
+								.equals(listItem.getDesc())) {
 
 							GlobalId = id = listItem.getId();
 
@@ -427,7 +428,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 						if (context != null) {
 
 							deleting = new Deleting(context);
-							deleting.delegate = ExpandableCommentFroum.this;
+							deleting.delegate = ExpandableCommentPost.this;
 
 							params.put("TableName", "LikeInComment");
 
@@ -478,7 +479,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 							if (context != null) {
 
 								date = new ServerDate(context);
-								date.delegate = ExpandableCommentFroum.this;
+								date.delegate = ExpandableCommentPost.this;
 								date.execute("");
 							}
 							/*
@@ -518,9 +519,9 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 					int cmtId = 0;
 
-					for (CommentInFroum listItem : cmt) {
+					for (CommentInPost listItem : cmt) {
 						if (txtMaincmt.getText().toString()
-								.equals(listItem.getDesk())) {
+								.equals(listItem.getDesc())) {
 
 							GlobalId = cmtId = listItem.getId();
 						}
@@ -539,7 +540,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 						if (context != null) {
 
 							deleting = new Deleting(context);
-							deleting.delegate = ExpandableCommentFroum.this;
+							deleting.delegate = ExpandableCommentPost.this;
 
 							params.put("TableName", "LikeInComment");
 
@@ -592,7 +593,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 							// ///////////
 
 							date = new ServerDate(context);
-							date.delegate = ExpandableCommentFroum.this;
+							date.delegate = ExpandableCommentPost.this;
 							date.execute("");
 
 							// ///////////////
@@ -626,8 +627,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 					TextView x = (TextView) view;
 					String item = x.getText().toString();
 					int commentid = 0;
-					for (CommentInFroum listItem : cmt) {
-						if (item.equals(listItem.getDesk())) {
+					for (CommentInPost listItem : cmt) {
+						if (item.equals(listItem.getDesc())) {
 
 							commentid = listItem.getId();
 						}
@@ -670,7 +671,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 				}
 				adapter.open();
 
-				if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) > 0) {
+				if (adapter.getCountOfReplyInFroum(postID, comment.getId()) > 0) {
 					i = -1;
 
 					DialogLongClick dia = new DialogLongClick(context, 5, u, i,
@@ -821,7 +822,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 					if (context != null) {
 
 						saving = new Saving(context);
-						saving.delegate = ExpandableCommentFroum.this;
+						saving.delegate = ExpandableCommentPost.this;
 
 						params.put("TableName", "LikeInComment");
 
@@ -866,7 +867,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 					if (context != null) {
 
 						saving = new Saving(context);
-						saving.delegate = ExpandableCommentFroum.this;
+						saving.delegate = ExpandableCommentPost.this;
 
 						params.put("TableName", "LikeInComment");
 
