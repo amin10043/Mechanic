@@ -100,7 +100,9 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 
 		// start code get image profile from server
 
-		obj = adapter.getObjectbyid(mylist.get(userItemId).getId());
+		if (mylist.size() > 0)
+
+			obj = adapter.getObjectbyid(mylist.get(userItemId).getId());
 
 		if (getActivity() != null) {
 			date = new ServerDate(getActivity());
@@ -221,7 +223,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 				}
 			}
 		});
-		util.ShowFooterAgahi(getActivity() , true , 2);
+		util.ShowFooterAgahi(getActivity(), true, 2);
 
 		return view;
 	}

@@ -3502,7 +3502,7 @@ public class DataBaseAdapter {
 	public void UpdateImagePathToDb(int id, String ImagePath, String tableName) {
 		ContentValues uc = new ContentValues();
 
-		if (!"".equals(ImagePath) && ImagePath != null)
+//		if (!"".equals(ImagePath) && ImagePath != null)
 			uc.put("ImagePath", ImagePath);
 
 		mDb.update(tableName, uc, "Id=" + id, null);

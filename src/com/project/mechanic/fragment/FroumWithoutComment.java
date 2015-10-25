@@ -327,7 +327,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 			}
 		});
 
-		ImageView send = util.ShowFooterAgahi(getActivity(), true, 3);
+		ImageView send = util.ShowFooterAgahi(getActivity(), true, 8);
 		send.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -358,6 +358,8 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 
 			}
 		});
+
+		
 		return view;
 	}
 
