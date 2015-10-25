@@ -456,6 +456,22 @@ public class DataBaseAdapter {
 		}
 
 	}
+	
+	public void insertLikeInPostToDb(int id, int UserId, int PostId,
+			String Date, int CommentId) {
+		if (!isUserLikedPost(UserId, PostId)) {
+			ContentValues uc = new ContentValues();
+			uc.put("Id", id);
+			uc.put("UserId", UserId);
+			uc.put("PostId", PostId);
+			uc.put("CommentId", CommentId);
+			uc.put("Date", Date);
+			uc.put("Seen", 0);
+
+			mDb.insert(TableLikeInPost, null, uc);
+		}
+
+	}
 
 	public boolean isUserLikedFroum(int userId, int FroumID) {
 
@@ -535,6 +551,21 @@ public class DataBaseAdapter {
 		cv.put("Seen", 0);
 
 		mDb.insert(TableCommentInFroum, null, cv);
+	}
+	
+	public void insertCommentInPosttoDb(int id, String description,
+			int Postid, int userid, String datetime, int commentid) {
+
+		ContentValues cv = new ContentValues();
+		cv.put("Id", id);
+		cv.put("Desc", description);
+		cv.put("UserId", userid);
+		cv.put("PostID", Postid);
+		cv.put("Date", datetime);
+		cv.put("CommentId", commentid);
+		cv.put("Seen", 0);
+
+		mDb.insert(TableCommentInPost, null, cv);
 	}
 
 	public void insertCommentInPapertoDb(String description, int Paperid,
@@ -2797,9 +2828,9 @@ public class DataBaseAdapter {
 		mDb.delete(TableLikeInFroum, "UserId=? and FroumId=?", t);
 	}
 
-	public void deleteLikePostPost(int userID, int FroumId) {
-		String[] t = { String.valueOf(userID), String.valueOf(FroumId) };
-		mDb.delete(TableLikeInFroum, "UserId=? and FroumId=?", t);
+	public void deleteLikeFromPost(int userID, int PostId) {
+		String[] t = { String.valueOf(userID), String.valueOf(PostId) };
+		mDb.delete(TableLikeInPost, "UserId=? and PostId=?", t);
 	}
 
 	public Integer getCountOfReplyInFroum(int froumID, int commentID) {

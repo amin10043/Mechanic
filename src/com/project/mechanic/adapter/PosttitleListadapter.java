@@ -386,7 +386,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 			adapter.open();
 			if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
-				adapter.deleteLikePostPost(CurrentUser.getId(), postNumber);
+				adapter.deleteLikeFromPost(CurrentUser.getId(), postNumber);
 
 				likeTitle.setBackgroundResource(R.drawable.like_froum_off);
 

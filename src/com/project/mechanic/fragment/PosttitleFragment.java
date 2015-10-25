@@ -39,7 +39,7 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 		CommInterface, AsyncInterface {
 	private ImageButton addtitle;
 	private DialogpostTitle dialog;
-	DialogcmtInfroum dialog2;
+	DialogcmtInpost dialog2;
 	DataBaseAdapter mdb;
 	View view;
 	ArrayList<Post> mylist;
@@ -177,11 +177,11 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 		lst.addFooterView(LoadMoreFooter);
 		LoadMoreFooter.setVisibility(View.INVISIBLE);
 		ListAdapter = new PosttitleListadapter(getActivity(),
-				R.layout.raw_froumtitle, mylist, PosttitleFragment.this);
+				R.layout.raw_posttitle, mylist, PosttitleFragment.this);
 		lst.setAdapter(ListAdapter);
 
 		int countList = ListAdapter.getCount();
-		Toast.makeText(getActivity(), "تعداد فروم ها = " + countList, 0).show();
+		Toast.makeText(getActivity(), "تعداد پست ها = " + countList, 0).show();
 
 		if (getArguments() != null) {
 			mLastFirstVisibleItem = getArguments().getInt("Post_List_Id");
