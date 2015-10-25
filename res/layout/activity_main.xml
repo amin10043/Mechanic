@@ -223,8 +223,8 @@
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/rep"
                 android:layout_toRightOf="@+id/deleteReply"
-                android:maxLength="50"
                 android:gravity="right"
+                android:maxLength="50"
                 android:text="reply"
                 android:textColor="@color/gray" />
 
@@ -243,7 +243,7 @@
             android:layout_below="@+id/replyLayout"
             android:layout_margin="5dp"
             android:orientation="horizontal"
-            android:visibility="gone" >
+            android:visibility="visible" >
 
             <EditText
                 android:id="@+id/inputComment"
@@ -251,7 +251,18 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/sendComment"
+                android:layout_toRightOf="@+id/pickPicture"
                 android:hint="نظر خود را وارد کنید" />
+
+            <ImageView
+                android:id="@+id/pickPicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/add"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/sendComment"

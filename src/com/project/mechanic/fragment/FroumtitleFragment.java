@@ -235,7 +235,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			}
 		});
 
-		util.ShowFooterAgahi(getActivity(), true, 1);
+		util.ShowFooterAgahi(getActivity(), true, 7);
 		return view;
 	}
 
@@ -262,7 +262,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 			util.CreateFile(output, f.getUserId(), "Mechanical", "Users",
 					"user", "Users");
-			mdb.UpdateImageServerDate(f.getUserId(), "Users", serverDate);
+			//mdb.UpdateImageServerDate(f.getUserId(), "Users", serverDate);
 
 			// mdb.UpdateUserImage(f.getUserId(), output, serverDate);
 			ListAdapter.notifyDataSetChanged();

@@ -151,9 +151,8 @@ public class LoginFragment extends Fragment implements CommInterface,
 				dialog.show();
 			}
 		});
-		
-		util.ShowFooterAgahi(getActivity() , false , 1);
-		 
+
+		util.ShowFooterAgahi(getActivity(), false, 1);
 
 		return view;
 
@@ -161,8 +160,8 @@ public class LoginFragment extends Fragment implements CommInterface,
 
 	@Override
 	public void processFinish(String output) {
-
-		ringProgressDialog.dismiss();
+		if (ringProgressDialog != null)
+			ringProgressDialog.dismiss();
 		SharedPreferences settings = getActivity().getSharedPreferences("user",
 				0);
 		SharedPreferences.Editor editor = settings.edit();
@@ -273,5 +272,6 @@ public class LoginFragment extends Fragment implements CommInterface,
 	@Override
 	public void CommProcessFinish(String output) {
 		processFinish(output);
+		
 	}
 }

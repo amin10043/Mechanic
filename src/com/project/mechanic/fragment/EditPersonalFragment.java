@@ -877,6 +877,12 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 						Cellphone, Fax, Address, infoItem, birthday, cityId);
 
 				dbAdapter.close();
+				
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame,
+						new DisplayPersonalInformationFragment());
+				trans.commit();
 			}
 
 			if (context != null) {
@@ -891,15 +897,17 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				saveImage.execute(imageParams);
 			}
 
-			FragmentTransaction trans = getActivity()
-					.getSupportFragmentManager().beginTransaction();
-			trans.replace(R.id.content_frame,
-					new DisplayPersonalInformationFragment());
-			trans.commit();
+//			FragmentTransaction trans = getActivity()
+//					.getSupportFragmentManager().beginTransaction();
+//			trans.replace(R.id.content_frame,
+//					new DisplayPersonalInformationFragment());
+//			trans.commit();
 
 		} catch (NumberFormatException ex) {
 			Toast.makeText(context, "خطا در بروز رسانی", Toast.LENGTH_SHORT)
 					.show();
+			if (dialog != null)
+				dialog.dismiss();
 		}
 	}
 
@@ -937,6 +945,9 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 			} catch (NumberFormatException ex) {
 				Toast.makeText(context, "  خطا در بروز رسانی تصویر",
 						Toast.LENGTH_SHORT).show();
+
+				if (dialog != null)
+					dialog.dismiss();
 			}
 		}
 	}

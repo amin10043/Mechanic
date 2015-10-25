@@ -736,7 +736,6 @@ public class Utility implements AsyncInterface {
 			try {
 				f.createNewFile();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			// write the bytes in file
@@ -744,13 +743,11 @@ public class Utility implements AsyncInterface {
 			try {
 				fo = new FileOutputStream(f);
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			try {
 				fo.write(byteImage);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -758,7 +755,6 @@ public class Utility implements AsyncInterface {
 			try {
 				fo.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -881,10 +877,10 @@ public class Utility implements AsyncInterface {
 	public ImageView ShowFooterAgahi(Activity activity, boolean IsShow,
 			final int Type) {
 
-		// type = 1 >>>>> main fragment
-		// type = 2 >>>>> main brand fragment & object fragment
-		// type = 3 >>>>> froum fragment
-		// type = 4 >>>>> paper fragment
+		// type = 1 >>>>> main brand fragment
+		// type = 2 >>>>> object fragment >> foroshgah
+		// type = 3 >>>>> object fragment >> moshaveran
+		// type = 4 >>>>> object fragment >> ashkhas haghighi
 		// type = 5 >>>>> favorite fragment
 
 		ViewFlipper vf = (ViewFlipper) activity.findViewById(R.id.footerAgahi);
@@ -892,7 +888,8 @@ public class Utility implements AsyncInterface {
 				.findViewById(R.id.getCommentLayout);
 
 		ImageView send = (ImageView) activity.findViewById(R.id.sendComment);
-		EditText comment = (EditText) activity.findViewById(R.id.inputComment);
+		// EditText comment = (EditText)
+		// activity.findViewById(R.id.inputComment);
 
 		ImageView img1 = (ImageView) activity.findViewById(R.id.img1);
 		ImageView img2 = (ImageView) activity.findViewById(R.id.img2);
@@ -926,31 +923,70 @@ public class Utility implements AsyncInterface {
 
 			}
 			case 3: {
-				if (getCurrentUser() != null)
-					la.setVisibility(View.VISIBLE);
-				vf.setVisibility(View.GONE);
+				la.setVisibility(View.GONE);
 
-				// img1.setBackgroundResource(R.drawable.slide4);
-				//
-				// img2.setBackgroundResource(R.drawable.slide5);
-				//
-				// img3.setBackgroundResource(R.drawable.slide6);
+				img1.setBackgroundResource(R.drawable.i1);
+
+				img2.setBackgroundResource(R.drawable.i2);
+
+				img3.setBackgroundResource(R.drawable.i3);
 				break;
-
 			}
 			case 4: {
-				if (getCurrentUser() != null)
-					la.setVisibility(View.VISIBLE);
-				vf.setVisibility(View.GONE);
+				la.setVisibility(View.GONE);
 
-				// img1.setBackgroundResource(R.drawable.slide4);
-				//
-				// img2.setBackgroundResource(R.drawable.slide5);
-				//
-				// img3.setBackgroundResource(R.drawable.slide6);
+				img1.setBackgroundResource(R.drawable.i4);
+
+				img2.setBackgroundResource(R.drawable.i5);
+
+				img3.setBackgroundResource(R.drawable.i6);
 				break;
 
 			}
+
+			case 5: {
+				la.setVisibility(View.GONE);
+
+				img1.setBackgroundResource(R.drawable.i4);
+
+				img2.setBackgroundResource(R.drawable.i5);
+
+				img3.setBackgroundResource(R.drawable.i6);
+				break;
+
+			}
+
+			// case 6: {
+			// la.setVisibility(View.GONE);
+			//
+			// img1.setBackgroundResource(R.drawable.i4);
+			//
+			// img2.setBackgroundResource(R.drawable.i5);
+			//
+			// img3.setBackgroundResource(R.drawable.i6);
+			// break;
+			//
+			// }
+			case 7: {
+				la.setVisibility(View.GONE);
+
+				img1.setBackgroundResource(R.drawable.birthday_icon);
+
+				img2.setBackgroundResource(R.drawable.admin_icon);
+
+				img3.setBackgroundResource(R.drawable.ic_create_post);
+				break;
+
+			}
+			case 8: {
+				la.setVisibility(View.VISIBLE);
+
+				vf.setVisibility(View.GONE);
+
+				break;
+
+			}
+
 			default:
 				break;
 			}
@@ -1010,5 +1046,43 @@ public class Utility implements AsyncInterface {
 		ImageView delete = (ImageView) activity.findViewById(R.id.deleteReply);
 
 		return delete;
+	}
+
+	public ImageView[] inputCommentAndPickFile(Activity activity) {
+
+		ImageView[] arrayImage = new ImageView[2];
+
+		ViewFlipper vf = (ViewFlipper) activity.findViewById(R.id.footerAgahi);
+		RelativeLayout la = (RelativeLayout) activity
+				.findViewById(R.id.getCommentLayout);
+
+		la.setVisibility(View.VISIBLE);
+		vf.setVisibility(View.GONE);
+
+		arrayImage[0] = (ImageView) activity.findViewById(R.id.sendComment);
+		arrayImage[1] = (ImageView) activity.findViewById(R.id.pickPicture);
+
+		arrayImage[1].setVisibility(View.VISIBLE);
+		
+//		ImageView sendMessage = util.inputCommentAndPickFile(getActivity())[0];
+//
+//		ImageView getPicture = util.inputCommentAndPickFile(getActivity())[1];
+//		
+//		sendMessage.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//			}
+//		});
+//		getPicture.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//			}
+//		});
+
+
+		return arrayImage;
+
 	}
 }
