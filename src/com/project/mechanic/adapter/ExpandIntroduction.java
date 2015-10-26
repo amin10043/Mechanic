@@ -15,10 +15,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -34,7 +33,6 @@ import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.DialogcmtInobject;
-import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.inter.AsyncInterface;
@@ -126,7 +124,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 			ReplyerPic.setImageResource(R.drawable.no_img_profile);
 		} else {
 
-//			byte[] byteImageProfile = y.getImage();
+			// byte[] byteImageProfile = y.getImage();
 
 			Bitmap bmp = BitmapFactory.decodeFile(y.getImagePath());
 
@@ -330,7 +328,11 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 			}
 		});
 		mainComment.setText(comment.getDescription());
-		nameCommenter.setText(x.getName());
+		if (x == null) {
+			// ERROR ! the users that comment here not exist yet!!!
+		} else {
+			nameCommenter.setText(x.getName());
+		}
 		dateCommenter.setText(util.getPersianDate(comment.getDatetime()));
 
 		countOfReply.setText(adapter.getCountOfReplyBrandPage(ObjectID,

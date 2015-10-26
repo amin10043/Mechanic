@@ -64,7 +64,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	DialogPersonLikedObject ListLiked;
 	UpdatingAllImage updating;
 	Map<String, String> maps;
-
+	View unavailable;
 	ArrayList<CommentInObject> commentGroup, ReplyGroup;
 	Map<CommentInObject, List<CommentInObject>> mapCollection;
 
@@ -128,6 +128,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_introduction, null);
+
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.brand);
 
 		adapter = new DataBaseAdapter(getActivity());
@@ -356,6 +357,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		object = adapter.getObjectbyid(ObjectID);
 		adapter.close();
+
 		if (getActivity() != null) {
 
 			update = new Updating(getActivity());
@@ -399,106 +401,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		// imagedisplay.setBackgroundResource(R.drawable.profile_account);
 		adapter.open();
-		if (object.getIsActive() == 0) {
-
-			View t = inflater.inflate(R.layout.fragment_is_active_introduction,
-					null);
-
-			ImageButton EditActive = (ImageButton) t
-					.findViewById(R.id.ImgbtnEdit);
-			Users user = ut.getCurrentUser();
-			if (user == null || object.getUserId() != user.getId()) {
-				EditActive.setVisibility(View.INVISIBLE);
-			} else {
-				EditActive.setVisibility(View.VISIBLE);
-
-			}
-
-			bitHeader = object.getImage1();
-			ImageView HeaderActive = (ImageView) t
-					.findViewById(R.id.imgvadvertise_Object);
-
-			if (bitHeader != null) {
-				Bitmap bmp1 = BitmapFactory.decodeByteArray(bitHeader, 0,
-						bitHeader.length);
-				HeaderActive.setImageBitmap(bmp1);
-			} else
-				HeaderActive.setBackgroundResource(R.drawable.no_image_header);
-			RelativeLayout profileActiveRelative = (RelativeLayout) t
-					.findViewById(R.id.linear_id_profile_introduction_page);
-
-			RelativeLayout.LayoutParams ll = new RelativeLayout.LayoutParams(
-					profileActiveRelative.getLayoutParams());
-			ll.width = ut.getScreenwidth() / 8;
-			ll.height = ut.getScreenwidth() / 8;
-			ll.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-
-			ImageView profileActive = (ImageView) t.findViewById(R.id.icon_pro);
-			bytepro = object.getImage2();
-			if (bytepro != null) {
-				Bitmap bmp2 = BitmapFactory.decodeByteArray(bytepro, 0,
-						bytepro.length);
-				profileActive.setImageBitmap(bmp2);
-				profileActive.setLayoutParams(ll);
-
-			} else {
-				profileActive.setBackgroundResource(R.drawable.no_img_profile);
-				profileActive.setLayoutParams(ll);
-
-			}
-
-			RelativeLayout namayandegiActive = (RelativeLayout) t
-					.findViewById(R.id.Layoutlink1);
-
-			namayandegiActive.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
-					trans.commit();
-				}
-			});
-
-			RelativeLayout khadamatActive = (RelativeLayout) t
-					.findViewById(R.id.Layoutlink2);
-			khadamatActive.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, new ProvinceFragment());
-					trans.commit();
-				}
-			});
-
-			EditActive.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame,
-							new IntroductionEditFragment());
-					trans.commit();
-				}
-			});
-
-			TextView namePageDisActive = (TextView) t
-					.findViewById(R.id.namePage);
-			namePageDisActive.setText(object.getName());
-			adapter.close();
-
-			// this view is created for check active or inactive introduction
-			// page
-
-			// return t;
-
-		}
 
 		adapter.close();
 

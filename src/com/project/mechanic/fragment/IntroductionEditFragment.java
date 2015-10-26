@@ -79,12 +79,13 @@ public class IntroductionEditFragment extends Fragment implements
 
 	RelativeLayout namayendegi, khadamat, Linearprofile;
 
-	LinearLayout editnetLink, Linearheader, Linearfooter , editDNlink , AdminsPage;
+	LinearLayout editnetLink, Linearheader, Linearfooter, editDNlink,
+			AdminsPage;
 
 	public String Dcatalog, Dprice, Dpdf, Dvideo;
 	public String Dface, Dlink, Dtwt, Dweb, Dgoogle, Dinstagram;
 	RatingBar rating;
-	ImageView payBtn , copyBtn;
+	ImageView payBtn, copyBtn;
 
 	Bitmap bmpHeader, bmpProfil, bmpFooter;
 	Saving saving;
@@ -95,16 +96,15 @@ public class IntroductionEditFragment extends Fragment implements
 
 	byte[] byteHeader, byteProfil, byteFooter;
 	private File mFileTemp;
-	
+
 	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
 	final int PIC_CROP = 10;
-	
+
 	boolean t1 = false;
 	boolean t2 = false;
 	boolean t3 = false;
-	
-	TextView linkPage;
 
+	TextView linkPage;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -136,10 +136,10 @@ public class IntroductionEditFragment extends Fragment implements
 		AdminsPage = (LinearLayout) view.findViewById(R.id.listAdmin);
 		rating = (RatingBar) view.findViewById(R.id.ratingBar1);
 		payBtn = (ImageView) view.findViewById(R.id.btnPay);
-		
-		copyBtn = (ImageView)view.findViewById(R.id.copyToClipboard);
-		linkPage = (TextView)view.findViewById(R.id.linkPage);
-		
+
+		copyBtn = (ImageView) view.findViewById(R.id.copyToClipboard);
+		linkPage = (TextView) view.findViewById(R.id.linkPage);
+
 		namayendegi.setVisibility(View.GONE);
 		khadamat.setVisibility(View.GONE);
 
@@ -157,7 +157,7 @@ public class IntroductionEditFragment extends Fragment implements
 		profileEditParams.width = util.getScreenwidth() / 4;
 		profileEditParams.height = util.getScreenwidth() / 4;
 		profileEditParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		profileEditParams.addRule(RelativeLayout.BELOW , R.id.btnsave);
+		profileEditParams.addRule(RelativeLayout.BELOW, R.id.btnsave);
 		profileEditParams.setMargins(5, 5, 5, 5);
 
 		footerEditParams = new LinearLayout.LayoutParams(
@@ -182,7 +182,7 @@ public class IntroductionEditFragment extends Fragment implements
 		headerImageEdit.setLayoutParams(headerEditParams);
 		profileImageEdit.setLayoutParams(profileEditParams);
 		footerImageEdit.setLayoutParams(footerEditParams);
-		
+
 		String state = Environment.getExternalStorageState();
 
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -208,38 +208,34 @@ public class IntroductionEditFragment extends Fragment implements
 		DBAdapter.open();
 		object = DBAdapter.getObjectbyid(PageId);
 
-		
 		String pathHeader = object.getImagePath1();
 		String pathProfile = object.getImagePath2();
 		String pathFooter = object.getImagePath3();
-		
+
 		Bitmap bmpHeader = BitmapFactory.decodeFile(pathHeader);
 		Bitmap bmpPrifile = BitmapFactory.decodeFile(pathProfile);
 		Bitmap bmpfooter = BitmapFactory.decodeFile(pathFooter);
-		
-		
-		
-		
-//		byte[] bitmapbyte = OBJECT.getImage2();
-		
+
+		// byte[] bitmapbyte = OBJECT.getImage2();
+
 		if (bmpHeader != null) {
-//			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-//					bitmapbyte.length);
+			// Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
+			// bitmapbyte.length);
 			headerImageEdit.setImageBitmap(bmpHeader);
 		} else
 			headerImageEdit.setImageResource(R.drawable.no_image_header);
 
-//		byte[] bitmap = object.getImage1();
+		// byte[] bitmap = object.getImage1();
 		if (bmpPrifile != null) {
-//			Bitmap bmp = BitmapFactory
-//					.decodeByteArray(bitmap, 0, bitmap.length);
+			// Bitmap bmp = BitmapFactory
+			// .decodeByteArray(bitmap, 0, bitmap.length);
 			profileImageEdit.setImageBitmap(bmpPrifile);
 		} else
 			profileImageEdit.setImageResource(R.drawable.no_img_profile);
 
-//		byte[] bitm = object.getImage3();
+		// byte[] bitm = object.getImage3();
 		if (bmpfooter != null) {
-//			Bitmap bmp = BitmapFactory.decodeByteArray(bitm, 0, bitm.length);
+			// Bitmap bmp = BitmapFactory.decodeByteArray(bitm, 0, bitm.length);
 			footerImageEdit.setImageBitmap(bmpfooter);
 		} else
 			footerImageEdit.setImageResource(R.drawable.no_image_header);
@@ -254,17 +250,19 @@ public class IntroductionEditFragment extends Fragment implements
 		DBAdapter.close();
 
 		// //////////////////////////////////////////////////
-		
+
 		copyBtn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-		        ClipboardManager clipMan = (ClipboardManager)getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData cData = ClipData.newPlainText("text", linkPage.getText().toString());
-                clipMan.setPrimaryClip(cData);
-                Toast.makeText(getActivity(), "آدرس صفحه کپی شد", 0).show();
-                
+				ClipboardManager clipMan = (ClipboardManager) getActivity()
+						.getSystemService(Context.CLIPBOARD_SERVICE);
+				ClipData cData = ClipData.newPlainText("text", linkPage
+						.getText().toString());
+				clipMan.setPrimaryClip(cData);
+				Toast.makeText(getActivity(), "آدرس صفحه کپی شد", 0).show();
+
 			}
 		});
 
@@ -437,7 +435,6 @@ public class IntroductionEditFragment extends Fragment implements
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-
 		if (requestCode == profileLoadCode) {
 			try {
 
@@ -459,7 +456,6 @@ public class IntroductionEditFragment extends Fragment implements
 			}
 			profileImageEdit.setLayoutParams(profileEditParams);
 
-
 		}
 		if (requestCode == PIC_CROP && data != null) {
 			String path = data.getStringExtra(CropImage.IMAGE_PATH);
@@ -472,7 +468,7 @@ public class IntroductionEditFragment extends Fragment implements
 			if (bitmap != null && t1) {
 				profileImageEdit.setImageBitmap(bitmap);
 				profileImageEdit.setLayoutParams(profileEditParams);
-				t1=false;
+				t1 = false;
 
 			}
 			if (bitmap != null && t2) {
@@ -490,7 +486,6 @@ public class IntroductionEditFragment extends Fragment implements
 
 		}
 
-	
 		if (requestCode == headerLoadCode && resultCode == Activity.RESULT_OK
 				&& null != data) {
 			try {
@@ -511,7 +506,7 @@ public class IntroductionEditFragment extends Fragment implements
 				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
 						.show();
 			}
-			 headerImageEdit.setLayoutParams(headerEditParams);
+			headerImageEdit.setLayoutParams(headerEditParams);
 
 		}
 		if (requestCode == footerLoadcode && resultCode == Activity.RESULT_OK
@@ -534,14 +529,14 @@ public class IntroductionEditFragment extends Fragment implements
 				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
 						.show();
 			}
-		
-			 footerImageEdit.setLayoutParams(footerEditParams);
+
+			footerImageEdit.setLayoutParams(footerEditParams);
 
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 
 	}
-	
+
 	private void startCropImage() {
 
 		Intent intent = new Intent(getActivity(), CropImage.class);
@@ -553,6 +548,7 @@ public class IntroductionEditFragment extends Fragment implements
 
 		startActivityForResult(intent, PIC_CROP);
 	}
+
 	@Override
 	public void processFinish(String output) {
 
@@ -596,25 +592,27 @@ public class IntroductionEditFragment extends Fragment implements
 					byteFooter = Utility.CompressBitmap(bmpFooter);
 			}
 
-			savingImage = new SavingImage3Picture(getActivity());
-			savingImage.delegate = IntroductionEditFragment.this;
-			Map<String, Object> it = new LinkedHashMap<String, Object>();
+			if (getActivity() != null) {
+				savingImage = new SavingImage3Picture(getActivity());
+				savingImage.delegate = IntroductionEditFragment.this;
+				Map<String, Object> it = new LinkedHashMap<String, Object>();
 
-			it.put("tableName", "Object");
-			it.put("fieldName1", "Image1");
-			it.put("fieldName2", "Image2");
-			it.put("fieldName3", "Image3");
+				it.put("tableName", "Object");
+				it.put("fieldName1", "Image1");
+				it.put("fieldName2", "Image2");
+				it.put("fieldName3", "Image3");
 
-			it.put("id", String.valueOf(PageId));
+				it.put("id", String.valueOf(PageId));
 
-			it.put("Image1", byteHeader);
-			it.put("Image2", byteProfil);
-			it.put("Image3", byteFooter);
+				it.put("Image1", byteHeader);
+				it.put("Image2", byteProfil);
+				it.put("Image3", byteFooter);
 
-			savingImage.execute(it);
-			ringProgressDialog = ProgressDialog.show(getActivity(), null,
-					"به منظور به روز رسانی تصاویر لطفا چند لحظه منتظر بمانید.");
-
+				savingImage.execute(it);
+				ringProgressDialog = ProgressDialog
+						.show(getActivity(), null,
+								"به منظور به روز رسانی تصاویر لطفا چند لحظه منتظر بمانید.");
+			}
 			// } else {
 			DBAdapter.open();
 			DBAdapter.UpdateObjectProperties(PageId, nameValue, phoneValue,
@@ -663,20 +661,20 @@ public class IntroductionEditFragment extends Fragment implements
 			// byteHeader = Utility.CompressBitmap(bmpHeader);
 			// byteProfil = Utility.CompressBitmap(bmpProfil);
 			// byteFooter = Utility.CompressBitmap(bmpFooter);
-			
+
 			util.CreateFile(byteHeader, PageId, "Mechanical", "Profile",
 					"header", "Object");
-			
+
 			util.CreateFile(byteProfil, PageId, "Mechanical", "Profile",
 					"profile", "Object");
-			
+
 			util.CreateFile(byteFooter, PageId, "Mechanical", "Profile",
 					"footer", "Object");
-			
-//			DBAdapter.open();
-//			DBAdapter.updateAllImageIntroductionPage(PageId, byteHeader,
-//					byteProfil, byteFooter);
-//			DBAdapter.close();
+
+			// DBAdapter.open();
+			// DBAdapter.updateAllImageIntroductionPage(PageId, byteHeader,
+			// byteProfil, byteFooter);
+			// DBAdapter.close();
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}

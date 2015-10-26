@@ -1,10 +1,13 @@
 package com.project.mechanic.adapter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -163,6 +166,36 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 			}
 
 			namePage.setText(pd.getNameObject());
+			
+			TextView baghiMandeh = (TextView) convertView
+					.findViewById(R.id.dayBaghiMandeh); // modate baghimande
+
+			String commitDate = pd.getDateObject(); // tarikhe ijad safhe
+
+			if (commitDate != null && !"".equals(commitDate)) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeInMillis(Long.valueOf(commitDate));
+				calendar.add(Calendar.YEAR, 1);
+
+				final SharedPreferences currentTime = context.getSharedPreferences(
+						"time", 0);
+
+				String time = currentTime.getString("time", "-1");
+
+				Calendar calendarNow = Calendar.getInstance();
+				calendarNow.setTimeInMillis(Long.valueOf(time));
+
+				long start = calendar.getTimeInMillis();
+				long now = calendarNow.getTimeInMillis();
+				long diff = TimeUnit.MILLISECONDS.toDays(Math.abs(start - now));
+
+				baghiMandeh.setText(String.valueOf(diff));
+			} else {
+				baghiMandeh.setText("نا معلوم");
+			}
+			
+			
+			
 
 			convertView.setOnClickListener(new OnClickListener() {
 

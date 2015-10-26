@@ -3724,8 +3724,8 @@ public class DataBaseAdapter {
 	public void UpdateImagePathToDb(int id, String ImagePath, String tableName) {
 		ContentValues uc = new ContentValues();
 
-//		if (!"".equals(ImagePath) && ImagePath != null)
-			uc.put("ImagePath", ImagePath);
+		// if (!"".equals(ImagePath) && ImagePath != null)
+		uc.put("ImagePath", ImagePath);
 
 		mDb.update(tableName, uc, "Id=" + id, null);
 
@@ -4239,6 +4239,17 @@ public class DataBaseAdapter {
 
 		}
 		return result;
+
+	}
+
+	public void SetIsActive(int id, int isActive) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("Id", id);
+		uc.put("IsActive", isActive);
+
+		mDb.insert(TableObject, null, uc);
 
 	}
 

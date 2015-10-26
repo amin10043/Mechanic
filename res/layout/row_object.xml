@@ -106,23 +106,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="روز"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/transparent"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/dayBaghiMandeh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:text="250"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/transparent"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/lable_etebar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="اعتبار :"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/transparent"
+                android:visibility="gone" />
         </LinearLayout>
     </RelativeLayout>
 

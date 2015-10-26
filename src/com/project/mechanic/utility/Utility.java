@@ -1050,10 +1050,10 @@ public class Utility implements AsyncInterface {
 
 		arrayImage[0] = (ImageView) activity.findViewById(R.id.sendComment);
 		arrayImage[1] = (ImageView) activity.findViewById(R.id.pickPicture);
-		arrayImage[2] = (ImageView) activity.findViewById(R.id.showPicture);
+//		arrayImage[2] = (ImageView) activity.findViewById(R.id.showPicture);
 
 		arrayImage[1].setVisibility(View.VISIBLE);
-		arrayImage[2].setVisibility(View.VISIBLE);
+//		arrayImage[2].setVisibility(View.VISIBLE);
 
 		return arrayImage;
 

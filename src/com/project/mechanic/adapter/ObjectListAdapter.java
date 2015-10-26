@@ -2,6 +2,7 @@ package com.project.mechanic.adapter;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,7 +13,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +34,7 @@ import com.project.mechanic.entity.Object;
 import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.fragment.MainFragment;
+import com.project.mechanic.fragment.UnavailableIntroduction;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -53,12 +54,12 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 	String DateTime;
 	int Type;
 	int etebarDay = 365; // constant for agahi
+	long diff;
 
 	public ObjectListAdapter(Context context, int resource,
 			List<Object> objact, Fragment fr, boolean IsShow, String DateTime,
 			int Type) {
 		super(context, resource, objact);
-
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
@@ -165,42 +166,40 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		String commitDate = person.getDate(); // tarikhe ijad safhe
 
 		if (commitDate != null && !"".equals(commitDate)) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(Long.valueOf(commitDate));
+			calendar.add(Calendar.YEAR, 1);
 
 			final SharedPreferences currentTime = context.getSharedPreferences(
 					"time", 0);
+
 			String time = currentTime.getString("time", "-1");
 
-			int commitYear = (Integer.valueOf(commitDate.substring(0, 4)));
-			int comitMonth = (Integer.valueOf(commitDate.substring(4, 6)));
-			int commitDay = (Integer.valueOf(commitDate.substring(6, 8)));
+			Calendar calendarNow = Calendar.getInstance();
+			calendarNow.setTimeInMillis(Long.valueOf(time));
 
-			int currentYear = (Integer.valueOf(time.substring(0, 4)));
-			int currentMonth = (Integer.valueOf(time.substring(4, 6)));
-			int currentDay = (Integer.valueOf(time.substring(6, 8)));
+			long start = calendar.getTimeInMillis();
+			long now = calendarNow.getTimeInMillis();
+			diff = TimeUnit.MILLISECONDS.toDays(Math.abs(start - now));
 
-			Calendar commitCalendar = Calendar.getInstance();
-			commitCalendar.set(commitYear + 1, comitMonth, commitDay);
-
-			Calendar currentCalendar = Calendar.getInstance();
-			currentCalendar.set(currentYear, currentMonth, currentDay);
-
-			int diff = currentCalendar.compareTo(commitCalendar);
-
-			// calendar.setTimeInMillis(Long.valueOf(commitDate));
-
-			// calendar.add(Calendar.YEAR, 1);
+			// if (diff <= 0) {
+			//
+			// // isActive == 0 >>>>> gheyr faal
+			// // isActive == 1 >>>>> faal
+			//
+			// adapter.open();
+			// adapter.SetIsActive(person.getId(), 0);
+			// adapter.close();
 			//
 			//
 			//
-			// Calendar calendarNow = Calendar.getInstance();
-			// calendarNow.setTimeInMillis(Long.valueOf(time));
-			// int diff = calendarNow.compareTo(calendar);
-			//
-			 baghiMandeh.setText(String.valueOf(diff));
+			// }
 
-		} else {
-			baghiMandeh.setText("نا معلوم");
+			// baghiMandeh.setText(String.valueOf(diff));
 		}
+		// else {
+		// baghiMandeh.setText("نا معلوم");
+		// }
 		convertView.setOnLongClickListener(new OnLongClickListener() {
 
 			@Override
@@ -243,31 +242,60 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 				SharedPreferences sendDataID = context.getSharedPreferences(
 						"Id", 0);
-				IntroductionFragment fragment = new IntroductionFragment();
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, fragment);
 
-				String item = txt1.getText().toString();
+				if (diff <= 0) {
 
-				int id = 0;
-				for (Object object : list) {
-					if (item.equals(object.getName())) {
-						// check authentication and authorization
-						id = object.getId();
-						sendDataID.edit().putInt("main_Id", id).commit();
+					UnavailableIntroduction fragment = new UnavailableIntroduction();
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, fragment);
+
+					String item = txt1.getText().toString();
+
+					int id = 0;
+					for (Object object : list) {
+						if (item.equals(object.getName())) {
+							// check authentication and authorization
+							id = object.getId();
+							sendDataID.edit().putInt("main_Id", id).commit();
+
+						}
 
 					}
 
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(id));
+					fragment.setArguments(bundle);
+					trans.addToBackStack(null);
+					trans.commit();
+
+				} else {
+
+					IntroductionFragment fragment = new IntroductionFragment();
+					FragmentTransaction trans = ((MainActivity) context)
+							.getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, fragment);
+
+					String item = txt1.getText().toString();
+
+					int id = 0;
+					for (Object object : list) {
+						if (item.equals(object.getName())) {
+							// check authentication and authorization
+							id = object.getId();
+							sendDataID.edit().putInt("main_Id", id).commit();
+
+						}
+
+					}
+
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(id));
+					fragment.setArguments(bundle);
+					trans.addToBackStack(null);
+					trans.commit();
 				}
-
-				Bundle bundle = new Bundle();
-				bundle.putString("Id", String.valueOf(id));
-				fragment.setArguments(bundle);
-				trans.addToBackStack(null);
-				trans.commit();
 			}
-
 		});
 		// final Animation animSideDown = AnimationUtils.loadAnimation(context,
 		// R.anim.slide_down);

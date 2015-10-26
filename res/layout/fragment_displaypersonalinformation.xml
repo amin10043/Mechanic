@@ -46,9 +46,9 @@
                 android:id="@+id/tgbnhy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/lin2"
                 android:layout_alignTop="@+id/lin2"
                 android:layout_gravity="left"
+                android:layout_toRightOf="@+id/lin2"
                 android:gravity="left"
                 android:orientation="vertical" >
 
@@ -160,6 +160,7 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginRight="@dimen/txtsize10"
                 android:layout_marginTop="20dp"
+                android:maxLines="1"
                 android:text="ایمیل :"
                 android:textColor="@color/transparent" />
         </RelativeLayout>
@@ -189,6 +190,7 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginRight="@dimen/txtsize10"
                 android:layout_marginTop="20dp"
+                android:maxLines="1"
                 android:text="شماره ثابت :"
                 android:textColor="@color/transparent" />
         </RelativeLayout>
@@ -219,6 +221,7 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginRight="@dimen/txtsize10"
                 android:layout_marginTop="20dp"
+                android:maxLines="1"
                 android:text="شماره همراه :"
                 android:textColor="@color/transparent" />
         </RelativeLayout>
@@ -250,6 +253,7 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginRight="@dimen/txtsize10"
                 android:layout_marginTop="20dp"
+                android:maxLines="1"
                 android:text="دورنما :"
                 android:textColor="@color/transparent" />
         </RelativeLayout>
@@ -281,15 +285,10 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginRight="@dimen/txtsize10"
                 android:layout_marginTop="20dp"
+                android:maxLines="1"
                 android:text="آدرس :"
                 android:textColor="@color/transparent" />
         </RelativeLayout>
-
-        
-
-        
-
-        
     </LinearLayout>
 
 </LinearLayout>

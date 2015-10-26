@@ -40,7 +40,7 @@ import com.project.mechanic.utility.Utility;
 public class FroumWithoutComment extends Fragment implements AsyncInterface {
 	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike,
 			nametxt;
-	LinearLayout addComment, likeTopic;
+	LinearLayout /*addComment,*/ likeTopic;
 	ImageButton sharebtn;
 	ImageView profileImg;
 	Froum topics;
@@ -59,10 +59,11 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 	ProgressDialog ringProgressDialog;
 	String serverDate = "";
 	ServerDate date;
-	RelativeLayout count, commentcounter;
+	RelativeLayout count;
 	FroumFragment ff;
 	int userId;
 	int diss = 0;
+	LinearLayout  commentcounter;
 	boolean LikeOrComment; // like == true & comment == false
 
 	@Override
@@ -81,14 +82,14 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 		countLike = (TextView) view.findViewById(R.id.txtNumofLike_CmtFroum);
 		nametxt = (TextView) view.findViewById(R.id.name_cc);
 
-		addComment = (LinearLayout) view.findViewById(R.id.addCommentToTopic);
+//		addComment = (LinearLayout) view.findViewById(R.id.addCommentToTopic);
 		likeTopic = (LinearLayout) view.findViewById(R.id.LikeTopicLinear);
 
 		sharebtn = (ImageButton) view.findViewById(R.id.sharefroumicon);
 		profileImg = (ImageView) view.findViewById(R.id.iconfroumtitle);
 
 		count = (RelativeLayout) view.findViewById(R.id.countLiketext);
-		commentcounter = (RelativeLayout) view.findViewById(R.id.countComment);
+		commentcounter = (LinearLayout) view.findViewById(R.id.cmffff);
 
 		final SharedPreferences froumId = getActivity().getSharedPreferences(
 				"Id", 0);
@@ -221,40 +222,40 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 				}
 			}
 		});
-		addComment.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				if (CurrentUser == null) {
-					Toast.makeText(getActivity(),
-							"برای درج کامنت ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
-
-				} else {
-					dialog = new DialogcmtInfroum(FroumWithoutComment.this, 0,
-							getActivity(), idFroum, R.layout.dialog_addcomment,
-							1);
-					dialog.show();
-
-					// FragmentTransaction trans = ((MainActivity)
-					// getActivity())
-					// .getSupportFragmentManager().beginTransaction();
-					// FroumFragment fragment = new FroumFragment();
-					// trans.setCustomAnimations(R.anim.pull_in_left,
-					// R.anim.push_out_right);
-					// Bundle b = new Bundle();
-					// b.putString("Id", String.valueOf(idFroum));
-					// fragment.setArguments(b);
-					//
-					// trans.replace(R.id.content_frame, fragment);
-					// trans.commit();
-					// ff = new FroumFragment();
-					// ff.updateList();
-
-				}
-			}
-		});
+//		addComment.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//
+//				if (CurrentUser == null) {
+//					Toast.makeText(getActivity(),
+//							"برای درج کامنت ابتدا باید وارد شوید",
+//							Toast.LENGTH_SHORT).show();
+//
+//				} else {
+//					dialog = new DialogcmtInfroum(FroumWithoutComment.this, 0,
+//							getActivity(), idFroum, R.layout.dialog_addcomment,
+//							1);
+//					dialog.show();
+//
+//					// FragmentTransaction trans = ((MainActivity)
+//					// getActivity())
+//					// .getSupportFragmentManager().beginTransaction();
+//					// FroumFragment fragment = new FroumFragment();
+//					// trans.setCustomAnimations(R.anim.pull_in_left,
+//					// R.anim.push_out_right);
+//					// Bundle b = new Bundle();
+//					// b.putString("Id", String.valueOf(idFroum));
+//					// fragment.setArguments(b);
+//					//
+//					// trans.replace(R.id.content_frame, fragment);
+//					// trans.commit();
+//					// ff = new FroumFragment();
+//					// ff.updateList();
+//
+//				}
+//			}
+//		});
 		sharebtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override

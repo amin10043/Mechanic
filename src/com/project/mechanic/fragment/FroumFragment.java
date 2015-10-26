@@ -55,11 +55,11 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike,
 			nametxt;
-	LinearLayout addComment, likeTopic;
+	LinearLayout /* addComment, */likeTopic;
 	ImageButton sharebtn;
 	ImageView profileImg;
 	int froumid;
-	RelativeLayout count, commentcounter;
+	RelativeLayout count /* ,commentcounter*/;
 
 	Froum topics;
 
@@ -126,7 +126,8 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 		countLike = (TextView) header.findViewById(R.id.txtNumofLike_CmtFroum);
 		nametxt = (TextView) header.findViewById(R.id.name_cc);
 
-		addComment = (LinearLayout) header.findViewById(R.id.addCommentToTopic);
+		// addComment = (LinearLayout)
+		// header.findViewById(R.id.addCommentToTopic);
 		likeTopic = (LinearLayout) header.findViewById(R.id.LikeTopicLinear);
 
 		sharebtn = (ImageButton) header.findViewById(R.id.sharefroumicon);
@@ -134,8 +135,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 		exlistview = (ExpandableListView) view.findViewById(R.id.commentlist);
 
 		count = (RelativeLayout) header.findViewById(R.id.countLike);
-		commentcounter = (RelativeLayout) header
-				.findViewById(R.id.countComment);
+//		commentcounter = (RelativeLayout) header.findViewById(R.id.cmffff);
 
 		// end find view
 
@@ -205,26 +205,26 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 			}
 		});
-		addComment.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				if (CurrentUser == null) {
-					Toast.makeText(getActivity(),
-							"برای درج کامنت ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
-
-				} else {
-
-					dialog = new DialogcmtInfroum(FroumFragment.this, 0,
-							getActivity(), froumid, R.layout.dialog_addcomment,
-							2);
-					dialog.show();
-					exadapter.notifyDataSetChanged();
-				}
-			}
-		});
+		// addComment.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		//
+		// if (CurrentUser == null) {
+		// Toast.makeText(getActivity(),
+		// "برای درج کامنت ابتدا باید وارد شوید",
+		// Toast.LENGTH_SHORT).show();
+		//
+		// } else {
+		//
+		// dialog = new DialogcmtInfroum(FroumFragment.this, 0,
+		// getActivity(), froumid, R.layout.dialog_addcomment,
+		// 2);
+		// dialog.show();
+		// exadapter.notifyDataSetChanged();
+		// }
+		// }
+		// });
 
 		commentGroup = adapter.getCommentInFroumbyPaperid(froumid, 0);
 
