@@ -2,6 +2,7 @@ package com.project.mechanic.adapter;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -174,7 +175,10 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 			Calendar calendarNow = Calendar.getInstance();
 			calendarNow.setTimeInMillis(Long.valueOf(time));
-			int diff = calendarNow.compareTo(calendar);
+
+			long start = calendar.getTimeInMillis();
+			long now = calendarNow.getTimeInMillis();
+			long diff = TimeUnit.MILLISECONDS.toDays(Math.abs(start - now));
 
 			baghiMandeh.setText(String.valueOf(diff));
 		} else {
