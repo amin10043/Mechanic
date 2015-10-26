@@ -30,7 +30,6 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.CommentInPost;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
@@ -161,11 +160,11 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 				// شود
 
 				int d = (int) getGroupId(groupPosition);
-				CommentInFroum w = (CommentInFroum) getChild(d, childPosition);
+				CommentInPost w = (CommentInPost) getChild(d, childPosition);
 				if (w != null) {
 					i = w.getId();
-					u = w.getUserid();
-					t = w.getDesk();
+					u = w.getUserId();
+					t = w.getDesc();
 				}
 				Toast.makeText(context, "id = " + i + "Userid = " + u, 0)
 						.show();
@@ -314,7 +313,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 		// lrr.setVisibility(View.GONE);
 		//
 		// } else
-		countOfReply.setText(adapter.getCountOfReplyInFroum(postID,
+		countOfReply.setText(adapter.getCountOfReplyInPost(postID,
 				comment.getId()).toString());
 
 		if (x != null) {
@@ -372,9 +371,9 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 
 			}
 		}
-		countLike.setText(String.valueOf(adapter.NumberOfLikeOrDisLikeFroum(c,
-				1)));
-		countdisLike.setText(String.valueOf(adapter.NumberOfLikeOrDisLikeFroum(
+		countLike.setText(String.valueOf(adapter
+				.NumberOfLikeOrDisLikePost(c, 1)));
+		countdisLike.setText(String.valueOf(adapter.NumberOfLikeOrDisLikePost(
 				c, 0)));
 
 		adapter.close();
@@ -664,14 +663,14 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 				String t = "";
 
 				int dd = (int) getGroupId(groupPosition);
-				CommentInFroum ww = (CommentInFroum) getGroup(dd);
+				CommentInPost ww = (CommentInPost) getGroup(dd);
 				if (ww != null) {
-					u = ww.getUserid();
-					t = ww.getDesk();
+					u = ww.getUserId();
+					t = ww.getDesc();
 				}
 				adapter.open();
 
-				if (adapter.getCountOfReplyInFroum(postID, comment.getId()) > 0) {
+				if (adapter.getCountOfReplyInPost(postID, comment.getId()) > 0) {
 					i = -1;
 
 					DialogLongClick dia = new DialogLongClick(context, 5, u, i,
@@ -684,11 +683,11 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 					// شود
 
 					int d = (int) getGroupId(groupPosition);
-					CommentInFroum w = (CommentInFroum) getGroup(d);
+					CommentInPost w = (CommentInPost) getGroup(d);
 					if (w != null) {
 						i = w.getId();
-						u = w.getUserid();
-						t = ww.getDesk();
+						u = w.getUserId();
+						t = ww.getDesc();
 
 					}
 
@@ -764,7 +763,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 
 					if (adapter.isUserLikedComment(Currentuser.getId(),
 							GlobalId, 1)) {
-						adapter.deleteLikeFromCommentInFroum(GlobalId,
+						adapter.deleteLikeFromCommentInPost(GlobalId,
 								Currentuser.getId(), 1);
 
 						notifyDataSetChanged();
@@ -774,7 +773,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 						}
 
 					} else {
-						adapter.InsertLikeCommentFroumToDatabase(id,
+						adapter.InsertLikeCommentPostToDatabase(id,
 								Currentuser.getId(), 1, GlobalId, serverDate);
 
 						notifyDataSetChanged();
@@ -791,7 +790,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 
 					if (adapter.isUserLikedComment(Currentuser.getId(),
 							GlobalId, 0)) {
-						adapter.deleteLikeFromCommentInFroum(GlobalId,
+						adapter.deleteLikeFromCommentInPost(GlobalId,
 								Currentuser.getId(), 0);
 						notifyDataSetChanged();
 						if (ringProgressDialog != null) {
@@ -800,7 +799,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 						}
 
 					} else {
-						adapter.InsertLikeCommentFroumToDatabase(id,
+						adapter.InsertLikeCommentPostToDatabase(id,
 								Currentuser.getId(), 0, GlobalId, serverDate);
 
 						notifyDataSetChanged();

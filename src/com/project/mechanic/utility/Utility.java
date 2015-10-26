@@ -10,12 +10,8 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
@@ -25,7 +21,6 @@ import android.app.ActivityManager.RunningTaskInfo;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,28 +42,22 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.WelcomeScreen;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.DialogcmtInfroum;
 import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.UpdatingAllDetail;
 import com.project.mechanic.service.UpdatingAllMaster;
@@ -1050,7 +1039,7 @@ public class Utility implements AsyncInterface {
 
 	public ImageView[] inputCommentAndPickFile(Activity activity) {
 
-		ImageView[] arrayImage = new ImageView[2];
+		ImageView[] arrayImage = new ImageView[3];
 
 		ViewFlipper vf = (ViewFlipper) activity.findViewById(R.id.footerAgahi);
 		RelativeLayout la = (RelativeLayout) activity
@@ -1061,26 +1050,10 @@ public class Utility implements AsyncInterface {
 
 		arrayImage[0] = (ImageView) activity.findViewById(R.id.sendComment);
 		arrayImage[1] = (ImageView) activity.findViewById(R.id.pickPicture);
+		arrayImage[2] = (ImageView) activity.findViewById(R.id.showPicture);
 
 		arrayImage[1].setVisibility(View.VISIBLE);
-		
-//		ImageView sendMessage = util.inputCommentAndPickFile(getActivity())[0];
-//
-//		ImageView getPicture = util.inputCommentAndPickFile(getActivity())[1];
-//		
-//		sendMessage.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View arg0) {
-//			}
-//		});
-//		getPicture.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View arg0) {
-//			}
-//		});
-
+		arrayImage[2].setVisibility(View.VISIBLE);
 
 		return arrayImage;
 

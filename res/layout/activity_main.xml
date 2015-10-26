@@ -240,19 +240,18 @@
             android:id="@+id/getCommentLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/replyLayout"
             android:layout_margin="5dp"
-            android:orientation="horizontal"
+            android:layout_toRightOf="@+id/replyLayout"
             android:visibility="visible" >
 
             <EditText
                 android:id="@+id/inputComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/sendComment"
                 android:layout_toRightOf="@+id/pickPicture"
-                android:hint="نظر خود را وارد کنید" />
+                android:hint="نظر خود را وارد کنید"
+                android:visibility="visible" />
 
             <ImageView
                 android:id="@+id/pickPicture"
@@ -272,6 +271,15 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="5dp"
                 android:background="@drawable/ic_send" />
+
+            <ImageView
+                android:id="@+id/showPicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignRight="@+id/inputComment"
+                android:background="@drawable/no_img_profile"
+                android:visibility="visible" />
         </RelativeLayout>
 
         <ViewFlipper

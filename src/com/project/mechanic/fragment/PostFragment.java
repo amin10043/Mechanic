@@ -1,18 +1,25 @@
 package com.project.mechanic.fragment;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
@@ -32,6 +39,7 @@ import android.widget.Toast;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.ExpandableCommentPost;
+import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.CommentInPost;
 import com.project.mechanic.entity.LikeInPost;
 import com.project.mechanic.entity.Post;
@@ -50,8 +58,14 @@ import com.project.mechanic.utility.Utility;
 public class PostFragment extends Fragment implements AsyncInterface,
 		GetAsyncInterface, CommInterface {
 
+	private File mFileTemp;
+	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
+	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201,
+			CROPING_CODE = 301;
+	final int PIC_CROP = 10;
 	DataBaseAdapter adapter;
 	ExpandableCommentPost exadapter;
+	private Uri mImageCaptureUri;
 
 	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike,
 			nametxt;
@@ -63,7 +77,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 	Post topics;
 
-	DialogcmtInfroum dialog;
+	DialogcmtInpost dialog;
 	ArrayList<CommentInPost> commentGroup, ReplyGroup;
 	// String currentDate;
 
@@ -99,12 +113,11 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	boolean LikeOrComment; // like == true & comment == false
 
 	@SuppressLint("InflateParams")
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceStdataate) {
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
-		View view = inflater.inflate(R.layout.fragment_froum, null);
+		View view = inflater.inflate(R.layout.fragment_post, null);
 
 		adapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
@@ -131,21 +144,22 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 		sharebtn = (ImageButton) header.findViewById(R.id.sharefroumicon);
 		profileImg = (ImageView) header.findViewById(R.id.iconfroumtitle);
-		exlistview = (ExpandableListView) view.findViewById(R.id.commentlist);
+		// exlistview = (ExpandableListView) view
+		// .findViewById(R.id.listvCmt_Introduction_post);
+		exlistview = (ExpandableListView) view
+				.findViewById(R.id.listvCmt_Introduction_post);
 
 		count = (RelativeLayout) header.findViewById(R.id.countLike);
 		commentcounter = (RelativeLayout) header
 				.findViewById(R.id.countComment);
 
 		// end find view
-
 		if (getArguments().getString("Id") != null)
 			postid = Integer.valueOf(getArguments().getString("Id"));
 
 		adapter.open();
 		CurrentUser = util.getCurrentUser();
 		if (CurrentUser == null) {
-
 		}
 
 		else
@@ -218,7 +232,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 				} else {
 
-					dialog = new DialogcmtInfroum(PostFragment.this, 0,
+					dialog = new DialogcmtInpost(PostFragment.this, 0,
 							getActivity(), postid, R.layout.dialog_addcomment,
 							2);
 					dialog.show();
@@ -269,6 +283,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 		}
 
 		exlistview.addHeaderView(header);
+
 		exadapter = new ExpandableCommentPost(getActivity(),
 				(ArrayList<CommentInPost>) commentGroup, mapCollection, this,
 				postid);
@@ -399,42 +414,231 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
-		ImageView send = util.ShowFooterAgahi(getActivity(), true, 3);
+		// ImageView send = util.ShowFooterAgahi(getActivity(), true, 3);
+		//
+		// send.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		//
+		// if ("".equals(util.inputComment(getActivity()))) {
+		// Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
+		// .show();
+		// } else {
+		//
+		// // date = new ServerDate(getActivity());
+		// // date.delegate = PostFragment.this;
+		// // date.execute("");
+		// // LikeOrComment = false;
+		// adapter.open();
+		// adapter.insertCommentInPosttoDb(id,
+		// util.inputComment(getActivity()), postid,
+		// CurrentUser.getId(), serverDate, commentId);
+		//
+		// adapter.close();
+		//
+		// util.ToEmptyComment(getActivity());
+		//
+		// util.ReplyLayout(getActivity(), "", false);
+		//
+		// }
+		// }
+		// });
+		// ImageView delete = util.deleteReply(getActivity());
+		//
+		// delete.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		//
+		// util.ReplyLayout(getActivity(), "", false);
+		//
+		// }
+		// });
 
-		send.setOnClickListener(new OnClickListener() {
+		String state = Environment.getExternalStorageState();
+
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			mFileTemp = new File(Environment.getExternalStorageDirectory(),
+					TEMP_PHOTO_FILE_NAME);
+		} else {
+			mFileTemp = new File(getActivity().getFilesDir(),
+					TEMP_PHOTO_FILE_NAME);
+		}
+
+		util.ShowFooterAgahi(getActivity(), false, 10);
+
+		ImageView[] TempImage = util.inputCommentAndPickFile(getActivity());
+
+		ImageView sendMessage = TempImage[0];
+		ImageView getPicture = TempImage[1];
+		showPicture = TempImage[2];
+
+		sendMessage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
+				adapter.open();
+				adapter.insertCommentInPosttoDb(id,
+						util.inputComment(getActivity()), postid,
+						CurrentUser.getId(), serverDate, commentId);
 
-				if ("".equals(util.inputComment(getActivity()))) {
-					Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
-							.show();
-				} else {
+				adapter.close();
 
-					date = new ServerDate(getActivity());
-					date.delegate = PostFragment.this;
-					date.execute("");
-					LikeOrComment = false;
-
-					util.ReplyLayout(getActivity(), "", false);
-
-				}
+				util.ToEmptyComment(getActivity());
+				util.ReplyLayout(getActivity(), "", false);
 			}
 		});
-		ImageView delete = util.deleteReply(getActivity());
+		getPicture.setOnClickListener(new OnClickListener() {
 
-		delete.setOnClickListener(new OnClickListener() {
-
-			@Override
 			public void onClick(View arg0) {
-
-				util.ReplyLayout(getActivity(), "", false);
-
+				selectImageOption();
 			}
 		});
 
 		return view;
 	}
+
+	public ImageView showPicture;
+	String imgDecodableString;
+
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		try {
+			if (requestCode == GALLERY_CODE && resultCode == Activity.RESULT_OK
+					&& null != data) {
+
+				mImageCaptureUri = data.getData();
+				// String img = data.getDataString();
+				// String filename = (new File(filePath)).getName();
+
+				Toast.makeText(getActivity(), mImageCaptureUri.getPath(),
+						Toast.LENGTH_LONG).show();
+
+				// Bitmap myBitmap = BitmapFactory.decodeFile(img);
+
+				// showPicture.setImageBitmap(myBitmap);
+				Bitmap bitmap = BitmapFactory.decodeFile(mImageCaptureUri
+						.getPath());
+				showPicture.setImageBitmap(bitmap);
+				// showPicture.setImageURI(mImageCaptureUri);
+
+				/*
+				 * String[] filePathColumn = { MediaStore.Images.Media.DATA };
+				 * 
+				 * Cursor cursor = getActivity().getContentResolver().query(
+				 * selectedImage, filePathColumn, null, null, null);
+				 * cursor.moveToFirst();
+				 * 
+				 * int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+				 * imgDecodableString = cursor.getString(columnIndex);
+				 * cursor.close();
+				 */
+
+				/*
+				 * showPicture.setImageBitmap(BitmapFactory
+				 * .decodeFile(imgDecodableString));
+				 */
+				// showPicture.setImageURI(selectedImage);
+
+			} else {
+				Toast.makeText(getActivity(), "You haven't picked Image",
+						Toast.LENGTH_LONG).show();
+			}
+		} catch (Exception e) {
+			Toast.makeText(getActivity(), "Something went wrong",
+					Toast.LENGTH_LONG).show();
+		}
+	}
+
+	private void selectImageOption() {
+		final CharSequence[] items = { "از دوربین", "از گالری تصاویر", "انصراف" };
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setTitle("افزودن تصویر");
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int item) {
+
+				if (items[item].equals("از دوربین")) {
+
+					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					File f = new File(android.os.Environment
+							.getExternalStorageDirectory(), "temp1.jpg");
+					mImageCaptureUri = Uri.fromFile(f);
+					intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+					startActivityForResult(intent, CAMERA_CODE);
+
+					showPicture.setImageURI(mImageCaptureUri);
+
+				} else if (items[item].equals("از گالری تصاویر")) {
+
+					Intent galleryIntent = new Intent(
+							Intent.ACTION_PICK,
+							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+					startActivityForResult(galleryIntent, GALLERY_CODE);
+
+				} else if (items[item].equals("انصراف")) {
+					dialog.dismiss();
+				}
+			}
+		});
+
+		builder.show();
+	}
+
+	private void startCropImage() {
+
+		Intent intent = new Intent(getActivity(), CropImage.class);
+		intent.putExtra(CropImage.IMAGE_PATH, mFileTemp.getPath());
+		intent.putExtra(CropImage.SCALE, true);
+
+		intent.putExtra(CropImage.ASPECT_X, 3);
+		intent.putExtra(CropImage.ASPECT_Y, 3);
+
+		startActivityForResult(intent, PIC_CROP);
+	}
+
+	// public void onActivityResult(int requestCode, int resultCode, Intent
+	// data) {
+	//
+	// if (requestCode == profileLoadCode) {
+	// try {
+	//
+	// InputStream inputStream = getActivity().getContentResolver()
+	// .openInputStream(data.getData());
+	// FileOutputStream fileOutputStream = new FileOutputStream(
+	// mFileTemp);
+	// Utility.copyStream(inputStream, fileOutputStream);
+	// fileOutputStream.close();
+	// inputStream.close();
+	//
+	// startCropImage();
+	//
+	// } catch (Exception e) {
+	//
+	// Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
+	// .show();
+	// }
+	// }
+	// if (requestCode == PIC_CROP && data != null) {
+	// String path = data.getStringExtra(CropImage.IMAGE_PATH);
+	// if (path == null) {
+	// return;
+	// }
+	// Bitmap bitmap = null;
+	// if (mFileTemp.getPath() != null)
+	// bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
+	// if (bitmap != null) {
+	// // profileImageEdit.setImageBitmap(bitmap);
+	// }
+	//
+	// }
+	//
+	// super.onActivityResult(requestCode, resultCode, data);
+	//
+	// }
 
 	public int getPostId() {
 		return id;
@@ -482,7 +686,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	}
 
 	public void setcount() {
-		countComment.setText(adapter.CommentInFroum_count(postid).toString());
+		countComment.setText(adapter.CommentInPost_count(postid).toString());
 
 	}
 
@@ -504,7 +708,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			mapCollection.put(comment, reply);
 		}
 
-		countComment.setText(adapter.CommentInFroum_count(postid).toString());
+		countComment.setText(adapter.CommentInPost_count(postid).toString());
 
 		exadapter = new ExpandableCommentPost(getActivity(),
 				(ArrayList<CommentInPost>) commentGroup, mapCollection, this,
@@ -531,31 +735,31 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			id = Integer.valueOf(output);
 
 			if (LikeOrComment == true) {
-				if (adapter.isUserLikedFroum(CurrentUser.getId(), postid)) {
-					adapter.deleteLikeFromFroum(CurrentUser.getId(), postid);
+				if (adapter.isUserLikedPost(CurrentUser.getId(), postid)) {
+					adapter.deleteLikeFromPost(CurrentUser.getId(), postid);
 					likeTopic.setBackgroundResource(R.drawable.like_off);
 					count.setBackgroundResource(R.drawable.count_like_off);
 
-					countLike.setText(adapter.LikeInFroum_count(postid)
+					countLike.setText(adapter.LikeInPost_count(postid)
 							.toString());
 				} else {
-					adapter.insertLikeInFroumToDb(id, CurrentUser.getId(),
+					adapter.insertLikeInPostToDb(id, CurrentUser.getId(),
 							postid, serverDate, 0);
 					likeTopic.setBackgroundResource(R.drawable.like_on);
 					count.setBackgroundResource(R.drawable.count_like);
 
-					countLike.setText(adapter.LikeInFroum_count(postid)
+					countLike.setText(adapter.LikeInPost_count(postid)
 							.toString());
 				}
 			} else {
 				adapter.open();
 
-				adapter.insertCommentInFroumtoDb(id,
-						util.inputComment(getActivity()), postid,
-						CurrentUser.getId(), serverDate, commentId);
-
-				adapter.close();
-				util.ToEmptyComment(getActivity());
+				// adapter.insertCommentInPosttoDb(id,
+				// util.inputComment(getActivity()), postid,
+				// CurrentUser.getId(), serverDate, commentId);
+				//
+				// adapter.close();
+				// util.ToEmptyComment(getActivity());
 				if (commentId == 0)
 					expanding(exadapter.getGroupCount());
 				else {
@@ -582,10 +786,10 @@ public class PostFragment extends Fragment implements AsyncInterface,
 						saving = new Saving(getActivity());
 						saving.delegate = PostFragment.this;
 
-						params.put("TableName", "CommentInFroum");
+						params.put("TableName", "CommentInPost");
 
 						params.put("Desk", util.inputComment(getActivity()));
-						params.put("FroumId", String.valueOf(postid));
+						params.put("PostId", String.valueOf(postid));
 						params.put("UserId",
 								String.valueOf(CurrentUser.getId()));
 						params.put("CommentId", String.valueOf(commentId));
@@ -623,7 +827,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 						return;
 					}
 
-					if (adapter.isUserLikedFroum(CurrentUser.getId(), postid)) {
+					if (adapter.isUserLikedPost(CurrentUser.getId(), postid)) {
 
 						params = new LinkedHashMap<String, String>();
 						if (getActivity() != null) {
@@ -631,10 +835,10 @@ public class PostFragment extends Fragment implements AsyncInterface,
 							deleting = new Deleting(getActivity());
 							deleting.delegate = PostFragment.this;
 
-							params.put("TableName", "LikeInFroum");
+							params.put("TableName", "LikeInPost");
 							params.put("UserId",
 									String.valueOf(CurrentUser.getId()));
-							params.put("FroumId", String.valueOf(postid));
+							params.put("PostId", String.valueOf(postid));
 
 							deleting.execute(params);
 						}
@@ -645,7 +849,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 							saving = new Saving(getActivity());
 							saving.delegate = PostFragment.this;
 
-							params.put("TableName", "LikeInFroum");
+							params.put("TableName", "LikeInPost");
 
 							params.put("UserId",
 									String.valueOf(CurrentUser.getId()));

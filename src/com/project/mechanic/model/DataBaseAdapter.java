@@ -102,13 +102,12 @@ public class DataBaseAdapter {
 	// private String[] Comment = { "ID", "UserId", "paperId", "Description" };
 	private String[] CommentInObject = { "Id", "Desk", "ObjectId", "UserId",
 			"Date", "CommentId", "NumofLike", "NumofDisLike ", "Seen" };
+
 	private String[] CommentInFroum = { "ID", "Desk", "FroumId", "UserId",
+			"Date", "CommentId", "NumOfDislike", "NumOfLike", "Seen" };
 
-	"Date", "CommentId", "NumOfDislike", "NumOfLike", "Seen" };
-
-	private String[] CommentInPost = { "ID", "Desk", "PostId", "UserId",
-
-	"Date", "CommentId", "Seen" };
+	private String[] CommentInPost = { "ID", "Desc", "PostId", "UserId",
+			"Date", "CommentId", "Seen" };
 
 	private String[] CommentInPaper = { "Id", "Desk", "PaperId", "UserId",
 			"Date", "CommentId", "Seen" };
@@ -456,7 +455,7 @@ public class DataBaseAdapter {
 		}
 
 	}
-	
+
 	public void insertLikeInPostToDb(int id, int UserId, int PostId,
 			String Date, int CommentId) {
 		if (!isUserLikedPost(UserId, PostId)) {
@@ -552,12 +551,12 @@ public class DataBaseAdapter {
 
 		mDb.insert(TableCommentInFroum, null, cv);
 	}
-	
-	public void insertCommentInPosttoDb(int id, String description,
-			int Postid, int userid, String datetime, int commentid) {
+
+	public void insertCommentInPosttoDb(int id, String description, int Postid,
+			int userid, String datetime, int commentid) {
 
 		ContentValues cv = new ContentValues();
-		cv.put("Id", id);
+		// cv.put("Id", id);
 		cv.put("Desc", description);
 		cv.put("UserId", userid);
 		cv.put("PostID", Postid);
@@ -1886,9 +1885,9 @@ public class DataBaseAdapter {
 		CommentInPost item = null;
 
 		Cursor mCur = mDb.query(
-				TableCommentInFroum,
-				CommentInFroum,
-				"FroumId=? AND CommentId=?",
+				TableCommentInPost,
+				CommentInPost,
+				"PostId=? AND CommentId=?",
 				new String[] { String.valueOf(Postid),
 						String.valueOf(Commentid) }, null, null, null);
 
@@ -2682,6 +2681,14 @@ public class DataBaseAdapter {
 				"CommentId=? and UserId =? and IsLike =?", t);
 	}
 
+	public void deleteLikeFromCommentInPost(int CommentID, int userID,
+			int isLike) {
+		String[] t = { String.valueOf(CommentID), String.valueOf(userID),
+				String.valueOf(isLike) };
+		mDb.delete(TableLikeInComment,
+				"CommentId=? and UserId =? and IsLike =?", t);
+	}
+
 	public int NumOfNewLikeInObject(int userId) {
 		int res = 0;
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
@@ -2837,6 +2844,18 @@ public class DataBaseAdapter {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
 				+ TableCommentInFroum + " WHERE FroumId=" + froumID
+				+ " AND CommentID= " + commentID, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public Integer getCountOfReplyInPost(int postID, int commentID) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableCommentInPost + " WHERE PostId=" + postID
 				+ " AND CommentID= " + commentID, null);
 		int res = 0;
 		if (cu.moveToNext()) {
@@ -3231,7 +3250,33 @@ public class DataBaseAdapter {
 		mDb.insert(TableLikeInComment, null, uc);
 	}
 
+	public void InsertLikeCommentPostToDatabase(int id, int UserId, int ISLike,
+			int CommentId, String date) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("ID", id);
+		uc.put("UserId", UserId);
+		uc.put("CommentId", CommentId);
+		uc.put("IsLike", ISLike);
+		uc.put("Date", date);
+
+		mDb.insert(TableLikeInComment, null, uc);
+	}
+
 	public Integer NumberOfLikeOrDisLikeFroum(int commentID, int isLike) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from "
+				+ TableLikeInComment + " WHERE CommentID=" + commentID
+				+ " AND isLike = " + isLike, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public Integer NumberOfLikeOrDisLikePost(int commentID, int isLike) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from "
 				+ TableLikeInComment + " WHERE CommentID=" + commentID
@@ -3325,7 +3370,7 @@ public class DataBaseAdapter {
 	public ArrayList<LikeInPost> getLikepostLikeInPostByPostId(int PostId) {
 		ArrayList<LikeInPost> result = new ArrayList<LikeInPost>();
 		Cursor cursor = mDb.rawQuery(
-				"select * from LikeInFroum where FroumId =  " + PostId, null);
+				"select * from LikeInPost where PostId =  " + PostId, null);
 
 		LikeInPost like;
 		while (cursor.moveToNext()) {
