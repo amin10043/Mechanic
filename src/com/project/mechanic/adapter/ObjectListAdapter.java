@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -164,20 +165,39 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		String commitDate = person.getDate(); // tarikhe ijad safhe
 
 		if (commitDate != null && !"".equals(commitDate)) {
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTimeInMillis(Long.valueOf(commitDate));
-			calendar.add(Calendar.YEAR, 1);
 
 			final SharedPreferences currentTime = context.getSharedPreferences(
 					"time", 0);
-
 			String time = currentTime.getString("time", "-1");
 
-			Calendar calendarNow = Calendar.getInstance();
-			calendarNow.setTimeInMillis(Long.valueOf(time));
-			int diff = calendarNow.compareTo(calendar);
+			int commitYear = (Integer.valueOf(commitDate.substring(0, 4)));
+			int comitMonth = (Integer.valueOf(commitDate.substring(4, 6)));
+			int commitDay = (Integer.valueOf(commitDate.substring(6, 8)));
 
-			baghiMandeh.setText(String.valueOf(diff));
+			int currentYear = (Integer.valueOf(time.substring(0, 4)));
+			int currentMonth = (Integer.valueOf(time.substring(4, 6)));
+			int currentDay = (Integer.valueOf(time.substring(6, 8)));
+
+			Calendar commitCalendar = Calendar.getInstance();
+			commitCalendar.set(commitYear + 1, comitMonth, commitDay);
+
+			Calendar currentCalendar = Calendar.getInstance();
+			currentCalendar.set(currentYear, currentMonth, currentDay);
+
+			int diff = currentCalendar.compareTo(commitCalendar);
+
+			// calendar.setTimeInMillis(Long.valueOf(commitDate));
+
+			// calendar.add(Calendar.YEAR, 1);
+			//
+			//
+			//
+			// Calendar calendarNow = Calendar.getInstance();
+			// calendarNow.setTimeInMillis(Long.valueOf(time));
+			// int diff = calendarNow.compareTo(calendar);
+			//
+			 baghiMandeh.setText(String.valueOf(diff));
+
 		} else {
 			baghiMandeh.setText("نا معلوم");
 		}
