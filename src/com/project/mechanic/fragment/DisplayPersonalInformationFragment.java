@@ -29,6 +29,8 @@ import com.project.mechanic.R;
 import com.project.mechanic.PushNotification.DomainSend;
 import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.adapter.DataPersonalExpandAdapter;
+import com.project.mechanic.entity.LikeInObject;
+import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.PersonalData;
 import com.project.mechanic.entity.Settings;
@@ -45,138 +47,141 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		GetAsyncInterface, AsyncInterface {
 
 	DataBaseAdapter dbAdapter;
-	Utility utile1;
+	Utility util;
 	UpdatingImage serviceImage;
 	DialogPersonLikedFroum dia;
-	ImageView img;
+	ImageView img, logout;
 	Ticket tempItem;
-	Users u;
+	Users currentUser;
 	Settings setting;
 	String serverDate;
 	ServerDate date;
-	int userId;
+	// int userId;
 	RelativeLayout phoneLayout, emailLayout, faxLayout, mobileLayout,
-			AddressLayout;
+			AddressLayout, btnedit, birthDayUsers;
 
 	AnadListAdapter anadGridAdapter;
-	RelativeLayout.LayoutParams followParams, paramsLayout;
+	View rootView, header;
+	ExpandableListView Expandview;
+
+	TextView txtaddress, txtcellphone, txtphone, txtemail, txtname, txtfax,
+			txtdate;
+	LinearLayout lin2;
+
+	LinearLayout.LayoutParams lp1;
+	RelativeLayout.LayoutParams editBtnParams, paramsLayout;
 
 	@SuppressLint("NewApi")
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			ViewGroup container, Bundle savedInstanceState) {
 
-		utile1 = new Utility(getActivity());
+		util = new Utility(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
 
-		View rootView = inflater.inflate(R.layout.fragment_personal_data, null);
+		// define rootView and header Layout
+		rootView = inflater.inflate(R.layout.fragment_personal_data, null);
+		header = inflater.inflate(R.layout.fragment_displaypersonalinformation,
+				null);
 
-		final View header = inflater.inflate(
-				R.layout.fragment_displaypersonalinformation, null);
+		// define Views : find View By Id
+		findView();
 
-		phoneLayout = (RelativeLayout) header.findViewById(R.id.laySabet);
-		mobileLayout = (RelativeLayout) header.findViewById(R.id.layHamrah);
-		AddressLayout = (RelativeLayout) header.findViewById(R.id.layaddress);
-		faxLayout = (RelativeLayout) header.findViewById(R.id.layfax);
-		emailLayout = (RelativeLayout) header.findViewById(R.id.layEmail);
+		// get User
+		CurrentUser();
 
-		if (getArguments() != null) {
-			if (getArguments().getInt("0") == 0) {
-				Bundle bundle = this.getArguments();
-				userId = bundle.getInt("0", 0);
+		// set data for expandListView
+		FillExpandListView();
+
+		// set LauoutParams
+		setLayoutParams();
+
+		// setValue for Parameter and variable
+		setValue();
+
+		// on click action
+		onClick();
+
+		util.ShowFooterAgahi(getActivity(), false, 1);
+
+		return rootView;
+	}
+
+	@Override
+	public void processFinish(byte[] output) {
+		// if (output != null) {
+		// Bitmap bmp = BitmapFactory
+		// .decodeByteArray(output, 0, output.length);
+		// img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
+		// dbAdapter.open();
+		// dbAdapter.UpdateUserImage(u.getId(), output, serverDate);
+		// dbAdapter.close();
+		// }
+		// else {
+		// if (u != null && u.getImage() != null) {
+		// Bitmap bmp = BitmapFactory.decodeByteArray(u.getImage(), 0,
+		// u.getImage().length);
+		// img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
+		// }
+		// }
+	}
+
+	@Override
+	public void processFinish(String output) {
+		if (!"".equals(output) && output != null) {
+			serverDate = output;
+			HashMap<String, String> params = new LinkedHashMap<String, String>();
+			params.put("tableName", "Users");
+			params.put("Id", String.valueOf(currentUser.getId()));
+			params.put("fromDate", currentUser.getImageServerDate());
+			Context context = getActivity();
+			if (context != null) {
+
+				serviceImage = new UpdatingImage(context);
+				serviceImage.delegate = this;
+				serviceImage.execute(params);
+
 			}
-
-			if (getArguments().getInt("userId") != 0) {
-				Bundle bundle = this.getArguments();
-				userId = bundle.getInt("userId", 0);
-			}
-		}
-		if (userId != 0) {
-
-			dbAdapter.open();
-			u = dbAdapter.getUserById(userId);
-			dbAdapter.close();
-
-		} else {
-			u = utile1.getCurrentUser();
-		}
-		if (u == null) {
-			// خطا . نباید این اتفاق بیفتد!
-			return header;
 		}
 
-		// date = new ServerDate(getActivity());
-		// date.delegate = this;
-		// date.execute("");
+	}
 
-		TextView txtaddress = (TextView) header.findViewById(R.id.address);
-		TextView txtcellphone = (TextView) header.findViewById(R.id.cellphone);
-		TextView txtphone = (TextView) header.findViewById(R.id.phone);
-		TextView txtemail = (TextView) header.findViewById(R.id.email);
-		TextView txtname = (TextView) header.findViewById(R.id.displayname);
-		TextView txtfax = (TextView) header.findViewById(R.id.fax);
-		img = (ImageView) header.findViewById(R.id.img1);
-		ImageView logout = (ImageView) header.findViewById(R.id.logout);
-		RelativeLayout btnedit = (RelativeLayout) header
-				.findViewById(R.id.btnedit);
-		RelativeLayout birthDayUsers = (RelativeLayout) header
-				.findViewById(R.id.birthdayUsers);
-
-		TextView txtdate = (TextView) header.findViewById(R.id.txtdate);
-
-		final LinearLayout lin2 = (LinearLayout) header.findViewById(R.id.lin2);
-
-		LayoutParams lp1 = new LinearLayout.LayoutParams(lin2.getLayoutParams());
-		lp1.width = utile1.getScreenwidth() / 4;
-		lp1.height = utile1.getScreenwidth() / 4;
-		img.setLayoutParams(lp1);
-		String ImagePath = u.getImagePath();
-		if (ImagePath != null) {
-			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-			img.setImageBitmap(bmp);
-		}
-
-		img.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				String ImagePath = u.getImagePath();
-				String name = u.getName();
-
-				DialogShowImage showImage = new DialogShowImage(getActivity(),
-						ImagePath, name);
-				showImage.show();
-			}
-		});
-		String name = u.getName();
-		String email = u.getEmail();
-		String address = u.getAddress();
-		String phone = u.getPhonenumber();
-		String cellphone = u.getMobailenumber();
-		String fax = u.getFaxnumber();
-		String d = u.getDate();
-
-		txtdate.setText(utile1.getPersianDate(d));
-		txtname.setText(name);
-		txtemail.setText(email);
-		txtcellphone.setText(cellphone);
-		txtphone.setText(phone);
-		txtfax.setText(fax);
-		txtaddress.setText(address);
-
+	public void FillExpandListView() {
 		dbAdapter.open();
-		List<PersonalData> ObejctData = dbAdapter.CustomFieldObjectByUser(u
-				.getId());
-		List<PersonalData> FroumData = dbAdapter.CustomFieldFroumByUser(u
-				.getId());
-		List<PersonalData> PaperData = dbAdapter.CustomFieldPaperByUser(u
-				.getId());
-		List<PersonalData> TicketData = dbAdapter.CustomFieldTicketByUser(u
-				.getId());
+		List<PersonalData> ObejctData = dbAdapter
+				.CustomFieldObjectByUser(currentUser.getId());
+		List<PersonalData> FroumData = dbAdapter
+				.CustomFieldFroumByUser(currentUser.getId());
+		List<PersonalData> PaperData = dbAdapter
+				.CustomFieldPaperByUser(currentUser.getId());
+		List<PersonalData> TicketData = dbAdapter
+				.CustomFieldTicketByUser(currentUser.getId());
+
+		List<Object> myFollowingPages = new ArrayList<Object>();
+
+		List<LikeInObject> likePages = dbAdapter.getAllPageFollowingMe(util
+				.getCurrentUser().getId(), 0);
+
+		for (int i = 0; i < likePages.size(); i++) {
+
+			Object o = dbAdapter.getObjectbyid(likePages.get(i).getPaperId());
+			myFollowingPages.add(o);
+		}
+
+		List<PersonalData> FollowedPageLsit = dbAdapter
+				.CustomFieldObjectFollowByUser(myFollowingPages);
+
 		dbAdapter.close();
 
-		ExpandableListView Expandview = (ExpandableListView) rootView
-				.findViewById(R.id.items);
+		List<Integer> sizeTypeList = new ArrayList<Integer>();
+
+		sizeTypeList.add(ObejctData.size());
+		sizeTypeList.add(TicketData.size());
+		sizeTypeList.add(PaperData.size());
+		sizeTypeList.add(FroumData.size());
+		sizeTypeList.add(FollowedPageLsit.size());
+
+		// Expandview = (ExpandableListView) rootView.findViewById(R.id.items);
 
 		HashMap<String, List<PersonalData>> listDataChild = new HashMap<String, List<PersonalData>>();
 
@@ -190,11 +195,13 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		parentItems.add("مدیریت آگهی ها");
 		parentItems.add("مدیریت مقالات");
 		parentItems.add("مدیریت تالار گفتگو");
+		parentItems.add("مدیریت صفحات دنبال شده");
 
 		listDataChild.put(parentItems.get(0), ObejctData); // Header, Child data
 		listDataChild.put(parentItems.get(1), TicketData);
 		listDataChild.put(parentItems.get(2), PaperData);
 		listDataChild.put(parentItems.get(3), FroumData);
+		listDataChild.put(parentItems.get(4), FollowedPageLsit);
 
 		final SharedPreferences currentTime = getActivity()
 				.getSharedPreferences("time", 0);
@@ -203,30 +210,123 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 
 		final DataPersonalExpandAdapter listAdapter = new DataPersonalExpandAdapter(
 				getActivity(), parentItems, listDataChild, time,
-				DisplayPersonalInformationFragment.this);
+				DisplayPersonalInformationFragment.this, sizeTypeList, true,
+				util.getCurrentUser().getName());
 
 		// setting list adapter
-		Expandview.addHeaderView(header);
 
 		Expandview.setAdapter(listAdapter);
+	}
 
-		followParams = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
+	private void findView() {
 
-		followParams.width = utile1.getScreenwidth() / 3;
-		followParams.setMargins(5, 5, 5, 5);
-		// followParams.addRule(RelativeLayout.ALIGN_LEFT, R.id.lin2);
-		followParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		followParams.addRule(RelativeLayout.BELOW, R.id.lin2);
+		phoneLayout = (RelativeLayout) header.findViewById(R.id.laySabet);
+		mobileLayout = (RelativeLayout) header.findViewById(R.id.layHamrah);
+		AddressLayout = (RelativeLayout) header.findViewById(R.id.layaddress);
+		faxLayout = (RelativeLayout) header.findViewById(R.id.layfax);
+		emailLayout = (RelativeLayout) header.findViewById(R.id.layEmail);
 
-		btnedit.setLayoutParams(followParams);
+		Expandview = (ExpandableListView) rootView.findViewById(R.id.items);
+
+		txtaddress = (TextView) header.findViewById(R.id.address);
+		txtcellphone = (TextView) header.findViewById(R.id.cellphone);
+		txtphone = (TextView) header.findViewById(R.id.phone);
+		txtemail = (TextView) header.findViewById(R.id.email);
+		txtname = (TextView) header.findViewById(R.id.displayname);
+		txtfax = (TextView) header.findViewById(R.id.fax);
+
+		img = (ImageView) header.findViewById(R.id.img1);
+		logout = (ImageView) header.findViewById(R.id.logout);
+
+		btnedit = (RelativeLayout) header.findViewById(R.id.btnedit);
+		birthDayUsers = (RelativeLayout) header
+				.findViewById(R.id.birthdayUsers);
+
+		txtdate = (TextView) header.findViewById(R.id.txtdate);
+
+		lin2 = (LinearLayout) header.findViewById(R.id.lin2);
+		Expandview.addHeaderView(header);
+
+	}
+
+	private Users CurrentUser() {
+
+		dbAdapter.open();
+		currentUser = dbAdapter.getUserById(util.getCurrentUser().getId());
+		dbAdapter.close();
+
+		return currentUser;
+
+	}
+
+	private void setLayoutParams() {
+
+		// imageProfile LayoutParams
+
+		lp1 = new LinearLayout.LayoutParams(lin2.getLayoutParams());
+		lp1.width = util.getScreenwidth() / 4;
+		lp1.height = util.getScreenwidth() / 4;
+		img.setLayoutParams(lp1);
+
+		// Edit button LayoutParams
+
+		editBtnParams = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
+		editBtnParams.width = util.getScreenwidth() / 3;
+		editBtnParams.setMargins(5, 5, 5, 5);
+		editBtnParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		editBtnParams.addRule(RelativeLayout.BELOW, R.id.lin2);
+		btnedit.setLayoutParams(editBtnParams);
+
+		// birthDayUser Button LayoutParams
 
 		paramsLayout = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
-
-		paramsLayout.width = utile1.getScreenwidth() / 3;
+		paramsLayout.width = util.getScreenwidth() / 3;
 		paramsLayout.setMargins(5, 0, 5, 5);
 		paramsLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		paramsLayout.addRule(RelativeLayout.BELOW, R.id.btnedit);
 		birthDayUsers.setLayoutParams(paramsLayout);
+
+	}
+
+	private void setValue() {
+
+		String ImagePath = currentUser.getImagePath();
+		if (ImagePath != null) {
+			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
+			img.setImageBitmap(bmp);
+		}
+
+		String name = currentUser.getName();
+		String email = currentUser.getEmail();
+		String address = currentUser.getAddress();
+		String phone = currentUser.getPhonenumber();
+		String cellphone = currentUser.getMobailenumber();
+		String fax = currentUser.getFaxnumber();
+		String date = currentUser.getDate();
+
+		txtname.setText(name);
+		txtemail.setText(email);
+		txtaddress.setText(address);
+		txtphone.setText(phone);
+		txtcellphone.setText(cellphone);
+		txtfax.setText(fax);
+		// txtdate.setText(utile1.getPersianDate(date));
+
+	}
+
+	private void onClick() {
+		img.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				String ImagePath = currentUser.getImagePath();
+				String name = currentUser.getName();
+
+				DialogShowImage showImage = new DialogShowImage(getActivity(),
+						ImagePath, name);
+				showImage.show();
+			}
+		});
 
 		logout.setOnClickListener(new OnClickListener() {
 
@@ -299,48 +399,6 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 
 			}
 		});
-
-		utile1.ShowFooterAgahi(getActivity(), false, 1);
-
-		return rootView;
-	}
-
-	@Override
-	public void processFinish(byte[] output) {
-		// if (output != null) {
-		// Bitmap bmp = BitmapFactory
-		// .decodeByteArray(output, 0, output.length);
-		// img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
-		// dbAdapter.open();
-		// dbAdapter.UpdateUserImage(u.getId(), output, serverDate);
-		// dbAdapter.close();
-		// }
-		// else {
-		// if (u != null && u.getImage() != null) {
-		// Bitmap bmp = BitmapFactory.decodeByteArray(u.getImage(), 0,
-		// u.getImage().length);
-		// img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
-		// }
-		// }
-	}
-
-	@Override
-	public void processFinish(String output) {
-		if (!"".equals(output) && output != null) {
-			serverDate = output;
-			HashMap<String, String> params = new LinkedHashMap<String, String>();
-			params.put("tableName", "Users");
-			params.put("Id", String.valueOf(u.getId()));
-			params.put("fromDate", u.getImageServerDate());
-			Context context = getActivity();
-			if (context != null) {
-
-				serviceImage = new UpdatingImage(context);
-				serviceImage.delegate = this;
-				serviceImage.execute(params);
-
-			}
-		}
 
 	}
 }

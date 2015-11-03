@@ -361,11 +361,12 @@ public class MainActivity extends FragmentActivity {
 
 			// personal page 1
 			if (util.getCurrentUser() != null) {
+				
 				fragment = new DisplayPersonalInformationFragment();
 				fragmentManager = getSupportFragmentManager();
-				Bundle bundle = new Bundle();
-				bundle.putInt("0", 0);
-				fragment.setArguments(bundle);
+//				Bundle bundle = new Bundle();
+//				bundle.putInt("0", 0);
+//				fragment.setArguments(bundle);
 				fragmentManager.beginTransaction()
 						.replace(R.id.content_frame, fragment).commit();
 

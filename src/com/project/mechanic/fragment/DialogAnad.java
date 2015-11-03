@@ -135,11 +135,27 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 
-				serverDate = new ServerDate(context);
-				serverDate.delegate = DialogAnad.this;
-				serverDate.execute("");
-				ringProgressDialog = ProgressDialog.show(context, null,
-						"لطفا منتظر بمانید.");
+				if (!"".equals(Day.getText().toString())) {
+					roz = Integer.parseInt(Day.getText().toString());
+				}
+
+				if ("".equals(dialog_anad_et1.getText().toString())
+						|| "".equals(dialog_anad_et2.getText().toString())
+						|| roz <= 0) {
+
+					Toast.makeText(
+							context,
+							" عنوان آگهی .شرح آگهی.اعتبار آگهی نمی تواند خالی باشد",
+							Toast.LENGTH_LONG).show();
+
+				} else {
+
+					serverDate = new ServerDate(context);
+					serverDate.delegate = DialogAnad.this;
+					serverDate.execute("");
+					ringProgressDialog = ProgressDialog.show(context, null,
+							"لطفا منتظر بمانید.");
+				}
 			}
 		});
 		dialog_img1.setOnClickListener(new android.view.View.OnClickListener() {
@@ -175,7 +191,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 	public void processFinish(String output) {
 		String title = dialog_anad_et1.getText().toString();
 		String desc = dialog_anad_et2.getText().toString();
-		int roz = Integer.parseInt(Day.getText().toString());
+		// Integer.parseInt(Day.getText().toString());
 		if (!"".equals(Day.getText().toString())) {
 			roz = Integer.parseInt(Day.getText().toString());
 		}

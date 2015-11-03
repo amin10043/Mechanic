@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/report_item_click"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="#b0c0d8"
+            android:gravity="right"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="گزارش تخلف"
+                android:textColor="@color/transparent" />
+
+            <ImageView
+                android:id="@+id/delete_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_dangrous" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical" >
+
+            <RadioGroup
+                android:id="@+id/rb1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_marginTop="5dp"
+                android:visibility="visible" >
+
+                <RadioButton
+                    android:id="@+id/r1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:button="@null"
+                    android:drawableRight="@android:drawable/btn_radio"
+                    android:gravity="right"
+                    android:text="محتوای آگهی نا مناسب است"
+                    android:textColor="@color/transparent" />
+
+                <RadioButton
+                    android:id="@+id/r2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:button="@null"
+                    android:drawableRight="@android:drawable/btn_radio"
+                    android:gravity="right"
+                    android:text="اطلاعات تماس آگهی نادرست است"
+                    android:textColor="@color/transparent" />
+
+                <RadioButton
+                    android:id="@+id/r3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:button="@null"
+                    android:drawableRight="@android:drawable/btn_radio"
+                    android:gravity="right"
+                    android:text="اطلاعات آگهی گمراه کننده و یا دروغ است"
+                    android:textColor="@color/transparent" />
+
+                <RadioButton
+                    android:id="@+id/r4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:button="@null"
+                    android:drawableRight="@android:drawable/btn_radio"
+                    android:gravity="right"
+                    android:text="آگهی اسپم است و چندین بار پست شده است"
+                    android:textColor="@color/transparent" />
+
+                <RadioButton
+                    android:id="@+id/r5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:button="@null"
+                    android:drawableRight="@android:drawable/btn_radio"
+                    android:gravity="right"
+                    android:text="اگهی در دسته بندی نا مربوط قرار گرفته است"
+                    android:textColor="@color/transparent" />
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/descriptionEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="توضیح درمورد گزارش"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/btn_report"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/headershape"
+                    android:text="ارسال"
+                    android:textSize="@dimen/txtsize10"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/headershape"
+                    android:text="انصراف"
+                    android:textSize="@dimen/txtsize10"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/report_item"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_gravity="left"
+        android:layout_margin="10dp"
+        android:text="ارسال"
+        android:visibility="visible" />
+
+</LinearLayout>

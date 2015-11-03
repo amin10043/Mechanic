@@ -140,7 +140,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:visibility="gone" >
+                    android:visibility="visible" >
 
                     <RadioButton
                         android:id="@+id/r1"
@@ -230,7 +230,7 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-        
+
         <Button
             android:id="@+id/report_item"
             android:layout_width="80dp"
@@ -238,7 +238,7 @@
             android:layout_gravity="left"
             android:layout_margin="10dp"
             android:text="ارسال"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <RelativeLayout
             android:id="@+id/delete_item"
@@ -267,8 +267,6 @@
                 android:text="حذف"
                 android:textColor="@color/transparent" />
         </RelativeLayout>
-
-        
     </LinearLayout>
 
 </ScrollView>

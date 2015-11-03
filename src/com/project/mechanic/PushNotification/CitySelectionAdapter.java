@@ -9,6 +9,7 @@ import com.project.mechanic.entity.City;
 import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.row_items.RowMain;
+import com.project.mechanic.utility.Utility;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -34,6 +35,7 @@ public class CitySelectionAdapter extends ArrayAdapter<City> {
 	int lastPosition = 0;
 	DataBaseAdapter adapter;
 	String type;
+	Utility util;
 
 	public CitySelectionAdapter(Context context, int resource,
 			List<City> objact, String type) {
@@ -43,6 +45,7 @@ public class CitySelectionAdapter extends ArrayAdapter<City> {
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
 		this.type = type;
+		util = new Utility(context);
 	}
 
 	@SuppressLint("ViewHolder")
@@ -65,9 +68,8 @@ public class CitySelectionAdapter extends ArrayAdapter<City> {
 		final City city = list.get(position);
 
 		txt1.setText(city.getName());
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BROYA.TTF");
-		txt1.setTypeface(typeFace);
+
+		txt1.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
 

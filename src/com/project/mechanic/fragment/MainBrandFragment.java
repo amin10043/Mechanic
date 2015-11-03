@@ -97,15 +97,15 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 
 		// start code get image profile from server
 
-		if (userItemId <mylist.size() )
+		if (userItemId < mylist.size())
 
 			obj = adapter.getObjectbyid(mylist.get(userItemId).getId());
-
-		if (getActivity() != null) {
-			date = new ServerDate(getActivity());
-			date.delegate = MainBrandFragment.this;
-			date.execute("");
-		}
+		if (mylist.size() > 0)
+			if (getActivity() != null) {
+				date = new ServerDate(getActivity());
+				date.delegate = MainBrandFragment.this;
+				date.execute("");
+			}
 
 		// end code for get image from server
 		setting = adapter.getSettings();

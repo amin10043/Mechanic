@@ -116,7 +116,7 @@ public class DialogAdminsPage extends Dialog implements CommInterface,
 			@Override
 			public void onClick(View arg0) {
 				phoneInput = in.getText().toString();
-
+				
 				if (!"".equals(phoneInput)) {
 					// /// save date
 
@@ -175,7 +175,7 @@ public class DialogAdminsPage extends Dialog implements CommInterface,
 			Toast.makeText(
 					context,
 					"شماره مورد نظر در نرم افزار ثبت نام نکرده است و یا ممکن است شماره را اشتباه وارد کرده باشید ",
-					Toast.LENGTH_SHORT).setDuration(5000);
+					Toast.LENGTH_LONG).show();
 		} else {
 			adapter.open();
 			if (adapter.countSubAdminPage(ObjectId) < 4) {

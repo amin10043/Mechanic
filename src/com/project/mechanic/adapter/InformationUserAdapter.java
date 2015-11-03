@@ -45,7 +45,7 @@ import com.project.mechanic.fragment.ShowAdFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
-public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
+public class InformationUserAdapter extends BaseExpandableListAdapter {
 	Context context;
 	ArrayList<String> parentItems;
 	HashMap<String, List<PersonalData>> listDataChild;
@@ -58,7 +58,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 	boolean isShowSettingBtn;
 	String name;
 
-	public DataPersonalExpandAdapter(Context context,
+	public InformationUserAdapter(Context context,
 			ArrayList<String> parentItems,
 			HashMap<String, List<PersonalData>> listDataChild,
 			String todayDate, Fragment fr, List<Integer> sizeType,
@@ -123,7 +123,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 		LayoutInflater infalInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		if (("مدیریت صفحات").equals(parentItems.get(groupPosition))) {
+		if (("صفحات").equals(parentItems.get(groupPosition))) {
 			convertView = infalInflater.inflate(R.layout.row_personal_object,
 					null);
 
@@ -250,7 +250,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				}
 			});
 
-		} else if (("مدیریت آگهی ها").equals(parentItems.get(groupPosition))) {
+		} else if (("آگهی ها").equals(parentItems.get(groupPosition))) {
 			convertView = infalInflater.inflate(R.layout.row_anad_personal,
 					null);
 
@@ -304,31 +304,31 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				img2.setLayoutParams(params);
 			}
 			String commitDate = pd.getDateTicket();
-			int thisDay = 0;
-			int TicketDay = Integer.valueOf(commitDate.substring(0, 8));
-			if (todayDate != null && !todayDate.equals(""))
-				thisDay = Integer.valueOf(todayDate.substring(0, 8));
-			LinearLayout TicketBackground = (LinearLayout) convertView
-					.findViewById(R.id.backgroundTicket);
+//			int thisDay = 0;
+//			int TicketDay = Integer.valueOf(commitDate.substring(0, 8));
+//			if (todayDate != null && !todayDate.equals(""))
+//				thisDay = Integer.valueOf(todayDate.substring(0, 8));
+//			LinearLayout TicketBackground = (LinearLayout) convertView
+//					.findViewById(R.id.backgroundTicket);
 
-			if (thisDay <= TicketDay + pd.getDayTicket()) {
-				TicketBackground.setBackgroundColor(Color.WHITE);
+//			if (thisDay <= TicketDay + pd.getDayTicket()) {
+//				TicketBackground.setBackgroundColor(Color.WHITE);
 				if (pd.getSeenBefore() > 0) {
 					txtName.setTextColor(Color.GRAY);
 					txtDesc.setTextColor(Color.GRAY);
 					txtdate.setTextColor(Color.GRAY);
 				}
-
-			} else {
-				TicketBackground.setBackgroundResource(R.color.lightred);
-
-				if (pd.getSeenBefore() > 0) {
-					txtName.setTextColor(Color.WHITE);
-					txtDesc.setTextColor(Color.WHITE);
-					txtdate.setTextColor(Color.WHITE);
-
-				}
-			}
+//
+//			} else {
+//				TicketBackground.setBackgroundResource(R.color.lightred);
+//
+//				if (pd.getSeenBefore() > 0) {
+//					txtName.setTextColor(Color.WHITE);
+//					txtDesc.setTextColor(Color.WHITE);
+//					txtdate.setTextColor(Color.WHITE);
+//
+//				}
+//			}
 
 			txtName.setTypeface(util.SetFontCasablanca());
 			txtDesc.setTypeface(util.SetFontCasablanca());
@@ -398,7 +398,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 			});
 
 			// update your views here
-		} else if (("مدیریت مقالات").equals(parentItems.get(groupPosition))) {
+		} else if (("مقالات").equals(parentItems.get(groupPosition))) {
 			convertView = infalInflater.inflate(R.layout.row_personal_froum,
 					null);
 
@@ -515,7 +515,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				}
 			});
 
-		} else if (("مدیریت تالار گفتگو")
+		} else if (("تالار گفتگو")
 				.equals(parentItems.get(groupPosition))) {
 			convertView = infalInflater.inflate(R.layout.row_personal_froum,
 					null);

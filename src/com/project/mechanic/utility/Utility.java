@@ -21,6 +21,8 @@ import android.app.ActivityManager.RunningTaskInfo;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,26 +38,38 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.PushNotification.DomainSend;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.FroumWithoutComment;
 import com.project.mechanic.fragment.PersianDate;
+import com.project.mechanic.fragment.ReportAbuseFragment;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
@@ -968,9 +982,12 @@ public class Utility implements AsyncInterface {
 
 			}
 			case 8: {
-				la.setVisibility(View.VISIBLE);
+				if (getCurrentUser() != null) {
+					la.setVisibility(View.VISIBLE);
 
-				vf.setVisibility(View.GONE);
+					vf.setVisibility(View.GONE);
+				} else
+					vf.setVisibility(View.GONE);
 
 				break;
 
@@ -1050,12 +1067,116 @@ public class Utility implements AsyncInterface {
 
 		arrayImage[0] = (ImageView) activity.findViewById(R.id.sendComment);
 		arrayImage[1] = (ImageView) activity.findViewById(R.id.pickPicture);
-//		arrayImage[2] = (ImageView) activity.findViewById(R.id.showPicture);
+		// arrayImage[2] = (ImageView) activity.findViewById(R.id.showPicture);
 
 		arrayImage[1].setVisibility(View.VISIBLE);
-//		arrayImage[2].setVisibility(View.VISIBLE);
+		// arrayImage[2].setVisibility(View.VISIBLE);
 
 		return arrayImage;
 
 	}
+
+	public PopupMenu ShowPopupMenu(List<String> nameItems, View v) {
+		int index = 0;
+
+		final PopupMenu popupMenu = new PopupMenu(context, v);
+
+		for (int i = 0; i < nameItems.size(); i++) {
+			String item = nameItems.get(i);
+			popupMenu.getMenu().add(Menu.NONE, i, Menu.NONE, item);
+			index = i;
+
+		}
+
+		v.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				popupMenu.show();
+			}
+		});
+
+		// popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+		//
+		// @Override
+		// public boolean onMenuItemClick(MenuItem item) {
+		//
+		// // if (item.getItemId() == 0) {
+		//
+		// Toast.makeText(context, "t", 0).show();
+		// // }
+		//
+		// return false;
+		// }
+		// });
+
+		return popupMenu;
+
+	}
+
+	public void sendMessage(String source) {
+
+		DomainSend fr = new DomainSend(source);
+
+		FragmentTransaction trans = ((MainActivity) context)
+				.getSupportFragmentManager().beginTransaction();
+
+		trans.replace(R.id.content_frame, fr);
+		trans.addToBackStack(null);
+		trans.commit();
+
+	}
+
+	public void CopyToClipboard(String value) {
+
+		ClipboardManager clipMan = (ClipboardManager) context
+				.getSystemService(Context.CLIPBOARD_SERVICE);
+		ClipData cData = ClipData.newPlainText("text", value);
+		clipMan.setPrimaryClip(cData);
+		Toast.makeText(context, "کپی شد", 0).show();
+
+	}
+
+	public void reportAbuse(int userIdSender, int source, int itemId,
+			String content , int backId) {
+
+		if (source > 4) {
+			FragmentTransaction trans = ((MainActivity) context)
+					.getSupportFragmentManager().beginTransaction();
+			ReportAbuseFragment fragment = new ReportAbuseFragment(backId);
+			trans.setCustomAnimations(R.anim.pull_in_left,
+					R.anim.push_out_right);
+
+			Bundle bundle = new Bundle();
+
+			bundle.putInt("userIdSender", userIdSender);
+			bundle.putInt("source", source);
+			bundle.putInt("itemId", itemId);
+			bundle.putString("content", content);
+			fragment.setArguments(bundle);
+
+			trans.replace(R.id.content_frame, fragment);
+			trans.commit();
+		} else {
+			FragmentTransaction trans = ((MainActivity) context)
+					.getSupportFragmentManager().beginTransaction();
+			ReportAbuseFragment fragment = new ReportAbuseFragment();
+			trans.setCustomAnimations(R.anim.pull_in_left,
+					R.anim.push_out_right);
+
+			Bundle bundle = new Bundle();
+
+			bundle.putInt("userIdSender", userIdSender);
+			bundle.putInt("source", source);
+			bundle.putInt("itemId", itemId);
+			bundle.putString("content", content);
+			fragment.setArguments(bundle);
+
+			trans.replace(R.id.content_frame, fragment);
+			trans.commit();
+		}
+
+	}
+
 }

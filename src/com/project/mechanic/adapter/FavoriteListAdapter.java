@@ -12,15 +12,20 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -29,6 +34,7 @@ import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.PersonalData;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
+import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.fragment.PaperFragment;
@@ -44,10 +50,11 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 	String todayDate;
 	DataBaseAdapter adapter;
 	Fragment fr;
+	List<Integer> sizeTypeItem;
 
 	public FavoriteListAdapter(Context context, ArrayList<String> parentItems,
 			HashMap<String, List<PersonalData>> listDataChild,
-			String todayDate, Fragment fr) {
+			String todayDate, Fragment fr, List<Integer> sizeType) {
 
 		this.context = context;
 		this.parentItems = parentItems;
@@ -56,6 +63,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 		this.todayDate = todayDate;
 		adapter = new DataBaseAdapter(context);
 		this.fr = fr;
+		this.sizeTypeItem = sizeType;
 	}
 
 	@Override
@@ -141,6 +149,9 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 			ImageView profileIco = (ImageView) convertView
 					.findViewById(R.id.icon_object);
 
+			ImageView settings = (ImageView) convertView
+					.findViewById(R.id.reportImage);
+
 			RelativeLayout rl = (RelativeLayout) convertView
 					.findViewById(R.id.main_icon_reply);
 			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
@@ -178,6 +189,54 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 					fragment.setArguments(bundle);
 					trans.addToBackStack(null);
 					trans.commit();
+				}
+			});
+
+			settings.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					// String[] items = { "حذف" };
+
+					List<String> items = new ArrayList<String>();
+
+					items.clear();
+					items.add("حذف");
+					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
+
+					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+						@Override
+						public boolean onMenuItemClick(MenuItem item) {
+
+							if (item.getItemId() == 0) {
+
+								adapter.open();
+								if (adapter.IsUserFavoriteItem(util
+										.getCurrentUser().getId(), pd
+										.getObjectId(), 4)) {
+
+									adapter.deletebyIdTicket(pd.getObjectId());
+									notifyDataSetChanged();
+
+									Toast.makeText(context,
+											" از لیست علاقه مندی ها حذف شد ", 0)
+											.show();
+
+									((Favorite_Fragment) fr).updateView();
+
+								}
+							}
+
+							return false;
+						}
+					};
+
+					popupMenu.setOnMenuItemClickListener(menuitem);
+
+					adapter.close();
+
 				}
 			});
 
@@ -233,10 +292,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 				img2.setImageResource(R.drawable.no_img_profile);
 				img2.setLayoutParams(params);
 			}
-			
-			
 
-			
 			txtName.setTypeface(util.SetFontCasablanca());
 			txtDesc.setTypeface(util.SetFontCasablanca());
 
@@ -263,6 +319,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 					adapter.close();
 
 				}
+
 			});
 
 			reaport.setOnClickListener(new OnClickListener() {
@@ -270,22 +327,45 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 				@Override
 				public void onClick(View v) {
 
-					// DialogLongClick dia = new DialogLongClick(context, 3, u,
-					// id, fr, t);
-					// Toast.makeText(context, id + "", 0).show();
-					//
-					// WindowManager.LayoutParams lp = new
-					// WindowManager.LayoutParams();
-					// lp.copyFrom(dia.getWindow().getAttributes());
-					// lp.width = (int) (util.getScreenwidth() / 1.5);
-					// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-					// ;
-					// dia.show();
-					//
-					// dia.getWindow().setAttributes(lp);
-					// dia.getWindow().setBackgroundDrawable(
-					// new ColorDrawable(
-					// android.graphics.Color.TRANSPARENT));
+					// String[] items = { "حذف" };
+					List<String> items = new ArrayList<String>();
+
+					items.clear();
+					items.add("حذف");
+					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
+
+					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+						@Override
+						public boolean onMenuItemClick(MenuItem item) {
+
+							if (item.getItemId() == 0) {
+
+								adapter.open();
+								if (adapter.IsUserFavoriteItem(util
+										.getCurrentUser().getId(), pd
+										.getTicketId(), 3)) {
+
+									adapter.deletebyIdTicket(pd.getTicketId());
+									notifyDataSetChanged();
+
+									Toast.makeText(context,
+											" از لیست علاقه مندی ها حذف شد ", 0)
+											.show();
+
+									((Favorite_Fragment) fr).updateView();
+
+								}
+							}
+
+							return false;
+						}
+					};
+
+					popupMenu.setOnMenuItemClickListener(menuitem);
+
+					adapter.close();
+
 				}
 			});
 
@@ -340,9 +420,11 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 			String ImagePath = util.getCurrentUser().getImagePath();
 			if (ImagePath != null) {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
-
+				if (bmp != null)
+					iconProile
+							.setImageBitmap(/* Utility.getRoundedCornerBitmap( */bmp/*
+																					 * )
+																					 */);
 				iconProile.setLayoutParams(lp);
 			}
 
@@ -368,6 +450,53 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack(null);
 					trans.commit();
+				}
+			});
+
+			report.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					// String[] items = { "حذف" };
+					List<String> items = new ArrayList<String>();
+
+					items.clear();
+					items.add("حذف");
+					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
+
+					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+						@Override
+						public boolean onMenuItemClick(MenuItem item) {
+
+							if (item.getItemId() == 0) {
+
+								adapter.open();
+								if (adapter.IsUserFavoriteItem(util
+										.getCurrentUser().getId(), pd
+										.getPaperId(), 2)) {
+
+									adapter.deletebyIdTicket(pd.getPaperId());
+									notifyDataSetChanged();
+
+									Toast.makeText(context,
+											" از لیست علاقه مندی ها حذف شد ", 0)
+											.show();
+
+									((Favorite_Fragment) fr).updateView();
+
+								}
+							}
+
+							return false;
+						}
+					};
+
+					popupMenu.setOnMenuItemClickListener(menuitem);
+
+					adapter.close();
+
 				}
 			});
 
@@ -421,8 +550,11 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 			String ImagePath = util.getCurrentUser().getImagePath();
 			if (ImagePath != null) {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
+				iconProile
+						.setImageBitmap(/* Utility.getRoundedCornerBitmap( */bmp/*
+																				 * ,
+																				 * 50
+																				 */);
 
 				iconProile.setLayoutParams(lp);
 			}
@@ -449,6 +581,52 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack(null);
 					trans.commit();
+				}
+			});
+			report.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					// String[] items = { "حذف" };
+					List<String> items = new ArrayList<String>();
+
+					items.clear();
+					items.add("حذف");
+					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
+
+					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+						@Override
+						public boolean onMenuItemClick(MenuItem item) {
+
+							if (item.getItemId() == 0) {
+
+								adapter.open();
+								if (adapter.IsUserFavoriteItem(util
+										.getCurrentUser().getId(), pd
+										.getFroumId(), 1)) {
+
+									adapter.deletebyIdTicket(pd.getFroumId());
+									notifyDataSetChanged();
+
+									Toast.makeText(context,
+											" از لیست علاقه مندی ها حذف شد ", 0)
+											.show();
+
+									((Favorite_Fragment) fr).updateView();
+
+								}
+							}
+
+							return false;
+						}
+					};
+
+					popupMenu.setOnMenuItemClickListener(menuitem);
+
+					adapter.close();
+
 				}
 			});
 
@@ -490,6 +668,27 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 				.findViewById(R.id.row_berand_txt);
 		titleGroup.setText(parentItems.get(groupPosition) + " "
 				+ util.getCurrentUser().getName());
+		final ExpandableListView mExpandableListView = (ExpandableListView) parent;
+
+		convertView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if (sizeTypeItem.get(groupPosition) == 0) {
+					Toast.makeText(context, "عنوانی ثبت نشده است", 0).show();
+				} else {
+
+					if (isExpanded) {
+						mExpandableListView.collapseGroup(groupPosition);
+						notifyDataSetChanged();
+
+					} else
+						mExpandableListView.expandGroup(groupPosition);
+
+					notifyDataSetChanged();
+				}
+			}
+		});
 
 		return convertView;
 	}

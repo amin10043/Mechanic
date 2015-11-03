@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -22,9 +23,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -35,13 +38,16 @@ import com.project.mechanic.entity.LikeInPaper;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class PaperFragment extends Fragment implements AsyncInterface {
+public class PaperFragment extends Fragment implements AsyncInterface,
+		CommInterface {
 
 	DataBaseAdapter adapter;
 	int paperID;
@@ -70,12 +76,13 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 	String serverDate = "";
 	ServerDate date;
 	ProgressDialog ringProgressDialog;
+	List<String> menuItems;
 
 	Saving saving;
 	Deleting deleting;
 	Map<String, String> params;
 	boolean LikeOrComment; // like == true & comment == false
-
+	Paper p;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -122,7 +129,7 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 
 		mylist = adapter.getCommentInPaperbyPaperid(paperID);
 
-		final Paper p = adapter.getPaperItembyid(paperID);
+		p = adapter.getPaperItembyid(paperID);
 		Users u = adapter.getUserbyid(p.getUserId());
 		// lstNews.addHeaderView(header);
 		// lstNews.addHeaderView(header);
@@ -313,27 +320,101 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 			@Override
 			public void onClick(View v) {
 
-				if (CurrentUser == null) {
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", 0)
-							.show();
+				if (util.getCurrentUser() != null) {
+					if (util.getCurrentUser().getId() == p.getUserId()) {
+
+						menuItems = new ArrayList<String>();
+						menuItems.clear();
+						menuItems.add("ارسال پیام");
+						menuItems.add("کپی");
+						menuItems.add("حذف");
+
+					} else {
+						menuItems = new ArrayList<String>();
+
+						menuItems.clear();
+						menuItems.add("ارسال پیام");
+						menuItems.add("افزودن به علاقه مندی ها");
+						menuItems.add("کپی");
+						menuItems.add("گزارش تخلف");
+					}
 				} else {
+					menuItems = new ArrayList<String>();
 
-					DialogLongClick dia = new DialogLongClick(getActivity(), 2,
-							p.getUserId(), p.getId(), PaperFragment.this, p
-									.getContext());
-					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-					lp.copyFrom(dia.getWindow().getAttributes());
-					lp.width = (int) (util.getScreenwidth() / 1.5);
-					lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-					;
-					dia.show();
-
-					dia.getWindow().setAttributes(lp);
-					dia.getWindow().setBackgroundDrawable(
-							new ColorDrawable(
-									android.graphics.Color.TRANSPARENT));
+					menuItems.clear();
+					menuItems.add("کپی");
 				}
+
+				final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
+
+				OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+
+						if (item.getTitle().equals("ارسال پیام")) {
+
+							util.sendMessage("Paper");
+
+						}
+
+						if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
+							adapter.open();
+							addToFavorite(util.getCurrentUser().getId(), 2,
+									p.getId());
+							adapter.close();
+						}
+						if (item.getTitle().equals("کپی")) {
+
+							util.CopyToClipboard(p.getContext());
+
+						}
+						if (item.getTitle().equals("گزارش تخلف")) {
+
+							util.reportAbuse(p.getUserId(), 2, p.getId(),
+									p.getContext(),0);
+
+						}
+						if (item.getTitle().equals("حذف")) {
+							if (util.getCurrentUser() != null
+									&& util.getCurrentUser().getId() == p
+											.getUserId())
+								deleteItems(p.getId());
+							else {
+
+								Toast.makeText(getActivity(), "", 0).show();
+							}
+						}
+
+						return false;
+					}
+				};
+
+				popupMenu.setOnMenuItemClickListener(menuitem);
+
+				// if (CurrentUser == null) {
+				// Toast.makeText(getActivity(), "ابتدا باید وارد شوید", 0)
+				// .show();
+				// } else {
+				//
+				// DialogLongClick dia = new DialogLongClick(getActivity(), 2,
+				// p.getUserId(), p.getId(), PaperFragment.this, p
+				// .getContext());
+				// WindowManager.LayoutParams lp = new
+				// WindowManager.LayoutParams();
+				// lp.copyFrom(dia.getWindow().getAttributes());
+				// lp.width = (int) (util.getScreenwidth() / 1.5);
+				// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+				// ;
+				// dia.show();
+				//
+				// dia.getWindow().setAttributes(lp);
+				// dia.getWindow().setBackgroundDrawable(
+				// new ColorDrawable(
+				// android.graphics.Color.TRANSPARENT));
+				// }
 			}
+
 		});
 
 		ImageView send = util.ShowFooterAgahi(getActivity(), true, 8);
@@ -386,7 +467,6 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 
 		lstNews.setAdapter(PaperListadapter);
 		lstNews.setSelection(PaperListadapter.getCount());
-		Toast.makeText(getActivity(), subList.size() - 1 + "", 0).show();
 
 		adapter.close();
 	}
@@ -433,7 +513,7 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 						util.inputComment(getActivity()), paperID,
 						CurrentUser.getId(), serverDate);
 				adapter.close();
-				
+
 				util.ToEmptyComment(getActivity());
 
 				updateView();
@@ -591,4 +671,73 @@ public class PaperFragment extends Fragment implements AsyncInterface {
 			}
 		}
 	}
+
+	public void addToFavorite(int currentUserId, int source, int ItemId) {
+
+		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
+			Toast.makeText(getActivity(),
+					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+		} else {
+			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
+			Toast.makeText(getActivity(), "به لیست علاقه مندی ها اضافه شد ", 0)
+					.show();
+		}
+	}
+
+	public void deleteItems(int itemId) {
+
+		ServiceComm service = new ServiceComm(getActivity());
+		service.delegate = PaperFragment.this;
+		Map<String, String> items = new LinkedHashMap<String, String>();
+		items.put("DeletingRecord", "DeletingRecord");
+
+		items.put("tableName", "Paper");
+		items.put("Id", String.valueOf(itemId));
+
+		service.execute(items);
+
+		ringProgressDialog = ProgressDialog.show(getActivity(), "",
+				"لطفا منتظر بمانید...", true);
+
+		ringProgressDialog.setCancelable(true);
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+
+					Thread.sleep(10000);
+
+				} catch (Exception e) {
+
+				}
+			}
+		}).start();
+
+	}
+
+	@Override
+	public void CommProcessFinish(String output) {
+		
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
+		adapter.open();
+
+		adapter.deletePaperTitle(p.getId());
+		adapter.deleteCommentPaper(p.getId());
+
+		adapter.close();
+
+		TitlepaperFragment fr = new TitlepaperFragment();
+
+		FragmentTransaction trans = ((MainActivity) getActivity())
+				.getSupportFragmentManager().beginTransaction();
+
+		trans.replace(R.id.content_frame, fr);
+		trans.addToBackStack(null);
+		trans.commit();		
+	}
+
 }

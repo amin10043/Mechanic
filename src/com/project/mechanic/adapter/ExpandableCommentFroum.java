@@ -15,6 +15,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -24,26 +25,32 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInFroum;
+import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
-		AsyncInterface {
+		AsyncInterface/* , CommInterface */{
 
 	Context context;
 	private Map<CommentInFroum, List<CommentInFroum>> mapCollection;
@@ -65,6 +72,10 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 	ServerDate date;
 	CommentInFroum reply;
 	CommentInFroum comment;
+	List<String> menuItems;
+	int itemId, userIdsender;;
+	String description;
+	boolean IsDeleteing;
 
 	public ExpandableCommentFroum(Context context,
 			ArrayList<CommentInFroum> laptops,
@@ -151,38 +162,112 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 		reportReply.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
-
-				int i = 0;
-				int u = 0;
-				String t = "";
-				// برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
-				// شود
+			public void onClick(View v) {
 
 				int d = (int) getGroupId(groupPosition);
-				CommentInFroum w = (CommentInFroum) getChild(d, childPosition);
+				final CommentInFroum w = (CommentInFroum) getChild(d,
+						childPosition);
 				if (w != null) {
-					i = w.getId();
-					u = w.getUserid();
-					t = w.getDesk();
+					itemId = w.getId();
+					userIdsender = w.getUserid();
+					description = w.getDesk();
+
 				}
-				Toast.makeText(context, "id = " + i + "Userid = " + u, 0)
-						.show();
-				// //////////////////////////
 
-				DialogLongClick dia = new DialogLongClick(context, 5, u, i, f,
-						t);
+				if (util.getCurrentUser() != null) {
 
-				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-				lp.copyFrom(dia.getWindow().getAttributes());
-				lp.width = (int) (util.getScreenwidth() / 1.5);
-				lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-				;
-				dia.show();
+					if (util.getCurrentUser().getId() == userIdsender) {
 
-				dia.getWindow().setAttributes(lp);
-				dia.getWindow().setBackgroundDrawable(
-						new ColorDrawable(android.graphics.Color.TRANSPARENT));
+						menuItems = new ArrayList<String>();
+						menuItems.clear();
+						menuItems.add("کپی");
+						menuItems.add("حذف");
+
+					} else {
+						menuItems = new ArrayList<String>();
+
+						menuItems.clear();
+						menuItems.add("کپی");
+						menuItems.add("گزارش تخلف");
+					}
+
+				} else {
+					menuItems = new ArrayList<String>();
+
+					menuItems.clear();
+					menuItems.add("کپی");
+				}
+
+				final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
+
+				OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+
+						if (item.getTitle().equals("کپی")) {
+
+							util.CopyToClipboard(description);
+
+						}
+						if (item.getTitle().equals("گزارش تخلف")) {
+
+							if (util.getCurrentUser() != null)
+								util.reportAbuse(userIdsender, 5, itemId,
+										description, w.getFroumid());
+							else
+								Toast.makeText(context, "ابتدا باید وارد شوید",
+										0).show();
+						}
+						if (item.getTitle().equals("حذف")) {
+							if (util.getCurrentUser() != null
+									&& util.getCurrentUser().getId() == userIdsender)
+								deleteItems(itemId);
+							else {
+
+								Toast.makeText(context, "", 0).show();
+							}
+						}
+
+						return false;
+					}
+				};
+
+				popupMenu.setOnMenuItemClickListener(menuitem);
+				// /////////////////////////
+				// int i = 0;
+				// int u = 0;
+				// String t = "";
+				// // برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
+				// // شود
+				//
+				// int d = (int) getGroupId(groupPosition);
+				// CommentInFroum w = (CommentInFroum) getChild(d,
+				// childPosition);
+				// if (w != null) {
+				// i = w.getId();
+				// u = w.getUserid();
+				// t = w.getDesk();
+				// }
+				// Toast.makeText(context, "id = " + i + "Userid = " + u, 0)
+				// .show();
+				// // //////////////////////////
+				//
+				// DialogLongClick dia = new DialogLongClick(context, 5, u, i,
+				// f,
+				// t);
+				//
+				// WindowManager.LayoutParams lp = new
+				// WindowManager.LayoutParams();
+				// lp.copyFrom(dia.getWindow().getAttributes());
+				// lp.width = (int) (util.getScreenwidth() / 1.5);
+				// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+				// ;
+				// dia.show();
+				//
+				// dia.getWindow().setAttributes(lp);
+				// dia.getWindow().setBackgroundDrawable(
+				// new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 			}
 		});
@@ -317,17 +402,21 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 				comment.getId()).toString());
 
 		if (x != null) {
+			Bitmap bmp = null;
 			nameCommenter.setText(x.getName());
 			if (x.getImagePath() == null) {
 				profileImage.setImageResource(R.drawable.no_img_profile);
 			} else {
 
 				// byte[] byteImageProfile = x.getImage();
+				if (x.getImagePath() != null)
+					bmp = BitmapFactory.decodeFile(x.getImagePath());
+				if (bmp != null)
 
-				Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
-
-				profileImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
+					profileImage.setImageBitmap(/*
+												 * Utility.getRoundedCornerBitmap
+												 * (
+												 */bmp/* , 50) */);
 			}
 		}
 		RelativeLayout rl = (RelativeLayout) convertView
@@ -656,59 +745,147 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 		reportComment.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View cc) {
+			public void onClick(View v) {
 
-				int u = 0;
-				int i = 0;
-				String t = "";
+				int d = (int) getGroupId(groupPosition);
+				final CommentInFroum w = (CommentInFroum) getGroup(d);
+				if (w != null) {
+					itemId = w.getId();
+					userIdsender = w.getUserid();
+					description = w.getDesk();
 
-				int dd = (int) getGroupId(groupPosition);
-				CommentInFroum ww = (CommentInFroum) getGroup(dd);
-				if (ww != null) {
-					u = ww.getUserid();
-					t = ww.getDesk();
 				}
-				adapter.open();
 
-				if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) > 0) {
-					i = -1;
+				if (util.getCurrentUser() != null) {
 
-					DialogLongClick dia = new DialogLongClick(context, 5, u, i,
-							f, t);
-					dia.show();
+					adapter.open();
+					int countReply = adapter.getCountOfReplyInFroum(froumID,
+							comment.getId());
+					adapter.close();
 
-				} else {
+					if (util.getCurrentUser().getId() == userIdsender) {
 
-					// برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
-					// شود
+						if (countReply == 0) {
+							menuItems = new ArrayList<String>();
+							menuItems.clear();
+							menuItems.add("کپی");
+							menuItems.add("حذف");
+						} else {
 
-					int d = (int) getGroupId(groupPosition);
-					CommentInFroum w = (CommentInFroum) getGroup(d);
-					if (w != null) {
-						i = w.getId();
-						u = w.getUserid();
-						t = ww.getDesk();
+							menuItems = new ArrayList<String>();
+							menuItems.clear();
+							menuItems.add("کپی");
 
+						}
+
+					} else {
+						menuItems = new ArrayList<String>();
+
+						menuItems.clear();
+						menuItems.add("کپی");
+						menuItems.add("گزارش تخلف");
 					}
 
-					// //////////////////////////
+				} else {
+					menuItems = new ArrayList<String>();
 
-					DialogLongClick dia = new DialogLongClick(context, 5, u, i,
-							f, t);
-					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-					lp.copyFrom(dia.getWindow().getAttributes());
-					lp.width = (int) (util.getScreenwidth() / 1.5);
-					lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-					;
-					dia.show();
-
-					dia.getWindow().setAttributes(lp);
-					dia.getWindow().setBackgroundDrawable(
-							new ColorDrawable(
-									android.graphics.Color.TRANSPARENT));
+					menuItems.clear();
+					menuItems.add("کپی");
 				}
-				adapter.close();
 
+				final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
+
+				OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+
+						if (item.getTitle().equals("کپی")) {
+
+							util.CopyToClipboard(description);
+
+						}
+						if (item.getTitle().equals("گزارش تخلف")) {
+
+							if (util.getCurrentUser() != null)
+								util.reportAbuse(userIdsender, 5, itemId,
+										description, w.getFroumid());
+							else
+								Toast.makeText(context, "ابتدا باید وارد شوید",
+										0).show();
+						}
+						if (item.getTitle().equals("حذف")) {
+							if (util.getCurrentUser() != null
+									&& util.getCurrentUser().getId() == userIdsender)
+								deleteItems(itemId);
+							else {
+
+								Toast.makeText(context, "", 0).show();
+							}
+						}
+
+						return false;
+					}
+				};
+
+				popupMenu.setOnMenuItemClickListener(menuitem);
+
+				// ///////////////////////////////////////////
+
+				// int u = 0;
+				// int i = 0;
+				// String t = "";
+				//
+				// int dd = (int) getGroupId(groupPosition);
+				// CommentInFroum ww = (CommentInFroum) getGroup(dd);
+				// if (ww != null) {
+				// u = ww.getUserid();
+				// t = ww.getDesk();
+				// }
+				// adapter.open();
+				//
+				// if (adapter.getCountOfReplyInFroum(froumID, comment.getId())
+				// > 0) {
+				// i = -1;
+				//
+				// DialogLongClick dia = new DialogLongClick(context, 5, u, i,
+				// f, t);
+				// dia.show();
+				//
+				// } else {
+				//
+				// // برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
+				// // شود
+				//
+				// int d = (int) getGroupId(groupPosition);
+				// CommentInFroum w = (CommentInFroum) getGroup(d);
+				// if (w != null) {
+				// i = w.getId();
+				// u = w.getUserid();
+				// t = ww.getDesk();
+				//
+				// }
+				//
+				// // //////////////////////////
+				//
+				// DialogLongClick dia = new DialogLongClick(context, 5, u, i,
+				// f, t);
+				// WindowManager.LayoutParams lp = new
+				// WindowManager.LayoutParams();
+				// lp.copyFrom(dia.getWindow().getAttributes());
+				// lp.width = (int) (util.getScreenwidth() / 1.5);
+				// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+				// ;
+				// dia.show();
+				//
+				// dia.getWindow().setAttributes(lp);
+				// dia.getWindow().setBackgroundDrawable(
+				// new ColorDrawable(
+				// android.graphics.Color.TRANSPARENT));
+				// }
+				// adapter.close();
+
+				// }
 			}
 
 		});
@@ -745,172 +922,239 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 
 	@Override
 	public void processFinish(String output) {
+		if (IsDeleteing == true) {
 
-		if (!"".equals(output) && output != null
-				&& !(output.contains("Exception") || output.contains("java"))) {
+			if (ringProgressDialog != null) {
+				ringProgressDialog.dismiss();
+			}
 
-			int id = -1;
-			try {
-				id = Integer.valueOf(output);
+			adapter.open();
+			adapter.deleteOnlyCommentFroum(itemId);
+			adapter.close();
 
-				adapter.open();
+			f.updateList();
 
-				if (flag) {
+		} else {
+			if (!"".equals(output)
+					&& output != null
+					&& !(output.contains("Exception") || output
+							.contains("java"))) {
 
-					/*
-					 * save like in database device
-					 */
+				int id = -1;
+				try {
+					id = Integer.valueOf(output);
 
-					if (adapter.isUserLikedComment(Currentuser.getId(),
-							GlobalId, 1)) {
-						adapter.deleteLikeFromCommentInFroum(GlobalId,
-								Currentuser.getId(), 1);
+					adapter.open();
 
-						notifyDataSetChanged();
-						if (ringProgressDialog != null) {
-							ringProgressDialog.dismiss();
+					if (flag) {
+
+						/*
+						 * save like in database device
+						 */
+
+						if (adapter.isUserLikedComment(Currentuser.getId(),
+								GlobalId, 1)) {
+							adapter.deleteLikeFromCommentInFroum(GlobalId,
+									Currentuser.getId(), 1);
+
+							notifyDataSetChanged();
+							if (ringProgressDialog != null) {
+								ringProgressDialog.dismiss();
+
+							}
+
+						} else {
+							adapter.InsertLikeCommentFroumToDatabase(id,
+									Currentuser.getId(), 1, GlobalId,
+									serverDate);
+
+							notifyDataSetChanged();
+							if (ringProgressDialog != null) {
+								ringProgressDialog.dismiss();
+
+							}
 
 						}
+					} else {
+						/*
+						 * save dislike in database device
+						 */
+
+						if (adapter.isUserLikedComment(Currentuser.getId(),
+								GlobalId, 0)) {
+							adapter.deleteLikeFromCommentInFroum(GlobalId,
+									Currentuser.getId(), 0);
+							notifyDataSetChanged();
+							if (ringProgressDialog != null) {
+								ringProgressDialog.dismiss();
+
+							}
+
+						} else {
+							adapter.InsertLikeCommentFroumToDatabase(id,
+									Currentuser.getId(), 0, GlobalId,
+									serverDate);
+
+							notifyDataSetChanged();
+							if (ringProgressDialog != null) {
+								ringProgressDialog.dismiss();
+
+							}
+
+						}
+					}
+
+					adapter.close();
+
+				} catch (NumberFormatException e) {
+					serverDate = output;
+
+					if (flag == true) {
+						params = new LinkedHashMap<String, String>();
+						if (context != null) {
+
+							saving = new Saving(context);
+							saving.delegate = ExpandableCommentFroum.this;
+
+							params.put("TableName", "LikeInComment");
+
+							params.put("UserId",
+									String.valueOf(Currentuser.getId()));
+							params.put("IsLike", String.valueOf(1));
+							params.put("CommentId", String.valueOf(GlobalId));
+							params.put("ModifyDate", serverDate);
+							params.put("IsUpdate", "0");
+							params.put("Date", serverDate);
+
+							params.put("Id", "0");
+
+							saving.execute(params);
+
+							ringProgressDialog = ProgressDialog.show(context,
+									"", "لطفا منتظر بمانید...", true);
+						}
+						ringProgressDialog.setCancelable(true);
+
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+
+						notifyDataSetChanged();
 
 					} else {
-						adapter.InsertLikeCommentFroumToDatabase(id,
-								Currentuser.getId(), 1, GlobalId, serverDate);
 
-						notifyDataSetChanged();
-						if (ringProgressDialog != null) {
-							ringProgressDialog.dismiss();
+						params = new LinkedHashMap<String, String>();
 
+						if (context != null) {
+
+							saving = new Saving(context);
+							saving.delegate = ExpandableCommentFroum.this;
+
+							params.put("TableName", "LikeInComment");
+
+							params.put("UserId",
+									String.valueOf(Currentuser.getId()));
+
+							params.put("IsLike", String.valueOf(0));
+							params.put("CommentId", String.valueOf(GlobalId));
+							params.put("ModifyDate", serverDate);
+							params.put("Date", serverDate);
+
+							params.put("IsUpdate", "0");
+							params.put("Id", "0");
+
+							saving.execute(params);
 						}
-
-					}
-				} else {
-					/*
-					 * save dislike in database device
-					 */
-
-					if (adapter.isUserLikedComment(Currentuser.getId(),
-							GlobalId, 0)) {
-						adapter.deleteLikeFromCommentInFroum(GlobalId,
-								Currentuser.getId(), 0);
-						notifyDataSetChanged();
-						if (ringProgressDialog != null) {
-							ringProgressDialog.dismiss();
-
-						}
-
-					} else {
-						adapter.InsertLikeCommentFroumToDatabase(id,
-								Currentuser.getId(), 0, GlobalId, serverDate);
-
-						notifyDataSetChanged();
-						if (ringProgressDialog != null) {
-							ringProgressDialog.dismiss();
-
-						}
-
-					}
-				}
-
-				adapter.close();
-
-			} catch (NumberFormatException e) {
-				serverDate = output;
-
-				if (flag == true) {
-					params = new LinkedHashMap<String, String>();
-					if (context != null) {
-
-						saving = new Saving(context);
-						saving.delegate = ExpandableCommentFroum.this;
-
-						params.put("TableName", "LikeInComment");
-
-						params.put("UserId",
-								String.valueOf(Currentuser.getId()));
-						params.put("IsLike", String.valueOf(1));
-						params.put("CommentId", String.valueOf(GlobalId));
-						params.put("ModifyDate", serverDate);
-						params.put("IsUpdate", "0");
-						params.put("Date", serverDate);
-
-						params.put("Id", "0");
-
-						saving.execute(params);
-
 						ringProgressDialog = ProgressDialog.show(context, "",
 								"لطفا منتظر بمانید...", true);
-					}
-					ringProgressDialog.setCancelable(true);
 
-					new Thread(new Runnable() {
+						ringProgressDialog.setCancelable(true);
 
-						@Override
-						public void run() {
+						new Thread(new Runnable() {
 
-							try {
+							@Override
+							public void run() {
 
-								Thread.sleep(10000);
+								try {
 
-							} catch (Exception e) {
+									Thread.sleep(10000);
 
+								} catch (Exception e) {
+
+								}
 							}
-						}
-					}).start();
+						}).start();
 
-					notifyDataSetChanged();
+						notifyDataSetChanged();
 
-				} else {
-
-					params = new LinkedHashMap<String, String>();
-
-					if (context != null) {
-
-						saving = new Saving(context);
-						saving.delegate = ExpandableCommentFroum.this;
-
-						params.put("TableName", "LikeInComment");
-
-						params.put("UserId",
-								String.valueOf(Currentuser.getId()));
-
-						params.put("IsLike", String.valueOf(0));
-						params.put("CommentId", String.valueOf(GlobalId));
-						params.put("ModifyDate", serverDate);
-						params.put("Date", serverDate);
-
-						params.put("IsUpdate", "0");
-						params.put("Id", "0");
-
-						saving.execute(params);
 					}
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
 
-					ringProgressDialog.setCancelable(true);
-
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-
-					notifyDataSetChanged();
-
+					// Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT)
+					// .show();
 				}
-
-				// Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT)
-				// .show();
 			}
+
 		}
+
 	}
 
+	public void deleteItems(int itemId) {
+
+		params = new LinkedHashMap<String, String>();
+
+		deleting = new Deleting(context);
+		deleting.delegate = ExpandableCommentFroum.this;
+
+		params.put("TableName", "CommentInFroum");
+		params.put("ID", String.valueOf(itemId));
+
+		deleting.execute(params);
+
+		ringProgressDialog = ProgressDialog.show(context, "",
+				"لطفا منتظر بمانید...", true);
+
+		ringProgressDialog.setCancelable(true);
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+
+					Thread.sleep(10000);
+
+				} catch (Exception e) {
+
+				}
+			}
+		}).start();
+		IsDeleteing = true;
+
+	}
+
+	// @Override
+	// public void CommProcessFinish(String output) {
+	//
+	// if (ringProgressDialog != null) {
+	// ringProgressDialog.dismiss();
+	// }
+	//
+	// adapter.open();
+	// adapter.deleteOnlyCommentFroum(itemId);
+	// adapter.close();
+	//
+	// f.updateList();
+	//
+	// }
 }

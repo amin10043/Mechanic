@@ -8,23 +8,35 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.utility.Utility;
 
 public class DialogSettings extends Fragment {
 	RelativeLayout Introduction, BestItems, NewsApp;
+	Utility util;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.dialog_settings, null);
+		util = new Utility(getActivity());
+
+		TextView introductiontxt = (TextView) rootView.findViewById(R.id.tre);
+		TextView besttxt = (TextView) rootView.findViewById(R.id.userviewtxt);
+		TextView information = (TextView) rootView.findViewById(R.id.alert);
 
 		Introduction = (RelativeLayout) rootView
 				.findViewById(R.id.introductionApp);
 		BestItems = (RelativeLayout) rootView.findViewById(R.id.best);
 		NewsApp = (RelativeLayout) rootView.findViewById(R.id.newsApp);
+
+		introductiontxt.setTypeface(util.SetFontCasablanca());
+		besttxt.setTypeface(util.SetFontCasablanca());
+		information.setTypeface(util.SetFontCasablanca());
 
 		Introduction.setOnClickListener(new OnClickListener() {
 

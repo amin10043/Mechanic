@@ -1,5 +1,6 @@
 package com.project.mechanic.adapter;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -24,28 +26,34 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
+import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.FroumWithoutComment;
+import com.project.mechanic.fragment.FroumtitleFragment;
 import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 @SuppressLint("SimpleDateFormat")
 public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
-		AsyncInterface {
+		AsyncInterface, CommInterface {
 
 	Context context;
 	List<Froum> mylist;
@@ -70,6 +78,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 	Fragment fragment;
 	ImageView report;
 	View Parent;
+	int itemId, userIdsender;
+	List<String> menuItems;
 
 	public FroumtitleListadapter(Context context, int resource,
 			List<Froum> objects, Fragment fragment) {
@@ -114,7 +124,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		report = (ImageView) convertView.findViewById(R.id.reportImage);
 
 		Froum person1 = mylist.get(position);
-		
+
 		txt1.setTypeface(util.SetFontCasablanca());
 		txt2.setTypeface(util.SetFontCasablanca());
 
@@ -135,7 +145,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		txt2.setText(person1.getDescription() + " ...");
 
 		// txt2.setText(person1.getDescription());
-		
+
 		adapter.open();
 
 		if (x != null)
@@ -191,10 +201,11 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				profileImg.setLayoutParams(lp);
 			} else {
 
-				// byte[] byteImg = x.getImage();
+//				// byte[] byteImg = x.getImage();
 				Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
-				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
+				if (bmp != null)
+					profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(
+							bmp, 50));
 
 				profileImg.setLayoutParams(lp);
 			}
@@ -255,36 +266,163 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 			@Override
 			public void onClick(View v) {
 
-				if (CurrentUser == null) {
-					Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
-				} else {
+				// final int ItemId ;
+				final String t;
+				ListView listView = (ListView) v.getParent().getParent()
+						.getParent().getParent();
+				int position = listView.getPositionForView(v);
+				Froum f = getItem(position);
+				if (f != null) {
+					userIdsender = f.getUserId();
+					t = f.getDescription();
+					itemId = f.getId();
 
-					int ItemId = 0;
-					String t = "";
-					ListView listView = (ListView) v.getParent().getParent()
-							.getParent().getParent();
-					int position = listView.getPositionForView(v);
-					Froum f = getItem(position);
-					if (f != null) {
-						ItemId = f.getUserId();
-						t = f.getDescription();
+					if (util.getCurrentUser() != null) {
+						if (util.getCurrentUser().getId() == userIdsender) {
+
+							menuItems = new ArrayList<String>();
+							menuItems.clear();
+							menuItems.add("ارسال پیام");
+							menuItems.add("کپی");
+							menuItems.add("حذف");
+
+						} else {
+							menuItems = new ArrayList<String>();
+
+							menuItems.clear();
+							menuItems.add("ارسال پیام");
+							menuItems.add("افزودن به علاقه مندی ها");
+							menuItems.add("کپی");
+							menuItems.add("گزارش تخلف");
+						}
+					} else {
+						menuItems = new ArrayList<String>();
+
+						menuItems.clear();
+						menuItems.add("کپی");
 					}
 
-					DialogLongClick dia = new DialogLongClick(context, 1,
-							ItemId, f.getId(), fragment, t);
-					Toast.makeText(context, ItemId + "", 0).show();
+					final PopupMenu popupMenu = util
+							.ShowPopupMenu(menuItems, v);
 
-					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-					lp.copyFrom(dia.getWindow().getAttributes());
-					lp.width = (int) (util.getScreenwidth() / 1.5);
-					lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-					;
-					dia.show();
+					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
 
-					dia.getWindow().setAttributes(lp);
-					dia.getWindow().setBackgroundDrawable(
-							new ColorDrawable(
-									android.graphics.Color.TRANSPARENT));
+						@Override
+						public boolean onMenuItemClick(MenuItem item) {
+
+							if (item.getTitle().equals("ارسال پیام")) {
+
+								if (util.getCurrentUser() != null)
+									util.sendMessage("Froum");
+								else
+									Toast.makeText(context,
+											"ابتدا باید وارد شوید", 0).show();
+							}
+
+							if (item.getTitle().equals(
+									"افزودن به علاقه مندی ها")) {
+								adapter.open();
+								addToFavorite(util.getCurrentUser().getId(), 1,
+										itemId);
+								adapter.close();
+							}
+							if (item.getTitle().equals("کپی")) {
+
+								util.CopyToClipboard(t);
+
+							}
+							if (item.getTitle().equals("گزارش تخلف")) {
+
+								if (util.getCurrentUser() != null)
+									util.reportAbuse(userIdsender, 1, itemId, t,0);
+								else
+									Toast.makeText(context,
+											"ابتدا باید وارد شوید", 0).show();
+							}
+							if (item.getTitle().equals("حذف")) {
+								if (util.getCurrentUser() != null
+										&& util.getCurrentUser().getId() == userIdsender)
+									deleteItems(itemId);
+								else {
+
+									Toast.makeText(context, "", 0).show();
+								}
+							}
+
+							// switch (item.getItemId()) {
+							// case 0: {
+							// if (util.getCurrentUser() != null)
+							// util.sendMessage("Froum");
+							// else
+							// Toast.makeText(context,
+							// "ابتدا باید وارد شوید", 0)
+							// .show();
+							//
+							// break;
+							// }
+							// case 1: {
+							// if (util.getCurrentUser() != null)
+							// util.addToFavorite(1, itemId);
+							// else
+							// Toast.makeText(context,
+							// "ابتدا باید وارد شوید", 0)
+							// .show();
+							// break;
+							// }
+							// case 2: {
+							//
+							// util.CopyToClipboard(t);
+							// break;
+							// }
+							// case 3: {
+							// if (util.getCurrentUser() != null)
+							// util.reportAbuse(itemId, 1,
+							// userIdsender, t);
+							// else
+							// Toast.makeText(context,
+							// "ابتدا باید وارد شوید", 0)
+							// .show();
+							// break;
+							// }
+							// case 4: {
+							// if (util.getCurrentUser() != null
+							// && util.getCurrentUser().getId() == userIdsender)
+							// deleteItems(itemId);
+							// else {
+							//
+							// Toast.makeText(context, "", 0).show();
+							// break;
+							// }
+							// }
+							// default:
+							// break;
+							// }
+
+							return false;
+						}
+					};
+
+					popupMenu.setOnMenuItemClickListener(menuitem);
+
+					// }
+					//
+					// DialogLongClick dia = new DialogLongClick(context, 1,
+					// ItemId, f.getId(), fragment, t);
+					// Toast.makeText(context, ItemId + "", 0).show();
+					//
+					// WindowManager.LayoutParams lp = new
+					// WindowManager.LayoutParams();
+					// lp.copyFrom(dia.getWindow().getAttributes());
+					// lp.width = (int) (util.getScreenwidth() / 1.5);
+					// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+					// ;
+					// dia.show();
+					//
+					// dia.getWindow().setAttributes(lp);
+					// dia.getWindow().setBackgroundDrawable(
+					// new ColorDrawable(
+					// android.graphics.Color.TRANSPARENT));
+					// }
 				}
 			}
 		});
@@ -496,6 +634,69 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		catch (Exception e) {
 
 			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	public void deleteItems(int itemId) {
+
+		ServiceComm service = new ServiceComm(context);
+		service.delegate = FroumtitleListadapter.this;
+		Map<String, String> items = new LinkedHashMap<String, String>();
+		items.put("DeletingRecord", "DeletingRecord");
+
+		items.put("tableName", "Froum");
+		items.put("Id", String.valueOf(itemId));
+
+		service.execute(items);
+
+		ringProgressDialog = ProgressDialog.show(context, "",
+				"لطفا منتظر بمانید...", true);
+
+		ringProgressDialog.setCancelable(true);
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+
+					Thread.sleep(10000);
+
+				} catch (Exception e) {
+
+				}
+			}
+		}).start();
+	}
+
+	@Override
+	public void CommProcessFinish(String output) {
+
+		adapter.open();
+
+		adapter.deleteFroumTitle(itemId);
+		adapter.deleteCommentFroum(itemId);
+		adapter.deleteLikeFroum(itemId);
+
+		adapter.close();
+
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
+
+		((FroumtitleFragment) fragment).updateView();
+
+	}
+
+	public void addToFavorite(int currentUserId, int source, int ItemId) {
+
+		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
+			Toast.makeText(context,
+					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+		} else {
+			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
+			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0)
+					.show();
 		}
 	}
 }

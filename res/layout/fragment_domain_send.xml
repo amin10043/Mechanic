@@ -66,7 +66,7 @@
             android:background="@drawable/ic_blank" />
 
         <TextView
-            android:id="@+id/RowCitytxt"
+            android:id="@+id/RowCitytxtcs"
             style="@style/row_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

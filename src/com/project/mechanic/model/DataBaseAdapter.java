@@ -4093,6 +4093,7 @@ public class DataBaseAdapter {
 			prd.setNameFroum(f.getTitle());
 			prd.setDescriptionFroum(f.getDescription());
 			prd.setDateFroum(f.getDate());
+			prd.setUserIdFroum(f.getUserId());
 
 			result.add(prd);
 
@@ -4117,6 +4118,7 @@ public class DataBaseAdapter {
 			prd.setDescriptonPaper(p.getContext());
 			prd.setDatePaper(p.getDate());
 			prd.setSeenBeforePaper(p.getSeenBefore());
+			prd.setUserIdPaper(p.getUserId());
 
 			result.add(prd);
 
@@ -4190,6 +4192,7 @@ public class DataBaseAdapter {
 				prd.setNameFroum(f.getTitle());
 				prd.setDescriptionFroum(f.getDescription());
 				prd.setDateFroum(f.getDate());
+				prd.setUserIdFroum(f.getUserId());
 				break;
 			}
 
@@ -4202,6 +4205,7 @@ public class DataBaseAdapter {
 				prd.setDescriptonPaper(p.getContext());
 				prd.setDatePaper(p.getDate());
 				prd.setSeenBeforePaper(p.getSeenBefore());
+				prd.setUserIdPaper(p.getUserId());
 				break;
 			}
 
@@ -4250,6 +4254,47 @@ public class DataBaseAdapter {
 		uc.put("IsActive", isActive);
 
 		mDb.insert(TableObject, null, uc);
+
+	}
+
+	public ArrayList<LikeInObject> getAllPageFollowingMe(int userId,
+			int commentId) {
+		ArrayList<LikeInObject> result = new ArrayList<LikeInObject>();
+		Cursor cursor = mDb.rawQuery(
+				"select * from LikeInObject where UserId =  " + userId
+						+ " And CommentId = " + commentId, null);
+
+		LikeInObject like;
+		while (cursor.moveToNext()) {
+			like = new LikeInObject(cursor.getInt(0), cursor.getInt(1),
+					cursor.getInt(2), cursor.getString(3), cursor.getInt(4),
+					cursor.getInt(5));
+
+			result.add(like);
+		}
+
+		return result;
+
+	}
+
+	public ArrayList<PersonalData> CustomFieldObjectFollowByUser(
+			List<Object> objectList) {
+
+		ArrayList<PersonalData> result = new ArrayList<PersonalData>();
+
+		for (int i = 0; i < objectList.size(); i++) {
+
+			PersonalData prd = new PersonalData();
+			Object o = objectList.get(i);
+
+			prd.setObjectFollowId(o.getId());
+			prd.setNameFollowObject(o.getName());
+			prd.setImagePathObjectFollow(o.getImagePath2());
+
+			result.add(prd);
+
+		}
+		return result;
 
 	}
 

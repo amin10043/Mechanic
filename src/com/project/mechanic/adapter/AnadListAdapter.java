@@ -210,38 +210,40 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 
 			@Override
 			public void onClick(View v) {
-				RelativeLayout parentlayout = (RelativeLayout) v.getParent();
-				TextView txtName = (TextView) parentlayout
-						.findViewById(R.id.row_favorite_title);
-				String item = txtName.getText().toString();
-				int id = 0;
-				int u = 0;
-				String t = "";
-				for (Ticket Ticket : list) {
-
-					if (item.equals(Ticket.getTitle())) {
-						// check authentication and authorization
-						id = Ticket.getId();
-						u = Ticket.getUserId();
-						t = Ticket.getDesc();
-
-					}
-				}
-
-				DialogLongClick dia = new DialogLongClick(context, 3, u, id,
-						fragment, t);
-				Toast.makeText(context, id + "", 0).show();
-
-				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-				lp.copyFrom(dia.getWindow().getAttributes());
-				lp.width = (int) (util.getScreenwidth() / 1.5);
-				lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-				;
-				dia.show();
-
-				dia.getWindow().setAttributes(lp);
-				dia.getWindow().setBackgroundDrawable(
-						new ColorDrawable(android.graphics.Color.TRANSPARENT));
+				
+				
+//				RelativeLayout parentlayout = (RelativeLayout) v.getParent();
+//				TextView txtName = (TextView) parentlayout
+//						.findViewById(R.id.row_favorite_title);
+//				String item = txtName.getText().toString();
+//				int id = 0;
+//				int u = 0;
+//				String t = "";
+//				for (Ticket Ticket : list) {
+//
+//					if (item.equals(Ticket.getTitle())) {
+//						// check authentication and authorization
+//						id = Ticket.getId();
+//						u = Ticket.getUserId();
+//						t = Ticket.getDesc();
+//
+//					}
+//				}
+//
+//				DialogLongClick dia = new DialogLongClick(context, 3, u, id,
+//						fragment, t);
+//				Toast.makeText(context, id + "", 0).show();
+//
+//				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//				lp.copyFrom(dia.getWindow().getAttributes());
+//				lp.width = (int) (util.getScreenwidth() / 1.5);
+//				lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+//				;
+//				dia.show();
+//
+//				dia.getWindow().setAttributes(lp);
+//				dia.getWindow().setBackgroundDrawable(
+//						new ColorDrawable(android.graphics.Color.TRANSPARENT));
 			}
 		});
 

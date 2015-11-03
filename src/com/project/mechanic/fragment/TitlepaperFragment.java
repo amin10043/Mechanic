@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -211,6 +213,26 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 		return view;
 	}
 
+	public void updateView(Context context) {
+
+		mdb = new DataBaseAdapter(context);
+		View view = ((Activity) context).getLayoutInflater().inflate(
+				R.layout.fragment_titlepaper, null);
+
+		ListView lst = (ListView) view.findViewById(R.id.lstComment);
+
+		mdb.open();
+		mylist = mdb.getAllPaper();
+		mdb.close();
+		ListAdapter = new PapertitleListAdapter(context,
+				R.layout.raw_froumtitle, mylist, TitlepaperFragment.this);
+		lst.setAdapter(ListAdapter);
+
+		ListAdapter.notifyDataSetChanged();
+		// LoadMoreFooter.setVisibility(View.INVISIBLE);
+
+	}
+
 	public void updateView() {
 		mdb.open();
 		mylist = mdb.getAllPaper();
@@ -248,7 +270,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 				&& !(output.contains("Exception") || output.contains("java") || output
 						.contains("soap"))) {
 			utility.parseQuery(output);
-			updateView();
+			updateView(getActivity());
 		} else {
 			Toast.makeText(getActivity(), "خطا در بروز رسانی داده های سرور",
 					Toast.LENGTH_SHORT).show();

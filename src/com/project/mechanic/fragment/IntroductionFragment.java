@@ -56,97 +56,486 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	Context context;
 	Utility ut;
-	Users CurrentUser;
-	View header;
+	Users currentUser;
+	View header, view;
 	ExpandableListView exListView;
 	ExpandIntroduction exadapter;
 	int ObjectID;
 	DialogPersonLikedObject ListLiked;
 	UpdatingAllImage updating;
 	Map<String, String> maps;
-	View unavailable;
 	ArrayList<CommentInObject> commentGroup, ReplyGroup;
 	Map<CommentInObject, List<CommentInObject>> mapCollection;
-
-	private ImageView peykan6, peykan5;
 	public RelativeLayout agency, service, sendSMS, addressRelative,
-			emailRelative, profileLinear, personPage, personPost;
-
+			emailRelative, profileLinear, personPage, personPost, phone,
+			cphone, email, map;
 	public DialogcmtInobject dialog;
-	// Fragment fragment;
-
-	public LinearLayout AddLike, AddComment;
+	public LinearLayout AddLike, AddComment, headImageLinear, footerLinear,
+			likePost;
 	public ImageButton Comment;
-	byte[] bitHeader, bytepro, bytefoot;
-
 	LinearLayout.LayoutParams headerParams, footerParams;
 	RelativeLayout.LayoutParams addressParams, emailParams, profileParams,
-			followParams, shareParams;
-
-	ArrayList<CommentInObject> mylist;
+			followParams, shareParams, shareParams2;
 	DataBaseAdapter adapter;
-	LinearLayout headImageLinear, footerLinear, likePost;
-
 	TextView txtFax, txtAddress, txtPhone, txtCellphone, txtEmail, txtDesc,
 			CountLikeIntroduction, CountCommentIntroduction, namePage,
 			countLikePost;
-
-	ImageView headerImage, advertise2, profileImage;
+	ImageView headerImage, footerImage, profileImage, reaport;
 	ImageButton Facebook, Instagram, LinkedIn, Google, Site, Twitter, Pdf1,
 			Pdf2, Pdf3, Pdf4;
 	Object object;
 	byte[] headerbyte, profilebyte, footerbyte;
-
-	SharedPreferences sendDataID;
-
+	SharedPreferences sendDataID, pageId;
 	Saving saving;
 	Deleting deleting;
 	Map<String, String> params;
-
 	ProgressDialog ringProgressDialog;
-
 	String serverDate = "";
 	ServerDate date;
-	boolean flag;
-
-	RelativeLayout phone, cphone, email, map;
-
 	Updating update;
-
-	boolean f1;
-	boolean f2;
-	boolean f3;
-	// RelativeLayout timeLayoutTimeLine;
+	boolean flag, f1, f2, f3;
 
 	ProgressBar loadingProgressHeader, loadingProgressProfile,
 			loadingProgressFooter;
-	Button followPage, EditPage, shareBtn, ShowPostBtn;
+	Button followPage, EditPage, shareBtn, ShowPostBtn, btnShowPost;
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View view = inflater.inflate(R.layout.fragment_introduction, null);
-
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.brand);
-
 		adapter = new DataBaseAdapter(getActivity());
 		ut = new Utility(getActivity());
 
+		// define rootView and header Layout
+		view = inflater.inflate(R.layout.fragment_introduction, null);
 		header = getActivity().getLayoutInflater().inflate(
 				R.layout.header_introduction, null);
-		CurrentUser = ut.getCurrentUser();
 
-		// start find view
+		// define Views : find view by Id
+		findView();
 
+		pageId = getActivity().getSharedPreferences("Id", 0);
+
+		if (getArguments().getString("Id") != null)
+			ObjectID = Integer.valueOf(getArguments().getString("Id"));
+
+		currentUser = ut.getCurrentUser();
+
+		// set values for parameter and variable
+		setValues();
+
+		// fill expand ListView
+		fillExpandListViewCommnet();
+
+		// set layoutParams
+		setLayoutParams();
+
+		// setImage background headerImage , ProfileImage , FooterImage
+		setImage();
+
+		// set on or off for follow and like button
+		setStateButtonFollowLike();
+
+		// get image from server
+		getImageFromServer();
+
+		// set Image on or off for link network social and download link
+		setStateLinkSocialAndDownload();
+
+		// set visibility for Agency and Service Button
+		setVisibilityItems();
+
+		// on click action for items link Network and Link Download
+		SetonItemsClickNetworkAndDownload();
+
+		// on click action for items information contact
+		setOnItemClickInformationContact();
+
+		// on click image
+		setonClickImage();
+
+		// action for like ,follow m comment , edit , share
+		LikeCommentAction();
+
+		// action click for Agency , Service , settings , post button
+		AgencyServiceSettingActionButton();
+
+		// action click for poeple liked page btn
+		showPeopleLikedBtn();
+
+		// for manage footer slide image agahi
+		ut.ShowFooterAgahi(getActivity(), false, 1);
+
+		return view;
+
+	}
+
+	public void updateList() {
+		sendDataID = getActivity().getSharedPreferences("Id", 0);
+		final int ObjectID = sendDataID.getInt("main_Id", -1);
+
+		adapter.open();
+		commentGroup = adapter.getAllCommentInObjectById(ObjectID, 0);
+		mapCollection = new LinkedHashMap<CommentInObject, List<CommentInObject>>();
+
+		List<CommentInObject> reply = null;
+		for (CommentInObject comment : commentGroup) {
+			reply = adapter.getReplyCommentIntroduction(ObjectID,
+					comment.getId());
+			mapCollection.put(comment, reply);
+		}
+
+		int countcmt = adapter.CommentInObject_count(ObjectID);
+		CountCommentIntroduction.setText(String.valueOf(countcmt));
+		exadapter = new ExpandIntroduction(getActivity(),
+				(ArrayList<CommentInObject>) commentGroup, mapCollection, this,
+				ObjectID);
+		adapter.close();
+		exadapter.notifyDataSetChanged();
+
+		exListView.setAdapter(exadapter);
+
+	}
+
+	@Override
+	public void processFinish(String output) {
+
+		if (output.contains("---")) {
+			if (ringProgressDialog != null)
+				ringProgressDialog.dismiss();
+
+			loadingProgressHeader.setVisibility(View.GONE);
+			loadingProgressProfile.setVisibility(View.GONE);
+			loadingProgressFooter.setVisibility(View.GONE);
+			return;
+		} else if (output.contains("-")) {
+			String[] strs = output.split(Pattern.quote("-")); // each
+
+			String s1, s2, s3;
+
+			serverDate = s1 = strs[0];
+			s2 = strs[1];
+			s3 = strs[2];
+
+			if (object.getImage1ServerDate() == null
+					|| !object.getImage1ServerDate().equals(s1)) {
+				object.setImage1ServerDate(s1);
+				f1 = true;
+			}
+			if (object.getImage2ServerDate() == null
+					|| !object.getImage2ServerDate().equals(s2)) {
+				object.setImage2ServerDate(s2);
+				f2 = true;
+			}
+
+			if (object.getImage3ServerDate() == null
+					|| !object.getImage3ServerDate().equals(s3)) {
+				object.setImage3ServerDate(s3);
+				f3 = true;
+			}
+
+			if (f1 || f2 || f3) {
+				updating = new UpdatingAllImage(getActivity());
+				updating.delegate = this;
+				maps = new LinkedHashMap<String, String>();
+				// maps.put("tableName", "Object1");
+				maps.put("tableName", "All");
+				maps.put("Id", String.valueOf(ObjectID));
+				maps.put("fromDate1", object.getImage1ServerDate());
+				maps.put("fromDate2", object.getImage2ServerDate());
+				maps.put("fromDate3", object.getImage3ServerDate());
+				updating.execute(maps);
+
+			} else {
+				loadingProgressHeader.setVisibility(View.GONE);
+				loadingProgressProfile.setVisibility(View.GONE);
+				loadingProgressFooter.setVisibility(View.GONE);
+				Toast.makeText(getActivity(),
+						"به روز رسانی تصاویر با موفقیت انجام شد",
+						Toast.LENGTH_SHORT).show();
+			}
+
+		} else {
+			int id = -1;
+			try {
+				id = Integer.valueOf(output);
+				// این متغیر مشخص کنندهلایک صفحه و لایک پست می بایشد
+				int comId;
+				if (flag)
+					// دنبال کردن
+					comId = 0;
+				else
+					// لایک پست
+					comId = 1;
+
+				adapter.open();
+
+				if (adapter.isUserLikeIntroductionPage(currentUser.getId(),
+						ObjectID, comId)) {
+
+					adapter.deleteLikeIntroduction(currentUser.getId(),
+							ObjectID, comId);
+					int countlike = adapter.LikeInObject_count(ObjectID, comId);
+
+					if (flag) {
+						followPage.setBackgroundColor(getResources().getColor(
+								R.color.gray));
+						// personPage
+						// .setBackgroundResource(R.drawable.count_like_off);
+						CountLikeIntroduction
+								.setText(String.valueOf(countlike));
+						if (ringProgressDialog != null)
+							ringProgressDialog.dismiss();
+
+					} else {
+						likePost.setBackgroundResource(R.drawable.like_off);
+						personPost
+								.setBackgroundResource(R.drawable.count_like_off);
+						countLikePost.setText(String.valueOf(countlike));
+						if (ringProgressDialog != null)
+							ringProgressDialog.dismiss();
+					}
+
+				} else {
+					adapter.insertLikeInObjectToDb(id, currentUser.getId(),
+							ObjectID, serverDate, comId);
+					int countlike = adapter.LikeInObject_count(ObjectID, comId);
+
+					if (flag) {
+						followPage.setBackgroundColor(getResources().getColor(
+								R.color.green));
+						// personPage.setBackgroundResource(R.drawable.count_like);
+						CountLikeIntroduction
+								.setText(String.valueOf(countlike));
+						if (ringProgressDialog != null)
+							ringProgressDialog.dismiss();
+					} else {
+						likePost.setBackgroundResource(R.drawable.like_on);
+						personPost.setBackgroundResource(R.drawable.count_like);
+						countLikePost.setText(String.valueOf(countlike));
+						if (ringProgressDialog != null)
+							ringProgressDialog.dismiss();
+					}
+
+				}
+				adapter.close();
+
+			} catch (NumberFormatException e) {
+				if (output != null
+						&& !(output.contains("Exception") || output
+								.contains("java"))) {
+					// این متغیر مشخص کنندهلایک صفحه و لایک پست می بایشد
+					int comId;
+					if (flag)
+						// لایک صفحه
+						comId = 0;
+					else
+						// لایک پست
+						comId = 1;
+					adapter.open();
+					if (adapter.isUserLikeIntroductionPage(currentUser.getId(),
+							ObjectID, comId)) {
+
+						params = new LinkedHashMap<String, String>();
+						if (getActivity() != null) {
+
+							deleting = new Deleting(getActivity());
+							deleting.delegate = IntroductionFragment.this;
+
+							params.put("TableName", "LikeInObject");
+							params.put("UserId",
+									String.valueOf(currentUser.getId()));
+							params.put("ObjectId", String.valueOf(ObjectID));
+							params.put("CommentId", String.valueOf(comId));
+
+							deleting.execute(params);
+						}
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								"", "لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+						adapter.close();
+
+					} else {
+						adapter.open();
+						params = new LinkedHashMap<String, String>();
+
+						if (getActivity() != null) {
+							saving = new Saving(getActivity());
+							saving.delegate = IntroductionFragment.this;
+
+							params.put("TableName", "LikeInObject");
+
+							params.put("UserId",
+									String.valueOf(currentUser.getId()));
+							params.put("ObjectId", String.valueOf(ObjectID));
+							params.put("Date", output);
+							params.put("ModifyDate", output);
+
+							params.put("CommentId", String.valueOf(comId));
+
+							params.put("IsUpdate", "0");
+							params.put("Id", "0");
+
+							serverDate = output;
+
+							saving.execute(params);
+						}
+						ringProgressDialog = ProgressDialog.show(getActivity(),
+								"", "لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+						adapter.close();
+
+					}
+					adapter.close();
+
+				} else {
+					Toast.makeText(getActivity(),
+							"خطا در ثبت. پاسخ نا مشخص از سرور",
+							Toast.LENGTH_SHORT).show();
+					loadingProgressHeader.setVisibility(View.GONE);
+					loadingProgressProfile.setVisibility(View.GONE);
+					loadingProgressFooter.setVisibility(View.GONE);
+				}
+			}
+
+			catch (Exception e) {
+
+				Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
+						.show();
+				loadingProgressHeader.setVisibility(View.GONE);
+				loadingProgressProfile.setVisibility(View.GONE);
+				loadingProgressFooter.setVisibility(View.GONE);
+			}
+		}
+	}
+
+	@Override
+	public void processFinish(List<byte[]> output) {
+
+		if (output != null && output.size() > 0) {
+
+			adapter.open();
+
+			if (f1)
+				if (output.get(0) != null) {
+					ut.CreateFile(output.get(0), object.getId(), "Mechanical",
+							"Profile", "header", "Object");
+
+					// adapter.UpdateHeaderImageObject(ObjectID, output.get(0));
+					object = adapter.getObjectbyid(ObjectID);
+
+					String PathImageHeader = "";
+					PathImageHeader = object.getImagePath1();
+					Bitmap b = BitmapFactory.decodeFile(PathImageHeader);
+
+					if (b != null)
+						headerImage.setImageBitmap(b);
+					else
+						headerImage
+								.setBackgroundResource(R.drawable.no_image_header);
+					adapter.updateObjectImage1ServerDate(ObjectID, serverDate);
+				}
+			if (f2)
+				if (output.get(1) != null) {
+					ut.CreateFile(output.get(1), object.getId(), "Mechanical",
+							"Profile", "profile", "Object");
+					object = adapter.getObjectbyid(ObjectID);
+
+					String PathImageProfile = "";
+					PathImageProfile = object.getImagePath2();
+					// adapter.UpdateProfileImageObject(ObjectID,
+					// output.get(1));
+					Bitmap b = BitmapFactory.decodeFile(PathImageProfile);
+
+					if (b != null)
+						profileImage.setImageBitmap(b);
+					else
+						profileImage
+								.setBackgroundResource(R.drawable.no_img_profile);
+					adapter.updateObjectImage2ServerDate(ObjectID, serverDate);
+				}
+
+			if (f3)
+				if (output.get(2) != null) {
+					ut.CreateFile(output.get(2), object.getId(), "Mechanical",
+							"Profile", "footer", "Object");
+					object = adapter.getObjectbyid(ObjectID);
+
+					String PathImageFooter = "";
+					PathImageFooter = object.getImagePath3();
+
+					// adapter.UpdateFooterImageObject(ObjectID, output.get(2));
+					Bitmap b = BitmapFactory.decodeFile(PathImageFooter);
+
+					if (b != null)
+						footerImage.setImageBitmap(b);
+					else
+						footerImage
+								.setBackgroundResource(R.drawable.no_image_header);
+
+					adapter.updateObjectImage3ServerDate(ObjectID, serverDate);
+
+				}
+			Toast.makeText(getActivity(),
+					"به روز رسانی تصاویر با موفقیت انجام شد",
+					Toast.LENGTH_SHORT).show();
+
+			loadingProgressHeader.setVisibility(View.GONE);
+			loadingProgressProfile.setVisibility(View.GONE);
+			loadingProgressFooter.setVisibility(View.GONE);
+
+			adapter.close();
+
+		}
+
+		if (ringProgressDialog != null)
+			ringProgressDialog.dismiss();
+
+	}
+
+	public int getObjectId() {
+		return ObjectID;
+	}
+
+	private void findView() {
 		exListView = (ExpandableListView) view
 				.findViewById(R.id.ExpandIntroduction);
-		peykan6 = (ImageView) header.findViewById(R.id.imageButton6);
-		peykan5 = (ImageView) header.findViewById(R.id.imageButton7);
+
 		headerImage = (ImageView) header
 				.findViewById(R.id.imgvadvertise_Object);
-		advertise2 = (ImageView) header
+		footerImage = (ImageView) header
 				.findViewById(R.id.imgvadvertise2_Object);
 		profileImage = (ImageView) header.findViewById(R.id.icon_pro);
 
@@ -216,9 +605,12 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				.findViewById(R.id.footer_progress_footer);
 
 		followPage = (Button) header.findViewById(R.id.followPage);
+		reaport = (ImageView) header.findViewById(R.id.reportImage);
+		btnShowPost = (Button) header.findViewById(R.id.btnShowPost);
 
-		if (getArguments().getString("Id") != null)
-			ObjectID = Integer.valueOf(getArguments().getString("Id"));
+	}
+
+	private void fillExpandListViewCommnet() {
 
 		adapter.open();
 		commentGroup = adapter.getAllCommentInObjectById(ObjectID, 0);
@@ -240,33 +632,15 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		exListView.setAdapter(exadapter);
 
-		exListView.setOnScrollListener(new OnScrollListener() {
+	}
 
-			@Override
-			public void onScrollStateChanged(AbsListView arg0, int arg1) {
-				switch (arg1) {
-				case SCROLL_STATE_IDLE:
+	private void setStateButtonFollowLike() {
 
-					break;
-
-				case SCROLL_STATE_TOUCH_SCROLL:
-
-				default:
-					break;
-				}
-			}
-
-			@Override
-			public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
-				// TODO Auto-generated method stub
-
-			}
-		});
 		adapter.open();
 
-		if (CurrentUser == null) {
+		if (currentUser == null) {
 		} else {
-			if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
+			if (adapter.isUserLikeIntroductionPage(currentUser.getId(),
 					ObjectID, 0)) {
 				followPage.setBackgroundColor(getResources().getColor(
 						R.color.green));
@@ -277,7 +651,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				// personPage.setBackgroundResource(R.drawable.count_like_off);
 
 			}
-			if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
+			if (adapter.isUserLikeIntroductionPage(currentUser.getId(),
 					ObjectID, 1)) {
 				likePost.setBackgroundResource(R.drawable.like_on);
 				personPost.setBackgroundResource(R.drawable.count_like);
@@ -289,6 +663,22 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			}
 		}
 		adapter.close();
+
+		if (currentUser == null || object.getUserId() != currentUser.getId()) {
+			EditPage.setVisibility(View.INVISIBLE);
+			Toast.makeText(getActivity(),
+					"userid dar database sqlite be soorat dasti 0 save shode",
+					Toast.LENGTH_LONG).show();
+			shareBtn.setLayoutParams(shareParams2);
+		} else {
+			EditPage.setVisibility(View.VISIBLE);
+			EditPage.setLayoutParams(followParams);
+
+		}
+
+	}
+
+	private void setLayoutParams() {
 
 		profileParams = new RelativeLayout.LayoutParams(
 				profileLinear.getLayoutParams());
@@ -333,7 +723,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		shareBtn.setLayoutParams(shareParams);
 
-		RelativeLayout.LayoutParams shareParams2 = new RelativeLayout.LayoutParams(
+		shareParams2 = new RelativeLayout.LayoutParams(
 				profileLinear.getLayoutParams());
 
 		shareParams2.height = ut.getScreenwidth() / 10;
@@ -345,80 +735,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		shareBtn.setLayoutParams(shareParams);
 		shareBtn.setTextSize(12);
 
-		adapter.open();
-		int countcmt = adapter.CommentInObject_count(ObjectID);
-		CountCommentIntroduction.setText(String.valueOf(countcmt));
-
-		int countlike = adapter.LikeInObject_count(ObjectID, 0);
-		CountLikeIntroduction.setText(String.valueOf(countlike));
-
-		int countlikePo = adapter.LikeInObject_count(ObjectID, 1);
-		countLikePost.setText(String.valueOf(countlikePo));
-
-		object = adapter.getObjectbyid(ObjectID);
-		adapter.close();
-
-		if (getActivity() != null) {
-
-			update = new Updating(getActivity());
-			update.delegate = IntroductionFragment.this;
-			String[] para = new String[4];
-			para[0] = "ImageServerDate";
-			para[1] = String.valueOf(object.getId());
-			para[2] = "masoud";
-			para[3] = "0";
-			update.execute(para);
-		}
-
-		loadingProgressHeader.setVisibility(View.VISIBLE);
-		loadingProgressProfile.setVisibility(View.VISIBLE);
-		loadingProgressFooter.setVisibility(View.VISIBLE);
-
-		if (ut.getCurrentUser() != null) {
-			if (ut.getCurrentUser().getId() != object.getId()) {
-				if (!ut.isNetworkConnected()) {
-					adapter.open();
-					adapter.insertVisitToDb(ut.getCurrentUser().getId(), 2,
-							object.getId());
-					adapter.close();
-				} else if ((ut.isNetworkConnected())) {
-					adapter.open();
-					// ارسال اطلاعات به جدول ویزیت سرور
-					// ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
-					adapter.deleteVisit();
-					adapter.close();
-				}
-			}
-		}
-
-		if (object == null) {
-			return view;
-		}
-		namePage.setText(object.getName());
-
-		headerImage.setLayoutParams(headerParams);
-		advertise2.setLayoutParams(footerParams);
-
-		// imagedisplay.setBackgroundResource(R.drawable.profile_account);
-		adapter.open();
-
-		adapter.close();
-
-		Users user = ut.getCurrentUser();
-		if (user == null || object.getUserId() != user.getId()) {
-			EditPage.setVisibility(View.INVISIBLE);
-			Toast.makeText(getActivity(),
-					"userid dar database sqlite be soorat dasti 0 save shode",
-					Toast.LENGTH_LONG).show();
-			shareBtn.setLayoutParams(shareParams2);
-		} else {
-			EditPage.setVisibility(View.VISIBLE);
-			EditPage.setLayoutParams(followParams);
-
-		}
-
-		if (user != null && object.getUserId() == user.getId())
-			followPage.setVisibility(View.GONE);
 		addressParams = new RelativeLayout.LayoutParams(
 				addressRelative.getLayoutParams());
 
@@ -433,6 +749,12 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		emailParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		txtEmail.setLayoutParams(emailParams);
 
+		headerImage.setLayoutParams(headerParams);
+		footerImage.setLayoutParams(footerParams);
+	}
+
+	private void setImage() {
+
 		String PathHeader = object.getImagePath1();
 		String PathProfile = object.getImagePath2();
 		String PathFooter = object.getImagePath3();
@@ -441,21 +763,13 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		Bitmap bmpProfile = BitmapFactory.decodeFile(PathProfile);
 		Bitmap bmpfooter = BitmapFactory.decodeFile(PathFooter);
 
-		// bitHeader = object.getImage1();
-
 		if (bmpHeader != null) {
-			// Bitmap bmp1 = BitmapFactory.decodeByteArray(bitHeader, 0,
-			// bitHeader.length);
 
 			headerImage.setImageBitmap(bmpHeader);
 		} else
 
 			headerImage.setBackgroundResource(R.drawable.no_image_header);
-		// /////////////////////
-		// bytepro = object.getImage2();
 		if (bmpProfile != null) {
-			// Bitmap bmp2 = BitmapFactory.decodeByteArray(bytepro, 0,
-			// bytepro.length);
 
 			profileImage.setImageBitmap(bmpProfile);
 
@@ -463,50 +777,14 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			profileImage.setBackgroundResource(R.drawable.no_img_profile);
 
 		}
-		// ///////////////////////
-		// bytefoot = object.getImage3();
 		if (bmpfooter != null) {
-			// Bitmap bmp3 = BitmapFactory.decodeByteArray(bytefoot, 0,
-			// bytefoot.length);
-
-			advertise2.setImageBitmap(bmpfooter);
+			footerImage.setImageBitmap(bmpfooter);
 
 		} else
-			advertise2.setBackgroundResource(R.drawable.no_image_header);
+			footerImage.setBackgroundResource(R.drawable.no_image_header);
+	}
 
-		txtFax.setText(object.getFax());
-		txtPhone.setText(object.getPhone());
-		txtCellphone.setText(object.getCellphone());
-		txtEmail.setText(object.getEmail());
-		txtAddress.setText(object.getAddress());
-		txtDesc.setText(object.getDescription());
-
-		if (object.getDescription() == null)
-			txtDesc.setVisibility(View.GONE);
-
-		// if ObjectBrandTypeId =1 >>>>>> namayandegi va khadamat faal hast
-		// if ObjectBrandTypeId =2 >>>>>> namayandegi va khadamat gheyr faal
-		// hast
-		// if ObjectBrandTypeId =3 >>>>>> namayandegi faal hast
-		// if ObjectBrandTypeId =4 >>>>>> khadamat faal hast
-
-		if (object.getObjectBrandTypeId() == 1) {
-			agency.setVisibility(View.VISIBLE);
-			service.setVisibility(View.VISIBLE);
-
-		}
-		if (object.getObjectBrandTypeId() == 2) {
-			agency.setVisibility(View.GONE);
-			service.setVisibility(View.GONE);
-		}
-		if (object.getObjectBrandTypeId() == 3) {
-			agency.setVisibility(View.VISIBLE);
-			service.setVisibility(View.GONE);
-		}
-		if (object.getObjectBrandTypeId() == 4) {
-			agency.setVisibility(View.GONE);
-			service.setVisibility(View.VISIBLE);
-		}
+	private void setStateLinkSocialAndDownload() {
 
 		if (object.getFacebook() != null
 				&& !object.getFacebook().equals("null"))
@@ -561,106 +839,41 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			Pdf4.setImageResource(R.drawable.ic_video);
 		else
 			Pdf4.setImageResource(R.drawable.ic_video_off);
-		//
-		// headerbyte = object.getImage1();
-		// profilebyte = object.getImage2();
-		// footerbyte = object.getImage3();
+	}
 
-		// if (footerbyte != null) {
-		// Bitmap bmp = BitmapFactory.decodeByteArray(footerbyte, 0,
-		// footerbyte.length);
-		// OutputStream stream = null;
-		// bmp.compress(CompressFormat.PNG, 80, stream);
-		//
-		// advertise2.setImageBitmap(bmp);
-		// }
+	private void setVisibilityItems() {
 
-		// advertise.setimage
-		headerImage.setOnClickListener(new OnClickListener() {
+		// if ObjectBrandTypeId =1 >>>>>> namayandegi & khadamat : faal
+		// if ObjectBrandTypeId =2 >>>>>> namayandegi & khadamat :gheyr faal
+		// if ObjectBrandTypeId =3 >>>>>> namayandegi : faal
+		// if ObjectBrandTypeId =4 >>>>>> khadamat : faal
 
-			@Override
-			public void onClick(View arg0) {
-				String pathImage = object.getImagePath1();
-				String namePage = object.getName();
+		if (object.getObjectBrandTypeId() == 1) {
+			agency.setVisibility(View.VISIBLE);
+			service.setVisibility(View.VISIBLE);
 
-				DialogShowImage showImageDialog = new DialogShowImage(
-						getActivity(), pathImage, namePage);
-				showImageDialog.show();
+		}
+		if (object.getObjectBrandTypeId() == 2) {
+			agency.setVisibility(View.GONE);
+			service.setVisibility(View.GONE);
+		}
+		if (object.getObjectBrandTypeId() == 3) {
+			agency.setVisibility(View.VISIBLE);
+			service.setVisibility(View.GONE);
+		}
+		if (object.getObjectBrandTypeId() == 4) {
+			agency.setVisibility(View.GONE);
+			service.setVisibility(View.VISIBLE);
+		}
+		if (currentUser != null && object.getUserId() == currentUser.getId())
+			followPage.setVisibility(View.GONE);
 
-			}
-		});
+		if (object.getDescription() == null)
+			txtDesc.setVisibility(View.GONE);
 
-		profileImage.setOnClickListener(new OnClickListener() {
+	}
 
-			@Override
-			public void onClick(View arg0) {
-
-				String PathProfile = object.getImagePath2();
-				String namePage = object.getName();
-				DialogShowImage showImageDialog = new DialogShowImage(
-						getActivity(), PathProfile, namePage);
-				showImageDialog.show();
-
-			}
-		});
-
-		advertise2.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				String pathImage = object.getImagePath3();
-				String namePage = object.getName();
-
-				DialogShowImage showImageDialog = new DialogShowImage(
-						getActivity(), pathImage, namePage);
-				showImageDialog.show();
-			}
-		});
-
-		personPage.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				adapter.open();
-
-				ArrayList<LikeInObject> likedist = adapter
-						.getAllLikeFromObject(ObjectID, 0);
-
-				adapter.close();
-				if (likedist.size() == 0) {
-					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
-							.show();
-				} else {
-					DialogPersonLikedObject dia = new DialogPersonLikedObject(
-							getActivity(), ObjectID, likedist);
-					dia.show();
-
-				}
-			}
-		});
-
-		personPost.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				adapter.open();
-				ArrayList<LikeInObject> likedist = adapter
-						.getAllLikeFromObject(ObjectID, 1);
-
-				adapter.close();
-				if (likedist.size() == 0) {
-					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
-							.show();
-				} else {
-					DialogPersonLikedObject dia = new DialogPersonLikedObject(
-							getActivity(), ObjectID, likedist);
-					dia.show();
-				}
-			}
-		});
-
+	private void SetonItemsClickNetworkAndDownload() {
 		Facebook.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -827,192 +1040,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
-		sendSMS.setOnClickListener(new OnClickListener() {
+	}
 
-			@Override
-			public void onClick(View arg0) {
-				// add the phone number in the data
-				Uri uri = Uri.parse("smsto:");
-
-				Intent smsSIntent = new Intent(Intent.ACTION_SENDTO, uri);
-				// add the message at the sms_body extra field
-				smsSIntent.putExtra("sms_body", object.getName() + "\n"
-						+ "همراه : " + "\n" + object.getCellphone() + "\n"
-						+ "تلفن :" + "\n" + object.getPhone() + "\n" + "آدرس :"
-						+ "\n" + object.getAddress());
-				try {
-					startActivity(smsSIntent);
-				} catch (Exception ex) {
-					Toast.makeText(getActivity(), "Your sms has failed...",
-							Toast.LENGTH_LONG).show();
-					ex.printStackTrace();
-				}
-			}
-		});
-
-		Button btnShowPost = (Button) view.findViewById(R.id.btnShowPost);
-		btnShowPost.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				PosttitleFragment fragment = new PosttitleFragment();
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, fragment);
-				trans.addToBackStack(null);
-				trans.commit();
-
-				Bundle bundle = new Bundle();
-				bundle.putInt("Id", ObjectID);
-				fragment.setArguments(bundle);
-			}
-
-		});
-
-		// IntroductionListAdapter listAdapter = new IntroductionListAdapter(
-		// getActivity(), R.layout.raw_froumcmt, mylist);
-		// lst.setAdapter(listAdapter);
-
-		// resizeListView(lst);
-
-		final SharedPreferences pageId = getActivity().getSharedPreferences(
-				"Id", 0);
-		agency.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new ProvinceFragment());
-				trans.commit();
-				pageId.edit().putInt("brandID", object.getId()).commit();
-				pageId.edit().putInt("IsAgency", 1).commit();
-				pageId.edit()
-						.putInt("main object id", object.getMainObjectId())
-						.commit();
-				Toast.makeText(
-						getActivity(),
-						"mainObjectId send brand = " + object.getMainObjectId()
-								+ " agency ", 0).show();
-			}
-		});
-
-		AddComment.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				if (CurrentUser == null) {
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
-					return;
-				} else {
-					dialog = new DialogcmtInobject(IntroductionFragment.this,
-							getActivity(), R.layout.dialog_addcomment,
-							ObjectID, 0);
-					dialog.show();
-					exadapter.notifyDataSetChanged();
-				}
-
-			}
-		});
-
-		likePost.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				if (CurrentUser == null) {
-					Toast.makeText(getActivity(),
-							"برای درج لایک ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
-				} else {
-
-					date = new ServerDate(getActivity());
-					date.delegate = IntroductionFragment.this;
-					date.execute("");
-
-					flag = false;
-
-				}
-
-			}
-
-		});
-
-		followPage.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				if (CurrentUser == null) {
-					Toast.makeText(getActivity(),
-							"برای درج لایک ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
-				} else {
-
-					date = new ServerDate(getActivity());
-					date.delegate = IntroductionFragment.this;
-					date.execute("");
-
-					flag = true;
-
-				}
-			}
-
-		});
-
-		service.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new ProvinceFragment());
-				trans.commit();
-
-				pageId.edit().putInt("brandID", object.getId()).commit();
-				pageId.edit().putInt("IsAgency", 0).commit();
-				pageId.edit()
-						.putInt("main object id", object.getMainObjectId())
-						.commit();
-				Toast.makeText(
-						getActivity(),
-						"MainObjectId = " + object.getMainObjectId()
-								+ "service", 0).show();
-
-			}
-		});
-
-		peykan6.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new ProvinceFragment());
-				trans.commit();
-
-			}
-		});
-
-		peykan5.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new ProvinceFragment());
-				trans.commit();
-
-			}
-		});
+	private void setOnItemClickInformationContact() {
 
 		phone.setOnClickListener(new OnClickListener() {
 
@@ -1082,6 +1112,140 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				startActivity(intent);
 			}
 		});
+		sendSMS.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// add the phone number in the data
+				Uri uri = Uri.parse("smsto:");
+
+				Intent smsSIntent = new Intent(Intent.ACTION_SENDTO, uri);
+				// add the message at the sms_body extra field
+				smsSIntent.putExtra("sms_body", object.getName() + "\n"
+						+ "همراه : " + "\n" + object.getCellphone() + "\n"
+						+ "تلفن :" + "\n" + object.getPhone() + "\n" + "آدرس :"
+						+ "\n" + object.getAddress());
+				try {
+					startActivity(smsSIntent);
+				} catch (Exception ex) {
+					Toast.makeText(getActivity(), "Your sms has failed...",
+							Toast.LENGTH_LONG).show();
+					ex.printStackTrace();
+				}
+			}
+		});
+
+	}
+
+	private void setonClickImage() {
+		headerImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				String pathImage = object.getImagePath1();
+				String namePage = object.getName();
+
+				DialogShowImage showImageDialog = new DialogShowImage(
+						getActivity(), pathImage, namePage);
+				showImageDialog.show();
+
+			}
+		});
+
+		profileImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				String PathProfile = object.getImagePath2();
+				String namePage = object.getName();
+				DialogShowImage showImageDialog = new DialogShowImage(
+						getActivity(), PathProfile, namePage);
+				showImageDialog.show();
+
+			}
+		});
+
+		footerImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				String pathImage = object.getImagePath3();
+				String namePage = object.getName();
+
+				DialogShowImage showImageDialog = new DialogShowImage(
+						getActivity(), pathImage, namePage);
+				showImageDialog.show();
+			}
+		});
+	}
+
+	private void LikeCommentAction() {
+
+		AddComment.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				if (currentUser == null) {
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+					return;
+				} else {
+					dialog = new DialogcmtInobject(IntroductionFragment.this,
+							getActivity(), R.layout.dialog_addcomment,
+							ObjectID, 0);
+					dialog.show();
+					exadapter.notifyDataSetChanged();
+				}
+
+			}
+		});
+
+		likePost.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				if (currentUser == null) {
+					Toast.makeText(getActivity(),
+							"برای درج لایک ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+				} else {
+
+					date = new ServerDate(getActivity());
+					date.delegate = IntroductionFragment.this;
+					date.execute("");
+
+					flag = false;
+
+				}
+
+			}
+
+		});
+
+		followPage.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				if (currentUser == null) {
+					Toast.makeText(getActivity(),
+							"برای درج لایک ابتدا باید وارد شوید",
+							Toast.LENGTH_SHORT).show();
+				} else {
+
+					date = new ServerDate(getActivity());
+					date.delegate = IntroductionFragment.this;
+					date.execute("");
+
+					flag = true;
+
+				}
+			}
+
+		});
 
 		EditPage.setOnClickListener(new OnClickListener() {
 
@@ -1135,7 +1299,52 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
-		ImageView reaport = (ImageView) header.findViewById(R.id.reportImage);
+	}
+
+	private void AgencyServiceSettingActionButton() {
+		agency.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new ProvinceFragment());
+				trans.commit();
+				pageId.edit().putInt("brandID", object.getId()).commit();
+				pageId.edit().putInt("IsAgency", 1).commit();
+				pageId.edit()
+						.putInt("main object id", object.getMainObjectId())
+						.commit();
+				Toast.makeText(
+						getActivity(),
+						"mainObjectId send brand = " + object.getMainObjectId()
+								+ " agency ", 0).show();
+			}
+		});
+
+		service.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new ProvinceFragment());
+				trans.commit();
+
+				pageId.edit().putInt("brandID", object.getId()).commit();
+				pageId.edit().putInt("IsAgency", 0).commit();
+				pageId.edit()
+						.putInt("main object id", object.getMainObjectId())
+						.commit();
+				Toast.makeText(
+						getActivity(),
+						"MainObjectId = " + object.getMainObjectId()
+								+ "service", 0).show();
+
+			}
+		});
 
 		reaport.setOnClickListener(new OnClickListener() {
 
@@ -1167,367 +1376,135 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
-		ut.ShowFooterAgahi(getActivity(), false, 1);
+		btnShowPost.setOnClickListener(new OnClickListener() {
 
-		return view;
+			@Override
+			public void onClick(View arg0) {
+
+				PosttitleFragment fragment = new PosttitleFragment();
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("Id", ObjectID);
+				fragment.setArguments(bundle);
+			}
+
+		});
 
 	}
 
-	public void updateList() {
-		sendDataID = getActivity().getSharedPreferences("Id", 0);
-		final int ObjectID = sendDataID.getInt("main_Id", -1);
+	private void setValues() {
 
 		adapter.open();
-		commentGroup = adapter.getAllCommentInObjectById(ObjectID, 0);
-		mapCollection = new LinkedHashMap<CommentInObject, List<CommentInObject>>();
-
-		List<CommentInObject> reply = null;
-		for (CommentInObject comment : commentGroup) {
-			reply = adapter.getReplyCommentIntroduction(ObjectID,
-					comment.getId());
-			mapCollection.put(comment, reply);
-		}
-
 		int countcmt = adapter.CommentInObject_count(ObjectID);
 		CountCommentIntroduction.setText(String.valueOf(countcmt));
-		exadapter = new ExpandIntroduction(getActivity(),
-				(ArrayList<CommentInObject>) commentGroup, mapCollection, this,
-				ObjectID);
-		adapter.close();
-		exadapter.notifyDataSetChanged();
 
-		exListView.setAdapter(exadapter);
+		int countlike = adapter.LikeInObject_count(ObjectID, 0);
+		CountLikeIntroduction.setText(String.valueOf(countlike));
+
+		int countlikePo = adapter.LikeInObject_count(ObjectID, 1);
+		countLikePost.setText(String.valueOf(countlikePo));
+
+		object = adapter.getObjectbyid(ObjectID);
+		adapter.close();
+
+		namePage.setText(object.getName());
+		txtFax.setText(object.getFax());
+		txtPhone.setText(object.getPhone());
+		txtCellphone.setText(object.getCellphone());
+		txtEmail.setText(object.getEmail());
+		txtAddress.setText(object.getAddress());
+		txtDesc.setText(object.getDescription());
 
 	}
 
-	@Override
-	public void processFinish(String output) {
+	private void showPeopleLikedBtn() {
+		personPage.setOnClickListener(new OnClickListener() {
 
-		if (output.contains("---")) {
-			if (ringProgressDialog != null)
-				ringProgressDialog.dismiss();
-
-			loadingProgressHeader.setVisibility(View.GONE);
-			loadingProgressProfile.setVisibility(View.GONE);
-			loadingProgressFooter.setVisibility(View.GONE);
-			return;
-		} else if (output.contains("-")) {
-			String[] strs = output.split(Pattern.quote("-")); // each
-
-			String s1, s2, s3;
-
-			serverDate = s1 = strs[0];
-			s2 = strs[1];
-			s3 = strs[2];
-
-			if (object.getImage1ServerDate() == null
-					|| !object.getImage1ServerDate().equals(s1)) {
-				object.setImage1ServerDate(s1);
-				f1 = true;
-			}
-			if (object.getImage2ServerDate() == null
-					|| !object.getImage2ServerDate().equals(s2)) {
-				object.setImage2ServerDate(s2);
-				f2 = true;
-			}
-
-			if (object.getImage3ServerDate() == null
-					|| !object.getImage3ServerDate().equals(s3)) {
-				object.setImage3ServerDate(s3);
-				f3 = true;
-			}
-
-			if (f1 || f2 || f3) {
-				updating = new UpdatingAllImage(getActivity());
-				updating.delegate = this;
-				maps = new LinkedHashMap<String, String>();
-				// maps.put("tableName", "Object1");
-				maps.put("tableName", "All");
-				maps.put("Id", String.valueOf(ObjectID));
-				maps.put("fromDate1", object.getImage1ServerDate());
-				maps.put("fromDate2", object.getImage2ServerDate());
-				maps.put("fromDate3", object.getImage3ServerDate());
-				updating.execute(maps);
-
-			} else {
-				loadingProgressHeader.setVisibility(View.GONE);
-				loadingProgressProfile.setVisibility(View.GONE);
-				loadingProgressFooter.setVisibility(View.GONE);
-				Toast.makeText(getActivity(),
-						"به روز رسانی تصاویر با موفقیت انجام شد",
-						Toast.LENGTH_SHORT).show();
-			}
-
-		} else {
-			int id = -1;
-			try {
-				id = Integer.valueOf(output);
-				// این متغیر مشخص کنندهلایک صفحه و لایک پست می بایشد
-				int comId;
-				if (flag)
-					// دنبال کردن
-					comId = 0;
-				else
-					// لایک پست
-					comId = 1;
+			@Override
+			public void onClick(View arg0) {
 
 				adapter.open();
 
-				if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
-						ObjectID, comId)) {
+				ArrayList<LikeInObject> likedist = adapter
+						.getAllLikeFromObject(ObjectID, 0);
 
-					adapter.deleteLikeIntroduction(CurrentUser.getId(),
-							ObjectID, comId);
-					int countlike = adapter.LikeInObject_count(ObjectID, comId);
-
-					if (flag) {
-						followPage.setBackgroundColor(getResources().getColor(
-								R.color.gray));
-						// personPage
-						// .setBackgroundResource(R.drawable.count_like_off);
-						CountLikeIntroduction
-								.setText(String.valueOf(countlike));
-						if (ringProgressDialog != null)
-							ringProgressDialog.dismiss();
-
-					} else {
-						likePost.setBackgroundResource(R.drawable.like_off);
-						personPost
-								.setBackgroundResource(R.drawable.count_like_off);
-						countLikePost.setText(String.valueOf(countlike));
-						if (ringProgressDialog != null)
-							ringProgressDialog.dismiss();
-					}
-
-				} else {
-					adapter.insertLikeInObjectToDb(id, CurrentUser.getId(),
-							ObjectID, serverDate, comId);
-					int countlike = adapter.LikeInObject_count(ObjectID, comId);
-
-					if (flag) {
-						followPage.setBackgroundColor(getResources().getColor(
-								R.color.green));
-						// personPage.setBackgroundResource(R.drawable.count_like);
-						CountLikeIntroduction
-								.setText(String.valueOf(countlike));
-						if (ringProgressDialog != null)
-							ringProgressDialog.dismiss();
-					} else {
-						likePost.setBackgroundResource(R.drawable.like_on);
-						personPost.setBackgroundResource(R.drawable.count_like);
-						countLikePost.setText(String.valueOf(countlike));
-						if (ringProgressDialog != null)
-							ringProgressDialog.dismiss();
-					}
-
-				}
 				adapter.close();
-
-			} catch (NumberFormatException e) {
-				if (output != null
-						&& !(output.contains("Exception") || output
-								.contains("java"))) {
-					// این متغیر مشخص کنندهلایک صفحه و لایک پست می بایشد
-					int comId;
-					if (flag)
-						// لایک صفحه
-						comId = 0;
-					else
-						// لایک پست
-						comId = 1;
-					adapter.open();
-					if (adapter.isUserLikeIntroductionPage(CurrentUser.getId(),
-							ObjectID, comId)) {
-
-						params = new LinkedHashMap<String, String>();
-						if (getActivity() != null) {
-
-							deleting = new Deleting(getActivity());
-							deleting.delegate = IntroductionFragment.this;
-
-							params.put("TableName", "LikeInObject");
-							params.put("UserId",
-									String.valueOf(CurrentUser.getId()));
-							params.put("ObjectId", String.valueOf(ObjectID));
-							params.put("CommentId", String.valueOf(comId));
-
-							deleting.execute(params);
-						}
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								"", "لطفا منتظر بمانید...", true);
-
-						ringProgressDialog.setCancelable(true);
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
-							}
-						}).start();
-						adapter.close();
-
-					} else {
-						adapter.open();
-						params = new LinkedHashMap<String, String>();
-
-						if (getActivity() != null) {
-							saving = new Saving(getActivity());
-							saving.delegate = IntroductionFragment.this;
-
-							params.put("TableName", "LikeInObject");
-
-							params.put("UserId",
-									String.valueOf(CurrentUser.getId()));
-							params.put("ObjectId", String.valueOf(ObjectID));
-							params.put("Date", output);
-							params.put("ModifyDate", output);
-
-							params.put("CommentId", String.valueOf(comId));
-
-							params.put("IsUpdate", "0");
-							params.put("Id", "0");
-
-							serverDate = output;
-
-							saving.execute(params);
-						}
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								"", "لطفا منتظر بمانید...", true);
-
-						ringProgressDialog.setCancelable(true);
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
-							}
-						}).start();
-						adapter.close();
-
-					}
-					adapter.close();
-
+				if (likedist.size() == 0) {
+					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
+							.show();
 				} else {
-					Toast.makeText(getActivity(),
-							"خطا در ثبت. پاسخ نا مشخص از سرور",
-							Toast.LENGTH_SHORT).show();
-					loadingProgressHeader.setVisibility(View.GONE);
-					loadingProgressProfile.setVisibility(View.GONE);
-					loadingProgressFooter.setVisibility(View.GONE);
+					DialogPersonLikedObject dia = new DialogPersonLikedObject(
+							getActivity(), ObjectID, likedist);
+					dia.show();
+
 				}
 			}
+		});
 
-			catch (Exception e) {
+		personPost.setOnClickListener(new OnClickListener() {
 
-				Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
-						.show();
-				loadingProgressHeader.setVisibility(View.GONE);
-				loadingProgressProfile.setVisibility(View.GONE);
-				loadingProgressFooter.setVisibility(View.GONE);
+			@Override
+			public void onClick(View arg0) {
+
+				adapter.open();
+				ArrayList<LikeInObject> likedist = adapter
+						.getAllLikeFromObject(ObjectID, 1);
+
+				adapter.close();
+				if (likedist.size() == 0) {
+					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
+							.show();
+				} else {
+					DialogPersonLikedObject dia = new DialogPersonLikedObject(
+							getActivity(), ObjectID, likedist);
+					dia.show();
+				}
+			}
+		});
+	}
+
+	private void getImageFromServer() {
+		if (getActivity() != null) {
+
+			update = new Updating(getActivity());
+			update.delegate = IntroductionFragment.this;
+			String[] para = new String[4];
+			para[0] = "ImageServerDate";
+			para[1] = String.valueOf(object.getId());
+			para[2] = "masoud";
+			para[3] = "0";
+			update.execute(para);
+		}
+
+		loadingProgressHeader.setVisibility(View.VISIBLE);
+		loadingProgressProfile.setVisibility(View.VISIBLE);
+		loadingProgressFooter.setVisibility(View.VISIBLE);
+	}
+
+	private void countVisitFromPage() {
+
+		if (currentUser != null) {
+			if (currentUser.getId() != object.getId()) {
+				if (!ut.isNetworkConnected()) {
+					adapter.open();
+					adapter.insertVisitToDb(ut.getCurrentUser().getId(), 2,
+							object.getId());
+					adapter.close();
+				} else if ((ut.isNetworkConnected())) {
+					adapter.open();
+					// ارسال اطلاعات به جدول ویزیت سرور
+					// ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
+					adapter.deleteVisit();
+					adapter.close();
+				}
 			}
 		}
-	}
-
-	@Override
-	public void processFinish(List<byte[]> output) {
-
-		if (output != null && output.size() > 0) {
-
-			adapter.open();
-
-			if (f1)
-				if (output.get(0) != null) {
-					ut.CreateFile(output.get(0), object.getId(), "Mechanical",
-							"Profile", "header", "Object");
-
-					// adapter.UpdateHeaderImageObject(ObjectID, output.get(0));
-					object = adapter.getObjectbyid(ObjectID);
-
-					String PathImageHeader = "";
-					PathImageHeader = object.getImagePath1();
-					Bitmap b = BitmapFactory.decodeFile(PathImageHeader);
-
-					if (b != null)
-						headerImage.setImageBitmap(b);
-					else
-						headerImage
-								.setBackgroundResource(R.drawable.no_image_header);
-					adapter.updateObjectImage1ServerDate(ObjectID, serverDate);
-				}
-			if (f2)
-				if (output.get(1) != null) {
-					ut.CreateFile(output.get(1), object.getId(), "Mechanical",
-							"Profile", "profile", "Object");
-					object = adapter.getObjectbyid(ObjectID);
-
-					String PathImageProfile = "";
-					PathImageProfile = object.getImagePath2();
-					// adapter.UpdateProfileImageObject(ObjectID,
-					// output.get(1));
-					Bitmap b = BitmapFactory.decodeFile(PathImageProfile);
-
-					if (b != null)
-						profileImage.setImageBitmap(b);
-					else
-						profileImage
-								.setBackgroundResource(R.drawable.no_img_profile);
-					adapter.updateObjectImage2ServerDate(ObjectID, serverDate);
-				}
-
-			if (f3)
-				if (output.get(2) != null) {
-					ut.CreateFile(output.get(2), object.getId(), "Mechanical",
-							"Profile", "footer", "Object");
-					object = adapter.getObjectbyid(ObjectID);
-
-					String PathImageFooter = "";
-					PathImageFooter = object.getImagePath3();
-
-					// adapter.UpdateFooterImageObject(ObjectID, output.get(2));
-					Bitmap b = BitmapFactory.decodeFile(PathImageFooter);
-
-					if (b != null)
-						advertise2.setImageBitmap(b);
-					else
-						advertise2
-								.setBackgroundResource(R.drawable.no_image_header);
-
-					adapter.updateObjectImage3ServerDate(ObjectID, serverDate);
-
-				}
-			Toast.makeText(getActivity(),
-					"به روز رسانی تصاویر با موفقیت انجام شد",
-					Toast.LENGTH_SHORT).show();
-
-			loadingProgressHeader.setVisibility(View.GONE);
-			loadingProgressProfile.setVisibility(View.GONE);
-			loadingProgressFooter.setVisibility(View.GONE);
-
-			adapter.close();
-
-		}
-
-		if (ringProgressDialog != null)
-			ringProgressDialog.dismiss();
 
 	}
-
-	public int getObjectId() {
-		return ObjectID;
-	}
-
 }

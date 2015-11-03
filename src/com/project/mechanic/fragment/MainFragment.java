@@ -31,14 +31,40 @@ public class MainFragment extends Fragment {
 	RelativeLayout.LayoutParams r1, r2, r3, r4, r5, r6, r7, r8;
 	ImageView img1, img2, img3, img4, img5, img6, img7;
 
-	TextView tite1;
+	TextView tite1, lable1, lable2, lable3, lable4, lable5, lable6, lable7;
+	View view;
+	SharedPreferences sendData;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
 		util = new Utility(getActivity());
-		View view = inflater.inflate(R.layout.fragment_main_page, null);
+
+		sendData = getActivity().getSharedPreferences("Id", 0);
+		view = inflater.inflate(R.layout.fragment_main_page, null);
+
+		// define Views : find view by Id Items
+		findView();
+
+		// define Layout Params
+		DefineLayoutParams();
+
+		// setLayout Params
+		setLayoutParams();
+
+		// set Font title
+		setFont();
+
+		// on click
+		onClick();
+
+		util.ShowFooterAgahi(getActivity(), true, 1);
+
+		return view;
+	}
+
+	private void findView() {
 
 		mainRow1 = (RelativeLayout) view.findViewById(R.id.relative_item1);
 		mainRow2 = (RelativeLayout) view.findViewById(R.id.relative_item2);
@@ -48,6 +74,25 @@ public class MainFragment extends Fragment {
 		mainRow6 = (RelativeLayout) view.findViewById(R.id.relative_item6);
 		mainRow7 = (RelativeLayout) view.findViewById(R.id.relative_item7);
 
+		img1 = (ImageView) view.findViewById(R.id.icon_item1);
+		img2 = (ImageView) view.findViewById(R.id.icon_item2);
+		img3 = (ImageView) view.findViewById(R.id.icon_item3);
+		img4 = (ImageView) view.findViewById(R.id.icon_item4);
+		img5 = (ImageView) view.findViewById(R.id.icon_item5);
+		img6 = (ImageView) view.findViewById(R.id.icon_item6);
+		img7 = (ImageView) view.findViewById(R.id.icon_item7);
+
+		lable1 = (TextView) view.findViewById(R.id.lable1);
+		lable2 = (TextView) view.findViewById(R.id.lable2);
+		lable3 = (TextView) view.findViewById(R.id.lable3);
+		lable4 = (TextView) view.findViewById(R.id.lable4);
+		lable5 = (TextView) view.findViewById(R.id.lable5);
+		lable6 = (TextView) view.findViewById(R.id.lable6);
+		lable7 = (TextView) view.findViewById(R.id.lable7);
+	}
+
+	private void DefineLayoutParams() {
+
 		r1 = new RelativeLayout.LayoutParams(mainRow1.getLayoutParams());
 		r2 = new RelativeLayout.LayoutParams(mainRow2.getLayoutParams());
 		r3 = new RelativeLayout.LayoutParams(mainRow3.getLayoutParams());
@@ -56,22 +101,10 @@ public class MainFragment extends Fragment {
 		r6 = new RelativeLayout.LayoutParams(mainRow6.getLayoutParams());
 		r7 = new RelativeLayout.LayoutParams(mainRow7.getLayoutParams());
 
-		img1 = (ImageView) view.findViewById(R.id.icon_item1);
-		img2 = (ImageView) view.findViewById(R.id.icon_item2);
-		img3 = (ImageView) view.findViewById(R.id.icon_item3);
-		img4 = (ImageView) view.findViewById(R.id.icon_item4);
-		img5 = (ImageView) view.findViewById(R.id.icon_item5);
-		img6 = (ImageView) view.findViewById(R.id.icon_item6);
-		img7 = (ImageView) view.findViewById(R.id.icon_item7);
-		
-		TextView lable1 = (TextView) view.findViewById(R.id.lable1);
-		TextView lable2 = (TextView) view.findViewById(R.id.lable2);
-		TextView lable3 = (TextView) view.findViewById(R.id.lable3);
-		TextView lable4 = (TextView) view.findViewById(R.id.lable4);
-		TextView lable5 = (TextView) view.findViewById(R.id.lable5);
-		TextView lable6 = (TextView) view.findViewById(R.id.lable6);
-		TextView lable7 = (TextView) view.findViewById(R.id.lable7);
-		
+	}
+
+	private void setLayoutParams() {
+
 		r1.width = util.getScreenwidth() / 10;
 		r1.height = util.getScreenwidth() / 10;
 		r1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -120,8 +153,10 @@ public class MainFragment extends Fragment {
 		r7.setMargins(5, 0, 1, 0);
 		r7.addRule(RelativeLayout.CENTER_VERTICAL);
 		img7.setLayoutParams(r7);
-		
-	
+	}
+
+	private void setFont() {
+
 		lable1.setTypeface(util.SetFontCasablanca());
 		lable2.setTypeface(util.SetFontCasablanca());
 		lable3.setTypeface(util.SetFontCasablanca());
@@ -129,10 +164,9 @@ public class MainFragment extends Fragment {
 		lable5.setTypeface(util.SetFontCasablanca());
 		lable6.setTypeface(util.SetFontCasablanca());
 		lable7.setTypeface(util.SetFontCasablanca());
+	}
 
-
-		final SharedPreferences sendData = getActivity().getSharedPreferences(
-				"Id", 0);
+	private void onClick() {
 
 		mainRow1.setOnClickListener(new OnClickListener() {
 
@@ -177,7 +211,6 @@ public class MainFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				int id = 3;
 
 				FragmentTransaction trans = ((MainActivity) getActivity())
@@ -266,10 +299,7 @@ public class MainFragment extends Fragment {
 				trans.commit();
 			}
 		});
-		
-		util.ShowFooterAgahi(getActivity() , true ,1);
 
-		return view;
 	}
 
 }

@@ -2,6 +2,7 @@ package com.project.mechanic.fragment;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.app.ProgressDialog;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -21,26 +23,34 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.PushNotification.DomainSend;
+import com.project.mechanic.adapter.FroumtitleListadapter;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.LikeInFroum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class FroumWithoutComment extends Fragment implements AsyncInterface {
+public class FroumWithoutComment extends Fragment implements AsyncInterface,
+		CommInterface {
 	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike,
 			nametxt;
-	LinearLayout /*addComment,*/ likeTopic;
+	LinearLayout /* addComment, */likeTopic;
 	ImageButton sharebtn;
 	ImageView profileImg;
 	Froum topics;
@@ -61,10 +71,11 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 	ServerDate date;
 	RelativeLayout count;
 	FroumFragment ff;
-	int userId;
+	int userId , itemId;
 	int diss = 0;
-	LinearLayout  commentcounter;
+	LinearLayout commentcounter;
 	boolean LikeOrComment; // like == true & comment == false
+	List<String> menuItems;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,7 +93,8 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 		countLike = (TextView) view.findViewById(R.id.txtNumofLike_CmtFroum);
 		nametxt = (TextView) view.findViewById(R.id.name_cc);
 
-//		addComment = (LinearLayout) view.findViewById(R.id.addCommentToTopic);
+		// addComment = (LinearLayout)
+		// view.findViewById(R.id.addCommentToTopic);
 		likeTopic = (LinearLayout) view.findViewById(R.id.LikeTopicLinear);
 
 		sharebtn = (ImageButton) view.findViewById(R.id.sharefroumicon);
@@ -222,40 +234,40 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 				}
 			}
 		});
-//		addComment.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View arg0) {
-//
-//				if (CurrentUser == null) {
-//					Toast.makeText(getActivity(),
-//							"برای درج کامنت ابتدا باید وارد شوید",
-//							Toast.LENGTH_SHORT).show();
-//
-//				} else {
-//					dialog = new DialogcmtInfroum(FroumWithoutComment.this, 0,
-//							getActivity(), idFroum, R.layout.dialog_addcomment,
-//							1);
-//					dialog.show();
-//
-//					// FragmentTransaction trans = ((MainActivity)
-//					// getActivity())
-//					// .getSupportFragmentManager().beginTransaction();
-//					// FroumFragment fragment = new FroumFragment();
-//					// trans.setCustomAnimations(R.anim.pull_in_left,
-//					// R.anim.push_out_right);
-//					// Bundle b = new Bundle();
-//					// b.putString("Id", String.valueOf(idFroum));
-//					// fragment.setArguments(b);
-//					//
-//					// trans.replace(R.id.content_frame, fragment);
-//					// trans.commit();
-//					// ff = new FroumFragment();
-//					// ff.updateList();
-//
-//				}
-//			}
-//		});
+		// addComment.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		//
+		// if (CurrentUser == null) {
+		// Toast.makeText(getActivity(),
+		// "برای درج کامنت ابتدا باید وارد شوید",
+		// Toast.LENGTH_SHORT).show();
+		//
+		// } else {
+		// dialog = new DialogcmtInfroum(FroumWithoutComment.this, 0,
+		// getActivity(), idFroum, R.layout.dialog_addcomment,
+		// 1);
+		// dialog.show();
+		//
+		// // FragmentTransaction trans = ((MainActivity)
+		// // getActivity())
+		// // .getSupportFragmentManager().beginTransaction();
+		// // FroumFragment fragment = new FroumFragment();
+		// // trans.setCustomAnimations(R.anim.pull_in_left,
+		// // R.anim.push_out_right);
+		// // Bundle b = new Bundle();
+		// // b.putString("Id", String.valueOf(idFroum));
+		// // fragment.setArguments(b);
+		// //
+		// // trans.replace(R.id.content_frame, fragment);
+		// // trans.commit();
+		// // ff = new FroumFragment();
+		// // ff.updateList();
+		//
+		// }
+		// }
+		// });
 		sharebtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -305,26 +317,102 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 			@Override
 			public void onClick(View v) {
 
-				if (CurrentUser == null) {
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", 0)
-							.show();
+				// final String t;
+				// ListView listView = (ListView) v.getParent().getParent()
+				// .getParent().getParent();
+				// int position = listView.getPositionForView(v);
+				// Froum f = getItem(position);
+				// if (f != null) {
+				final int userIdsender = topics.getUserId();
+				final String t = topics.getDescription();
+				itemId = topics.getId();
+
+				if (util.getCurrentUser() != null) {
+					if (util.getCurrentUser().getId() == userIdsender) {
+
+						menuItems = new ArrayList<String>();
+						menuItems.clear();
+						menuItems.add("ارسال پیام");
+						menuItems.add("کپی");
+						menuItems.add("حذف");
+
+					} else {
+						menuItems = new ArrayList<String>();
+
+						menuItems.clear();
+						menuItems.add("ارسال پیام");
+						menuItems.add("افزودن به علاقه مندی ها");
+						menuItems.add("کپی");
+						menuItems.add("گزارش تخلف");
+					}
 				} else {
+					menuItems = new ArrayList<String>();
 
-					DialogLongClick dia = new DialogLongClick(getActivity(), 1,
-							topics.getUserId(), topics.getId(),
-							FroumWithoutComment.this, topics.getDescription());
-					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-					lp.copyFrom(dia.getWindow().getAttributes());
-					lp.width = (int) (util.getScreenwidth() / 1.5);
-					lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-					;
-					dia.show();
-
-					dia.getWindow().setAttributes(lp);
-					dia.getWindow().setBackgroundDrawable(
-							new ColorDrawable(
-									android.graphics.Color.TRANSPARENT));
+					menuItems.clear();
+					menuItems.add("کپی");
 				}
+
+				final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
+
+				OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+
+						if (item.getTitle().equals("ارسال پیام")) {
+
+							util.sendMessage("Froum");
+
+						}
+
+						if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
+							adapter.open();
+							addToFavorite(util.getCurrentUser().getId(), 1,
+									itemId);
+							adapter.close();
+						}
+						if (item.getTitle().equals("کپی")) {
+
+							util.CopyToClipboard(t);
+
+						}
+						if (item.getTitle().equals("گزارش تخلف")) {
+
+							util.reportAbuse(userIdsender, 1, itemId, t,0);
+
+						}
+						if (item.getTitle().equals("حذف")) {
+							if (util.getCurrentUser() != null
+									&& util.getCurrentUser().getId() == userIdsender)
+								deleteItems(itemId);
+							else {
+
+								Toast.makeText(getActivity(), "", 0).show();
+							}
+						}
+
+						return false;
+					}
+				};
+
+				popupMenu.setOnMenuItemClickListener(menuitem);
+
+				// DialogLongClick dia = new DialogLongClick(getActivity(), 1,
+				// topics.getUserId(), topics.getId(),
+				// FroumWithoutComment.this, topics.getDescription());
+				// WindowManager.LayoutParams lp = new
+				// WindowManager.LayoutParams();
+				// lp.copyFrom(dia.getWindow().getAttributes());
+				// lp.width = (int) (util.getScreenwidth() / 1.5);
+				// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+				// ;
+				// dia.show();
+				//
+				// dia.getWindow().setAttributes(lp);
+				// dia.getWindow().setBackgroundDrawable(
+				// new ColorDrawable(
+				// android.graphics.Color.TRANSPARENT));
+
 			}
 		});
 
@@ -360,7 +448,6 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 			}
 		});
 
-		
 		return view;
 	}
 
@@ -549,5 +636,75 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface {
 				ringProgressDialog.dismiss();
 			}
 		}
+	}
+
+	public void addToFavorite(int currentUserId, int source, int ItemId) {
+
+		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
+			Toast.makeText(getActivity(),
+					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+		} else {
+			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
+			Toast.makeText(getActivity(), "به لیست علاقه مندی ها اضافه شد ", 0)
+					.show();
+		}
+	}
+
+	public void deleteItems(int itemId) {
+
+		ServiceComm service = new ServiceComm(getActivity());
+		service.delegate = FroumWithoutComment.this;
+		Map<String, String> items = new LinkedHashMap<String, String>();
+		items.put("DeletingRecord", "DeletingRecord");
+
+		items.put("tableName", "Froum");
+		items.put("Id", String.valueOf(itemId));
+
+		service.execute(items);
+
+		ringProgressDialog = ProgressDialog.show(getActivity(), "",
+				"لطفا منتظر بمانید...", true);
+
+		ringProgressDialog.setCancelable(true);
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+
+					Thread.sleep(10000);
+
+				} catch (Exception e) {
+
+				}
+			}
+		}).start();
+	}
+
+	@Override
+	public void CommProcessFinish(String output) {
+		adapter.open();
+
+		adapter.deleteFroumTitle(itemId);
+		adapter.deleteCommentFroum(itemId);
+		adapter.deleteLikeFroum(itemId);
+
+		adapter.close();
+
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
+		
+		FroumtitleFragment fr = new FroumtitleFragment();
+
+		FragmentTransaction trans = ((MainActivity) getActivity())
+				.getSupportFragmentManager().beginTransaction();
+
+		trans.replace(R.id.content_frame, fr);
+		trans.addToBackStack(null);
+		trans.commit();
+		
+
 	}
 }

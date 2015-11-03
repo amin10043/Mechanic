@@ -124,8 +124,8 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 		default:
 			break;
 		}
-		final SharedPreferences tashkhis = context
-				.getSharedPreferences("Id", 0);
+//		final SharedPreferences tashkhis = context
+//				.getSharedPreferences("Id", 0);
 
 		if (source != 3) {
 			r2.setVisibility(View.GONE);
@@ -146,19 +146,19 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 				if (util.getCurrentUser() != null) {
 
-					DomainSend fr = new DomainSend(tableName);
+//					DomainSend fr = new DomainSend(tableName);
+//
+//					FragmentTransaction trans = ((MainActivity) context)
+//							.getSupportFragmentManager().beginTransaction();
+//
+//					trans.replace(R.id.content_frame, fr);
+//					trans.addToBackStack(null);
+//					trans.commit();
 
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-
-					trans.replace(R.id.content_frame, fr);
-					trans.addToBackStack(null);
-					trans.commit();
-
-					dismiss();
-					tashkhis.edit().putString("enter", "Dialog").commit();
-					tashkhis.edit().putString("FromTableName", tableName)
-							.commit();
+//					dismiss();
+//					tashkhis.edit().putString("enter", "Dialog").commit();
+//					tashkhis.edit().putString("FromTableName", tableName)
+//							.commit();
 				} else
 					Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 

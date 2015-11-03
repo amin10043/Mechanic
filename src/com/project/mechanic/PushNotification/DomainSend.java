@@ -13,17 +13,28 @@ import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.utility.Utility;
 
 @SuppressLint("ValidFragment")
 public class DomainSend extends Fragment {
 
 	String type;
 	RelativeLayout countryItem, cityItem;
+	Utility util;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_domain_send, null);
+		
+		util = new Utility(getActivity());
+		
+		TextView lableCountry = (TextView)rootView.findViewById(R.id.RowCitytxt);
+		TextView lableCity = (TextView)rootView.findViewById(R.id.RowCitytxtcs);
+		
+		lableCountry.setTypeface(util.SetFontCasablanca());
+		lableCity.setTypeface(util.SetFontCasablanca());
+
 
 		countryItem = (RelativeLayout) rootView.findViewById(R.id.countryItem);
 		cityItem = (RelativeLayout) rootView.findViewById(R.id.cityItem);
@@ -79,6 +90,7 @@ public class DomainSend extends Fragment {
 			}
 		});
 
+		util.ShowFooterAgahi(getActivity(), false, 0);
 		return rootView;
 	}
 

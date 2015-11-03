@@ -30,13 +30,13 @@
                 android:background="@drawable/ic_blank" />
 
             <TextView
-                android:id="@+id/tre"
+                android:id="@+id/a1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
-                android:text="بیشترین بازدید از صفحات"
+                android:text="بیشترین پسند از صفحات"
                 android:textColor="@color/transparent" />
         </RelativeLayout>
 
@@ -59,13 +59,13 @@
                 android:background="@drawable/ic_blank" />
 
             <TextView
-                android:id="@+id/userviewtxt"
+                android:id="@+id/a2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
-                android:text="بیشترین بازدید از مطالب"
+                android:text="بیشترین پسند از مطالب"
                 android:textColor="@color/transparent" />
         </RelativeLayout>
 
@@ -88,13 +88,13 @@
                 android:background="@drawable/ic_blank" />
 
             <TextView
-                android:id="@+id/tre"
+                android:id="@+id/a3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
-                android:text="بیشترین بازدید از مقالات"
+                android:text="بیشترین پسند از مقالات"
                 android:textColor="@color/transparent" />
         </RelativeLayout>
     </LinearLayout>

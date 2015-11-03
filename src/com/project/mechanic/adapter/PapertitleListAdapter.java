@@ -1,5 +1,6 @@
 package com.project.mechanic.adapter;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -25,12 +27,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.PushNotification.DomainSend;
+import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
@@ -38,15 +44,18 @@ import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.PaperWithoutComment;
 import com.project.mechanic.fragment.PersianDate;
+import com.project.mechanic.fragment.TitlepaperFragment;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
-		AsyncInterface {
+		AsyncInterface, CommInterface {
 
 	Context context;
 	List<Paper> mylist;
@@ -72,6 +81,8 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 	LinearLayout commentBtn;
 	Fragment fr;
 	ImageView report;
+	List<String> menuItems;
+	int itemId, userIdsender;
 
 	public PapertitleListAdapter(Context context, int resource,
 			List<Paper> objects, Fragment fr) {
@@ -153,8 +164,9 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 				// byte[] byteImg = x.getImage();
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
+				if (bmp != null)
+					iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(
+							bmp, 50));
 
 				iconProile.setLayoutParams(lp);
 				adapter.close();
@@ -187,7 +199,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 		txt1.setTypeface(util.SetFontCasablanca());
 		txt2.setTypeface(util.SetFontCasablanca());
-		
+
 		String item = txt1.getText().toString();
 		for (Paper listItem : mylist) {
 			if (item.equals(listItem.getTitle())) {
@@ -237,7 +249,6 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 					date.delegate = PapertitleListAdapter.this;
 					date.execute("");
 				}
-				
 
 			}
 		});
@@ -246,35 +257,126 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 			@Override
 			public void onClick(View v) {
 
-				if (currentUser == null) {
-//					Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
-				} else {
+				final String t;
+				ListView listView = (ListView) v.getParent().getParent()
+						.getParent().getParent();
+				int position = listView.getPositionForView(v);
+				Paper p = getItem(position);
+				if (p != null) {
+					userIdsender = p.getUserId();
+					t = p.getContext();
+					itemId = p.getId();
 
-					int i = 0;
-					int us = 0;
-					String t = "";
+					if (util.getCurrentUser() != null) {
+						if (util.getCurrentUser().getId() == userIdsender) {
 
-					int d = (int) getItemId(position);
-					Paper w = getItem(d);
-					if (w != null) {
-						i = w.getId();
-						us = w.getUserId();
-						t = w.getContext();
+							menuItems = new ArrayList<String>();
+							menuItems.clear();
+							menuItems.add("ارسال پیام");
+							menuItems.add("کپی");
+							menuItems.add("حذف");
+
+						} else {
+							menuItems = new ArrayList<String>();
+
+							menuItems.clear();
+							menuItems.add("ارسال پیام");
+							menuItems.add("افزودن به علاقه مندی ها");
+							menuItems.add("کپی");
+							menuItems.add("گزارش تخلف");
+						}
+					} else {
+						menuItems = new ArrayList<String>();
+
+						menuItems.clear();
+						menuItems.add("کپی");
 					}
 
-					DialogLongClick dia = new DialogLongClick(context, 2, us,
-							i, fr, t);
-					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-					lp.copyFrom(dia.getWindow().getAttributes());
-					lp.width = (int) (util.getScreenwidth() / 1.5);
-					lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-					;
-					dia.show();
+					final PopupMenu popupMenu = util
+							.ShowPopupMenu(menuItems, v);
 
-					dia.getWindow().setAttributes(lp);
-					dia.getWindow().setBackgroundDrawable(
-							new ColorDrawable(
-									android.graphics.Color.TRANSPARENT));
+					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+						@Override
+						public boolean onMenuItemClick(MenuItem item) {
+
+							if (item.getTitle().equals("ارسال پیام")) {
+
+								if (util.getCurrentUser() != null)
+									util.sendMessage("Paper");
+								else
+									Toast.makeText(context,
+											"ابتدا باید وارد شوید", 0).show();
+							}
+
+							if (item.getTitle().equals(
+									"افزودن به علاقه مندی ها")) {
+								adapter.open();
+								addToFavorite(util.getCurrentUser().getId(), 2,
+										itemId);
+								adapter.close();
+							}
+							if (item.getTitle().equals("کپی")) {
+
+								util.CopyToClipboard(t);
+
+							}
+							if (item.getTitle().equals("گزارش تخلف")) {
+
+								if (util.getCurrentUser() != null)
+									util.reportAbuse(userIdsender, 2, itemId, t,0);
+								else
+									Toast.makeText(context,
+											"ابتدا باید وارد شوید", 0).show();
+							}
+							if (item.getTitle().equals("حذف")) {
+								if (util.getCurrentUser() != null
+										&& util.getCurrentUser().getId() == userIdsender)
+									deleteItems(itemId);
+								else {
+
+									Toast.makeText(context, "", 0).show();
+								}
+							}
+
+							return false;
+						}
+					};
+
+					popupMenu.setOnMenuItemClickListener(menuitem);
+
+					// if (currentUser == null) {
+					// // Toast.makeText(context, "ابتدا باید وارد شوید",
+					// 0).show();
+					// } else {
+					//
+					// int i = 0;
+					// int us = 0;
+					// String t = "";
+					//
+					// int d = (int) getItemId(position);
+					// Paper w = getItem(d);
+					// if (w != null) {
+					// i = w.getId();
+					// us = w.getUserId();
+					// t = w.getContext();
+					// }
+					//
+					// DialogLongClick dia = new DialogLongClick(context, 2, us,
+					// i, fr, t);
+					// WindowManager.LayoutParams lp = new
+					// WindowManager.LayoutParams();
+					// lp.copyFrom(dia.getWindow().getAttributes());
+					// lp.width = (int) (util.getScreenwidth() / 1.5);
+					// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+					// ;
+					// dia.show();
+					//
+					// dia.getWindow().setAttributes(lp);
+					// dia.getWindow().setBackgroundDrawable(
+					// new ColorDrawable(
+					// android.graphics.Color.TRANSPARENT));
+					// }
 				}
 			}
 		});
@@ -473,5 +575,76 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	public void addToFavorite(int currentUserId, int source, int ItemId) {
+
+		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
+			Toast.makeText(context,
+					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+		} else {
+			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
+			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0)
+					.show();
+		}
+	}
+
+	public void deleteItems(int itemId) {
+
+		ServiceComm service = new ServiceComm(context);
+		service.delegate = PapertitleListAdapter.this;
+		Map<String, String> items = new LinkedHashMap<String, String>();
+		items.put("DeletingRecord", "DeletingRecord");
+
+		items.put("tableName", "Paper");
+		items.put("Id", String.valueOf(itemId));
+
+		service.execute(items);
+
+		ringProgressDialog = ProgressDialog.show(context, "",
+				"لطفا منتظر بمانید...", true);
+
+		ringProgressDialog.setCancelable(true);
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+
+					Thread.sleep(10000);
+
+				} catch (Exception e) {
+
+				}
+			}
+		}).start();
+	}
+
+	@Override
+	public void CommProcessFinish(String output) {
+
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
+		adapter.open();
+
+		adapter.deletePaperTitle(itemId);
+		adapter.deleteCommentPaper(itemId);
+
+		adapter.close();
+		
+		TitlepaperFragment fr = new TitlepaperFragment();
+
+		FragmentTransaction trans = ((MainActivity) context)
+				.getSupportFragmentManager().beginTransaction();
+
+		trans.replace(R.id.content_frame, fr);
+		trans.addToBackStack(null);
+		trans.commit();
+		fr.updateView(context);
+
+
+//		((PaperFragment) fr).updateView();
 	}
 }

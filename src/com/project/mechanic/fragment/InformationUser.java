@@ -1,7 +1,10 @@
 package com.project.mechanic.fragment;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -18,20 +22,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.project.mechanic.R;
+import com.project.mechanic.adapter.DataPersonalExpandAdapter;
+import com.project.mechanic.adapter.InformationUserAdapter;
 import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.entity.Object;
+import com.project.mechanic.entity.PersonalData;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
 public class InformationUser extends Fragment {
 
-	ListView listViewPages;
+	ExpandableListView Expandview;
 
 	View rootView, header;
 
 	TextView txtaddress, txtcellphone, txtphone, txtemail, txtname, txtfax,
-			txtdate, namePage;
+			txtdate /*, namePage*/;
 
 	ImageView profileImage;
 
@@ -65,7 +72,7 @@ public class InformationUser extends Fragment {
 
 		findView();
 		informationUser();
-		listViewPages.addHeaderView(header);
+		// Expandview.addHeaderView(header);
 
 		allpageUser();
 
@@ -82,13 +89,16 @@ public class InformationUser extends Fragment {
 
 			}
 		});
+		
+		util.ShowFooterAgahi(getActivity(), false, -1);
 
 		return rootView;
 	}
 
 	private void findView() {
 
-		listViewPages = (ListView) rootView.findViewById(R.id.listPageUser);
+		Expandview = (ExpandableListView) rootView
+				.findViewById(R.id.listPageUser);
 
 		txtaddress = (TextView) header.findViewById(R.id.address);
 		txtcellphone = (TextView) header.findViewById(R.id.cellphone);
@@ -97,7 +107,7 @@ public class InformationUser extends Fragment {
 		txtname = (TextView) header.findViewById(R.id.displayname);
 		txtfax = (TextView) header.findViewById(R.id.fax);
 		txtdate = (TextView) header.findViewById(R.id.txtdate);
-		namePage = (TextView) header.findViewById(R.id.namepageList);
+//		namePage = (TextView) header.findViewById(R.id.namepageList);
 
 		profileImage = (ImageView) header.findViewById(R.id.img1);
 
@@ -140,7 +150,7 @@ public class InformationUser extends Fragment {
 		txtphone.setText(userPage.getPhonenumber());
 		txtfax.setText(userPage.getFaxnumber());
 		txtaddress.setText(userPage.getAddress());
-		namePage.setText(userPage.getName());
+//		namePage.setText(userPage.getName());
 		/*
 		 * end et information text
 		 */
@@ -197,21 +207,59 @@ public class InformationUser extends Fragment {
 	private void allpageUser() {
 
 		dbadaAdapter.open();
-		List<Object> listPage = dbadaAdapter.getAllObjectByUserId(userIdPage);
+
+		List<PersonalData> ObejctData = dbadaAdapter
+				.CustomFieldObjectByUser(userPage.getId());
+		List<PersonalData> FroumData = dbadaAdapter
+				.CustomFieldFroumByUser(userPage.getId());
+		List<PersonalData> PaperData = dbadaAdapter
+				.CustomFieldPaperByUser(userPage.getId());
+		List<PersonalData> TicketData = dbadaAdapter
+				.CustomFieldTicketByUser(userPage.getId());
+
 		dbadaAdapter.close();
 
-		listAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object,
-				listPage, InformationUser.this, false, null, 1);
+		List<Integer> sizeTypeList = new ArrayList<Integer>();
 
-		listViewPages.setAdapter(listAdapter);
+		sizeTypeList.add(ObejctData.size());
+		sizeTypeList.add(TicketData.size());
+		sizeTypeList.add(PaperData.size());
+		sizeTypeList.add(FroumData.size());
 
-		if (listPage.size() == 0) {
+		// ExpandableListView Expandview = (ExpandableListView) rootView
+		// .findViewById(R.id.items);
 
-			RelativeLayout rela = (RelativeLayout) header
-					.findViewById(R.id.noPage);
+		HashMap<String, List<PersonalData>> listDataChild = new HashMap<String, List<PersonalData>>();
 
-			rela.setVisibility(View.VISIBLE);
-		}
+		ArrayList<String> parentItems = new ArrayList<String>();
+
+		Expandview.setDividerHeight(5);
+		Expandview.setGroupIndicator(null);
+		Expandview.setClickable(true);
+
+		parentItems.add("صفحات");
+		parentItems.add("آگهی ها");
+		parentItems.add("مقالات");
+		parentItems.add("تالار گفتگو");
+
+		listDataChild.put(parentItems.get(0), ObejctData); // Header, Child data
+		listDataChild.put(parentItems.get(1), TicketData);
+		listDataChild.put(parentItems.get(2), PaperData);
+		listDataChild.put(parentItems.get(3), FroumData);
+
+		final SharedPreferences currentTime = getActivity()
+				.getSharedPreferences("time", 0);
+
+		String time = currentTime.getString("time", "-1");
+
+		final InformationUserAdapter listAdapter = new InformationUserAdapter(
+				getActivity(), parentItems, listDataChild, time,
+				InformationUser.this, sizeTypeList, false , userPage.getName());
+
+		// setting list adapter
+		Expandview.addHeaderView(header);
+
+		Expandview.setAdapter(listAdapter);
 
 	}
 }

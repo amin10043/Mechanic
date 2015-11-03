@@ -45,6 +45,14 @@ public class Favorite_Fragment extends Fragment {
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 
+		updateView();
+
+		util.ShowFooterAgahi(getActivity(), false, 5);
+		return view;
+
+	}
+
+	public void updateView() {
 		dbAdapter.open();
 
 		List<PersonalData> FroumData = dbAdapter.CustomFieldFavorite(util
@@ -57,6 +65,13 @@ public class Favorite_Fragment extends Fragment {
 				.getCurrentUser().getId(), 4);
 
 		dbAdapter.close();
+
+		List<Integer> sizeListItems = new ArrayList<Integer>();
+
+		sizeListItems.add(ObejctData.size());
+		sizeListItems.add(TicketData.size());
+		sizeListItems.add(PaperData.size());
+		sizeListItems.add(FroumData.size());
 
 		ExpandableListView Expandview = (ExpandableListView) view
 				.findViewById(R.id.items);
@@ -86,29 +101,12 @@ public class Favorite_Fragment extends Fragment {
 
 		final FavoriteListAdapter listAdapter = new FavoriteListAdapter(
 				getActivity(), parentItems, listDataChild, time,
-				Favorite_Fragment.this);
+				Favorite_Fragment.this, sizeListItems);
 
 		// setting list adapter
 
 		Expandview.setAdapter(listAdapter);
-		
-		
-		util.ShowFooterAgahi(getActivity(), false, 5);
-		return view;
 
 	}
-
-	// public void updateView() {
-	// dbAdapter.open();
-	// mylist = dbAdapter.getTicketByusetId(u.getId());
-	// dbAdapter.close();
-	//
-	// listFavorite = (ListView) view.findViewById(R.id.listView_favorite);
-	// FavoriteListAdapter ListAdapter = new FavoriteListAdapter(
-	// getActivity(), R.layout.row_favorite, mylist, this);
-	//
-	// listFavorite.setAdapter(ListAdapter);
-	//
-	// }
 
 }

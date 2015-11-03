@@ -15,6 +15,7 @@ public class PersonalData {
 	String DateFroum;
 	int seenBeforeFroum;
 	int UserIdFroum;
+	String ImagePathFroum;
 
 	int PaperId;
 	String NamePaper;
@@ -22,6 +23,7 @@ public class PersonalData {
 	String DatePaper;
 	int seenBeforePaper;
 	int UserIdPaper;
+	String ImagePathPaper;
 
 	int TicketId;
 	String NameTicket;
@@ -30,6 +32,10 @@ public class PersonalData {
 	String DateTicket;
 	int SeenBefore;
 	int DayTicket;
+
+	int ObjectFollowId;
+	String NameFollowObject;
+	String ImagePathObjectFollow;
 
 	public PersonalData(int Id, int ObjectId, String NameObject,
 			String ImagePathObject, String DateObject) {
@@ -48,7 +54,9 @@ public class PersonalData {
 			String DatePaper, int TicketId, String NameTicket,
 			String DescriptonTicket, String ImagePathTicket, String DateTicket,
 			int SeenBefore, int DayTicket, int seenBeforePaper,
-			int UserIdPaper, String DataPaper) {
+			int UserIdPaper, String DataPaper, String ImagePathFroum,
+			String ImagePathPaper, int ObjectFollowId, String NameFollowObject,
+			String ImagePathObjectFollow) {
 
 		this.Id = Id;
 
@@ -78,6 +86,53 @@ public class PersonalData {
 		this.seenBeforePaper = seenBeforePaper;
 		this.UserIdPaper = UserIdPaper;
 
+		this.ImagePathFroum = ImagePathFroum;
+		this.ImagePathPaper = ImagePathPaper;
+
+		this.ObjectFollowId = ObjectFollowId;
+		this.NameFollowObject = NameFollowObject;
+		this.ImagePathObjectFollow = ImagePathObjectFollow;
+
+	}
+
+	public int getObjectFollowId() {
+		return ObjectFollowId;
+	}
+
+	public void setObjectFollowId(int objectFollowId) {
+		ObjectFollowId = objectFollowId;
+	}
+
+	public String getNameFollowObject() {
+		return NameFollowObject;
+	}
+
+	public void setNameFollowObject(String nameFollowObject) {
+		NameFollowObject = nameFollowObject;
+	}
+
+	public String getImagePathObjectFollow() {
+		return ImagePathObjectFollow;
+	}
+
+	public void setImagePathObjectFollow(String imagePathObjectFollow) {
+		ImagePathObjectFollow = imagePathObjectFollow;
+	}
+
+	public String getImagePathFroum() {
+		return ImagePathFroum;
+	}
+
+	public void setImagePathFroum(String imagePathFroum) {
+		ImagePathFroum = imagePathFroum;
+	}
+
+	public String getImagePathPaper() {
+		return ImagePathPaper;
+	}
+
+	public void setImagePathPaper(String imagePathPaper) {
+		ImagePathPaper = imagePathPaper;
 	}
 
 	public int getSeenBeforeFroum() {
