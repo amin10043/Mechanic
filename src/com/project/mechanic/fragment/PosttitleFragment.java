@@ -92,7 +92,7 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 							Toast.LENGTH_SHORT).show();
 				else {
 					dialog = new DialogpostTitle(getActivity(),
-							R.layout.dialog_addtitle, PosttitleFragment.this);
+							R.layout.dialog_addtitlepost, PosttitleFragment.this);
 					dialog.getWindow()
 							.setSoftInputMode(
 									WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);

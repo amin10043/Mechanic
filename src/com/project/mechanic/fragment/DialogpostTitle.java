@@ -1,23 +1,39 @@
 package com.project.mechanic.fragment;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -46,6 +62,7 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 	ImageButton createImage;
 	ServerDate sDate;
 	String severDate;
+	ImageView btnPickFile;
 
 	public DialogpostTitle(Context context, int resourceId, Fragment fragment) {
 		super(context);
@@ -87,6 +104,8 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 		titleDestxt.setVisibility(View.GONE);
 		btntitle.setVisibility(View.GONE);
 
+		btnPickFile = (ImageView) findViewById(R.id.btnPickFile);
+		
 		createImage.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -119,8 +138,157 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 				dismiss();
 			}
 		});
+		
+		/****************************************************************************/
+		/*LinearLayout lin3 = (LinearLayout) findViewById(R.id.RelativeLayout1);
+		ut = new Utility(fragment.getActivity());
+		lp2 = new LinearLayout.LayoutParams(lin3.getLayoutParams());
+		lp2.height = ut.getScreenwidth() / 4;
+		lp2.width = ut.getScreenwidth() / 4;
+		lp2.setMargins(5, 5, 5, 5);
+		ImageProfile.setLayoutParams(lp2);*/
+		String state = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			mFileTemp = new File(Environment.getExternalStorageDirectory(),
+					TEMP_PHOTO_FILE_NAME);
+		} else {
+			mFileTemp = new File(fragment.getActivity().getFilesDir(),
+					TEMP_PHOTO_FILE_NAME);
+		}
+		btnPickFile.setOnClickListener(new View.OnClickListener() {
+			   public void onClick(View v) {
+				   selectImageOption();
+			   }        
+			});
+		
 	}
 
+	/********************************************************************/
+	Utility ut;
+	LinearLayout.LayoutParams lp2;
+	private Uri mImageCaptureUri;
+	private File mFileTemp;
+	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
+	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201,
+			CROPING_CODE = 301;
+	final int PIC_CROP = 10;
+	ImageView ImageProfile, imagecamera;
+	
+	private void selectImageOption() {
+		final CharSequence[] items = { "از دوربین", "از گالری تصاویر", "انصراف" };
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getActivity());
+		builder.setTitle("افزودن تصویر");
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int item) {
+
+				if (items[item].equals("از دوربین")) {
+
+					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+					File f = new File(android.os.Environment
+							.getExternalStorageDirectory(), "temp1.jpg");
+
+					mImageCaptureUri = Uri.fromFile(f);
+					intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+
+					//fragment.getActivity().startActivityForResult(intent, CAMERA_CODE);
+
+				} else if (items[item].equals("از گالری تصاویر")) {
+
+					Intent i = new Intent(
+							Intent.ACTION_PICK,
+							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+					fragment.getActivity().startActivityFromFragment(
+							fragment, i, GALLERY_CODE);
+
+					// Intent intent = new Intent();
+					// intent.setType("image/*");
+					// intent.setAction(Intent.ACTION_GET_CONTENT);
+					// try {
+					// intent.putExtra("return-data", true);
+					// startActivityForResult(
+					// Intent.createChooser(intent, "تکمیل کار با"),
+					// GALLERY_CODE);
+					// } catch (ActivityNotFoundException e) {
+					// }
+
+				} else if (items[item].equals("انصراف")) {
+					dialog.dismiss();
+				}
+			}
+		});
+
+		builder.show();
+	}
+
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Toast.makeText(getContext(), "Text", Toast.LENGTH_LONG).show();
+		/*if (requestCode == GALLERY_CODE) {
+			try {
+
+				InputStream inputStream = fragment.getActivity().getContentResolver()
+						.openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(
+						mFileTemp);
+				Utility.copyStream(inputStream, fileOutputStream);
+				fileOutputStream.close();
+				inputStream.close();
+				
+				Bitmap bitmap = null;
+				if (mFileTemp.getPath() != null)
+					bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
+				if (bitmap != null) {
+					btnPickFile.setImageBitmap(bitmap);
+				}
+				
+				//startCropImage();
+
+			} catch (Exception e) {
+
+				Toast.makeText(fragment.getActivity(), e.toString(), Toast.LENGTH_LONG)
+						.show();
+			}
+			ImageProfile.setLayoutParams(lp2);
+			
+
+		}
+		if (requestCode == PIC_CROP && data != null) {
+			String path = data.getStringExtra(CropImage.IMAGE_PATH);
+			if (path == null) {
+				return;
+			}
+			Bitmap bitmap = null;
+			if (mFileTemp.getPath() != null)
+				bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
+			if (bitmap != null) {
+				ImageProfile.setImageBitmap(bitmap);
+				ImageProfile.setLayoutParams(lp2);
+
+			}
+
+		}*/
+		onActivityResult(requestCode, resultCode, data);
+
+	}
+//
+//	private void startCropImage() {
+//
+//		Intent intent = new Intent(getActivity(), CropImage.class);
+//		intent.putExtra(CropImage.IMAGE_PATH, mFileTemp.getPath());
+//		intent.putExtra(CropImage.SCALE, true);
+//
+//		intent.putExtra(CropImage.ASPECT_X, 3);
+//		intent.putExtra(CropImage.ASPECT_Y, 3);
+//
+//		startActivityForResult(intent, PIC_CROP);
+//	}
+	/*****************************************************************************************/
+	
+	
+	
 	public interface OnMyDialogResult {
 		void finish(String result);
 	}
