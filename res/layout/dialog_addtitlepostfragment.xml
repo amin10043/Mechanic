@@ -31,7 +31,8 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="لطفا عنوان را وارد نمایید" />
+                android:hint="لطفا عنوان را وارد نمایید"
+                android:visibility="gone" />
 
             <requestFocus />
         </RelativeLayout>
@@ -48,7 +49,9 @@
                 android:layout_margin="10dp"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="توضیحات را وارد کنید" />
+                android:hint="توضیحات را وارد کنید"
+                android:visibility="gone" />
+
         </RelativeLayout>
 
         <RelativeLayout

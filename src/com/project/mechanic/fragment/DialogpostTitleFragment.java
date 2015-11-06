@@ -17,6 +17,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.CursorJoiner.Result;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -129,8 +130,8 @@ public class DialogpostTitleFragment extends DialogFragment {
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
-		
-		Toast.makeText(getActivity(), "YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEES", Toast.LENGTH_LONG).show();
+		if( resultCode == GALLERY_CODE )
+			Toast.makeText(getActivity(), "YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEES", Toast.LENGTH_LONG).show();
 		/*if (requestCode == GALLERY_CODE) {
 			try {
 
