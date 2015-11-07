@@ -13,23 +13,43 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
 public class DialogPostFragment extends Fragment {
 
 	Context mContext;
+	
 	ImageView btnPickFile;
 	ImageView ShowImage;
+	
+	Button btnClearImage;
+	Button btnSave;
+	
+	private DataBaseAdapter dbadapter;
+	
+	private EditText PostTitle;
+	private EditText PostDecription;
+	
 	Utility util;
+	
 	Users user;
+	
+	Users currentUser;
+	
 	View view;
+	
 	byte[] ImageConvertedToByte = null;
 
+	String severDate;
+	
 	@Override
 	public View onCreateView(android.view.LayoutInflater inflater,
 			android.view.ViewGroup container, Bundle savedInstanceStat) {
@@ -39,19 +59,36 @@ public class DialogPostFragment extends Fragment {
 		util = new Utility(this.getActivity());
 		user = new Users();
 
+		currentUser = util.getCurrentUser();
+		
 		ShowImage = (ImageView) view.findViewById(R.id.ShowImage);
-
+		
 		btnPickFile = (ImageView) view.findViewById(R.id.btnPickFile);
 		btnPickFile.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				// selectImageOption();
-				Intent i = new Intent(
-						Intent.ACTION_PICK,
-						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-				getActivity().startActivityFromFragment(
-						DialogPostFragment.this, i, GALLERY_CODE);
-
+				selectImageOption();
+			}
+		});
+		
+		btnClearImage = (Button) view.findViewById(R.id.btnClearImage);
+		btnClearImage.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				ImageConvertedToByte = null;
+				ShowImage.setVisibility(View.INVISIBLE);
+				btnClearImage.setVisibility(View.INVISIBLE);
+			}
+		});
+		
+		PostTitle = (EditText) view.findViewById(R.id.txtTitleP);
+		PostDecription = (EditText) view.findViewById(R.id.txttitleDes);
+		btnSave = (Button) view.findViewById(R.id.btnPdf1_Object);
+		btnSave.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				dbadapter.open();
+				dbadapter.insertPosttitletoDb(PostTitle.getText().toString(),
+						PostDecription.getText().toString(), currentUser.getId(),
+						severDate, "ImageAddress");
+				dbadapter.close();
 			}
 		});
 
@@ -97,7 +134,8 @@ public class DialogPostFragment extends Fragment {
 							Intent.ACTION_PICK,
 							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-					getActivity().startActivityForResult(i, GALLERY_CODE);
+					getActivity().startActivityFromFragment(
+							DialogPostFragment.this, i, GALLERY_CODE);
 
 					// Intent intent = new Intent();
 					// intent.setType("image/*");
@@ -132,6 +170,11 @@ public class DialogPostFragment extends Fragment {
 					ShowImage.setImageBitmap(bitmapImage);
 					ImageConvertedToByte = Utility.CompressBitmap(bitmapImage);
 
+					if( ImageConvertedToByte != null ){
+						ShowImage.setVisibility(View.VISIBLE);
+						btnClearImage.setVisibility(View.VISIBLE);
+					}
+					
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}

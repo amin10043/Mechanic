@@ -14,7 +14,8 @@
             android:id="@+id/ShowImage"
             android:layout_width="match_parent"
             android:layout_height="220dp"
-            android:src="@drawable/no_image_header" />
+            android:src="@drawable/no_image_header"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -31,8 +32,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="لطفا عنوان را وارد نمایید"
-                android:visibility="gone" />
+                android:hint="لطفا عنوان را وارد نمایید" />
 
             <requestFocus />
         </RelativeLayout>
@@ -49,8 +49,7 @@
                 android:layout_margin="10dp"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="توضیحات را وارد کنید"
-                android:visibility="gone" />
+                android:hint="توضیحات را وارد کنید" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -76,6 +75,17 @@
                 android:layout_marginLeft="19dp"
                 android:clickable="true"
                 android:src="@drawable/camera1" />
+
+            <Button
+                android:id="@+id/btnClearImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/delete_reply"
+                android:visibility="invisible" />
+
         </RelativeLayout>
     </LinearLayout>
 

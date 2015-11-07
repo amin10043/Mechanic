@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -65,6 +66,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	Button alertdfragbutton;
 	FloatingActionButton action;
 	DialogPostFragment MyDialog;
+	DialogpostTitleFragment MyDialogShow;
 	int ObjectID;
 	/**/
 
@@ -158,6 +160,10 @@ public class PostFragment extends Fragment implements AsyncInterface,
 				Bundle bundle = new Bundle();
 				bundle.putInt("Id", ObjectID);
 				fragment.setArguments(bundle);
+				
+//				FragmentManager fm = getFragmentManager();
+//				MyDialogShow = new DialogpostTitleFragment();
+//				MyDialogShow.show(fm, "Dialog Fragment");
 
 			}
 		});

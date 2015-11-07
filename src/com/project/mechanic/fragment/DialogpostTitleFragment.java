@@ -1,12 +1,14 @@
 package com.project.mechanic.fragment;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -29,6 +31,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -37,7 +40,20 @@ public class DialogpostTitleFragment extends DialogFragment {
 	
 	Context mContext;
 	ImageView btnPickFile;
-	ImageView SelectPick;
+	ImageView ShowImage;
+	Button btnClearImage;
+	Utility util;
+	Users user;
+	View view;
+	byte[] ImageConvertedToByte = null;
+	
+	LinearLayout.LayoutParams lp2;
+	private Uri mImageCaptureUri;
+	private File mFileTemp;
+	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
+	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201,
+			CROPING_CODE = 301;
+	final int PIC_CROP = 10;
 	
 	public DialogpostTitleFragment() {
         mContext = getActivity();
@@ -50,7 +66,7 @@ public class DialogpostTitleFragment extends DialogFragment {
 				false);
 		getDialog().setTitle("ایجاد پست جدید");
 		
-		SelectPick = (ImageView) rootView.findViewById(R.id.btnPickFile);
+		ShowImage = (ImageView) rootView.findViewById(R.id.btnPickFile);
 		
 		btnPickFile = (ImageView) rootView.findViewById(R.id.btnPickFile);
 		btnPickFile.setOnClickListener(new View.OnClickListener() {
@@ -67,15 +83,6 @@ public class DialogpostTitleFragment extends DialogFragment {
         return f;
     }
 	
-	Utility ut;
-	LinearLayout.LayoutParams lp2;
-	private Uri mImageCaptureUri;
-	private File mFileTemp;
-	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
-	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201,
-			CROPING_CODE = 301;
-	final int PIC_CROP = 10;
-	//ImageView ImageProfile, imagecamera;
 	
 	private void selectImageOption() {
 		final CharSequence[] items = { "از دوربین", "از گالری تصاویر", "انصراف" };
@@ -104,10 +111,8 @@ public class DialogpostTitleFragment extends DialogFragment {
 							Intent.ACTION_PICK,
 							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-					getActivity().startActivityForResult(
-							i, GALLERY_CODE);
-
-					Toast.makeText(getActivity(), "Text1", Toast.LENGTH_LONG).show();
+					getActivity().startActivityFromFragment(
+							DialogpostTitleFragment.this, i, GALLERY_CODE);
 					// Intent intent = new Intent();
 					// intent.setType("image/*");
 					// intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -129,55 +134,53 @@ public class DialogpostTitleFragment extends DialogFragment {
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		
-		if( resultCode == GALLERY_CODE )
-			Toast.makeText(getActivity(), "YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEES", Toast.LENGTH_LONG).show();
-		/*if (requestCode == GALLERY_CODE) {
-			try {
-
-				InputStream inputStream = getActivity().getContentResolver()
-						.openInputStream(data.getData());
-				FileOutputStream fileOutputStream = new FileOutputStream(
-						mFileTemp);
-				Utility.copyStream(inputStream, fileOutputStream);
-				fileOutputStream.close();
-				inputStream.close();
-				
-				Bitmap bitmap = null;
-				if (mFileTemp.getPath() != null)
-					bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
-				if (bitmap != null) {
-					SelectPick.setImageBitmap(bitmap);
-				}
-				
-				//startCropImage();
-
-			} catch (Exception e) {
-
-				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
-						.show();
-			}
-			SelectPick.setLayoutParams(lp2);
-			
-
-		}*/
-		/*if (requestCode == PIC_CROP && data != null) {
-			String path = data.getStringExtra(CropImage.IMAGE_PATH);
-			if (path == null) {
-				return;
-			}
-			Bitmap bitmap = null;
-			if (mFileTemp.getPath() != null)
-				bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
-			if (bitmap != null) {
-				ImageProfile.setImageBitmap(bitmap);
-				ImageProfile.setLayoutParams(lp2);
-
-			}
-
-		}*/
-		
 		super.onActivityResult(requestCode, resultCode, data);
+		
+		switch (requestCode) {
+		case GALLERY_CODE:
+			if (resultCode == this.getActivity().RESULT_OK) {
+
+				mImageCaptureUri = data.getData();
+				try {
+					Bitmap bitmapImage = decodeBitmap(mImageCaptureUri);
+					ShowImage.setImageBitmap(bitmapImage);
+					ImageConvertedToByte = Utility.CompressBitmap(bitmapImage);
+
+					if( ImageConvertedToByte != null ){
+						ShowImage.setVisibility(View.VISIBLE);
+						btnClearImage.setVisibility(View.VISIBLE);
+					}
+					
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	public Bitmap decodeBitmap(Uri selectedImage) throws FileNotFoundException {
+		BitmapFactory.Options o = new BitmapFactory.Options();
+		o.inJustDecodeBounds = true;
+		BitmapFactory.decodeStream(this.getActivity().getContentResolver()
+				.openInputStream(selectedImage), null, o);
+
+		final int REQUIRED_SIZE = 100;
+
+		int width_tmp = o.outWidth, height_tmp = o.outHeight;
+		int scale = 1;
+		while (true) {
+			if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE) {
+				break;
+			}
+			width_tmp /= 2;
+			height_tmp /= 2;
+			scale *= 2;
+		}
+
+		BitmapFactory.Options o2 = new BitmapFactory.Options();
+		o2.inSampleSize = scale;
+		return BitmapFactory.decodeStream(this.getActivity()
+				.getContentResolver().openInputStream(selectedImage), null, o2);
 	}
 	
 }

@@ -132,10 +132,10 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 				dbadapter.open();
 				dbadapter.insertPosttitletoDb(titletxt.getText().toString(),
 						titleDestxt.getText().toString(), currentUser.getId(),
-						severDate);
+						severDate, "ImageAddress");
 				dbadapter.close();
-				((PosttitleFragment) fragment).updateView();
-				dismiss();
+//				((PosttitleFragment) fragment).updateView();
+//				dismiss();
 			}
 		});
 		
@@ -308,7 +308,7 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 			dbadapter.open();
 			dbadapter.insertPosttitletoDb(/* id, */titletxt.getText().toString(),
 					titleDestxt.getText().toString(), currentUser.getId(),
-					severDate);
+					severDate, "ImageAddress");
 			dbadapter.close();
 			((PosttitleFragment) fragment).updateView();
 			this.dismiss();
