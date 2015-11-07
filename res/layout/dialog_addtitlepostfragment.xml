@@ -11,7 +11,7 @@
         android:orientation="vertical" >
 
         <ImageView
-            android:id="@+id/SelectPick"
+            android:id="@+id/ShowImage"
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:src="@drawable/no_image_header" />
@@ -51,7 +51,6 @@
                 android:gravity="center"
                 android:hint="توضیحات را وارد کنید"
                 android:visibility="gone" />
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -70,14 +69,13 @@
 
             <ImageView
                 android:id="@+id/btnPickFile"
-                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="19dp"
+                android:clickable="true"
                 android:src="@drawable/camera1" />
-
         </RelativeLayout>
     </LinearLayout>
 

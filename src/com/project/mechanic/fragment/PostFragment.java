@@ -9,7 +9,6 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -58,7 +57,6 @@ import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-
 public class PostFragment extends Fragment implements AsyncInterface,
 		GetAsyncInterface, CommInterface {
 
@@ -66,9 +64,10 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	Button dfragbutton;
 	Button alertdfragbutton;
 	FloatingActionButton action;
-	DialogpostTitleFragment MyDialog;
+	DialogPostFragment MyDialog;
+	int ObjectID;
 	/**/
-	
+
 	private File mFileTemp;
 	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
 	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201,
@@ -141,17 +140,29 @@ public class PostFragment extends Fragment implements AsyncInterface,
 				R.layout.header_expandable, null);
 
 		/**/
+		if (getArguments().getString("Id") != null)
+			ObjectID = Integer.valueOf(getArguments().getString("Id"));
 		action = (FloatingActionButton) view.findViewById(R.id.fab);
 		action.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				DialogpostTitleFragment dialog = DialogpostTitleFragment.newInstance();
-	            dialog.show(getFragmentManager(), "fragmentDialog");
+				DialogPostFragment fragment = new DialogPostFragment();
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("Id", ObjectID);
+				fragment.setArguments(bundle);
+
 			}
 		});
 		/**/
-		
+
 		// start find view
 
 		titletxt = (TextView) header.findViewById(R.id.title_topic);
