@@ -1,5 +1,6 @@
 package com.project.mechanic.adapter;
 
+import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,8 +90,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater
-				.inflate(R.layout.raw_froumtitle, parent, false);
+		convertView = myInflater.inflate(R.layout.raw_posttitle, parent, false);
 
 		Parent = parent;
 		final TextView txt1 = (TextView) convertView
@@ -106,6 +106,10 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				.findViewById(R.id.countLikeInFroumTitle);
 		ImageView profileImg = (ImageView) convertView
 				.findViewById(R.id.iconfroumtitle);
+
+		ImageView postImage = (ImageView) convertView
+				.findViewById(R.id.postImage);
+
 		LinearLayout commenttitle = (LinearLayout) convertView
 				.findViewById(R.id.l1cm);
 		LikeTitle = (LinearLayout) convertView
@@ -131,10 +135,27 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 			dateTopic.setTextColor(Color.GRAY);
 
 		}
-		txt1.setText(person1.getTitle());
-		txt2.setText(person1.getDescription() + " ...");
+		if (!person1.getTitle().isEmpty()) {
+			txt1.setText(person1.getTitle());
+			txt1.setVisibility(View.VISIBLE);
+		}
+		if (!person1.getDescription().isEmpty()) {
+			txt2.setText(person1.getDescription() + " ...");
+			txt2.setVisibility(View.VISIBLE);
+		}
 
 		// txt2.setText(person1.getDescription());
+
+		if (!person1.getPhoto().isEmpty()) {
+
+			File imgFile = new File(person1.getPhoto());
+
+			if (imgFile.exists()) {
+				Bitmap myBitmap = BitmapFactory.decodeFile(person1.getPhoto());
+				postImage.setImageBitmap(myBitmap);
+				postImage.setVisibility(View.VISIBLE);
+			}
+		}
 
 		adapter.open();
 
@@ -293,7 +314,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 				// در تمام صفحات از این کد ها استفاده شود
 				int ItemId = 0;
-				ListView listView = (ListView) v.getParent();
+				ListView listView = (ListView) v.getParent().getParent();
 				int position = listView.getPositionForView(v);
 				Post f = getItem(position);
 				if (f != null) {
@@ -345,6 +366,15 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 						ItemId = listItem.getId();
 					}
 				}
+
+				// int ItemId = 0;
+				// ListView listView = (ListView) v.getParent().getParent()
+				// .getParent();
+				// int position = listView.getPositionForView(v);
+				// Post f = getItem(position);
+				// if (f != null) {
+				// ItemId = f.getId();
+				// }
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();

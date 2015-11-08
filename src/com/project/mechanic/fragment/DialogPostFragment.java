@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.Time;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,30 +27,30 @@ import com.project.mechanic.utility.Utility;
 public class DialogPostFragment extends Fragment {
 
 	Context mContext;
-	
+
 	ImageView btnPickFile;
 	ImageView ShowImage;
-	
+
 	Button btnClearImage;
 	Button btnSave;
-	
+
 	private DataBaseAdapter dbadapter;
-	
+
 	private EditText PostTitle;
 	private EditText PostDecription;
-	
+
 	Utility util;
-	
+
 	Users user;
-	
+
 	Users currentUser;
-	
+
 	View view;
-	
+
 	byte[] ImageConvertedToByte = null;
 
 	String severDate;
-	
+
 	@Override
 	public View onCreateView(android.view.LayoutInflater inflater,
 			android.view.ViewGroup container, Bundle savedInstanceStat) {
@@ -60,34 +61,50 @@ public class DialogPostFragment extends Fragment {
 		user = new Users();
 
 		currentUser = util.getCurrentUser();
-		
+
 		ShowImage = (ImageView) view.findViewById(R.id.ShowImage);
-		
+
 		btnPickFile = (ImageView) view.findViewById(R.id.btnPickFile);
 		btnPickFile.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				selectImageOption();
 			}
 		});
-		
+
 		btnClearImage = (Button) view.findViewById(R.id.btnClearImage);
 		btnClearImage.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				ImageConvertedToByte = null;
-				ShowImage.setVisibility(View.INVISIBLE);
+				ShowImage.setVisibility(View.GONE);
 				btnClearImage.setVisibility(View.INVISIBLE);
 			}
 		});
-		
+
+		dbadapter = new DataBaseAdapter(getActivity());
+
 		PostTitle = (EditText) view.findViewById(R.id.txtTitleP);
 		PostDecription = (EditText) view.findViewById(R.id.txttitleDes);
 		btnSave = (Button) view.findViewById(R.id.btnPdf1_Object);
 		btnSave.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+
+				String ImageAddress = "";
+
+				if (ImageConvertedToByte != null) {
+					Time time = new Time();
+					time.setToNow();
+
+					ImageAddress = util.CreateFileString(
+							ImageConvertedToByte,
+							"_" + currentUser.getId() + "_"
+									+ Long.toString(time.toMillis(false)),
+							"Mechanical", "Post", "post");
+				}
+
 				dbadapter.open();
 				dbadapter.insertPosttitletoDb(PostTitle.getText().toString(),
-						PostDecription.getText().toString(), currentUser.getId(),
-						severDate, "ImageAddress");
+						PostDecription.getText().toString(),
+						currentUser.getId(), severDate, ImageAddress);
 				dbadapter.close();
 			}
 		});
@@ -170,11 +187,11 @@ public class DialogPostFragment extends Fragment {
 					ShowImage.setImageBitmap(bitmapImage);
 					ImageConvertedToByte = Utility.CompressBitmap(bitmapImage);
 
-					if( ImageConvertedToByte != null ){
+					if (ImageConvertedToByte != null) {
 						ShowImage.setVisibility(View.VISIBLE);
 						btnClearImage.setVisibility(View.VISIBLE);
 					}
-					
+
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}

@@ -10,14 +10,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -25,17 +23,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.ListView.PullAndLoadListView;
-import com.project.mechanic.PushNotification.DomainSend;
 import com.project.mechanic.adapter.PaperListAdapter;
-import com.project.mechanic.adapter.PapertitleListAdapter;
 import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.LikeInPaper;
 import com.project.mechanic.entity.Paper;
@@ -380,7 +376,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 						if (item.getTitle().equals("گزارش تخلف")) {
 
 							util.reportAbuse(p.getUserId(), 2, p.getId(),
-									p.getContext(),0);
+									p.getContext(), 0);
 
 						}
 						if (item.getTitle().equals("حذف")) {
