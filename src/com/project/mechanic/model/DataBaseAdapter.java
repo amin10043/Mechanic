@@ -119,7 +119,7 @@ public class DataBaseAdapter {
 			"ServerDate", "Submit", "Date", "SeenBefore" };
 
 	private String[] Post = { "ID", "UserId", "Title", "Description", "Seen",
-			"ServerDate", "Submit", "Date", "SeenBefore" };
+			"ServerDate", "Submit", "Date", "SeenBefore", "Photo" };
 
 	// private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date",
@@ -193,8 +193,9 @@ public class DataBaseAdapter {
 	// private String[] Visit = { "UserId", "ObjectId", "TypeId" };
 	private String[] SubAdmin = { "Id", "ObjectId", "UserId", "AdminID", "Date" };
 
-	private String[] post = { "Id", "Desc", "ImagePath", "Date", "UserId",
-			"ModifyDate" };
+	// private String[] post = { "SeenBefore", "Id", "Desc", "ImagePath",
+	// "Date",
+	// "UserId", "ModifyDate" };
 
 	private String[] likeInPost = { "Id", "PostId", "UserId", "IsLike", "Date",
 			"ModifyDate" };
@@ -1393,7 +1394,7 @@ public class DataBaseAdapter {
 		Post tempPost = new Post(cursor.getInt(0), cursor.getInt(1),
 				cursor.getString(2), cursor.getString(3), cursor.getInt(4),
 				cursor.getString(5), cursor.getInt(6), cursor.getString(7),
-				cursor.getInt(8));
+				cursor.getInt(8), cursor.getString(9));
 		return tempPost;
 	}
 

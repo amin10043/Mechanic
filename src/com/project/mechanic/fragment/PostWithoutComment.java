@@ -1,5 +1,6 @@
 package com.project.mechanic.fragment;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -56,6 +57,8 @@ public class PostWithoutComment extends Fragment implements AsyncInterface {
 	Deleting deleting;
 	Map<String, String> params;
 
+	ImageView postImage;
+
 	ProgressDialog ringProgressDialog;
 	String serverDate = "";
 	ServerDate date;
@@ -72,6 +75,8 @@ public class PostWithoutComment extends Fragment implements AsyncInterface {
 		util = new Utility(getActivity());
 		// date = new PersianDate();
 		// currentDate = date.todayShamsi();
+
+		postImage = (ImageView) view.findViewById(R.id.postImage);
 
 		titletxt = (TextView) view.findViewById(R.id.title_topic);
 		descriptiontxt = (TextView) view.findViewById(R.id.description_topic);
@@ -167,8 +172,25 @@ public class PostWithoutComment extends Fragment implements AsyncInterface {
 
 			}
 		});
-		titletxt.setText(topics.getTitle());
-		descriptiontxt.setText(topics.getDescription());
+
+		if (!topics.getTitle().isEmpty()) {
+			titletxt.setText(topics.getTitle());
+			titletxt.setVisibility(View.VISIBLE);
+		}
+		if (!topics.getDescription().isEmpty()) {
+			descriptiontxt.setText(topics.getDescription());
+			descriptiontxt.setVisibility(View.VISIBLE);
+		}
+		if (!topics.getPhoto().isEmpty()) {
+			File imgFile = new File(topics.getPhoto());
+
+			if (imgFile.exists()) {
+				Bitmap myBitmap = BitmapFactory.decodeFile(topics.getPhoto());
+				postImage.setImageBitmap(myBitmap);
+				postImage.setVisibility(View.VISIBLE);
+			}
+		}
+
 		countComment.setText(adapter.CommentInPost_count(idPost).toString());
 		countLike.setText(adapter.LikeInPost_count(idPost).toString());
 		dateTopic.setText(util.getPersianDate(topics.getDate()));
@@ -190,8 +212,10 @@ public class PostWithoutComment extends Fragment implements AsyncInterface {
 				bundle.putString("Id", String.valueOf(idPost));
 				fragment.setArguments(bundle);
 
-				/*bundle.putString("Id", String.valueOf(idPost));
-				fragment.setArguments(bundle);*/
+				/*
+				 * bundle.putString("Id", String.valueOf(idPost));
+				 * fragment.setArguments(bundle);
+				 */
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
@@ -362,8 +386,7 @@ public class PostWithoutComment extends Fragment implements AsyncInterface {
 
 	public void setcount() {
 		adapter.open();
-		countComment
-				.setText(adapter.CommentInPost_count(IdGglobal).toString());
+		countComment.setText(adapter.CommentInPost_count(IdGglobal).toString());
 		adapter.close();
 	}
 
@@ -377,8 +400,7 @@ public class PostWithoutComment extends Fragment implements AsyncInterface {
 				adapter.open();
 				if (LikeOrComment == true) {
 
-					if (adapter
-							.isUserLikedPost(CurrentUser.getId(), IdGglobal)) {
+					if (adapter.isUserLikedPost(CurrentUser.getId(), IdGglobal)) {
 						adapter.deleteLikeFromPost(CurrentUser.getId(),
 								IdGglobal);
 						likeTopic.setBackgroundResource(R.drawable.like_off);

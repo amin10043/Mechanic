@@ -11,6 +11,7 @@ public class Post {
 	int Submit;
 	String Date;
 	int seenBefore;
+	String Photo;
 
 	public int getId() {
 		return Id;
@@ -84,8 +85,17 @@ public class Post {
 		this.seenBefore = seenBefore;
 	}
 
+	public String getPhoto() {
+		return Photo;
+	}
+
+	public void setPhoto(String Photo) {
+		this.Photo = Photo;
+	}
+
 	public Post(int id, int userId, String title, String description, int seen,
-			String serverDate, int submit, String date, int seenBefore) {
+			String serverDate, int submit, String date, int seenBefore,
+			String photo) {
 		super();
 		Id = id;
 		UserId = userId;
@@ -95,6 +105,7 @@ public class Post {
 		ServerDate = serverDate;
 		Submit = submit;
 		Date = date;
+		Photo = photo;
 		this.seenBefore = seenBefore;
 	}
 

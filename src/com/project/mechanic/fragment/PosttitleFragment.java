@@ -8,11 +8,11 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageButton;
@@ -61,6 +61,8 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 	ArrayList<Integer> missedIds;
 	ServiceComm service;
 
+	int ObjectID;
+
 	Updating update;
 	Settings setting;
 
@@ -83,22 +85,29 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 		final SharedPreferences realize = getActivity().getSharedPreferences(
 				"Id", 0);
 
+		if (getArguments().getString("Id") != null)
+			ObjectID = Integer.valueOf(getArguments().getString("Id"));
+
 		action.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				if (Currentuser == null)
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
-				else {
-					dialog = new DialogpostTitle(getActivity(),
-							R.layout.dialog_addtitlepost, PosttitleFragment.this);
-					dialog.getWindow()
-							.setSoftInputMode(
-									WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-					dialog.show();
-					realize.edit().putInt("main_Id", 1).commit();
-				}
+				// if (Currentuser == null)
+				// Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+				// Toast.LENGTH_SHORT).show();
+				// else {
+				DialogPostFragment fragment = new DialogPostFragment();
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("Id", ObjectID);
+				fragment.setArguments(bundle);
+				// }
 			}
 		});
 

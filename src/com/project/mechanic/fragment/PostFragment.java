@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -84,6 +83,9 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	LinearLayout addComment, likeTopic;
 	ImageButton sharebtn;
 	ImageView profileImg;
+
+	ImageView postImage;
+
 	int postid;
 	RelativeLayout count, commentcounter;
 
@@ -160,16 +162,18 @@ public class PostFragment extends Fragment implements AsyncInterface,
 				Bundle bundle = new Bundle();
 				bundle.putInt("Id", ObjectID);
 				fragment.setArguments(bundle);
-				
-//				FragmentManager fm = getFragmentManager();
-//				MyDialogShow = new DialogpostTitleFragment();
-//				MyDialogShow.show(fm, "Dialog Fragment");
+
+				// FragmentManager fm = getFragmentManager();
+				// MyDialogShow = new DialogpostTitleFragment();
+				// MyDialogShow.show(fm, "Dialog Fragment");
 
 			}
 		});
 		/**/
 
 		// start find view
+
+		postImage = (ImageView) header.findViewById(R.id.postImage);
 
 		titletxt = (TextView) header.findViewById(R.id.title_topic);
 		descriptiontxt = (TextView) header.findViewById(R.id.description_topic);
@@ -235,8 +239,24 @@ public class PostFragment extends Fragment implements AsyncInterface,
 				profileImg.setLayoutParams(lp);
 			}
 		}
-		titletxt.setText(topics.getTitle());
-		descriptiontxt.setText(topics.getDescription());
+
+		if (!topics.getTitle().isEmpty()) {
+			titletxt.setText(topics.getTitle());
+			titletxt.setVisibility(View.VISIBLE);
+		}
+		if (!topics.getTitle().isEmpty()) {
+			descriptiontxt.setText(topics.getDescription());
+			descriptiontxt.setVisibility(View.VISIBLE);
+		}
+		if (!topics.getPhoto().isEmpty()) {
+			File imgFile = new File(topics.getPhoto());
+
+			if (imgFile.exists()) {
+				Bitmap myBitmap = BitmapFactory.decodeFile(topics.getPhoto());
+				postImage.setImageBitmap(myBitmap);
+				postImage.setVisibility(View.VISIBLE);
+			}
+		}
 		countComment.setText(adapter.CommentInPost_count(postid).toString());
 		countLike.setText(adapter.LikeInPost_count(postid).toString());
 		dateTopic.setText(util.getPersianDate(topics.getDate()));
