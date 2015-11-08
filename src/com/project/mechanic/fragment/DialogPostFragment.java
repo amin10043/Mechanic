@@ -2,51 +2,99 @@ package com.project.mechanic.fragment;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import com.project.mechanic.R;
-import com.project.mechanic.entity.Users;
-import com.project.mechanic.inter.AsyncInterface;
-import com.project.mechanic.inter.SaveAsyncInterface;
-import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.utility.Utility;
-
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.CursorJoiner.Result;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-public class DialogpostTitleFragment extends DialogFragment {
-	
+import com.project.mechanic.R;
+import com.project.mechanic.entity.Users;
+import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
+
+public class DialogPostFragment extends Fragment {
+
 	Context mContext;
+	
 	ImageView btnPickFile;
 	ImageView ShowImage;
-	Button btnClearImage;
-	Utility util;
-	Users user;
-	View view;
-	byte[] ImageConvertedToByte = null;
 	
+	Button btnClearImage;
+	Button btnSave;
+	
+	private DataBaseAdapter dbadapter;
+	
+	private EditText PostTitle;
+	private EditText PostDecription;
+	
+	Utility util;
+	
+	Users user;
+	
+	Users currentUser;
+	
+	View view;
+	
+	byte[] ImageConvertedToByte = null;
+
+	String severDate;
+	
+	@Override
+	public View onCreateView(android.view.LayoutInflater inflater,
+			android.view.ViewGroup container, Bundle savedInstanceStat) {
+
+		view = inflater.inflate(R.layout.dialog_addtitlepostfragment, null);
+
+		util = new Utility(this.getActivity());
+		user = new Users();
+
+		currentUser = util.getCurrentUser();
+		
+		ShowImage = (ImageView) view.findViewById(R.id.ShowImage);
+		
+		btnPickFile = (ImageView) view.findViewById(R.id.btnPickFile);
+		btnPickFile.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				selectImageOption();
+			}
+		});
+		
+		btnClearImage = (Button) view.findViewById(R.id.btnClearImage);
+		btnClearImage.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				ImageConvertedToByte = null;
+				ShowImage.setVisibility(View.INVISIBLE);
+				btnClearImage.setVisibility(View.INVISIBLE);
+			}
+		});
+		
+		PostTitle = (EditText) view.findViewById(R.id.txtTitleP);
+		PostDecription = (EditText) view.findViewById(R.id.txttitleDes);
+		btnSave = (Button) view.findViewById(R.id.btnPdf1_Object);
+		btnSave.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				dbadapter.open();
+				dbadapter.insertPosttitletoDb(PostTitle.getText().toString(),
+						PostDecription.getText().toString(), currentUser.getId(),
+						severDate, "ImageAddress");
+				dbadapter.close();
+			}
+		});
+
+		return view;
+	}
+
 	LinearLayout.LayoutParams lp2;
 	private Uri mImageCaptureUri;
 	private File mFileTemp;
@@ -54,40 +102,12 @@ public class DialogpostTitleFragment extends DialogFragment {
 	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201,
 			CROPING_CODE = 301;
 	final int PIC_CROP = 10;
-	
-	public DialogpostTitleFragment() {
-        mContext = getActivity();
-    }
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.dialog_addtitlepostfragment, container,
-				false);
-		getDialog().setTitle("ایجاد پست جدید");
-		
-		ShowImage = (ImageView) rootView.findViewById(R.id.btnPickFile);
-		
-		btnPickFile = (ImageView) rootView.findViewById(R.id.btnPickFile);
-		btnPickFile.setOnClickListener(new View.OnClickListener() {
-			   public void onClick(View v) {
-				   selectImageOption();
-			   }        
-			});
-		
-		return rootView;
-	}
-	
-	public static DialogpostTitleFragment newInstance() {
-		DialogpostTitleFragment f = new DialogpostTitleFragment();
-        return f;
-    }
-	
-	
+
 	private void selectImageOption() {
 		final CharSequence[] items = { "از دوربین", "از گالری تصاویر", "انصراف" };
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+				this.getActivity());
 		builder.setTitle("افزودن تصویر");
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 			@Override
@@ -95,15 +115,18 @@ public class DialogpostTitleFragment extends DialogFragment {
 
 				if (items[item].equals("از دوربین")) {
 
-					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					// Intent intent = new
+					// Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					//
+					// File f = new File(android.os.Environment
+					// .getExternalStorageDirectory(), "temp1.jpg");
+					//
+					// mImageCaptureUri = Uri.fromFile(f);
+					// intent.putExtra(MediaStore.EXTRA_OUTPUT,
+					// mImageCaptureUri);
 
-					File f = new File(android.os.Environment
-							.getExternalStorageDirectory(), "temp1.jpg");
-
-					mImageCaptureUri = Uri.fromFile(f);
-					intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
-
-					//fragment.getActivity().startActivityForResult(intent, CAMERA_CODE);
+					// fragment.getActivity().startActivityForResult(intent,
+					// CAMERA_CODE);
 
 				} else if (items[item].equals("از گالری تصاویر")) {
 
@@ -112,7 +135,8 @@ public class DialogpostTitleFragment extends DialogFragment {
 							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
 					getActivity().startActivityFromFragment(
-							DialogpostTitleFragment.this, i, GALLERY_CODE);
+							DialogPostFragment.this, i, GALLERY_CODE);
+
 					// Intent intent = new Intent();
 					// intent.setType("image/*");
 					// intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -135,7 +159,7 @@ public class DialogpostTitleFragment extends DialogFragment {
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		
+
 		switch (requestCode) {
 		case GALLERY_CODE:
 			if (resultCode == this.getActivity().RESULT_OK) {
@@ -156,8 +180,9 @@ public class DialogpostTitleFragment extends DialogFragment {
 				}
 			}
 		}
+
 	}
-	
+
 	public Bitmap decodeBitmap(Uri selectedImage) throws FileNotFoundException {
 		BitmapFactory.Options o = new BitmapFactory.Options();
 		o.inJustDecodeBounds = true;
@@ -182,5 +207,5 @@ public class DialogpostTitleFragment extends DialogFragment {
 		return BitmapFactory.decodeStream(this.getActivity()
 				.getContentResolver().openInputStream(selectedImage), null, o2);
 	}
-	
+
 }

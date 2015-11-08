@@ -18,6 +18,7 @@
     <string name="Propaganda">آگهی وتبلیغات</string>
     <string name="favorite">پسند شده ها</string>
     <string name="Forums">تالار گفتگو</string>
+    <string name="Post">پست گذاری</string>
     <string name="Tube">لوله واتصالات</string>
     <string name="SmartTube">لوله واتصالات هوشمند</string>
     <string name="FivelayerTube">لوله واتصالات پنج لایه</string>
@@ -57,8 +58,6 @@
     <string name="preparing_card">اماده سازی کارت حافظه</string>
     <string name="no_storage_card">کارت حافظه موجود نیست.</string>
     <string name="not_enough_space">فضای کافی در اختیار نیست.</string>
-    
-    
     <string name="center_click">Center has been clicked</string>
     <string name="text_fa">مجموعه رادکام از سال 1377 با هدف فعالیت در زمینه نرم‌افزار پا به عرصه وجود نهاد و در سال 1379 همگام با آغاز رشد روز افزون کاربرد اینترنت در دنیا، به طور تخصصی فعالیت خود را در زمینه ثبت‌دامنه، هاست و سرور اختصاصی و نیز طراحی سایت و پورتال سازمانی متمرکزساخت.
 

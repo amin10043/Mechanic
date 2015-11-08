@@ -221,7 +221,7 @@
             android:layout_marginRight="5dp"
             android:layout_toLeftOf="@+id/icon_item5"
             android:gravity="right"
-            android:text="نشریات - مقالات - اخبار "
+            android:text="نشریات - مقالات"
             android:textColor="@color/transparent" />
 
         <ImageView

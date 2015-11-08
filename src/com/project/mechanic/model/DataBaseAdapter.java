@@ -615,7 +615,7 @@ public class DataBaseAdapter {
 	}
 
 	public void insertPosttitletoDb(/* int id, */String Title,
-			String description, int userId, String date) {
+			String description, int userId, String date, String ImageAdrress) {
 
 		ContentValues cv = new ContentValues();
 
@@ -625,6 +625,7 @@ public class DataBaseAdapter {
 		cv.put("UserId", userId);
 		cv.put("Date", date);
 		cv.put("Seen", 0);
+		cv.put("Photo", ImageAdrress);
 
 		mDb.insert(TablePost, null, cv);
 
