@@ -52,6 +52,7 @@ public class NewsFragment extends Fragment {
 		NewsListAdapter ListAdapter = new NewsListAdapter(getActivity(),
 				R.layout.row_news, mylist, id);
 		lstNews.setAdapter(ListAdapter);
+		utility.ShowFooterAgahi(getActivity(), false, 0);
 		return view;
 	}
 }

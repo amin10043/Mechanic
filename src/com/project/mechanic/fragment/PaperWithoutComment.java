@@ -353,6 +353,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 				}
 
 				final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
+				popupMenu.show();
 
 				OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
 

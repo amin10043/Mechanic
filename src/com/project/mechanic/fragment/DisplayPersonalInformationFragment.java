@@ -147,6 +147,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 	}
 
 	public void FillExpandListView() {
+
 		dbAdapter.open();
 		List<PersonalData> ObejctData = dbAdapter
 				.CustomFieldObjectByUser(currentUser.getId());
@@ -176,10 +177,10 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		List<Integer> sizeTypeList = new ArrayList<Integer>();
 
 		sizeTypeList.add(ObejctData.size());
+		sizeTypeList.add(FollowedPageLsit.size());
 		sizeTypeList.add(TicketData.size());
 		sizeTypeList.add(PaperData.size());
 		sizeTypeList.add(FroumData.size());
-		sizeTypeList.add(FollowedPageLsit.size());
 
 		// Expandview = (ExpandableListView) rootView.findViewById(R.id.items);
 
@@ -192,16 +193,16 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		Expandview.setClickable(true);
 
 		parentItems.add("مدیریت صفحات");
+		parentItems.add("مدیریت صفحات دنبال شده");
 		parentItems.add("مدیریت آگهی ها");
 		parentItems.add("مدیریت مقالات");
 		parentItems.add("مدیریت تالار گفتگو");
-		parentItems.add("مدیریت صفحات دنبال شده");
 
 		listDataChild.put(parentItems.get(0), ObejctData); // Header, Child data
-		listDataChild.put(parentItems.get(1), TicketData);
-		listDataChild.put(parentItems.get(2), PaperData);
-		listDataChild.put(parentItems.get(3), FroumData);
-		listDataChild.put(parentItems.get(4), FollowedPageLsit);
+		listDataChild.put(parentItems.get(1), FollowedPageLsit);
+		listDataChild.put(parentItems.get(2), TicketData);
+		listDataChild.put(parentItems.get(3), PaperData);
+		listDataChild.put(parentItems.get(4), FroumData);
 
 		final SharedPreferences currentTime = getActivity()
 				.getSharedPreferences("time", 0);

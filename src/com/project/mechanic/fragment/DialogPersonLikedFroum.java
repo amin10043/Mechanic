@@ -213,7 +213,7 @@ public class DialogPersonLikedFroum extends Dialog implements CommInterface,
 		serverDate = output;
 		getUserFromServer(missedIds, controller);
 
-		adapter.open();
+//		adapter.open();
 
 	}
 

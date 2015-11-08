@@ -1,9 +1,13 @@
 package com.project.mechanic.adapter;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +18,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -21,23 +26,31 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Anad;
+import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.fragment.AnadFragment;
 import com.project.mechanic.fragment.DialogLongClick;
-import com.project.mechanic.fragment.DialogManagementTicket;
 import com.project.mechanic.fragment.ShowAdFragment;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Deleting;
+import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 @SuppressLint("ResourceAsColor")
-public class AnadListAdapter extends ArrayAdapter<Ticket> {
+public class AnadListAdapter extends ArrayAdapter<Ticket> implements
+		AsyncInterface {
 
 	Context context;
 	List<Ticket> list;
@@ -47,16 +60,23 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 	int ProvinceId;
 	Utility util;
 	Fragment fragment;
-	RelativeLayout.LayoutParams params;
+	RelativeLayout.LayoutParams layoutParams;
 	boolean IsShow;
 	ProgressBar LoadingProgress;
 	String DateTime;
 	int Type;
-	DialogManagementTicket dia;
+	// DialogManagementTicket dia;
+	int itemId, userIdsender;
+	List<String> menuItems;
+	String content;
+	Map<String, String> params;
+	Deleting deleting;
+	ProgressDialog ringProgressDialog;
+	int ticketTypeId;
 
 	public AnadListAdapter(Context context, int resource, List<Ticket> objact,
 			int ProvinceId, Fragment fragment, boolean IsShow, String DateTime,
-			int Type) {
+			int Type, int ticketTypeId) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -68,6 +88,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 		this.IsShow = IsShow;
 		this.DateTime = DateTime;
 		this.Type = Type;
+		this.ticketTypeId = ticketTypeId;
 
 		// if type==1 >>>> anadFragment
 
@@ -109,12 +130,12 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 
 		RelativeLayout llkj = (RelativeLayout) convertView
 				.findViewById(R.id.layoutmnb);
-		params = new RelativeLayout.LayoutParams(llkj.getLayoutParams());
-		params.width = util.getScreenwidth() / 5;
-		params.height = util.getScreenwidth() / 5;
-		params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		params.setMargins(1, 1, 1, 1);
+		layoutParams = new RelativeLayout.LayoutParams(llkj.getLayoutParams());
+		layoutParams.width = util.getScreenwidth() / 5;
+		layoutParams.height = util.getScreenwidth() / 5;
+		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		layoutParams.setMargins(1, 1, 1, 1);
 
 		String pathProfile = tempItem.getImagePath();
 		Bitmap profileImage = BitmapFactory.decodeFile(pathProfile);
@@ -122,12 +143,12 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 		if (profileImage != null) {
 
 			img2.setImageBitmap(profileImage);
-			img2.setLayoutParams(params);
+			img2.setLayoutParams(layoutParams);
 			LoadingProgress.setVisibility(View.GONE);
 
 		} else {
 			img2.setImageResource(R.drawable.no_img_profile);
-			img2.setLayoutParams(params);
+			img2.setLayoutParams(layoutParams);
 		}
 		if (IsShow == false)
 			LoadingProgress.setVisibility(View.GONE);
@@ -162,12 +183,115 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 			}
 		}
 
-		
 		txtName.setTypeface(util.SetFontCasablanca());
 		txtDesc.setTypeface(util.SetFontCasablanca());
 
 		ImageView reaport = (ImageView) convertView
 				.findViewById(R.id.reportImage);
+
+		reaport.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				RelativeLayout parentlayout = (RelativeLayout) v.getParent();
+				TextView txtName = (TextView) parentlayout
+						.findViewById(R.id.row_favorite_title);
+				String item = txtName.getText().toString();
+				for (Ticket Ticket : list) {
+
+					if (item.equals(Ticket.getTitle())) {
+						// check authentication and authorization
+						itemId = Ticket.getId();
+						userIdsender = Ticket.getUserId();
+						content = Ticket.getDesc();
+
+					}
+				}
+
+				if (util.getCurrentUser() != null) {
+					if (util.getCurrentUser().getId() == userIdsender) {
+
+						menuItems = new ArrayList<String>();
+						menuItems.clear();
+						menuItems.add("ارسال پیام");
+						menuItems.add("کپی");
+						menuItems.add("حذف");
+
+					} else {
+						menuItems = new ArrayList<String>();
+
+						menuItems.clear();
+						menuItems.add("ارسال پیام");
+						menuItems.add("افزودن به علاقه مندی ها");
+						menuItems.add("کپی");
+						menuItems.add("گزارش تخلف");
+					}
+				} else {
+					menuItems = new ArrayList<String>();
+
+					menuItems.clear();
+					menuItems.add("کپی");
+				}
+
+				final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
+				popupMenu.show();
+
+				OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+
+						if (item.getTitle().equals("ارسال پیام")) {
+
+							if (util.getCurrentUser() != null)
+								util.sendMessage("Ticket");
+							else
+								Toast.makeText(context, "ابتدا باید وارد شوید",
+										0).show();
+						}
+
+						if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
+							adapter.open();
+							addToFavorite(util.getCurrentUser().getId(), 3,
+									itemId);
+							adapter.close();
+						}
+						if (item.getTitle().equals("کپی")) {
+
+							util.CopyToClipboard(content);
+
+						}
+						if (item.getTitle().equals("گزارش تخلف")) {
+
+							if (util.getCurrentUser() != null)
+								util.reportAbuseTicket(userIdsender, itemId,
+										content, ticketTypeId, ProvinceId);
+							// util.reportAbuse(userIdsender, 3, itemId,
+							// content, 0);
+							else
+								Toast.makeText(context, "ابتدا باید وارد شوید",
+										0).show();
+						}
+						if (item.getTitle().equals("حذف")) {
+							if (util.getCurrentUser() != null
+									&& util.getCurrentUser().getId() == userIdsender)
+								deleteItems(itemId);
+							else {
+
+								Toast.makeText(context, "", 0).show();
+							}
+						}
+
+						return false;
+					}
+				};
+
+				popupMenu.setOnMenuItemClickListener(menuitem);
+
+			}
+
+		});
 
 		convertView.setOnClickListener(new OnClickListener() {
 
@@ -206,50 +330,109 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> {
 			}
 		});
 
-		reaport.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				
-				
-//				RelativeLayout parentlayout = (RelativeLayout) v.getParent();
-//				TextView txtName = (TextView) parentlayout
-//						.findViewById(R.id.row_favorite_title);
-//				String item = txtName.getText().toString();
-//				int id = 0;
-//				int u = 0;
-//				String t = "";
-//				for (Ticket Ticket : list) {
-//
-//					if (item.equals(Ticket.getTitle())) {
-//						// check authentication and authorization
-//						id = Ticket.getId();
-//						u = Ticket.getUserId();
-//						t = Ticket.getDesc();
-//
-//					}
-//				}
-//
-//				DialogLongClick dia = new DialogLongClick(context, 3, u, id,
-//						fragment, t);
-//				Toast.makeText(context, id + "", 0).show();
-//
-//				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//				lp.copyFrom(dia.getWindow().getAttributes());
-//				lp.width = (int) (util.getScreenwidth() / 1.5);
-//				lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-//				;
-//				dia.show();
-//
-//				dia.getWindow().setAttributes(lp);
-//				dia.getWindow().setBackgroundDrawable(
-//						new ColorDrawable(android.graphics.Color.TRANSPARENT));
-			}
-		});
+		// reaport.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		//
+		// // RelativeLayout parentlayout = (RelativeLayout) v.getParent();
+		// // TextView txtName = (TextView) parentlayout
+		// // .findViewById(R.id.row_favorite_title);
+		// // String item = txtName.getText().toString();
+		// // int id = 0;
+		// // int u = 0;
+		// // String t = "";
+		// // for (Ticket Ticket : list) {
+		// //
+		// // if (item.equals(Ticket.getTitle())) {
+		// // // check authentication and authorization
+		// // id = Ticket.getId();
+		// // u = Ticket.getUserId();
+		// // t = Ticket.getDesc();
+		// //
+		// // }
+		// // }
+		// //
+		// // DialogLongClick dia = new DialogLongClick(context, 3, u, id,
+		// // fragment, t);
+		// // Toast.makeText(context, id + "", 0).show();
+		// //
+		// // WindowManager.LayoutParams lp = new
+		// // WindowManager.LayoutParams();
+		// // lp.copyFrom(dia.getWindow().getAttributes());
+		// // lp.width = (int) (util.getScreenwidth() / 1.5);
+		// // lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+		// // ;
+		// // dia.show();
+		// //
+		// // dia.getWindow().setAttributes(lp);
+		// // dia.getWindow().setBackgroundDrawable(
+		// // new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		// }
+		// });
 
 		// dia.dismiss();
 
 		return convertView;
 
+	}
+
+	public void deleteItems(int itemId) {
+
+		params = new LinkedHashMap<String, String>();
+
+		deleting = new Deleting(context);
+		deleting.delegate = AnadListAdapter.this;
+
+		params.put("TableName", "Ticket");
+		params.put("Id", String.valueOf(itemId));
+
+		deleting.execute(params);
+
+		ringProgressDialog = ProgressDialog.show(context, "",
+				"لطفا منتظر بمانید...", true);
+
+		ringProgressDialog.setCancelable(true);
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+
+					Thread.sleep(10000);
+
+				} catch (Exception e) {
+
+				}
+			}
+		}).start();
+
+	}
+
+	public void addToFavorite(int currentUserId, int source, int ItemId) {
+
+		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
+			Toast.makeText(context,
+					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+		} else {
+			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
+			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0)
+					.show();
+		}
+	}
+
+	@Override
+	public void processFinish(String output) {
+
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
+
+		adapter.open();
+		adapter.deleteTicketItem(itemId);
+		adapter.close();
+
+		((AnadFragment) fragment).updateView();
 	}
 }

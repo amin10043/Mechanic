@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -23,9 +25,11 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -62,6 +66,10 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 	Deleting deleting;
 	Map<String, String> params;
 	ImageView reportComment, reportReply;
+	int itemId, userIdsender;;
+	String content;
+	List<String> menuItems;
+	boolean IsDeleteing;
 
 	public ExpandIntroduction(Context context,
 			ArrayList<CommentInObject> CommentList,
@@ -120,60 +128,135 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 		final CommentInObject comment = CommentList.get(groupPosition);
 		Users y = adapter.getUserbyid(comment.getUserid());
 
+		RelativeLayout rl = (RelativeLayout) convertView
+				.findViewById(R.id.main_icon_reply);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+				rl.getLayoutParams());
+
+		lp.width = util.getScreenwidth() / 7;
+		lp.height = util.getScreenwidth() / 7;
+		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		lp.setMargins(5, 5, 5, 5);
 		if (y.getImagePath() == null) {
 			ReplyerPic.setImageResource(R.drawable.no_img_profile);
-		} else {
+			ReplyerPic.setLayoutParams(lp);
 
-			// byte[] byteImageProfile = y.getImage();
+		} else {
 
 			Bitmap bmp = BitmapFactory.decodeFile(y.getImagePath());
 
 			ReplyerPic.setImageBitmap(bmp);
 
-			RelativeLayout rl = (RelativeLayout) convertView
-					.findViewById(R.id.main_icon_reply);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-					rl.getLayoutParams());
-
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 5, 5, 5);
 			ReplyerPic.setLayoutParams(lp);
 		}
 
 		reportReply.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
-				int i = 0;
-				int u = 0;
-				String t = "";
-				// برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
-				// شود
+			public void onClick(View v) {
 
-				int d = (int) getGroupId(groupPosition);
-				CommentInObject w = (CommentInObject) getChild(d, childPosition);
-				if (w != null) {
-					i = w.getId();
-					u = w.getUserid();
-					t = w.getDescription();
+				int id = (int) getGroupId(groupPosition);
+				CommentInObject co = (CommentInObject) getChild(id,
+						childPosition);
+				if (co != null) {
+					itemId = co.getId();
+					userIdsender = co.getUserid();
+					content = co.getDescription();
 				}
-				Toast.makeText(context, "id = " + i + "Userid = " + u, 0)
-						.show();
 
-				DialogLongClick dia = new DialogLongClick(context, 7, u, i, f,
-						t);
-				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-				lp.copyFrom(dia.getWindow().getAttributes());
-				lp.width = (int) (util.getScreenwidth() / 1.5);
-				lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-				;
-				dia.show();
+				if (util.getCurrentUser() != null) {
 
-				dia.getWindow().setAttributes(lp);
-				dia.getWindow().setBackgroundDrawable(
-						new ColorDrawable(android.graphics.Color.TRANSPARENT));
+					if (util.getCurrentUser().getId() == userIdsender) {
+
+						menuItems = new ArrayList<String>();
+						menuItems.clear();
+						menuItems.add("کپی");
+						menuItems.add("حذف");
+
+					} else {
+						menuItems = new ArrayList<String>();
+
+						menuItems.clear();
+						menuItems.add("کپی");
+						menuItems.add("گزارش تخلف");
+					}
+
+				} else {
+					menuItems = new ArrayList<String>();
+
+					menuItems.clear();
+					menuItems.add("کپی");
+				}
+
+				final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
+				popupMenu.show();
+
+				OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+
+						if (item.getTitle().equals("کپی")) {
+
+							util.CopyToClipboard(content);
+
+						}
+						if (item.getTitle().equals("گزارش تخلف")) {
+
+							if (util.getCurrentUser() != null)
+								util.reportAbuse(userIdsender, 7, itemId,
+										content, ObjectID);
+							else
+								Toast.makeText(context, "ابتدا باید وارد شوید",
+										0).show();
+						}
+						if (item.getTitle().equals("حذف")) {
+							if (util.getCurrentUser() != null
+									&& util.getCurrentUser().getId() == userIdsender)
+								deleteItems(itemId);
+							else {
+
+								Toast.makeText(context, "", 0).show();
+							}
+						}
+
+						return false;
+					}
+				};
+
+				popupMenu.setOnMenuItemClickListener(menuitem);
+
+				// int i = 0;
+				// int u = 0;
+				// String t = "";
+				// // برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
+				// // شود
+				//
+				// int d = (int) getGroupId(groupPosition);
+				// CommentInObject w = (CommentInObject) getChild(d,
+				// childPosition);
+				// if (w != null) {
+				// i = w.getId();
+				// u = w.getUserid();
+				// t = w.getDescription();
+				// }
+				// Toast.makeText(context, "id = " + i + "Userid = " + u, 0)
+				// .show();
+				//
+				// DialogLongClick dia = new DialogLongClick(context, 7, u, i,
+				// f,
+				// t);
+				// WindowManager.LayoutParams lp = new
+				// WindowManager.LayoutParams();
+				// lp.copyFrom(dia.getWindow().getAttributes());
+				// lp.width = (int) (util.getScreenwidth() / 1.5);
+				// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+				// ;
+				// dia.show();
+				//
+				// dia.getWindow().setAttributes(lp);
+				// dia.getWindow().setBackgroundDrawable(
+				// new ColorDrawable(android.graphics.Color.TRANSPARENT));
 			}
 		});
 
@@ -333,7 +416,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 		} else {
 			nameCommenter.setText(x.getName());
 		}
-		dateCommenter.setText(util.getPersianDate(comment.getDatetime()));
+//		dateCommenter.setText(util.getPersianDate(comment.getDatetime()));
 
 		countOfReply.setText(adapter.getCountOfReplyBrandPage(ObjectID,
 				comment.getId()).toString());
@@ -740,11 +823,15 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 							break;
 						}
 					}
-
-					DialogcmtInobject dialog = new DialogcmtInobject(f,
-							context, R.layout.dialog_addcomment, ObjectID,
-							commentid);
-					dialog.show();
+					f.CommentId(commentid);
+					f.groupPosition(groupPosition);
+					util.ReplyLayout((Activity) context, mainComment.getText()
+							.toString(), true);
+					
+//					DialogcmtInobject dialog = new DialogcmtInobject(f,
+//							context, R.layout.dialog_addcomment, ObjectID,
+//							commentid);
+//					dialog.show();
 
 					adapter.close();
 				}
@@ -754,57 +841,142 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 		reportComment.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
-				int u = 0;
-				int i = 0;
-				String t = "";
+			public void onClick(View v) {
 
-				adapter.open();
+				int id = (int) getGroupId(groupPosition);
+				CommentInObject co = (CommentInObject) getGroup(id);
+				if (co != null) {
+					itemId = co.getId();
+					userIdsender = co.getUserid();
+					content = co.getDescription();
+				}
 
-				if (adapter.getCountOfReplyBrandPage(ObjectID, comment.getId()) > 0) {
-					i = -1;
-					int dd = (int) getGroupId(groupPosition);
-					CommentInObject ww = (CommentInObject) getGroup(dd);
-					if (ww != null) {
-						u = ww.getUserid();
-						t = ww.getDescription();
-					}
+				if (util.getCurrentUser() != null) {
+
+					adapter.open();
+					int countReply = adapter.getCountOfReplyInObject(ObjectID,
+							comment.getId());
 					adapter.close();
 
-					DialogLongClick dia = new DialogLongClick(context, 7, u, i,
-							f, t);
-					dia.show();
+					if (util.getCurrentUser().getId() == userIdsender) {
 
-				} else {
+						if (countReply == 0) {
+							menuItems = new ArrayList<String>();
+							menuItems.clear();
+							menuItems.add("کپی");
+							menuItems.add("حذف");
+						} else {
 
-					// برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
-					// شود
+							menuItems = new ArrayList<String>();
+							menuItems.clear();
+							menuItems.add("کپی");
 
-					int d = (int) getGroupId(groupPosition);
-					CommentInObject w = (CommentInObject) getGroup(d);
-					if (w != null) {
-						i = w.getId();
-						u = w.getUserid();
-						t = w.getDescription();
+						}
 
+					} else {
+						menuItems = new ArrayList<String>();
+
+						menuItems.clear();
+						menuItems.add("کپی");
+						menuItems.add("گزارش تخلف");
 					}
 
-					// //////////////////////////
+				} else {
+					menuItems = new ArrayList<String>();
 
-					DialogLongClick dia = new DialogLongClick(context, 7, u, i,
-							f, t);
-					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-					lp.copyFrom(dia.getWindow().getAttributes());
-					lp.width = (int) (util.getScreenwidth() / 1.5);
-					lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-					;
-					dia.show();
-
-					dia.getWindow().setAttributes(lp);
-					dia.getWindow().setBackgroundDrawable(
-							new ColorDrawable(
-									android.graphics.Color.TRANSPARENT));
+					menuItems.clear();
+					menuItems.add("کپی");
 				}
+
+				final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
+				popupMenu.show();
+
+				OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+
+						if (item.getTitle().equals("کپی")) {
+
+							util.CopyToClipboard(content);
+
+						}
+						if (item.getTitle().equals("گزارش تخلف")) {
+
+							if (util.getCurrentUser() != null)
+								util.reportAbuse(userIdsender, 7, itemId,
+										content, ObjectID);
+							else
+								Toast.makeText(context, "ابتدا باید وارد شوید",
+										0).show();
+						}
+						if (item.getTitle().equals("حذف")) {
+							if (util.getCurrentUser() != null
+									&& util.getCurrentUser().getId() == userIdsender)
+								deleteItems(itemId);
+							else {
+
+								Toast.makeText(context, "", 0).show();
+							}
+						}
+
+						return false;
+					}
+				};
+
+				popupMenu.setOnMenuItemClickListener(menuitem);
+				// int u = 0;
+				// int i = 0;
+				// String t = "";
+				//
+				// adapter.open();
+				//
+				// if (adapter.getCountOfReplyBrandPage(ObjectID,
+				// comment.getId()) > 0) {
+				// i = -1;
+				// int dd = (int) getGroupId(groupPosition);
+				// CommentInObject ww = (CommentInObject) getGroup(dd);
+				// if (ww != null) {
+				// u = ww.getUserid();
+				// t = ww.getDescription();
+				// }
+				// adapter.close();
+				//
+				// DialogLongClick dia = new DialogLongClick(context, 7, u, i,
+				// f, t);
+				// dia.show();
+				//
+				// } else {
+				//
+				// // برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
+				// // شود
+				//
+				// int d = (int) getGroupId(groupPosition);
+				// CommentInObject w = (CommentInObject) getGroup(d);
+				// if (w != null) {
+				// i = w.getId();
+				// u = w.getUserid();
+				// t = w.getDescription();
+				//
+				// }
+				//
+				// // //////////////////////////
+				//
+				// DialogLongClick dia = new DialogLongClick(context, 7, u, i,
+				// f, t);
+				// WindowManager.LayoutParams lp = new
+				// WindowManager.LayoutParams();
+				// lp.copyFrom(dia.getWindow().getAttributes());
+				// lp.width = (int) (util.getScreenwidth() / 1.5);
+				// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+				// ;
+				// dia.show();
+				//
+				// dia.getWindow().setAttributes(lp);
+				// dia.getWindow().setBackgroundDrawable(
+				// new ColorDrawable(
+				// android.graphics.Color.TRANSPARENT));
+				// }
 			}
 		});
 
@@ -840,64 +1012,115 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 	@Override
 	public void processFinish(String output) {
 
-		if (!"".equals(output) && output != null
-				&& !(output.contains("Exception") || output.contains("java"))) {
-			int id = -1;
-			try {
-				id = Integer.valueOf(output);
+		if (IsDeleteing == true) {
 
-				adapter.open();
-				if (flag) {
+			adapter.open();
+			adapter.deleteOnlyCommentObject(itemId);
+			adapter.close();
 
-					if (adapter.isUserLikedCommentBrandPage(
-							Currentuser.getId(), GlobalId, 1)) {
+			if (ringProgressDialog != null) {
+				ringProgressDialog.dismiss();
+			}
+			((IntroductionFragment) f).updateList();
+		} else {
 
-						adapter.deleteLikeCommentBrandPage(GlobalId,
-								Currentuser.getId(), 1);
-						notifyDataSetChanged();
-						if (ringProgressDialog != null) {
-							ringProgressDialog.dismiss();
+			if (!"".equals(output)
+					&& output != null
+					&& !(output.contains("Exception") || output
+							.contains("java"))) {
+				int id = -1;
+				try {
+					id = Integer.valueOf(output);
+
+					adapter.open();
+					if (flag) {
+
+						if (adapter.isUserLikedCommentBrandPage(
+								Currentuser.getId(), GlobalId, 1)) {
+
+							adapter.deleteLikeCommentBrandPage(GlobalId,
+									Currentuser.getId(), 1);
+							notifyDataSetChanged();
+							if (ringProgressDialog != null) {
+								ringProgressDialog.dismiss();
+
+							}
+						} else {
+
+							adapter.InsertLikeCommentFromObject(id,
+									Currentuser.getId(), 1, GlobalId);
+							notifyDataSetChanged();
+							if (ringProgressDialog != null) {
+								ringProgressDialog.dismiss();
+
+							}
 
 						}
+
 					} else {
+						if (adapter.isUserLikedCommentBrandPage(
+								Currentuser.getId(), GlobalId, 0)) {
 
-						adapter.InsertLikeCommentFromObject(id,
-								Currentuser.getId(), 1, GlobalId);
-						notifyDataSetChanged();
-						if (ringProgressDialog != null) {
-							ringProgressDialog.dismiss();
+							adapter.deleteLikeCommentBrandPage(GlobalId,
+									Currentuser.getId(), 0);
+							notifyDataSetChanged();
+							if (ringProgressDialog != null) {
+								ringProgressDialog.dismiss();
 
+							}
+						} else {
+							adapter.InsertLikeCommentFromObject(id,
+									Currentuser.getId(), 0, GlobalId);
+							notifyDataSetChanged();
+							if (ringProgressDialog != null) {
+								ringProgressDialog.dismiss();
+
+							}
 						}
 
 					}
-
-				} else {
-					if (adapter.isUserLikedCommentBrandPage(
-							Currentuser.getId(), GlobalId, 0)) {
-
-						adapter.deleteLikeCommentBrandPage(GlobalId,
-								Currentuser.getId(), 0);
-						notifyDataSetChanged();
-						if (ringProgressDialog != null) {
-							ringProgressDialog.dismiss();
-
-						}
-					} else {
-						adapter.InsertLikeCommentFromObject(id,
-								Currentuser.getId(), 0, GlobalId);
-						notifyDataSetChanged();
-						if (ringProgressDialog != null) {
-							ringProgressDialog.dismiss();
-
-						}
-					}
-
+				} catch (Exception e) {
+					Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT)
+							.show();
 				}
-			} catch (Exception e) {
-				Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT)
-						.show();
 			}
 		}
+
+	}
+
+	public void deleteItems(int itemId) {
+
+		params = new LinkedHashMap<String, String>();
+
+		deleting = new Deleting(context);
+		deleting.delegate = ExpandIntroduction.this;
+
+		params.put("TableName", "CommentInObject");
+		params.put("Id", String.valueOf(itemId));
+
+		deleting.execute(params);
+
+		ringProgressDialog = ProgressDialog.show(context, "",
+				"لطفا منتظر بمانید...", true);
+
+		ringProgressDialog.setCancelable(true);
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+
+					Thread.sleep(10000);
+
+				} catch (Exception e) {
+
+				}
+			}
+		}).start();
+
+		IsDeleteing = true;
+
 	}
 
 }

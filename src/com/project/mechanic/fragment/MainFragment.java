@@ -242,6 +242,7 @@ public class MainFragment extends Fragment {
 
 			}
 		});
+
 		mainRow5.setOnClickListener(new OnClickListener() {
 
 			@Override
