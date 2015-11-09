@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,26 +22,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.ExpandIntroduction;
+import com.project.mechanic.adapter.PosttitleListadapter;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.Object;
+import com.project.mechanic.entity.Post;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.GetAllAsyncInterface;
@@ -60,7 +60,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	Context context;
 	Utility ut;
 	Users currentUser;
-	View header, view;
+	View header, view, Posts;
+
+	ListView PostList;
+
 	ExpandableListView exListView;
 	ExpandIntroduction exadapter;
 	int ObjectID, gp;
@@ -68,6 +71,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	UpdatingAllImage updating;
 	Map<String, String> maps;
 	ArrayList<CommentInObject> commentGroup, ReplyGroup;
+	ArrayList<Post> ArrayPosts;
 	Map<CommentInObject, List<CommentInObject>> mapCollection;
 	public RelativeLayout agency, service, sendSMS, addressRelative,
 			emailRelative, profileLinear, personPage, personPost, phone,
@@ -104,6 +108,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	Button followPage, EditPage, shareBtn, ShowPostBtn, btnShowPost;
 	int userId, commentId = 0;
 
+	FloatingActionButton action;
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -117,6 +123,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		view = inflater.inflate(R.layout.fragment_introduction, null);
 		header = getActivity().getLayoutInflater().inflate(
 				R.layout.header_introduction, null);
+		Posts = inflater.inflate(R.layout.fragment_titlepost, null);
+		PostList = (ListView) Posts.findViewById(R.id.lstComment);
+		PostList.addHeaderView(header);
 
 		// define Views : find view by Id
 		findView();
@@ -133,6 +142,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		// fill expand ListView
 		fillExpandListViewCommnet();
+
+		// fill Post List View
+		fillListView();
 
 		// set layoutParams
 		setLayoutParams();
@@ -171,8 +183,11 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		showPeopleLikedBtn();
 
 		// for manage footer slide image agahi
-		addComment();
-		return view;
+		// addComment();
+		if (PostList.getCount() > 0)
+			return Posts;
+		else
+			return header;
 
 	}
 
@@ -695,8 +710,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		followPage = (Button) header.findViewById(R.id.followPage);
 		reaport = (ImageView) header.findViewById(R.id.reportImage);
-		btnShowPost = (Button) header.findViewById(R.id.btnShowPost);
 
+		action = (FloatingActionButton) Posts.findViewById(R.id.fab);
 	}
 
 	private void fillExpandListViewCommnet() {
@@ -720,9 +735,19 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		exListView.addHeaderView(header);
 
 		exListView.setAdapter(exadapter);
-		if (commentClick ==true)
+		if (commentClick == true)
 			exListView.setSelectedGroup(mapCollection.size() - 1);
 
+	}
+
+	private void fillListView() {
+		adapter.open();
+		ArrayPosts = adapter.getAllPost();
+		PosttitleListadapter ListAdapterPost = new PosttitleListadapter(
+				getActivity(), R.layout.raw_posttitle, ArrayPosts,
+				IntroductionFragment.this);
+		PostList.setAdapter(ListAdapterPost);
+		PostList.addHeaderView(header);
 	}
 
 	private void setStateButtonFollowLike() {
@@ -1135,6 +1160,29 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	private void setOnItemClickInformationContact() {
 
+		action.setOnClickListener(new OnClickListener() {
+			public void onClick(View arg0) {
+				// if (Currentuser == null)
+				// Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+				// Toast.LENGTH_SHORT).show();
+				// else {
+				DialogPostFragment fragment = new DialogPostFragment();
+
+				FragmentTransaction trans = getActivity()
+						.getSupportFragmentManager().beginTransaction();
+				trans.setCustomAnimations(R.anim.pull_in_left,
+						R.anim.push_out_right);
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("Id", ObjectID);
+				fragment.setArguments(bundle);
+				// }
+			}
+		});
+
 		phone.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -1529,26 +1577,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				// dia.getWindow().setBackgroundDrawable(
 				// new ColorDrawable(android.graphics.Color.TRANSPARENT));
 			}
-		});
-
-		btnShowPost.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				PosttitleFragment fragment = new PosttitleFragment();
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, fragment);
-				trans.addToBackStack(null);
-				trans.commit();
-
-				Bundle bundle = new Bundle();
-				bundle.putInt("Id", ObjectID);
-				fragment.setArguments(bundle);
-			}
-
 		});
 
 	}

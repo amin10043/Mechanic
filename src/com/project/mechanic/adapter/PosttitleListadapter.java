@@ -14,7 +14,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -39,7 +38,6 @@ import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.DialogShowImage;
 import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.fragment.PostFragment;
-import com.project.mechanic.fragment.PostWithoutComment;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
@@ -105,6 +103,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				.findViewById(R.id.countCommentInEveryTopic);
 		TextView dateTopic = (TextView) convertView
 				.findViewById(R.id.datetopicinFroum);
+		TextView PostID = (TextView) convertView.findViewById(R.id.PostID);
 		countLikePost = (TextView) convertView
 				.findViewById(R.id.countLikeInFroumTitle);
 		ImageView profileImg = (ImageView) convertView
@@ -138,6 +137,9 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 			dateTopic.setTextColor(Color.GRAY);
 
 		}
+
+		PostID.setText(person1.getId() + "");
+
 		if (!person1.getTitle().isEmpty()) {
 			txt1.setText(person1.getTitle());
 			txt1.setVisibility(View.VISIBLE);
@@ -146,8 +148,6 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 			txt2.setText(person1.getDescription());
 			txt2.setVisibility(View.VISIBLE);
 		}
-
-		// txt2.setText(person1.getDescription());
 
 		if (!person1.getPhoto().isEmpty()) {
 
@@ -315,14 +315,18 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 			public void onClick(View v) {
 
 				// در تمام صفحات از این کد ها استفاده شود
-				int ItemId = 0;
-				ListView listView = (ListView) v.getParent();
-				int position = listView.getPositionForView(v);
-				Post f = getItem(position);
-				if (f != null) {
-					ItemId = f.getId();
-				}
+				// int ItemId = 0;
+				// ListView listView = (ListView) v.getParent();
+				// int position = listView.getPositionForView(v);
+				// Post f = getItem(position);
+				// if (f != null) {
+				// ItemId = f.getId();
+				// }
 				// تا اینجا
+
+				TextView PostID = (TextView) v.findViewById(R.id.PostID);
+				String TextPostID = PostID.getText().toString();
+				int ItemId = Integer.parseInt(TextPostID);
 
 				adapter.open();
 				adapter.SetSeen("Post", ItemId, "1");
@@ -330,22 +334,40 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				PostWithoutComment fragment = new PostWithoutComment();
+				PostFragment fragment = new PostFragment();
 				trans.setCustomAnimations(R.anim.pull_in_left,
 						R.anim.push_out_right);
 				Bundle bundle = new Bundle();
-
 				bundle.putString("Id", String.valueOf(ItemId));
 				fragment.setArguments(bundle);
 
+				/*
+				 * bundle.putString("Id", String.valueOf(idPost));
+				 * fragment.setArguments(bundle);
+				 */
+
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
-				abc.edit().putInt("main_Id", 1).commit();
-				abc.edit()
-						.putInt("Post_List_Id",
-								((ListView) parent).getFirstVisiblePosition())
-						.commit();
-				postId.edit().putInt("main_Id", ItemId).commit();
+				abc.edit().putInt("main_Id", 2).commit();
+
+				// FragmentTransaction trans = ((MainActivity) context)
+				// .getSupportFragmentManager().beginTransaction();
+				// PostWithoutComment fragment = new PostWithoutComment();
+				// trans.setCustomAnimations(R.anim.pull_in_left,
+				// R.anim.push_out_right);
+				// Bundle bundle = new Bundle();
+				//
+				// bundle.putString("Id", String.valueOf(ItemId));
+				// fragment.setArguments(bundle);
+				//
+				// trans.replace(R.id.content_frame, fragment);
+				// trans.commit();
+				// abc.edit().putInt("main_Id", 1).commit();
+				// abc.edit()
+				// .putInt("Post_List_Id",
+				// ((ListView) parent).getFirstVisiblePosition())
+				// .commit();
+				// postId.edit().putInt("main_Id", ItemId).commit();
 
 			}
 		});
@@ -354,20 +376,25 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 			@Override
 			public void onClick(View v) {
 
-				LinearLayout parentlayout = (LinearLayout) v;
+				// LinearLayout parentlayout = (LinearLayout) v;
+				//
+				// String item = txt2.getText().toString();
+				// ;
+				// int sizeDescription = item.length();
+				// String subItem;
+				// subItem = item.subSequence(0, sizeDescription -
+				// 4).toString();
+				// int ItemId = 0;
+				// for (Post listItem : mylist) {
+				// if (subItem.equals(listItem.getDescription())) {
+				// // check authentication and authorization
+				// ItemId = listItem.getId();
+				// }
+				// }
 
-				String item = txt2.getText().toString();
-				;
-				int sizeDescription = item.length();
-				String subItem;
-				subItem = item.subSequence(0, sizeDescription - 4).toString();
-				int ItemId = 0;
-				for (Post listItem : mylist) {
-					if (subItem.equals(listItem.getDescription())) {
-						// check authentication and authorization
-						ItemId = listItem.getId();
-					}
-				}
+				TextView PostID = (TextView) v.findViewById(R.id.PostID);
+				String TextPostID = PostID.getText().toString();
+				int ItemId = Integer.parseInt(TextPostID);
 
 				// int ItemId = 0;
 				// ListView listView = (ListView) v.getParent().getParent()
@@ -377,6 +404,10 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				// if (f != null) {
 				// ItemId = f.getId();
 				// }
+
+				adapter.open();
+				adapter.SetSeen("Post", ItemId, "1");
+				adapter.close();
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
@@ -398,25 +429,24 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 		});
 
-		
 		postImage.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				
-				
+
 				if (postImage.getDrawable() != null) {
-					 Bitmap bitmapHeader = ((BitmapDrawable) postImage.getDrawable())
-					 .getBitmap();
-					 byte[] ImageConvertedToByte = Utility.CompressBitmap(bitmapHeader);
-				//Bitmap image=((BitmapDrawable) postImage.getDrawable()).getBitmap();
-				//Drawable myDrawable = postImage.getDrawable();
-				DialogShowImage showImageDialog = new DialogShowImage(
-						context, ImageConvertedToByte , "");
-				showImageDialog.show();
+					Bitmap bitmapHeader = ((BitmapDrawable) postImage
+							.getDrawable()).getBitmap();
+					byte[] ImageConvertedToByte = Utility
+							.CompressBitmap(bitmapHeader);
+					// Bitmap image=((BitmapDrawable)
+					// postImage.getDrawable()).getBitmap();
+					// Drawable myDrawable = postImage.getDrawable();
+					DialogShowImage showImageDialog = new DialogShowImage(
+							context, ImageConvertedToByte, "");
+					showImageDialog.show();
 				}
 			}
 		});
-		
-		
+
 		convertView.setTag(person1.getId());
 		// Parent = convertView;
 		return convertView;
