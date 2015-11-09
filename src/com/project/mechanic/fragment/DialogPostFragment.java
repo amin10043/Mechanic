@@ -2,6 +2,9 @@ package com.project.mechanic.fragment;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,15 +14,20 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.format.Time;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
@@ -51,10 +59,12 @@ public class DialogPostFragment extends Fragment {
 
 	String severDate;
 
+	int ObjectId;
+
 	@Override
 	public View onCreateView(android.view.LayoutInflater inflater,
 			android.view.ViewGroup container, Bundle savedInstanceStat) {
-
+		ObjectId = Integer.valueOf(getArguments().getInt("Id"));
 		view = inflater.inflate(R.layout.dialog_addtitlepostfragment, null);
 
 		util = new Utility(this.getActivity());
@@ -80,6 +90,15 @@ public class DialogPostFragment extends Fragment {
 			}
 		});
 
+		String state = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			mFileTemp = new File(Environment.getExternalStorageDirectory(),
+					TEMP_PHOTO_FILE_NAME);
+		} else {
+			mFileTemp = new File(getActivity().getFilesDir(),
+					TEMP_PHOTO_FILE_NAME);
+		}
+
 		dbadapter = new DataBaseAdapter(getActivity());
 
 		PostTitle = (EditText) view.findViewById(R.id.txtTitleP);
@@ -100,12 +119,33 @@ public class DialogPostFragment extends Fragment {
 									+ Long.toString(time.toMillis(false)),
 							"Mechanical", "Post", "post");
 				}
+				if (!ImageAddress.isEmpty()
+						|| (!PostTitle.getText().toString().isEmpty() && !PostDecription
+								.getText().toString().isEmpty())) {
+					dbadapter.open();
+					dbadapter.insertPosttitletoDb(PostTitle.getText()
+							.toString(), PostDecription.getText().toString(),
+							currentUser.getId(), severDate, ImageAddress);
+					dbadapter.close();
 
-				dbadapter.open();
-				dbadapter.insertPosttitletoDb(PostTitle.getText().toString(),
-						PostDecription.getText().toString(),
-						currentUser.getId(), severDate, ImageAddress);
-				dbadapter.close();
+					IntroductionFragment fragment = new IntroductionFragment();
+
+					FragmentTransaction trans = getActivity()
+							.getSupportFragmentManager().beginTransaction();
+					trans.setCustomAnimations(R.anim.pull_in_left,
+							R.anim.push_out_right);
+					trans.replace(R.id.content_frame, fragment);
+					trans.addToBackStack(null);
+					trans.commit();
+
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", ObjectId + "");
+					fragment.setArguments(bundle);
+
+				} else
+					Toast.makeText(getActivity(),
+							"حداقل یه عکس یا یک عنوان و توضیحات وارد کنید",
+							Toast.LENGTH_SHORT).show();
 			}
 		});
 
@@ -131,19 +171,12 @@ public class DialogPostFragment extends Fragment {
 			public void onClick(DialogInterface dialog, int item) {
 
 				if (items[item].equals("از دوربین")) {
-
-					// Intent intent = new
-					// Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-					//
-					// File f = new File(android.os.Environment
-					// .getExternalStorageDirectory(), "temp1.jpg");
-					//
-					// mImageCaptureUri = Uri.fromFile(f);
-					// intent.putExtra(MediaStore.EXTRA_OUTPUT,
-					// mImageCaptureUri);
-
-					// fragment.getActivity().startActivityForResult(intent,
-					// CAMERA_CODE);
+					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					File f = new File(android.os.Environment
+							.getExternalStorageDirectory(), "temp1.jpg");
+					mImageCaptureUri = Uri.fromFile(f);
+					intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+					getActivity().startActivityForResult(intent, CAMERA_CODE);
 
 				} else if (items[item].equals("از گالری تصاویر")) {
 
@@ -183,17 +216,58 @@ public class DialogPostFragment extends Fragment {
 
 				mImageCaptureUri = data.getData();
 				try {
-					Bitmap bitmapImage = decodeBitmap(mImageCaptureUri);
-					ShowImage.setImageBitmap(bitmapImage);
-					ImageConvertedToByte = Utility.CompressBitmap(bitmapImage);
+					// Bitmap bitmapImage = decodeBitmap(mImageCaptureUri);
+					// ShowImage.setImageBitmap(bitmapImage);
+					// ImageConvertedToByte =
+					// Utility.CompressBitmap(bitmapImage);
 
-					if (ImageConvertedToByte != null) {
-						ShowImage.setVisibility(View.VISIBLE);
-						btnClearImage.setVisibility(View.VISIBLE);
+					InputStream inputStream = getActivity()
+							.getContentResolver().openInputStream(
+									data.getData());
+					FileOutputStream fileOutputStream = new FileOutputStream(
+							mFileTemp);
+					try {
+						Utility.copyStream(inputStream, fileOutputStream);
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
+					try {
+						fileOutputStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					try {
+						inputStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					startCropImage();
+
+					// if (ImageConvertedToByte != null) {
+					// ShowImage.setVisibility(View.VISIBLE);
+					// btnClearImage.setVisibility(View.VISIBLE);
+					// }
 
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
+				}
+			}
+		case PIC_CROP:
+			if (data != null) {
+				String path = data.getStringExtra(CropImage.IMAGE_PATH);
+				if (path == null) {
+					return;
+				}
+				Bitmap bitmap = null;
+				if (mFileTemp.getPath() != null)
+					bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
+				if (bitmap != null) {
+					ImageConvertedToByte = Utility.CompressBitmap(bitmap);
+					ShowImage.setImageBitmap(bitmap);
+					ShowImage.setVisibility(View.VISIBLE);
+					btnClearImage.setVisibility(View.VISIBLE);
+					// ImageProfile.setLayoutParams(lp2);
 				}
 			}
 		}
@@ -225,4 +299,15 @@ public class DialogPostFragment extends Fragment {
 				.getContentResolver().openInputStream(selectedImage), null, o2);
 	}
 
+	private void startCropImage() {
+
+		Intent intent = new Intent(getActivity(), CropImage.class);
+		intent.putExtra(CropImage.IMAGE_PATH, mFileTemp.getPath());
+		intent.putExtra(CropImage.SCALE, true);
+
+		intent.putExtra(CropImage.ASPECT_X, 3);
+		intent.putExtra(CropImage.ASPECT_Y, 3);
+
+		startActivityForResult(intent, PIC_CROP);
+	}
 }

@@ -53,8 +53,11 @@
 
         <ImageView
             android:id="@+id/postImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:scaleType="fitXY"
             android:src="@drawable/no_img_profile"
             android:visibility="gone" />
 
@@ -102,6 +105,13 @@
                 android:gravity="center"
                 android:text="123"
                 android:textColor="@color/transparent" />
+
+            <TextView
+                android:id="@+id/PostID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AAA"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -141,6 +151,7 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="right"
             android:background="@android:color/transparent"
+            android:clickable="true"
             android:scaleType="fitXY"
             android:src="@drawable/google" />
 

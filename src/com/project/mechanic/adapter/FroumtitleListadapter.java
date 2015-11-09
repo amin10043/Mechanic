@@ -12,7 +12,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -21,23 +20,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.DialogLongClick;
-import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.FroumWithoutComment;
 import com.project.mechanic.fragment.FroumtitleFragment;
@@ -286,7 +282,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 							menuItems.add("حذف");
 
 						} else {
-//							menuItems = new ArrayList<String>();
+							// menuItems = new ArrayList<String>();
 
 							menuItems.clear();
 							menuItems.add("ارسال پیام");
@@ -295,7 +291,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 							menuItems.add("گزارش تخلف");
 						}
 					} else {
-//						menuItems = new ArrayList<String>();
+						// menuItems = new ArrayList<String>();
 
 						menuItems.clear();
 						menuItems.add("کپی");

@@ -1836,7 +1836,7 @@ public class DataBaseAdapter {
 
 	}
 
-	public ArrayList<CommentInPost> getCommentInPostbyPaperid(int Postid,
+	public ArrayList<CommentInPost> getCommentInPostbyPostid(int Postid,
 			int commentID) {
 
 		ArrayList<CommentInPost> result = new ArrayList<CommentInPost>();

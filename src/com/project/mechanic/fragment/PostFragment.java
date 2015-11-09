@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,7 +40,6 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.ExpandableCommentPost;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.CommentInPost;
@@ -63,7 +63,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	/**/
 	Button dfragbutton;
 	Button alertdfragbutton;
-	FloatingActionButton action;
+	// FloatingActionButton action;
 	DialogPostFragment MyDialog;
 	DialogpostTitleFragment MyDialogShow;
 	int ObjectID;
@@ -146,29 +146,29 @@ public class PostFragment extends Fragment implements AsyncInterface,
 		/**/
 		if (getArguments().getString("Id") != null)
 			ObjectID = Integer.valueOf(getArguments().getString("Id"));
-		action = (FloatingActionButton) view.findViewById(R.id.fab);
-		action.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				DialogPostFragment fragment = new DialogPostFragment();
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, fragment);
-				trans.addToBackStack(null);
-				trans.commit();
-
-				Bundle bundle = new Bundle();
-				bundle.putInt("Id", ObjectID);
-				fragment.setArguments(bundle);
-
-				// FragmentManager fm = getFragmentManager();
-				// MyDialogShow = new DialogpostTitleFragment();
-				// MyDialogShow.show(fm, "Dialog Fragment");
-
-			}
-		});
+		// action = (FloatingActionButton) view.findViewById(R.id.fab);
+		// action.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// DialogPostFragment fragment = new DialogPostFragment();
+		//
+		// FragmentTransaction trans = getActivity()
+		// .getSupportFragmentManager().beginTransaction();
+		// trans.replace(R.id.content_frame, fragment);
+		// trans.addToBackStack(null);
+		// trans.commit();
+		//
+		// Bundle bundle = new Bundle();
+		// bundle.putInt("Id", ObjectID);
+		// fragment.setArguments(bundle);
+		//
+		// // FragmentManager fm = getFragmentManager();
+		// // MyDialogShow = new DialogpostTitleFragment();
+		// // MyDialogShow.show(fm, "Dialog Fragment");
+		//
+		// }
+		// });
 		/**/
 
 		// start find view
@@ -264,6 +264,24 @@ public class PostFragment extends Fragment implements AsyncInterface,
 		// titletxt.setTypeface(util.SetFontCasablanca());
 		// descriptiontxt.setTypeface(util.SetFontCasablanca());
 
+		postImage.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+
+				if (postImage.getDrawable() != null) {
+					Bitmap bitmapHeader = ((BitmapDrawable) postImage
+							.getDrawable()).getBitmap();
+					byte[] ImageConvertedToByte = Utility
+							.CompressBitmap(bitmapHeader);
+					// Bitmap image=((BitmapDrawable)
+					// postImage.getDrawable()).getBitmap();
+					// Drawable myDrawable = postImage.getDrawable();
+					DialogShowImage showImageDialog = new DialogShowImage(
+							getActivity(), ImageConvertedToByte, "");
+					showImageDialog.show();
+				}
+			}
+		});
+
 		profileImg.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -301,7 +319,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
-		commentGroup = adapter.getCommentInPostbyPaperid(postid, 0);
+		commentGroup = adapter.getCommentInPostbyPostid(postid, 0);
 
 		mapCollection = new LinkedHashMap<CommentInPost, List<CommentInPost>>();
 
@@ -532,6 +550,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 		ImageView sendMessage = TempImage[0];
 		ImageView getPicture = TempImage[1];
+		getPicture.setVisibility(View.GONE);
 		showPicture = TempImage[2];
 
 		sendMessage.setOnClickListener(new OnClickListener() {
@@ -547,6 +566,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 				util.ToEmptyComment(getActivity());
 				util.ReplyLayout(getActivity(), "", false);
+				updateList();
 			}
 		});
 		getPicture.setOnClickListener(new OnClickListener() {
@@ -719,7 +739,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	public void updateList() {
 		adapter.open();
 
-		commentGroup = adapter.getCommentInPostbyPaperid(postid, 0);
+		commentGroup = adapter.getCommentInPostbyPostid(postid, 0);
 
 		mapCollection = new LinkedHashMap<CommentInPost, List<CommentInPost>>();
 
@@ -757,7 +777,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	public void expanding(int groupPosition) {
 		adapter.open();
 
-		commentGroup = adapter.getCommentInPostbyPaperid(postid, 0);
+		commentGroup = adapter.getCommentInPostbyPostid(postid, 0);
 
 		mapCollection = new LinkedHashMap<CommentInPost, List<CommentInPost>>();
 
