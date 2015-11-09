@@ -200,41 +200,41 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		// else {
 		// baghiMandeh.setText("نا معلوم");
 		// }
-		convertView.setOnLongClickListener(new OnLongClickListener() {
-
-			@Override
-			public boolean onLongClick(View v) {
-
-				int i = 0;
-				int u = 0;
-				String t = "";
-				ListView listView = (ListView) v.getParent();
-				int position = listView.getPositionForView(v);
-				Object f = getItem(position);
-				if (f != null) {
-					u = f.getUserId();
-					i = f.getId();
-					t = f.getName();
-				}
-
-				DialogLongClick dia = new DialogLongClick(context, 4, u, i, fr,
-						t);
-				Toast.makeText(context, "object id = " + i + " userId = " + u,
-						0).show();
-				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-				lp.copyFrom(dia.getWindow().getAttributes());
-				lp.width = (int) (util.getScreenwidth() / 1.5);
-				lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-				;
-				dia.show();
-
-				dia.getWindow().setAttributes(lp);
-				dia.getWindow().setBackgroundDrawable(
-						new ColorDrawable(android.graphics.Color.TRANSPARENT));
-				return true;
-			}
-
-		});
+//		convertView.setOnLongClickListener(new OnLongClickListener() {
+//
+//			@Override
+//			public boolean onLongClick(View v) {
+//
+//				int i = 0;
+//				int u = 0;
+//				String t = "";
+//				ListView listView = (ListView) v.getParent();
+//				int position = listView.getPositionForView(v);
+//				Object f = getItem(position);
+//				if (f != null) {
+//					u = f.getUserId();
+//					i = f.getId();
+//					t = f.getName();
+//				}
+//
+//				DialogLongClick dia = new DialogLongClick(context, 4, u, i, fr,
+//						t);
+//				Toast.makeText(context, "object id = " + i + " userId = " + u,
+//						0).show();
+//				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//				lp.copyFrom(dia.getWindow().getAttributes());
+//				lp.width = (int) (util.getScreenwidth() / 1.5);
+//				lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+//				;
+//				dia.show();
+//
+//				dia.getWindow().setAttributes(lp);
+//				dia.getWindow().setBackgroundDrawable(
+//						new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//				return true;
+//			}
+//
+//		});
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override

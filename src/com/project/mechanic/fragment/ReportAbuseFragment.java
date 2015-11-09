@@ -24,7 +24,8 @@ import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
-@SuppressLint("ValidFragment") public class ReportAbuseFragment extends Fragment implements AsyncInterface {
+@SuppressLint("ValidFragment")
+public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 	Utility util;
 	ServerDate date;
 	ProgressDialog ringProgressDialog;
@@ -34,6 +35,13 @@ import com.project.mechanic.utility.Utility;
 	String content, serverDate;
 	boolean flag = false;
 	int backId;
+	int ticketType, proviceId;
+
+//	public ReportAbuseFragment(int ticketType, int provinceId) {
+//		
+//		this.ticketType = ticketType;
+//		this.proviceId = provinceId;
+//	}
 
 	public ReportAbuseFragment(int backId) {
 		this.backId = backId;
@@ -52,6 +60,8 @@ import com.project.mechanic.utility.Utility;
 		source = getArguments().getInt("source");
 		itemId = getArguments().getInt("itemId");
 		content = getArguments().getString("content");
+		
+		
 
 		View rootView = inflater.inflate(R.layout.fragment_report_abuse, null);
 
@@ -136,6 +146,28 @@ import com.project.mechanic.utility.Utility;
 				TitlepaperFragment fragment = new TitlepaperFragment();
 				trans.setCustomAnimations(R.anim.pull_in_left,
 						R.anim.push_out_right);
+
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+
+				break;
+			}
+			case 3: {
+
+				ticketType =  getArguments().getInt("ticketTypeId");
+				proviceId =  getArguments().getInt("provinceId");
+
+				FragmentTransaction trans = ((MainActivity) getActivity())
+						.getSupportFragmentManager().beginTransaction();
+				AnadFragment fragment = new AnadFragment();
+				trans.setCustomAnimations(R.anim.pull_in_left,
+						R.anim.push_out_right);
+				
+				Bundle bundle = new Bundle();
+
+				bundle.putString("Id", String.valueOf(ticketType));
+				bundle.putString("ProID", String.valueOf(proviceId));
+				fragment.setArguments(bundle);
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();

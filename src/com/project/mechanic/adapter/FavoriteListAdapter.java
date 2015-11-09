@@ -204,7 +204,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 					items.clear();
 					items.add("حذف");
 					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
-
+					popupMenu.show();
 					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
 
 						@Override
@@ -416,8 +416,9 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			lp.setMargins(5, 5, 5, 5);
 			iconProile.setLayoutParams(lp);
-
-			String ImagePath = util.getCurrentUser().getImagePath();
+			
+			adapter.open();
+			String ImagePath = adapter.getUserbyid(pd.getUserIdPaper()).getImagePath();
 			if (ImagePath != null) {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
 				if (bmp != null)
@@ -427,9 +428,15 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 																					 */);
 				iconProile.setLayoutParams(lp);
 			}
-
+			adapter.close();
+			
 			DateView.setText(util.getPersianDate(pd.getDatePaper()));
-			txt3.setText(util.getCurrentUser().getName());
+
+			adapter.open();
+			String name = adapter.getUserbyid(pd.getUserIdPaper()).getName();
+			adapter.close();
+
+			txt3.setText(name);
 
 			txt1.setText(pd.getNamePaper());
 			txt2.setText(pd.getDescriptonPaper());
@@ -464,7 +471,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 					items.clear();
 					items.add("حذف");
 					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
-
+					popupMenu.show();
 					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
 
 						@Override
@@ -547,7 +554,10 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 			lp.setMargins(5, 5, 5, 5);
 			iconProile.setLayoutParams(lp);
 
-			String ImagePath = util.getCurrentUser().getImagePath();
+			adapter.open();
+			txt3.setText(adapter.getUserbyid(pd.getUserIdFroum()).getName());
+
+			String ImagePath = adapter.getUserbyid(pd.getUserIdFroum()).getImagePath();
 			if (ImagePath != null) {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
 				iconProile
@@ -558,9 +568,9 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 
 				iconProile.setLayoutParams(lp);
 			}
+			adapter.close();
 
 			DateView.setText(util.getPersianDate(pd.getDateFroum()));
-			txt3.setText(util.getCurrentUser().getName());
 
 			txt1.setText(pd.getNameFroum());
 			txt2.setText(pd.getDescriptionFroum());
@@ -594,6 +604,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 					items.clear();
 					items.add("حذف");
 					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
+					popupMenu.show();
 
 					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
 

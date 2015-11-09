@@ -199,7 +199,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 				}
 
 				final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
-
+				popupMenu.show();
 				OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
 
 					@Override
@@ -794,6 +794,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 				}
 
 				final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
+				popupMenu.show();
 
 				OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
 

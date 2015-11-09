@@ -19,17 +19,20 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -60,7 +63,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	View header, view;
 	ExpandableListView exListView;
 	ExpandIntroduction exadapter;
-	int ObjectID;
+	int ObjectID, gp;
 	DialogPersonLikedObject ListLiked;
 	UpdatingAllImage updating;
 	Map<String, String> maps;
@@ -93,11 +96,13 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	String serverDate = "";
 	ServerDate date;
 	Updating update;
-	boolean flag, f1, f2, f3;
+	boolean flag, f1, f2, f3, LikeOrComment, commentClick = false;
+	List<String> menuItems;
 
 	ProgressBar loadingProgressHeader, loadingProgressProfile,
 			loadingProgressFooter;
 	Button followPage, EditPage, shareBtn, ShowPostBtn, btnShowPost;
+	int userId, commentId = 0;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -166,8 +171,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		showPeopleLikedBtn();
 
 		// for manage footer slide image agahi
-		ut.ShowFooterAgahi(getActivity(), false, 1);
-
+		addComment();
 		return view;
 
 	}
@@ -202,243 +206,328 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	@Override
 	public void processFinish(String output) {
 
-		if (output.contains("---")) {
-			if (ringProgressDialog != null)
-				ringProgressDialog.dismiss();
+		if (LikeOrComment == true) {
+			if (output.contains("---")) {
+				if (ringProgressDialog != null)
+					ringProgressDialog.dismiss();
 
-			loadingProgressHeader.setVisibility(View.GONE);
-			loadingProgressProfile.setVisibility(View.GONE);
-			loadingProgressFooter.setVisibility(View.GONE);
-			return;
-		} else if (output.contains("-")) {
-			String[] strs = output.split(Pattern.quote("-")); // each
-
-			String s1, s2, s3;
-
-			serverDate = s1 = strs[0];
-			s2 = strs[1];
-			s3 = strs[2];
-
-			if (object.getImage1ServerDate() == null
-					|| !object.getImage1ServerDate().equals(s1)) {
-				object.setImage1ServerDate(s1);
-				f1 = true;
-			}
-			if (object.getImage2ServerDate() == null
-					|| !object.getImage2ServerDate().equals(s2)) {
-				object.setImage2ServerDate(s2);
-				f2 = true;
-			}
-
-			if (object.getImage3ServerDate() == null
-					|| !object.getImage3ServerDate().equals(s3)) {
-				object.setImage3ServerDate(s3);
-				f3 = true;
-			}
-
-			if (f1 || f2 || f3) {
-				updating = new UpdatingAllImage(getActivity());
-				updating.delegate = this;
-				maps = new LinkedHashMap<String, String>();
-				// maps.put("tableName", "Object1");
-				maps.put("tableName", "All");
-				maps.put("Id", String.valueOf(ObjectID));
-				maps.put("fromDate1", object.getImage1ServerDate());
-				maps.put("fromDate2", object.getImage2ServerDate());
-				maps.put("fromDate3", object.getImage3ServerDate());
-				updating.execute(maps);
-
-			} else {
 				loadingProgressHeader.setVisibility(View.GONE);
 				loadingProgressProfile.setVisibility(View.GONE);
 				loadingProgressFooter.setVisibility(View.GONE);
-				Toast.makeText(getActivity(),
-						"به روز رسانی تصاویر با موفقیت انجام شد",
-						Toast.LENGTH_SHORT).show();
-			}
+				return;
+			} else if (output.contains("-")) {
+				String[] strs = output.split(Pattern.quote("-")); // each
 
-		} else {
-			int id = -1;
-			try {
-				id = Integer.valueOf(output);
-				// این متغیر مشخص کنندهلایک صفحه و لایک پست می بایشد
-				int comId;
-				if (flag)
-					// دنبال کردن
-					comId = 0;
-				else
-					// لایک پست
-					comId = 1;
+				String s1, s2, s3;
 
-				adapter.open();
+				serverDate = s1 = strs[0];
+				s2 = strs[1];
+				s3 = strs[2];
 
-				if (adapter.isUserLikeIntroductionPage(currentUser.getId(),
-						ObjectID, comId)) {
+				if (object.getImage1ServerDate() == null
+						|| !object.getImage1ServerDate().equals(s1)) {
+					object.setImage1ServerDate(s1);
+					f1 = true;
+				}
+				if (object.getImage2ServerDate() == null
+						|| !object.getImage2ServerDate().equals(s2)) {
+					object.setImage2ServerDate(s2);
+					f2 = true;
+				}
 
-					adapter.deleteLikeIntroduction(currentUser.getId(),
-							ObjectID, comId);
-					int countlike = adapter.LikeInObject_count(ObjectID, comId);
+				if (object.getImage3ServerDate() == null
+						|| !object.getImage3ServerDate().equals(s3)) {
+					object.setImage3ServerDate(s3);
+					f3 = true;
+				}
 
-					if (flag) {
-						followPage.setBackgroundColor(getResources().getColor(
-								R.color.gray));
-						// personPage
-						// .setBackgroundResource(R.drawable.count_like_off);
-						CountLikeIntroduction
-								.setText(String.valueOf(countlike));
-						if (ringProgressDialog != null)
-							ringProgressDialog.dismiss();
-
-					} else {
-						likePost.setBackgroundResource(R.drawable.like_off);
-						personPost
-								.setBackgroundResource(R.drawable.count_like_off);
-						countLikePost.setText(String.valueOf(countlike));
-						if (ringProgressDialog != null)
-							ringProgressDialog.dismiss();
-					}
+				if (f1 || f2 || f3) {
+					updating = new UpdatingAllImage(getActivity());
+					updating.delegate = this;
+					maps = new LinkedHashMap<String, String>();
+					// maps.put("tableName", "Object1");
+					maps.put("tableName", "All");
+					maps.put("Id", String.valueOf(ObjectID));
+					maps.put("fromDate1", object.getImage1ServerDate());
+					maps.put("fromDate2", object.getImage2ServerDate());
+					maps.put("fromDate3", object.getImage3ServerDate());
+					updating.execute(maps);
 
 				} else {
-					adapter.insertLikeInObjectToDb(id, currentUser.getId(),
-							ObjectID, serverDate, comId);
-					int countlike = adapter.LikeInObject_count(ObjectID, comId);
-
-					if (flag) {
-						followPage.setBackgroundColor(getResources().getColor(
-								R.color.green));
-						// personPage.setBackgroundResource(R.drawable.count_like);
-						CountLikeIntroduction
-								.setText(String.valueOf(countlike));
-						if (ringProgressDialog != null)
-							ringProgressDialog.dismiss();
-					} else {
-						likePost.setBackgroundResource(R.drawable.like_on);
-						personPost.setBackgroundResource(R.drawable.count_like);
-						countLikePost.setText(String.valueOf(countlike));
-						if (ringProgressDialog != null)
-							ringProgressDialog.dismiss();
-					}
-
+					loadingProgressHeader.setVisibility(View.GONE);
+					loadingProgressProfile.setVisibility(View.GONE);
+					loadingProgressFooter.setVisibility(View.GONE);
+					Toast.makeText(getActivity(),
+							"به روز رسانی تصاویر با موفقیت انجام شد",
+							Toast.LENGTH_SHORT).show();
 				}
-				adapter.close();
 
-			} catch (NumberFormatException e) {
-				if (output != null
-						&& !(output.contains("Exception") || output
-								.contains("java"))) {
+			} else {
+				int id = -1;
+				try {
+					id = Integer.valueOf(output);
 					// این متغیر مشخص کنندهلایک صفحه و لایک پست می بایشد
 					int comId;
 					if (flag)
-						// لایک صفحه
+						// دنبال کردن
 						comId = 0;
 					else
 						// لایک پست
 						comId = 1;
+
 					adapter.open();
+
 					if (adapter.isUserLikeIntroductionPage(currentUser.getId(),
 							ObjectID, comId)) {
 
-						params = new LinkedHashMap<String, String>();
-						if (getActivity() != null) {
+						adapter.deleteLikeIntroduction(currentUser.getId(),
+								ObjectID, comId);
+						int countlike = adapter.LikeInObject_count(ObjectID,
+								comId);
 
-							deleting = new Deleting(getActivity());
-							deleting.delegate = IntroductionFragment.this;
+						if (flag) {
+							followPage.setBackgroundColor(getResources()
+									.getColor(R.color.gray));
+							// personPage
+							// .setBackgroundResource(R.drawable.count_like_off);
+							CountLikeIntroduction.setText(String
+									.valueOf(countlike));
+							if (ringProgressDialog != null)
+								ringProgressDialog.dismiss();
 
-							params.put("TableName", "LikeInObject");
-							params.put("UserId",
-									String.valueOf(currentUser.getId()));
-							params.put("ObjectId", String.valueOf(ObjectID));
-							params.put("CommentId", String.valueOf(comId));
-
-							deleting.execute(params);
+						} else {
+							likePost.setBackgroundResource(R.drawable.like_off);
+							personPost
+									.setBackgroundResource(R.drawable.count_like_off);
+							countLikePost.setText(String.valueOf(countlike));
+							if (ringProgressDialog != null)
+								ringProgressDialog.dismiss();
 						}
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								"", "لطفا منتظر بمانید...", true);
-
-						ringProgressDialog.setCancelable(true);
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
-							}
-						}).start();
-						adapter.close();
 
 					} else {
-						adapter.open();
-						params = new LinkedHashMap<String, String>();
+						adapter.insertLikeInObjectToDb(id, currentUser.getId(),
+								ObjectID, serverDate, comId);
+						int countlike = adapter.LikeInObject_count(ObjectID,
+								comId);
 
-						if (getActivity() != null) {
-							saving = new Saving(getActivity());
-							saving.delegate = IntroductionFragment.this;
-
-							params.put("TableName", "LikeInObject");
-
-							params.put("UserId",
-									String.valueOf(currentUser.getId()));
-							params.put("ObjectId", String.valueOf(ObjectID));
-							params.put("Date", output);
-							params.put("ModifyDate", output);
-
-							params.put("CommentId", String.valueOf(comId));
-
-							params.put("IsUpdate", "0");
-							params.put("Id", "0");
-
-							serverDate = output;
-
-							saving.execute(params);
+						if (flag) {
+							followPage.setBackgroundColor(getResources()
+									.getColor(R.color.green));
+							// personPage.setBackgroundResource(R.drawable.count_like);
+							CountLikeIntroduction.setText(String
+									.valueOf(countlike));
+							if (ringProgressDialog != null)
+								ringProgressDialog.dismiss();
+						} else {
+							likePost.setBackgroundResource(R.drawable.like_on);
+							personPost
+									.setBackgroundResource(R.drawable.count_like);
+							countLikePost.setText(String.valueOf(countlike));
+							if (ringProgressDialog != null)
+								ringProgressDialog.dismiss();
 						}
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								"", "لطفا منتظر بمانید...", true);
-
-						ringProgressDialog.setCancelable(true);
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
-							}
-						}).start();
-						adapter.close();
 
 					}
 					adapter.close();
 
-				} else {
-					Toast.makeText(getActivity(),
-							"خطا در ثبت. پاسخ نا مشخص از سرور",
+				} catch (NumberFormatException e) {
+					if (output != null
+							&& !(output.contains("Exception") || output
+									.contains("java"))) {
+						// این متغیر مشخص کنندهلایک صفحه و لایک پست می بایشد
+						int comId;
+						if (flag)
+							// لایک صفحه
+							comId = 0;
+						else
+							// لایک پست
+							comId = 1;
+						adapter.open();
+						if (adapter.isUserLikeIntroductionPage(
+								currentUser.getId(), ObjectID, comId)) {
+
+							params = new LinkedHashMap<String, String>();
+							if (getActivity() != null) {
+
+								deleting = new Deleting(getActivity());
+								deleting.delegate = IntroductionFragment.this;
+
+								params.put("TableName", "LikeInObject");
+								params.put("UserId",
+										String.valueOf(currentUser.getId()));
+								params.put("ObjectId", String.valueOf(ObjectID));
+								params.put("CommentId", String.valueOf(comId));
+
+								deleting.execute(params);
+							}
+							ringProgressDialog = ProgressDialog.show(
+									getActivity(), "", "لطفا منتظر بمانید...",
+									true);
+
+							ringProgressDialog.setCancelable(true);
+							new Thread(new Runnable() {
+
+								@Override
+								public void run() {
+
+									try {
+
+										Thread.sleep(10000);
+
+									} catch (Exception e) {
+
+									}
+								}
+							}).start();
+							adapter.close();
+
+						} else {
+							adapter.open();
+							params = new LinkedHashMap<String, String>();
+
+							if (getActivity() != null) {
+								saving = new Saving(getActivity());
+								saving.delegate = IntroductionFragment.this;
+
+								params.put("TableName", "LikeInObject");
+
+								params.put("UserId",
+										String.valueOf(currentUser.getId()));
+								params.put("ObjectId", String.valueOf(ObjectID));
+								params.put("Date", output);
+								params.put("ModifyDate", output);
+
+								params.put("CommentId", String.valueOf(comId));
+
+								params.put("IsUpdate", "0");
+								params.put("Id", "0");
+
+								serverDate = output;
+
+								saving.execute(params);
+							}
+							ringProgressDialog = ProgressDialog.show(
+									getActivity(), "", "لطفا منتظر بمانید...",
+									true);
+
+							ringProgressDialog.setCancelable(true);
+							new Thread(new Runnable() {
+
+								@Override
+								public void run() {
+
+									try {
+
+										Thread.sleep(10000);
+
+									} catch (Exception e) {
+
+									}
+								}
+							}).start();
+							adapter.close();
+
+						}
+						adapter.close();
+
+					} else {
+						Toast.makeText(getActivity(),
+								"خطا در ثبت. پاسخ نا مشخص از سرور",
+								Toast.LENGTH_SHORT).show();
+						loadingProgressHeader.setVisibility(View.GONE);
+						loadingProgressProfile.setVisibility(View.GONE);
+						loadingProgressFooter.setVisibility(View.GONE);
+					}
+				}
+
+				catch (Exception e) {
+
+					Toast.makeText(getActivity(), "خطا در ثبت",
 							Toast.LENGTH_SHORT).show();
 					loadingProgressHeader.setVisibility(View.GONE);
 					loadingProgressProfile.setVisibility(View.GONE);
 					loadingProgressFooter.setVisibility(View.GONE);
 				}
 			}
+		} else {
+			int id = -1;
 
-			catch (Exception e) {
+			try {
+				id = Integer.valueOf(output);
 
-				Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
-						.show();
-				loadingProgressHeader.setVisibility(View.GONE);
-				loadingProgressProfile.setVisibility(View.GONE);
-				loadingProgressFooter.setVisibility(View.GONE);
+				adapter.open();
+
+				adapter.insertCommentObjecttoDb(id,
+						ut.inputComment(getActivity()), ObjectID,
+						currentUser.getId(), serverDate, commentId);
+
+				adapter.close();
+				ut.ToEmptyComment(getActivity());
+
+				if (ringProgressDialog != null)
+					ringProgressDialog.dismiss();
+
+				fillExpandListViewCommnet();
+
+			} catch (NumberFormatException e) {
+
+				if (output != null
+						&& !(output.contains("Exception") || output
+								.contains("java"))) {
+
+					adapter.open();
+					params = new LinkedHashMap<String, String>();
+
+					if (getActivity() != null)
+						saving = new Saving(getActivity());
+					saving.delegate = IntroductionFragment.this;
+
+					params.put("TableName", "CommentInObject");
+
+					params.put("Desk", ut.inputComment(getActivity()));
+					params.put("ObjectId", String.valueOf(ObjectID));
+					params.put("UserId", String.valueOf(currentUser.getId()));
+					params.put("Date", output);
+					params.put("ModifyDate", output);
+
+					params.put("CommentId", String.valueOf(commentId));
+
+					serverDate = output;
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+
+					saving.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(getActivity(), "",
+							"لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
+					adapter.close();
+
+				} else {
+					Toast.makeText(getActivity(),
+							"خطا در ثبت. پاسخ نا مشخص از سرور",
+							Toast.LENGTH_SHORT).show();
+				}
 			}
+
 		}
+
 	}
 
 	@Override
@@ -631,6 +720,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		exListView.addHeaderView(header);
 
 		exListView.setAdapter(exadapter);
+		if (commentClick ==true)
+			exListView.setSelectedGroup(mapCollection.size() - 1);
 
 	}
 
@@ -1187,17 +1278,17 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 
-				if (currentUser == null) {
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
-					return;
-				} else {
-					dialog = new DialogcmtInobject(IntroductionFragment.this,
-							getActivity(), R.layout.dialog_addcomment,
-							ObjectID, 0);
-					dialog.show();
-					exadapter.notifyDataSetChanged();
-				}
+				// if (currentUser == null) {
+				// Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+				// Toast.LENGTH_SHORT).show();
+				// return;
+				// } else {
+				// dialog = new DialogcmtInobject(IntroductionFragment.this,
+				// getActivity(), R.layout.dialog_addcomment,
+				// ObjectID, 0);
+				// dialog.show();
+				// exadapter.notifyDataSetChanged();
+				// }
 
 			}
 		});
@@ -1241,6 +1332,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					date.execute("");
 
 					flag = true;
+					LikeOrComment = true;
 
 				}
 			}
@@ -1350,29 +1442,92 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 			@Override
 			public void onClick(View v) {
-				// RelativeLayout parentlayout = (RelativeLayout) v.getParent();
-				// TextView txtName = (TextView) parentlayout
-				// .findViewById(R.id.row_favorite_title);
-				// String item = txtName.getText().toString();
-				// int id = 0;
-				// int u = 0;
-				// String t = "";
 
-				DialogLongClick dia = new DialogLongClick(getActivity(), 4,
-						ObjectID, -1, IntroductionFragment.this, object
-								.getDescription());
-				Toast.makeText(getActivity(), ObjectID + "", 0).show();
+				if (ut.getCurrentUser() != null) {
+					if (ut.getCurrentUser().getId() == object.getUserId()) {
 
-				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-				lp.copyFrom(dia.getWindow().getAttributes());
-				lp.width = (int) (ut.getScreenwidth() / 1.5);
-				lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-				;
-				dia.show();
+						menuItems = new ArrayList<String>();
+						menuItems.clear();
+						menuItems.add("ارسال پیام");
+						menuItems.add("کپی");
 
-				dia.getWindow().setAttributes(lp);
-				dia.getWindow().setBackgroundDrawable(
-						new ColorDrawable(android.graphics.Color.TRANSPARENT));
+					} else {
+						menuItems = new ArrayList<String>();
+
+						menuItems.clear();
+						menuItems.add("ارسال پیام");
+						menuItems.add("افزودن به علاقه مندی ها");
+						menuItems.add("کپی");
+						menuItems.add("گزارش تخلف");
+					}
+				} else {
+					menuItems = new ArrayList<String>();
+
+					menuItems.clear();
+					menuItems.add("کپی");
+				}
+
+				final PopupMenu popupMenu = ut.ShowPopupMenu(menuItems, v);
+				popupMenu.show();
+
+				OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+
+						if (item.getTitle().equals("ارسال پیام")) {
+
+							if (ut.getCurrentUser() != null)
+								ut.sendMessage("Object");
+							else
+								Toast.makeText(context, "ابتدا باید وارد شوید",
+										0).show();
+						}
+
+						if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
+							adapter.open();
+							addToFavorite(ut.getCurrentUser().getId(), 4,
+									object.getId());
+							adapter.close();
+						}
+						if (item.getTitle().equals("کپی")) {
+
+							ut.CopyToClipboard(object.getDescription());
+
+						}
+						if (item.getTitle().equals("گزارش تخلف")) {
+
+							if (ut.getCurrentUser() != null)
+								ut.reportAbuse(object.getId(), 4,
+										object.getId(),
+										object.getDescription(), 0);
+							else
+								Toast.makeText(context, "ابتدا باید وارد شوید",
+										0).show();
+						}
+
+						return false;
+					}
+				};
+
+				popupMenu.setOnMenuItemClickListener(menuitem);
+
+				// DialogLongClick dia = new DialogLongClick(getActivity(), 4,
+				// ObjectID, -1, IntroductionFragment.this, object
+				// .getDescription());
+				// Toast.makeText(getActivity(), ObjectID + "", 0).show();
+				//
+				// WindowManager.LayoutParams lp = new
+				// WindowManager.LayoutParams();
+				// lp.copyFrom(dia.getWindow().getAttributes());
+				// lp.width = (int) (ut.getScreenwidth() / 1.5);
+				// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+				// ;
+				// dia.show();
+				//
+				// dia.getWindow().setAttributes(lp);
+				// dia.getWindow().setBackgroundDrawable(
+				// new ColorDrawable(android.graphics.Color.TRANSPARENT));
 			}
 		});
 
@@ -1480,6 +1635,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			para[2] = "masoud";
 			para[3] = "0";
 			update.execute(para);
+			LikeOrComment = true;
+
 		}
 
 		loadingProgressHeader.setVisibility(View.VISIBLE);
@@ -1506,5 +1663,64 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			}
 		}
 
+	}
+
+	public void addToFavorite(int currentUserId, int source, int ItemId) {
+
+		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
+			Toast.makeText(context,
+					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+		} else {
+			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
+			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0)
+					.show();
+		}
+	}
+
+	private void addComment() {
+		ImageView send = ut.ShowFooterAgahi(getActivity(), true, 6);
+
+		send.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				if ("".equals(ut.inputComment(getActivity()))) {
+					Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
+							.show();
+				} else {
+
+					date = new ServerDate(getActivity());
+					date.delegate = IntroductionFragment.this;
+					date.execute("");
+					LikeOrComment = false;
+
+					ut.ReplyLayout(getActivity(), "", false);
+					commentClick = true;
+
+				}
+			}
+		});
+		ImageView delete = ut.deleteReply(getActivity());
+
+		delete.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				ut.ReplyLayout(getActivity(), "", false);
+
+			}
+		});
+
+	}
+
+	public int groupPosition(int groupPosition) {
+		gp = groupPosition;
+		return gp;
+	}
+
+	public void CommentId(int Id) {
+		commentId = Id;
 	}
 }

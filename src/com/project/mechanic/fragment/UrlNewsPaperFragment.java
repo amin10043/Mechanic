@@ -71,10 +71,13 @@ public class UrlNewsPaperFragment extends Fragment {
 		// //////////////////////////////////////////////////////////////////////////////
 		dbAdapter = new DataBaseAdapter(getActivity());
 
+		
 		dbAdapter.open();
-
+		
 		final NewsPaper newsPaper = dbAdapter.getNewsPaperId(id);
-
+		
+		dbAdapter.close();
+		
 		if (util.isNetworkConnected()) {
 			Toast.makeText(getActivity(), "network connected", 0).show();
 			if (newsPaper != null) {
@@ -85,66 +88,68 @@ public class UrlNewsPaperFragment extends Fragment {
 				// webview.addJavascriptInterface(myJavaScriptInterface,
 				// "HTMLOUT");
 				webview.loadUrl(newsPaper.getUrl());
-				webview.setWebViewClient(new WebViewClient()
-
-				{
-
-					public void onPageFinished(WebView view, String url) {
-
-						ringProgressDialog1.dismiss();
-
-						String url1 = newsPaper.getUrl();
-
-						try {
-							html = fetchContent(webview, url1);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						// ////////////////////////////////////////////////////
-						// html = "<html>"
-						// + "<body><h1>Yay, Mobiletuts+!</h1></body>"
-						// + "</html>";
-
-						// ////////////////////////////////////////////////////////////
-						dbAdapter.open();
-
-						dbAdapter.UpdateHtmlStringInNewspaper(id, html);
-						dbAdapter.close();
-						// do your stuff here
-					}
-
-				});
-
-			}
-		} else {
-			Toast.makeText(getActivity(), "faild in connect to internet", 0)
-					.show();
-			if (newsPaper != null) {
-				// rei=ad db html
+				// webview.setWebViewClient(new WebViewClient()
 				//
-
-				webview.loadData(newsPaper.getHtmlString(),
-						"text/html; charset=UTF-8", null);
-				// ////////////////////////////////////////
-				// webview.getSettings().setCacheMode(
-				// WebSettings.LOAD_CACHE_ELSE_NETWORK);
-				webview.setWebViewClient(new WebViewClient()
-
-				{
-
-					public void onPageFinished(WebView view, String url) {
-
-						ringProgressDialog1.dismiss();
-
-					}
-
-				});
+				// {
+				//
+				// public void onPageFinished(WebView view, String url) {
+				//
+				// ringProgressDialog1.dismiss();
+				//
+				// String url1 = newsPaper.getUrl();
+				//
+				// try {
+				// html = fetchContent(webview, url1);
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// }
+				// // ////////////////////////////////////////////////////
+				// // html = "<html>"
+				// // + "<body><h1>Yay, Mobiletuts+!</h1></body>"
+				// // + "</html>";
+				//
+				// //
+				// ////////////////////////////////////////////////////////////
+				// dbAdapter.open();
+				//
+				// dbAdapter.UpdateHtmlStringInNewspaper(id, html);
+				// dbAdapter.close();
+				// // do your stuff here
+				// }
+				//
+				// });
 
 			}
+			// } else {
+			// Toast.makeText(getActivity(), "faild in connect to internet", 0)
+			// .show();
+			// if (newsPaper != null) {
+			// // rei=ad db html
+			// //
+			//
+			// webview.loadData(newsPaper.getHtmlString(),
+			// "text/html; charset=UTF-8", null);
+			// // ////////////////////////////////////////
+			// // webview.getSettings().setCacheMode(
+			// // WebSettings.LOAD_CACHE_ELSE_NETWORK);
+			// webview.setWebViewClient(new WebViewClient()
+			//
+			// {
+			//
+			// public void onPageFinished(WebView view, String url) {
+			//
+			// ringProgressDialog1.dismiss();
+			//
+			// }
+			//
+			// });
+			//
+			// }
 
 		} // /
 
+		util.ShowFooterAgahi(getActivity(), true, 5);
 		return view;
 
 	}

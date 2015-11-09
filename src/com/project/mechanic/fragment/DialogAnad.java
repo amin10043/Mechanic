@@ -210,6 +210,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 					UPhonnumber.getText().toString(),
 					UFax.getText().toString(), null, UMobile.getText()
 							.toString(), roz);
+			dbadapter.close();
 
 			if (dialog_img1.getDrawable() != null) {
 

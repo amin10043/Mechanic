@@ -79,7 +79,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 	ImageView report;
 	View Parent;
 	int itemId, userIdsender;
-	List<String> menuItems;
+	List<String> menuItems = new ArrayList<String>();;
 
 	public FroumtitleListadapter(Context context, int resource,
 			List<Froum> objects, Fragment fragment) {
@@ -201,7 +201,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				profileImg.setLayoutParams(lp);
 			} else {
 
-//				// byte[] byteImg = x.getImage();
+				// // byte[] byteImg = x.getImage();
 				Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
 				if (bmp != null)
 					profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(
@@ -280,14 +280,13 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 					if (util.getCurrentUser() != null) {
 						if (util.getCurrentUser().getId() == userIdsender) {
 
-							menuItems = new ArrayList<String>();
 							menuItems.clear();
 							menuItems.add("ارسال پیام");
 							menuItems.add("کپی");
 							menuItems.add("حذف");
 
 						} else {
-							menuItems = new ArrayList<String>();
+//							menuItems = new ArrayList<String>();
 
 							menuItems.clear();
 							menuItems.add("ارسال پیام");
@@ -296,7 +295,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 							menuItems.add("گزارش تخلف");
 						}
 					} else {
-						menuItems = new ArrayList<String>();
+//						menuItems = new ArrayList<String>();
 
 						menuItems.clear();
 						menuItems.add("کپی");
@@ -304,6 +303,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 					final PopupMenu popupMenu = util
 							.ShowPopupMenu(menuItems, v);
+					popupMenu.show();
 
 					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
 
@@ -334,7 +334,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 							if (item.getTitle().equals("گزارش تخلف")) {
 
 								if (util.getCurrentUser() != null)
-									util.reportAbuse(userIdsender, 1, itemId, t,0);
+									util.reportAbuse(userIdsender, 1, itemId,
+											t, 0);
 								else
 									Toast.makeText(context,
 											"ابتدا باید وارد شوید", 0).show();

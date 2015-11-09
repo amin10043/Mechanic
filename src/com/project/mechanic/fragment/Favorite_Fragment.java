@@ -47,7 +47,7 @@ public class Favorite_Fragment extends Fragment {
 
 		updateView();
 
-		util.ShowFooterAgahi(getActivity(), false, 5);
+		util.ShowFooterAgahi(getActivity(), false, 1);
 		return view;
 
 	}
@@ -61,14 +61,14 @@ public class Favorite_Fragment extends Fragment {
 				.getCurrentUser().getId(), 2);
 		List<PersonalData> TicketData = dbAdapter.CustomFieldFavorite(util
 				.getCurrentUser().getId(), 3);
-		List<PersonalData> ObejctData = dbAdapter.CustomFieldFavorite(util
-				.getCurrentUser().getId(), 4);
+//		List<PersonalData> ObejctData = dbAdapter.CustomFieldFavorite(util
+//				.getCurrentUser().getId(), 4);
 
 		dbAdapter.close();
 
 		List<Integer> sizeListItems = new ArrayList<Integer>();
 
-		sizeListItems.add(ObejctData.size());
+		//sizeListItems.add(ObejctData.size());
 		sizeListItems.add(TicketData.size());
 		sizeListItems.add(PaperData.size());
 		sizeListItems.add(FroumData.size());
@@ -84,15 +84,15 @@ public class Favorite_Fragment extends Fragment {
 		Expandview.setGroupIndicator(null);
 		Expandview.setClickable(true);
 
-		parentItems.add("صفحات");
+		//parentItems.add("صفحات");
 		parentItems.add("آگهی ها");
 		parentItems.add("مقالات");
 		parentItems.add("تالار گفتگو");
 
-		listDataChild.put(parentItems.get(0), ObejctData); // Header, Child data
-		listDataChild.put(parentItems.get(1), TicketData);
-		listDataChild.put(parentItems.get(2), PaperData);
-		listDataChild.put(parentItems.get(3), FroumData);
+//		listDataChild.put(parentItems.get(0), ObejctData); // Header, Child data
+		listDataChild.put(parentItems.get(0), TicketData);
+		listDataChild.put(parentItems.get(1), PaperData);
+		listDataChild.put(parentItems.get(2), FroumData);
 
 		final SharedPreferences currentTime = getActivity()
 				.getSharedPreferences("time", 0);

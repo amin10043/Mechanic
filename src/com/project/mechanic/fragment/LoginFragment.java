@@ -74,6 +74,8 @@ public class LoginFragment extends Fragment implements CommInterface,
 		final EditText editpass = (EditText) view
 				.findViewById(R.id.editTextpass);
 		// TextView test = (TextView) view.findViewById(R.id.texttest);
+		
+
 		btnlog.setOnClickListener(new View.OnClickListener() {
 
 			@SuppressWarnings("unchecked")

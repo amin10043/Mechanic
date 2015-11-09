@@ -208,7 +208,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 		}
 
 		ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
-				ValidTicket(mylist), proID, AnadFragment.this, true, time, 1);
+				ValidTicket(mylist), proID, AnadFragment.this, true, time, 1 , ticketTypeid);
 		listviewanad.setAdapter(ListAdapter);
 
 		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
@@ -519,7 +519,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 		// ListView lstAnad = (ListView) view.findViewById(R.id.listVanad);
 		AnadListAdapter ListAdapter = new AnadListAdapter(getActivity(),
 				R.layout.row_anad, ValidTicket(mylist), proID,
-				AnadFragment.this, false, time, 1);
+				AnadFragment.this, false, time, 1  , ticketTypeid);
 		ListAdapter.notifyDataSetChanged();
 		listviewanad.setAdapter(ListAdapter);
 
@@ -562,7 +562,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 			dbAdapter.close();
 			ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
 					ValidTicket(mylist), proID, AnadFragment.this, false, time,
-					1);
+					1, ticketTypeid);
 			// if (mylist != null && !mylist.isEmpty())
 			listviewanad.setAdapter(ListAdapter);
 			getAnadImageFromServer(anadlist, true);
@@ -936,7 +936,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 			dbAdapter.close();
 
 			ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
-					mylist, proID, AnadFragment.this, false, time, 1);
+					mylist, proID, AnadFragment.this, false, time, 1, ticketTypeid);
 
 			listviewanad.setAdapter(ListAdapter);
 			LoadMoreFooter.setVisibility(View.INVISIBLE);

@@ -12,7 +12,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -34,6 +36,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.Post;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
+import com.project.mechanic.fragment.DialogShowImage;
 import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.fragment.PostFragment;
 import com.project.mechanic.fragment.PostWithoutComment;
@@ -107,7 +110,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		ImageView profileImg = (ImageView) convertView
 				.findViewById(R.id.iconfroumtitle);
 
-		ImageView postImage = (ImageView) convertView
+		final ImageView postImage = (ImageView) convertView
 				.findViewById(R.id.postImage);
 
 		LinearLayout commenttitle = (LinearLayout) convertView
@@ -182,7 +185,6 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 			}
 		}
 		adapter.open();
-
 		countLikePost.setText(adapter.LikeInPost_count(ItemId).toString());
 
 		if (CurrentUser == null) {
@@ -314,7 +316,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 				// در تمام صفحات از این کد ها استفاده شود
 				int ItemId = 0;
-				ListView listView = (ListView) v.getParent().getParent();
+				ListView listView = (ListView) v.getParent();
 				int position = listView.getPositionForView(v);
 				Post f = getItem(position);
 				if (f != null) {
@@ -396,6 +398,25 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 		});
 
+		
+		postImage.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				
+				
+				if (postImage.getDrawable() != null) {
+					 Bitmap bitmapHeader = ((BitmapDrawable) postImage.getDrawable())
+					 .getBitmap();
+					 byte[] ImageConvertedToByte = Utility.CompressBitmap(bitmapHeader);
+				//Bitmap image=((BitmapDrawable) postImage.getDrawable()).getBitmap();
+				//Drawable myDrawable = postImage.getDrawable();
+				DialogShowImage showImageDialog = new DialogShowImage(
+						context, ImageConvertedToByte , "");
+				showImageDialog.show();
+				}
+			}
+		});
+		
+		
 		convertView.setTag(person1.getId());
 		// Parent = convertView;
 		return convertView;

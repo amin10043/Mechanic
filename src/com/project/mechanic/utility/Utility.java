@@ -999,13 +999,19 @@ public class Utility implements AsyncInterface {
 	public ImageView ShowFooterAgahi(Activity activity, boolean IsShow,
 			final int Type) {
 
+		// type = 0 >>>>> mainFragment
 		// type = 1 >>>>> main brand fragment
 		// type = 2 >>>>> object fragment >> foroshgah
 		// type = 3 >>>>> object fragment >> moshaveran
 		// type = 4 >>>>> object fragment >> ashkhas haghighi
-		// type = 5 >>>>> favorite fragment
+		// type = 5 >>>>> UrlNewsPaperFragment
+		// type = 6 >>>>> introduction fragment
+		// type = 7 >>>>> froumtitle && titlePaper fragment
+		// type = 8 >>>>> paper and Froum fragment
+		// type = 9 >>>>> top items
 
 		ViewFlipper vf = (ViewFlipper) activity.findViewById(R.id.footerAgahi);
+
 		RelativeLayout la = (RelativeLayout) activity
 				.findViewById(R.id.getCommentLayout);
 
@@ -1023,6 +1029,16 @@ public class Utility implements AsyncInterface {
 
 			switch (Type) {
 
+			case 0: {
+				la.setVisibility(View.GONE);
+
+				img1.setBackgroundResource(R.drawable.slide1);
+
+				img2.setBackgroundResource(R.drawable.slide2);
+
+				img3.setBackgroundResource(R.drawable.slide3);
+				break;
+			}
 			case 1: {
 				la.setVisibility(View.GONE);
 
@@ -1078,17 +1094,16 @@ public class Utility implements AsyncInterface {
 
 			}
 
-			// case 6: {
-			// la.setVisibility(View.GONE);
-			//
-			// img1.setBackgroundResource(R.drawable.i4);
-			//
-			// img2.setBackgroundResource(R.drawable.i5);
-			//
-			// img3.setBackgroundResource(R.drawable.i6);
-			// break;
-			//
-			// }
+			case 6: {
+				if (getCurrentUser() != null) {
+					la.setVisibility(View.VISIBLE);
+
+					vf.setVisibility(View.GONE);
+				} else
+					vf.setVisibility(View.GONE);
+				break;
+
+			}
 			case 7: {
 				la.setVisibility(View.GONE);
 
@@ -1111,6 +1126,18 @@ public class Utility implements AsyncInterface {
 				break;
 
 			}
+			case 9: {
+				la.setVisibility(View.GONE);
+
+				img1.setBackgroundResource(R.drawable.birthday_icon);
+
+				img2.setBackgroundResource(R.drawable.admin_icon);
+
+				img3.setBackgroundResource(R.drawable.ic_create_post);
+				break;
+
+			}
+			
 
 			default:
 				break;
@@ -1295,6 +1322,30 @@ public class Utility implements AsyncInterface {
 			trans.replace(R.id.content_frame, fragment);
 			trans.commit();
 		}
+
+	}
+
+	public void reportAbuseTicket(int userIdSender, int itemId, String content,
+			int ticketTypeId, int provinceId) {
+
+		FragmentTransaction trans = ((MainActivity) context)
+				.getSupportFragmentManager().beginTransaction();
+		ReportAbuseFragment fragment = new ReportAbuseFragment();
+		trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
+
+		Bundle bundle = new Bundle();
+
+		bundle.putInt("userIdSender", userIdSender);
+		bundle.putInt("itemId", itemId);
+		bundle.putInt("source", 3);
+		bundle.putString("content", content);
+		bundle.putInt("ticketTypeId", ticketTypeId);
+		bundle.putInt("provinceId", provinceId);
+
+		fragment.setArguments(bundle);
+
+		trans.replace(R.id.content_frame, fragment);
+		trans.commit();
 
 	}
 

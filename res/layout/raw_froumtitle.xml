@@ -23,8 +23,8 @@
 
             <ImageView
                 android:id="@+id/reportImage"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="left"
                 android:background="@drawable/down_arrow" />
 

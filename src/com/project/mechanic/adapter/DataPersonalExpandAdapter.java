@@ -178,7 +178,10 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 					items.add("حذف");
 					items.add("کپی");
 
-					util.ShowPopupMenu(items, v);
+					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
+					popupMenu.show();
+
+					
 				}
 			});
 
@@ -488,6 +491,10 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 						50));
 
 				iconProile.setLayoutParams(lp);
+			} else {
+				iconProile.setImageResource(R.drawable.no_img_profile);
+				iconProile.setLayoutParams(lp);
+
 			}
 
 			DateView.setText(util.getPersianDate(pd.getDatePaper()));
@@ -601,8 +608,11 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 						50));
 
 				iconProile.setLayoutParams(lp);
-			}
+			} else {
+				iconProile.setImageResource(R.drawable.no_img_profile);
+				iconProile.setLayoutParams(lp);
 
+			}
 			DateView.setText(util.getPersianDate(pd.getDateFroum()));
 
 			txt1.setText(pd.getNameFroum());
@@ -737,7 +747,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 					items.add("حذف");
 
 					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
-
+					popupMenu.show();
 					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
 
 						@Override
