@@ -140,7 +140,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 			txt1.setVisibility(View.VISIBLE);
 		}
 		if (!person1.getDescription().isEmpty()) {
-			txt2.setText(person1.getDescription() + " ...");
+			txt2.setText(person1.getDescription());
 			txt2.setVisibility(View.VISIBLE);
 		}
 
