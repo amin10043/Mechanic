@@ -184,6 +184,12 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		// for manage footer slide image agahi
 		// addComment();
+
+		if (currentUser.getId() == ObjectID)
+			action.setVisibility(View.VISIBLE);
+		else
+			action.setVisibility(View.GONE);
+
 		if (PostList.getCount() > 0)
 			return Posts;
 		else
@@ -742,7 +748,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	private void fillListView() {
 		adapter.open();
-		ArrayPosts = adapter.getAllPost();
+		ArrayPosts = adapter.getAllPost(ObjectID);
 		PosttitleListadapter ListAdapterPost = new PosttitleListadapter(
 				getActivity(), R.layout.raw_posttitle, ArrayPosts,
 				IntroductionFragment.this);
