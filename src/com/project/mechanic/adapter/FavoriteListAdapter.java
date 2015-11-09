@@ -677,7 +677,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 		}
 		TextView titleGroup = (TextView) convertView
 				.findViewById(R.id.row_berand_txt);
-		titleGroup.setText(parentItems.get(groupPosition) + " "
+		titleGroup.setText(parentItems.get(groupPosition) + " - "
 				+ util.getCurrentUser().getName());
 		final ExpandableListView mExpandableListView = (ExpandableListView) parent;
 

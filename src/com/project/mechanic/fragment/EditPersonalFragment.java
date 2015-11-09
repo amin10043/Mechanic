@@ -916,7 +916,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		if (dialog != null) {
 			dialog.dismiss();
 		}
-		if (output != null && "".equals(output)) {
+		if (output != null && !"".equals(output)) {
 			try {
 				id = Integer.valueOf(output);
 
@@ -930,11 +930,15 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				if (!emptyBitmap.equals(bitmap)) {
 					Image = Utility.CompressBitmap(bitmap);
 				}
-				dbAdapter.open();
-				dbAdapter.UpdateAllUserToDb(gId, Email, null, Phone, Cellphone,
-						Fax, Address, Image);
-
-				dbAdapter.close();
+				
+				ut.CreateFile(Image, gId, "Mechanical", "Users", "user",
+						"Users");	
+				
+//				dbAdapter.open();
+//				dbAdapter.UpdateAllUserToDb(gId, Email, null, Phone, Cellphone,
+//						Fax, Address, Image);
+//
+//				dbAdapter.close();
 
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();

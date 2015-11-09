@@ -445,7 +445,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				FroumWithoutComment fragment = new FroumWithoutComment();
+				FroumFragment fragment = new FroumFragment();
 				trans.setCustomAnimations(R.anim.pull_in_left,
 						R.anim.push_out_right);
 				Bundle bundle = new Bundle();

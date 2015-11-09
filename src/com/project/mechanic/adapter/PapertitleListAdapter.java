@@ -399,7 +399,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				}
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				PaperWithoutComment fragment = new PaperWithoutComment();
+				PaperFragment fragment = new PaperFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
 				fragment.setArguments(bundle);
