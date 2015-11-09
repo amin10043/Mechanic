@@ -146,6 +146,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		// fill Post List View
 		fillListView();
 		PostList.addHeaderView(header);
+		
 		// set layoutParams
 		setLayoutParams();
 
@@ -181,11 +182,11 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		// action click for poeple liked page btn
 		showPeopleLikedBtn();
-
+		
 		// for manage footer slide image agahi
 		// addComment();
 
-		if (currentUser.getId() == ObjectID)
+		if (currentUser.getId() == object.getUserId())
 			action.setVisibility(View.VISIBLE);
 		else
 			action.setVisibility(View.GONE);
@@ -748,7 +749,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	private void fillListView() {
 		adapter.open();
-		ArrayPosts = adapter.getAllPost(ObjectID);
+		ArrayPosts = adapter.getAllPost(object.getUserId());
 		PosttitleListadapter ListAdapterPost = new PosttitleListadapter(
 				getActivity(), R.layout.raw_posttitle, ArrayPosts,
 				IntroductionFragment.this);
