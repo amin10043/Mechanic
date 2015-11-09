@@ -52,7 +52,7 @@ public class UrlNewsPaperFragment extends Fragment {
 		((MainActivity) getActivity()).setActivityTitle(R.string.News);
 		View view = inflater.inflate(R.layout.fragment_urlnewspaper, null);
 		final WebView webview = (WebView) view.findViewById(R.id.webView1);
-		final JavaScriptInterface myJavaScriptInterface = new JavaScriptInterface();
+//		final JavaScriptInterface myJavaScriptInterface = new JavaScriptInterface();
 		util = new Utility(getActivity());
 		ringProgressDialog1 = ProgressDialog.show(getActivity(), "",
 				"لطفا منتظر بمانید...", true);

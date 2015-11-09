@@ -38,9 +38,8 @@
 
             <ImageView
                 android:id="@+id/reportImagereply"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="left"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/down_arrow" />
 
             <TextView

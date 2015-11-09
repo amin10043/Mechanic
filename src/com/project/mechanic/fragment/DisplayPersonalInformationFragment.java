@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -124,6 +125,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		// img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
 		// }
 		// }
+		Toast.makeText(getActivity(), "", 0).show();
 	}
 
 	@Override
