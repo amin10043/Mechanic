@@ -145,7 +145,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		// fill Post List View
 		fillListView();
-
+		PostList.addHeaderView(header);
 		// set layoutParams
 		setLayoutParams();
 
@@ -753,7 +753,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				getActivity(), R.layout.raw_posttitle, ArrayPosts,
 				IntroductionFragment.this);
 		PostList.setAdapter(ListAdapterPost);
-		PostList.addHeaderView(header);
 	}
 
 	private void setStateButtonFollowLike() {
