@@ -180,7 +180,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 				Bitmap bmp = BitmapFactory.decodeFile(u.getImagePath());
 				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
+						20));
 
 				profileImg.setLayoutParams(lp);
 			}

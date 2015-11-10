@@ -153,7 +153,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 			// Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
 			// byteImageProfile.length);
 
-			ReplyerPic.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
+			ReplyerPic.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 20));
 
 			ReplyerPic.setLayoutParams(lp);
 
@@ -413,10 +413,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter implements
 					bmp = BitmapFactory.decodeFile(x.getImagePath());
 				if (bmp != null)
 
-					profileImage.setImageBitmap(/*
-												 * Utility.getRoundedCornerBitmap
-												 * (
-												 */bmp/* , 50) */);
+					profileImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 20));
 			}
 		}
 		RelativeLayout rl = (RelativeLayout) convertView

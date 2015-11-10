@@ -1,12 +1,11 @@
 package com.project.mechanic.entity;
 
-
 public class Visit {
 
+	int Id;
 	int UserId;
 	int ObjectId;
 	int TypeId;
-
 
 	public int getUserId() {
 		return UserId;
@@ -15,7 +14,6 @@ public class Visit {
 	public void setId(int userid) {
 		UserId = userid;
 	}
-
 
 	public int getObjectId() {
 		return ObjectId;
@@ -33,12 +31,24 @@ public class Visit {
 		TypeId = typeid;
 	}
 
-	public Visit(int userid, int Objectid, int typeid) {
+	public Visit(int Id, int userid, int Objectid, int typeid) {
 
-		
 		UserId = userid;
 		ObjectId = Objectid;
 		TypeId = typeid;
+		this.Id = Id;
+	}
+
+	public int getId() {
+		return Id;
+	}
+
+	public void setUserId(int userId) {
+		UserId = userId;
+	}
+
+	public void setTypeId(int typeId) {
+		TypeId = typeId;
 	}
 
 }

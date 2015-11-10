@@ -131,7 +131,7 @@ public class InformationUser extends Fragment {
 
 		if (ImagePath != null) {
 			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-			profileImage.setImageBitmap(bmp);
+			profileImage.setImageBitmap(util.getRoundedCornerBitmap(bmp, 20));
 			profileImage.setLayoutParams(lp1);
 		}
 
@@ -214,15 +214,15 @@ public class InformationUser extends Fragment {
 				.CustomFieldFroumByUser(userPage.getId());
 		List<PersonalData> PaperData = dbadaAdapter
 				.CustomFieldPaperByUser(userPage.getId());
-		List<PersonalData> TicketData = dbadaAdapter
-				.CustomFieldTicketByUser(userPage.getId());
+//		List<PersonalData> TicketData = dbadaAdapter
+//				.CustomFieldTicketByUser(userPage.getId());
 
 		dbadaAdapter.close();
 
 		List<Integer> sizeTypeList = new ArrayList<Integer>();
 
 		sizeTypeList.add(ObejctData.size());
-		sizeTypeList.add(TicketData.size());
+	//	sizeTypeList.add(TicketData.size());
 		sizeTypeList.add(PaperData.size());
 		sizeTypeList.add(FroumData.size());
 
@@ -238,14 +238,14 @@ public class InformationUser extends Fragment {
 		Expandview.setClickable(true);
 
 		parentItems.add("صفحات");
-		parentItems.add("آگهی ها");
+		//parentItems.add("آگهی ها");
 		parentItems.add("مقالات");
 		parentItems.add("تالار گفتگو");
 
 		listDataChild.put(parentItems.get(0), ObejctData); // Header, Child data
-		listDataChild.put(parentItems.get(1), TicketData);
-		listDataChild.put(parentItems.get(2), PaperData);
-		listDataChild.put(parentItems.get(3), FroumData);
+		//listDataChild.put(parentItems.get(1), TicketData);
+		listDataChild.put(parentItems.get(1), PaperData);
+		listDataChild.put(parentItems.get(2), FroumData);
 
 		final SharedPreferences currentTime = getActivity()
 				.getSharedPreferences("time", 0);

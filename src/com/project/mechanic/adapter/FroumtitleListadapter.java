@@ -201,7 +201,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
 				if (bmp != null)
 					profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(
-							bmp, 50));
+							bmp, 20));
 
 				profileImg.setLayoutParams(lp);
 			}
@@ -431,8 +431,10 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				// در تمام صفحات از این کد ها استفاده شود
 				int ItemId = 0;
+				int position = 0;
 				ListView listView = (ListView) v.getParent();
-				int position = listView.getPositionForView(v);
+				if (listView != null)
+					position = listView.getPositionForView(v);
 				Froum f = getItem(position);
 				if (f != null) {
 					ItemId = f.getId();

@@ -142,7 +142,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 
 		if (profileImage != null) {
 
-			img2.setImageBitmap(profileImage);
+			img2.setImageBitmap(Utility.getRoundedCornerBitmap(profileImage, 20));
 			img2.setLayoutParams(layoutParams);
 			LoadingProgress.setVisibility(View.GONE);
 

@@ -165,6 +165,11 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			ImageView report = (ImageView) convertView
 					.findViewById(R.id.reportImage);
+			
+			if (isShowSettingBtn == true) {
+				report.setVisibility(View.VISIBLE);
+			} else
+				report.setVisibility(View.GONE);
 
 			report.setOnClickListener(new OnClickListener() {
 
@@ -200,7 +205,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			if (ImagePath != null) {
 				Bitmap bitmap = BitmapFactory.decodeFile(ImagePath);
-				profileIco.setImageBitmap(bitmap);
+				profileIco.setImageBitmap(Utility.getRoundedCornerBitmap(bitmap, 20));
 			}
 
 			namePage.setText(pd.getNameObject());
@@ -296,14 +301,14 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			if (profileImage != null) {
 
-				img2.setImageBitmap(profileImage);
+				img2.setImageBitmap(Utility.getRoundedCornerBitmap(profileImage, 20));
 				img2.setLayoutParams(params);
 
 			} else {
 				img2.setImageResource(R.drawable.no_img_profile);
 				img2.setLayoutParams(params);
 			}
-			String commitDate = pd.getDateTicket();
+//			String commitDate = pd.getDateTicket();
 //			int thisDay = 0;
 //			int TicketDay = Integer.valueOf(commitDate.substring(0, 8));
 //			if (todayDate != null && !todayDate.equals(""))
@@ -485,7 +490,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 			if (ImagePath != null) {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
 				iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
+						20));
 
 				iconProile.setLayoutParams(lp);
 			}
@@ -598,7 +603,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 			if (ImagePath != null) {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
 				iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
+						20));
 
 				iconProile.setLayoutParams(lp);
 			}
@@ -691,7 +696,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			if (ImagePath != null) {
 				Bitmap bitmap = BitmapFactory.decodeFile(ImagePath);
-				profileIco.setImageBitmap(bitmap);
+				profileIco.setImageBitmap(Utility.getRoundedCornerBitmap(bitmap, 20));
 			}
 
 			namePage.setText(pd.getNameFollowObject());
@@ -815,7 +820,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 		TextView titleGroup = (TextView) convertView
 				.findViewById(R.id.row_berand_txt);
-		if (util.getCurrentUser() != null)
+//		if (util.getCurrentUser() != null)
 			titleGroup.setText(parentItems.get(groupPosition) + " - " + name);
 
 		convertView.setOnClickListener(new OnClickListener() {

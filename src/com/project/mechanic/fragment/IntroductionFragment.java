@@ -584,7 +584,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					Bitmap b = BitmapFactory.decodeFile(PathImageProfile);
 
 					if (b != null)
-						profileImage.setImageBitmap(b);
+						profileImage.setImageBitmap(Utility.getRoundedCornerBitmap(b, 20));
 					else
 						profileImage
 								.setBackgroundResource(R.drawable.no_img_profile);
@@ -887,7 +887,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			headerImage.setBackgroundResource(R.drawable.no_image_header);
 		if (bmpProfile != null) {
 
-			profileImage.setImageBitmap(bmpProfile);
+			profileImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmpProfile, 20));
 
 		} else {
 			profileImage.setBackgroundResource(R.drawable.no_img_profile);

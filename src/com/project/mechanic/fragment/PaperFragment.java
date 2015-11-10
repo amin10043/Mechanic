@@ -173,7 +173,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 		if (ImagePath != null) {
 			bitmap = BitmapFactory.decodeFile(ImagePath);
 			if (bitmap != null) {
-				icon.setImageBitmap(bitmap);
+				icon.setImageBitmap(Utility.getRoundedCornerBitmap(bitmap, 20));
 				icon.setLayoutParams(lp);
 
 			}

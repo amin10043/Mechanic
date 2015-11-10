@@ -151,7 +151,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 			if (ImagePath != null) {
 				bitmap = BitmapFactory.decodeFile(ImagePath);
 				if (bitmap != null) {
-					profileImg.setImageBitmap(bitmap);
+					profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bitmap, 20));
 					profileImg.setLayoutParams(lp);
 
 				}

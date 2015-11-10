@@ -118,7 +118,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements
 			Bitmap bitmap = BitmapFactory.decodeFile(user.getImagePath());
 
 			if (bitmap != null) {
-				profilepic.setImageBitmap(bitmap);
+				profilepic.setImageBitmap(Utility.getRoundedCornerBitmap(bitmap, 20));
 				profilepic.setLayoutParams(lp);
 
 			}

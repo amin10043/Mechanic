@@ -166,7 +166,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
 				if (bmp != null)
 					iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(
-							bmp, 50));
+							bmp, 20));
 
 				iconProile.setLayoutParams(lp);
 				adapter.close();

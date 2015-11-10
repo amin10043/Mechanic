@@ -190,7 +190,7 @@ public class DataBaseAdapter {
 	private String[] LikeInCommentObject = { "Id", "CommentId", "UserId",
 			"IsLike", "Date" };
 
-	// private String[] Visit = { "UserId", "ObjectId", "TypeId" };
+	 private String[] Visit = { "Id" ,"UserId", "ObjectId", "TypeId" };
 	private String[] SubAdmin = { "Id", "ObjectId", "UserId", "AdminID", "Date" };
 
 	// private String[] post = { "SeenBefore", "Id", "Desc", "ImagePath",
