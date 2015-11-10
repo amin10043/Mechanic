@@ -2164,10 +2164,12 @@ public class DataBaseAdapter {
 		return result;
 	}
 
-	public ArrayList<Post> getAllPost() {
+	public ArrayList<Post> getAllPost(int UserID) {
 		ArrayList<Post> result = new ArrayList<Post>();
-		Cursor cursor = mDb
-				.query(TablePost, Post, null, null, null, null, null);
+		Cursor cursor = mDb.query(TablePost, Post, " UserId=?",
+				new String[] { String.valueOf(UserID) }, null, null, null);
+		// Cursor cursor = mDb
+		// .query(TablePost, Post, null, null, null, null, null);
 		while (cursor.moveToNext()) {
 			result.add(CursorToPost(cursor));
 		}

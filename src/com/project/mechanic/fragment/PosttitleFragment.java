@@ -117,7 +117,7 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 		Currentuser = util.getCurrentUser();
 
 		mdb.open();
-		mylist = mdb.getAllPost();
+		mylist = mdb.getAllPost(1);
 
 		String strIdes = "";
 		if (mylist != null) {
@@ -250,7 +250,7 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 
 	public void updateView() {
 		mdb.open();
-		mylist = mdb.getAllPost();
+		mylist = mdb.getAllPost(1);
 		mdb.close();
 		ListAdapter = new PosttitleListadapter(getActivity(),
 				R.layout.raw_posttitle, mylist, PosttitleFragment.this);
