@@ -54,7 +54,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 	String DateTime;
 	int Type;
 	int etebarDay = 365; // constant for agahi
-	long diff;
+	int diff;
 
 	public ObjectListAdapter(Context context, int resource,
 			List<Object> objact, Fragment fr, boolean IsShow, String DateTime,
@@ -164,77 +164,80 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 				.findViewById(R.id.dayBaghiMandeh); // modate baghimande
 
 		String commitDate = person.getDate(); // tarikhe ijad safhe
+		final SharedPreferences currentTime = context.getSharedPreferences(
+				"time", 0);
 
-		if (commitDate != null && !"".equals(commitDate)) {
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTimeInMillis(Long.valueOf(commitDate));
-			calendar.add(Calendar.YEAR, 1);
+		String time = currentTime.getString("time", "-1");
 
-			final SharedPreferences currentTime = context.getSharedPreferences(
-					"time", 0);
+		if (person.getActiveDate() == null) {
 
-			String time = currentTime.getString("time", "-1");
+			if (commitDate != null && !"".equals(commitDate)) {
 
-			Calendar calendarNow = Calendar.getInstance();
-			calendarNow.setTimeInMillis(Long.valueOf(time));
+				diff = util.differentTwoDate(commitDate, time);
 
-			long start = calendar.getTimeInMillis();
-			long now = calendarNow.getTimeInMillis();
-			diff = TimeUnit.MILLISECONDS.toDays(Math.abs(start - now));
+				if (diff == 30) {
 
-			// if (diff <= 0) {
-			//
-			// // isActive == 0 >>>>> gheyr faal
-			// // isActive == 1 >>>>> faal
-			//
-			// adapter.open();
-			// adapter.SetIsActive(person.getId(), 0);
-			// adapter.close();
-			//
-			//
-			//
-			// }
+					adapter.open();
+					adapter.SetIsActive(person.getId(), 0);
+					adapter.close();
 
-			// baghiMandeh.setText(String.valueOf(diff));
+				}
+
+				// baghiMandeh.setText(String.valueOf(diff));
+			}
+		} else	{
+
+				diff = util.differentTwoDate(person.getActiveDate(), time);
+
+				if (diff <= 0) {
+
+					adapter.open();
+					adapter.SetIsActive(person.getId(), 0);
+					adapter.close();
+
+				}
+
+			
 		}
+
 		// else {
 		// baghiMandeh.setText("نا معلوم");
 		// }
-//		convertView.setOnLongClickListener(new OnLongClickListener() {
-//
-//			@Override
-//			public boolean onLongClick(View v) {
-//
-//				int i = 0;
-//				int u = 0;
-//				String t = "";
-//				ListView listView = (ListView) v.getParent();
-//				int position = listView.getPositionForView(v);
-//				Object f = getItem(position);
-//				if (f != null) {
-//					u = f.getUserId();
-//					i = f.getId();
-//					t = f.getName();
-//				}
-//
-//				DialogLongClick dia = new DialogLongClick(context, 4, u, i, fr,
-//						t);
-//				Toast.makeText(context, "object id = " + i + " userId = " + u,
-//						0).show();
-//				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//				lp.copyFrom(dia.getWindow().getAttributes());
-//				lp.width = (int) (util.getScreenwidth() / 1.5);
-//				lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-//				;
-//				dia.show();
-//
-//				dia.getWindow().setAttributes(lp);
-//				dia.getWindow().setBackgroundDrawable(
-//						new ColorDrawable(android.graphics.Color.TRANSPARENT));
-//				return true;
-//			}
-//
-//		});
+		// convertView.setOnLongClickListener(new OnLongClickListener() {
+		//
+		// @Override
+		// public boolean onLongClick(View v) {
+		//
+		// int i = 0;
+		// int u = 0;
+		// String t = "";
+		// ListView listView = (ListView) v.getParent();
+		// int position = listView.getPositionForView(v);
+		// Object f = getItem(position);
+		// if (f != null) {
+		// u = f.getUserId();
+		// i = f.getId();
+		// t = f.getName();
+		// }
+		//
+		// DialogLongClick dia = new DialogLongClick(context, 4, u, i, fr,
+		// t);
+		// Toast.makeText(context, "object id = " + i + " userId = " + u,
+		// 0).show();
+		// WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+		// lp.copyFrom(dia.getWindow().getAttributes());
+		// lp.width = (int) (util.getScreenwidth() / 1.5);
+		// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+		// ;
+		// dia.show();
+		//
+		// dia.getWindow().setAttributes(lp);
+		// dia.getWindow().setBackgroundDrawable(
+		// new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		// return true;
+		// }
+		//
+		// });
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -243,7 +246,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 				SharedPreferences sendDataID = context.getSharedPreferences(
 						"Id", 0);
 
-				if (diff <= 0) {
+				if (person.getIsActive() == 0) {
 
 					UnavailableIntroduction fragment = new UnavailableIntroduction();
 					FragmentTransaction trans = ((MainActivity) context)

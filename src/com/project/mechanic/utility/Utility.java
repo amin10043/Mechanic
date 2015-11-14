@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -1352,4 +1353,64 @@ public class Utility implements AsyncInterface {
 
 	}
 
+	public static Bitmap getclip(Bitmap bitmap) {
+		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+				bitmap.getHeight(), Config.ARGB_8888);
+		Canvas canvas = new Canvas(output);
+
+		final Paint paint = new Paint();
+		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+		paint.setAntiAlias(true);
+		canvas.drawARGB(0, 0, 0, 0);
+		canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+				bitmap.getWidth() / 2, paint);
+		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+		canvas.drawBitmap(bitmap, rect, rect, paint);
+		return output;
+	}
+
+	public static List<String> convertYear(String timeStamp) {
+
+		List<String> dates = new ArrayList<String>();
+
+		if (timeStamp != null && !"".equals(timeStamp)) {
+			dates.add(timeStamp.substring(0, 4));
+			dates.add(timeStamp.substring(4, 6));
+			dates.add(timeStamp.substring(6, 8));
+
+		}
+		return dates;
+
+	}
+
+	public int differentTwoDate(String date1, String date2) {
+
+		List<String> pastDate = convertYear(date1);
+		List<String> CurrentDate = convertYear(date2);
+
+		Calendar calendar1 = Calendar.getInstance();
+		Calendar calendar2 = Calendar.getInstance();
+
+		calendar1.set(Integer.valueOf(pastDate.get(0)) + 1,
+				Integer.valueOf(pastDate.get(1)),
+				Integer.valueOf(pastDate.get(2)));
+
+		calendar2.set(Integer.valueOf(CurrentDate.get(0)),
+				Integer.valueOf(CurrentDate.get(1)),
+				Integer.valueOf(CurrentDate.get(2)));
+
+		long milsecs1 = calendar1.getTimeInMillis();
+		long milsecs2 = calendar2.getTimeInMillis();
+		long diff = Math.abs(milsecs2 - milsecs1);
+		// long dsecs = diff / 1000;
+		// long dminutes = diff / (60 * 1000);
+		// long dhours = diff / (60 * 60 * 1000);
+		
+		long ddays = diff / (24 * 60 * 60 * 1000);
+		int dif = (int) ddays;
+		
+		return dif;
+		
+	}
 }

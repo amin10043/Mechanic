@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,23 +18,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.PushNotification.DomainSend;
 import com.project.mechanic.adapter.AnadListAdapter;
-import com.project.mechanic.adapter.DataPersonalExpandAdapter;
+import com.project.mechanic.adapter.TestAdapter;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.Object;
-import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.PersonalData;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
@@ -45,8 +43,8 @@ import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.Utility;
 
-public class DisplayPersonalInformationFragment extends Fragment implements
-		GetAsyncInterface, AsyncInterface {
+public class TestDisplayPersonal extends Fragment implements GetAsyncInterface,
+		AsyncInterface {
 
 	DataBaseAdapter dbAdapter;
 	Utility util;
@@ -82,26 +80,9 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		dbAdapter = new DataBaseAdapter(getActivity());
 
 		// define rootView and header Layout
-		rootView = inflater.inflate(R.layout.fragment_personal_data, null);
-		header = inflater.inflate(R.layout.fragment_displaypersonalinformation,
-				null);
-
-		Button secondView = (Button) header.findViewById(R.id.secondView);
-
-		secondView.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new TestDisplayPersonal());
-				trans.addToBackStack(null);
-
-				trans.commit();
-
-			}
-		});
+		rootView = inflater.inflate(R.layout.test_expandable, null);
+		header = inflater
+				.inflate(R.layout.fragment_test_display_personal, null);
 
 		// define Views : find View By Id
 		findView();
@@ -208,8 +189,15 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 
 		ArrayList<String> parentItems = new ArrayList<String>();
 
-		Expandview.setDividerHeight(5);
-		Expandview.setGroupIndicator(null);
+		// Expandview.setDividerHeight(20);
+		
+//		Drawable d = getResources().getDrawable(R.drawable.indicator_expandable);
+//		Expandview.setIndicatorBounds(345,375);
+
+//		Expandview.setGroupIndicator(d);
+
+
+		 Expandview.setGroupIndicator(null);
 		Expandview.setClickable(true);
 
 		parentItems.add("مدیریت صفحات");
@@ -229,10 +217,9 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 
 		String time = currentTime.getString("time", "-1");
 
-		final DataPersonalExpandAdapter listAdapter = new DataPersonalExpandAdapter(
-				getActivity(), parentItems, listDataChild, time,
-				DisplayPersonalInformationFragment.this, sizeTypeList, true,
-				util.getCurrentUser().getName());
+		final TestAdapter listAdapter = new TestAdapter(getActivity(),
+				parentItems, listDataChild, time, TestDisplayPersonal.this,
+				sizeTypeList, true, util.getCurrentUser().getName());
 
 		// setting list adapter
 
@@ -257,16 +244,54 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		txtfax = (TextView) header.findViewById(R.id.fax);
 
 		img = (ImageView) header.findViewById(R.id.img1);
+//		img.setVisibility(View.GONE);
 		logout = (ImageView) header.findViewById(R.id.logout);
 
 		btnedit = (RelativeLayout) header.findViewById(R.id.btnedit);
+		btnedit.setVisibility(View.GONE);
+
 		birthDayUsers = (RelativeLayout) header
 				.findViewById(R.id.birthdayUsers);
+		birthDayUsers.setVisibility(View.GONE);
 
 		txtdate = (TextView) header.findViewById(R.id.txtdate);
+		txtdate.setVisibility(View.GONE);
 
 		lin2 = (LinearLayout) header.findViewById(R.id.lin2);
 		Expandview.addHeaderView(header);
+		
+		
+		////////////
+		
+		TextView l1 = (TextView) header.findViewById(R.id.labb1);
+		TextView l2 = (TextView) header.findViewById(R.id.tst);
+		TextView l3 = (TextView) header.findViewById(R.id.name);
+		
+		TextView textView6 = (TextView) header.findViewById(R.id.textView6);
+		TextView textView8 = (TextView) header.findViewById(R.id.textView8);
+		TextView textView4 = (TextView) header.findViewById(R.id.textView4);
+		TextView textView10 = (TextView) header.findViewById(R.id.textView10);
+		TextView textView12 = (TextView) header.findViewById(R.id.textView12);
+
+		
+		l1.setTypeface(util.SetFontCasablanca());
+		l2.setTypeface(util.SetFontCasablanca());
+		l3.setTypeface(util.SetFontCasablanca());
+
+		txtaddress.setTypeface(util.SetFontCasablanca());
+		txtcellphone.setTypeface(util.SetFontCasablanca());
+		txtphone.setTypeface(util.SetFontCasablanca());
+		txtemail.setTypeface(util.SetFontCasablanca());
+		txtname.setTypeface(util.SetFontCasablanca());
+		txtfax.setTypeface(util.SetFontCasablanca());
+		
+		textView6.setTypeface(util.SetFontCasablanca());
+		textView8.setTypeface(util.SetFontCasablanca());
+		textView4.setTypeface(util.SetFontCasablanca());
+		textView10.setTypeface(util.SetFontCasablanca());
+		textView12.setTypeface(util.SetFontCasablanca());
+
+		/////////////////
 
 	}
 
@@ -285,8 +310,8 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		// imageProfile LayoutParams
 
 		lp1 = new LinearLayout.LayoutParams(lin2.getLayoutParams());
-		lp1.width = util.getScreenwidth() / 4;
-		lp1.height = util.getScreenwidth() / 4;
+		lp1.width = util.getScreenwidth() / 5;
+		lp1.height = util.getScreenwidth() / 5;
 		img.setLayoutParams(lp1);
 
 		// Edit button LayoutParams
@@ -314,7 +339,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		String ImagePath = currentUser.getImagePath();
 		if (ImagePath != null) {
 			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-			img.setImageBitmap(bmp);
+			img.setImageBitmap(Utility.getclip(bmp));
 		}
 
 		String name = currentUser.getName();
@@ -422,7 +447,4 @@ public class DisplayPersonalInformationFragment extends Fragment implements
 		});
 
 	}
-
-	
-
 }

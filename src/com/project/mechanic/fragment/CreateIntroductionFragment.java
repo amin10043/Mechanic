@@ -785,7 +785,7 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("Date", output);
 					params.put("ModifyDate", output);
 
-					params.put("IsActive", "0");
+					params.put("IsActive", "1");
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 					d = serverDate = output;
@@ -847,7 +847,7 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("Date", output);
 					params.put("ModifyDate", output);
 
-					params.put("IsActive", "0");
+					params.put("IsActive", "1");
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
 					serverDate = output;
@@ -918,7 +918,7 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("Date", output);
 					params.put("ModifyDate", output);
 
-					params.put("IsActive", "0");
+					params.put("IsActive", "1");
 
 					params.put("IsUpdate", "0");
 					params.put("Id", "0");
