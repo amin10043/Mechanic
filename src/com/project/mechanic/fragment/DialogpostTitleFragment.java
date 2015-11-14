@@ -117,24 +117,24 @@ public class DialogpostTitleFragment extends DialogFragment {
 		btnSave.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
+				Time time = new Time();
+				time.setToNow();
+				String Date = Long.toString(time.toMillis(false));
+
 				String ImageAddress = "";
 
 				if (ImageConvertedToByte != null) {
-					Time time = new Time();
-					time.setToNow();
 
-					ImageAddress = util.CreateFileString(
-							ImageConvertedToByte,
-							"_" + currentUser.getId() + "_"
-									+ Long.toString(time.toMillis(false)),
+					ImageAddress = util.CreateFileString(ImageConvertedToByte,
+							"_" + currentUser.getId() + "_" + Date,
 							"Mechanical", "Post", "post");
 				}
 				if (!ImageAddress.isEmpty()
 						|| !PostDecription.getText().toString().isEmpty()) {
+
 					dbadapter.open();
 					dbadapter.insertPosttitletoDb(PostDecription.getText()
-							.toString(), currentUser.getId(), severDate,
-							ImageAddress);
+							.toString(), currentUser.getId(), "", ImageAddress);
 					dbadapter.close();
 
 					IntroductionFragment fragment = new IntroductionFragment();
