@@ -44,7 +44,7 @@ public class DialogPostFragment extends Fragment {
 
 	private DataBaseAdapter dbadapter;
 
-	private EditText PostTitle;
+	// private EditText PostTitle;
 	private EditText PostDecription;
 
 	Utility util;
@@ -101,7 +101,7 @@ public class DialogPostFragment extends Fragment {
 
 		dbadapter = new DataBaseAdapter(getActivity());
 
-		PostTitle = (EditText) view.findViewById(R.id.txtTitleP);
+		// PostTitle = (EditText) view.findViewById(R.id.txtTitleP);
 		PostDecription = (EditText) view.findViewById(R.id.txttitleDes);
 		btnSave = (Button) view.findViewById(R.id.btnPdf1_Object);
 		btnSave.setOnClickListener(new View.OnClickListener() {
@@ -120,12 +120,11 @@ public class DialogPostFragment extends Fragment {
 							"Mechanical", "Post", "post");
 				}
 				if (!ImageAddress.isEmpty()
-						|| (!PostTitle.getText().toString().isEmpty() && !PostDecription
-								.getText().toString().isEmpty())) {
+						|| !PostDecription.getText().toString().isEmpty()) {
 					dbadapter.open();
-					dbadapter.insertPosttitletoDb(PostTitle.getText()
-							.toString(), PostDecription.getText().toString(),
-							currentUser.getId(), severDate, ImageAddress);
+					dbadapter.insertPosttitletoDb(PostDecription.getText()
+							.toString(), currentUser.getId(), severDate,
+							ImageAddress);
 					dbadapter.close();
 
 					IntroductionFragment fragment = new IntroductionFragment();
@@ -144,7 +143,7 @@ public class DialogPostFragment extends Fragment {
 
 				} else
 					Toast.makeText(getActivity(),
-							"حداقل یه عکس یا یک عنوان و توضیحات وارد کنید",
+							"حداقل یه عکس یا یک متن وارد کنید",
 							Toast.LENGTH_SHORT).show();
 			}
 		});

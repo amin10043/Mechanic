@@ -43,6 +43,15 @@ public class Object implements Comparable<Object> {
 	String ImagePath1;
 	String ImagePath2;
 	String ImagePath3;
+	String ActiveDate;
+
+	public String getActiveDate() {
+		return ActiveDate;
+	}
+
+	public void setActiveDate(String activeDate) {
+		ActiveDate = activeDate;
+	}
 
 	public String getImagePath1() {
 		return ImagePath1;
@@ -351,7 +360,7 @@ public class Object implements Comparable<Object> {
 			int mainObjectid, int IsActive, int UserId, int ObjectId,
 			String Date, String img1ServerDate, String img2ServerDate,
 			String img3ServerDate, int AgencyService, String ImagePath1,
-			String ImagePath2, String ImagePath3) {
+			String ImagePath2, String ImagePath3, String activeDate) {
 
 		super();
 		Id = id;
@@ -395,6 +404,7 @@ public class Object implements Comparable<Object> {
 		this.ImagePath1 = ImagePath1;
 		this.ImagePath2 = ImagePath2;
 		this.ImagePath3 = ImagePath3;
+		ActiveDate = activeDate;
 	}
 
 	public int getAgencyService() {
@@ -433,7 +443,7 @@ public class Object implements Comparable<Object> {
 		int compareRate = compareObject.getRate();
 		int a = compareRate - this.Rate;
 		if (a == 0) {
-			long temp = 0, temp1=0;
+			long temp = 0, temp1 = 0;
 			if (compareObject.getDate() != null)
 				temp = Long.valueOf(compareObject.getDate());
 			if (this.getDate() != null)

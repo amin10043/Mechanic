@@ -94,8 +94,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		convertView = myInflater.inflate(R.layout.raw_posttitle, parent, false);
 
 		Parent = parent;
-		final TextView txt1 = (TextView) convertView
-				.findViewById(R.id.rowtitlepaper);
+		// final TextView txt1 = (TextView) convertView
+		// .findViewById(R.id.rowtitlepaper);
 		final TextView txt2 = (TextView) convertView
 				.findViewById(R.id.rowdescriptionpaper);
 		TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
@@ -121,7 +121,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 		Post person1 = mylist.get(position);
 
-		txt1.setTypeface(util.SetFontCasablanca());
+		// txt1.setTypeface(util.SetFontCasablanca());
 		txt2.setTypeface(util.SetFontCasablanca());
 
 		adapter.open();
@@ -131,7 +131,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		CurrentUser = util.getCurrentUser();
 
 		if (person1.getSeenBefore() > 0) {
-			txt1.setTextColor(Color.GRAY);
+			// txt1.setTextColor(Color.GRAY);
 			txt2.setTextColor(Color.GRAY);
 			txt3.setTextColor(Color.GRAY);
 			dateTopic.setTextColor(Color.GRAY);
@@ -140,10 +140,10 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 		PostID.setText(person1.getId() + "");
 
-		if (!person1.getTitle().isEmpty()) {
-			txt1.setText(person1.getTitle());
-			txt1.setVisibility(View.VISIBLE);
-		}
+		// if (!person1.getTitle().isEmpty()) {
+		// txt1.setText(person1.getTitle());
+		// txt1.setVisibility(View.VISIBLE);
+		// }
 		if (!person1.getDescription().isEmpty()) {
 			txt2.setText(person1.getDescription());
 			txt2.setVisibility(View.VISIBLE);
@@ -173,14 +173,14 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		dateTopic.setText(util.getPersianDate(person1.getDate()));
 
 		String item = txt2.getText().toString();
-
-		int sizeDescription = item.length();
-		String subItem;
-		subItem = item.subSequence(0, sizeDescription - 4).toString();
+		//
+		// int sizeDescription = item.length();
+		// String subItem;
+		// subItem = item.subSequence(0, sizeDescription - 4).toString();
 
 		int ItemId = 0;
 		for (Post listItem : mylist) {
-			if (subItem.equals(listItem.getDescription())) {
+			if (item.equals(listItem.getDescription())) {
 				postNumber = ItemId = listItem.getId();
 			}
 		}

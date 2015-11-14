@@ -40,17 +40,6 @@
                 android:textColor="@color/transparent" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/rowtitlepaper"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:gravity="right"
-            android:hint=" "
-            android:text="title"
-            android:textColor="@color/transparent"
-            android:visibility="gone" />
-
         <ImageView
             android:id="@+id/postImage"
             android:layout_width="fill_parent"

@@ -240,14 +240,14 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			}
 		}
 
-		if (!topics.getTitle().isEmpty()) {
-			titletxt.setText(topics.getTitle());
-			titletxt.setVisibility(View.VISIBLE);
-		}
-		if (!topics.getTitle().isEmpty()) {
-			descriptiontxt.setText(topics.getDescription());
-			descriptiontxt.setVisibility(View.VISIBLE);
-		}
+		// if (!topics.getTitle().isEmpty()) {
+		// titletxt.setText(topics.getTitle());
+		// titletxt.setVisibility(View.VISIBLE);
+		// }
+		// if (!topics.getTitle().isEmpty()) {
+		// descriptiontxt.setText(topics.getDescription());
+		// descriptiontxt.setVisibility(View.VISIBLE);
+		// }
 		if (!topics.getPhoto().isEmpty()) {
 			File imgFile = new File(topics.getPhoto());
 
@@ -454,8 +454,8 @@ public class PostFragment extends Fragment implements AsyncInterface,
 				Intent sharingIntent = new Intent(
 						android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/html");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-						topics.getTitle());
+				// sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+				// topics.getTitle());
 				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
 						Html.fromHtml(body));
 				startActivity(Intent.createChooser(sharingIntent,

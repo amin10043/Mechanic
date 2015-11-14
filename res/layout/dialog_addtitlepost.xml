@@ -10,43 +10,12 @@
         android:baselineAligned="true"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/maintextcreate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:lineSpacingExtra="10dp"
-            android:text="نظرات  و تجارب خود را با سایر کاربران به اشتراک بگذارید                با تشکر"
-            android:textColor="@color/transparent"
-            android:textSize="30dp" />
-
-        <ImageButton
-            android:id="@+id/createicondialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/ic_create" />
-
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/ShowImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/txtTitleP"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:ems="10"
-                android:gravity="center"
-                android:hint="لطفا عنوان را وارد نمایید" />
-
-            <requestFocus />
-        </RelativeLayout>
+            android:layout_height="220dp"
+            android:src="@drawable/no_image_header"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -61,6 +30,8 @@
                 android:ems="10"
                 android:gravity="center"
                 android:hint="توضیحات را وارد کنید" />
+
+            <requestFocus />
         </RelativeLayout>
 
         <RelativeLayout
@@ -77,16 +48,25 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/save" />
 
+            <Button
+                android:id="@+id/btnClearImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/delete_reply"
+                android:visibility="invisible" />
+
             <ImageView
                 android:id="@+id/btnPickFile"
-                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="19dp"
+                android:clickable="true"
                 android:src="@drawable/camera1" />
-
         </RelativeLayout>
     </LinearLayout>
 

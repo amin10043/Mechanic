@@ -4,7 +4,6 @@ public class Post {
 
 	int Id;
 	int UserId;
-	String Title;
 	String Description;
 	int Seen;
 	String ServerDate;
@@ -27,14 +26,6 @@ public class Post {
 
 	public void setUserId(int userId) {
 		UserId = userId;
-	}
-
-	public String getTitle() {
-		return Title;
-	}
-
-	public void setTitle(String title) {
-		Title = title;
 	}
 
 	public String getDescription() {
@@ -93,13 +84,12 @@ public class Post {
 		this.Photo = Photo;
 	}
 
-	public Post(int id, int userId, String title, String description, int seen,
+	public Post(int id, int userId, String description, int seen,
 			String serverDate, int submit, String date, int seenBefore,
 			String photo) {
 		super();
 		Id = id;
 		UserId = userId;
-		Title = title;
 		Description = description;
 		Seen = seen;
 		ServerDate = serverDate;

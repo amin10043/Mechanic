@@ -11,7 +11,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -19,24 +18,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.DialogLongClick;
-import com.project.mechanic.fragment.DialogcmtInobject;
 import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.inter.AsyncInterface;
@@ -416,7 +412,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 		} else {
 			nameCommenter.setText(x.getName());
 		}
-//		dateCommenter.setText(util.getPersianDate(comment.getDatetime()));
+		// dateCommenter.setText(util.getPersianDate(comment.getDatetime()));
 
 		countOfReply.setText(adapter.getCountOfReplyBrandPage(ObjectID,
 				comment.getId()).toString());
@@ -827,11 +823,11 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 					f.groupPosition(groupPosition);
 					util.ReplyLayout((Activity) context, mainComment.getText()
 							.toString(), true);
-					
-//					DialogcmtInobject dialog = new DialogcmtInobject(f,
-//							context, R.layout.dialog_addcomment, ObjectID,
-//							commentid);
-//					dialog.show();
+
+					// DialogcmtInobject dialog = new DialogcmtInobject(f,
+					// context, R.layout.dialog_addcomment, ObjectID,
+					// commentid);
+					// dialog.show();
 
 					adapter.close();
 				}
@@ -1021,7 +1017,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
-			((IntroductionFragment) f).updateList();
+			// ((IntroductionFragment) f).updateList();
 		} else {
 
 			if (!"".equals(output)

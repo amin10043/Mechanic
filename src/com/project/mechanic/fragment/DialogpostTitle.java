@@ -1,8 +1,7 @@
 package com.project.mechanic.fragment;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.FileNotFoundException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -20,9 +19,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +30,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
-import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -44,7 +40,7 @@ import com.project.mechanic.utility.Utility;
 public class DialogpostTitle extends Dialog implements AsyncInterface {
 
 	private Button btntitle;
-	private EditText titletxt;
+	// private EditText titletxt;
 	private EditText titleDestxt;
 	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
@@ -64,6 +60,10 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 	String severDate;
 	ImageView btnPickFile;
 
+	ImageView ShowImage;
+	byte[] ImageConvertedToByte = null;
+	Button btnClearImage;
+
 	public DialogpostTitle(Context context, int resourceId, Fragment fragment) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -81,45 +81,45 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-		if (currentUser == null) {
-			// karbar vared nashode ast !!!!!!!
-			// nabayad inja bashaaad !!!!!!
-			Toast.makeText(context, "ابدتدا باید وارد شوید", Toast.LENGTH_SHORT)
-					.show();
-			return;
-		}
+		// if (currentUser == null) {
+		// // karbar vared nashode ast !!!!!!!
+		// // nabayad inja bashaaad !!!!!!
+		// Toast.makeText(context, "ابدتدا باید وارد شوید", Toast.LENGTH_SHORT)
+		// .show();
+		// return;
+		// }
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setBackgroundDrawable(
 				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		setContentView(resourceId);
 		btntitle = (Button) findViewById(R.id.btnPdf1_Object);
-		titletxt = (EditText) findViewById(R.id.txtTitleP);
+		// titletxt = (EditText) findViewById(R.id.txtTitleP);
 		titleDestxt = (EditText) findViewById(R.id.txttitleDes);
 
 		createImage = (ImageButton) findViewById(R.id.createicondialog);
 		titleHeader = (TextView) findViewById(R.id.maintextcreate);
 
-		titletxt.setVisibility(View.GONE);
-		titleDestxt.setVisibility(View.GONE);
-		btntitle.setVisibility(View.GONE);
+		// titletxt.setVisibility(View.GONE);
+		// titleDestxt.setVisibility(View.GONE);
+		// btntitle.setVisibility(View.GONE);
 
 		btnPickFile = (ImageView) findViewById(R.id.btnPickFile);
-		
-		createImage.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View arg0) {
-				if (currentUser != null) {
-					titletxt.setVisibility(View.VISIBLE);
-					titleDestxt.setVisibility(View.VISIBLE);
-					btntitle.setVisibility(View.VISIBLE);
-
-					createImage.setVisibility(View.GONE);
-					titleHeader.setVisibility(View.GONE);
-				}
-			}
-		});
+		// createImage.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// if (currentUser != null) {
+		// // titletxt.setVisibility(View.VISIBLE);
+		// titleDestxt.setVisibility(View.VISIBLE);
+		// btntitle.setVisibility(View.VISIBLE);
+		//
+		// createImage.setVisibility(View.GONE);
+		// titleHeader.setVisibility(View.GONE);
+		// }
+		// }
+		// });
 
 		btntitle.setOnClickListener(new android.view.View.OnClickListener() {
 
@@ -130,23 +130,24 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 				// sDate.delegate = DialogpostTitle.this;
 				// sDate.execute("");
 				dbadapter.open();
-				dbadapter.insertPosttitletoDb(titletxt.getText().toString(),
-						titleDestxt.getText().toString(), currentUser.getId(),
+				dbadapter.insertPosttitletoDb(/* titletxt.getText().toString(), */
+				titleDestxt.getText().toString(), currentUser.getId(),
 						severDate, "ImageAddress");
 				dbadapter.close();
-//				((PosttitleFragment) fragment).updateView();
-//				dismiss();
+				// ((PosttitleFragment) fragment).updateView();
+				// dismiss();
 			}
 		});
-		
+
 		/****************************************************************************/
-		/*LinearLayout lin3 = (LinearLayout) findViewById(R.id.RelativeLayout1);
-		ut = new Utility(fragment.getActivity());
-		lp2 = new LinearLayout.LayoutParams(lin3.getLayoutParams());
-		lp2.height = ut.getScreenwidth() / 4;
-		lp2.width = ut.getScreenwidth() / 4;
-		lp2.setMargins(5, 5, 5, 5);
-		ImageProfile.setLayoutParams(lp2);*/
+		/*
+		 * LinearLayout lin3 = (LinearLayout)
+		 * findViewById(R.id.RelativeLayout1); ut = new
+		 * Utility(fragment.getActivity()); lp2 = new
+		 * LinearLayout.LayoutParams(lin3.getLayoutParams()); lp2.height =
+		 * ut.getScreenwidth() / 4; lp2.width = ut.getScreenwidth() / 4;
+		 * lp2.setMargins(5, 5, 5, 5); ImageProfile.setLayoutParams(lp2);
+		 */
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
 			mFileTemp = new File(Environment.getExternalStorageDirectory(),
@@ -156,11 +157,11 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 					TEMP_PHOTO_FILE_NAME);
 		}
 		btnPickFile.setOnClickListener(new View.OnClickListener() {
-			   public void onClick(View v) {
-				   selectImageOption();
-			   }        
-			});
-		
+			public void onClick(View v) {
+				selectImageOption();
+			}
+		});
+
 	}
 
 	/********************************************************************/
@@ -173,11 +174,12 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 			CROPING_CODE = 301;
 	final int PIC_CROP = 10;
 	ImageView ImageProfile, imagecamera;
-	
+
 	private void selectImageOption() {
 		final CharSequence[] items = { "از دوربین", "از گالری تصاویر", "انصراف" };
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getActivity());
+		AlertDialog.Builder builder = new AlertDialog.Builder(
+				fragment.getActivity());
 		builder.setTitle("افزودن تصویر");
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 			@Override
@@ -193,7 +195,8 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 					mImageCaptureUri = Uri.fromFile(f);
 					intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
 
-					//fragment.getActivity().startActivityForResult(intent, CAMERA_CODE);
+					// fragment.getActivity().startActivityForResult(intent,
+					// CAMERA_CODE);
 
 				} else if (items[item].equals("از گالری تصاویر")) {
 
@@ -201,8 +204,8 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 							Intent.ACTION_PICK,
 							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-					fragment.getActivity().startActivityFromFragment(
-							fragment, i, GALLERY_CODE);
+					fragment.getActivity().startActivityFromFragment(fragment,
+							i, GALLERY_CODE);
 
 					// Intent intent = new Intent();
 					// intent.setType("image/*");
@@ -225,70 +228,60 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Toast.makeText(getContext(), "Text", Toast.LENGTH_LONG).show();
-		/*if (requestCode == GALLERY_CODE) {
-			try {
+		fragment.onActivityResult(requestCode, resultCode, data);
 
-				InputStream inputStream = fragment.getActivity().getContentResolver()
-						.openInputStream(data.getData());
-				FileOutputStream fileOutputStream = new FileOutputStream(
-						mFileTemp);
-				Utility.copyStream(inputStream, fileOutputStream);
-				fileOutputStream.close();
-				inputStream.close();
-				
-				Bitmap bitmap = null;
-				if (mFileTemp.getPath() != null)
-					bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
-				if (bitmap != null) {
-					btnPickFile.setImageBitmap(bitmap);
-				}
-				
-				//startCropImage();
+		Toast.makeText(context, "Yes", Toast.LENGTH_SHORT).show();
 
-			} catch (Exception e) {
-
-				Toast.makeText(fragment.getActivity(), e.toString(), Toast.LENGTH_LONG)
-						.show();
-			}
-			ImageProfile.setLayoutParams(lp2);
-			
-
-		}
-		if (requestCode == PIC_CROP && data != null) {
-			String path = data.getStringExtra(CropImage.IMAGE_PATH);
-			if (path == null) {
-				return;
-			}
-			Bitmap bitmap = null;
-			if (mFileTemp.getPath() != null)
-				bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
-			if (bitmap != null) {
-				ImageProfile.setImageBitmap(bitmap);
-				ImageProfile.setLayoutParams(lp2);
-
-			}
-
-		}*/
-		onActivityResult(requestCode, resultCode, data);
+		// switch (requestCode) {
+		// case GALLERY_CODE:
+		// if (resultCode == fragment.getActivity().RESULT_OK) {
+		//
+		// mImageCaptureUri = data.getData();
+		// try {
+		// Bitmap bitmapImage = decodeBitmap(mImageCaptureUri);
+		// ShowImage.setImageBitmap(bitmapImage);
+		// ImageConvertedToByte = Utility.CompressBitmap(bitmapImage);
+		//
+		// if (ImageConvertedToByte != null) {
+		// ShowImage.setVisibility(View.VISIBLE);
+		// btnClearImage.setVisibility(View.VISIBLE);
+		// }
+		//
+		// } catch (FileNotFoundException e) {
+		// e.printStackTrace();
+		// }
+		// }
+		// }
 
 	}
-//
-//	private void startCropImage() {
-//
-//		Intent intent = new Intent(getActivity(), CropImage.class);
-//		intent.putExtra(CropImage.IMAGE_PATH, mFileTemp.getPath());
-//		intent.putExtra(CropImage.SCALE, true);
-//
-//		intent.putExtra(CropImage.ASPECT_X, 3);
-//		intent.putExtra(CropImage.ASPECT_Y, 3);
-//
-//		startActivityForResult(intent, PIC_CROP);
-//	}
+
+	public Bitmap decodeBitmap(Uri selectedImage) throws FileNotFoundException {
+		BitmapFactory.Options o = new BitmapFactory.Options();
+		o.inJustDecodeBounds = true;
+		BitmapFactory.decodeStream(fragment.getActivity().getContentResolver()
+				.openInputStream(selectedImage), null, o);
+
+		final int REQUIRED_SIZE = 100;
+
+		int width_tmp = o.outWidth, height_tmp = o.outHeight;
+		int scale = 1;
+		while (true) {
+			if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE) {
+				break;
+			}
+			width_tmp /= 2;
+			height_tmp /= 2;
+			scale *= 2;
+		}
+
+		BitmapFactory.Options o2 = new BitmapFactory.Options();
+		o2.inSampleSize = scale;
+		return BitmapFactory.decodeStream(fragment.getActivity()
+				.getContentResolver().openInputStream(selectedImage), null, o2);
+	}
+
 	/*****************************************************************************************/
-	
-	
-	
+
 	public interface OnMyDialogResult {
 		void finish(String result);
 	}
@@ -306,9 +299,9 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 		try {
 			id = Integer.valueOf(output);
 			dbadapter.open();
-			dbadapter.insertPosttitletoDb(/* id, */titletxt.getText().toString(),
-					titleDestxt.getText().toString(), currentUser.getId(),
-					severDate, "ImageAddress");
+			dbadapter.insertPosttitletoDb(/* id,titletxt.getText().toString(), */
+			titleDestxt.getText().toString(), currentUser.getId(), severDate,
+					"ImageAddress");
 			dbadapter.close();
 			((PosttitleFragment) fragment).updateView();
 			this.dismiss();
@@ -322,7 +315,7 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 				saving.delegate = DialogpostTitle.this;
 
 				params.put("TableName", "Post");
-				params.put("Title", titletxt.getText().toString());
+				// params.put("Title", titletxt.getText().toString());
 				params.put("Description", titleDestxt.getText().toString());
 				params.put("UserId", String.valueOf(currentUser.getId()));
 				params.put("Date", output);

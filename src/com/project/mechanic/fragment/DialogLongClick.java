@@ -6,11 +6,9 @@ import java.util.Map;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -20,9 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.PushNotification.DomainSend;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -53,7 +49,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 	ServerDate date;
 	LinearLayout reaportLayout;
 
-	RelativeLayout SendMessage , CopyItem;
+	RelativeLayout SendMessage, CopyItem;
 	String tableName;
 
 	public DialogLongClick(Context context, int source, int UserIdObject,
@@ -124,8 +120,8 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 		default:
 			break;
 		}
-//		final SharedPreferences tashkhis = context
-//				.getSharedPreferences("Id", 0);
+		// final SharedPreferences tashkhis = context
+		// .getSharedPreferences("Id", 0);
 
 		if (source != 3) {
 			r2.setVisibility(View.GONE);
@@ -146,19 +142,19 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 				if (util.getCurrentUser() != null) {
 
-//					DomainSend fr = new DomainSend(tableName);
-//
-//					FragmentTransaction trans = ((MainActivity) context)
-//							.getSupportFragmentManager().beginTransaction();
-//
-//					trans.replace(R.id.content_frame, fr);
-//					trans.addToBackStack(null);
-//					trans.commit();
+					// DomainSend fr = new DomainSend(tableName);
+					//
+					// FragmentTransaction trans = ((MainActivity) context)
+					// .getSupportFragmentManager().beginTransaction();
+					//
+					// trans.replace(R.id.content_frame, fr);
+					// trans.addToBackStack(null);
+					// trans.commit();
 
-//					dismiss();
-//					tashkhis.edit().putString("enter", "Dialog").commit();
-//					tashkhis.edit().putString("FromTableName", tableName)
-//							.commit();
+					// dismiss();
+					// tashkhis.edit().putString("enter", "Dialog").commit();
+					// tashkhis.edit().putString("FromTableName", tableName)
+					// .commit();
 				} else
 					Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 
@@ -561,10 +557,10 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 			}
 		});
 		CopyItem.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
-				
+
 			}
 		});
 
@@ -718,7 +714,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 					ringProgressDialog.dismiss();
 				}
 				dismiss();
-				((IntroductionFragment) fragment).updateList();
+				// ((IntroductionFragment) fragment).updateList();
 
 			}
 
