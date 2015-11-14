@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,7 +24,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -60,11 +60,11 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	Context context;
 	Utility ut;
 	Users currentUser;
-	View header, view, Posts;
-
+	View header, Posts;
+	// view,
 	ListView PostList;
 
-	ExpandableListView exListView;
+	// ExpandableListView exListView;
 	ExpandIntroduction exadapter;
 	int ObjectID, gp;
 	DialogPersonLikedObject ListLiked;
@@ -110,6 +110,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	FloatingActionButton action;
 
+	DialogpostTitleFragment MyDialog;
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,12 +122,12 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		ut = new Utility(getActivity());
 
 		// define rootView and header Layout
-		view = inflater.inflate(R.layout.fragment_introduction, null);
+		// view = inflater.inflate(R.layout.fragment_introduction, null);
 		header = getActivity().getLayoutInflater().inflate(
 				R.layout.header_introduction, null);
 		Posts = inflater.inflate(R.layout.fragment_titlepost, null);
 		PostList = (ListView) Posts.findViewById(R.id.lstComment);
-		PostList.addHeaderView(header);
+		// PostList.addHeaderView(header);
 
 		// define Views : find view by Id
 		findView();
@@ -141,12 +143,12 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		setValues();
 
 		// fill expand ListView
-		fillExpandListViewCommnet();
+		// fillExpandListViewCommnet();
 
 		// fill Post List View
-		fillListView();
 		PostList.addHeaderView(header);
-		
+		fillListView();
+
 		// set layoutParams
 		setLayoutParams();
 
@@ -182,48 +184,53 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		// action click for poeple liked page btn
 		showPeopleLikedBtn();
-		
+
 		// for manage footer slide image agahi
 		// addComment();
+		ut.ShowFooterAgahi(getActivity(), false, 6);
 
-		if (currentUser.getId() == object.getUserId())
-			action.setVisibility(View.VISIBLE);
+		if (currentUser != null)
+			if (currentUser.getId() == object.getUserId())
+				action.setVisibility(View.VISIBLE);
+			else
+				action.setVisibility(View.GONE);
 		else
 			action.setVisibility(View.GONE);
 
-		if (PostList.getCount() > 0)
-			return Posts;
-		else
-			return header;
+		// if (PostList.getCount() > 0)
+		return Posts;
+		// else
+		// return header;
 
 	}
 
-	public void updateList() {
-		sendDataID = getActivity().getSharedPreferences("Id", 0);
-		final int ObjectID = sendDataID.getInt("main_Id", -1);
-
-		adapter.open();
-		commentGroup = adapter.getAllCommentInObjectById(ObjectID, 0);
-		mapCollection = new LinkedHashMap<CommentInObject, List<CommentInObject>>();
-
-		List<CommentInObject> reply = null;
-		for (CommentInObject comment : commentGroup) {
-			reply = adapter.getReplyCommentIntroduction(ObjectID,
-					comment.getId());
-			mapCollection.put(comment, reply);
-		}
-
-		int countcmt = adapter.CommentInObject_count(ObjectID);
-		CountCommentIntroduction.setText(String.valueOf(countcmt));
-		exadapter = new ExpandIntroduction(getActivity(),
-				(ArrayList<CommentInObject>) commentGroup, mapCollection, this,
-				ObjectID);
-		adapter.close();
-		exadapter.notifyDataSetChanged();
-
-		exListView.setAdapter(exadapter);
-
-	}
+	// public void updateList() {
+	// sendDataID = getActivity().getSharedPreferences("Id", 0);
+	// final int ObjectID = sendDataID.getInt("main_Id", -1);
+	//
+	// adapter.open();
+	// commentGroup = adapter.getAllCommentInObjectById(ObjectID, 0);
+	// mapCollection = new LinkedHashMap<CommentInObject,
+	// List<CommentInObject>>();
+	//
+	// List<CommentInObject> reply = null;
+	// for (CommentInObject comment : commentGroup) {
+	// reply = adapter.getReplyCommentIntroduction(ObjectID,
+	// comment.getId());
+	// mapCollection.put(comment, reply);
+	// }
+	//
+	// int countcmt = adapter.CommentInObject_count(ObjectID);
+	// CountCommentIntroduction.setText(String.valueOf(countcmt));
+	// exadapter = new ExpandIntroduction(getActivity(),
+	// (ArrayList<CommentInObject>) commentGroup, mapCollection, this,
+	// ObjectID);
+	// adapter.close();
+	// exadapter.notifyDataSetChanged();
+	//
+	// exListView.setAdapter(exadapter);
+	//
+	// }
 
 	@Override
 	public void processFinish(String output) {
@@ -489,7 +496,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				if (ringProgressDialog != null)
 					ringProgressDialog.dismiss();
 
-				fillExpandListViewCommnet();
+				// fillExpandListViewCommnet();
 
 			} catch (NumberFormatException e) {
 
@@ -591,7 +598,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					Bitmap b = BitmapFactory.decodeFile(PathImageProfile);
 
 					if (b != null)
-						profileImage.setImageBitmap(Utility.getRoundedCornerBitmap(b, 20));
+						profileImage.setImageBitmap(Utility
+								.getRoundedCornerBitmap(b, 20));
 					else
 						profileImage
 								.setBackgroundResource(R.drawable.no_img_profile);
@@ -641,8 +649,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	}
 
 	private void findView() {
-		exListView = (ExpandableListView) view
-				.findViewById(R.id.ExpandIntroduction);
+		// exListView = (ExpandableListView) view
+		// .findViewById(R.id.ExpandIntroduction);
 
 		headerImage = (ImageView) header
 				.findViewById(R.id.imgvadvertise_Object);
@@ -721,31 +729,32 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		action = (FloatingActionButton) Posts.findViewById(R.id.fab);
 	}
 
-	private void fillExpandListViewCommnet() {
-
-		adapter.open();
-		commentGroup = adapter.getAllCommentInObjectById(ObjectID, 0);
-		mapCollection = new LinkedHashMap<CommentInObject, List<CommentInObject>>();
-
-		List<CommentInObject> reply = null;
-		for (CommentInObject comment : commentGroup) {
-			reply = adapter.getReplyCommentIntroduction(ObjectID,
-					comment.getId());
-			mapCollection.put(comment, reply);
-		}
-
-		adapter.close();
-
-		exadapter = new ExpandIntroduction(getActivity(),
-				(ArrayList<CommentInObject>) commentGroup, mapCollection, this,
-				ObjectID);
-		exListView.addHeaderView(header);
-
-		exListView.setAdapter(exadapter);
-		if (commentClick == true)
-			exListView.setSelectedGroup(mapCollection.size() - 1);
-
-	}
+	// private void fillExpandListViewCommnet() {
+	//
+	// adapter.open();
+	// commentGroup = adapter.getAllCommentInObjectById(ObjectID, 0);
+	// mapCollection = new LinkedHashMap<CommentInObject,
+	// List<CommentInObject>>();
+	//
+	// List<CommentInObject> reply = null;
+	// for (CommentInObject comment : commentGroup) {
+	// reply = adapter.getReplyCommentIntroduction(ObjectID,
+	// comment.getId());
+	// mapCollection.put(comment, reply);
+	// }
+	//
+	// adapter.close();
+	//
+	// exadapter = new ExpandIntroduction(getActivity(),
+	// (ArrayList<CommentInObject>) commentGroup, mapCollection, this,
+	// ObjectID);
+	// exListView.addHeaderView(header);
+	//
+	// exListView.setAdapter(exadapter);
+	// if (commentClick == true)
+	// exListView.setSelectedGroup(mapCollection.size() - 1);
+	//
+	// }
 
 	private void fillListView() {
 		adapter.open();
@@ -893,7 +902,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			headerImage.setBackgroundResource(R.drawable.no_image_header);
 		if (bmpProfile != null) {
 
-			profileImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmpProfile, 20));
+			profileImage.setImageBitmap(Utility.getRoundedCornerBitmap(
+					bmpProfile, 20));
 
 		} else {
 			profileImage.setBackgroundResource(R.drawable.no_img_profile);
@@ -1172,20 +1182,32 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				// Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
 				// Toast.LENGTH_SHORT).show();
 				// else {
-				DialogPostFragment fragment = new DialogPostFragment();
-
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.setCustomAnimations(R.anim.pull_in_left,
-						R.anim.push_out_right);
-				trans.replace(R.id.content_frame, fragment);
-				trans.addToBackStack(null);
-				trans.commit();
-
-				Bundle bundle = new Bundle();
-				bundle.putInt("Id", ObjectID);
-				fragment.setArguments(bundle);
+				// DialogPostFragment fragment = new DialogPostFragment();
+				//
+				// FragmentTransaction trans = getActivity()
+				// .getSupportFragmentManager().beginTransaction();
+				// trans.setCustomAnimations(R.anim.pull_in_left,
+				// R.anim.push_out_right);
+				// trans.replace(R.id.content_frame, fragment);
+				// trans.addToBackStack(null);
+				// trans.commit();
+				//
+				// Bundle bundle = new Bundle();
+				// bundle.putInt("Id", ObjectID);
+				// fragment.setArguments(bundle);
 				// }
+
+				// MyDialog = new DialogpostTitle(getActivity(),
+				// R.layout.dialog_addtitlepost, IntroductionFragment.this);
+				// MyDialog.getWindow().setSoftInputMode(
+				// WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+				FragmentManager fm = getActivity().getSupportFragmentManager();
+				MyDialog = new DialogpostTitleFragment(ObjectID);
+				// MyDialog = new DialogpostTitleFragment();
+				MyDialog.show(fm, "My_Dialog_Dialog");
+
+				// realize.edit().putInt("main_Id", 1).commit();
+
 			}
 		});
 
@@ -1711,43 +1733,44 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		}
 	}
 
-	private void addComment() {
-		ImageView send = ut.ShowFooterAgahi(getActivity(), true, 6);
+	// private void addComment() {
+	// ImageView send = ut.ShowFooterAgahi(getActivity(), false, 6);
 
-		send.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				if ("".equals(ut.inputComment(getActivity()))) {
-					Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
-							.show();
-				} else {
-
-					date = new ServerDate(getActivity());
-					date.delegate = IntroductionFragment.this;
-					date.execute("");
-					LikeOrComment = false;
-
-					ut.ReplyLayout(getActivity(), "", false);
-					commentClick = true;
-
-				}
-			}
-		});
-		ImageView delete = ut.deleteReply(getActivity());
-
-		delete.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				ut.ReplyLayout(getActivity(), "", false);
-
-			}
-		});
-
-	}
+	//
+	// send.setOnClickListener(new OnClickListener() {
+	//
+	// @Override
+	// public void onClick(View arg0) {
+	//
+	// if ("".equals(ut.inputComment(getActivity()))) {
+	// Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
+	// .show();
+	// } else {
+	//
+	// date = new ServerDate(getActivity());
+	// date.delegate = IntroductionFragment.this;
+	// date.execute("");
+	// LikeOrComment = false;
+	//
+	// ut.ReplyLayout(getActivity(), "", false);
+	// commentClick = true;
+	//
+	// }
+	// }
+	// });
+	// ImageView delete = ut.deleteReply(getActivity());
+	//
+	// delete.setOnClickListener(new OnClickListener() {
+	//
+	// @Override
+	// public void onClick(View arg0) {
+	//
+	// ut.ReplyLayout(getActivity(), "", false);
+	//
+	// }
+	// });
+	//
+	// }
 
 	public int groupPosition(int groupPosition) {
 		gp = groupPosition;

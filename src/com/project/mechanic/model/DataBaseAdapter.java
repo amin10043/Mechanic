@@ -118,7 +118,7 @@ public class DataBaseAdapter {
 	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen",
 			"ServerDate", "Submit", "Date", "SeenBefore" };
 
-	private String[] Post = { "ID", "UserId", "Title", "Description", "Seen",
+	private String[] Post = { "ID", "UserId", "Description", "Seen",
 			"ServerDate", "Submit", "Date", "SeenBefore", "Photo" };
 
 	// private String[] Like = { "ID", "UserId", "PaperId" };
@@ -141,7 +141,8 @@ public class DataBaseAdapter {
 			"Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
 			"Submit", "MainObjectId", "IsActive", "UserId", "ObjectId", "Date",
 			"Image1ServerDate", "Image2ServerDate", "Image3ServerDate",
-			"AgencyService", "ImagePath1", "ImagePath2", "ImagePath3" };
+			"AgencyService", "ImagePath1", "ImagePath2", "ImagePath3",
+			"ActiveDate" };
 	private String[] ObjectInCity = { "Id", "ObjectId", "CityId", "Date" };
 	// private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	// private String[] ObjectType = { "ID", "Name" };
@@ -190,7 +191,7 @@ public class DataBaseAdapter {
 	private String[] LikeInCommentObject = { "Id", "CommentId", "UserId",
 			"IsLike", "Date" };
 
-	 private String[] Visit = { "Id" ,"UserId", "ObjectId", "TypeId" };
+	private String[] Visit = { "Id", "UserId", "ObjectId", "TypeId" };
 	private String[] SubAdmin = { "Id", "ObjectId", "UserId", "AdminID", "Date" };
 
 	// private String[] post = { "SeenBefore", "Id", "Desc", "ImagePath",
@@ -615,13 +616,13 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertPosttitletoDb(/* int id, */String Title,
-			String description, int userId, String date, String ImageAdrress) {
+	public void insertPosttitletoDb(/* int id,String Title, */
+	String description, int userId, String date, String ImageAdrress) {
 
 		ContentValues cv = new ContentValues();
 
 		// cv.put("Id", id);
-		cv.put("Title", Title);
+		// cv.put("Title", Title);
 		cv.put("Description", description);
 		cv.put("UserId", userId);
 		cv.put("Date", date);
@@ -747,7 +748,7 @@ public class DataBaseAdapter {
 					cursor.getString(34), cursor.getString(35),
 					cursor.getString(36), cursor.getInt(37),
 					cursor.getString(38), cursor.getString(39),
-					cursor.getString(40));
+					cursor.getString(40), cursor.getString(41));
 
 			result.add(tempObject);
 		}
@@ -1357,7 +1358,8 @@ public class DataBaseAdapter {
 				cursor.getInt(31), cursor.getInt(32), cursor.getString(33),
 				cursor.getString(34), cursor.getString(35),
 				cursor.getString(36), cursor.getInt(37), cursor.getString(38),
-				cursor.getString(39), cursor.getString(40));
+				cursor.getString(39), cursor.getString(40),
+				cursor.getString(41));
 		return tempObject;
 	}
 
@@ -1392,9 +1394,9 @@ public class DataBaseAdapter {
 
 	private Post CursorToPost(Cursor cursor) {
 		Post tempPost = new Post(cursor.getInt(0), cursor.getInt(1),
-				cursor.getString(2), cursor.getString(3), cursor.getInt(4),
-				cursor.getString(5), cursor.getInt(6), cursor.getString(7),
-				cursor.getInt(8), cursor.getString(9));
+				cursor.getString(2), cursor.getInt(3), cursor.getString(4),
+				cursor.getInt(5), cursor.getString(6), cursor.getInt(7),
+				cursor.getString(8));
 		return tempPost;
 	}
 
@@ -2454,7 +2456,7 @@ public class DataBaseAdapter {
 					cursor.getString(34), cursor.getString(35),
 					cursor.getString(36), cursor.getInt(37),
 					cursor.getString(38), cursor.getString(39),
-					cursor.getString(40));
+					cursor.getString(40), cursor.getString(41));
 
 			result.add(tempObject);
 		}
@@ -3328,7 +3330,7 @@ public class DataBaseAdapter {
 					cursor.getString(34), cursor.getString(35),
 					cursor.getString(36), cursor.getInt(37),
 					cursor.getString(38), cursor.getString(39),
-					cursor.getString(40));
+					cursor.getString(40), cursor.getString(41));
 
 			result.add(tempObject);
 		}
@@ -3812,7 +3814,7 @@ public class DataBaseAdapter {
 					cursor.getString(34), cursor.getString(35),
 					cursor.getString(36), cursor.getInt(37),
 					cursor.getString(38), cursor.getString(39),
-					cursor.getString(40));
+					cursor.getString(40), cursor.getString(41));
 
 			result.add(tempObject);
 		}

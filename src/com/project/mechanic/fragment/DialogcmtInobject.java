@@ -105,7 +105,7 @@ public class DialogcmtInobject extends Dialog implements AsyncInterface {
 					objectID, CurrentUser.getId(), serverDate, commentId);
 
 			dbadapter.close();
-			f.updateList();
+			// f.updateList();
 			if (ringProgressDialog != null)
 				ringProgressDialog.dismiss();
 			DialogcmtInobject.this.dismiss();

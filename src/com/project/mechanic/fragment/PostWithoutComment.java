@@ -173,10 +173,10 @@ public class PostWithoutComment extends Fragment implements AsyncInterface {
 			}
 		});
 
-		if (!topics.getTitle().isEmpty()) {
-			titletxt.setText(topics.getTitle());
-			titletxt.setVisibility(View.VISIBLE);
-		}
+		// if (!topics.getTitle().isEmpty()) {
+		// titletxt.setText(topics.getTitle());
+		// titletxt.setVisibility(View.VISIBLE);
+		// }
 		if (!topics.getDescription().isEmpty()) {
 			descriptiontxt.setText(topics.getDescription());
 			descriptiontxt.setVisibility(View.VISIBLE);
@@ -286,8 +286,8 @@ public class PostWithoutComment extends Fragment implements AsyncInterface {
 						android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
 				// String shareBody = x.getDescription();
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-						topics.getTitle());
+				// sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+				// topics.getTitle());
 				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
 						topics.getDescription());
 				startActivity(Intent.createChooser(sharingIntent,
