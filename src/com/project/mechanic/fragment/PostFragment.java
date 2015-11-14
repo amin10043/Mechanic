@@ -175,7 +175,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 		postImage = (ImageView) header.findViewById(R.id.postImage);
 
-		titletxt = (TextView) header.findViewById(R.id.title_topic);
+		// titletxt = (TextView) header.findViewById(R.id.title_topic);
 		descriptiontxt = (TextView) header.findViewById(R.id.description_topic);
 		dateTopic = (TextView) header.findViewById(R.id.date_cc);
 		countComment = (TextView) header
@@ -244,10 +244,10 @@ public class PostFragment extends Fragment implements AsyncInterface,
 		// titletxt.setText(topics.getTitle());
 		// titletxt.setVisibility(View.VISIBLE);
 		// }
-		// if (!topics.getTitle().isEmpty()) {
-		// descriptiontxt.setText(topics.getDescription());
-		// descriptiontxt.setVisibility(View.VISIBLE);
-		// }
+		if (!topics.getDescription().isEmpty()) {
+			descriptiontxt.setText(topics.getDescription());
+			descriptiontxt.setVisibility(View.VISIBLE);
+		}
 		if (!topics.getPhoto().isEmpty()) {
 			File imgFile = new File(topics.getPhoto());
 
