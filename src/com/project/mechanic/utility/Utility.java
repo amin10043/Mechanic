@@ -1277,6 +1277,10 @@ public class Utility implements AsyncInterface {
 
 		ClipboardManager clipMan = (ClipboardManager) context
 				.getSystemService(Context.CLIPBOARD_SERVICE);
+		value = "http://www.google.com\n" + value;
+
+		Toast.makeText(context, value, Toast.LENGTH_SHORT).show();
+
 		ClipData cData = ClipData.newPlainText("text", value);
 		clipMan.setPrimaryClip(cData);
 		Toast.makeText(context, "کپی شد", 0).show();
