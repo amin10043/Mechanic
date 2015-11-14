@@ -2594,7 +2594,7 @@ public class DataBaseAdapter {
 		if (MainObjectId != -1)
 			cv.put("MainObjectId", MainObjectId);
 
-		cv.put("IsActive", 0);
+		cv.put("IsActive", 1);
 		cv.put("rate", 0);
 		cv.put("Seen", 1);
 
@@ -3198,7 +3198,7 @@ public class DataBaseAdapter {
 		if (MainObjectId != -1)
 			cv.put("MainObjectId", MainObjectId);
 
-		cv.put("IsActive", 0);
+		cv.put("IsActive", 1);
 		cv.put("rate", 0);
 		cv.put("Seen", 1);
 
