@@ -17,8 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/no_img_profile" />
+            android:background="@drawable/circle_drawable"
+            android:scaleType="fitXY" />
 
         <RelativeLayout
             android:id="@+id/propertiesObject"
@@ -57,7 +57,7 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_alignParentRight="true"
-                    android:background="@drawable/numberlike" />
+                    android:background="@drawable/numll" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -84,7 +84,7 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_alignParentRight="true"
-                    android:background="@drawable/numberview" />
+                    android:background="@drawable/numvv" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -151,5 +151,12 @@
             android:layout_marginRight="16dp"
             android:visibility="gone" />
     </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/main_icon_reply"
+        android:background="@drawable/lili" />
 
 </RelativeLayout>

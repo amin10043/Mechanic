@@ -4,12 +4,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -23,17 +30,20 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.PersonalData;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
+import com.project.mechanic.fragment.Favorite_Fragment;
 import com.project.mechanic.fragment.FroumFragment;
 import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.fragment.PaperFragment;
@@ -41,7 +51,7 @@ import com.project.mechanic.fragment.ShowAdFragment;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
-public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
+public class TestAdapter extends BaseExpandableListAdapter {
 	Context context;
 	ArrayList<String> parentItems;
 	HashMap<String, List<PersonalData>> listDataChild;
@@ -54,8 +64,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 	boolean isShowSettingBtn;
 	String name;
 
-	public DataPersonalExpandAdapter(Context context,
-			ArrayList<String> parentItems,
+	public TestAdapter(Context context, ArrayList<String> parentItems,
 			HashMap<String, List<PersonalData>> listDataChild,
 			String todayDate, Fragment fr, List<Integer> sizeType,
 			boolean isShowSettingBtn, String name) {
@@ -137,6 +146,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 			paramsfollow.width = (util.getScreenwidth());
 			paramsfollow.height = (util.getScreenwidth() / 4);
+			paramsVisit.setMargins(5, 5, 5, 5);
 			paramsfollow.addRule(RelativeLayout.LEFT_OF, R.id.icon_object);
 
 			paramsVisit.width = (util.getScreenwidth() / 16);
@@ -188,7 +198,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 			lp.width = (util.getScreenwidth() / 4);
 			lp.height = (util.getScreenwidth() / 4);
 			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 0, 0, 0);
+			lp.setMargins(5, 5, 5, 5);
 			profileIco.setLayoutParams(lp);
 
 			final PersonalData pd = (PersonalData) getChild(groupPosition,
@@ -198,7 +208,8 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 			if (ImagePath != null) {
 				Bitmap bitmap = BitmapFactory.decodeFile(ImagePath);
-				profileIco.setImageBitmap(bitmap);
+				
+				profileIco.setImageBitmap(Utility.getclip(bitmap));
 			}
 
 			namePage.setText(pd.getNameObject());
@@ -209,13 +220,23 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 			String commitDate = pd.getDateObject(); // tarikhe ijad safhe
 
 			if (commitDate != null && !"".equals(commitDate)) {
-				
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeInMillis(Long.valueOf(commitDate));
+				calendar.add(Calendar.YEAR, 1);
+
 				final SharedPreferences currentTime = context
 						.getSharedPreferences("time", 0);
 
 				String time = currentTime.getString("time", "-1");
-				baghiMandeh.setText(util.differentTwoDate(commitDate, time)+"");
-				
+
+				Calendar calendarNow = Calendar.getInstance();
+				calendarNow.setTimeInMillis(Long.valueOf(time));
+
+				long start = calendar.getTimeInMillis();
+				long now = calendarNow.getTimeInMillis();
+				long diff = TimeUnit.MILLISECONDS.toDays(Math.abs(start - now));
+
+				baghiMandeh.setText(String.valueOf(diff));
 			} else {
 				baghiMandeh.setText("نا معلوم");
 			}
@@ -802,7 +823,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 		if (convertView == null) {
 			LayoutInflater infalInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(R.layout.row_per_data, null);
+			convertView = infalInflater.inflate(R.layout.row_group_test, null);
 
 		}
 
@@ -812,7 +833,9 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				.findViewById(R.id.row_berand_txt);
 		if (util.getCurrentUser() != null)
 			titleGroup.setText(parentItems.get(groupPosition) + " - " + name);
-
+		titleGroup.setTypeface(util.SetFontCasablanca());
+		final ImageView indicatorImg = (ImageView) convertView
+				.findViewById(R.id.icon_item);
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -823,11 +846,14 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 					if (isExpanded) {
 						mExpandableListView.collapseGroup(groupPosition);
+						indicatorImg.setBackgroundResource(R.drawable.dow);
 						notifyDataSetChanged();
 
-					} else
-						mExpandableListView.expandGroup(groupPosition);
+					} else {
+						indicatorImg.setBackgroundResource(R.drawable.dow_s);
 
+						mExpandableListView.expandGroup(groupPosition);
+					}
 					notifyDataSetChanged();
 				}
 			}
@@ -859,4 +885,5 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 		return true;
 	}
 
+	
 }
