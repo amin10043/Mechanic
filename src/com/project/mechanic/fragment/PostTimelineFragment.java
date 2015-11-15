@@ -40,6 +40,7 @@ public class PostTimelineFragment extends Fragment implements AsyncInterface,
 		View view = inflater.inflate(R.layout.fragment_timelinepost, null);
 		ListTimeLine = (ListView) view.findViewById(R.id.TimeLineList);
 
+		adapter = new DataBaseAdapter(getActivity());
 		utility = new Utility(getActivity());
 		Currentuser = utility.getCurrentUser();
 

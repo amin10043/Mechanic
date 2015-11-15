@@ -1162,6 +1162,14 @@ public class Utility implements AsyncInterface {
 		return typeFace;
 
 	}
+	public Typeface SetFontIranSans() {
+
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
+				"fonts/IranSans.TTF");
+
+		return typeFace;
+
+	}
 
 	public String inputComment(Activity activity) {
 

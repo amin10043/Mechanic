@@ -17,7 +17,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -26,7 +25,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,8 +37,6 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -51,8 +47,6 @@ import android.widget.Toast;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.Action.FloatingActionButton;
-import com.project.mechanic.ListView.PullAndLoadListView;
-import com.project.mechanic.ListView.PullAndLoadListView.OnLoadMoreListener;
 import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Anad;
@@ -74,21 +68,20 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 		GetAsyncInterface, CommInterface {
 
 	DataBaseAdapter dbAdapter;
-	View view;
-	List<Ticket> mylist;
+	View rootView, LoadMoreFooter;
+	List<Ticket> ticketList;
 	List<Anad> anadlist;
 	private DialogAnad dialog;
 	private DialogAnadimg dialog1;
-	int ticketTypeid = 0;
+	int ticketTypeId = 0;
 	private static int RESULT_LOAD_IMAGE = 1;
 	public static String picturePath;
-	int proID = 0;
+	int provinceId = 0;
 	int ticket;
 	private LinearLayout verticalOuterLayout;
 	List<Anad> list;
 	// List<Ticket> subList;
 	List<Ticket> tempList;
-	Anad tempItem;
 	int position;
 	int a;
 	int I;
@@ -104,7 +97,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 	private Timer clickTimer = null;
 	private Timer faceTimer = null;
 	private ImageView clickedButton = null;
-	Users u;
+	Users currentUser;
 	Utility util;
 	// int i = 0, j = 9;
 	final int PIC_CROP = 2;
@@ -119,13 +112,9 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 	SwipeRefreshLayout swipeLayout;
 	Updating updating;
 	Settings setting;
-	View LoadMoreFooter;
 
 	boolean FindPosition;
-	int beforePosition;
-	int code = 100;
-	int icode = 0;
-	int ImageCode;
+	int beforePosition, code = 100, /* icode = 0 ImageCode,*/ counterAnad = 0;
 	UpdatingImage update;
 	Map<String, String> maps;
 
@@ -134,195 +123,59 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 	LinearLayout.LayoutParams layoutParams;
 	ServerDate date;
 
-	String typeItem, time, commiteDate;
+	String typeItem, time;
 	int TicketId;
 	int counterTicketList;
+	FloatingActionButton createItem;
+	Anad anadItem;
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.fragment_anad, null);
 
-		ticketTypeid = Integer.valueOf(getArguments().getString("Id"));
-		final FloatingActionButton createItem = (FloatingActionButton) view
-				.findViewById(R.id.fabAnad);
+		rootView = inflater.inflate(R.layout.fragment_anad, null);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
-		u = util.getCurrentUser();
-
-		final SharedPreferences currentTime = getActivity()
-				.getSharedPreferences("time", 0);
-
-		time = currentTime.getString("time", "-1");
-
-		if (getArguments().getString("ProID") != null) {
-			proID = Integer.valueOf(getArguments().getString("ProID"));
-		}
-
+		currentUser = util.getCurrentUser();
 		layoutParams = new LinearLayout.LayoutParams(util.getScreenwidth() / 3,
 				util.getScreenwidth() / 3);
 
-		dbAdapter.open();
-		if (getActivity() != null) {
-			date = new ServerDate(getActivity());
-			date.delegate = AnadFragment.this;
-			date.execute("");
-		}
-		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
-		anadlist = dbAdapter.getAnadtByTypeIdProId(proID);
-		setting = dbAdapter.getSettings();
+		findView();
 
-		dbAdapter.close();
+		getSettings();
 
-		listviewanad = (ListView) view.findViewById(R.id.listVanad);
+		currentTime();
 
-		createItem.setOnClickListener(new OnClickListener() {
+		getTicketTypeIdAndProvinceId();
 
-			@Override
-			public void onClick(View arg0) {
-				if (u == null) {
-					Toast.makeText(getActivity(), " شما وارد نشده اید.",
-							Toast.LENGTH_LONG).show();
-					return;
-				}
-				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,
-						AnadFragment.this, ticketTypeid, proID);
-				// dialog.setTitle(R.string.txtanad);
-				dialog.getWindow().setSoftInputMode(
-						WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+		// get date from server
+		RunServiceDate();
 
-				dialog.show();
-				imageView = (ImageView) dialog.findViewById(R.id.dialog_img1);
-			}
-		});
+		fillAnadListTicketList();
 
-		String state = Environment.getExternalStorageState();
-		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			mFileTemp = new File(Environment.getExternalStorageDirectory(),
-					TEMP_PHOTO_FILE_NAME);
-		} else {
-			mFileTemp = new File(getActivity().getFilesDir(),
-					TEMP_PHOTO_FILE_NAME);
-		}
+		createTicket();
 
-		ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
-				ValidTicket(mylist), proID, AnadFragment.this, true, time, 1 , ticketTypeid);
-		listviewanad.setAdapter(ListAdapter);
+		createFile();
 
-		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
-				R.layout.load_more_footer, null);
-		listviewanad.addFooterView(LoadMoreFooter);
-		LoadMoreFooter.setVisibility(View.INVISIBLE);
+		swiperLayoutRefresh();
 
-		swipeLayout = (SwipeRefreshLayout) view
-				.findViewById(R.id.swipe_container);
-
-		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
-
-			@Override
-			public void onRefresh() {
-
-				if (getActivity() != null) {
-
-					updating = new Updating(getActivity());
-
-					updating.delegate = AnadFragment.this;
-					String[] params = new String[4];
-					params[0] = "Ticket";
-					params[1] = setting.getServerDate_Start_Ticket() != null ? setting
-							.getServerDate_Start_Ticket() : "";
-					params[2] = setting.getServerDate_End_Ticket() != null ? setting
-							.getServerDate_End_Ticket() : "";
-
-					params[3] = "1";
-					updating.execute(params);
-				}
-			}
-		});
-
-		swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
-				android.R.color.holo_green_light,
-				android.R.color.holo_orange_light,
-				android.R.color.holo_red_light);
-
-		verticalScrollview = (ScrollView) view
-				.findViewById(R.id.vertical_scrollview_id);
-		verticalOuterLayout = (LinearLayout) view
-				.findViewById(R.id.vertical_outer_layout_id);
 		addImagesToView(anadlist);
 
-		if (listviewanad != null) {
+		totalMethodeScroll();
 
-			listviewanad.setOnScrollListener(new OnScrollListener() {
-
-				@Override
-				public void onScrollStateChanged(AbsListView arg0, int arg1) {
-
-					switch (arg1) {
-					case SCROLL_STATE_FLING:
-						createItem.hide(true);
-						break;
-					case SCROLL_STATE_TOUCH_SCROLL:
-						createItem.show(true);
-						break;
-					}
-
-				}
-
-				@Override
-				public void onScroll(AbsListView arg0, int firstVisibleItem,
-						int visibleItemCount, int totalItemCount) {
-
-					int lastInScreen = firstVisibleItem + visibleItemCount;
-
-					if (lastInScreen == totalItemCount) {
-
-						LoadMoreFooter.setVisibility(View.VISIBLE);
-
-						if (getActivity() != null) {
-
-							updating = new Updating(getActivity());
-
-							updating.delegate = AnadFragment.this;
-							String[] params = new String[4];
-							params[0] = "Ticket";
-							params[1] = setting.getServerDate_Start_Ticket() != null ? setting
-									.getServerDate_Start_Paper() : "";
-							params[2] = setting.getServerDate_End_Ticket() != null ? setting
-									.getServerDate_End_Ticket() : "";
-
-							params[3] = "0";
-							updating.execute(params);
-						}
-
-						FindPosition = false;
-					}
-				}
-			});
-		}
-		ViewTreeObserver vto = verticalOuterLayout.getViewTreeObserver();
-		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-			@SuppressWarnings("deprecation")
-			@Override
-			public void onGlobalLayout() {
-				verticalOuterLayout.getViewTreeObserver()
-						.removeGlobalOnLayoutListener(this);
-				getScrollMaxAmount();
-				startAutoScrolling();
-			}
-		});
-		return view;
+		return rootView;
 	}
 
 	public void addImagesToView(final List<Anad> lst) {
 
-		for (I = 0; I < lst.size(); I++) {
-			byte[] tmpImage = lst.get(I).getImage();
-
+		for (int t = 0; t < lst.size(); t++) {
+//			byte[] tmpImage = lst.get(t).getImage();
+			String imagePath = lst.get(t).getImagePath();
+			
 			final ImageView imageButton = new ImageView(getActivity());
-			if (tmpImage == null) {
+			if (imagePath == null) {
 				Drawable image = this.getResources().getDrawable(
 						R.drawable.propagand);
 
@@ -330,8 +183,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 				imageButton.setScaleType(ScaleType.FIT_XY);
 
 			} else {
-				imageButton.setImageBitmap(BitmapFactory.decodeByteArray(
-						tmpImage, 0, tmpImage.length));
+				imageButton.setImageBitmap(BitmapFactory.decodeFile(imagePath));
 
 			}
 			imageButton.setTag(I);
@@ -363,7 +215,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 							}
 						};
 						dbAdapter.open();
-						switch (proID) {
+						switch (provinceId) {
 						case 1:
 							a = position + 1;
 							break;
@@ -466,7 +318,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 						Anad t = dbAdapter.getAnadByid(a);
 						int objectId = t.getObjectId();
 						clickTimer.schedule(clickSchedule, 1500);
-						if (u == null) {
+						if (currentUser == null) {
 							Toast.makeText(getActivity(),
 									" شما وارد نشده اید.", Toast.LENGTH_LONG)
 									.show();
@@ -475,8 +327,8 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 							if (objectId == 0) {
 								dialog1 = new DialogAnadimg(getActivity(),
 										R.layout.dialog_imganad,
-										AnadFragment.this, ticketTypeid, proID,
-										a);
+										AnadFragment.this, ticketTypeId,
+										provinceId, a);
 								dialog1.show();
 								a = 0;
 							} else {
@@ -488,9 +340,10 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 										.beginTransaction();
 								IntroductionFragment fragment = new IntroductionFragment();
 								Bundle bundle = new Bundle();
-								 bundle.putString("Id", String.valueOf(t.getObjectId()));
-//								bundlei.putString("I",
-//										String.valueOf(t.getObjectId()));
+								bundle.putString("Id",
+										String.valueOf(t.getObjectId()));
+								// bundlei.putString("I",
+								// String.valueOf(t.getObjectId()));
 								fragment.setArguments(bundle);
 								trans.replace(R.id.content_frame, fragment);
 								trans.addToBackStack(null);
@@ -514,12 +367,12 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 	public void updateView() {
 		dbAdapter.open();
-		mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
+		ticketList = dbAdapter.getTicketByTypeIdProId(ticketTypeId, provinceId);
 
 		// ListView lstAnad = (ListView) view.findViewById(R.id.listVanad);
 		AnadListAdapter ListAdapter = new AnadListAdapter(getActivity(),
-				R.layout.row_anad, ValidTicket(mylist), proID,
-				AnadFragment.this, false, time, 1  , ticketTypeid);
+				R.layout.row_anad, ValidTicket(ticketList), provinceId,
+				AnadFragment.this, false, time, 1, ticketTypeId);
 		ListAdapter.notifyDataSetChanged();
 		listviewanad.setAdapter(ListAdapter);
 
@@ -551,143 +404,357 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 				} else {
 
 					counterTicketList++;
-					getTicketImageFromServer(ValidTicket(mylist),
+					getTicketImageFromServer(ValidTicket(ticketList),
 							counterTicketList);
 				}
 			}
 		} else {
-			mylist.clear();
+			ticketList.clear();
 			dbAdapter.open();
-			mylist = dbAdapter.getTicketByTypeIdProId(ticketTypeid, proID);
+			ticketList = dbAdapter.getTicketByTypeIdProId(ticketTypeId,
+					provinceId);
 			dbAdapter.close();
 			ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
-					ValidTicket(mylist), proID, AnadFragment.this, false, time,
-					1, ticketTypeid);
+					ValidTicket(ticketList), provinceId, AnadFragment.this,
+					false, time, 1, ticketTypeId);
 			// if (mylist != null && !mylist.isEmpty())
 			listviewanad.setAdapter(ListAdapter);
-			getAnadImageFromServer(anadlist, true);
+			getAnadImageFromServer(anadlist, counterAnad);
 			LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 		}
 	}
 
-	private void getAnadImageFromServer(List<Anad> anadlist, boolean IsFirst) {
-		if (IsFirst == true) {
-
-			switch (proID) {
-
-			case 1:
-				ImageCode = 1;
-				break;
-			case 3:
-				ImageCode = 51;
-				break;
-			case 4:
-				ImageCode = 81;
-				break;
-			case 5:
-				ImageCode = 151;
-				break;
-			case 6:
-				ImageCode = 201;
-				break;
-			case 7:
-				ImageCode = 231;
-				break;
-			case 8:
-				ImageCode = 261;
-				break;
-			case 9:
-				ImageCode = 361;
-				break;
-			case 10:
-				ImageCode = 391;
-				break;
-			case 11:
-				ImageCode = 421;
-				break;
-			case 12:
-				ImageCode = 471;
-				break;
-			case 13:
-				ImageCode = 501;
-				break;
-			case 14:
-				ImageCode = 531;
-				break;
-			case 15:
-				ImageCode = 561;
-				break;
-			case 16:
-				ImageCode = 591;
-				break;
-			case 17:
-				ImageCode = 621;
-				break;
-			case 18:
-				ImageCode = 671;
-				break;
-			case 19:
-				ImageCode = 701;
-				break;
-			case 20:
-				ImageCode = 751;
-				break;
-			case 21:
-				ImageCode = 781;
-				break;
-			case 22:
-				ImageCode = 831;
-				break;
-			case 23:
-				ImageCode = 861;
-				break;
-			case 24:
-				ImageCode = 891;
-				break;
-			case 25:
-				ImageCode = 921;
-				break;
-			case 26:
-				ImageCode = 971;
-				break;
-			case 27:
-				ImageCode = 1021;
-				break;
-			case 28:
-				ImageCode = 1071;
-				break;
-			case 29:
-				ImageCode = 1121;
-				break;
-			case 30:
-				ImageCode = 1171;
-				break;
-			case 31:
-				ImageCode = 1201;
-				break;
-			case 0:
-				ImageCode = 1251;
-				break;
-			case 2:
-				ImageCode = 1351;
-				break;
-			default:
-			}
-
-		}
+	private void getAnadImageFromServer(List<Anad> anadlist, int counter) {
+		
+		if (counter < anadlist.size()){		
+			
+			anadItem = anadlist.get(counter);
+		
 		if (getActivity() != null) {
 
 			update = new UpdatingImage(getActivity());
 			update.delegate = AnadFragment.this;
 			maps = new LinkedHashMap<String, String>();
 			maps.put("tableName", "Anad");
-			maps.put("Id", String.valueOf(ImageCode));
-			maps.put("fromDate", commiteDate);
+			maps.put("Id", String.valueOf(anadItem.getId()));
+			maps.put("fromDate", anadItem.getImageServerDate());
 			update.execute(maps);
 			typeItem = "Anad";
 			LoadMoreFooter.setVisibility(View.INVISIBLE);
 		}
+		
+		}
+//	
+//		
+//		
+//		
+//		if (IsFirst == true) {
+//
+//			switch (provinceId) {
+//
+//			case 1:
+//				ImageCode = 1;
+//				break;
+//			case 3:
+//				ImageCode = 51;
+//				break;
+//			case 4:
+//				ImageCode = 81;
+//				break;
+//			case 5:
+//				ImageCode = 151;
+//				break;
+//			case 6:
+//				ImageCode = 201;
+//				break;
+//			case 7:
+//				ImageCode = 231;
+//				break;
+//			case 8:
+//				ImageCode = 261;
+//				break;
+//			case 9:
+//				ImageCode = 361;
+//				break;
+//			case 10:
+//				ImageCode = 391;
+//				break;
+//			case 11:
+//				ImageCode = 421;
+//				break;
+//			case 12:
+//				ImageCode = 471;
+//				break;
+//			case 13:
+//				ImageCode = 501;
+//				break;
+//			case 14:
+//				ImageCode = 531;
+//				break;
+//			case 15:
+//				ImageCode = 561;
+//				break;
+//			case 16:
+//				ImageCode = 591;
+//				break;
+//			case 17:
+//				ImageCode = 621;
+//				break;
+//			case 18:
+//				ImageCode = 671;
+//				break;
+//			case 19:
+//				ImageCode = 701;
+//				break;
+//			case 20:
+//				ImageCode = 751;
+//				break;
+//			case 21:
+//				ImageCode = 781;
+//				break;
+//			case 22:
+//				ImageCode = 831;
+//				break;
+//			case 23:
+//				ImageCode = 861;
+//				break;
+//			case 24:
+//				ImageCode = 891;
+//				break;
+//			case 25:
+//				ImageCode = 921;
+//				break;
+//			case 26:
+//				ImageCode = 971;
+//				break;
+//			case 27:
+//				ImageCode = 1021;
+//				break;
+//			case 28:
+//				ImageCode = 1071;
+//				break;
+//			case 29:
+//				ImageCode = 1121;
+//				break;
+//			case 30:
+//				ImageCode = 1171;
+//				break;
+//			case 31:
+//				ImageCode = 1201;
+//				break;
+//			case 0:
+//				ImageCode = 1251;
+//				break;
+//			case 2:
+//				ImageCode = 1351;
+//				break;
+//			default:
+//			}
+//
+//		}
+		
+	}
+
+	private void findView() {
+
+		// find view by Id
+		createItem = (FloatingActionButton) rootView.findViewById(R.id.fabAnad);
+
+		listviewanad = (ListView) rootView.findViewById(R.id.listVanad);
+
+		swipeLayout = (SwipeRefreshLayout) rootView
+				.findViewById(R.id.swipe_container);
+
+		verticalScrollview = (ScrollView) rootView
+				.findViewById(R.id.vertical_scrollview_id);
+
+		verticalOuterLayout = (LinearLayout) rootView
+				.findViewById(R.id.vertical_outer_layout_id);
+	}
+
+	private void currentTime() {
+
+		final SharedPreferences currentTime = getActivity()
+				.getSharedPreferences("time", 0);
+
+		time = currentTime.getString("time", "-1");
+	}
+
+	private void getTicketTypeIdAndProvinceId() {
+
+		ticketTypeId = Integer.valueOf(getArguments().getString("Id"));
+		if (getArguments().getString("ProID") != null) {
+			provinceId = Integer.valueOf(getArguments().getString("ProID"));
+		}
+
+	}
+
+	private void RunServiceDate() {
+
+		if (getActivity() != null) {
+			date = new ServerDate(getActivity());
+			date.delegate = AnadFragment.this;
+			date.execute("");
+		}
+	}
+
+	private void fillAnadListTicketList() {
+
+		dbAdapter.open();
+
+		ticketList = dbAdapter.getTicketByTypeIdProId(ticketTypeId, provinceId);
+		anadlist = dbAdapter.getAnadtByTypeIdProId(provinceId);
+
+		dbAdapter.close();
+
+		ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
+				ValidTicket(ticketList), provinceId, AnadFragment.this, true,
+				time, 1, ticketTypeId);
+		listviewanad.setAdapter(ListAdapter);
+
+		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
+				R.layout.load_more_footer, null);
+		listviewanad.addFooterView(LoadMoreFooter);
+		LoadMoreFooter.setVisibility(View.INVISIBLE);
+	}
+
+	private void createTicket() {
+
+		createItem.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				if (currentUser == null) {
+					Toast.makeText(getActivity(), " شما وارد نشده اید.",
+							Toast.LENGTH_LONG).show();
+					return;
+				}
+				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad,
+						AnadFragment.this, ticketTypeId, provinceId);
+				// dialog.setTitle(R.string.txtanad);
+				dialog.getWindow().setSoftInputMode(
+						WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+				dialog.show();
+				imageView = (ImageView) dialog.findViewById(R.id.dialog_img1);
+			}
+		});
+
+	}
+
+	private void createFile() {
+
+		String state = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			mFileTemp = new File(Environment.getExternalStorageDirectory(),
+					TEMP_PHOTO_FILE_NAME);
+		} else {
+			mFileTemp = new File(getActivity().getFilesDir(),
+					TEMP_PHOTO_FILE_NAME);
+		}
+	}
+
+	private void swiperLayoutRefresh() {
+
+		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
+
+			@Override
+			public void onRefresh() {
+
+				if (getActivity() != null) {
+
+					updating = new Updating(getActivity());
+
+					updating.delegate = AnadFragment.this;
+					String[] params = new String[4];
+					params[0] = "Ticket";
+					params[1] = setting.getServerDate_Start_Ticket() != null ? setting
+							.getServerDate_Start_Ticket() : "";
+					params[2] = setting.getServerDate_End_Ticket() != null ? setting
+							.getServerDate_End_Ticket() : "";
+
+					params[3] = "1";
+					updating.execute(params);
+				}
+			}
+		});
+
+		swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+				android.R.color.holo_green_light,
+				android.R.color.holo_orange_light,
+				android.R.color.holo_red_light);
+
+	}
+
+	private void totalMethodeScroll() {
+
+		if (listviewanad != null) {
+
+			listviewanad.setOnScrollListener(new OnScrollListener() {
+
+				@Override
+				public void onScrollStateChanged(AbsListView arg0, int arg1) {
+
+					switch (arg1) {
+					case SCROLL_STATE_FLING:
+						createItem.hide(true);
+						break;
+					case SCROLL_STATE_TOUCH_SCROLL:
+						createItem.show(true);
+						break;
+					}
+
+				}
+
+				@Override
+				public void onScroll(AbsListView arg0, int firstVisibleItem,
+						int visibleItemCount, int totalItemCount) {
+
+					int lastInScreen = firstVisibleItem + visibleItemCount;
+
+					if (lastInScreen == totalItemCount) {
+
+						LoadMoreFooter.setVisibility(View.VISIBLE);
+
+						if (getActivity() != null) {
+
+							updating = new Updating(getActivity());
+
+							updating.delegate = AnadFragment.this;
+							String[] params = new String[4];
+							params[0] = "Ticket";
+							params[1] = setting.getServerDate_Start_Ticket() != null ? setting
+									.getServerDate_Start_Paper() : "";
+							params[2] = setting.getServerDate_End_Ticket() != null ? setting
+									.getServerDate_End_Ticket() : "";
+
+							params[3] = "0";
+							updating.execute(params);
+						}
+
+						FindPosition = false;
+					}
+				}
+			});
+		}
+		ViewTreeObserver vto = verticalOuterLayout.getViewTreeObserver();
+		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onGlobalLayout() {
+				verticalOuterLayout.getViewTreeObserver()
+						.removeGlobalOnLayoutListener(this);
+				getScrollMaxAmount();
+				startAutoScrolling();
+			}
+		});
+	}
+
+	private void getSettings() {
+		dbAdapter.open();
+		setting = dbAdapter.getSettings();
+		dbAdapter.close();
 	}
 
 	@Override
@@ -919,7 +986,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 			serverDate = output;
 			LoadMoreFooter.setVisibility(View.INVISIBLE);
 
-			getTicketImageFromServer(mylist, 0);
+			getTicketImageFromServer(ticketList, 0);
 		}
 
 		if (output != null
@@ -929,14 +996,15 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 			LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 			util.parseQuery(output);
-			mylist.clear();
+			ticketList.clear();
 
 			dbAdapter.open();
-			mylist.addAll(dbAdapter.getAllTicket());
+			ticketList.addAll(dbAdapter.getAllTicket());
 			dbAdapter.close();
 
 			ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad,
-					mylist, proID, AnadFragment.this, false, time, 1, ticketTypeid);
+					ticketList, provinceId, AnadFragment.this, false, time, 1,
+					ticketTypeId);
 
 			listviewanad.setAdapter(ListAdapter);
 			LoadMoreFooter.setVisibility(View.INVISIBLE);
@@ -964,19 +1032,24 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 				boolean IsEmptyByte = util.IsEmptyByteArrayImage(output);
 				if (IsEmptyByte == false) {
-					dbAdapter.updateImageAnad(ImageCode, output);
+					
+					util.CreateFile(output, anadItem.getId(), "Mechanical", "Anad", "anad", "Anad");
+//					dbAdapter.updateImageAnad(anad, output);
 
 					ServiceComm serv = new ServiceComm(getActivity());
 
 					serv.delegate = AnadFragment.this;
 					Map<String, String> items = new LinkedHashMap<String, String>();
 					items.put("tableName", "getAnadImageDate");
-					items.put("Id", String.valueOf(ImageCode));
+					items.put("Id", String.valueOf(anadItem.getId()));
 					serv.execute(items);
 
 					typeItem = "Anad";
 
 				}
+			}else
+			{
+				
 			}
 
 		}
@@ -1000,7 +1073,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 				}
 			}
 			counterTicketList++;
-			getTicketImageFromServer(ValidTicket(mylist), counterTicketList);
+			getTicketImageFromServer(ValidTicket(ticketList), counterTicketList);
 			dbAdapter.close();
 		}
 
@@ -1008,10 +1081,10 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 	@Override
 	public void CommProcessFinish(String output) {
-		
+
 		if (output.equals("anyType{}"))
 			output = "";
-		
+
 		if (typeItem.equals("Ticket")) {
 
 			dbAdapter.open();
@@ -1019,32 +1092,26 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 			dbAdapter.close();
 
 			counterTicketList++;
-			getTicketImageFromServer(ValidTicket(mylist), counterTicketList);
+			getTicketImageFromServer(ValidTicket(ticketList), counterTicketList);
 		}
 
 		if (typeItem.equals("Anad")) {
 
 			dbAdapter.open();
-			dbAdapter.UpdateImageServerDate(ImageCode, "Anad", output);
+			dbAdapter.UpdateImageServerDate(anadItem.getId(), "Anad", output);
 
+			//anadlist = dbAdapter.getAnadtByTypeIdProId(provinceId);
 
-			anadlist = dbAdapter.getAnadtByTypeIdProId(proID);
-
-			Anad anadItem;
-			byte[] imageAnad;
+//			Anad anadItem;
+//			byte[] imageAnad;
 			boolean allowShow = true;
-			int objId;
+//			int objId;
 
-			if (icode < anadlist.size()) {
-				anadItem = anadlist.get(icode);
 
-				commiteDate = anadItem.getDate();
-				imageAnad = anadItem.getImage();
-				objId = anadItem.getObjectId();
-				if (commiteDate == null)
-					commiteDate = "20150000000000";
+				if (anadItem.getDate() == null)
+					anadItem.setDate("20150000000000")  ;
 
-				int AnadYear = Integer.valueOf(commiteDate.substring(0, 4));
+				int AnadYear = Integer.valueOf(anadItem.getDate().substring(0, 4));
 				int thisYear = Integer.valueOf(serverDate.substring(0, 4));
 
 				if (thisYear < AnadYear + 1)
@@ -1054,21 +1121,19 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 				if (allowShow == false) {
 					Toast.makeText(getActivity(),
-							" آگهی شماره " + ImageCode + "منقضی شده است", 0)
+							" آگهی شماره " + anadItem.getDate() + "منقضی شده است", 0)
 							.show();
 					dbAdapter.open();
-					dbAdapter.UpdateAnadToDb(ImageCode, -1, "", -1, proID);
+					dbAdapter.UpdateAnadToDb(anadItem.getId(), -1, "", -1, provinceId);
 					dbAdapter.close();
 
 				} else {
-					if (imageAnad != null) {
+					if (anadItem.getImagePath() != null) {
 						if (getActivity() != null) {
 							imageButton = new ImageView(getActivity());
 
 							imageButton.setImageBitmap(BitmapFactory
-									.decodeByteArray(imageAnad, 0,
-											imageAnad.length));
-
+									.decodeFile(anadItem.getImagePath()));
 						}
 					} else {
 						if (getActivity() != null) {
@@ -1085,13 +1150,14 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 					imageButton.setScaleType(ScaleType.FIT_XY);
 					verticalOuterLayout.addView(imageButton);
 
-					ImageCode++;
-					icode++;
-					getAnadImageFromServer(anadlist, false);
+//					ImageCode++;
+//					icode++;
+					counterAnad++;
+					getAnadImageFromServer(anadlist, counterAnad);
 
 				}
 
-			}
+			
 
 			dbAdapter.close();
 

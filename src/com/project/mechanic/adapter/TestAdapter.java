@@ -208,7 +208,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 
 			if (ImagePath != null) {
 				Bitmap bitmap = BitmapFactory.decodeFile(ImagePath);
-				
+
 				profileIco.setImageBitmap(Utility.getclip(bitmap));
 			}
 
@@ -289,7 +289,14 @@ public class TestAdapter extends BaseExpandableListAdapter {
 				txtdate.setTextColor(Color.GRAY);
 
 			}
+			if ("".equals(pd.getNameTicket()) || pd.getNameTicket() == null) {
+				txtName.setVisibility(View.GONE);
 
+			}
+			if ("".equals(pd.getDescriptonTicket())
+					|| pd.getDescriptonTicket() == null) {
+				txtDesc.setVisibility(View.GONE);
+			}
 			RelativeLayout llkj = (RelativeLayout) convertView
 					.findViewById(R.id.layoutmnb);
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
@@ -298,18 +305,18 @@ public class TestAdapter extends BaseExpandableListAdapter {
 			params.height = util.getScreenwidth() / 5;
 			params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 			params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-			params.setMargins(1, 1, 1, 1);
+			params.setMargins(5, 5, 5, 5);
 
 			String pathProfile = pd.getImagePathTicket();
 			Bitmap profileImage = BitmapFactory.decodeFile(pathProfile);
 
 			if (profileImage != null) {
 
-				img2.setImageBitmap(profileImage);
+				img2.setImageBitmap(Utility.getclip(profileImage));
 				img2.setLayoutParams(params);
 
 			} else {
-				img2.setImageResource(R.drawable.no_img_profile);
+				// img2.setImageResource(R.drawable.no_img_profile);
 				img2.setLayoutParams(params);
 			}
 			String commitDate = pd.getDateTicket();
@@ -317,7 +324,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 			int TicketDay = Integer.valueOf(commitDate.substring(0, 8));
 			if (todayDate != null && !todayDate.equals(""))
 				thisDay = Integer.valueOf(todayDate.substring(0, 8));
-			LinearLayout TicketBackground = (LinearLayout) convertView
+			RelativeLayout TicketBackground = (RelativeLayout) convertView
 					.findViewById(R.id.backgroundTicket);
 
 			if (thisDay <= TicketDay + pd.getDayTicket()) {
@@ -470,8 +477,8 @@ public class TestAdapter extends BaseExpandableListAdapter {
 			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
+			lp.width = util.getScreenwidth() / 4;
+			lp.height = util.getScreenwidth() / 4;
 			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			lp.setMargins(5, 5, 5, 5);
 			iconProile.setLayoutParams(lp);
@@ -493,8 +500,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 			}
 			if (ImagePath != null) {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
+				iconProile.setImageBitmap(Utility.getclip(bmp));
 
 				iconProile.setLayoutParams(lp);
 			} else {
@@ -509,7 +515,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 			txt2.setText(pd.getDescriptonPaper());
 
 			txt1.setTypeface(util.SetFontCasablanca());
-			txt2.setTypeface(util.SetFontCasablanca());
+			txt2.setTypeface(util.SetFontIranSans());
 
 			convertView.setOnClickListener(new OnClickListener() {
 
@@ -587,8 +593,8 @@ public class TestAdapter extends BaseExpandableListAdapter {
 			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
+			lp.width = util.getScreenwidth() / 4;
+			lp.height = util.getScreenwidth() / 4;
 			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			lp.setMargins(5, 5, 5, 5);
 			iconProile.setLayoutParams(lp);
@@ -610,8 +616,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 
 			if (ImagePath != null) {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
+				iconProile.setImageBitmap(Utility.getclip(bmp));
 
 				iconProile.setLayoutParams(lp);
 			} else {
@@ -625,7 +630,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 			txt2.setText(pd.getDescriptionFroum());
 
 			txt1.setTypeface(util.SetFontCasablanca());
-			txt2.setTypeface(util.SetFontCasablanca());
+			txt2.setTypeface(util.SetFontIranSans());
 
 			convertView.setOnClickListener(new OnClickListener() {
 
@@ -832,7 +837,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 		TextView titleGroup = (TextView) convertView
 				.findViewById(R.id.row_berand_txt);
 		if (util.getCurrentUser() != null)
-			titleGroup.setText(parentItems.get(groupPosition) + " - " + name);
+			titleGroup.setText(parentItems.get(groupPosition));
 		titleGroup.setTypeface(util.SetFontCasablanca());
 		final ImageView indicatorImg = (ImageView) convertView
 				.findViewById(R.id.icon_item);
@@ -885,5 +890,4 @@ public class TestAdapter extends BaseExpandableListAdapter {
 		return true;
 	}
 
-	
 }

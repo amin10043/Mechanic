@@ -15,12 +15,12 @@
         android:layout_height="wrap_content"
         android:layout_weight="5" >
 
-        <ExpandableListView
+        <ListView
             android:id="@+id/TimeLineList"
             style="@style/second_item_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-        </ExpandableListView>
+        </ListView>
     </RelativeLayout>
 
 </LinearLayout>
