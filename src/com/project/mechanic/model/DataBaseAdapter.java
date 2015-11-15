@@ -96,7 +96,7 @@ public class DataBaseAdapter {
 	// private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] Anad = { "Id", "Image", "ObjectId", "Date", "TypeId",
-			"ProvinceId", "Seen", "Submit", "ImageServerDate" };
+			"ProvinceId", "Seen", "Submit", "ImageServerDate" , "ImagePath" };
 	private String[] CityColumn = { "ID", "Name", "ProvinceId", "Count" };
 
 	// private String[] Comment = { "ID", "UserId", "paperId", "Description" };
@@ -1336,7 +1336,7 @@ public class DataBaseAdapter {
 		Anad tempAnad = new Anad(cursor.getInt(0), cursor.getInt(2),
 				cursor.getBlob(1), cursor.getString(3), cursor.getInt(4),
 				cursor.getInt(5), cursor.getInt(6), cursor.getInt(7),
-				cursor.getString(8));
+				cursor.getString(8),cursor.getString(9));
 
 		return tempAnad;
 	}
