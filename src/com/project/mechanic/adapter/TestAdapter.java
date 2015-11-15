@@ -289,11 +289,12 @@ public class TestAdapter extends BaseExpandableListAdapter {
 				txtdate.setTextColor(Color.GRAY);
 
 			}
-			if( "".equals(pd.getNameTicket()) || pd.getNameTicket() == null) {
+			if ("".equals(pd.getNameTicket()) || pd.getNameTicket() == null) {
 				txtName.setVisibility(View.GONE);
 
 			}
-			if ("".equals(pd.getDescriptonTicket()) || pd.getDescriptonTicket() == null) {
+			if ("".equals(pd.getDescriptonTicket())
+					|| pd.getDescriptonTicket() == null) {
 				txtDesc.setVisibility(View.GONE);
 			}
 			RelativeLayout llkj = (RelativeLayout) convertView
@@ -315,7 +316,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 				img2.setLayoutParams(params);
 
 			} else {
-//				img2.setImageResource(R.drawable.no_img_profile);
+				// img2.setImageResource(R.drawable.no_img_profile);
 				img2.setLayoutParams(params);
 			}
 			String commitDate = pd.getDateTicket();
@@ -476,8 +477,8 @@ public class TestAdapter extends BaseExpandableListAdapter {
 			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
+			lp.width = util.getScreenwidth() / 4;
+			lp.height = util.getScreenwidth() / 4;
 			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			lp.setMargins(5, 5, 5, 5);
 			iconProile.setLayoutParams(lp);
@@ -499,8 +500,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 			}
 			if (ImagePath != null) {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
+				iconProile.setImageBitmap(Utility.getclip(bmp));
 
 				iconProile.setLayoutParams(lp);
 			} else {
@@ -515,7 +515,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 			txt2.setText(pd.getDescriptonPaper());
 
 			txt1.setTypeface(util.SetFontCasablanca());
-			txt2.setTypeface(util.SetFontCasablanca());
+			txt2.setTypeface(util.SetFontIranSans());
 
 			convertView.setOnClickListener(new OnClickListener() {
 
@@ -593,8 +593,8 @@ public class TestAdapter extends BaseExpandableListAdapter {
 			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
+			lp.width = util.getScreenwidth() / 4;
+			lp.height = util.getScreenwidth() / 4;
 			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			lp.setMargins(5, 5, 5, 5);
 			iconProile.setLayoutParams(lp);
@@ -616,8 +616,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 
 			if (ImagePath != null) {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
+				iconProile.setImageBitmap(Utility.getclip(bmp));
 
 				iconProile.setLayoutParams(lp);
 			} else {
@@ -631,7 +630,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 			txt2.setText(pd.getDescriptionFroum());
 
 			txt1.setTypeface(util.SetFontCasablanca());
-			txt2.setTypeface(util.SetFontCasablanca());
+			txt2.setTypeface(util.SetFontIranSans());
 
 			convertView.setOnClickListener(new OnClickListener() {
 

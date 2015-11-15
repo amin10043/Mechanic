@@ -17,6 +17,9 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -31,7 +34,6 @@ import com.project.mechanic.entity.ListItem;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.AdvisorTypeFragment;
 import com.project.mechanic.fragment.BerandFragment;
-import com.project.mechanic.fragment.TypeBestItemsFragment;
 import com.project.mechanic.fragment.City2Fragment;
 import com.project.mechanic.fragment.City3Fragment;
 import com.project.mechanic.fragment.CityFragment;
@@ -57,6 +59,7 @@ import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.fragment.ObjectFragment;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.PaperWithoutComment;
+import com.project.mechanic.fragment.PostTimelineFragment;
 import com.project.mechanic.fragment.Province2Fragment;
 import com.project.mechanic.fragment.Province3Fragment;
 import com.project.mechanic.fragment.ProvinceFragment;
@@ -110,6 +113,7 @@ public class MainActivity extends FragmentActivity {
 			EnterDialog dialogEnter = new EnterDialog(MainActivity.this);
 			dialogEnter.show();
 		}
+
 		Settings = (ImageView) findViewById(R.id.settings_icon);
 		Settings.setOnClickListener(new OnClickListener() {
 
@@ -137,6 +141,24 @@ public class MainActivity extends FragmentActivity {
 				trans.commit();
 			}
 		});
+		ImageView timeLine = (ImageView) findViewById(R.id.timeline_btn);
+		
+		timeLine.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				
+				FragmentTransaction trans = getSupportFragmentManager()
+						.beginTransaction();
+				trans.replace(R.id.content_frame, new PostTimelineFragment());
+
+				trans.addToBackStack(null);
+				trans.commit();
+				
+			}
+		});
+
+		
 
 		iBtnmessage.setOnClickListener(new OnClickListener() {
 
@@ -166,6 +188,19 @@ public class MainActivity extends FragmentActivity {
 
 			}
 		});
+
+		final ImageButton iBtnMenu = (ImageButton) findViewById(R.id.iBtnMenu);
+		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
+
+		final Animation animation1 = AnimationUtils.loadAnimation(
+				getApplicationContext(), R.anim.rotate_animation);
+		final Animation animation2 = AnimationUtils.loadAnimation(
+				getApplicationContext(), R.anim.rotate_animation_back);
+
+//		final RotateAnimation animation1 = new RotateAnimation(0.0f, -90.0f,
+//				Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT,
+//				0.5f);
+//		animation1.setDuration(500);
 
 		final ImageButton iBtnNotification = (ImageButton) findViewById(R.id.iBtnNotification);
 		iBtnNotification.setOnClickListener(new OnClickListener() {
@@ -214,9 +249,12 @@ public class MainActivity extends FragmentActivity {
 		R.string.app_name /* "close drawer" description */) {
 
 			public void onDrawerClosed(View view) {
+				iBtnMenu.startAnimation(animation2);
+
 			}
 
 			public void onDrawerOpened(View drawerView) {
+				iBtnMenu.startAnimation(animation1);
 
 			}
 
@@ -227,7 +265,9 @@ public class MainActivity extends FragmentActivity {
 					if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
 						mDrawerLayout.closeDrawer(Gravity.RIGHT);
 					} else {
-						mDrawerLayout.openDrawer(Gravity.RIGHT);
+						// mDrawerLayout.openDrawer(Gravity.RIGHT);
+						// animation1.start();
+
 					}
 				}
 				return false;
@@ -236,8 +276,6 @@ public class MainActivity extends FragmentActivity {
 
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		ImageButton iBtnMenu = (ImageButton) findViewById(R.id.iBtnMenu);
-		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
 		// ImageView search = (ImageView) findViewById(R.id.sedarch_v);
 
 		// search.setOnClickListener(new OnClickListener() {
@@ -270,9 +308,12 @@ public class MainActivity extends FragmentActivity {
 		iBtnMenu.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 				if (!mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
 					mDrawerLayout.openDrawer(Gravity.RIGHT);
+					// v.startAnimation(animation1);
+					// animation1.start();
+
 				}
 			}
 		});
@@ -361,12 +402,12 @@ public class MainActivity extends FragmentActivity {
 
 			// personal page 1
 			if (util.getCurrentUser() != null) {
-				
+
 				fragment = new DisplayPersonalInformationFragment();
 				fragmentManager = getSupportFragmentManager();
-//				Bundle bundle = new Bundle();
-//				bundle.putInt("0", 0);
-//				fragment.setArguments(bundle);
+				// Bundle bundle = new Bundle();
+				// bundle.putInt("0", 0);
+				// fragment.setArguments(bundle);
 				fragmentManager.beginTransaction()
 						.replace(R.id.content_frame, fragment).commit();
 
