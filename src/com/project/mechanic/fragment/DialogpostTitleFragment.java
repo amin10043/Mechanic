@@ -15,7 +15,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -172,6 +171,7 @@ public class DialogpostTitleFragment extends DialogFragment {
 	// DialogpostTitleFragment f = new DialogpostTitleFragment();
 	// return f;
 	// }
+	private Uri imageToUploadUri;
 
 	private void selectImageOption() {
 		final CharSequence[] items = { "از دوربین", "از گالری تصاویر", "انصراف" };
@@ -184,12 +184,42 @@ public class DialogpostTitleFragment extends DialogFragment {
 			public void onClick(DialogInterface dialog, int item) {
 
 				if (items[item].equals("از دوربین")) {
-					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-					File f = new File(android.os.Environment
-							.getExternalStorageDirectory(), "temp1.jpg");
-					mImageCaptureUri = Uri.fromFile(f);
-					intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
-					getActivity().startActivityForResult(intent, CAMERA_CODE);
+					// Intent intent = new
+					// Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					// File f = new File(android.os.Environment
+					// .getExternalStorageDirectory(), "temp1.jpg");
+					// mImageCaptureUri = Uri.fromFile(f);
+					// intent.putExtra(MediaStore.EXTRA_OUTPUT,
+					// mImageCaptureUri);
+					// getActivity().startActivityForResult(intent,
+					// CAMERA_CODE);
+					// Intent cameraIntent = new Intent(
+					// android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+					// startActivityForResult(cameraIntent, CAMERA_CODE);
+					// getActivity().startActivityFromFragment(
+					// DialogpostTitleFragment.this, cameraIntent,
+					// CAMERA_CODE);
+					// Intent intent = new
+					// Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					// File f = new File(android.os.Environment
+					// .getExternalStorageDirectory(), "temp.jpg");
+					// intent.putExtra(MediaStore.EXTRA_OUTPUT,
+					// Uri.fromFile(f));
+					// // pic = f;
+					//
+					// startActivityForResult(intent, CAMERA_CODE);
+					// Intent chooserIntent = new Intent(
+					// MediaStore.ACTION_IMAGE_CAPTURE);
+					// File f = new File(
+					// Environment.getExternalStorageDirectory(),
+					// "POST_IMAGE.jpg");
+					// chooserIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+					// Uri.fromFile(f));
+					// imageToUploadUri = Uri.fromFile(f);
+					// startActivityForResult(chooserIntent, CAMERA_CODE);
+					// Intent intent = new
+					// Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					// startActivityForResult(intent, CAMERA_CODE);
 
 				} else if (items[item].equals("از گالری تصاویر")) {
 
@@ -223,6 +253,7 @@ public class DialogpostTitleFragment extends DialogFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
+		// if (data != null) {
 		switch (requestCode) {
 		case GALLERY_CODE:
 			if (resultCode == this.getActivity().RESULT_OK) {
@@ -266,6 +297,14 @@ public class DialogpostTitleFragment extends DialogFragment {
 					e.printStackTrace();
 				}
 			}
+//		case CAMERA_CODE:
+//			if (resultCode == this.getActivity().RESULT_OK) {
+//				Toast.makeText(mContext, "Camera", Toast.LENGTH_SHORT).show();
+//			}
+			// Bitmap photo = (Bitmap) data.getExtras().get("data");
+			// ShowImage.setImageBitmap(photo);
+			// ShowImage.setVisibility(View.VISIBLE);
+			// btnClearImage.setVisibility(View.VISIBLE);
 		case PIC_CROP:
 			if (data != null) {
 				String path = data.getStringExtra(CropImage.IMAGE_PATH);
@@ -284,6 +323,8 @@ public class DialogpostTitleFragment extends DialogFragment {
 				}
 			}
 		}
+		// } else
+		// Toast.makeText(mContext, "Camera", Toast.LENGTH_SHORT).show();
 
 	}
 
