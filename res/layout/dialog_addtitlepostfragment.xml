@@ -13,6 +13,7 @@
             android:id="@+id/ShowImage"
             android:layout_width="match_parent"
             android:layout_height="220dp"
+            android:layout_marginTop="10px"
             android:src="@drawable/no_image_header"
             android:visibility="gone" />
 

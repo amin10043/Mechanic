@@ -36,6 +36,7 @@ import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.PersonalData;
 import com.project.mechanic.entity.Post;
+import com.project.mechanic.entity.PostTimeline;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.SubAdmin;
@@ -96,7 +97,7 @@ public class DataBaseAdapter {
 	// private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] Anad = { "Id", "Image", "ObjectId", "Date", "TypeId",
-			"ProvinceId", "Seen", "Submit", "ImageServerDate" };
+			"ProvinceId", "Seen", "Submit", "ImageServerDate" , "ImagePath" };
 	private String[] CityColumn = { "ID", "Name", "ProvinceId", "Count" };
 
 	// private String[] Comment = { "ID", "UserId", "paperId", "Description" };
@@ -1336,7 +1337,7 @@ public class DataBaseAdapter {
 		Anad tempAnad = new Anad(cursor.getInt(0), cursor.getInt(2),
 				cursor.getBlob(1), cursor.getString(3), cursor.getInt(4),
 				cursor.getInt(5), cursor.getInt(6), cursor.getInt(7),
-				cursor.getString(8));
+				cursor.getString(8),cursor.getString(9));
 
 		return tempAnad;
 	}
@@ -2178,6 +2179,20 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			result.add(CursorToPost(cursor));
 		}
+
+		// Collections.sort(result);
+		return result;
+	}
+
+	public ArrayList<PostTimeline> getAllTimeline(int UserID) {
+		ArrayList<PostTimeline> result = new ArrayList<PostTimeline>();
+
+		// Cursor cursor = mDb.query(TablePost, Post, " UserId=?",
+		// new String[] { String.valueOf(UserID) }, null, null,
+		// "Date DESC");
+		// while (cursor.moveToNext()) {
+		// result.add(CursorToPost(cursor));
+		// }
 
 		// Collections.sort(result);
 		return result;
