@@ -78,7 +78,8 @@ public class Anad {
 	}
 
 	public Anad(int id, int Objectid, byte[] imge, String date, int typeid,
-			int provinceid, int seen, int submit, String ImageServerDate , String ImagePath) {
+			int provinceid, int seen, int submit, String ImageServerDate,
+			String ImagePath) {
 
 		super();
 		Id = id;

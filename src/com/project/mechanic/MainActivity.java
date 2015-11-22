@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -142,23 +141,21 @@ public class MainActivity extends FragmentActivity {
 			}
 		});
 		ImageView timeLine = (ImageView) findViewById(R.id.timeline_btn);
-		
+
 		timeLine.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
-				
+
 				FragmentTransaction trans = getSupportFragmentManager()
 						.beginTransaction();
 				trans.replace(R.id.content_frame, new PostTimelineFragment());
 
 				trans.addToBackStack(null);
 				trans.commit();
-				
+
 			}
 		});
-
-		
 
 		iBtnmessage.setOnClickListener(new OnClickListener() {
 
@@ -197,10 +194,10 @@ public class MainActivity extends FragmentActivity {
 		final Animation animation2 = AnimationUtils.loadAnimation(
 				getApplicationContext(), R.anim.rotate_animation_back);
 
-//		final RotateAnimation animation1 = new RotateAnimation(0.0f, -90.0f,
-//				Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT,
-//				0.5f);
-//		animation1.setDuration(500);
+		// final RotateAnimation animation1 = new RotateAnimation(0.0f, -90.0f,
+		// Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT,
+		// 0.5f);
+		// animation1.setDuration(500);
 
 		final ImageButton iBtnNotification = (ImageButton) findViewById(R.id.iBtnNotification);
 		iBtnNotification.setOnClickListener(new OnClickListener() {

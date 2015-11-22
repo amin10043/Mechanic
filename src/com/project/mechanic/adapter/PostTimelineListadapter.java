@@ -34,7 +34,7 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.entity.Post;
+import com.project.mechanic.entity.PostTimeline;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogShowImage;
 import com.project.mechanic.fragment.InformationUser;
@@ -47,11 +47,11 @@ import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
 @SuppressLint("SimpleDateFormat")
-public class PosttitleListadapter extends ArrayAdapter<Post> implements
-		AsyncInterface {
+public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
+		implements AsyncInterface {
 
 	Context context;
-	List<Post> mylist;
+	List<PostTimeline> mylist;
 	DataBaseAdapter adapter;
 	Utility util;
 	Users CurrentUser;
@@ -79,8 +79,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 	int itemId, userIdsender;
 	List<String> menuItems = new ArrayList<String>();
 
-	public PosttitleListadapter(Context context, int resource,
-			List<Post> objects, Fragment fragment) {
+	public PostTimelineListadapter(Context context, int resource,
+			List<PostTimeline> objects, Fragment fragment) {
 		super(context, resource, objects);
 		this.context = context;
 		this.mylist = objects;
@@ -128,18 +128,18 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 		report = (ImageView) convertView.findViewById(R.id.reportImage);
 
-		Post person1 = mylist.get(position);
+		PostTimeline person1 = mylist.get(position);
 
 		// txt1.setTypeface(util.SetFontCasablanca());
 		txt2.setTypeface(util.SetFontCasablanca());
 
 		adapter.open();
-		Users x = adapter.getUserbyid(person1.getUserId());
+		// Object x = adapter.getObjectbyid(person1.getObjectId());
 		adapter.close();
 
 		CurrentUser = util.getCurrentUser();
 
-		if (person1.getSeenBefore() > 0) {
+		if (person1.getPostseenBefore() > 0) {
 			// txt1.setTextColor(Color.GRAY);
 			txt2.setTextColor(Color.GRAY);
 			txt3.setTextColor(Color.GRAY);
@@ -147,24 +147,24 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 		}
 
-		PostID.setText(person1.getId() + "");
+		PostID.setText(person1.getUserId() + "");
 
 		// if (!person1.getTitle().isEmpty()) {
 		// txt1.setText(person1.getTitle());
 		// txt1.setVisibility(View.VISIBLE);
 		// }
-		if (!person1.getDescription().isEmpty()) {
-			if (person1.getDescription().length() > 100)
-				txt2.setText(person1.getDescription().substring(0, 100)
+		if (!person1.getPostDescription().isEmpty()) {
+			if (person1.getPostDescription().length() > 100)
+				txt2.setText(person1.getPostDescription().substring(0, 100)
 						+ " ...");
 			else
-				txt2.setText(person1.getDescription());
+				txt2.setText(person1.getPostDescription());
 			txt2.setVisibility(View.VISIBLE);
 		}
 
-		if (!person1.getPhoto().isEmpty()) {
+		if (!person1.getPostPhoto().isEmpty()) {
 
-			File imgFile = new File(person1.getPhoto());
+			File imgFile = new File(person1.getPostPhoto());
 
 			if (imgFile.exists()) {
 
@@ -175,7 +175,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				// LNImageShowParams.setMargins(5, 5, 5, 5);
 				postImage.setLayoutParams(LNImageShowParams);
 
-				Bitmap myBitmap = BitmapFactory.decodeFile(person1.getPhoto());
+				Bitmap myBitmap = BitmapFactory.decodeFile(person1
+						.getPostPhoto());
 				postImage.setImageBitmap(myBitmap);
 				postImage.setVisibility(View.VISIBLE);
 			}
@@ -183,15 +184,15 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 		adapter.open();
 
-		if (x != null)
-			txt3.setText(x.getName());
-		countcommentpost.setText(adapter.CommentInPost_count(person1.getId())
-				.toString());
-		countLikePost.setText(adapter.LikeInPost_count(person1.getId())
+		if (person1.getObjectName() != null)
+			txt3.setText(person1.getObjectName());
+		countcommentpost.setText(adapter.CommentInPost_count(
+				person1.getUserId()).toString());
+		countLikePost.setText(adapter.LikeInPost_count(person1.getUserId())
 				.toString());
 		adapter.close();
 
-		dateTopic.setText(util.getPersianDate(person1.getDate()));
+		dateTopic.setText(util.getPersianDate(person1.getPostDate()));
 
 		String item = txt2.getText().toString();
 		//
@@ -200,9 +201,9 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		// subItem = item.subSequence(0, sizeDescription - 4).toString();
 
 		int ItemId = 0;
-		for (Post listItem : mylist) {
-			if (item.equals(listItem.getDescription())) {
-				postNumber = ItemId = listItem.getId();
+		for (PostTimeline listItem : mylist) {
+			if (item.equals(listItem.getPostDescription())) {
+				postNumber = ItemId = listItem.getUserId();
 			}
 		}
 		adapter.open();
@@ -227,14 +228,15 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		lp.width = util.getScreenwidth() / 7;
 		lp.height = util.getScreenwidth() / 7;
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		if (x != null) {
+		if (person1 != null) {
 
-			if (x.getImagePath() == null) {
+			if (person1.getObjectImagePath2().isEmpty()) {
 				profileImg.setImageResource(R.drawable.no_img_profile);
 				profileImg.setLayoutParams(lp);
 			} else {
 				// byte[] byteImg = x.getImage();
-				Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
+				Bitmap bmp = BitmapFactory.decodeFile(person1
+						.getObjectImagePath2());
 				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
 						50));
 
@@ -246,7 +248,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 			public void onClick(View arg0) {
 				adapter.open();
-				Post person1 = mylist.get(position);
+				PostTimeline person1 = mylist.get(position);
 				Users x = adapter.getUserbyid(person1.getUserId());
 				userId = x.getId();
 				FragmentTransaction trans = ((MainActivity) context)
@@ -278,7 +280,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 					int id = ((Integer) parent.getTag());
 					postNumber = id;
 					date = new ServerDate(context);
-					date.delegate = PosttitleListadapter.this;
+					date.delegate = PostTimelineListadapter.this;
 					date.execute("");
 					ringProgressDialog = ProgressDialog.show(context, "",
 							"لطفا منتظر بمانید...", true);
@@ -341,11 +343,11 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				ListView listView = (ListView) v.getParent().getParent()
 						.getParent().getParent();
 				int position = listView.getPositionForView(v);
-				Post f = getItem(position - 1);
+				PostTimeline f = getItem(position - 1);
 				if (f != null) {
 					userIdsender = f.getUserId();
-					t = f.getDescription();
-					itemId = f.getId();
+					t = f.getPostDescription();
+					itemId = f.getUserId();
 
 					if (util.getCurrentUser() != null) {
 						if (util.getCurrentUser().getId() == userIdsender) {
@@ -636,7 +638,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 			}
 		});
 
-		convertView.setTag(person1.getId());
+		convertView.setTag(person1.getUserId() + "");
 		// Parent = convertView;
 		return convertView;
 	}
@@ -685,7 +687,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
 					params = new LinkedHashMap<String, String>();
 					deleting = new Deleting(context);
-					deleting.delegate = PosttitleListadapter.this;
+					deleting.delegate = PostTimelineListadapter.this;
 
 					params.put("TableName", "LikeInPost");
 					params.put("UserId", String.valueOf(CurrentUser.getId()));
@@ -714,7 +716,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				} else {
 					params = new LinkedHashMap<String, String>();
 					saving = new Saving(context);
-					saving.delegate = PosttitleListadapter.this;
+					saving.delegate = PostTimelineListadapter.this;
 
 					params.put("TableName", "LikeInPost");
 
