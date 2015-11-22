@@ -21,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -28,6 +29,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ImageView.ScaleType;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
@@ -129,34 +131,6 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			// update your views here
 
-			RelativeLayout followLayout = (RelativeLayout) convertView
-					.findViewById(R.id.propertiesObject);
-			// visitLayout = (RelativeLayout)
-			// convertView.findViewById(R.id.relativeLayout2);
-
-			RelativeLayout.LayoutParams paramsfollow = new RelativeLayout.LayoutParams(
-					followLayout.getLayoutParams());
-			RelativeLayout.LayoutParams paramsVisit = new RelativeLayout.LayoutParams(
-					followLayout.getLayoutParams());
-
-			paramsfollow.width = (util.getScreenwidth());
-			paramsfollow.height = (util.getScreenwidth() / 4);
-			paramsfollow.addRule(RelativeLayout.LEFT_OF, R.id.icon_object);
-
-			paramsVisit.width = (util.getScreenwidth() / 16);
-			paramsVisit.height = (util.getScreenwidth() / 16);
-			paramsVisit.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-
-			ImageView followIcon = (ImageView) convertView
-					.findViewById(R.id.iconNumberLike);
-			ImageView visitIcon = (ImageView) convertView
-					.findViewById(R.id.iconNumberVisit);
-
-			followLayout.setLayoutParams(paramsfollow);
-
-			followIcon.setLayoutParams(paramsVisit);
-			visitIcon.setLayoutParams(paramsVisit);
-
 			TextView namePage = (TextView) convertView
 					.findViewById(R.id.Rowobjecttxt);
 
@@ -165,11 +139,6 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			ImageView report = (ImageView) convertView
 					.findViewById(R.id.reportImage);
-			
-			if (isShowSettingBtn == true) {
-				report.setVisibility(View.VISIBLE);
-			} else
-				report.setVisibility(View.GONE);
 
 			report.setOnClickListener(new OnClickListener() {
 
@@ -183,21 +152,31 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 					items.add("حذف");
 					items.add("کپی");
 
-					util.ShowPopupMenu(items, v);
+					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
+					popupMenu.show();
+
 				}
 			});
 
-			RelativeLayout rl = (RelativeLayout) convertView
-					.findViewById(R.id.main_icon_reply);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+			FrameLayout rl = (FrameLayout) convertView
+					.findViewById(R.id.imageFrame);
+			FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = (util.getScreenwidth() / 4);
-			lp.height = (util.getScreenwidth() / 4);
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 0, 0, 0);
+			lp.width = (util.getScreenwidth() / 5);
+			lp.height = (util.getScreenwidth() / 5);
+			lp.setMargins(10, 10, 10,10);
+			
+			profileIco.setScaleType(ScaleType.FIT_XY);
+			
 			profileIco.setLayoutParams(lp);
+			
+			if (isShowSettingBtn == true) {
+				report.setVisibility(View.VISIBLE);
+			} else
+				report.setVisibility(View.GONE);
 
+			
 			final PersonalData pd = (PersonalData) getChild(groupPosition,
 					childPosition);
 
@@ -205,38 +184,17 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			if (ImagePath != null) {
 				Bitmap bitmap = BitmapFactory.decodeFile(ImagePath);
-				profileIco.setImageBitmap(Utility.getRoundedCornerBitmap(bitmap, 20));
+				profileIco.setImageBitmap(Utility.getclip(bitmap));
 			}
 
 			namePage.setText(pd.getNameObject());
 
-			TextView baghiMandeh = (TextView) convertView
-					.findViewById(R.id.dayBaghiMandeh); // modate baghimande
-
-			String commitDate = pd.getDateObject(); // tarikhe ijad safhe
-
-			if (commitDate != null && !"".equals(commitDate)) {
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTimeInMillis(Long.valueOf(commitDate));
-				calendar.add(Calendar.YEAR, 1);
-
-				final SharedPreferences currentTime = context
-						.getSharedPreferences("time", 0);
-
-				String time = currentTime.getString("time", "-1");
-
-				Calendar calendarNow = Calendar.getInstance();
-				calendarNow.setTimeInMillis(Long.valueOf(time));
-
-				long start = calendar.getTimeInMillis();
-				long now = calendarNow.getTimeInMillis();
-				long diff = TimeUnit.MILLISECONDS.toDays(Math.abs(start - now));
-
-				baghiMandeh.setText(String.valueOf(diff));
-			} else {
-				baghiMandeh.setText("نا معلوم");
-			}
-
+			LinearLayout etebar = (LinearLayout) convertView
+					.findViewById(R.id.et); // modate baghimande
+			
+			etebar.setVisibility(View.GONE);
+			
+			
 			convertView.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -294,14 +252,14 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 			params.height = util.getScreenwidth() / 5;
 			params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 			params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-			params.setMargins(1, 1, 1, 1);
+			params.setMargins(10, 10, 10,10);
 
 			String pathProfile = pd.getImagePathTicket();
 			Bitmap profileImage = BitmapFactory.decodeFile(pathProfile);
 
 			if (profileImage != null) {
 
-				img2.setImageBitmap(Utility.getRoundedCornerBitmap(profileImage, 20));
+				img2.setImageBitmap(Utility.getclip(profileImage));
 				img2.setLayoutParams(params);
 
 			} else {
@@ -428,7 +386,6 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				report.setVisibility(View.VISIBLE);
 			} else
 				report.setVisibility(View.GONE);
-
 			// end find view
 
 			report.setOnClickListener(new OnClickListener() {
@@ -461,15 +418,15 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			// Users x = adapter.getUserbyid(person1.getUserId());
 			// userId=x.getId();
-			RelativeLayout rl = (RelativeLayout) convertView
+			LinearLayout rl = (LinearLayout) convertView
 					.findViewById(R.id.topicTitleFroum);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 5, 5, 5);
+			lp.width = util.getScreenwidth() / 5;
+			lp.height = util.getScreenwidth() /5;
+			//lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp.setMargins(10, 10, 10,10);
 			iconProile.setLayoutParams(lp);
 
 			Users u = null;
@@ -489,8 +446,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 			}
 			if (ImagePath != null) {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						20));
+				iconProile.setImageBitmap(Utility.getclip(bmp));
 
 				iconProile.setLayoutParams(lp);
 			}
@@ -546,7 +502,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 			} else
 				report.setVisibility(View.GONE);
 			// end find view
-
+			
 			report.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -574,15 +530,15 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			// Users x = adapter.getUserbyid(person1.getUserId());
 			// userId=x.getId();
-			RelativeLayout rl = (RelativeLayout) convertView
+			LinearLayout rl = (LinearLayout) convertView
 					.findViewById(R.id.topicTitleFroum);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 5, 5, 5);
+			lp.width = util.getScreenwidth() / 5;
+			lp.height = util.getScreenwidth() / 5;
+			//lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp.setMargins(10, 10, 10,10);
 			iconProile.setLayoutParams(lp);
 
 			Users u = null;
@@ -602,8 +558,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			if (ImagePath != null) {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						20));
+				iconProile.setImageBitmap(Utility.getclip(bmp));
 
 				iconProile.setLayoutParams(lp);
 			}
@@ -683,10 +638,10 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = (util.getScreenwidth() / 4);
-			lp.height = (util.getScreenwidth() / 4);
+			lp.width = (util.getScreenwidth() / 5);
+			lp.height = (util.getScreenwidth() / 5);
 			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 0, 0, 0);
+			lp.setMargins(10, 10, 10,10);
 			profileIco.setLayoutParams(lp);
 
 			final PersonalData pd = (PersonalData) getChild(groupPosition,
@@ -812,7 +767,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 		if (convertView == null) {
 			LayoutInflater infalInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(R.layout.row_per_data, null);
+			convertView = infalInflater.inflate(R.layout.row_group_test, null);
 
 		}
 

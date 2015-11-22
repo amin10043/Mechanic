@@ -9,12 +9,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
@@ -38,7 +40,7 @@ public class InformationUser extends Fragment {
 	View rootView, header;
 
 	TextView txtaddress, txtcellphone, txtphone, txtemail, txtname, txtfax,
-			txtdate /*, namePage*/;
+			txtdate /* , namePage */;
 
 	ImageView profileImage;
 
@@ -51,6 +53,9 @@ public class InformationUser extends Fragment {
 	Users userPage;
 
 	ObjectListAdapter listAdapter;
+
+	RelativeLayout phoneLayout, emailLayout, faxLayout, mobileLayout,
+			AddressLayout, btnedit, birthDayUsers;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,7 +78,7 @@ public class InformationUser extends Fragment {
 		findView();
 		informationUser();
 		// Expandview.addHeaderView(header);
-
+		setLayoutParams();
 		allpageUser();
 
 		profileImage.setOnClickListener(new OnClickListener() {
@@ -89,16 +94,88 @@ public class InformationUser extends Fragment {
 
 			}
 		});
-		
+
 		util.ShowFooterAgahi(getActivity(), false, -1);
 
 		return rootView;
 	}
 
+	private void setLayoutParams() {
+
+		RelativeLayout.LayoutParams f1 = new RelativeLayout.LayoutParams(
+				phoneLayout.getLayoutParams());
+		RelativeLayout.LayoutParams f2 = new RelativeLayout.LayoutParams(
+				mobileLayout.getLayoutParams());
+		RelativeLayout.LayoutParams f3 = new RelativeLayout.LayoutParams(
+				emailLayout.getLayoutParams());
+		RelativeLayout.LayoutParams f4 = new RelativeLayout.LayoutParams(
+				faxLayout.getLayoutParams());
+		RelativeLayout.LayoutParams f5 = new RelativeLayout.LayoutParams(
+				AddressLayout.getLayoutParams());
+
+		f1.width = util.getScreenwidth();
+		f1.height = LayoutParams.WRAP_CONTENT;
+		f1.setMargins(50, 0, 50, 0);
+		f1.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		f1.addRule(RelativeLayout.BELOW, R.id.textView6);
+
+		f2.width = util.getScreenwidth();
+		f2.height = LayoutParams.WRAP_CONTENT;
+		f2.setMargins(50, 0, 50, 0);
+		f2.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		f2.addRule(RelativeLayout.BELOW, R.id.textView8);
+
+		f3.width = util.getScreenwidth();
+		f3.height = LayoutParams.WRAP_CONTENT;
+		f3.setMargins(50, 0, 50, 0);
+		f3.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		f3.addRule(RelativeLayout.BELOW, R.id.textView4);
+
+		f4.width = util.getScreenwidth();
+		f4.height = LayoutParams.WRAP_CONTENT;
+		f4.setMargins(50, 0, 50, 0);
+		f4.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		f4.addRule(RelativeLayout.BELOW, R.id.textView10);
+
+		f5.width = util.getScreenwidth();
+		f5.height = LayoutParams.WRAP_CONTENT;
+		f5.setMargins(50, 0, 50, 0);
+		f5.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		f5.addRule(RelativeLayout.BELOW, R.id.textView12);
+
+		ImageView l11 = (ImageView) header.findViewById(R.id.i1);
+		ImageView l22 = (ImageView) header.findViewById(R.id.i2);
+		ImageView l33 = (ImageView) header.findViewById(R.id.i3);
+		ImageView l44 = (ImageView) header.findViewById(R.id.i4);
+		ImageView l55 = (ImageView) header.findViewById(R.id.i5);
+
+		l11.setLayoutParams(f1);
+		l22.setLayoutParams(f2);
+		l33.setLayoutParams(f3);
+		l44.setLayoutParams(f4);
+		l55.setLayoutParams(f5);
+
+		LinearLayout imageLinear = (LinearLayout) header
+				.findViewById(R.id.imageLinear);
+
+		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+				imageLinear.getLayoutParams());
+		llp.width = (int) (util.getScreenwidth() / 4.5);
+		llp.height = (int) (util.getScreenwidth() / 4.5);
+
+		profileImage.setLayoutParams(llp);
+
+	}
+
 	private void findView() {
 
-		Expandview = (ExpandableListView) rootView
-				.findViewById(R.id.listPageUser);
+		phoneLayout = (RelativeLayout) header.findViewById(R.id.laySabet);
+		mobileLayout = (RelativeLayout) header.findViewById(R.id.layHamrah);
+		AddressLayout = (RelativeLayout) header.findViewById(R.id.layaddress);
+		faxLayout = (RelativeLayout) header.findViewById(R.id.layfax);
+		emailLayout = (RelativeLayout) header.findViewById(R.id.layEmail);
+
+		Expandview = (ExpandableListView) rootView.findViewById(R.id.items);
 
 		txtaddress = (TextView) header.findViewById(R.id.address);
 		txtcellphone = (TextView) header.findViewById(R.id.cellphone);
@@ -107,11 +184,12 @@ public class InformationUser extends Fragment {
 		txtname = (TextView) header.findViewById(R.id.displayname);
 		txtfax = (TextView) header.findViewById(R.id.fax);
 		txtdate = (TextView) header.findViewById(R.id.txtdate);
-//		namePage = (TextView) header.findViewById(R.id.namepageList);
+		// namePage = (TextView) header.findViewById(R.id.namepageList);
 
 		profileImage = (ImageView) header.findViewById(R.id.img1);
 
-		layoutImageProfile = (LinearLayout) header.findViewById(R.id.lin2);
+		layoutImageProfile = (LinearLayout) header
+				.findViewById(R.id.imageLinear);
 
 	}
 
@@ -131,8 +209,14 @@ public class InformationUser extends Fragment {
 
 		if (ImagePath != null) {
 			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-			profileImage.setImageBitmap(util.getRoundedCornerBitmap(bmp, 20));
+			profileImage.setImageBitmap(Utility.getclip(bmp));
 			profileImage.setLayoutParams(lp1);
+			profileImage.setScaleType(ScaleType.FIT_XY);
+		} else {
+			profileImage.setImageResource(R.drawable.no_img_profile);
+			profileImage.setLayoutParams(lp1);
+			profileImage.setScaleType(ScaleType.FIT_XY);
+
 		}
 
 		/*
@@ -150,7 +234,7 @@ public class InformationUser extends Fragment {
 		txtphone.setText(userPage.getPhonenumber());
 		txtfax.setText(userPage.getFaxnumber());
 		txtaddress.setText(userPage.getAddress());
-//		namePage.setText(userPage.getName());
+		// namePage.setText(userPage.getName());
 		/*
 		 * end et information text
 		 */
@@ -178,9 +262,11 @@ public class InformationUser extends Fragment {
 				}
 
 				if (i == 2) {
-					if (v.equals("0"))
+					if (v.equals("0")) {
 						txtemail.setText("محدودیت در نمایش اطلاعات");
-					// emailLayout.setVisibility(View.INVISIBLE);
+						txtemail.setGravity(Gravity.RIGHT);
+
+					}
 				}
 
 				if (i == 3) {
@@ -197,6 +283,7 @@ public class InformationUser extends Fragment {
 				}
 
 			}
+
 		}
 
 		/*
@@ -214,15 +301,15 @@ public class InformationUser extends Fragment {
 				.CustomFieldFroumByUser(userPage.getId());
 		List<PersonalData> PaperData = dbadaAdapter
 				.CustomFieldPaperByUser(userPage.getId());
-//		List<PersonalData> TicketData = dbadaAdapter
-//				.CustomFieldTicketByUser(userPage.getId());
+		// List<PersonalData> TicketData = dbadaAdapter
+		// .CustomFieldTicketByUser(userPage.getId());
 
 		dbadaAdapter.close();
 
 		List<Integer> sizeTypeList = new ArrayList<Integer>();
 
 		sizeTypeList.add(ObejctData.size());
-	//	sizeTypeList.add(TicketData.size());
+		// sizeTypeList.add(TicketData.size());
 		sizeTypeList.add(PaperData.size());
 		sizeTypeList.add(FroumData.size());
 
@@ -238,12 +325,12 @@ public class InformationUser extends Fragment {
 		Expandview.setClickable(true);
 
 		parentItems.add("صفحات");
-		//parentItems.add("آگهی ها");
+		// parentItems.add("آگهی ها");
 		parentItems.add("مقالات");
 		parentItems.add("تالار گفتگو");
 
 		listDataChild.put(parentItems.get(0), ObejctData); // Header, Child data
-		//listDataChild.put(parentItems.get(1), TicketData);
+		// listDataChild.put(parentItems.get(1), TicketData);
 		listDataChild.put(parentItems.get(1), PaperData);
 		listDataChild.put(parentItems.get(2), FroumData);
 
@@ -254,7 +341,7 @@ public class InformationUser extends Fragment {
 
 		final InformationUserAdapter listAdapter = new InformationUserAdapter(
 				getActivity(), parentItems, listDataChild, time,
-				InformationUser.this, sizeTypeList, false , userPage.getName());
+				InformationUser.this, sizeTypeList, false, userPage.getName());
 
 		// setting list adapter
 		Expandview.addHeaderView(header);

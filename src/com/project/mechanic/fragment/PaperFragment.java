@@ -14,6 +14,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,7 +52,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 
 	DataBaseAdapter adapter;
 	int paperID;
-	LinearLayout btnAddcmt;
+//	LinearLayout btnAddcmt;
 	LinearLayout Like;
 	TextView NumofLike, NumofComment, txttitle, txttitleDes, txtname, txtdate;
 	DialogcmtInPaper dialog;
@@ -70,7 +71,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 	List<CommentInPaper> tempList;
 	View view;
 	ListView lstNews;
-	RelativeLayout countLike;
+//	RelativeLayout countLike;
 	int userId;
 
 	String serverDate = "";
@@ -88,12 +89,12 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_paper, null);
 		header = getActivity().getLayoutInflater().inflate(
-				R.layout.header_expandable, null);
+				R.layout.header_froum, null);
 		util = new Utility(getActivity());
 
 		CurrentUser = util.getCurrentUser();
 
-		btnAddcmt = (LinearLayout) header.findViewById(R.id.addCommentToTopic);
+//		btnAddcmt = (LinearLayout) header.findViewById(R.id.addCommentToTopic);
 		Like = (LinearLayout) header.findViewById(R.id.LikeTopicLinear);
 		lstNews = (ListView) view.findViewById(R.id.listViewnewspaper);
 		NumofComment = (TextView) header
@@ -103,7 +104,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 		txttitleDes = (TextView) header.findViewById(R.id.description_topic);
 		txtdate = (TextView) header.findViewById(R.id.date_cc);
 		txtname = (TextView) header.findViewById(R.id.name_cc);
-		countLike = (RelativeLayout) header.findViewById(R.id.countLike);
+//		countLike = (RelativeLayout) header.findViewById(R.id.countLike);
 
 		icon = (ImageView) header.findViewById(R.id.iconfroumtitle);
 		sharebtn = (ImageView) header.findViewById(R.id.sharefroumicon);
@@ -115,12 +116,12 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 
 		if (CurrentUser == null
 				|| !adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
-			Like.setBackgroundResource(R.drawable.like_off);
-			countLike.setBackgroundResource(R.drawable.count_like_off);
+			Like.setBackgroundResource(R.drawable.like_froum_off);
+//			countLike.setBackgroundResource(R.drawable.count_like_off);
 		} else {
 
-			Like.setBackgroundResource(R.drawable.like_on);
-			countLike.setBackgroundResource(R.drawable.count_like);
+			Like.setBackgroundResource(R.drawable.like_froum_on);
+//			countLike.setBackgroundResource(R.drawable.count_like);
 
 		}
 		NumofComment.setText(adapter.CommentInPaper_count(paperID).toString());
@@ -159,21 +160,22 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 		txtdate.setText(util.getPersianDate(p.getDate()));
 
 		LinearLayout rl = (LinearLayout) header
-				.findViewById(R.id.profileLinearcommenterinContinue);
+				.findViewById(R.id.imageLinear);
 
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 				rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
-		lp.setMargins(5, 5, 5, 5);
+		lp.width = util.getScreenwidth() / 4;
+		lp.height = util.getScreenwidth() / 4;
+		lp.gravity = Gravity.CENTER_HORIZONTAL;
+		lp.setMargins(10, 10, 10, 10);
 
 		Bitmap bitmap;
 		String ImagePath = u.getImagePath();
 		if (ImagePath != null) {
 			bitmap = BitmapFactory.decodeFile(ImagePath);
 			if (bitmap != null) {
-				icon.setImageBitmap(Utility.getRoundedCornerBitmap(bitmap, 20));
+				icon.setImageBitmap(Utility.getclip(bitmap));
 				icon.setLayoutParams(lp);
 
 			}
@@ -236,25 +238,25 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 			updateView();
 		}
 
-		countLike.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				adapter.open();
-				ArrayList<LikeInPaper> likedist = adapter
-						.getLikePaperByPaperId(paperID);
-
-				adapter.close();
-				if (likedist.size() == 0) {
-					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
-							.show();
-				} else {
-					DialogPersonLikedPaper dia = new DialogPersonLikedPaper(
-							getActivity(), paperID, likedist);
-					dia.show();
-				}
-			}
-		});
+////		countLike.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				adapter.open();
+//				ArrayList<LikeInPaper> likedist = adapter
+//						.getLikePaperByPaperId(paperID);
+//
+//				adapter.close();
+//				if (likedist.size() == 0) {
+//					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
+//							.show();
+//				} else {
+//					DialogPersonLikedPaper dia = new DialogPersonLikedPaper(
+//							getActivity(), paperID, likedist);
+//					dia.show();
+//				}
+//			}
+//		});
 
 		sharebtn.setOnClickListener(new View.OnClickListener() {
 
@@ -295,24 +297,24 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
-		btnAddcmt.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (CurrentUser == null) {
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
-					return;
-				} else {
-					dialog = new DialogcmtInPaper(PaperFragment.this,
-							getActivity(), R.layout.dialog_addcomment, paperID,
-							2);
-					dialog.show();
-
-				}
-
-			}
-		});
+////		btnAddcmt.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				if (CurrentUser == null) {
+//					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+//							Toast.LENGTH_SHORT).show();
+//					return;
+//				} else {
+//					dialog = new DialogcmtInPaper(PaperFragment.this,
+//							getActivity(), R.layout.dialog_addcomment, paperID,
+//							2);
+//					dialog.show();
+//
+//				}
+//
+//			}
+//		});
 
 		ImageView report = (ImageView) view.findViewById(R.id.reportImage);
 		report.setOnClickListener(new OnClickListener() {
@@ -485,8 +487,8 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 				adapter.open();
 				if (adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
 					adapter.deleteLikeFromPaper(CurrentUser.getId(), paperID);
-					Like.setBackgroundResource(R.drawable.like_off);
-					countLike.setBackgroundResource(R.drawable.count_like_off);
+					Like.setBackgroundResource(R.drawable.like_froum_off);
+//					countLike.setBackgroundResource(R.drawable.count_like_off);
 
 					NumofLike.setText(adapter.LikeInPaper_count(paperID)
 							.toString());
@@ -496,8 +498,8 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 				} else {
 					adapter.insertLikeInPaperToDb(CurrentUser.getId(), paperID,
 							serverDate);
-					Like.setBackgroundResource(R.drawable.like_on);
-					countLike.setBackgroundResource(R.drawable.count_like);
+					Like.setBackgroundResource(R.drawable.like_froum_on);
+//					countLike.setBackgroundResource(R.drawable.count_like);
 
 					NumofLike.setText(adapter.LikeInPaper_count(paperID)
 							.toString());

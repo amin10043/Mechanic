@@ -7,14 +7,14 @@
 
     <ExpandableListView
         android:id="@+id/items"
-     style="@style/sss"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="#394264"
-        android:childDivider="#e8e8e8"
+        android:background="@color/white"
+        android:childDivider="@drawable/lili"
+        android:divider="@color/white"
+        android:dividerHeight="5dp"
         android:groupIndicator="@null" >
     </ExpandableListView>
-
 
 </LinearLayout>

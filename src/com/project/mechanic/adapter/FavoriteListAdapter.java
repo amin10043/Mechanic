@@ -18,9 +18,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.ImageView.ScaleType;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -115,33 +117,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 
 			// update your views here
 
-			RelativeLayout followLayout = (RelativeLayout) convertView
-					.findViewById(R.id.propertiesObject);
-			// visitLayout = (RelativeLayout)
-			// convertView.findViewById(R.id.relativeLayout2);
-
-			RelativeLayout.LayoutParams paramsfollow = new RelativeLayout.LayoutParams(
-					followLayout.getLayoutParams());
-			RelativeLayout.LayoutParams paramsVisit = new RelativeLayout.LayoutParams(
-					followLayout.getLayoutParams());
-
-			paramsfollow.width = (util.getScreenwidth());
-			paramsfollow.height = (util.getScreenwidth() / 4);
-			paramsfollow.addRule(RelativeLayout.LEFT_OF, R.id.icon_object);
-
-			paramsVisit.width = (util.getScreenwidth() / 16);
-			paramsVisit.height = (util.getScreenwidth() / 16);
-			paramsVisit.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-
-			ImageView followIcon = (ImageView) convertView
-					.findViewById(R.id.iconNumberLike);
-			ImageView visitIcon = (ImageView) convertView
-					.findViewById(R.id.iconNumberVisit);
-
-			followLayout.setLayoutParams(paramsfollow);
-
-			followIcon.setLayoutParams(paramsVisit);
-			visitIcon.setLayoutParams(paramsVisit);
+			// ///////
 
 			TextView namePage = (TextView) convertView
 					.findViewById(R.id.Rowobjecttxt);
@@ -149,22 +125,25 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 			ImageView profileIco = (ImageView) convertView
 					.findViewById(R.id.icon_object);
 
-			ImageView settings = (ImageView) convertView
+			ImageView report = (ImageView) convertView
 					.findViewById(R.id.reportImage);
 
-			RelativeLayout rl = (RelativeLayout) convertView
-					.findViewById(R.id.main_icon_reply);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+			FrameLayout rl = (FrameLayout) convertView
+					.findViewById(R.id.imageFrame);
+			FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = (util.getScreenwidth() / 4);
-			lp.height = (util.getScreenwidth() / 4);
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 0, 0, 0);
+			lp.width = (util.getScreenwidth() / 5);
+			lp.height = (util.getScreenwidth() / 5);
+			lp.setMargins(10, 10, 10, 10);
+
+			profileIco.setScaleType(ScaleType.FIT_XY);
+
 			profileIco.setLayoutParams(lp);
 
 			final PersonalData pd = (PersonalData) getChild(groupPosition,
 					childPosition);
+			// ///////
 
 			String ImagePath = pd.getImagePathObject();
 
@@ -192,7 +171,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 				}
 			});
 
-			settings.setOnClickListener(new OnClickListener() {
+			report.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -243,6 +222,8 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 		} else if (("آگهی ها").equals(parentItems.get(groupPosition))) {
 			convertView = infalInflater.inflate(R.layout.row_anad, null);
 
+			// ///////////
+
 			TextView txtdate = (TextView) convertView
 					.findViewById(R.id.text_favorite_desc);
 			TextView txtName = (TextView) convertView
@@ -259,6 +240,8 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 			final PersonalData pd = (PersonalData) getChild(groupPosition,
 					childPosition);
 
+			// //////////
+
 			txtdate.setText(util.getPersianDate(pd.getDateTicket()));
 			txtName.setText(pd.getNameTicket());
 			txtDesc.setText(pd.getDescriptonTicket());
@@ -270,27 +253,72 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 
 			}
 
-			RelativeLayout llkj = (RelativeLayout) convertView
-					.findViewById(R.id.layoutmnb);
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+			if ("".equals(pd.getNameTicket()) || pd.getNameTicket() == null) {
+				txtName.setVisibility(View.GONE);
+
+			}
+			if ("".equals(pd.getDescriptonTicket())
+					|| pd.getDescriptonTicket() == null) {
+				txtDesc.setVisibility(View.GONE);
+			}
+			ImageView imgBi = (ImageView) convertView
+					.findViewById(R.id.aks_bi_etebar);
+
+			FrameLayout llkj = (FrameLayout) convertView
+					.findViewById(R.id.imageFrame);
+
+			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
 					llkj.getLayoutParams());
+
 			params.width = util.getScreenwidth() / 5;
 			params.height = util.getScreenwidth() / 5;
-			params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-			params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-			params.setMargins(1, 1, 1, 1);
+			// params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			// params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			// params.addRule(RelativeLayout.CENTER_VERTICAL);
+			params.setMargins(10, 10, 10, 10);
 
 			String pathProfile = pd.getImagePathTicket();
 			Bitmap profileImage = BitmapFactory.decodeFile(pathProfile);
 
 			if (profileImage != null) {
 
-				img2.setImageBitmap(profileImage);
+				img2.setImageBitmap(Utility.getclip(profileImage));
 				img2.setLayoutParams(params);
 
 			} else {
-				img2.setImageResource(R.drawable.no_img_profile);
+				// img2.setImageResource(R.drawable.no_img_profile);
 				img2.setLayoutParams(params);
+			}
+
+			String commitDate = pd.getDateTicket();
+			int thisDay = 0;
+			int TicketDay = Integer.valueOf(commitDate.substring(0, 8));
+			if (todayDate != null && !todayDate.equals(""))
+				thisDay = Integer.valueOf(todayDate.substring(0, 8));
+			RelativeLayout TicketBackground = (RelativeLayout) convertView
+					.findViewById(R.id.backgroundTicket);
+
+			if (thisDay <= TicketDay + pd.getDayTicket()) {
+				TicketBackground.setBackgroundColor(Color.WHITE);
+				if (pd.getSeenBefore() > 0) {
+					txtName.setTextColor(Color.GRAY);
+					txtDesc.setTextColor(Color.GRAY);
+					txtdate.setTextColor(Color.GRAY);
+				}
+
+			} else {
+				imgBi.setVisibility(View.VISIBLE);
+				imgBi.setLayoutParams(params);
+
+				// img2.setImageResource(R.drawable.bi_etebar);
+				// TicketBackground.setBackgroundResource(R.color.lightred);
+
+				if (pd.getSeenBefore() > 0) {
+					txtName.setTextColor(Color.WHITE);
+					txtDesc.setTextColor(Color.WHITE);
+					txtdate.setTextColor(Color.WHITE);
+
+				}
 			}
 
 			txtName.setTypeface(util.SetFontCasablanca());
@@ -333,7 +361,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 					items.clear();
 					items.add("حذف");
 					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
-
+					popupMenu.show();
 					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
 
 						@Override
@@ -404,32 +432,37 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 
 			}
 
-			// Users x = adapter.getUserbyid(person1.getUserId());
-			// userId=x.getId();
-			RelativeLayout rl = (RelativeLayout) convertView
+			LinearLayout rl = (LinearLayout) convertView
 					.findViewById(R.id.topicTitleFroum);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 5, 5, 5);
+			lp.width = util.getScreenwidth() / 5;
+			lp.height = util.getScreenwidth() / 5;
+			// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp.setMargins(10, 10, 10, 10);
 			iconProile.setLayoutParams(lp);
-			
+
+			Users u = null;
+			String ImagePath = "";
 			adapter.open();
-			String ImagePath = adapter.getUserbyid(pd.getUserIdPaper()).getImagePath();
+			u = adapter.getUserbyid(pd.getUserIdPaper());
+			adapter.close();
+			ImagePath = u.getImagePath();
+
+			txt3.setText(u.getName());
+
 			if (ImagePath != null) {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				if (bmp != null)
-					iconProile
-							.setImageBitmap(/* Utility.getRoundedCornerBitmap( */bmp/*
-																					 * )
-																					 */);
-				iconProile.setLayoutParams(lp);
+				iconProile.setImageBitmap(Utility.getclip(bmp));
+
+				// iconProile.setLayoutParams(lp);
+			} else {
+				iconProile.setImageResource(R.drawable.no_img_profile);
+				// iconProile.setLayoutParams(lp);
+
 			}
-			adapter.close();
-			
+
 			DateView.setText(util.getPersianDate(pd.getDatePaper()));
 
 			adapter.open();
@@ -543,40 +576,43 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 
 			// Users x = adapter.getUserbyid(person1.getUserId());
 			// userId=x.getId();
-			RelativeLayout rl = (RelativeLayout) convertView
+			LinearLayout rl = (LinearLayout) convertView
 					.findViewById(R.id.topicTitleFroum);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 5, 5, 5);
+			lp.width = util.getScreenwidth() / 5;
+			lp.height = util.getScreenwidth() / 5;
+			// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp.setMargins(10, 10, 10, 10);
 			iconProile.setLayoutParams(lp);
 
-			adapter.open();
-			txt3.setText(adapter.getUserbyid(pd.getUserIdFroum()).getName());
+			Users u = null;
+			String ImagePath = "";
 
-			String ImagePath = adapter.getUserbyid(pd.getUserIdFroum()).getImagePath();
+			adapter.open();
+			u = adapter.getUserbyid(pd.getUserIdFroum());
+			adapter.close();
+			ImagePath = u.getImagePath();
+			txt3.setText(u.getName());
+
 			if (ImagePath != null) {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				iconProile
-						.setImageBitmap(/* Utility.getRoundedCornerBitmap( */bmp/*
-																				 * ,
-																				 * 50
-																				 */);
+				iconProile.setImageBitmap(Utility.getclip(bmp));
 
 				iconProile.setLayoutParams(lp);
-			}
-			adapter.close();
+			} else {
+				iconProile.setImageResource(R.drawable.no_img_profile);
+				iconProile.setLayoutParams(lp);
 
+			}
 			DateView.setText(util.getPersianDate(pd.getDateFroum()));
 
 			txt1.setText(pd.getNameFroum());
 			txt2.setText(pd.getDescriptionFroum());
 
 			txt1.setTypeface(util.SetFontCasablanca());
-			txt2.setTypeface(util.SetFontCasablanca());
+			txt2.setTypeface(util.SetFontIranSans());
 
 			convertView.setOnClickListener(new OnClickListener() {
 
@@ -672,15 +708,16 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 		if (convertView == null) {
 			LayoutInflater infalInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(R.layout.row_per_data, null);
+			convertView = infalInflater.inflate(R.layout.row_group_test, null);
 
 		}
 		TextView titleGroup = (TextView) convertView
 				.findViewById(R.id.row_berand_txt);
-		titleGroup.setText(parentItems.get(groupPosition) + " - "
-				+ util.getCurrentUser().getName());
+		final ImageView indicatorImg = (ImageView) convertView
+				.findViewById(R.id.icon_item);
+		titleGroup.setText(parentItems.get(groupPosition));
 		final ExpandableListView mExpandableListView = (ExpandableListView) parent;
-
+		titleGroup.setTypeface(util.SetFontCasablanca());
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -691,11 +728,14 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 
 					if (isExpanded) {
 						mExpandableListView.collapseGroup(groupPosition);
+						indicatorImg.setBackgroundResource(R.drawable.dow);
 						notifyDataSetChanged();
 
-					} else
-						mExpandableListView.expandGroup(groupPosition);
+					} else {
+						indicatorImg.setBackgroundResource(R.drawable.dow_s);
 
+						mExpandableListView.expandGroup(groupPosition);
+					}
 					notifyDataSetChanged();
 				}
 			}

@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="#306098"
+            android:background="@drawable/rectangle_drawable"
             android:gravity="center_horizontal"
             android:orientation="horizontal" >
 

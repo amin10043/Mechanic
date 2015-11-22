@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.ListViewAutoScrollHelper;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
@@ -114,7 +115,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 	Settings setting;
 
 	boolean FindPosition;
-	int beforePosition, code = 100, /* icode = 0 ImageCode,*/ counterAnad = 0;
+	int beforePosition, code = 100, /* icode = 0 ImageCode, */counterAnad = 0;
 	UpdatingImage update;
 	Map<String, String> maps;
 
@@ -171,9 +172,9 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 	public void addImagesToView(final List<Anad> lst) {
 
 		for (int t = 0; t < lst.size(); t++) {
-//			byte[] tmpImage = lst.get(t).getImage();
+			// byte[] tmpImage = lst.get(t).getImage();
 			String imagePath = lst.get(t).getImagePath();
-			
+
 			final ImageView imageButton = new ImageView(getActivity());
 			if (imagePath == null) {
 				Drawable image = this.getResources().getDrawable(
@@ -426,134 +427,134 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 	}
 
 	private void getAnadImageFromServer(List<Anad> anadlist, int counter) {
-		
-		if (counter < anadlist.size()){		
-			
-			anadItem = anadlist.get(counter);
-		
-		if (getActivity() != null) {
 
-			update = new UpdatingImage(getActivity());
-			update.delegate = AnadFragment.this;
-			maps = new LinkedHashMap<String, String>();
-			maps.put("tableName", "Anad");
-			maps.put("Id", String.valueOf(anadItem.getId()));
-			maps.put("fromDate", anadItem.getImageServerDate());
-			update.execute(maps);
-			typeItem = "Anad";
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
+		if (counter < anadlist.size()) {
+
+			anadItem = anadlist.get(counter);
+
+			if (getActivity() != null) {
+
+				update = new UpdatingImage(getActivity());
+				update.delegate = AnadFragment.this;
+				maps = new LinkedHashMap<String, String>();
+				maps.put("tableName", "Anad");
+				maps.put("Id", String.valueOf(anadItem.getId()));
+				maps.put("fromDate", anadItem.getImageServerDate());
+				update.execute(maps);
+				typeItem = "Anad";
+				LoadMoreFooter.setVisibility(View.INVISIBLE);
+			}
+
 		}
-		
-		}
-//	
-//		
-//		
-//		
-//		if (IsFirst == true) {
-//
-//			switch (provinceId) {
-//
-//			case 1:
-//				ImageCode = 1;
-//				break;
-//			case 3:
-//				ImageCode = 51;
-//				break;
-//			case 4:
-//				ImageCode = 81;
-//				break;
-//			case 5:
-//				ImageCode = 151;
-//				break;
-//			case 6:
-//				ImageCode = 201;
-//				break;
-//			case 7:
-//				ImageCode = 231;
-//				break;
-//			case 8:
-//				ImageCode = 261;
-//				break;
-//			case 9:
-//				ImageCode = 361;
-//				break;
-//			case 10:
-//				ImageCode = 391;
-//				break;
-//			case 11:
-//				ImageCode = 421;
-//				break;
-//			case 12:
-//				ImageCode = 471;
-//				break;
-//			case 13:
-//				ImageCode = 501;
-//				break;
-//			case 14:
-//				ImageCode = 531;
-//				break;
-//			case 15:
-//				ImageCode = 561;
-//				break;
-//			case 16:
-//				ImageCode = 591;
-//				break;
-//			case 17:
-//				ImageCode = 621;
-//				break;
-//			case 18:
-//				ImageCode = 671;
-//				break;
-//			case 19:
-//				ImageCode = 701;
-//				break;
-//			case 20:
-//				ImageCode = 751;
-//				break;
-//			case 21:
-//				ImageCode = 781;
-//				break;
-//			case 22:
-//				ImageCode = 831;
-//				break;
-//			case 23:
-//				ImageCode = 861;
-//				break;
-//			case 24:
-//				ImageCode = 891;
-//				break;
-//			case 25:
-//				ImageCode = 921;
-//				break;
-//			case 26:
-//				ImageCode = 971;
-//				break;
-//			case 27:
-//				ImageCode = 1021;
-//				break;
-//			case 28:
-//				ImageCode = 1071;
-//				break;
-//			case 29:
-//				ImageCode = 1121;
-//				break;
-//			case 30:
-//				ImageCode = 1171;
-//				break;
-//			case 31:
-//				ImageCode = 1201;
-//				break;
-//			case 0:
-//				ImageCode = 1251;
-//				break;
-//			case 2:
-//				ImageCode = 1351;
-//				break;
-//			default:
-//			}
-//
-//		}
-		
+		//
+		//
+		//
+		//
+		// if (IsFirst == true) {
+		//
+		// switch (provinceId) {
+		//
+		// case 1:
+		// ImageCode = 1;
+		// break;
+		// case 3:
+		// ImageCode = 51;
+		// break;
+		// case 4:
+		// ImageCode = 81;
+		// break;
+		// case 5:
+		// ImageCode = 151;
+		// break;
+		// case 6:
+		// ImageCode = 201;
+		// break;
+		// case 7:
+		// ImageCode = 231;
+		// break;
+		// case 8:
+		// ImageCode = 261;
+		// break;
+		// case 9:
+		// ImageCode = 361;
+		// break;
+		// case 10:
+		// ImageCode = 391;
+		// break;
+		// case 11:
+		// ImageCode = 421;
+		// break;
+		// case 12:
+		// ImageCode = 471;
+		// break;
+		// case 13:
+		// ImageCode = 501;
+		// break;
+		// case 14:
+		// ImageCode = 531;
+		// break;
+		// case 15:
+		// ImageCode = 561;
+		// break;
+		// case 16:
+		// ImageCode = 591;
+		// break;
+		// case 17:
+		// ImageCode = 621;
+		// break;
+		// case 18:
+		// ImageCode = 671;
+		// break;
+		// case 19:
+		// ImageCode = 701;
+		// break;
+		// case 20:
+		// ImageCode = 751;
+		// break;
+		// case 21:
+		// ImageCode = 781;
+		// break;
+		// case 22:
+		// ImageCode = 831;
+		// break;
+		// case 23:
+		// ImageCode = 861;
+		// break;
+		// case 24:
+		// ImageCode = 891;
+		// break;
+		// case 25:
+		// ImageCode = 921;
+		// break;
+		// case 26:
+		// ImageCode = 971;
+		// break;
+		// case 27:
+		// ImageCode = 1021;
+		// break;
+		// case 28:
+		// ImageCode = 1071;
+		// break;
+		// case 29:
+		// ImageCode = 1121;
+		// break;
+		// case 30:
+		// ImageCode = 1171;
+		// break;
+		// case 31:
+		// ImageCode = 1201;
+		// break;
+		// case 0:
+		// ImageCode = 1251;
+		// break;
+		// case 2:
+		// ImageCode = 1351;
+		// break;
+		// default:
+		// }
+		//
+		// }
+
 	}
 
 	private void findView() {
@@ -1032,9 +1033,10 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 
 				boolean IsEmptyByte = util.IsEmptyByteArrayImage(output);
 				if (IsEmptyByte == false) {
-					
-					util.CreateFile(output, anadItem.getId(), "Mechanical", "Anad", "anad", "Anad");
-//					dbAdapter.updateImageAnad(anad, output);
+
+					util.CreateFile(output, anadItem.getId(), "Mechanical",
+							"Anad", "anad", "Anad");
+					// dbAdapter.updateImageAnad(anad, output);
 
 					ServiceComm serv = new ServiceComm(getActivity());
 
@@ -1047,9 +1049,8 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 					typeItem = "Anad";
 
 				}
-			}else
-			{
-				
+			} else {
+
 			}
 
 		}
@@ -1100,64 +1101,62 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 			dbAdapter.open();
 			dbAdapter.UpdateImageServerDate(anadItem.getId(), "Anad", output);
 
-			//anadlist = dbAdapter.getAnadtByTypeIdProId(provinceId);
+			// anadlist = dbAdapter.getAnadtByTypeIdProId(provinceId);
 
-//			Anad anadItem;
-//			byte[] imageAnad;
+			// Anad anadItem;
+			// byte[] imageAnad;
 			boolean allowShow = true;
-//			int objId;
+			// int objId;
 
+			if (anadItem.getDate() == null)
+				anadItem.setDate("20150000000000");
 
-				if (anadItem.getDate() == null)
-					anadItem.setDate("20150000000000")  ;
+			int AnadYear = Integer.valueOf(anadItem.getDate().substring(0, 4));
+			int thisYear = Integer.valueOf(serverDate.substring(0, 4));
 
-				int AnadYear = Integer.valueOf(anadItem.getDate().substring(0, 4));
-				int thisYear = Integer.valueOf(serverDate.substring(0, 4));
+			if (thisYear < AnadYear + 1)
+				allowShow = true;
+			else
+				allowShow = false;
 
-				if (thisYear < AnadYear + 1)
-					allowShow = true;
-				else
-					allowShow = false;
+			if (allowShow == false) {
+				Toast.makeText(getActivity(),
+						" آگهی شماره " + anadItem.getDate() + "منقضی شده است",
+						0).show();
+				dbAdapter.open();
+				dbAdapter.UpdateAnadToDb(anadItem.getId(), -1, "", -1,
+						provinceId);
+				dbAdapter.close();
 
-				if (allowShow == false) {
-					Toast.makeText(getActivity(),
-							" آگهی شماره " + anadItem.getDate() + "منقضی شده است", 0)
-							.show();
-					dbAdapter.open();
-					dbAdapter.UpdateAnadToDb(anadItem.getId(), -1, "", -1, provinceId);
-					dbAdapter.close();
+			} else {
+				if (anadItem.getImagePath() != null) {
+					if (getActivity() != null) {
+						imageButton = new ImageView(getActivity());
 
-				} else {
-					if (anadItem.getImagePath() != null) {
-						if (getActivity() != null) {
-							imageButton = new ImageView(getActivity());
-
-							imageButton.setImageBitmap(BitmapFactory
-									.decodeFile(anadItem.getImagePath()));
-						}
-					} else {
-						if (getActivity() != null) {
-							imageButton = new ImageView(getActivity());
-
-							Drawable image = this.getResources().getDrawable(
-									R.drawable.propagand);
-
-							imageButton.setImageDrawable(image);
-						}
+						imageButton.setImageBitmap(BitmapFactory
+								.decodeFile(anadItem.getImagePath()));
 					}
+				} else {
+					if (getActivity() != null) {
+						imageButton = new ImageView(getActivity());
 
-					imageButton.setLayoutParams(layoutParams);
-					imageButton.setScaleType(ScaleType.FIT_XY);
-					verticalOuterLayout.addView(imageButton);
+						Drawable image = this.getResources().getDrawable(
+								R.drawable.propagand);
 
-//					ImageCode++;
-//					icode++;
-					counterAnad++;
-					getAnadImageFromServer(anadlist, counterAnad);
-
+						imageButton.setImageDrawable(image);
+					}
 				}
 
-			
+				imageButton.setLayoutParams(layoutParams);
+				imageButton.setScaleType(ScaleType.FIT_XY);
+				verticalOuterLayout.addView(imageButton);
+
+				// ImageCode++;
+				// icode++;
+				counterAnad++;
+				getAnadImageFromServer(anadlist, counterAnad);
+
+			}
 
 			dbAdapter.close();
 

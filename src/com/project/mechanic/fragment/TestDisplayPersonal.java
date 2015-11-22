@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +23,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,8 +68,7 @@ public class TestDisplayPersonal extends Fragment implements GetAsyncInterface,
 
 	TextView txtaddress, txtcellphone, txtphone, txtemail, txtname, txtfax,
 			txtdate;
-	LinearLayout lin2;
-
+	TextView txtEdit, txtBirthday;
 	LinearLayout.LayoutParams lp1;
 	RelativeLayout.LayoutParams editBtnParams, paramsLayout;
 
@@ -90,14 +91,16 @@ public class TestDisplayPersonal extends Fragment implements GetAsyncInterface,
 		// get User
 		CurrentUser();
 
+		setFont();
+
 		// set data for expandListView
 		FillExpandListView();
 
-		// set LauoutParams
-		setLayoutParams();
-
 		// setValue for Parameter and variable
 		setValue();
+
+		// set LauoutParams
+		setLayoutParams();
 
 		// on click action
 		onClick();
@@ -190,14 +193,14 @@ public class TestDisplayPersonal extends Fragment implements GetAsyncInterface,
 		ArrayList<String> parentItems = new ArrayList<String>();
 
 		// Expandview.setDividerHeight(20);
-		
-//		Drawable d = getResources().getDrawable(R.drawable.indicator_expandable);
-//		Expandview.setIndicatorBounds(345,375);
 
-//		Expandview.setGroupIndicator(d);
+		// Drawable d =
+		// getResources().getDrawable(R.drawable.indicator_expandable);
+		// Expandview.setIndicatorBounds(345,375);
 
+		// Expandview.setGroupIndicator(d);
 
-		 Expandview.setGroupIndicator(null);
+		Expandview.setGroupIndicator(null);
 		Expandview.setClickable(true);
 
 		parentItems.add("مدیریت صفحات");
@@ -244,54 +247,19 @@ public class TestDisplayPersonal extends Fragment implements GetAsyncInterface,
 		txtfax = (TextView) header.findViewById(R.id.fax);
 
 		img = (ImageView) header.findViewById(R.id.img1);
-//		img.setVisibility(View.GONE);
 		logout = (ImageView) header.findViewById(R.id.logout);
 
 		btnedit = (RelativeLayout) header.findViewById(R.id.btnedit);
-		btnedit.setVisibility(View.GONE);
 
-		birthDayUsers = (RelativeLayout) header
-				.findViewById(R.id.birthdayUsers);
-		birthDayUsers.setVisibility(View.GONE);
+		birthDayUsers = (RelativeLayout) header.findViewById(R.id.b);
 
 		txtdate = (TextView) header.findViewById(R.id.txtdate);
 		txtdate.setVisibility(View.GONE);
 
-		lin2 = (LinearLayout) header.findViewById(R.id.lin2);
 		Expandview.addHeaderView(header);
-		
-		
-		////////////
-		
-		TextView l1 = (TextView) header.findViewById(R.id.labb1);
-		TextView l2 = (TextView) header.findViewById(R.id.tst);
-		TextView l3 = (TextView) header.findViewById(R.id.name);
-		
-		TextView textView6 = (TextView) header.findViewById(R.id.textView6);
-		TextView textView8 = (TextView) header.findViewById(R.id.textView8);
-		TextView textView4 = (TextView) header.findViewById(R.id.textView4);
-		TextView textView10 = (TextView) header.findViewById(R.id.textView10);
-		TextView textView12 = (TextView) header.findViewById(R.id.textView12);
 
-		
-		l1.setTypeface(util.SetFontCasablanca());
-		l2.setTypeface(util.SetFontCasablanca());
-		l3.setTypeface(util.SetFontCasablanca());
-
-		txtaddress.setTypeface(util.SetFontCasablanca());
-		txtcellphone.setTypeface(util.SetFontCasablanca());
-		txtphone.setTypeface(util.SetFontCasablanca());
-		txtemail.setTypeface(util.SetFontCasablanca());
-		txtname.setTypeface(util.SetFontCasablanca());
-		txtfax.setTypeface(util.SetFontCasablanca());
-		
-		textView6.setTypeface(util.SetFontCasablanca());
-		textView8.setTypeface(util.SetFontCasablanca());
-		textView4.setTypeface(util.SetFontCasablanca());
-		textView10.setTypeface(util.SetFontCasablanca());
-		textView12.setTypeface(util.SetFontCasablanca());
-
-		/////////////////
+		txtEdit = (TextView) header.findViewById(R.id.labb1);
+		txtBirthday = (TextView) header.findViewById(R.id.tst);
 
 	}
 
@@ -307,30 +275,68 @@ public class TestDisplayPersonal extends Fragment implements GetAsyncInterface,
 
 	private void setLayoutParams() {
 
-		// imageProfile LayoutParams
+		RelativeLayout.LayoutParams f1 = new RelativeLayout.LayoutParams(
+				phoneLayout.getLayoutParams());
+		RelativeLayout.LayoutParams f2 = new RelativeLayout.LayoutParams(
+				mobileLayout.getLayoutParams());
+		RelativeLayout.LayoutParams f3 = new RelativeLayout.LayoutParams(
+				emailLayout.getLayoutParams());
+		RelativeLayout.LayoutParams f4 = new RelativeLayout.LayoutParams(
+				faxLayout.getLayoutParams());
+		RelativeLayout.LayoutParams f5 = new RelativeLayout.LayoutParams(
+				AddressLayout.getLayoutParams());
 
-		lp1 = new LinearLayout.LayoutParams(lin2.getLayoutParams());
-		lp1.width = util.getScreenwidth() / 5;
-		lp1.height = util.getScreenwidth() / 5;
-		img.setLayoutParams(lp1);
+		f1.width = util.getScreenwidth();
+		f1.height = LayoutParams.WRAP_CONTENT;
+		f1.setMargins(50, 0, 50, 0);
+		f1.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		f1.addRule(RelativeLayout.BELOW, R.id.textView6);
 
-		// Edit button LayoutParams
+		f2.width = util.getScreenwidth();
+		f2.height = LayoutParams.WRAP_CONTENT;
+		f2.setMargins(50, 0, 50, 0);
+		f2.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		f2.addRule(RelativeLayout.BELOW, R.id.textView8);
 
-		editBtnParams = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
-		editBtnParams.width = util.getScreenwidth() / 3;
-		editBtnParams.setMargins(5, 5, 5, 5);
-		editBtnParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		editBtnParams.addRule(RelativeLayout.BELOW, R.id.lin2);
-		btnedit.setLayoutParams(editBtnParams);
+		f3.width = util.getScreenwidth();
+		f3.height = LayoutParams.WRAP_CONTENT;
+		f3.setMargins(50, 0, 50, 0);
+		f3.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		f3.addRule(RelativeLayout.BELOW, R.id.textView4);
 
-		// birthDayUser Button LayoutParams
+		f4.width = util.getScreenwidth();
+		f4.height = LayoutParams.WRAP_CONTENT;
+		f4.setMargins(50, 0, 50, 0);
+		f4.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		f4.addRule(RelativeLayout.BELOW, R.id.textView10);
 
-		paramsLayout = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
-		paramsLayout.width = util.getScreenwidth() / 3;
-		paramsLayout.setMargins(5, 0, 5, 5);
-		paramsLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		paramsLayout.addRule(RelativeLayout.BELOW, R.id.btnedit);
-		birthDayUsers.setLayoutParams(paramsLayout);
+		f5.width = util.getScreenwidth();
+		f5.height = LayoutParams.WRAP_CONTENT;
+		f5.setMargins(50, 0, 50, 0);
+		f5.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		f5.addRule(RelativeLayout.BELOW, R.id.textView12);
+
+		ImageView l11 = (ImageView) header.findViewById(R.id.i1);
+		ImageView l22 = (ImageView) header.findViewById(R.id.i2);
+		ImageView l33 = (ImageView) header.findViewById(R.id.i3);
+		ImageView l44 = (ImageView) header.findViewById(R.id.i4);
+		ImageView l55 = (ImageView) header.findViewById(R.id.i5);
+
+		l11.setLayoutParams(f1);
+		l22.setLayoutParams(f2);
+		l33.setLayoutParams(f3);
+		l44.setLayoutParams(f4);
+		l55.setLayoutParams(f5);
+
+		LinearLayout imageLinear = (LinearLayout) header
+				.findViewById(R.id.imageLinear);
+
+		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+				imageLinear.getLayoutParams());
+		llp.width = (int) (util.getScreenwidth() / 4.5);
+		llp.height = (int) (util.getScreenwidth() / 4.5);
+
+		img.setLayoutParams(llp);
 
 	}
 
@@ -340,7 +346,8 @@ public class TestDisplayPersonal extends Fragment implements GetAsyncInterface,
 		if (ImagePath != null) {
 			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
 			img.setImageBitmap(Utility.getclip(bmp));
-		}
+		} else
+			img.setBackgroundResource(R.drawable.no_img_profile);
 
 		String name = currentUser.getName();
 		String email = currentUser.getEmail();
@@ -445,6 +452,20 @@ public class TestDisplayPersonal extends Fragment implements GetAsyncInterface,
 
 			}
 		});
+
+	}
+
+	private void setFont() {
+
+		txtEdit.setTypeface(util.SetFontCasablanca());
+		txtBirthday.setTypeface(util.SetFontCasablanca());
+
+		txtaddress.setTypeface(util.SetFontCasablanca());
+		txtcellphone.setTypeface(util.SetFontCasablanca());
+		txtphone.setTypeface(util.SetFontCasablanca());
+		txtemail.setTypeface(util.SetFontCasablanca());
+		txtname.setTypeface(util.SetFontCasablanca());
+		txtfax.setTypeface(util.SetFontCasablanca());
 
 	}
 }

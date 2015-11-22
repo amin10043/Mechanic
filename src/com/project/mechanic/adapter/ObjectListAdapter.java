@@ -79,10 +79,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 		convertView = myInflater.inflate(R.layout.row_object, parent, false);
 
-		// Animation animation = AnimationUtils.loadAnimation(getContext(),
-		// (position > lastPosition) ? R.anim.up_from_bottom
-		// : R.anim.down_from_top);
-		// convertView.startAnimation(animation);
+		
 		lastPosition = position;
 
 		final TextView txt1 = (TextView) convertView
@@ -106,14 +103,15 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 				.findViewById(R.id.icon_object);
 
 		RelativeLayout rl = (RelativeLayout) convertView
-				.findViewById(R.id.main_icon_reply);
+				.findViewById(R.id.propertiesObject);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				rl.getLayoutParams());
 
 		lp.width = (util.getScreenwidth() / 4);
 		lp.height = (util.getScreenwidth() / 4);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		lp.setMargins(5, 0, 0, 0);
+		lp.addRule(RelativeLayout.CENTER_VERTICAL);
+		lp.setMargins(10, 10, 10, 10);
 
 		String pathProfile = person.getImagePath2();
 
@@ -121,7 +119,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 		if (profileImage != null) {
 
-			profileIco.setImageBitmap(profileImage);
+			profileIco.setImageBitmap(Utility.getclip(profileImage));
 			profileIco.setLayoutParams(lp);
 			LoadingProgress.setVisibility(View.GONE);
 
@@ -132,36 +130,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		if (IsShow == false)
 			LoadingProgress.setVisibility(View.GONE);
 
-		followLayout = (RelativeLayout) convertView
-				.findViewById(R.id.propertiesObject);
-		// visitLayout = (RelativeLayout)
-		// convertView.findViewById(R.id.relativeLayout2);
 
-		paramsfollow = new RelativeLayout.LayoutParams(
-				followLayout.getLayoutParams());
-		paramsVisit = new RelativeLayout.LayoutParams(
-				followLayout.getLayoutParams());
-
-		paramsfollow.width = (util.getScreenwidth());
-		paramsfollow.height = (util.getScreenwidth() / 4);
-		paramsfollow.addRule(RelativeLayout.LEFT_OF, R.id.icon_object);
-
-		paramsVisit.width = (util.getScreenwidth() / 16);
-		paramsVisit.height = (util.getScreenwidth() / 16);
-		paramsVisit.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-
-		ImageView followIcon = (ImageView) convertView
-				.findViewById(R.id.iconNumberLike);
-		ImageView visitIcon = (ImageView) convertView
-				.findViewById(R.id.iconNumberVisit);
-
-		followLayout.setLayoutParams(paramsfollow);
-
-		followIcon.setLayoutParams(paramsVisit);
-		visitIcon.setLayoutParams(paramsVisit);
-
-		TextView baghiMandeh = (TextView) convertView
-				.findViewById(R.id.dayBaghiMandeh); // modate baghimande
 
 		String commitDate = person.getDate(); // tarikhe ijad safhe
 		final SharedPreferences currentTime = context.getSharedPreferences(

@@ -175,7 +175,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 		} else {
 			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
-				LikeTitle.setBackgroundResource(R.drawable.like_froum);
+				LikeTitle.setBackgroundResource(R.drawable.like_froum_on);
 			} else
 				LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
 		}
@@ -186,9 +186,12 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
+		lp.width = util.getScreenwidth() / 4;
+		lp.height = util.getScreenwidth() / 4;
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		lp.addRule(RelativeLayout.CENTER_VERTICAL);
+		lp.setMargins(10, 10, 10, 10);
+
 		if (x != null) {
 
 			if (x.getImagePath() == null) {
@@ -200,8 +203,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				// // byte[] byteImg = x.getImage();
 				Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
 				if (bmp != null)
-					profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(
-							bmp, 20));
+					profileImg.setImageBitmap(Utility.getclip(bmp));
 
 				profileImg.setLayoutParams(lp);
 			}
@@ -239,7 +241,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				} else {
 
 					LinearLayout parentlayout = (LinearLayout) v;
-					LinearLayout parent = (LinearLayout) parentlayout
+					RelativeLayout parent = (RelativeLayout) parentlayout
 							.getParent().getParent();
 					int id = ((Integer) parent.getTag());
 					froumNumber = id;
@@ -264,8 +266,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 
 				// final int ItemId ;
 				final String t;
-				ListView listView = (ListView) v.getParent().getParent()
-						.getParent().getParent();
+				ListView listView = (ListView) v.getParent().getParent().getParent();
 				int position = listView.getPositionForView(v);
 				Froum f = getItem(position);
 				if (f != null) {
@@ -534,7 +535,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements
 				adapter.insertLikeInFroumToDb(id, CurrentUser.getId(),
 						froumNumber, serverDate, 0);
 
-				likeTitle.setBackgroundResource(R.drawable.like_froum);
+				likeTitle.setBackgroundResource(R.drawable.like_froum_on);
 			}
 
 			TextView likeCountFroum = (TextView) likeTitle

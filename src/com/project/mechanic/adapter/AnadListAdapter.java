@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -105,7 +106,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 
 		TextView txtdate = (TextView) convertView
 				.findViewById(R.id.text_favorite_desc);
-		TextView txtName = (TextView) convertView
+		final TextView txtName = (TextView) convertView
 				.findViewById(R.id.row_favorite_title);
 		TextView txtDesc = (TextView) convertView
 				.findViewById(R.id.row_anad_txt2);
@@ -128,14 +129,17 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 
 		}
 
-		RelativeLayout llkj = (RelativeLayout) convertView
-				.findViewById(R.id.layoutmnb);
-		layoutParams = new RelativeLayout.LayoutParams(llkj.getLayoutParams());
+		FrameLayout llkj = (FrameLayout) convertView
+				.findViewById(R.id.imageFrame);
+
+		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+				llkj.getLayoutParams());
+		
 		layoutParams.width = util.getScreenwidth() / 5;
 		layoutParams.height = util.getScreenwidth() / 5;
-		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		layoutParams.setMargins(1, 1, 1, 1);
+		//layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		//layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		layoutParams.setMargins(10, 10, 10, 10);
 
 		String pathProfile = tempItem.getImagePath();
 		Bitmap profileImage = BitmapFactory.decodeFile(pathProfile);
@@ -158,7 +162,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 		int TicketDay = Integer.valueOf(commitDate.substring(0, 8));
 		if (DateTime != null && !DateTime.equals(""))
 			thisDay = Integer.valueOf(DateTime.substring(0, 8));
-		LinearLayout TicketBackground = (LinearLayout) convertView
+		RelativeLayout TicketBackground = (RelativeLayout) convertView
 				.findViewById(R.id.backgroundTicket);
 
 		if (thisDay <= TicketDay + tempItem.getDay()) {
@@ -195,8 +199,8 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 			public void onClick(View v) {
 
 				RelativeLayout parentlayout = (RelativeLayout) v.getParent();
-				TextView txtName = (TextView) parentlayout
-						.findViewById(R.id.row_favorite_title);
+//				TextView txtName = (TextView) parentlayout
+//						.findViewById(R.id.row_favorite_title);
 				String item = txtName.getText().toString();
 				for (Ticket Ticket : list) {
 

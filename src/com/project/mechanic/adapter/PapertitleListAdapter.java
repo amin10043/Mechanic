@@ -41,6 +41,7 @@ import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
+import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.PaperWithoutComment;
 import com.project.mechanic.fragment.PersianDate;
@@ -149,10 +150,10 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
+		lp.width = util.getScreenwidth() / 4;
+		lp.height = util.getScreenwidth() / 4;
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		lp.setMargins(5, 5, 5, 5);
+		lp.setMargins(10, 10, 10, 10);
 
 		if (x != null) {
 			String ImagePath = x.getImagePath();
@@ -165,8 +166,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				// byte[] byteImg = x.getImage();
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
 				if (bmp != null)
-					iconProile.setImageBitmap(Utility.getRoundedCornerBitmap(
-							bmp, 20));
+					iconProile.setImageBitmap(Utility.getclip(bmp));
 
 				iconProile.setLayoutParams(lp);
 				adapter.close();
@@ -185,7 +185,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				userId = x.getId();
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
-				DisplayPersonalInformationFragment fragment = new DisplayPersonalInformationFragment();
+				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
 				fragment.setArguments(bundle);
@@ -214,7 +214,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 		} else {
 			if (adapter.isUserLikedPaper(currentUser.getId(), paperNumber)) {
-				likePaper.setBackgroundResource(R.drawable.like_froum);
+				likePaper.setBackgroundResource(R.drawable.like_froum_on);
 			} else
 				likePaper.setBackgroundResource(R.drawable.like_froum_off);
 		}
@@ -259,7 +259,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 				final String t;
 				ListView listView = (ListView) v.getParent().getParent()
-						.getParent().getParent();
+						.getParent();
 				int position = listView.getPositionForView(v);
 				Paper p = getItem(position);
 				if (p != null) {
@@ -471,7 +471,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 			} else {
 				adapter.insertLikeInPaperToDb(currentUser.getId(), paperNumber,
 						serverDate);
-				likePaper.setBackgroundResource(R.drawable.like_froum);
+				likePaper.setBackgroundResource(R.drawable.like_froum_on);
 				NumofLike.setText(adapter.LikeInPaper_count(paperNumber)
 						.toString());
 				if (ringProgressDialog != null) {

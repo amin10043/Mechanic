@@ -18,12 +18,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -811,19 +813,29 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	private void setLayoutParams() {
 
-		profileParams = new RelativeLayout.LayoutParams(
-				profileLinear.getLayoutParams());
+		// profileParams = new RelativeLayout.LayoutParams(
+		// profileLinear.getLayoutParams());
+		
+		int marginTop = ut.getScreenwidth()-(ut.getScreenwidth() /8);
+
+		FrameLayout profileFrame = (FrameLayout) header
+				.findViewById(R.id.frameLayoutHeader);
+		FrameLayout.LayoutParams profileParams = new FrameLayout.LayoutParams(
+				profileFrame.getLayoutParams());
 
 		profileParams.height = ut.getScreenwidth() / 4;
 		profileParams.width = ut.getScreenwidth() / 4;
-		profileParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		profileParams.addRule(RelativeLayout.BELOW, R.id.namePage);
-		profileParams.setMargins(0, 10, 0, 0);
+		profileParams.gravity = Gravity.CENTER_HORIZONTAL;
+		
+//		profileParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//		profileParams.addRule(RelativeLayout.BELOW, R.id.namePage);
+		profileParams.setMargins(0, marginTop, 0, 0);
 
 		profileImage.setLayoutParams(profileParams);
 
-		headerParams = new LinearLayout.LayoutParams(
-				headImageLinear.getLayoutParams());
+		FrameLayout.LayoutParams headerParams = new FrameLayout.LayoutParams(
+				profileFrame.getLayoutParams());
+
 		headerParams.height = ut.getScreenwidth();
 		headerParams.width = ut.getScreenwidth();
 

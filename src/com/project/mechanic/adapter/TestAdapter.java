@@ -27,11 +27,14 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.PopupMenu.OnMenuItemClickListener;
@@ -120,6 +123,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 		return childPosition;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public View getChildView(int groupPosition, final int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
@@ -133,35 +137,6 @@ public class TestAdapter extends BaseExpandableListAdapter {
 					null);
 
 			// update your views here
-
-			RelativeLayout followLayout = (RelativeLayout) convertView
-					.findViewById(R.id.propertiesObject);
-			// visitLayout = (RelativeLayout)
-			// convertView.findViewById(R.id.relativeLayout2);
-
-			RelativeLayout.LayoutParams paramsfollow = new RelativeLayout.LayoutParams(
-					followLayout.getLayoutParams());
-			RelativeLayout.LayoutParams paramsVisit = new RelativeLayout.LayoutParams(
-					followLayout.getLayoutParams());
-
-			paramsfollow.width = (util.getScreenwidth());
-			paramsfollow.height = (util.getScreenwidth() / 4);
-			paramsVisit.setMargins(5, 5, 5, 5);
-			paramsfollow.addRule(RelativeLayout.LEFT_OF, R.id.icon_object);
-
-			paramsVisit.width = (util.getScreenwidth() / 16);
-			paramsVisit.height = (util.getScreenwidth() / 16);
-			paramsVisit.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-
-			ImageView followIcon = (ImageView) convertView
-					.findViewById(R.id.iconNumberLike);
-			ImageView visitIcon = (ImageView) convertView
-					.findViewById(R.id.iconNumberVisit);
-
-			followLayout.setLayoutParams(paramsfollow);
-
-			followIcon.setLayoutParams(paramsVisit);
-			visitIcon.setLayoutParams(paramsVisit);
 
 			TextView namePage = (TextView) convertView
 					.findViewById(R.id.Rowobjecttxt);
@@ -190,15 +165,17 @@ public class TestAdapter extends BaseExpandableListAdapter {
 				}
 			});
 
-			RelativeLayout rl = (RelativeLayout) convertView
-					.findViewById(R.id.main_icon_reply);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+			FrameLayout rl = (FrameLayout) convertView
+					.findViewById(R.id.imageFrame);
+			FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = (util.getScreenwidth() / 4);
-			lp.height = (util.getScreenwidth() / 4);
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 5, 5, 5);
+			lp.width = (util.getScreenwidth() / 5);
+			lp.height = (util.getScreenwidth() / 5);
+			lp.setMargins(10, 10, 10,10);
+			
+			profileIco.setScaleType(ScaleType.FIT_XY);
+			
 			profileIco.setLayoutParams(lp);
 
 			final PersonalData pd = (PersonalData) getChild(groupPosition,
@@ -220,23 +197,25 @@ public class TestAdapter extends BaseExpandableListAdapter {
 			String commitDate = pd.getDateObject(); // tarikhe ijad safhe
 
 			if (commitDate != null && !"".equals(commitDate)) {
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTimeInMillis(Long.valueOf(commitDate));
-				calendar.add(Calendar.YEAR, 1);
-
 				final SharedPreferences currentTime = context
 						.getSharedPreferences("time", 0);
 
 				String time = currentTime.getString("time", "-1");
+				
+				int diff = util.differentTwoDate(commitDate, time);
+				
+				baghiMandeh.setText(diff+"");
+				
+				
+				ImageView imgBi = (ImageView)convertView.findViewById(R.id.aks_bi_etebar);
 
-				Calendar calendarNow = Calendar.getInstance();
-				calendarNow.setTimeInMillis(Long.valueOf(time));
-
-				long start = calendar.getTimeInMillis();
-				long now = calendarNow.getTimeInMillis();
-				long diff = TimeUnit.MILLISECONDS.toDays(Math.abs(start - now));
-
-				baghiMandeh.setText(String.valueOf(diff));
+				if (diff <=0){
+					imgBi.setVisibility(View.VISIBLE);
+					imgBi.setLayoutParams(lp);
+				}
+				
+				
+				
 			} else {
 				baghiMandeh.setText("نا معلوم");
 			}
@@ -297,15 +276,21 @@ public class TestAdapter extends BaseExpandableListAdapter {
 					|| pd.getDescriptonTicket() == null) {
 				txtDesc.setVisibility(View.GONE);
 			}
-			RelativeLayout llkj = (RelativeLayout) convertView
-					.findViewById(R.id.layoutmnb);
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+			ImageView imgBi = (ImageView)convertView.findViewById(R.id.aks_bi_etebar);
+			
+			FrameLayout llkj = (FrameLayout) convertView
+					.findViewById(R.id.imageFrame);
+
+			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
 					llkj.getLayoutParams());
+
 			params.width = util.getScreenwidth() / 5;
 			params.height = util.getScreenwidth() / 5;
-			params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-			params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-			params.setMargins(5, 5, 5, 5);
+			//params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			// params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			//params.addRule(RelativeLayout.CENTER_VERTICAL);
+			params.setMargins(10, 10, 10,10);
+			
 
 			String pathProfile = pd.getImagePathTicket();
 			Bitmap profileImage = BitmapFactory.decodeFile(pathProfile);
@@ -319,6 +304,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 				// img2.setImageResource(R.drawable.no_img_profile);
 				img2.setLayoutParams(params);
 			}
+
 			String commitDate = pd.getDateTicket();
 			int thisDay = 0;
 			int TicketDay = Integer.valueOf(commitDate.substring(0, 8));
@@ -336,7 +322,11 @@ public class TestAdapter extends BaseExpandableListAdapter {
 				}
 
 			} else {
-				TicketBackground.setBackgroundResource(R.color.lightred);
+				imgBi.setVisibility(View.VISIBLE);
+				imgBi.setLayoutParams(params);
+
+				//img2.setImageResource(R.drawable.bi_etebar);
+				//TicketBackground.setBackgroundResource(R.color.lightred);
 
 				if (pd.getSeenBefore() > 0) {
 					txtName.setTextColor(Color.WHITE);
@@ -392,8 +382,8 @@ public class TestAdapter extends BaseExpandableListAdapter {
 					items.add("حذف");
 					items.add("کپی");
 
-					util.ShowPopupMenu(items, v);
-
+					PopupMenu popmenu = util.ShowPopupMenu(items, v);
+					popmenu.show();
 					// DialogLongClick dia = new DialogLongClick(context, 3, u,
 					// id, fr, t);
 					// Toast.makeText(context, id + "", 0).show();
@@ -455,7 +445,8 @@ public class TestAdapter extends BaseExpandableListAdapter {
 
 					// String[] nameItems = { "ارسال پیام", "حذف", "کپی" };
 
-					util.ShowPopupMenu(items, v);
+					PopupMenu popupmenu = util.ShowPopupMenu(items, v);
+					popupmenu.show();
 				}
 			});
 
@@ -469,18 +460,20 @@ public class TestAdapter extends BaseExpandableListAdapter {
 				DateView.setTextColor(Color.GRAY);
 
 			}
+			
+			
 
 			// Users x = adapter.getUserbyid(person1.getUserId());
 			// userId=x.getId();
-			RelativeLayout rl = (RelativeLayout) convertView
+			LinearLayout rl = (LinearLayout) convertView
 					.findViewById(R.id.topicTitleFroum);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = util.getScreenwidth() / 4;
-			lp.height = util.getScreenwidth() / 4;
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 5, 5, 5);
+			lp.width = util.getScreenwidth() / 5;
+			lp.height = util.getScreenwidth() /5;
+			//lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp.setMargins(10, 10, 10,10);
 			iconProile.setLayoutParams(lp);
 
 			Users u = null;
@@ -502,10 +495,10 @@ public class TestAdapter extends BaseExpandableListAdapter {
 				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
 				iconProile.setImageBitmap(Utility.getclip(bmp));
 
-				iconProile.setLayoutParams(lp);
+//				iconProile.setLayoutParams(lp);
 			} else {
 				iconProile.setImageResource(R.drawable.no_img_profile);
-				iconProile.setLayoutParams(lp);
+//				iconProile.setLayoutParams(lp);
 
 			}
 
@@ -572,7 +565,8 @@ public class TestAdapter extends BaseExpandableListAdapter {
 					items.add("حذف");
 					items.add("کپی");
 
-					util.ShowPopupMenu(items, v);
+					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
+					popupMenu.show();
 				}
 			});
 			final PersonalData pd = (PersonalData) getChild(groupPosition,
@@ -588,15 +582,15 @@ public class TestAdapter extends BaseExpandableListAdapter {
 
 			// Users x = adapter.getUserbyid(person1.getUserId());
 			// userId=x.getId();
-			RelativeLayout rl = (RelativeLayout) convertView
+			LinearLayout rl = (LinearLayout) convertView
 					.findViewById(R.id.topicTitleFroum);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = util.getScreenwidth() / 4;
-			lp.height = util.getScreenwidth() / 4;
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 5, 5, 5);
+			lp.width = util.getScreenwidth() / 5;
+			lp.height = util.getScreenwidth() / 5;
+			//lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp.setMargins(10, 10, 10,10);
 			iconProile.setLayoutParams(lp);
 
 			Users u = null;
@@ -656,35 +650,11 @@ public class TestAdapter extends BaseExpandableListAdapter {
 					null);
 
 			// update your views here
-
-			RelativeLayout followLayout = (RelativeLayout) convertView
-					.findViewById(R.id.propertiesObject);
-			// visitLayout = (RelativeLayout)
-			// convertView.findViewById(R.id.relativeLayout2);
-
-			RelativeLayout.LayoutParams paramsfollow = new RelativeLayout.LayoutParams(
-					followLayout.getLayoutParams());
-			RelativeLayout.LayoutParams paramsVisit = new RelativeLayout.LayoutParams(
-					followLayout.getLayoutParams());
-
-			paramsfollow.width = (util.getScreenwidth());
-			paramsfollow.height = (util.getScreenwidth() / 4);
-			paramsfollow.addRule(RelativeLayout.LEFT_OF, R.id.icon_object);
-
-			paramsVisit.width = (util.getScreenwidth() / 16);
-			paramsVisit.height = (util.getScreenwidth() / 16);
-			paramsVisit.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-
-			ImageView followIcon = (ImageView) convertView
-					.findViewById(R.id.iconNumberLike);
-			ImageView visitIcon = (ImageView) convertView
-					.findViewById(R.id.iconNumberVisit);
-
-			followLayout.setLayoutParams(paramsfollow);
-
-			followIcon.setLayoutParams(paramsVisit);
-			visitIcon.setLayoutParams(paramsVisit);
-
+			
+			
+			
+			////////////////////////
+			
 			TextView namePage = (TextView) convertView
 					.findViewById(R.id.Rowobjecttxt);
 
@@ -693,18 +663,37 @@ public class TestAdapter extends BaseExpandableListAdapter {
 
 			ImageView report = (ImageView) convertView
 					.findViewById(R.id.reportImage);
-
-			RelativeLayout rl = (RelativeLayout) convertView
-					.findViewById(R.id.main_icon_reply);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+			
+			
+			FrameLayout rl = (FrameLayout) convertView
+					.findViewById(R.id.imageFrame);
+			FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
 					rl.getLayoutParams());
 
-			lp.width = (util.getScreenwidth() / 4);
-			lp.height = (util.getScreenwidth() / 4);
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(5, 0, 0, 0);
+			lp.width = (util.getScreenwidth() / 5);
+			lp.height = (util.getScreenwidth() / 5);
+			lp.setMargins(10, 10, 10,10);
+			
+			profileIco.setScaleType(ScaleType.FIT_XY);
+			
 			profileIco.setLayoutParams(lp);
+			
+			
+			
+			
+			FrameLayout ad = (FrameLayout) convertView
+					.findViewById(R.id.imageFrame);
+			FrameLayout.LayoutParams ss = new FrameLayout.LayoutParams(
+					ad.getLayoutParams());
 
+			ss.width = (util.getScreenwidth() / 5);
+			ss.height = (util.getScreenwidth() / 5);
+			ss.setMargins(10, 10, 10,10);
+			
+			profileIco.setScaleType(ScaleType.FIT_XY);
+			
+			profileIco.setLayoutParams(ss);
+			
 			final PersonalData pd = (PersonalData) getChild(groupPosition,
 					childPosition);
 
@@ -747,7 +736,7 @@ public class TestAdapter extends BaseExpandableListAdapter {
 
 				}
 			});
-
+			
 			report.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -796,6 +785,20 @@ public class TestAdapter extends BaseExpandableListAdapter {
 
 				}
 			});
+			
+			
+			///////////////////////////////////
+			
+			
+			
+			
+	
+
+		
+			
+		
+
+
 
 		}
 

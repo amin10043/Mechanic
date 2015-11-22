@@ -58,9 +58,9 @@
     <style name="second_item_style">
         <item name="android:background">@color/shiri</item>
         <item name="android:cacheColorHint">@android:color/transparent</item>
-        <item name="android:divider">@android:color/transparent</item>
+        <item name="android:divider">@drawable/lili</item>
         <item name="android:dividerHeight">5dp</item>
-        <item name="android:listSelector">@drawable/shape_list</item>
+        <!-- <item name="android:listSelector">@drawable/shape_list</item> -->
     </style>
 
     <style name="brandStyle">
@@ -94,6 +94,12 @@
     <style name="sss">
         <item name="android:divider">#e8e8e8</item>
         <item name="android:dividerHeight">5dp</item>
+    </style>
+
+    <style name="StarRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingbar_selector</item>
+        <item name="android:minHeight">25dip</item>
+        <item name="android:maxHeight">48dip</item>
     </style>
 
 </resources>

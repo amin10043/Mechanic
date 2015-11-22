@@ -5,22 +5,24 @@
     xmlns:app1="http://schemas.android.com/apk/res/com.project.mechanic"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e9eaed" >
-  <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-    <ListView
-        android:id="@+id/lstComment"
-        style="@style/second_item_style"
+    android:background="#fff" >
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/re"
-        android:dividerHeight="10dp"
-        android:fillViewport="true" >
-    </ListView>
-        </android.support.v4.widget.SwipeRefreshLayout>
-    
+        android:layout_height="match_parent" >
+
+        <ListView
+            android:id="@+id/lstComment"
+            style="@style/second_item_style"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/re"
+            android:dividerHeight="5dp"
+            android:fillViewport="true" >
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
     <com.project.mechanic.Action.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
