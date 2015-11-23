@@ -25,5 +25,12 @@
     <color name="bl">#39619c</color>
     <color name="lightred">#f05656</color>
     <color name="header">#306098</color>
-    
+
+    <!-- main colors -->
+    <color name="orginal_red_color">#981b1f</color>
+    <color name="orginal_golden_color">#c5b158</color>
+    <color name="orginal_hard_blue_color">#1f315f</color>
+    <color name="orginal_hard_gray_color">#333333</color>
+    <color name="orginal_light_gray_color">#ebebeb</color>
+
 </resources>

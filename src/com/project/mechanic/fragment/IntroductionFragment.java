@@ -77,7 +77,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	Map<CommentInObject, List<CommentInObject>> mapCollection;
 	public RelativeLayout agency, service, sendSMS, addressRelative,
 			emailRelative, profileLinear, personPage, personPost, phone,
-			cphone, email, map;
+			cphone, email, map , shareBtn , followPage;
 	public DialogcmtInobject dialog;
 	public LinearLayout AddLike, AddComment, headImageLinear, footerLinear,
 			likePost;
@@ -107,7 +107,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	ProgressBar loadingProgressHeader, loadingProgressProfile,
 			loadingProgressFooter;
-	Button followPage, EditPage, shareBtn, ShowPostBtn, btnShowPost;
+	Button  EditPage,  ShowPostBtn, btnShowPost;
 	int userId, commentId = 0;
 
 	FloatingActionButton action;
@@ -700,7 +700,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		cphone = (RelativeLayout) header.findViewById(R.id.personalMobile);
 		map = (RelativeLayout) header.findViewById(R.id.addressRelative);
 		email = (RelativeLayout) header.findViewById(R.id.emailsRelative);
-		shareBtn = (Button) header.findViewById(R.id.shareIntroduction);
+		 shareBtn = (RelativeLayout) header.findViewById(R.id.b);
 
 		Pdf1 = (ImageButton) header.findViewById(R.id.btnPdf1_Object);
 		Pdf2 = (ImageButton) header.findViewById(R.id.btnPdf2_Object);
@@ -725,7 +725,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		loadingProgressFooter = (ProgressBar) header
 				.findViewById(R.id.footer_progress_footer);
 
-		followPage = (Button) header.findViewById(R.id.followPage);
+		followPage = (RelativeLayout) header.findViewById(R.id.follow_follow);
 		reaport = (ImageView) header.findViewById(R.id.reportImage);
 
 		action = (FloatingActionButton) Posts.findViewById(R.id.fab);
@@ -802,7 +802,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			Toast.makeText(getActivity(),
 					"userid dar database sqlite be soorat dasti 0 save shode",
 					Toast.LENGTH_LONG).show();
-			shareBtn.setLayoutParams(shareParams2);
+//			shareBtn.setLayoutParams(shareParams2);
 		} else {
 			EditPage.setVisibility(View.VISIBLE);
 			EditPage.setLayoutParams(followParams);
@@ -864,7 +864,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		shareParams.addRule(RelativeLayout.BELOW, R.id.ImgbtnEdit);
 		shareParams.setMargins(0, 10, 0, 0);
 
-		shareBtn.setLayoutParams(shareParams);
+//		shareBtn.setLayoutParams(shareParams);
 
 		shareParams2 = new RelativeLayout.LayoutParams(
 				profileLinear.getLayoutParams());
@@ -875,8 +875,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		shareParams2.addRule(RelativeLayout.BELOW, R.id.followPage);
 		shareParams2.setMargins(0, 10, 0, 0);
 
-		shareBtn.setLayoutParams(shareParams);
-		shareBtn.setTextSize(12);
+//		shareBtn.setLayoutParams(shareParams);
+//		shareBtn.setTextSize(12);
 
 		addressParams = new RelativeLayout.LayoutParams(
 				addressRelative.getLayoutParams());
@@ -914,11 +914,11 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			headerImage.setBackgroundResource(R.drawable.no_image_header);
 		if (bmpProfile != null) {
 
-			profileImage.setImageBitmap(Utility.getRoundedCornerBitmap(
-					bmpProfile, 20));
+			profileImage.setImageBitmap(Utility.getclip(bmpProfile));
 
 		} else {
-			profileImage.setBackgroundResource(R.drawable.no_img_profile);
+			profileImage.setBackgroundResource(R.drawable.circle_drawable);
+			profileImage.setImageResource(R.drawable.no_img_profile);
 
 		}
 		if (bmpfooter != null) {
