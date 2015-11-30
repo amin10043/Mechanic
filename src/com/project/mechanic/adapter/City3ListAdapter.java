@@ -52,10 +52,10 @@ public class City3ListAdapter extends ArrayAdapter<City> {
 
 		convertView = myInflater.inflate(R.layout.row_city, parent, false);
 
-		Animation animation = AnimationUtils.loadAnimation(getContext(),
-				(position > lastPosition) ? R.anim.up_from_bottom
-						: R.anim.down_from_top);
-		convertView.startAnimation(animation);
+//		Animation animation = AnimationUtils.loadAnimation(getContext(),
+//				(position > lastPosition) ? R.anim.up_from_bottom
+//						: R.anim.down_from_top);
+//		convertView.startAnimation(animation);
 		lastPosition = position;
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.RowCitytxt);

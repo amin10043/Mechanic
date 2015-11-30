@@ -20,7 +20,8 @@
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_launcher" />
+            android:background="@drawable/circle_drawable"
+            android:src="@drawable/no_img_profile" />
 
         <TextView
             android:id="@+id/rawUsernamecmttxt_cmt"

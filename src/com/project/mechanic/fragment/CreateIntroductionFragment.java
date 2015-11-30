@@ -7,32 +7,6 @@ import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
-
 import com.project.mechanic.R;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Users;
@@ -45,8 +19,30 @@ import com.project.mechanic.service.SavingImage3Picture;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
-public class CreateIntroductionFragment extends Fragment implements
-		AsyncInterface, SaveAsyncInterface {
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+public class CreateIntroductionFragment extends Fragment implements AsyncInterface, SaveAsyncInterface {
 
 	private static int RESULT_LOAD_IMAGE = 1;
 	private static int HeaderCode = 2;
@@ -58,17 +54,14 @@ public class CreateIntroductionFragment extends Fragment implements
 	final int PIC_CROP = 10;
 
 	DataBaseAdapter DBAdapter;
-	ImageButton btnSave;
+	Button btnSave;
 	ImageView btnProfile, btnHeader, btnFooter;
-	String nameValue, phoneValue, faxValue, mobileValue, emailValue,
-			addressValue, descriptionValue;
-	EditText NameEnter, phoneEnter, faxEnter, mobileEnter, emailEnter,
-			addressEnter, DescriptionEnter;
+	String nameValue, phoneValue, faxValue, mobileValue, emailValue, addressValue, descriptionValue;
+	EditText NameEnter, phoneEnter, faxEnter, mobileEnter, emailEnter, addressEnter, DescriptionEnter;
 	Fragment fragment;
 	Utility util;
-	LinearLayout headerLinear, footerLinear;
-	RelativeLayout NetworkSocial, DownloadLink, nameEditRelative, namayendegi,
-			khadamat, linearCreateProfil;
+	LinearLayout headerLinear, footerLinear , NetworkSocial, DownloadLink;
+	RelativeLayout  nameEditRelative, namayendegi, khadamat, linearCreateProfil;
 	LinearLayout.LayoutParams headerParams, footerParams;
 	RelativeLayout.LayoutParams profilParams, nameParams;
 	DialogNetworkSocial dialognetwork;
@@ -77,11 +70,9 @@ public class CreateIntroductionFragment extends Fragment implements
 
 	int mainID;
 
-	Bitmap bitmapHeader, bitmapProfil, bitmapFooter, emptyHeader, emptyProfile,
-			emptyFooter;
+	Bitmap bitmapHeader, bitmapProfil, bitmapFooter, emptyHeader, emptyProfile, emptyFooter;
 
-	public String Lfacebook, Llinkedin, Ltwitter, Lwebsite, Lgoogle,
-			Linstagram;
+	public String Lfacebook, Llinkedin, Ltwitter, Lwebsite, Lgoogle, Linstagram;
 	public String Lcatalog, Lprice, Lpdf, Lvideo;
 	Users currentUser;
 
@@ -122,33 +113,30 @@ public class CreateIntroductionFragment extends Fragment implements
 	// inInstagram;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View view = inflater.inflate(R.layout.fragment_create_introduction,
-				null);
+		View view = inflater.inflate(R.layout.fragment_create_introduction, null);
 		// Object = Integer.valueOf(getArguments().getString("I"));
 		DBAdapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
 
 		currentUser = util.getCurrentUser();
 
-		NetworkSocial = (RelativeLayout) view.findViewById(R.id.editNetwork);
-		DownloadLink = (RelativeLayout) view.findViewById(R.id.editdownload);
+		NetworkSocial = (LinearLayout) view.findViewById(R.id.editNetwork);
+		DownloadLink = (LinearLayout) view.findViewById(R.id.editdownload);
 
-		btnSave = (ImageButton) view.findViewById(R.id.btnsave);
+		btnSave = (Button) view.findViewById(R.id.btnsave);
 		btnProfile = (ImageView) view.findViewById(R.id.profile_img);
 		btnHeader = (ImageView) view.findViewById(R.id.imgvadvertise_Object);
 		btnFooter = (ImageView) view.findViewById(R.id.imgvadvertise2_Object);
 
 		NameEnter = (EditText) view.findViewById(R.id.nameInput);
-		phoneEnter = (EditText) view.findViewById(R.id.ephone);
-		faxEnter = (EditText) view.findViewById(R.id.efax);
-		mobileEnter = (EditText) view.findViewById(R.id.emobile);
-		emailEnter = (EditText) view.findViewById(R.id.eemail);
-		addressEnter = (EditText) view.findViewById(R.id.eaddress);
-		DescriptionEnter = (EditText) view
-				.findViewById(R.id.descriptionEdittext);
+		phoneEnter = (EditText) view.findViewById(R.id.editTextphone);
+		faxEnter = (EditText) view.findViewById(R.id.editTextfax);
+		mobileEnter = (EditText) view.findViewById(R.id.editTextmob);
+		emailEnter = (EditText) view.findViewById(R.id.editTextemail);
+		addressEnter = (EditText) view.findViewById(R.id.editTextaddres);
+		DescriptionEnter = (EditText) view.findViewById(R.id.descriptionEdittext);
 
 		namayendegi = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
 		khadamat = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
@@ -161,8 +149,7 @@ public class CreateIntroductionFragment extends Fragment implements
 
 		/* ********** start: come from create object fragment ********** */
 
-		SharedPreferences sendToCreate = getActivity().getSharedPreferences(
-				"Id", 0);
+		SharedPreferences sendToCreate = getActivity().getSharedPreferences("Id", 0);
 		MainObjectId = sendToCreate.getInt("MainObjectId", -1);
 		CityId = sendToCreate.getInt("CityId", -1);
 		objectId = sendToCreate.getInt("objectId", -1);
@@ -171,69 +158,67 @@ public class CreateIntroductionFragment extends Fragment implements
 
 		/* ********** end: come from create of object fragment ********** */
 
-		/* ********** start: come from create of main brand fragment ********** */
-		SharedPreferences sendParentID = getActivity().getSharedPreferences(
-				"Id", 0);
+		/*
+		 * ********** start: come from create of main brand fragment **********
+		 */
+		SharedPreferences sendParentID = getActivity().getSharedPreferences("Id", 0);
 		parentId = sendParentID.getInt("ParentId", -1);
 		mainItem = sendParentID.getInt("mainObject", -1);
 
 		objectIdItem1 = sendParentID.getInt("objectId", -1);
-		Toast.makeText(
-				getActivity(),
-				" parentId recieve = " + parentId + "\n mainObjectId = "
-						+ mainItem, Toast.LENGTH_SHORT).show();
+//		Toast.makeText(getActivity(), " parentId recieve = " + parentId + "\n mainObjectId = " + mainItem,
+//				Toast.LENGTH_SHORT).show();
 
 		/* ********** end: come from create of main brand fragment ********** */
 
 		/* ********** start: come from main fragment ********** */
-		SharedPreferences sendData = getActivity()
-				.getSharedPreferences("Id", 0);
+		SharedPreferences sendData = getActivity().getSharedPreferences("Id", 0);
 		mainID = sendData.getInt("main_Id", -1);
 
 		/* ********** end: come from main fragment ********** */
 
-		linearCreateProfil = (RelativeLayout) view
-				.findViewById(R.id.linearCreateProfil);
+		linearCreateProfil = (RelativeLayout) view.findViewById(R.id.linearCreateProfil);
 
 		headerLinear = (LinearLayout) view.findViewById(R.id.headerLinear);
 		footerLinear = (LinearLayout) view.findViewById(R.id.footerlinears);
 
-		profilParams = new RelativeLayout.LayoutParams(
-				linearCreateProfil.getLayoutParams());
+		profilParams = new RelativeLayout.LayoutParams(linearCreateProfil.getLayoutParams());
 		profilParams.width = (util.getScreenwidth() / 5);
 		profilParams.height = (util.getScreenwidth() / 5);
-		profilParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		profilParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-		headerParams = new LinearLayout.LayoutParams(
-				headerLinear.getLayoutParams());
+		headerParams = new LinearLayout.LayoutParams(headerLinear.getLayoutParams());
 		headerParams.height = util.getScreenwidth();
 		headerParams.width = util.getScreenwidth();
 
-		footerParams = new LinearLayout.LayoutParams(
-				footerLinear.getLayoutParams());
+		footerParams = new LinearLayout.LayoutParams(footerLinear.getLayoutParams());
 		footerParams.height = util.getScreenwidth();
 		footerParams.width = util.getScreenwidth();
 
-		nameParams = new RelativeLayout.LayoutParams(
-				linearCreateProfil.getLayoutParams());
-		nameParams.width = util.getScreenwidth() / 3;
+		
+		RelativeLayout nameLayout = (RelativeLayout)view.findViewById(R.id.namelayout);
+		
+		nameParams = new RelativeLayout.LayoutParams(nameLayout.getLayoutParams());
+		nameParams.width = util.getScreenwidth() / 2;
 		nameParams.height = util.getScreenwidth() / 10;
+		nameParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		nameParams.addRule(RelativeLayout.BELOW , R.id.profile_img);
 
 		RelativeLayout.LayoutParams edittextParams = new RelativeLayout.LayoutParams(
 				(int) (util.getScreenwidth() / 1.8), LayoutParams.WRAP_CONTENT);
 		edittextParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		edittextParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-		phoneEnter.setLayoutParams(edittextParams);
-		faxEnter.setLayoutParams(edittextParams);
-		mobileEnter.setLayoutParams(edittextParams);
-		emailEnter.setLayoutParams(edittextParams);
-		addressEnter.setLayoutParams(edittextParams);
+//		phoneEnter.setLayoutParams(edittextParams);
+//		faxEnter.setLayoutParams(edittextParams);
+//		mobileEnter.setLayoutParams(edittextParams);
+//		emailEnter.setLayoutParams(edittextParams);
+//		addressEnter.setLayoutParams(edittextParams);
 
 		btnHeader.setLayoutParams(headerParams);
 		btnProfile.setLayoutParams(profilParams);
 		btnFooter.setLayoutParams(headerParams);
-		// NameEnter.setLayoutParams(nameParams);
+		 NameEnter.setLayoutParams(nameParams);
 
 		if (mainID != 1) {
 			checkAgency.setVisibility(View.GONE);
@@ -243,23 +228,19 @@ public class CreateIntroductionFragment extends Fragment implements
 		String state = Environment.getExternalStorageState();
 
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			mFileTemp = new File(Environment.getExternalStorageDirectory(),
-					TEMP_PHOTO_FILE_NAME);
+			mFileTemp = new File(Environment.getExternalStorageDirectory(), TEMP_PHOTO_FILE_NAME);
 		} else {
-			mFileTemp = new File(getActivity().getFilesDir(),
-					TEMP_PHOTO_FILE_NAME);
+			mFileTemp = new File(getActivity().getFilesDir(), TEMP_PHOTO_FILE_NAME);
 		}
 
 		btnProfile.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				Intent i = new Intent(
-						Intent.ACTION_PICK,
+				Intent i = new Intent(Intent.ACTION_PICK,
 						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-				getActivity().startActivityFromFragment(
-						CreateIntroductionFragment.this, i, RESULT_LOAD_IMAGE);
+				getActivity().startActivityFromFragment(CreateIntroductionFragment.this, i, RESULT_LOAD_IMAGE);
 			}
 		});
 
@@ -271,7 +252,7 @@ public class CreateIntroductionFragment extends Fragment implements
 						CreateIntroductionFragment.this, getActivity(),
 						R.layout.dialog_network_social);
 				dialognetwork.setTitle("ویرایش  لینک های شبکه های اجتماعی");
-				dialognetwork.show();
+				util.setSizeDialog(dialognetwork);
 
 			}
 		});
@@ -280,11 +261,10 @@ public class CreateIntroductionFragment extends Fragment implements
 
 			@Override
 			public void onClick(View arg0) {
-				dialogDownload = new DialogLinkDownload(
-						CreateIntroductionFragment.this, getActivity(),
+				dialogDownload = new DialogLinkDownload(CreateIntroductionFragment.this, getActivity(),
 						R.layout.dialog_download_link);
 				dialogDownload.setTitle("ویرایش لینک های دانلود");
-				dialogDownload.show();
+				util.setSizeDialog(dialogDownload);
 			}
 		});
 
@@ -292,12 +272,10 @@ public class CreateIntroductionFragment extends Fragment implements
 
 			@Override
 			public void onClick(View arg0) {
-				Intent i = new Intent(
-						Intent.ACTION_PICK,
+				Intent i = new Intent(Intent.ACTION_PICK,
 						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-				getActivity().startActivityFromFragment(
-						CreateIntroductionFragment.this, i, HeaderCode);
+				getActivity().startActivityFromFragment(CreateIntroductionFragment.this, i, HeaderCode);
 			}
 		});
 
@@ -305,20 +283,16 @@ public class CreateIntroductionFragment extends Fragment implements
 
 			@Override
 			public void onClick(View arg0) {
-				Intent i = new Intent(
-						Intent.ACTION_PICK,
+				Intent i = new Intent(Intent.ACTION_PICK,
 						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-				getActivity().startActivityFromFragment(
-						CreateIntroductionFragment.this, i, FooterCode);
+				getActivity().startActivityFromFragment(CreateIntroductionFragment.this, i, FooterCode);
 			}
 		});
 
-		if (btnHeader.getDrawable() == null & btnProfile.getDrawable() == null
-				& btnFooter.getDrawable() == null)
+		if (btnHeader.getDrawable() == null & btnProfile.getDrawable() == null & btnFooter.getDrawable() == null)
 
-			Toast.makeText(getActivity(), "Empty Bitmap", Toast.LENGTH_SHORT)
-					.show();
+//			Toast.makeText(getActivity(), "Empty Bitmap", Toast.LENGTH_SHORT).show();
 
 		btnSave.setOnClickListener(new OnClickListener() {
 
@@ -339,11 +313,10 @@ public class CreateIntroductionFragment extends Fragment implements
 					ObjectBrandTypeId = 2;
 
 				if (btnHeader.getDrawable() != null) {
-					bitmapHeader = ((BitmapDrawable) btnHeader.getDrawable())
-							.getBitmap();
+					bitmapHeader = ((BitmapDrawable) btnHeader.getDrawable()).getBitmap();
 
-					emptyHeader = Bitmap.createBitmap(bitmapHeader.getWidth(),
-							bitmapHeader.getHeight(), bitmapHeader.getConfig());
+					emptyHeader = Bitmap.createBitmap(bitmapHeader.getWidth(), bitmapHeader.getHeight(),
+							bitmapHeader.getConfig());
 
 					byteHeader = Utility.CompressBitmap(bitmapHeader);
 
@@ -352,22 +325,20 @@ public class CreateIntroductionFragment extends Fragment implements
 				}
 
 				if (btnProfile.getDrawable() != null) {
-					bitmapProfil = ((BitmapDrawable) btnProfile.getDrawable())
-							.getBitmap();
+					bitmapProfil = ((BitmapDrawable) btnProfile.getDrawable()).getBitmap();
 
-					emptyProfile = Bitmap.createBitmap(bitmapProfil.getWidth(),
-							bitmapProfil.getHeight(), bitmapProfil.getConfig());
+					emptyProfile = Bitmap.createBitmap(bitmapProfil.getWidth(), bitmapProfil.getHeight(),
+							bitmapProfil.getConfig());
 					byteProfil = Utility.CompressBitmap(bitmapProfil);
 					f2 = true;
 
 				}
 
 				if (btnFooter.getDrawable() != null) {
-					bitmapFooter = ((BitmapDrawable) btnFooter.getDrawable())
-							.getBitmap();
+					bitmapFooter = ((BitmapDrawable) btnFooter.getDrawable()).getBitmap();
 
-					emptyFooter = Bitmap.createBitmap(bitmapFooter.getWidth(),
-							bitmapFooter.getHeight(), bitmapFooter.getConfig());
+					emptyFooter = Bitmap.createBitmap(bitmapFooter.getWidth(), bitmapFooter.getHeight(),
+							bitmapFooter.getConfig());
 
 					byteFooter = Utility.CompressBitmap(bitmapFooter);
 
@@ -375,11 +346,9 @@ public class CreateIntroductionFragment extends Fragment implements
 
 				}
 
-				if (bitmapHeader == null & bitmapProfil == null
-						& bitmapFooter == null)
+				if (bitmapHeader == null & bitmapProfil == null & bitmapFooter == null)
 
-					Toast.makeText(getActivity(), "Empty ByteArray",
-							Toast.LENGTH_SHORT).show();
+//					Toast.makeText(getActivity(), "Empty ByteArray", Toast.LENGTH_SHORT).show();
 
 				// final byte[] byteHeader = getBitmapAsByteArray(bitmapHeader);
 				// final byte[] byteProfil = getBitmapAsByteArray(bitmapProfil);
@@ -394,33 +363,28 @@ public class CreateIntroductionFragment extends Fragment implements
 				descriptionValue = DescriptionEnter.getText().toString();
 
 				if (nameValue.equals("")) {
-					Toast.makeText(getActivity(),
-							"پر کردن فیلد نام اجباری است", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(getActivity(), "پر کردن فیلد نام اجباری است", Toast.LENGTH_SHORT).show();
 
 				}
 
-				else if (phoneValue.equals("") && mobileValue.equals("")
-						& emailValue.equals("") && faxValue.equals("")) {
+				else if (phoneValue.equals("") && mobileValue.equals("") & emailValue.equals("")
+						&& faxValue.equals("")) {
 
-					Toast.makeText(getActivity(),
-							"پر کردن حداقل یکی از فیلدهای تماس الزامی است",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "پر کردن حداقل یکی از فیلدهای تماس الزامی است", Toast.LENGTH_SHORT)
+							.show();
 				} else {
 					date = new ServerDate(getActivity());
 					date.delegate = CreateIntroductionFragment.this;
 					date.execute("");
 
-					ringProgressDialog = ProgressDialog.show(getActivity(),
-							null, "لطفا منتظر بمانید.");
+					ringProgressDialog = ProgressDialog.show(getActivity(), null, "لطفا منتظر بمانید.");
 
 				}
 
 			}
 		});
-		
-		util.ShowFooterAgahi(getActivity() , false , 1);
 
+		util.ShowFooterAgahi(getActivity(), false, 1);
 
 		return view;
 	}
@@ -434,14 +398,11 @@ public class CreateIntroductionFragment extends Fragment implements
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-
 		if (requestCode == RESULT_LOAD_IMAGE) {
 			try {
 
-				InputStream inputStream = getActivity().getContentResolver()
-						.openInputStream(data.getData());
-				FileOutputStream fileOutputStream = new FileOutputStream(
-						mFileTemp);
+				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
 				Utility.copyStream(inputStream, fileOutputStream);
 				fileOutputStream.close();
 				inputStream.close();
@@ -451,11 +412,9 @@ public class CreateIntroductionFragment extends Fragment implements
 
 			} catch (Exception e) {
 
-				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
 			}
 			btnProfile.setLayoutParams(profilParams);
-
 
 		}
 		if (requestCode == PIC_CROP && data != null) {
@@ -469,7 +428,7 @@ public class CreateIntroductionFragment extends Fragment implements
 			if (bitmap != null && t1) {
 				btnProfile.setImageBitmap(bitmap);
 				btnProfile.setLayoutParams(profilParams);
-				t1=false;
+				t1 = false;
 
 			}
 			if (bitmap != null && t2) {
@@ -487,15 +446,11 @@ public class CreateIntroductionFragment extends Fragment implements
 
 		}
 
-	
-		if (requestCode == HeaderCode && resultCode == Activity.RESULT_OK
-				&& null != data) {
+		if (requestCode == HeaderCode && resultCode == Activity.RESULT_OK && null != data) {
 			try {
 
-				InputStream inputStream = getActivity().getContentResolver()
-						.openInputStream(data.getData());
-				FileOutputStream fileOutputStream = new FileOutputStream(
-						mFileTemp);
+				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
 				Utility.copyStream(inputStream, fileOutputStream);
 				fileOutputStream.close();
 				inputStream.close();
@@ -505,20 +460,16 @@ public class CreateIntroductionFragment extends Fragment implements
 
 			} catch (Exception e) {
 
-				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
 			}
-			 btnHeader.setLayoutParams(headerParams);
+			btnHeader.setLayoutParams(headerParams);
 
 		}
-		if (requestCode == FooterCode && resultCode == Activity.RESULT_OK
-				&& null != data) {
+		if (requestCode == FooterCode && resultCode == Activity.RESULT_OK && null != data) {
 			try {
 
-				InputStream inputStream = getActivity().getContentResolver()
-						.openInputStream(data.getData());
-				FileOutputStream fileOutputStream = new FileOutputStream(
-						mFileTemp);
+				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
 				Utility.copyStream(inputStream, fileOutputStream);
 				fileOutputStream.close();
 				inputStream.close();
@@ -528,11 +479,10 @@ public class CreateIntroductionFragment extends Fragment implements
 
 			} catch (Exception e) {
 
-				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
 			}
-		
-			 btnFooter.setLayoutParams(footerParams);
+
+			btnFooter.setLayoutParams(footerParams);
 
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -566,12 +516,10 @@ public class CreateIntroductionFragment extends Fragment implements
 			if (mainID == 2 || mainID == 3 || mainID == 4) {
 				if (flag == true) {
 
-					DBAdapter.CreatePageInShopeObject(serverId, nameValue,
-							phoneValue, emailValue, faxValue, descriptionValue,
-							Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
-							mobileValue, Lfacebook, Linstagram, Llinkedin,
-							Lgoogle, Lwebsite, Ltwitter, currentUser.getId(),
-							mainID, ObjectBrandTypeId, ObjectTypeId);
+					DBAdapter.CreatePageInShopeObject(serverId, nameValue, phoneValue, emailValue, faxValue,
+							descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo, addressValue, mobileValue, Lfacebook,
+							Linstagram, Llinkedin, Lgoogle, Lwebsite, Ltwitter, currentUser.getId(), mainID,
+							ObjectBrandTypeId, ObjectTypeId);
 
 					flag = false;
 
@@ -593,8 +541,7 @@ public class CreateIntroductionFragment extends Fragment implements
 
 					saving.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(getActivity(),
-							null, "لطفا منتظر بمانید.");
+					ringProgressDialog = ProgressDialog.show(getActivity(), null, "لطفا منتظر بمانید.");
 
 				} else {
 
@@ -607,8 +554,7 @@ public class CreateIntroductionFragment extends Fragment implements
 						ringProgressDialog.dismiss();
 					}
 
-					if (btnHeader.getDrawable() != null
-							|| btnProfile.getDrawable() != null
+					if (btnHeader.getDrawable() != null || btnProfile.getDrawable() != null
 							|| btnFooter.getDrawable() != null) {
 						savingImage = new SavingImage3Picture(getActivity());
 						savingImage.delegate = this;
@@ -628,9 +574,8 @@ public class CreateIntroductionFragment extends Fragment implements
 						it.put("Image3", byteFooter);
 
 						savingImage.execute(it);
-						ringProgressDialog = ProgressDialog
-								.show(getActivity(), null,
-										"به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
+						ringProgressDialog = ProgressDialog.show(getActivity(), null,
+								"به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
 
 					}
 				}
@@ -639,17 +584,14 @@ public class CreateIntroductionFragment extends Fragment implements
 			if (mainID == 1 && flag) {
 				// int m = (Integer) null;
 
-				DBAdapter.InsertInformationNewObject(serverId, nameValue,
-						phoneValue, emailValue, faxValue, descriptionValue,
-						Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
-						mobileValue, Lfacebook, Linstagram, Llinkedin, Lgoogle,
-						Lwebsite, Ltwitter, currentUser.getId(), parentId, 1,
+				DBAdapter.InsertInformationNewObject(serverId, nameValue, phoneValue, emailValue, faxValue,
+						descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo, addressValue, mobileValue, Lfacebook,
+						Linstagram, Llinkedin, Lgoogle, Lwebsite, Ltwitter, currentUser.getId(), parentId, 1,
 						objectIdItem1, ObjectBrandTypeId, 100, serverDate);
 
 				lastItem = serverId;
 
-				if (btnHeader.getDrawable() != null
-						|| btnProfile.getDrawable() != null
+				if (btnHeader.getDrawable() != null || btnProfile.getDrawable() != null
 						|| btnFooter.getDrawable() != null) {
 					savingImage = new SavingImage3Picture(getActivity());
 					savingImage.delegate = this;
@@ -669,21 +611,17 @@ public class CreateIntroductionFragment extends Fragment implements
 					it.put("Image3", byteFooter);
 
 					savingImage.execute(it);
-					ringProgressDialog = ProgressDialog
-							.show(getActivity(), null,
-									"به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
+					ringProgressDialog = ProgressDialog.show(getActivity(), null,
+							"به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
 
 				}
 			}
 			if (mainID > 4) {
 				if (flag) {
-					DBAdapter.InsertInformationNewObject(serverId, nameValue,
-							phoneValue, emailValue, faxValue, descriptionValue,
-							Lcatalog, Lprice, Lpdf, Lvideo, addressValue,
-							mobileValue, Lfacebook, Linstagram, Llinkedin,
-							Lgoogle, Lwebsite, Ltwitter, currentUser.getId(),
-							0, MainObjectId, objectId, ObjectBrandTypeId,
-							AgencyService, serverDate);
+					DBAdapter.InsertInformationNewObject(serverId, nameValue, phoneValue, emailValue, faxValue,
+							descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo, addressValue, mobileValue, Lfacebook,
+							Linstagram, Llinkedin, Lgoogle, Lwebsite, Ltwitter, currentUser.getId(), 0, MainObjectId,
+							objectId, ObjectBrandTypeId, AgencyService, serverDate);
 
 					flag = false;
 
@@ -706,14 +644,11 @@ public class CreateIntroductionFragment extends Fragment implements
 
 					saving.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(getActivity(),
-							null, "لطفا منتظر بمانید.");
+					ringProgressDialog = ProgressDialog.show(getActivity(), null, "لطفا منتظر بمانید.");
 				} else {
-					DBAdapter.insertObjectInCity(serverId, lastItem, CityId,
-							serverDate);
+					DBAdapter.insertObjectInCity(serverId, lastItem, CityId, serverDate);
 
-					if (btnHeader.getDrawable() != null
-							|| btnProfile.getDrawable() != null
+					if (btnHeader.getDrawable() != null || btnProfile.getDrawable() != null
 							|| btnFooter.getDrawable() != null) {
 						savingImage = new SavingImage3Picture(getActivity());
 						savingImage.delegate = this;
@@ -733,22 +668,18 @@ public class CreateIntroductionFragment extends Fragment implements
 						it.put("Image3", byteFooter);
 
 						savingImage.execute(it);
-						ringProgressDialog = ProgressDialog
-								.show(getActivity(), null,
-										"به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
+						ringProgressDialog = ProgressDialog.show(getActivity(), null,
+								"به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
 
 					}
 
 				}
 			}
-		
 
 			DBAdapter.close();
 
 		} catch (NumberFormatException e) {
-			if (output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 
 				if (mainID == 2 || mainID == 3 || mainID == 4) {
 
@@ -769,8 +700,7 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("Pdf2", Lprice);
 					params.put("Pdf3", Lpdf);
 					params.put("Pdf4", Lvideo);
-					params.put("ObjectBrandTypeId",
-							String.valueOf(ObjectBrandTypeId));
+					params.put("ObjectBrandTypeId", String.valueOf(ObjectBrandTypeId));
 					params.put("Facebook", Lfacebook);
 					params.put("Instagram", Linstagram);
 					params.put("LinkedIn", Llinkedin);
@@ -792,8 +722,7 @@ public class CreateIntroductionFragment extends Fragment implements
 
 					saving.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -838,8 +767,7 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("Google", Lgoogle);
 					params.put("Site", Lwebsite);
 					params.put("Twitter", Ltwitter);
-					params.put("ObjectBrandTypeId",
-							String.valueOf(ObjectBrandTypeId));
+					params.put("ObjectBrandTypeId", String.valueOf(ObjectBrandTypeId));
 					params.put("UserId", String.valueOf(currentUser.getId()));
 					params.put("ParentId", String.valueOf(parentId));
 					params.put("MainObjectId", String.valueOf(1));
@@ -854,8 +782,7 @@ public class CreateIntroductionFragment extends Fragment implements
 
 					saving.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -909,8 +836,7 @@ public class CreateIntroductionFragment extends Fragment implements
 
 					params.put("MainObjectId", String.valueOf(MainObjectId));
 					params.put("ObjectId", String.valueOf(objectId));
-					params.put("ObjectBrandTypeId",
-							String.valueOf(ObjectBrandTypeId));
+					params.put("ObjectBrandTypeId", String.valueOf(ObjectBrandTypeId));
 
 					params.put("AgencyService", String.valueOf(AgencyService));
 
@@ -924,8 +850,7 @@ public class CreateIntroductionFragment extends Fragment implements
 					params.put("Id", "0");
 					saving.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -948,15 +873,12 @@ public class CreateIntroductionFragment extends Fragment implements
 				}
 
 			} else {
-				Toast.makeText(getActivity(),
-						"خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 			}
 
 		} catch (Exception e) {
 
-			Toast.makeText(getActivity(), "خطا در ثبت" + e, Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(getActivity(), "خطا در ثبت" + e, Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -966,15 +888,14 @@ public class CreateIntroductionFragment extends Fragment implements
 			ringProgressDialog.dismiss();
 		}
 		try {
-			
+
 			util.CreateFile(byteHeader, lastItem, "Mechanical", "Profile", "header", "Object");
 			util.CreateFile(byteProfil, lastItem, "Mechanical", "Profile", "profile", "Object");
 			util.CreateFile(byteFooter, lastItem, "Mechanical", "Profile", "footer", "Object");
 
-
-//			DBAdapter.open();
-//			DBAdapter.UpdateImageObjectToDatabase(lastItem, byteHeader,
-//					byteProfil, byteFooter);
+			// DBAdapter.open();
+			// DBAdapter.UpdateImageObjectToDatabase(lastItem, byteHeader,
+			// byteProfil, byteFooter);
 
 			if (f1)
 				DBAdapter.updateObjectImage1ServerDate(lastItem, output);
@@ -985,16 +906,14 @@ public class CreateIntroductionFragment extends Fragment implements
 
 			DBAdapter.close();
 
-			Toast.makeText(getActivity(),
-					"ذخیره سازی تصاویر با موفقیت انجا م شد", 0).show();
+			Toast.makeText(getActivity(), "ذخیره سازی تصاویر با موفقیت انجا م شد", 0).show();
 
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
 
 		} catch (Exception e) {
-			Toast.makeText(getActivity(), "خطا در ذخیره سازی تصاویر" + e,
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "خطا در ذخیره سازی تصاویر" + e, Toast.LENGTH_SHORT).show();
 		}
 	}
 }

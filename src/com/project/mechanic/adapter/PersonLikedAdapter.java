@@ -92,7 +92,7 @@ public class PersonLikedAdapter extends ArrayAdapter<LikeInFroum> {
 
 			Bitmap bmp = BitmapFactory.decodeFile(user.getImagePath());
 
-			peronImage.setImageBitmap(bmp);
+			peronImage.setImageBitmap(Utility.getclip(bmp));
 			peronImage.setLayoutParams(lp);
 
 		} else {

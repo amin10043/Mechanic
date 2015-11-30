@@ -22,26 +22,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/headerTitleArticle"
-                android:dividerHeight="5dp"
+                android:dividerHeight="2dp"
                 android:fillViewport="true" >
             </ListView>
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <com.project.mechanic.Action.FloatingActionButton
+         <com.project.mechanic.Action.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:src="@drawable/fab_add"
-            app:fab_colorNormal="#7ac5cd"
+            app:fab_colorNormal="@color/orginal_hard_blue_color"
             app:fab_hideAnimation="@anim/fab_scale_down"
             app:fab_shadowColor="#3366FF"
             app:fab_shadowRadius="4dp"
             app:fab_shadowXOffset="1dp"
             app:fab_shadowYOffset="3dp"
             app:fab_showAnimation="@anim/fab_scale_up"
-            app:fab_showShadow="true"
+            app:fab_showShadow="false"
             app:fab_size="normal" />
     </RelativeLayout>
 

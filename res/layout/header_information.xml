@@ -2,93 +2,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e9eaed"
+    android:background="@color/white"
     android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/lin__register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#e9eaed"
+        android:background="@color/white"
         android:orientation="vertical" >
 
         <FrameLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <RelativeLayout
+            <FrameLayout
+                android:id="@+id/frameLayoutHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <RelativeLayout
-                    android:id="@+id/back"
+                <ImageView
+                    android:id="@+id/imgvadvertise_Object"
                     android:layout_width="match_parent"
-                    android:layout_height="350dp"
-                    android:background="@drawable/backgp" >
-                </RelativeLayout>
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_persinal" />
 
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/img1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/back" >
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="40dp" >
-
-                        <RelativeLayout
-                            android:id="@+id/mm"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:background="@drawable/blank_header" >
-
-                            <ImageView
-                                android:id="@+id/shadowLine"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="150dp"
-                                android:background="@drawable/shadow_line_personal" />
-                        </RelativeLayout>
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:id="@+id/imageLinear"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical" >
-
-                        <ImageView
-                            android:id="@+id/img1"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:background="@drawable/circle_drawable"
-                            android:src="@drawable/no_img_profile" />
-
-                        <TextView
-                            android:id="@+id/displayname"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="مسعود محمودزاده"
-                            android:textColor="#780117" />
-
-                        <TextView
-                            android:id="@+id/txtdate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="date"
-                            android:textColor="#780117" />
-
-                        
-                    </LinearLayout>
-                </FrameLayout>
-            </RelativeLayout>
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="380dp"
+                    android:background="@drawable/circle_drawable"
+                    android:src="@drawable/no_img_profile" />
+            </FrameLayout>
         </FrameLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <RelativeLayout
+                android:id="@+id/mm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <LinearLayout
+                    android:id="@+id/imageLinear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/displayname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="مسعود محمودزاده"
+                        android:textColor="#780117" />
+
+                    <TextView
+                        android:id="@+id/txtdate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="date"
+                        android:textColor="#780117" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/shadowLine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imageLinear"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/shadow_line_personal" />
+            </RelativeLayout>
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/laySabet"

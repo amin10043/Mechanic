@@ -35,8 +35,7 @@ import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
-		CommInterface, AsyncInterface {
+public class FroumtitleFragment extends Fragment implements GetAsyncInterface, CommInterface, AsyncInterface {
 	private ImageButton addtitle;
 	private DialogfroumTitle dialog;
 	DialogcmtInfroum dialog2;
@@ -69,8 +68,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 	@SuppressLint("InflateParams")
 	@Override
-	public View onCreateView(android.view.LayoutInflater inflater,
-			android.view.ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container,
+			Bundle savedInstanceState) {
 
 		view = inflater.inflate(R.layout.fragment_titlefrm, null);
 		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
@@ -80,22 +79,17 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		ids = new ArrayList<Integer>();
 		missedIds = new ArrayList<Integer>();
 
-		final SharedPreferences realize = getActivity().getSharedPreferences(
-				"Id", 0);
+		final SharedPreferences realize = getActivity().getSharedPreferences("Id", 0);
 
 		action.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				if (Currentuser == null)
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 				else {
-					dialog = new DialogfroumTitle(getActivity(),
-							R.layout.dialog_addtitle, FroumtitleFragment.this);
-					dialog.getWindow()
-							.setSoftInputMode(
-									WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+					dialog = new DialogfroumTitle(getActivity(), R.layout.dialog_addtitle, FroumtitleFragment.this);
+					dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 					dialog.show();
 					realize.edit().putInt("main_Id", 1).commit();
 				}
@@ -145,8 +139,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			date.delegate = this;
 			date.execute("");
 		}
-		swipeLayout = (SwipeRefreshLayout) view
-				.findViewById(R.id.swipe_container);
+		swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
 		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override
@@ -157,27 +150,22 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 					update.delegate = FroumtitleFragment.this;
 					String[] params = new String[4];
 					params[0] = "Froum";
-					params[1] = setting.getServerDate_Start_Froum() != null ? setting
-							.getServerDate_Start_Froum() : "";
-					params[2] = setting.getServerDate_End_Froum() != null ? setting
-							.getServerDate_End_Froum() : "";
+					params[1] = setting.getServerDate_Start_Froum() != null ? setting.getServerDate_Start_Froum() : "";
+					params[2] = setting.getServerDate_End_Froum() != null ? setting.getServerDate_End_Froum() : "";
 					params[3] = "1";
 					update.execute(params);
 
 				}
 			}
 		});
-		swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
-				android.R.color.holo_green_light,
-				android.R.color.holo_orange_light,
-				android.R.color.holo_red_light);
+		swipeLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+				android.R.color.holo_orange_light, android.R.color.holo_red_light);
 
-		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
-				R.layout.load_more_footer, null);
+		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
 		lst.addFooterView(LoadMoreFooter);
 		LoadMoreFooter.setVisibility(View.INVISIBLE);
-		ListAdapter = new FroumtitleListadapter(getActivity(),
-				R.layout.raw_froumtitle, mylist, FroumtitleFragment.this);
+		ListAdapter = new FroumtitleListadapter(getActivity(), R.layout.raw_froumtitle, mylist,
+				FroumtitleFragment.this);
 		lst.setAdapter(ListAdapter);
 
 		int countList = ListAdapter.getCount();
@@ -207,8 +195,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 			}
 
-			public void onScroll(AbsListView arg0, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
+			public void onScroll(AbsListView arg0, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
 				int lastInScreen = firstVisibleItem + visibleItemCount;
 
@@ -222,10 +209,9 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 						update.delegate = FroumtitleFragment.this;
 						String[] params = new String[4];
 						params[0] = "Froum";
-						params[1] = setting.getServerDate_Start_Froum() != null ? setting
-								.getServerDate_Start_Froum() : "";
-						params[2] = setting.getServerDate_End_Froum() != null ? setting
-								.getServerDate_End_Froum() : "";
+						params[1] = setting.getServerDate_Start_Froum() != null ? setting.getServerDate_Start_Froum()
+								: "";
+						params[2] = setting.getServerDate_End_Froum() != null ? setting.getServerDate_End_Froum() : "";
 						params[3] = "0";
 						update.execute(params);
 
@@ -235,7 +221,10 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 			}
 		});
 
-		util.ShowFooterAgahi(getActivity(), true, 7);
+		if (getActivity() != null) {
+			util.ShowFooterAgahi(getActivity(), true, 7);
+
+		}
 		return view;
 	}
 
@@ -243,8 +232,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		mdb.open();
 		mylist = mdb.getAllFroum();
 		mdb.close();
-		ListAdapter = new FroumtitleListadapter(getActivity(),
-				R.layout.raw_froumtitle, mylist, FroumtitleFragment.this);
+		ListAdapter = new FroumtitleListadapter(getActivity(), R.layout.raw_froumtitle, mylist,
+				FroumtitleFragment.this);
 		ListAdapter.notifyDataSetChanged();
 		lst.setAdapter(ListAdapter);
 		LoadMoreFooter.setVisibility(View.INVISIBLE);
@@ -260,8 +249,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		if (output != null && mylist != null && mylist.size() > userItemId) {
 			f = mylist.get(userItemId);
 
-			util.CreateFile(output, f.getUserId(), "Mechanical", "Users",
-					"user", "Users");
+			util.CreateFile(output, f.getUserId(), "Mechanical", "Users", "user", "Users");
 			// mdb.UpdateImageServerDate(f.getUserId(), "Users", serverDate);
 
 			// mdb.UpdateUserImage(f.getUserId(), output, serverDate);
@@ -299,10 +287,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 	@SuppressWarnings("unchecked")
 	@Override
 	public void processFinish(String output) {
-		if (!"".equals(output)
-				&& output != null
-				&& !(output.contains("Exception") || output.contains("java") || output
-						.contains("soap"))) {
+		if (!"".equals(output) && output != null
+				&& !(output.contains("Exception") || output.contains("java") || output.contains("soap"))) {
 			if (mylist != null && mylist.size() > 0) {
 				mdb.open();
 				if (mylist.size() > userItemId) {
@@ -349,10 +335,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 
 	@Override
 	public void CommProcessFinish(String output) {
-		if (!"".equals(output)
-				&& output != null
-				&& !(output.contains("Exception") || output.contains("java") || output
-						.contains("soap"))) {
+		if (!"".equals(output) && output != null
+				&& !(output.contains("Exception") || output.contains("java") || output.contains("soap"))) {
 			util.parseQuery(output);
 			updateView();
 			if (swipeLayout != null)
@@ -361,8 +345,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface,
 		} else {
 			if (swipeLayout != null)
 				swipeLayout.setRefreshing(false);
-			Toast.makeText(getActivity(), "خطا در بروز رسانی داده های سرور",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "خطا در بروز رسانی داده های سرور", Toast.LENGTH_SHORT).show();
 		}
 
 	}

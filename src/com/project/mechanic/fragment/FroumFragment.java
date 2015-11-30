@@ -5,34 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.text.Html;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ExpandableListView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.PopupMenu.OnMenuItemClickListener;
-
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.adapter.ExpandableCommentFroum;
@@ -51,19 +23,44 @@ import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class FroumFragment extends Fragment implements AsyncInterface,
-		GetAsyncInterface , CommInterface {
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.Html;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncInterface, CommInterface {
 
 	DataBaseAdapter adapter;
 	ExpandableCommentFroum exadapter;
 
-	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike,
-			nametxt;
-	LinearLayout /* addComment, */likeTopic;
+	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike, nametxt;
+	LinearLayout /* addComment, */ likeTopic;
 	ImageButton sharebtn;
-	ImageView profileImg;
+	ImageView profileImg, likeIcon;
 	int froumid;
-//	RelativeLayout count /* ,commentcounter */;
+	// RelativeLayout count /* ,commentcounter */;
 
 	Froum topics;
 
@@ -106,8 +103,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 	@SuppressLint("InflateParams")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceStdataate) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceStdataate) {
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
 		View view = inflater.inflate(R.layout.fragment_froum, null);
@@ -119,16 +115,17 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 		missedIds = new ArrayList<Integer>();
 
-		header = getActivity().getLayoutInflater().inflate(
-				R.layout.header_froum, null);
+		header = getActivity().getLayoutInflater().inflate(R.layout.header_froum, null);
 
 		// start find view
 
 		titletxt = (TextView) header.findViewById(R.id.title_topic);
 		descriptiontxt = (TextView) header.findViewById(R.id.description_topic);
+
 		dateTopic = (TextView) header.findViewById(R.id.date_cc);
-		countComment = (TextView) header
-				.findViewById(R.id.numberOfCommentTopic);
+		TextView time = (TextView) header.findViewById(R.id.timetxt);
+
+		countComment = (TextView) header.findViewById(R.id.numberOfCommentTopic);
 		countLike = (TextView) header.findViewById(R.id.txtNumofLike_CmtFroum);
 		nametxt = (TextView) header.findViewById(R.id.name_cc);
 
@@ -140,7 +137,9 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 		profileImg = (ImageView) header.findViewById(R.id.iconfroumtitle);
 		exlistview = (ExpandableListView) view.findViewById(R.id.commentlist);
 
-//		count = (RelativeLayout) header.findViewById(R.id.countLike);
+		likeIcon = (ImageView) header.findViewById(R.id.likeIcon);
+
+		// count = (RelativeLayout) header.findViewById(R.id.countLike);
 		// commentcounter = (RelativeLayout) header.findViewById(R.id.cmffff);
 
 		// end find view
@@ -163,15 +162,14 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 			userId = u.getId();
 
 			nametxt.setText(u.getName());
-			LinearLayout rl = (LinearLayout) header
-					.findViewById(R.id.imageLinear);
+			LinearLayout rl = (LinearLayout) header.findViewById(R.id.imageLinear);
 
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-					rl.getLayoutParams());
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
 
 			lp.width = util.getScreenwidth() / 4;
 			lp.height = util.getScreenwidth() / 4;
 			lp.gravity = Gravity.CENTER_HORIZONTAL;
+			lp.setMargins(0, 10, 0, 0);
 			profileImg.setLayoutParams(lp);
 
 			if (u.getImagePath() == null) {
@@ -190,8 +188,11 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 		descriptiontxt.setText(topics.getDescription());
 		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
 		countLike.setText(adapter.LikeInFroum_count(froumid).toString());
-		dateTopic.setText(util.getPersianDate(topics.getDate()));
 
+		String ddd = util.getPersianDate(topics.getDate());
+		List<String> dateTime = util.spilitDateTime(ddd);
+		dateTopic.setText(dateTime.get(0));
+		time.setText(dateTime.get(1));
 		// titletxt.setTypeface(util.SetFontCasablanca());
 		// descriptiontxt.setTypeface(util.SetFontCasablanca());
 
@@ -200,8 +201,8 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
@@ -211,6 +212,10 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 			}
 		});
+
+		RelativeLayout re = (RelativeLayout) header.findViewById(R.id.layoutlayout);
+		re.setPadding(0, (util.getScreenwidth() / 8) + 10, 0, 0);
+
 		// addComment.setOnClickListener(new View.OnClickListener() {
 		//
 		// @Override
@@ -238,8 +243,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 		List<CommentInFroum> reply = null;
 		for (CommentInFroum comment : commentGroup) {
-			reply = adapter
-					.getReplyCommentbyCommentID(froumid, comment.getId());
+			reply = adapter.getReplyCommentbyCommentID(froumid, comment.getId());
 			mapCollection.put(comment, reply);
 		}
 
@@ -262,8 +266,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 		if (missedIds.size() > 0) {
 			if (getActivity() != null) {
 
-				ringProgressDialog = ProgressDialog.show(getActivity(), "",
-						"لطفا منتظر بمانید...", true);
+				ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 				ringProgressDialog.setCancelable(true);
 				date = new ServerDate(getActivity());
 				date.delegate = FroumFragment.this;
@@ -274,61 +277,78 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 		}
 
 		exlistview.addHeaderView(header);
-		exadapter = new ExpandableCommentFroum(getActivity(),
-				(ArrayList<CommentInFroum>) commentGroup, mapCollection, this,
-				froumid);
+		exadapter = new ExpandableCommentFroum(getActivity(), (ArrayList<CommentInFroum>) commentGroup, mapCollection,
+				this, froumid);
 
 		exadapter.notifyDataSetChanged();
 
 		exlistview.setAdapter(exadapter);
 
 		if (CurrentUser == null) {
-			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
-//			count.setBackgroundResource(R.drawable.count_like_off);
+			likeIcon.setBackgroundResource(R.drawable.like_froum_off);
+			// count.setBackgroundResource(R.drawable.count_like_off);
 		} else {
 			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid)) {
-				likeTopic.setBackgroundResource(R.drawable.like_froum_on);
-//				count.setBackgroundResource(R.drawable.count_like);
+				likeIcon.setBackgroundResource(R.drawable.like_froum_on);
+				// count.setBackgroundResource(R.drawable.count_like);
 
 			} else {
 
-				likeTopic.setBackgroundResource(R.drawable.like_froum_off);
-//				count.setBackgroundResource(R.drawable.count_like_off);
+				likeIcon.setBackgroundResource(R.drawable.like_froum_off);
+				// count.setBackgroundResource(R.drawable.count_like_off);
 
 			}
 		}
 		adapter.close();
-//		count.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View arg0) {
-//				adapter.open();
-//				ArrayList<LikeInFroum> likedist = adapter
-//						.getLikefroumLikeInFroumByFroumId(froumid);
-//
-//				adapter.close();
-//				if (likedist.size() == 0) {
-//					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
-//							.show();
-//				} else {
-//					DialogPersonLikedFroum dia = new DialogPersonLikedFroum(
-//							getActivity(), froumid, likedist);
-//					dia.show();
-//				}
-//			}
-//		});
+		// count.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// adapter.open();
+		// ArrayList<LikeInFroum> likedist = adapter
+		// .getLikefroumLikeInFroumByFroumId(froumid);
+		//
+		// adapter.close();
+		// if (likedist.size() == 0) {
+		// Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
+		// .show();
+		// } else {
+		// DialogPersonLikedFroum dia = new DialogPersonLikedFroum(
+		// getActivity(), froumid, likedist);
+		// dia.show();
+		// }
+		// }
+		// });
 
 		// این کد ها برای مشخص شدن مبدا ارسالی برای آپدیت کردن لیست می باشد
 		// وقتی کاربر در صفحه فروم بدون کامنت ، نظری ثبت می کند به این صفحه
 		// منتقل می شود و این کد ها برای مشخص کردن مبدا و انجام عمل آپدیت کردن
 		// استفاده می شود
-		SharedPreferences realizeIdComment = getActivity()
-				.getSharedPreferences("Id", 0);
+		SharedPreferences realizeIdComment = getActivity().getSharedPreferences("Id", 0);
 		int destinyId = realizeIdComment.getInt("main_Id", -1);
 		if (destinyId == 1371) {
 			updateList();
 		}
 
+		likeTopic.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View arg0) {
+
+				adapter.open();
+				ArrayList<LikeInFroum> likedist = adapter.getLikefroumLikeInFroumByFroumId(froumid);
+
+				adapter.close();
+				if (likedist.size() == 0) {
+					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0).show();
+				} else {
+					DialogPersonLikedFroum dia = new DialogPersonLikedFroum(getActivity(), froumid, likedist);
+					util.setSizeDialog(dia);
+				}
+
+				return false;
+			}
+		});
 		likeTopic.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -336,13 +356,10 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 				adapter.open();
 
 				if (CurrentUser == null) {
-					Toast.makeText(getActivity(),
-							"برای درج لایک ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 				} else {
 
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 					ringProgressDialog.setCancelable(true);
 					date = new ServerDate(getActivity());
 					date.delegate = FroumFragment.this;
@@ -360,18 +377,13 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 			@Override
 			public void onClick(View arg0) {
-				String body = topics.getDescription() + "\n"
-						+ " مشاهده کامل گفتگو در: "
+				String body = topics.getDescription() + "\n" + " مشاهده کامل گفتگو در: "
 						+ "<a href=\"mechanical://SplashActivity\">اینجا</a> ";
-				Intent sharingIntent = new Intent(
-						android.content.Intent.ACTION_SEND);
+				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/html");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-						topics.getTitle());
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-						Html.fromHtml(body));
-				startActivity(Intent.createChooser(sharingIntent,
-						"اشتراک از طریق"));
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, topics.getTitle());
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(body));
+				startActivity(Intent.createChooser(sharingIntent, "اشتراک از طریق"));
 			}
 		});
 
@@ -426,8 +438,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 						if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
 							adapter.open();
-							addToFavorite(util.getCurrentUser().getId(), 1,
-									itemId);
+							addToFavorite(util.getCurrentUser().getId(), 1, itemId);
 							adapter.close();
 						}
 						if (item.getTitle().equals("کپی")) {
@@ -437,12 +448,11 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 						}
 						if (item.getTitle().equals("گزارش تخلف")) {
 
-							util.reportAbuse(userIdsender, 1, itemId, t,0);
+							util.reportAbuse(userIdsender, 1, itemId, t, 0);
 
 						}
 						if (item.getTitle().equals("حذف")) {
-							if (util.getCurrentUser() != null
-									&& util.getCurrentUser().getId() == userIdsender)
+							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender)
 								deleteItems(itemId);
 							else {
 
@@ -475,39 +485,41 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
-		ImageView send = util.ShowFooterAgahi(getActivity(), true, 8);
+		if (getActivity() != null) {
+			ImageView send = util.ShowFooterAgahi(getActivity(), true, 8);
 
-		send.setOnClickListener(new OnClickListener() {
+			send.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View arg0) {
+				@Override
+				public void onClick(View arg0) {
 
-				if ("".equals(util.inputComment(getActivity()))) {
-					Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
-							.show();
-				} else {
+					if ("".equals(util.inputComment(getActivity()))) {
+						Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0).show();
+					} else {
 
-					date = new ServerDate(getActivity());
-					date.delegate = FroumFragment.this;
-					date.execute("");
-					LikeOrComment = false;
+						date = new ServerDate(getActivity());
+						date.delegate = FroumFragment.this;
+						date.execute("");
+						LikeOrComment = false;
+
+						util.ReplyLayout(getActivity(), "", false);
+
+					}
+				}
+			});
+			ImageView delete = util.deleteReply(getActivity());
+
+			delete.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
 
 					util.ReplyLayout(getActivity(), "", false);
 
 				}
-			}
-		});
-		ImageView delete = util.deleteReply(getActivity());
+			});
 
-		delete.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				util.ReplyLayout(getActivity(), "", false);
-
-			}
-		});
+		}
 
 		return view;
 	}
@@ -537,16 +549,14 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 		List<CommentInFroum> reply = null;
 		for (CommentInFroum comment : commentGroup) {
-			reply = adapter
-					.getReplyCommentbyCommentID(froumid, comment.getId());
+			reply = adapter.getReplyCommentbyCommentID(froumid, comment.getId());
 			mapCollection.put(comment, reply);
 		}
 
 		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
 
-		exadapter = new ExpandableCommentFroum(getActivity(),
-				(ArrayList<CommentInFroum>) commentGroup, mapCollection, this,
-				froumid);
+		exadapter = new ExpandableCommentFroum(getActivity(), (ArrayList<CommentInFroum>) commentGroup, mapCollection,
+				this, froumid);
 
 		exadapter.notifyDataSetChanged();
 
@@ -575,16 +585,14 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 		List<CommentInFroum> reply = null;
 		for (CommentInFroum comment : commentGroup) {
-			reply = adapter
-					.getReplyCommentbyCommentID(froumid, comment.getId());
+			reply = adapter.getReplyCommentbyCommentID(froumid, comment.getId());
 			mapCollection.put(comment, reply);
 		}
 
 		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
 
-		exadapter = new ExpandableCommentFroum(getActivity(),
-				(ArrayList<CommentInFroum>) commentGroup, mapCollection, this,
-				froumid);
+		exadapter = new ExpandableCommentFroum(getActivity(), (ArrayList<CommentInFroum>) commentGroup, mapCollection,
+				this, froumid);
 		exadapter.notifyDataSetChanged();
 		exlistview.setAdapter(exadapter);
 		if (groupPosition <= mapCollection.size()) {
@@ -609,26 +617,22 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 			if (LikeOrComment == true) {
 				if (adapter.isUserLikedFroum(CurrentUser.getId(), froumid)) {
 					adapter.deleteLikeFromFroum(CurrentUser.getId(), froumid);
-					likeTopic.setBackgroundResource(R.drawable.like_froum_off);
-//					count.setBackgroundResource(R.drawable.count_like_off);
+					likeIcon.setBackgroundResource(R.drawable.like_froum_off);
+					// count.setBackgroundResource(R.drawable.count_like_off);
 
-					countLike.setText(adapter.LikeInFroum_count(froumid)
-							.toString());
+					countLike.setText(adapter.LikeInFroum_count(froumid).toString());
 				} else {
-					adapter.insertLikeInFroumToDb(id, CurrentUser.getId(),
-							froumid, serverDate, 0);
-					likeTopic.setBackgroundResource(R.drawable.like_froum_on);
-//					count.setBackgroundResource(R.drawable.count_like);
+					adapter.insertLikeInFroumToDb(id, CurrentUser.getId(), froumid, serverDate, 0);
+					likeIcon.setBackgroundResource(R.drawable.like_froum_on);
+					// count.setBackgroundResource(R.drawable.count_like);
 
-					countLike.setText(adapter.LikeInFroum_count(froumid)
-							.toString());
+					countLike.setText(adapter.LikeInFroum_count(froumid).toString());
 				}
 			} else {
 				adapter.open();
 
-				adapter.insertCommentInFroumtoDb(id,
-						util.inputComment(getActivity()), froumid,
-						CurrentUser.getId(), serverDate, commentId);
+				adapter.insertCommentInFroumtoDb(id, util.inputComment(getActivity()), froumid, CurrentUser.getId(),
+						serverDate, commentId);
 
 				adapter.close();
 				util.ToEmptyComment(getActivity());
@@ -644,9 +648,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 				ringProgressDialog.dismiss();
 			}
 		} catch (NumberFormatException ex) {
-			if (output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 
 				serverDate = output;
 
@@ -662,8 +664,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 						params.put("Desk", util.inputComment(getActivity()));
 						params.put("FroumId", String.valueOf(froumid));
-						params.put("UserId",
-								String.valueOf(CurrentUser.getId()));
+						params.put("UserId", String.valueOf(CurrentUser.getId()));
 						params.put("CommentId", String.valueOf(commentId));
 
 						params.put("Date", output);
@@ -673,8 +674,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 						saving.execute(params);
 					}
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -708,8 +708,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 							deleting.delegate = FroumFragment.this;
 
 							params.put("TableName", "LikeInFroum");
-							params.put("UserId",
-									String.valueOf(CurrentUser.getId()));
+							params.put("UserId", String.valueOf(CurrentUser.getId()));
 							params.put("FroumId", String.valueOf(froumid));
 
 							deleting.execute(params);
@@ -723,8 +722,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 							params.put("TableName", "LikeInFroum");
 
-							params.put("UserId",
-									String.valueOf(CurrentUser.getId()));
+							params.put("UserId", String.valueOf(CurrentUser.getId()));
 							params.put("FroumId", String.valueOf(froumid));
 							params.put("CommentId", "0");
 							params.put("Date", output);
@@ -736,9 +734,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 					}
 				}
 			} else {
-				Toast.makeText(getActivity(),
-						"خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 				if (ringProgressDialog != null) {
 					ringProgressDialog.dismiss();
 				}
@@ -747,8 +743,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 		catch (Exception e) {
 
-			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
 			adapter.close();
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
@@ -783,11 +778,8 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 		if (flag == true) {
 
-			if (!"".equals(output)
-					&& output != null
-					&& !(output.contains("Exception")
-							|| output.contains("java") || output
-								.contains("soap"))) {
+			if (!"".equals(output) && output != null
+					&& !(output.contains("Exception") || output.contains("java") || output.contains("soap"))) {
 				util.parseQuery(output);
 
 				adapter.open();
@@ -806,8 +798,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 					updating.execute(maps);
 				}
 			} else
-				Toast.makeText(getActivity(), "خطا در دریافت کاربران", 0)
-						.show();
+				Toast.makeText(getActivity(), "خطا در دریافت کاربران", 0).show();
 		} else {
 			adapter.open();
 
@@ -823,8 +814,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 			FroumtitleFragment fr = new FroumtitleFragment();
 
-			FragmentTransaction trans = ((MainActivity) getActivity())
-					.getSupportFragmentManager().beginTransaction();
+			FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager().beginTransaction();
 
 			trans.replace(R.id.content_frame, fr);
 			trans.addToBackStack(null);
@@ -850,12 +840,10 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
 
 		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
-			Toast.makeText(getActivity(),
-					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+			Toast.makeText(getActivity(), " قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
 		} else {
 			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
-			Toast.makeText(getActivity(), "به لیست علاقه مندی ها اضافه شد ", 0)
-					.show();
+			Toast.makeText(getActivity(), "به لیست علاقه مندی ها اضافه شد ", 0).show();
 		}
 	}
 
@@ -871,8 +859,7 @@ public class FroumFragment extends Fragment implements AsyncInterface,
 
 		service.execute(items);
 
-		ringProgressDialog = ProgressDialog.show(getActivity(), "",
-				"لطفا منتظر بمانید...", true);
+		ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 		ringProgressDialog.setCancelable(true);
 		new Thread(new Runnable() {

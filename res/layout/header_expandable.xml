@@ -12,6 +12,7 @@
         android:orientation="vertical" >
 
         <LinearLayout
+            android:id="@+id/imageLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -49,13 +50,12 @@
                 android:paddingRight="10dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/no_img_profile"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <TextView
                 android:id="@+id/description_topic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
                 android:lineSpacingExtra="5dp"
@@ -63,142 +63,98 @@
                 android:textColor="@color/transparent"
                 android:textIsSelectable="true" />
 
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal" >
-
-            <LinearLayout
-                android:id="@+id/cmffff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
-                android:layout_marginRight="5dp"
-                android:orientation="horizontal" >
-
-                <RelativeLayout
-                    android:id="@+id/countComment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/count_comment" >
-
-                    <TextView
-                        android:id="@+id/numberOfCommentTopic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_margin="2dp"
-                        android:text="n"
-                        android:textColor="@color/transparent" />
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:id="@+id/addCommentToTopic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/comment_fr"
-                    android:gravity="center" >
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
-                android:layout_toRightOf="@+id/cmffff"
-                android:orientation="horizontal" >
-
-                <RelativeLayout
-                    android:id="@+id/countLike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/count_like" >
-
-                    <TextView
-                        android:id="@+id/txtNumofLike_CmtFroum"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_margin="2dp"
-                        android:text="nlike"
-                        android:textColor="@color/transparent" />
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:id="@+id/LikeTopicLinear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/like_on"
-                    android:gravity="center" >
-                </LinearLayout>
-            </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/sharefroumicon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/profileLinearcommenterinContinue"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/lll"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_share_froum" />
-
-            <TextView
-                android:id="@+id/name_cc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/profileLinearcommenterinContinue"
-                android:layout_below="@+id/profileLinearcommenterinContinue"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:text="name"
-                android:textColor="@color/transparent" />
-
             <LinearLayout
                 android:id="@+id/profileLinearcommenterinContinue"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true" >
+                android:layout_height="wrap_content" >
 
                 <ImageView
                     android:id="@+id/iconfroumtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:background="@android:color/transparent"
+                    android:background="@drawable/circle_drawable"
                     android:scaleType="fitXY"
-                    android:src="@drawable/google_off" />
+                    android:src="@drawable/no_img_profile" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/name_cc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="name"
+                android:textColor="@color/transparent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/icons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/description_topic"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp" >
+
+            <LinearLayout
+                android:id="@+id/LikeTopicLinear"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/like"
+                android:gravity="center"
+                android:visibility="visible" >
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtNumofLike_CmtFroum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:gravity="bottom"
+                android:text="123"
+                android:textColor="@color/transparent" />
+
+            <LinearLayout
+                android:id="@+id/l1cm"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/ic_cmt_froum_display"
+                android:gravity="center"
+                android:visibility="visible" >
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/numberOfCommentTopic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:gravity="center"
+                android:text="456"
+                android:textColor="@color/transparent" />
+
             <ImageView
-                android:id="@+id/iconNumberVisit"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_alignLeft="@+id/cmffff"
-                android:layout_below="@+id/cmffff"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/numberview" />
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/numvv" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/iconNumberVisit"
-                android:layout_toRightOf="@+id/iconNumberVisit"
-                android:gravity="bottom"
-                android:text="18"
-                android:textColor="@color/transparent"
-                android:textSize="10dp" />
-        </RelativeLayout>
+                android:layout_marginLeft="2dp"
+                android:gravity="center"
+                android:text="789"
+                android:textColor="@color/transparent" />
+
+            <ImageButton
+                android:id="@+id/sharefroumicon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/ic_share_froum" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

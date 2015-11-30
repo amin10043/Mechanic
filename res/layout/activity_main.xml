@@ -242,7 +242,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/replyLayout"
             android:layout_margin="5dp"
-            android:visibility="gone" >
+            android:visibility="visible" >
 
             <EditText
                 android:id="@+id/inputComment"
@@ -265,8 +265,8 @@
 
             <ImageView
                 android:id="@+id/sendComment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="5dp"

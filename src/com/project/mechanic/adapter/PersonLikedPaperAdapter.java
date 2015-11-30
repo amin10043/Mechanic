@@ -93,7 +93,7 @@ public class PersonLikedPaperAdapter extends ArrayAdapter<LikeInPaper> {
 			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
 					byteImageProfile.length);
 
-			peronImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
+			peronImage.setImageBitmap(Utility.getclip(bmp));
 			peronImage.setLayoutParams(lp);
 		}
 //		convertView.setOnClickListener(new View.OnClickListener() {

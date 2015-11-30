@@ -80,7 +80,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike,
 			nametxt;
-	LinearLayout addComment, likeTopic;
+	LinearLayout /*addComment,*/ likeTopic;
 	ImageButton sharebtn;
 	ImageView profileImg;
 
@@ -183,7 +183,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 		countLike = (TextView) header.findViewById(R.id.txtNumofLike_CmtFroum);
 		nametxt = (TextView) header.findViewById(R.id.name_cc);
 
-		addComment = (LinearLayout) header.findViewById(R.id.addCommentToTopic);
+//		addComment = (LinearLayout) header.findViewById(R.id.addCommentToTopic);
 		likeTopic = (LinearLayout) header.findViewById(R.id.LikeTopicLinear);
 
 		sharebtn = (ImageButton) header.findViewById(R.id.sharefroumicon);
@@ -193,9 +193,9 @@ public class PostFragment extends Fragment implements AsyncInterface,
 		exlistview = (ExpandableListView) view
 				.findViewById(R.id.listvCmt_Introduction_post);
 
-		count = (RelativeLayout) header.findViewById(R.id.countLike);
-		commentcounter = (RelativeLayout) header
-				.findViewById(R.id.countComment);
+//		count = (RelativeLayout) header.findViewById(R.id.countLike);
+//		commentcounter = (RelativeLayout) header
+//				.findViewById(R.id.countComment);
 
 		// end find view
 		if (getArguments().getString("Id") != null)
@@ -226,6 +226,8 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			profileImg.setLayoutParams(lp);
 
 			if (u.getImagePath() == null) {
+				profileImg.setBackgroundResource(R.drawable.circle_drawable);
+
 				profileImg.setImageResource(R.drawable.no_img_profile);
 				profileImg.setLayoutParams(lp);
 
@@ -233,8 +235,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 				// byte[] bytepic = u.getImage();
 
 				Bitmap bmp = BitmapFactory.decodeFile(u.getImagePath());
-				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
+				profileImg.setImageBitmap(Utility.getclip(bmp));
 
 				profileImg.setLayoutParams(lp);
 			}
@@ -248,6 +249,12 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			descriptiontxt.setText(topics.getDescription());
 			descriptiontxt.setVisibility(View.VISIBLE);
 		}
+		
+		LinearLayout layoutImg = (LinearLayout) header.findViewById(R.id.imageLayout);
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(layoutImg.getLayoutParams());
+		lp.width = util.getScreenwidth();
+		lp.height = util.getScreenwidth();
+		
 		if (!topics.getPhoto().isEmpty()) {
 			File imgFile = new File(topics.getPhoto());
 
@@ -255,6 +262,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 				Bitmap myBitmap = BitmapFactory.decodeFile(topics.getPhoto());
 				postImage.setImageBitmap(myBitmap);
 				postImage.setVisibility(View.VISIBLE);
+				postImage.setLayoutParams(lp);
 			}
 		}
 		countComment.setText(adapter.CommentInPost_count(postid).toString());
@@ -298,26 +306,26 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 			}
 		});
-		addComment.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				if (CurrentUser == null) {
-					Toast.makeText(getActivity(),
-							"برای درج کامنت ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
-
-				} else {
-
-					dialog = new DialogcmtInpost(PostFragment.this, 0,
-							getActivity(), postid, R.layout.dialog_addcomment,
-							2);
-					dialog.show();
-					exadapter.notifyDataSetChanged();
-				}
-			}
-		});
+//		addComment.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//
+//				if (CurrentUser == null) {
+//					Toast.makeText(getActivity(),
+//							"برای درج کامنت ابتدا باید وارد شوید",
+//							Toast.LENGTH_SHORT).show();
+//
+//				} else {
+//
+//					dialog = new DialogcmtInpost(PostFragment.this, 0,
+//							getActivity(), postid, R.layout.dialog_addcomment,
+//							2);
+//					dialog.show();
+//					exadapter.notifyDataSetChanged();
+//				}
+//			}
+//		});
 
 		commentGroup = adapter.getCommentInPostbyPostid(postid, 0);
 
@@ -371,40 +379,40 @@ public class PostFragment extends Fragment implements AsyncInterface,
 		exlistview.setAdapter(exadapter);
 
 		if (CurrentUser == null) {
-			likeTopic.setBackgroundResource(R.drawable.like_off);
-			count.setBackgroundResource(R.drawable.count_like_off);
+			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+//			count.setBackgroundResource(R.drawable.count_like_off);
 		} else {
 			if (adapter.isUserLikedPost(CurrentUser.getId(), postid)) {
-				likeTopic.setBackgroundResource(R.drawable.like_on);
-				count.setBackgroundResource(R.drawable.count_like);
+				likeTopic.setBackgroundResource(R.drawable.like_froum_on);
+//				count.setBackgroundResource(R.drawable.count_like);
 
 			} else {
 
-				likeTopic.setBackgroundResource(R.drawable.like_off);
-				count.setBackgroundResource(R.drawable.count_like_off);
+				likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+//				count.setBackgroundResource(R.drawable.count_like_off);
 
 			}
 		}
 		adapter.close();
-		count.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				adapter.open();
-				ArrayList<LikeInPost> likedist = adapter
-						.getLikepostLikeInPostByPostId(postid);
-
-				adapter.close();
-				if (likedist.size() == 0) {
-					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
-							.show();
-				} else {
-					DialogPersonLikedPost dia = new DialogPersonLikedPost(
-							getActivity(), postid, likedist);
-					dia.show();
-				}
-			}
-		});
+//		count.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				adapter.open();
+//				ArrayList<LikeInPost> likedist = adapter
+//						.getLikepostLikeInPostByPostId(postid);
+//
+//				adapter.close();
+//				if (likedist.size() == 0) {
+//					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
+//							.show();
+//				} else {
+//					DialogPersonLikedPost dia = new DialogPersonLikedPost(
+//							getActivity(), postid, likedist);
+//					dia.show();
+//				}
+//			}
+//		});
 
 		// این کد ها برای مشخص شدن مبدا ارسالی برای آپدیت کردن لیست می باشد
 		// وقتی کاربر در صفحه فروم بدون کامنت ، نظری ثبت می کند به این صفحه

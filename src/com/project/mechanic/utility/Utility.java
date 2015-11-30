@@ -15,11 +15,26 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import com.project.mechanic.MainActivity;
+import com.project.mechanic.R;
+import com.project.mechanic.PushNotification.DomainSend;
+import com.project.mechanic.entity.Settings;
+import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.PersianDate;
+import com.project.mechanic.fragment.ReportAbuseFragment;
+import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.UpdatingAllDetail;
+import com.project.mechanic.service.UpdatingAllMaster;
+import com.project.mechanic.utility.Roozh.SolarCalendar;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ClipData;
@@ -38,6 +53,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -58,20 +74,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-
-import com.project.mechanic.MainActivity;
-import com.project.mechanic.R;
-import com.project.mechanic.PushNotification.DomainSend;
-import com.project.mechanic.entity.Settings;
-import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.PersianDate;
-import com.project.mechanic.fragment.ReportAbuseFragment;
-import com.project.mechanic.inter.AsyncInterface;
-import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.service.ServerDate;
-import com.project.mechanic.service.UpdatingAllDetail;
-import com.project.mechanic.service.UpdatingAllMaster;
-import com.project.mechanic.utility.Roozh.SolarCalendar;
 
 public class Utility implements AsyncInterface {
 
@@ -106,8 +108,7 @@ public class Utility implements AsyncInterface {
 	}
 
 	public boolean first_time_check() {
-		SharedPreferences uPreferences = context.getSharedPreferences(
-				"firstTime", 0);
+		SharedPreferences uPreferences = context.getSharedPreferences("firstTime", 0);
 		String first = uPreferences.getString("first", null);
 		if ((first == null)) {
 			return false;
@@ -116,47 +117,33 @@ public class Utility implements AsyncInterface {
 	}
 
 	public boolean isNetworkConnected() {
-		ConnectivityManager cm = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		return cm.getActiveNetworkInfo() != null
-				&& cm.getActiveNetworkInfo().isConnectedOrConnecting();
+		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
 	}
 
 	public void showYesNoDialog(Context context, String Title, String message) {
-		new AlertDialog.Builder(context)
-				.setTitle(Title)
-				.setMessage(message)
-				.setPositiveButton("بلی",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,
-									int which) {
+		new AlertDialog.Builder(context).setTitle(Title).setMessage(message)
+				.setPositiveButton("بلی", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
 
-							}
-						})
-				.setNegativeButton("خیر",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,
-									int which) {
+					}
+				}).setNegativeButton("خیر", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
 
-							}
-						}).setIcon(android.R.drawable.ic_dialog_alert).show();
+					}
+				}).setIcon(android.R.drawable.ic_dialog_alert).show();
 	}
 
 	public void showOkDialog(Context context, String Title, String message) {
-		new AlertDialog.Builder(context)
-				.setTitle(Title)
-				.setMessage(message)
-				.setPositiveButton("تایید",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,
-									int which) {
-								dialog.dismiss();
-							}
-						}).setIcon(android.R.drawable.ic_dialog_alert).show();
+		new AlertDialog.Builder(context).setTitle(Title).setMessage(message)
+				.setPositiveButton("تایید", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				}).setIcon(android.R.drawable.ic_dialog_alert).show();
 	}
 
-	public static void copyStream(InputStream input, OutputStream output)
-			throws IOException {
+	public static void copyStream(InputStream input, OutputStream output) throws IOException {
 
 		byte[] buffer = new byte[1024];
 		int bytesRead;
@@ -168,8 +155,7 @@ public class Utility implements AsyncInterface {
 	public void showtoast(View view, int picture, String massage, String Title) {
 
 		TextView txtView_Title = (TextView) view.findViewById(R.id.txt_Title);
-		TextView txtView_Context = (TextView) view
-				.findViewById(R.id.txt_context);
+		TextView txtView_Context = (TextView) view.findViewById(R.id.txt_context);
 		ImageView imageView = (ImageView) view.findViewById(R.id.image_toast);
 
 		txtView_Title.setText(Title);
@@ -199,8 +185,7 @@ public class Utility implements AsyncInterface {
 	@SuppressLint("NewApi")
 	public int getScreenHeight() {
 		int columnWidth;
-		WindowManager wm = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
+		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 
 		final Point point = new Point();
@@ -217,8 +202,7 @@ public class Utility implements AsyncInterface {
 
 	@SuppressLint("NewApi")
 	public int getScreenHeightWithPadding() {
-		WindowManager wm = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
+		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 
 		final Point point = new Point();
@@ -240,15 +224,13 @@ public class Utility implements AsyncInterface {
 	}
 
 	public int iconPadding() {
-		WindowManager wm = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
+		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 		DisplayMetrics outMetrics = new DisplayMetrics();
 		display.getMetrics(outMetrics);
 
 		float density = context.getResources().getDisplayMetrics().density;
-		int paddingIcon = (int) ((int) context.getResources().getDimension(
-				R.dimen.iconPadding) * density);
+		int paddingIcon = (int) ((int) context.getResources().getDimension(R.dimen.iconPadding) * density);
 
 		return paddingIcon;
 	}
@@ -256,8 +238,7 @@ public class Utility implements AsyncInterface {
 	@SuppressWarnings("deprecation")
 	public int getScreenwidth() {
 		int columnWidth;
-		WindowManager wm = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
+		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 
 		final Point point = new Point();
@@ -276,8 +257,7 @@ public class Utility implements AsyncInterface {
 		Locale loc = new Locale("en_US");
 		Roozh util = new Roozh();
 		SolarCalendar sc = util.new SolarCalendar();
-		return String.valueOf(sc.year) + "/"
-				+ String.format(loc, "%02d", sc.month) + "/"
+		return String.valueOf(sc.year) + "/" + String.format(loc, "%02d", sc.month) + "/"
 				+ String.format(loc, "%02d", sc.date);
 	}
 
@@ -293,13 +273,11 @@ public class Utility implements AsyncInterface {
 		intent.putExtra("title", strtitle);
 		intent.putExtra("text", strtext);
 		// Open NotificationView.java Activity
-		PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent,
-				PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		// Create Notification using NotificationCompat.Builder
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(
-				context)
-		// Set Icon
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+				// Set Icon
 				.setSmallIcon(R.drawable.ic_notification)
 				// Set Ticker Message
 				.setTicker("arabian")
@@ -348,8 +326,7 @@ public class Utility implements AsyncInterface {
 					}
 					adapter.open();
 					if (values != null && values.length > 0 && flag)
-						adapter.updateTables(tableName.trim(), cols, values,
-								startModifyDate, endModifyDate);
+						adapter.updateTables(tableName.trim(), cols, values, startModifyDate, endModifyDate);
 
 					adapter.close();
 				}
@@ -358,10 +335,8 @@ public class Utility implements AsyncInterface {
 	}
 
 	public static boolean isAppRunning(Context context) {
-		ActivityManager activityManager = (ActivityManager) context
-				.getSystemService(Context.ACTIVITY_SERVICE);
-		List<RunningTaskInfo> services = activityManager
-				.getRunningTasks(Integer.MAX_VALUE);
+		ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		List<RunningTaskInfo> services = activityManager.getRunningTasks(Integer.MAX_VALUE);
 		if (services.get(0).topActivity.getPackageName().toString()
 				.equalsIgnoreCase(context.getPackageName().toString())) {
 			return true;
@@ -429,8 +404,7 @@ public class Utility implements AsyncInterface {
 			c = Calendar.getInstance();
 			c.setTimeInMillis(Long.valueOf(serverDate));
 		} catch (Exception e) {
-			Toast.makeText(context, "خطا در خواندن تاریخ از سرور ",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, "خطا در خواندن تاریخ از سرور ", Toast.LENGTH_SHORT).show();
 		}
 		return c.getTime();
 	}
@@ -438,15 +412,12 @@ public class Utility implements AsyncInterface {
 	@Override
 	public void processFinish(String output) {
 
-		if (output != null
-				&& !(output.contains("Exception") || output.contains("anyType")
-						|| output.contains("java") || output
-							.contains("SoapFault"))) {
+		if (output != null && !(output.contains("Exception") || output.contains("anyType") || output.contains("java")
+				|| output.contains("SoapFault"))) {
 			if (output.length() == 18) {
 				todayDate = output;
 
-				final SharedPreferences currentTime = context
-						.getSharedPreferences("time", 0);
+				final SharedPreferences currentTime = context.getSharedPreferences("time", 0);
 				currentTime.edit().putString("time", todayDate).commit();
 
 			}
@@ -459,47 +430,28 @@ public class Utility implements AsyncInterface {
 					settings = new Settings();
 				String mStartDatesMaster = "";
 				String mEndDatesMaster = "";
-				mStartDatesMaster = (settings.getServerDate_Start_Anad() != null ? settings
-						.getServerDate_Start_Anad() : "")
+				mStartDatesMaster = (settings.getServerDate_Start_Anad() != null ? settings.getServerDate_Start_Anad()
+						: "") + "-"
+						+ (settings.getServerDate_Start_Froum() != null ? settings.getServerDate_Start_Froum() : "")
+						+ "-" + (settings.getServerDate_Start_News() != null ? settings.getServerDate_Start_News() : "")
 						+ "-"
-						+ (settings.getServerDate_Start_Froum() != null ? settings
-								.getServerDate_Start_Froum() : "")
+						+ (settings.getServerDate_Start_Object() != null ? settings.getServerDate_Start_Object() : "")
 						+ "-"
-						+ (settings.getServerDate_Start_News() != null ? settings
-								.getServerDate_Start_News() : "")
+						+ (settings.getServerDate_Start_Paper() != null ? settings.getServerDate_Start_Paper() : "")
 						+ "-"
-						+ (settings.getServerDate_Start_Object() != null ? settings
-								.getServerDate_Start_Object() : "")
+						+ (settings.getServerDate_Start_Ticket() != null ? settings.getServerDate_Start_Ticket() : "")
 						+ "-"
-						+ (settings.getServerDate_Start_Paper() != null ? settings
-								.getServerDate_Start_Paper() : "")
-						+ "-"
-						+ (settings.getServerDate_Start_Ticket() != null ? settings
-								.getServerDate_Start_Ticket() : "")
-						+ "-"
-						+ (settings.getServerDate_Start_Users() != null ? settings
-								.getServerDate_Start_Users() : "") + "-";
+						+ (settings.getServerDate_Start_Users() != null ? settings.getServerDate_Start_Users() : "")
+						+ "-";
 
-				mEndDatesMaster = (settings.getServerDate_End_Anad() != null ? settings
-						.getServerDate_End_Anad() : "")
-						+ "-"
-						+ (settings.getServerDate_End_Froum() != null ? settings
-								.getServerDate_End_Froum() : "")
-						+ "-"
-						+ (settings.getServerDate_End_News() != null ? settings
-								.getServerDate_End_News() : "")
-						+ "-"
-						+ (settings.getServerDate_End_Object() != null ? settings
-								.getServerDate_End_Object() : "")
-						+ "-"
-						+ (settings.getServerDate_End_Paper() != null ? settings
-								.getServerDate_End_Paper() : "")
-						+ "-"
-						+ (settings.getServerDate_End_Ticket() != null ? settings
-								.getServerDate_End_Ticket() : "")
-						+ "-"
-						+ (settings.getServerDate_End_Users() != null ? settings
-								.getServerDate_End_Users() : "") + "-";
+				mEndDatesMaster = (settings.getServerDate_End_Anad() != null ? settings.getServerDate_End_Anad() : "")
+						+ "-" + (settings.getServerDate_End_Froum() != null ? settings.getServerDate_End_Froum() : "")
+						+ "-" + (settings.getServerDate_End_News() != null ? settings.getServerDate_End_News() : "")
+						+ "-" + (settings.getServerDate_End_Object() != null ? settings.getServerDate_End_Object() : "")
+						+ "-" + (settings.getServerDate_End_Paper() != null ? settings.getServerDate_End_Paper() : "")
+						+ "-" + (settings.getServerDate_End_Ticket() != null ? settings.getServerDate_End_Ticket() : "")
+						+ "-" + (settings.getServerDate_End_Users() != null ? settings.getServerDate_End_Users() : "")
+						+ "-";
 
 				serviceUpdate.execute(mStartDatesMaster, mEndDatesMaster, "0");
 				flag = true;
@@ -516,64 +468,57 @@ public class Utility implements AsyncInterface {
 
 				String mStartDatesDetail = "";
 				String mEndDatesDetail = "";
-				mStartDatesDetail = (settings.getServerDate_Start_CmtInPaper() != null ? settings
-						.getServerDate_Start_CmtInPaper() : "")
+				mStartDatesDetail = (settings.getServerDate_Start_CmtInPaper() != null
+						? settings.getServerDate_Start_CmtInPaper() : "")
 						+ "-"
-						+ (settings.getServerDate_Start_CommentInFroum() != null ? settings
-								.getServerDate_Start_CommentInFroum() : "")
+						+ (settings.getServerDate_Start_CommentInFroum() != null
+								? settings.getServerDate_Start_CommentInFroum() : "")
 						+ "-"
-						+ (settings.getServerDate_Start_CommentInObject() != null ? settings
-								.getServerDate_Start_CommentInObject() : "")
+						+ (settings.getServerDate_Start_CommentInObject() != null
+								? settings.getServerDate_Start_CommentInObject() : "")
 						+ "-"
-						+ (settings.getServerDate_Start_LikeInFroum() != null ? settings
-								.getServerDate_Start_LikeInFroum() : "")
+						+ (settings.getServerDate_Start_LikeInFroum() != null
+								? settings.getServerDate_Start_LikeInFroum() : "")
 						+ "-"
-						+ (settings.getServerDate_Start_LikeInObject() != null ? settings
-								.getServerDate_Start_LikeInObject() : "")
+						+ (settings.getServerDate_Start_LikeInObject() != null
+								? settings.getServerDate_Start_LikeInObject() : "")
 						+ "-"
-						+ (settings.getServerDate_Start_LikeInPaper() != null ? settings
-								.getServerDate_Start_LikeInPaper() : "")
+						+ (settings.getServerDate_Start_LikeInPaper() != null
+								? settings.getServerDate_Start_LikeInPaper() : "")
 						+ "-"
-						+ (settings.getServerDate_Start_LikeInComment() != null ? settings
-								.getServerDate_Start_LikeInComment() : "")
+						+ (settings.getServerDate_Start_LikeInComment() != null
+								? settings.getServerDate_Start_LikeInComment() : "")
 						+ "-"
-						+ (settings.getServerDate_Start_LikeInCommentObject() != null ? settings
-								.getServerDate_Start_LikeInCommentObject() : "")
-						+ "-"
-						+ (settings.getServerDate_Start_ObjectInCity() != null ? settings
-								.getServerDate_Start_ObjectInCity() : "");
+						+ (settings.getServerDate_Start_LikeInCommentObject() != null
+								? settings.getServerDate_Start_LikeInCommentObject() : "")
+						+ "-" + (settings.getServerDate_Start_ObjectInCity() != null
+								? settings.getServerDate_Start_ObjectInCity() : "");
 
-				mEndDatesDetail = settings.getServerDate_End_CmtInPaper() != null ? settings
-						.getServerDate_End_CmtInPaper()
-						: ""
+				mEndDatesDetail = settings.getServerDate_End_CmtInPaper() != null
+						? settings.getServerDate_End_CmtInPaper()
+						: "" + "-"
+								+ (settings.getServerDate_End_CommentInFroum() != null
+										? settings.getServerDate_End_CommentInFroum() : "")
 								+ "-"
-								+ (settings.getServerDate_End_CommentInFroum() != null ? settings
-										.getServerDate_End_CommentInFroum()
-										: "")
+								+ (settings.getServerDate_End_CommentInObject() != null
+										? settings.getServerDate_End_CommentInObject() : "")
 								+ "-"
-								+ (settings.getServerDate_End_CommentInObject() != null ? settings
-										.getServerDate_End_CommentInObject()
-										: "")
+								+ (settings.getServerDate_End_LikeInFroum() != null
+										? settings.getServerDate_End_LikeInFroum() : "")
 								+ "-"
-								+ (settings.getServerDate_End_LikeInFroum() != null ? settings
-										.getServerDate_End_LikeInFroum() : "")
+								+ (settings.getServerDate_End_LikeInObject() != null
+										? settings.getServerDate_End_LikeInObject() : "")
 								+ "-"
-								+ (settings.getServerDate_End_LikeInObject() != null ? settings
-										.getServerDate_End_LikeInObject() : "")
+								+ (settings.getServerDate_End_LikeInPaper() != null
+										? settings.getServerDate_End_LikeInPaper() : "")
 								+ "-"
-								+ (settings.getServerDate_End_LikeInPaper() != null ? settings
-										.getServerDate_End_LikeInPaper() : "")
+								+ (settings.getServerDate_End_LikeInComment() != null
+										? settings.getServerDate_End_LikeInComment() : "")
 								+ "-"
-								+ (settings.getServerDate_End_LikeInComment() != null ? settings
-										.getServerDate_End_LikeInComment() : "")
-								+ "-"
-								+ (settings
-										.getServerDate_End_LikeInCommentObject() != null ? settings
-										.getServerDate_End_LikeInCommentObject()
-										: "")
-								+ "-"
-								+ (settings.getServerDate_End_ObjectInCity() != null ? settings
-										.getServerDate_End_ObjectInCity() : "");
+								+ (settings.getServerDate_End_LikeInCommentObject() != null
+										? settings.getServerDate_End_LikeInCommentObject() : "")
+								+ "-" + (settings.getServerDate_End_ObjectInCity() != null
+										? settings.getServerDate_End_ObjectInCity() : "");
 
 				serviceUpdateD = new UpdatingAllDetail(context);
 				serviceUpdateD.delegate = this;
@@ -608,8 +553,8 @@ public class Utility implements AsyncInterface {
 			String M = test.substring(10, 12);
 			String s = test.substring(12, 14);
 			try {
-				ret = pDate.Shamsi(Integer.valueOf(y), Integer.valueOf(m),
-						Integer.valueOf(d)) + "  " + h + ":" + M + ":" + s;
+				ret = pDate.Shamsi(Integer.valueOf(y), Integer.valueOf(m), Integer.valueOf(d)) + "  " + h + ":" + M
+						+ ":" + s;
 			} catch (Exception ex) {
 				ret = "";
 			}
@@ -619,8 +564,7 @@ public class Utility implements AsyncInterface {
 
 	public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
 
-		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-				bitmap.getHeight(), Config.ARGB_8888);
+		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
 
 		final int color = 0xff424242;
@@ -641,8 +585,7 @@ public class Utility implements AsyncInterface {
 	}
 
 	@SuppressWarnings("null")
-	public int CreateFile(byte[] byteImage, int ImageId,
-			String nameMainDirectory, String SubFolder, String nameFile,
+	public int CreateFile(byte[] byteImage, int ImageId, String nameMainDirectory, String SubFolder, String nameFile,
 			String TableName) {
 
 		// تایپ برای مشخص کردن جدول ذخیره سازی آدرس تصاویر می باشد
@@ -654,83 +597,60 @@ public class Utility implements AsyncInterface {
 		File root = android.os.Environment.getExternalStorageDirectory();
 
 		// پیدا کردن و ایجاد آدرس پوشه پکیج
-		File FolderPackage = new File(root.getPath() + "/Android/data/"
-				+ namePackage + "/");
+		File FolderPackage = new File(root.getPath() + "/Android/data/" + namePackage + "/");
 
 		if (!FolderPackage.exists()) {
 			FolderPackage.mkdirs(); // build directory
 		}
 
 		// پیدا کردن و ایجادآدرس پوشه اصلی
-		File mainDirectory = new File(FolderPackage.getPath() + "/"
-				+ nameMainDirectory + "/");
+		File mainDirectory = new File(FolderPackage.getPath() + "/" + nameMainDirectory + "/");
 		if (!mainDirectory.exists()) {
 			mainDirectory.mkdirs(); // build directory
 		}
 
 		// پیدا کردن و ایجاد آدرس پوشه فرعی
-		File agahiDirectory = new File(mainDirectory.getPath() + "/"
-				+ SubFolder + "/");
+		File agahiDirectory = new File(mainDirectory.getPath() + "/" + SubFolder + "/");
 
 		if (!agahiDirectory.exists()) {
 			agahiDirectory.mkdirs(); // build directory
 		}
 
-		byte[] zeroByte = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		byte[] zeroByte = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 		boolean retval = Arrays.equals(byteImage, zeroByte);
 
 		if (retval == false) {
 
-			File f = new File(agahiDirectory + File.separator + nameFile
-					+ String.valueOf(ImageId) + ".jpg");
+			File f = new File(agahiDirectory + File.separator + nameFile + String.valueOf(ImageId) + ".jpg");
 			// itemID.add(ImageId);
 			try {
 				f.createNewFile();
@@ -790,8 +710,7 @@ public class Utility implements AsyncInterface {
 				adapter.close();
 
 			}
-			Toast.makeText(context, nameFile + " " + ImageId + "ذخیره شد", 0)
-					.show();
+			Toast.makeText(context, nameFile + " " + ImageId + "ذخیره شد", 0).show();
 			return ImageId;
 
 		} else
@@ -799,8 +718,8 @@ public class Utility implements AsyncInterface {
 
 	}
 
-	public String CreateFileString(byte[] byteImage, String ImageId,
-			String nameMainDirectory, String SubFolder, String nameFile) {
+	public String CreateFileString(byte[] byteImage, String ImageId, String nameMainDirectory, String SubFolder,
+			String nameFile) {
 
 		// تایپ برای مشخص کردن جدول ذخیره سازی آدرس تصاویر می باشد
 
@@ -811,83 +730,60 @@ public class Utility implements AsyncInterface {
 		File root = android.os.Environment.getExternalStorageDirectory();
 
 		// پیدا کردن و ایجاد آدرس پوشه پکیج
-		File FolderPackage = new File(root.getPath() + "/Android/data/"
-				+ namePackage + "/");
+		File FolderPackage = new File(root.getPath() + "/Android/data/" + namePackage + "/");
 
 		if (!FolderPackage.exists()) {
 			FolderPackage.mkdirs(); // build directory
 		}
 
 		// پیدا کردن و ایجادآدرس پوشه اصلی
-		File mainDirectory = new File(FolderPackage.getPath() + "/"
-				+ nameMainDirectory + "/");
+		File mainDirectory = new File(FolderPackage.getPath() + "/" + nameMainDirectory + "/");
 		if (!mainDirectory.exists()) {
 			mainDirectory.mkdirs(); // build directory
 		}
 
 		// پیدا کردن و ایجاد آدرس پوشه فرعی
-		File agahiDirectory = new File(mainDirectory.getPath() + "/"
-				+ SubFolder + "/");
+		File agahiDirectory = new File(mainDirectory.getPath() + "/" + SubFolder + "/");
 
 		if (!agahiDirectory.exists()) {
 			agahiDirectory.mkdirs(); // build directory
 		}
 
-		byte[] zeroByte = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		byte[] zeroByte = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 		boolean retval = Arrays.equals(byteImage, zeroByte);
 
 		if (retval == false) {
 
-			File f = new File(agahiDirectory + File.separator + nameFile
-					+ String.valueOf(ImageId) + ".jpg");
+			File f = new File(agahiDirectory + File.separator + nameFile + String.valueOf(ImageId) + ".jpg");
 			// itemID.add(ImageId);
 			try {
 				f.createNewFile();
@@ -914,8 +810,7 @@ public class Utility implements AsyncInterface {
 				e.printStackTrace();
 			}
 
-			Toast.makeText(context, nameFile + " " + ImageId + "ذخیره شد", 0)
-					.show();
+			Toast.makeText(context, nameFile + " " + ImageId + "ذخیره شد", 0).show();
 			return f.getPath();
 
 		} else
@@ -925,54 +820,35 @@ public class Utility implements AsyncInterface {
 
 	public boolean IsEmptyByteArrayImage(byte[] ImageByte) {
 
-		byte[] zeroByte = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		byte[] zeroByte = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 		boolean retval = Arrays.equals(ImageByte, zeroByte);
 		return retval;
@@ -988,8 +864,7 @@ public class Utility implements AsyncInterface {
 			String d = test.substring(6, 8);
 
 			try {
-				ret = pDate.Shamsi(Integer.valueOf(y), Integer.valueOf(m),
-						Integer.valueOf(d));
+				ret = pDate.Shamsi(Integer.valueOf(y), Integer.valueOf(m), Integer.valueOf(d));
 			} catch (Exception ex) {
 				ret = "";
 			}
@@ -997,8 +872,7 @@ public class Utility implements AsyncInterface {
 		return ret;
 	}
 
-	public ImageView ShowFooterAgahi(Activity activity, boolean IsShow,
-			final int Type) {
+	public ImageView ShowFooterAgahi(Activity activity, boolean IsShow, final int Type) {
 
 		// type = 0 >>>>> mainFragment
 		// type = 1 >>>>> main brand fragment
@@ -1013,8 +887,7 @@ public class Utility implements AsyncInterface {
 
 		ViewFlipper vf = (ViewFlipper) activity.findViewById(R.id.footerAgahi);
 
-		RelativeLayout la = (RelativeLayout) activity
-				.findViewById(R.id.getCommentLayout);
+		RelativeLayout la = (RelativeLayout) activity.findViewById(R.id.getCommentLayout);
 
 		ImageView send = (ImageView) activity.findViewById(R.id.sendComment);
 		// EditText comment = (EditText)
@@ -1156,16 +1029,15 @@ public class Utility implements AsyncInterface {
 
 	public Typeface SetFontCasablanca() {
 
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/Casablanca.TTF");
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(), "fonts/Casablanca.TTF");
 
 		return typeFace;
 
 	}
+
 	public Typeface SetFontIranSans() {
 
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/IranSans.TTF");
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(), "fonts/IranSans.TTF");
 
 		return typeFace;
 
@@ -1187,17 +1059,19 @@ public class Utility implements AsyncInterface {
 
 	public void ReplyLayout(Activity activity, String text, boolean isShow) {
 
-		TextView reply = (TextView) activity.findViewById(R.id.reply);
-		RelativeLayout layout = (RelativeLayout) activity
-				.findViewById(R.id.replyLayout);
+		if (activity != null) {
 
-		if (isShow == true) {
-			layout.setVisibility(View.VISIBLE);
-			reply.setText(text);
-		} else {
-			reply.setText("");
-			layout.setVisibility(View.GONE);
+			TextView reply = (TextView) activity.findViewById(R.id.reply);
+			RelativeLayout layout = (RelativeLayout) activity.findViewById(R.id.replyLayout);
 
+			if (isShow == true) {
+				layout.setVisibility(View.VISIBLE);
+				reply.setText(text);
+			} else {
+				reply.setText("");
+				layout.setVisibility(View.GONE);
+
+			}
 		}
 	}
 
@@ -1213,8 +1087,7 @@ public class Utility implements AsyncInterface {
 		ImageView[] arrayImage = new ImageView[3];
 
 		ViewFlipper vf = (ViewFlipper) activity.findViewById(R.id.footerAgahi);
-		RelativeLayout la = (RelativeLayout) activity
-				.findViewById(R.id.getCommentLayout);
+		RelativeLayout la = (RelativeLayout) activity.findViewById(R.id.getCommentLayout);
 
 		la.setVisibility(View.VISIBLE);
 		vf.setVisibility(View.GONE);
@@ -1273,8 +1146,7 @@ public class Utility implements AsyncInterface {
 
 		DomainSend fr = new DomainSend(source);
 
-		FragmentTransaction trans = ((MainActivity) context)
-				.getSupportFragmentManager().beginTransaction();
+		FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 
 		trans.replace(R.id.content_frame, fr);
 		trans.addToBackStack(null);
@@ -1284,8 +1156,7 @@ public class Utility implements AsyncInterface {
 
 	public void CopyToClipboard(String value) {
 
-		ClipboardManager clipMan = (ClipboardManager) context
-				.getSystemService(Context.CLIPBOARD_SERVICE);
+		ClipboardManager clipMan = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
 		value = "http://www.google.com\n" + value;
 
 		Toast.makeText(context, value, Toast.LENGTH_SHORT).show();
@@ -1296,15 +1167,12 @@ public class Utility implements AsyncInterface {
 
 	}
 
-	public void reportAbuse(int userIdSender, int source, int itemId,
-			String content, int backId) {
+	public void reportAbuse(int userIdSender, int source, int itemId, String content, int backId) {
 
 		if (source > 4) {
-			FragmentTransaction trans = ((MainActivity) context)
-					.getSupportFragmentManager().beginTransaction();
+			FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 			ReportAbuseFragment fragment = new ReportAbuseFragment(backId);
-			trans.setCustomAnimations(R.anim.pull_in_left,
-					R.anim.push_out_right);
+			trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 
 			Bundle bundle = new Bundle();
 
@@ -1317,11 +1185,9 @@ public class Utility implements AsyncInterface {
 			trans.replace(R.id.content_frame, fragment);
 			trans.commit();
 		} else {
-			FragmentTransaction trans = ((MainActivity) context)
-					.getSupportFragmentManager().beginTransaction();
+			FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 			ReportAbuseFragment fragment = new ReportAbuseFragment();
-			trans.setCustomAnimations(R.anim.pull_in_left,
-					R.anim.push_out_right);
+			trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 
 			Bundle bundle = new Bundle();
 
@@ -1337,11 +1203,9 @@ public class Utility implements AsyncInterface {
 
 	}
 
-	public void reportAbuseTicket(int userIdSender, int itemId, String content,
-			int ticketTypeId, int provinceId) {
+	public void reportAbuseTicket(int userIdSender, int itemId, String content, int ticketTypeId, int provinceId) {
 
-		FragmentTransaction trans = ((MainActivity) context)
-				.getSupportFragmentManager().beginTransaction();
+		FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 		ReportAbuseFragment fragment = new ReportAbuseFragment();
 		trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 
@@ -1362,8 +1226,7 @@ public class Utility implements AsyncInterface {
 	}
 
 	public static Bitmap getclip(Bitmap bitmap) {
-		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-				bitmap.getHeight(), Config.ARGB_8888);
+		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
 
 		final Paint paint = new Paint();
@@ -1371,8 +1234,7 @@ public class Utility implements AsyncInterface {
 
 		paint.setAntiAlias(true);
 		canvas.drawARGB(0, 0, 0, 0);
-		canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
-				bitmap.getWidth() / 2, paint);
+		canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
 		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
 		canvas.drawBitmap(bitmap, rect, rect, paint);
 		return output;
@@ -1400,12 +1262,10 @@ public class Utility implements AsyncInterface {
 		Calendar calendar1 = Calendar.getInstance();
 		Calendar calendar2 = Calendar.getInstance();
 
-		calendar1.set(Integer.valueOf(pastDate.get(0)) + 1,
-				Integer.valueOf(pastDate.get(1)),
+		calendar1.set(Integer.valueOf(pastDate.get(0)) + 1, Integer.valueOf(pastDate.get(1)),
 				Integer.valueOf(pastDate.get(2)));
 
-		calendar2.set(Integer.valueOf(CurrentDate.get(0)),
-				Integer.valueOf(CurrentDate.get(1)),
+		calendar2.set(Integer.valueOf(CurrentDate.get(0)), Integer.valueOf(CurrentDate.get(1)),
 				Integer.valueOf(CurrentDate.get(2)));
 
 		long milsecs1 = calendar1.getTimeInMillis();
@@ -1414,11 +1274,44 @@ public class Utility implements AsyncInterface {
 		// long dsecs = diff / 1000;
 		// long dminutes = diff / (60 * 1000);
 		// long dhours = diff / (60 * 60 * 1000);
-		
+
 		long ddays = diff / (24 * 60 * 60 * 1000);
 		int dif = (int) ddays;
-		
+
 		return dif;
-		
+
+	}
+
+	public void setSizeDialog(Dialog dialog) {
+
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+		lp.copyFrom(dialog.getWindow().getAttributes());
+		lp.width = (int) getScreenwidth() - 50;
+		lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.BLACK));
+		dialog.getWindow().setAttributes(lp);
+
+		dialog.getWindow().getAttributes().windowAnimations = R.style.animationDialog;
+		dialog.show();
+
+	}
+
+	public List<String> spilitDateTime(String date) {
+
+		List<String> list = new ArrayList<String>();
+
+		if (date != null && !"".equals(date)) {
+
+			String da = date.substring(0, 10);
+			list.add(da);
+
+			String time = date.substring(11, 17);
+			list.add(time);
+
+		}
+
+		return list;
+
 	}
 }

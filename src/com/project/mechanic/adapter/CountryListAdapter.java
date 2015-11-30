@@ -55,10 +55,10 @@ public class CountryListAdapter extends ArrayAdapter<ListItem> {
 
 		convertView = myInflater.inflate(R.layout.row_city, parent, false);
 
-		Animation animation = AnimationUtils.loadAnimation(getContext(),
-				(position > lastPosition) ? R.anim.up_from_bottom
-						: R.anim.down_from_top);
-		convertView.startAnimation(animation);
+//		Animation animation = AnimationUtils.loadAnimation(getContext(),
+//				(position > lastPosition) ? R.anim.up_from_bottom
+//						: R.anim.down_from_top);
+//		convertView.startAnimation(animation);
 		TextView txtName = (TextView) convertView.findViewById(R.id.RowCitytxt);
 
 		tempItem = list.get(position);

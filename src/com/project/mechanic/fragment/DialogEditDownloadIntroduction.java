@@ -1,16 +1,18 @@
 package com.project.mechanic.fragment;
 
+import com.project.mechanic.R;
+import com.project.mechanic.utility.Utility;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.project.mechanic.R;
 
 public class DialogEditDownloadIntroduction extends Dialog {
 	Context context;
@@ -18,13 +20,16 @@ public class DialogEditDownloadIntroduction extends Dialog {
 
 	String l1, l2, l3, l4;
 	EditText inCatalog, inPrice, inPDF, inVideo;
-	ImageButton saveBtn;
+	Button saveBtn;
+	
+	Utility util;
 
 	public DialogEditDownloadIntroduction(IntroductionEditFragment fragment,
 			Context context, int xmllayout) {
 		super(context);
 		this.fragment = fragment;
 		this.context = context;
+		util = new Utility(context);
 	}
 
 	@Override
@@ -38,12 +43,21 @@ public class DialogEditDownloadIntroduction extends Dialog {
 
 		setContentView(R.layout.dialog_edit_link_dn);
 
-		saveBtn = (ImageButton) findViewById(R.id.saveDn);
-
+		saveBtn = (Button) findViewById(R.id.save);
+		
+		RelativeLayout rl = (RelativeLayout)findViewById(R.id.layout);
+		
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
+		lp.width = util.getScreenwidth()/4;
+		lp.height  = util.getScreenwidth()/8;
+		lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		
 		inCatalog = (EditText) findViewById(R.id.de1);
 		inPrice = (EditText) findViewById(R.id.de2);
 		inPDF = (EditText) findViewById(R.id.de3);
 		inVideo = (EditText) findViewById(R.id.de4);
+		
+		saveBtn.setLayoutParams(lp);
 
 		saveBtn.setOnClickListener(new android.view.View.OnClickListener() {
 

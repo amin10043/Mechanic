@@ -1,32 +1,34 @@
 package com.project.mechanic.fragment;
 
+import com.project.mechanic.R;
+import com.project.mechanic.utility.Utility;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.project.mechanic.R;
 
 public class DialogEditNet extends Dialog {
 	Context context;
 	IntroductionEditFragment fragment;
 
 	String l1, l2, l3, l4, l5, l6;
-	EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle,
-			inInstagram;
+	EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle, inInstagram;
 
-	ImageButton saveBtn;
+	Button saveBtn;
+	Utility util;
 
-	public DialogEditNet(IntroductionEditFragment fragment, Context context,
-			int xmlDesign) {
+	public DialogEditNet(IntroductionEditFragment fragment, Context context, int xmlDesign) {
 		super(context);
 		this.context = context;
 		this.fragment = fragment;
+		util = new Utility(context);
 	}
 
 	@Override
@@ -34,8 +36,7 @@ public class DialogEditNet extends Dialog {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setBackgroundDrawable(
-				new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		setContentView(R.layout.dialog_edit_link_net);
 
 		inFacebook = (EditText) findViewById(R.id.dialogm1);
@@ -45,8 +46,15 @@ public class DialogEditNet extends Dialog {
 		inGoogle = (EditText) findViewById(R.id.dialogm5);
 		inInstagram = (EditText) findViewById(R.id.dialogm6);
 
-		saveBtn = (ImageButton) findViewById(R.id.savenetlink);
+		RelativeLayout rl = (RelativeLayout) findViewById(R.id.layout);
 
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
+		lp.width = util.getScreenwidth() / 4;
+		lp.height = util.getScreenwidth() / 8;
+		lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+		saveBtn = (Button) findViewById(R.id.savenetlink);
+		saveBtn.setLayoutParams(lp);
 		saveBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -58,8 +66,7 @@ public class DialogEditNet extends Dialog {
 				l5 = inGoogle.getText().toString();
 				l6 = inInstagram.getText().toString();
 
-				if (l1.equals("") & l2.equals("") & l3.equals("")
-						& l4.equals("") & l5.equals("") & l6.equals("")) {
+				if (l1.equals("") & l2.equals("") & l3.equals("") & l4.equals("") & l5.equals("") & l6.equals("")) {
 					dismiss();
 				} else {
 
@@ -70,8 +77,7 @@ public class DialogEditNet extends Dialog {
 					fragment.Dgoogle = l5;
 					fragment.Dinstagram = l6;
 
-					Toast.makeText(context, "لینک ها با موفقیت اضافه شدند",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "لینک ها با موفقیت اضافه شدند", Toast.LENGTH_SHORT).show();
 
 					dismiss();
 

@@ -41,8 +41,7 @@ import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.utility.Utility;
 
-public class ExpandIntroduction extends BaseExpandableListAdapter implements
-		AsyncInterface {
+public class ExpandIntroduction extends BaseExpandableListAdapter implements AsyncInterface {
 
 	Context context;
 	private Map<CommentInObject, List<CommentInObject>> mapCollection;
@@ -67,10 +66,9 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 	List<String> menuItems;
 	boolean IsDeleteing;
 
-	public ExpandIntroduction(Context context,
-			ArrayList<CommentInObject> CommentList,
-			Map<CommentInObject, List<CommentInObject>> mapCollection,
-			IntroductionFragment introductionFragment, int ObjectId) {
+	public ExpandIntroduction(Context context, ArrayList<CommentInObject> CommentList,
+			Map<CommentInObject, List<CommentInObject>> mapCollection, IntroductionFragment introductionFragment,
+			int ObjectId) {
 
 		this.context = context;
 		this.mapCollection = mapCollection;
@@ -86,8 +84,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		return mapCollection.get(CommentList.get(groupPosition)).get(
-				childPosition);
+		return mapCollection.get(CommentList.get(groupPosition)).get(childPosition);
 
 	}
 
@@ -97,43 +94,35 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 	}
 
 	@Override
-	public View getChildView(final int groupPosition, final int childPosition,
-			boolean isLastChild, View convertView, ViewGroup parent) {
-		CommentInObject reply = (CommentInObject) getChild(groupPosition,
-				childPosition);
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView,
+			ViewGroup parent) {
+		CommentInObject reply = (CommentInObject) getChild(groupPosition, childPosition);
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.row_child_item, null);
 		}
-		TextView mainReply = (TextView) convertView
-				.findViewById(R.id.reply_txt_child);
+		TextView mainReply = (TextView) convertView.findViewById(R.id.reply_txt_child);
 
-		TextView dateReply = (TextView) convertView
-				.findViewById(R.id.date_replyed);
-		TextView nameReplyer = (TextView) convertView
-				.findViewById(R.id.name_replyed);
+		TextView dateReply = (TextView) convertView.findViewById(R.id.date_replyed);
+		TextView nameReplyer = (TextView) convertView.findViewById(R.id.name_replyed);
 
-		ImageButton ReplyerPic = (ImageButton) convertView
-				.findViewById(R.id.icon_reply_comment);
+		ImageButton ReplyerPic = (ImageButton) convertView.findViewById(R.id.icon_reply_comment);
 
-		reportReply = (ImageView) convertView
-				.findViewById(R.id.reportImagereply);
+		reportReply = (ImageView) convertView.findViewById(R.id.reportImagereply);
 		adapter.open();
 
 		final CommentInObject comment = CommentList.get(groupPosition);
 		Users y = adapter.getUserbyid(comment.getUserid());
 
-		RelativeLayout rl = (RelativeLayout) convertView
-				.findViewById(R.id.main_icon_reply);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				rl.getLayoutParams());
+		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.main_icon_reply);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
 		lp.width = util.getScreenwidth() / 7;
 		lp.height = util.getScreenwidth() / 7;
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
 		if (y.getImagePath() == null) {
+			ReplyerPic.setBackgroundResource(R.drawable.circle_drawable);
 			ReplyerPic.setImageResource(R.drawable.no_img_profile);
 			ReplyerPic.setLayoutParams(lp);
 
@@ -141,7 +130,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 			Bitmap bmp = BitmapFactory.decodeFile(y.getImagePath());
 
-			ReplyerPic.setImageBitmap(bmp);
+			ReplyerPic.setImageBitmap(Utility.getclip(bmp));
 
 			ReplyerPic.setLayoutParams(lp);
 		}
@@ -152,8 +141,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 			public void onClick(View v) {
 
 				int id = (int) getGroupId(groupPosition);
-				CommentInObject co = (CommentInObject) getChild(id,
-						childPosition);
+				CommentInObject co = (CommentInObject) getChild(id, childPosition);
 				if (co != null) {
 					itemId = co.getId();
 					userIdsender = co.getUserid();
@@ -200,15 +188,12 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 						if (item.getTitle().equals("گزارش تخلف")) {
 
 							if (util.getCurrentUser() != null)
-								util.reportAbuse(userIdsender, 7, itemId,
-										content, ObjectID);
+								util.reportAbuse(userIdsender, 7, itemId, content, ObjectID);
 							else
-								Toast.makeText(context, "ابتدا باید وارد شوید",
-										0).show();
+								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
 						if (item.getTitle().equals("حذف")) {
-							if (util.getCurrentUser() != null
-									&& util.getCurrentUser().getId() == userIdsender)
+							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender)
 								deleteItems(itemId);
 							else {
 
@@ -264,8 +249,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 				CommentInObject comment = CommentList.get(groupPosition);
 				Users y = adapter.getUserbyid(comment.getUserid());
 				userId = y.getId();
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
@@ -310,8 +294,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 	}
 
 	@Override
-	public View getGroupView(final int groupPosition, final boolean isExpanded,
-			View convertView, ViewGroup parent) {
+	public View getGroupView(final int groupPosition, final boolean isExpanded, View convertView, ViewGroup parent) {
 		adapter.open();
 
 		final CommentInObject comment = CommentList.get(groupPosition);
@@ -320,42 +303,31 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 		adapter.close();
 
 		if (convertView == null) {
-			LayoutInflater infalInflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = infalInflater.inflate(R.layout.row_group_item, null);
 		}
 
 		// start find view
-		final TextView mainComment = (TextView) convertView
-				.findViewById(R.id.peygham);
+		final TextView mainComment = (TextView) convertView.findViewById(R.id.peygham);
 
-		TextView nameCommenter = (TextView) convertView
-				.findViewById(R.id.name_froum_profile);
+		TextView nameCommenter = (TextView) convertView.findViewById(R.id.name_froum_profile);
 
-		final TextView countLike = (TextView) convertView
-				.findViewById(R.id.countCommentFroum);
-		final TextView countdisLike = (TextView) convertView
-				.findViewById(R.id.countdislikecommentFroum);
+		final TextView countLike = (TextView) convertView.findViewById(R.id.countCommentFroum);
+		final TextView countdisLike = (TextView) convertView.findViewById(R.id.countdislikecommentFroum);
 
-		TextView dateCommenter = (TextView) convertView
-				.findViewById(R.id.date_commented_in_froum);
+		TextView dateCommenter = (TextView) convertView.findViewById(R.id.date_commented_in_froum);
 
-		TextView countOfReply = (TextView) convertView
-				.findViewById(R.id.numberOfCommentTopic);
+		TextView countOfReply = (TextView) convertView.findViewById(R.id.numberOfCommentTopic);
 
-		LinearLayout addreply = (LinearLayout) convertView
-				.findViewById(R.id.addCommentToTopic);
+		LinearLayout addreply = (LinearLayout) convertView.findViewById(R.id.addCommentToTopic);
 
-		ImageButton profileImage = (ImageButton) convertView
-				.findViewById(R.id.icon_froum_profile);
+		ImageButton profileImage = (ImageButton) convertView.findViewById(R.id.icon_froum_profile);
 
 		reportComment = (ImageView) convertView.findViewById(R.id.reportImage);
 
-		final ImageButton imglikeComment = (ImageButton) convertView
-				.findViewById(R.id.positive_img);
+		final ImageButton imglikeComment = (ImageButton) convertView.findViewById(R.id.positive_img);
 
-		final ImageButton imgdislikeComment = (ImageButton) convertView
-				.findViewById(R.id.negative_img);
+		final ImageButton imgdislikeComment = (ImageButton) convertView.findViewById(R.id.negative_img);
 
 		final ExpandableListView mExpandableListView = (ExpandableListView) parent;
 
@@ -369,15 +341,13 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 			imglikeComment.setImageResource((R.drawable.positive_off));
 			imgdislikeComment.setImageResource((R.drawable.negative_off));
 		} else {
-			if (adapter.isUserLikedCommentBrandPage(Currentuser.getId(),
-					comment.getId(), 1)) {
+			if (adapter.isUserLikedCommentBrandPage(Currentuser.getId(), comment.getId(), 1)) {
 				imglikeComment.setImageResource((R.drawable.positive));
 			} else {
 				imglikeComment.setImageResource((R.drawable.positive_off));
 
 			}
-			if (adapter.isUserLikedCommentBrandPage(Currentuser.getId(),
-					comment.getId(), 0)) {
+			if (adapter.isUserLikedCommentBrandPage(Currentuser.getId(), comment.getId(), 0)) {
 				imgdislikeComment.setImageResource((R.drawable.negative));
 			} else {
 				imgdislikeComment.setImageResource((R.drawable.negative_off));
@@ -395,8 +365,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 				Users x = adapter.getUserbyid(comment.getUserid());
 				userId = x.getId();
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
@@ -414,22 +383,18 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 		}
 		// dateCommenter.setText(util.getPersianDate(comment.getDatetime()));
 
-		countOfReply.setText(adapter.getCountOfReplyBrandPage(ObjectID,
-				comment.getId()).toString());
+		countOfReply.setText(adapter.getCountOfReplyBrandPage(ObjectID, comment.getId()).toString());
 
 		int com = 0;
 		for (CommentInObject listItem : CommentList) {
-			if (mainComment.getText().toString()
-					.equals(listItem.getDescription())) {
+			if (mainComment.getText().toString().equals(listItem.getDescription())) {
 
 				com = listItem.getId();
 
 			}
 		}
-		countdisLike.setText(String.valueOf(adapter
-				.NumberOfLikeOrDisLikeBrandPage(com, 0)));
-		countLike.setText(String.valueOf(adapter
-				.NumberOfLikeOrDisLikeBrandPage(com, 1)));
+		countdisLike.setText(String.valueOf(adapter.NumberOfLikeOrDisLikeBrandPage(com, 0)));
+		countLike.setText(String.valueOf(adapter.NumberOfLikeOrDisLikeBrandPage(com, 1)));
 		// if (adapter.getCountOfReplyInObject(ObjectID, comment.getId()) == 0)
 		// {
 		// LinearLayout lrr = (LinearLayout) convertView
@@ -446,18 +411,18 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 		// start... this code for set image of profile
 		adapter.open();
 		if (x.getImagePath() == null) {
+			profileImage.setBackgroundResource(R.drawable.circle_drawable);
+			;
 			profileImage.setImageResource(R.drawable.no_img_profile);
 		} else {
 
 			Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
 
-			profileImage.setImageBitmap(bmp);
+			profileImage.setImageBitmap(Utility.getclip(bmp));
 		}
 		adapter.close();
-		RelativeLayout rl = (RelativeLayout) convertView
-				.findViewById(R.id.icon_header_comment_froum);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				rl.getLayoutParams());
+		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.icon_header_comment_froum);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
 		lp.width = util.getScreenwidth() / 7;
 		lp.height = util.getScreenwidth() / 7;
@@ -482,27 +447,23 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 				adapter.open();
 
 				if (Currentuser == null) {
-					Toast.makeText(context, "ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 					return;
 				} else {
 
 					flag = false;
 
-					RelativeLayout parentlayout = (RelativeLayout) v
-							.getParent().getParent();
+					RelativeLayout parentlayout = (RelativeLayout) v.getParent().getParent();
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
 					TextView txtMaincmt = (TextView) viewMaincmt;
 
-					View viewnumlike = parentlayout
-							.findViewById(R.id.countCommentFroum);
+					View viewnumlike = parentlayout.findViewById(R.id.countCommentFroum);
 					TextView txtlike = (TextView) viewnumlike;
 
 					int CommentId = 0;
 
 					for (CommentInObject listItem : CommentList) {
-						if (txtMaincmt.getText().toString()
-								.equals(listItem.getDescription())) {
+						if (txtMaincmt.getText().toString().equals(listItem.getDescription())) {
 
 							GlobalId = CommentId = listItem.getId();
 
@@ -511,8 +472,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 					// send to database
 
-					if (adapter.isUserLikedCommentBrandPage(
-							Currentuser.getId(), CommentId, 0)) {
+					if (adapter.isUserLikedCommentBrandPage(Currentuser.getId(), CommentId, 0)) {
 
 						/*
 						 * start >>>>> delete dislike from server
@@ -526,16 +486,14 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 							params.put("TableName", "LikeInCommentObject");
 
-							params.put("UserId",
-									String.valueOf(Currentuser.getId()));
+							params.put("UserId", String.valueOf(Currentuser.getId()));
 
 							params.put("IsLike", String.valueOf(0));
 							params.put("CommentId", String.valueOf(CommentId));
 
 							deleting.execute(params);
 						}
-						ringProgressDialog = ProgressDialog.show(context, "",
-								"لطفا منتظر بمانید...", true);
+						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 						ringProgressDialog.setCancelable(true);
 
@@ -566,11 +524,8 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 					} else {
 
-						if (adapter.isUserLikedCommentBrandPage(
-								Currentuser.getId(), CommentId, 1))
-							Toast.makeText(
-									context,
-									"شما قبلا نظرتان را در این مورد این مطلب بیان کردید",
+						if (adapter.isUserLikedCommentBrandPage(Currentuser.getId(), CommentId, 1))
+							Toast.makeText(context, "شما قبلا نظرتان را در این مورد این مطلب بیان کردید",
 									Toast.LENGTH_SHORT).show();
 						else {
 
@@ -583,21 +538,17 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 								params.put("TableName", "LikeInCommentObject");
 
-								params.put("UserId",
-										String.valueOf(Currentuser.getId()));
+								params.put("UserId", String.valueOf(Currentuser.getId()));
 
 								params.put("IsLike", String.valueOf(0));
-								params.put("CommentId",
-										String.valueOf(CommentId));
+								params.put("CommentId", String.valueOf(CommentId));
 
 								params.put("IsUpdate", "0");
 								params.put("Id", "0");
 
 								saving.execute(params);
 
-								ringProgressDialog = ProgressDialog.show(
-										context, "", "لطفا منتظر بمانید...",
-										true);
+								ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 							}
 							ringProgressDialog.setCancelable(true);
 
@@ -651,25 +602,21 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 				flag = true;
 
 				if (Currentuser == null) {
-					Toast.makeText(context, "ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 					return;
 				} else {
 
-					RelativeLayout parentlayout = (RelativeLayout) v
-							.getParent().getParent();
+					RelativeLayout parentlayout = (RelativeLayout) v.getParent().getParent();
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
 					TextView txtMaincmt = (TextView) viewMaincmt;
 
-					View viewnumlike = parentlayout
-							.findViewById(R.id.countCommentFroum);
+					View viewnumlike = parentlayout.findViewById(R.id.countCommentFroum);
 					TextView txtlike = (TextView) viewnumlike;
 
 					int CommentId = 0;
 
 					for (CommentInObject listItem : CommentList) {
-						if (txtMaincmt.getText().toString()
-								.equals(listItem.getDescription())) {
+						if (txtMaincmt.getText().toString().equals(listItem.getDescription())) {
 
 							GlobalId = CommentId = listItem.getId();
 
@@ -678,8 +625,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 					// send to database
 
-					if (adapter.isUserLikedCommentBrandPage(
-							Currentuser.getId(), CommentId, 1)) {
+					if (adapter.isUserLikedCommentBrandPage(Currentuser.getId(), CommentId, 1)) {
 
 						params = new LinkedHashMap<String, String>();
 						if (context != null) {
@@ -689,16 +635,14 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 							params.put("TableName", "LikeInCommentObject");
 
-							params.put("UserId",
-									String.valueOf(Currentuser.getId()));
+							params.put("UserId", String.valueOf(Currentuser.getId()));
 
 							params.put("IsLike", String.valueOf(1));
 							params.put("CommentId", String.valueOf(CommentId));
 
 							deleting.execute(params);
 						}
-						ringProgressDialog = ProgressDialog.show(context, "",
-								"لطفا منتظر بمانید...", true);
+						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 						ringProgressDialog.setCancelable(true);
 
@@ -727,11 +671,8 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 						// Toast.makeText(context, "لایک پاک شد", 0).show();
 
 					} else {
-						if (adapter.isUserLikedCommentBrandPage(
-								Currentuser.getId(), CommentId, 0))
-							Toast.makeText(
-									context,
-									"شما قبلا نظرتان را در این مورد این مطلب بیان کردید",
+						if (adapter.isUserLikedCommentBrandPage(Currentuser.getId(), CommentId, 0))
+							Toast.makeText(context, "شما قبلا نظرتان را در این مورد این مطلب بیان کردید",
 									Toast.LENGTH_SHORT).show();
 						else {
 
@@ -744,20 +685,17 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 								params.put("TableName", "LikeInCommentObject");
 
-								params.put("UserId",
-										String.valueOf(Currentuser.getId()));
+								params.put("UserId", String.valueOf(Currentuser.getId()));
 
 								params.put("IsLike", String.valueOf(1));
-								params.put("CommentId",
-										String.valueOf(CommentId));
+								params.put("CommentId", String.valueOf(CommentId));
 
 								params.put("IsUpdate", "0");
 								params.put("Id", "0");
 
 								saving.execute(params);
 							}
-							ringProgressDialog = ProgressDialog.show(context,
-									"", "لطفا منتظر بمانید...", true);
+							ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 							ringProgressDialog.setCancelable(true);
 
@@ -801,13 +739,11 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 				adapter.open();
 
 				if (Currentuser == null) {
-					Toast.makeText(context, "ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 					return;
 				} else {
 
-					RelativeLayout parentlayout = (RelativeLayout) m
-							.getParent().getParent();
+					RelativeLayout parentlayout = (RelativeLayout) m.getParent().getParent();
 					View view = parentlayout.findViewById(R.id.peygham);
 					TextView x = (TextView) view;
 					String item = x.getText().toString();
@@ -821,8 +757,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 					}
 					f.CommentId(commentid);
 					f.groupPosition(groupPosition);
-					util.ReplyLayout((Activity) context, mainComment.getText()
-							.toString(), true);
+					util.ReplyLayout((Activity) context, mainComment.getText().toString(), true);
 
 					// DialogcmtInobject dialog = new DialogcmtInobject(f,
 					// context, R.layout.dialog_addcomment, ObjectID,
@@ -850,8 +785,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 				if (util.getCurrentUser() != null) {
 
 					adapter.open();
-					int countReply = adapter.getCountOfReplyInObject(ObjectID,
-							comment.getId());
+					int countReply = adapter.getCountOfReplyInObject(ObjectID, comment.getId());
 					adapter.close();
 
 					if (util.getCurrentUser().getId() == userIdsender) {
@@ -900,15 +834,12 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 						if (item.getTitle().equals("گزارش تخلف")) {
 
 							if (util.getCurrentUser() != null)
-								util.reportAbuse(userIdsender, 7, itemId,
-										content, ObjectID);
+								util.reportAbuse(userIdsender, 7, itemId, content, ObjectID);
 							else
-								Toast.makeText(context, "ابتدا باید وارد شوید",
-										0).show();
+								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
 						if (item.getTitle().equals("حذف")) {
-							if (util.getCurrentUser() != null
-									&& util.getCurrentUser().getId() == userIdsender)
+							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender)
 								deleteItems(itemId);
 							else {
 
@@ -1020,10 +951,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 			// ((IntroductionFragment) f).updateList();
 		} else {
 
-			if (!"".equals(output)
-					&& output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			if (!"".equals(output) && output != null && !(output.contains("Exception") || output.contains("java"))) {
 				int id = -1;
 				try {
 					id = Integer.valueOf(output);
@@ -1031,11 +959,9 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 					adapter.open();
 					if (flag) {
 
-						if (adapter.isUserLikedCommentBrandPage(
-								Currentuser.getId(), GlobalId, 1)) {
+						if (adapter.isUserLikedCommentBrandPage(Currentuser.getId(), GlobalId, 1)) {
 
-							adapter.deleteLikeCommentBrandPage(GlobalId,
-									Currentuser.getId(), 1);
+							adapter.deleteLikeCommentBrandPage(GlobalId, Currentuser.getId(), 1);
 							notifyDataSetChanged();
 							if (ringProgressDialog != null) {
 								ringProgressDialog.dismiss();
@@ -1043,8 +969,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 							}
 						} else {
 
-							adapter.InsertLikeCommentFromObject(id,
-									Currentuser.getId(), 1, GlobalId);
+							adapter.InsertLikeCommentFromObject(id, Currentuser.getId(), 1, GlobalId);
 							notifyDataSetChanged();
 							if (ringProgressDialog != null) {
 								ringProgressDialog.dismiss();
@@ -1054,19 +979,16 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 						}
 
 					} else {
-						if (adapter.isUserLikedCommentBrandPage(
-								Currentuser.getId(), GlobalId, 0)) {
+						if (adapter.isUserLikedCommentBrandPage(Currentuser.getId(), GlobalId, 0)) {
 
-							adapter.deleteLikeCommentBrandPage(GlobalId,
-									Currentuser.getId(), 0);
+							adapter.deleteLikeCommentBrandPage(GlobalId, Currentuser.getId(), 0);
 							notifyDataSetChanged();
 							if (ringProgressDialog != null) {
 								ringProgressDialog.dismiss();
 
 							}
 						} else {
-							adapter.InsertLikeCommentFromObject(id,
-									Currentuser.getId(), 0, GlobalId);
+							adapter.InsertLikeCommentFromObject(id, Currentuser.getId(), 0, GlobalId);
 							notifyDataSetChanged();
 							if (ringProgressDialog != null) {
 								ringProgressDialog.dismiss();
@@ -1076,8 +998,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 					}
 				} catch (Exception e) {
-					Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
@@ -1096,8 +1017,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements
 
 		deleting.execute(params);
 
-		ringProgressDialog = ProgressDialog.show(context, "",
-				"لطفا منتظر بمانید...", true);
+		ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 		ringProgressDialog.setCancelable(true);
 		new Thread(new Runnable() {

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -54,12 +55,10 @@ public class InformationUser extends Fragment {
 
 	ObjectListAdapter listAdapter;
 
-	RelativeLayout phoneLayout, emailLayout, faxLayout, mobileLayout,
-			AddressLayout, btnedit, birthDayUsers;
+	RelativeLayout phoneLayout, emailLayout, faxLayout, mobileLayout, AddressLayout, btnedit, birthDayUsers;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		rootView = inflater.inflate(R.layout.fragment_information_user, null);
 		header = inflater.inflate(R.layout.header_information, null);
@@ -88,8 +87,7 @@ public class InformationUser extends Fragment {
 
 				String PathProfile = userPage.getImagePath();
 				String namePage = userPage.getName();
-				DialogShowImage showImageDialog = new DialogShowImage(
-						getActivity(), PathProfile, namePage);
+				DialogShowImage showImageDialog = new DialogShowImage(getActivity(), PathProfile, namePage);
 				showImageDialog.show();
 
 			}
@@ -102,16 +100,11 @@ public class InformationUser extends Fragment {
 
 	private void setLayoutParams() {
 
-		RelativeLayout.LayoutParams f1 = new RelativeLayout.LayoutParams(
-				phoneLayout.getLayoutParams());
-		RelativeLayout.LayoutParams f2 = new RelativeLayout.LayoutParams(
-				mobileLayout.getLayoutParams());
-		RelativeLayout.LayoutParams f3 = new RelativeLayout.LayoutParams(
-				emailLayout.getLayoutParams());
-		RelativeLayout.LayoutParams f4 = new RelativeLayout.LayoutParams(
-				faxLayout.getLayoutParams());
-		RelativeLayout.LayoutParams f5 = new RelativeLayout.LayoutParams(
-				AddressLayout.getLayoutParams());
+		RelativeLayout.LayoutParams f1 = new RelativeLayout.LayoutParams(phoneLayout.getLayoutParams());
+		RelativeLayout.LayoutParams f2 = new RelativeLayout.LayoutParams(mobileLayout.getLayoutParams());
+		RelativeLayout.LayoutParams f3 = new RelativeLayout.LayoutParams(emailLayout.getLayoutParams());
+		RelativeLayout.LayoutParams f4 = new RelativeLayout.LayoutParams(faxLayout.getLayoutParams());
+		RelativeLayout.LayoutParams f5 = new RelativeLayout.LayoutParams(AddressLayout.getLayoutParams());
 
 		f1.width = util.getScreenwidth();
 		f1.height = LayoutParams.WRAP_CONTENT;
@@ -155,15 +148,45 @@ public class InformationUser extends Fragment {
 		l44.setLayoutParams(f4);
 		l55.setLayoutParams(f5);
 
-		LinearLayout imageLinear = (LinearLayout) header
-				.findViewById(R.id.imageLinear);
+		// LinearLayout imageLinear = (LinearLayout) header
+		// .findViewById(R.id.imageLinear);
+		//
+		// LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+		// imageLinear.getLayoutParams());
+		// llp.width = (int) (util.getScreenwidth() / 4.5);
+		// llp.height = (int) (util.getScreenwidth() / 4.5);
+		//
+		// profileImage.setLayoutParams(llp);
+		
+		int marginTop = (util.getScreenHeight()/3)-(util.getScreenwidth() /8);
 
-		LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
-				imageLinear.getLayoutParams());
-		llp.width = (int) (util.getScreenwidth() / 4.5);
-		llp.height = (int) (util.getScreenwidth() / 4.5);
+		FrameLayout profileFrame = (FrameLayout) header.findViewById(R.id.frameLayoutHeader);
+		FrameLayout.LayoutParams profileParams = new FrameLayout.LayoutParams(profileFrame.getLayoutParams());
 
-		profileImage.setLayoutParams(llp);
+		profileParams.height = util.getScreenwidth() / 4;
+		profileParams.width = util.getScreenwidth() / 4;
+		profileParams.gravity = Gravity.CENTER_HORIZONTAL;
+
+		// profileParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// profileParams.addRule(RelativeLayout.BELOW, R.id.namePage);
+		profileParams.setMargins(0, marginTop, 0, 0);
+
+		// LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+		// imageLinear.getLayoutParams());
+		// llp.width = (int) (util.getScreenwidth() / 4.5);
+		// llp.height = (int) (util.getScreenwidth() / 4.5);
+
+		profileImage.setLayoutParams(profileParams);
+
+		ImageView headerImageView = (ImageView) header.findViewById(R.id.imgvadvertise_Object);
+
+		FrameLayout.LayoutParams headerparams = new FrameLayout.LayoutParams(profileFrame.getLayoutParams());
+
+		headerparams.height = util.getScreenHeight() / 3;
+		headerparams.width = util.getScreenwidth();
+		headerparams.gravity = Gravity.CENTER_HORIZONTAL;
+
+		headerImageView.setLayoutParams(headerparams);
 
 	}
 
@@ -188,8 +211,7 @@ public class InformationUser extends Fragment {
 
 		profileImage = (ImageView) header.findViewById(R.id.img1);
 
-		layoutImageProfile = (LinearLayout) header
-				.findViewById(R.id.imageLinear);
+		layoutImageProfile = (LinearLayout) header.findViewById(R.id.imageLinear);
 
 	}
 
@@ -199,8 +221,7 @@ public class InformationUser extends Fragment {
 		 * start set image User
 		 */
 
-		LayoutParams lp1 = new LinearLayout.LayoutParams(
-				layoutImageProfile.getLayoutParams());
+		LayoutParams lp1 = new LinearLayout.LayoutParams(layoutImageProfile.getLayoutParams());
 		lp1.width = util.getScreenwidth() / 4;
 		lp1.height = util.getScreenwidth() / 4;
 		lp1.setMargins(5, 5, 5, 5);
@@ -295,12 +316,9 @@ public class InformationUser extends Fragment {
 
 		dbadaAdapter.open();
 
-		List<PersonalData> ObejctData = dbadaAdapter
-				.CustomFieldObjectByUser(userPage.getId());
-		List<PersonalData> FroumData = dbadaAdapter
-				.CustomFieldFroumByUser(userPage.getId());
-		List<PersonalData> PaperData = dbadaAdapter
-				.CustomFieldPaperByUser(userPage.getId());
+		List<PersonalData> ObejctData = dbadaAdapter.CustomFieldObjectByUser(userPage.getId());
+		List<PersonalData> FroumData = dbadaAdapter.CustomFieldFroumByUser(userPage.getId());
+		List<PersonalData> PaperData = dbadaAdapter.CustomFieldPaperByUser(userPage.getId());
 		// List<PersonalData> TicketData = dbadaAdapter
 		// .CustomFieldTicketByUser(userPage.getId());
 
@@ -334,14 +352,12 @@ public class InformationUser extends Fragment {
 		listDataChild.put(parentItems.get(1), PaperData);
 		listDataChild.put(parentItems.get(2), FroumData);
 
-		final SharedPreferences currentTime = getActivity()
-				.getSharedPreferences("time", 0);
+		final SharedPreferences currentTime = getActivity().getSharedPreferences("time", 0);
 
 		String time = currentTime.getString("time", "-1");
 
-		final InformationUserAdapter listAdapter = new InformationUserAdapter(
-				getActivity(), parentItems, listDataChild, time,
-				InformationUser.this, sizeTypeList, false, userPage.getName());
+		final InformationUserAdapter listAdapter = new InformationUserAdapter(getActivity(), parentItems, listDataChild,
+				time, InformationUser.this, sizeTypeList, false, userPage.getName());
 
 		// setting list adapter
 		Expandview.addHeaderView(header);

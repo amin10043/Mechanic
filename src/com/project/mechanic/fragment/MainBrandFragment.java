@@ -36,8 +36,7 @@ import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class MainBrandFragment extends Fragment implements AsyncInterface,
-		GetAsyncInterface, CommInterface {
+public class MainBrandFragment extends Fragment implements AsyncInterface, GetAsyncInterface, CommInterface {
 	DataBaseAdapter adapter;
 	int parentId;
 	Users CurrentUser;
@@ -69,20 +68,18 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 
 	@SuppressLint("InflateParams")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		if (getArguments() != null && getArguments().getString("Id") != null) {
 			parentId = Integer.valueOf(getArguments().getString("Id"));
-			Toast.makeText(getActivity(), "parent Id = " + parentId, 0).show();
+//			Toast.makeText(getActivity(), "parent Id = " + parentId, 0).show();
 		}
 
 		((MainActivity) getActivity()).setTitle(R.string.object);
 
 		View view = inflater.inflate(R.layout.fragment_object, null);
 
-		SharedPreferences sendData = getActivity()
-				.getSharedPreferences("Id", 0);
+		SharedPreferences sendData = getActivity().getSharedPreferences("Id", 0);
 		final int MainObjectId = sendData.getInt("main_Id", -1);
 		// RelativeLayout createPage = (RelativeLayout) view
 		// .findViewById(R.id.relative);
@@ -113,16 +110,14 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 		adapter.close();
 
 		lstObject = (ListView) view.findViewById(R.id.listvCmt_Introduction);
-		ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object,
-				mylist, MainBrandFragment.this, true, null, 1);
+		ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, MainBrandFragment.this, true,
+				null, 1);
 
-		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
-				R.layout.load_more_footer, null);
+		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
 		lstObject.addFooterView(LoadMoreFooter);
 		LoadMoreFooter.setVisibility(View.INVISIBLE);
 
-		swipeLayout = (SwipeRefreshLayout) view
-				.findViewById(R.id.swipe_container);
+		swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
 
 		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
 
@@ -133,10 +128,9 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 					updating.delegate = MainBrandFragment.this;
 					String[] params = new String[4];
 					params[0] = "Object";
-					params[1] = setting.getServerDate_Start_Object() != null ? setting
-							.getServerDate_Start_Object() : "";
-					params[2] = setting.getServerDate_End_Object() != null ? setting
-							.getServerDate_End_Object() : "";
+					params[1] = setting.getServerDate_Start_Object() != null ? setting.getServerDate_Start_Object()
+							: "";
+					params[2] = setting.getServerDate_End_Object() != null ? setting.getServerDate_End_Object() : "";
 
 					params[3] = "1";
 					updating.execute(params);
@@ -144,13 +138,10 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
-		swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
-				android.R.color.holo_green_light,
-				android.R.color.holo_orange_light,
-				android.R.color.holo_red_light);
+		swipeLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+				android.R.color.holo_orange_light, android.R.color.holo_red_light);
 
-		final FloatingActionButton createItem = (FloatingActionButton) view
-				.findViewById(R.id.fab);
+		final FloatingActionButton createItem = (FloatingActionButton) view.findViewById(R.id.fab);
 		final String message = "کاربر گرامی اگر مشخصات برند یا فعالیت شما در این نرم افزار ثبت نشده می توانید با ایجاد صفحه،  فعالیت خود را به سایر کاربران این نرم افزار معرفی نمایید ";
 		createItem.setOnClickListener(new OnClickListener() {
 
@@ -159,8 +150,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 				dialog = new DialogCreatePage(getActivity(), message);
 				dialog.show();
 
-				SharedPreferences sendParentID = getActivity()
-						.getSharedPreferences("Id", 0);
+				SharedPreferences sendParentID = getActivity().getSharedPreferences("Id", 0);
 				sendParentID.edit().putInt("ParentId", parentId).commit();
 				sendParentID.edit().putInt("mainObject", MainObjectId).commit();
 				sendParentID.edit().putInt("objectId", 0).commit();
@@ -189,8 +179,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 			}
 
 			@Override
-			public void onScroll(AbsListView arg0, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
+			public void onScroll(AbsListView arg0, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
 				if (totalItemCount == visibleItemCount) {
 					return;
@@ -198,8 +187,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 
 				int lastInScreen = firstVisibleItem + visibleItemCount;
 
-				if (lastInScreen == totalItemCount
-						&& OnScrollListener.SCROLL_STATE_TOUCH_SCROLL == 1) {
+				if (lastInScreen == totalItemCount && OnScrollListener.SCROLL_STATE_TOUCH_SCROLL == 1) {
 
 					LoadMoreFooter.setVisibility(View.VISIBLE);
 					if (getActivity() != null) {
@@ -208,10 +196,10 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 						updating.delegate = MainBrandFragment.this;
 						String[] params = new String[4];
 						params[0] = "Object";
-						params[1] = setting.getServerDate_Start_Object() != null ? setting
-								.getServerDate_Start_Object() : "";
-						params[2] = setting.getServerDate_End_Object() != null ? setting
-								.getServerDate_End_Object() : "";
+						params[1] = setting.getServerDate_Start_Object() != null ? setting.getServerDate_Start_Object()
+								: "";
+						params[2] = setting.getServerDate_End_Object() != null ? setting.getServerDate_End_Object()
+								: "";
 
 						params[3] = "0";
 						updating.execute(params);
@@ -228,9 +216,8 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 	public void UpdateList() {
 		adapter.open();
 		ArrayList<Object> mylist = adapter.getObjectbyParentId(parentId);
-		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(),
-				R.layout.row_object, mylist, MainBrandFragment.this, true,
-				null, 1);
+		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist,
+				MainBrandFragment.this, true, null, 1);
 		ListAdapter.notifyDataSetChanged();
 
 		lstObject.setAdapter(ListAdapter);
@@ -249,7 +236,9 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 
 		if (output.length() == 18 && code == 100) {
 			serverDate = output;
-			ImageUpdating = new UpdatingImage(getActivity());
+
+			if (getActivity() != null)
+				ImageUpdating = new UpdatingImage(getActivity());
 			ImageUpdating.delegate = MainBrandFragment.this;
 			maps = new LinkedHashMap<String, String>();
 			maps.put("tableName", "Object2");
@@ -275,10 +264,8 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 			swipeLayout.setRefreshing(false);
 		}
 
-		if (output != null
-				&& !(output.contains("Exception") || output.contains("java")
-						|| output.contains("SoapFault") || output
-							.contains("anyType")) && code == -1) {
+		if (output != null && !(output.contains("Exception") || output.contains("java") || output.contains("SoapFault")
+				|| output.contains("anyType")) && code == -1) {
 
 			util.parseQuery(output);
 			adapter.open();
@@ -288,8 +275,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 			if (totalItemCountBeforeSwipe != mylist.size()) {
 				mylist.clear();
 				if (mylist.size() > 0) {
-					ListAdapter = new ObjectListAdapter(getActivity(),
-							R.layout.row_object, mylist,
+					ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist,
 							MainBrandFragment.this, true, null, 1);
 					lstObject.setAdapter(ListAdapter);
 				}
@@ -302,10 +288,10 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 
 		if (output != null) {
 
-			util.CreateFile(output, obj.getId(), "Mechanical", "Profile",
-					"profile", "Object");
-
-			ServiceComm getDateService = new ServiceComm(getActivity());
+			util.CreateFile(output, obj.getId(), "Mechanical", "Profile", "profile", "Object");
+			ServiceComm getDateService = null;
+			if (getActivity() != null)
+				getDateService = new ServiceComm(getActivity());
 
 			getDateService.delegate = MainBrandFragment.this;
 			Map<String, String> items = new LinkedHashMap<String, String>();
@@ -319,8 +305,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 
 	@Override
 	public void CommProcessFinish(String output) {
-		if (output.equals("java.lang.NullPointerException")
-				|| output.equals("anyType"))
+		if (output.equals("java.lang.NullPointerException") || output.equals("anyType"))
 			output = "";
 
 		adapter.open();
@@ -353,8 +338,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface,
 			adapter.close();
 
 			if (getActivity() != null) {
-				ListAdapter = new ObjectListAdapter(getActivity(),
-						R.layout.row_object, mylist, MainBrandFragment.this,
+				ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, MainBrandFragment.this,
 						false, null, 1);
 				lstObject.setAdapter(ListAdapter);
 			}

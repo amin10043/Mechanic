@@ -6,17 +6,18 @@
     android:orientation="vertical" >
 
     <FrameLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/totalFrameLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/back" >
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/layoutlayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="40dp" >
 
             <RelativeLayout
-                android:id="@+id/mm"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -36,13 +37,27 @@
                         android:layout_gravity="left"
                         android:background="@drawable/down_arrow" />
 
-                    <TextView
-                        android:id="@+id/date_cc"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="date"
-                        android:textColor="@color/transparent" />
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/date_cc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="date"
+                            android:textColor="@color/transparent" />
+
+                        <TextView
+                            android:id="@+id/timetxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="a"
+                            android:textSize="12dp"
+                            android:textColor="@color/transparent" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <TextView
@@ -84,67 +99,88 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/description_topic"
-                    android:layout_marginLeft="5dp"
-                    android:gravity="center_vertical|center_horizontal"
+                    android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingBottom="5dp" >
+                    android:paddingBottom="5dp"
+                    android:weightSum="6" >
 
                     <LinearLayout
                         android:id="@+id/LikeTopicLinear"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:background="@drawable/like"
-                        android:gravity="center"
-                        android:visibility="visible" >
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/txtNumofLike_CmtFroum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="2dp"
-                        android:gravity="bottom"
-                        android:text="123"
-                        android:textColor="@color/transparent" />
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal" >
+
+                        <ImageView
+                            android:id="@+id/likeIcon"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:background="@drawable/like"
+                            android:gravity="center"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/txtNumofLike_CmtFroum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="bottom"
+                            android:text="123"
+                            android:textColor="@color/transparent" />
+                    </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/l1cm"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="20dp"
-                        android:background="@drawable/ic_cmt_froum_display"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:visibility="visible" >
+                        android:orientation="horizontal" >
+
+                        <LinearLayout
+                            android:id="@+id/l1cm"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:background="@drawable/ic_cmt_froum_display"
+                            android:gravity="center"
+                            android:visibility="visible" >
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/numberOfCommentTopic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center"
+                            android:text="456"
+                            android:textColor="@color/transparent" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/numberOfCommentTopic"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="2dp"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:text="456"
-                        android:textColor="@color/transparent" />
+                        android:orientation="horizontal" >
 
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="20dp"
-                        android:background="@drawable/numvv" />
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:background="@drawable/numvv" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="2dp"
-                        android:gravity="center"
-                        android:text="789"
-                        android:textColor="@color/transparent" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center"
+                            android:text="789"
+                            android:textColor="@color/transparent" />
+                    </LinearLayout>
 
                     <ImageButton
                         android:id="@+id/sharefroumicon"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_marginLeft="20dp"
                         android:background="@drawable/ic_share_froum" />
                 </LinearLayout>
             </RelativeLayout>

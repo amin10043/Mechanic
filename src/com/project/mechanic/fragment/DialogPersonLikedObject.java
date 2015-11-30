@@ -37,7 +37,7 @@ public class DialogPersonLikedObject extends Dialog implements AsyncInterface,
 		CommInterface , GetAsyncInterface {
 
 	Context context;
-	DataBaseAdapter adapter;
+	DataBaseAdapter dbAdapter;
 	int ObjectId;
 	ListView lv;
 	ArrayList<LikeInObject> likedist;
@@ -61,7 +61,7 @@ public class DialogPersonLikedObject extends Dialog implements AsyncInterface,
 		this.context = context;
 		this.ObjectId = ObjectId;
 		this.likedist = list;
-		adapter = new DataBaseAdapter(context);
+		dbAdapter = new DataBaseAdapter(context);
 	}
 
 	@Override
@@ -78,13 +78,13 @@ public class DialogPersonLikedObject extends Dialog implements AsyncInterface,
 
 		setContentView(R.layout.dialog_person_liked);
 
-		adapter.open();
+		dbAdapter.open();
 		
 		if (likedist != null) {
 			Users uId;
 			for (int i = 0; i < likedist.size(); ++i) {
 				int uidd = likedist.get(i).getUserId();
-				uId = adapter.getUserById(uidd);
+				uId = dbAdapter.getUserById(uidd);
 				if (uId == null) {
 					missedIds.add(uidd);
 				}
@@ -109,7 +109,7 @@ public class DialogPersonLikedObject extends Dialog implements AsyncInterface,
 						int position, long arg3) {
 
 					LikeInObject likes = likedist.get(position);
-					Users user = adapter.getUserById(likes.getUserId());
+					Users user = dbAdapter.getUserById(likes.getUserId());
 					int userId = user.getId();
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
@@ -168,11 +168,11 @@ public class DialogPersonLikedObject extends Dialog implements AsyncInterface,
 						.contains("soap"))) {
 			util.parseQuery(output);
 
-			adapter.open();
+			dbAdapter.open();
 
-			uu = adapter.getUserById(iid);
+			uu = dbAdapter.getUserById(iid);
 
-			adapter.close();
+			dbAdapter.close();
 			if (context != null) {
 				updating = new UpdatingImage(context);
 				updating.delegate = DialogPersonLikedObject.this;
@@ -197,9 +197,9 @@ public class DialogPersonLikedObject extends Dialog implements AsyncInterface,
 			
 
 			util.CreateFile(output, iid, "Mechanical", "Users", "user", "Users");
-			adapter.open();
-			adapter.UpdateImageServerDate(iid, "Users", serverDate);
-			adapter.close();
+			dbAdapter.open();
+			dbAdapter.UpdateImageServerDate(iid, "Users", serverDate);
+			dbAdapter.close();
 		} else {
 
 			PersonLikedObjectAdapter listadapter = new PersonLikedObjectAdapter(

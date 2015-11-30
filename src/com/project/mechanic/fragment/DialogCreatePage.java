@@ -38,18 +38,17 @@ public class DialogCreatePage extends Dialog {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setBackgroundDrawable(
-				new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//		getWindow().setBackgroundDrawable(
+//				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 		setContentView(R.layout.dialog_create);
 		create = (ImageButton) findViewById(R.id.createDialogPage);
 		TextView main = (TextView) findViewById(R.id.textDay);
 		Currentser = util.getCurrentUser();
 
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
-				"fonts/BoldRoya.TTF");
+		
 		main.setText(message);
-		main.setTypeface(typeFace);
+		main.setTypeface(util.SetFontIranSans());
 
 		SharedPreferences realize = context.getSharedPreferences("Id", 0);
 		create.setOnClickListener(new android.view.View.OnClickListener() {

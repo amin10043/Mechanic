@@ -65,25 +65,25 @@ public class PersonLikedObjectAdapter extends ArrayAdapter<LikeInObject> {
 		adapter.open();
 		Users user = adapter.getUserById(likes.getUserId());
 		adapter.close();
-		convertView.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				adapter.open();
-				LikeInObject likes = myList.get(position);
-				Users user = adapter.getUserById(likes.getUserId());
-				userId = user.getId();
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
-				InformationUser fragment = new InformationUser();
-				Bundle bundle = new Bundle();
-				bundle.putInt("userId", userId);
-				fragment.setArguments(bundle);
-				trans.replace(R.id.content_frame, fragment);
-				trans.commit();
-
-			}
-		});
+//		convertView.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				adapter.open();
+//				LikeInObject likes = myList.get(position);
+//				Users user = adapter.getUserById(likes.getUserId());
+//				userId = user.getId();
+//				FragmentTransaction trans = ((MainActivity) context)
+//						.getSupportFragmentManager().beginTransaction();
+//				InformationUser fragment = new InformationUser();
+//				Bundle bundle = new Bundle();
+//				bundle.putInt("userId", userId);
+//				fragment.setArguments(bundle);
+//				trans.replace(R.id.content_frame, fragment);
+//				trans.commit();
+//
+//			}
+//		});
 		namePerson.setText(user.getName());
 		DateLiked.setText(util.getPersianDate(likes.getDatetime()));
 
@@ -108,7 +108,7 @@ public class PersonLikedObjectAdapter extends ArrayAdapter<LikeInObject> {
 			Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
 					byteImageProfile.length);
 
-			peronImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
+			peronImage.setImageBitmap(Utility.getclip(bmp));
 			peronImage.setLayoutParams(lp);
 		}
 

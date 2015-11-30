@@ -53,10 +53,10 @@ public class Province2ListAdapter extends ArrayAdapter<Province> {
 
 		convertView = myInflater.inflate(R.layout.row_ostan, parent, false);
 
-		Animation animation = AnimationUtils.loadAnimation(getContext(),
-				(position > lastPosition) ? R.anim.up_from_bottom
-						: R.anim.down_from_top);
-		convertView.startAnimation(animation);
+//		Animation animation = AnimationUtils.loadAnimation(getContext(),
+//				(position > lastPosition) ? R.anim.up_from_bottom
+//						: R.anim.down_from_top);
+//		convertView.startAnimation(animation);
 		lastPosition = position;
 
 		TextView tx1 = (TextView) convertView.findViewById(R.id.RowOstantxt);

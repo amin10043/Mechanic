@@ -7,37 +7,6 @@ import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.project.mechanic.R;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.inter.AsyncInterface;
@@ -47,8 +16,34 @@ import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.SavingImage3Picture;
 import com.project.mechanic.utility.Utility;
 
-public class IntroductionEditFragment extends Fragment implements
-		AsyncInterface, SaveAsyncInterface {
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class IntroductionEditFragment extends Fragment implements AsyncInterface, SaveAsyncInterface {
 	private static int headerLoadCode = 1;
 	private static int profileLoadCode = 2;
 	private static int footerLoadcode = 3;
@@ -62,25 +57,22 @@ public class IntroductionEditFragment extends Fragment implements
 
 	DialogEditNet dianet;
 
-	ImageButton btnSave;
+	Button btnSave;
+	TextView lableStar, lableNetwork, lableAdmins, lableDownload, lablecopy;
 
-	String nameValue, phoneValue, faxValue, mobileValue, emailValue,
-			addressValue, descriptionValue;
+	String nameValue, phoneValue, faxValue, mobileValue, emailValue, addressValue, descriptionValue;
 
-	EditText nameEnter, phoneEnter, faxEnter, mobileEnter, emailEnter,
-			addressEnter, descriptionEnter;
+	EditText nameEnter, phoneEnter, faxEnter, mobileEnter, emailEnter, addressEnter, descriptionEnter;
 
 	ImageView headerImageEdit, profileImageEdit, footerImageEdit;
 
-	LinearLayout.LayoutParams headerEditParams, footerEditParams,
-			editnameParams;
+	LinearLayout.LayoutParams headerEditParams, footerEditParams, editnameParams;
 
 	RelativeLayout.LayoutParams profileEditParams;
 
 	RelativeLayout namayendegi, khadamat, Linearprofile;
 
-	LinearLayout editnetLink, Linearheader, Linearfooter, editDNlink,
-			AdminsPage;
+	LinearLayout editnetLink, Linearheader, Linearfooter, editDNlink, AdminsPage;
 
 	public String Dcatalog, Dprice, Dpdf, Dvideo;
 	public String Dface, Dlink, Dtwt, Dweb, Dgoogle, Dinstagram;
@@ -107,15 +99,14 @@ public class IntroductionEditFragment extends Fragment implements
 	TextView linkPage;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_introduction_edit, null);
 
 		DBAdapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
 
-		btnSave = (ImageButton) view.findViewById(R.id.btnsave);
+		btnSave = (Button) view.findViewById(R.id.btnsave);
 		headerImageEdit = (ImageView) view.findViewById(R.id.hh1);
 		profileImageEdit = (ImageView) view.findViewById(R.id.pp1);
 		footerImageEdit = (ImageView) view.findViewById(R.id.ft1);
@@ -126,13 +117,12 @@ public class IntroductionEditFragment extends Fragment implements
 		mobileEnter = (EditText) view.findViewById(R.id.editTextmob);
 		emailEnter = (EditText) view.findViewById(R.id.editTextemail);
 		addressEnter = (EditText) view.findViewById(R.id.editTextaddres);
-		descriptionEnter = (EditText) view
-				.findViewById(R.id.descriptionpageedit);
+		descriptionEnter = (EditText) view.findViewById(R.id.descriptionpageedit);
 
 		editnetLink = (LinearLayout) view.findViewById(R.id.editpageNetwork);
 		editDNlink = (LinearLayout) view.findViewById(R.id.editpagedownload);
-		namayendegi = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
-		khadamat = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
+		// namayendegi = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
+		// khadamat = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
 		AdminsPage = (LinearLayout) view.findViewById(R.id.listAdmin);
 		rating = (RatingBar) view.findViewById(R.id.ratingBar1);
 		payBtn = (ImageView) view.findViewById(R.id.btnPay);
@@ -140,44 +130,52 @@ public class IntroductionEditFragment extends Fragment implements
 		copyBtn = (ImageView) view.findViewById(R.id.copyToClipboard);
 		linkPage = (TextView) view.findViewById(R.id.linkPage);
 
-		namayendegi.setVisibility(View.GONE);
-		khadamat.setVisibility(View.GONE);
+		// namayendegi.setVisibility(View.GONE);
+		// khadamat.setVisibility(View.GONE);
 
 		Linearheader = (LinearLayout) view.findViewById(R.id.headerLinearPage);
-		Linearprofile = (RelativeLayout) view
-				.findViewById(R.id.linearEditProfil);
+		Linearprofile = (RelativeLayout) view.findViewById(R.id.linearEditProfil);
 		Linearfooter = (LinearLayout) view.findViewById(R.id.linearfooteredit);
 
-		headerEditParams = new LinearLayout.LayoutParams(
-				Linearheader.getLayoutParams());
+		headerEditParams = new LinearLayout.LayoutParams(Linearheader.getLayoutParams());
 		headerEditParams.height = (int) (util.getScreenwidth());
 
-		profileEditParams = new RelativeLayout.LayoutParams(
-				Linearprofile.getLayoutParams());
+		profileEditParams = new RelativeLayout.LayoutParams(Linearprofile.getLayoutParams());
 		profileEditParams.width = util.getScreenwidth() / 4;
 		profileEditParams.height = util.getScreenwidth() / 4;
-		profileEditParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		profileEditParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		profileEditParams.addRule(RelativeLayout.BELOW, R.id.btnsave);
 		profileEditParams.setMargins(5, 5, 5, 5);
 
-		footerEditParams = new LinearLayout.LayoutParams(
-				Linearfooter.getLayoutParams());
+		footerEditParams = new LinearLayout.LayoutParams(Linearfooter.getLayoutParams());
 		footerEditParams.height = util.getScreenwidth();
 
-		editnameParams = new LinearLayout.LayoutParams(
-				Linearprofile.getLayoutParams());
+		editnameParams = new LinearLayout.LayoutParams(Linearprofile.getLayoutParams());
 		editnameParams.width = util.getScreenwidth() / 3;
 		editnameParams.height = util.getScreenwidth() / 10;
 
-		RelativeLayout.LayoutParams edittextParams = new RelativeLayout.LayoutParams(
-				(int) (util.getScreenwidth() / 1.8), LayoutParams.WRAP_CONTENT);
-		edittextParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// RelativeLayout.LayoutParams edittextParams = new
+		// RelativeLayout.LayoutParams(
+		// (int) (util.getScreenwidth() / 1.8), LayoutParams.WRAP_CONTENT);
+		// edittextParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		//
+		// phoneEnter.setLayoutParams(edittextParams);
+		// faxEnter.setLayoutParams(edittextParams);
+		// mobileEnter.setLayoutParams(edittextParams);
+		// emailEnter.setLayoutParams(edittextParams);
+		// addressEnter.setLayoutParams(edittextParams);
 
-		phoneEnter.setLayoutParams(edittextParams);
-		faxEnter.setLayoutParams(edittextParams);
-		mobileEnter.setLayoutParams(edittextParams);
-		emailEnter.setLayoutParams(edittextParams);
-		addressEnter.setLayoutParams(edittextParams);
+		lableStar = (TextView) view.findViewById(R.id.lableSt);
+		lableNetwork = (TextView) view.findViewById(R.id.lableeditnetwork);
+		lableDownload = (TextView) view.findViewById(R.id.labledownload);
+		lablecopy = (TextView) view.findViewById(R.id.copylable);
+		lableAdmins = (TextView) view.findViewById(R.id.lableEditadmin);
+
+		lableStar.setTypeface(util.SetFontIranSans());
+		lableNetwork.setTypeface(util.SetFontCasablanca());
+		lableDownload.setTypeface(util.SetFontCasablanca());
+		lablecopy.setTypeface(util.SetFontCasablanca());
+		lableAdmins.setTypeface(util.SetFontCasablanca());
 
 		headerImageEdit.setLayoutParams(headerEditParams);
 		profileImageEdit.setLayoutParams(profileEditParams);
@@ -186,19 +184,15 @@ public class IntroductionEditFragment extends Fragment implements
 		String state = Environment.getExternalStorageState();
 
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			mFileTemp = new File(Environment.getExternalStorageDirectory(),
-					TEMP_PHOTO_FILE_NAME);
+			mFileTemp = new File(Environment.getExternalStorageDirectory(), TEMP_PHOTO_FILE_NAME);
 		} else {
-			mFileTemp = new File(getActivity().getFilesDir(),
-					TEMP_PHOTO_FILE_NAME);
+			mFileTemp = new File(getActivity().getFilesDir(), TEMP_PHOTO_FILE_NAME);
 		}
 
-		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id",
-				0);
+		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id", 0);
 		PageId = sendDataID.getInt("main_Id", -1);
 
-		Toast.makeText(getActivity(), "introduction id =" + PageId,
-				Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), "introduction id =" + PageId, Toast.LENGTH_SHORT).show();
 
 		// /////////display information///////////////////////
 
@@ -256,10 +250,8 @@ public class IntroductionEditFragment extends Fragment implements
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				ClipboardManager clipMan = (ClipboardManager) getActivity()
-						.getSystemService(Context.CLIPBOARD_SERVICE);
-				ClipData cData = ClipData.newPlainText("text", linkPage
-						.getText().toString());
+				ClipboardManager clipMan = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+				ClipData cData = ClipData.newPlainText("text", linkPage.getText().toString());
 				clipMan.setPrimaryClip(cData);
 				Toast.makeText(getActivity(), "آدرس صفحه کپی شد", 0).show();
 
@@ -270,12 +262,10 @@ public class IntroductionEditFragment extends Fragment implements
 
 			@Override
 			public void onClick(View arg0) {
-				Intent i = new Intent(
-						Intent.ACTION_PICK,
+				Intent i = new Intent(Intent.ACTION_PICK,
 						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-				getActivity().startActivityFromFragment(
-						IntroductionEditFragment.this, i, headerLoadCode);
+				getActivity().startActivityFromFragment(IntroductionEditFragment.this, i, headerLoadCode);
 
 			}
 		});
@@ -290,16 +280,14 @@ public class IntroductionEditFragment extends Fragment implements
 
 					DBAdapter.updateRatingObject(rat, PageId);
 
-					Toast.makeText(getActivity(), "ثبت درگاه انجام شود ", 0)
-							.show();
+					Toast.makeText(getActivity(), "ثبت درگاه انجام شود ", 0).show();
 
 					Toast.makeText(getActivity(), rat + "", 0).show();
 
 					DBAdapter.close();
 
 				} else {
-					Toast.makeText(getActivity(), "انتخاب ستاره ها الزامی است",
-							0).show();
+					Toast.makeText(getActivity(), "انتخاب ستاره ها الزامی است", 0).show();
 				}
 			}
 		});
@@ -309,9 +297,8 @@ public class IntroductionEditFragment extends Fragment implements
 			@Override
 			public void onClick(View arg0) {
 				int AdminId = object.getUserId();
-				DialogAdminsPage adminDialog = new DialogAdminsPage(
-						getActivity(), PageId, AdminId);
-				adminDialog.show();
+				DialogAdminsPage adminDialog = new DialogAdminsPage(getActivity(), PageId, AdminId);
+				util.setSizeDialog(adminDialog);
 			}
 		});
 
@@ -319,12 +306,10 @@ public class IntroductionEditFragment extends Fragment implements
 
 			@Override
 			public void onClick(View arg0) {
-				Intent i = new Intent(
-						Intent.ACTION_PICK,
+				Intent i = new Intent(Intent.ACTION_PICK,
 						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-				getActivity().startActivityFromFragment(
-						IntroductionEditFragment.this, i, profileLoadCode);
+				getActivity().startActivityFromFragment(IntroductionEditFragment.this, i, profileLoadCode);
 
 			}
 		});
@@ -332,12 +317,10 @@ public class IntroductionEditFragment extends Fragment implements
 
 			@Override
 			public void onClick(View arg0) {
-				Intent i = new Intent(
-						Intent.ACTION_PICK,
+				Intent i = new Intent(Intent.ACTION_PICK,
 						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-				getActivity().startActivityFromFragment(
-						IntroductionEditFragment.this, i, footerLoadcode);
+				getActivity().startActivityFromFragment(IntroductionEditFragment.this, i, footerLoadcode);
 
 			}
 		});
@@ -346,11 +329,12 @@ public class IntroductionEditFragment extends Fragment implements
 
 			@Override
 			public void onClick(View arg0) {
-				diadown = new DialogEditDownloadIntroduction(
-						IntroductionEditFragment.this, getActivity(),
+				diadown = new DialogEditDownloadIntroduction(IntroductionEditFragment.this, getActivity(),
 						R.layout.dialog_edit_link_dn);
 				diadown.setTitle("ویرایش لینک های دانلود");
-				diadown.show();
+
+				util.setSizeDialog(diadown);
+
 			}
 		});
 
@@ -358,10 +342,9 @@ public class IntroductionEditFragment extends Fragment implements
 
 			@Override
 			public void onClick(View arg0) {
-				dianet = new DialogEditNet(IntroductionEditFragment.this,
-						getActivity(), R.layout.dialog_edit_link_dn);
+				dianet = new DialogEditNet(IntroductionEditFragment.this, getActivity(), R.layout.dialog_edit_link_dn);
 				dianet.setTitle("ویرایش لینک شبکه های اجتماعی");
-				dianet.show();
+				util.setSizeDialog(dianet);
 			}
 		});
 
@@ -380,9 +363,7 @@ public class IntroductionEditFragment extends Fragment implements
 				descriptionValue = descriptionEnter.getText().toString();
 
 				if (nameValue.equals("")) {
-					Toast.makeText(getActivity(),
-							"پر کردن فیلد نام الزامی است", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(getActivity(), "پر کردن فیلد نام الزامی است", Toast.LENGTH_SHORT).show();
 				} else {
 
 					saving = new Saving(getActivity());
@@ -413,8 +394,7 @@ public class IntroductionEditFragment extends Fragment implements
 					params.put("Id", String.valueOf(PageId));
 					saving.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(getActivity(),
-							"در حال بروزرسانی", "لطفا منتظر بمانید...");
+					ringProgressDialog = ProgressDialog.show(getActivity(), "در حال بروزرسانی", "لطفا منتظر بمانید...");
 
 					getActivity().getSupportFragmentManager().popBackStack();
 				}
@@ -438,10 +418,8 @@ public class IntroductionEditFragment extends Fragment implements
 		if (requestCode == profileLoadCode) {
 			try {
 
-				InputStream inputStream = getActivity().getContentResolver()
-						.openInputStream(data.getData());
-				FileOutputStream fileOutputStream = new FileOutputStream(
-						mFileTemp);
+				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
 				Utility.copyStream(inputStream, fileOutputStream);
 				fileOutputStream.close();
 				inputStream.close();
@@ -451,8 +429,7 @@ public class IntroductionEditFragment extends Fragment implements
 
 			} catch (Exception e) {
 
-				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
 			}
 			profileImageEdit.setLayoutParams(profileEditParams);
 
@@ -486,14 +463,11 @@ public class IntroductionEditFragment extends Fragment implements
 
 		}
 
-		if (requestCode == headerLoadCode && resultCode == Activity.RESULT_OK
-				&& null != data) {
+		if (requestCode == headerLoadCode && resultCode == Activity.RESULT_OK && null != data) {
 			try {
 
-				InputStream inputStream = getActivity().getContentResolver()
-						.openInputStream(data.getData());
-				FileOutputStream fileOutputStream = new FileOutputStream(
-						mFileTemp);
+				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
 				Utility.copyStream(inputStream, fileOutputStream);
 				fileOutputStream.close();
 				inputStream.close();
@@ -503,20 +477,16 @@ public class IntroductionEditFragment extends Fragment implements
 
 			} catch (Exception e) {
 
-				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
 			}
 			headerImageEdit.setLayoutParams(headerEditParams);
 
 		}
-		if (requestCode == footerLoadcode && resultCode == Activity.RESULT_OK
-				&& null != data) {
+		if (requestCode == footerLoadcode && resultCode == Activity.RESULT_OK && null != data) {
 			try {
 
-				InputStream inputStream = getActivity().getContentResolver()
-						.openInputStream(data.getData());
-				FileOutputStream fileOutputStream = new FileOutputStream(
-						mFileTemp);
+				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
 				Utility.copyStream(inputStream, fileOutputStream);
 				fileOutputStream.close();
 				inputStream.close();
@@ -526,8 +496,7 @@ public class IntroductionEditFragment extends Fragment implements
 
 			} catch (Exception e) {
 
-				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
 			}
 
 			footerImageEdit.setLayoutParams(footerEditParams);
@@ -564,30 +533,25 @@ public class IntroductionEditFragment extends Fragment implements
 			// byte[] byteProfil = util.CompressBitmap(bmpProfil);
 			// byte[] byteFooter = util.CompressBitmap(bmpFooter);
 
-			if (headerImageEdit.getDrawable() == null
-					&& profileImageEdit.getDrawable() == null
+			if (headerImageEdit.getDrawable() == null && profileImageEdit.getDrawable() == null
 					&& footerImageEdit.getDrawable() == null) {
 
-				Toast.makeText(getActivity(), "Empty ByteArray",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Empty ByteArray", Toast.LENGTH_SHORT).show();
 			}
 
 			if (headerImageEdit.getDrawable() != null) {
-				bmpHeader = ((BitmapDrawable) headerImageEdit.getDrawable())
-						.getBitmap();
+				bmpHeader = ((BitmapDrawable) headerImageEdit.getDrawable()).getBitmap();
 				if (bmpHeader != null)
 					byteHeader = Utility.CompressBitmap(bmpHeader);
 
 			}
 			if (profileImageEdit.getDrawable() != null) {
-				bmpProfil = ((BitmapDrawable) profileImageEdit.getDrawable())
-						.getBitmap();
+				bmpProfil = ((BitmapDrawable) profileImageEdit.getDrawable()).getBitmap();
 				if (bmpProfil != null)
 					byteProfil = Utility.CompressBitmap(bmpProfil);
 			}
 			if (footerImageEdit.getDrawable() != null) {
-				bmpFooter = ((BitmapDrawable) footerImageEdit.getDrawable())
-						.getBitmap();
+				bmpFooter = ((BitmapDrawable) footerImageEdit.getDrawable()).getBitmap();
 				if (bmpFooter != null)
 					byteFooter = Utility.CompressBitmap(bmpFooter);
 			}
@@ -609,16 +573,14 @@ public class IntroductionEditFragment extends Fragment implements
 				it.put("Image3", byteFooter);
 
 				savingImage.execute(it);
-				ringProgressDialog = ProgressDialog
-						.show(getActivity(), null,
-								"به منظور به روز رسانی تصاویر لطفا چند لحظه منتظر بمانید.");
+				ringProgressDialog = ProgressDialog.show(getActivity(), null,
+						"به منظور به روز رسانی تصاویر لطفا چند لحظه منتظر بمانید.");
 			}
 			// } else {
 			DBAdapter.open();
-			DBAdapter.UpdateObjectProperties(PageId, nameValue, phoneValue,
-					emailValue, faxValue, descriptionValue, Dcatalog, Dprice,
-					Dpdf, Dvideo, addressValue, mobileValue, Dface, Dinstagram,
-					Dlink, Dgoogle, Dweb, Dtwt);
+			DBAdapter.UpdateObjectProperties(PageId, nameValue, phoneValue, emailValue, faxValue, descriptionValue,
+					Dcatalog, Dprice, Dpdf, Dvideo, addressValue, mobileValue, Dface, Dinstagram, Dlink, Dgoogle, Dweb,
+					Dtwt);
 
 			DBAdapter.close();
 			// if (ringProgressDialog != null) {
@@ -628,8 +590,7 @@ public class IntroductionEditFragment extends Fragment implements
 			// }
 
 		} catch (NumberFormatException ex) {
-			Toast.makeText(getActivity(), "خطا در بروز رسانی",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "خطا در بروز رسانی", Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -650,26 +611,21 @@ public class IntroductionEditFragment extends Fragment implements
 			// byte[] byteProfil = getBitmapAsByteArray(bmpProfil);
 			// byte[] byteFooter = getBitmapAsByteArray(bmpFooter);
 
-			if (headerImageEdit.getDrawable() == null
-					&& profileImageEdit.getDrawable() == null
+			if (headerImageEdit.getDrawable() == null && profileImageEdit.getDrawable() == null
 					&& footerImageEdit.getDrawable() == null) {
 
-				Toast.makeText(getActivity(), "Empty ByteArray",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Empty ByteArray", Toast.LENGTH_SHORT).show();
 			}
 
 			// byteHeader = Utility.CompressBitmap(bmpHeader);
 			// byteProfil = Utility.CompressBitmap(bmpProfil);
 			// byteFooter = Utility.CompressBitmap(bmpFooter);
 
-			util.CreateFile(byteHeader, PageId, "Mechanical", "Profile",
-					"header", "Object");
+			util.CreateFile(byteHeader, PageId, "Mechanical", "Profile", "header", "Object");
 
-			util.CreateFile(byteProfil, PageId, "Mechanical", "Profile",
-					"profile", "Object");
+			util.CreateFile(byteProfil, PageId, "Mechanical", "Profile", "profile", "Object");
 
-			util.CreateFile(byteFooter, PageId, "Mechanical", "Profile",
-					"footer", "Object");
+			util.CreateFile(byteFooter, PageId, "Mechanical", "Profile", "footer", "Object");
 
 			// DBAdapter.open();
 			// DBAdapter.updateAllImageIntroductionPage(PageId, byteHeader,
@@ -680,7 +636,7 @@ public class IntroductionEditFragment extends Fragment implements
 			}
 
 			// } catch (NumberFormatException e) {
-			// Toast.makeText(getActivity(), "  خطا در بروز رسانی تصویر",
+			// Toast.makeText(getActivity(), " خطا در بروز رسانی تصویر",
 			// Toast.LENGTH_SHORT).show();
 			// }
 		}

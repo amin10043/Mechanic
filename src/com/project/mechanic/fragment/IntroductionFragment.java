@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -41,6 +44,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.ExpandIntroduction;
 import com.project.mechanic.adapter.PosttitleListadapter;
+import com.project.mechanic.crop.Util;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.Object;
@@ -56,8 +60,7 @@ import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingAllImage;
 import com.project.mechanic.utility.Utility;
 
-public class IntroductionFragment extends Fragment implements AsyncInterface,
-		GetAllAsyncInterface {
+public class IntroductionFragment extends Fragment implements AsyncInterface, GetAllAsyncInterface {
 
 	Context context;
 	Utility ut;
@@ -75,23 +78,18 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	ArrayList<CommentInObject> commentGroup, ReplyGroup;
 	ArrayList<Post> ArrayPosts;
 	Map<CommentInObject, List<CommentInObject>> mapCollection;
-	public RelativeLayout agency, service, sendSMS, addressRelative,
-			emailRelative, profileLinear, personPage, personPost, phone,
-			cphone, email, map , shareBtn , followPage;
+	public RelativeLayout agency, service, sendSMS, addressRelative, emailRelative, profileLinear,
+			/* personPost, */ phone, cphone, email, map, shareBtn, followPage, EditPage;
 	public DialogcmtInobject dialog;
-	public LinearLayout AddLike, AddComment, headImageLinear, footerLinear,
-			likePost;
+	public LinearLayout /* AddLike, AddComment, */ headImageLinear, footerLinear, likePost, personPage;
 	public ImageButton Comment;
 	LinearLayout.LayoutParams headerParams, footerParams;
-	RelativeLayout.LayoutParams addressParams, emailParams, profileParams,
-			followParams, shareParams, shareParams2;
+	RelativeLayout.LayoutParams addressParams, emailParams, profileParams, followParams, shareParams, shareParams2;
 	DataBaseAdapter adapter;
-	TextView txtFax, txtAddress, txtPhone, txtCellphone, txtEmail, txtDesc,
-			CountLikeIntroduction, CountCommentIntroduction, namePage,
-			countLikePost;
+	TextView txtFax, txtAddress, txtPhone, txtCellphone, txtEmail, txtDesc, CountLikeIntroduction,
+			CountCommentIntroduction, namePage, countLikePost;
 	ImageView headerImage, footerImage, profileImage, reaport;
-	ImageButton Facebook, Instagram, LinkedIn, Google, Site, Twitter, Pdf1,
-			Pdf2, Pdf3, Pdf4;
+	ImageButton Facebook, Instagram, LinkedIn, Google, Site, Twitter, Pdf1, Pdf2, Pdf3, Pdf4;
 	Object object;
 	byte[] headerbyte, profilebyte, footerbyte;
 	SharedPreferences sendDataID, pageId;
@@ -105,19 +103,18 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	boolean flag, f1, f2, f3, LikeOrComment, commentClick = false;
 	List<String> menuItems;
 
-	ProgressBar loadingProgressHeader, loadingProgressProfile,
-			loadingProgressFooter;
-	Button  EditPage,  ShowPostBtn, btnShowPost;
+	ProgressBar loadingProgressHeader, loadingProgressProfile, loadingProgressFooter;
+	Button ShowPostBtn, btnShowPost;
 	int userId, commentId = 0;
 
 	FloatingActionButton action;
 
 	DialogpostTitleFragment MyDialog;
+	ImageView iconFollow;
 
 	@SuppressLint("InflateParams")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.brand);
 		adapter = new DataBaseAdapter(getActivity());
@@ -125,8 +122,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		// define rootView and header Layout
 		// view = inflater.inflate(R.layout.fragment_introduction, null);
-		header = getActivity().getLayoutInflater().inflate(
-				R.layout.header_introduction, null);
+		header = getActivity().getLayoutInflater().inflate(R.layout.header_introduction, null);
 		Posts = inflater.inflate(R.layout.fragment_titlepost, null);
 		PostList = (ListView) Posts.findViewById(R.id.lstComment);
 		// PostList.addHeaderView(header);
@@ -164,7 +160,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		getImageFromServer();
 
 		// set Image on or off for link network social and download link
-		setStateLinkSocialAndDownload();
+		// setStateLinkSocialAndDownload();
 
 		// set visibility for Agency and Service Button
 		setVisibilityItems();
@@ -255,19 +251,16 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				s2 = strs[1];
 				s3 = strs[2];
 
-				if (object.getImage1ServerDate() == null
-						|| !object.getImage1ServerDate().equals(s1)) {
+				if (object.getImage1ServerDate() == null || !object.getImage1ServerDate().equals(s1)) {
 					object.setImage1ServerDate(s1);
 					f1 = true;
 				}
-				if (object.getImage2ServerDate() == null
-						|| !object.getImage2ServerDate().equals(s2)) {
+				if (object.getImage2ServerDate() == null || !object.getImage2ServerDate().equals(s2)) {
 					object.setImage2ServerDate(s2);
 					f2 = true;
 				}
 
-				if (object.getImage3ServerDate() == null
-						|| !object.getImage3ServerDate().equals(s3)) {
+				if (object.getImage3ServerDate() == null || !object.getImage3ServerDate().equals(s3)) {
 					object.setImage3ServerDate(s3);
 					f3 = true;
 				}
@@ -288,9 +281,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					loadingProgressHeader.setVisibility(View.GONE);
 					loadingProgressProfile.setVisibility(View.GONE);
 					loadingProgressFooter.setVisibility(View.GONE);
-					Toast.makeText(getActivity(),
-							"به روز رسانی تصاویر با موفقیت انجام شد",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "به روز رسانی تصاویر با موفقیت انجام شد", Toast.LENGTH_SHORT).show();
 				}
 
 			} else {
@@ -308,51 +299,44 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 					adapter.open();
 
-					if (adapter.isUserLikeIntroductionPage(currentUser.getId(),
-							ObjectID, comId)) {
+					if (adapter.isUserLikeIntroductionPage(currentUser.getId(), ObjectID, comId)) {
 
-						adapter.deleteLikeIntroduction(currentUser.getId(),
-								ObjectID, comId);
-						int countlike = adapter.LikeInObject_count(ObjectID,
-								comId);
+						adapter.deleteLikeIntroduction(currentUser.getId(), ObjectID, comId);
+						int countlike = adapter.LikeInObject_count(ObjectID, comId);
 
 						if (flag) {
-							followPage.setBackgroundColor(getResources()
-									.getColor(R.color.gray));
+							iconFollow.setBackgroundResource(R.drawable.ic_following);
+
 							// personPage
 							// .setBackgroundResource(R.drawable.count_like_off);
-							CountLikeIntroduction.setText(String
-									.valueOf(countlike));
+							CountLikeIntroduction.setText(String.valueOf(countlike));
 							if (ringProgressDialog != null)
 								ringProgressDialog.dismiss();
 
 						} else {
-							likePost.setBackgroundResource(R.drawable.like_off);
-							personPost
-									.setBackgroundResource(R.drawable.count_like_off);
+							likePost.setBackgroundResource(R.drawable.like_froum_off);
+							// personPost
+							// .setBackgroundResource(R.drawable.count_like_off);
 							countLikePost.setText(String.valueOf(countlike));
 							if (ringProgressDialog != null)
 								ringProgressDialog.dismiss();
 						}
 
 					} else {
-						adapter.insertLikeInObjectToDb(id, currentUser.getId(),
-								ObjectID, serverDate, comId);
-						int countlike = adapter.LikeInObject_count(ObjectID,
-								comId);
+						adapter.insertLikeInObjectToDb(id, currentUser.getId(), ObjectID, serverDate, comId);
+						int countlike = adapter.LikeInObject_count(ObjectID, comId);
 
 						if (flag) {
-							followPage.setBackgroundColor(getResources()
-									.getColor(R.color.green));
+							iconFollow.setBackgroundResource(R.drawable.ic_followed);
+
 							// personPage.setBackgroundResource(R.drawable.count_like);
-							CountLikeIntroduction.setText(String
-									.valueOf(countlike));
+							CountLikeIntroduction.setText(String.valueOf(countlike));
 							if (ringProgressDialog != null)
 								ringProgressDialog.dismiss();
 						} else {
-							likePost.setBackgroundResource(R.drawable.like_on);
-							personPost
-									.setBackgroundResource(R.drawable.count_like);
+							likePost.setBackgroundResource(R.drawable.like_froum_on);
+							// personPost
+							// .setBackgroundResource(R.drawable.count_like);
 							countLikePost.setText(String.valueOf(countlike));
 							if (ringProgressDialog != null)
 								ringProgressDialog.dismiss();
@@ -362,9 +346,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					adapter.close();
 
 				} catch (NumberFormatException e) {
-					if (output != null
-							&& !(output.contains("Exception") || output
-									.contains("java"))) {
+					if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 						// این متغیر مشخص کنندهلایک صفحه و لایک پست می بایشد
 						int comId;
 						if (flag)
@@ -374,8 +356,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 							// لایک پست
 							comId = 1;
 						adapter.open();
-						if (adapter.isUserLikeIntroductionPage(
-								currentUser.getId(), ObjectID, comId)) {
+						if (adapter.isUserLikeIntroductionPage(currentUser.getId(), ObjectID, comId)) {
 
 							params = new LinkedHashMap<String, String>();
 							if (getActivity() != null) {
@@ -384,16 +365,13 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 								deleting.delegate = IntroductionFragment.this;
 
 								params.put("TableName", "LikeInObject");
-								params.put("UserId",
-										String.valueOf(currentUser.getId()));
+								params.put("UserId", String.valueOf(currentUser.getId()));
 								params.put("ObjectId", String.valueOf(ObjectID));
 								params.put("CommentId", String.valueOf(comId));
 
 								deleting.execute(params);
 							}
-							ringProgressDialog = ProgressDialog.show(
-									getActivity(), "", "لطفا منتظر بمانید...",
-									true);
+							ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 							ringProgressDialog.setCancelable(true);
 							new Thread(new Runnable() {
@@ -422,8 +400,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 								params.put("TableName", "LikeInObject");
 
-								params.put("UserId",
-										String.valueOf(currentUser.getId()));
+								params.put("UserId", String.valueOf(currentUser.getId()));
 								params.put("ObjectId", String.valueOf(ObjectID));
 								params.put("Date", output);
 								params.put("ModifyDate", output);
@@ -437,9 +414,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 								saving.execute(params);
 							}
-							ringProgressDialog = ProgressDialog.show(
-									getActivity(), "", "لطفا منتظر بمانید...",
-									true);
+							ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 							ringProgressDialog.setCancelable(true);
 							new Thread(new Runnable() {
@@ -462,9 +437,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 						adapter.close();
 
 					} else {
-						Toast.makeText(getActivity(),
-								"خطا در ثبت. پاسخ نا مشخص از سرور",
-								Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 						loadingProgressHeader.setVisibility(View.GONE);
 						loadingProgressProfile.setVisibility(View.GONE);
 						loadingProgressFooter.setVisibility(View.GONE);
@@ -473,8 +446,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 				catch (Exception e) {
 
-					Toast.makeText(getActivity(), "خطا در ثبت",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
 					loadingProgressHeader.setVisibility(View.GONE);
 					loadingProgressProfile.setVisibility(View.GONE);
 					loadingProgressFooter.setVisibility(View.GONE);
@@ -488,9 +460,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 				adapter.open();
 
-				adapter.insertCommentObjecttoDb(id,
-						ut.inputComment(getActivity()), ObjectID,
-						currentUser.getId(), serverDate, commentId);
+				adapter.insertCommentObjecttoDb(id, ut.inputComment(getActivity()), ObjectID, currentUser.getId(),
+						serverDate, commentId);
 
 				adapter.close();
 				ut.ToEmptyComment(getActivity());
@@ -502,9 +473,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 			} catch (NumberFormatException e) {
 
-				if (output != null
-						&& !(output.contains("Exception") || output
-								.contains("java"))) {
+				if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 
 					adapter.open();
 					params = new LinkedHashMap<String, String>();
@@ -530,8 +499,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 					saving.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -551,9 +519,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					adapter.close();
 
 				} else {
-					Toast.makeText(getActivity(),
-							"خطا در ثبت. پاسخ نا مشخص از سرور",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 				}
 			}
 
@@ -570,8 +536,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 			if (f1)
 				if (output.get(0) != null) {
-					ut.CreateFile(output.get(0), object.getId(), "Mechanical",
-							"Profile", "header", "Object");
+					ut.CreateFile(output.get(0), object.getId(), "Mechanical", "Profile", "header", "Object");
 
 					// adapter.UpdateHeaderImageObject(ObjectID, output.get(0));
 					object = adapter.getObjectbyid(ObjectID);
@@ -583,14 +548,12 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					if (b != null)
 						headerImage.setImageBitmap(b);
 					else
-						headerImage
-								.setBackgroundResource(R.drawable.no_image_header);
+						headerImage.setBackgroundResource(R.drawable.no_image_header);
 					adapter.updateObjectImage1ServerDate(ObjectID, serverDate);
 				}
 			if (f2)
 				if (output.get(1) != null) {
-					ut.CreateFile(output.get(1), object.getId(), "Mechanical",
-							"Profile", "profile", "Object");
+					ut.CreateFile(output.get(1), object.getId(), "Mechanical", "Profile", "profile", "Object");
 					object = adapter.getObjectbyid(ObjectID);
 
 					String PathImageProfile = "";
@@ -600,18 +563,15 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					Bitmap b = BitmapFactory.decodeFile(PathImageProfile);
 
 					if (b != null)
-						profileImage.setImageBitmap(Utility
-								.getRoundedCornerBitmap(b, 20));
+						profileImage.setImageBitmap(Utility.getRoundedCornerBitmap(b, 20));
 					else
-						profileImage
-								.setBackgroundResource(R.drawable.no_img_profile);
+						profileImage.setBackgroundResource(R.drawable.no_img_profile);
 					adapter.updateObjectImage2ServerDate(ObjectID, serverDate);
 				}
 
 			if (f3)
 				if (output.get(2) != null) {
-					ut.CreateFile(output.get(2), object.getId(), "Mechanical",
-							"Profile", "footer", "Object");
+					ut.CreateFile(output.get(2), object.getId(), "Mechanical", "Profile", "footer", "Object");
 					object = adapter.getObjectbyid(ObjectID);
 
 					String PathImageFooter = "";
@@ -623,15 +583,12 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 					if (b != null)
 						footerImage.setImageBitmap(b);
 					else
-						footerImage
-								.setBackgroundResource(R.drawable.no_image_header);
+						footerImage.setBackgroundResource(R.drawable.no_image_header);
 
 					adapter.updateObjectImage3ServerDate(ObjectID, serverDate);
 
 				}
-			Toast.makeText(getActivity(),
-					"به روز رسانی تصاویر با موفقیت انجام شد",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "به روز رسانی تصاویر با موفقیت انجام شد", Toast.LENGTH_SHORT).show();
 
 			loadingProgressHeader.setVisibility(View.GONE);
 			loadingProgressProfile.setVisibility(View.GONE);
@@ -654,18 +611,15 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		// exListView = (ExpandableListView) view
 		// .findViewById(R.id.ExpandIntroduction);
 
-		headerImage = (ImageView) header
-				.findViewById(R.id.imgvadvertise_Object);
-		footerImage = (ImageView) header
-				.findViewById(R.id.imgvadvertise2_Object);
+		headerImage = (ImageView) header.findViewById(R.id.imgvadvertise_Object);
+		footerImage = (ImageView) header.findViewById(R.id.imgvadvertise2_Object);
 		profileImage = (ImageView) header.findViewById(R.id.icon_pro);
 
-		headImageLinear = (LinearLayout) header
-				.findViewById(R.id.headerlinerpageintroduction);
+		// headImageLinear = (LinearLayout) header
+		// .findViewById(R.id.headerlinerpageintroduction);
 		agency = (RelativeLayout) header.findViewById(R.id.Layoutlink1);
 		service = (RelativeLayout) header.findViewById(R.id.Layoutlink2);
-		sendSMS = (RelativeLayout) header
-				.findViewById(R.id.sendsmsIntroduction);
+		sendSMS = (RelativeLayout) header.findViewById(R.id.sendsmsIntroduction);
 
 		txtFax = (TextView) header.findViewById(R.id.txtFax_Object);
 		txtAddress = (TextView) header.findViewById(R.id.txtAddress_Object);
@@ -674,20 +628,16 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		txtDesc = (TextView) header.findViewById(R.id.txtDesc_Object);
 		txtEmail = (TextView) header.findViewById(R.id.txtEmail_Object);
 		namePage = (TextView) header.findViewById(R.id.namePage);
-		CountLikeIntroduction = (TextView) header
-				.findViewById(R.id.countLikeIntroduction);
-		CountCommentIntroduction = (TextView) header
-				.findViewById(R.id.CountCommentIntroduction);
+		CountLikeIntroduction = (TextView) header.findViewById(R.id.countLikeIntroduction);
+		CountCommentIntroduction = (TextView) header.findViewById(R.id.numberOfCommentTopic);
 
-		AddLike = (LinearLayout) header
-				.findViewById(R.id.AddLikeIntroductionLinear);
-		AddComment = (LinearLayout) header
-				.findViewById(R.id.AddcommentIntroductionLinear);
+		// AddLike = (LinearLayout) header
+		// .findViewById(R.id.AddLikeIntroductionLinear);
+		// AddComment = (LinearLayout) header
+		// .findViewById(R.id.AddcommentIntroductionLinear);
 
-		addressRelative = (RelativeLayout) header
-				.findViewById(R.id.addressRelative);
-		emailRelative = (RelativeLayout) header
-				.findViewById(R.id.emailsRelative);
+		addressRelative = (RelativeLayout) header.findViewById(R.id.addressRelative);
+		emailRelative = (RelativeLayout) header.findViewById(R.id.emailsRelative);
 
 		Facebook = (ImageButton) header.findViewById(R.id.nfacebook);
 		Instagram = (ImageButton) header.findViewById(R.id.ninstagram);
@@ -700,35 +650,32 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		cphone = (RelativeLayout) header.findViewById(R.id.personalMobile);
 		map = (RelativeLayout) header.findViewById(R.id.addressRelative);
 		email = (RelativeLayout) header.findViewById(R.id.emailsRelative);
-		 shareBtn = (RelativeLayout) header.findViewById(R.id.b);
+		shareBtn = (RelativeLayout) header.findViewById(R.id.b);
 
 		Pdf1 = (ImageButton) header.findViewById(R.id.btnPdf1_Object);
 		Pdf2 = (ImageButton) header.findViewById(R.id.btnPdf2_Object);
 		Pdf3 = (ImageButton) header.findViewById(R.id.btnPdf3_Object);
 		Pdf4 = (ImageButton) header.findViewById(R.id.btnPdf4_Object);
-		profileLinear = (RelativeLayout) header
-				.findViewById(R.id.linear_id_profile_introduction_page);
+		profileLinear = (RelativeLayout) header.findViewById(R.id.linear_id_profile_introduction_page);
 		footerLinear = (LinearLayout) header.findViewById(R.id.footerint);
-		EditPage = (Button) header.findViewById(R.id.ImgbtnEdit);
-		likePost = (LinearLayout) header
-				.findViewById(R.id.likePostIntroduction);
+		EditPage = (RelativeLayout) header.findViewById(R.id.ImgbtnEdit);
+		likePost = (LinearLayout) header.findViewById(R.id.LikeTopicLinear);
 
-		countLikePost = (TextView) header.findViewById(R.id.countlllllll);
-		personPage = (RelativeLayout) header.findViewById(R.id.countLiketext);
-		personPost = (RelativeLayout) header.findViewById(R.id.countLikeqqz);
+		countLikePost = (TextView) header.findViewById(R.id.txtNumofLike_CmtFroum);
+		personPage = (LinearLayout) header.findViewById(R.id.countLiketext);
+		// personPost = (RelativeLayout) header.findViewById(R.id.countLikeqqz);
 
-		loadingProgressHeader = (ProgressBar) header
-				.findViewById(R.id.header_progress_header);
+		loadingProgressHeader = (ProgressBar) header.findViewById(R.id.header_progress_header);
 
-		loadingProgressProfile = (ProgressBar) header
-				.findViewById(R.id.profile_progress_profile);
-		loadingProgressFooter = (ProgressBar) header
-				.findViewById(R.id.footer_progress_footer);
+		loadingProgressProfile = (ProgressBar) header.findViewById(R.id.profile_progress_profile);
+		loadingProgressFooter = (ProgressBar) header.findViewById(R.id.footer_progress_footer);
 
 		followPage = (RelativeLayout) header.findViewById(R.id.follow_follow);
 		reaport = (ImageView) header.findViewById(R.id.reportImage);
 
 		action = (FloatingActionButton) Posts.findViewById(R.id.fab);
+
+		iconFollow = (ImageView) header.findViewById(R.id.imageiconfollow);
 	}
 
 	// private void fillExpandListViewCommnet() {
@@ -761,9 +708,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	private void fillListView() {
 		adapter.open();
 		ArrayPosts = adapter.getAllPost(object.getUserId());
-		PosttitleListadapter ListAdapterPost = new PosttitleListadapter(
-				getActivity(), R.layout.raw_posttitle, ArrayPosts,
-				IntroductionFragment.this);
+		PosttitleListadapter ListAdapterPost = new PosttitleListadapter(getActivity(), R.layout.raw_posttitle,
+				ArrayPosts, IntroductionFragment.this);
 		PostList.setAdapter(ListAdapterPost);
 	}
 
@@ -773,39 +719,35 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		if (currentUser == null) {
 		} else {
-			if (adapter.isUserLikeIntroductionPage(currentUser.getId(),
-					ObjectID, 0)) {
-				followPage.setBackgroundColor(getResources().getColor(
-						R.color.green));
+			if (adapter.isUserLikeIntroductionPage(currentUser.getId(), ObjectID, 0)) {
+				iconFollow.setBackgroundResource(R.drawable.ic_followed);
 				// personPage.setBackgroundResource(R.drawable.count_like);
 			} else {
-				followPage.setBackgroundColor(getResources().getColor(
-						R.color.gray));
+				iconFollow.setBackgroundResource(R.drawable.ic_following);
+
 				// personPage.setBackgroundResource(R.drawable.count_like_off);
 
 			}
-			if (adapter.isUserLikeIntroductionPage(currentUser.getId(),
-					ObjectID, 1)) {
-				likePost.setBackgroundResource(R.drawable.like_on);
-				personPost.setBackgroundResource(R.drawable.count_like);
+			if (adapter.isUserLikeIntroductionPage(currentUser.getId(), ObjectID, 1)) {
+				likePost.setBackgroundResource(R.drawable.like_froum_on);
+				// personPost.setBackgroundResource(R.drawable.count_like);
 
 			} else {
-				likePost.setBackgroundResource(R.drawable.like_off);
-				personPost.setBackgroundResource(R.drawable.count_like_off);
+				likePost.setBackgroundResource(R.drawable.like_froum_off);
+				// personPost.setBackgroundResource(R.drawable.count_like_off);
 
 			}
 		}
 		adapter.close();
 
 		if (currentUser == null || object.getUserId() != currentUser.getId()) {
-			EditPage.setVisibility(View.INVISIBLE);
-			Toast.makeText(getActivity(),
-					"userid dar database sqlite be soorat dasti 0 save shode",
-					Toast.LENGTH_LONG).show();
-//			shareBtn.setLayoutParams(shareParams2);
+			EditPage.setVisibility(View.GONE);
+			Toast.makeText(getActivity(), "userid dar database sqlite be soorat dasti 0 save shode", Toast.LENGTH_LONG)
+					.show();
+			// shareBtn.setLayoutParams(shareParams2);
 		} else {
 			EditPage.setVisibility(View.VISIBLE);
-			EditPage.setLayoutParams(followParams);
+			// EditPage.setLayoutParams(followParams);
 
 		}
 
@@ -815,78 +757,72 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 		// profileParams = new RelativeLayout.LayoutParams(
 		// profileLinear.getLayoutParams());
-		
-		int marginTop = ut.getScreenwidth()-(ut.getScreenwidth() /8);
 
-		FrameLayout profileFrame = (FrameLayout) header
-				.findViewById(R.id.frameLayoutHeader);
-		FrameLayout.LayoutParams profileParams = new FrameLayout.LayoutParams(
-				profileFrame.getLayoutParams());
+		int marginTop = ut.getScreenwidth() - (ut.getScreenwidth() / 8);
+
+		FrameLayout profileFrame = (FrameLayout) header.findViewById(R.id.frameLayoutHeader);
+		FrameLayout.LayoutParams profileParams = new FrameLayout.LayoutParams(profileFrame.getLayoutParams());
 
 		profileParams.height = ut.getScreenwidth() / 4;
 		profileParams.width = ut.getScreenwidth() / 4;
 		profileParams.gravity = Gravity.CENTER_HORIZONTAL;
-		
-//		profileParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-//		profileParams.addRule(RelativeLayout.BELOW, R.id.namePage);
+
+		// profileParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// profileParams.addRule(RelativeLayout.BELOW, R.id.namePage);
 		profileParams.setMargins(0, marginTop, 0, 0);
 
 		profileImage.setLayoutParams(profileParams);
 
-		FrameLayout.LayoutParams headerParams = new FrameLayout.LayoutParams(
-				profileFrame.getLayoutParams());
+		FrameLayout.LayoutParams headerParams = new FrameLayout.LayoutParams(profileFrame.getLayoutParams());
 
 		headerParams.height = ut.getScreenwidth();
 		headerParams.width = ut.getScreenwidth();
 
-		footerParams = new LinearLayout.LayoutParams(
-				footerLinear.getLayoutParams());
+		footerParams = new LinearLayout.LayoutParams(footerLinear.getLayoutParams());
 		footerParams.height = ut.getScreenwidth();
 		footerParams.width = ut.getScreenwidth();
 
-		followParams = new RelativeLayout.LayoutParams(
-				profileLinear.getLayoutParams());
+		// followParams = new RelativeLayout.LayoutParams(
+		// profileLinear.getLayoutParams());
+		//
+		// followParams.width = ut.getScreenwidth() / 4;
+		// followParams.height = ut.getScreenwidth() / 10;
+		// followParams.setMargins(0, 10, 0, 0);
+		// followParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// followParams.addRule(RelativeLayout.BELOW, R.id.icon_pro);
 
-		followParams.width = ut.getScreenwidth() / 4;
-		followParams.height = ut.getScreenwidth() / 10;
-		followParams.setMargins(0, 10, 0, 0);
-		followParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		followParams.addRule(RelativeLayout.BELOW, R.id.icon_pro);
+		// followPage.setLayoutParams(followParams);
 
-		followPage.setLayoutParams(followParams);
+		// shareParams = new RelativeLayout.LayoutParams(
+		// profileLinear.getLayoutParams());
+		//
+		// shareParams.height = ut.getScreenwidth() / 10;
+		// shareParams.width = ut.getScreenwidth() / 4;
+		// shareParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// shareParams.addRule(RelativeLayout.BELOW, R.id.ImgbtnEdit);
+		// shareParams.setMargins(0, 10, 0, 0);
 
-		shareParams = new RelativeLayout.LayoutParams(
-				profileLinear.getLayoutParams());
+		// shareBtn.setLayoutParams(shareParams);
 
-		shareParams.height = ut.getScreenwidth() / 10;
-		shareParams.width = ut.getScreenwidth() / 4;
-		shareParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		shareParams.addRule(RelativeLayout.BELOW, R.id.ImgbtnEdit);
-		shareParams.setMargins(0, 10, 0, 0);
+		// shareParams2 = new RelativeLayout.LayoutParams(
+		// profileLinear.getLayoutParams());
+		//
+		// shareParams2.height = ut.getScreenwidth() / 10;
+		// shareParams2.width = ut.getScreenwidth() / 4;
+		// shareParams2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// shareParams2.addRule(RelativeLayout.BELOW, R.id.followPage);
+		// shareParams2.setMargins(0, 10, 0, 0);
 
-//		shareBtn.setLayoutParams(shareParams);
+		// shareBtn.setLayoutParams(shareParams);
+		// shareBtn.setTextSize(12);
 
-		shareParams2 = new RelativeLayout.LayoutParams(
-				profileLinear.getLayoutParams());
-
-		shareParams2.height = ut.getScreenwidth() / 10;
-		shareParams2.width = ut.getScreenwidth() / 4;
-		shareParams2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		shareParams2.addRule(RelativeLayout.BELOW, R.id.followPage);
-		shareParams2.setMargins(0, 10, 0, 0);
-
-//		shareBtn.setLayoutParams(shareParams);
-//		shareBtn.setTextSize(12);
-
-		addressParams = new RelativeLayout.LayoutParams(
-				addressRelative.getLayoutParams());
+		addressParams = new RelativeLayout.LayoutParams(addressRelative.getLayoutParams());
 
 		addressParams.width = ut.getScreenwidth() / 2;
 		addressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		txtAddress.setLayoutParams(addressParams);
 
-		emailParams = new RelativeLayout.LayoutParams(
-				emailRelative.getLayoutParams());
+		emailParams = new RelativeLayout.LayoutParams(emailRelative.getLayoutParams());
 
 		emailParams.width = (int) (ut.getScreenwidth() / 2.5);
 		emailParams.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -930,20 +866,17 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	private void setStateLinkSocialAndDownload() {
 
-		if (object.getFacebook() != null
-				&& !object.getFacebook().equals("null"))
+		if (object.getFacebook() != null && !object.getFacebook().equals("null"))
 			Facebook.setImageResource(R.drawable.facebook);
 		else
 			Facebook.setImageResource(R.drawable.facebook_off);
 
-		if (object.getInstagram() != null
-				&& !object.getInstagram().equals("null"))
+		if (object.getInstagram() != null && !object.getInstagram().equals("null"))
 			Instagram.setImageResource(R.drawable.insta);
 		else
 			Instagram.setImageResource(R.drawable.insta_off);
 
-		if (object.getLinkedIn() != null
-				&& !object.getLinkedIn().equals("null"))
+		if (object.getLinkedIn() != null && !object.getLinkedIn().equals("null"))
 			LinkedIn.setImageResource(R.drawable.lnkin);
 		else
 			LinkedIn.setImageResource(R.drawable.lnkin_off);
@@ -956,7 +889,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 		if (object.getSite() != null && !object.getSite().equals("null"))
 			Site.setImageResource(R.drawable.internet);
 		else
-			Site.setImageResource(R.drawable.internet_off);
+			Site.setImageResource(R.drawable.internet);
 
 		if (object.getTwitter() != null && !object.getTwitter().equals("null"))
 			Twitter.setImageResource(R.drawable.twtr);
@@ -1024,8 +957,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			public void onClick(View v) {
 				if (object.getFacebook() != null) {
 					String url = "http://" + object.getFacebook();
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
 					trans.commit();
 				}
@@ -1039,8 +971,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 					String url = "http://" + object.getInstagram();
 
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
 					trans.commit();
 				}
@@ -1056,8 +987,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 					String url = "http://" + object.getLinkedIn();
 
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
 					trans.commit();
 				}
@@ -1073,8 +1003,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 					String url = "http://" + object.getGoogle();
 
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
 					trans.commit();
 				}
@@ -1090,8 +1019,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 					String url = "http://" + object.getSite();
 
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
 					trans.commit();
 				}
@@ -1107,8 +1035,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 					String url = "http://" + object.getTwitter();
 
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
 					trans.commit();
 				}
@@ -1123,8 +1050,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				if (object.getPdf1() != null) {
 					String url = "http://" + object.getPdf1();
 
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
 					trans.commit();
 				}
@@ -1140,8 +1066,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 					String url = "http://" + object.getPdf2();
 
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
 					trans.commit();
 				}
@@ -1157,8 +1082,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 					String url = "http://" + object.getPdf3();
 
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
 					trans.commit();
 				}
@@ -1175,8 +1099,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 					String url = "http://" + object.getPdf4();
 
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
 					trans.commit();
 				}
@@ -1235,8 +1158,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				// Intent("android.intent.action.call",Uri.parse("tel:"+
 				// txtCellphone.getText().toString())), 1);
 
-				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
-						+ txtCellphone.getText().toString()));
+				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + txtCellphone.getText().toString()));
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(intent);
 
@@ -1254,8 +1176,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				// Intent("android.intent.action.call",Uri.parse("tel:"+
 				// txtPhone.getText().toString())), 1);
 
-				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
-						+ txtPhone.getText().toString()));
+				Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + txtPhone.getText().toString()));
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(intent);
 
@@ -1272,8 +1193,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				email.putExtra(Intent.EXTRA_EMAIL, new String[] { "b_email" });
 				email.setType("message/rfc822");
 
-				startActivity(Intent.createChooser(email,
-						"Choose an Email client :"));
+				startActivity(Intent.createChooser(email, "Choose an Email client :"));
 
 			}
 
@@ -1285,9 +1205,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			public void onClick(View v) {
 
 				Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
-				Intent intent = new Intent(
-						android.content.Intent.ACTION_VIEW,
-						Uri.parse("https://www.google.com/maps/dir/36.2476613,59.4998502/Mashhad,+Khorasan+Razavi/Khorasan+Razavi,+Mashhad,+Kolahdooz+Blvd,+No.+47/@36.2934197,59.5606058,15z/data=!4m15!4m14!1m0!1m5!1m1!1s0x3f6c911abe4131d7:0xc9c57e3a9318753b!2m2!1d59.6167549!2d36.2604623!1m5!1m1!1s0x3f6c91798c9d172b:0xaf638c4e2e2ac720!2m2!1d59.5749626!2d36.2999667!3e2"));
+				Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(
+						"https://www.google.com/maps/dir/36.2476613,59.4998502/Mashhad,+Khorasan+Razavi/Khorasan+Razavi,+Mashhad,+Kolahdooz+Blvd,+No.+47/@36.2934197,59.5606058,15z/data=!4m15!4m14!1m0!1m5!1m1!1s0x3f6c911abe4131d7:0xc9c57e3a9318753b!2m2!1d59.6167549!2d36.2604623!1m5!1m1!1s0x3f6c91798c9d172b:0xaf638c4e2e2ac720!2m2!1d59.5749626!2d36.2999667!3e2"));
 				startActivity(intent);
 			}
 		});
@@ -1300,15 +1219,12 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 				Intent smsSIntent = new Intent(Intent.ACTION_SENDTO, uri);
 				// add the message at the sms_body extra field
-				smsSIntent.putExtra("sms_body", object.getName() + "\n"
-						+ "همراه : " + "\n" + object.getCellphone() + "\n"
-						+ "تلفن :" + "\n" + object.getPhone() + "\n" + "آدرس :"
-						+ "\n" + object.getAddress());
+				smsSIntent.putExtra("sms_body", object.getName() + "\n" + "همراه : " + "\n" + object.getCellphone()
+						+ "\n" + "تلفن :" + "\n" + object.getPhone() + "\n" + "آدرس :" + "\n" + object.getAddress());
 				try {
 					startActivity(smsSIntent);
 				} catch (Exception ex) {
-					Toast.makeText(getActivity(), "Your sms has failed...",
-							Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), "Your sms has failed...", Toast.LENGTH_LONG).show();
 					ex.printStackTrace();
 				}
 			}
@@ -1324,8 +1240,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				String pathImage = object.getImagePath1();
 				String namePage = object.getName();
 
-				DialogShowImage showImageDialog = new DialogShowImage(
-						getActivity(), pathImage, namePage);
+				DialogShowImage showImageDialog = new DialogShowImage(getActivity(), pathImage, namePage);
 				showImageDialog.show();
 
 			}
@@ -1338,8 +1253,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 				String PathProfile = object.getImagePath2();
 				String namePage = object.getName();
-				DialogShowImage showImageDialog = new DialogShowImage(
-						getActivity(), PathProfile, namePage);
+				DialogShowImage showImageDialog = new DialogShowImage(getActivity(), PathProfile, namePage);
 				showImageDialog.show();
 
 			}
@@ -1352,8 +1266,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 				String pathImage = object.getImagePath3();
 				String namePage = object.getName();
 
-				DialogShowImage showImageDialog = new DialogShowImage(
-						getActivity(), pathImage, namePage);
+				DialogShowImage showImageDialog = new DialogShowImage(getActivity(), pathImage, namePage);
 				showImageDialog.show();
 			}
 		});
@@ -1361,25 +1274,25 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 	private void LikeCommentAction() {
 
-		AddComment.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				// if (currentUser == null) {
-				// Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-				// Toast.LENGTH_SHORT).show();
-				// return;
-				// } else {
-				// dialog = new DialogcmtInobject(IntroductionFragment.this,
-				// getActivity(), R.layout.dialog_addcomment,
-				// ObjectID, 0);
-				// dialog.show();
-				// exadapter.notifyDataSetChanged();
-				// }
-
-			}
-		});
+		// AddComment.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		//
+		// // if (currentUser == null) {
+		// // Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+		// // Toast.LENGTH_SHORT).show();
+		// // return;
+		// // } else {
+		// // dialog = new DialogcmtInobject(IntroductionFragment.this,
+		// // getActivity(), R.layout.dialog_addcomment,
+		// // ObjectID, 0);
+		// // dialog.show();
+		// // exadapter.notifyDataSetChanged();
+		// // }
+		//
+		// }
+		// });
 
 		likePost.setOnClickListener(new OnClickListener() {
 
@@ -1387,9 +1300,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			public void onClick(View arg0) {
 
 				if (currentUser == null) {
-					Toast.makeText(getActivity(),
-							"برای درج لایک ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 				} else {
 
 					date = new ServerDate(getActivity());
@@ -1410,9 +1321,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			public void onClick(View arg0) {
 
 				if (currentUser == null) {
-					Toast.makeText(getActivity(),
-							"برای درج لایک ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "برای دنبال کردن باید وارد شوید", Toast.LENGTH_SHORT).show();
 				} else {
 
 					date = new ServerDate(getActivity());
@@ -1432,10 +1341,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame,
-						new IntroductionEditFragment());
+				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new IntroductionEditFragment());
 				trans.addToBackStack(null);
 				trans.commit();
 
@@ -1445,37 +1352,24 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 			@Override
 			public void onClick(View arg0) {
-				Intent sharingIntent = new Intent(
-						android.content.Intent.ACTION_SEND);
+				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
 				// String shareBody = x.getDescription();
 				// sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
 				// object.getName());
 
-				sharingIntent.putExtra(
-						android.content.Intent.EXTRA_TEXT,
-						object.getName() + "\n" + "تلفن :" + "\n"
-								+ object.getPhone() + "\n" + "فکس :" + "\n"
-								+ object.getFax() + "\n" + "موبایل :" + "\n"
-								+ object.getCellphone() + "\n" + "ایمیل :"
-								+ "\n" + object.getEmail() + "\n" + "آدرس : "
-								+ "\n" + object.getAddress() + "\n"
-								+ "فیس بوک : " + "\n" + object.getFacebook()
-								+ "\n" + "لینکدین : " + "\n"
-								+ object.getLinkedIn() + "\n" + "توئیتر :"
-								+ "\n" + object.getTwitter() + "\n"
-								+ " سایت : " + "\n" + object.getSite() + "\n"
-								+ "  گوگل پلاس : " + "\n" + object.getGoogle()
-								+ "\n" + "اینستاگرام : " + "\n"
-								+ object.getInstagram() + "\n"
-								+ "لینک کاتالوگ :" + "\n" + object.getPdf1()
-								+ "\n" + "لیست قیمت" + "\n" + object.getPdf2()
-								+ "\n" + "Pdf : " + "\n" + object.getPdf3()
-								+ "\n" + "لینک آپارات" + "\n"
-								+ object.getPdf4() + "\n" + "توضیحات :" + "\n"
-								+ object.getDescription());
-				startActivity(Intent.createChooser(sharingIntent,
-						"اشتراک از طریق"));
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+						object.getName() + "\n" + "تلفن :" + "\n" + object.getPhone() + "\n" + "فکس :" + "\n"
+								+ object.getFax() + "\n" + "موبایل :" + "\n" + object.getCellphone() + "\n" + "ایمیل :"
+								+ "\n" + object.getEmail() + "\n" + "آدرس : " + "\n" + object.getAddress() + "\n"
+								+ "فیس بوک : " + "\n" + object.getFacebook() + "\n" + "لینکدین : " + "\n"
+								+ object.getLinkedIn() + "\n" + "توئیتر :" + "\n" + object.getTwitter() + "\n"
+								+ " سایت : " + "\n" + object.getSite() + "\n" + "  گوگل پلاس : " + "\n"
+								+ object.getGoogle() + "\n" + "اینستاگرام : " + "\n" + object.getInstagram() + "\n"
+								+ "لینک کاتالوگ :" + "\n" + object.getPdf1() + "\n" + "لیست قیمت" + "\n"
+								+ object.getPdf2() + "\n" + "Pdf : " + "\n" + object.getPdf3() + "\n" + "لینک آپارات"
+								+ "\n" + object.getPdf4() + "\n" + "توضیحات :" + "\n" + object.getDescription());
+				startActivity(Intent.createChooser(sharingIntent, "اشتراک از طریق"));
 			}
 		});
 
@@ -1487,19 +1381,14 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View v) {
 
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new ProvinceFragment());
 				trans.commit();
 				pageId.edit().putInt("brandID", object.getId()).commit();
 				pageId.edit().putInt("IsAgency", 1).commit();
-				pageId.edit()
-						.putInt("main object id", object.getMainObjectId())
-						.commit();
-				Toast.makeText(
-						getActivity(),
-						"mainObjectId send brand = " + object.getMainObjectId()
-								+ " agency ", 0).show();
+				pageId.edit().putInt("main object id", object.getMainObjectId()).commit();
+				Toast.makeText(getActivity(), "mainObjectId send brand = " + object.getMainObjectId() + " agency ", 0)
+						.show();
 			}
 		});
 
@@ -1508,20 +1397,14 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View v) {
 
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new ProvinceFragment());
 				trans.commit();
 
 				pageId.edit().putInt("brandID", object.getId()).commit();
 				pageId.edit().putInt("IsAgency", 0).commit();
-				pageId.edit()
-						.putInt("main object id", object.getMainObjectId())
-						.commit();
-				Toast.makeText(
-						getActivity(),
-						"MainObjectId = " + object.getMainObjectId()
-								+ "service", 0).show();
+				pageId.edit().putInt("main object id", object.getMainObjectId()).commit();
+				Toast.makeText(getActivity(), "MainObjectId = " + object.getMainObjectId() + "service", 0).show();
 
 			}
 		});
@@ -1568,14 +1451,12 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 							if (ut.getCurrentUser() != null)
 								ut.sendMessage("Object");
 							else
-								Toast.makeText(context, "ابتدا باید وارد شوید",
-										0).show();
+								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
 
 						if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
 							adapter.open();
-							addToFavorite(ut.getCurrentUser().getId(), 4,
-									object.getId());
+							addToFavorite(ut.getCurrentUser().getId(), 4, object.getId());
 							adapter.close();
 						}
 						if (item.getTitle().equals("کپی")) {
@@ -1586,12 +1467,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 						if (item.getTitle().equals("گزارش تخلف")) {
 
 							if (ut.getCurrentUser() != null)
-								ut.reportAbuse(object.getId(), 4,
-										object.getId(),
-										object.getDescription(), 0);
+								ut.reportAbuse(object.getId(), 4, object.getId(), object.getDescription(), 0);
 							else
-								Toast.makeText(context, "ابتدا باید وارد شوید",
-										0).show();
+								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
 
 						return false;
@@ -1654,42 +1532,39 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 
 				adapter.open();
 
-				ArrayList<LikeInObject> likedist = adapter
-						.getAllLikeFromObject(ObjectID, 0);
+				ArrayList<LikeInObject> likedist = adapter.getAllLikeFromObject(ObjectID, 0);
 
 				adapter.close();
 				if (likedist.size() == 0) {
-					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
-							.show();
+					Toast.makeText(getActivity(), "دنبال کننده ای ثبت نشده است", 0).show();
 				} else {
-					DialogPersonLikedObject dia = new DialogPersonLikedObject(
-							getActivity(), ObjectID, likedist);
-					dia.show();
+					DialogPersonLikedObject dia = new DialogPersonLikedObject(getActivity(), ObjectID, likedist);
+					ut.setSizeDialog(dia);
 
 				}
 			}
 		});
 
-		personPost.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				adapter.open();
-				ArrayList<LikeInObject> likedist = adapter
-						.getAllLikeFromObject(ObjectID, 1);
-
-				adapter.close();
-				if (likedist.size() == 0) {
-					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
-							.show();
-				} else {
-					DialogPersonLikedObject dia = new DialogPersonLikedObject(
-							getActivity(), ObjectID, likedist);
-					dia.show();
-				}
-			}
-		});
+		// personPost.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		//
+		// adapter.open();
+		// ArrayList<LikeInObject> likedist = adapter
+		// .getAllLikeFromObject(ObjectID, 1);
+		//
+		// adapter.close();
+		// if (likedist.size() == 0) {
+		// Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
+		// .show();
+		// } else {
+		// DialogPersonLikedObject dia = new DialogPersonLikedObject(
+		// getActivity(), ObjectID, likedist);
+		// dia.show();
+		// }
+		// }
+		// });
 	}
 
 	private void getImageFromServer() {
@@ -1718,8 +1593,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 			if (currentUser.getId() != object.getId()) {
 				if (!ut.isNetworkConnected()) {
 					adapter.open();
-					adapter.insertVisitToDb(ut.getCurrentUser().getId(), 2,
-							object.getId());
+					adapter.insertVisitToDb(ut.getCurrentUser().getId(), 2, object.getId());
 					adapter.close();
 				} else if ((ut.isNetworkConnected())) {
 					adapter.open();
@@ -1736,12 +1610,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface,
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
 
 		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
-			Toast.makeText(context,
-					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+			Toast.makeText(context, " قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
 		} else {
 			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
-			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0)
-					.show();
+			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0).show();
 		}
 	}
 

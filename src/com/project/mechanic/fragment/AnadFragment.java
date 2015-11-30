@@ -216,6 +216,9 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 							}
 						};
 						dbAdapter.open();
+						
+						List<Anad> listAnad = dbAdapter.getAnadById(provinceId);
+						
 						switch (provinceId) {
 						case 1:
 							a = position + 1;
@@ -560,7 +563,7 @@ public class AnadFragment extends Fragment implements AsyncInterface,
 	private void findView() {
 
 		// find view by Id
-		createItem = (FloatingActionButton) rootView.findViewById(R.id.fabAnad);
+		createItem = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
 		listviewanad = (ListView) rootView.findViewById(R.id.listVanad);
 

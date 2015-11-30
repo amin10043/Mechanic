@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/second_item_style"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/list_item"
+    android:background="@color/white"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -34,17 +33,17 @@
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_marginRight="10dp"
-                android:background="#bfbfbf"
+                android:background="@drawable/rectangle_drawable"
                 android:text="ورود"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/orginal_golden_color" />
 
             <Button
                 android:id="@+id/noExit"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
-                android:background="#bfbfbf"
+                android:background="@drawable/rectangle_drawable"
                 android:text="انصراف"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/orginal_golden_color" />
         </LinearLayout>
     </RelativeLayout>
 

@@ -22,6 +22,7 @@ import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -71,10 +72,12 @@ public class DialogpostTitleFragment extends DialogFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
 		View rootView = inflater.inflate(R.layout.dialog_addtitlepostfragment,
 				container, false);
-		getDialog().setTitle("ایجاد پست جدید");
-
+		//getDialog().setTitle("ایجاد پست جدید");
+	
 		// ObjectId = Integer.valueOf(getArguments().getInt("Id"));
 		util = new Utility(this.getActivity());
 		user = new Users();

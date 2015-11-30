@@ -315,7 +315,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements GetA
 		int marginTop = (util.getScreenHeight()/3)-(util.getScreenwidth() /8);
 
 		
-		LinearLayout imageLinear = (LinearLayout) header.findViewById(R.id.imageLinear);
+//		LinearLayout imageLinear = (LinearLayout) header.findViewById(R.id.imageLinear);
 
 		FrameLayout profileFrame = (FrameLayout) header.findViewById(R.id.frameLayoutHeader);
 		FrameLayout.LayoutParams profileParams = new FrameLayout.LayoutParams(profileFrame.getLayoutParams());

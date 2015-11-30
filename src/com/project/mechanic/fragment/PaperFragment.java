@@ -5,34 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.PopupMenu.OnMenuItemClickListener;
-
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.ListView.PullToRefreshListView.OnRefreshListener;
 import com.project.mechanic.adapter.PaperListAdapter;
 import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.LikeInPaper;
@@ -47,12 +21,35 @@ import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class PaperFragment extends Fragment implements AsyncInterface,
-		CommInterface {
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class PaperFragment extends Fragment implements AsyncInterface, CommInterface {
 
 	DataBaseAdapter adapter;
 	int paperID;
-//	LinearLayout btnAddcmt;
+	// LinearLayout btnAddcmt;
 	LinearLayout Like;
 	TextView NumofLike, NumofComment, txttitle, txttitleDes, txtname, txtdate;
 	DialogcmtInPaper dialog;
@@ -71,9 +68,9 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 	List<CommentInPaper> tempList;
 	View view;
 	ListView lstNews;
-//	RelativeLayout countLike;
+	// RelativeLayout countLike;
 	int userId;
-
+	ImageView likeIcon;
 	String serverDate = "";
 	ServerDate date;
 	ProgressDialog ringProgressDialog;
@@ -84,27 +81,30 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 	Map<String, String> params;
 	boolean LikeOrComment; // like == true & comment == false
 	Paper p;
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_paper, null);
-		header = getActivity().getLayoutInflater().inflate(
-				R.layout.header_froum, null);
+		header = getActivity().getLayoutInflater().inflate(R.layout.header_froum, null);
 		util = new Utility(getActivity());
 
 		CurrentUser = util.getCurrentUser();
 
-//		btnAddcmt = (LinearLayout) header.findViewById(R.id.addCommentToTopic);
+		// btnAddcmt = (LinearLayout)
+		// header.findViewById(R.id.addCommentToTopic);
 		Like = (LinearLayout) header.findViewById(R.id.LikeTopicLinear);
 		lstNews = (ListView) view.findViewById(R.id.listViewnewspaper);
-		NumofComment = (TextView) header
-				.findViewById(R.id.numberOfCommentTopic);
+		NumofComment = (TextView) header.findViewById(R.id.numberOfCommentTopic);
 		NumofLike = (TextView) header.findViewById(R.id.txtNumofLike_CmtFroum);
 		txttitle = (TextView) header.findViewById(R.id.title_topic);
 		txttitleDes = (TextView) header.findViewById(R.id.description_topic);
 		txtdate = (TextView) header.findViewById(R.id.date_cc);
+		TextView time = (TextView) header.findViewById(R.id.timetxt);
+
 		txtname = (TextView) header.findViewById(R.id.name_cc);
-//		countLike = (RelativeLayout) header.findViewById(R.id.countLike);
+		// countLike = (RelativeLayout) header.findViewById(R.id.countLike);
+
+		likeIcon = (ImageView) header.findViewById(R.id.likeIcon);
 
 		icon = (ImageView) header.findViewById(R.id.iconfroumtitle);
 		sharebtn = (ImageView) header.findViewById(R.id.sharefroumicon);
@@ -114,14 +114,13 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 
 		paperID = Integer.valueOf(getArguments().getString("Id"));
 
-		if (CurrentUser == null
-				|| !adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
-			Like.setBackgroundResource(R.drawable.like_froum_off);
-//			countLike.setBackgroundResource(R.drawable.count_like_off);
+		if (CurrentUser == null || !adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
+			likeIcon.setBackgroundResource(R.drawable.like_froum_off);
+			// countLike.setBackgroundResource(R.drawable.count_like_off);
 		} else {
 
-			Like.setBackgroundResource(R.drawable.like_froum_on);
-//			countLike.setBackgroundResource(R.drawable.count_like);
+			likeIcon.setBackgroundResource(R.drawable.like_froum_on);
+			// countLike.setBackgroundResource(R.drawable.count_like);
 
 		}
 		NumofComment.setText(adapter.CommentInPaper_count(paperID).toString());
@@ -147,8 +146,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 		// subList.add(T);
 		// }
 		// }
-		PaperListadapter = new PaperListAdapter(getActivity(),
-				R.layout.raw_papercmt, mylist, PaperFragment.this);
+		PaperListadapter = new PaperListAdapter(getActivity(), R.layout.raw_papercmt, mylist, PaperFragment.this);
 
 		lstNews.addHeaderView(header);
 		lstNews.setAdapter(PaperListadapter);
@@ -157,13 +155,15 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 
 		txttitle.setText(p.getTitle());
 		txttitleDes.setText(p.getContext());
-		txtdate.setText(util.getPersianDate(p.getDate()));
 
-		LinearLayout rl = (LinearLayout) header
-				.findViewById(R.id.imageLinear);
+		String ddd = util.getPersianDate(p.getDate());
+		List<String> dateTime = util.spilitDateTime(ddd);
+		txtdate.setText(dateTime.get(0));
+		time.setText(dateTime.get(1));
 
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-				rl.getLayoutParams());
+		LinearLayout rl = (LinearLayout) header.findViewById(R.id.imageLinear);
+
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
 
 		lp.width = util.getScreenwidth() / 4;
 		lp.height = util.getScreenwidth() / 4;
@@ -184,15 +184,12 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 		if (util.getCurrentUser() != null) {
 			if (util.getCurrentUser().getId() != paperID) {
 				if (!util.isNetworkConnected()) {
-					Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT).show();
 					adapter.open();
-					adapter.insertVisitToDb(util.getCurrentUser().getId(), 2,
-							paperID);
+					adapter.insertVisitToDb(util.getCurrentUser().getId(), 2, paperID);
 					adapter.close();
 				} else if ((util.isNetworkConnected())) {
-					Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT).show();
 					adapter.open();
 					// ارسال اطلاعات به جدول ویزیت سرور
 					// ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
@@ -206,8 +203,8 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 
 			@Override
 			public void onClick(View arg0) {
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
@@ -228,8 +225,10 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 		//
 		// }
 
-		final SharedPreferences realizeIdPaper = getActivity()
-				.getSharedPreferences("Id", 0);
+		RelativeLayout re = (RelativeLayout) header.findViewById(R.id.layoutlayout);
+		re.setPadding(0, (util.getScreenwidth() / 8) + 10, 0, 0);
+
+		final SharedPreferences realizeIdPaper = getActivity().getSharedPreferences("Id", 0);
 		int destinyId = realizeIdPaper.getInt("main_Id", -1);
 
 		if (destinyId == 1378) {
@@ -238,40 +237,56 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 			updateView();
 		}
 
-////		countLike.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View arg0) {
-//				adapter.open();
-//				ArrayList<LikeInPaper> likedist = adapter
-//						.getLikePaperByPaperId(paperID);
-//
-//				adapter.close();
-//				if (likedist.size() == 0) {
-//					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
-//							.show();
-//				} else {
-//					DialogPersonLikedPaper dia = new DialogPersonLikedPaper(
-//							getActivity(), paperID, likedist);
-//					dia.show();
-//				}
-//			}
-//		});
+		//// countLike.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// adapter.open();
+		// ArrayList<LikeInPaper> likedist = adapter
+		// .getLikePaperByPaperId(paperID);
+		//
+		// adapter.close();
+		// if (likedist.size() == 0) {
+		// Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
+		// .show();
+		// } else {
+		// DialogPersonLikedPaper dia = new DialogPersonLikedPaper(
+		// getActivity(), paperID, likedist);
+		// dia.show();
+		// }
+		// }
+		// });
 
 		sharebtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				Intent sharingIntent = new Intent(
-						android.content.Intent.ACTION_SEND);
+				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
 				// String shareBody = x.getDescription();
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-						p.getTitle());
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-						p.getContext());
-				startActivity(Intent.createChooser(sharingIntent,
-						"اشتراک از طریق"));
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, p.getTitle());
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, p.getContext());
+				startActivity(Intent.createChooser(sharingIntent, "اشتراک از طریق"));
+			}
+		});
+
+		Like.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View arg0) {
+
+				adapter.open();
+				ArrayList<LikeInPaper> likedist = adapter.getLikePaperByPaperId(paperID);
+
+				adapter.close();
+				if (likedist.size() == 0) {
+					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0).show();
+				} else {
+					DialogPersonLikedPaper dia = new DialogPersonLikedPaper(getActivity(), paperID, likedist);
+					util.setSizeDialog(dia);
+				}
+
+				return false;
 			}
 		});
 
@@ -280,8 +295,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 				if (CurrentUser == null) {
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 					return;
 
 				} else {
@@ -297,24 +311,24 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
-////		btnAddcmt.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				if (CurrentUser == null) {
-//					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-//							Toast.LENGTH_SHORT).show();
-//					return;
-//				} else {
-//					dialog = new DialogcmtInPaper(PaperFragment.this,
-//							getActivity(), R.layout.dialog_addcomment, paperID,
-//							2);
-//					dialog.show();
-//
-//				}
-//
-//			}
-//		});
+		//// btnAddcmt.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// if (CurrentUser == null) {
+		// Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
+		// Toast.LENGTH_SHORT).show();
+		// return;
+		// } else {
+		// dialog = new DialogcmtInPaper(PaperFragment.this,
+		// getActivity(), R.layout.dialog_addcomment, paperID,
+		// 2);
+		// dialog.show();
+		//
+		// }
+		//
+		// }
+		// });
 
 		ImageView report = (ImageView) view.findViewById(R.id.reportImage);
 		report.setOnClickListener(new OnClickListener() {
@@ -363,8 +377,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 
 						if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
 							adapter.open();
-							addToFavorite(util.getCurrentUser().getId(), 2,
-									p.getId());
+							addToFavorite(util.getCurrentUser().getId(), 2, p.getId());
 							adapter.close();
 						}
 						if (item.getTitle().equals("کپی")) {
@@ -374,14 +387,11 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 						}
 						if (item.getTitle().equals("گزارش تخلف")) {
 
-							util.reportAbuse(p.getUserId(), 2, p.getId(),
-									p.getContext(),0);
+							util.reportAbuse(p.getUserId(), 2, p.getId(), p.getContext(), 0);
 
 						}
 						if (item.getTitle().equals("حذف")) {
-							if (util.getCurrentUser() != null
-									&& util.getCurrentUser().getId() == p
-											.getUserId())
+							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == p.getUserId())
 								deleteItems(p.getId());
 							else {
 
@@ -428,8 +438,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 			public void onClick(View arg0) {
 
 				if ("".equals(util.inputComment(getActivity()))) {
-					Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
-							.show();
+					Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0).show();
 				} else {
 
 					date = new ServerDate(getActivity());
@@ -465,8 +474,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 
 		lstNews = (ListView) view.findViewById(R.id.listViewnewspaper);
 
-		PaperListadapter = new PaperListAdapter(getActivity(),
-				R.layout.raw_papercmt, subList, PaperFragment.this);
+		PaperListadapter = new PaperListAdapter(getActivity(), R.layout.raw_papercmt, subList, PaperFragment.this);
 
 		lstNews.setAdapter(PaperListadapter);
 		lstNews.setSelection(PaperListadapter.getCount());
@@ -487,22 +495,19 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 				adapter.open();
 				if (adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
 					adapter.deleteLikeFromPaper(CurrentUser.getId(), paperID);
-					Like.setBackgroundResource(R.drawable.like_froum_off);
-//					countLike.setBackgroundResource(R.drawable.count_like_off);
+					likeIcon.setBackgroundResource(R.drawable.like_froum_off);
+					// countLike.setBackgroundResource(R.drawable.count_like_off);
 
-					NumofLike.setText(adapter.LikeInPaper_count(paperID)
-							.toString());
+					NumofLike.setText(adapter.LikeInPaper_count(paperID).toString());
 					if (ringProgressDialog != null) {
 						ringProgressDialog.dismiss();
 					}
 				} else {
-					adapter.insertLikeInPaperToDb(CurrentUser.getId(), paperID,
-							serverDate);
-					Like.setBackgroundResource(R.drawable.like_froum_on);
-//					countLike.setBackgroundResource(R.drawable.count_like);
+					adapter.insertLikeInPaperToDb(CurrentUser.getId(), paperID, serverDate);
+					likeIcon.setBackgroundResource(R.drawable.like_froum_on);
+					// countLike.setBackgroundResource(R.drawable.count_like);
 
-					NumofLike.setText(adapter.LikeInPaper_count(paperID)
-							.toString());
+					NumofLike.setText(adapter.LikeInPaper_count(paperID).toString());
 					if (ringProgressDialog != null) {
 						ringProgressDialog.dismiss();
 					}
@@ -512,9 +517,8 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 			} else {
 
 				adapter.open();
-				adapter.insertCommentInPapertoDb(
-						util.inputComment(getActivity()), paperID,
-						CurrentUser.getId(), serverDate);
+				adapter.insertCommentInPapertoDb(util.inputComment(getActivity()), paperID, CurrentUser.getId(),
+						serverDate);
 				adapter.close();
 
 				util.ToEmptyComment(getActivity());
@@ -527,9 +531,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 			}
 
 		} catch (NumberFormatException e) {
-			if (output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 
 				if (LikeOrComment == true) {
 
@@ -544,14 +546,12 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 						deleting.delegate = PaperFragment.this;
 
 						params.put("TableName", "LikeInPaper");
-						params.put("UserId",
-								String.valueOf(CurrentUser.getId()));
+						params.put("UserId", String.valueOf(CurrentUser.getId()));
 						params.put("PaperId", String.valueOf(paperID));
 
 						deleting.execute(params);
 
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								"", "لطفا منتظر بمانید...", true);
+						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 						ringProgressDialog.setCancelable(true);
 						new Thread(new Runnable() {
@@ -579,8 +579,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 
 						params.put("TableName", "LikeInPaper");
 
-						params.put("UserId",
-								String.valueOf(CurrentUser.getId()));
+						params.put("UserId", String.valueOf(CurrentUser.getId()));
 						params.put("PaperId", String.valueOf(paperID));
 						params.put("Date", output);
 						params.put("IsUpdate", "0");
@@ -590,8 +589,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 
 						saving.execute(params);
 
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								"", "لطفا منتظر بمانید...", true);
+						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 						ringProgressDialog.setCancelable(true);
 						new Thread(new Runnable() {
@@ -636,8 +634,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 
 					saving.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -658,17 +655,14 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 				}
 
 			} else {
-				Toast.makeText(getActivity(),
-						"خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 				if (ringProgressDialog != null) {
 					ringProgressDialog.dismiss();
 				}
 			}
 		} catch (Exception e) {
 
-			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
@@ -678,12 +672,10 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
 
 		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
-			Toast.makeText(getActivity(),
-					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+			Toast.makeText(getActivity(), " قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
 		} else {
 			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
-			Toast.makeText(getActivity(), "به لیست علاقه مندی ها اضافه شد ", 0)
-					.show();
+			Toast.makeText(getActivity(), "به لیست علاقه مندی ها اضافه شد ", 0).show();
 		}
 	}
 
@@ -699,8 +691,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 
 		service.execute(items);
 
-		ringProgressDialog = ProgressDialog.show(getActivity(), "",
-				"لطفا منتظر بمانید...", true);
+		ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 		ringProgressDialog.setCancelable(true);
 		new Thread(new Runnable() {
@@ -722,7 +713,7 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 
 	@Override
 	public void CommProcessFinish(String output) {
-		
+
 		if (ringProgressDialog != null) {
 			ringProgressDialog.dismiss();
 		}
@@ -735,12 +726,11 @@ public class PaperFragment extends Fragment implements AsyncInterface,
 
 		TitlepaperFragment fr = new TitlepaperFragment();
 
-		FragmentTransaction trans = ((MainActivity) getActivity())
-				.getSupportFragmentManager().beginTransaction();
+		FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager().beginTransaction();
 
 		trans.replace(R.id.content_frame, fr);
 		trans.addToBackStack(null);
-		trans.commit();		
+		trans.commit();
 	}
 
 }

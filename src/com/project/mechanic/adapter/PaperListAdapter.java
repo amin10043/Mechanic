@@ -118,7 +118,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements
 			Bitmap bitmap = BitmapFactory.decodeFile(user.getImagePath());
 
 			if (bitmap != null) {
-				profilepic.setImageBitmap(Utility.getRoundedCornerBitmap(bitmap, 20));
+				profilepic.setImageBitmap(Utility.getclip(bitmap));
 				profilepic.setLayoutParams(lp);
 
 			}
@@ -164,7 +164,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements
 				}
 
 				final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
-
+				popupMenu.show();
 				OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
 
 					@Override

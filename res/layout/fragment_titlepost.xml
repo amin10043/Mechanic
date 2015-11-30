@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/re"
         android:layout_margin="5dp"
-        android:dividerHeight="10dp"
+        android:dividerHeight="2dp"
         android:fillViewport="true" >
     </ListView>
 
@@ -23,16 +23,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
         android:src="@drawable/fab_add"
-        app:fab_colorNormal="#7ac5cd"
+        app:fab_colorNormal="@color/orginal_hard_blue_color"
         app:fab_hideAnimation="@anim/fab_scale_down"
         app:fab_shadowColor="#3366FF"
         app:fab_shadowRadius="4dp"
         app:fab_shadowXOffset="1dp"
         app:fab_shadowYOffset="3dp"
         app:fab_showAnimation="@anim/fab_scale_up"
-        app:fab_showShadow="true"
+        app:fab_showShadow="false"
         app:fab_size="normal" />
 
 </RelativeLayout>

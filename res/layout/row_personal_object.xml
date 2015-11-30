@@ -109,7 +109,7 @@
 
             <RatingBar
                 android:id="@+id/ratingBar1"
-                style="@style/StarRatingBar"
+                style="@style/ratingbarObject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"

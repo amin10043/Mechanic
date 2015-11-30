@@ -56,10 +56,10 @@
     </style>
 
     <style name="second_item_style">
-        <item name="android:background">@color/shiri</item>
+        <item name="android:background">@color/white</item>
         <item name="android:cacheColorHint">@android:color/transparent</item>
         <item name="android:divider">@drawable/lili</item>
-        <item name="android:dividerHeight">5dp</item>
+        <item name="android:dividerHeight">2dp</item>
         <!-- <item name="android:listSelector">@drawable/shape_list</item> -->
     </style>
 
@@ -98,8 +98,18 @@
 
     <style name="StarRatingBar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/ratingbar_selector</item>
-        <item name="android:minHeight">25dip</item>
-        <item name="android:maxHeight">48dip</item>
+        <item name="android:minHeight">72dip</item>
+        <item name="android:maxHeight">72dip</item>
     </style>
+    <style name="ratingbarObject" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingbar_brand_selector</item>
+        <item name="android:minHeight">40dip</item>
+        <item name="android:maxHeight">40dip</item>
+    </style>
+    
+    <style name="animationDialog">
+    <item name="android:windowEnterAnimation">@anim/down_from_top</item>
+    <item name="android:windowExitAnimation">@anim/zoom_out</item>
+</style>
 
 </resources>

@@ -319,6 +319,8 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 		if (x != null) {
 			nameCommenter.setText(x.getName());
 			if (x.getImagePath() == null) {
+				profileImage.setBackgroundResource(R.drawable.circle_drawable);
+
 				profileImage.setImageResource(R.drawable.no_img_profile);
 			} else {
 
@@ -326,8 +328,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 
 				Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
 
-				profileImage.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
+				profileImage.setImageBitmap(Utility.getclip(bmp));
 			}
 		}
 		RelativeLayout rl = (RelativeLayout) convertView

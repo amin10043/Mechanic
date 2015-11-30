@@ -40,8 +40,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 	int lastPosition = 0;
 	Utility util;
 
-	public NewsListAdapter(Context context, int resource,
-			List<ListItem> objact, int id) {
+	public NewsListAdapter(Context context, int resource, List<ListItem> objact, int id) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -56,22 +55,17 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_shop, parent, false);
 
-		Animation animation = AnimationUtils.loadAnimation(getContext(),
-				(position > lastPosition) ? R.anim.up_from_bottom
-						: R.anim.down_from_top);
-		convertView.startAnimation(animation);
-		TextView txtName = (TextView) convertView
-				.findViewById(R.id.row_news_txt);
+//		Animation animation = AnimationUtils.loadAnimation(getContext(),(position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
+		// convertView.startAnimation(animation);
+		TextView txtName = (TextView) convertView.findViewById(R.id.row_news_txt);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
 
-		
 		txtName.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
@@ -80,8 +74,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 			public void onClick(View v) {
 
 				RelativeLayout parentlayout = (RelativeLayout) v;
-				TextView txtName = (TextView) parentlayout
-						.findViewById(R.id.row_news_txt);
+				TextView txtName = (TextView) parentlayout.findViewById(R.id.row_news_txt);
 				String item = txtName.getText().toString();
 
 				int id = 0;
@@ -97,8 +90,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 				adapter.close();
 
 				if (id == 166) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					NewsFragment fragment = new NewsFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
@@ -108,8 +100,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 					trans.commit();
 
 				} else if (id == 167) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					TitlepaperFragment fragment = new TitlepaperFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
@@ -119,8 +110,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 					trans.commit();
 
 				} else if (id == 168) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					NewspaperFragment fragment = new NewspaperFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
@@ -130,8 +120,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 					trans.commit();
 
 				} else if (id == 178) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					AnadFragment fragment = new AnadFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
@@ -141,8 +130,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 					trans.commit();
 
 				} else if (id == 179) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					ShopFragment fragment = new ShopFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
@@ -152,8 +140,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 					trans.commit();
 				}
 				if (id == 169) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					NewsBuildingFragment fragment = new NewsBuildingFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
@@ -164,8 +151,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 
 				}
 				if (id == 290) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					UrlNewsPaperFragment fragment = new UrlNewsPaperFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
@@ -176,8 +162,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 
 				}
 				if (id == 170) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					NewsBuildingFragment fragment = new NewsBuildingFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
@@ -188,8 +173,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 
 				}
 				if (id == 171) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					NewsBuildingFragment fragment = new NewsBuildingFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
@@ -200,8 +184,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 
 				}
 				if (id == 291) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					NewsBuildingFragment fragment = new NewsBuildingFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
@@ -212,8 +195,7 @@ public class NewsListAdapter extends ArrayAdapter<ListItem> {
 
 				}
 				if (id == 292) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					NewsBuildingFragment fragment = new NewsBuildingFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));

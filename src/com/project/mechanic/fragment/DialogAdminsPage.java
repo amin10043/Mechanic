@@ -68,8 +68,8 @@ public class DialogAdminsPage extends Dialog implements CommInterface,
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setBackgroundDrawable(
-				new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//		getWindow().setBackgroundDrawable(
+//				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		setContentView(R.layout.dialog_admins_page);
 
 		nameMainAdmin = (TextView) findViewById(R.id.nameMainAdmin);

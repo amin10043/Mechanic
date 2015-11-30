@@ -1,14 +1,15 @@
 package com.project.mechanic.fragment;
 
+import com.project.mechanic.R;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
-
-import com.project.mechanic.R;
 
 public class DialogLinkDownload extends Dialog {
 	Context context;
@@ -16,7 +17,7 @@ public class DialogLinkDownload extends Dialog {
 
 	String l1, l2, l3, l4, l5, l6;
 	EditText inCatalog, inPrice, inPDF, inVideo;
-	ImageButton saveBtn;
+	Button saveBtn;
 
 	public DialogLinkDownload(CreateIntroductionFragment fragment,
 			Context context, int xmlDesign) {
@@ -30,9 +31,10 @@ public class DialogLinkDownload extends Dialog {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.dialog_download_link);
 
-		saveBtn = (ImageButton) findViewById(R.id.saveDownload);
+		saveBtn = (Button) findViewById(R.id.saveDownload);
 
 		inCatalog = (EditText) findViewById(R.id.d1);
 		inPrice = (EditText) findViewById(R.id.d2);
