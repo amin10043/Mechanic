@@ -234,7 +234,7 @@ public class MainActivity extends FragmentActivity {
 
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		mDrawerList.setDivider(getResources().getDrawable(
-				R.drawable.custom_drawable));
+				R.drawable.lili));
 		mDrawerList.setAdapter(slideadapter);
 
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -382,11 +382,11 @@ public class MainActivity extends FragmentActivity {
 		Fragment fragment;
 		FragmentManager fragmentManager;
 		switch (position) {
+//		case 0:
+//
+//			break;
+
 		case 0:
-
-			break;
-
-		case 1:
 			// main page 0
 			fragment = new MainFragment();
 			fragmentManager = getSupportFragmentManager();
@@ -395,7 +395,7 @@ public class MainActivity extends FragmentActivity {
 
 			break;
 
-		case 2:
+		case 1:
 
 			// personal page 1
 			if (util.getCurrentUser() != null) {
@@ -418,7 +418,7 @@ public class MainActivity extends FragmentActivity {
 			}
 			break;
 
-		case 3:
+		case 2:
 			// favorite 2
 
 			if (util.getCurrentUser() != null) {
@@ -431,14 +431,14 @@ public class MainActivity extends FragmentActivity {
 						.show();
 			break;
 
-		case 4:
+		case 3:
 			fragment = new FragmentContactUs();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.content_frame, fragment).commit();
 
 			break;
-		case 5:
+		case 4:
 			// contact us 4
 
 			// about us 3

@@ -198,6 +198,7 @@
                         android:textColor="@color/transparent" />
 
                     <TextView
+                        android:id="@+id/countPost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="25"
@@ -372,7 +373,7 @@
                     android:layout_toLeftOf="@+id/textView6"
                     android:gravity="right"
                     android:text="TextView"
-                    android:textColor="#1f3163" />
+                    android:textColor="@color/orginal_red_color" />
 
                 <ImageView
                     android:id="@+id/textView6"
@@ -414,7 +415,7 @@
                     android:layout_toLeftOf="@+id/textView10"
                     android:gravity="right"
                     android:text="TextView"
-                    android:textColor="#1f3163" />
+                    android:textColor="@color/orginal_red_color" />
 
                 <ImageView
                     android:id="@+id/textView10"
@@ -454,7 +455,7 @@
                     android:layout_toLeftOf="@+id/textView8"
                     android:gravity="right"
                     android:text="TextView"
-                    android:textColor="#1f3163" />
+                    android:textColor="@color/orginal_red_color" />
 
                 <ImageView
                     android:id="@+id/textView8"
@@ -484,7 +485,7 @@
                 android:background="@color/white" >
 
                 <TextView
-                    android:id="@+id/txtCellphone_Object"
+                    android:id="@+id/txtwebsite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/i2"
@@ -494,7 +495,7 @@
                     android:layout_toLeftOf="@+id/textView8"
                     android:gravity="left"
                     android:text="TextView"
-                    android:textColor="#1f3163" />
+                    android:textColor="@color/orginal_red_color" />
 
                 <ImageView
                     android:id="@+id/textView8"
@@ -534,7 +535,7 @@
                     android:layout_toLeftOf="@+id/textView4"
                     android:gravity="left"
                     android:text="TextView"
-                    android:textColor="#1f3163" />
+                    android:textColor="@color/orginal_red_color" />
 
                 <ImageView
                     android:id="@+id/textView4"
@@ -583,7 +584,7 @@
                         android:layout_toLeftOf="@+id/ImageView01"
                         android:gravity="right"
                         android:text="TextView"
-                        android:textColor="#1f3163" />
+                    android:textColor="@color/orginal_red_color" />
 
                     <ImageView
                         android:id="@+id/ImageView01"
@@ -626,7 +627,7 @@
                     android:layout_toLeftOf="@+id/visitbtn"
                     android:gravity="right"
                     android:text="ارسال کارت ویزیت"
-                    android:textColor="#1f3163" />
+                    android:textColor="@color/orginal_red_color" />
 
                 <ImageButton
                     android:id="@+id/visitbtn"
@@ -805,7 +806,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:text="توضیحات"
-                    android:textColor="@color/transparent" />
+                    android:textColor="@color/orginal_red_color" />
 
                 <LinearLayout
                     android:id="@+id/icons"

@@ -60,9 +60,9 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 	Button btnSave;
 	TextView lableStar, lableNetwork, lableAdmins, lableDownload, lablecopy;
 
-	String nameValue, phoneValue, faxValue, mobileValue, emailValue, addressValue, descriptionValue;
+	String nameValue, phoneValue, faxValue, mobileValue, emailValue, addressValue, descriptionValue, websiteValue;
 
-	EditText nameEnter, phoneEnter, faxEnter, mobileEnter, emailEnter, addressEnter, descriptionEnter;
+	EditText nameEnter, phoneEnter, faxEnter, mobileEnter, emailEnter, addressEnter, descriptionEnter, websiteEnter;
 
 	ImageView headerImageEdit, profileImageEdit, footerImageEdit;
 
@@ -75,7 +75,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 	LinearLayout editnetLink, Linearheader, Linearfooter, editDNlink, AdminsPage;
 
 	public String Dcatalog, Dprice, Dpdf, Dvideo;
-	public String Dface, Dlink, Dtwt, Dweb, Dgoogle, Dinstagram;
+	public String Dface, Dlink, Dtwt,  Dgoogle, Dinstagram;
 	RatingBar rating;
 	ImageView payBtn, copyBtn;
 
@@ -118,6 +118,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 		emailEnter = (EditText) view.findViewById(R.id.editTextemail);
 		addressEnter = (EditText) view.findViewById(R.id.editTextaddres);
 		descriptionEnter = (EditText) view.findViewById(R.id.descriptionpageedit);
+		websiteEnter = (EditText) view.findViewById(R.id.editwebsite);
 
 		editnetLink = (LinearLayout) view.findViewById(R.id.editpageNetwork);
 		editDNlink = (LinearLayout) view.findViewById(R.id.editpagedownload);
@@ -361,7 +362,8 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 				emailValue = emailEnter.getText().toString();
 				addressValue = addressEnter.getText().toString();
 				descriptionValue = descriptionEnter.getText().toString();
-
+				websiteValue = websiteEnter.getText().toString();
+				
 				if (nameValue.equals("")) {
 					Toast.makeText(getActivity(), "پر کردن فیلد نام الزامی است", Toast.LENGTH_SHORT).show();
 				} else {
@@ -387,7 +389,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 					params.put("Instagram", Dinstagram);
 					params.put("LinkedIn", Dlink);
 					params.put("Google", Dgoogle);
-					params.put("Site", Dweb);
+					params.put("Site", websiteValue);
 					params.put("Twitter", Dtwt);
 
 					params.put("IsUpdate", "1");
@@ -579,7 +581,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 			// } else {
 			DBAdapter.open();
 			DBAdapter.UpdateObjectProperties(PageId, nameValue, phoneValue, emailValue, faxValue, descriptionValue,
-					Dcatalog, Dprice, Dpdf, Dvideo, addressValue, mobileValue, Dface, Dinstagram, Dlink, Dgoogle, Dweb,
+					Dcatalog, Dprice, Dpdf, Dvideo, addressValue, mobileValue, Dface, Dinstagram, Dlink, Dgoogle, websiteValue,
 					Dtwt);
 
 			DBAdapter.close();

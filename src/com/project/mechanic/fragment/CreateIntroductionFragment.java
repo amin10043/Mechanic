@@ -56,12 +56,12 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 	DataBaseAdapter DBAdapter;
 	Button btnSave;
 	ImageView btnProfile, btnHeader, btnFooter;
-	String nameValue, phoneValue, faxValue, mobileValue, emailValue, addressValue, descriptionValue;
-	EditText NameEnter, phoneEnter, faxEnter, mobileEnter, emailEnter, addressEnter, DescriptionEnter;
+	String nameValue, phoneValue, faxValue, mobileValue, emailValue, addressValue, descriptionValue, websiteValue;
+	EditText NameEnter, phoneEnter, faxEnter, mobileEnter, emailEnter, addressEnter, DescriptionEnter, websiteEnter;
 	Fragment fragment;
 	Utility util;
-	LinearLayout headerLinear, footerLinear , NetworkSocial, DownloadLink;
-	RelativeLayout  nameEditRelative, namayendegi, khadamat, linearCreateProfil;
+	LinearLayout headerLinear, footerLinear, NetworkSocial, DownloadLink;
+	RelativeLayout nameEditRelative, namayendegi, khadamat, linearCreateProfil;
 	LinearLayout.LayoutParams headerParams, footerParams;
 	RelativeLayout.LayoutParams profilParams, nameParams;
 	DialogNetworkSocial dialognetwork;
@@ -72,7 +72,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 	Bitmap bitmapHeader, bitmapProfil, bitmapFooter, emptyHeader, emptyProfile, emptyFooter;
 
-	public String Lfacebook, Llinkedin, Ltwitter, Lwebsite, Lgoogle, Linstagram;
+	public String Lfacebook, Llinkedin, Ltwitter,  Lgoogle, Linstagram;
 	public String Lcatalog, Lprice, Lpdf, Lvideo;
 	Users currentUser;
 
@@ -137,6 +137,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 		emailEnter = (EditText) view.findViewById(R.id.editTextemail);
 		addressEnter = (EditText) view.findViewById(R.id.editTextaddres);
 		DescriptionEnter = (EditText) view.findViewById(R.id.descriptionEdittext);
+		websiteEnter = (EditText) view.findViewById(R.id.editwebsite);
 
 		namayendegi = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
 		khadamat = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
@@ -166,8 +167,9 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 		mainItem = sendParentID.getInt("mainObject", -1);
 
 		objectIdItem1 = sendParentID.getInt("objectId", -1);
-//		Toast.makeText(getActivity(), " parentId recieve = " + parentId + "\n mainObjectId = " + mainItem,
-//				Toast.LENGTH_SHORT).show();
+		// Toast.makeText(getActivity(), " parentId recieve = " + parentId + "\n
+		// mainObjectId = " + mainItem,
+		// Toast.LENGTH_SHORT).show();
 
 		/* ********** end: come from create of main brand fragment ********** */
 
@@ -195,30 +197,29 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 		footerParams.height = util.getScreenwidth();
 		footerParams.width = util.getScreenwidth();
 
-		
-		RelativeLayout nameLayout = (RelativeLayout)view.findViewById(R.id.namelayout);
-		
+		RelativeLayout nameLayout = (RelativeLayout) view.findViewById(R.id.namelayout);
+
 		nameParams = new RelativeLayout.LayoutParams(nameLayout.getLayoutParams());
 		nameParams.width = util.getScreenwidth() / 2;
 		nameParams.height = util.getScreenwidth() / 10;
 		nameParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		nameParams.addRule(RelativeLayout.BELOW , R.id.profile_img);
+		nameParams.addRule(RelativeLayout.BELOW, R.id.profile_img);
 
 		RelativeLayout.LayoutParams edittextParams = new RelativeLayout.LayoutParams(
 				(int) (util.getScreenwidth() / 1.8), LayoutParams.WRAP_CONTENT);
 		edittextParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		edittextParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-//		phoneEnter.setLayoutParams(edittextParams);
-//		faxEnter.setLayoutParams(edittextParams);
-//		mobileEnter.setLayoutParams(edittextParams);
-//		emailEnter.setLayoutParams(edittextParams);
-//		addressEnter.setLayoutParams(edittextParams);
+		// phoneEnter.setLayoutParams(edittextParams);
+		// faxEnter.setLayoutParams(edittextParams);
+		// mobileEnter.setLayoutParams(edittextParams);
+		// emailEnter.setLayoutParams(edittextParams);
+		// addressEnter.setLayoutParams(edittextParams);
 
 		btnHeader.setLayoutParams(headerParams);
 		btnProfile.setLayoutParams(profilParams);
 		btnFooter.setLayoutParams(headerParams);
-		 NameEnter.setLayoutParams(nameParams);
+		NameEnter.setLayoutParams(nameParams);
 
 		if (mainID != 1) {
 			checkAgency.setVisibility(View.GONE);
@@ -248,8 +249,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 			@Override
 			public void onClick(View arg0) {
-				dialognetwork = new DialogNetworkSocial(
-						CreateIntroductionFragment.this, getActivity(),
+				dialognetwork = new DialogNetworkSocial(CreateIntroductionFragment.this, getActivity(),
 						R.layout.dialog_network_social);
 				dialognetwork.setTitle("ویرایش  لینک های شبکه های اجتماعی");
 				util.setSizeDialog(dialognetwork);
@@ -292,97 +292,102 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 		if (btnHeader.getDrawable() == null & btnProfile.getDrawable() == null & btnFooter.getDrawable() == null)
 
-//			Toast.makeText(getActivity(), "Empty Bitmap", Toast.LENGTH_SHORT).show();
+			// Toast.makeText(getActivity(), "Empty Bitmap",
+			// Toast.LENGTH_SHORT).show();
 
-		btnSave.setOnClickListener(new OnClickListener() {
+			btnSave.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View arg0) {
-				// if (checkAgency.isChecked())
-				// globalMainObjectId = 3;
-				// if (checkService.isChecked())
-				// globalMainObjectId = 4;
+				@Override
+				public void onClick(View arg0) {
+					// if (checkAgency.isChecked())
+					// globalMainObjectId = 3;
+					// if (checkService.isChecked())
+					// globalMainObjectId = 4;
 
-				if (checkAgency.isChecked() && checkService.isChecked())
-					ObjectBrandTypeId = 1;
-				else if (checkAgency.isChecked())
-					ObjectBrandTypeId = 3;
-				else if (checkService.isChecked())
-					ObjectBrandTypeId = 4;
-				else
-					ObjectBrandTypeId = 2;
+					if (checkAgency.isChecked() && checkService.isChecked())
+						ObjectBrandTypeId = 1;
+					else if (checkAgency.isChecked())
+						ObjectBrandTypeId = 3;
+					else if (checkService.isChecked())
+						ObjectBrandTypeId = 4;
+					else
+						ObjectBrandTypeId = 2;
 
-				if (btnHeader.getDrawable() != null) {
-					bitmapHeader = ((BitmapDrawable) btnHeader.getDrawable()).getBitmap();
+					if (btnHeader.getDrawable() != null) {
+						bitmapHeader = ((BitmapDrawable) btnHeader.getDrawable()).getBitmap();
 
-					emptyHeader = Bitmap.createBitmap(bitmapHeader.getWidth(), bitmapHeader.getHeight(),
-							bitmapHeader.getConfig());
+						emptyHeader = Bitmap.createBitmap(bitmapHeader.getWidth(), bitmapHeader.getHeight(),
+								bitmapHeader.getConfig());
 
-					byteHeader = Utility.CompressBitmap(bitmapHeader);
+						byteHeader = Utility.CompressBitmap(bitmapHeader);
 
-					f1 = true;
+						f1 = true;
+
+					}
+
+					if (btnProfile.getDrawable() != null) {
+						bitmapProfil = ((BitmapDrawable) btnProfile.getDrawable()).getBitmap();
+
+						emptyProfile = Bitmap.createBitmap(bitmapProfil.getWidth(), bitmapProfil.getHeight(),
+								bitmapProfil.getConfig());
+						byteProfil = Utility.CompressBitmap(bitmapProfil);
+						f2 = true;
+
+					}
+
+					if (btnFooter.getDrawable() != null) {
+						bitmapFooter = ((BitmapDrawable) btnFooter.getDrawable()).getBitmap();
+
+						emptyFooter = Bitmap.createBitmap(bitmapFooter.getWidth(), bitmapFooter.getHeight(),
+								bitmapFooter.getConfig());
+
+						byteFooter = Utility.CompressBitmap(bitmapFooter);
+
+						f3 = true;
+
+					}
+
+					if (bitmapHeader == null & bitmapProfil == null & bitmapFooter == null)
+
+						// Toast.makeText(getActivity(), "Empty ByteArray",
+						// Toast.LENGTH_SHORT).show();
+
+						// final byte[] byteHeader =
+						// getBitmapAsByteArray(bitmapHeader);
+						// final byte[] byteProfil =
+						// getBitmapAsByteArray(bitmapProfil);
+						// final byte[] byteFooter =
+						// getBitmapAsByteArray(bitmapFooter);
+
+						nameValue = NameEnter.getText().toString();
+					phoneValue = phoneEnter.getText().toString();
+					faxValue = faxEnter.getText().toString();
+					mobileValue = mobileEnter.getText().toString();
+					emailValue = emailEnter.getText().toString();
+					addressValue = addressEnter.getText().toString();
+					descriptionValue = DescriptionEnter.getText().toString();
+					websiteValue = websiteEnter.getText().toString();
+					if (nameValue.equals("")) {
+						Toast.makeText(getActivity(), "پر کردن فیلد نام اجباری است", Toast.LENGTH_SHORT).show();
+
+					}
+
+					else if (phoneValue.equals("") && mobileValue.equals("") & emailValue.equals("")
+							&& faxValue.equals("")) {
+
+						Toast.makeText(getActivity(), "پر کردن حداقل یکی از فیلدهای تماس الزامی است",
+								Toast.LENGTH_SHORT).show();
+					} else {
+						date = new ServerDate(getActivity());
+						date.delegate = CreateIntroductionFragment.this;
+						date.execute("");
+
+						ringProgressDialog = ProgressDialog.show(getActivity(), null, "لطفا منتظر بمانید.");
+
+					}
 
 				}
-
-				if (btnProfile.getDrawable() != null) {
-					bitmapProfil = ((BitmapDrawable) btnProfile.getDrawable()).getBitmap();
-
-					emptyProfile = Bitmap.createBitmap(bitmapProfil.getWidth(), bitmapProfil.getHeight(),
-							bitmapProfil.getConfig());
-					byteProfil = Utility.CompressBitmap(bitmapProfil);
-					f2 = true;
-
-				}
-
-				if (btnFooter.getDrawable() != null) {
-					bitmapFooter = ((BitmapDrawable) btnFooter.getDrawable()).getBitmap();
-
-					emptyFooter = Bitmap.createBitmap(bitmapFooter.getWidth(), bitmapFooter.getHeight(),
-							bitmapFooter.getConfig());
-
-					byteFooter = Utility.CompressBitmap(bitmapFooter);
-
-					f3 = true;
-
-				}
-
-				if (bitmapHeader == null & bitmapProfil == null & bitmapFooter == null)
-
-//					Toast.makeText(getActivity(), "Empty ByteArray", Toast.LENGTH_SHORT).show();
-
-				// final byte[] byteHeader = getBitmapAsByteArray(bitmapHeader);
-				// final byte[] byteProfil = getBitmapAsByteArray(bitmapProfil);
-				// final byte[] byteFooter = getBitmapAsByteArray(bitmapFooter);
-
-				nameValue = NameEnter.getText().toString();
-				phoneValue = phoneEnter.getText().toString();
-				faxValue = faxEnter.getText().toString();
-				mobileValue = mobileEnter.getText().toString();
-				emailValue = emailEnter.getText().toString();
-				addressValue = addressEnter.getText().toString();
-				descriptionValue = DescriptionEnter.getText().toString();
-
-				if (nameValue.equals("")) {
-					Toast.makeText(getActivity(), "پر کردن فیلد نام اجباری است", Toast.LENGTH_SHORT).show();
-
-				}
-
-				else if (phoneValue.equals("") && mobileValue.equals("") & emailValue.equals("")
-						&& faxValue.equals("")) {
-
-					Toast.makeText(getActivity(), "پر کردن حداقل یکی از فیلدهای تماس الزامی است", Toast.LENGTH_SHORT)
-							.show();
-				} else {
-					date = new ServerDate(getActivity());
-					date.delegate = CreateIntroductionFragment.this;
-					date.execute("");
-
-					ringProgressDialog = ProgressDialog.show(getActivity(), null, "لطفا منتظر بمانید.");
-
-				}
-
-			}
-		});
+			});
 
 		util.ShowFooterAgahi(getActivity(), false, 1);
 
@@ -518,7 +523,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 					DBAdapter.CreatePageInShopeObject(serverId, nameValue, phoneValue, emailValue, faxValue,
 							descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo, addressValue, mobileValue, Lfacebook,
-							Linstagram, Llinkedin, Lgoogle, Lwebsite, Ltwitter, currentUser.getId(), mainID,
+							Linstagram, Llinkedin, Lgoogle, websiteValue, Ltwitter, currentUser.getId(), mainID,
 							ObjectBrandTypeId, ObjectTypeId);
 
 					flag = false;
@@ -586,7 +591,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 				DBAdapter.InsertInformationNewObject(serverId, nameValue, phoneValue, emailValue, faxValue,
 						descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo, addressValue, mobileValue, Lfacebook,
-						Linstagram, Llinkedin, Lgoogle, Lwebsite, Ltwitter, currentUser.getId(), parentId, 1,
+						Linstagram, Llinkedin, Lgoogle, websiteValue, Ltwitter, currentUser.getId(), parentId, 1,
 						objectIdItem1, ObjectBrandTypeId, 100, serverDate);
 
 				lastItem = serverId;
@@ -620,7 +625,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 				if (flag) {
 					DBAdapter.InsertInformationNewObject(serverId, nameValue, phoneValue, emailValue, faxValue,
 							descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo, addressValue, mobileValue, Lfacebook,
-							Linstagram, Llinkedin, Lgoogle, Lwebsite, Ltwitter, currentUser.getId(), 0, MainObjectId,
+							Linstagram, Llinkedin, Lgoogle, websiteValue, Ltwitter, currentUser.getId(), 0, MainObjectId,
 							objectId, ObjectBrandTypeId, AgencyService, serverDate);
 
 					flag = false;
@@ -705,7 +710,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 					params.put("Instagram", Linstagram);
 					params.put("LinkedIn", Llinkedin);
 					params.put("Google", Lgoogle);
-					params.put("Site", Lwebsite);
+					params.put("Site", websiteValue);
 					params.put("Twitter", Ltwitter);
 					params.put("UserId", String.valueOf(currentUser.getId()));
 					params.put("Twitter", Ltwitter);
@@ -765,7 +770,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 					params.put("Instagram", Linstagram);
 					params.put("LinkedIn", Llinkedin);
 					params.put("Google", Lgoogle);
-					params.put("Site", Lwebsite);
+					params.put("Site", websiteValue);
 					params.put("Twitter", Ltwitter);
 					params.put("ObjectBrandTypeId", String.valueOf(ObjectBrandTypeId));
 					params.put("UserId", String.valueOf(currentUser.getId()));
@@ -828,7 +833,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 					params.put("Instagram", Linstagram);
 					params.put("LinkedIn", Llinkedin);
 					params.put("Google", Lgoogle);
-					params.put("Site", Lwebsite);
+					params.put("Site", websiteValue);
 					params.put("Twitter", Ltwitter);
 
 					params.put("UserId", String.valueOf(currentUser.getId()));

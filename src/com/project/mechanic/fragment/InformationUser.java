@@ -157,8 +157,8 @@ public class InformationUser extends Fragment {
 		// llp.height = (int) (util.getScreenwidth() / 4.5);
 		//
 		// profileImage.setLayoutParams(llp);
-		
-		int marginTop = (util.getScreenHeight()/3)-(util.getScreenwidth() /8);
+
+		int marginTop = (util.getScreenHeight() / 3) - (util.getScreenwidth() / 8);
 
 		FrameLayout profileFrame = (FrameLayout) header.findViewById(R.id.frameLayoutHeader);
 		FrameLayout.LayoutParams profileParams = new FrameLayout.LayoutParams(profileFrame.getLayoutParams());
@@ -347,10 +347,43 @@ public class InformationUser extends Fragment {
 		parentItems.add("مقالات");
 		parentItems.add("تالار گفتگو");
 
-		listDataChild.put(parentItems.get(0), ObejctData); // Header, Child data
-		// listDataChild.put(parentItems.get(1), TicketData);
-		listDataChild.put(parentItems.get(1), PaperData);
-		listDataChild.put(parentItems.get(2), FroumData);
+		List<PersonalData> emptyItem = new ArrayList<PersonalData>();
+
+		PersonalData prd = new PersonalData();
+
+		if (ObejctData.size() == 0) {
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(0), emptyItem);
+		} else {
+			listDataChild.put(parentItems.get(0), ObejctData);
+
+		}
+
+		if (PaperData.size() == 0) {
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(1), emptyItem);
+		} else {
+			listDataChild.put(parentItems.get(1), PaperData);
+		}
+		if (FroumData.size() == 0) {
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(2), emptyItem);
+
+		}
+
+		else {
+
+			listDataChild.put(parentItems.get(2), FroumData);
+		}
 
 		final SharedPreferences currentTime = getActivity().getSharedPreferences("time", 0);
 

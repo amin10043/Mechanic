@@ -52,8 +52,8 @@ public class DialogAnadimg extends Dialog {
 	String titel;
 	String Bytimage;
 	int ProvinceId;
-	int id;
-	int i;
+//	int id;
+	int anadId;
 	protected byte[] img;
 	String TABLE_NAME = "Ticket";
 
@@ -66,7 +66,7 @@ public class DialogAnadimg extends Dialog {
 		this.fragment = fragment;
 		this.ticketTypeID = ticketTypeID;
 		this.ProvinceId = ProvinceId;
-		this.i = i;
+		this.anadId = i;
 
 	}
 
@@ -81,8 +81,8 @@ public class DialogAnadimg extends Dialog {
 
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setBackgroundDrawable(
-				new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//		getWindow().setBackgroundDrawable(
+//				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 		setContentView(resourceId);
 
@@ -100,18 +100,27 @@ public class DialogAnadimg extends Dialog {
 				FragmentTransaction trans = ((MainActivity) context)
 						.getSupportFragmentManager().beginTransaction();
 				show_pay_fragment fragment = new show_pay_fragment();
+				
 				Bundle bundle = new Bundle();
-				Bundle bundlei = new Bundle();
-				// bundle.putString("Id", String.valueOf(id));
-				if (ProvinceId >= 0)
-					// bundle.putString("ProID", String.valueOf(ProvinceId));
-					bundlei.putString("I", String.valueOf(i));
+				bundle.putString("AnadId", String.valueOf(anadId));
+				bundle.putString("TypeId", String.valueOf(ticketTypeID));
+
 				fragment.setArguments(bundle);
-				fragment.setArguments(bundlei);
+
 				trans.replace(R.id.content_frame, fragment);
 				trans.addToBackStack(null);
 				trans.commit();
 				DialogAnadimg.this.dismiss();
+				
+//				Bundle bundlei = new Bundle();
+//				 bundle.putString("Id", String.valueOf(id));
+//				if (ProvinceId >= 0)
+					// bundle.putString("ProID", String.valueOf(ProvinceId));
+//					bundlei.putString("I", String.valueOf(anadId));
+//				fragment.setArguments(bundlei);
+				
+				
+				
 
 			}
 		});

@@ -199,11 +199,69 @@ public class DisplayPersonalInformationFragment extends Fragment implements GetA
 		parentItems.add("مدیریت مقالات");
 		parentItems.add("مدیریت تالار گفتگو");
 
-		listDataChild.put(parentItems.get(0), ObejctData); // Header, Child data
-		listDataChild.put(parentItems.get(1), FollowedPageLsit);
-		listDataChild.put(parentItems.get(2), TicketData);
-		listDataChild.put(parentItems.get(3), PaperData);
-		listDataChild.put(parentItems.get(4), FroumData);
+		List<PersonalData> emptyItem = new ArrayList<PersonalData>();
+
+		PersonalData prd = new PersonalData();
+
+		if (ObejctData.size() == 0) {
+
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(0), emptyItem);
+
+		} else {
+			listDataChild.put(parentItems.get(0), ObejctData);
+
+		}
+
+		if (FollowedPageLsit.size() == 0) {
+
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(1), emptyItem);
+		} else {
+
+			listDataChild.put(parentItems.get(1), FollowedPageLsit);
+
+		}
+
+		if (TicketData.size() == 0) {
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(2), emptyItem);
+		} else {
+			listDataChild.put(parentItems.get(2), TicketData);
+
+		}
+
+		if (PaperData.size() == 0) {
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(3), emptyItem);
+		} else {
+			listDataChild.put(parentItems.get(3), PaperData);
+		}
+		if (FroumData.size() == 0) {
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(4), emptyItem);
+
+		}
+
+		else {
+
+			listDataChild.put(parentItems.get(4), FroumData);
+		}
 
 		final SharedPreferences currentTime = getActivity().getSharedPreferences("time", 0);
 
@@ -312,10 +370,10 @@ public class DisplayPersonalInformationFragment extends Fragment implements GetA
 		l44.setLayoutParams(f4);
 		l55.setLayoutParams(f5);
 
-		int marginTop = (util.getScreenHeight()/3)-(util.getScreenwidth() /8);
+		int marginTop = (util.getScreenHeight() / 3) - (util.getScreenwidth() / 8);
 
-		
-//		LinearLayout imageLinear = (LinearLayout) header.findViewById(R.id.imageLinear);
+		// LinearLayout imageLinear = (LinearLayout)
+		// header.findViewById(R.id.imageLinear);
 
 		FrameLayout profileFrame = (FrameLayout) header.findViewById(R.id.frameLayoutHeader);
 		FrameLayout.LayoutParams profileParams = new FrameLayout.LayoutParams(profileFrame.getLayoutParams());
@@ -339,10 +397,10 @@ public class DisplayPersonalInformationFragment extends Fragment implements GetA
 
 		FrameLayout.LayoutParams headerparams = new FrameLayout.LayoutParams(profileFrame.getLayoutParams());
 
-		headerparams.height = util.getScreenHeight()/3;
-		headerparams.width = util.getScreenwidth() ;
+		headerparams.height = util.getScreenHeight() / 3;
+		headerparams.width = util.getScreenwidth();
 		headerparams.gravity = Gravity.CENTER_HORIZONTAL;
-		
+
 		headerImageView.setLayoutParams(headerparams);
 
 	}
@@ -352,9 +410,14 @@ public class DisplayPersonalInformationFragment extends Fragment implements GetA
 		String ImagePath = currentUser.getImagePath();
 		if (ImagePath != null) {
 			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
+			img.setBackgroundResource(R.drawable.circle_drawable);
+
 			img.setImageBitmap(Utility.getclip(bmp));
-		} else
-			img.setBackgroundResource(R.drawable.no_img_profile);
+		} else{
+			img.setBackgroundResource(R.drawable.circle_drawable);
+			img.setImageResource(R.drawable.no_img_profile);
+
+		}
 
 		String name = currentUser.getName();
 		String email = currentUser.getEmail();

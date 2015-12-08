@@ -35,8 +35,7 @@ public class Favorite_Fragment extends Fragment {
 	Users u;
 	View view;
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		util = new Utility(getActivity());
 
@@ -55,26 +54,22 @@ public class Favorite_Fragment extends Fragment {
 	public void updateView() {
 		dbAdapter.open();
 
-		List<PersonalData> FroumData = dbAdapter.CustomFieldFavorite(util
-				.getCurrentUser().getId(), 1);
-		List<PersonalData> PaperData = dbAdapter.CustomFieldFavorite(util
-				.getCurrentUser().getId(), 2);
-		List<PersonalData> TicketData = dbAdapter.CustomFieldFavorite(util
-				.getCurrentUser().getId(), 3);
-//		List<PersonalData> ObejctData = dbAdapter.CustomFieldFavorite(util
-//				.getCurrentUser().getId(), 4);
+		List<PersonalData> FroumData = dbAdapter.CustomFieldFavorite(util.getCurrentUser().getId(), 1);
+		List<PersonalData> PaperData = dbAdapter.CustomFieldFavorite(util.getCurrentUser().getId(), 2);
+		List<PersonalData> TicketData = dbAdapter.CustomFieldFavorite(util.getCurrentUser().getId(), 3);
+		// List<PersonalData> ObejctData = dbAdapter.CustomFieldFavorite(util
+		// .getCurrentUser().getId(), 4);
 
 		dbAdapter.close();
 
 		List<Integer> sizeListItems = new ArrayList<Integer>();
 
-		//sizeListItems.add(ObejctData.size());
+		// sizeListItems.add(ObejctData.size());
 		sizeListItems.add(TicketData.size());
 		sizeListItems.add(PaperData.size());
 		sizeListItems.add(FroumData.size());
 
-		ExpandableListView Expandview = (ExpandableListView) view
-				.findViewById(R.id.items);
+		ExpandableListView Expandview = (ExpandableListView) view.findViewById(R.id.items);
 
 		HashMap<String, List<PersonalData>> listDataChild = new HashMap<String, List<PersonalData>>();
 
@@ -84,23 +79,55 @@ public class Favorite_Fragment extends Fragment {
 		Expandview.setGroupIndicator(null);
 		Expandview.setClickable(true);
 
-		//parentItems.add("صفحات");
+		// parentItems.add("صفحات");
 		parentItems.add("آگهی ها");
 		parentItems.add("مقالات");
 		parentItems.add("تالار گفتگو");
 
-//		listDataChild.put(parentItems.get(0), ObejctData); // Header, Child data
-		listDataChild.put(parentItems.get(0), TicketData);
-		listDataChild.put(parentItems.get(1), PaperData);
-		listDataChild.put(parentItems.get(2), FroumData);
+		List<PersonalData> emptyItem = new ArrayList<PersonalData>();
 
-		final SharedPreferences currentTime = getActivity()
-				.getSharedPreferences("time", 0);
+		PersonalData prd = new PersonalData();
+
+		if (TicketData.size() == 0) {
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(0), emptyItem);
+		} else {
+			listDataChild.put(parentItems.get(0), TicketData);
+
+		}
+
+		if (PaperData.size() == 0) {
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(1), emptyItem);
+		} else {
+			listDataChild.put(parentItems.get(1), PaperData);
+		}
+		if (FroumData.size() == 0) {
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(2), emptyItem);
+
+		}
+
+		else {
+
+		
+			listDataChild.put(parentItems.get(2), FroumData);
+		}
+
+		final SharedPreferences currentTime = getActivity().getSharedPreferences("time", 0);
 
 		String time = currentTime.getString("time", "-1");
 
-		final FavoriteListAdapter listAdapter = new FavoriteListAdapter(
-				getActivity(), parentItems, listDataChild, time,
+		final FavoriteListAdapter listAdapter = new FavoriteListAdapter(getActivity(), parentItems, listDataChild, time,
 				Favorite_Fragment.this, sizeListItems);
 
 		// setting list adapter

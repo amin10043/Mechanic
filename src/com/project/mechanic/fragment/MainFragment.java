@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
@@ -26,8 +27,8 @@ public class MainFragment extends Fragment {
 	MainListAdapter ListAdapter;
 	LinearLayout footer_layLayout;
 	Utility util;
-	RelativeLayout mainRow1, mainRow2, mainRow3, mainRow4, mainRow5, mainRow6,
-			mainRow7;
+	RelativeLayout mainRow1, mainRow2, mainRow3, mainRow4, mainRow5, mainRow6, mainRow7, main1, main2, main3, main4,
+			main5, main6, main7;
 	RelativeLayout.LayoutParams r1, r2, r3, r4, r5, r6, r7, r8;
 	ImageView img1, img2, img3, img4, img5, img6, img7;
 
@@ -36,8 +37,7 @@ public class MainFragment extends Fragment {
 	SharedPreferences sendData;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		util = new Utility(getActivity());
 
@@ -74,6 +74,14 @@ public class MainFragment extends Fragment {
 		mainRow6 = (RelativeLayout) view.findViewById(R.id.relative_item6);
 		mainRow7 = (RelativeLayout) view.findViewById(R.id.relative_item7);
 
+		main1 = (RelativeLayout) view.findViewById(R.id.main1);
+		main2 = (RelativeLayout) view.findViewById(R.id.main2);
+		main3 = (RelativeLayout) view.findViewById(R.id.main3);
+		main4 = (RelativeLayout) view.findViewById(R.id.main4);
+		main5 = (RelativeLayout) view.findViewById(R.id.main5);
+		main6 = (RelativeLayout) view.findViewById(R.id.main6);
+		main7 = (RelativeLayout) view.findViewById(R.id.main7);
+
 		img1 = (ImageView) view.findViewById(R.id.icon_item1);
 		img2 = (ImageView) view.findViewById(R.id.icon_item2);
 		img3 = (ImageView) view.findViewById(R.id.icon_item3);
@@ -105,53 +113,53 @@ public class MainFragment extends Fragment {
 
 	private void setLayoutParams() {
 
-		r1.width = util.getScreenwidth() / 10;
-		r1.height = util.getScreenwidth() / 10;
-		r1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		r1.setMargins(5, 0, 1, 0);
-		r1.addRule(RelativeLayout.CENTER_VERTICAL);
+		r1.width = (util.getScreenwidth()) / 10;
+		r1.height = (util.getScreenwidth()) / 10;
+		r1.addRule(RelativeLayout.CENTER_IN_PARENT);
+		// r1.setMargins(5, 0, 1, 0);
+		// r1.addRule(RelativeLayout.CENTER_VERTICAL);
 		img1.setLayoutParams(r1);
 
 		r2.width = util.getScreenwidth() / 10;
 		r2.height = util.getScreenwidth() / 10;
-		r2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		r2.setMargins(5, 0, 1, 0);
-		r2.addRule(RelativeLayout.CENTER_VERTICAL);
+		// r2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// r2.setMargins(5, 0, 1, 0);
+		r2.addRule(RelativeLayout.CENTER_IN_PARENT);
 		img2.setLayoutParams(r2);
 
 		r3.width = util.getScreenwidth() / 10;
 		r3.height = util.getScreenwidth() / 10;
-		r3.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		r3.setMargins(5, 0, 1, 0);
-		r3.addRule(RelativeLayout.CENTER_VERTICAL);
+		// r3.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// r3.setMargins(5, 0, 1, 0);
+		r3.addRule(RelativeLayout.CENTER_IN_PARENT);
 		img3.setLayoutParams(r3);
 
 		r4.width = util.getScreenwidth() / 10;
 		r4.height = util.getScreenwidth() / 10;
-		r4.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		r4.setMargins(5, 0, 1, 0);
-		r4.addRule(RelativeLayout.CENTER_VERTICAL);
+		// r4.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// r4.setMargins(5, 0, 1, 0);
+		r4.addRule(RelativeLayout.CENTER_IN_PARENT);
 		img4.setLayoutParams(r4);
 
 		r5.width = util.getScreenwidth() / 10;
 		r5.height = util.getScreenwidth() / 10;
-		r5.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		r5.setMargins(5, 0, 1, 0);
-		r5.addRule(RelativeLayout.CENTER_VERTICAL);
+		// r5.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// r5.setMargins(5, 0, 1, 0);
+		r5.addRule(RelativeLayout.CENTER_IN_PARENT);
 		img5.setLayoutParams(r5);
 
 		r6.width = util.getScreenwidth() / 10;
 		r6.height = util.getScreenwidth() / 10;
-		r6.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		r6.setMargins(5, 0, 1, 0);
-		r6.addRule(RelativeLayout.CENTER_VERTICAL);
+		// r6.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// r6.setMargins(5, 0, 1, 0);
+		r6.addRule(RelativeLayout.CENTER_IN_PARENT);
 		img6.setLayoutParams(r6);
 
 		r7.width = util.getScreenwidth() / 10;
 		r7.height = util.getScreenwidth() / 10;
-		r7.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		r7.setMargins(5, 0, 1, 0);
-		r7.addRule(RelativeLayout.CENTER_VERTICAL);
+		// r7.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// r7.setMargins(5, 0, 1, 0);
+		r7.addRule(RelativeLayout.CENTER_IN_PARENT);
 		img7.setLayoutParams(r7);
 	}
 
@@ -173,8 +181,8 @@ public class MainFragment extends Fragment {
 			@Override
 			public void onClick(View arg0) {
 				int id = 1;
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				BerandFragment fragment = new BerandFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
@@ -194,8 +202,8 @@ public class MainFragment extends Fragment {
 			public void onClick(View arg0) {
 				int id = 2;
 
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				Fragment ostan = new ProvinceFragment();
 
 				sendData.edit().putInt("main_Id", id).commit();
@@ -213,8 +221,8 @@ public class MainFragment extends Fragment {
 			public void onClick(View arg0) {
 				int id = 3;
 
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				trans.replace(R.id.content_frame, new Province2Fragment());
 
 				sendData.edit().putInt("main_Id", id).commit();
@@ -231,8 +239,8 @@ public class MainFragment extends Fragment {
 			public void onClick(View arg0) {
 				int id = 4;
 
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				trans.replace(R.id.content_frame, new Province3Fragment());
 
 				sendData.edit().putInt("main_Id", id).commit();
@@ -248,8 +256,8 @@ public class MainFragment extends Fragment {
 			@Override
 			public void onClick(View arg0) {
 				int id = 5;
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				NewsFragment fragment = new NewsFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
@@ -270,8 +278,8 @@ public class MainFragment extends Fragment {
 			public void onClick(View arg0) {
 				int id = 6;
 
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				CountryFragment fragment = new CountryFragment();
 				// Bundle bundle = new Bundle();
 				// bundle.putString("Id", String.valueOf(id));
@@ -290,8 +298,141 @@ public class MainFragment extends Fragment {
 			@Override
 			public void onClick(View arg0) {
 				int id = 7;
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
+				trans.replace(R.id.content_frame, new TypeFroum());
+
+				sendData.edit().putInt("main_Id", id).commit();
+
+				trans.addToBackStack(null);
+				trans.commit();
+			}
+		});
+
+		main1.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				int id = 1;
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
+				BerandFragment fragment = new BerandFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString("Id", String.valueOf(id));
+				fragment.setArguments(bundle);
+
+				sendData.edit().putInt("main_Id", id).commit();
+
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+			}
+		});
+
+		main2.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				int id = 2;
+
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
+				Fragment ostan = new ProvinceFragment();
+
+				sendData.edit().putInt("main_Id", id).commit();
+
+				trans.addToBackStack(null);
+				trans.replace(R.id.content_frame, ostan);
+
+				trans.commit();
+			}
+		});
+
+		main3.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				int id = 3;
+
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
+				trans.replace(R.id.content_frame, new Province2Fragment());
+
+				sendData.edit().putInt("main_Id", id).commit();
+
+				trans.addToBackStack(null);
+				trans.commit();
+
+			}
+		});
+
+		main4.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				int id = 4;
+
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
+				trans.replace(R.id.content_frame, new Province3Fragment());
+
+				sendData.edit().putInt("main_Id", id).commit();
+
+				trans.addToBackStack(null);
+				trans.commit();
+
+			}
+		});
+
+		main5.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				int id = 5;
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
+				NewsFragment fragment = new NewsFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString("Id", String.valueOf(id));
+				fragment.setArguments(bundle);
+
+				sendData.edit().putInt("main_Id", id).commit();
+
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+
+			}
+		});
+
+		main6.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				int id = 6;
+
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
+				CountryFragment fragment = new CountryFragment();
+				// Bundle bundle = new Bundle();
+				// bundle.putString("Id", String.valueOf(id));
+				// fragment.setArguments(bundle);
+
+				sendData.edit().putInt("main_Id", id).commit();
+
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+			}
+		});
+
+		main7.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				int id = 7;
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				trans.replace(R.id.content_frame, new TypeFroum());
 
 				sendData.edit().putInt("main_Id", id).commit();

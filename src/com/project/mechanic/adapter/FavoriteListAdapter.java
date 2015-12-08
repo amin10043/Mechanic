@@ -55,8 +55,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 	List<Integer> sizeTypeItem;
 
 	public FavoriteListAdapter(Context context, ArrayList<String> parentItems,
-			HashMap<String, List<PersonalData>> listDataChild,
-			String todayDate, Fragment fr, List<Integer> sizeType) {
+			HashMap<String, List<PersonalData>> listDataChild, String todayDate, Fragment fr, List<Integer> sizeType) {
 
 		this.context = context;
 		this.parentItems = parentItems;
@@ -88,8 +87,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		return listDataChild.get(parentItems.get(groupPosition)).get(
-				childPosition);
+		return listDataChild.get(parentItems.get(groupPosition)).get(childPosition);
 	}
 
 	@Override
@@ -104,34 +102,27 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public View getChildView(int groupPosition, final int childPosition,
-			boolean isLastChild, View convertView, ViewGroup parent) {
+	public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView,
+			ViewGroup parent) {
 
 		// if (convertView == null) {
-		LayoutInflater infalInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		if (("صفحات").equals(parentItems.get(groupPosition))) {
-			convertView = infalInflater.inflate(R.layout.row_personal_object,
-					null);
+			convertView = infalInflater.inflate(R.layout.row_personal_object, null);
 
 			// update your views here
 
 			// ///////
 
-			TextView namePage = (TextView) convertView
-					.findViewById(R.id.Rowobjecttxt);
+			TextView namePage = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
 
-			ImageView profileIco = (ImageView) convertView
-					.findViewById(R.id.icon_object);
+			ImageView profileIco = (ImageView) convertView.findViewById(R.id.icon_object);
 
-			ImageView report = (ImageView) convertView
-					.findViewById(R.id.reportImage);
+			ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
 
-			FrameLayout rl = (FrameLayout) convertView
-					.findViewById(R.id.imageFrame);
-			FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-					rl.getLayoutParams());
+			FrameLayout rl = (FrameLayout) convertView.findViewById(R.id.imageFrame);
+			FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(rl.getLayoutParams());
 
 			lp.width = (util.getScreenwidth() / 5);
 			lp.height = (util.getScreenwidth() / 5);
@@ -141,8 +132,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 
 			profileIco.setLayoutParams(lp);
 
-			final PersonalData pd = (PersonalData) getChild(groupPosition,
-					childPosition);
+			final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 			// ///////
 
 			String ImagePath = pd.getImagePathObject();
@@ -160,8 +150,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 				public void onClick(View arg0) {
 
 					IntroductionFragment fragment = new IntroductionFragment();
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, fragment);
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(pd.getObjectId()));
@@ -192,16 +181,12 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 							if (item.getItemId() == 0) {
 
 								adapter.open();
-								if (adapter.IsUserFavoriteItem(util
-										.getCurrentUser().getId(), pd
-										.getObjectId(), 4)) {
+								if (adapter.IsUserFavoriteItem(util.getCurrentUser().getId(), pd.getObjectId(), 4)) {
 
 									adapter.deletebyIdTicket(pd.getObjectId());
 									notifyDataSetChanged();
 
-									Toast.makeText(context,
-											" از لیست علاقه مندی ها حذف شد ", 0)
-											.show();
+									Toast.makeText(context, " از لیست علاقه مندی ها حذف شد ", 0).show();
 
 									((Favorite_Fragment) fr).updateView();
 
@@ -220,463 +205,468 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 			});
 
 		} else if (("آگهی ها").equals(parentItems.get(groupPosition))) {
-			convertView = infalInflater.inflate(R.layout.row_anad, null);
 
-			// ///////////
+			if (sizeTypeItem.get(groupPosition) == 0) {
 
-			TextView txtdate = (TextView) convertView
-					.findViewById(R.id.text_favorite_desc);
-			TextView txtName = (TextView) convertView
-					.findViewById(R.id.row_favorite_title);
-			TextView txtDesc = (TextView) convertView
-					.findViewById(R.id.row_anad_txt2);
-			ImageView img2 = (ImageView) convertView
-					.findViewById(R.id.row_favorite_img);
+				convertView = infalInflater.inflate(R.layout.row_search, null);
 
-			ProgressBar LoadingProgress = (ProgressBar) convertView
-					.findViewById(R.id.progressBar1);
-			LoadingProgress.setVisibility(View.GONE);
+				TextView txt = (TextView) convertView.findViewById(R.id.row_search_name);
 
-			final PersonalData pd = (PersonalData) getChild(groupPosition,
-					childPosition);
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
-			// //////////
+				// //////////
 
-			txtdate.setText(util.getPersianDate(pd.getDateTicket()));
-			txtName.setText(pd.getNameTicket());
-			txtDesc.setText(pd.getDescriptonTicket());
-
-			if (pd.getSeenBefore() > 0) {
-				txtName.setTextColor(Color.GRAY);
-				txtDesc.setTextColor(Color.GRAY);
-				txtdate.setTextColor(Color.GRAY);
-
-			}
-
-			if ("".equals(pd.getNameTicket()) || pd.getNameTicket() == null) {
-				txtName.setVisibility(View.GONE);
-
-			}
-			if ("".equals(pd.getDescriptonTicket())
-					|| pd.getDescriptonTicket() == null) {
-				txtDesc.setVisibility(View.GONE);
-			}
-			ImageView imgBi = (ImageView) convertView
-					.findViewById(R.id.aks_bi_etebar);
-
-			FrameLayout llkj = (FrameLayout) convertView
-					.findViewById(R.id.imageFrame);
-
-			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-					llkj.getLayoutParams());
-
-			params.width = util.getScreenwidth() / 5;
-			params.height = util.getScreenwidth() / 5;
-			// params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			// params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-			// params.addRule(RelativeLayout.CENTER_VERTICAL);
-			params.setMargins(10, 10, 10, 10);
-
-			String pathProfile = pd.getImagePathTicket();
-			Bitmap profileImage = BitmapFactory.decodeFile(pathProfile);
-
-			if (profileImage != null) {
-
-				img2.setImageBitmap(Utility.getclip(profileImage));
-				img2.setLayoutParams(params);
+				txt.setText(pd.getDateTicket());
+				txt.setTypeface(util.SetFontCasablanca());
 
 			} else {
-				// img2.setImageResource(R.drawable.no_img_profile);
-				img2.setLayoutParams(params);
-			}
+				convertView = infalInflater.inflate(R.layout.row_anad, null);
 
-			String commitDate = pd.getDateTicket();
-			int thisDay = 0;
-			int TicketDay = Integer.valueOf(commitDate.substring(0, 8));
-			if (todayDate != null && !todayDate.equals(""))
-				thisDay = Integer.valueOf(todayDate.substring(0, 8));
-			RelativeLayout TicketBackground = (RelativeLayout) convertView
-					.findViewById(R.id.backgroundTicket);
+				// ///////////
 
-			if (thisDay <= TicketDay + pd.getDayTicket()) {
-				TicketBackground.setBackgroundColor(Color.WHITE);
+				TextView txtdate = (TextView) convertView.findViewById(R.id.text_favorite_desc);
+				TextView txtName = (TextView) convertView.findViewById(R.id.row_favorite_title);
+				TextView txtDesc = (TextView) convertView.findViewById(R.id.row_anad_txt2);
+				ImageView img2 = (ImageView) convertView.findViewById(R.id.row_favorite_img);
+
+				ProgressBar LoadingProgress = (ProgressBar) convertView.findViewById(R.id.progressBar1);
+				LoadingProgress.setVisibility(View.GONE);
+
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
+
+				// //////////
+
+				txtdate.setText(util.getPersianDate(pd.getDateTicket()));
+				txtName.setText(pd.getNameTicket());
+				txtDesc.setText(pd.getDescriptonTicket());
+
 				if (pd.getSeenBefore() > 0) {
 					txtName.setTextColor(Color.GRAY);
 					txtDesc.setTextColor(Color.GRAY);
 					txtdate.setTextColor(Color.GRAY);
-				}
-
-			} else {
-				imgBi.setVisibility(View.VISIBLE);
-				imgBi.setLayoutParams(params);
-
-				// img2.setImageResource(R.drawable.bi_etebar);
-				// TicketBackground.setBackgroundResource(R.color.lightred);
-
-				if (pd.getSeenBefore() > 0) {
-					txtName.setTextColor(Color.WHITE);
-					txtDesc.setTextColor(Color.WHITE);
-					txtdate.setTextColor(Color.WHITE);
-
-				}
-			}
-
-			txtName.setTypeface(util.SetFontCasablanca());
-			txtDesc.setTypeface(util.SetFontCasablanca());
-
-			ImageView reaport = (ImageView) convertView
-					.findViewById(R.id.reportImage);
-
-			convertView.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					ShowAdFragment fragment = new ShowAdFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(pd.getTicketId()));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
-
-					adapter.open();
-					adapter.SetSeen("Ticket", pd.getTicketId(), "1");
-					adapter.close();
 
 				}
 
-			});
+				if ("".equals(pd.getNameTicket()) || pd.getNameTicket() == null) {
+					txtName.setVisibility(View.GONE);
 
-			reaport.setOnClickListener(new OnClickListener() {
+				}
+				if ("".equals(pd.getDescriptonTicket()) || pd.getDescriptonTicket() == null) {
+					txtDesc.setVisibility(View.GONE);
+				}
+				ImageView imgBi = (ImageView) convertView.findViewById(R.id.aks_bi_etebar);
 
-				@Override
-				public void onClick(View v) {
+				FrameLayout llkj = (FrameLayout) convertView.findViewById(R.id.imageFrame);
 
-					// String[] items = { "حذف" };
-					List<String> items = new ArrayList<String>();
+				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(llkj.getLayoutParams());
 
-					items.clear();
-					items.add("حذف");
-					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
-					popupMenu.show();
-					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+				params.width = util.getScreenwidth() / 5;
+				params.height = util.getScreenwidth() / 5;
+				// params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				// params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+				// params.addRule(RelativeLayout.CENTER_VERTICAL);
+				params.setMargins(10, 10, 10, 10);
 
-						@Override
-						public boolean onMenuItemClick(MenuItem item) {
+				String pathProfile = pd.getImagePathTicket();
+				Bitmap profileImage = BitmapFactory.decodeFile(pathProfile);
 
-							if (item.getItemId() == 0) {
+				if (profileImage != null) {
 
-								adapter.open();
-								if (adapter.IsUserFavoriteItem(util
-										.getCurrentUser().getId(), pd
-										.getTicketId(), 3)) {
+					img2.setImageBitmap(Utility.getclip(profileImage));
+					img2.setLayoutParams(params);
 
-									adapter.deletebyIdTicket(pd.getTicketId());
-									notifyDataSetChanged();
+				} else {
+					// img2.setImageResource(R.drawable.no_img_profile);
+					img2.setLayoutParams(params);
+				}
 
-									Toast.makeText(context,
-											" از لیست علاقه مندی ها حذف شد ", 0)
-											.show();
+				String commitDate = pd.getDateTicket();
+				int thisDay = 0;
+				int TicketDay = Integer.valueOf(commitDate.substring(0, 8));
+				if (todayDate != null && !todayDate.equals(""))
+					thisDay = Integer.valueOf(todayDate.substring(0, 8));
+				RelativeLayout TicketBackground = (RelativeLayout) convertView.findViewById(R.id.backgroundTicket);
 
-									((Favorite_Fragment) fr).updateView();
+				if (thisDay <= TicketDay + pd.getDayTicket()) {
+					TicketBackground.setBackgroundColor(Color.WHITE);
+					if (pd.getSeenBefore() > 0) {
+						txtName.setTextColor(Color.GRAY);
+						txtDesc.setTextColor(Color.GRAY);
+						txtdate.setTextColor(Color.GRAY);
+					}
 
+				} else {
+					imgBi.setVisibility(View.VISIBLE);
+					imgBi.setLayoutParams(params);
+
+					// img2.setImageResource(R.drawable.bi_etebar);
+					// TicketBackground.setBackgroundResource(R.color.lightred);
+
+					if (pd.getSeenBefore() > 0) {
+						txtName.setTextColor(Color.WHITE);
+						txtDesc.setTextColor(Color.WHITE);
+						txtdate.setTextColor(Color.WHITE);
+
+					}
+				}
+
+				txtName.setTypeface(util.SetFontCasablanca());
+				txtDesc.setTypeface(util.SetFontCasablanca());
+
+				ImageView reaport = (ImageView) convertView.findViewById(R.id.reportImage);
+
+				convertView.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+
+						FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager()
+								.beginTransaction();
+						ShowAdFragment fragment = new ShowAdFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(pd.getTicketId()));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+
+						adapter.open();
+						adapter.SetSeen("Ticket", pd.getTicketId(), "1");
+						adapter.close();
+
+					}
+
+				});
+
+				reaport.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+
+						// String[] items = { "حذف" };
+						List<String> items = new ArrayList<String>();
+
+						items.clear();
+						items.add("حذف");
+						PopupMenu popupMenu = util.ShowPopupMenu(items, v);
+						popupMenu.show();
+						OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+							@Override
+							public boolean onMenuItemClick(MenuItem item) {
+
+								if (item.getItemId() == 0) {
+
+									adapter.open();
+									if (adapter.IsUserFavoriteItem(util.getCurrentUser().getId(), pd.getTicketId(),
+											3)) {
+
+										adapter.deletebyIdTicket(pd.getTicketId());
+										notifyDataSetChanged();
+
+										Toast.makeText(context, " از لیست علاقه مندی ها حذف شد ", 0).show();
+
+										((Favorite_Fragment) fr).updateView();
+
+									}
 								}
+
+								return false;
 							}
+						};
 
-							return false;
-						}
-					};
+						popupMenu.setOnMenuItemClickListener(menuitem);
 
-					popupMenu.setOnMenuItemClickListener(menuitem);
+						adapter.close();
 
-					adapter.close();
+					}
+				});
 
-				}
-			});
-
-			// update your views here
+			} // update your views here
 		} else if (("مقالات").equals(parentItems.get(groupPosition))) {
-			convertView = infalInflater.inflate(R.layout.row_personal_froum,
-					null);
 
-			// update your views here
+			if (sizeTypeItem.get(groupPosition) == 0) {
 
-			final TextView txt1 = (TextView) convertView
-					.findViewById(R.id.rowtitlepaper);
-			TextView txt2 = (TextView) convertView
-					.findViewById(R.id.rowdescriptionpaper);
-			TextView txt3 = (TextView) convertView
-					.findViewById(R.id.authorname);
+				convertView = infalInflater.inflate(R.layout.row_search, null);
 
-			TextView DateView = (TextView) convertView
-					.findViewById(R.id.datetopicinFroum);
-			ImageView iconProile = (ImageView) convertView
-					.findViewById(R.id.iconfroumtitle);
+				TextView txt = (TextView) convertView.findViewById(R.id.row_search_name);
 
-			ImageView report = (ImageView) convertView
-					.findViewById(R.id.reportImage);
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
-			// end find view
+				// //////////
 
-			final PersonalData pd = (PersonalData) getChild(groupPosition,
-					childPosition);
+				txt.setText(pd.getDateTicket());
+				txt.setTypeface(util.SetFontCasablanca());
 
-			if (pd.getSeenBeforePaper() > 0) {
-				txt1.setTextColor(Color.GRAY);
-				txt2.setTextColor(Color.GRAY);
-				txt3.setTextColor(Color.GRAY);
-				DateView.setTextColor(Color.GRAY);
-
-			}
-
-			LinearLayout rl = (LinearLayout) convertView
-					.findViewById(R.id.topicTitleFroum);
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-					rl.getLayoutParams());
-
-			lp.width = util.getScreenwidth() / 5;
-			lp.height = util.getScreenwidth() / 5;
-			// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(10, 10, 10, 10);
-			iconProile.setLayoutParams(lp);
-
-			Users u = null;
-			String ImagePath = "";
-			adapter.open();
-			u = adapter.getUserbyid(pd.getUserIdPaper());
-			adapter.close();
-			ImagePath = u.getImagePath();
-
-			txt3.setText(u.getName());
-
-			if (ImagePath != null) {
-				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				iconProile.setImageBitmap(Utility.getclip(bmp));
-
-				// iconProile.setLayoutParams(lp);
 			} else {
-				iconProile.setImageResource(R.drawable.no_img_profile);
-				// iconProile.setLayoutParams(lp);
 
-			}
+				convertView = infalInflater.inflate(R.layout.row_personal_froum, null);
 
-			DateView.setText(util.getPersianDate(pd.getDatePaper()));
+				// update your views here
 
-			adapter.open();
-			String name = adapter.getUserbyid(pd.getUserIdPaper()).getName();
-			adapter.close();
+				final TextView txt1 = (TextView) convertView.findViewById(R.id.rowtitlepaper);
+				TextView txt2 = (TextView) convertView.findViewById(R.id.rowdescriptionpaper);
+				TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
 
-			txt3.setText(name);
+				TextView DateView = (TextView) convertView.findViewById(R.id.datetopicinFroum);
+				ImageView iconProile = (ImageView) convertView.findViewById(R.id.iconfroumtitle);
 
-			txt1.setText(pd.getNamePaper());
-			txt2.setText(pd.getDescriptonPaper());
+				ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
 
-			txt1.setTypeface(util.SetFontCasablanca());
-			txt2.setTypeface(util.SetFontCasablanca());
+				// end find view
 
-			convertView.setOnClickListener(new OnClickListener() {
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
-				@Override
-				public void onClick(View arg0) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					PaperFragment fragment = new PaperFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(pd.getPaperId()));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
+				if (pd.getSeenBeforePaper() > 0) {
+					txt1.setTextColor(Color.GRAY);
+					txt2.setTextColor(Color.GRAY);
+					txt3.setTextColor(Color.GRAY);
+					DateView.setTextColor(Color.GRAY);
+
 				}
-			});
 
-			report.setOnClickListener(new OnClickListener() {
+				LinearLayout rl = (LinearLayout) convertView.findViewById(R.id.topicTitleFroum);
+				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
 
-				@Override
-				public void onClick(View v) {
+				lp.width = util.getScreenwidth() / 5;
+				lp.height = util.getScreenwidth() / 5;
+				// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				lp.setMargins(10, 10, 10, 10);
+				iconProile.setLayoutParams(lp);
 
-					// String[] items = { "حذف" };
-					List<String> items = new ArrayList<String>();
+				Users u = null;
+				String ImagePath = "";
+				adapter.open();
+				u = adapter.getUserbyid(pd.getUserIdPaper());
+				adapter.close();
+				ImagePath = u.getImagePath();
 
-					items.clear();
-					items.add("حذف");
-					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
-					popupMenu.show();
-					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+				txt3.setText(u.getName());
 
-						@Override
-						public boolean onMenuItemClick(MenuItem item) {
+				if (ImagePath != null) {
+					Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
+					iconProile.setImageBitmap(Utility.getclip(bmp));
 
-							if (item.getItemId() == 0) {
+					// iconProile.setLayoutParams(lp);
+				} else {
+					iconProile.setImageResource(R.drawable.no_img_profile);
+					// iconProile.setLayoutParams(lp);
 
-								adapter.open();
-								if (adapter.IsUserFavoriteItem(util
-										.getCurrentUser().getId(), pd
-										.getPaperId(), 2)) {
+				}
 
-									adapter.deletebyIdTicket(pd.getPaperId());
-									notifyDataSetChanged();
+				DateView.setText(util.getPersianDate(pd.getDatePaper()));
 
-									Toast.makeText(context,
-											" از لیست علاقه مندی ها حذف شد ", 0)
-											.show();
+				adapter.open();
+				String name = adapter.getUserbyid(pd.getUserIdPaper()).getName();
+				adapter.close();
 
-									((Favorite_Fragment) fr).updateView();
+				txt3.setText(name);
 
+				txt1.setText(pd.getNamePaper());
+				txt2.setText(pd.getDescriptonPaper());
+
+				txt1.setTypeface(util.SetFontCasablanca());
+				txt2.setTypeface(util.SetFontCasablanca());
+
+				convertView.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+						FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager()
+								.beginTransaction();
+						PaperFragment fragment = new PaperFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(pd.getPaperId()));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+					}
+				});
+
+				report.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+
+						// String[] items = { "حذف" };
+						List<String> items = new ArrayList<String>();
+
+						items.clear();
+						items.add("حذف");
+						PopupMenu popupMenu = util.ShowPopupMenu(items, v);
+						popupMenu.show();
+						OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+							@Override
+							public boolean onMenuItemClick(MenuItem item) {
+
+								if (item.getItemId() == 0) {
+
+									adapter.open();
+									if (adapter.IsUserFavoriteItem(util.getCurrentUser().getId(), pd.getPaperId(), 2)) {
+
+										adapter.deletebyIdTicket(pd.getPaperId());
+										notifyDataSetChanged();
+
+										Toast.makeText(context, " از لیست علاقه مندی ها حذف شد ", 0).show();
+
+										((Favorite_Fragment) fr).updateView();
+
+									}
 								}
+
+								return false;
 							}
+						};
 
-							return false;
-						}
-					};
+						popupMenu.setOnMenuItemClickListener(menuitem);
 
-					popupMenu.setOnMenuItemClickListener(menuitem);
+						adapter.close();
 
-					adapter.close();
-
-				}
-			});
-
+					}
+				});
+			}
 		} else if (("تالار گفتگو").equals(parentItems.get(groupPosition))) {
-			convertView = infalInflater.inflate(R.layout.row_personal_froum,
-					null);
 
-			// update your views here
+			if (sizeTypeItem.get(groupPosition) == 0) {
 
-			final TextView txt1 = (TextView) convertView
-					.findViewById(R.id.rowtitlepaper);
-			TextView txt2 = (TextView) convertView
-					.findViewById(R.id.rowdescriptionpaper);
-			TextView txt3 = (TextView) convertView
-					.findViewById(R.id.authorname);
+				convertView = infalInflater.inflate(R.layout.row_search, null);
 
-			TextView DateView = (TextView) convertView
-					.findViewById(R.id.datetopicinFroum);
-			ImageView iconProile = (ImageView) convertView
-					.findViewById(R.id.iconfroumtitle);
+				TextView txt = (TextView) convertView.findViewById(R.id.row_search_name);
 
-			ImageView report = (ImageView) convertView
-					.findViewById(R.id.reportImage);
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
-			// end find view
+				// //////////
 
-			final PersonalData pd = (PersonalData) getChild(groupPosition,
-					childPosition);
+				txt.setText(pd.getDateTicket());
+				txt.setTypeface(util.SetFontCasablanca());
 
-			if (pd.getSeenBeforeFroum() > 0) {
-				txt1.setTextColor(Color.GRAY);
-				txt2.setTextColor(Color.GRAY);
-				txt3.setTextColor(Color.GRAY);
-				DateView.setTextColor(Color.GRAY);
-
-			}
-
-			// Users x = adapter.getUserbyid(person1.getUserId());
-			// userId=x.getId();
-			LinearLayout rl = (LinearLayout) convertView
-					.findViewById(R.id.topicTitleFroum);
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-					rl.getLayoutParams());
-
-			lp.width = util.getScreenwidth() / 5;
-			lp.height = util.getScreenwidth() / 5;
-			// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(10, 10, 10, 10);
-			iconProile.setLayoutParams(lp);
-
-			Users u = null;
-			String ImagePath = "";
-
-			adapter.open();
-			u = adapter.getUserbyid(pd.getUserIdFroum());
-			adapter.close();
-			ImagePath = u.getImagePath();
-			txt3.setText(u.getName());
-
-			if (ImagePath != null) {
-				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				iconProile.setImageBitmap(Utility.getclip(bmp));
-
-				iconProile.setLayoutParams(lp);
 			} else {
-				iconProile.setImageResource(R.drawable.no_img_profile);
+
+				convertView = infalInflater.inflate(R.layout.row_personal_froum, null);
+
+				// update your views here
+
+				final TextView txt1 = (TextView) convertView.findViewById(R.id.rowtitlepaper);
+				TextView txt2 = (TextView) convertView.findViewById(R.id.rowdescriptionpaper);
+				TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
+
+				TextView DateView = (TextView) convertView.findViewById(R.id.datetopicinFroum);
+				ImageView iconProile = (ImageView) convertView.findViewById(R.id.iconfroumtitle);
+
+				ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
+
+				// end find view
+
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
+
+				if (pd.getSeenBeforeFroum() > 0) {
+					txt1.setTextColor(Color.GRAY);
+					txt2.setTextColor(Color.GRAY);
+					txt3.setTextColor(Color.GRAY);
+					DateView.setTextColor(Color.GRAY);
+
+				}
+
+				// Users x = adapter.getUserbyid(person1.getUserId());
+				// userId=x.getId();
+				LinearLayout rl = (LinearLayout) convertView.findViewById(R.id.topicTitleFroum);
+				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
+
+				lp.width = util.getScreenwidth() / 5;
+				lp.height = util.getScreenwidth() / 5;
+				// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				lp.setMargins(10, 10, 10, 10);
 				iconProile.setLayoutParams(lp);
 
-			}
-			DateView.setText(util.getPersianDate(pd.getDateFroum()));
+				Users u = null;
+				String ImagePath = "";
 
-			txt1.setText(pd.getNameFroum());
-			txt2.setText(pd.getDescriptionFroum());
+				adapter.open();
+				u = adapter.getUserbyid(pd.getUserIdFroum());
+				adapter.close();
+				ImagePath = u.getImagePath();
+				txt3.setText(u.getName());
 
-			txt1.setTypeface(util.SetFontCasablanca());
-			txt2.setTypeface(util.SetFontIranSans());
+				if (ImagePath != null) {
+					Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
+					iconProile.setImageBitmap(Utility.getclip(bmp));
 
-			convertView.setOnClickListener(new OnClickListener() {
+					iconProile.setLayoutParams(lp);
+				} else {
+					iconProile.setImageResource(R.drawable.no_img_profile);
+					iconProile.setLayoutParams(lp);
 
-				@Override
-				public void onClick(View arg0) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					FroumFragment fragment = new FroumFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(pd.getFroumId()));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
 				}
-			});
-			report.setOnClickListener(new OnClickListener() {
+				DateView.setText(util.getPersianDate(pd.getDateFroum()));
 
-				@Override
-				public void onClick(View v) {
+				txt1.setText(pd.getNameFroum());
+				txt2.setText(pd.getDescriptionFroum());
 
-					// String[] items = { "حذف" };
-					List<String> items = new ArrayList<String>();
+				txt1.setTypeface(util.SetFontCasablanca());
+				txt2.setTypeface(util.SetFontIranSans());
 
-					items.clear();
-					items.add("حذف");
-					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
-					popupMenu.show();
+				convertView.setOnClickListener(new OnClickListener() {
 
-					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+					@Override
+					public void onClick(View arg0) {
+						FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager()
+								.beginTransaction();
+						FroumFragment fragment = new FroumFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(pd.getFroumId()));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+					}
+				});
+				report.setOnClickListener(new OnClickListener() {
 
-						@Override
-						public boolean onMenuItemClick(MenuItem item) {
+					@Override
+					public void onClick(View v) {
 
-							if (item.getItemId() == 0) {
+						// String[] items = { "حذف" };
+						List<String> items = new ArrayList<String>();
 
-								adapter.open();
-								if (adapter.IsUserFavoriteItem(util
-										.getCurrentUser().getId(), pd
-										.getFroumId(), 1)) {
+						items.clear();
+						items.add("حذف");
+						PopupMenu popupMenu = util.ShowPopupMenu(items, v);
+						popupMenu.show();
 
-									adapter.deletebyIdTicket(pd.getFroumId());
-									notifyDataSetChanged();
+						OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
 
-									Toast.makeText(context,
-											" از لیست علاقه مندی ها حذف شد ", 0)
-											.show();
+							@Override
+							public boolean onMenuItemClick(MenuItem item) {
 
-									((Favorite_Fragment) fr).updateView();
+								if (item.getItemId() == 0) {
 
+									adapter.open();
+									if (adapter.IsUserFavoriteItem(util.getCurrentUser().getId(), pd.getFroumId(), 1)) {
+
+										adapter.deletebyIdTicket(pd.getFroumId());
+										notifyDataSetChanged();
+
+										Toast.makeText(context, " از لیست علاقه مندی ها حذف شد ", 0).show();
+
+										((Favorite_Fragment) fr).updateView();
+
+									}
 								}
+
+								return false;
 							}
+						};
 
-							return false;
-						}
-					};
+						popupMenu.setOnMenuItemClickListener(menuitem);
 
-					popupMenu.setOnMenuItemClickListener(menuitem);
+						adapter.close();
 
-					adapter.close();
+					}
+				});
 
-				}
-			});
-
+			}
 		}
 
 		return convertView;
@@ -703,18 +693,14 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public View getGroupView(final int groupPosition, final boolean isExpanded,
-			View convertView, ViewGroup parent) {
+	public View getGroupView(final int groupPosition, final boolean isExpanded, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			LayoutInflater infalInflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = infalInflater.inflate(R.layout.row_group_test, null);
 
 		}
-		TextView titleGroup = (TextView) convertView
-				.findViewById(R.id.row_berand_txt);
-		final ImageView indicatorImg = (ImageView) convertView
-				.findViewById(R.id.icon_item);
+		TextView titleGroup = (TextView) convertView.findViewById(R.id.row_berand_txt);
+		final ImageView indicatorImg = (ImageView) convertView.findViewById(R.id.icon_item);
 		titleGroup.setText(parentItems.get(groupPosition));
 		final ExpandableListView mExpandableListView = (ExpandableListView) parent;
 		titleGroup.setTypeface(util.SetFontCasablanca());
@@ -722,22 +708,22 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 
 			@Override
 			public void onClick(View arg0) {
-				if (sizeTypeItem.get(groupPosition) == 0) {
-					Toast.makeText(context, "عنوانی ثبت نشده است", 0).show();
-				} else {
+				// if (sizeTypeItem.get(groupPosition) == 0) {
+				// Toast.makeText(context, "عنوانی ثبت نشده است", 0).show();
+				// } else {
 
-					if (isExpanded) {
-						mExpandableListView.collapseGroup(groupPosition);
-						indicatorImg.setBackgroundResource(R.drawable.dow);
-						notifyDataSetChanged();
-
-					} else {
-						indicatorImg.setBackgroundResource(R.drawable.dow_s);
-
-						mExpandableListView.expandGroup(groupPosition);
-					}
+				if (isExpanded) {
+					mExpandableListView.collapseGroup(groupPosition);
+					indicatorImg.setBackgroundResource(R.drawable.dow);
 					notifyDataSetChanged();
+
+				} else {
+					indicatorImg.setBackgroundResource(R.drawable.dow_s);
+
+					mExpandableListView.expandGroup(groupPosition);
 				}
+				notifyDataSetChanged();
+				// }
 			}
 		});
 

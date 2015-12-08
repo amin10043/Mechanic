@@ -88,207 +88,320 @@
             android:src="@drawable/ic_search" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/relative_item1"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="1dp"
-        android:layout_weight="1"
-        android:background="#d3dff9" >
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="6" >
 
-        <TextView
-            android:id="@+id/lable1"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/icon_item1"
-            android:gravity="right"
-            android:text="تولیدکنندگان داخلی - برندهای وارداتی - نمایندگی ها "
-            android:textColor="@color/transparent" />
+            android:layout_weight="1"
+            android:orientation="vertical" >
 
-        <ImageView
-            android:id="@+id/icon_item1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:background="@drawable/ic_main_item1" />
-    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/main1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1" >
 
-    <RelativeLayout
-        android:id="@+id/relative_item2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="1dp"
-        android:layout_weight="1"
-        android:background="#d3dff9" >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/background_item_main"
+                    android:gravity="right" >
 
-        <TextView
-            android:id="@+id/lable2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/icon_item2"
-            android:gravity="right"
-            android:text="فروشگاهها - شرکت های عرضه کننده محصولات"
-            android:textColor="@color/transparent" />
+                    <TextView
+                        android:id="@+id/lable1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right"
+                        android:text="تولیدکنندگان داخلی - برندهای وارداتی - نمایندگی ها "
+                        android:textColor="@color/transparent" />
+                </LinearLayout>
+            </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/icon_item2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/ic_main_item2" />
-    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/main2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1" >
 
-    <RelativeLayout
-        android:id="@+id/relative_item3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="1dp"
-        android:layout_weight="1"
-        android:background="#d3dff9" >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/background_item_main"
+                    android:gravity="right" >
 
-        <TextView
-            android:id="@+id/lable3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/icon_item3"
-            android:gravity="right"
-            android:text="مشاوران - ناظران - شرکت های مجری "
-            android:textColor="@color/transparent" />
+                    <TextView
+                        android:id="@+id/lable2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right"
+                        android:text="فروشگاهها - شرکت های عرضه کننده محصولات"
+                        android:textColor="@color/transparent" />
+                </LinearLayout>
+            </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/icon_item3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:background="@drawable/ic_main_item3" />
-    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/main3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1" >
 
-    <RelativeLayout
-        android:id="@+id/relative_item4"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="1dp"
-        android:layout_weight="1"
-        android:background="#d3dff9" >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/background_item_main"
+                    android:gravity="right" >
 
-        <TextView
-            android:id="@+id/lable4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/icon_item4"
-            android:gravity="right"
-            android:text="اشخاص حقیقی (استادکاران)"
-            android:textColor="@color/transparent" />
+                    <TextView
+                        android:id="@+id/lable3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right"
+                        android:text="مشاوران - ناظران - شرکت های مجری "
+                        android:textColor="@color/transparent" />
+                </LinearLayout>
+            </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/icon_item4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:background="@drawable/ic_main_item4" />
-    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/main4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1" >
 
-    <RelativeLayout
-        android:id="@+id/relative_item5"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="1dp"
-        android:layout_weight="1"
-        android:background="#d3dff9" >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/background_item_main"
+                    android:gravity="right" >
 
-        <TextView
-            android:id="@+id/lable5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/icon_item5"
-            android:gravity="right"
-            android:text="نشریات - مقالات"
-            android:textColor="@color/transparent" />
+                    <TextView
+                        android:id="@+id/lable4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right"
+                        android:text="اشخاص حقیقی (استادکاران)"
+                        android:textColor="@color/transparent" />
+                </LinearLayout>
+            </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/icon_item5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:background="@drawable/ic_main_item5" />
-    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/main5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1" >
 
-    <RelativeLayout
-        android:id="@+id/relative_item6"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="1dp"
-        android:layout_weight="1"
-        android:background="#d3dff9" >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/background_item_main"
+                    android:gravity="right" >
 
-        <TextView
-            android:id="@+id/lable6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/icon_item6"
-            android:text="آگهی - تبلیغات"
-            android:textColor="@color/transparent" />
+                    <TextView
+                        android:id="@+id/lable5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right"
+                        android:text="نشریات - مقالات"
+                        android:textColor="@color/transparent" />
+                </LinearLayout>
+            </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/icon_item6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:background="@drawable/ic_main_item6" />
-    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/main6"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1" >
 
-    <RelativeLayout
-        android:id="@+id/relative_item7"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="1dp"
-        android:layout_weight="1"
-        android:background="#d3dff9" >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/background_item_main"
+                    android:gravity="right" >
 
-        <TextView
-            android:id="@+id/lable7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/icon_item7"
-            android:gravity="right"
-            android:text="تالار گفتگو"
-            android:textColor="@color/transparent" />
+                    <TextView
+                        android:id="@+id/lable6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right"
+                        android:text="آگهی - تبلیغات"
+                        android:textColor="@color/transparent" />
+                </LinearLayout>
+            </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/icon_item7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:background="@drawable/ic_main_item7" />
-    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/main7"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/background_item_main"
+                    android:gravity="right" >
+
+                    <TextView
+                        android:id="@+id/lable7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right"
+                        android:text="تالار گفتگو"
+                        android:textColor="@color/transparent" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:orientation="vertical"
+            android:weightSum="7" >
+
+            <RelativeLayout
+                android:id="@+id/relative_item1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/blank_background_item_main" >
+
+                <ImageView
+                    android:id="@+id/icon_item1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/phone2"
+                    android:visibility="visible" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_item2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/blank_background_item_main" >
+
+                <ImageView
+                    android:id="@+id/icon_item2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_home"
+                    android:visibility="visible" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_item3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/blank_background_item_main" >
+
+                <ImageView
+                    android:id="@+id/icon_item3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_main_item3"
+                    android:visibility="visible" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_item4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/blank_background_item_main" >
+
+                <ImageView
+                    android:id="@+id/icon_item4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_main_item5"
+                    android:visibility="visible" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_item5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/blank_background_item_main" >
+
+                <ImageView
+                    android:id="@+id/icon_item5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_main_item5"
+                    android:visibility="visible" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_item6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/blank_background_item_main" >
+
+                <ImageView
+                    android:id="@+id/icon_item6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_main_item6"
+                    android:visibility="visible" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_item7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/blank_background_item_main" >
+
+                <ImageView
+                    android:id="@+id/icon_item7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_main_item7"
+                    android:visibility="visible" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

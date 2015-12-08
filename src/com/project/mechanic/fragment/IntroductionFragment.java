@@ -78,8 +78,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 	ArrayList<CommentInObject> commentGroup, ReplyGroup;
 	ArrayList<Post> ArrayPosts;
 	Map<CommentInObject, List<CommentInObject>> mapCollection;
-	public RelativeLayout agency, service, sendSMS, addressRelative, emailRelative, profileLinear,
-			/* personPost, */ phone, cphone, email, map, shareBtn, followPage, EditPage;
+	public RelativeLayout agency, service, sendSMS, addressRelative, profileLinear, /* personPost, */ phone, cphone,
+			email, shareBtn, followPage, EditPage, WebsiteRelative;
 	public DialogcmtInobject dialog;
 	public LinearLayout /* AddLike, AddComment, */ headImageLinear, footerLinear, likePost, personPage;
 	public ImageButton Comment;
@@ -87,7 +87,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 	RelativeLayout.LayoutParams addressParams, emailParams, profileParams, followParams, shareParams, shareParams2;
 	DataBaseAdapter adapter;
 	TextView txtFax, txtAddress, txtPhone, txtCellphone, txtEmail, txtDesc, CountLikeIntroduction,
-			CountCommentIntroduction, namePage, countLikePost;
+			CountCommentIntroduction, namePage, countLikePost, txtWebsite, countPost;
 	ImageView headerImage, footerImage, profileImage, reaport;
 	ImageButton Facebook, Instagram, LinkedIn, Google, Site, Twitter, Pdf1, Pdf2, Pdf3, Pdf4;
 	Object object;
@@ -563,7 +563,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 					Bitmap b = BitmapFactory.decodeFile(PathImageProfile);
 
 					if (b != null)
-						profileImage.setImageBitmap(Utility.getRoundedCornerBitmap(b, 20));
+						profileImage.setImageBitmap(Utility.getclip(b));
 					else
 						profileImage.setBackgroundResource(R.drawable.no_img_profile);
 					adapter.updateObjectImage2ServerDate(ObjectID, serverDate);
@@ -631,13 +631,15 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		CountLikeIntroduction = (TextView) header.findViewById(R.id.countLikeIntroduction);
 		CountCommentIntroduction = (TextView) header.findViewById(R.id.numberOfCommentTopic);
 
+		txtWebsite = (TextView) header.findViewById(R.id.txtwebsite);
+		countPost = (TextView) header.findViewById(R.id.countPost);
 		// AddLike = (LinearLayout) header
 		// .findViewById(R.id.AddLikeIntroductionLinear);
 		// AddComment = (LinearLayout) header
 		// .findViewById(R.id.AddcommentIntroductionLinear);
 
 		addressRelative = (RelativeLayout) header.findViewById(R.id.addressRelative);
-		emailRelative = (RelativeLayout) header.findViewById(R.id.emailsRelative);
+		WebsiteRelative = (RelativeLayout) header.findViewById(R.id.personweb);
 
 		Facebook = (ImageButton) header.findViewById(R.id.nfacebook);
 		Instagram = (ImageButton) header.findViewById(R.id.ninstagram);
@@ -648,7 +650,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 		phone = (RelativeLayout) header.findViewById(R.id.fixedPhone);
 		cphone = (RelativeLayout) header.findViewById(R.id.personalMobile);
-		map = (RelativeLayout) header.findViewById(R.id.addressRelative);
 		email = (RelativeLayout) header.findViewById(R.id.emailsRelative);
 		shareBtn = (RelativeLayout) header.findViewById(R.id.b);
 
@@ -822,7 +823,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		addressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		txtAddress.setLayoutParams(addressParams);
 
-		emailParams = new RelativeLayout.LayoutParams(emailRelative.getLayoutParams());
+		emailParams = new RelativeLayout.LayoutParams(email.getLayoutParams());
 
 		emailParams.width = (int) (ut.getScreenwidth() / 2.5);
 		emailParams.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -959,6 +960,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 					String url = "http://" + object.getFacebook();
 					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.addToBackStack(null);
 					trans.commit();
 				}
 			}
@@ -973,6 +975,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.addToBackStack(null);
+
 					trans.commit();
 				}
 
@@ -989,6 +993,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.addToBackStack(null);
+
 					trans.commit();
 				}
 
@@ -1005,6 +1011,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.addToBackStack(null);
+
 					trans.commit();
 				}
 
@@ -1021,6 +1029,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.addToBackStack(null);
+
 					trans.commit();
 				}
 
@@ -1037,6 +1047,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.addToBackStack(null);
+
 					trans.commit();
 				}
 
@@ -1052,6 +1064,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.addToBackStack(null);
+
 					trans.commit();
 				}
 
@@ -1068,6 +1082,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.addToBackStack(null);
+
 					trans.commit();
 				}
 
@@ -1084,6 +1100,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.addToBackStack(null);
+
 					trans.commit();
 				}
 
@@ -1101,6 +1119,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.addToBackStack(null);
+
 					trans.commit();
 				}
 
@@ -1199,7 +1219,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 		});
 
-		map.setOnClickListener(new OnClickListener() {
+		addressRelative.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -1230,6 +1250,21 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 			}
 		});
 
+		WebsiteRelative.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				if (object.getSite() != null) {
+					String url = "http://" + object.getSite();
+					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new FragmentShowSite(url));
+					trans.addToBackStack(null);
+					trans.commit();
+				}
+
+			}
+		});
 	}
 
 	private void setonClickImage() {
@@ -1521,7 +1556,15 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		txtEmail.setText(object.getEmail());
 		txtAddress.setText(object.getAddress());
 		txtDesc.setText(object.getDescription());
+		if (object.getSite() != null && !object.getSite().equals("null"))
+			txtWebsite.setText(object.getSite());
 
+		else
+			txtWebsite.setText("");
+		
+		adapter.open();
+		countPost.setText(adapter.CountPostUser(object.getId())+"");
+		adapter.close();
 	}
 
 	private void showPeopleLikedBtn() {

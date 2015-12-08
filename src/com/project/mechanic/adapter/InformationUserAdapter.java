@@ -60,10 +60,8 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 	boolean isShowSettingBtn;
 	String name;
 
-	public InformationUserAdapter(Context context,
-			ArrayList<String> parentItems,
-			HashMap<String, List<PersonalData>> listDataChild,
-			String todayDate, Fragment fr, List<Integer> sizeType,
+	public InformationUserAdapter(Context context, ArrayList<String> parentItems,
+			HashMap<String, List<PersonalData>> listDataChild, String todayDate, Fragment fr, List<Integer> sizeType,
 			boolean isShowSettingBtn, String name) {
 
 		this.context = context;
@@ -102,8 +100,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		return listDataChild.get(parentItems.get(groupPosition)).get(
-				childPosition);
+		return listDataChild.get(parentItems.get(groupPosition)).get(childPosition);
 	}
 
 	@Override
@@ -118,27 +115,36 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public View getChildView(int groupPosition, final int childPosition,
-			boolean isLastChild, View convertView, ViewGroup parent) {
+	public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView,
+			ViewGroup parent) {
 
 		// if (convertView == null) {
-		LayoutInflater infalInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		if (("صفحات").equals(parentItems.get(groupPosition))) {
-			convertView = infalInflater.inflate(R.layout.row_personal_object,
-					null);
+			
+			if (sizeTypeItem.get(groupPosition) == 0) {
+
+				convertView = infalInflater.inflate(R.layout.row_search, null);
+
+				TextView txt = (TextView) convertView.findViewById(R.id.row_search_name);
+
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
+
+				// //////////
+
+				txt.setText(pd.getDateTicket());
+
+			}else{
+			convertView = infalInflater.inflate(R.layout.row_personal_object, null);
 
 			// update your views here
 
-			TextView namePage = (TextView) convertView
-					.findViewById(R.id.Rowobjecttxt);
+			TextView namePage = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
 
-			ImageView profileIco = (ImageView) convertView
-					.findViewById(R.id.icon_object);
+			ImageView profileIco = (ImageView) convertView.findViewById(R.id.icon_object);
 
-			ImageView report = (ImageView) convertView
-					.findViewById(R.id.reportImage);
+			ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
 
 			report.setOnClickListener(new OnClickListener() {
 
@@ -158,27 +164,23 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				}
 			});
 
-			FrameLayout rl = (FrameLayout) convertView
-					.findViewById(R.id.imageFrame);
-			FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
-					rl.getLayoutParams());
+			FrameLayout rl = (FrameLayout) convertView.findViewById(R.id.imageFrame);
+			FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(rl.getLayoutParams());
 
 			lp.width = (util.getScreenwidth() / 5);
 			lp.height = (util.getScreenwidth() / 5);
-			lp.setMargins(10, 10, 10,10);
-			
+			lp.setMargins(10, 10, 10, 10);
+
 			profileIco.setScaleType(ScaleType.FIT_XY);
-			
+
 			profileIco.setLayoutParams(lp);
-			
+
 			if (isShowSettingBtn == true) {
 				report.setVisibility(View.VISIBLE);
 			} else
 				report.setVisibility(View.GONE);
 
-			
-			final PersonalData pd = (PersonalData) getChild(groupPosition,
-					childPosition);
+			final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
 			String ImagePath = pd.getImagePathObject();
 
@@ -189,20 +191,18 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			namePage.setText(pd.getNameObject());
 
-			LinearLayout etebar = (LinearLayout) convertView
-					.findViewById(R.id.et); // modate baghimande
-			
+			LinearLayout etebar = (LinearLayout) convertView.findViewById(R.id.et); // modate
+																					// baghimande
+
 			etebar.setVisibility(View.GONE);
-			
-			
+
 			convertView.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View arg0) {
 
 					IntroductionFragment fragment = new IntroductionFragment();
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, fragment);
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(pd.getObjectId()));
@@ -213,25 +213,18 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				}
 			});
 
-		} else if (("آگهی ها").equals(parentItems.get(groupPosition))) {
-			convertView = infalInflater.inflate(R.layout.row_anad_personal,
-					null);
+		}} else if (("آگهی ها").equals(parentItems.get(groupPosition))) {
+			convertView = infalInflater.inflate(R.layout.row_anad_personal, null);
 
-			TextView txtdate = (TextView) convertView
-					.findViewById(R.id.text_favorite_desc);
-			TextView txtName = (TextView) convertView
-					.findViewById(R.id.row_favorite_title);
-			TextView txtDesc = (TextView) convertView
-					.findViewById(R.id.row_anad_txt2);
-			ImageView img2 = (ImageView) convertView
-					.findViewById(R.id.row_favorite_img);
+			TextView txtdate = (TextView) convertView.findViewById(R.id.text_favorite_desc);
+			TextView txtName = (TextView) convertView.findViewById(R.id.row_favorite_title);
+			TextView txtDesc = (TextView) convertView.findViewById(R.id.row_anad_txt2);
+			ImageView img2 = (ImageView) convertView.findViewById(R.id.row_favorite_img);
 
-			ProgressBar LoadingProgress = (ProgressBar) convertView
-					.findViewById(R.id.progressBar1);
+			ProgressBar LoadingProgress = (ProgressBar) convertView.findViewById(R.id.progressBar1);
 			LoadingProgress.setVisibility(View.GONE);
 
-			final PersonalData pd = (PersonalData) getChild(groupPosition,
-					childPosition);
+			final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
 			txtdate.setText(util.getPersianDate(pd.getDateTicket()));
 			txtName.setText(pd.getNameTicket());
@@ -244,15 +237,13 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			}
 
-			RelativeLayout llkj = (RelativeLayout) convertView
-					.findViewById(R.id.layoutmnb);
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-					llkj.getLayoutParams());
+			RelativeLayout llkj = (RelativeLayout) convertView.findViewById(R.id.layoutmnb);
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(llkj.getLayoutParams());
 			params.width = util.getScreenwidth() / 5;
 			params.height = util.getScreenwidth() / 5;
 			params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 			params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-			params.setMargins(10, 10, 10,10);
+			params.setMargins(10, 10, 10, 10);
 
 			String pathProfile = pd.getImagePathTicket();
 			Bitmap profileImage = BitmapFactory.decodeFile(pathProfile);
@@ -266,38 +257,37 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				img2.setImageResource(R.drawable.no_img_profile);
 				img2.setLayoutParams(params);
 			}
-//			String commitDate = pd.getDateTicket();
-//			int thisDay = 0;
-//			int TicketDay = Integer.valueOf(commitDate.substring(0, 8));
-//			if (todayDate != null && !todayDate.equals(""))
-//				thisDay = Integer.valueOf(todayDate.substring(0, 8));
-//			LinearLayout TicketBackground = (LinearLayout) convertView
-//					.findViewById(R.id.backgroundTicket);
+			// String commitDate = pd.getDateTicket();
+			// int thisDay = 0;
+			// int TicketDay = Integer.valueOf(commitDate.substring(0, 8));
+			// if (todayDate != null && !todayDate.equals(""))
+			// thisDay = Integer.valueOf(todayDate.substring(0, 8));
+			// LinearLayout TicketBackground = (LinearLayout) convertView
+			// .findViewById(R.id.backgroundTicket);
 
-//			if (thisDay <= TicketDay + pd.getDayTicket()) {
-//				TicketBackground.setBackgroundColor(Color.WHITE);
-				if (pd.getSeenBefore() > 0) {
-					txtName.setTextColor(Color.GRAY);
-					txtDesc.setTextColor(Color.GRAY);
-					txtdate.setTextColor(Color.GRAY);
-				}
-//
-//			} else {
-//				TicketBackground.setBackgroundResource(R.color.lightred);
-//
-//				if (pd.getSeenBefore() > 0) {
-//					txtName.setTextColor(Color.WHITE);
-//					txtDesc.setTextColor(Color.WHITE);
-//					txtdate.setTextColor(Color.WHITE);
-//
-//				}
-//			}
+			// if (thisDay <= TicketDay + pd.getDayTicket()) {
+			// TicketBackground.setBackgroundColor(Color.WHITE);
+			if (pd.getSeenBefore() > 0) {
+				txtName.setTextColor(Color.GRAY);
+				txtDesc.setTextColor(Color.GRAY);
+				txtdate.setTextColor(Color.GRAY);
+			}
+			//
+			// } else {
+			// TicketBackground.setBackgroundResource(R.color.lightred);
+			//
+			// if (pd.getSeenBefore() > 0) {
+			// txtName.setTextColor(Color.WHITE);
+			// txtDesc.setTextColor(Color.WHITE);
+			// txtdate.setTextColor(Color.WHITE);
+			//
+			// }
+			// }
 
 			txtName.setTypeface(util.SetFontCasablanca());
 			txtDesc.setTypeface(util.SetFontCasablanca());
 
-			ImageView reaport = (ImageView) convertView
-					.findViewById(R.id.reportImage);
+			ImageView reaport = (ImageView) convertView.findViewById(R.id.reportImage);
 			if (isShowSettingBtn == true) {
 				reaport.setVisibility(View.VISIBLE);
 			} else
@@ -308,8 +298,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				@Override
 				public void onClick(View v) {
 
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					ShowAdFragment fragment = new ShowAdFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(pd.getTicketId()));
@@ -362,25 +351,32 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			// update your views here
 		} else if (("مقالات").equals(parentItems.get(groupPosition))) {
-			convertView = infalInflater.inflate(R.layout.row_personal_froum,
-					null);
+			
+			if (sizeTypeItem.get(groupPosition) == 0) {
+
+				convertView = infalInflater.inflate(R.layout.row_search, null);
+
+				TextView txt = (TextView) convertView.findViewById(R.id.row_search_name);
+
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
+
+				// //////////
+
+				txt.setText(pd.getDateTicket());
+
+			}else{
+			convertView = infalInflater.inflate(R.layout.row_personal_froum, null);
 
 			// update your views here
 
-			final TextView txt1 = (TextView) convertView
-					.findViewById(R.id.rowtitlepaper);
-			TextView txt2 = (TextView) convertView
-					.findViewById(R.id.rowdescriptionpaper);
-			TextView txt3 = (TextView) convertView
-					.findViewById(R.id.authorname);
+			final TextView txt1 = (TextView) convertView.findViewById(R.id.rowtitlepaper);
+			TextView txt2 = (TextView) convertView.findViewById(R.id.rowdescriptionpaper);
+			TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
 
-			TextView DateView = (TextView) convertView
-					.findViewById(R.id.datetopicinFroum);
-			ImageView iconProile = (ImageView) convertView
-					.findViewById(R.id.iconfroumtitle);
+			TextView DateView = (TextView) convertView.findViewById(R.id.datetopicinFroum);
+			ImageView iconProile = (ImageView) convertView.findViewById(R.id.iconfroumtitle);
 
-			ImageView report = (ImageView) convertView
-					.findViewById(R.id.reportImage);
+			ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
 
 			if (isShowSettingBtn == true) {
 				report.setVisibility(View.VISIBLE);
@@ -405,8 +401,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				}
 			});
 
-			final PersonalData pd = (PersonalData) getChild(groupPosition,
-					childPosition);
+			final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
 			if (pd.getSeenBeforePaper() > 0) {
 				txt1.setTextColor(Color.GRAY);
@@ -418,15 +413,13 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			// Users x = adapter.getUserbyid(person1.getUserId());
 			// userId=x.getId();
-			LinearLayout rl = (LinearLayout) convertView
-					.findViewById(R.id.topicTitleFroum);
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-					rl.getLayoutParams());
+			LinearLayout rl = (LinearLayout) convertView.findViewById(R.id.topicTitleFroum);
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
 
 			lp.width = util.getScreenwidth() / 5;
-			lp.height = util.getScreenwidth() /5;
-			//lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(10, 10, 10,10);
+			lp.height = util.getScreenwidth() / 5;
+			// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp.setMargins(10, 10, 10, 10);
 			iconProile.setLayoutParams(lp);
 
 			Users u = null;
@@ -464,8 +457,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				@Override
 				public void onClick(View arg0) {
 
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					PaperFragment fragment = new PaperFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(pd.getPaperId()));
@@ -476,33 +468,39 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				}
 			});
 
-		} else if (("تالار گفتگو")
-				.equals(parentItems.get(groupPosition))) {
-			convertView = infalInflater.inflate(R.layout.row_personal_froum,
-					null);
+		}} else if (("تالار گفتگو").equals(parentItems.get(groupPosition))) {
+			
+			if (sizeTypeItem.get(groupPosition) == 0) {
+
+				convertView = infalInflater.inflate(R.layout.row_search, null);
+
+				TextView txt = (TextView) convertView.findViewById(R.id.row_search_name);
+
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
+
+				// //////////
+
+				txt.setText(pd.getDateTicket());
+
+			}else{
+			convertView = infalInflater.inflate(R.layout.row_personal_froum, null);
 
 			// update your views here
 
-			final TextView txt1 = (TextView) convertView
-					.findViewById(R.id.rowtitlepaper);
-			TextView txt2 = (TextView) convertView
-					.findViewById(R.id.rowdescriptionpaper);
-			TextView txt3 = (TextView) convertView
-					.findViewById(R.id.authorname);
+			final TextView txt1 = (TextView) convertView.findViewById(R.id.rowtitlepaper);
+			TextView txt2 = (TextView) convertView.findViewById(R.id.rowdescriptionpaper);
+			TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
 
-			TextView DateView = (TextView) convertView
-					.findViewById(R.id.datetopicinFroum);
-			ImageView iconProile = (ImageView) convertView
-					.findViewById(R.id.iconfroumtitle);
+			TextView DateView = (TextView) convertView.findViewById(R.id.datetopicinFroum);
+			ImageView iconProile = (ImageView) convertView.findViewById(R.id.iconfroumtitle);
 
-			ImageView report = (ImageView) convertView
-					.findViewById(R.id.reportImage);
+			ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
 			if (isShowSettingBtn == true) {
 				report.setVisibility(View.VISIBLE);
 			} else
 				report.setVisibility(View.GONE);
 			// end find view
-			
+
 			report.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -517,8 +515,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 					util.ShowPopupMenu(items, v);
 				}
 			});
-			final PersonalData pd = (PersonalData) getChild(groupPosition,
-					childPosition);
+			final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
 			if (pd.getSeenBeforeFroum() > 0) {
 				txt1.setTextColor(Color.GRAY);
@@ -530,15 +527,13 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			// Users x = adapter.getUserbyid(person1.getUserId());
 			// userId=x.getId();
-			LinearLayout rl = (LinearLayout) convertView
-					.findViewById(R.id.topicTitleFroum);
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-					rl.getLayoutParams());
+			LinearLayout rl = (LinearLayout) convertView.findViewById(R.id.topicTitleFroum);
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
 
 			lp.width = util.getScreenwidth() / 5;
 			lp.height = util.getScreenwidth() / 5;
-			//lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(10, 10, 10,10);
+			// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp.setMargins(10, 10, 10, 10);
 			iconProile.setLayoutParams(lp);
 
 			Users u = null;
@@ -576,8 +571,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				@Override
 				public void onClick(View arg0) {
 
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					FroumFragment fragment = new FroumFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(pd.getFroumId()));
@@ -589,22 +583,17 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				}
 			});
 
-		} else if (("مدیریت صفحات دنبال شده").equals(parentItems
-				.get(groupPosition))) {
-			convertView = infalInflater.inflate(R.layout.row_personal_object,
-					null);
+			}} else if (("مدیریت صفحات دنبال شده").equals(parentItems.get(groupPosition))) {
+			convertView = infalInflater.inflate(R.layout.row_personal_object, null);
 
 			// update your views here
 
-			RelativeLayout followLayout = (RelativeLayout) convertView
-					.findViewById(R.id.propertiesObject);
+			RelativeLayout followLayout = (RelativeLayout) convertView.findViewById(R.id.propertiesObject);
 			// visitLayout = (RelativeLayout)
 			// convertView.findViewById(R.id.relativeLayout2);
 
-			RelativeLayout.LayoutParams paramsfollow = new RelativeLayout.LayoutParams(
-					followLayout.getLayoutParams());
-			RelativeLayout.LayoutParams paramsVisit = new RelativeLayout.LayoutParams(
-					followLayout.getLayoutParams());
+			RelativeLayout.LayoutParams paramsfollow = new RelativeLayout.LayoutParams(followLayout.getLayoutParams());
+			RelativeLayout.LayoutParams paramsVisit = new RelativeLayout.LayoutParams(followLayout.getLayoutParams());
 
 			paramsfollow.width = (util.getScreenwidth());
 			paramsfollow.height = (util.getScreenwidth() / 4);
@@ -614,38 +603,30 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 			paramsVisit.height = (util.getScreenwidth() / 16);
 			paramsVisit.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
-			ImageView followIcon = (ImageView) convertView
-					.findViewById(R.id.iconNumberLike);
-			ImageView visitIcon = (ImageView) convertView
-					.findViewById(R.id.iconNumberVisit);
+			ImageView followIcon = (ImageView) convertView.findViewById(R.id.iconNumberLike);
+			ImageView visitIcon = (ImageView) convertView.findViewById(R.id.iconNumberVisit);
 
 			followLayout.setLayoutParams(paramsfollow);
 
 			followIcon.setLayoutParams(paramsVisit);
 			visitIcon.setLayoutParams(paramsVisit);
 
-			TextView namePage = (TextView) convertView
-					.findViewById(R.id.Rowobjecttxt);
+			TextView namePage = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
 
-			ImageView profileIco = (ImageView) convertView
-					.findViewById(R.id.icon_object);
+			ImageView profileIco = (ImageView) convertView.findViewById(R.id.icon_object);
 
-			ImageView report = (ImageView) convertView
-					.findViewById(R.id.reportImage);
+			ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
 
-			RelativeLayout rl = (RelativeLayout) convertView
-					.findViewById(R.id.main_icon_reply);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-					rl.getLayoutParams());
+			RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.main_icon_reply);
+			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
 			lp.width = (util.getScreenwidth() / 5);
 			lp.height = (util.getScreenwidth() / 5);
 			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(10, 10, 10,10);
+			lp.setMargins(10, 10, 10, 10);
 			profileIco.setLayoutParams(lp);
 
-			final PersonalData pd = (PersonalData) getChild(groupPosition,
-					childPosition);
+			final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
 			String ImagePath = pd.getImagePathObjectFollow();
 
@@ -656,11 +637,10 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			namePage.setText(pd.getNameFollowObject());
 
-			TextView baghiMandeh = (TextView) convertView
-					.findViewById(R.id.dayBaghiMandeh); // modate baghimande
+			TextView baghiMandeh = (TextView) convertView.findViewById(R.id.dayBaghiMandeh); // modate
+																								// baghimande
 
-			TextView lable1 = (TextView) convertView
-					.findViewById(R.id.lable_etebar);
+			TextView lable1 = (TextView) convertView.findViewById(R.id.lable_etebar);
 
 			TextView lable2 = (TextView) convertView.findViewById(R.id.lable2);
 
@@ -674,12 +654,10 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				public void onClick(View arg0) {
 
 					IntroductionFragment fragment = new IntroductionFragment();
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, fragment);
 					Bundle bundle = new Bundle();
-					bundle.putString("Id",
-							String.valueOf(pd.getObjectFollowId()));
+					bundle.putString("Id", String.valueOf(pd.getObjectFollowId()));
 					fragment.setArguments(bundle);
 					trans.addToBackStack(null);
 					trans.commit();
@@ -706,21 +684,16 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 							if (item.getItemId() == 0) {
 
 								adapter.open();
-								if (adapter.isUserLikeIntroductionPage(util
-										.getCurrentUser().getId(), pd
-										.getObjectFollowId(), 0)) {
+								if (adapter.isUserLikeIntroductionPage(util.getCurrentUser().getId(),
+										pd.getObjectFollowId(), 0)) {
 
-									adapter.deleteLikeIntroduction(util
-											.getCurrentUser().getId(), pd
-											.getObjectFollowId(), 0);
+									adapter.deleteLikeIntroduction(util.getCurrentUser().getId(),
+											pd.getObjectFollowId(), 0);
 									notifyDataSetChanged();
 
-									Toast.makeText(context,
-											" از لیست دنبال شوندگان حذف شد ", 0)
-											.show();
+									Toast.makeText(context, " از لیست دنبال شوندگان حذف شد ", 0).show();
 
-									((DisplayPersonalInformationFragment) fr)
-											.FillExpandListView();
+									((DisplayPersonalInformationFragment) fr).FillExpandListView();
 
 								}
 							}
@@ -762,47 +735,43 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public View getGroupView(final int groupPosition, final boolean isExpanded,
-			View convertView, ViewGroup parent) {
+	public View getGroupView(final int groupPosition, final boolean isExpanded, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			LayoutInflater infalInflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = infalInflater.inflate(R.layout.row_group_test, null);
 
 		}
 
 		final ExpandableListView mExpandableListView = (ExpandableListView) parent;
 
-		TextView titleGroup = (TextView) convertView
-				.findViewById(R.id.row_berand_txt);
-//		if (util.getCurrentUser() != null)
-			titleGroup.setText(parentItems.get(groupPosition) + " - " + name);
+		TextView titleGroup = (TextView) convertView.findViewById(R.id.row_berand_txt);
+		// if (util.getCurrentUser() != null)
+		titleGroup.setText(parentItems.get(groupPosition) + " - " + name);
 
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				if (sizeTypeItem.get(groupPosition) == 0) {
-					Toast.makeText(context, "عنوانی ثبت نشده است", 0).show();
-				} else {
+				// if (sizeTypeItem.get(groupPosition) == 0) {
+				// Toast.makeText(context, "عنوانی ثبت نشده است", 0).show();
+				// } else {
 
-					if (isExpanded) {
-						mExpandableListView.collapseGroup(groupPosition);
-						notifyDataSetChanged();
-
-					} else
-						mExpandableListView.expandGroup(groupPosition);
-
+				if (isExpanded) {
+					mExpandableListView.collapseGroup(groupPosition);
 					notifyDataSetChanged();
-				}
+
+				} else
+					mExpandableListView.expandGroup(groupPosition);
+
+				notifyDataSetChanged();
+				// }
 			}
 		});
 
 		return convertView;
 	}
 
-	public void onBackPressed(ExpandableListView ex, int position,
-			boolean isExpand) {
+	public void onBackPressed(ExpandableListView ex, int position, boolean isExpand) {
 
 		if (ex.getVisibility() == View.VISIBLE) {
 			ex.setVisibility(View.GONE);

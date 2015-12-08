@@ -19,7 +19,7 @@ public class DialogEditNet extends Dialog {
 	IntroductionEditFragment fragment;
 
 	String l1, l2, l3, l4, l5, l6;
-	EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle, inInstagram;
+	EditText inFacebook, inLinkedin, inTwiiter, inGoogle, inInstagram;
 
 	Button saveBtn;
 	Utility util;
@@ -42,7 +42,6 @@ public class DialogEditNet extends Dialog {
 		inFacebook = (EditText) findViewById(R.id.dialogm1);
 		inLinkedin = (EditText) findViewById(R.id.dialogm2);
 		inTwiiter = (EditText) findViewById(R.id.dialogm3);
-		inWebsite = (EditText) findViewById(R.id.dialogm4);
 		inGoogle = (EditText) findViewById(R.id.dialogm5);
 		inInstagram = (EditText) findViewById(R.id.dialogm6);
 
@@ -62,7 +61,6 @@ public class DialogEditNet extends Dialog {
 				l1 = inFacebook.getText().toString();
 				l2 = inLinkedin.getText().toString();
 				l3 = inTwiiter.getText().toString();
-				l4 = inWebsite.getText().toString();
 				l5 = inGoogle.getText().toString();
 				l6 = inInstagram.getText().toString();
 
@@ -73,7 +71,6 @@ public class DialogEditNet extends Dialog {
 					fragment.Dface = l1;
 					fragment.Dlink = l2;
 					fragment.Dtwt = l3;
-					fragment.Dweb = l4;
 					fragment.Dgoogle = l5;
 					fragment.Dinstagram = l6;
 

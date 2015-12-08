@@ -29,11 +29,11 @@ public class SlideMenuAdapter extends BaseAdapter {
 
 	Context context;
 
-	String[] slideitem = { "", "صفحه اصلی", "صفحه شخصی", "علاقه مندی ها",
-			"پشتیبانی آنلاین", "درباره ما", "خروج" };
-	int[] icon = { R.drawable.mechanical_logo, R.drawable.ic_home,
+	String[] slideitem = {/* "",*/ "صفحه اصلی", "صفحه شخصی", "علاقه مندی ها",
+			"پشتیبانی آنلاین", "درباره ما"/*, "خروج"*/ };
+	int[] icon = {/* R.drawable.mechanical_logo,*/ R.drawable.ic_home,
 			R.drawable.ic_personal, R.drawable.ic_bookmark, R.drawable.phone2,
-			R.drawable.ic_about_us, R.drawable.exit };
+			R.drawable.ic_about_us/*, R.drawable.exit*/ };
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -59,28 +59,32 @@ public class SlideMenuAdapter extends BaseAdapter {
 		iconImg.setImageResource(icon[position]);
 		//
 		// }
-
-		if (position == 0) {
-			RelativeLayout layout = (RelativeLayout) convertView
-					.findViewById(R.id.item_list_slide_menu);
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-					layout.getLayoutParams());
-			lp.width = 140;
-			lp.height = 140;
-			lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-			iconImg.setLayoutParams(lp);
-			Bitmap ttb;
-			if (u != null && u.getImage() != null) {
-
-				ttb = BitmapFactory.decodeByteArray(u.getImage(), 0,
-						u.getImage().length);
-				iconImg.setImageBitmap(ttb);
-			}
-			// iconImg.setImageResource(R.drawable.mechanical_logo);
-
-			nametxt.setVisibility(View.GONE);
-		}
+		
+		RelativeLayout layout = (RelativeLayout) convertView
+				.findViewById(R.id.item_list_slide_menu);
+		
+		
+		
+//		if (position == 0) {
+//	
+//			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+//					layout.getLayoutParams());
+//			lp.width = 140;
+//			lp.height = 140;
+//			lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+//
+//			iconImg.setLayoutParams(lp);
+//			Bitmap ttb;
+//			if (u != null && u.getImage() != null) {
+//
+//				ttb = BitmapFactory.decodeByteArray(u.getImage(), 0,
+//						u.getImage().length);
+//				iconImg.setImageBitmap(ttb);
+//			}
+//			// iconImg.setImageResource(R.drawable.mechanical_logo);
+//
+//			nametxt.setVisibility(View.GONE);
+//		}
 
 		nametxt.setText(slideitem[position]);
 
