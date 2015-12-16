@@ -32,7 +32,7 @@ public class UpdatingPersonalPage extends AsyncTask<String, Integer, String> {
 
 	@Override
 	protected String doInBackground(String... arg0) {
-		OPERATION_NAME = "getAll" + arg0[0];
+		OPERATION_NAME = "getAll" + arg0[0]+"ByUserId";
 		SOAP_ACTION += OPERATION_NAME;
 
 		try {
@@ -57,6 +57,13 @@ public class UpdatingPersonalPage extends AsyncTask<String, Integer, String> {
 			pi.setValue(arg0[3]);
 			pi.setType(Integer.class);
 			request.addProperty(pi);
+			
+			pi = new PropertyInfo();
+			pi.setName("userId");
+			pi.setValue(arg0[4]);
+			pi.setType(Integer.class);
+			request.addProperty(pi);
+
 
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 					SoapEnvelope.VER11);
