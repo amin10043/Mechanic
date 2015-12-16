@@ -78,7 +78,9 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 	int itemId, userIdsender;
 	List<String> menuItems = new ArrayList<String>();
-
+	
+	ImageView likeIcon;
+	
 	public PosttitleListadapter(Context context, int resource,
 			List<Post> objects, Fragment fragment) {
 		super(context, resource, objects);
@@ -111,7 +113,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				.findViewById(R.id.datetopicinFroum);
 		TextView PostID = (TextView) convertView.findViewById(R.id.PostID);
 		countLikePost = (TextView) convertView
-				.findViewById(R.id.countLikeInFroumTitle);
+				.findViewById(R.id.txtNumofLike_CmtFroum);
 		ImageView profileImg = (ImageView) convertView
 				.findViewById(R.id.iconfroumtitle);
 
@@ -121,12 +123,14 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		LinearLayout commenttitle = (LinearLayout) convertView
 				.findViewById(R.id.l1cm);
 		LikeTitle = (LinearLayout) convertView
-				.findViewById(R.id.liketitleTopic);
+				.findViewById(R.id.LikeTopicLinear);
 
 		LinearLayout LinearImageShow = (LinearLayout) convertView
 				.findViewById(R.id.LNImageShow);
 
 		report = (ImageView) convertView.findViewById(R.id.reportImage);
+		
+		likeIcon = (ImageView) convertView.findViewById(R.id.likeIcon);
 
 		Post person1 = mylist.get(position);
 
@@ -156,7 +160,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		if (!person1.getDescription().isEmpty()) {
 			if (person1.getDescription().length() > 100)
 				txt2.setText(person1.getDescription().substring(0, 100)
-						+ " ...");
+						+ "...");
 			else
 				txt2.setText(person1.getDescription());
 			txt2.setVisibility(View.VISIBLE);
@@ -209,13 +213,13 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		countLikePost.setText(adapter.LikeInPost_count(ItemId).toString());
 
 		if (CurrentUser == null) {
-			LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
+			likeIcon.setBackgroundResource(R.drawable.like_froum_off);
 
 		} else {
 			if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
-				LikeTitle.setBackgroundResource(R.drawable.like_froum);
+				likeIcon.setBackgroundResource(R.drawable.like_froum_on);
 			} else
-				LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
+				likeIcon.setBackgroundResource(R.drawable.like_froum_off);
 		}
 		adapter.close();
 
@@ -235,8 +239,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 			} else {
 				// byte[] byteImg = x.getImage();
 				Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
-				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						50));
+				profileImg.setImageBitmap(Utility.getclip(bmp));
 
 				profileImg.setLayoutParams(lp);
 			}
@@ -658,13 +661,13 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 			if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
 				adapter.deleteLikeFromPost(CurrentUser.getId(), postNumber);
 
-				likeTitle.setBackgroundResource(R.drawable.like_froum_off);
+				likeIcon.setBackgroundResource(R.drawable.like_froum_off);
 
 			} else {
 				adapter.insertLikeInPostToDb(id, CurrentUser.getId(),
 						postNumber, serverDate, 0);
 
-				likeTitle.setBackgroundResource(R.drawable.like_froum);
+				likeIcon.setBackgroundResource(R.drawable.like_froum_on);
 			}
 
 			TextView likeCountPost = (TextView) likeTitle

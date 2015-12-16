@@ -157,7 +157,7 @@
                         android:layout_marginRight="30dp"
                         android:layout_toLeftOf="@+id/copylable"
                         android:text="www.mechanical.ir/namePage"
-                        android:textColor="@color/transparent"
+                        android:textColor="@color/orginal_hard_blue_color"
                         android:textSize="15dp" />
 
                     <ImageView
@@ -319,7 +319,8 @@
                                     android:gravity="right"
                                     android:lineSpacingMultiplier="2"
                                     android:text="به منظور ارتقا وضعیت نمایش صفحه خود در بین سایر صفحات می توانید با افزایش ستاره های صفحه ، جایگاه خود را بهبود بخشید  "
-                                    android:textColor="@color/transparent" />
+                                                           android:textColor="@color/orginal_hard_blue_color"
+ />
 
                                 <RatingBar
                                     android:id="@+id/ratingBar1"

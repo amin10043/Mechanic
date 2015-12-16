@@ -65,14 +65,12 @@ import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.SavingImage;
 import com.project.mechanic.utility.Utility;
 
-public class EditPersonalFragment extends Fragment implements AsyncInterface,
-		SaveAsyncInterface {
-	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201,
-			CROPING_CODE = 301;
+public class EditPersonalFragment extends Fragment implements AsyncInterface, SaveAsyncInterface {
+	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201, CROPING_CODE = 301;
 	protected static final int RESULT_LOAD_IMAGE = 1;
 	DataBaseAdapter dbAdapter;
 	ImageView ImageProfile, imagecamera;
-	LinearLayout.LayoutParams lp2;
+	RelativeLayout.LayoutParams lp2;
 	Utility ut;
 	int id;
 	Saving saving;
@@ -101,21 +99,15 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 
 	EditText txtname;
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		final View view = inflater
-				.inflate(R.layout.fragment_editpersonal, null);
-		outPutFile = new File(
-				android.os.Environment.getExternalStorageDirectory(),
-				"temp.jpg");
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		final View view = inflater.inflate(R.layout.fragment_editpersonal, null);
+		outPutFile = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
 
 		context = getActivity();
 		dbAdapter = new DataBaseAdapter(getActivity());
 		ut = new Utility(getActivity());
-		final EditText txtaddress = (EditText) view
-				.findViewById(R.id.etxtaddress);
-		final EditText txtcellphone = (EditText) view
-				.findViewById(R.id.etxtcellphone);
+		final EditText txtaddress = (EditText) view.findViewById(R.id.etxtaddress);
+		final EditText txtcellphone = (EditText) view.findViewById(R.id.etxtcellphone);
 		final EditText txtphone = (EditText) view.findViewById(R.id.etxtphone);
 		final EditText txtemail = (EditText) view.findViewById(R.id.etxtemail);
 		txtname = (EditText) view.findViewById(R.id.etxtname);
@@ -123,18 +115,13 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		ImageProfile = (ImageView) view.findViewById(R.id.imgp);
 		Button btnregedit = (Button) view.findViewById(R.id.btnregedit);
 		Button btnback = (Button) view.findViewById(R.id.btnbackdisplay);
-		LinearLayout lin3 = (LinearLayout) view.findViewById(R.id.lin5);
+		RelativeLayout lin3 = (RelativeLayout) view.findViewById(R.id.lin5);
 
-		final CheckBox checkPhone = (CheckBox) view
-				.findViewById(R.id.showPhoneValue);
-		final CheckBox checkMobile = (CheckBox) view
-				.findViewById(R.id.showmobileValue);
-		final CheckBox checkEmail = (CheckBox) view
-				.findViewById(R.id.showEmailValue);
-		final CheckBox checkFax = (CheckBox) view
-				.findViewById(R.id.showFaxValue);
-		final CheckBox checkAddress = (CheckBox) view
-				.findViewById(R.id.showAddressValue);
+		final CheckBox checkPhone = (CheckBox) view.findViewById(R.id.showPhoneValue);
+		final CheckBox checkMobile = (CheckBox) view.findViewById(R.id.showmobileValue);
+		final CheckBox checkEmail = (CheckBox) view.findViewById(R.id.showEmailValue);
+		final CheckBox checkFax = (CheckBox) view.findViewById(R.id.showFaxValue);
+		final CheckBox checkAddress = (CheckBox) view.findViewById(R.id.showAddressValue);
 		Users u = ut.getCurrentUser();
 		gId = u.getId();
 		id = u.getId();
@@ -196,23 +183,17 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		String state = Environment.getExternalStorageState();
 
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			mFileTemp = new File(Environment.getExternalStorageDirectory(),
-					TEMP_PHOTO_FILE_NAME);
+			mFileTemp = new File(Environment.getExternalStorageDirectory(), TEMP_PHOTO_FILE_NAME);
 		} else {
-			mFileTemp = new File(getActivity().getFilesDir(),
-					TEMP_PHOTO_FILE_NAME);
+			mFileTemp = new File(getActivity().getFilesDir(), TEMP_PHOTO_FILE_NAME);
 		}
 
 		final Spinner daySpinner = (Spinner) view.findViewById(R.id.daySpinner);
-		final Spinner monthSpinner = (Spinner) view
-				.findViewById(R.id.monthSpinner);
-		final Spinner yearSpinner = (Spinner) view
-				.findViewById(R.id.yearSpinner);
+		final Spinner monthSpinner = (Spinner) view.findViewById(R.id.monthSpinner);
+		final Spinner yearSpinner = (Spinner) view.findViewById(R.id.yearSpinner);
 
-		final Spinner ostanSpinner = (Spinner) view
-				.findViewById(R.id.ostanSpinner);
-		final Spinner citySpinner = (Spinner) view
-				.findViewById(R.id.CitySpinner);
+		final Spinner ostanSpinner = (Spinner) view.findViewById(R.id.ostanSpinner);
+		final Spinner citySpinner = (Spinner) view.findViewById(R.id.CitySpinner);
 
 		final ArrayList<String> dayList = new ArrayList<String>();
 		final ArrayList<String> monthList = new ArrayList<String>();
@@ -228,35 +209,31 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 			yearList.add(i + "");
 		}
 
-		ArrayAdapter<String> dayadapter = new ArrayAdapter<String>(
-				getActivity(), android.R.layout.simple_spinner_item, dayList);
+		ArrayAdapter<String> dayadapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,
+				dayList);
 
-		dayadapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		dayadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		daySpinner.setAdapter(dayadapter);
 
-		ArrayAdapter<String> monthAdapter = new ArrayAdapter<String>(
-				getActivity(), android.R.layout.simple_spinner_item, monthList);
+		ArrayAdapter<String> monthAdapter = new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_spinner_item, monthList);
 
-		monthAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		monthSpinner.setAdapter(monthAdapter);
 
-		ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(
-				getActivity(), android.R.layout.simple_spinner_item, yearList);
+		ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,
+				yearList);
 
-		yearAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		yearSpinner.setAdapter(yearAdapter);
 
 		daySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
 				int day = (int) daySpinner.getSelectedItemId();
 
@@ -274,8 +251,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		monthSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
 				int month = (int) monthSpinner.getSelectedItemId();
 
@@ -292,8 +268,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		yearSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
 				int year = (int) yearSpinner.getSelectedItemId();
 
@@ -309,8 +284,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 
 		dbAdapter.open();
 
-		final ArrayList<Province> ostanList = dbAdapter
-				.getAllProvinceNoSorting();
+		final ArrayList<Province> ostanList = dbAdapter.getAllProvinceNoSorting();
 
 		dbAdapter.close();
 
@@ -323,11 +297,10 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 
 		}
 
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-				getActivity(), android.R.layout.simple_spinner_item, NameOstan);
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,
+				NameOstan);
 
-		dataAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		ostanSpinner.setAdapter(dataAdapter);
 		citySpinner.setEnabled(false);
@@ -335,8 +308,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		ostanSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
 				int w = (int) ostanSpinner.getSelectedItemId();
 
@@ -354,12 +326,10 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 					NameCity.add(cityList.get(i).getName());
 
 				}
-				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-						getActivity(), android.R.layout.simple_spinner_item,
-						NameCity);
+				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
+						android.R.layout.simple_spinner_item, NameCity);
 
-				dataAdapter
-						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 				citySpinner.setAdapter(dataAdapter);
 
@@ -375,8 +345,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		citySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
 				int m = (int) citySpinner.getSelectedItemId();
 
@@ -406,38 +375,33 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		daySpinner.setEnabled(false);
 		monthSpinner.setEnabled(false);
 		yearSpinner.setEnabled(false);
-		final CheckBox isActiveBirthDay = (CheckBox) view
-				.findViewById(R.id.checkBox1);
-		isActiveBirthDay
-				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		final CheckBox isActiveBirthDay = (CheckBox) view.findViewById(R.id.checkBox1);
+		isActiveBirthDay.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-					@Override
-					public void onCheckedChanged(CompoundButton arg0,
-							boolean arg1) {
-						if (isActiveBirthDay.isChecked()) {
-							daySpinner.setEnabled(true);
-							monthSpinner.setEnabled(true);
-							yearSpinner.setEnabled(true);
+			@Override
+			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				if (isActiveBirthDay.isChecked()) {
+					daySpinner.setEnabled(true);
+					monthSpinner.setEnabled(true);
+					yearSpinner.setEnabled(true);
 
-							flag = true;
-						} else {
-							daySpinner.setEnabled(false);
-							monthSpinner.setEnabled(false);
-							yearSpinner.setEnabled(false);
-							flag = false;
-						}
-					}
-				});
+					flag = true;
+				} else {
+					daySpinner.setEnabled(false);
+					monthSpinner.setEnabled(false);
+					yearSpinner.setEnabled(false);
+					flag = false;
+				}
+			}
+		});
 
 		if (cityIduser != 0) {
 			dbAdapter.open();
 
 			City cityUser = dbAdapter.getCityById(cityIduser);
-			Province provinceUser = dbAdapter.getProvinceById(cityUser
-					.getProvinceId());
+			Province provinceUser = dbAdapter.getProvinceById(cityUser.getProvinceId());
 			ostanSpinner.setSelection(provinceUser.getId() - 1);
-			cityList = dbAdapter.getCitysByProvinceIdNoSort(provinceUser
-					.getId());
+			cityList = dbAdapter.getCitysByProvinceIdNoSort(provinceUser.getId());
 			for (int i = 0; i < cityList.size(); i++) {
 
 				City c = cityList.get(i);
@@ -452,9 +416,10 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 			dbAdapter.close();
 		}
 
-		lp2 = new LinearLayout.LayoutParams(lin3.getLayoutParams());
+		lp2 = new RelativeLayout.LayoutParams(lin3.getLayoutParams());
 		lp2.height = ut.getScreenwidth() / 4;
 		lp2.width = ut.getScreenwidth() / 4;
+		lp2.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		lp2.setMargins(5, 5, 5, 5);
 		ImageProfile.setLayoutParams(lp2);
 		dbAdapter = new DataBaseAdapter(getActivity());
@@ -462,9 +427,19 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		if (ImagePath != null) {
 			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
 			if (bmp != null)
-				ImageProfile.setImageBitmap(bmp);
-		}
+				ImageProfile.setImageBitmap(Utility.getclip(bmp));
+		} else {
+			ImageProfile.setImageResource(R.drawable.no_img_profile);
+			ImageProfile.setBackgroundResource(R.drawable.circle_drawable);
 
+		}
+		ImageProfile.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				selectImageOption();
+			}
+		});
 		txtname.setText(u.getName());
 		txtemail.setText(u.getEmail());
 		txtcellphone.setText(u.getMobailenumber());
@@ -493,8 +468,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 
-				dialog = ProgressDialog.show(getActivity(), "در حال بروزرسانی",
-						"لطفا منتظر بمانید...");
+				dialog = ProgressDialog.show(getActivity(), "در حال بروزرسانی", "لطفا منتظر بمانید...");
 
 				Address = txtaddress.getText().toString();
 				Cellphone = txtcellphone.getText().toString();
@@ -531,8 +505,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 					infoItem = infoItem + viewItemArray[i];
 				}
 
-				if (checkPhone.isChecked() || checkMobile.isChecked()
-						|| checkEmail.isChecked() || checkFax.isChecked()
+				if (checkPhone.isChecked() || checkMobile.isChecked() || checkEmail.isChecked() || checkFax.isChecked()
 						|| checkAddress.isChecked())
 
 				{
@@ -560,9 +533,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 						saving.execute(params);
 					}
 				} else
-					Toast.makeText(getActivity(),
-							"حداقل یکی از موارد تماس باید انتخاب شده باشد", 0)
-							.show();
+					Toast.makeText(getActivity(), "حداقل یکی از موارد تماس باید انتخاب شده باشد", 0).show();
 			}
 
 		});
@@ -572,18 +543,14 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame,
-						new DisplayPersonalInformationFragment());
+				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new DisplayPersonalInformationFragment());
 				trans.commit();
 
 			}
 		});
-		RelativeLayout btnedit = (RelativeLayout) view
-				.findViewById(R.id.btnedit);
-		LinearLayout.LayoutParams lp3 = new LinearLayout.LayoutParams(
-				lin3.getLayoutParams());
+		RelativeLayout btnedit = (RelativeLayout) view.findViewById(R.id.btnedit);
+		RelativeLayout.LayoutParams lp3 = new RelativeLayout.LayoutParams(lin3.getLayoutParams());
 		lp3.width = ut.getScreenwidth() / 4;
 		lp3.setMargins(5, 5, 5, 5);
 
@@ -613,8 +580,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 
 					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-					File f = new File(android.os.Environment
-							.getExternalStorageDirectory(), "temp1.jpg");
+					File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp1.jpg");
 
 					mImageCaptureUri = Uri.fromFile(f);
 					intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
@@ -623,12 +589,10 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 
 				} else if (items[item].equals("از گالری تصاویر")) {
 
-					Intent i = new Intent(
-							Intent.ACTION_PICK,
+					Intent i = new Intent(Intent.ACTION_PICK,
 							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-					getActivity().startActivityFromFragment(
-							EditPersonalFragment.this, i, GALLERY_CODE);
+					getActivity().startActivityFromFragment(EditPersonalFragment.this, i, GALLERY_CODE);
 
 					// Intent intent = new Intent();
 					// intent.setType("image/*");
@@ -655,10 +619,8 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		if (requestCode == GALLERY_CODE) {
 			try {
 
-				InputStream inputStream = getActivity().getContentResolver()
-						.openInputStream(data.getData());
-				FileOutputStream fileOutputStream = new FileOutputStream(
-						mFileTemp);
+				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
 				Utility.copyStream(inputStream, fileOutputStream);
 				fileOutputStream.close();
 				inputStream.close();
@@ -667,8 +629,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 
 			} catch (Exception e) {
 
-				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
 			}
 			ImageProfile.setLayoutParams(lp2);
 
@@ -752,8 +713,8 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 		final Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setType("image/*");
 
-		ArrayList<ResolveInfo> list = (ArrayList<ResolveInfo>) getActivity()
-				.getPackageManager().queryIntentActivities(intent, 0);
+		ArrayList<ResolveInfo> list = (ArrayList<ResolveInfo>) getActivity().getPackageManager()
+				.queryIntentActivities(intent, 0);
 		int size = list.size();
 		if (size == 0) {
 			return;
@@ -769,54 +730,42 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				Intent i = new Intent(intent);
 				ResolveInfo res = list.get(0);
 
-				i.setComponent(new ComponentName(res.activityInfo.packageName,
-						res.activityInfo.name));
+				i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
 
 				startActivityForResult(i, CROPING_CODE);
 			} else {
 				for (ResolveInfo res : list) {
 					final CropingOption co = new CropingOption();
 					PackageManager pm = getActivity().getPackageManager();
-					co.title = pm
-							.getApplicationLabel(res.activityInfo.applicationInfo);
-					co.icon = pm
-							.getApplicationIcon(res.activityInfo.applicationInfo);
+					co.title = pm.getApplicationLabel(res.activityInfo.applicationInfo);
+					co.icon = pm.getApplicationIcon(res.activityInfo.applicationInfo);
 					co.appIntent = new Intent(intent);
-					co.appIntent
-							.setComponent(new ComponentName(
-									res.activityInfo.packageName,
-									res.activityInfo.name));
+					co.appIntent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
 					cropOptions.add(co);
 				}
 
-				CropingOptionAdapter adapter = new CropingOptionAdapter(
-						getActivity().getApplicationContext(), cropOptions);
+				CropingOptionAdapter adapter = new CropingOptionAdapter(getActivity().getApplicationContext(),
+						cropOptions);
 
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						getActivity());
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setTitle("Choose Croping App");
 				builder.setCancelable(false);
-				builder.setAdapter(adapter,
-						new DialogInterface.OnClickListener() {
+				builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
 
-							public void onClick(DialogInterface dialog,
-									int itemc) {
+					public void onClick(DialogInterface dialog, int itemc) {
 
-								final CropingOption co = new CropingOption();
-								co.appIntent = new Intent(intent);
-								startActivityForResult(
-										cropOptions.get(itemc).appIntent,
-										CROPING_CODE);
-							}
-						});
+						final CropingOption co = new CropingOption();
+						co.appIntent = new Intent(intent);
+						startActivityForResult(cropOptions.get(itemc).appIntent, CROPING_CODE);
+					}
+				});
 
 				builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
 					@Override
 					public void onCancel(DialogInterface dialog) {
 
 						if (mImageCaptureUri != null) {
-							getActivity().getContentResolver().delete(
-									mImageCaptureUri, null, null);
+							getActivity().getContentResolver().delete(mImageCaptureUri, null, null);
 							mImageCaptureUri = null;
 						}
 					}
@@ -837,8 +786,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 			int width_tmp = o.outWidth, height_tmp = o.outHeight;
 			int scale = 1;
 			while (true) {
-				if (width_tmp / 2 < REQUIRED_SIZE
-						|| height_tmp / 2 < REQUIRED_SIZE)
+				if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE)
 					break;
 				width_tmp /= 2;
 				height_tmp /= 2;
@@ -861,27 +809,22 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 
 			// id > 0 -> updating
 
-			Bitmap bitmap = ((BitmapDrawable) ImageProfile.getDrawable())
-					.getBitmap();
+			Bitmap bitmap = ((BitmapDrawable) ImageProfile.getDrawable()).getBitmap();
 
-			Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
-					bitmap.getHeight(), bitmap.getConfig());
+			Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
 			byte[] Image = null;
 
 			if (!emptyBitmap.equals(bitmap)) {
 				Image = Utility.CompressBitmap(bitmap);
 
 				dbAdapter.open();
-				dbAdapter.UpdateAllUserToDbNoPic(txtname.getText().toString(),
-						ut.getCurrentUser().getId(), Email, null, Phone,
-						Cellphone, Fax, Address, infoItem, birthday, cityId);
+				dbAdapter.UpdateAllUserToDbNoPic(txtname.getText().toString(), ut.getCurrentUser().getId(), Email, null,
+						Phone, Cellphone, Fax, Address, infoItem, birthday, cityId);
 
 				dbAdapter.close();
-				
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame,
-						new DisplayPersonalInformationFragment());
+
+				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new DisplayPersonalInformationFragment());
 				trans.commit();
 			}
 
@@ -897,15 +840,14 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 				saveImage.execute(imageParams);
 			}
 
-//			FragmentTransaction trans = getActivity()
-//					.getSupportFragmentManager().beginTransaction();
-//			trans.replace(R.id.content_frame,
-//					new DisplayPersonalInformationFragment());
-//			trans.commit();
+			// FragmentTransaction trans = getActivity()
+			// .getSupportFragmentManager().beginTransaction();
+			// trans.replace(R.id.content_frame,
+			// new DisplayPersonalInformationFragment());
+			// trans.commit();
 
 		} catch (NumberFormatException ex) {
-			Toast.makeText(context, "خطا در بروز رسانی", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(context, "خطا در بروز رسانی", Toast.LENGTH_SHORT).show();
 			if (dialog != null)
 				dialog.dismiss();
 		}
@@ -920,35 +862,30 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface,
 			try {
 				id = Integer.valueOf(output);
 
-				Bitmap bitmap = ((BitmapDrawable) ImageProfile.getDrawable())
-						.getBitmap();
+				Bitmap bitmap = ((BitmapDrawable) ImageProfile.getDrawable()).getBitmap();
 
-				Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
-						bitmap.getHeight(), bitmap.getConfig());
+				Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
 				byte[] Image = null;
 
 				if (!emptyBitmap.equals(bitmap)) {
 					Image = Utility.CompressBitmap(bitmap);
 				}
-				
-				ut.CreateFile(Image, gId, "Mechanical", "Users", "user",
-						"Users");	
-				
-//				dbAdapter.open();
-//				dbAdapter.UpdateAllUserToDb(gId, Email, null, Phone, Cellphone,
-//						Fax, Address, Image);
-//
-//				dbAdapter.close();
 
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame,
-						new DisplayPersonalInformationFragment());
+				ut.CreateFile(Image, gId, "Mechanical", "Users", "user", "Users");
+
+				// dbAdapter.open();
+				// dbAdapter.UpdateAllUserToDb(gId, Email, null, Phone,
+				// Cellphone,
+				// Fax, Address, Image);
+				//
+				// dbAdapter.close();
+
+				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new DisplayPersonalInformationFragment());
 				trans.commit();
 
 			} catch (NumberFormatException ex) {
-				Toast.makeText(context, "  خطا در بروز رسانی تصویر",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "  خطا در بروز رسانی تصویر", Toast.LENGTH_SHORT).show();
 
 				if (dialog != null)
 					dialog.dismiss();

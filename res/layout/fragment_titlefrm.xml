@@ -5,7 +5,7 @@
     xmlns:app1="http://schemas.android.com/apk/res/com.project.mechanic"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff" >
+    android:background="@color/orginal_light_gray_color" >
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"
@@ -14,10 +14,12 @@
 
         <ListView
             android:id="@+id/lstComment"
-            style="@style/second_item_style"
+            style="@style/seprateListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/re"
+            android:layout_margin="10dp"
+            android:background="@color/orginal_light_gray_color"
             android:fillViewport="true" >
         </ListView>
     </android.support.v4.widget.SwipeRefreshLayout>

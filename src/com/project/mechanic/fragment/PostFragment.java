@@ -250,7 +250,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			descriptiontxt.setVisibility(View.VISIBLE);
 		}
 		
-		LinearLayout layoutImg = (LinearLayout) header.findViewById(R.id.imageLayout);
+		RelativeLayout layoutImg = (RelativeLayout) header.findViewById(R.id.imageLayout);
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(layoutImg.getLayoutParams());
 		lp.width = util.getScreenwidth();
 		lp.height = util.getScreenwidth();

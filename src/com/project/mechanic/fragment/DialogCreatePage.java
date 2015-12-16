@@ -1,27 +1,25 @@
 package com.project.mechanic.fragment;
 
-import android.app.Dialog;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.view.Window;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.utility.Utility;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
 public class DialogCreatePage extends Dialog {
 	Context context;
 	Utility util;
-	ImageButton create;
+	Button create;
 	Users Currentser;
 	String message;
 	private DialogfroumTitle dialog;
@@ -42,7 +40,7 @@ public class DialogCreatePage extends Dialog {
 //				new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 		setContentView(R.layout.dialog_create);
-		create = (ImageButton) findViewById(R.id.createDialogPage);
+		create = (Button) findViewById(R.id.createDialogPage);
 		TextView main = (TextView) findViewById(R.id.textDay);
 		Currentser = util.getCurrentUser();
 

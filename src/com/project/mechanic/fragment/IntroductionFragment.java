@@ -6,9 +6,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import com.project.mechanic.R;
+import com.project.mechanic.Action.FloatingActionButton;
+import com.project.mechanic.adapter.ExpandIntroduction;
+import com.project.mechanic.adapter.PosttitleListadapter;
+import com.project.mechanic.entity.CommentInObject;
+import com.project.mechanic.entity.LikeInObject;
+import com.project.mechanic.entity.Object;
+import com.project.mechanic.entity.Post;
+import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.GetAllAsyncInterface;
+import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Deleting;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.Updating;
+import com.project.mechanic.service.UpdatingAllImage;
+import com.project.mechanic.utility.Utility;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +43,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -39,26 +55,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.project.mechanic.R;
-import com.project.mechanic.Action.FloatingActionButton;
-import com.project.mechanic.adapter.ExpandIntroduction;
-import com.project.mechanic.adapter.PosttitleListadapter;
-import com.project.mechanic.crop.Util;
-import com.project.mechanic.entity.CommentInObject;
-import com.project.mechanic.entity.LikeInObject;
-import com.project.mechanic.entity.Object;
-import com.project.mechanic.entity.Post;
-import com.project.mechanic.entity.Users;
-import com.project.mechanic.inter.AsyncInterface;
-import com.project.mechanic.inter.GetAllAsyncInterface;
-import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.service.Deleting;
-import com.project.mechanic.service.Saving;
-import com.project.mechanic.service.ServerDate;
-import com.project.mechanic.service.Updating;
-import com.project.mechanic.service.UpdatingAllImage;
-import com.project.mechanic.utility.Utility;
 
 public class IntroductionFragment extends Fragment implements AsyncInterface, GetAllAsyncInterface {
 
@@ -103,7 +99,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 	boolean flag, f1, f2, f3, LikeOrComment, commentClick = false;
 	List<String> menuItems;
 
-	ProgressBar loadingProgressHeader, loadingProgressProfile, loadingProgressFooter;
+	ProgressBar loadingProgressHeader/*, loadingProgressProfile*/, loadingProgressFooter;
 	Button ShowPostBtn, btnShowPost;
 	int userId, commentId = 0;
 
@@ -111,6 +107,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 	DialogpostTitleFragment MyDialog;
 	ImageView iconFollow;
+
+	TextView points;
+	TextView lableShare, lableEdit, lableFollow, lableNumFollow, lableNumView, lableNumPost , lableAgency , lableservice , lableSendBusinessCard;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -183,6 +182,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		// action click for poeple liked page btn
 		showPeopleLikedBtn();
 
+		setFont();
+
 		// for manage footer slide image agahi
 		// addComment();
 		ut.ShowFooterAgahi(getActivity(), false, 6);
@@ -239,7 +240,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 					ringProgressDialog.dismiss();
 
 				loadingProgressHeader.setVisibility(View.GONE);
-				loadingProgressProfile.setVisibility(View.GONE);
+//				loadingProgressProfile.setVisibility(View.GONE);
 				loadingProgressFooter.setVisibility(View.GONE);
 				return;
 			} else if (output.contains("-")) {
@@ -279,7 +280,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 				} else {
 					loadingProgressHeader.setVisibility(View.GONE);
-					loadingProgressProfile.setVisibility(View.GONE);
+//					loadingProgressProfile.setVisibility(View.GONE);
 					loadingProgressFooter.setVisibility(View.GONE);
 					Toast.makeText(getActivity(), "به روز رسانی تصاویر با موفقیت انجام شد", Toast.LENGTH_SHORT).show();
 				}
@@ -439,7 +440,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 					} else {
 						Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 						loadingProgressHeader.setVisibility(View.GONE);
-						loadingProgressProfile.setVisibility(View.GONE);
+//						loadingProgressProfile.setVisibility(View.GONE);
 						loadingProgressFooter.setVisibility(View.GONE);
 					}
 				}
@@ -448,7 +449,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 					Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
 					loadingProgressHeader.setVisibility(View.GONE);
-					loadingProgressProfile.setVisibility(View.GONE);
+//					loadingProgressProfile.setVisibility(View.GONE);
 					loadingProgressFooter.setVisibility(View.GONE);
 				}
 			}
@@ -591,7 +592,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 			Toast.makeText(getActivity(), "به روز رسانی تصاویر با موفقیت انجام شد", Toast.LENGTH_SHORT).show();
 
 			loadingProgressHeader.setVisibility(View.GONE);
-			loadingProgressProfile.setVisibility(View.GONE);
+//			loadingProgressProfile.setVisibility(View.GONE);
 			loadingProgressFooter.setVisibility(View.GONE);
 
 			adapter.close();
@@ -662,13 +663,15 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		EditPage = (RelativeLayout) header.findViewById(R.id.ImgbtnEdit);
 		likePost = (LinearLayout) header.findViewById(R.id.LikeTopicLinear);
 
+		points = (TextView) header.findViewById(R.id.points);
+
 		countLikePost = (TextView) header.findViewById(R.id.txtNumofLike_CmtFroum);
 		personPage = (LinearLayout) header.findViewById(R.id.countLiketext);
 		// personPost = (RelativeLayout) header.findViewById(R.id.countLikeqqz);
 
 		loadingProgressHeader = (ProgressBar) header.findViewById(R.id.header_progress_header);
 
-		loadingProgressProfile = (ProgressBar) header.findViewById(R.id.profile_progress_profile);
+//		loadingProgressProfile = (ProgressBar) header.findViewById(R.id.profile_progress_profile);
 		loadingProgressFooter = (ProgressBar) header.findViewById(R.id.footer_progress_footer);
 
 		followPage = (RelativeLayout) header.findViewById(R.id.follow_follow);
@@ -677,6 +680,20 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		action = (FloatingActionButton) Posts.findViewById(R.id.fab);
 
 		iconFollow = (ImageView) header.findViewById(R.id.imageiconfollow);
+
+		lableShare = (TextView) header.findViewById(R.id.tst);
+		lableEdit = (TextView) header.findViewById(R.id.labb1);
+		lableFollow = (TextView) header.findViewById(R.id.labbbb1);
+
+		lableNumFollow = (TextView) header.findViewById(R.id.lablelablefollow);
+		lableNumView = (TextView) header.findViewById(R.id.lableviewlable);
+		lableNumPost = (TextView) header.findViewById(R.id.lablematlab);
+		
+		lableAgency = (TextView) header.findViewById(R.id.textView12);
+		lableservice = (TextView) header.findViewById(R.id.textView13);
+		lableSendBusinessCard = (TextView)header.findViewById(R.id.dialog_phone);
+		
+
 	}
 
 	// private void fillExpandListViewCommnet() {
@@ -1561,10 +1578,11 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 		else
 			txtWebsite.setText("");
-		
+
 		adapter.open();
-		countPost.setText(adapter.CountPostUser(object.getId())+"");
+		countPost.setText(adapter.CountPostUser(object.getId()) + "");
 		adapter.close();
+
 	}
 
 	private void showPeopleLikedBtn() {
@@ -1626,7 +1644,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		}
 
 		loadingProgressHeader.setVisibility(View.VISIBLE);
-		loadingProgressProfile.setVisibility(View.VISIBLE);
+//		loadingProgressProfile.setVisibility(View.VISIBLE);
 		loadingProgressFooter.setVisibility(View.VISIBLE);
 	}
 
@@ -1660,6 +1678,27 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		}
 	}
 
+	private void setFont() {
+
+		lableShare.setTypeface(ut.SetFontCasablanca());
+		lableEdit.setTypeface(ut.SetFontCasablanca());
+
+		namePage.setTypeface(ut.SetFontCasablanca());
+		lableFollow.setTypeface(ut.SetFontCasablanca());
+
+		lableNumFollow.setTypeface(ut.SetFontCasablanca());
+
+		lableNumView.setTypeface(ut.SetFontCasablanca());
+		lableNumPost.setTypeface(ut.SetFontCasablanca());
+		
+		lableAgency.setTypeface(ut.SetFontCasablanca());
+		lableservice.setTypeface(ut.SetFontCasablanca());
+		
+		lableSendBusinessCard.setTypeface(ut.SetFontCasablanca());
+		 
+		txtDesc.setTypeface(ut.SetFontIranSans());
+
+	}
 	// private void addComment() {
 	// ImageView send = ut.ShowFooterAgahi(getActivity(), false, 6);
 

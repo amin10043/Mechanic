@@ -193,8 +193,8 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 		List<String> dateTime = util.spilitDateTime(ddd);
 		dateTopic.setText(dateTime.get(0));
 		time.setText(dateTime.get(1));
-		// titletxt.setTypeface(util.SetFontCasablanca());
-		// descriptiontxt.setTypeface(util.SetFontCasablanca());
+		 titletxt.setTypeface(util.SetFontCasablanca());
+		 descriptiontxt.setTypeface(util.SetFontIranSans());
 
 		profileImg.setOnClickListener(new View.OnClickListener() {
 

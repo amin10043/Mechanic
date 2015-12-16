@@ -44,12 +44,10 @@ public class WelcomeScreen extends Activity {
 	// private ImageButton btnNext, btnExit, btnins1, btnint1, btngp1, btnfb1,
 	// btntw1, btnlink1;
 
-	LinearLayout row1, row2, row3, row4, row5, row6, row7, row8, row9, row10,
-			row_Displacement, row_network;
-	ImageButton img1, img2, img3, img4, img5, img6, img7, img8, img9, img10,
-			img11, img12, img13, img14, img15, img16, img17, img18, img19,
-			img20, img21, img22, img23, img24, img25, img26, img27, img28,
-			img29, img30, next_btn, pre_btn, i1, i2, i3, i4, i5, i6;
+	LinearLayout row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row_Displacement, row_network;
+	ImageButton img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16,
+			img17, img18, img19, img20, img21, img22, img23, img24, img25, img26, img27, img28, img29, img30, next_btn,
+			pre_btn, i1, i2, i3, i4, i5, i6;
 	private int column = 3;
 	int gridePadding = 1;
 	private int columnWidth;
@@ -96,6 +94,7 @@ public class WelcomeScreen extends Activity {
 		Adding();
 		setParams();
 		clickItem();
+		setFont();
 
 		verticalOuterLayout = (LinearLayout) findViewById(R.id.vertical_outer_layout_id);
 		verticalScrollview = (ScrollView) findViewById(R.id.vertical_scrollview_id);
@@ -104,8 +103,7 @@ public class WelcomeScreen extends Activity {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void onGlobalLayout() {
-				verticalOuterLayout.getViewTreeObserver()
-						.removeGlobalOnLayoutListener(this);
+				verticalOuterLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 				getScrollMaxAmount();
 				startAutoScrolling();
 			}
@@ -118,8 +116,7 @@ public class WelcomeScreen extends Activity {
 	@SuppressLint("NewApi")
 	public int getScreenWidth() {
 		int columnWidth;
-		WindowManager wm = (WindowManager) this
-				.getSystemService(Context.WINDOW_SERVICE);
+		WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 
 		final Point point = new Point();
@@ -416,8 +413,7 @@ public class WelcomeScreen extends Activity {
 
 	private void setParams() {
 
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-				row1.getLayoutParams());
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(row1.getLayoutParams());
 		lp.width = columnWidth;
 		lp.height = columnWidth;
 		lp.setMargins(1, 1, 1, 1);
@@ -462,8 +458,7 @@ public class WelcomeScreen extends Activity {
 		img29.setLayoutParams(lp);
 		img30.setLayoutParams(lp);
 
-		LinearLayout.LayoutParams ip = new LinearLayout.LayoutParams(
-				row_Displacement.getLayoutParams());
+		LinearLayout.LayoutParams ip = new LinearLayout.LayoutParams(row_Displacement.getLayoutParams());
 		ip.width = LinearLayout.LayoutParams.MATCH_PARENT;
 		ip.setMargins(2, 2, 2, 2);
 		ip.gravity = Gravity.CENTER_HORIZONTAL;
@@ -471,8 +466,7 @@ public class WelcomeScreen extends Activity {
 		row_Displacement.setLayoutParams(ip);
 		// row_network.setLayoutParams(ip);
 
-		LinearLayout.LayoutParams dd = new LinearLayout.LayoutParams(
-				row1.getLayoutParams());
+		LinearLayout.LayoutParams dd = new LinearLayout.LayoutParams(row1.getLayoutParams());
 
 		dd.width = 3 * columnWidth / 2;
 		dd.height = columnWidth / 2;
@@ -480,8 +474,7 @@ public class WelcomeScreen extends Activity {
 		next_btn.setLayoutParams(dd);
 		pre_btn.setLayoutParams(dd);
 
-		LinearLayout.LayoutParams np = new LinearLayout.LayoutParams(
-				row1.getLayoutParams());
+		LinearLayout.LayoutParams np = new LinearLayout.LayoutParams(row1.getLayoutParams());
 		np.height = columnWidth / 2;
 		np.width = 3 * (columnWidth - 2) / 6;
 
@@ -526,19 +519,15 @@ public class WelcomeScreen extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				new AlertDialog.Builder(WelcomeScreen.this)
-						.setTitle("خروج از برنامه")
-						.setMessage("آیا از خروج اطمینان دارید؟")
-						.setNegativeButton("خیر", null)
-						.setPositiveButton("بله",
-								new DialogInterface.OnClickListener() {
+				new AlertDialog.Builder(WelcomeScreen.this).setTitle("خروج از برنامه")
+						.setMessage("آیا از خروج اطمینان دارید؟").setNegativeButton("خیر", null)
+						.setPositiveButton("بله", new DialogInterface.OnClickListener() {
 
-									public void onClick(DialogInterface arg0,
-											int arg1) {
-										finish();
-										System.exit(0);
-									}
-								}).create().show();
+					public void onClick(DialogInterface arg0, int arg1) {
+						finish();
+						System.exit(0);
+					}
+				}).create().show();
 
 			}
 		});
@@ -597,9 +586,8 @@ public class WelcomeScreen extends Activity {
 	}
 
 	public Animation scaleFaceUpAnimation() {
-		Animation scaleFace = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f,
-				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-				0.5f);
+		Animation scaleFace = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
 		scaleFace.setDuration(500);
 		scaleFace.setFillAfter(true);
 		scaleFace.setInterpolator(new AccelerateInterpolator());
@@ -652,9 +640,8 @@ public class WelcomeScreen extends Activity {
 	};
 
 	public Animation scaleFaceDownAnimation(int duration) {
-		Animation scaleFace = new ScaleAnimation(1.2f, 1.0f, 1.2f, 1.0f,
-				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-				0.5f);
+		Animation scaleFace = new ScaleAnimation(1.2f, 1.0f, 1.2f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
 		scaleFace.setDuration(duration);
 		scaleFace.setFillAfter(true);
 		scaleFace.setInterpolator(new AccelerateInterpolator());
@@ -720,4 +707,11 @@ public class WelcomeScreen extends Activity {
 
 		Toast.makeText(this, "LOW MEMORY1", Toast.LENGTH_SHORT).show();
 	}
+
+	public void setFont() {
+		TextView lableEnter = (TextView) findViewById(R.id.labletxt);
+		lableEnter.setTypeface(util.SetFontCasablanca());
+
+	}
+
 }

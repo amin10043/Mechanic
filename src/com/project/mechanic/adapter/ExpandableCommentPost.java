@@ -125,8 +125,8 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 
 		lp.width = util.getScreenwidth() / 7;
 		lp.height = util.getScreenwidth() / 7;
-		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		lp.setMargins(5, 5, 5, 5);
+		//lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		//lp.setMargins(5, 5, 5, 5);
 		ReplyerPic.setLayoutParams(lp);
 
 		if (y.getImagePath() == null) {
@@ -142,7 +142,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 			// Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
 			// byteImageProfile.length);
 
-			ReplyerPic.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
+			ReplyerPic.setImageBitmap(Utility.getclip(bmp));
 
 			ReplyerPic.setLayoutParams(lp);
 
@@ -285,21 +285,21 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 		Currentuser = util.getCurrentUser();
 
 		if (Currentuser == null) {
-			imglikeComment.setImageResource((R.drawable.positive_off));
-			imgdislikeComment.setImageResource((R.drawable.negative_off));
+			imglikeComment.setBackgroundResource((R.drawable.positive_off));
+			imgdislikeComment.setBackgroundResource((R.drawable.negative_off));
 		} else {
 			if (adapter.isUserLikedComment(Currentuser.getId(),
 					comment.getId(), 1)) {
-				imglikeComment.setImageResource((R.drawable.positive));
+				imglikeComment.setBackgroundResource((R.drawable.positive));
 			} else {
-				imglikeComment.setImageResource((R.drawable.positive_off));
+				imglikeComment.setBackgroundResource((R.drawable.positive_off));
 
 			}
 			if (adapter.isUserLikedComment(Currentuser.getId(),
 					comment.getId(), 0)) {
-				imgdislikeComment.setImageResource((R.drawable.negative));
+				imgdislikeComment.setBackgroundResource((R.drawable.negative));
 			} else {
-				imgdislikeComment.setImageResource((R.drawable.negative_off));
+				imgdislikeComment.setBackgroundResource((R.drawable.negative_off));
 
 			}
 
@@ -338,8 +338,8 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements
 
 		lp.width = util.getScreenwidth() / 7;
 		lp.height = util.getScreenwidth() / 7;
-		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		lp.setMargins(5, 5, 5, 5);
+		//lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		//lp.setMargins(5, 5, 5, 5);
 		profileImage.setLayoutParams(lp);
 		profileImage.setOnClickListener(new View.OnClickListener() {
 

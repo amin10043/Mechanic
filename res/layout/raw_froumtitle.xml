@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="right"
-    android:background="#fff" >
+    android:layout_margin="10dp"
+    android:background="@color/white" >
 
     <RelativeLayout
         android:id="@+id/topicTitleFroum"
@@ -23,36 +24,28 @@
             android:src="@drawable/no_img_profile" />
 
         <LinearLayout
-            android:id="@+id/nameLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/iconfroumtitle"
-            android:layout_below="@+id/iconfroumtitle"
-            android:layout_marginTop="30dp"
-            android:gravity="right" >
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/iconfroumtitle"
+            android:gravity="right|center_vertical"
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/authorname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:gravity="right"
                 android:text="author"
                 android:textColor="@color/transparent" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/iconfroumtitle"
-            android:gravity="right"
-            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/rowtitlepaper"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="34dp"
+                android:layout_marginTop="2dp"
                 android:gravity="right"
                 android:hint=" "
                 android:text="title"
@@ -62,9 +55,10 @@
                 android:id="@+id/rowdescriptionpaper"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="1dp"
                 android:gravity="right"
-                android:maxLines="2"
+                android:singleLine="true"
                 android:text="text description"
                 android:textColor="@color/transparent" />
         </LinearLayout>
@@ -76,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/topicTitleFroum"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="5dp" >
@@ -96,7 +91,7 @@
             android:layout_marginLeft="2dp"
             android:gravity="bottom"
             android:text="123"
-            android:textColor="@color/transparent" />
+            android:textColor="@color/orginal_hard_blue_color" />
 
         <LinearLayout
             android:id="@+id/l1cm"
@@ -115,13 +110,13 @@
             android:layout_marginLeft="2dp"
             android:gravity="center"
             android:text="456"
-            android:textColor="@color/transparent" />
+            android:textColor="@color/orginal_hard_blue_color" />
 
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/numvv" />
+            android:background="@drawable/numvvred" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -129,7 +124,7 @@
             android:layout_marginLeft="2dp"
             android:gravity="center"
             android:text="789"
-            android:textColor="@color/transparent" />
+            android:textColor="@color/orginal_hard_blue_color" />
     </LinearLayout>
 
     <LinearLayout

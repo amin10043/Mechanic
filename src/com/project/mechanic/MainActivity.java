@@ -189,10 +189,10 @@ public class MainActivity extends FragmentActivity {
 		final ImageButton iBtnMenu = (ImageButton) findViewById(R.id.iBtnMenu);
 		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
 
-		final Animation animation1 = AnimationUtils.loadAnimation(
-				getApplicationContext(), R.anim.rotate_animation);
-		final Animation animation2 = AnimationUtils.loadAnimation(
-				getApplicationContext(), R.anim.rotate_animation_back);
+//		final Animation animation1 = AnimationUtils.loadAnimation(
+//				getApplicationContext(), R.anim.rotate_animation);
+//		final Animation animation2 = AnimationUtils.loadAnimation(
+//				getApplicationContext(), R.anim.rotate_animation_back);
 
 		// final RotateAnimation animation1 = new RotateAnimation(0.0f, -90.0f,
 		// Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT,
@@ -246,12 +246,12 @@ public class MainActivity extends FragmentActivity {
 		R.string.app_name /* "close drawer" description */) {
 
 			public void onDrawerClosed(View view) {
-				iBtnMenu.startAnimation(animation2);
+//				iBtnMenu.startAnimation(animation2);
 
 			}
 
 			public void onDrawerOpened(View drawerView) {
-				iBtnMenu.startAnimation(animation1);
+//				iBtnMenu.startAnimation(animation1);
 
 			}
 

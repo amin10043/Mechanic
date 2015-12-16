@@ -50,8 +50,7 @@ import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 @SuppressLint("ResourceAsColor")
-public class AnadListAdapter extends ArrayAdapter<Ticket> implements
-		AsyncInterface {
+public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterface {
 
 	Context context;
 	List<Ticket> list;
@@ -75,9 +74,8 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 	ProgressDialog ringProgressDialog;
 	int ticketTypeId;
 
-	public AnadListAdapter(Context context, int resource, List<Ticket> objact,
-			int ProvinceId, Fragment fragment, boolean IsShow, String DateTime,
-			int Type, int ticketTypeId) {
+	public AnadListAdapter(Context context, int resource, List<Ticket> objact, int ProvinceId, Fragment fragment,
+			boolean IsShow, String DateTime, int Type, int ticketTypeId) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -99,29 +97,30 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_anad, parent, false);
 
-		TextView txtdate = (TextView) convertView
-				.findViewById(R.id.text_favorite_desc);
-		final TextView txtName = (TextView) convertView
-				.findViewById(R.id.row_favorite_title);
-		TextView txtDesc = (TextView) convertView
-				.findViewById(R.id.row_anad_txt2);
-		ImageView img2 = (ImageView) convertView
-				.findViewById(R.id.row_favorite_img);
+		TextView txtdate = (TextView) convertView.findViewById(R.id.text_favorite_desc);
+		final TextView txtName = (TextView) convertView.findViewById(R.id.row_favorite_title);
+		TextView txtDesc = (TextView) convertView.findViewById(R.id.row_anad_txt2);
+		ImageView img2 = (ImageView) convertView.findViewById(R.id.row_favorite_img);
 
-		LoadingProgress = (ProgressBar) convertView
-				.findViewById(R.id.progressBar1);
+		LoadingProgress = (ProgressBar) convertView.findViewById(R.id.progressBar1);
 		if (!list.isEmpty())
 			tempItem = list.get(position);
 		txtdate.setText(util.getPersianDate(tempItem.getDate()));
 		txtName.setText(tempItem.getTitle());
-		if (tempItem.getDesc() != null && !tempItem.getDesc().equals("null"))
-			txtDesc.setText(tempItem.getDesc() + " ... ");
-		// byte[] bitmapbyte = tempItem.getImage();
+		if (tempItem.getDesc() != null && !tempItem.getDesc().equals("null")) {
+			if (tempItem.getDesc().length() > 25)
+				txtDesc.setText(tempItem.getDesc().substring(0, 25) + " ...");
+			else
+				txtDesc.setText(tempItem.getDesc());
+
+		} else {
+			txtDesc.setVisibility(View.GONE);;
+
+		}
 		if (tempItem.getSeenBefore() > 0) {
 			txtName.setTextColor(Color.GRAY);
 			txtDesc.setTextColor(Color.GRAY);
@@ -129,16 +128,14 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 
 		}
 
-		FrameLayout llkj = (FrameLayout) convertView
-				.findViewById(R.id.imageFrame);
+		FrameLayout llkj = (FrameLayout) convertView.findViewById(R.id.imageFrame);
 
-		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-				llkj.getLayoutParams());
-		
+		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(llkj.getLayoutParams());
+
 		layoutParams.width = util.getScreenwidth() / 5;
 		layoutParams.height = util.getScreenwidth() / 5;
-		//layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		//layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		// layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		// layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		layoutParams.setMargins(10, 10, 10, 10);
 
 		String pathProfile = tempItem.getImagePath();
@@ -146,7 +143,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 
 		if (profileImage != null) {
 
-			img2.setImageBitmap(Utility.getRoundedCornerBitmap(profileImage, 20));
+			img2.setImageBitmap(Utility.getclip(profileImage));
 			img2.setLayoutParams(layoutParams);
 			LoadingProgress.setVisibility(View.GONE);
 
@@ -162,8 +159,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 		int TicketDay = Integer.valueOf(commitDate.substring(0, 8));
 		if (DateTime != null && !DateTime.equals(""))
 			thisDay = Integer.valueOf(DateTime.substring(0, 8));
-		RelativeLayout TicketBackground = (RelativeLayout) convertView
-				.findViewById(R.id.backgroundTicket);
+		RelativeLayout TicketBackground = (RelativeLayout) convertView.findViewById(R.id.backgroundTicket);
 
 		if (thisDay <= TicketDay + tempItem.getDay()) {
 			TicketBackground.setBackgroundColor(Color.WHITE);
@@ -171,6 +167,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 				txtName.setTextColor(Color.GRAY);
 				txtDesc.setTextColor(Color.GRAY);
 				txtdate.setTextColor(Color.GRAY);
+
 			}
 
 		} else {
@@ -190,8 +187,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 		txtName.setTypeface(util.SetFontCasablanca());
 		txtDesc.setTypeface(util.SetFontCasablanca());
 
-		ImageView reaport = (ImageView) convertView
-				.findViewById(R.id.reportImage);
+		ImageView reaport = (ImageView) convertView.findViewById(R.id.reportImage);
 
 		reaport.setOnClickListener(new OnClickListener() {
 
@@ -199,8 +195,8 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 			public void onClick(View v) {
 
 				RelativeLayout parentlayout = (RelativeLayout) v.getParent();
-//				TextView txtName = (TextView) parentlayout
-//						.findViewById(R.id.row_favorite_title);
+				// TextView txtName = (TextView) parentlayout
+				// .findViewById(R.id.row_favorite_title);
 				String item = txtName.getText().toString();
 				for (Ticket Ticket : list) {
 
@@ -251,14 +247,12 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 							if (util.getCurrentUser() != null)
 								util.sendMessage("Ticket");
 							else
-								Toast.makeText(context, "ابتدا باید وارد شوید",
-										0).show();
+								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
 
 						if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
 							adapter.open();
-							addToFavorite(util.getCurrentUser().getId(), 3,
-									itemId);
+							addToFavorite(util.getCurrentUser().getId(), 3, itemId);
 							adapter.close();
 						}
 						if (item.getTitle().equals("کپی")) {
@@ -269,17 +263,14 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 						if (item.getTitle().equals("گزارش تخلف")) {
 
 							if (util.getCurrentUser() != null)
-								util.reportAbuseTicket(userIdsender, itemId,
-										content, ticketTypeId, ProvinceId);
+								util.reportAbuseTicket(userIdsender, itemId, content, ticketTypeId, ProvinceId);
 							// util.reportAbuse(userIdsender, 3, itemId,
 							// content, 0);
 							else
-								Toast.makeText(context, "ابتدا باید وارد شوید",
-										0).show();
+								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
 						if (item.getTitle().equals("حذف")) {
-							if (util.getCurrentUser() != null
-									&& util.getCurrentUser().getId() == userIdsender)
+							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender)
 								deleteItems(itemId);
 							else {
 
@@ -303,8 +294,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 			public void onClick(View v) {
 
 				RelativeLayout parentlayout = (RelativeLayout) v;
-				TextView txtName = (TextView) parentlayout
-						.findViewById(R.id.row_favorite_title);
+				TextView txtName = (TextView) parentlayout.findViewById(R.id.row_favorite_title);
 				String item = txtName.getText().toString();
 				int id = 0;
 				for (Ticket Ticket : list) {
@@ -315,8 +305,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 					}
 				}
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				ShowAdFragment fragment = new ShowAdFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
@@ -393,8 +382,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 
 		deleting.execute(params);
 
-		ringProgressDialog = ProgressDialog.show(context, "",
-				"لطفا منتظر بمانید...", true);
+		ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 		ringProgressDialog.setCancelable(true);
 		new Thread(new Runnable() {
@@ -417,12 +405,10 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
 
 		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
-			Toast.makeText(context,
-					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+			Toast.makeText(context, " قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
 		} else {
 			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
-			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0)
-					.show();
+			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0).show();
 		}
 	}
 

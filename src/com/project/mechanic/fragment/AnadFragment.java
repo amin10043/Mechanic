@@ -128,7 +128,7 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 	int counterTicketList;
 	FloatingActionButton createItem;
 	Anad anadItem;
-//	boolean startShowImageAfterDownload = false;
+	// boolean startShowImageAfterDownload = false;
 	List<ImageView> imageList = new ArrayList<ImageView>();
 
 	@SuppressLint("InflateParams")
@@ -175,7 +175,8 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 		dbAdapter.close();
 
 		imageList.clear();
-		verticalOuterLayout.removeAllViewsInLayout();;
+		verticalOuterLayout.removeAllViewsInLayout();
+		;
 
 		for (int t = 0; t < anadlist.size(); t++) {
 			// byte[] tmpImage = lst.get(t).getImage();
@@ -263,7 +264,7 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 			verticalOuterLayout.addView(imageButton);
 			imageList.add(imageButton);
 		}
-//		startShowImageAfterDownload = true;
+		// startShowImageAfterDownload = true;
 		return imageList;
 
 	}
@@ -347,8 +348,8 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 			}
 
 		} else {
-//			if (startShowImageAfterDownload == true)
-				addImagesToView();
+			// if (startShowImageAfterDownload == true)
+			addImagesToView();
 		}
 
 	}
@@ -749,7 +750,6 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 	@Override
 	public void processFinish(String output) {
 		LoadMoreFooter.setVisibility(View.INVISIBLE);
-
 		if (output.contains("anyType")) {
 			LoadMoreFooter.setVisibility(View.INVISIBLE);
 		}
@@ -804,7 +804,7 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 
 			if (output != null) {
 
-				//boolean IsEmptyByte = util.IsEmptyByteArrayImage(output);
+				// boolean IsEmptyByte = util.IsEmptyByteArrayImage(output);
 				// if (IsEmptyByte == false) {
 
 				util.CreateFile(output, anadItem.getId(), "Mechanical", "Anad", "anad", "Anad");

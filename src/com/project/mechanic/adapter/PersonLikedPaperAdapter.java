@@ -70,6 +70,7 @@ public class PersonLikedPaperAdapter extends ArrayAdapter<LikeInPaper> {
 		adapter.close();
 
 		namePerson.setText(user.getName());
+		namePerson.setTypeface(util.SetFontCasablanca());
 		DateLiked.setText(util.getPersianDate(likes.getDatetime()));
 
 		RelativeLayout rl = (RelativeLayout) convertView
@@ -78,8 +79,8 @@ public class PersonLikedPaperAdapter extends ArrayAdapter<LikeInPaper> {
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				rl.getLayoutParams());
 
-		lp.width = (util.getScreenwidth() / 8);
-		lp.height = (util.getScreenwidth() / 8);
+		lp.width = (util.getScreenwidth() / 6);
+		lp.height = (util.getScreenwidth() / 6);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
 

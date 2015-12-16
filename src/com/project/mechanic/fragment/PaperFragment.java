@@ -36,6 +36,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -155,7 +156,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 
 		txttitle.setText(p.getTitle());
 		txttitleDes.setText(p.getContext());
-
+		txttitleDes.setTypeface(util.SetFontIranSans());
 		String ddd = util.getPersianDate(p.getDate());
 		List<String> dateTime = util.spilitDateTime(ddd);
 		txtdate.setText(dateTime.get(0));
@@ -236,6 +237,17 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 
 			updateView();
 		}
+
+		RelativeLayout para = (RelativeLayout) header.findViewById(R.id.layoutparams);
+
+		RelativeLayout.LayoutParams mnb = new RelativeLayout.LayoutParams(para.getLayoutParams());
+
+		mnb.width = LayoutParams.WRAP_CONTENT;
+		mnb.height = LayoutParams.WRAP_CONTENT;
+		mnb.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		mnb.setMargins(0, util.getScreenwidth() / 4, 5, 5);
+
+		txttitle.setLayoutParams(mnb);
 
 		//// countLike.setOnClickListener(new OnClickListener() {
 		//

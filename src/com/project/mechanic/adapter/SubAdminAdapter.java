@@ -88,7 +88,7 @@ public class SubAdminAdapter extends ArrayAdapter<SubAdmin> implements
 		if (bitmapbyte != null) {
 			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
 					bitmapbyte.length);
-			picture.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
+			picture.setImageBitmap(Utility.getclip(bmp));
 			picture.setLayoutParams(lp);
 		} else {
 			picture.setImageResource(R.drawable.no_img_profile);

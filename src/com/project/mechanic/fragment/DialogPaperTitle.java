@@ -72,8 +72,7 @@ public class DialogPaperTitle extends Dialog implements AsyncInterface {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setBackgroundDrawable(
-				new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		setContentView(resourceId);
 		btntitle = (Button) findViewById(R.id.btnPdf1_Object);
 		titletxt = (EditText) findViewById(R.id.txtTitleP);
@@ -84,7 +83,7 @@ public class DialogPaperTitle extends Dialog implements AsyncInterface {
 		titletxt.setVisibility(View.GONE);
 		titleDestxt.setVisibility(View.GONE);
 		btntitle.setVisibility(View.GONE);
-		final ImageButton createImage = (ImageButton) findViewById(R.id.createicondialog);
+		final Button createImage = (Button) findViewById(R.id.createicondialog);
 		final TextView titleHeader = (TextView) findViewById(R.id.maintextcreate);
 
 		createImage.setOnClickListener(new View.OnClickListener() {
@@ -102,14 +101,23 @@ public class DialogPaperTitle extends Dialog implements AsyncInterface {
 			}
 		});
 
+		titleHeader.setTypeface(utility.SetFontIranSans());
 		btntitle.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				sDate = new ServerDate(context);
-				sDate.delegate = DialogPaperTitle.this;
-				sDate.execute("");
+				String title = titletxt.getText().toString();
+				String description = titleDestxt.getText().toString();
+
+				if (!"".equals(title) && !"".equals(description)) {
+
+					sDate = new ServerDate(context);
+					sDate.delegate = DialogPaperTitle.this;
+					sDate.execute("");
+				} else {
+					Toast.makeText(context, "پر کردن عنوان و توضیحات الزامی است", 0).show();
+				}
 
 			}
 		});
@@ -133,17 +141,14 @@ public class DialogPaperTitle extends Dialog implements AsyncInterface {
 		try {
 			id = Integer.valueOf(output);
 			dbadapter.open();
-			dbadapter.insertPapertitletoDb(id, titletxt.getText().toString(),
-					titleDestxt.getText().toString(), CurrentUser.getId(),
-					severDate);
+			dbadapter.insertPapertitletoDb(id, titletxt.getText().toString(), titleDestxt.getText().toString(),
+					CurrentUser.getId(), severDate);
 			dbadapter.close();
 			((TitlepaperFragment) fragment).updateView();
 			DialogPaperTitle.this.dismiss();
 
 		} catch (NumberFormatException ex) {
-			if (output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 
 				saving = new Saving(context);
 				saving.delegate = DialogPaperTitle.this;
@@ -160,8 +165,7 @@ public class DialogPaperTitle extends Dialog implements AsyncInterface {
 
 				saving.execute(params);
 
-				ringProgressDialog = ProgressDialog.show(context, "",
-						"لطفا منتظر بمانید...", true);
+				ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 				ringProgressDialog.setCancelable(true);
 
@@ -181,8 +185,7 @@ public class DialogPaperTitle extends Dialog implements AsyncInterface {
 				}).start();
 
 			} else {
-				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 			}
 		}
 

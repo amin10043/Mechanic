@@ -46,7 +46,7 @@
     </style>
 
     <style name="row_text">
-        <item name="android:textColor">#000</item>
+        <item name="android:textColor">@color/orginal_hard_blue_color</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -92,8 +92,8 @@
     </style>
 
     <style name="sss">
-        <item name="android:divider">#e8e8e8</item>
-        <item name="android:dividerHeight">5dp</item>
+        <item name="android:divider">@color/orginal_golden_color</item>
+        <item name="android:dividerHeight">2dp</item>
     </style>
 
     <style name="StarRatingBar" parent="@android:style/Widget.RatingBar">
@@ -101,15 +101,25 @@
         <item name="android:minHeight">72dip</item>
         <item name="android:maxHeight">72dip</item>
     </style>
+
     <style name="ratingbarObject" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/ratingbar_brand_selector</item>
         <item name="android:minHeight">40dip</item>
         <item name="android:maxHeight">40dip</item>
     </style>
-    
+
     <style name="animationDialog">
-    <item name="android:windowEnterAnimation">@anim/down_from_top</item>
-    <item name="android:windowExitAnimation">@anim/zoom_out</item>
-</style>
+        <item name="android:windowEnterAnimation">@anim/down_from_top</item>
+        <item name="android:windowExitAnimation">@anim/zoom_out</item>
+    </style>
+
+    <style name="seprateListView">
+        <item name="android:background">@color/white</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+        <item name="android:divider">@color/orginal_light_gray_color</item>
+        <item name="android:dividerHeight">10dp</item>
+        <item name="android:padding">10dp</item>
+        <!-- <item name="android:listSelector">@drawable/shape_list</item> -->
+    </style>
 
 </resources>

@@ -193,7 +193,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id", 0);
 		PageId = sendDataID.getInt("main_Id", -1);
 
-		Toast.makeText(getActivity(), "introduction id =" + PageId, Toast.LENGTH_SHORT).show();
+//		Toast.makeText(getActivity(), "introduction id =" + PageId, Toast.LENGTH_SHORT).show();
 
 		// /////////display information///////////////////////
 
@@ -398,7 +398,6 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 
 					ringProgressDialog = ProgressDialog.show(getActivity(), "در حال بروزرسانی", "لطفا منتظر بمانید...");
 
-					getActivity().getSupportFragmentManager().popBackStack();
 				}
 			}
 		});
@@ -598,7 +597,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 
 	@Override
 	public void processFinishSaveImage(String output) {
-		Toast.makeText(getActivity(), "output = " + output, 0).show();
+	//	Toast.makeText(getActivity(), "output = " + output, 0).show();
 
 		if (output != null) {
 			// try {
@@ -636,6 +635,8 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
+				getActivity().getSupportFragmentManager().popBackStack();
+
 
 			// } catch (NumberFormatException e) {
 			// Toast.makeText(getActivity(), " خطا در بروز رسانی تصویر",

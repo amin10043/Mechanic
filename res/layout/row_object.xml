@@ -33,7 +33,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:text="Large Text"
-                    android:textColor="#9d0420" />
+                    android:textColor="@color/orginal_red_color" />
 
                 <LinearLayout
                     android:id="@+id/numviewslay"
@@ -67,8 +67,8 @@
                             android:gravity="bottom"
                             android:paddingTop="1dp"
                             android:text="20"
-                            android:textColor="@color/transparent"
-                            android:textSize="10dp" />
+                            android:textColor="@color/orginal_red_color" />
+                            android:textSize="10dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -92,8 +92,8 @@
                             android:layout_marginRight="5dp"
                             android:layout_toLeftOf="@+id/iconNumberVisit"
                             android:text="18"
-                            android:textColor="@color/transparent"
-                            android:textSize="10dp" />
+                            android:textColor="@color/orginal_red_color" />
+                            android:textSize="10dp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

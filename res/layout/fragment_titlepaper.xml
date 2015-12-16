@@ -5,7 +5,7 @@
     xmlns:app1="http://schemas.android.com/apk/res/com.project.mechanic"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e9eaed" >
+    android:background="@color/orginal_light_gray_color" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,16 +18,17 @@
 
             <ListView
                 android:id="@+id/lstComment"
-                style="@style/second_item_style"
+                style="@style/seprateListView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/headerTitleArticle"
-                android:dividerHeight="2dp"
+                android:background="@color/orginal_light_gray_color"
+                android:dividerHeight="10dp"
                 android:fillViewport="true" >
             </ListView>
         </android.support.v4.widget.SwipeRefreshLayout>
 
-         <com.project.mechanic.Action.FloatingActionButton
+        <com.project.mechanic.Action.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

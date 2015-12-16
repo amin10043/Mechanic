@@ -108,8 +108,8 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements
 
 		lp.width = util.getScreenwidth() / 7;
 		lp.height = util.getScreenwidth() / 7;
-		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		lp.setMargins(5, 5, 5, 5);
+//		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//		lp.setMargins(5, 5, 5, 5);
 		Users user = adapter.getUserbyid(comment.getUserid());
 		// userId=user.getId();
 

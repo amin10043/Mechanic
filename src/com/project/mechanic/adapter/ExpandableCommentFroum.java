@@ -126,8 +126,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 
 		lp.width = util.getScreenwidth() / 7;
 		lp.height = util.getScreenwidth() / 7;
-		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		lp.setMargins(5, 5, 5, 5);
+//		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//		lp.setMargins(5, 5, 5, 5);
 		ReplyerPic.setLayoutParams(lp);
 
 		if (y.getImagePath() == null) {
@@ -373,7 +373,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 		// lrr.setVisibility(View.GONE);
 		//
 		// } else
-		countOfReply.setText(adapter.getCountOfReplyInFroum(froumID, comment.getId()).toString()+" نظر");
+		countOfReply.setText(adapter.getCountOfReplyInFroum(froumID, comment.getId()).toString());
 
 		if (x != null) {
 			Bitmap bmp = null;
@@ -394,10 +394,10 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.icon_header_comment_froum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 6;
-		lp.height = util.getScreenwidth() / 6;
-		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		lp.setMargins(5, 5, 5, 5);
+		lp.width = util.getScreenwidth() / 7;
+		lp.height = util.getScreenwidth() / 7;
+//		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//		lp.setMargins(5, 5, 5, 5);
 		profileImage.setLayoutParams(lp);
 		profileImage.setOnClickListener(new View.OnClickListener() {
 

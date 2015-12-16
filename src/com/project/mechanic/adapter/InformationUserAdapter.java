@@ -632,7 +632,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			if (ImagePath != null) {
 				Bitmap bitmap = BitmapFactory.decodeFile(ImagePath);
-				profileIco.setImageBitmap(Utility.getRoundedCornerBitmap(bitmap, 20));
+				profileIco.setImageBitmap(Utility.getclip(bitmap));
 			}
 
 			namePage.setText(pd.getNameFollowObject());

@@ -5,45 +5,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.PopupMenu.OnMenuItemClickListener;
-
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.PushNotification.DomainSend;
-import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.DialogLongClick;
-import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.fragment.PaperFragment;
-import com.project.mechanic.fragment.PaperWithoutComment;
 import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.fragment.TitlepaperFragment;
 import com.project.mechanic.inter.AsyncInterface;
@@ -55,8 +22,34 @@ import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
-		AsyncInterface, CommInterface {
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncInterface, CommInterface {
 
 	Context context;
 	List<Paper> mylist;
@@ -85,8 +78,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 	List<String> menuItems;
 	int itemId, userIdsender;
 
-	public PapertitleListAdapter(Context context, int resource,
-			List<Paper> objects, Fragment fr) {
+	public PapertitleListAdapter(Context context, int resource, List<Paper> objects, Fragment fr) {
 		super(context, resource, objects);
 		this.context = context;
 		this.mylist = objects;
@@ -99,32 +91,23 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 	@SuppressLint("ViewHolder")
 	@Override
-	public View getView(final int position, View convertView,
-			final ViewGroup parent) {
+	public View getView(final int position, View convertView, final ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater
-				.inflate(R.layout.raw_froumtitle, parent, false);
+		convertView = myInflater.inflate(R.layout.raw_froumtitle, parent, false);
 
 		// start find view
 
-		final TextView txt1 = (TextView) convertView
-				.findViewById(R.id.rowtitlepaper);
-		TextView txt2 = (TextView) convertView
-				.findViewById(R.id.rowdescriptionpaper);
+		final TextView txt1 = (TextView) convertView.findViewById(R.id.rowtitlepaper);
+		final TextView txt2 = (TextView) convertView.findViewById(R.id.rowdescriptionpaper);
 		TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
-		NumofComment = (TextView) convertView
-				.findViewById(R.id.countCommentInEveryTopic);
-		NumofLike = (TextView) convertView
-				.findViewById(R.id.countLikeInFroumTitle);
+		NumofComment = (TextView) convertView.findViewById(R.id.countCommentInEveryTopic);
+		NumofLike = (TextView) convertView.findViewById(R.id.countLikeInFroumTitle);
 		DateView = (TextView) convertView.findViewById(R.id.datetopicinFroum);
-		ImageView iconProile = (ImageView) convertView
-				.findViewById(R.id.iconfroumtitle);
+		ImageView iconProile = (ImageView) convertView.findViewById(R.id.iconfroumtitle);
 
-		likePaper = (LinearLayout) convertView
-				.findViewById(R.id.liketitleTopic);
+		likePaper = (LinearLayout) convertView.findViewById(R.id.liketitleTopic);
 
 		commentBtn = (LinearLayout) convertView.findViewById(R.id.l1cm);
 		report = (ImageView) convertView.findViewById(R.id.reportImage);
@@ -133,7 +116,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 		adapter.open();
 		currentUser = util.getCurrentUser();
 
-		Paper person1 = mylist.get(position);
+		final Paper person1 = mylist.get(position);
 
 		if (person1.getSeenBefore() > 0) {
 			txt1.setTextColor(Color.GRAY);
@@ -142,16 +125,16 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 			DateView.setTextColor(Color.GRAY);
 
 		}
+		
+		
 
 		Users x = adapter.getUserbyid(person1.getUserId());
 		// userId=x.getId();
-		RelativeLayout rl = (RelativeLayout) convertView
-				.findViewById(R.id.topicTitleFroum);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				rl.getLayoutParams());
+		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.topicTitleFroum);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 4;
-		lp.height = util.getScreenwidth() / 4;
+		lp.width = (int) (util.getScreenwidth() / 3.8);
+		lp.height = (int) (util.getScreenwidth() / 3.8);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(10, 10, 10, 10);
 
@@ -183,8 +166,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				Paper person1 = mylist.get(position);
 				Users x = adapter.getUserbyid(person1.getUserId());
 				userId = x.getId();
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
@@ -195,10 +177,39 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 			}
 		});
 		txt1.setText(person1.getTitle());
-		txt2.setText(person1.getContext() + " ... ");
+		if (person1.getContext() != null && !"".equals((person1.getContext()))) {
 
+//			if (person1.getContext().length() > 50)
+//				txt2.setText(person1.getContext().substring(0, 50) + " ... ");
+//			else
+				txt2.setText(person1.getContext());
+
+		} else
+			txt2.setVisibility(View.GONE);
 		txt1.setTypeface(util.SetFontCasablanca());
 		txt2.setTypeface(util.SetFontCasablanca());
+		
+		
+//		txt2.post(new Runnable() {
+//			
+//			@Override
+//			public void run() {
+//				int countline = txt2.getLineCount();
+//		        
+//				if (countline>1){
+//					txt2.setText(person1.getContext());
+//
+//					//txt2.setMaxLines(1);
+//					
+//					
+//				}
+//
+//					
+//			}
+//		});
+		
+			
+		
 
 		String item = txt1.getText().toString();
 		for (Paper listItem : mylist) {
@@ -206,6 +217,10 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				paperNumber = listItem.getId();
 			}
 		}
+		
+		///////////////////
+		
+		
 
 		adapter.open();
 
@@ -219,11 +234,9 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				likePaper.setBackgroundResource(R.drawable.like_froum_off);
 		}
 
-		NumofComment.setText(adapter.CommentInPaper_count(person1.getId())
-				.toString());
+		NumofComment.setText(adapter.CommentInPaper_count(person1.getId()).toString());
 
-		NumofLike
-				.setText(adapter.LikeInPaper_count(person1.getId()).toString());
+		NumofLike.setText(adapter.LikeInPaper_count(person1.getId()).toString());
 		adapter.close();
 
 		final SharedPreferences abc = context.getSharedPreferences("Id", 0);
@@ -233,9 +246,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 			public void onClick(View arg0) {
 
 				if (currentUser == null) {
-					Toast.makeText(context,
-							"برای درج لایک ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 				} else {
 
 					String item = txt1.getText().toString();
@@ -258,8 +269,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 			public void onClick(View v) {
 
 				final String t;
-				ListView listView = (ListView) v.getParent().getParent()
-						.getParent();
+				ListView listView = (ListView) v.getParent().getParent().getParent();
 				int position = listView.getPositionForView(v);
 				Paper p = getItem(position);
 				if (p != null) {
@@ -292,8 +302,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 						menuItems.add("کپی");
 					}
 
-					final PopupMenu popupMenu = util
-							.ShowPopupMenu(menuItems, v);
+					final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
 					popupMenu.show();
 
 					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
@@ -306,15 +315,12 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 								if (util.getCurrentUser() != null)
 									util.sendMessage("Paper");
 								else
-									Toast.makeText(context,
-											"ابتدا باید وارد شوید", 0).show();
+									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}
 
-							if (item.getTitle().equals(
-									"افزودن به علاقه مندی ها")) {
+							if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
 								adapter.open();
-								addToFavorite(util.getCurrentUser().getId(), 2,
-										itemId);
+								addToFavorite(util.getCurrentUser().getId(), 2, itemId);
 								adapter.close();
 							}
 							if (item.getTitle().equals("کپی")) {
@@ -325,14 +331,12 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 							if (item.getTitle().equals("گزارش تخلف")) {
 
 								if (util.getCurrentUser() != null)
-									util.reportAbuse(userIdsender, 2, itemId, t,0);
+									util.reportAbuse(userIdsender, 2, itemId, t, 0);
 								else
-									Toast.makeText(context,
-											"ابتدا باید وارد شوید", 0).show();
+									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}
 							if (item.getTitle().equals("حذف")) {
-								if (util.getCurrentUser() != null
-										&& util.getCurrentUser().getId() == userIdsender)
+								if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender)
 									deleteItems(itemId);
 								else {
 
@@ -397,17 +401,13 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 						id = listItem.getId();
 					}
 				}
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				PaperFragment fragment = new PaperFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
 				fragment.setArguments(bundle);
 
-				abc.edit()
-						.putInt("Froum_List_Id",
-								((ListView) parent).getFirstVisiblePosition())
-						.commit();
+				abc.edit().putInt("Froum_List_Id", ((ListView) parent).getFirstVisiblePosition()).commit();
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
@@ -415,6 +415,17 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				adapter.open();
 				adapter.SetSeen("Paper", id, "1");
 				adapter.close();
+				
+				
+				//////////////////////
+//				Rect bounds = new Rect();
+//				Paint paint = new Paint();
+//				paint.getTextBounds(txt2.getText().toString(), 0, txt2.getText().toString().length(), bounds);
+//
+//				int width = (int) Math.ceil( bounds.width());
+				
+				
+				
 
 			}
 
@@ -434,11 +445,9 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 						id = listItem.getId();
 					}
 				}
-				Toast.makeText(context, "send = " + id, Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(context, "send = " + id, Toast.LENGTH_SHORT).show();
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				PaperFragment fragment = new PaperFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
@@ -463,17 +472,14 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				adapter.deleteLikeFromPaper(currentUser.getId(), paperNumber);
 				likePaper.setBackgroundResource(R.drawable.like_froum_off);
 
-				NumofLike.setText(adapter.LikeInPaper_count(paperNumber)
-						.toString());
+				NumofLike.setText(adapter.LikeInPaper_count(paperNumber).toString());
 				if (ringProgressDialog != null) {
 					ringProgressDialog.dismiss();
 				}
 			} else {
-				adapter.insertLikeInPaperToDb(currentUser.getId(), paperNumber,
-						serverDate);
+				adapter.insertLikeInPaperToDb(currentUser.getId(), paperNumber, serverDate);
 				likePaper.setBackgroundResource(R.drawable.like_froum_on);
-				NumofLike.setText(adapter.LikeInPaper_count(paperNumber)
-						.toString());
+				NumofLike.setText(adapter.LikeInPaper_count(paperNumber).toString());
 				if (ringProgressDialog != null) {
 					ringProgressDialog.dismiss();
 				}
@@ -481,16 +487,11 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 			adapter.close();
 
 		} catch (NumberFormatException e) {
-			if (output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 				adapter.open();
 				if (currentUser == null) {
-					Toast.makeText(context,
-							"برای درج لایک ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
-				} else if (adapter.isUserLikedPaper(currentUser.getId(),
-						paperNumber)) {
+					Toast.makeText(context, "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
+				} else if (adapter.isUserLikedPaper(currentUser.getId(), paperNumber)) {
 					adapter.open();
 
 					params = new LinkedHashMap<String, String>();
@@ -503,8 +504,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 					deleting.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -543,8 +543,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 					saving.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -569,8 +568,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 				}
 				adapter.close();
 			} else {
-				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 			}
 		} catch (Exception e) {
 
@@ -581,12 +579,10 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
 
 		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
-			Toast.makeText(context,
-					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+			Toast.makeText(context, " قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
 		} else {
 			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
-			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0)
-					.show();
+			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0).show();
 		}
 	}
 
@@ -602,8 +598,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 
 		service.execute(items);
 
-		ringProgressDialog = ProgressDialog.show(context, "",
-				"لطفا منتظر بمانید...", true);
+		ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 		ringProgressDialog.setCancelable(true);
 		new Thread(new Runnable() {
@@ -634,18 +629,16 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements
 		adapter.deleteCommentPaper(itemId);
 
 		adapter.close();
-		
+
 		TitlepaperFragment fr = new TitlepaperFragment();
 
-		FragmentTransaction trans = ((MainActivity) context)
-				.getSupportFragmentManager().beginTransaction();
+		FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 
 		trans.replace(R.id.content_frame, fr);
 		trans.addToBackStack(null);
 		trans.commit();
 		fr.updateView(context);
 
-
-//		((PaperFragment) fr).updateView();
+		// ((PaperFragment) fr).updateView();
 	}
 }

@@ -40,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class CreateIntroductionFragment extends Fragment implements AsyncInterface, SaveAsyncInterface {
@@ -108,6 +109,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 	boolean t1 = false;
 	boolean t2 = false;
 	boolean t3 = false;
+	TextView lableEditNetwork , lableEditDownloadLink;
 
 	// EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle,
 	// inInstagram;
@@ -144,6 +146,10 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 		checkAgency = (CheckBox) view.findViewById(R.id.checkAgency);
 		checkService = (CheckBox) view.findViewById(R.id.checkService);
+		
+		lableEditNetwork = (TextView)view.findViewById(R.id.lableeditnetwork);
+		lableEditDownloadLink = (TextView)view.findViewById(R.id.labledownload);
+		
 
 		namayendegi.setVisibility(View.GONE);
 		khadamat.setVisibility(View.GONE);
@@ -220,6 +226,8 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 		btnProfile.setLayoutParams(profilParams);
 		btnFooter.setLayoutParams(headerParams);
 		NameEnter.setLayoutParams(nameParams);
+		
+		setFont();
 
 		if (mainID != 1) {
 			checkAgency.setVisibility(View.GONE);
@@ -393,7 +401,16 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 		return view;
 	}
-
+	
+	private void setFont(){
+		
+		checkAgency.setTypeface(util.SetFontCasablanca());
+		checkService.setTypeface(util.SetFontCasablanca());
+		
+		lableEditNetwork.setTypeface(util.SetFontCasablanca());
+		lableEditDownloadLink.setTypeface(util.SetFontCasablanca());
+		btnSave.setTypeface(util.SetFontCasablanca());
+	}
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		// bitmap.compress(CompressFormat.PNG, 50, outputStream);

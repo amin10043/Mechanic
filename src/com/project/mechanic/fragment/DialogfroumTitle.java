@@ -43,7 +43,7 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 	ProgressDialog ringProgressDialog;
 	String currentDate;
 	TextView titleHeader;
-	ImageButton createImage;
+	Button createImage;
 	ServerDate sDate;
 	String severDate;
 
@@ -67,20 +67,18 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 		if (currentUser == null) {
 			// karbar vared nashode ast !!!!!!!
 			// nabayad inja bashaaad !!!!!!
-			Toast.makeText(context, "ابدتدا باید وارد شوید", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(context, "ابدتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setBackgroundDrawable(
-				new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 		setContentView(resourceId);
 		btntitle = (Button) findViewById(R.id.btnPdf1_Object);
 		titletxt = (EditText) findViewById(R.id.txtTitleP);
 		titleDestxt = (EditText) findViewById(R.id.txttitleDes);
 
-		createImage = (ImageButton) findViewById(R.id.createicondialog);
+		createImage = (Button) findViewById(R.id.createicondialog);
 		titleHeader = (TextView) findViewById(R.id.maintextcreate);
 
 		titletxt.setVisibility(View.GONE);
@@ -101,15 +99,25 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 				}
 			}
 		});
-
+		titleHeader.setTypeface(utility.SetFontIranSans());
 		btntitle.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				sDate = new ServerDate(context);
-				sDate.delegate = DialogfroumTitle.this;
-				sDate.execute("");
+				String title = titletxt.getText().toString();
+				String description = titleDestxt.getText().toString();
+
+				if (!"".equals(title) && !"".equals(description)) {
+					
+					sDate = new ServerDate(context);
+					sDate.delegate = DialogfroumTitle.this;
+					sDate.execute("");
+				}else
+				{
+					Toast.makeText(context, "پر کردن عنوان و توضیحات الزامی است", 0).show();
+				}
+
 			}
 		});
 	}
@@ -131,17 +139,14 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 		try {
 			id = Integer.valueOf(output);
 			dbadapter.open();
-			dbadapter.insertFroumtitletoDb(id, titletxt.getText().toString(),
-					titleDestxt.getText().toString(), currentUser.getId(),
-					severDate);
+			dbadapter.insertFroumtitletoDb(id, titletxt.getText().toString(), titleDestxt.getText().toString(),
+					currentUser.getId(), severDate);
 			dbadapter.close();
 			((FroumtitleFragment) fragment).updateView();
 			this.dismiss();
 
 		} catch (NumberFormatException ex) {
-			if (output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 				params = new LinkedHashMap<String, String>();
 				saving = new Saving(context);
 				saving.delegate = DialogfroumTitle.this;
@@ -156,13 +161,11 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 				params.put("Id", "0");
 				severDate = output;
 				saving.execute(params);
-				ringProgressDialog = ProgressDialog.show(context, "",
-						"لطفا منتظر بمانید...", true);
+				ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 				ringProgressDialog.setCancelable(true);
 			} else {
-				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 			}
 		}
 
