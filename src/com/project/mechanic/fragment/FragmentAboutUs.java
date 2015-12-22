@@ -3,6 +3,7 @@ package com.project.mechanic.fragment;
 import ir.noghteh.JustifiedTextView;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,11 @@ public class FragmentAboutUs extends Fragment {
         View V = getActivity().getLayoutInflater().inflate(R.layout.fragment_menu_about_us, null);
         mJTv = (JustifiedTextView) V.findViewById(R.id.activity_main_jtv);
         util = new Utility(getActivity());
+        
+
+        mJTv.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+		mJTv.setLineSpacing(15);
+        mJTv.setTypeFace(util.SetFontIranSans());
         
         util.ShowFooterAgahi(getActivity(), false, 0);
         return V;

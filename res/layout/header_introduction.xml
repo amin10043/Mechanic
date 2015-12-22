@@ -18,9 +18,12 @@
 
         <ProgressBar
             android:id="@+id/header_progress_header"
-            android:layout_width="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="center"
+            android:max="100"
+            android:progressDrawable="@drawable/custom_horizontal_progress"
             android:visibility="visible" />
 
         <ImageView
@@ -38,7 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="12dp"
-            android:layout_marginTop="40dp" />
+            android:layout_marginTop="40dp"
+            android:visibility="gone" />
     </FrameLayout>
 
     <LinearLayout
@@ -834,7 +838,8 @@
                     android:layout_below="@+id/description_topic"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp" >
 
                     <LinearLayout
                         android:id="@+id/LikeTopicLinear"
@@ -885,11 +890,13 @@
 
         <ProgressBar
             android:id="@+id/footer_progress_footer"
-            android:layout_width="wrap_content"
+              style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="12dp"
-            android:layout_marginTop="10dp" />
+            android:layout_gravity="center"
+            android:max="100"
+            android:progressDrawable="@drawable/custom_horizontal_progress"
+            android:visibility="visible"/>
     </FrameLayout>
 
 </LinearLayout>

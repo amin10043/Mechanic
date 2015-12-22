@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -49,13 +50,14 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import ir.noghteh.JustifiedTextView;
 
 public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncInterface, CommInterface {
 
 	DataBaseAdapter adapter;
 	ExpandableCommentFroum exadapter;
 
-	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike, nametxt;
+	TextView titletxt,  dateTopic, countComment, countLike, nametxt;
 	LinearLayout /* addComment, */ likeTopic;
 	ImageButton sharebtn;
 	ImageView profileImg, likeIcon;
@@ -63,7 +65,7 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 	// RelativeLayout count /* ,commentcounter */;
 
 	Froum topics;
-
+	JustifiedTextView descriptiontxt;
 	DialogcmtInfroum dialog;
 	ArrayList<CommentInFroum> commentGroup, ReplyGroup;
 	// String currentDate;
@@ -120,7 +122,7 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 		// start find view
 
 		titletxt = (TextView) header.findViewById(R.id.title_topic);
-		descriptiontxt = (TextView) header.findViewById(R.id.description_topic);
+		descriptiontxt = (JustifiedTextView) header.findViewById(R.id.description_topic);
 
 		dateTopic = (TextView) header.findViewById(R.id.date_cc);
 		TextView time = (TextView) header.findViewById(R.id.timetxt);
@@ -193,9 +195,13 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 		List<String> dateTime = util.spilitDateTime(ddd);
 		dateTopic.setText(dateTime.get(0));
 		time.setText(dateTime.get(1));
-		 titletxt.setTypeface(util.SetFontCasablanca());
-		 descriptiontxt.setTypeface(util.SetFontIranSans());
-
+		titletxt.setTypeface(util.SetFontCasablanca());
+		descriptiontxt.setTypeFace(util.SetFontIranSans());
+		
+		descriptiontxt.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+		descriptiontxt.setLineSpacing(15);
+		
+		titletxt.setPadding(0, 20, 0, 0);
 		profileImg.setOnClickListener(new View.OnClickListener() {
 
 			@Override

@@ -309,7 +309,7 @@
                     android:id="@+id/icon_item1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/phone2"
+                    android:background="@drawable/ic_main_item2"
                     android:visibility="visible" />
             </RelativeLayout>
 
@@ -354,7 +354,7 @@
                     android:id="@+id/icon_item4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_main_item5"
+                    android:background="@drawable/ic_main_item4"
                     android:visibility="visible" />
             </RelativeLayout>
 

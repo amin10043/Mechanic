@@ -10,10 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:background="#39619c"
+        android:background="@drawable/rectangle_drawable"
         android:gravity="center"
         android:text="نظرات"
-        android:textColor="@color/white" />
+        android:textColor="@color/orginal_golden_color" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,10 +45,10 @@
 
                 <ImageButton
                     android:id="@+id/btnshowcmf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/ic_notification_froum" />
+                    android:background="@drawable/ic_main_item7" />
 
                 <TextView
                     android:id="@+id/textDay"
@@ -94,10 +94,10 @@
 
                 <ImageButton
                     android:id="@+id/btnshowcmo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/ic_notification_object" />
+                    android:background="@drawable/ic_personal" />
 
                 <TextView
                     android:id="@+id/textView6"
@@ -143,8 +143,8 @@
 
                 <ImageButton
                     android:id="@+id/btnshowcmp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
                     android:layout_gravity="center"
                     android:background="@drawable/ic_main_item5" />
 
@@ -190,6 +190,8 @@
             android:id="@+id/listnewcmf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:divider="@color/orginal_golden_color"
+            android:dividerHeight="2dp"
             android:layout_margin="10dp" >
         </ListView>
     </LinearLayout>

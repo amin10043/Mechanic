@@ -37,8 +37,11 @@ public class PersonalData {
 	String NameFollowObject;
 	String ImagePathObjectFollow;
 
-	public PersonalData(int Id, int ObjectId, String NameObject,
-			String ImagePathObject, String DateObject) {
+	int AnadId;
+	int ObjectIdAnad;
+	int ProvinceIdAnad;
+
+	public PersonalData(int Id, int ObjectId, String NameObject, String ImagePathObject, String DateObject) {
 
 		this.Id = Id;
 		this.ObjectId = ObjectId;
@@ -47,16 +50,12 @@ public class PersonalData {
 		this.DateObject = DateObject;
 	}
 
-	public PersonalData(int Id, int ObjectId, String NameObject,
-			String ImagePathObject, String DateObject, int FroumId,
-			String NameFroum, String DescriptionFroum, String DateFroum,
-			int PaperId, String NamePaper, String DescriptonPaper,
-			String DatePaper, int TicketId, String NameTicket,
-			String DescriptonTicket, String ImagePathTicket, String DateTicket,
-			int SeenBefore, int DayTicket, int seenBeforePaper,
-			int UserIdPaper, String DataPaper, String ImagePathFroum,
-			String ImagePathPaper, int ObjectFollowId, String NameFollowObject,
-			String ImagePathObjectFollow) {
+	public PersonalData(int Id, int ObjectId, String NameObject, String ImagePathObject, String DateObject, int FroumId,
+			String NameFroum, String DescriptionFroum, String DateFroum, int PaperId, String NamePaper,
+			String DescriptonPaper, String DatePaper, int TicketId, String NameTicket, String DescriptonTicket,
+			String ImagePathTicket, String DateTicket, int SeenBefore, int DayTicket, int seenBeforePaper,
+			int UserIdPaper, String DataPaper, String ImagePathFroum, String ImagePathPaper, int ObjectFollowId,
+			String NameFollowObject, String ImagePathObjectFollow, int AnadId, int ObjectIdAnad, int ProvinceIdAnad) {
 
 		this.Id = Id;
 
@@ -93,6 +92,9 @@ public class PersonalData {
 		this.NameFollowObject = NameFollowObject;
 		this.ImagePathObjectFollow = ImagePathObjectFollow;
 
+		this.AnadId = AnadId;
+		this.ObjectIdAnad = ObjectIdAnad;
+		this.ProvinceIdAnad = ProvinceIdAnad;
 	}
 
 	public int getObjectFollowId() {
@@ -328,6 +330,30 @@ public class PersonalData {
 
 	public void setDateTicket(String dateTicket) {
 		DateTicket = dateTicket;
+	}
+
+	public int getAnadId() {
+		return AnadId;
+	}
+
+	public void setAnadId(int anadId) {
+		AnadId = anadId;
+	}
+
+	public int getObjectIdAnad() {
+		return ObjectIdAnad;
+	}
+
+	public void setObjectIdAnad(int objectIdAnad) {
+		ObjectIdAnad = objectIdAnad;
+	}
+
+	public int getProvinceIdAnad() {
+		return ProvinceIdAnad;
+	}
+
+	public void setProvinceIdAnad(int provinceIdAnad) {
+		ProvinceIdAnad = provinceIdAnad;
 	}
 
 }

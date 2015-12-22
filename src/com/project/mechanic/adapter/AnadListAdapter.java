@@ -194,7 +194,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 			@Override
 			public void onClick(View v) {
 
-				RelativeLayout parentlayout = (RelativeLayout) v.getParent();
+				RelativeLayout parentlayout = (RelativeLayout) v.getParent().getParent();
 				// TextView txtName = (TextView) parentlayout
 				// .findViewById(R.id.row_favorite_title);
 				String item = txtName.getText().toString();

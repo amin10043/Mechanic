@@ -563,6 +563,24 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 			}
 		});
 
+		TextView lable1 = (TextView) view.findViewById(R.id.tt1t);
+		TextView lable2 = (TextView) view.findViewById(R.id.tt2t);
+		TextView lable3 = (TextView) view.findViewById(R.id.lables);
+		TextView lable4 = (TextView) view.findViewById(R.id.cdas);
+		TextView lable5 = (TextView) view.findViewById(R.id.lablesostan);
+		TextView lable6 = (TextView) view.findViewById(R.id.lablescity);
+
+		lable1.setTypeface(ut.SetFontIranSans());
+		lable2.setTypeface(ut.SetFontIranSans());
+
+		lable3.setTypeface(ut.SetFontCasablanca());
+		lable4.setTypeface(ut.SetFontCasablanca());
+		lable5.setTypeface(ut.SetFontCasablanca());
+		lable6.setTypeface(ut.SetFontCasablanca());
+
+		btnback.setTypeface(ut.SetFontCasablanca());
+		btnregedit.setTypeface(ut.SetFontCasablanca());
+
 		return view;
 
 	}

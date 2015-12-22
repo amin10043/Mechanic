@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="20dp"
     android:background="@color/orginal_light_gray_color"
     android:orientation="vertical" >
 
@@ -62,44 +63,50 @@
 
                 <TextView
                     android:id="@+id/title_topic"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:layout_marginTop="80dp"
-                    android:lineSpacingExtra="5dp"
+                    android:gravity="right"
+                    android:lineSpacingExtra="8dp"
                     android:text="title"
                     android:textColor="@color/transparent"
                     android:textIsSelectable="true" />
 
-                <TextView
+                <ir.noghteh.JustifiedTextView
+                    xmlns:noghteh="http://noghteh.ir"
                     android:id="@+id/description_topic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/title_topic"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:gravity="right"
-                    android:lineSpacingExtra="5dp"
+                    android:lineSpacingExtra="15dp"
+                    
                     android:text="description"
                     android:textColor="@color/transparent"
-                    android:textIsSelectable="true" />
+                    android:textIsSelectable="true" >
+                </ir.noghteh.JustifiedTextView>
 
                 <LinearLayout
                     android:id="@+id/icons"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/description_topic"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
+                    android:paddingBottom="10dp"
                     android:visibility="visible"
-                    android:weightSum="6" >
+                    android:weightSum="4" >
 
                     <LinearLayout
                         android:id="@+id/LikeTopicLinear"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -124,7 +131,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -150,7 +157,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -170,11 +177,28 @@
                             android:textColor="@color/orginal_hard_blue_color" />
                     </LinearLayout>
 
-                    <ImageButton
-                        android:id="@+id/sharefroumicon"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:background="@drawable/ic_share_froumred" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal" >
+
+                        <ImageButton
+                            android:id="@+id/sharefroumicon"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:background="@drawable/ic_share_froumred" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="center"
+                            android:text="789"
+                            android:textColor="@color/orginal_hard_blue_color"
+                            android:visibility="invisible" />
+                    </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
@@ -204,5 +228,16 @@
                 android:textColor="@color/orginal_hard_blue_color" />
         </LinearLayout>
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/orginal_light_gray_color" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_blank" />
+    </LinearLayout>
 
 </LinearLayout>

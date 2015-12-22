@@ -380,7 +380,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 			nameCommenter.setText(x.getName());
 			if (x.getImagePath() == null) {
 
-				profileImage.setBackgroundResource(R.drawable.circle_drawable);
+//				profileImage.setBackgroundResource(R.drawable.circle_drawable);
 				profileImage.setImageResource(R.drawable.no_img_profile);
 			} else {
 
@@ -397,7 +397,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 		lp.width = util.getScreenwidth() / 7;
 		lp.height = util.getScreenwidth() / 7;
 //		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-//		lp.setMargins(5, 5, 5, 5);
+//		lp.setMargins(5, 5, 10, 5);
 		profileImage.setLayoutParams(lp);
 		profileImage.setOnClickListener(new View.OnClickListener() {
 
@@ -656,7 +656,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 					return;
 				} else {
 					adapter.open();
-					RelativeLayout parentlayout = (RelativeLayout) m.getParent().getParent();
+					RelativeLayout parentlayout = (RelativeLayout) m.getParent().getParent().getParent();
 					View view = parentlayout.findViewById(R.id.peygham);
 					TextView x = (TextView) view;
 					String item = x.getText().toString();

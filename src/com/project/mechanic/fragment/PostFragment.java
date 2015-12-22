@@ -25,6 +25,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -34,9 +35,11 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -57,8 +60,7 @@ import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class PostFragment extends Fragment implements AsyncInterface,
-		GetAsyncInterface, CommInterface {
+public class PostFragment extends Fragment implements AsyncInterface, GetAsyncInterface, CommInterface {
 
 	/**/
 	Button dfragbutton;
@@ -68,19 +70,18 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	DialogpostTitleFragment MyDialogShow;
 	int ObjectID;
 	/**/
+	int IDcurrentUser, itemId;
 
 	private File mFileTemp;
 	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
-	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201,
-			CROPING_CODE = 301;
+	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201, CROPING_CODE = 301;
 	final int PIC_CROP = 10;
 	DataBaseAdapter adapter;
 	ExpandableCommentPost exadapter;
 	private Uri mImageCaptureUri;
 
-	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike,
-			nametxt;
-	LinearLayout /*addComment,*/ likeTopic;
+	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike, nametxt;
+	LinearLayout /* addComment, */ likeTopic;
 	ImageButton sharebtn;
 	ImageView profileImg;
 
@@ -90,6 +91,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	RelativeLayout count, commentcounter;
 
 	Post topics;
+	List<String> menuItems;
 
 	DialogcmtInpost dialog;
 	ArrayList<CommentInPost> commentGroup, ReplyGroup;
@@ -100,7 +102,6 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 	View header;
 	Users CurrentUser, uu;
-	int IDcurrentUser;
 	// PersianDate date;
 	Utility util;
 	int id, gp;
@@ -127,8 +128,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	boolean LikeOrComment; // like == true & comment == false
 
 	@SuppressLint("InflateParams")
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceStdataate) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceStdataate) {
 
 		((MainActivity) getActivity()).setActivityTitle(R.string.Forums);
 		View view = inflater.inflate(R.layout.fragment_post, null);
@@ -140,8 +140,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 		missedIds = new ArrayList<Integer>();
 
-		header = getActivity().getLayoutInflater().inflate(
-				R.layout.header_expandable, null);
+		header = getActivity().getLayoutInflater().inflate(R.layout.header_expandable, null);
 
 		/**/
 		if (getArguments().getString("Id") != null)
@@ -178,24 +177,23 @@ public class PostFragment extends Fragment implements AsyncInterface,
 		// titletxt = (TextView) header.findViewById(R.id.title_topic);
 		descriptiontxt = (TextView) header.findViewById(R.id.description_topic);
 		dateTopic = (TextView) header.findViewById(R.id.date_cc);
-		countComment = (TextView) header
-				.findViewById(R.id.numberOfCommentTopic);
+		countComment = (TextView) header.findViewById(R.id.numberOfCommentTopic);
 		countLike = (TextView) header.findViewById(R.id.txtNumofLike_CmtFroum);
 		nametxt = (TextView) header.findViewById(R.id.name_cc);
 
-//		addComment = (LinearLayout) header.findViewById(R.id.addCommentToTopic);
+		// addComment = (LinearLayout)
+		// header.findViewById(R.id.addCommentToTopic);
 		likeTopic = (LinearLayout) header.findViewById(R.id.LikeTopicLinear);
 
 		sharebtn = (ImageButton) header.findViewById(R.id.sharefroumicon);
 		profileImg = (ImageView) header.findViewById(R.id.iconfroumtitle);
 		// exlistview = (ExpandableListView) view
 		// .findViewById(R.id.listvCmt_Introduction_post);
-		exlistview = (ExpandableListView) view
-				.findViewById(R.id.listvCmt_Introduction_post);
+		exlistview = (ExpandableListView) view.findViewById(R.id.listvCmt_Introduction_post);
 
-//		count = (RelativeLayout) header.findViewById(R.id.countLike);
-//		commentcounter = (RelativeLayout) header
-//				.findViewById(R.id.countComment);
+		// count = (RelativeLayout) header.findViewById(R.id.countLike);
+		// commentcounter = (RelativeLayout) header
+		// .findViewById(R.id.countComment);
 
 		// end find view
 		if (getArguments().getString("Id") != null)
@@ -215,11 +213,9 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			userId = u.getId();
 
 			nametxt.setText(u.getName());
-			LinearLayout rl = (LinearLayout) header
-					.findViewById(R.id.profileLinearcommenterinContinue);
+			LinearLayout rl = (LinearLayout) header.findViewById(R.id.profileLinearcommenterinContinue);
 
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-					rl.getLayoutParams());
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
 
 			lp.width = util.getScreenwidth() / 7;
 			lp.height = util.getScreenwidth() / 7;
@@ -249,12 +245,12 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			descriptiontxt.setText(topics.getDescription());
 			descriptiontxt.setVisibility(View.VISIBLE);
 		}
-		
+
 		RelativeLayout layoutImg = (RelativeLayout) header.findViewById(R.id.imageLayout);
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(layoutImg.getLayoutParams());
 		lp.width = util.getScreenwidth();
 		lp.height = util.getScreenwidth();
-		
+
 		if (!topics.getPhoto().isEmpty()) {
 			File imgFile = new File(topics.getPhoto());
 
@@ -276,15 +272,12 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			public void onClick(View v) {
 
 				if (postImage.getDrawable() != null) {
-					Bitmap bitmapHeader = ((BitmapDrawable) postImage
-							.getDrawable()).getBitmap();
-					byte[] ImageConvertedToByte = Utility
-							.CompressBitmap(bitmapHeader);
+					Bitmap bitmapHeader = ((BitmapDrawable) postImage.getDrawable()).getBitmap();
+					byte[] ImageConvertedToByte = Utility.CompressBitmap(bitmapHeader);
 					// Bitmap image=((BitmapDrawable)
 					// postImage.getDrawable()).getBitmap();
 					// Drawable myDrawable = postImage.getDrawable();
-					DialogShowImage showImageDialog = new DialogShowImage(
-							getActivity(), ImageConvertedToByte, "");
+					DialogShowImage showImageDialog = new DialogShowImage(getActivity(), ImageConvertedToByte, "");
 					showImageDialog.show();
 				}
 			}
@@ -295,8 +288,8 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
@@ -306,26 +299,26 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 			}
 		});
-//		addComment.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View arg0) {
-//
-//				if (CurrentUser == null) {
-//					Toast.makeText(getActivity(),
-//							"برای درج کامنت ابتدا باید وارد شوید",
-//							Toast.LENGTH_SHORT).show();
-//
-//				} else {
-//
-//					dialog = new DialogcmtInpost(PostFragment.this, 0,
-//							getActivity(), postid, R.layout.dialog_addcomment,
-//							2);
-//					dialog.show();
-//					exadapter.notifyDataSetChanged();
-//				}
-//			}
-//		});
+		// addComment.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		//
+		// if (CurrentUser == null) {
+		// Toast.makeText(getActivity(),
+		// "برای درج کامنت ابتدا باید وارد شوید",
+		// Toast.LENGTH_SHORT).show();
+		//
+		// } else {
+		//
+		// dialog = new DialogcmtInpost(PostFragment.this, 0,
+		// getActivity(), postid, R.layout.dialog_addcomment,
+		// 2);
+		// dialog.show();
+		// exadapter.notifyDataSetChanged();
+		// }
+		// }
+		// });
 
 		commentGroup = adapter.getCommentInPostbyPostid(postid, 0);
 
@@ -333,8 +326,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 		List<CommentInPost> reply = null;
 		for (CommentInPost comment : commentGroup) {
-			reply = adapter.getReplyCommentbyCommentIDPost(postid,
-					comment.getId());
+			reply = adapter.getReplyCommentbyCommentIDPost(postid, comment.getId());
 			mapCollection.put(comment, reply);
 		}
 
@@ -357,8 +349,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 		if (missedIds.size() > 0) {
 			if (getActivity() != null) {
 
-				ringProgressDialog = ProgressDialog.show(getActivity(), "",
-						"لطفا منتظر بمانید...", true);
+				ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 				ringProgressDialog.setCancelable(true);
 				date = new ServerDate(getActivity());
 				date.delegate = PostFragment.this;
@@ -370,9 +361,8 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 		exlistview.addHeaderView(header);
 
-		exadapter = new ExpandableCommentPost(getActivity(),
-				(ArrayList<CommentInPost>) commentGroup, mapCollection, this,
-				postid);
+		exadapter = new ExpandableCommentPost(getActivity(), (ArrayList<CommentInPost>) commentGroup, mapCollection,
+				this, postid);
 
 		exadapter.notifyDataSetChanged();
 
@@ -380,46 +370,45 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 		if (CurrentUser == null) {
 			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
-//			count.setBackgroundResource(R.drawable.count_like_off);
+			// count.setBackgroundResource(R.drawable.count_like_off);
 		} else {
 			if (adapter.isUserLikedPost(CurrentUser.getId(), postid)) {
 				likeTopic.setBackgroundResource(R.drawable.like_froum_on);
-//				count.setBackgroundResource(R.drawable.count_like);
+				// count.setBackgroundResource(R.drawable.count_like);
 
 			} else {
 
 				likeTopic.setBackgroundResource(R.drawable.like_froum_off);
-//				count.setBackgroundResource(R.drawable.count_like_off);
+				// count.setBackgroundResource(R.drawable.count_like_off);
 
 			}
 		}
 		adapter.close();
-//		count.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View arg0) {
-//				adapter.open();
-//				ArrayList<LikeInPost> likedist = adapter
-//						.getLikepostLikeInPostByPostId(postid);
-//
-//				adapter.close();
-//				if (likedist.size() == 0) {
-//					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
-//							.show();
-//				} else {
-//					DialogPersonLikedPost dia = new DialogPersonLikedPost(
-//							getActivity(), postid, likedist);
-//					dia.show();
-//				}
-//			}
-//		});
+		// count.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View arg0) {
+		// adapter.open();
+		// ArrayList<LikeInPost> likedist = adapter
+		// .getLikepostLikeInPostByPostId(postid);
+		//
+		// adapter.close();
+		// if (likedist.size() == 0) {
+		// Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
+		// .show();
+		// } else {
+		// DialogPersonLikedPost dia = new DialogPersonLikedPost(
+		// getActivity(), postid, likedist);
+		// dia.show();
+		// }
+		// }
+		// });
 
 		// این کد ها برای مشخص شدن مبدا ارسالی برای آپدیت کردن لیست می باشد
 		// وقتی کاربر در صفحه فروم بدون کامنت ، نظری ثبت می کند به این صفحه
 		// منتقل می شود و این کد ها برای مشخص کردن مبدا و انجام عمل آپدیت کردن
 		// استفاده می شود
-		SharedPreferences realizeIdComment = getActivity()
-				.getSharedPreferences("Id", 0);
+		SharedPreferences realizeIdComment = getActivity().getSharedPreferences("Id", 0);
 		int destinyId = realizeIdComment.getInt("main_Id", -1);
 		if (destinyId == 1371) {
 			updateList();
@@ -432,13 +421,10 @@ public class PostFragment extends Fragment implements AsyncInterface,
 				adapter.open();
 
 				if (CurrentUser == null) {
-					Toast.makeText(getActivity(),
-							"برای درج لایک ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 				} else {
 
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 					ringProgressDialog.setCancelable(true);
 					date = new ServerDate(getActivity());
 					date.delegate = PostFragment.this;
@@ -456,18 +442,14 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 			@Override
 			public void onClick(View arg0) {
-				String body = topics.getDescription() + "\n"
-						+ " مشاهده کامل گفتگو در: "
+				String body = topics.getDescription() + "\n" + " مشاهده کامل گفتگو در: "
 						+ "<a href=\"mechanical://SplashActivity\">اینجا</a> ";
-				Intent sharingIntent = new Intent(
-						android.content.Intent.ACTION_SEND);
+				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/html");
 				// sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
 				// topics.getTitle());
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-						Html.fromHtml(body));
-				startActivity(Intent.createChooser(sharingIntent,
-						"اشتراک از طریق"));
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(body));
+				startActivity(Intent.createChooser(sharingIntent, "اشتراک از طریق"));
 			}
 		});
 
@@ -477,27 +459,98 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View v) {
 
-				if (CurrentUser == null) {
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", 0)
-							.show();
+				final int userIdsender = topics.getUserId();
+				final String t = topics.getDescription();
+				itemId = topics.getId();
+
+				if (util.getCurrentUser() != null) {
+					if (util.getCurrentUser().getId() == userIdsender) {
+
+						menuItems = new ArrayList<String>();
+						menuItems.clear();
+						menuItems.add("ارسال پیام");
+						menuItems.add("کپی");
+						menuItems.add("حذف");
+
+					} else {
+						menuItems = new ArrayList<String>();
+
+						menuItems.clear();
+						menuItems.add("ارسال پیام");
+						menuItems.add("افزودن به علاقه مندی ها");
+						menuItems.add("کپی");
+						menuItems.add("گزارش تخلف");
+					}
 				} else {
+					menuItems = new ArrayList<String>();
 
-					DialogLongClick dia = new DialogLongClick(getActivity(), 1,
-							topics.getUserId(), topics.getId(),
-							PostFragment.this, topics.getDescription());
-					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-					lp.copyFrom(dia.getWindow().getAttributes());
-					lp.width = (int) (util.getScreenwidth() / 1.5);
-					lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-					;
-					dia.show();
-
-					dia.getWindow().setAttributes(lp);
-					dia.getWindow().setBackgroundDrawable(
-							new ColorDrawable(
-									android.graphics.Color.TRANSPARENT));
+					menuItems.clear();
+					menuItems.add("کپی");
 				}
+
+				final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
+				popupMenu.show();
+
+				OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+
+						if (item.getTitle().equals("ارسال پیام")) {
+
+							util.sendMessage("Froum");
+
+						}
+						if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
+							// adapter.open();
+							// addToFavorite(util.getCurrentUser().getId(), 1,
+							// itemId);
+							// adapter.close();
+						}
+
+						if (item.getTitle().equals("کپی")) {
+
+							util.CopyToClipboard(t);
+
+						}
+
+						if (item.getTitle().equals("گزارش تخلف")) {
+
+							util.reportAbuse(userIdsender, 9, itemId, t, 0);
+
+						}
+						if (item.getTitle().equals("حذف")) {
+							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender) {
+								// deleteItems(itemId);
+							} else {
+
+								Toast.makeText(getActivity(), "", 0).show();
+							}
+						}
+
+						return false;
+					}
+
+				};
+				popupMenu.setOnMenuItemClickListener(menuitem);
+
+				// DialogLongClick dia = new DialogLongClick(getActivity(), 1,
+				// topics.getUserId(), topics.getId(),
+				// PostFragment.this, topics.getDescription());
+				// WindowManager.LayoutParams lp = new
+				// WindowManager.LayoutParams();
+				// lp.copyFrom(dia.getWindow().getAttributes());
+				// lp.width = (int) (util.getScreenwidth() / 1.5);
+				// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+				// ;
+				// dia.show();
+				//
+				// dia.getWindow().setAttributes(lp);
+				// dia.getWindow().setBackgroundDrawable(
+				// new ColorDrawable(
+				// android.graphics.Color.TRANSPARENT));
 			}
+
 		});
 
 		// ImageView send = util.ShowFooterAgahi(getActivity(), true, 3);
@@ -545,11 +598,9 @@ public class PostFragment extends Fragment implements AsyncInterface,
 		String state = Environment.getExternalStorageState();
 
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			mFileTemp = new File(Environment.getExternalStorageDirectory(),
-					TEMP_PHOTO_FILE_NAME);
+			mFileTemp = new File(Environment.getExternalStorageDirectory(), TEMP_PHOTO_FILE_NAME);
 		} else {
-			mFileTemp = new File(getActivity().getFilesDir(),
-					TEMP_PHOTO_FILE_NAME);
+			mFileTemp = new File(getActivity().getFilesDir(), TEMP_PHOTO_FILE_NAME);
 		}
 
 		util.ShowFooterAgahi(getActivity(), false, 10);
@@ -566,9 +617,8 @@ public class PostFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 				adapter.open();
-				adapter.insertCommentInPosttoDb(id,
-						util.inputComment(getActivity()), postid,
-						CurrentUser.getId(), serverDate, commentId);
+				adapter.insertCommentInPosttoDb(id, util.inputComment(getActivity()), postid, CurrentUser.getId(),
+						serverDate, commentId);
 
 				adapter.close();
 
@@ -593,21 +643,18 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		try {
-			if (requestCode == GALLERY_CODE && resultCode == Activity.RESULT_OK
-					&& null != data) {
+			if (requestCode == GALLERY_CODE && resultCode == Activity.RESULT_OK && null != data) {
 
 				mImageCaptureUri = data.getData();
 				// String img = data.getDataString();
 				// String filename = (new File(filePath)).getName();
 
-				Toast.makeText(getActivity(), mImageCaptureUri.getPath(),
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), mImageCaptureUri.getPath(), Toast.LENGTH_LONG).show();
 
 				// Bitmap myBitmap = BitmapFactory.decodeFile(img);
 
 				// showPicture.setImageBitmap(myBitmap);
-				Bitmap bitmap = BitmapFactory.decodeFile(mImageCaptureUri
-						.getPath());
+				Bitmap bitmap = BitmapFactory.decodeFile(mImageCaptureUri.getPath());
 				showPicture.setImageBitmap(bitmap);
 				// showPicture.setImageURI(mImageCaptureUri);
 
@@ -630,12 +677,10 @@ public class PostFragment extends Fragment implements AsyncInterface,
 				// showPicture.setImageURI(selectedImage);
 
 			} else {
-				Toast.makeText(getActivity(), "You haven't picked Image",
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), "You haven't picked Image", Toast.LENGTH_LONG).show();
 			}
 		} catch (Exception e) {
-			Toast.makeText(getActivity(), "Something went wrong",
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -651,8 +696,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 				if (items[item].equals("از دوربین")) {
 
 					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-					File f = new File(android.os.Environment
-							.getExternalStorageDirectory(), "temp1.jpg");
+					File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp1.jpg");
 					mImageCaptureUri = Uri.fromFile(f);
 					intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
 					startActivityForResult(intent, CAMERA_CODE);
@@ -661,8 +705,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 				} else if (items[item].equals("از گالری تصاویر")) {
 
-					Intent galleryIntent = new Intent(
-							Intent.ACTION_PICK,
+					Intent galleryIntent = new Intent(Intent.ACTION_PICK,
 							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
 					startActivityForResult(galleryIntent, GALLERY_CODE);
@@ -753,16 +796,14 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 		List<CommentInPost> reply = null;
 		for (CommentInPost comment : commentGroup) {
-			reply = adapter.getReplyCommentbyCommentIDPost(postid,
-					comment.getId());
+			reply = adapter.getReplyCommentbyCommentIDPost(postid, comment.getId());
 			mapCollection.put(comment, reply);
 		}
 
 		countComment.setText(adapter.CommentInPost_count(postid).toString());
 
-		exadapter = new ExpandableCommentPost(getActivity(),
-				(ArrayList<CommentInPost>) commentGroup, mapCollection, this,
-				postid);
+		exadapter = new ExpandableCommentPost(getActivity(), (ArrayList<CommentInPost>) commentGroup, mapCollection,
+				this, postid);
 
 		exadapter.notifyDataSetChanged();
 
@@ -791,16 +832,14 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 		List<CommentInPost> reply = null;
 		for (CommentInPost comment : commentGroup) {
-			reply = adapter.getReplyCommentbyCommentIDPost(postid,
-					comment.getId());
+			reply = adapter.getReplyCommentbyCommentIDPost(postid, comment.getId());
 			mapCollection.put(comment, reply);
 		}
 
 		countComment.setText(adapter.CommentInPost_count(postid).toString());
 
-		exadapter = new ExpandableCommentPost(getActivity(),
-				(ArrayList<CommentInPost>) commentGroup, mapCollection, this,
-				postid);
+		exadapter = new ExpandableCommentPost(getActivity(), (ArrayList<CommentInPost>) commentGroup, mapCollection,
+				this, postid);
 		exadapter.notifyDataSetChanged();
 		exlistview.setAdapter(exadapter);
 		if (groupPosition <= mapCollection.size()) {
@@ -828,16 +867,13 @@ public class PostFragment extends Fragment implements AsyncInterface,
 					likeTopic.setBackgroundResource(R.drawable.like_off);
 					count.setBackgroundResource(R.drawable.count_like_off);
 
-					countLike.setText(adapter.LikeInPost_count(postid)
-							.toString());
+					countLike.setText(adapter.LikeInPost_count(postid).toString());
 				} else {
-					adapter.insertLikeInPostToDb(id, CurrentUser.getId(),
-							postid, serverDate, 0);
+					adapter.insertLikeInPostToDb(id, CurrentUser.getId(), postid, serverDate, 0);
 					likeTopic.setBackgroundResource(R.drawable.like_on);
 					count.setBackgroundResource(R.drawable.count_like);
 
-					countLike.setText(adapter.LikeInPost_count(postid)
-							.toString());
+					countLike.setText(adapter.LikeInPost_count(postid).toString());
 				}
 			} else {
 				adapter.open();
@@ -860,9 +896,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 				ringProgressDialog.dismiss();
 			}
 		} catch (NumberFormatException ex) {
-			if (output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 
 				serverDate = output;
 
@@ -878,8 +912,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 						params.put("Desk", util.inputComment(getActivity()));
 						params.put("PostId", String.valueOf(postid));
-						params.put("UserId",
-								String.valueOf(CurrentUser.getId()));
+						params.put("UserId", String.valueOf(CurrentUser.getId()));
 						params.put("CommentId", String.valueOf(commentId));
 
 						params.put("Date", output);
@@ -889,8 +922,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 						saving.execute(params);
 					}
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -924,8 +956,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 							deleting.delegate = PostFragment.this;
 
 							params.put("TableName", "LikeInPost");
-							params.put("UserId",
-									String.valueOf(CurrentUser.getId()));
+							params.put("UserId", String.valueOf(CurrentUser.getId()));
 							params.put("PostId", String.valueOf(postid));
 
 							deleting.execute(params);
@@ -939,8 +970,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 							params.put("TableName", "LikeInPost");
 
-							params.put("UserId",
-									String.valueOf(CurrentUser.getId()));
+							params.put("UserId", String.valueOf(CurrentUser.getId()));
 							params.put("PostId", String.valueOf(postid));
 							params.put("CommentId", "0");
 							params.put("Date", output);
@@ -952,9 +982,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 					}
 				}
 			} else {
-				Toast.makeText(getActivity(),
-						"خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 				if (ringProgressDialog != null) {
 					ringProgressDialog.dismiss();
 				}
@@ -963,8 +991,7 @@ public class PostFragment extends Fragment implements AsyncInterface,
 
 		catch (Exception e) {
 
-			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
 			adapter.close();
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
@@ -996,10 +1023,8 @@ public class PostFragment extends Fragment implements AsyncInterface,
 	@Override
 	public void CommProcessFinish(String output) {
 
-		if (!"".equals(output)
-				&& output != null
-				&& !(output.contains("Exception") || output.contains("java") || output
-						.contains("soap"))) {
+		if (!"".equals(output) && output != null
+				&& !(output.contains("Exception") || output.contains("java") || output.contains("soap"))) {
 			util.parseQuery(output);
 
 			adapter.open();

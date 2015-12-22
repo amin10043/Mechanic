@@ -1287,7 +1287,7 @@ public class Utility implements AsyncInterface {
 		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 		lp.copyFrom(dialog.getWindow().getAttributes());
 		lp.width = (int) getScreenwidth() - 50;
-		lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+		//lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.BLACK));
 		dialog.getWindow().setAttributes(lp);

@@ -321,6 +321,7 @@ public class InformationUser extends Fragment {
 		List<PersonalData> PaperData = dbadaAdapter.CustomFieldPaperByUser(userPage.getId());
 		// List<PersonalData> TicketData = dbadaAdapter
 		// .CustomFieldTicketByUser(userPage.getId());
+		List<PersonalData> AnadData = dbadaAdapter.CustomFieldAnadByUser(userPage.getId());
 
 		dbadaAdapter.close();
 
@@ -330,6 +331,7 @@ public class InformationUser extends Fragment {
 		// sizeTypeList.add(TicketData.size());
 		sizeTypeList.add(PaperData.size());
 		sizeTypeList.add(FroumData.size());
+		sizeTypeList.add(AnadData.size());
 
 		// ExpandableListView Expandview = (ExpandableListView) rootView
 		// .findViewById(R.id.items);
@@ -346,6 +348,7 @@ public class InformationUser extends Fragment {
 		// parentItems.add("آگهی ها");
 		parentItems.add("مقالات");
 		parentItems.add("تالار گفتگو");
+		parentItems.add("مدیریت تبلیغات");
 
 		List<PersonalData> emptyItem = new ArrayList<PersonalData>();
 
@@ -378,11 +381,21 @@ public class InformationUser extends Fragment {
 
 			listDataChild.put(parentItems.get(2), emptyItem);
 
-		}
-
-		else {
+		} else {
 
 			listDataChild.put(parentItems.get(2), FroumData);
+		}
+		
+		if (AnadData.size() == 0) {
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(3), emptyItem);
+
+		} else {
+
+			listDataChild.put(parentItems.get(3), AnadData);
 		}
 
 		final SharedPreferences currentTime = getActivity().getSharedPreferences("time", 0);

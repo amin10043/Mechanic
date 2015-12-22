@@ -18,6 +18,11 @@
         android:textColor="@color/white"
         android:visibility="gone" />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/orginal_golden_color" />
+
     <RelativeLayout
         android:id="@+id/countryItem"
         android:layout_width="match_parent"
@@ -25,8 +30,7 @@
         android:layout_gravity="right"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:background="#d3dff9" >
+        android:layout_marginTop="5dp" >
 
         <ImageView
             android:id="@+id/icon_item"
@@ -47,6 +51,11 @@
             android:text="کشوری" />
     </RelativeLayout>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/orginal_golden_color" />
+
     <RelativeLayout
         android:id="@+id/cityItem"
         android:layout_width="match_parent"
@@ -54,8 +63,7 @@
         android:layout_gravity="right"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:background="#d3dff9" >
+        android:layout_marginTop="5dp" >
 
         <ImageView
             android:id="@+id/icon_item"
@@ -75,5 +83,10 @@
             android:layout_margin="10dp"
             android:text="استانی" />
     </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/orginal_golden_color" />
 
 </LinearLayout>

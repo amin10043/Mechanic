@@ -3,17 +3,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical"
-    android:weightSum="2" >
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/messageBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/lablesd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:gravity="right"
+            android:text="متن پیام:"
+            android:textColor="@color/transparent" />
+
+        <LinearLayout
+            android:id="@+id/sbu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/lablesd"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/select_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/circle_drawable"
+                android:src="@drawable/no_img_profile" />
+
+            <Button
+                android:id="@+id/sendNotification"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/select_image"
+                android:layout_margin="10dp"
+                android:background="@drawable/rectangle_drawable"
+                android:text="ثبت"
+                android:textColor="@color/orginal_golden_color" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/getMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:layout_toLeftOf="@+id/sbu" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/orginal_golden_color" />
 
     <RelativeLayout
         android:id="@+id/users"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/fdcvb"
         android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:background="@drawable/stroke_xml"
+        android:background="@color/white"
         android:visibility="visible" >
 
         <TextView
@@ -45,57 +102,6 @@
             android:text="شما فاقد صفحه در برنامه می باشید برای ارسال پیام برای سایر کاربران میبایست دارای صفحه در برنامه باشید"
             android:textColor="@color/white"
             android:visibility="gone" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/messageBox"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:background="@drawable/stroke_xml" >
-
-        <TextView
-            android:id="@+id/lablesd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_margin="10dp"
-            android:gravity="right"
-            android:text="متن پیام:"
-            android:textColor="@color/transparent" />
-
-        <LinearLayout
-            android:id="@+id/sbu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/lablesd"
-            android:gravity="center"
-            android:orientation="vertical" >
-
-            <ImageView
-                android:id="@+id/select_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/no_img_profile" />
-
-            <Button
-                android:id="@+id/sendNotification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/select_image"
-                android:text="ثبت" />
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/getMessage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            android:layout_toLeftOf="@+id/sbu" />
     </RelativeLayout>
 
 </LinearLayout>

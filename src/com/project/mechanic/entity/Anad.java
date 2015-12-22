@@ -53,10 +53,7 @@ public class Anad {
 		TypeId = typeid;
 	}
 
-	public int getProvinceid() {
-		return ProvinceId;
-	}
-
+	
 	public void setProvinceId(int provinceid) {
 		ProvinceId = provinceid;
 	}

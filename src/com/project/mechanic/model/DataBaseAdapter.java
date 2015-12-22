@@ -813,6 +813,20 @@ public class DataBaseAdapter {
 
 	}
 
+	public Anad getAnadByObjectId(int objectId) {
+
+		Anad item = null;
+		Cursor mCur = mDb.query("Anad", Anad, "ObjectId=?", new String[] { String.valueOf(objectId) }, null, null,
+				null);
+
+		while (mCur.moveToNext()) {
+			item = CursorToAnad(mCur);
+		}
+
+		return item;
+
+	}
+
 	public ArrayList<NewsPaper> getNewsPaperTypeId(int TypeId) {
 
 		ArrayList<NewsPaper> result = new ArrayList<NewsPaper>();
@@ -3470,7 +3484,7 @@ public class DataBaseAdapter {
 		return result;
 	}
 
-	public ArrayList<Ticket> getAllAnadUser(int userId) {
+	public ArrayList<Ticket> getAllTicketUser(int userId) {
 
 		ArrayList<Ticket> result = new ArrayList<Ticket>();
 		Cursor cursor = mDb.query(TableTicket, Ticket, "userId=?", new String[] { String.valueOf(userId) }, null, null,
@@ -3485,6 +3499,23 @@ public class DataBaseAdapter {
 					cursor.getInt(23), cursor.getString(24), cursor.getString(25));
 
 			result.add(tempTicket);
+		}
+
+		return result;
+	}
+
+	public ArrayList<Anad> getAllAnadUser(int ObjectId) {
+
+		ArrayList<Anad> result = new ArrayList<Anad>();
+		Cursor cursor = mDb.query(TableAnad, Anad, "ObjectId=?", new String[] { String.valueOf(ObjectId) }, null, null,
+				null);
+		Anad tempAnad;
+		while (cursor.moveToNext()) {
+			tempAnad = new Anad(cursor.getInt(0), cursor.getInt(2), cursor.getBlob(1), cursor.getString(3),
+					cursor.getInt(4), cursor.getInt(5), cursor.getInt(6), cursor.getInt(7), cursor.getString(8),
+					cursor.getString(9));
+
+			result.add(tempAnad);
 		}
 
 		return result;
@@ -3624,7 +3655,7 @@ public class DataBaseAdapter {
 		List<Object> listPage = getAllObjectByUserId(userId);
 		List<Froum> ListFroum = getAllFroumUser(userId);
 		List<Paper> listPaper = getAllPaperUser(userId);
-		List<Ticket> TicketList = getAllAnadUser(userId);
+		List<Ticket> TicketList = getAllTicketUser(userId);
 
 		int count = FindMaximumNumber(listPage.size(), TicketList.size(), listPaper.size(), ListFroum.size());
 
@@ -3772,7 +3803,7 @@ public class DataBaseAdapter {
 
 		ArrayList<PersonalData> result = new ArrayList<PersonalData>();
 
-		List<Ticket> TicketList = getAllAnadUser(userId);
+		List<Ticket> TicketList = getAllTicketUser(userId);
 
 		for (int i = 0; i < TicketList.size(); i++) {
 
@@ -3785,6 +3816,45 @@ public class DataBaseAdapter {
 			prd.setImagePathTicket(t.getImagePath());
 			prd.setDateTicket(t.getDate());
 			prd.setDayTicket(t.getDay());
+
+			result.add(prd);
+
+		}
+		return result;
+
+	}
+
+	public ArrayList<PersonalData> CustomFieldAnadByUser(int userId) {
+
+		ArrayList<PersonalData> result = new ArrayList<PersonalData>();
+
+		List<Object> objectList = getAllObjectByUserId(userId);
+
+		List<Integer> objectIds = new ArrayList<Integer>();
+
+		List<Anad> AnadList = new ArrayList<Anad>();
+
+		for (int i = 0; i < objectList.size(); i++) {
+
+			objectIds.add(objectList.get(i).getId());
+
+		}
+
+		for (int i = 0; i < objectIds.size(); i++) {
+
+			List<Anad> aList = getAllAnadUser(objectIds.get(i));
+			for (int j = 0; j < aList.size(); j++)
+				AnadList.add(aList.get(j));
+		}
+
+		for (int i = 0; i < AnadList.size(); i++) {
+
+			PersonalData prd = new PersonalData();
+			Anad a = AnadList.get(i);
+
+			prd.setAnadId(a.getId());
+			prd.setObjectIdAnad(a.getObjectId());
+			prd.setProvinceIdAnad(a.getProvinceId());
 
 			result.add(prd);
 

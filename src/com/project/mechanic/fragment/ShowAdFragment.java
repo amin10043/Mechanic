@@ -105,19 +105,19 @@ public class ShowAdFragment extends Fragment {
 		RelativeLayout.LayoutParams p3 = new RelativeLayout.LayoutParams(lin3.getLayoutParams());
 		RelativeLayout.LayoutParams p4 = new RelativeLayout.LayoutParams(lin4.getLayoutParams());
 
-		p1.width = util.getScreenwidth()-100;
+		p1.width = util.getScreenwidth()-150;
 		p1.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		p1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
-		p2.width = util.getScreenwidth()-100;
+		p2.width = util.getScreenwidth()-150;
 		p2.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		p2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		
-		p3.width = util.getScreenwidth()-100;
+		p3.width = util.getScreenwidth()-150;
 		p3.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		p3.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		
-		p4.width = util.getScreenwidth()-100;
+		p4.width = util.getScreenwidth()-150;
 		p4.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		p4.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
@@ -135,9 +135,9 @@ public class ShowAdFragment extends Fragment {
 		userTicket = t.getUserId();
 		boolean check = dbAdapter.isUserFavorite(userTicket, a);
 		if (check) {
-			like.setBackgroundResource(R.drawable.like_anad_on);
+			like.setBackgroundResource(R.drawable.ic_star_on);
 		} else {
-			like.setBackgroundResource(R.drawable.like_anad_off);
+			like.setBackgroundResource(R.drawable.ic_star_off);
 		}
 		// this code invisible edit button
 		edite.setVisibility(View.GONE);
@@ -231,14 +231,14 @@ public class ShowAdFragment extends Fragment {
 					dbAdapter.open();
 					dbAdapter.deletebyIdTicket(a);
 					dbAdapter.close();
-					like.setBackgroundResource(R.drawable.like_anad_off);
+					like.setBackgroundResource(R.drawable.ic_star_off);
 					// like.setLayoutParams(likeParams);
 
 				} else {
 					dbAdapter.open();
 					dbAdapter.insertFavoritetoDb(0, u.getId(), a , 3);
 					dbAdapter.close();
-					like.setBackgroundResource(R.drawable.like_anad_on);
+					like.setBackgroundResource(R.drawable.ic_star_on);
 					// like.setLayoutParams(likeParams);
 
 				}
@@ -363,6 +363,8 @@ public class ShowAdFragment extends Fragment {
 			fax.setText(t.getUFax());
 		}
 		dbAdapter.close();
+		
+		TextView lable1 = (TextView) view.findViewById(R.id.labelDayOfCommitAnad);
 
 		return view;
 

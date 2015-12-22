@@ -55,10 +55,10 @@ public class TypeUserNotificationAdapter extends ArrayAdapter<String> {
 		number.setText(numberMember.get(position) + "");
 		icon.setBackgroundResource(iconList.get(position));
 
-		if (visibleItem == 1 && position == 1) {
-			convertView.setVisibility(View.GONE);
-
-		}
+//		if (visibleItem == 1 && position == 1) {
+//			convertView.setVisibility(View.GONE);
+//
+//		}
 		if (visibleItem == 1 && position == 2) {
 			convertView.setVisibility(View.GONE);
 
