@@ -148,6 +148,19 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 		util.ShowFooterAgahi(getActivity(), false, 1);
 		layoutParams();
 
+		
+		TextView lableEnter = (TextView)view.findViewById(R.id.lableEnter);
+		TextView labletxt = (TextView)view.findViewById(R.id.lableee);
+		TextView txtRegister = (TextView)view.findViewById(R.id.txt_title_register);
+		TextView txttr = (TextView)view.findViewById(R.id.labler);
+		
+		lableEnter.setTypeface(util.SetFontCasablanca());
+		labletxt.setTypeface(util.SetFontCasablanca());
+		txttr.setTypeface(util.SetFontCasablanca());
+		txtRegister.setTypeface(util.SetFontIranSans());
+		
+
+		
 		return view;
 
 	}

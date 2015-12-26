@@ -20,11 +20,14 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
-            android:background="@drawable/tabric_icon" />
+            android:background="@drawable/tabric_icon"
+            android:visibility="gone" />
 
         <TextView
+            android:id="@+id/tabridlable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
             android:layout_toLeftOf="@+id/icon_group_chat"
@@ -61,11 +64,15 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
-            android:background="@drawable/healing_cooling_icon" />
+            android:background="@drawable/healing_cooling_icon"
+            android:visibility="gone" />
 
         <TextView
+                        android:id="@+id/garmayeshlable"
+            
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
             android:layout_toLeftOf="@+id/icon_group_chat"
@@ -102,11 +109,14 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
-            android:background="@drawable/floor_heating_icon" />
+            android:background="@drawable/floor_heating_icon"
+            android:visibility="gone" />
 
         <TextView
+            android:id="@+id/azkaflable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
             android:layout_toLeftOf="@+id/icon_group_chat"
@@ -144,11 +154,14 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
-            android:background="@drawable/bms_icon" />
+            android:background="@drawable/bms_icon"
+            android:visibility="gone" />
 
         <TextView
+            android:id="@+id/bmslable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
             android:layout_toLeftOf="@+id/icon_group_chat"

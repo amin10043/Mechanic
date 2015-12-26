@@ -95,8 +95,8 @@ public class DialogAdminsPage extends Dialog implements CommInterface,
 		pictureParams = new RelativeLayout.LayoutParams(
 				LayoutMain.getLayoutParams());
 
-		pictureParams.width = util.getScreenwidth() / 8;
-		pictureParams.height = util.getScreenwidth() / 8;
+		pictureParams.width = util.getScreenwidth() / 4;
+		pictureParams.height = util.getScreenwidth() / 4;
 		pictureParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		pictureParams.setMargins(5, 5, 5, 5);
 
@@ -104,7 +104,7 @@ public class DialogAdminsPage extends Dialog implements CommInterface,
 			Bitmap bmp = BitmapFactory.decodeByteArray(mainAdminArrayByte, 0,
 					mainAdminArrayByte.length);
 
-			picMainAdmin.setImageBitmap(util.getRoundedCornerBitmap(bmp, 50));
+			picMainAdmin.setImageBitmap(Utility.getclip(bmp));
 			picMainAdmin.setLayoutParams(pictureParams);
 		} else {
 			picMainAdmin.setImageResource(R.drawable.no_img_profile);

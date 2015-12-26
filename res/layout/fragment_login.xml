@@ -31,6 +31,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:background="@color/white"
+                        android:gravity="center"
                         android:orientation="vertical" >
 
                         <RelativeLayout
@@ -44,7 +45,7 @@
                             <EditText
                                 android:id="@+id/editTextmobile"
                                 android:layout_width="match_parent"
-                                android:layout_height="35dp"
+                                android:layout_height="50dp"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginRight="20dp"
                                 android:layout_marginTop="40dp"
@@ -62,9 +63,8 @@
                             <EditText
                                 android:id="@+id/editTextpass"
                                 android:layout_width="match_parent"
-                                android:layout_height="35dp"
+                                android:layout_height="50dp"
                                 android:layout_below="@+id/editTextmobile"
-                                android:layout_marginBottom="5dp"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginRight="20dp"
                                 android:layout_marginTop="@dimen/txtsize5"
@@ -78,13 +78,15 @@
 
                             <RelativeLayout
                                 android:id="@+id/btnlogin"
-                                android:layout_width="100dp"
+                                android:layout_width="150dp"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/editTextpass"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
                                 android:background="@drawable/rectangle_drawable" >
 
                                 <TextView
+                                    android:id="@+id/lableee"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_centerInParent="true"
@@ -106,8 +108,7 @@
                         <RelativeLayout
                             android:id="@+id/layout_register"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                        >
+                            android:layout_height="wrap_content" >
 
                             <RelativeLayout
                                 android:id="@+id/relative1_vertical_register"
@@ -128,7 +129,7 @@
 
                             <RelativeLayout
                                 android:id="@+id/btnreg1"
-                                android:layout_width="100dp"
+                                android:layout_width="150dp"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/relative1_vertical_register"
                                 android:layout_centerHorizontal="true"
@@ -139,6 +140,7 @@
                                 android:textSize="20dp" >
 
                                 <TextView
+                                    android:id="@+id/labler"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_centerInParent="true"
@@ -157,6 +159,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/stroke_xml"
+                    android:visibility="gone"
                     android:gravity="center" >
 
                     <ImageView
@@ -192,7 +195,8 @@
                         android:visibility="visible" />
 
                     <TextView
-                         android:layout_width="wrap_content"
+                        android:id="@+id/lableEnter"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="ورود به سیستم"

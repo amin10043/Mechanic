@@ -19,6 +19,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.project.mechanic.R;
 import com.project.mechanic.PushNotification.SelectUserFragment;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.utility.Utility;
 
 public class SelectUsersAdapter extends ArrayAdapter<Users> {
 	List<Users> usersList;
@@ -57,7 +58,7 @@ public class SelectUsersAdapter extends ArrayAdapter<Users> {
 		String path = user.getImagePath();
 		if (path != null)
 			bmp = BitmapFactory.decodeFile(path);
-		profileImg.setImageBitmap(bmp);
+		profileImg.setImageBitmap(Utility.getclip(bmp));
 
 		name.setText(user.getName());
 

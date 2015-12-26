@@ -44,90 +44,119 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="5dp" >
+            android:layout_margin="20dp" >
 
             <ImageButton
                 android:id="@+id/icon_froum_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/circle_drawable"
                 android:scaleType="fitXY"
-                android:src="@drawable/no_img_profile" />
+                android:background="@drawable/no_img_profile" />
         </RelativeLayout>
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/likedislike"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layoutabcd"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/cmffff"
-        android:orientation="horizontal" >
-
-        <ImageButton
-            android:id="@+id/positive_img"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/positive_off" />
-
-        <TextView
-            android:id="@+id/countCommentFroum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:text="0"
-            android:textColor="@color/transparent" />
-
-        <ImageButton
-            android:id="@+id/negative_img"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/negative_off" />
-
-        <TextView
-            android:id="@+id/countdislikecommentFroum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:text="0"
-            android:textColor="@color/transparent" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/cmffff"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layoutabcd"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/cmffff"
-        android:gravity="center"
-        android:orientation="horizontal" >
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:weightSum="6" >
 
         <LinearLayout
-            android:id="@+id/addCommentToTopic"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/comment_fr"
-            android:gravity="center" >
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/numberOfCommentTopic"
+            android:id="@+id/cmffff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal"
-            android:text="n"
-            android:textColor="@color/transparent"
-            android:textSize="12dp" />
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/cmffff"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/addCommentToTopic"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/comment_fr"
+                android:gravity="center" >
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/numberOfCommentTopic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:gravity="center_horizontal"
+                android:text="n"
+                android:textColor="@color/transparent"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/likedislike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layoutabcd"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/cmffff"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:weightSum="2" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/positive_img"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/positive_off" />
+
+                <TextView
+                    android:id="@+id/countCommentFroum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="@color/transparent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/negative_img"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/negative_off" />
+
+                <TextView
+                    android:id="@+id/countdislikecommentFroum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="@color/transparent" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -142,13 +171,14 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="left"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/down_arrow" />
 
         <TextView
             android:id="@+id/date_commented_in_froum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp"
             android:gravity="left"

@@ -1,22 +1,28 @@
 package com.project.mechanic.adapter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+import com.project.mechanic.MainActivity;
+import com.project.mechanic.R;
+import com.project.mechanic.entity.Anad;
+import com.project.mechanic.entity.PersonalData;
+import com.project.mechanic.entity.Province;
+import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
+import com.project.mechanic.fragment.FroumFragment;
+import com.project.mechanic.fragment.IntroductionFragment;
+import com.project.mechanic.fragment.PaperFragment;
+import com.project.mechanic.fragment.ShowAdFragment;
+import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -32,27 +38,11 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.PopupMenu.OnMenuItemClickListener;
-
-import com.project.mechanic.MainActivity;
-import com.project.mechanic.R;
-import com.project.mechanic.entity.Froum;
-import com.project.mechanic.entity.Paper;
-import com.project.mechanic.entity.PersonalData;
-import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
-import com.project.mechanic.fragment.Favorite_Fragment;
-import com.project.mechanic.fragment.FroumFragment;
-import com.project.mechanic.fragment.IntroductionFragment;
-import com.project.mechanic.fragment.PaperFragment;
-import com.project.mechanic.fragment.ShowAdFragment;
-import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.utility.Utility;
 
 public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 	Context context;
@@ -717,7 +707,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 				if (ImagePath != null) {
 					Bitmap bitmap = BitmapFactory.decodeFile(ImagePath);
-					profileIco.setImageBitmap(bitmap);
+					profileIco.setImageBitmap(Utility.getclip(bitmap));
 				}
 
 				namePage.setText(pd.getNameFollowObject());
@@ -783,6 +773,141 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 									}
 								}
+
+								return false;
+							}
+						};
+
+						popupMenu.setOnMenuItemClickListener(menuitem);
+
+						adapter.close();
+
+					}
+				});
+
+				// /////////////////////////////////
+
+			}
+		} else if (("مدیریت تبلیغات").equals(parentItems.get(groupPosition))) {
+
+			if (sizeTypeItem.get(groupPosition) == 0) {
+
+				convertView = infalInflater.inflate(R.layout.row_search, null);
+
+				TextView txt = (TextView) convertView.findViewById(R.id.row_search_name);
+
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
+
+				// //////////
+
+				txt.setText(pd.getDateTicket());
+				txt.setTypeface(util.SetFontCasablanca());
+
+			} else {
+				convertView = infalInflater.inflate(R.layout.row_anad_personal_tabligh, null);
+
+				// update your views here
+
+				// //////////////////////
+
+				TextView namePage = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
+				TextView ProvinceName = (TextView) convertView.findViewById(R.id.row_anad_txt2);
+
+				ImageView profileIco = (ImageView) convertView.findViewById(R.id.row_favorite_img);
+
+				ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
+
+				FrameLayout rl = (FrameLayout) convertView.findViewById(R.id.imageFrame);
+				FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(rl.getLayoutParams());
+
+				lp.width = (util.getScreenwidth() / 5);
+				lp.height = (util.getScreenwidth() / 5);
+				lp.setMargins(10, 10, 10, 10);
+
+				profileIco.setScaleType(ScaleType.FIT_XY);
+
+				profileIco.setLayoutParams(lp);
+
+				FrameLayout ad = (FrameLayout) convertView.findViewById(R.id.imageFrame);
+				FrameLayout.LayoutParams ss = new FrameLayout.LayoutParams(ad.getLayoutParams());
+
+				ss.width = (util.getScreenwidth() / 5);
+				ss.height = (util.getScreenwidth() / 5);
+				ss.setMargins(10, 10, 10, 10);
+
+				profileIco.setScaleType(ScaleType.FIT_XY);
+
+				profileIco.setLayoutParams(ss);
+
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
+
+				int anadId = pd.getAnadId();
+				adapter.open();
+				Anad a = adapter.getAnadByid(anadId);
+				com.project.mechanic.entity.Object obj = adapter.getObjectbyid(a.getObjectId());
+				Province province = adapter.getProvinceById(a.getProvinceId());
+				adapter.close();
+
+				String ImagePath = a.getImagePath();
+
+				if (ImagePath != null) {
+					Bitmap bitmap = BitmapFactory.decodeFile(ImagePath);
+					profileIco.setImageBitmap(Utility.getclip(bitmap));
+				}
+
+				namePage.setText(obj.getName());
+				ProvinceName.setText(province.getName());
+
+				TextView baghiMandeh = (TextView) convertView.findViewById(R.id.day); // modate
+																									// baghimande
+
+				TextView lable1 = (TextView) convertView.findViewById(R.id.lable_etebar);
+				TextView lable2 = (TextView) convertView.findViewById(R.id.lable2);
+
+				String commitDate = a.getDate(); // tarikhe ijad safhe
+
+				if (commitDate != null && !"".equals(commitDate)) {
+					final SharedPreferences currentTime = context.getSharedPreferences("time", 0);
+
+					String time = currentTime.getString("time", "-1");
+
+					int diff = util.differentTwoDate(commitDate, time);
+
+					baghiMandeh.setText(diff + "");
+
+					ImageView imgBi = (ImageView) convertView.findViewById(R.id.aks_bi_etebar);
+
+					if (diff <= 0) {
+						imgBi.setVisibility(View.VISIBLE);
+						imgBi.setLayoutParams(lp);
+					}
+
+				} else {
+					baghiMandeh.setText("نا معلوم");
+				}
+
+				// baghiMandeh.setVisibility(View.GONE);
+				// lable1.setVisibility(View.GONE);
+				// lable2.setVisibility(View.GONE);
+
+			
+				report.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+
+						List<String> items = new ArrayList<String>();
+						items.clear();
+						items.add("تمدید");
+
+						PopupMenu popupMenu = util.ShowPopupMenu(items, v);
+						popupMenu.show();
+						OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+							@Override
+							public boolean onMenuItemClick(MenuItem item) {
+
+								
 
 								return false;
 							}

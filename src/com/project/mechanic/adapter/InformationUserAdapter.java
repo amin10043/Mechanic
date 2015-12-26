@@ -34,9 +34,11 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.PersonalData;
+import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.Favorite_Fragment;
@@ -122,7 +124,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 		LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		if (("صفحات").equals(parentItems.get(groupPosition))) {
-			
+
 			if (sizeTypeItem.get(groupPosition) == 0) {
 
 				convertView = infalInflater.inflate(R.layout.row_search, null);
@@ -135,85 +137,87 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 				txt.setText(pd.getDateTicket());
 
-			}else{
-			convertView = infalInflater.inflate(R.layout.row_personal_object, null);
+			} else {
+				convertView = infalInflater.inflate(R.layout.row_personal_object, null);
 
-			// update your views here
+				// update your views here
 
-			TextView namePage = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
+				TextView namePage = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
 
-			ImageView profileIco = (ImageView) convertView.findViewById(R.id.icon_object);
+				ImageView profileIco = (ImageView) convertView.findViewById(R.id.icon_object);
 
-			ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
+				ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
 
-			report.setOnClickListener(new OnClickListener() {
+				report.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
+					@Override
+					public void onClick(View v) {
 
-					List<String> items = new ArrayList<String>();
+						List<String> items = new ArrayList<String>();
 
-					items.clear();
-					items.add("تمدید اعتبار");
-					items.add("حذف");
-					items.add("کپی");
+						items.clear();
+						items.add("تمدید اعتبار");
+						items.add("حذف");
+						items.add("کپی");
 
-					PopupMenu popupMenu = util.ShowPopupMenu(items, v);
-					popupMenu.show();
+						PopupMenu popupMenu = util.ShowPopupMenu(items, v);
+						popupMenu.show();
 
+					}
+				});
+
+				FrameLayout rl = (FrameLayout) convertView.findViewById(R.id.imageFrame);
+				FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(rl.getLayoutParams());
+
+				lp.width = (util.getScreenwidth() / 5);
+				lp.height = (util.getScreenwidth() / 5);
+				lp.setMargins(10, 10, 10, 10);
+
+				profileIco.setScaleType(ScaleType.FIT_XY);
+
+				profileIco.setLayoutParams(lp);
+
+				if (isShowSettingBtn == true) {
+					report.setVisibility(View.VISIBLE);
+				} else
+					report.setVisibility(View.GONE);
+
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
+
+				String ImagePath = pd.getImagePathObject();
+
+				if (ImagePath != null) {
+					Bitmap bitmap = BitmapFactory.decodeFile(ImagePath);
+					profileIco.setImageBitmap(Utility.getclip(bitmap));
 				}
-			});
 
-			FrameLayout rl = (FrameLayout) convertView.findViewById(R.id.imageFrame);
-			FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(rl.getLayoutParams());
+				namePage.setText(pd.getNameObject());
 
-			lp.width = (util.getScreenwidth() / 5);
-			lp.height = (util.getScreenwidth() / 5);
-			lp.setMargins(10, 10, 10, 10);
+				LinearLayout etebar = (LinearLayout) convertView.findViewById(R.id.et); // modate
+																						// baghimande
 
-			profileIco.setScaleType(ScaleType.FIT_XY);
+				etebar.setVisibility(View.GONE);
 
-			profileIco.setLayoutParams(lp);
+				convertView.setOnClickListener(new OnClickListener() {
 
-			if (isShowSettingBtn == true) {
-				report.setVisibility(View.VISIBLE);
-			} else
-				report.setVisibility(View.GONE);
+					@Override
+					public void onClick(View arg0) {
 
-			final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
+						IntroductionFragment fragment = new IntroductionFragment();
+						FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager()
+								.beginTransaction();
+						trans.replace(R.id.content_frame, fragment);
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(pd.getObjectId()));
+						fragment.setArguments(bundle);
+						trans.addToBackStack(null);
+						trans.commit();
 
-			String ImagePath = pd.getImagePathObject();
+					}
+				});
 
-			if (ImagePath != null) {
-				Bitmap bitmap = BitmapFactory.decodeFile(ImagePath);
-				profileIco.setImageBitmap(Utility.getclip(bitmap));
 			}
-
-			namePage.setText(pd.getNameObject());
-
-			LinearLayout etebar = (LinearLayout) convertView.findViewById(R.id.et); // modate
-																					// baghimande
-
-			etebar.setVisibility(View.GONE);
-
-			convertView.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-
-					IntroductionFragment fragment = new IntroductionFragment();
-					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
-					trans.replace(R.id.content_frame, fragment);
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(pd.getObjectId()));
-					fragment.setArguments(bundle);
-					trans.addToBackStack(null);
-					trans.commit();
-
-				}
-			});
-
-		}} else if (("آگهی ها").equals(parentItems.get(groupPosition))) {
+		} else if (("آگهی ها").equals(parentItems.get(groupPosition))) {
 			convertView = infalInflater.inflate(R.layout.row_anad_personal, null);
 
 			TextView txtdate = (TextView) convertView.findViewById(R.id.text_favorite_desc);
@@ -351,7 +355,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 			// update your views here
 		} else if (("مقالات").equals(parentItems.get(groupPosition))) {
-			
+
 			if (sizeTypeItem.get(groupPosition) == 0) {
 
 				convertView = infalInflater.inflate(R.layout.row_search, null);
@@ -364,112 +368,114 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 				txt.setText(pd.getDateTicket());
 
-			}else{
-			convertView = infalInflater.inflate(R.layout.row_personal_froum, null);
-
-			// update your views here
-
-			final TextView txt1 = (TextView) convertView.findViewById(R.id.rowtitlepaper);
-			TextView txt2 = (TextView) convertView.findViewById(R.id.rowdescriptionpaper);
-			TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
-
-			TextView DateView = (TextView) convertView.findViewById(R.id.datetopicinFroum);
-			ImageView iconProile = (ImageView) convertView.findViewById(R.id.iconfroumtitle);
-
-			ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
-
-			if (isShowSettingBtn == true) {
-				report.setVisibility(View.VISIBLE);
-			} else
-				report.setVisibility(View.GONE);
-			// end find view
-
-			report.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					List<String> items = new ArrayList<String>();
-
-					items.clear();
-					items.add("ارسال پیام");
-					items.add("حذف");
-					items.add("کپی");
-
-					// String[] nameItems = { "ارسال پیام", "حذف", "کپی" };
-
-					util.ShowPopupMenu(items, v);
-				}
-			});
-
-			final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
-
-			if (pd.getSeenBeforePaper() > 0) {
-				txt1.setTextColor(Color.GRAY);
-				txt2.setTextColor(Color.GRAY);
-				txt3.setTextColor(Color.GRAY);
-				DateView.setTextColor(Color.GRAY);
-
-			}
-
-			// Users x = adapter.getUserbyid(person1.getUserId());
-			// userId=x.getId();
-			LinearLayout rl = (LinearLayout) convertView.findViewById(R.id.topicTitleFroum);
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
-
-			lp.width = util.getScreenwidth() / 5;
-			lp.height = util.getScreenwidth() / 5;
-			// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(10, 10, 10, 10);
-			iconProile.setLayoutParams(lp);
-
-			Users u = null;
-			String ImagePath = "";
-			if (isShowSettingBtn == false) {
-				adapter.open();
-				u = adapter.getUserbyid(pd.getUserIdPaper());
-				adapter.close();
-				ImagePath = u.getImagePath();
-
-				txt3.setText(u.getName());
-
 			} else {
-				ImagePath = util.getCurrentUser().getImagePath();
-				txt3.setText(util.getCurrentUser().getName());
+				convertView = infalInflater.inflate(R.layout.row_personal_froum, null);
 
-			}
-			if (ImagePath != null) {
-				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				iconProile.setImageBitmap(Utility.getclip(bmp));
+				// update your views here
 
-				iconProile.setLayoutParams(lp);
-			}
+				final TextView txt1 = (TextView) convertView.findViewById(R.id.rowtitlepaper);
+				TextView txt2 = (TextView) convertView.findViewById(R.id.rowdescriptionpaper);
+				TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
 
-			DateView.setText(util.getPersianDate(pd.getDatePaper()));
+				TextView DateView = (TextView) convertView.findViewById(R.id.datetopicinFroum);
+				ImageView iconProile = (ImageView) convertView.findViewById(R.id.iconfroumtitle);
 
-			txt1.setText(pd.getNamePaper());
-			txt2.setText(pd.getDescriptonPaper());
+				ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
 
-			txt1.setTypeface(util.SetFontCasablanca());
-			txt2.setTypeface(util.SetFontCasablanca());
+				if (isShowSettingBtn == true) {
+					report.setVisibility(View.VISIBLE);
+				} else
+					report.setVisibility(View.GONE);
+				// end find view
 
-			convertView.setOnClickListener(new OnClickListener() {
+				report.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View arg0) {
+					@Override
+					public void onClick(View v) {
+						List<String> items = new ArrayList<String>();
 
-					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
-					PaperFragment fragment = new PaperFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(pd.getPaperId()));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
+						items.clear();
+						items.add("ارسال پیام");
+						items.add("حذف");
+						items.add("کپی");
+
+						// String[] nameItems = { "ارسال پیام", "حذف", "کپی" };
+
+						util.ShowPopupMenu(items, v);
+					}
+				});
+
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
+
+				if (pd.getSeenBeforePaper() > 0) {
+					txt1.setTextColor(Color.GRAY);
+					txt2.setTextColor(Color.GRAY);
+					txt3.setTextColor(Color.GRAY);
+					DateView.setTextColor(Color.GRAY);
+
 				}
-			});
 
-		}} else if (("تالار گفتگو").equals(parentItems.get(groupPosition))) {
-			
+				// Users x = adapter.getUserbyid(person1.getUserId());
+				// userId=x.getId();
+				LinearLayout rl = (LinearLayout) convertView.findViewById(R.id.topicTitleFroum);
+				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
+
+				lp.width = util.getScreenwidth() / 5;
+				lp.height = util.getScreenwidth() / 5;
+				// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				lp.setMargins(10, 10, 10, 10);
+				iconProile.setLayoutParams(lp);
+
+				Users u = null;
+				String ImagePath = "";
+				if (isShowSettingBtn == false) {
+					adapter.open();
+					u = adapter.getUserbyid(pd.getUserIdPaper());
+					adapter.close();
+					ImagePath = u.getImagePath();
+
+					txt3.setText(u.getName());
+
+				} else {
+					ImagePath = util.getCurrentUser().getImagePath();
+					txt3.setText(util.getCurrentUser().getName());
+
+				}
+				if (ImagePath != null) {
+					Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
+					iconProile.setImageBitmap(Utility.getclip(bmp));
+
+					iconProile.setLayoutParams(lp);
+				}
+
+				DateView.setText(util.getPersianDate(pd.getDatePaper()));
+
+				txt1.setText(pd.getNamePaper());
+				txt2.setText(pd.getDescriptonPaper());
+
+				txt1.setTypeface(util.SetFontCasablanca());
+				txt2.setTypeface(util.SetFontCasablanca());
+
+				convertView.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+
+						FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager()
+								.beginTransaction();
+						PaperFragment fragment = new PaperFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(pd.getPaperId()));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+					}
+				});
+
+			}
+		} else if (("تالار گفتگو").equals(parentItems.get(groupPosition))) {
+
 			if (sizeTypeItem.get(groupPosition) == 0) {
 
 				convertView = infalInflater.inflate(R.layout.row_search, null);
@@ -482,108 +488,110 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 				txt.setText(pd.getDateTicket());
 
-			}else{
-			convertView = infalInflater.inflate(R.layout.row_personal_froum, null);
-
-			// update your views here
-
-			final TextView txt1 = (TextView) convertView.findViewById(R.id.rowtitlepaper);
-			TextView txt2 = (TextView) convertView.findViewById(R.id.rowdescriptionpaper);
-			TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
-
-			TextView DateView = (TextView) convertView.findViewById(R.id.datetopicinFroum);
-			ImageView iconProile = (ImageView) convertView.findViewById(R.id.iconfroumtitle);
-
-			ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
-			if (isShowSettingBtn == true) {
-				report.setVisibility(View.VISIBLE);
-			} else
-				report.setVisibility(View.GONE);
-			// end find view
-
-			report.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					List<String> items = new ArrayList<String>();
-
-					items.clear();
-					items.add("ارسال پیام");
-					items.add("حذف");
-					items.add("کپی");
-
-					util.ShowPopupMenu(items, v);
-				}
-			});
-			final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
-
-			if (pd.getSeenBeforeFroum() > 0) {
-				txt1.setTextColor(Color.GRAY);
-				txt2.setTextColor(Color.GRAY);
-				txt3.setTextColor(Color.GRAY);
-				DateView.setTextColor(Color.GRAY);
-
-			}
-
-			// Users x = adapter.getUserbyid(person1.getUserId());
-			// userId=x.getId();
-			LinearLayout rl = (LinearLayout) convertView.findViewById(R.id.topicTitleFroum);
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
-
-			lp.width = util.getScreenwidth() / 5;
-			lp.height = util.getScreenwidth() / 5;
-			// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp.setMargins(10, 10, 10, 10);
-			iconProile.setLayoutParams(lp);
-
-			Users u = null;
-			String ImagePath = "";
-			if (isShowSettingBtn == false) {
-				adapter.open();
-				u = adapter.getUserbyid(pd.getUserIdFroum());
-				adapter.close();
-				ImagePath = u.getImagePath();
-				txt3.setText(u.getName());
-
 			} else {
-				ImagePath = util.getCurrentUser().getImagePath();
-				txt3.setText(util.getCurrentUser().getName());
+				convertView = infalInflater.inflate(R.layout.row_personal_froum, null);
 
-			}
+				// update your views here
 
-			if (ImagePath != null) {
-				Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-				iconProile.setImageBitmap(Utility.getclip(bmp));
+				final TextView txt1 = (TextView) convertView.findViewById(R.id.rowtitlepaper);
+				TextView txt2 = (TextView) convertView.findViewById(R.id.rowdescriptionpaper);
+				TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
 
-				iconProile.setLayoutParams(lp);
-			}
+				TextView DateView = (TextView) convertView.findViewById(R.id.datetopicinFroum);
+				ImageView iconProile = (ImageView) convertView.findViewById(R.id.iconfroumtitle);
 
-			DateView.setText(util.getPersianDate(pd.getDateFroum()));
+				ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
+				if (isShowSettingBtn == true) {
+					report.setVisibility(View.VISIBLE);
+				} else
+					report.setVisibility(View.GONE);
+				// end find view
 
-			txt1.setText(pd.getNameFroum());
-			txt2.setText(pd.getDescriptionFroum());
+				report.setOnClickListener(new OnClickListener() {
 
-			txt1.setTypeface(util.SetFontCasablanca());
-			txt2.setTypeface(util.SetFontCasablanca());
+					@Override
+					public void onClick(View v) {
+						List<String> items = new ArrayList<String>();
 
-			convertView.setOnClickListener(new OnClickListener() {
+						items.clear();
+						items.add("ارسال پیام");
+						items.add("حذف");
+						items.add("کپی");
 
-				@Override
-				public void onClick(View arg0) {
+						util.ShowPopupMenu(items, v);
+					}
+				});
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
-					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
-					FroumFragment fragment = new FroumFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(pd.getFroumId()));
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
+				if (pd.getSeenBeforeFroum() > 0) {
+					txt1.setTextColor(Color.GRAY);
+					txt2.setTextColor(Color.GRAY);
+					txt3.setTextColor(Color.GRAY);
+					DateView.setTextColor(Color.GRAY);
 
 				}
-			});
 
-			}} else if (("مدیریت صفحات دنبال شده").equals(parentItems.get(groupPosition))) {
+				// Users x = adapter.getUserbyid(person1.getUserId());
+				// userId=x.getId();
+				LinearLayout rl = (LinearLayout) convertView.findViewById(R.id.topicTitleFroum);
+				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
+
+				lp.width = util.getScreenwidth() / 5;
+				lp.height = util.getScreenwidth() / 5;
+				// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				lp.setMargins(10, 10, 10, 10);
+				iconProile.setLayoutParams(lp);
+
+				Users u = null;
+				String ImagePath = "";
+				if (isShowSettingBtn == false) {
+					adapter.open();
+					u = adapter.getUserbyid(pd.getUserIdFroum());
+					adapter.close();
+					ImagePath = u.getImagePath();
+					txt3.setText(u.getName());
+
+				} else {
+					ImagePath = util.getCurrentUser().getImagePath();
+					txt3.setText(util.getCurrentUser().getName());
+
+				}
+
+				if (ImagePath != null) {
+					Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
+					iconProile.setImageBitmap(Utility.getclip(bmp));
+
+					iconProile.setLayoutParams(lp);
+				}
+
+				DateView.setText(util.getPersianDate(pd.getDateFroum()));
+
+				txt1.setText(pd.getNameFroum());
+				txt2.setText(pd.getDescriptionFroum());
+
+				txt1.setTypeface(util.SetFontCasablanca());
+				txt2.setTypeface(util.SetFontCasablanca());
+
+				convertView.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+
+						FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager()
+								.beginTransaction();
+						FroumFragment fragment = new FroumFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString("Id", String.valueOf(pd.getFroumId()));
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+						trans.addToBackStack(null);
+						trans.commit();
+
+					}
+				});
+
+			}
+		} else if (("مدیریت صفحات دنبال شده").equals(parentItems.get(groupPosition))) {
 			convertView = infalInflater.inflate(R.layout.row_personal_object, null);
 
 			// update your views here
@@ -711,6 +719,142 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 		}
 
+		else if (("مدیریت تبلیغات").equals(parentItems.get(groupPosition))) {
+
+			if (sizeTypeItem.get(groupPosition) == 0) {
+
+				convertView = infalInflater.inflate(R.layout.row_search, null);
+
+				TextView txt = (TextView) convertView.findViewById(R.id.row_search_name);
+
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
+
+				// //////////
+
+				txt.setText(pd.getDateTicket());
+				txt.setTypeface(util.SetFontCasablanca());
+
+			} else {
+				convertView = infalInflater.inflate(R.layout.row_anad_personal_tabligh, null);
+
+				// update your views here
+
+				// //////////////////////
+
+				TextView namePage = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
+				TextView ProvinceName = (TextView) convertView.findViewById(R.id.row_anad_txt2);
+
+				ImageView profileIco = (ImageView) convertView.findViewById(R.id.row_favorite_img);
+
+				ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
+
+				FrameLayout rl = (FrameLayout) convertView.findViewById(R.id.imageFrame);
+				FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(rl.getLayoutParams());
+
+				lp.width = (util.getScreenwidth() / 5);
+				lp.height = (util.getScreenwidth() / 5);
+				lp.setMargins(10, 10, 10, 10);
+
+				profileIco.setScaleType(ScaleType.FIT_XY);
+
+				profileIco.setLayoutParams(lp);
+
+				FrameLayout ad = (FrameLayout) convertView.findViewById(R.id.imageFrame);
+				FrameLayout.LayoutParams ss = new FrameLayout.LayoutParams(ad.getLayoutParams());
+
+				ss.width = (util.getScreenwidth() / 5);
+				ss.height = (util.getScreenwidth() / 5);
+				ss.setMargins(10, 10, 10, 10);
+
+				profileIco.setScaleType(ScaleType.FIT_XY);
+
+				profileIco.setLayoutParams(ss);
+
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
+
+				int anadId = pd.getAnadId();
+				adapter.open();
+				Anad a = adapter.getAnadByid(anadId);
+				com.project.mechanic.entity.Object obj = adapter.getObjectbyid(a.getObjectId());
+				Province province = adapter.getProvinceById(a.getProvinceId());
+				adapter.close();
+
+				String ImagePath = a.getImagePath();
+
+				if (ImagePath != null) {
+					Bitmap bitmap = BitmapFactory.decodeFile(ImagePath);
+					profileIco.setImageBitmap(Utility.getclip(bitmap));
+				}
+
+				namePage.setText(obj.getName());
+				ProvinceName.setText(province.getName());
+
+				TextView baghiMandeh = (TextView) convertView.findViewById(R.id.day); // modate
+																						// baghimande
+
+				TextView lable1 = (TextView) convertView.findViewById(R.id.lable_etebar);
+				TextView lable2 = (TextView) convertView.findViewById(R.id.lable2);
+
+//				String commitDate = a.getDate(); // tarikhe ijad safhe
+//
+//				if (commitDate != null && !"".equals(commitDate)) {
+//					final SharedPreferences currentTime = context.getSharedPreferences("time", 0);
+//
+//					String time = currentTime.getString("time", "-1");
+//
+//					int diff = util.differentTwoDate(commitDate, time);
+//
+//					baghiMandeh.setText(diff + "");
+//
+//					ImageView imgBi = (ImageView) convertView.findViewById(R.id.aks_bi_etebar);
+//
+//					if (diff <= 0) {
+//						imgBi.setVisibility(View.VISIBLE);
+//						imgBi.setLayoutParams(lp);
+//					}
+//
+//				} else {
+//					baghiMandeh.setText("نا معلوم");
+//				}
+
+				 baghiMandeh.setVisibility(View.GONE);
+				 lable1.setVisibility(View.GONE);
+				 lable2.setVisibility(View.GONE);
+				 report.setVisibility(View.GONE);
+
+				 
+				report.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+
+						List<String> items = new ArrayList<String>();
+						items.clear();
+						items.add("تمدید");
+
+						PopupMenu popupMenu = util.ShowPopupMenu(items, v);
+						popupMenu.show();
+						OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
+
+							@Override
+							public boolean onMenuItemClick(MenuItem item) {
+
+								return false;
+							}
+						};
+
+						popupMenu.setOnMenuItemClickListener(menuitem);
+
+						adapter.close();
+
+					}
+				});
+
+				// /////////////////////////////////
+
+			}
+		}
+
 		return convertView;
 	}
 
@@ -746,7 +890,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 		TextView titleGroup = (TextView) convertView.findViewById(R.id.row_berand_txt);
 		// if (util.getCurrentUser() != null)
-		titleGroup.setText(parentItems.get(groupPosition) + " - " + name);
+		titleGroup.setText(parentItems.get(groupPosition));
 
 		convertView.setOnClickListener(new OnClickListener() {
 

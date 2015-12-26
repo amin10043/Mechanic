@@ -79,9 +79,11 @@ public class SubAdminAdapter extends ArrayAdapter<SubAdmin> implements
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
+		lp.width = util.getScreenwidth() / 6;
+		lp.height = util.getScreenwidth() / 6;
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		lp.addRule(RelativeLayout.CENTER_VERTICAL);
+
 		lp.setMargins(5, 5, 5, 5);
 
 		byte[] bitmapbyte = u.getImage();

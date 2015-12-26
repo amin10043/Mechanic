@@ -11,8 +11,8 @@
         <RelativeLayout
             android:id="@+id/mainAdminLinear"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#568bdd" >
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content" >
 
             <ImageView
                 android:id="@+id/mainAdminPagepic"
@@ -21,6 +21,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="10dp"
+                android:background="@drawable/circle_drawable"
                 android:src="@drawable/no_img_profile" />
 
             <TextView
@@ -31,16 +32,22 @@
                 android:layout_margin="10dp"
                 android:layout_toLeftOf="@+id/mainAdminPagepic"
                 android:text="admin"
-                android:textColor="@color/white" />
+                android:textColor="@color/orginal_hard_blue_color" />
         </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/shadow"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_below="@+id/mainAdminLinear"
+            android:background="@drawable/shadow_line_personal" />
 
         <RelativeLayout
             android:id="@+id/adminssubs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mainAdminLinear"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/list_item1" >
+            android:layout_below="@+id/shadow"
+            android:layout_marginTop="20dp" >
 
             <RelativeLayout
                 android:id="@+id/phonesubAdminRelative"
@@ -59,25 +66,28 @@
 
                 <ImageView
                     android:id="@+id/addBtnPhoneNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_centerVertical="true"
                     android:layout_margin="10dp"
+                    android:background="@drawable/circle_drawable"
                     android:layout_toLeftOf="@+id/inputPhoneSubAdmin"
-                    android:src="@drawable/add" />
+                    android:src="@drawable/fab_add" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/listRelativeSubAdmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/phonesubAdminRelative" >
+                android:layout_below="@+id/phonesubAdminRelative"
+                android:layout_margin="10dp" >
 
                 <ListView
                     android:id="@+id/listSubAdmin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:divider="@null" >
+                    android:divider="@color/orginal_golden_color"
+                    android:dividerHeight="2dp" >
                 </ListView>
             </RelativeLayout>
         </RelativeLayout>

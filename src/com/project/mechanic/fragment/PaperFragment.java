@@ -29,6 +29,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -45,6 +46,7 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import ir.noghteh.JustifiedTextView;
 
 public class PaperFragment extends Fragment implements AsyncInterface, CommInterface {
 
@@ -52,9 +54,9 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 	int paperID;
 	// LinearLayout btnAddcmt;
 	LinearLayout Like;
-	TextView NumofLike, NumofComment, txttitle, txttitleDes, txtname, txtdate;
+	TextView NumofLike, NumofComment, txttitle, txtname, txtdate;
 	DialogcmtInPaper dialog;
-
+	JustifiedTextView txttitleDes;
 	ArrayList<CommentInPaper> mylist;
 	PaperListAdapter PaperListadapter;
 	int like = 0;
@@ -98,7 +100,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 		NumofComment = (TextView) header.findViewById(R.id.numberOfCommentTopic);
 		NumofLike = (TextView) header.findViewById(R.id.txtNumofLike_CmtFroum);
 		txttitle = (TextView) header.findViewById(R.id.title_topic);
-		txttitleDes = (TextView) header.findViewById(R.id.description_topic);
+		txttitleDes = (JustifiedTextView) header.findViewById(R.id.description_topic);
 		txtdate = (TextView) header.findViewById(R.id.date_cc);
 		TextView time = (TextView) header.findViewById(R.id.timetxt);
 
@@ -156,7 +158,11 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 
 		txttitle.setText(p.getTitle());
 		txttitleDes.setText(p.getContext());
-		txttitleDes.setTypeface(util.SetFontIranSans());
+		txttitleDes.setTypeFace(util.SetFontIranSans());
+
+		txttitleDes.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
+		txttitleDes.setLineSpacing(15);		
+		
 		String ddd = util.getPersianDate(p.getDate());
 		List<String> dateTime = util.spilitDateTime(ddd);
 		txtdate.setText(dateTime.get(0));

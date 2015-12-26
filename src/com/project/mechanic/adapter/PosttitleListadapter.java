@@ -342,7 +342,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				// final int ItemId ;
 				final String t;
 				ListView listView = (ListView) v.getParent().getParent()
-						.getParent().getParent();
+						.getParent().getParent().getParent();
 				int position = listView.getPositionForView(v);
 				Post f = getItem(position - 1);
 				if (f != null) {

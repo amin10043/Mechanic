@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/LinearLayout14"
-    style="@style/List_Item_Style"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="right"
@@ -15,81 +14,80 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/topicTitleFroum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:id="@+id/reportImage"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="left"
-                android:background="@drawable/down_arrow" />
+            android:layout_margin="10dp" >
 
             <TextView
-                android:id="@+id/datetopicinFroum"
+                android:id="@+id/authorname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"
-                android:gravity="left"
-                android:text="Date"
+android:layout_below="@+id/set"                android:layout_margin="5dp"
+                android:layout_toLeftOf="@+id/iconfroumtitle"
+                android:text="author"
                 android:textColor="@color/transparent" />
-        </LinearLayout>
-<RelativeLayout
-        android:id="@+id/topicTitleFroum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp" >
 
-        <TextView
-            android:id="@+id/authorname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/iconfroumtitle"
-            android:text="author"
-            android:textColor="@color/transparent" />
+            <ImageView
+                android:id="@+id/iconfroumtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:background="@drawable/circle_drawable"
+                android:clickable="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/no_img_profile" />
 
-        
+            <LinearLayout
+                android:id="@+id/set"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
 
-        <ImageView
-            android:id="@+id/iconfroumtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="right"
-            android:background="@drawable/circle_drawable"
-            android:clickable="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/no_img_profile" />
-    </RelativeLayout>
+                <ImageView
+                    android:id="@+id/reportImage"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="left"
+                    android:background="@drawable/down_arrow" />
+
+                <TextView
+                    android:id="@+id/datetopicinFroum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="left"
+                    android:text="Date"
+                    android:textColor="@color/transparent" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
         <ImageView
             android:id="@+id/postImage"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
             android:src="@drawable/no_image_header"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/rowdescriptionpaper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:gravity="right"
-            android:layout_gravity="right"
             android:maxLines="2"
-            android:text="text description"
             android:singleLine="true"
+            android:text="text description"
             android:textColor="@color/transparent"
             android:visibility="visible" />
-
     </LinearLayout>
 
     <LinearLayout

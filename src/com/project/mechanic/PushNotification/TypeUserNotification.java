@@ -40,9 +40,9 @@ public class TypeUserNotification extends Fragment {
 		titleList.add("کاربرانی که صفحه شما را بازدید کرده اند");
 		titleList.add("کاربرانی که صفحه شما را دنبال می کنند");
 
-		iconList.add(R.drawable.numberview);
-		iconList.add(R.drawable.numberview);
-		iconList.add(R.drawable.numberlike);
+		iconList.add(R.drawable.numvv);
+		iconList.add(R.drawable.numvv);
+		iconList.add(R.drawable.numll);
 
 		numberMember.add(20);
 		numberMember.add(34);
@@ -53,9 +53,15 @@ public class TypeUserNotification extends Fragment {
 
 			visibleValue = 1;
 
+			
+			titleList.clear();
+			titleList.add("کاربرانی که نرم افزار را نصب  دارند");
+			
 			TypeUserNotificationAdapter listAdapter = new TypeUserNotificationAdapter(
 					getActivity(), R.layout.row_type_user, titleList, iconList,
 					numberMember, visibleValue);
+			
+		
 			typeItem.setAdapter(listAdapter);
 
 		}

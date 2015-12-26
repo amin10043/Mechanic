@@ -2,38 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_froum_reply" >
+    android:background="@color/white" >
 
     <RelativeLayout
         android:id="@+id/layoutabcd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/settingsLayout"
         android:orientation="horizontal" >
 
-        <RelativeLayout
-            android:id="@+id/main_icon_reply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp" >
-
-            <ImageButton
-                android:id="@+id/icon_reply_comment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/circle_drawable"
-                android:scaleType="fitXY"
-                android:src="@drawable/no_img_profile" />
-        </RelativeLayout>
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:layout_toLeftOf="@+id/main_icon_reply"
             android:gravity="right"
             android:orientation="vertical" >
@@ -42,7 +25,7 @@
                 android:id="@+id/name_replyed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
+                android:gravity="right"
                 android:text="Name"
                 android:textColor="@color/transparent" />
 
@@ -50,36 +33,132 @@
                 android:id="@+id/reply_txt_child"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:gravity="right"
                 android:lineSpacingExtra="5dp"
-                android:text="reply meesage"
+                android:text="Message"
                 android:textColor="@color/transparent" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/settingsLayout"
+        <RelativeLayout
+            android:id="@+id/main_icon_reply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="20dp" >
 
-            <ImageView
-                android:id="@+id/reportImagereply"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/down_arrow" />
-
-            <TextView
-                android:id="@+id/date_replyed"
+            <ImageButton
+                android:id="@+id/icon_reply_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"
-                android:gravity="left"
-                android:text="Date"
-                android:textColor="@color/transparent" />
-        </LinearLayout>
+                android:background="@drawable/circle_drawable"
+                android:scaleType="fitXY"
+                android:src="@drawable/no_img_profile" />
+        </RelativeLayout>
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/likedislike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutabcd"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/cmffff"
+        android:orientation="horizontal"
+        android:visibility="invisible" >
+
+        <ImageButton
+            android:id="@+id/positive_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/positive_off" />
+
+        <TextView
+            android:id="@+id/countCommentFroum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="0"
+            android:textColor="@color/transparent" />
+
+        <ImageButton
+            android:id="@+id/negative_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/negative_off" />
+
+        <TextView
+            android:id="@+id/countdislikecommentFroum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:text="0"
+            android:textColor="@color/transparent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cmffff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutabcd"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/cmffff"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="invisible" >
+
+        <LinearLayout
+            android:id="@+id/addCommentToTopic"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/comment_fr"
+            android:gravity="center" >
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/numberOfCommentTopic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center_horizontal"
+            android:text="n"
+            android:textColor="@color/transparent"
+            android:textSize="12dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/settingsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible" >
+
+        <ImageView
+            android:id="@+id/reportImagereply"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="left"
+            android:background="@drawable/down_arrow" />
+
+        <TextView
+            android:id="@+id/date_replyed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:gravity="left|center_vertical"
+            android:text="Date"
+            android:textColor="@color/transparent" />
+    </LinearLayout>
 
 </RelativeLayout>

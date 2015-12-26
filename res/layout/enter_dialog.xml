@@ -17,10 +17,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:layout_centerHorizontal="true"
             android:text="به منظور استفاده از تمامی امکانات برنامه باید ثبت نام کرده باشید"
             android:textColor="@color/transparent" />
 
         <LinearLayout
+            android:id="@+id/linear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/messageExit"

@@ -2,30 +2,6 @@ package com.project.mechanic;
 
 import java.util.List;
 
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.os.StrictMode;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.project.mechanic.adapter.SlideMenuAdapter;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.CommentInFroum;
@@ -67,6 +43,30 @@ import com.project.mechanic.fragment.TypeExpertFroum;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.PeriodicTask;
 import com.project.mechanic.utility.Utility;
+import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.os.StrictMode;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
 
@@ -89,8 +89,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-				.permitAll().build();
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 		StrictMode.setThreadPolicy(policy);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		adapter = new DataBaseAdapter(this);
@@ -109,8 +108,19 @@ public class MainActivity extends FragmentActivity {
 			txtlike.setVisibility(View.VISIBLE);
 			util.setNoti(this, user.getId());
 		} else {
+			
 			EnterDialog dialogEnter = new EnterDialog(MainActivity.this);
-			dialogEnter.show();
+//			WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//			lp.copyFrom(dialogEnter.getWindow().getAttributes());
+//			lp.width = (int) (util.getScreenwidth()-50);
+//			lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+//			
+//
+//			dialogEnter.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.BLACK));
+			
+
+			util.setSizeDialog(dialogEnter);
+//			dialogEnter.show();
 		}
 
 		Settings = (ImageView) findViewById(R.id.settings_icon);
@@ -119,8 +129,7 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onClick(View arg0) {
 
-				FragmentTransaction trans = getSupportFragmentManager()
-						.beginTransaction();
+				FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new DialogSettings());
 
 				trans.addToBackStack(null);
@@ -132,8 +141,7 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				FragmentTransaction trans = getSupportFragmentManager()
-						.beginTransaction();
+				FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new TypeExpertFroum());
 
 				trans.addToBackStack(null);
@@ -147,8 +155,7 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onClick(View arg0) {
 
-				FragmentTransaction trans = getSupportFragmentManager()
-						.beginTransaction();
+				FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new PostTimelineFragment());
 
 				trans.addToBackStack(null);
@@ -163,16 +170,14 @@ public class MainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				user = util.getCurrentUser();
 				if (user == null) {
-					Toast.makeText(MainActivity.this,
-							"شما هنوز وارد نشده اید.", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(MainActivity.this,"ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 					return;
 				}
 
 				adapter.open();
 				dialog = new Dialog_notification(MainActivity.this, r, r1, r2);
 
-				dialog.show();
+				util.setSizeDialog(dialog);
 
 				// int seen = 1;
 				// adapter.updatecmseentodb(seen, user.getId());
@@ -189,10 +194,10 @@ public class MainActivity extends FragmentActivity {
 		final ImageButton iBtnMenu = (ImageButton) findViewById(R.id.iBtnMenu);
 		final TextView txtTitle = (TextView) findViewById(R.id.txtTitleP);
 
-//		final Animation animation1 = AnimationUtils.loadAnimation(
-//				getApplicationContext(), R.anim.rotate_animation);
-//		final Animation animation2 = AnimationUtils.loadAnimation(
-//				getApplicationContext(), R.anim.rotate_animation_back);
+		// final Animation animation1 = AnimationUtils.loadAnimation(
+		// getApplicationContext(), R.anim.rotate_animation);
+		// final Animation animation2 = AnimationUtils.loadAnimation(
+		// getApplicationContext(), R.anim.rotate_animation_back);
 
 		// final RotateAnimation animation1 = new RotateAnimation(0.0f, -90.0f,
 		// Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT,
@@ -206,17 +211,14 @@ public class MainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				user = util.getCurrentUser();
 				if (user == null) {
-					Toast.makeText(MainActivity.this,
-							"شما هنوز وارد نشده اید.", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(MainActivity.this, "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				adapter.open();
 
-				dialog1 = new Dialog_notificationlike(MainActivity.this, t, t1,
-						t2);
+				dialog1 = new Dialog_notificationlike(MainActivity.this, t, t1, t2);
 
-				dialog1.show();
+				util.setSizeDialog(dialog1);
 				// int seen = 1;
 				// adapter.updatelikeseentodb(seen, user.getId());
 				// adapter.updatelikefroumseentodb(seen, user.getId());
@@ -233,25 +235,26 @@ public class MainActivity extends FragmentActivity {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-		mDrawerList.setDivider(getResources().getDrawable(
-				R.drawable.lili));
+		mDrawerList.setDivider(getResources().getDrawable(R.drawable.lili));
 		mDrawerList.setAdapter(slideadapter);
 
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
-		mDrawerLayout, /* DrawerLayout object */
-		R.drawable.ic_launcher, /* nav drawer icon to replace 'Up' caret */
-		R.string.hello_world, /* "open drawer" description */
-		R.string.app_name /* "close drawer" description */) {
+				mDrawerLayout, /* DrawerLayout object */
+				R.drawable.ic_launcher, /*
+										 * nav drawer icon to replace 'Up' caret
+										 */
+				R.string.hello_world, /* "open drawer" description */
+				R.string.app_name /* "close drawer" description */) {
 
 			public void onDrawerClosed(View view) {
-//				iBtnMenu.startAnimation(animation2);
+				// iBtnMenu.startAnimation(animation2);
 
 			}
 
 			public void onDrawerOpened(View drawerView) {
-//				iBtnMenu.startAnimation(animation1);
+				// iBtnMenu.startAnimation(animation1);
 
 			}
 
@@ -317,8 +320,7 @@ public class MainActivity extends FragmentActivity {
 
 		txtTitle.setText(R.string.strMain);
 
-		FragmentTransaction trans = getSupportFragmentManager()
-				.beginTransaction();
+		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 		trans.replace(R.id.content_frame, new MainFragment());
 		trans.addToBackStack(null);
 		trans.commit();
@@ -354,13 +356,11 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
-	private class DrawerItemClickListener implements
-			ListView.OnItemClickListener {
+	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
 		@SuppressWarnings("rawtypes")
 		@Override
-		public void onItemClick(AdapterView parent, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView parent, View view, int position, long id) {
 			selectItem(position);
 		}
 	}
@@ -382,16 +382,15 @@ public class MainActivity extends FragmentActivity {
 		Fragment fragment;
 		FragmentManager fragmentManager;
 		switch (position) {
-//		case 0:
-//
-//			break;
+		// case 0:
+		//
+		// break;
 
 		case 0:
 			// main page 0
 			fragment = new MainFragment();
 			fragmentManager = getSupportFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
+			fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
 			break;
 
@@ -405,16 +404,14 @@ public class MainActivity extends FragmentActivity {
 				// Bundle bundle = new Bundle();
 				// bundle.putInt("0", 0);
 				// fragment.setArguments(bundle);
-				fragmentManager.beginTransaction()
-						.replace(R.id.content_frame, fragment).commit();
+				fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
 				//
 			} else {
 
 				fragment = new LoginFragment();
 				fragmentManager = getSupportFragmentManager();
-				fragmentManager.beginTransaction()
-						.replace(R.id.content_frame, fragment).commit();
+				fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 			}
 			break;
 
@@ -424,18 +421,15 @@ public class MainActivity extends FragmentActivity {
 			if (util.getCurrentUser() != null) {
 				fragment = new Favorite_Fragment();
 				fragmentManager = getSupportFragmentManager();
-				fragmentManager.beginTransaction()
-						.replace(R.id.content_frame, fragment).commit();
+				fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 			} else
-				Toast.makeText(MainActivity.this, "ابتدا باید وارد شوید", 0)
-						.show();
+				Toast.makeText(MainActivity.this, "ابتدا باید وارد شوید", 0).show();
 			break;
 
 		case 3:
 			fragment = new FragmentContactUs();
 			fragmentManager = getSupportFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
+			fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
 			break;
 		case 4:
@@ -444,8 +438,7 @@ public class MainActivity extends FragmentActivity {
 			// about us 3
 			fragment = new FragmentAboutUs();
 			fragmentManager = getSupportFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment).commit();
+			fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
 			break;
 
@@ -473,8 +466,7 @@ public class MainActivity extends FragmentActivity {
 
 		else {
 			if (f instanceof FroumFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				SharedPreferences shared = getSharedPreferences("Id", 0);
 				FroumtitleFragment fragment = new FroumtitleFragment();
 				int ListId = shared.getInt("Froum_List_Id", 0);
@@ -484,8 +476,7 @@ public class MainActivity extends FragmentActivity {
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
 			} else if (f instanceof FroumWithoutComment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				SharedPreferences shared = getSharedPreferences("Id", 0);
 				FroumtitleFragment fragment = new FroumtitleFragment();
 				int ListId = shared.getInt("Froum_List_Id", 0);
@@ -496,14 +487,12 @@ public class MainActivity extends FragmentActivity {
 				trans.commit();
 
 			} else if (f instanceof FroumtitleFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
 
 			} else if (f instanceof BerandFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				int Id = ((BerandFragment) f).getCurrentId();
 				adapter.open();
 				ListItem li = adapter.getListItemById(Id);
@@ -521,8 +510,7 @@ public class MainActivity extends FragmentActivity {
 
 				trans.commit();
 			} else if (f instanceof MainBrandFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				int parentID = ((MainBrandFragment) f).getParentId();
 				adapter.open();
 				int jadID = adapter.getListItemById(parentID).getListId();
@@ -537,11 +525,9 @@ public class MainActivity extends FragmentActivity {
 			} else if (f instanceof IntroductionFragment) {
 				int objId = ((IntroductionFragment) f).getObjectId();
 
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				adapter.open();
-				com.project.mechanic.entity.Object o = adapter
-						.getObjectbyid(objId);
+				com.project.mechanic.entity.Object o = adapter.getObjectbyid(objId);
 				adapter.close();
 				if (o.getObjectBrandTypeId() == 0) {
 
@@ -562,8 +548,7 @@ public class MainActivity extends FragmentActivity {
 
 			} else if (f instanceof ProvinceFragment) {
 
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				final SharedPreferences pageId = getSharedPreferences("Id", 0);
 				int res = pageId.getInt("IsAgency", -1);
 				switch (res) {
@@ -571,8 +556,7 @@ public class MainActivity extends FragmentActivity {
 					trans.replace(R.id.content_frame, new MainFragment());
 					break;
 				case 1:
-					trans.replace(R.id.content_frame,
-							new IntroductionFragment());
+					trans.replace(R.id.content_frame, new IntroductionFragment());
 					break;
 				case -1:
 					trans.replace(R.id.content_frame, new MainFragment());
@@ -581,80 +565,65 @@ public class MainActivity extends FragmentActivity {
 
 				trans.commit();
 			} else if (f instanceof Province2Fragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
 			} else if (f instanceof Province3Fragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
 			} else if (f instanceof City3Fragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
 			} else if (f instanceof City2Fragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new Province2Fragment());
 				trans.commit();
 			} else if (f instanceof CityFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new ProvinceFragment());
 				trans.commit();
 			} else if (f instanceof ObjectFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				int cityId = ((ObjectFragment) f).getCityId();
 				adapter.open();
 				City c = adapter.getCityById(cityId);
-				List<City> allCity = adapter.getCitysByProvinceId(c
-						.getProvinceId());
+				List<City> allCity = adapter.getCitysByProvinceId(c.getProvinceId());
 				CityFragment cf = new CityFragment(allCity);
 				adapter.close();
 				trans.replace(R.id.content_frame, cf);
 				trans.commit();
 			} else if (f instanceof AdvisorTypeFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new City2Fragment());
 				trans.commit();
 			} else if (f instanceof ExecutertypeFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new City3Fragment());
 				trans.commit();
 			} else if (f instanceof NewsFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
 			} else if (f instanceof CountryFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
 			} else if (f instanceof NewsFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
 			} else if (f instanceof TitlepaperFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new NewsFragment());
 				trans.commit();
 			} else if (f instanceof PaperWithoutComment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new TitlepaperFragment());
 				trans.commit();
 			} else if (f instanceof PaperFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right,
-						R.anim.pull_in_left);
+				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new TitlepaperFragment());
 				trans.commit();
 			} else {
@@ -663,11 +632,15 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
+	@SuppressLint("NewApi")
 	private void ConfirmAlert() {
 
 		ExitDialog exDialog = new ExitDialog(MainActivity.this);
+		
+		util.setSizeDialog(exDialog);
 
-		exDialog.show();
+//		
+
 	}
 
 	@Override

@@ -19,7 +19,6 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:background="#d3dff9"
             android:visibility="visible" >
 
             <ImageView
@@ -41,6 +40,11 @@
                 android:textColor="@color/transparent" />
         </RelativeLayout>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/orginal_golden_color" />
+
         <RelativeLayout
             android:id="@+id/best"
             android:layout_width="match_parent"
@@ -48,7 +52,6 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:background="#d3dff9"
             android:visibility="visible" >
 
             <ImageView
@@ -70,6 +73,11 @@
                 android:textColor="@color/transparent" />
         </RelativeLayout>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/orginal_golden_color" />
+
         <RelativeLayout
             android:id="@+id/newsApp"
             android:layout_width="match_parent"
@@ -77,7 +85,6 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:background="#d3dff9"
             android:visibility="visible" >
 
             <ImageView
@@ -98,6 +105,11 @@
                 android:text="اطلاع رسانی"
                 android:textColor="@color/transparent" />
         </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/orginal_golden_color" />
     </LinearLayout>
 
 </LinearLayout>
