@@ -13,7 +13,7 @@ import com.project.mechanic.inter.AsyncInterface;
 //import org.ksoap2.transport.HttpTransportSE;
 //import org.ksoap2.transport.HttpTransportSE;
 
-public class UpdatingPersonalPage extends AsyncTask<String, Integer, String> {
+public class UpdatingVisit extends AsyncTask<String, Integer, String> {
 
 	public String SOAP_ACTION = "http://tempuri.org/";
 
@@ -27,12 +27,12 @@ public class UpdatingPersonalPage extends AsyncTask<String, Integer, String> {
 
 	public AsyncInterface delegate = null;
 
-	public UpdatingPersonalPage(Context context) {
+	public UpdatingVisit(Context context) {
 	}
 
 	@Override
 	protected String doInBackground(String... arg0) {
-		OPERATION_NAME = "getAll" + arg0[0]+"ByUserId";
+		OPERATION_NAME = "getAll" + arg0[0];
 		SOAP_ACTION += OPERATION_NAME;
 
 		try {
@@ -58,12 +58,6 @@ public class UpdatingPersonalPage extends AsyncTask<String, Integer, String> {
 			pi.setType(Integer.class);
 			request.addProperty(pi);
 			
-			pi = new PropertyInfo();
-			pi.setName("userId");
-			pi.setValue(arg0[4]);
-			pi.setType(Integer.class);
-			request.addProperty(pi);
-
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 					SoapEnvelope.VER11);
 			envelope.dotNet = true;
