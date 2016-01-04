@@ -8,12 +8,9 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.AsyncInterfaceVisit;
 
-//import org.ksoap2.transport.HttpTransportSE;
-//import org.ksoap2.transport.HttpTransportSE;
-
-public class UpdatingPersonalPage extends AsyncTask<String, Integer, String> {
+public class UpdatingVisit extends AsyncTask<String, Integer, String> {
 
 	public String SOAP_ACTION = "http://tempuri.org/";
 
@@ -25,45 +22,32 @@ public class UpdatingPersonalPage extends AsyncTask<String, Integer, String> {
 
 	public String response = "";
 
-	public AsyncInterface delegate = null;
+	public AsyncInterfaceVisit delegate = null;
 
-	public UpdatingPersonalPage(Context context) {
+	public UpdatingVisit(Context context) {
 	}
 
 	@Override
 	protected String doInBackground(String... arg0) {
-		OPERATION_NAME = "getAll" + arg0[0]+"ByUserId";
+		OPERATION_NAME = "getAll" + arg0[0];
 		SOAP_ACTION += OPERATION_NAME;
 
 		try {
-
 			SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,
 					OPERATION_NAME);
 			PropertyInfo pi = null;
 			pi = new PropertyInfo();
-			pi.setName("fromDate");
+			pi.setName("objectId");
 			pi.setValue(arg0[1]);
-			pi.setType(String.class);
+			pi.setType(Integer.class);
 			request.addProperty(pi);
 
 			pi = new PropertyInfo();
-			pi.setName("endDate");
+			pi.setName("typeId");
 			pi.setValue(arg0[2]);
-			pi.setType(String.class);
-			request.addProperty(pi);
-
-			pi = new PropertyInfo();
-			pi.setName("isRefresh");
-			pi.setValue(arg0[3]);
 			pi.setType(Integer.class);
 			request.addProperty(pi);
 			
-			pi = new PropertyInfo();
-			pi.setName("userId");
-			pi.setValue(arg0[4]);
-			pi.setType(Integer.class);
-			request.addProperty(pi);
-
 			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 					SoapEnvelope.VER11);
 			envelope.dotNet = true;
@@ -86,6 +70,6 @@ public class UpdatingPersonalPage extends AsyncTask<String, Integer, String> {
 	protected void onPostExecute(String res) {
 
 		if (delegate != null)
-			delegate.processFinish(res);
+			delegate.processFinishVisit(res);
 	}
 }
