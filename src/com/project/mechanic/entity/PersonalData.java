@@ -41,6 +41,10 @@ public class PersonalData {
 	int ObjectIdAnad;
 	int ProvinceIdAnad;
 
+	String Image2ServerDateObject;
+	String ImageServerDateTicket;
+	String ImageServerDateAnad;
+
 	public PersonalData(int Id, int ObjectId, String NameObject, String ImagePathObject, String DateObject) {
 
 		this.Id = Id;
@@ -55,7 +59,8 @@ public class PersonalData {
 			String DescriptonPaper, String DatePaper, int TicketId, String NameTicket, String DescriptonTicket,
 			String ImagePathTicket, String DateTicket, int SeenBefore, int DayTicket, int seenBeforePaper,
 			int UserIdPaper, String DataPaper, String ImagePathFroum, String ImagePathPaper, int ObjectFollowId,
-			String NameFollowObject, String ImagePathObjectFollow, int AnadId, int ObjectIdAnad, int ProvinceIdAnad) {
+			String NameFollowObject, String ImagePathObjectFollow, int AnadId, int ObjectIdAnad, int ProvinceIdAnad,
+			String Image2ServerDateObject, String ImageServerDateTicket, String ImageServerDateAnad) {
 
 		this.Id = Id;
 
@@ -95,6 +100,35 @@ public class PersonalData {
 		this.AnadId = AnadId;
 		this.ObjectIdAnad = ObjectIdAnad;
 		this.ProvinceIdAnad = ProvinceIdAnad;
+
+		this.Image2ServerDateObject = Image2ServerDateObject;
+		this.ImageServerDateTicket = ImageServerDateTicket;
+		this.ImageServerDateAnad = ImageServerDateAnad;
+
+	}
+
+	public String getImageServerDateAnad() {
+		return ImageServerDateAnad;
+	}
+
+	public void setImageServerDateAnad(String imageServerDateAnad) {
+		ImageServerDateAnad = imageServerDateAnad;
+	}
+
+	public String getImageServerDateTicket() {
+		return ImageServerDateTicket;
+	}
+
+	public void setImageServerDateTicket(String imageServerDateTicket) {
+		ImageServerDateTicket = imageServerDateTicket;
+	}
+
+	public String getImage2ServerDateObject() {
+		return Image2ServerDateObject;
+	}
+
+	public void setImage2ServerDateObject(String image2ServerDateObject) {
+		Image2ServerDateObject = image2ServerDateObject;
 	}
 
 	public int getObjectFollowId() {

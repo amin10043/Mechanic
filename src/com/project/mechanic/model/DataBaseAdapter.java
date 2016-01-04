@@ -6,15 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import android.R.string;
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.City;
@@ -43,9 +34,19 @@ import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.TicketType;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.entity.Visit;
 import com.project.mechanic.row_items.CommentNotiItem;
 import com.project.mechanic.row_items.LikeNotiItem;
 import com.project.mechanic.row_items.RowMain;
+
+import android.R.string;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.widget.Toast;
 
 public class DataBaseAdapter {
 
@@ -97,7 +98,7 @@ public class DataBaseAdapter {
 	// private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
 	private String[] Anad = { "Id", "Image", "ObjectId", "Date", "TypeId", "ProvinceId", "Seen", "Submit",
-			"ImageServerDate", "ImagePath" };
+			"ImageServerDate", "ImagePath", "UserId" };
 	private String[] CityColumn = { "ID", "Name", "ProvinceId", "Count" };
 
 	// private String[] Comment = { "ID", "UserId", "paperId", "Description" };
@@ -1244,7 +1245,7 @@ public class DataBaseAdapter {
 	private Anad CursorToAnad(Cursor cursor) {
 		Anad tempAnad = new Anad(cursor.getInt(0), cursor.getInt(2), cursor.getBlob(1), cursor.getString(3),
 				cursor.getInt(4), cursor.getInt(5), cursor.getInt(6), cursor.getInt(7), cursor.getString(8),
-				cursor.getString(9));
+				cursor.getString(9), cursor.getInt(10));
 
 		return tempAnad;
 	}
@@ -3504,16 +3505,16 @@ public class DataBaseAdapter {
 		return result;
 	}
 
-	public ArrayList<Anad> getAllAnadUser(int ObjectId) {
+	public ArrayList<Anad> getAllAnadUser(int userId) {
 
 		ArrayList<Anad> result = new ArrayList<Anad>();
-		Cursor cursor = mDb.query(TableAnad, Anad, "ObjectId=?", new String[] { String.valueOf(ObjectId) }, null, null,
+		Cursor cursor = mDb.query(TableAnad, Anad, "UserId=?", new String[] { String.valueOf(userId) }, null, null,
 				null);
 		Anad tempAnad;
 		while (cursor.moveToNext()) {
 			tempAnad = new Anad(cursor.getInt(0), cursor.getInt(2), cursor.getBlob(1), cursor.getString(3),
 					cursor.getInt(4), cursor.getInt(5), cursor.getInt(6), cursor.getInt(7), cursor.getString(8),
-					cursor.getString(9));
+					cursor.getString(9), cursor.getInt(10));
 
 			result.add(tempAnad);
 		}
@@ -3741,6 +3742,7 @@ public class DataBaseAdapter {
 			prd.setNameObject(o.getName());
 			prd.setImagePathObject(o.getImagePath2());
 			prd.setDateObject(o.getDate());
+			prd.setImage2ServerDateObject(o.getImage2ServerDate());
 
 			result.add(prd);
 
@@ -3816,6 +3818,7 @@ public class DataBaseAdapter {
 			prd.setImagePathTicket(t.getImagePath());
 			prd.setDateTicket(t.getDate());
 			prd.setDayTicket(t.getDay());
+			prd.setImageServerDateTicket(t.getImageServerDate());
 
 			result.add(prd);
 
@@ -3828,24 +3831,24 @@ public class DataBaseAdapter {
 
 		ArrayList<PersonalData> result = new ArrayList<PersonalData>();
 
-		List<Object> objectList = getAllObjectByUserId(userId);
+		// List<Object> objectList = getAllObjectByUserId(userId);
 
-		List<Integer> objectIds = new ArrayList<Integer>();
+		// List<Integer> objectIds = new ArrayList<Integer>();
 
-		List<Anad> AnadList = new ArrayList<Anad>();
+		List<Anad> AnadList = getAllAnadUser(userId);
 
-		for (int i = 0; i < objectList.size(); i++) {
+		// for (int i = 0; i < objectList.size(); i++) {
+		//
+		// objectIds.add(objectList.get(i).getId());
+		//
+		// }
 
-			objectIds.add(objectList.get(i).getId());
-
-		}
-
-		for (int i = 0; i < objectIds.size(); i++) {
-
-			List<Anad> aList = getAllAnadUser(objectIds.get(i));
-			for (int j = 0; j < aList.size(); j++)
-				AnadList.add(aList.get(j));
-		}
+		// for (int i = 0; i < objectIds.size(); i++) {
+		//
+		// List<Anad> aList = getAllAnadUser(objectIds.get(i));
+		// for (int j = 0; j < aList.size(); j++)
+		// AnadList.add(aList.get(j));
+		// }
 
 		for (int i = 0; i < AnadList.size(); i++) {
 
@@ -3855,7 +3858,7 @@ public class DataBaseAdapter {
 			prd.setAnadId(a.getId());
 			prd.setObjectIdAnad(a.getObjectId());
 			prd.setProvinceIdAnad(a.getProvinceId());
-
+			prd.setImageServerDateAnad(a.getImageServerDate());
 			result.add(prd);
 
 		}
@@ -4012,5 +4015,18 @@ public class DataBaseAdapter {
 			res = cu.getInt(0);
 		}
 		return res;
+	}
+
+	public ArrayList<com.project.mechanic.entity.Visit> getAllVisitItems() {
+
+		ArrayList<com.project.mechanic.entity.Visit> result = new ArrayList<com.project.mechanic.entity.Visit>();
+		Cursor cursor = mDb.query(TableVisit, Visit, null, null, null, null, null);
+		Visit tempVisit;
+		while (cursor.moveToNext()) {
+			tempVisit = new Visit(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getInt(3));
+			result.add(tempVisit);
+		}
+
+		return result;
 	}
 }

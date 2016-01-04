@@ -9,6 +9,8 @@ import com.project.mechanic.R;
 import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.PersonalData;
 import com.project.mechanic.entity.Province;
+import com.project.mechanic.entity.Ticket;
+import com.project.mechanic.entity.TicketType;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.FroumFragment;
@@ -253,6 +255,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				TextView txtName = (TextView) convertView.findViewById(R.id.row_favorite_title);
 				TextView txtDesc = (TextView) convertView.findViewById(R.id.row_anad_txt2);
 				ImageView img2 = (ImageView) convertView.findViewById(R.id.row_favorite_img);
+				TextView address = (TextView) convertView.findViewById(R.id.address);
 
 				ProgressBar LoadingProgress = (ProgressBar) convertView.findViewById(R.id.progressBar1);
 				LoadingProgress.setVisibility(View.GONE);
@@ -288,6 +291,21 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				// params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 				// params.addRule(RelativeLayout.CENTER_VERTICAL);
 				params.setMargins(10, 10, 10, 10);
+
+				adapter.open();
+				Ticket t = adapter.getTicketById(pd.getTicketId());
+				Province p = adapter.getProvinceById(t.getProvinceId());
+				String provinceName = p.getName();
+
+				List<TicketType> tt = adapter.getAllTicketType();
+
+				TicketType titype = tt.get(t.getTypeId()-1);
+				String typeNameTicket = titype.getDesc();
+
+				address.setText(typeNameTicket + " : " + provinceName);
+
+				address.setTypeface(util.SetFontCasablanca());
+				adapter.close();
 
 				String pathProfile = pd.getImagePathTicket();
 				Bitmap profileImage = BitmapFactory.decodeFile(pathProfile);
@@ -859,7 +877,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				ProvinceName.setText(province.getName());
 
 				TextView baghiMandeh = (TextView) convertView.findViewById(R.id.day); // modate
-																									// baghimande
+																						// baghimande
 
 				TextView lable1 = (TextView) convertView.findViewById(R.id.lable_etebar);
 				TextView lable2 = (TextView) convertView.findViewById(R.id.lable2);
@@ -890,7 +908,6 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				// lable1.setVisibility(View.GONE);
 				// lable2.setVisibility(View.GONE);
 
-			
 				report.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -906,8 +923,6 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 							@Override
 							public boolean onMenuItemClick(MenuItem item) {
-
-								
 
 								return false;
 							}

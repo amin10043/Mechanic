@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
@@ -18,11 +19,13 @@ import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.service.UpdatingPersonalPage;
+import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 import android.annotation.SuppressLint;
@@ -48,7 +51,8 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class DisplayPersonalInformationFragment extends Fragment implements AsyncInterface {
+public class DisplayPersonalInformationFragment extends Fragment
+		implements AsyncInterface, GetAsyncInterface, CommInterface {
 
 	DataBaseAdapter dbAdapter;
 	Utility util;
@@ -78,6 +82,15 @@ public class DisplayPersonalInformationFragment extends Fragment implements Asyn
 	boolean isFirstRun;
 	String tableName;
 	int selectTableId = 1;
+	List<PersonalData> ObejctData, FroumData, PaperData, TicketData, AnadData, FollowedPageLsit;
+	Map<String, String> maps;
+
+	int objectIdPage, objectIdFollowed, ticketIdData, anadIdData;
+	int counterMyObject = 0, counterFollowObject = 0, counterTicket = 0, counterAnad = 0;
+	boolean f1 = false;
+	boolean f2 = false;
+	boolean f3 = false;
+	boolean f4 = false;
 
 	@SuppressLint("NewApi")
 	@Override
@@ -160,23 +173,26 @@ public class DisplayPersonalInformationFragment extends Fragment implements Asyn
 	public void FillExpandListView() {
 
 		dbAdapter.open();
-		List<PersonalData> ObejctData = dbAdapter.CustomFieldObjectByUser(currentUser.getId());
-		List<PersonalData> FroumData = dbAdapter.CustomFieldFroumByUser(currentUser.getId());
-		List<PersonalData> PaperData = dbAdapter.CustomFieldPaperByUser(currentUser.getId());
-		List<PersonalData> TicketData = dbAdapter.CustomFieldTicketByUser(currentUser.getId());
-		List<PersonalData> AnadData = dbAdapter.CustomFieldAnadByUser(currentUser.getId());
+
+		ObejctData = dbAdapter.CustomFieldObjectByUser(currentUser.getId());
+		FroumData = dbAdapter.CustomFieldFroumByUser(currentUser.getId());
+		PaperData = dbAdapter.CustomFieldPaperByUser(currentUser.getId());
+		TicketData = dbAdapter.CustomFieldTicketByUser(currentUser.getId());
+		AnadData = dbAdapter.CustomFieldAnadByUser(currentUser.getId());
 
 		List<Object> myFollowingPages = new ArrayList<Object>();
 
 		List<LikeInObject> likePages = dbAdapter.getAllPageFollowingMe(util.getCurrentUser().getId(), 0);
 
-		for (int i = 0; i < likePages.size(); i++) {
+		if (likePages.size() > 0)
+			for (int i = 0; i < likePages.size(); i++) {
 
-			Object o = dbAdapter.getObjectbyid(likePages.get(i).getPaperId());
-			myFollowingPages.add(o);
-		}
+				Object o = dbAdapter.getObjectbyid(likePages.get(i).getPaperId());
+				if (o != null)
+					myFollowingPages.add(o);
+			}
 
-		List<PersonalData> FollowedPageLsit = dbAdapter.CustomFieldObjectFollowByUser(myFollowingPages);
+		FollowedPageLsit = dbAdapter.CustomFieldObjectFollowByUser(myFollowingPages);
 
 		dbAdapter.close();
 
@@ -270,7 +286,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements Asyn
 
 			listDataChild.put(parentItems.get(4), emptyItem);
 
-		}else {
+		} else {
 
 			listDataChild.put(parentItems.get(4), FroumData);
 		}
@@ -281,7 +297,7 @@ public class DisplayPersonalInformationFragment extends Fragment implements Asyn
 
 			listDataChild.put(parentItems.get(5), emptyItem);
 
-		}else {
+		} else {
 
 			listDataChild.put(parentItems.get(5), AnadData);
 		}
@@ -555,36 +571,10 @@ public class DisplayPersonalInformationFragment extends Fragment implements Asyn
 
 	}
 
-	private void getAllDataFromServer(String tablename) {
+	private void getAllDataFromServer() {
 
 		if (getActivity() != null) {
-			updating = new UpdatingPersonalPage(getActivity());
-			updating.delegate = DisplayPersonalInformationFragment.this;
-			String[] params = new String[5];
-			params[0] = tablename;
-			params[1] = "201510210957407981";
-			params[2] = serverDate;
 
-			params[3] = "1";
-			params[4] = String.valueOf(currentUser.getId());
-
-			updating.execute(params);
-
-			ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-			ringProgressDialog.setCancelable(true);
-			isFirstRun = false;
-		}
-
-	}
-
-	@Override
-	public void processFinish(String output) {
-		if (ringProgressDialog != null)
-			ringProgressDialog.dismiss();
-
-		if (isFirstRun == true) {
-
-			serverDate = output;
 			switch (selectTableId) {
 
 			case 1: {
@@ -603,12 +593,75 @@ public class DisplayPersonalInformationFragment extends Fragment implements Asyn
 				tableName = "Froum";
 				break;
 			}
+			case 5: {
+				tableName = "Ticket";
+				break;
+			}
+			case 6: {
+				tableName = "LikeInObject";
+				break;
+			}
 			}
 			selectTableId++;
-			getAllDataFromServer(tableName);
 
-		} else {
+			updating = new UpdatingPersonalPage(getActivity());
+			updating.delegate = DisplayPersonalInformationFragment.this;
+			String[] params = new String[5];
+			params[0] = tableName;
+			params[1] = "201510210957407981";
+			params[2] = serverDate;
 
+			params[3] = "1";
+			params[4] = String.valueOf(currentUser.getId());
+
+			updating.execute(params);
+
+			// ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا
+			// منتظر بمانید...", true);
+			// ringProgressDialog.setCancelable(true);
+			isFirstRun = false;
+		}
+
+	}
+
+	@Override
+	public void processFinish(String output) {
+		if (selectTableId < 8) {
+
+			if (ringProgressDialog != null)
+				ringProgressDialog.dismiss();
+
+			if (output != null || !"".equals(output) || !output.equals("anyType{}")
+					|| !output.equals("java.io.EOFException")) {
+
+				if (ringProgressDialog != null)
+					ringProgressDialog.dismiss();
+
+				if (isFirstRun == true) {
+
+					serverDate = output;
+
+					getAllDataFromServer();
+
+				} else {
+
+					util.parseQuery(output);
+					getAllDataFromServer();
+
+				}
+			}
+			if (selectTableId > 7) {
+				if (ringProgressDialog != null)
+					ringProgressDialog.dismiss();
+				f1 = true;
+				getImageObject();
+				
+				ringProgressDialog = ProgressDialog.show(getActivity(), "", " به روز رسانی تصاویر ...", true);
+				ringProgressDialog.setCancelable(true);
+				
+				FillExpandListView();
+
+			}
 		}
 	}
 
@@ -618,12 +671,342 @@ public class DisplayPersonalInformationFragment extends Fragment implements Asyn
 
 			ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 			ringProgressDialog.setCancelable(true);
+
 			date = new ServerDate(getActivity());
 			date.delegate = DisplayPersonalInformationFragment.this;
 			date.execute("");
+
 			isFirstRun = true;
 
 		}
 	}
 
+	private void getImageObject() {
+
+		if (counterMyObject < ObejctData.size()) {
+
+			PersonalData pd = ObejctData.get(counterMyObject);
+			objectIdPage = pd.getObjectId();
+
+			if (getActivity() != null) {
+
+				UpdatingImage ImageUpdating = new UpdatingImage(getActivity());
+				ImageUpdating.delegate = DisplayPersonalInformationFragment.this;
+				maps = new LinkedHashMap<String, String>();
+				maps.put("tableName", "Object2");
+				maps.put("Id", String.valueOf(objectIdPage));
+				maps.put("fromDate", pd.getImage2ServerDateObject());
+				ImageUpdating.execute(maps);
+			}
+
+		} else {
+
+			f1 = false;
+			f2 = true;
+			getImageFollowed();
+
+		}
+	}
+
+	private void getImageFollowed() {
+
+		if (counterFollowObject < FollowedPageLsit.size()) {
+
+			PersonalData pd = FollowedPageLsit.get(counterFollowObject);
+			objectIdFollowed = pd.getObjectFollowId();
+
+			if (getActivity() != null) {
+
+				UpdatingImage ImageUpdating = new UpdatingImage(getActivity());
+				ImageUpdating.delegate = DisplayPersonalInformationFragment.this;
+				maps = new LinkedHashMap<String, String>();
+				maps.put("tableName", "Object2");
+				maps.put("Id", String.valueOf(objectIdFollowed));
+				maps.put("fromDate", pd.getImage2ServerDateObject());
+				ImageUpdating.execute(maps);
+			}
+
+		} else {
+			f2 = false;
+			f3 = true;
+			getTicketImage();
+
+		}
+
+	}
+
+	private void getTicketImage() {
+
+		if (getActivity() != null) {
+
+			if (counterTicket < TicketData.size()) {
+
+				PersonalData pd = TicketData.get(counterTicket);
+				ticketIdData = pd.getTicketId();
+
+				UpdatingImage update = new UpdatingImage(getActivity());
+				update.delegate = DisplayPersonalInformationFragment.this;
+				maps = new LinkedHashMap<String, String>();
+				maps.put("tableName", "Ticket");
+				maps.put("Id", String.valueOf(ticketIdData));
+				maps.put("fromDate", pd.getImageServerDateTicket());
+				update.execute(maps);
+
+			} else {
+				f3 = false;
+				f4 = true;
+				getAnadImage();
+
+			}
+		}
+
+	}
+
+	private void getAnadImage() {
+
+		if (getActivity() != null) {
+			if (counterAnad < AnadData.size()) {
+
+				PersonalData pd = AnadData.get(counterAnad);
+				anadIdData = pd.getAnadId();
+
+				UpdatingImage update = new UpdatingImage(getActivity());
+				update.delegate = DisplayPersonalInformationFragment.this;
+				maps = new LinkedHashMap<String, String>();
+				maps.put("tableName", "Anad");
+				maps.put("Id", String.valueOf(anadIdData));
+				maps.put("fromDate", pd.getImageServerDateAnad());
+				update.execute(maps);
+			} else {
+				
+				if (ringProgressDialog != null)
+					ringProgressDialog.dismiss();
+				
+				Toast.makeText(getActivity(), " به روز رسانی اطلاعات با موفقیت انجام شد", 0).show();
+
+				f1 = false;
+				f2 = false;
+				f3 = false;
+				f4 = false;
+
+				counterMyObject = 0;
+				counterFollowObject = 0;
+				counterTicket = 0;
+				counterAnad = 0;
+				f1 = true;
+				getDateObject();
+
+			}
+		}
+
+	}
+
+	private void getDateObject() {
+
+		if (counterMyObject < ObejctData.size()) {
+			
+			PersonalData pd = ObejctData.get(counterMyObject);
+			objectIdPage = pd.getObjectId();
+
+			if (getActivity() != null) {
+
+				ServiceComm getDateService = new ServiceComm(getActivity());
+				getDateService.delegate = DisplayPersonalInformationFragment.this;
+				Map<String, String> items = new LinkedHashMap<String, String>();
+				items.put("tableName", "getObject2ImageDate");
+				items.put("Id", String.valueOf(objectIdPage));
+				getDateService.execute(items);
+			}
+		} else {
+			f1 = false;
+			f2 = true;
+			getDateFollow();
+
+		}
+	}
+
+	private void getDateFollow() {
+
+		if (counterFollowObject < FollowedPageLsit.size()) {
+
+			PersonalData pd = FollowedPageLsit.get(counterFollowObject);
+			objectIdFollowed = pd.getObjectFollowId();
+			
+			if (getActivity() != null) {
+				ServiceComm getDateService = new ServiceComm(getActivity());
+
+				getDateService.delegate = DisplayPersonalInformationFragment.this;
+				Map<String, String> items = new LinkedHashMap<String, String>();
+				items.put("tableName", "getObject2ImageDate");
+				items.put("Id", String.valueOf(objectIdFollowed));
+				getDateService.execute(items);
+			}
+		} else {
+			f2 = false;
+			f3 = true;
+			getDateTicket();
+
+		}
+	}
+
+	private void getDateTicket() {
+		if (counterTicket < TicketData.size()) {
+			
+			PersonalData pd = TicketData.get(counterTicket);
+			ticketIdData = pd.getTicketId();
+
+			if (getActivity() != null) {
+
+				ServiceComm getDateService = new ServiceComm(getActivity());
+
+				getDateService.delegate = DisplayPersonalInformationFragment.this;
+				Map<String, String> items = new LinkedHashMap<String, String>();
+				items.put("tableName", "getTicketImageDate");
+				items.put("Id", String.valueOf(ticketIdData));
+				getDateService.execute(items);
+			}
+		} else {
+			f3 = false;
+			f4 = true;
+			getDateAnad();
+		}
+
+	}
+
+	private void getDateAnad() {
+
+		if (counterAnad < AnadData.size()) {
+			
+			PersonalData pd = AnadData.get(counterAnad);
+			anadIdData = pd.getAnadId();
+
+			if (getActivity() != null) {
+
+				ServiceComm getDateService = new ServiceComm(getActivity());
+
+				getDateService.delegate = DisplayPersonalInformationFragment.this;
+				Map<String, String> items = new LinkedHashMap<String, String>();
+				items.put("tableName", "getAnadImageDate");
+				items.put("Id", String.valueOf(anadIdData));
+				getDateService.execute(items);
+
+			}
+		} else {
+		
+			FillExpandListView();
+		}
+
+	}
+
+	@Override
+	public void processFinish(byte[] output) {
+		if (f1 == true) {
+
+			if (output != null) {
+
+				util.CreateFile(output, objectIdPage, "Mechanical", "Profile", "profile", "Object");
+			}
+			counterMyObject++;
+			getImageObject();
+
+		} // end f1
+		else if (f2 == true) {
+
+			if (output != null) {
+
+				util.CreateFile(output, objectIdFollowed, "Mechanical", "Profile", "profile", "Object");
+
+			}
+			counterFollowObject++;
+			getImageFollowed();
+		} // end f2
+		else {
+			if (f3 == true) {
+
+				if (output != null) {
+
+					boolean IsEmptyByte = util.IsEmptyByteArrayImage(output);
+					if (IsEmptyByte == false) {
+						util.CreateFile(output, ticketIdData, "Mechanical", "Ticket", "ticket", "Ticket");
+
+					}
+
+				}
+				counterTicket++;
+				getTicketImage();
+			} // end f3
+			else if (f4 == true) {
+
+				if (output != null) {
+
+					util.CreateFile(output, anadIdData, "Mechanical", "Anad", "anad", "Anad");
+
+				}
+				counterAnad++;
+				getAnadImage();
+
+			}
+
+		}
+	}
+
+	@Override
+	public void CommProcessFinish(String output) {
+		if (f1 == true) {
+
+			if (output.equals("java.lang.NullPointerException") || output.equals("anyType"))
+				output = "";
+
+			dbAdapter.open();
+			dbAdapter.updateObjectImage2ServerDate(objectIdPage, output);
+			dbAdapter.close();
+
+			counterMyObject++;
+			getDateObject();
+		} // end f1
+		else {
+
+			if (f2 == true) {
+
+				if (output.equals("java.lang.NullPointerException") || output.equals("anyType"))
+					output = "";
+
+				dbAdapter.open();
+				dbAdapter.updateObjectImage2ServerDate(objectIdFollowed, output);
+				dbAdapter.close();
+
+				counterFollowObject++;
+				getDateFollow();;
+
+			} // end f2
+			else {
+				if (f3 == true) {
+
+					if (output.equals("java.lang.NullPointerException") || output.equals("anyType"))
+						output = "";
+
+					dbAdapter.open();
+					dbAdapter.UpdateImageServerDate(ticketIdData, "Ticket", output);
+					dbAdapter.close();
+
+					counterTicket++;
+					getDateTicket();
+				}else{
+					if (f4 == true) {
+
+						if (output.equals("java.lang.NullPointerException") || output.equals("anyType"))
+							output = "";
+
+						dbAdapter.open();
+						dbAdapter.UpdateImageServerDate(anadIdData, "Anad", output);
+						dbAdapter.close();
+
+						counterTicket++;
+						getDateTicket();
+					}
+				}
+				
+			}
+		}
+	}
 }

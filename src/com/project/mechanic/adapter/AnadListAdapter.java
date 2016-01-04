@@ -37,6 +37,7 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Ticket;
@@ -46,6 +47,8 @@ import com.project.mechanic.fragment.ShowAdFragment;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
@@ -73,6 +76,10 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 	Deleting deleting;
 	ProgressDialog ringProgressDialog;
 	int ticketTypeId;
+
+	boolean flag;
+	int idTicket;
+	String serverDate = "";
 
 	public AnadListAdapter(Context context, int resource, List<Ticket> objact, int ProvinceId, Fragment fragment,
 			boolean IsShow, String DateTime, int Type, int ticketTypeId) {
@@ -118,7 +125,8 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 				txtDesc.setText(tempItem.getDesc());
 
 		} else {
-			txtDesc.setVisibility(View.GONE);;
+			txtDesc.setVisibility(View.GONE);
+			;
 
 		}
 		if (tempItem.getSeenBefore() > 0) {
@@ -320,7 +328,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 				adapter.SetSeen("Ticket", id, "1");
 				adapter.close();
 
-			}
+							}
 		});
 
 		// reaport.setOnClickListener(new OnClickListener() {
@@ -381,6 +389,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 		params.put("Id", String.valueOf(itemId));
 
 		deleting.execute(params);
+		flag = false;
 
 		ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
@@ -414,15 +423,18 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 
 	@Override
 	public void processFinish(String output) {
+		serverDate = output;
+	
 
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
+			if (ringProgressDialog != null) {
+				ringProgressDialog.dismiss();
+			}
+
+			adapter.open();
+			adapter.deleteTicketItem(itemId);
+			adapter.close();
+
+			((AnadFragment) fragment).updateView();
 		}
-
-		adapter.open();
-		adapter.deleteTicketItem(itemId);
-		adapter.close();
-
-		((AnadFragment) fragment).updateView();
-	}
+	
 }

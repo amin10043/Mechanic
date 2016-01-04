@@ -11,19 +11,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.PushNotification.DomainSend;
+import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.entity.Visit;
 import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.fragment.ReportAbuseFragment;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.UpdatingAllDetail;
 import com.project.mechanic.service.UpdatingAllMaster;
@@ -57,6 +63,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
@@ -97,6 +104,9 @@ public class Utility implements AsyncInterface {
 
 	Runnable run1;
 	int flagSlide;
+	int counterVisit;
+	int ItemId, userId, typeId;
+	String currentTime = "";
 
 	public Utility(Context context) {
 		this.context = context;
@@ -1287,7 +1297,7 @@ public class Utility implements AsyncInterface {
 		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 		lp.copyFrom(dialog.getWindow().getAttributes());
 		lp.width = (int) getScreenwidth() - 50;
-		//lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+		// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.BLACK));
 		dialog.getWindow().setAttributes(lp);
@@ -1315,5 +1325,4 @@ public class Utility implements AsyncInterface {
 
 	}
 
-	
 }

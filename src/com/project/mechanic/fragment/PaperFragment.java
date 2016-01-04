@@ -7,11 +7,15 @@ import java.util.Map;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.adapter.PaperListAdapter;
+import com.project.mechanic.adapter.PapertitleListAdapter;
 import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.LikeInPaper;
 import com.project.mechanic.entity.Paper;
+import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.entity.Visit;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -84,6 +88,12 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 	Map<String, String> params;
 	boolean LikeOrComment; // like == true & comment == false
 	Paper p;
+	// boolean saveVisit;
+	int idItem, typeId, sender;
+	Visit visit;
+	int counterVisit = 0;
+	boolean isFinish = false, saveVisitFalg;
+	String currentTime = "";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -160,9 +170,9 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 		txttitleDes.setText(p.getContext());
 		txttitleDes.setTypeFace(util.SetFontIranSans());
 
-		txttitleDes.setTextSize(TypedValue.COMPLEX_UNIT_SP,15);
-		txttitleDes.setLineSpacing(15);		
-		
+		txttitleDes.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+		txttitleDes.setLineSpacing(15);
+
 		String ddd = util.getPersianDate(p.getDate());
 		List<String> dateTime = util.spilitDateTime(ddd);
 		txtdate.setText(dateTime.get(0));
@@ -188,23 +198,6 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 			}
 		}
 
-		if (util.getCurrentUser() != null) {
-			if (util.getCurrentUser().getId() != paperID) {
-				if (!util.isNetworkConnected()) {
-					Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT).show();
-					adapter.open();
-					adapter.insertVisitToDb(util.getCurrentUser().getId(), 2, paperID);
-					adapter.close();
-				} else if ((util.isNetworkConnected())) {
-					Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT).show();
-					adapter.open();
-					// ارسال اطلاعات به جدول ویزیت سرور
-					// ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
-					adapter.deleteVisit();
-					adapter.close();
-				}
-			}
-		}
 		adapter.close();
 		icon.setOnClickListener(new View.OnClickListener() {
 
@@ -274,6 +267,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 		// }
 		// }
 		// });
+		checkInternet();
 
 		sharebtn.setOnClickListener(new View.OnClickListener() {
 
@@ -503,187 +497,208 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 	@Override
 	public void processFinish(String output) {
 
-		int id = -1;
+		Toast.makeText(getActivity(), output, 0).show();
 
-		try {
-			id = Integer.valueOf(output);
+		if (!output.equals("java.io.EOFException") && !output.equals("java.net.SocketTimeoutException")) {
 
-			if (LikeOrComment == true) {
+			if (saveVisitFalg == true) {
 
-				adapter.open();
-				if (adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
-					adapter.deleteLikeFromPaper(CurrentUser.getId(), paperID);
-					likeIcon.setBackgroundResource(R.drawable.like_froum_off);
-					// countLike.setBackgroundResource(R.drawable.count_like_off);
-
-					NumofLike.setText(adapter.LikeInPaper_count(paperID).toString());
-					if (ringProgressDialog != null) {
-						ringProgressDialog.dismiss();
-					}
-				} else {
-					adapter.insertLikeInPaperToDb(CurrentUser.getId(), paperID, serverDate);
-					likeIcon.setBackgroundResource(R.drawable.like_froum_on);
-					// countLike.setBackgroundResource(R.drawable.count_like);
-
-					NumofLike.setText(adapter.LikeInPaper_count(paperID).toString());
-					if (ringProgressDialog != null) {
-						ringProgressDialog.dismiss();
-					}
-				}
-				adapter.close();
+				if (counterVisit == 0)
+					currentTime = output;
+				sendVisit();
 
 			} else {
+				if (isFinish == true) {
 
-				adapter.open();
-				adapter.insertCommentInPapertoDb(util.inputComment(getActivity()), paperID, CurrentUser.getId(),
-						serverDate);
-				adapter.close();
-
-				util.ToEmptyComment(getActivity());
-
-				updateView();
-
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
+					return;
 				}
-			}
+				int id = -1;
 
-		} catch (NumberFormatException e) {
-			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
+				try {
+					id = Integer.valueOf(output);
 
-				if (LikeOrComment == true) {
+					if (LikeOrComment == true) {
 
-					adapter.open();
-					if (adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
 						adapter.open();
-						// int c = adapter.LikeInFroum_count(ItemId) - 1;
-						// countLikeFroum.setText(String.valueOf(c));
+						if (adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
+							adapter.deleteLikeFromPaper(CurrentUser.getId(), paperID);
+							likeIcon.setBackgroundResource(R.drawable.like_froum_off);
+							// countLike.setBackgroundResource(R.drawable.count_like_off);
 
-						params = new LinkedHashMap<String, String>();
-						deleting = new Deleting(getActivity());
-						deleting.delegate = PaperFragment.this;
-
-						params.put("TableName", "LikeInPaper");
-						params.put("UserId", String.valueOf(CurrentUser.getId()));
-						params.put("PaperId", String.valueOf(paperID));
-
-						deleting.execute(params);
-
-						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-
-						ringProgressDialog.setCancelable(true);
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
+							NumofLike.setText(adapter.LikeInPaper_count(paperID).toString());
+							if (ringProgressDialog != null) {
+								ringProgressDialog.dismiss();
 							}
-						}).start();
+						} else {
+							adapter.insertLikeInPaperToDb(CurrentUser.getId(), paperID, serverDate);
+							likeIcon.setBackgroundResource(R.drawable.like_froum_on);
+							// countLike.setBackgroundResource(R.drawable.count_like);
 
+							NumofLike.setText(adapter.LikeInPaper_count(paperID).toString());
+							if (ringProgressDialog != null) {
+								ringProgressDialog.dismiss();
+							}
+						}
 						adapter.close();
 
 					} else {
+
 						adapter.open();
-						params = new LinkedHashMap<String, String>();
-						saving = new Saving(getActivity());
-						saving.delegate = PaperFragment.this;
-
-						params.put("TableName", "LikeInPaper");
-
-						params.put("UserId", String.valueOf(CurrentUser.getId()));
-						params.put("PaperId", String.valueOf(paperID));
-						params.put("Date", output);
-						params.put("IsUpdate", "0");
-						params.put("Id", "0");
-
-						serverDate = output;
-
-						saving.execute(params);
-
-						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-
-						ringProgressDialog.setCancelable(true);
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
-							}
-						}).start();
-
-						// countLikeFroum.setText(adapter
-						// .LikeInFroum_count(ItemId).toString());
-
+						adapter.insertCommentInPapertoDb(util.inputComment(getActivity()), paperID, CurrentUser.getId(),
+								serverDate);
 						adapter.close();
-					}
-					adapter.close();
 
-				} else {
+						util.ToEmptyComment(getActivity());
 
-					params = new LinkedHashMap<String, String>();
-					saving = new Saving(getActivity());
-					saving.delegate = PaperFragment.this;
+						updateView();
 
-					params.put("TableName", "CommentInPaper");
-
-					params.put("Desk", util.inputComment(getActivity()));
-					params.put("PaperId", String.valueOf(paperID));
-					params.put("UserId", String.valueOf(CurrentUser.getId()));
-					params.put("IsUpdate", "0");
-					params.put("Date", output);
-					params.put("ModifyDate", output);
-
-					params.put("Id", "0");
-					serverDate = output;
-
-					saving.execute(params);
-
-					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
+						if (ringProgressDialog != null) {
+							ringProgressDialog.dismiss();
 						}
-					}).start();
+					}
 
-				}
+				} catch (NumberFormatException e) {
+					if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 
-			} else {
-				Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
+						if (LikeOrComment == true) {
+
+							adapter.open();
+							if (adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
+								adapter.open();
+								// int c = adapter.LikeInFroum_count(ItemId) -
+								// 1;
+								// countLikeFroum.setText(String.valueOf(c));
+
+								params = new LinkedHashMap<String, String>();
+								deleting = new Deleting(getActivity());
+								deleting.delegate = PaperFragment.this;
+
+								params.put("TableName", "LikeInPaper");
+								params.put("UserId", String.valueOf(CurrentUser.getId()));
+								params.put("PaperId", String.valueOf(paperID));
+
+								deleting.execute(params);
+
+								ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...",
+										true);
+
+								ringProgressDialog.setCancelable(true);
+								new Thread(new Runnable() {
+
+									@Override
+									public void run() {
+
+										try {
+
+											Thread.sleep(10000);
+
+										} catch (Exception e) {
+
+										}
+									}
+								}).start();
+
+								adapter.close();
+
+							} else {
+								adapter.open();
+								params = new LinkedHashMap<String, String>();
+								saving = new Saving(getActivity());
+								saving.delegate = PaperFragment.this;
+
+								params.put("TableName", "LikeInPaper");
+
+								params.put("UserId", String.valueOf(CurrentUser.getId()));
+								params.put("PaperId", String.valueOf(paperID));
+								params.put("Date", output);
+								params.put("IsUpdate", "0");
+								params.put("Id", "0");
+
+								serverDate = output;
+
+								saving.execute(params);
+
+								ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...",
+										true);
+
+								ringProgressDialog.setCancelable(true);
+								new Thread(new Runnable() {
+
+									@Override
+									public void run() {
+
+										try {
+
+											Thread.sleep(10000);
+
+										} catch (Exception e) {
+
+										}
+									}
+								}).start();
+
+								// countLikeFroum.setText(adapter
+								// .LikeInFroum_count(ItemId).toString());
+
+								adapter.close();
+							}
+							adapter.close();
+
+						} else {
+
+							params = new LinkedHashMap<String, String>();
+							saving = new Saving(getActivity());
+							saving.delegate = PaperFragment.this;
+
+							params.put("TableName", "CommentInPaper");
+
+							params.put("Desk", util.inputComment(getActivity()));
+							params.put("PaperId", String.valueOf(paperID));
+							params.put("UserId", String.valueOf(CurrentUser.getId()));
+							params.put("IsUpdate", "0");
+							params.put("Date", output);
+							params.put("ModifyDate", output);
+
+							params.put("Id", "0");
+							serverDate = output;
+
+							saving.execute(params);
+
+							ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+
+							ringProgressDialog.setCancelable(true);
+							new Thread(new Runnable() {
+
+								@Override
+								public void run() {
+
+									try {
+
+										Thread.sleep(10000);
+
+									} catch (Exception e) {
+
+									}
+								}
+							}).start();
+
+						}
+
+					} else {
+						Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
+						if (ringProgressDialog != null) {
+							ringProgressDialog.dismiss();
+						}
+					}
+				} catch (Exception e) {
+
+					Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
+					if (ringProgressDialog != null) {
+						ringProgressDialog.dismiss();
+					}
 				}
 			}
-		} catch (Exception e) {
 
-			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
-			if (ringProgressDialog != null) {
-				ringProgressDialog.dismiss();
-			}
 		}
 	}
 
@@ -751,4 +766,142 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 		trans.commit();
 	}
 
+	private void checkInternet() {
+
+		if (util.getCurrentUser() != null) {
+
+			if (util.isNetworkConnected()) {
+				Toast.makeText(getActivity(), "Connected", 0).show();
+
+				ServerDate date = new ServerDate(getActivity());
+				date.delegate = PaperFragment.this;
+				date.execute("");
+				saveVisitFalg = true;
+
+			} else {
+				Toast.makeText(getActivity(), "Disconnected", 0).show();
+
+				if (checkUsers() == true) {
+
+					adapter.open();
+					adapter.insertVisitToDb(util.getCurrentUser().getId(), StaticValues.TypePaperVisit, p.getId());
+					adapter.close();
+				}
+
+			}
+
+		}
+	}
+
+	private boolean checkUsers() {
+
+		// if isSave = true allow to save visit on server
+		// else don't allow to save
+		boolean isSave = true;
+
+		if (util.getCurrentUser().getId() == p.getUserId())
+			isSave = false;
+
+		return isSave;
+
+	}
+
+	private void sendVisit() {
+
+		if (getActivity() != null) {
+
+			adapter.open();
+			List<Visit> visitList = adapter.getAllVisitItems();
+			adapter.close();
+
+			Visit vis = null;
+
+			if (visitList.size() != 0) {
+
+				if (counterVisit < visitList.size()) {
+
+					vis = visitList.get(counterVisit);
+
+					userId = vis.getUserId();
+					typeId = vis.getTypeId();
+					idItem = vis.getObjectId();
+
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(getActivity());
+					saving.delegate = PaperFragment.this;
+
+					params.put("TableName", "Visit");
+					params.put("UserId", String.valueOf(userId));
+					params.put("TypeId", String.valueOf(typeId));
+					params.put("ObjectId", String.valueOf(idItem));
+					params.put("ModifyDate", String.valueOf(currentTime));
+					params.put("Date", String.valueOf(currentTime));
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+
+					saving.execute(params);
+
+					counterVisit++;
+
+					saveVisitFalg = true;
+					// sendVisit();
+				} else {
+
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(getActivity());
+					saving.delegate = PaperFragment.this;
+
+					params.put("TableName", "Visit");
+					params.put("UserId", String.valueOf(userId));
+					params.put("TypeId", String.valueOf(typeId));
+					params.put("ObjectId", String.valueOf(p.getId()));
+					params.put("ModifyDate", String.valueOf(currentTime));
+					params.put("Date", String.valueOf(currentTime));
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+
+					saving.execute(params);
+
+					adapter.open();
+					adapter.deleteVisit();
+					adapter.close();
+
+					saveVisitFalg = false;
+					isFinish = true;
+
+				}
+
+			} else {
+
+				if (checkUsers() == true) {
+					userId = util.getCurrentUser().getId();
+					typeId = StaticValues.TypePaperVisit;
+					// int idObj = object.getId();
+
+					params = new LinkedHashMap<String, String>();
+					saving = new Saving(getActivity());
+					saving.delegate = PaperFragment.this;
+
+					params.put("TableName", "Visit");
+					params.put("UserId", String.valueOf(userId));
+					params.put("TypeId", String.valueOf(typeId));
+					params.put("ObjectId", String.valueOf(p.getId()));
+					params.put("ModifyDate", String.valueOf(currentTime));
+					params.put("Date", String.valueOf(currentTime));
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+
+					saving.execute(params);
+					saveVisitFalg = false;
+					isFinish = true;
+
+				}
+			}
+
+		}
+
+	}
 }

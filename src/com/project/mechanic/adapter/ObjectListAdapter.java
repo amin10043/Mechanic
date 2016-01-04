@@ -1,44 +1,49 @@
 package com.project.mechanic.adapter;
 
-import java.util.Calendar;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
+
+import com.project.mechanic.MainActivity;
+import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
+import com.project.mechanic.entity.Object;
+import com.project.mechanic.entity.Users;
+import com.project.mechanic.entity.Visit;
+import com.project.mechanic.fragment.IntroductionFragment;
+import com.project.mechanic.fragment.LoginFragment;
+import com.project.mechanic.fragment.MainFragment;
+import com.project.mechanic.fragment.UnavailableIntroduction;
+import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Deleting;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.utility.Utility;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.project.mechanic.MainActivity;
-import com.project.mechanic.R;
-import com.project.mechanic.entity.Object;
-import com.project.mechanic.fragment.DialogLongClick;
-import com.project.mechanic.fragment.IntroductionFragment;
-import com.project.mechanic.fragment.MainFragment;
-import com.project.mechanic.fragment.UnavailableIntroduction;
-import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.utility.Utility;
-
-public class ObjectListAdapter extends ArrayAdapter<Object> {
+public class ObjectListAdapter
+		extends ArrayAdapter<Object> /* implements AsyncInterface */ {
 
 	Context context;
 	List<Object> list;
@@ -56,9 +61,20 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 	int etebarDay = 365; // constant for agahi
 	int diff;
 
-	public ObjectListAdapter(Context context, int resource,
-			List<Object> objact, Fragment fr, boolean IsShow, String DateTime,
-			int Type) {
+	Saving saving;
+	Deleting deleting;
+	Map<String, String> params;
+
+	ProgressDialog ringProgressDialog;
+	Users currentUser;
+	Object person;
+	boolean flag;
+	int ItemId, userId, typeId;
+	int counterVisit = 0;
+	String serverDate = "";
+
+	public ObjectListAdapter(Context context, int resource, List<Object> objact, Fragment fr, boolean IsShow,
+			String DateTime, int Type) {
 		super(context, resource, objact);
 		this.context = context;
 		this.list = objact;
@@ -74,21 +90,17 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_object, parent, false);
 
-		
 		lastPosition = position;
 
-		final TextView txt1 = (TextView) convertView
-				.findViewById(R.id.Rowobjecttxt);
+		final TextView txt1 = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
 
-		final Object person = list.get(position);
+		person = list.get(position);
 
-		LoadingProgress = (ProgressBar) convertView
-				.findViewById(R.id.progressBar1);
+		LoadingProgress = (ProgressBar) convertView.findViewById(R.id.progressBar1);
 
 		txt1.setText(person.getName());
 
@@ -99,13 +111,10 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 		rating.setEnabled(false);
 
-		ImageView profileIco = (ImageView) convertView
-				.findViewById(R.id.icon_object);
+		ImageView profileIco = (ImageView) convertView.findViewById(R.id.icon_object);
 
-		RelativeLayout rl = (RelativeLayout) convertView
-				.findViewById(R.id.propertiesObject);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				rl.getLayoutParams());
+		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.propertiesObject);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
 		lp.width = (util.getScreenwidth() / 4);
 		lp.height = (util.getScreenwidth() / 4);
@@ -130,11 +139,8 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 		if (IsShow == false)
 			LoadingProgress.setVisibility(View.GONE);
 
-
-
 		String commitDate = person.getDate(); // tarikhe ijad safhe
-		final SharedPreferences currentTime = context.getSharedPreferences(
-				"time", 0);
+		final SharedPreferences currentTime = context.getSharedPreferences("time", 0);
 
 		String time = currentTime.getString("time", "-1");
 
@@ -154,20 +160,21 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 				// baghiMandeh.setText(String.valueOf(diff));
 			}
-		} else	{
+		} else {
 
-				diff = util.differentTwoDate(person.getActiveDate(), time);
+			diff = util.differentTwoDate(person.getActiveDate(), time);
 
-				if (diff <= 0) {
+			if (diff <= 0) {
 
-					adapter.open();
-					adapter.SetIsActive(person.getId(), 0);
-					adapter.close();
+				adapter.open();
+				adapter.SetIsActive(person.getId(), 0);
+				adapter.close();
 
-				}
+			}
 
-			
 		}
+
+		currentUser = util.getCurrentUser();
 
 		// else {
 		// baghiMandeh.setText("نا معلوم");
@@ -212,14 +219,12 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 			@Override
 			public void onClick(View arg0) {
 
-				SharedPreferences sendDataID = context.getSharedPreferences(
-						"Id", 0);
+				SharedPreferences sendDataID = context.getSharedPreferences("Id", 0);
 
 				if (person.getIsActive() == 0) {
 
 					UnavailableIntroduction fragment = new UnavailableIntroduction();
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, fragment);
 
 					String item = txt1.getText().toString();
@@ -244,8 +249,7 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 				} else {
 
 					IntroductionFragment fragment = new IntroductionFragment();
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, fragment);
 
 					String item = txt1.getText().toString();
@@ -267,6 +271,8 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 					trans.addToBackStack(null);
 					trans.commit();
 				}
+				ItemId = person.getId();
+
 			}
 		});
 		// final Animation animSideDown = AnimationUtils.loadAnimation(context,
@@ -279,10 +285,25 @@ public class ObjectListAdapter extends ArrayAdapter<Object> {
 
 	public void onBackPressed() {
 
-		FragmentTransaction trans = ((MainActivity) context)
-				.getSupportFragmentManager().beginTransaction();
+		FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 		trans.replace(R.id.content_frame, new MainFragment());
 		trans.commit();
 
 	}
+
+	// @Override
+	// public void processFinish(String output) {
+	//
+	// serverDate = output;
+	//
+	// if (flag == true) {
+	//
+	// sendVisit();
+	//
+	// } else {
+	//
+	// if (ringProgressDialog != null)
+	// ringProgressDialog.dismiss();
+	// }
+	// }
 }

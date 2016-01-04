@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.InformationUser;
@@ -77,6 +78,8 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 	ImageView report;
 	List<String> menuItems;
 	int itemId, userIdsender;
+	boolean flag;
+	int idPaper;
 
 	public PapertitleListAdapter(Context context, int resource, List<Paper> objects, Fragment fr) {
 		super(context, resource, objects);
@@ -125,8 +128,6 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 			DateView.setTextColor(Color.GRAY);
 
 		}
-		
-		
 
 		Users x = adapter.getUserbyid(person1.getUserId());
 		// userId=x.getId();
@@ -179,37 +180,33 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 		txt1.setText(person1.getTitle());
 		if (person1.getContext() != null && !"".equals((person1.getContext()))) {
 
-//			if (person1.getContext().length() > 50)
-//				txt2.setText(person1.getContext().substring(0, 50) + " ... ");
-//			else
-				txt2.setText(person1.getContext());
+			// if (person1.getContext().length() > 50)
+			// txt2.setText(person1.getContext().substring(0, 50) + " ... ");
+			// else
+			txt2.setText(person1.getContext());
 
 		} else
 			txt2.setVisibility(View.GONE);
 		txt1.setTypeface(util.SetFontCasablanca());
 		txt2.setTypeface(util.SetFontCasablanca());
-		
-		
-//		txt2.post(new Runnable() {
-//			
-//			@Override
-//			public void run() {
-//				int countline = txt2.getLineCount();
-//		        
-//				if (countline>1){
-//					txt2.setText(person1.getContext());
-//
-//					//txt2.setMaxLines(1);
-//					
-//					
-//				}
-//
-//					
-//			}
-//		});
-		
-			
-		
+
+		// txt2.post(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// int countline = txt2.getLineCount();
+		//
+		// if (countline>1){
+		// txt2.setText(person1.getContext());
+		//
+		// //txt2.setMaxLines(1);
+		//
+		//
+		// }
+		//
+		//
+		// }
+		// });
 
 		String item = txt1.getText().toString();
 		for (Paper listItem : mylist) {
@@ -217,10 +214,8 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 				paperNumber = listItem.getId();
 			}
 		}
-		
+
 		///////////////////
-		
-		
 
 		adapter.open();
 
@@ -415,16 +410,8 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 				adapter.open();
 				adapter.SetSeen("Paper", id, "1");
 				adapter.close();
-				
-				
-				//////////////////////
-//				Rect bounds = new Rect();
-//				Paint paint = new Paint();
-//				paint.getTextBounds(txt2.getText().toString(), 0, txt2.getText().toString().length(), bounds);
-//
-//				int width = (int) Math.ceil( bounds.width());
-				
-				
+
+				idPaper = id;
 				
 
 			}
@@ -465,114 +452,158 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 	@Override
 	public void processFinish(String output) {
 
-		try {
-			Integer.valueOf(output);
-			adapter.open();
-			if (adapter.isUserLikedPaper(currentUser.getId(), paperNumber)) {
-				adapter.deleteLikeFromPaper(currentUser.getId(), paperNumber);
-				likePaper.setBackgroundResource(R.drawable.like_froum_off);
+		if (flag == true) {
+			
+			serverDate = output;
+			if (context != null) {
+				params = new LinkedHashMap<String, String>();
 
-				NumofLike.setText(adapter.LikeInPaper_count(paperNumber).toString());
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
-				}
-			} else {
-				adapter.insertLikeInPaperToDb(currentUser.getId(), paperNumber, serverDate);
-				likePaper.setBackgroundResource(R.drawable.like_froum_on);
-				NumofLike.setText(adapter.LikeInPaper_count(paperNumber).toString());
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
-				}
+				saving = new Saving(context);
+				saving.delegate = PapertitleListAdapter.this;
+
+				params.put("TableName", "Visit");
+
+				params.put("UserId", String.valueOf(currentUser.getId()));
+				params.put("TypeId", String.valueOf(StaticValues.TypePaperVisit));
+				params.put("ObjectId", String.valueOf(idPaper));
+				params.put("ModifyDate", String.valueOf(serverDate));
+				params.put("Date", String.valueOf(serverDate));
+
+				params.put("IsUpdate", "0");
+				params.put("Id", "0");
+
+				saving.execute(params);
+				flag = false;
+
 			}
-			adapter.close();
+			ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
-		} catch (NumberFormatException e) {
-			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
+			ringProgressDialog.setCancelable(true);
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+
+					try {
+
+						Thread.sleep(10000);
+
+					} catch (Exception e) {
+
+					}
+				}
+			}).start();
+		} else {
+
+			try {
+				Integer.valueOf(output);
 				adapter.open();
-				if (currentUser == null) {
-					Toast.makeText(context, "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
-				} else if (adapter.isUserLikedPaper(currentUser.getId(), paperNumber)) {
-					adapter.open();
+				if (adapter.isUserLikedPaper(currentUser.getId(), paperNumber)) {
+					adapter.deleteLikeFromPaper(currentUser.getId(), paperNumber);
+					likePaper.setBackgroundResource(R.drawable.like_froum_off);
 
-					params = new LinkedHashMap<String, String>();
-					deleting = new Deleting(context);
-					deleting.delegate = PapertitleListAdapter.this;
-
-					params.put("TableName", "LikeInPaper");
-					params.put("UserId", String.valueOf(currentUser.getId()));
-					params.put("PaperId", String.valueOf(paperNumber));
-
-					deleting.execute(params);
-
-					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-
-					adapter.close();
-
+					NumofLike.setText(adapter.LikeInPaper_count(paperNumber).toString());
+					if (ringProgressDialog != null) {
+						ringProgressDialog.dismiss();
+					}
 				} else {
-					adapter.open();
-					params = new LinkedHashMap<String, String>();
-					saving = new Saving(context);
-					saving.delegate = PapertitleListAdapter.this;
-
-					params.put("TableName", "LikeInPaper");
-
-					params.put("UserId", String.valueOf(currentUser.getId()));
-					params.put("PaperId", String.valueOf(paperNumber));
-					params.put("Date", output);
-					params.put("ModifyDate", output);
-					params.put("IsUpdate", "0");
-					params.put("Id", "0");
-
-					serverDate = output;
-
-					saving.execute(params);
-
-					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-
-					// countLikeFroum.setText(adapter
-					// .LikeInFroum_count(ItemId).toString());
-
-					adapter.close();
+					adapter.insertLikeInPaperToDb(currentUser.getId(), paperNumber, serverDate);
+					likePaper.setBackgroundResource(R.drawable.like_froum_on);
+					NumofLike.setText(adapter.LikeInPaper_count(paperNumber).toString());
+					if (ringProgressDialog != null) {
+						ringProgressDialog.dismiss();
+					}
 				}
 				adapter.close();
-			} else {
-				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
-			}
-		} catch (Exception e) {
 
-			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
+			} catch (NumberFormatException e) {
+				if (output != null && !(output.contains("Exception") || output.contains("java"))) {
+					adapter.open();
+					if (currentUser == null) {
+						Toast.makeText(context, "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
+					} else if (adapter.isUserLikedPaper(currentUser.getId(), paperNumber)) {
+						adapter.open();
+
+						params = new LinkedHashMap<String, String>();
+						deleting = new Deleting(context);
+						deleting.delegate = PapertitleListAdapter.this;
+
+						params.put("TableName", "LikeInPaper");
+						params.put("UserId", String.valueOf(currentUser.getId()));
+						params.put("PaperId", String.valueOf(paperNumber));
+
+						deleting.execute(params);
+
+						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+
+						adapter.close();
+
+					} else {
+						adapter.open();
+						params = new LinkedHashMap<String, String>();
+						saving = new Saving(context);
+						saving.delegate = PapertitleListAdapter.this;
+
+						params.put("TableName", "LikeInPaper");
+
+						params.put("UserId", String.valueOf(currentUser.getId()));
+						params.put("PaperId", String.valueOf(paperNumber));
+						params.put("Date", output);
+						params.put("ModifyDate", output);
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						serverDate = output;
+
+						saving.execute(params);
+
+						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+
+						// countLikeFroum.setText(adapter
+						// .LikeInFroum_count(ItemId).toString());
+
+						adapter.close();
+					}
+					adapter.close();
+				} else {
+					Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
+				}
+			} catch (Exception e) {
+
+				Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 

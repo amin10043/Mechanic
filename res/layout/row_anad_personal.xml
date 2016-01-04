@@ -22,8 +22,8 @@
             <FrameLayout
                 android:id="@+id/imageFrame"
                 android:layout_width="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" >
 
                 <ImageView
                     android:id="@+id/row_favorite_img"
@@ -42,9 +42,9 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:alpha="0.8"
-                    android:visibility="invisible"
                     android:background="@drawable/circle_drawable"
-                    android:src="@drawable/bi_etebar" />
+                    android:src="@drawable/bi_etebar"
+                    android:visibility="invisible" />
             </FrameLayout>
 
             <ProgressBar
@@ -145,6 +145,17 @@
                     android:textColor="@color/transparent" />
             </RelativeLayout>
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="10dp"
+            android:paddingBottom="10dp"
+            android:text="address"
+            android:textColor="@color/orginal_hard_blue_color" />
     </RelativeLayout>
 
 </RelativeLayout>

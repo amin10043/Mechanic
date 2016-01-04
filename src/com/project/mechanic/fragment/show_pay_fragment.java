@@ -405,6 +405,7 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 				params.put("ObjectId", String.valueOf(objectSelected.getId()));
 				params.put("Date", output);
 				params.put("ModifyDate", output);
+				params.put("UserId", String.valueOf(util.getCurrentUser().getId()));
 
 				params.put("TypeId", String.valueOf(typeId));
 

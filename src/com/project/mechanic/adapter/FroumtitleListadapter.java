@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.FroumFragment;
@@ -75,6 +76,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 	View Parent;
 	int itemId, userIdsender;
 	List<String> menuItems = new ArrayList<String>();;
+	boolean flag;
+	int idFroum;
 
 	public FroumtitleListadapter(Context context, int resource, List<Froum> objects, Fragment fragment) {
 		super(context, resource, objects);
@@ -125,13 +128,12 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 
 		}
 		txt1.setText(person1.getTitle());
-		if (person1.getDescription() != null && !"".equals(person1.getDescription())){
-//			if (person1.getDescription().length() > 50)
-//				txt2.setText(person1.getDescription().substring(0, 50) + " ...");
-//			else
-				txt2.setText(person1.getDescription());
-		}else
-		{
+		if (person1.getDescription() != null && !"".equals(person1.getDescription())) {
+			// if (person1.getDescription().length() > 50)
+			// txt2.setText(person1.getDescription().substring(0, 50) + " ...");
+			// else
+			txt2.setText(person1.getDescription());
+		} else {
 			txt2.setVisibility(View.GONE);
 		}
 		adapter.open();
@@ -232,6 +234,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 					date = new ServerDate(context);
 					date.delegate = FroumtitleListadapter.this;
 					date.execute("");
+					flag = false;
+
 					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
@@ -484,115 +488,160 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 	@Override
 	public void processFinish(String output) {
 
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
-		try {
-			int id = Integer.valueOf(output);
-			LinearLayout parentLayout = (LinearLayout) Parent.findViewWithTag(froumNumber);
-			LinearLayout likeTitle = (LinearLayout) parentLayout.findViewById(R.id.liketitleTopic);
+		String date = output;
 
-			adapter.open();
-			if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
-				adapter.deleteLikeFromFroum(CurrentUser.getId(), froumNumber);
+		if (flag == true) {
+			if (context != null) {
+				params = new LinkedHashMap<String, String>();
 
-				likeTitle.setBackgroundResource(R.drawable.like_froum_off);
+				saving = new Saving(context);
+				saving.delegate = FroumtitleListadapter.this;
 
-			} else {
-				adapter.insertLikeInFroumToDb(id, CurrentUser.getId(), froumNumber, serverDate, 0);
+				params.put("TableName", "Visit");
 
-				likeTitle.setBackgroundResource(R.drawable.like_froum_on);
+				params.put("UserId", String.valueOf(util.getCurrentUser().getId()));
+				params.put("TypeId", String.valueOf(StaticValues.TypeFroumVist));
+				params.put("ObjectId", String.valueOf(idFroum));
+				params.put("ModifyDate", String.valueOf(date));
+				params.put("Date", String.valueOf(date));
+
+				params.put("IsUpdate", "0");
+				params.put("Id", "0");
+
+				saving.execute(params);
+				flag = false;
+
 			}
+			ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
-			TextView likeCountFroum = (TextView) likeTitle.findViewById(R.id.countLikeInFroumTitle);
-			likeCountFroum.setText(adapter.LikeInFroum_count(froumNumber).toString());
+			ringProgressDialog.setCancelable(true);
+			new Thread(new Runnable() {
 
-			adapter.close();
+				@Override
+				public void run() {
+
+					try {
+
+						Thread.sleep(10000);
+
+					} catch (Exception e) {
+
+					}
+				}
+			}).start();
+
+		} else {
+
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
+			try {
+				int id = Integer.valueOf(output);
+				LinearLayout parentLayout = (LinearLayout) Parent.findViewWithTag(froumNumber);
+				LinearLayout likeTitle = (LinearLayout) parentLayout.findViewById(R.id.liketitleTopic);
 
-		} catch (NumberFormatException ex) {
-			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 				adapter.open();
 				if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
-					params = new LinkedHashMap<String, String>();
-					deleting = new Deleting(context);
-					deleting.delegate = FroumtitleListadapter.this;
+					adapter.deleteLikeFromFroum(CurrentUser.getId(), froumNumber);
 
-					params.put("TableName", "LikeInFroum");
-					params.put("UserId", String.valueOf(CurrentUser.getId()));
-					params.put("FroumId", String.valueOf(froumNumber));
+					likeTitle.setBackgroundResource(R.drawable.like_froum_off);
 
-					deleting.execute(params);
-
-					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
 				} else {
-					params = new LinkedHashMap<String, String>();
-					saving = new Saving(context);
-					saving.delegate = FroumtitleListadapter.this;
+					adapter.insertLikeInFroumToDb(id, CurrentUser.getId(), froumNumber, serverDate, 0);
 
-					params.put("TableName", "LikeInFroum");
-
-					params.put("UserId", String.valueOf(CurrentUser.getId()));
-					params.put("FroumId", String.valueOf(froumNumber));
-					params.put("CommentId", "0");
-					params.put("Date", output);
-					params.put("ModifyDate", output);
-					params.put("IsUpdate", "0");
-					params.put("Id", "0");
-
-					serverDate = output;
-
-					saving.execute(params);
-
-					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-
-					// countLikeFroum.setText(adapter
-					// .LikeInFroum_count(ItemId).toString());
+					likeTitle.setBackgroundResource(R.drawable.like_froum_on);
 				}
+
+				TextView likeCountFroum = (TextView) likeTitle.findViewById(R.id.countLikeInFroumTitle);
+				likeCountFroum.setText(adapter.LikeInFroum_count(froumNumber).toString());
+
 				adapter.close();
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
 
-			} else {
-				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
+			} catch (NumberFormatException ex) {
+				if (output != null && !(output.contains("Exception") || output.contains("java"))) {
+					adapter.open();
+					if (adapter.isUserLikedFroum(CurrentUser.getId(), froumNumber)) {
+						params = new LinkedHashMap<String, String>();
+						deleting = new Deleting(context);
+						deleting.delegate = FroumtitleListadapter.this;
+
+						params.put("TableName", "LikeInFroum");
+						params.put("UserId", String.valueOf(CurrentUser.getId()));
+						params.put("FroumId", String.valueOf(froumNumber));
+
+						deleting.execute(params);
+
+						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+					} else {
+						params = new LinkedHashMap<String, String>();
+						saving = new Saving(context);
+						saving.delegate = FroumtitleListadapter.this;
+
+						params.put("TableName", "LikeInFroum");
+
+						params.put("UserId", String.valueOf(CurrentUser.getId()));
+						params.put("FroumId", String.valueOf(froumNumber));
+						params.put("CommentId", "0");
+						params.put("Date", output);
+						params.put("ModifyDate", output);
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						serverDate = output;
+
+						saving.execute(params);
+
+						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+
+						// countLikeFroum.setText(adapter
+						// .LikeInFroum_count(ItemId).toString());
+					}
+					adapter.close();
+
+				} else {
+					Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
+				}
 			}
-		}
 
-		catch (Exception e) {
+			catch (Exception e) {
 
-			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 

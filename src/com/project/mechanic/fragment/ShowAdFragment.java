@@ -1,6 +1,8 @@
 package com.project.mechanic.fragment;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -29,12 +31,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.entity.Visit;
+import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
-public class ShowAdFragment extends Fragment {
+public class ShowAdFragment extends Fragment implements AsyncInterface {
 
 	int id;
 	int a;
@@ -58,12 +65,16 @@ public class ShowAdFragment extends Fragment {
 	private boolean isFavorite = false;
 	RelativeLayout headerRelative, iconRelative;
 	RelativeLayout.LayoutParams headerParams;
+	int idItem, typeId, sender, userId;
+	Map<String, String> params;
+	int counterVisit = 0;
+	boolean isFinish = false, saveVisitFalg;
+	String currentTime = "";
 
 	@SuppressWarnings("null")
 	@SuppressLint("InflateParams")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.showad);
 		id = Integer.valueOf(getArguments().getString("Id"));
 		util = new Utility(getActivity());
@@ -89,35 +100,35 @@ public class ShowAdFragment extends Fragment {
 		btnCancel = (Button) view.findViewById(R.id.btn_cancel);
 		day = (TextView) view.findViewById(R.id.textDay);
 		date = (TextView) view.findViewById(R.id.textdate);
-		
-		RelativeLayout lin1 = (RelativeLayout)view.findViewById(R.id.a1);
-		RelativeLayout lin2 = (RelativeLayout)view.findViewById(R.id.a2);
-		RelativeLayout lin3 = (RelativeLayout)view.findViewById(R.id.a3);
-		RelativeLayout lin4 = (RelativeLayout)view.findViewById(R.id.a4);
 
-		ImageView line1 = (ImageView)view.findViewById(R.id.i1);
-		ImageView line2 = (ImageView)view.findViewById(R.id.i2);
-		ImageView line3 = (ImageView)view.findViewById(R.id.i3);
-		ImageView line4 = (ImageView)view.findViewById(R.id.i4);
+		RelativeLayout lin1 = (RelativeLayout) view.findViewById(R.id.a1);
+		RelativeLayout lin2 = (RelativeLayout) view.findViewById(R.id.a2);
+		RelativeLayout lin3 = (RelativeLayout) view.findViewById(R.id.a3);
+		RelativeLayout lin4 = (RelativeLayout) view.findViewById(R.id.a4);
+
+		ImageView line1 = (ImageView) view.findViewById(R.id.i1);
+		ImageView line2 = (ImageView) view.findViewById(R.id.i2);
+		ImageView line3 = (ImageView) view.findViewById(R.id.i3);
+		ImageView line4 = (ImageView) view.findViewById(R.id.i4);
 
 		RelativeLayout.LayoutParams p1 = new RelativeLayout.LayoutParams(lin1.getLayoutParams());
 		RelativeLayout.LayoutParams p2 = new RelativeLayout.LayoutParams(lin2.getLayoutParams());
 		RelativeLayout.LayoutParams p3 = new RelativeLayout.LayoutParams(lin3.getLayoutParams());
 		RelativeLayout.LayoutParams p4 = new RelativeLayout.LayoutParams(lin4.getLayoutParams());
 
-		p1.width = util.getScreenwidth()-150;
+		p1.width = util.getScreenwidth() - 150;
 		p1.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		p1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
-		p2.width = util.getScreenwidth()-150;
+		p2.width = util.getScreenwidth() - 150;
 		p2.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		p2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		
-		p3.width = util.getScreenwidth()-150;
+
+		p3.width = util.getScreenwidth() - 150;
 		p3.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		p3.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		
-		p4.width = util.getScreenwidth()-150;
+
+		p4.width = util.getScreenwidth() - 150;
 		p4.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		p4.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
@@ -145,7 +156,7 @@ public class ShowAdFragment extends Fragment {
 		like.setSelected(check);
 		String ImagePath = t.getImagePath();
 		Bitmap imgBitmap;
-		if ( ImagePath == null) {
+		if (ImagePath == null) {
 			img.setBackgroundResource(R.drawable.no_img_profile);
 
 		} else {
@@ -153,7 +164,6 @@ public class ShowAdFragment extends Fragment {
 			img.setImageBitmap(imgBitmap);
 		}
 
-		
 		dbAdapter.close();
 		u = util.getCurrentUser();
 
@@ -183,8 +193,7 @@ public class ShowAdFragment extends Fragment {
 		// }
 		// }
 		headerRelative = (RelativeLayout) view.findViewById(R.id.headerAnad);
-		headerParams = new RelativeLayout.LayoutParams(
-				headerRelative.getLayoutParams());
+		headerParams = new RelativeLayout.LayoutParams(headerRelative.getLayoutParams());
 		headerParams.width = util.getScreenwidth();
 		headerParams.height = util.getScreenwidth();
 		headerParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -208,8 +217,7 @@ public class ShowAdFragment extends Fragment {
 		// likeParams.addRule(RelativeLayout.BELOW, R.id.imgShare_showAd);
 
 		// like.setLayoutParams(likeParams);
-		final EditText DescriptionReport = (EditText) view
-				.findViewById(R.id.descriptionEdit);
+		final EditText DescriptionReport = (EditText) view.findViewById(R.id.descriptionEdit);
 		final RadioGroup rd = (RadioGroup) view.findViewById(R.id.rb1);
 
 		rd.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -236,7 +244,7 @@ public class ShowAdFragment extends Fragment {
 
 				} else {
 					dbAdapter.open();
-					dbAdapter.insertFavoritetoDb(0, u.getId(), a , 3);
+					dbAdapter.insertFavoritetoDb(0, u.getId(), a, 3);
 					dbAdapter.close();
 					like.setBackgroundResource(R.drawable.ic_star_on);
 					// like.setLayoutParams(likeParams);
@@ -250,8 +258,7 @@ public class ShowAdFragment extends Fragment {
 
 			// @Override
 			public void onClick(View arg0) {
-				dialog = new Dialog_show_fragment(getActivity(),
-						R.layout.dialog_show, ShowAdFragment.this, a);
+				dialog = new Dialog_show_fragment(getActivity(), R.layout.dialog_show, ShowAdFragment.this, a);
 				dialog.setTitle(R.string.txtanadedite);
 
 				dialog.show();
@@ -274,12 +281,10 @@ public class ShowAdFragment extends Fragment {
 			@Override
 			public void onClick(View arg0) {
 				if (u == null) {
-					Toast.makeText(getActivity(), " شما وارد نشده اید.",
-							Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), " شما وارد نشده اید.", Toast.LENGTH_LONG).show();
 					return;
 				}
-				Toast.makeText(getActivity(), "گزارش شما با موفقیت ارسال شد",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "گزارش شما با موفقیت ارسال شد", Toast.LENGTH_SHORT).show();
 				// dialog_report = new Dialog_report(getActivity(),
 				// R.layout.dialog_report, ShowAdFragment.this, a);
 				// dialog_report.setTitle("گزارش آگهی");
@@ -299,16 +304,12 @@ public class ShowAdFragment extends Fragment {
 
 			@Override
 			public void onClick(View arg0) {
-				Intent sharingIntent = new Intent(
-						android.content.Intent.ACTION_SEND);
+				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
 				String shareBody = t.getDesc();
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-						"Subject Here");
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-						shareBody);
-				startActivity(Intent.createChooser(sharingIntent,
-						"اشتراک از طریق"));
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+				startActivity(Intent.createChooser(sharingIntent, "اشتراک از طریق"));
 
 			}
 		});
@@ -363,9 +364,9 @@ public class ShowAdFragment extends Fragment {
 			fax.setText(t.getUFax());
 		}
 		dbAdapter.close();
-		
-		TextView lable1 = (TextView) view.findViewById(R.id.labelDayOfCommitAnad);
 
+		TextView lable1 = (TextView) view.findViewById(R.id.labelDayOfCommitAnad);
+		checkInternet();
 		return view;
 
 	}
@@ -375,22 +376,19 @@ public class ShowAdFragment extends Fragment {
 
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == RESULT_LOAD_IMAGE
-				&& resultCode == Activity.RESULT_OK && null != data) {
+		if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
 			Uri selectedImage = data.getData();
 
 			String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
-			Cursor cursor = getActivity().getContentResolver().query(
-					selectedImage, filePathColumn, null, null, null);
+			Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
 			cursor.moveToFirst();
 
 			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 			String picturePath = cursor.getString(columnIndex);
 			cursor.close();
 
-			ImageView imageView = (ImageView) dialog
-					.findViewById(R.id.dialog_img11);
+			ImageView imageView = (ImageView) dialog.findViewById(R.id.dialog_img11);
 			imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
 		}
@@ -421,8 +419,7 @@ public class ShowAdFragment extends Fragment {
 
 		byte[] bitmapbyte = t.getImage();
 		if (bitmapbyte != null) {
-			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-					bitmapbyte.length);
+			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0, bitmapbyte.length);
 			img.setImageBitmap(bmp);
 		}
 		dbAdapter.close();
@@ -487,6 +484,169 @@ public class ShowAdFragment extends Fragment {
 			fax.setText(t.getUFax());
 		}
 		dbAdapter.close();
+
+	}
+
+	private void checkInternet() {
+
+		if (util.getCurrentUser() != null) {
+
+			if (util.isNetworkConnected()) {
+				Toast.makeText(getActivity(), "Connected", 0).show();
+
+				ServerDate date = new ServerDate(getActivity());
+				date.delegate = ShowAdFragment.this;
+				date.execute("");
+				saveVisitFalg = true;
+
+			} else {
+				Toast.makeText(getActivity(), "Disconnected", 0).show();
+
+				if (checkUsers() == true) {
+
+					dbAdapter.open();
+					dbAdapter.insertVisitToDb(util.getCurrentUser().getId(), StaticValues.TypeTicketVisit, t.getId());
+					dbAdapter.close();
+				}
+
+			}
+
+		}
+	}
+
+	private boolean checkUsers() {
+
+		// if isSave = true allow to save visit on server
+		// else don't allow to save
+		boolean isSave = true;
+
+		if (util.getCurrentUser().getId() == t.getUserId())
+			isSave = false;
+
+		return isSave;
+
+	}
+
+	private void sendVisit() {
+
+		if (getActivity() != null) {
+
+			dbAdapter.open();
+			List<Visit> visitList = dbAdapter.getAllVisitItems();
+			dbAdapter.close();
+
+			Visit vis = null;
+
+			if (visitList.size() != 0) {
+
+				if (counterVisit < visitList.size()) {
+
+					vis = visitList.get(counterVisit);
+
+					sender = vis.getUserId();
+					typeId = vis.getTypeId();
+					idItem = vis.getObjectId();
+
+					params = new LinkedHashMap<String, String>();
+					Saving saving = new Saving(getActivity());
+					saving.delegate = ShowAdFragment.this;
+
+					params.put("TableName", "Visit");
+					params.put("UserId", String.valueOf(sender));
+					params.put("TypeId", String.valueOf(typeId));
+					params.put("ObjectId", String.valueOf(idItem));
+					params.put("ModifyDate", String.valueOf(currentTime));
+					params.put("Date", String.valueOf(currentTime));
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+
+					saving.execute(params);
+
+					counterVisit++;
+
+					saveVisitFalg = true;
+					// sendVisit();
+				} else {
+
+					params = new LinkedHashMap<String, String>();
+					Saving saving = new Saving(getActivity());
+					saving.delegate = ShowAdFragment.this;
+
+					params.put("TableName", "Visit");
+					params.put("UserId", String.valueOf(t.getUserId()));
+					params.put("TypeId", String.valueOf(StaticValues.TypeTicketVisit));
+					params.put("ObjectId", String.valueOf(t.getId()));
+					params.put("ModifyDate", String.valueOf(currentTime));
+					params.put("Date", String.valueOf(currentTime));
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+
+					saving.execute(params);
+
+					dbAdapter.open();
+					dbAdapter.deleteVisit();
+					dbAdapter.close();
+
+					saveVisitFalg = false;
+					isFinish = true;
+
+				}
+
+			} else {
+
+				if (checkUsers() == true) {
+					userId = util.getCurrentUser().getId();
+					typeId = StaticValues.TypeTicketVisit;
+					// int idObj = object.getId();
+
+					params = new LinkedHashMap<String, String>();
+					Saving saving = new Saving(getActivity());
+					saving.delegate = ShowAdFragment.this;
+
+					params.put("TableName", "Visit");
+					params.put("UserId", String.valueOf(userId));
+					params.put("TypeId", String.valueOf(typeId));
+					params.put("ObjectId", String.valueOf(t.getId()));
+					params.put("ModifyDate", String.valueOf(currentTime));
+					params.put("Date", String.valueOf(currentTime));
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+
+					saving.execute(params);
+					saveVisitFalg = false;
+					isFinish = true;
+
+				}
+			}
+
+		}
+
+	}
+
+	@Override
+	public void processFinish(String output) {
+
+		Toast.makeText(getActivity(), output, 0).show();
+
+		if (!output.equals("java.io.EOFException") && !output.equals("java.net.SocketTimeoutException")) {
+
+			if (saveVisitFalg == true) {
+
+				if (counterVisit == 0)
+					currentTime = output;
+				sendVisit();
+
+			} else {
+				if (isFinish == true) {
+
+					return;
+				}
+			}
+
+		}
 
 	}
 
