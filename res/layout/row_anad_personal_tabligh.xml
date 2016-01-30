@@ -2,150 +2,159 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="horizontal" >
+    android:layout_gravity="center"
+    android:background="@color/white" >
 
-    
-
-    <RelativeLayout
-        android:id="@+id/backgroundTicket"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff"
-        android:orientation="horizontal" >
+        android:layout_centerInParent="true"
+        android:orientation="vertical" >
 
         <RelativeLayout
-            android:id="@+id/layoutmnb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:orientation="vertical" >
+            android:id="@+id/settinglayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
-            <FrameLayout
-                android:id="@+id/imageFrame"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true" >
-
-                <ImageView
-                    android:id="@+id/row_favorite_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/circle_drawable"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/no_img_profile" />
-
-                <ImageView
-                    android:id="@+id/aks_bi_etebar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:alpha="0.8"
-                    android:background="@drawable/circle_drawable"
-                    android:src="@drawable/bi_etebar"
-                    android:visibility="invisible" />
-            </FrameLayout>
-
-            <ProgressBar
-                android:id="@+id/progressBar1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/reportImage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_margin="10dp"
-                android:visibility="gone" />
+                android:layout_centerVertical="true"
+                android:background="@drawable/down_arrow" />
+        </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/dda"
+        <RelativeLayout
+            android:id="@+id/backgroundTicket"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/settinglayout"
+            android:layout_centerVertical="true"
+            android:background="@color/white"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:id="@+id/layoutmnb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:gravity="right"
-                
-                android:layout_toLeftOf="@+id/imageFrame"
-                android:orientation="horizontal" >
+                android:orientation="vertical" >
 
-                <LinearLayout
+                <FrameLayout
+                    android:id="@+id/imageFrame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="10dp"
-                    android:gravity="right|center_vertical"
-                    android:orientation="vertical" >
+                    android:layout_alignParentRight="true" >
 
-                    <TextView
-                        android:id="@+id/Rowobjecttxt"
+                    <ImageView
+                        android:id="@+id/row_favorite_img"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:gravity="right"
-                        android:text="Large Text"
-                        android:textColor="#9d0420" />
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/circle_drawable"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/no_img_profile" />
 
-                    <TextView
-                        android:id="@+id/row_anad_txt2"
+                    <ImageView
+                        android:id="@+id/aks_bi_etebar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:gravity="right"
-                        android:maxLength="20"
-                        android:maxLines="1"
-                        android:text="Large Text"
-                        android:textColor="#9d0420" />
-                </LinearLayout>
-            </LinearLayout>
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:alpha="0.8"
+                        android:background="@drawable/circle_drawable"
+                        android:src="@drawable/bi_etebar"
+                        android:visibility="invisible" />
+                </FrameLayout>
 
-            <RelativeLayout
-                android:id="@+id/settinglayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/reportImage"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="10dp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/dda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/down_arrow" />
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/imageFrame"
+                    android:gravity="right"
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:gravity="right|center_vertical"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/Rowobjecttxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:gravity="right"
+                            android:text="Large Text"
+                            android:textColor="@color/orginal_red_color" />
+
+                        <TextView
+                            android:id="@+id/row_anad_txt2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:gravity="right"
+                            android:maxLength="20"
+                            android:maxLines="1"
+                            android:text="Large Text"
+                            android:textColor="@color/orginal_red_color" />
+                    </LinearLayout>
+                </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
-    </RelativeLayout>
-<LinearLayout
-        android:id="@+id/et"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:visibility="visible" >
 
-        <TextView
-            android:id="@+id/lable2"
+        <LinearLayout
+            android:id="@+id/et"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="روز"
-            android:textColor="@color/transparent" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/backgroundTicket"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:visibility="visible" >
 
-        <TextView
-            android:id="@+id/day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="250"
-            android:textColor="@color/transparent" />
+            <TextView
+                android:id="@+id/lable2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="روز"
+                android:textColor="@color/orginal_red_color" />
 
-        <TextView
-            android:id="@+id/lable_etebar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text="اعتبار :"
-            android:textColor="@color/transparent" />
+            <TextView
+                android:id="@+id/day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="250"
+                android:textColor="@color/orginal_red_color" />
+
+            <TextView
+                android:id="@+id/lable_etebar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="اعتبار :"
+                android:textColor="@color/orginal_red_color" />
+        </LinearLayout>
     </LinearLayout>
+
 </RelativeLayout>

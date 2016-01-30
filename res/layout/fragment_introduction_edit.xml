@@ -124,7 +124,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="5dp"
-                        android:text="ویرایش مدیران صفحه"
+                        android:text="ویرایش مدیران "
                         android:textColor="@color/orginal_red_color" />
 
                     <ImageView

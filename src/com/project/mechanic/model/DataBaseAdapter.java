@@ -91,9 +91,12 @@ public class DataBaseAdapter {
 	private String TableLikeInCommentObject = "LikeInCommentObject";
 	private String TableSubAdmin = "SubAdmin";
 	private String TablePost = "Post";
+	private String TablePostPhoto = "PostPhoto";
+
 	private String TableLikeInPost = "LikeInPost";
 	private String TableCommentInPost = "CommentInPost";
 	private String TableAnadFooter = "AnadFooter";
+	private String TableLikeInCommentPost = "LikeInCommentPost";
 
 	// private String[] ACL = { "ID", "UserId", "ListItemId" };
 	private String[] AdvisorType = { "ID", "Name" };
@@ -115,10 +118,10 @@ public class DataBaseAdapter {
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId", "IdTicket", "Type" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen", "ServerDate", "Submit", "Date",
-			"SeenBefore" };
+			"SeenBefore", "CountView" };
 
 	private String[] Post = { "ID", "UserId", "Description", "Seen", "ServerDate", "Submit", "Date", "SeenBefore",
-			"Photo" };
+			"Photo", "CountView", "ObjectId" };
 
 	// private String[] Like = { "ID", "UserId", "PaperId" };
 	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date", "CommentId", "Seen" };
@@ -132,12 +135,12 @@ public class DataBaseAdapter {
 			"Image4", "Pdf1", "Pdf2", "Pdf3", "Pdf4", "Address", "CellPhone", "ObjectTypeId", "ObjectBrandTypeId",
 			"Facebook", "Instagram", "LinkedIn", "Google", "Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
 			"Submit", "MainObjectId", "IsActive", "UserId", "ObjectId", "Date", "Image1ServerDate", "Image2ServerDate",
-			"Image3ServerDate", "AgencyService", "ImagePath1", "ImagePath2", "ImagePath3", "ActiveDate" };
+			"Image3ServerDate", "AgencyService", "ImagePath1", "ImagePath2", "ImagePath3", "ActiveDate", "CountView" };
 	private String[] ObjectInCity = { "Id", "ObjectId", "CityId", "Date" };
 	// private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
 	// private String[] ObjectType = { "ID", "Name" };
-	private String[] Paper = { "ID", "Title", "Context", "Seen", "ServerDate", "Submit", "UserId", "Date",
-			"SeenBefore" };
+	private String[] Paper = { "ID", "Title", "Context", "Seen", "ServerDate", "Submit", "UserId", "Date", "SeenBefore",
+			"CountView" };
 	// private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name", "Count" };
 	private String[] Settings = { "Id", "IMEI", "ServerDate_Start_Object", "ServerDate_End_Object",
@@ -154,7 +157,7 @@ public class DataBaseAdapter {
 
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image", "date", "TypeId", "Name", "Email", "Mobile",
 			"Phone", "Fax", "ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress", "UImage", "UMobile",
-			"Seen", "Submit", "seenBefore", "Day", "imagePath", "ImageServerDate" };
+			"Seen", "Submit", "seenBefore", "Day", "imagePath", "ImageServerDate", "CountView" };
 
 	private String[] TicketType = { "ID", "desc" };
 
@@ -175,12 +178,13 @@ public class DataBaseAdapter {
 	// "Date",
 	// "UserId", "ModifyDate" };
 
-	private String[] likeInPost = { "Id", "PostId", "UserId", "IsLike", "Date", "ModifyDate" };
+	private String[] likeInPost = { "Id", "PostId", "UserId", "IsLike", "Date", "ModifyDate", "CommentId" };
 
 	private String[] commentInPost = { "Id", "Desc", "PostId", "UserId", "Date", "CommentId", "Seen" };
 
 	private String[] AnadFooter = { "Id", "Image", "ObjectId", "Date", "TypeId", "Seen", "Submit", "ImageServerDate" };
 
+	private String[] LikeinCommentPost = { "ID", "CommentId", "UserId", "IsLike", "Date" };
 	private final Context mContext;
 	private SQLiteDatabase mDb;
 	private DataBaseHelper mDbHelper;
@@ -450,7 +454,7 @@ public class DataBaseAdapter {
 	}
 
 	public boolean isUserLikedPost(int userId, int PostID) {
-		Cursor curs = mDb.rawQuery("SELECT COUNT(*) AS NUM FROM " + TableLikeInPost + " WHERE PostId= "
+		Cursor curs = mDb.rawQuery("SELECT COUNT(*) AS NUM FROM " + TableLikeInPost + " WHERE UserId= "
 				+ String.valueOf(userId) + " AND PostId=" + String.valueOf(PostID), null);
 		if (curs.moveToNext()) {
 			int number = curs.getInt(0);
@@ -518,7 +522,7 @@ public class DataBaseAdapter {
 			int commentid) {
 
 		ContentValues cv = new ContentValues();
-		// cv.put("Id", id);
+		cv.put("Id", id);
 		cv.put("Desc", description);
 		cv.put("UserId", userid);
 		cv.put("PostID", Postid);
@@ -574,18 +578,19 @@ public class DataBaseAdapter {
 
 	}
 
-	public void insertPosttitletoDb(/* int id,String Title, */
-			String description, int userId, String date, String ImageAdrress) {
+	public void insertPosttitletoDb(int id, /* String Title, */
+			String description, int userId, String date, String ImageAdrress, int objectId) {
 
 		ContentValues cv = new ContentValues();
 
-		// cv.put("Id", id);
+		cv.put("Id", id);
 		// cv.put("Title", Title);
 		cv.put("Description", description);
 		cv.put("UserId", userId);
 		cv.put("Date", date);
 		cv.put("Seen", 0);
 		cv.put("Photo", ImageAdrress);
+		cv.put("ObjectId", objectId);
 
 		mDb.insert(TablePost, null, cv);
 
@@ -690,7 +695,7 @@ public class DataBaseAdapter {
 					cursor.getString(27), cursor.getInt(28), cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
 					cursor.getInt(32), cursor.getString(33), cursor.getString(34), cursor.getString(35),
 					cursor.getString(36), cursor.getInt(37), cursor.getString(38), cursor.getString(39),
-					cursor.getString(40), cursor.getString(41));
+					cursor.getString(40), cursor.getString(41), cursor.getInt(42));
 
 			result.add(tempObject);
 		}
@@ -1261,7 +1266,7 @@ public class DataBaseAdapter {
 				cursor.getInt(28), cursor.getInt(29), cursor.getInt(30), cursor.getInt(31), cursor.getInt(32),
 				cursor.getString(33), cursor.getString(34), cursor.getString(35), cursor.getString(36),
 				cursor.getInt(37), cursor.getString(38), cursor.getString(39), cursor.getString(40),
-				cursor.getString(41));
+				cursor.getString(41), cursor.getInt(42));
 		return tempObject;
 	}
 
@@ -1279,7 +1284,8 @@ public class DataBaseAdapter {
 
 	private Froum CursorToFroum(Cursor cursor) {
 		Froum tempForum = new Froum(cursor.getInt(0), cursor.getInt(1), cursor.getString(2), cursor.getString(3),
-				cursor.getInt(4), cursor.getString(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8));
+				cursor.getInt(4), cursor.getString(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8),
+				cursor.getInt(9));
 		return tempForum;
 
 	}
@@ -1292,13 +1298,27 @@ public class DataBaseAdapter {
 
 	private Post CursorToPost(Cursor cursor) {
 		Post tempPost = new Post(cursor.getInt(0), cursor.getInt(1), cursor.getString(2), cursor.getInt(3),
-				cursor.getString(4), cursor.getInt(5), cursor.getString(6), cursor.getInt(7), cursor.getString(8));
+				cursor.getString(4), cursor.getInt(5), cursor.getString(6), cursor.getInt(7), cursor.getString(8),
+				cursor.getInt(9), cursor.getInt(10));
 		return tempPost;
 	}
 
+	// private PostTimeline CursorToPostTimeline(Cursor cursor) {
+	// PostTimeline tempPostTimeLine = new PostTimeline(cursor.getInt(0),
+	// cursor.getInt(1), cursor.getString(2),
+	// cursor.getInt(3), cursor.getString(4), cursor.getInt(5),
+	// cursor.getString(6), cursor.getInt(7),
+	// cursor.getString(8), cursor.getInt(9), cursor.getString(10),
+	// cursor.getString(11), cursor.getInt(12),
+	// cursor.getInt(13), cursor.getInt(14), cursor.getInt(15),
+	// cursor.getString(16), cursor.getString(17));
+	// return tempPost;
+	// }
+
 	private Paper CursorToPaper(Cursor cursor) {
 		Paper tempPaper = new Paper(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3),
-				cursor.getString(4), cursor.getInt(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8));
+				cursor.getString(4), cursor.getInt(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8),
+				cursor.getInt(9));
 		return tempPaper;
 
 	}
@@ -1337,7 +1357,7 @@ public class DataBaseAdapter {
 				cursor.getInt(9), cursor.getInt(10), cursor.getInt(11), cursor.getInt(12), cursor.getString(13),
 				cursor.getString(14), cursor.getString(15), cursor.getString(16), cursor.getString(17),
 				cursor.getBlob(18), cursor.getString(19), cursor.getInt(20), cursor.getInt(21), cursor.getInt(22),
-				cursor.getInt(23), cursor.getString(24), cursor.getString(25));
+				cursor.getInt(23), cursor.getString(24), cursor.getString(25), cursor.getInt(26));
 
 		return tempTicket;
 
@@ -1436,7 +1456,8 @@ public class DataBaseAdapter {
 		Paper tempObject;
 		while (cursor.moveToNext()) {
 			tempObject = new Paper(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3),
-					cursor.getString(4), cursor.getInt(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8));
+					cursor.getString(4), cursor.getInt(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8),
+					cursor.getInt(9));
 			result.add(tempObject);
 		}
 		Collections.sort(result);
@@ -1842,6 +1863,19 @@ public class DataBaseAdapter {
 		return false;
 	}
 
+	public boolean isUserLikedCommentPost(int userId, int CommentId, int isLike) {
+
+		Cursor curs = mDb.rawQuery("SELECT COUNT(*) AS NUM FROM " + TableLikeInCommentPost + " WHERE UserId= "
+				+ String.valueOf(userId) + " AND CommentId=" + String.valueOf(CommentId) + " AND IsLike=" + isLike,
+				null);
+		if (curs.moveToNext()) {
+			int number = curs.getInt(0);
+			if (number > 0)
+				return true;
+		}
+		return false;
+	}
+
 	public boolean isUserFavorite(int userId, int TicketId) {
 
 		Cursor curs = mDb.rawQuery("SELECT COUNT(*) AS NUM FROM " + TableFavorite + " WHERE UserId= "
@@ -1975,13 +2009,13 @@ public class DataBaseAdapter {
 		return result;
 	}
 
-	public ArrayList<Post> getAllPost(int UserID) {
+	public ArrayList<Post> getAllPost(int objectId) {
 		ArrayList<Post> result = new ArrayList<Post>();
 		// Cursor cursor = mDb.query(TablePost, Post, " UserId=?",
 		// new String[] { String.valueOf(UserID) }, null, null, null);
 		// Cursor cursor = mDb
 		// .query(TablePost, Post, null, null, null, null, null);
-		Cursor cursor = mDb.query(TablePost, Post, " UserId=?", new String[] { String.valueOf(UserID) }, null, null,
+		Cursor cursor = mDb.query(TablePost, Post, " ObjectId=?", new String[] { String.valueOf(objectId) }, null, null,
 				"Date DESC");
 		while (cursor.moveToNext()) {
 			result.add(CursorToPost(cursor));
@@ -1992,14 +2026,53 @@ public class DataBaseAdapter {
 	}
 
 	public ArrayList<PostTimeline> getAllTimeline(int UserID) {
+
 		ArrayList<PostTimeline> result = new ArrayList<PostTimeline>();
 
-		// Cursor cursor = mDb.query(TablePost, Post, " UserId=?",
-		// new String[] { String.valueOf(UserID) }, null, null,
-		// "Date DESC");
-		// while (cursor.moveToNext()) {
-		// result.add(CursorToPost(cursor));
-		// }
+		String MY_QUERY = "SELECT Post.Id AS PostId, Post.UserId AS PostUserId, Post.Description AS PostDescription, Post.Seen AS PostSeen, Post.serverDate AS PostserverDate, Post.Submit AS PostSubmit, Post.Date AS PostDate, Post.SeenBefore AS PostSeenBefore, Post.Photo AS PostPhoto,"
+				+ "Object.Id AS ObjectId,Object.ImagePath2 AS ObjectImagePath2,Object.Name AS ObjectName,"
+				+ "LikeInObject.Id AS LikeInObjectId,LikeInObject.UserId AS LikeInObjectUserId,LikeInObject.PaperId AS LikeInObjectPaperId FROM Post "
+				+ "INNER JOIN LikeInObject ON LikeInObject.PaperId = Post.ObjectId "
+				+ "INNER JOIN Object ON Object.Id = LikeInObject.PaperId " + "WHERE LikeInObject.UserId="
+				+ String.valueOf(UserID) + " ORDER BY Post.Id DESC";// LIMIT 5
+		Cursor cursor = mDb.rawQuery(MY_QUERY, null);
+
+		Toast.makeText(mContext, UserID + " — " + cursor.getCount() + "", Toast.LENGTH_SHORT).show();
+
+		while (cursor.moveToNext()) {
+
+			String ObjectImagePath2 = cursor.getString(cursor.getColumnIndex("ObjectImagePath2"));
+			String PostDescription = (String) cursor.getString(cursor.getColumnIndex("PostDescription"));
+			String PostserverDate = cursor.getString(cursor.getColumnIndex("PostserverDate"));
+			String PostDate = cursor.getString(cursor.getColumnIndex("PostDate"));
+			String PostPhoto = cursor.getString(cursor.getColumnIndex("PostPhoto"));
+			String ObjectName = cursor.getString(cursor.getColumnIndex("ObjectName"));
+
+			if (ObjectImagePath2 == null)
+				ObjectImagePath2 = "";
+			if (PostDescription == null)
+				PostDescription = "";
+			if (PostserverDate == null)
+				PostserverDate = "";
+			if (PostDate == null)
+				PostDate = "";
+			if (PostPhoto == null)
+				PostPhoto = "";
+			if (ObjectName == null)
+				ObjectName = "";
+
+			PostTimeline ArrayPostTimeLine = new PostTimeline(cursor.getInt(cursor.getColumnIndex("PostId")),
+					cursor.getInt(cursor.getColumnIndex("PostUserId")), PostDescription,
+					cursor.getInt(cursor.getColumnIndex("PostSeen")), PostserverDate,
+					cursor.getInt(cursor.getColumnIndex("PostSubmit")), PostDate,
+					cursor.getInt(cursor.getColumnIndex("PostSeenBefore")), PostPhoto,
+					cursor.getInt(cursor.getColumnIndex("ObjectId")), ObjectImagePath2, ObjectName,
+					cursor.getInt(cursor.getColumnIndex("LikeInObjectId")),
+					cursor.getInt(cursor.getColumnIndex("LikeInObjectUserId")),
+					cursor.getInt(cursor.getColumnIndex("LikeInObjectPaperId")));
+
+			result.add(ArrayPostTimeLine);
+		}
 
 		// Collections.sort(result);
 		return result;
@@ -2216,7 +2289,7 @@ public class DataBaseAdapter {
 		ArrayList<Object> result = new ArrayList<Object>();
 		Cursor cursor = mDb.rawQuery(
 
-				"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate , O.AgencyService , O.ImagePath1 , O.ImagePath2 , O.ImagePath3 From "
+				"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate , O.AgencyService , O.ImagePath1 , O.ImagePath2 , O.ImagePath3 ,O.ActiveDate , O.CountView  From "
 						+ TableObject + " as O inner join " + TableObjectInCity
 						+ " as C On O.Id = C.ObjectId Where O.MainObjectId = " + MainId + " and C.CityId = " + CityId
 						+ " and O.ObjectTypeId = " + TypeList,
@@ -2233,7 +2306,7 @@ public class DataBaseAdapter {
 					cursor.getString(27), cursor.getInt(28), cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
 					cursor.getInt(32), cursor.getString(33), cursor.getString(34), cursor.getString(35),
 					cursor.getString(36), cursor.getInt(37), cursor.getString(38), cursor.getString(39),
-					cursor.getString(40), cursor.getString(41));
+					cursor.getString(40), cursor.getString(41), cursor.getInt(42));
 
 			result.add(tempObject);
 		}
@@ -2453,7 +2526,7 @@ public class DataBaseAdapter {
 
 	public void deleteLikeFromCommentInPost(int CommentID, int userID, int isLike) {
 		String[] t = { String.valueOf(CommentID), String.valueOf(userID), String.valueOf(isLike) };
-		mDb.delete(TableLikeInComment, "CommentId=? and UserId =? and IsLike =?", t);
+		mDb.delete(TableLikeInCommentPost, "CommentId=? and UserId =? and IsLike =?", t);
 	}
 
 	public int NumOfNewLikeInObject(int userId) {
@@ -2984,7 +3057,20 @@ public class DataBaseAdapter {
 		uc.put("IsLike", ISLike);
 		uc.put("Date", date);
 
-		mDb.insert(TableLikeInComment, null, uc);
+		mDb.insert(TableLikeInCommentPost, null, uc);
+	}
+
+	public void insertLikeCommentPost(int id, int UserId, int ISLike, int CommentId, String date) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("ID", id);
+		uc.put("UserId", UserId);
+		uc.put("CommentId", CommentId);
+		uc.put("IsLike", ISLike);
+		uc.put("Date", date);
+
+		mDb.insert(TableLikeInCommentPost, null, uc);
 	}
 
 	public Integer NumberOfLikeOrDisLikeFroum(int commentID, int isLike) {
@@ -3000,8 +3086,8 @@ public class DataBaseAdapter {
 
 	public Integer NumberOfLikeOrDisLikePost(int commentID, int isLike) {
 
-		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TableLikeInComment + " WHERE CommentID=" + commentID
-				+ " AND isLike = " + isLike, null);
+		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TableLikeInCommentPost + " WHERE CommentID="
+				+ commentID + " AND isLike = " + isLike, null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -3030,7 +3116,7 @@ public class DataBaseAdapter {
 					cursor.getString(27), cursor.getInt(28), cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
 					cursor.getInt(32), cursor.getString(33), cursor.getString(34), cursor.getString(35),
 					cursor.getString(36), cursor.getInt(37), cursor.getString(38), cursor.getString(39),
-					cursor.getString(40), cursor.getString(41));
+					cursor.getString(40), cursor.getString(41), cursor.getInt(42));
 
 			result.add(tempObject);
 		}
@@ -3477,7 +3563,7 @@ public class DataBaseAdapter {
 					cursor.getString(27), cursor.getInt(28), cursor.getInt(29), cursor.getInt(30), cursor.getInt(31),
 					cursor.getInt(32), cursor.getString(33), cursor.getString(34), cursor.getString(35),
 					cursor.getString(36), cursor.getInt(37), cursor.getString(38), cursor.getString(39),
-					cursor.getString(40), cursor.getString(41));
+					cursor.getString(40), cursor.getString(41), cursor.getInt(42));
 
 			result.add(tempObject);
 		}
@@ -3497,7 +3583,7 @@ public class DataBaseAdapter {
 					cursor.getInt(9), cursor.getInt(10), cursor.getInt(11), cursor.getInt(12), cursor.getString(13),
 					cursor.getString(14), cursor.getString(15), cursor.getString(16), cursor.getString(17),
 					cursor.getBlob(18), cursor.getString(19), cursor.getInt(20), cursor.getInt(21), cursor.getInt(22),
-					cursor.getInt(23), cursor.getString(24), cursor.getString(25));
+					cursor.getInt(23), cursor.getString(24), cursor.getString(25), cursor.getInt(26));
 
 			result.add(tempTicket);
 		}
@@ -3530,7 +3616,8 @@ public class DataBaseAdapter {
 		Paper tempTicket;
 		while (cursor.moveToNext()) {
 			tempTicket = new Paper(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3),
-					cursor.getString(4), cursor.getInt(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8));
+					cursor.getString(4), cursor.getInt(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8),
+					cursor.getInt(9));
 
 			result.add(tempTicket);
 		}
@@ -3546,7 +3633,8 @@ public class DataBaseAdapter {
 		Froum temp;
 		while (cursor.moveToNext()) {
 			temp = new Froum(cursor.getInt(0), cursor.getInt(1), cursor.getString(2), cursor.getString(3),
-					cursor.getInt(4), cursor.getString(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8));
+					cursor.getInt(4), cursor.getString(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8),
+					cursor.getInt(9));
 			result.add(temp);
 		}
 
@@ -4009,7 +4097,7 @@ public class DataBaseAdapter {
 
 	public Integer CountPostUser(int ObjectId) {
 
-		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TablePost + " WHERE UserId= " + ObjectId, null);
+		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TablePost + " WHERE ObjectId= " + ObjectId, null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -4028,5 +4116,43 @@ public class DataBaseAdapter {
 		}
 
 		return result;
+	}
+
+	public void updateCountView(String tableName, int id, int value) {
+
+		ContentValues uc = new ContentValues();
+		uc.put("CountView", value);
+		mDb.update(tableName, uc, "Id=" + id, null);
+	}
+
+	public Integer getCountVisitItem(int itemId, int typeId) {
+
+		Cursor cu = mDb.rawQuery(
+				"Select count(*) as co from " + TableVisit + " WHERE ObjectId=" + itemId + " AND TypeId=" + typeId,
+				null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public void insertPhotoPostToDB(int id, String ImageAdrress) {
+
+		ContentValues cv = new ContentValues();
+
+		cv.put("PostId", id);
+
+		cv.put("Name", ImageAdrress);
+
+		mDb.insert(TablePostPhoto, null, cv);
+
+	}
+
+	public void updateAnadItem(int id, int objectId) {
+
+		ContentValues uc = new ContentValues();
+		uc.put("ObjectId", objectId);
+		mDb.update(TableAnad, uc, "ID=" + id, null);
 	}
 }

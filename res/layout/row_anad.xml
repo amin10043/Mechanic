@@ -160,13 +160,14 @@
                         android:background="@drawable/numvv" />
 
                     <TextView
+                        android:id="@+id/getTicketCountVisit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/iconNumberLike"
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@+id/iconNumberLike"
                         android:text="20"
-                        android:textColor="@color/transparent"
+                        android:textColor="@color/orginal_red_color"
                         android:textSize="10dp" />
                 </RelativeLayout>
             </LinearLayout>

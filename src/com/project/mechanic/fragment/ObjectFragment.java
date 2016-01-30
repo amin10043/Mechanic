@@ -22,20 +22,22 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.AsyncInterfaceVisit;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingImage;
+import com.project.mechanic.service.UpdatingVisit;
 import com.project.mechanic.utility.Utility;
 
-public class ObjectFragment extends Fragment implements AsyncInterface,
-		GetAsyncInterface {
+public class ObjectFragment extends Fragment implements AsyncInterface, GetAsyncInterface, AsyncInterfaceVisit {
 
 	DataBaseAdapter adapter;
 	Users currentUser;
@@ -64,11 +66,11 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 	UpdatingImage ImageUpdating;
 
 	Map<String, String> maps;
+	int visitCounter = 0;
 
 	@SuppressLint("InflateParams")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		((MainActivity) getActivity()).setTitle(R.string.object);
 
 		View view = inflater.inflate(R.layout.fragment_object, null);
@@ -77,8 +79,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 
 		AgencyService = pageId.getInt("IsAgency", -1);
 
-		SharedPreferences sendData = getActivity()
-				.getSharedPreferences("Id", 0);
+		SharedPreferences sendData = getActivity().getSharedPreferences("Id", 0);
 		final int id = sendData.getInt("main_Id", -1);
 		m = id;
 		city_id = Integer.valueOf(getArguments().getString("cityId"));
@@ -100,9 +101,8 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 			mylist = adapter.getObjectBy_BTId_CityId(id, city_id, typeList);
 
 			if (mylist != null && !mylist.isEmpty()) {
-				ListAdapter = new ObjectListAdapter(getActivity(),
-						R.layout.row_object, mylist, ObjectFragment.this, true,
-						null, 1);
+				ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, ObjectFragment.this,
+						true, null, 1);
 				lstObject.setAdapter(ListAdapter);
 
 				// start code get image profile from server
@@ -127,16 +127,14 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 
 			if (mylist != null && !mylist.isEmpty()) {
 
-				ListAdapter = new ObjectListAdapter(getActivity(),
-						R.layout.row_object, mylist, ObjectFragment.this, true,
-						null, 1);
+				ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, ObjectFragment.this,
+						true, null, 1);
 				lstObject.setAdapter(ListAdapter);
 			}
 		}
 
 		adapter.close();
-		swipeLayout = (SwipeRefreshLayout) view
-				.findViewById(R.id.swipe_container);
+		swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
 		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override
@@ -148,27 +146,22 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 					updating.delegate = ObjectFragment.this;
 					String[] params = new String[4];
 					params[0] = "Object";
-					params[1] = setting.getServerDate_Start_Object() != null ? setting
-							.getServerDate_Start_Object() : "";
-					params[2] = setting.getServerDate_End_Object() != null ? setting
-							.getServerDate_End_Object() : "";
+					params[1] = setting.getServerDate_Start_Object() != null ? setting.getServerDate_Start_Object()
+							: "";
+					params[2] = setting.getServerDate_End_Object() != null ? setting.getServerDate_End_Object() : "";
 
 					params[3] = "1";
 					updating.execute(params);
 				}
 			}
 		});
-		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
-				R.layout.load_more_footer, null);
+		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
 		lstObject.addFooterView(LoadMoreFooter);
 		LoadMoreFooter.setVisibility(View.INVISIBLE);
-		swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
-				android.R.color.holo_green_light,
-				android.R.color.holo_orange_light,
-				android.R.color.holo_red_light);
+		swipeLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+				android.R.color.holo_orange_light, android.R.color.holo_red_light);
 
-		final FloatingActionButton createItem = (FloatingActionButton) view
-				.findViewById(R.id.fab);
+		final FloatingActionButton createItem = (FloatingActionButton) view.findViewById(R.id.fab);
 		final String message = "کاربر گرامی اگر مشخصات برند یا فعالیت شما در این نرم افزار ثبت نشده می توانید با ایجاد صفحه،  فعالیت خود را به سایر کاربران این نرم افزار معرفی نمایید ";
 
 		lstObject.setOnScrollListener(new OnScrollListener() {
@@ -189,8 +182,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 			}
 
 			@Override
-			public void onScroll(AbsListView arg0, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
+			public void onScroll(AbsListView arg0, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
 				if (totalItemCount == visibleItemCount) {
 					return;
@@ -206,10 +198,9 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 					updating.delegate = ObjectFragment.this;
 					String[] params = new String[4];
 					params[0] = "Object";
-					params[1] = setting.getServerDate_Start_Object() != null ? setting
-							.getServerDate_Start_Object() : "";
-					params[2] = setting.getServerDate_End_Object() != null ? setting
-							.getServerDate_End_Object() : "";
+					params[1] = setting.getServerDate_Start_Object() != null ? setting.getServerDate_Start_Object()
+							: "";
+					params[2] = setting.getServerDate_End_Object() != null ? setting.getServerDate_End_Object() : "";
 
 					params[3] = "0";
 					updating.execute(params);
@@ -224,8 +215,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 			public void onClick(View arg0) {
 				dialog = new DialogCreatePage(getActivity(), message);
 				dialog.show();
-				SharedPreferences sendToCreate = getActivity()
-						.getSharedPreferences("Id", 0);
+				SharedPreferences sendToCreate = getActivity().getSharedPreferences("Id", 0);
 
 				if (id == 2 || id == 3 || id == 4) {
 
@@ -235,28 +225,23 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 					sendToCreate.edit().putInt("MainObjectId", id).commit();
 					sendToCreate.edit().putInt("CityId", city_id).commit();
 					sendToCreate.edit().putInt("objectId", 0).commit();
-					sendToCreate.edit().putInt("ObjectTypeId", typeList)
-							.commit();
+					sendToCreate.edit().putInt("ObjectTypeId", typeList).commit();
 
 				} else {
-					SharedPreferences pageId = getActivity()
-							.getSharedPreferences("Id", 0);
+					SharedPreferences pageId = getActivity().getSharedPreferences("Id", 0);
 					int brandId = pageId.getInt("brandID", -1);
 					int MainObjID = pageId.getInt("main object id", -1);
 
-					sendToCreate.edit().putInt("MainObjectId", MainObjID)
-							.commit();
+					sendToCreate.edit().putInt("MainObjectId", MainObjID).commit();
 					sendToCreate.edit().putInt("CityId", city_id).commit();
 					sendToCreate.edit().putInt("objectId", brandId).commit();
-					sendToCreate.edit().putInt("IsAgency", AgencyService)
-							.commit();
+					sendToCreate.edit().putInt("IsAgency", AgencyService).commit();
 
 				}
 
 			}
 		});
-		util.ShowFooterAgahi(getActivity() , true , id);
-
+		util.ShowFooterAgahi(getActivity(), true, id);
 
 		return view;
 	}
@@ -265,10 +250,8 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 		adapter.open();
 		if (mylist != null || !mylist.isEmpty()) {
 
-			ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(m,
-					city_id, typeList);
-			ObjectListAdapter ListAdapter = new ObjectListAdapter(
-					getActivity(), R.layout.row_object, mylist,
+			ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(m, city_id, typeList);
+			ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist,
 					ObjectFragment.this, false, null, 1);
 			lstObject.setAdapter(ListAdapter);
 
@@ -300,10 +283,8 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 			swipeLayout.setRefreshing(false);
 		}
 
-		if (output != null
-				&& !(output.contains("Exception") || output.contains("java")
-						|| output.contains("SoapFault") || output
-							.contains("anyType"))) {
+		if (output != null && !(output.contains("Exception") || output.contains("java") || output.contains("SoapFault")
+				|| output.contains("anyType"))) {
 
 			util.parseQuery(output);
 
@@ -314,8 +295,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 			if (totalItemCountBeforeSwipe != mylist.size()) {
 				mylist.clear();
 				if (mylist.size() > 0) {
-					ListAdapter = new ObjectListAdapter(getActivity(),
-							R.layout.row_object, mylist, ObjectFragment.this,
+					ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, ObjectFragment.this,
 							true, null, 1);
 					lstObject.setAdapter(ListAdapter);
 				}
@@ -327,8 +307,7 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 	public void processFinish(byte[] output) {
 
 		if (output != null) {
-			util.CreateFile(output, obj.getId(), "Mechanical", "Profile",
-					"profile", "Object");
+			util.CreateFile(output, obj.getId(), "Mechanical", "Profile", "profile", "Object");
 		}
 
 		adapter.open();
@@ -361,14 +340,67 @@ public class ObjectFragment extends Fragment implements AsyncInterface,
 			else
 				mylist = adapter.subBrandObject(brand, city_id, AgencyService);
 
-			ListAdapter = new ObjectListAdapter(getActivity(),
-					R.layout.row_object, mylist, ObjectFragment.this, false,
+			ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, ObjectFragment.this, false,
 					null, 1);
 			lstObject.setAdapter(ListAdapter);
+			
+			getCountVisitFromServer();
 
 		}
 
 		adapter.close();
 
 	}
+
+	private void getCountVisitFromServer() {
+		adapter.open();
+
+		if (m == 2 || m == 3 || m == 4)
+			mylist = adapter.getObjectBy_BTId_CityId(m, city_id, typeList);
+		else
+			mylist = adapter.subBrandObject(brand, city_id, AgencyService);
+
+		if (visitCounter < mylist.size()) {
+
+			obj = adapter.getObjectbyid(mylist.get(visitCounter).getId());
+			adapter.close();
+
+			UpdatingVisit updateVisit = new UpdatingVisit(getActivity());
+			updateVisit.delegate = ObjectFragment.this;
+			Map<String, String> serv = new LinkedHashMap<String, String>();
+
+			serv.put("tableName", "Visit");
+			serv.put("objectId", String.valueOf(obj.getId()));
+			serv.put("typeId", StaticValues.TypeObjectVisit + "");
+			updateVisit.execute(serv);
+
+		} else {
+			if (getActivity() != null) {
+
+				if (m == 2 || m == 3 || m == 4)
+					mylist = adapter.getObjectBy_BTId_CityId(m, city_id, typeList);
+				else
+					mylist = adapter.subBrandObject(brand, city_id, AgencyService);
+				
+				ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, ObjectFragment.this,
+						false, null, 1);
+				lstObject.setAdapter(ListAdapter);
+			}
+		}
+
+	}
+
+	@Override
+	public void processFinishVisit(String output) {
+
+		if (!output.contains("Exception")) {
+
+			adapter.open();
+			adapter.updateCountView("Object", obj.getId(), Integer.valueOf(output));
+			adapter.close();
+		}
+		visitCounter++;
+		getCountVisitFromServer();
+	}
+
 }

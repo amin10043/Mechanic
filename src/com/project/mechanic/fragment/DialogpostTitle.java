@@ -130,9 +130,9 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 				// sDate.delegate = DialogpostTitle.this;
 				// sDate.execute("");
 				dbadapter.open();
-				dbadapter.insertPosttitletoDb(/* titletxt.getText().toString(), */
-				titleDestxt.getText().toString(), currentUser.getId(),
-						severDate, "ImageAddress");
+//				dbadapter.insertPosttitletoDb(/* titletxt.getText().toString(), */
+//				titleDestxt.getText().toString(), currentUser.getId(),
+//						severDate, "ImageAddress");
 				dbadapter.close();
 				// ((PosttitleFragment) fragment).updateView();
 				// dismiss();
@@ -299,9 +299,9 @@ public class DialogpostTitle extends Dialog implements AsyncInterface {
 		try {
 			id = Integer.valueOf(output);
 			dbadapter.open();
-			dbadapter.insertPosttitletoDb(/* id,titletxt.getText().toString(), */
-			titleDestxt.getText().toString(), currentUser.getId(), severDate,
-					"ImageAddress");
+//			dbadapter.insertPosttitletoDb(/* id,titletxt.getText().toString(), */
+//			titleDestxt.getText().toString(), currentUser.getId(), severDate,
+//					"ImageAddress");
 			dbadapter.close();
 			((PosttitleFragment) fragment).updateView();
 			this.dismiss();

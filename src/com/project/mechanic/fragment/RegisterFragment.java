@@ -49,6 +49,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Province;
@@ -61,8 +62,7 @@ import com.project.mechanic.service.SavingImage;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
-public class RegisterFragment extends Fragment implements AsyncInterface,
-		SaveAsyncInterface {
+public class RegisterFragment extends Fragment implements AsyncInterface, SaveAsyncInterface {
 
 	int resourceId;
 
@@ -93,61 +93,63 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	private boolean firstTime = true;
 	private File mFileTemp;
 
-	View view2;
+	View view2, view;
 	Uri selectedImage;
 	private Uri picUri;
 	ProgressDialog imageloadprogressdialog;
 	private static final int PICK_FROM_CAMERA = 1;
 	final int PIC_CROP = 3;
-	int ostanId, cityId, dayId, monthId, yearId;
+	int ostanId = 0, cityId = 0, dayId = 0, monthId = 0, yearId = 0;
 	ArrayList<City> cityList;
 	boolean flag;
 	String birthday;
 	byte[] Image;
+	Button btncan, btnreg;
+	EditText editname, editmobile, editpass;
+	TextView comregtxt;
+
+	String selectOstanLable = "انتخاب استان";
+	String selectCityLable = "انتخاب شهر";
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_register, null);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+		view = inflater.inflate(R.layout.fragment_register, null);
 
 		utile = new Utility(getActivity());
 		dbAdapter = new DataBaseAdapter(getActivity());
 		date = new PersianDate();
-		tm = (TelephonyManager) getActivity().getSystemService(
-				Context.TELEPHONY_SERVICE);
+		tm = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
 		btnaddpic1 = (ImageView) view.findViewById(R.id.btnaddpic);
-		Button btncan = (Button) view.findViewById(R.id.btncancle2);
-		final Button btnreg = (Button) view.findViewById(R.id.btnreg2);
-		final TextView comregtxt = (TextView) view
-				.findViewById(R.id.compeletereg);
-		final EditText editname = (EditText) view.findViewById(R.id.Textname);
-		final EditText editmobile = (EditText) view
-				.findViewById(R.id.mobiletxt);
-		final EditText editpass = (EditText) view.findViewById(R.id.Textpass);
-		btnreg.setEnabled(false);
+		btncan = (Button) view.findViewById(R.id.btncancle2);
+		btnreg = (Button) view.findViewById(R.id.btnreg2);
+		comregtxt = (TextView) view.findViewById(R.id.compeletereg);
+		editname = (EditText) view.findViewById(R.id.Textname);
+		editmobile = (EditText) view.findViewById(R.id.mobiletxt);
+		editpass = (EditText) view.findViewById(R.id.Textpass);
+		// btnreg.setEnabled(false);
 
-		final CheckBox Rulescheck = (CheckBox) view
-				.findViewById(R.id.rulescheck);
+		final CheckBox Rulescheck = (CheckBox) view.findViewById(R.id.rulescheck);
 
 		toastlayout = (ViewGroup) view.findViewById(R.id.toast_layout);
 		TextView textrules = (TextView) view.findViewById(R.id.txtrulles);
 		final LinearLayout lin1 = (LinearLayout) view.findViewById(R.id.lin1);
 
 		LayoutInflater inflater1 = getLayoutInflater(getArguments());
-		final View view2 = inflater1
-				.inflate(R.layout.toast_define, toastlayout);
+		final View view2 = inflater1.inflate(R.layout.toast_define, toastlayout);
 		btnaddpic1.setBackgroundResource(R.drawable.i13);
+		;
+
 		lp = new LinearLayout.LayoutParams(lin1.getLayoutParams());
-		lp.width = utile.getScreenwidth() / 4;
-		lp.height = utile.getScreenwidth() / 4;
+		lp.width = (int) (utile.getScreenwidth() / StaticValues.RateImageRegisterPage);
+		lp.height = (int) (utile.getScreenwidth() / StaticValues.RateImageRegisterPage);
 		btnaddpic1.setLayoutParams(lp);
 
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			mFileTemp = new File(Environment.getExternalStorageDirectory(),
-					AnadFragment.TEMP_PHOTO_FILE_NAME);
+			mFileTemp = new File(Environment.getExternalStorageDirectory(), AnadFragment.TEMP_PHOTO_FILE_NAME);
 		} else {
-			mFileTemp = new File(getActivity().getFilesDir(),
-					AnadFragment.TEMP_PHOTO_FILE_NAME);
+			mFileTemp = new File(getActivity().getFilesDir(), AnadFragment.TEMP_PHOTO_FILE_NAME);
 		}
 
 		server = getActivity().getSharedPreferences("sId", 0);
@@ -157,90 +159,99 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new DisplayeRullseFragment());
 				trans.commit();
 
 			}
 		});
 
-		Rulescheck.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// is chkIos checked?
-				if (((CheckBox) v).isChecked()) {
-					btnreg.setEnabled(true);
-					// btnreg.setBackgroundColor(R.drawable.buttonshape);
-				} else {
-
-					btnreg.setEnabled(false);
-					// btnreg.setBackgroundColor(R.drawable.buttonshape2);
-				}
-				StringBuffer result = new StringBuffer();
-				result.append("Linux check : ").append(Rulescheck.isChecked());
-			}
-		});
+		// Rulescheck.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// // is chkIos checked?
+		// if (((CheckBox) v).isChecked()) {
+		// btnreg.setEnabled(true);
+		// // btnreg.setBackgroundColor(R.drawable.buttonshape);
+		// } else {
+		//
+		// btnreg.setEnabled(false);
+		// // btnreg.setBackgroundColor(R.drawable.buttonshape2);
+		// }
+		// StringBuffer result = new StringBuffer();
+		// result.append("Linux check : ").append(Rulescheck.isChecked());
+		// }
+		// });
 		btnreg.setOnClickListener(new OnClickListener() {
 			@SuppressWarnings("unchecked")
 			public void onClick(View arg0) {
+
 				Name = editname.getText().toString();
 				Mobile = editmobile.getText().toString();
 				Pass = editpass.getText().toString();
 				txtdate = date.todayShamsi();
 				number = tm.getLine1Number();
 
-				if (!utile.isNetworkConnected()) {
-					utile.showOkDialog(getActivity(), "خطا در ارتباط",
-							"شما به اینترنت متصل نیستید.");
-				}
+				if (Rulescheck.isChecked()) {
 
-				else if (Name.equals("") || Pass.equals("")
-						|| Mobile.equals("")) {
+					if (ostanId != 0 && cityId != 0) {
 
-					utile.showtoast(view2, R.drawable.errormassage,
-							"لطفا فیلدهای اجباری را پر نمایید", "خطا");
-
-					toast = new Toast(getActivity());
-					toast.setGravity(Gravity.CENTER, 0, 0);
-					toast.setDuration(Toast.LENGTH_LONG);
-					toast.setView(view2);
-					toast.show();
-				}
-
-				else if (!isValidName(Name)) {
-					editname.setError(" نام و نام خانوادگی شما نامعتبر است");
-				}
-
-				else if (!isValidPassword(Pass)) {
-					editpass.setError("رمز عبور نا معتبر است");
-				}
-
-				else {
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							try {
-								Thread.sleep(10000);
-							} catch (Exception e) {
-							}
+						if (!utile.isNetworkConnected()) {
+							utile.showOkDialog(getActivity(), "خطا در ارتباط", "شما به اینترنت متصل نیستید.");
 						}
-					}).start();
 
-					comregtxt.setVisibility(View.VISIBLE);
-					btnreg.setEnabled(false);
+						else if (Name.equals("") || Pass.equals("") || Mobile.equals("")) {
 
-					ServerDate date = new ServerDate(getActivity());
-					date.delegate = RegisterFragment.this;
-					date.execute("");
+							utile.showtoast(view2, R.drawable.errormassage, "لطفا فیلدهای اجباری را پر نمایید", "خطا");
+
+							toast = new Toast(getActivity());
+							toast.setGravity(Gravity.CENTER, 0, 0);
+							toast.setDuration(Toast.LENGTH_LONG);
+							toast.setView(view2);
+							toast.show();
+						}
+
+						else if (!isValidName(Name)) {
+							editname.setError(" نام و نام خانوادگی شما نامعتبر است");
+						}
+
+						else if (!isValidPassword(Pass)) {
+							editpass.setError("رمز عبور نا معتبر است");
+						}
+
+						else {
+							ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+
+							ringProgressDialog.setCancelable(true);
+							new Thread(new Runnable() {
+								@Override
+								public void run() {
+									try {
+										Thread.sleep(10000);
+									} catch (Exception e) {
+									}
+								}
+							}).start();
+
+							comregtxt.setVisibility(View.VISIBLE);
+							// btnreg.setEnabled(false);
+
+							ServerDate date = new ServerDate(getActivity());
+							date.delegate = RegisterFragment.this;
+							date.execute("");
+						}
+
+					} else {
+						Toast.makeText(getActivity(), "انتخاب استان و شهر اجباری است", 0).show();
+
+					}
+
+				} else {
+					Toast.makeText(getActivity(), " باید قوانین را مطالعه و بپذیرید", 0).show();
 				}
-
 			}
+
 		});
 
 		comregtxt.setOnClickListener(new OnClickListener() {
@@ -256,8 +267,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 				int id = dbAdapter.getcount();
 				dbAdapter.close();
 
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 				CompeleteRegisterFragment fragment = new CompeleteRegisterFragment();
 
 				Bundle bundle = new Bundle();
@@ -274,8 +284,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
 			}
@@ -287,8 +296,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			public void onClick(View arg0) {
 
 				final CharSequence[] items = { "گالری تصاویر", "دوربین" };
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						getActivity());
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setItems(items, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int item) {
 						if (item == 0) {
@@ -303,10 +311,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			}
 		});
 		final Spinner daySpinner = (Spinner) view.findViewById(R.id.daySpinner);
-		final Spinner monthSpinner = (Spinner) view
-				.findViewById(R.id.monthSpinner);
-		final Spinner yearSpinner = (Spinner) view
-				.findViewById(R.id.yearSpinner);
+		final Spinner monthSpinner = (Spinner) view.findViewById(R.id.monthSpinner);
+		final Spinner yearSpinner = (Spinner) view.findViewById(R.id.yearSpinner);
 
 		final ArrayList<String> dayList = new ArrayList<String>();
 		final ArrayList<String> monthList = new ArrayList<String>();
@@ -322,35 +328,31 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			yearList.add(i + "");
 		}
 
-		ArrayAdapter<String> dayadapter = new ArrayAdapter<String>(
-				getActivity(), android.R.layout.simple_spinner_item, dayList);
+		ArrayAdapter<String> dayadapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,
+				dayList);
 
-		dayadapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		dayadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		daySpinner.setAdapter(dayadapter);
 
-		ArrayAdapter<String> monthAdapter = new ArrayAdapter<String>(
-				getActivity(), android.R.layout.simple_spinner_item, monthList);
+		ArrayAdapter<String> monthAdapter = new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_spinner_item, monthList);
 
-		monthAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		monthSpinner.setAdapter(monthAdapter);
 
-		ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(
-				getActivity(), android.R.layout.simple_spinner_item, yearList);
+		ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,
+				yearList);
 
-		yearAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		yearSpinner.setAdapter(yearAdapter);
 
 		daySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
 				int day = (int) daySpinner.getSelectedItemId();
 
@@ -367,8 +369,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		monthSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
 				int month = (int) monthSpinner.getSelectedItemId();
 
@@ -385,8 +386,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		yearSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
 				int year = (int) yearSpinner.getSelectedItemId();
 
@@ -400,32 +400,29 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			}
 		});
 
-		final Spinner ostanSpinner = (Spinner) view
-				.findViewById(R.id.ostanSpinner);
-		final Spinner citySpinner = (Spinner) view
-				.findViewById(R.id.CitySpinner);
+		final Spinner ostanSpinner = (Spinner) view.findViewById(R.id.ostanSpinner);
+		final Spinner citySpinner = (Spinner) view.findViewById(R.id.CitySpinner);
 
 		dbAdapter.open();
 
-		final ArrayList<Province> ostanList = dbAdapter
-				.getAllProvinceNoSorting();
+		final ArrayList<Province> ostanList = dbAdapter.getAllProvinceNoSorting();
 
 		dbAdapter.close();
 
 		ArrayList<String> NameOstan = new ArrayList<String>();
 		final ArrayList<String> NameCity = new ArrayList<String>();
 
+		NameOstan.add(selectOstanLable);
 		for (int i = 0; i < ostanList.size(); i++) {
 
 			NameOstan.add(ostanList.get(i).getName());
 
 		}
 
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-				getActivity(), android.R.layout.simple_spinner_item, NameOstan);
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,
+				NameOstan);
 
-		dataAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		ostanSpinner.setAdapter(dataAdapter);
 		citySpinner.setEnabled(false);
@@ -433,33 +430,41 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		ostanSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
-				int w = (int) ostanSpinner.getSelectedItemId();
+				int w = (int) ostanSpinner.getSelectedItemId() - 1;
 
-				ostanId = ostanList.get(w).getId();
+				String item = (String) ostanSpinner.getSelectedItem();
 
-				dbAdapter.open();
-				cityList = dbAdapter.getCitysByProvinceIdNoSort(ostanId);
-				dbAdapter.close();
+				if (!item.equals(selectOstanLable)) {
 
-				citySpinner.setEnabled(true);
+					ostanId = ostanList.get(w).getId();
 
-				NameCity.clear();
-				for (int i = 0; i < cityList.size(); i++) {
+					dbAdapter.open();
+					cityList = dbAdapter.getCitysByProvinceIdNoSort(ostanId);
+					dbAdapter.close();
 
-					NameCity.add(cityList.get(i).getName());
+					citySpinner.setEnabled(true);
 
+					NameCity.clear();
+					NameCity.add(selectCityLable);
+
+					for (int i = 0; i < cityList.size(); i++) {
+
+						NameCity.add(cityList.get(i).getName());
+
+					}
+					ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
+							android.R.layout.simple_spinner_item, NameCity);
+
+					dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+					citySpinner.setAdapter(dataAdapter);
+					Toast.makeText(getActivity(), ostanId + "", 0).show();
+				} else {
+					citySpinner.setEnabled(false);
 				}
-				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-						getActivity(), android.R.layout.simple_spinner_item,
-						NameCity);
 
-				dataAdapter
-						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-				citySpinner.setAdapter(dataAdapter);
 			}
 
 			@Override
@@ -472,12 +477,18 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		citySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
-				int m = (int) citySpinner.getSelectedItemId();
+				int m = (int) citySpinner.getSelectedItemId() - 1;
+				String item = (String) citySpinner.getSelectedItem();
 
-				cityId = cityList.get(m).getId();
+				if (!item.equals(selectCityLable)) {
+
+					cityId = cityList.get(m).getId();
+					Toast.makeText(getActivity(), cityId + "", 0).show();
+
+				}
+
 			}
 
 			@Override
@@ -489,28 +500,27 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		daySpinner.setEnabled(false);
 		monthSpinner.setEnabled(false);
 		yearSpinner.setEnabled(false);
-		final CheckBox isActiveBirthDay = (CheckBox) view
-				.findViewById(R.id.checkBox1);
-		isActiveBirthDay
-				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		final CheckBox isActiveBirthDay = (CheckBox) view.findViewById(R.id.checkBox1);
+		isActiveBirthDay.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-					@Override
-					public void onCheckedChanged(CompoundButton arg0,
-							boolean arg1) {
-						if (isActiveBirthDay.isChecked()) {
-							daySpinner.setEnabled(true);
-							monthSpinner.setEnabled(true);
-							yearSpinner.setEnabled(true);
+			@Override
+			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				if (isActiveBirthDay.isChecked()) {
+					daySpinner.setEnabled(true);
+					monthSpinner.setEnabled(true);
+					yearSpinner.setEnabled(true);
 
-							flag = true;
-						} else {
-							daySpinner.setEnabled(false);
-							monthSpinner.setEnabled(false);
-							yearSpinner.setEnabled(false);
-							flag = false;
-						}
-					}
-				});
+					flag = true;
+				} else {
+					daySpinner.setEnabled(false);
+					monthSpinner.setEnabled(false);
+					yearSpinner.setEnabled(false);
+					flag = false;
+				}
+			}
+		});
+
+		setFont();
 
 		return view;
 	}
@@ -522,8 +532,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			startActivityForResult(captureIntent, PICK_FROM_CAMERA);
 		} catch (ActivityNotFoundException anfe) {
-			Toast toast = Toast.makeText(getActivity(),
-					"این دستگاه از برش تصویر پشتیبانی نمی کند.",
+			Toast toast = Toast.makeText(getActivity(), "این دستگاه از برش تصویر پشتیبانی نمی کند.",
 					Toast.LENGTH_SHORT);
 			toast.show();
 		}
@@ -531,8 +540,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 	}
 
 	public void do_gallery_work() {
-		Intent i = new Intent(Intent.ACTION_PICK,
-				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
 		startActivityForResult(i, RESULT_LOAD_IMAGE);
 	}
@@ -543,7 +551,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		if (resultCode != Activity.RESULT_OK) {
 			return;
 		}
-		if (requestCode == PICK_FROM_CAMERA) {
+		if (requestCode == PICK_FROM_CAMERA && data != null) {
 			picUri = data.getData();
 			try {
 				Intent cropIntent = new Intent("com.android.camera.action.CROP");
@@ -560,8 +568,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 				if (imageloadprogressdialog != null)
 					imageloadprogressdialog.dismiss();
 			} catch (ActivityNotFoundException anfe) {
-				Toast toast = Toast.makeText(getActivity(),
-						"این دستگاه از برش تصویر پشتیبانی نمی کند.",
+				Toast toast = Toast.makeText(getActivity(), "این دستگاه از برش تصویر پشتیبانی نمی کند.",
 						Toast.LENGTH_SHORT);
 				toast.show();
 			}
@@ -571,10 +578,8 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		else if (requestCode == RESULT_LOAD_IMAGE) {
 			try {
 
-				InputStream inputStream = getActivity().getContentResolver()
-						.openInputStream(data.getData());
-				FileOutputStream fileOutputStream = new FileOutputStream(
-						mFileTemp);
+				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
 				Utility.copyStream(inputStream, fileOutputStream);
 				fileOutputStream.close();
 				inputStream.close();
@@ -583,8 +588,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 
 			} catch (Exception e) {
 
-				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
 			}
 
 		} else if (requestCode == PIC_CROP) {
@@ -596,8 +600,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 			Bitmap bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
 			btnaddpic1.setImageBitmap(bitmap);
 		} else {
-			Toast.makeText(getActivity(), "Picture NOt taken",
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "Picture NOt taken", Toast.LENGTH_LONG).show();
 		}
 		btnaddpic1.setLayoutParams(lp);
 
@@ -642,32 +645,26 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 		try {
 			res = Integer.valueOf(output);
 			if (res > 0) {
-				SharedPreferences settings = getActivity()
-						.getSharedPreferences("user", 0);
+				SharedPreferences settings = getActivity().getSharedPreferences("user", 0);
 				SharedPreferences.Editor editor = settings.edit();
 				editor.putBoolean("isLogin", true);
 				editor.commit();
-				FragmentTransaction trans = getActivity()
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
-				
+
 				dbAdapter.open();
-				
-				dbAdapter.inserUserToDb(serverId, Name, null, Pass,
-						null, Mobile, null, null, null, 0, txtdate , birthday , cityId);
+
+				dbAdapter.inserUserToDb(serverId, Name, null, Pass, null, Mobile, null, null, null, 0, txtdate,
+						birthday, cityId);
 				if (output != null) {
 
-					utile.CreateFile(Image, serverId, "Mechanical", "Users",
-							"user", "Users");
+					utile.CreateFile(Image, serverId, "Mechanical", "Users", "user", "Users");
 				}
-				
-				
-				
-				
-//				dbAdapter.inserUserToDb(serverId, Name, null, Pass,
-//						null, Mobile, null, null, Image, 0, txtdate);
-				
+
+				// dbAdapter.inserUserToDb(serverId, Name, null, Pass,
+				// null, Mobile, null, null, Image, 0, txtdate);
+
 				u = dbAdapter.getUserbymobailenumber(Mobile);
 				if (u != null) {
 					int id = u.getId();
@@ -675,17 +672,14 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 					dbAdapter.UpdateAdminUserToDb(id, admin);
 				}
 				dbAdapter.close();
-				
-				Toast.makeText(getActivity(), "شما وارد شده اید.",
-						Toast.LENGTH_SHORT).show();
+
+				Toast.makeText(getActivity(), "شما وارد شده اید.", Toast.LENGTH_SHORT).show();
 			} else {
-				Toast.makeText(getActivity(), "خطا در ثبت عکس",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "خطا در ثبت عکس", Toast.LENGTH_SHORT).show();
 			}
 
 		} catch (Exception ex) {
-			Toast.makeText(getActivity(), "خطا در ثبت عکس", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(getActivity(), "خطا در ثبت عکس", Toast.LENGTH_SHORT).show();
 		}
 		if (ringProgressDialog != null) {
 			ringProgressDialog.dismiss();
@@ -707,11 +701,9 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 
 				if ((btnaddpic1.getDrawable() != null) && firstTime) {
 
-					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable())
-							.getBitmap();
+					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable()).getBitmap();
 
-					Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
-							bitmap.getHeight(), bitmap.getConfig());
+					Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
 
 					firstTime = false;
 					if (!bitmap.sameAs(emptyBitmap)) {
@@ -725,56 +717,46 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 							it.put("id", serverId);
 							it.put("Image", Image);
 						}
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								"", "لطفا منتظر بمانید...", true);
+						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 						savingImage.delegate = this;
 						savingImage.execute(it);
-//						dbAdapter.inserUserToDb(serverId, Name, null, Pass,
-//								null, Mobile, null, null, Image, 0, txtdate);
+						// dbAdapter.inserUserToDb(serverId, Name, null, Pass,
+						// null, Mobile, null, null, Image, 0, txtdate);
 					}
 				} else {
-					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass,
-							null, Mobile, null, null, 0, txtdate, birthday,
-							cityId);
+					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass, null, Mobile, null, null, 0, txtdate,
+							birthday, cityId);
 					LayoutInflater inflater4 = getLayoutInflater(getArguments());
-					View view4 = inflater4.inflate(R.layout.toast_define,
-							toastlayout);
-					utile.showtoast(view4, R.drawable.massage,
-							"اطلاعات مورد نظر ثبت شد", "پیغام");
+					View view4 = inflater4.inflate(R.layout.toast_define, toastlayout);
+					utile.showtoast(view4, R.drawable.massage, "اطلاعات مورد نظر ثبت شد", "پیغام");
 
 					toast = new Toast(getActivity());
 					toast.setGravity(Gravity.CENTER, 0, 0);
 					toast.setDuration(Toast.LENGTH_LONG);
 					toast.setView(view4);
 					toast.show();
-					
+
 					u = dbAdapter.getUserbymobailenumber(Mobile);
 					if (u != null) {
 						int id = u.getId();
 						int admin = 1;
 						dbAdapter.UpdateAdminUserToDb(id, admin);
 					}
-					SharedPreferences settings = getActivity()
-							.getSharedPreferences("user", 0);
+					SharedPreferences settings = getActivity().getSharedPreferences("user", 0);
 					SharedPreferences.Editor editor = settings.edit();
 					editor.putBoolean("isLogin", true);
 					editor.commit();
 
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, new MainFragment());
 					trans.commit();
-					
-					
-					
+
 				}
 				dbAdapter.close();
 			} else {
 				LayoutInflater inflater5 = getLayoutInflater(getArguments());
-				View view5 = inflater5.inflate(R.layout.toast_define,
-						toastlayout);
-				utile.showtoast(view5, R.drawable.errormassage,
-						"شما به سرویس متصل نشده اید", "خطا");
+				View view5 = inflater5.inflate(R.layout.toast_define, toastlayout);
+				utile.showtoast(view5, R.drawable.errormassage, "شما به سرویس متصل نشده اید", "خطا");
 
 				toast = new Toast(getActivity());
 				toast.setGravity(Gravity.CENTER, 0, 0);
@@ -813,12 +795,32 @@ public class RegisterFragment extends Fragment implements AsyncInterface,
 				items.put("IsUpdate", "0");
 				items.put("Id", "0");
 
-				ringProgressDialog = ProgressDialog.show(getActivity(), "",
-						"لطفا منتظر بمانید...", true);
+				ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 				saving.delegate = RegisterFragment.this;
 				saving.execute(items);
 			}
 		}
+
+	}
+
+	private void setFont() {
+
+		TextView txtHeader = (TextView) view.findViewById(R.id.txt_title_register);
+		TextView lables1 = (TextView) view.findViewById(R.id.lables);
+		TextView lables2 = (TextView) view.findViewById(R.id.cdas);
+		TextView lables3 = (TextView) view.findViewById(R.id.lablesostan);
+		TextView lables4 = (TextView) view.findViewById(R.id.lablescity);
+		TextView lables5 = (TextView) view.findViewById(R.id.txtrulles);
+
+		txtHeader.setTypeface(utile.SetFontCasablanca());
+		lables1.setTypeface(utile.SetFontCasablanca());
+		lables2.setTypeface(utile.SetFontCasablanca());
+		lables3.setTypeface(utile.SetFontCasablanca());
+		lables4.setTypeface(utile.SetFontCasablanca());
+		lables5.setTypeface(utile.SetFontIranSans());
+
+		btnreg.setTypeface(utile.SetFontCasablanca());
+		btncan.setTypeface(utile.SetFontCasablanca());
 
 	}
 

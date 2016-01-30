@@ -44,6 +44,15 @@ public class Object implements Comparable<Object> {
 	String ImagePath2;
 	String ImagePath3;
 	String ActiveDate;
+	int CountView;
+
+	public int getCountView() {
+		return CountView;
+	}
+
+	public void setCountView(int countView) {
+		CountView = countView;
+	}
 
 	public String getActiveDate() {
 		return ActiveDate;
@@ -360,7 +369,7 @@ public class Object implements Comparable<Object> {
 			int mainObjectid, int IsActive, int UserId, int ObjectId,
 			String Date, String img1ServerDate, String img2ServerDate,
 			String img3ServerDate, int AgencyService, String ImagePath1,
-			String ImagePath2, String ImagePath3, String activeDate) {
+			String ImagePath2, String ImagePath3, String activeDate , int CounView) {
 
 		super();
 		Id = id;
@@ -405,6 +414,7 @@ public class Object implements Comparable<Object> {
 		this.ImagePath2 = ImagePath2;
 		this.ImagePath3 = ImagePath3;
 		ActiveDate = activeDate;
+		this.CountView = CounView;
 	}
 
 	public int getAgencyService() {

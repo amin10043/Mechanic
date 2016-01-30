@@ -9,6 +9,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.DataPersonalInterface;
 
 //import org.ksoap2.transport.HttpTransportSE;
 //import org.ksoap2.transport.HttpTransportSE;
@@ -25,7 +26,7 @@ public class UpdatingPersonalPage extends AsyncTask<String, Integer, String> {
 
 	public String response = "";
 
-	public AsyncInterface delegate = null;
+	public DataPersonalInterface delegate = null;
 
 	public UpdatingPersonalPage(Context context) {
 	}
@@ -86,6 +87,6 @@ public class UpdatingPersonalPage extends AsyncTask<String, Integer, String> {
 	protected void onPostExecute(String res) {
 
 		if (delegate != null)
-			delegate.processFinish(res);
+			delegate.ResultServer(res);
 	}
 }

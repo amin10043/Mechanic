@@ -27,20 +27,23 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.Action.FloatingActionButton;
+import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.adapter.PapertitleListAdapter;
 import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.AsyncInterfaceVisit;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Updating;
+import com.project.mechanic.service.UpdatingVisit;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class TitlepaperFragment extends Fragment implements CommInterface,
-		AsyncInterface {
+public class TitlepaperFragment extends Fragment implements CommInterface, AsyncInterface, AsyncInterfaceVisit {
 	private ImageButton addtitle;
 	private DialogPaperTitle dialog;
 	DataBaseAdapter mdb;
@@ -65,14 +68,15 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 
 	boolean FindPosition;
 	int beforePosition;
-
+	Paper p;
 	ProgressBar progress;
+	int visitCounter = 0;
 
 	@SuppressWarnings("unchecked")
 	@SuppressLint("InflateParams")
 	@Override
-	public View onCreateView(android.view.LayoutInflater inflater,
-			android.view.ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container,
+			Bundle savedInstanceState) {
 
 		view = inflater.inflate(R.layout.fragment_titlepaper, null);
 		action = (FloatingActionButton) view.findViewById(R.id.fab);
@@ -101,15 +105,12 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 
 		lst = (ListView) view.findViewById(R.id.lstComment);
 
-		final FloatingActionButton action = (FloatingActionButton) view
-				.findViewById(R.id.fab);
+		final FloatingActionButton action = (FloatingActionButton) view.findViewById(R.id.fab);
 
-		LoadMoreFooter = getActivity().getLayoutInflater().inflate(
-				R.layout.load_more_footer, null);
+		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
 		lst.addFooterView(LoadMoreFooter);
 		LoadMoreFooter.setVisibility(View.INVISIBLE);
-		swipeLayout = (SwipeRefreshLayout) view
-				.findViewById(R.id.swipe_container);
+		swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
 		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override
@@ -118,47 +119,38 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 				updating.delegate = TitlepaperFragment.this;
 				String[] params = new String[4];
 				params[0] = "Paper";
-				params[1] = setting.getServerDate_Start_Paper() != null ? setting
-						.getServerDate_Start_Paper() : "";
-				params[2] = setting.getServerDate_End_Paper() != null ? setting
-						.getServerDate_End_Paper() : "";
+				params[1] = setting.getServerDate_Start_Paper() != null ? setting.getServerDate_Start_Paper() : "";
+				params[2] = setting.getServerDate_End_Paper() != null ? setting.getServerDate_End_Paper() : "";
 
 				params[3] = "1";
 				updating.execute(params);
 			}
 		});
-		swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
-				android.R.color.holo_green_light,
-				android.R.color.holo_orange_light,
-				android.R.color.holo_red_light);
+		swipeLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+				android.R.color.holo_orange_light, android.R.color.holo_red_light);
 
 		action.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				if (CurrentUser == null)
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 				else {
 
-					dialog = new DialogPaperTitle(getActivity(),
-							R.layout.dialog_addtitle, TitlepaperFragment.this);
-					dialog.getWindow()
-							.setSoftInputMode(
-									WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+					dialog = new DialogPaperTitle(getActivity(), R.layout.dialog_addtitle, TitlepaperFragment.this);
+					dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 					dialog.show();
 				}
 			}
 		});
 
-		ListAdapter = new PapertitleListAdapter(getActivity(),
-				R.layout.raw_froumtitle, mylist, TitlepaperFragment.this);
+		ListAdapter = new PapertitleListAdapter(getActivity(), R.layout.raw_froumtitle, mylist,
+				TitlepaperFragment.this);
 
 		lst.setAdapter(ListAdapter);
 
 		int countList = ListAdapter.getCount();
-		Toast.makeText(getActivity(), "تعداد مقالات = " + countList,
-				Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), "تعداد مقالات = " + countList, Toast.LENGTH_SHORT).show();
 
 		lst.setOnScrollListener(new OnScrollListener() {
 
@@ -180,8 +172,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 			}
 
 			@Override
-			public void onScroll(AbsListView arg0, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
+			public void onScroll(AbsListView arg0, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
 				int lastInScreen = firstVisibleItem + visibleItemCount;
 				//
@@ -193,10 +184,8 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 					updating.delegate = TitlepaperFragment.this;
 					String[] params = new String[4];
 					params[0] = "Paper";
-					params[1] = setting.getServerDate_Start_Paper() != null ? setting
-							.getServerDate_Start_Paper() : "";
-					params[2] = setting.getServerDate_End_Paper() != null ? setting
-							.getServerDate_End_Paper() : "";
+					params[1] = setting.getServerDate_Start_Paper() != null ? setting.getServerDate_Start_Paper() : "";
+					params[2] = setting.getServerDate_End_Paper() != null ? setting.getServerDate_End_Paper() : "";
 
 					params[3] = "0";
 					updating.execute(params);
@@ -209,23 +198,21 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 			}
 		});
 		utility.ShowFooterAgahi(getActivity(), true, 7);
-
+		getCountVisitFromServer();
 		return view;
 	}
 
 	public void updateView(Context context) {
 
 		mdb = new DataBaseAdapter(context);
-		View view = ((Activity) context).getLayoutInflater().inflate(
-				R.layout.fragment_titlepaper, null);
+		View view = ((Activity) context).getLayoutInflater().inflate(R.layout.fragment_titlepaper, null);
 
 		ListView lst = (ListView) view.findViewById(R.id.lstComment);
 
 		mdb.open();
 		mylist = mdb.getAllPaper();
 		mdb.close();
-		ListAdapter = new PapertitleListAdapter(context,
-				R.layout.raw_froumtitle, mylist, TitlepaperFragment.this);
+		ListAdapter = new PapertitleListAdapter(context, R.layout.raw_froumtitle, mylist, TitlepaperFragment.this);
 		lst.setAdapter(ListAdapter);
 
 		ListAdapter.notifyDataSetChanged();
@@ -237,8 +224,8 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 		mdb.open();
 		mylist = mdb.getAllPaper();
 		mdb.close();
-		ListAdapter = new PapertitleListAdapter(getActivity(),
-				R.layout.raw_froumtitle, mylist, TitlepaperFragment.this);
+		ListAdapter = new PapertitleListAdapter(getActivity(), R.layout.raw_froumtitle, mylist,
+				TitlepaperFragment.this);
 		lst.setAdapter(ListAdapter);
 
 		ListAdapter.notifyDataSetChanged();
@@ -265,15 +252,12 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 
 	@Override
 	public void CommProcessFinish(String output) {
-		if (!"".equals(output)
-				&& output != null
-				&& !(output.contains("Exception") || output.contains("java") || output
-						.contains("soap"))) {
+		if (!"".equals(output) && output != null
+				&& !(output.contains("Exception") || output.contains("java") || output.contains("soap"))) {
 			utility.parseQuery(output);
 			updateView(getActivity());
 		} else {
-			Toast.makeText(getActivity(), "خطا در بروز رسانی داده های سرور",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "خطا در بروز رسانی داده های سرور", Toast.LENGTH_SHORT).show();
 		}
 
 	}
@@ -293,10 +277,8 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 
 		// LoadMoreFooter.setVisibility(View.GONE);
 
-		if (output != null
-				&& !(output.contains("Exception") || output.contains("java")
-						|| output.contains("SoapFault") || output
-							.contains("anyType"))) {
+		if (output != null && !(output.contains("Exception") || output.contains("java") || output.contains("SoapFault")
+				|| output.contains("anyType"))) {
 
 			utility.parseQuery(output);
 			mylist.clear();
@@ -304,8 +286,8 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 			mylist.addAll(mdb.getAllPaper());
 			mdb.close();
 
-			ListAdapter = new PapertitleListAdapter(getActivity(),
-					R.layout.raw_froumtitle, mylist, TitlepaperFragment.this);
+			ListAdapter = new PapertitleListAdapter(getActivity(), R.layout.raw_froumtitle, mylist,
+					TitlepaperFragment.this);
 
 			lst.setAdapter(ListAdapter);
 
@@ -324,6 +306,49 @@ public class TitlepaperFragment extends Fragment implements CommInterface,
 			// Toast.makeText(getActivity(), "به روز رسانی با موفقیت انجام شد ",
 			// Toast.LENGTH_LONG).show();
 
+		}
+
+	}
+
+	@Override
+	public void processFinishVisit(String output) {
+		if (!output.contains("Exception")) {
+
+			mdb.open();
+			mdb.updateCountView("Paper", p.getId(), Integer.valueOf(output));
+			mdb.close();
+		}
+		visitCounter++;
+		getCountVisitFromServer();
+	}
+
+	private void getCountVisitFromServer() {
+
+		if (visitCounter < mylist.size()) {
+
+			mdb.open();
+			p = mylist.get(visitCounter);
+			mdb.close();
+
+			UpdatingVisit updateVisit = new UpdatingVisit(getActivity());
+			updateVisit.delegate = TitlepaperFragment.this;
+			Map<String, String> serv = new LinkedHashMap<String, String>();
+
+			serv.put("tableName", "Visit");
+			serv.put("objectId", String.valueOf(p.getId()));
+			serv.put("typeId", StaticValues.TypePaperVisit + "");
+			updateVisit.execute(serv);
+
+		} else {
+			if (getActivity() != null) {
+
+				mdb.open();
+				mylist = mdb.getAllPaper();
+				mdb.close();
+				ListAdapter = new PapertitleListAdapter(getActivity(), R.layout.raw_froumtitle, mylist,
+						TitlepaperFragment.this);
+				lst.setAdapter(ListAdapter);
+			}
 		}
 
 	}

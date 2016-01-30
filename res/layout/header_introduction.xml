@@ -230,6 +230,7 @@
                         android:textColor="@color/orginal_red_color" />
 
                     <TextView
+                        android:id="@+id/numVisitPage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="25"

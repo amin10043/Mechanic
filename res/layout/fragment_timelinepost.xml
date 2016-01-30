@@ -4,7 +4,7 @@
     xmlns:app1="http://schemas.android.com/apk/res/com.project.mechanic"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#e9eaed"
+    android:background="@color/orginal_light_gray_color"
     android:orientation="vertical"
     android:weightSum="6"
     tools:context="com.arabian.constitution_mechanic.City$PlaceholderFragment" >
@@ -17,9 +17,10 @@
 
         <ListView
             android:id="@+id/TimeLineList"
-            style="@style/second_item_style"
+            style="@style/seprateListView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@color/orginal_light_gray_color" >
         </ListView>
     </RelativeLayout>
 

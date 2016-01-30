@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/orginal_light_gray_color"
+    android:orientation="vertical" >
+
+    <ExpandableListView
+        android:id="@+id/lstComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/white"
+        android:childDivider="@color/orginal_golden_color"
+        android:divider="@color/white"
+        android:dividerHeight="2dp"
+        android:groupIndicator="@null" >
+    </ExpandableListView>
+
+    <com.project.mechanic.Action.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/fab_add"
+        app:fab_colorNormal="@color/orginal_hard_blue_color"
+        app:fab_hideAnimation="@anim/fab_scale_down"
+        app:fab_shadowColor="#3366FF"
+        app:fab_shadowRadius="4dp"
+        app:fab_shadowXOffset="1dp"
+        app:fab_shadowYOffset="3dp"
+        app:fab_showAnimation="@anim/fab_scale_up"
+        app:fab_showShadow="false"
+        app:fab_size="normal" />
+
+</RelativeLayout>

@@ -17,9 +17,11 @@ import com.project.mechanic.entity.Visit;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
+import com.project.mechanic.inter.VisitSaveInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.SavingVisit;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
@@ -54,12 +56,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ir.noghteh.JustifiedTextView;
 
-public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncInterface, CommInterface {
+public class FroumFragment extends Fragment
+		implements AsyncInterface, GetAsyncInterface, CommInterface, VisitSaveInterface {
 
 	DataBaseAdapter adapter;
 	ExpandableCommentFroum exadapter;
 
-	TextView titletxt, dateTopic, countComment, countLike, nametxt;
+	TextView titletxt, dateTopic, countComment, countLike, nametxt, countvisit;
 	LinearLayout /* addComment, */ likeTopic;
 	ImageButton sharebtn;
 	ImageView profileImg, likeIcon;
@@ -109,6 +112,7 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 	boolean isFinish = false, saveVisitFalg;
 	String currentTime = "";
 	int idItem, typeId, sender;
+	List<Visit> visitList;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -148,6 +152,8 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 
 		likeIcon = (ImageView) header.findViewById(R.id.likeIcon);
 
+		countvisit = (TextView) header.findViewById(R.id.countvisit);
+
 		// count = (RelativeLayout) header.findViewById(R.id.countLike);
 		// commentcounter = (RelativeLayout) header.findViewById(R.id.cmffff);
 
@@ -176,8 +182,8 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 
 			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
 
-			lp.width = util.getScreenwidth() / 4;
-			lp.height = util.getScreenwidth() / 4;
+			lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageFroumFragmentPage);
+			lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageFroumFragmentPage);
 			lp.gravity = Gravity.CENTER_HORIZONTAL;
 			lp.setMargins(0, 10, 0, 0);
 			profileImg.setLayoutParams(lp);
@@ -214,6 +220,7 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 		descriptiontxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
 		descriptiontxt.setLineSpacing(15);
 
+		countvisit.setText(topics.getCountView() + "");
 		titletxt.setPadding(0, 20, 0, 0);
 		checkInternet();
 		profileImg.setOnClickListener(new View.OnClickListener() {
@@ -519,14 +526,15 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 					if ("".equals(util.inputComment(getActivity()))) {
 						Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0).show();
 					} else {
+						if (util.getCurrentUser() != null) {
+							date = new ServerDate(getActivity());
+							date.delegate = FroumFragment.this;
+							date.execute("");
+							LikeOrComment = false;
 
-						date = new ServerDate(getActivity());
-						date.delegate = FroumFragment.this;
-						date.execute("");
-						LikeOrComment = false;
+							util.ReplyLayout(getActivity(), "", false);
 
-						util.ReplyLayout(getActivity(), "", false);
-
+						}
 					}
 				}
 			});
@@ -633,7 +641,7 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 	public void processFinish(String output) {
 
 		Toast.makeText(getActivity(), output, 0).show();
-		if (!output.equals("java.io.EOFException") && !output.equals("java.net.SocketTimeoutException")) {
+		if (!output.contains("Exception")) {
 
 			if (saveVisitFalg == true) {
 
@@ -642,6 +650,11 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 				sendVisit();
 
 			} else {
+				if (isFinish == true) {
+
+					return;
+				}
+
 				adapter.open();
 				int id = -1;
 				try {
@@ -958,7 +971,7 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 		if (getActivity() != null) {
 
 			adapter.open();
-			List<Visit> visitList = adapter.getAllVisitItems();
+			visitList = adapter.getAllVisitItems();
 			adapter.close();
 
 			Visit vis = null;
@@ -974,7 +987,7 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 					idItem = vis.getObjectId();
 
 					params = new LinkedHashMap<String, String>();
-					saving = new Saving(getActivity());
+					SavingVisit saving = new SavingVisit(getActivity());
 					saving.delegate = FroumFragment.this;
 
 					params.put("TableName", "Visit");
@@ -996,7 +1009,7 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 				} else {
 
 					params = new LinkedHashMap<String, String>();
-					saving = new Saving(getActivity());
+					SavingVisit saving = new SavingVisit(getActivity());
 					saving.delegate = FroumFragment.this;
 
 					params.put("TableName", "Visit");
@@ -1028,7 +1041,7 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 					// int idObj = object.getId();
 
 					params = new LinkedHashMap<String, String>();
-					saving = new Saving(getActivity());
+					SavingVisit saving = new SavingVisit(getActivity());
 					saving.delegate = FroumFragment.this;
 
 					params.put("TableName", "Visit");
@@ -1048,6 +1061,76 @@ public class FroumFragment extends Fragment implements AsyncInterface, GetAsyncI
 				}
 			}
 
+		}
+
+	}
+
+	@Override
+	public void saveVisit(String output) {
+
+		if (!output.contains("Exception")) {
+			if (isFinish == false) {
+				Visit vis = null;
+
+				if (visitList.size() != 0) {
+
+					if (counterVisit < visitList.size()) {
+
+						vis = visitList.get(counterVisit);
+
+						sender = vis.getUserId();
+						typeId = vis.getTypeId();
+						idItem = vis.getObjectId();
+
+						params = new LinkedHashMap<String, String>();
+						SavingVisit saving = new SavingVisit(getActivity());
+						saving.delegate = FroumFragment.this;
+
+						params.put("TableName", "Visit");
+						params.put("UserId", String.valueOf(sender));
+						params.put("TypeId", String.valueOf(typeId));
+						params.put("ObjectId", String.valueOf(idItem));
+						params.put("ModifyDate", String.valueOf(currentTime));
+						params.put("Date", String.valueOf(currentTime));
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						saving.execute(params);
+
+						counterVisit++;
+
+						saveVisitFalg = true;
+						// sendVisit();
+					} else {
+
+						params = new LinkedHashMap<String, String>();
+						SavingVisit saving = new SavingVisit(getActivity());
+						saving.delegate = FroumFragment.this;
+
+						params.put("TableName", "Visit");
+						params.put("UserId", String.valueOf(sender));
+						params.put("TypeId", String.valueOf(typeId));
+						params.put("ObjectId", String.valueOf(topics.getId()));
+						params.put("ModifyDate", String.valueOf(currentTime));
+						params.put("Date", String.valueOf(currentTime));
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						saving.execute(params);
+
+						adapter.open();
+						adapter.deleteVisit();
+						adapter.close();
+
+						saveVisitFalg = false;
+						isFinish = true;
+
+					}
+
+				}
+			}
 		}
 
 	}

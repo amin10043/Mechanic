@@ -12,9 +12,11 @@
     <dimen name="listItemPadding">10dp</dimen>
     <dimen name="iconPadding">20dp</dimen>
     <dimen name="txtsize40">40dp</dimen>
-    
-        <dimen name="fab_size_normal">56dp</dimen>
+    <dimen name="fab_size_normal">56dp</dimen>
     <dimen name="fab_size_mini">40dp</dimen>
     <dimen name="labels_text_size">14sp</dimen>
+    
+    <!-- original -->
+    <dimen name="size_item_list">18dp</dimen>
 
 </resources>

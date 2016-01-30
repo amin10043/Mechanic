@@ -134,8 +134,8 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.topicTitleFroum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = (int) (util.getScreenwidth() / 3.8);
-		lp.height = (int) (util.getScreenwidth() / 3.8);
+		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageTitlePaper);
+		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageTitlePaper);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(10, 10, 10, 10);
 
@@ -412,7 +412,6 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 				adapter.close();
 
 				idPaper = id;
-				
 
 			}
 
@@ -445,6 +444,9 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 
 		});
 
+		TextView visitCount = (TextView) convertView.findViewById(R.id.visitCount);
+
+		visitCount.setText(person1.getCountView()+"");
 		return convertView;
 	}
 
@@ -453,7 +455,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 	public void processFinish(String output) {
 
 		if (flag == true) {
-			
+
 			serverDate = output;
 			if (context != null) {
 				params = new LinkedHashMap<String, String>();

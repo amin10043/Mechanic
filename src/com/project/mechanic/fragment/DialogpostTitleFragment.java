@@ -5,8 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,10 +35,15 @@ import android.widget.Toast;
 import com.project.mechanic.R;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.SavingImage;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
-public class DialogpostTitleFragment extends DialogFragment {
+public class DialogpostTitleFragment extends DialogFragment implements AsyncInterface, SaveAsyncInterface {
 
 	Context mContext;
 	ImageView btnPickFile;
@@ -50,8 +58,7 @@ public class DialogpostTitleFragment extends DialogFragment {
 	private Uri mImageCaptureUri;
 	private File mFileTemp;
 	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
-	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201,
-			CROPING_CODE = 301;
+	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201, CROPING_CODE = 301;
 	final int PIC_CROP = 10;
 
 	/**/
@@ -61,8 +68,18 @@ public class DialogpostTitleFragment extends DialogFragment {
 	Users currentUser;
 	int ObjectId;
 	String severDate;
-
+	boolean textOrImage = false;
+	String serverDate;
 	/**/
+
+	ServerDate date;
+	Saving saving;
+	Map<String, String> params;
+
+	SavingImage saveImage;
+	Map<String, Object> imageParams;
+	int PostId;
+	ProgressDialog ringProgressDialog;
 
 	public DialogpostTitleFragment(int object_id) {
 		mContext = getActivity();
@@ -70,14 +87,12 @@ public class DialogpostTitleFragment extends DialogFragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-		View rootView = inflater.inflate(R.layout.dialog_addtitlepostfragment,
-				container, false);
-		//getDialog().setTitle("ایجاد پست جدید");
-	
+		View rootView = inflater.inflate(R.layout.dialog_addtitlepostfragment, container, false);
+		// getDialog().setTitle("ایجاد پست جدید");
+
 		// ObjectId = Integer.valueOf(getArguments().getInt("Id"));
 		util = new Utility(this.getActivity());
 		user = new Users();
@@ -104,11 +119,9 @@ public class DialogpostTitleFragment extends DialogFragment {
 
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			mFileTemp = new File(Environment.getExternalStorageDirectory(),
-					TEMP_PHOTO_FILE_NAME);
+			mFileTemp = new File(Environment.getExternalStorageDirectory(), TEMP_PHOTO_FILE_NAME);
 		} else {
-			mFileTemp = new File(getActivity().getFilesDir(),
-					TEMP_PHOTO_FILE_NAME);
+			mFileTemp = new File(getActivity().getFilesDir(), TEMP_PHOTO_FILE_NAME);
 		}
 
 		dbadapter = new DataBaseAdapter(getActivity());
@@ -119,51 +132,29 @@ public class DialogpostTitleFragment extends DialogFragment {
 		btnSave.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
-				Time time = new Time();
-				time.setToNow();
-				String Date = Long.toString(time.toMillis(false));
+				if (getActivity() != null) {
 
-				String ImageAddress = "";
+					if (currentUser == null) {
+						Toast.makeText(getActivity(), "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
+					} else {
 
-				if (ImageConvertedToByte != null) {
+						if (!PostDecription.getText().toString().isEmpty() || ImageConvertedToByte != null) {
 
-					ImageAddress = util.CreateFileString(ImageConvertedToByte,
-							"_" + currentUser.getId() + "_" + Date,
-							"Mechanical", "Post", "post");
-				}
-				if (!ImageAddress.isEmpty()
-						|| !PostDecription.getText().toString().isEmpty()) {
+							date = new ServerDate(getActivity());
+							date.delegate = DialogpostTitleFragment.this;
+							date.execute("");
 
-					dbadapter.open();
-					dbadapter.insertPosttitletoDb(PostDecription.getText()
-							.toString(), currentUser.getId(), "", ImageAddress);
-					dbadapter.close();
+							ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
-					IntroductionFragment fragment = new IntroductionFragment();
+							ringProgressDialog.setCancelable(true);
+						} else
+							Toast.makeText(getActivity(), "حداقل یه عکس یا یک متن وارد کنید", Toast.LENGTH_SHORT)
+									.show();
 
-					FragmentTransaction trans = getActivity()
-							.getSupportFragmentManager().beginTransaction();
-					trans.setCustomAnimations(R.anim.pull_in_left,
-							R.anim.push_out_right);
-					trans.replace(R.id.content_frame, fragment);
-					trans.addToBackStack(null);
-					trans.commit();
-
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", ObjectId + "");
-					fragment.setArguments(bundle);
-
-					Fragment prev = getActivity().getSupportFragmentManager()
-							.findFragmentByTag("My_Dialog_Dialog");
-					if (prev != null) {
-						DialogpostTitleFragment df = (DialogpostTitleFragment) prev;
-						df.dismiss();
 					}
 
-				} else
-					Toast.makeText(getActivity(),
-							"حداقل یه عکس یا یک متن وارد کنید",
-							Toast.LENGTH_SHORT).show();
+				}
+
 			}
 		});
 
@@ -179,8 +170,7 @@ public class DialogpostTitleFragment extends DialogFragment {
 	private void selectImageOption() {
 		final CharSequence[] items = { "از دوربین", "از گالری تصاویر", "انصراف" };
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(
-				this.getActivity());
+		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
 		builder.setTitle("افزودن تصویر");
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 			@Override
@@ -226,12 +216,10 @@ public class DialogpostTitleFragment extends DialogFragment {
 
 				} else if (items[item].equals("از گالری تصاویر")) {
 
-					Intent i = new Intent(
-							Intent.ACTION_PICK,
+					Intent i = new Intent(Intent.ACTION_PICK,
 							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-					getActivity().startActivityFromFragment(
-							DialogpostTitleFragment.this, i, GALLERY_CODE);
+					getActivity().startActivityFromFragment(DialogpostTitleFragment.this, i, GALLERY_CODE);
 
 					// Intent intent = new Intent();
 					// intent.setType("image/*");
@@ -268,11 +256,8 @@ public class DialogpostTitleFragment extends DialogFragment {
 					// ImageConvertedToByte =
 					// Utility.CompressBitmap(bitmapImage);
 
-					InputStream inputStream = getActivity()
-							.getContentResolver().openInputStream(
-									data.getData());
-					FileOutputStream fileOutputStream = new FileOutputStream(
-							mFileTemp);
+					InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
+					FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
 					try {
 						Utility.copyStream(inputStream, fileOutputStream);
 					} catch (IOException e) {
@@ -300,10 +285,10 @@ public class DialogpostTitleFragment extends DialogFragment {
 					e.printStackTrace();
 				}
 			}
-//		case CAMERA_CODE:
-//			if (resultCode == this.getActivity().RESULT_OK) {
-//				Toast.makeText(mContext, "Camera", Toast.LENGTH_SHORT).show();
-//			}
+			// case CAMERA_CODE:
+			// if (resultCode == this.getActivity().RESULT_OK) {
+			// Toast.makeText(mContext, "Camera", Toast.LENGTH_SHORT).show();
+			// }
 			// Bitmap photo = (Bitmap) data.getExtras().get("data");
 			// ShowImage.setImageBitmap(photo);
 			// ShowImage.setVisibility(View.VISIBLE);
@@ -334,8 +319,7 @@ public class DialogpostTitleFragment extends DialogFragment {
 	public Bitmap decodeBitmap(Uri selectedImage) throws FileNotFoundException {
 		BitmapFactory.Options o = new BitmapFactory.Options();
 		o.inJustDecodeBounds = true;
-		BitmapFactory.decodeStream(this.getActivity().getContentResolver()
-				.openInputStream(selectedImage), null, o);
+		BitmapFactory.decodeStream(this.getActivity().getContentResolver().openInputStream(selectedImage), null, o);
 
 		final int REQUIRED_SIZE = 100;
 
@@ -352,8 +336,8 @@ public class DialogpostTitleFragment extends DialogFragment {
 
 		BitmapFactory.Options o2 = new BitmapFactory.Options();
 		o2.inSampleSize = scale;
-		return BitmapFactory.decodeStream(this.getActivity()
-				.getContentResolver().openInputStream(selectedImage), null, o2);
+		return BitmapFactory.decodeStream(this.getActivity().getContentResolver().openInputStream(selectedImage), null,
+				o2);
 	}
 
 	private void startCropImage() {
@@ -366,6 +350,203 @@ public class DialogpostTitleFragment extends DialogFragment {
 		intent.putExtra(CropImage.ASPECT_Y, 3);
 
 		startActivityForResult(intent, PIC_CROP);
+	}
+
+	@Override
+	public void processFinish(String output) {
+
+		if (ringProgressDialog != null)
+			ringProgressDialog.dismiss();
+
+		int id = -1;
+
+		try {
+
+			PostId = id = Integer.valueOf(output);
+
+			dbadapter.open();
+			dbadapter.insertPosttitletoDb(PostId, PostDecription.getText().toString(), currentUser.getId(), serverDate,
+					"", ObjectId);
+			dbadapter.close();
+
+			if (ImageConvertedToByte != null) {
+
+				if (getActivity() != null) {
+					saveImage = new SavingImage((getActivity()));
+					saveImage.delegate = DialogpostTitleFragment.this;
+					imageParams = new LinkedHashMap<String, Object>();
+					imageParams.put("tableName", "Post");
+					imageParams.put("fieldName", "Photo");
+					imageParams.put("id", PostId);
+					imageParams.put("image", ImageConvertedToByte);
+
+					saveImage.execute(imageParams);
+					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+				}
+
+			} else {
+
+				IntroductionFragment fragment = new IntroductionFragment();
+
+				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+
+				Bundle bundle = new Bundle();
+				bundle.putString("Id", ObjectId + "");
+				fragment.setArguments(bundle);
+
+				Fragment prev = getActivity().getSupportFragmentManager().findFragmentByTag("My_Dialog_Dialog");
+				if (prev != null) {
+					DialogpostTitleFragment df = (DialogpostTitleFragment) prev;
+					df.dismiss();
+				}
+			}
+
+		} catch (NumberFormatException ex) {
+
+			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
+
+				if (getActivity() != null) {
+
+					if (!PostDecription.getText().toString().isEmpty()) {
+
+						serverDate = output;
+
+						saving = new Saving(getActivity());
+						saving.delegate = DialogpostTitleFragment.this;
+						params = new LinkedHashMap<String, String>();
+
+						params.put("TableName", "Post");
+
+						params.put("UserId", String.valueOf(currentUser.getId()));
+						params.put("Description", PostDecription.getText().toString());
+						params.put("ObjectId", ObjectId + "");
+
+						params.put("Date", serverDate);
+						params.put("ModifyDate", serverDate);
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						saving.execute(params);
+						
+						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+
+						ringProgressDialog.setCancelable(true);
+					} else {
+
+						if (ImageConvertedToByte != null) {
+
+							if (getActivity() != null) {
+								saveImage = new SavingImage((getActivity()));
+								saveImage.delegate = DialogpostTitleFragment.this;
+								imageParams = new LinkedHashMap<String, Object>();
+								imageParams.put("tableName", "Post");
+								imageParams.put("fieldName", "Photo");
+								imageParams.put("id", PostId);
+								imageParams.put("image", ImageConvertedToByte);
+
+								saveImage.execute(imageParams);
+								
+								ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+
+								ringProgressDialog.setCancelable(true);
+							}
+
+						}
+
+					}
+
+				}
+			}
+
+		}
+
+		// Time time = new Time();
+		// time.setToNow();
+		// String Date = Long.toString(time.toMillis(false));
+
+		// String ImageAddress = "";
+		//
+		// if (ImageConvertedToByte != null) {
+		//
+		// ImageAddress = util.CreateFileString(ImageConvertedToByte, "_" +
+		// currentUser.getId() + "_" + serverDate,
+		// "Mechanical", "Post", "post");
+		// }
+		// if (!ImageAddress.isEmpty() ||
+		// !PostDecription.getText().toString().isEmpty()) {
+		//
+		// dbadapter.open();
+		// dbadapter.insertPosttitletoDb(PostDecription.getText().toString(),
+		// currentUser.getId(), "", ImageAddress);
+		// dbadapter.close();
+		//
+		// IntroductionFragment fragment = new IntroductionFragment();
+		//
+		// FragmentTransaction trans =
+		// getActivity().getSupportFragmentManager().beginTransaction();
+		// trans.setCustomAnimations(R.anim.pull_in_left,
+		// R.anim.push_out_right);
+		// trans.replace(R.id.content_frame, fragment);
+		// trans.addToBackStack(null);
+		// trans.commit();
+		//
+		// Bundle bundle = new Bundle();
+		// bundle.putString("Id", ObjectId + "");
+		// fragment.setArguments(bundle);
+		//
+		// Fragment prev =
+		// getActivity().getSupportFragmentManager().findFragmentByTag("My_Dialog_Dialog");
+		// if (prev != null) {
+		// DialogpostTitleFragment df = (DialogpostTitleFragment) prev;
+		// df.dismiss();
+		// }
+		//
+		// } else
+		// Toast.makeText(getActivity(), "حداقل یه عکس یا یک متن وارد کنید",
+		// Toast.LENGTH_SHORT).show();
+
+	}
+
+	@Override
+	public void processFinishSaveImage(String output) {
+
+		if (output != null && !"".equals(output) && !(output.contains("Exception") || output.contains("java"))) {
+
+			String ImageAddress = "";
+
+			if (ImageConvertedToByte != null) {
+
+				ImageAddress = util.CreateFileString(ImageConvertedToByte, "_" + currentUser.getId() + "_" + serverDate,
+						"Mechanical", "Post", "post");
+			}
+
+			IntroductionFragment fragment = new IntroductionFragment();
+
+			FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+			trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
+			trans.replace(R.id.content_frame, fragment);
+			trans.addToBackStack(null);
+			trans.commit();
+
+			Bundle bundle = new Bundle();
+			bundle.putString("Id", ObjectId + "");
+			fragment.setArguments(bundle);
+
+			Fragment prev = getActivity().getSupportFragmentManager().findFragmentByTag("My_Dialog_Dialog");
+			if (prev != null) {
+				DialogpostTitleFragment df = (DialogpostTitleFragment) prev;
+				df.dismiss();
+			}
+
+		}
+
 	}
 
 }

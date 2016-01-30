@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.InformationUser;
@@ -117,8 +118,8 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements Asy
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.main_icon_reply);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
+		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
+		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
 		if (y.getImagePath() == null) {
@@ -424,8 +425,8 @@ public class ExpandIntroduction extends BaseExpandableListAdapter implements Asy
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.icon_header_comment_froum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
+		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
+		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.setMargins(5, 5, 5, 5);
 		profileImage.setLayoutParams(lp);

@@ -122,9 +122,9 @@ public class DialogPostFragment extends Fragment {
 				if (!ImageAddress.isEmpty()
 						|| !PostDecription.getText().toString().isEmpty()) {
 					dbadapter.open();
-					dbadapter.insertPosttitletoDb(PostDecription.getText()
-							.toString(), currentUser.getId(), severDate,
-							ImageAddress);
+//					dbadapter.insertPosttitletoDb(PostDecription.getText()
+//							.toString(), currentUser.getId(), severDate,
+//							ImageAddress);
 					dbadapter.close();
 
 					IntroductionFragment fragment = new IntroductionFragment();

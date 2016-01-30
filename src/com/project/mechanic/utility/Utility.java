@@ -894,6 +894,7 @@ public class Utility implements AsyncInterface {
 		// type = 7 >>>>> froumtitle && titlePaper fragment
 		// type = 8 >>>>> paper and Froum fragment
 		// type = 9 >>>>> top items
+		// type = 10 >>>>> chat fragment
 
 		ViewFlipper vf = (ViewFlipper) activity.findViewById(R.id.footerAgahi);
 
@@ -1018,6 +1019,11 @@ public class Utility implements AsyncInterface {
 				img2.setBackgroundResource(R.drawable.admin_icon);
 
 				img3.setBackgroundResource(R.drawable.ic_create_post);
+				break;
+
+			}
+			case 10: {
+				inputCommentAndPickFile(activity);
 				break;
 
 			}

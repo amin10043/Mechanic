@@ -9,6 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_below="@+id/dated"
         android:layout_gravity="right"
         android:layout_margin="10dp" >
 
@@ -35,8 +36,8 @@
         android:id="@+id/LinearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/d"
         android:background="#fff"
-        android:layout_below="@+id/profileLinearcommenterinContinue"
         android:orientation="vertical" >
 
         <RelativeLayout
@@ -44,7 +45,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:gravity="center"
             android:orientation="vertical" >
 
             <ImageView
@@ -55,18 +55,18 @@
                 android:paddingRight="10dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/no_image_header"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/description_topic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_below="@+id/postImage"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
-                android:lineSpacingExtra="5dp"
                 android:gravity="right"
-                android:layout_alignParentRight="true"
+                android:lineSpacingExtra="5dp"
                 android:text="description"
                 android:textColor="@color/transparent"
                 android:textIsSelectable="true" />
@@ -84,40 +84,59 @@
 
             <LinearLayout
                 android:id="@+id/LikeTopicLinear"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@drawable/like"
-                android:gravity="center"
-                android:visibility="visible" >
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/txtNumofLike_CmtFroum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:gravity="bottom"
-                android:text="123"
-                android:textColor="@color/transparent" />
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:visibility="visible" >
+
+                    <ImageView
+                        android:id="@+id/likeIcon"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/like"
+                        android:gravity="center"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtNumofLike_CmtFroum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:gravity="bottom"
+                    android:text="123"
+                    android:textColor="@color/transparent" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/l1cm"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginLeft="20dp"
-                android:background="@drawable/ic_cmt_froum_display"
-                android:gravity="center"
-                android:visibility="visible" >
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/numberOfCommentTopic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
+                android:layout_marginLeft="20dp"
                 android:gravity="center"
-                android:text="456"
-                android:textColor="@color/transparent" />
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/ic_cmt_froum_display"
+                    android:visibility="visible" >
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/numberOfCommentTopic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:gravity="center"
+                    android:text="456"
+                    android:textColor="@color/transparent" />
+            </LinearLayout>
 
             <ImageView
                 android:layout_width="25dp"
@@ -126,6 +145,7 @@
                 android:background="@drawable/numvv" />
 
             <TextView
+                android:id="@+id/countVisit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
@@ -143,7 +163,8 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/dated"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -163,6 +184,31 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:text="date"
+            android:textColor="@color/transparent" />
+    </LinearLayout>
+     <LinearLayout
+        android:id="@+id/d"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:visibility="invisible"
+        android:layout_below="@+id/profileLinearcommenterinContinue"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/dddfa"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="left"
+            android:background="@drawable/down_arrow" />
+
+        <TextView
+            android:id="@+id/asdaf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="daasdate"
             android:textColor="@color/transparent" />
     </LinearLayout>
 

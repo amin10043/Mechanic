@@ -21,9 +21,11 @@
             android:visibility="visible" />
 
         <LinearLayout
+            android:id="@+id/textlayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_margin="5dp"
             android:layout_toLeftOf="@+id/imageFrame"
             android:gravity="right"
             android:orientation="vertical" >
@@ -40,6 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
+                    android:singleLine="true"
                     android:text="Large Text"
                     android:textColor="#9d0420" />
 
@@ -68,6 +71,7 @@
                             android:background="@drawable/numll" />
 
                         <TextView
+                            android:id="@+id/followers"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignBottom="@+id/iconNumberLike"
@@ -76,7 +80,7 @@
                             android:gravity="bottom"
                             android:paddingTop="1dp"
                             android:text="20"
-                            android:textColor="@color/transparent"
+                            android:textColor="@color/orginal_red_color"
                             android:textSize="10dp" />
                     </LinearLayout>
 
@@ -95,13 +99,14 @@
                             android:background="@drawable/numvv" />
 
                         <TextView
+                            android:id="@+id/views"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignBottom="@+id/iconNumberVisit"
                             android:layout_marginRight="5dp"
                             android:layout_toLeftOf="@+id/iconNumberVisit"
                             android:text="18"
-                            android:textColor="@color/transparent"
+                            android:textColor="@color/orginal_red_color"
                             android:textSize="10dp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -124,9 +129,9 @@
             android:id="@+id/et"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:orientation="horizontal"
+            android:layout_below="@+id/textlayout"
             android:paddingBottom="10dp"
             android:visibility="visible" >
 
@@ -135,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="روز"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/orginal_red_color" />
 
             <TextView
                 android:id="@+id/dayBaghiMandeh"
@@ -144,7 +149,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text="250"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/orginal_red_color" />
 
             <TextView
                 android:id="@+id/lable_etebar"
@@ -152,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:text="اعتبار :"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/orginal_red_color" />
         </LinearLayout>
 
         <FrameLayout

@@ -9,18 +9,18 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.StaticValues;
 import com.project.mechanic.adapter.PaperListAdapter;
-import com.project.mechanic.adapter.PapertitleListAdapter;
 import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.LikeInPaper;
 import com.project.mechanic.entity.Paper;
-import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.entity.Visit;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
+import com.project.mechanic.inter.VisitSaveInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.SavingVisit;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
@@ -52,13 +52,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ir.noghteh.JustifiedTextView;
 
-public class PaperFragment extends Fragment implements AsyncInterface, CommInterface {
+public class PaperFragment extends Fragment implements AsyncInterface, CommInterface, VisitSaveInterface {
 
 	DataBaseAdapter adapter;
 	int paperID;
 	// LinearLayout btnAddcmt;
 	LinearLayout Like;
-	TextView NumofLike, NumofComment, txttitle, txtname, txtdate;
+	TextView NumofLike, NumofComment, txttitle, txtname, txtdate, countvisit;
 	DialogcmtInPaper dialog;
 	JustifiedTextView txttitleDes;
 	ArrayList<CommentInPaper> mylist;
@@ -94,6 +94,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 	int counterVisit = 0;
 	boolean isFinish = false, saveVisitFalg;
 	String currentTime = "";
+	List<Visit> visitList;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -121,6 +122,8 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 
 		icon = (ImageView) header.findViewById(R.id.iconfroumtitle);
 		sharebtn = (ImageView) header.findViewById(R.id.sharefroumicon);
+
+		countvisit = (TextView) header.findViewById(R.id.countvisit);
 
 		adapter = new DataBaseAdapter(getActivity());
 		adapter.open();
@@ -182,8 +185,8 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 4;
-		lp.height = util.getScreenwidth() / 4;
+		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImagePaperFragmentPage);
+		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImagePaperFragmentPage);
 		lp.gravity = Gravity.CENTER_HORIZONTAL;
 		lp.setMargins(10, 10, 10, 10);
 
@@ -199,6 +202,8 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 		}
 
 		adapter.close();
+
+		countvisit.setText(p.getCountView() + "");
 		icon.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -499,12 +504,12 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 
 		Toast.makeText(getActivity(), output, 0).show();
 
-		if (!output.equals("java.io.EOFException") && !output.equals("java.net.SocketTimeoutException")) {
+		if (!output.contains("Exception")) {
 
 			if (saveVisitFalg == true) {
 
-				if (counterVisit == 0)
-					currentTime = output;
+				// if (counterVisit == 0)
+				currentTime = output;
 				sendVisit();
 
 			} else {
@@ -811,7 +816,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 		if (getActivity() != null) {
 
 			adapter.open();
-			List<Visit> visitList = adapter.getAllVisitItems();
+			visitList = adapter.getAllVisitItems();
 			adapter.close();
 
 			Visit vis = null;
@@ -827,7 +832,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 					idItem = vis.getObjectId();
 
 					params = new LinkedHashMap<String, String>();
-					saving = new Saving(getActivity());
+					SavingVisit saving = new SavingVisit(getActivity());
 					saving.delegate = PaperFragment.this;
 
 					params.put("TableName", "Visit");
@@ -849,7 +854,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 				} else {
 
 					params = new LinkedHashMap<String, String>();
-					saving = new Saving(getActivity());
+					SavingVisit saving = new SavingVisit(getActivity());
 					saving.delegate = PaperFragment.this;
 
 					params.put("TableName", "Visit");
@@ -881,7 +886,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 					// int idObj = object.getId();
 
 					params = new LinkedHashMap<String, String>();
-					saving = new Saving(getActivity());
+					SavingVisit saving = new SavingVisit(getActivity());
 					saving.delegate = PaperFragment.this;
 
 					params.put("TableName", "Visit");
@@ -899,6 +904,80 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 					isFinish = true;
 
 				}
+			}
+
+		}
+
+	}
+
+	@Override
+	public void saveVisit(String output) {
+
+		if (!output.contains("Exception")) {
+
+			if (isFinish == false) {
+
+				Visit vis = null;
+
+				if (visitList.size() != 0) {
+
+					if (counterVisit < visitList.size()) {
+
+						vis = visitList.get(counterVisit);
+
+						userId = vis.getUserId();
+						typeId = vis.getTypeId();
+						idItem = vis.getObjectId();
+
+						params = new LinkedHashMap<String, String>();
+						SavingVisit saving = new SavingVisit(getActivity());
+						saving.delegate = PaperFragment.this;
+
+						params.put("TableName", "Visit");
+						params.put("UserId", String.valueOf(userId));
+						params.put("TypeId", String.valueOf(typeId));
+						params.put("ObjectId", String.valueOf(idItem));
+						params.put("ModifyDate", String.valueOf(currentTime));
+						params.put("Date", String.valueOf(currentTime));
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						saving.execute(params);
+
+						counterVisit++;
+
+						saveVisitFalg = true;
+						// sendVisit();
+					} else {
+
+						params = new LinkedHashMap<String, String>();
+						SavingVisit saving = new SavingVisit(getActivity());
+						saving.delegate = PaperFragment.this;
+
+						params.put("TableName", "Visit");
+						params.put("UserId", String.valueOf(userId));
+						params.put("TypeId", String.valueOf(typeId));
+						params.put("ObjectId", String.valueOf(p.getId()));
+						params.put("ModifyDate", String.valueOf(currentTime));
+						params.put("Date", String.valueOf(currentTime));
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						saving.execute(params);
+
+						adapter.open();
+						adapter.deleteVisit();
+						adapter.close();
+
+						saveVisitFalg = false;
+						isFinish = true;
+
+					}
+
+				}
+
 			}
 
 		}

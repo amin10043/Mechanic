@@ -34,6 +34,8 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
+import com.project.mechanic.entity.Post;
 import com.project.mechanic.entity.PostTimeline;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogShowImage;
@@ -47,8 +49,7 @@ import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
 @SuppressLint("SimpleDateFormat")
-public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
-		implements AsyncInterface {
+public class PostTimelineListadapter extends ArrayAdapter<PostTimeline> implements AsyncInterface {
 
 	Context context;
 	List<PostTimeline> mylist;
@@ -78,9 +79,9 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 
 	int itemId, userIdsender;
 	List<String> menuItems = new ArrayList<String>();
+	ImageView likeIcon;
 
-	public PostTimelineListadapter(Context context, int resource,
-			List<PostTimeline> objects, Fragment fragment) {
+	public PostTimelineListadapter(Context context, int resource, List<PostTimeline> objects, Fragment fragment) {
 		super(context, resource, objects);
 		this.context = context;
 		this.mylist = objects;
@@ -91,42 +92,32 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 
 	@SuppressLint("ViewHolder")
 	@Override
-	public View getView(final int position, View convertView,
-			final ViewGroup parent) {
+	public View getView(final int position, View convertView, final ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.raw_posttitle, parent, false);
 
 		Parent = parent;
 		// final TextView txt1 = (TextView) convertView
 		// .findViewById(R.id.rowtitlepaper);
-		final TextView txt2 = (TextView) convertView
-				.findViewById(R.id.rowdescriptionpaper);
+		final TextView txt2 = (TextView) convertView.findViewById(R.id.rowdescriptionpaper);
 		TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
-		TextView countcommentpost = (TextView) convertView
-				.findViewById(R.id.countCommentInEveryTopic);
-		TextView dateTopic = (TextView) convertView
-				.findViewById(R.id.datetopicinFroum);
+		TextView countcommentpost = (TextView) convertView.findViewById(R.id.countCommentInEveryTopic);
+		TextView dateTopic = (TextView) convertView.findViewById(R.id.datetopicinFroum);
 		TextView PostID = (TextView) convertView.findViewById(R.id.PostID);
-		countLikePost = (TextView) convertView
-				.findViewById(R.id.countLikeInFroumTitle);
-		ImageView profileImg = (ImageView) convertView
-				.findViewById(R.id.iconfroumtitle);
+		countLikePost = (TextView) convertView.findViewById(R.id.txtNumofLike_CmtFroum);
+		ImageView profileImg = (ImageView) convertView.findViewById(R.id.iconfroumtitle);
 
-		final ImageView postImage = (ImageView) convertView
-				.findViewById(R.id.postImage);
+		final ImageView postImage = (ImageView) convertView.findViewById(R.id.postImage);
 
-		LinearLayout commenttitle = (LinearLayout) convertView
-				.findViewById(R.id.l1cm);
-		LikeTitle = (LinearLayout) convertView
-				.findViewById(R.id.liketitleTopic);
+		LinearLayout commenttitle = (LinearLayout) convertView.findViewById(R.id.l1cm);
+		LikeTitle = (LinearLayout) convertView.findViewById(R.id.LikeTopicLinear);
 
-		LinearLayout LinearImageShow = (LinearLayout) convertView
-				.findViewById(R.id.LNImageShow);
+		LinearLayout LinearImageShow = (LinearLayout) convertView.findViewById(R.id.LNImageShow);
 
 		report = (ImageView) convertView.findViewById(R.id.reportImage);
+		likeIcon = (ImageView) convertView.findViewById(R.id.likeIcon);
 
 		PostTimeline person1 = mylist.get(position);
 
@@ -147,7 +138,7 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 
 		}
 
-		PostID.setText(person1.getUserId() + "");
+		PostID.setText(person1.getPostId() + "");
 
 		// if (!person1.getTitle().isEmpty()) {
 		// txt1.setText(person1.getTitle());
@@ -155,41 +146,52 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 		// }
 		if (!person1.getPostDescription().isEmpty()) {
 			if (person1.getPostDescription().length() > 100)
-				txt2.setText(person1.getPostDescription().substring(0, 100)
-						+ " ...");
+				txt2.setText(person1.getPostDescription().substring(0, 100) + " ...");
 			else
 				txt2.setText(person1.getPostDescription());
 			txt2.setVisibility(View.VISIBLE);
 		}
+		
+//		TextView des = (TextView)convertView.findViewById(R.id.des);
 
+		
+		
 		if (!person1.getPostPhoto().isEmpty()) {
+			
 
 			File imgFile = new File(person1.getPostPhoto());
 
 			if (imgFile.exists()) {
 
-				LNImageShowParams = new LinearLayout.LayoutParams(
-						LinearImageShow.getLayoutParams());
+				LNImageShowParams = new LinearLayout.LayoutParams(LinearImageShow.getLayoutParams());
 				LNImageShowParams.height = util.getScreenwidth();
 				LNImageShowParams.width = util.getScreenwidth();
-				// LNImageShowParams.setMargins(5, 5, 5, 5);
+				 LNImageShowParams.setMargins(0, 10, 0, 10);
 				postImage.setLayoutParams(LNImageShowParams);
 
-				Bitmap myBitmap = BitmapFactory.decodeFile(person1
-						.getPostPhoto());
+				Bitmap myBitmap = BitmapFactory.decodeFile(person1.getPostPhoto());
 				postImage.setImageBitmap(myBitmap);
 				postImage.setVisibility(View.VISIBLE);
+//				des.setVisibility(View.GONE);
+//				txt2.setVisibility(View.VISIBLE);
+
 			}
+		}else{
+			
+//			des.setVisibility(View.VISIBLE);
+//			des.setText(person1.getPostDescription());
+//			txt2.setVisibility(View.GONE);
+
+
 		}
 
 		adapter.open();
 
 		if (person1.getObjectName() != null)
 			txt3.setText(person1.getObjectName());
-		countcommentpost.setText(adapter.CommentInPost_count(
-				person1.getUserId()).toString());
-		countLikePost.setText(adapter.LikeInPost_count(person1.getUserId())
-				.toString());
+		countcommentpost.setText(adapter.CommentInPost_count(person1.getPostUserId()).toString());
+
+		countLikePost.setText(adapter.LikeInPost_count(postNumber).toString());
 		adapter.close();
 
 		dateTopic.setText(util.getPersianDate(person1.getPostDate()));
@@ -203,30 +205,28 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 		int ItemId = 0;
 		for (PostTimeline listItem : mylist) {
 			if (item.equals(listItem.getPostDescription())) {
-				postNumber = ItemId = listItem.getUserId();
+				postNumber = ItemId = listItem.getPostId();
 			}
 		}
 		adapter.open();
 		countLikePost.setText(adapter.LikeInPost_count(ItemId).toString());
 
 		if (CurrentUser == null) {
-			LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
+			likeIcon.setBackgroundResource(R.drawable.like_froum_off);
 
 		} else {
 			if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
-				LikeTitle.setBackgroundResource(R.drawable.like_froum);
+				likeIcon.setBackgroundResource(R.drawable.like_froum_on);
 			} else
-				LikeTitle.setBackgroundResource(R.drawable.like_froum_off);
+				likeIcon.setBackgroundResource(R.drawable.like_froum_off);
 		}
 		adapter.close();
 
-		RelativeLayout rl = (RelativeLayout) convertView
-				.findViewById(R.id.topicTitleFroum);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				rl.getLayoutParams());
+		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.topicTitleFroum);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
+		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImagePostTimelineFragmentPage);
+		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImagePostTimelineFragmentPage);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		if (person1 != null) {
 
@@ -235,9 +235,8 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 				profileImg.setLayoutParams(lp);
 			} else {
 				// byte[] byteImg = x.getImage();
-				Bitmap bmp = BitmapFactory.decodeFile(person1
-						.getObjectImagePath2());
-				profileImg.setImageBitmap(Utility.getclip(bmp));
+				Bitmap bmp = BitmapFactory.decodeFile(person1.getObjectImagePath2());
+				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
 
 				profileImg.setLayoutParams(lp);
 			}
@@ -248,10 +247,9 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 			public void onClick(View arg0) {
 				adapter.open();
 				PostTimeline person1 = mylist.get(position);
-				Users x = adapter.getUserbyid(person1.getUserId());
+				Users x = adapter.getUserbyid(person1.getPostUserId());
 				userId = x.getId();
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
@@ -268,21 +266,17 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 			public void onClick(View v) {
 
 				if (CurrentUser == null) {
-					Toast.makeText(context,
-							"برای درج لایک ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 				} else {
 
 					LinearLayout parentlayout = (LinearLayout) v;
-					LinearLayout parent = (LinearLayout) parentlayout
-							.getParent().getParent();
-					int id = ((Integer) parent.getTag());
+					LinearLayout parent = (LinearLayout) parentlayout.getParent().getParent();
+					Integer id =  Integer.parseInt((String) parent.getTag());
 					postNumber = id;
 					date = new ServerDate(context);
 					date.delegate = PostTimelineListadapter.this;
 					date.execute("");
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 				}
@@ -339,14 +333,13 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 
 				// final int ItemId ;
 				final String t;
-				ListView listView = (ListView) v.getParent().getParent()
-						.getParent().getParent();
+				ListView listView = (ListView) v.getParent().getParent().getParent().getParent();
 				int position = listView.getPositionForView(v);
 				PostTimeline f = getItem(position - 1);
 				if (f != null) {
-					userIdsender = f.getUserId();
+					userIdsender = f.getPostUserId();
 					t = f.getPostDescription();
-					itemId = f.getUserId();
+					itemId = f.getPostUserId();
 
 					if (util.getCurrentUser() != null) {
 						if (util.getCurrentUser().getId() == userIdsender) {
@@ -372,8 +365,7 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 						menuItems.add("کپی");
 					}
 
-					final PopupMenu popupMenu = util
-							.ShowPopupMenu(menuItems, v);
+					final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
 					popupMenu.show();
 
 					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
@@ -386,15 +378,12 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 								if (util.getCurrentUser() != null)
 									util.sendMessage("Froum");
 								else
-									Toast.makeText(context,
-											"ابتدا باید وارد شوید", 0).show();
+									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}
 
-							if (item.getTitle().equals(
-									"افزودن به علاقه مندی ها")) {
+							if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
 								adapter.open();
-								addToFavorite(util.getCurrentUser().getId(), 1,
-										itemId);
+								addToFavorite(util.getCurrentUser().getId(), 1, itemId);
 								adapter.close();
 							}
 							if (item.getTitle().equals("کپی")) {
@@ -405,15 +394,12 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 							if (item.getTitle().equals("گزارش تخلف")) {
 
 								if (util.getCurrentUser() != null)
-									util.reportAbuse(userIdsender, 1, itemId,
-											t, 0);
+									util.reportAbuse(userIdsender, 1, itemId, t, 0);
 								else
-									Toast.makeText(context,
-											"ابتدا باید وارد شوید", 0).show();
+									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}
 							if (item.getTitle().equals("حذف")) {
-								if (util.getCurrentUser() != null
-										&& util.getCurrentUser().getId() == userIdsender) {
+								if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender) {
 									// deleteItems(itemId);
 								} else {
 
@@ -522,11 +508,9 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 				adapter.SetSeen("Post", ItemId, "1");
 				adapter.close();
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				PostFragment fragment = new PostFragment();
-				trans.setCustomAnimations(R.anim.pull_in_left,
-						R.anim.push_out_right);
+				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(ItemId));
 				fragment.setArguments(bundle);
@@ -599,11 +583,9 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 				adapter.SetSeen("Post", ItemId, "1");
 				adapter.close();
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				PostFragment fragment = new PostFragment();
-				trans.setCustomAnimations(R.anim.pull_in_left,
-						R.anim.push_out_right);
+				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(ItemId));
 				fragment.setArguments(bundle);
@@ -623,22 +605,28 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 			public void onClick(View v) {
 
 				if (postImage.getDrawable() != null) {
-					Bitmap bitmapHeader = ((BitmapDrawable) postImage
-							.getDrawable()).getBitmap();
-					byte[] ImageConvertedToByte = Utility
-							.CompressBitmap(bitmapHeader);
+					Bitmap bitmapHeader = ((BitmapDrawable) postImage.getDrawable()).getBitmap();
+					byte[] ImageConvertedToByte = Utility.CompressBitmap(bitmapHeader);
 					// Bitmap image=((BitmapDrawable)
 					// postImage.getDrawable()).getBitmap();
 					// Drawable myDrawable = postImage.getDrawable();
-					DialogShowImage showImageDialog = new DialogShowImage(
-							context, ImageConvertedToByte, "");
+					DialogShowImage showImageDialog = new DialogShowImage(context, ImageConvertedToByte, "");
 					showImageDialog.show();
 				}
 			}
 		});
 
-		convertView.setTag(person1.getUserId() + "");
+		convertView.setTag(person1.getPostId() + "");
 		// Parent = convertView;
+		
+		TextView countVisit = (TextView)convertView.findViewById(R.id.countVisit);
+		adapter.open();
+		Post pos = adapter.getPostItembyid(person1.getPostId());
+		countVisit.setText(pos.getCountView()+"");
+		adapter.close();
+		
+		
+		
 		return convertView;
 	}
 
@@ -650,28 +638,23 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 		}
 		try {
 			int id = Integer.valueOf(output);
-			LinearLayout parentLayout = (LinearLayout) Parent
-					.findViewWithTag(postNumber);
-			LinearLayout likeTitle = (LinearLayout) parentLayout
-					.findViewById(R.id.liketitleTopic);
+//			LinearLayout parentLayout = (LinearLayout) Parent.findViewWithTag(postNumber);
+//			LinearLayout likeTitle = (LinearLayout) parentLayout.findViewById(R.id.liketitleTopic);
 
 			adapter.open();
 			if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
 				adapter.deleteLikeFromPost(CurrentUser.getId(), postNumber);
 
-				likeTitle.setBackgroundResource(R.drawable.like_froum_off);
+				likeIcon.setBackgroundResource(R.drawable.like_froum_off);
 
 			} else {
-				adapter.insertLikeInPostToDb(id, CurrentUser.getId(),
-						postNumber, serverDate, 0);
+				adapter.insertLikeInPostToDb(id, CurrentUser.getId(), postNumber, serverDate, 0);
 
-				likeTitle.setBackgroundResource(R.drawable.like_froum);
+				likeIcon.setBackgroundResource(R.drawable.like_froum_on);
 			}
 
-			TextView likeCountPost = (TextView) likeTitle
-					.findViewById(R.id.countLikeInFroumTitle);
-			likeCountPost.setText(adapter.LikeInPost_count(postNumber)
-					.toString());
+//			TextView countLikePost = (TextView)v.findViewById(R.id.countLikeInFroumTitle);
+			countLikePost.setText(adapter.LikeInPost_count(postNumber).toString());
 
 			adapter.close();
 			if (ringProgressDialog != null) {
@@ -679,9 +662,7 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 			}
 
 		} catch (NumberFormatException ex) {
-			if (output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 				adapter.open();
 				if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
 					params = new LinkedHashMap<String, String>();
@@ -694,8 +675,7 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 
 					deleting.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -731,8 +711,7 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 
 					saving.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -756,8 +735,7 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 				adapter.close();
 
 			} else {
-				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 			}
 		}
 
@@ -802,12 +780,10 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline>
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
 
 		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
-			Toast.makeText(context,
-					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+			Toast.makeText(context, " قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
 		} else {
 			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
-			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0)
-					.show();
+			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0).show();
 		}
 	}
 }

@@ -36,6 +36,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
                 android:text="بیشترین پسند از صفحات"
+                            android:textSize="@dimen/size_item_list"
+                
                 android:textColor="@color/transparent" />
         </RelativeLayout>
 
@@ -68,6 +70,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
+                            android:textSize="@dimen/size_item_list"
+                
                 android:text="بیشترین پسند از مطالب"
                 android:textColor="@color/transparent" />
         </RelativeLayout>
@@ -101,6 +105,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
+                            android:textSize="@dimen/size_item_list"
+                
                 android:text="بیشترین پسند از مقالات"
                 android:textColor="@color/transparent" />
         </RelativeLayout>

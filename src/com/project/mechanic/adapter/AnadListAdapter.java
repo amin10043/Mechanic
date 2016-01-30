@@ -373,6 +373,10 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 		// });
 
 		// dia.dismiss();
+		
+		TextView countVisit = (TextView)convertView.findViewById(R.id.getTicketCountVisit);
+		
+		countVisit.setText(tempItem.getCountView()+"");
 
 		return convertView;
 

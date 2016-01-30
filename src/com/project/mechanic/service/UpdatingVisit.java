@@ -1,5 +1,7 @@
 package com.project.mechanic.service;
 
+import java.util.Map;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
@@ -10,7 +12,7 @@ import android.os.AsyncTask;
 
 import com.project.mechanic.inter.AsyncInterfaceVisit;
 
-public class UpdatingVisit extends AsyncTask<String, Integer, String> {
+public class UpdatingVisit extends AsyncTask<Map<String, String>, Integer, String> {
 
 	public String SOAP_ACTION = "http://tempuri.org/";
 
@@ -28,8 +30,9 @@ public class UpdatingVisit extends AsyncTask<String, Integer, String> {
 	}
 
 	@Override
-	protected String doInBackground(String... arg0) {
-		OPERATION_NAME = "getAll" + arg0[0];
+	protected String doInBackground(Map<String, String>... arg0) {
+		Map<String,String> map = arg0[0];
+		OPERATION_NAME = "getAll" + map.get("tableName");
 		SOAP_ACTION += OPERATION_NAME;
 
 		try {
@@ -38,13 +41,13 @@ public class UpdatingVisit extends AsyncTask<String, Integer, String> {
 			PropertyInfo pi = null;
 			pi = new PropertyInfo();
 			pi.setName("objectId");
-			pi.setValue(arg0[1]);
+			pi.setValue(map.get("objectId"));
 			pi.setType(Integer.class);
 			request.addProperty(pi);
 
 			pi = new PropertyInfo();
 			pi.setName("typeId");
-			pi.setValue(arg0[2]);
+			pi.setValue(map.get("typeId"));
 			pi.setType(Integer.class);
 			request.addProperty(pi);
 			

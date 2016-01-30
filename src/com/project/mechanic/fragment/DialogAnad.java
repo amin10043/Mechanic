@@ -264,7 +264,7 @@ public class DialogAnad extends Dialog implements AsyncInterface,
 
 					params.put("TableName", "Ticket");
 					params.put("Title", dialog_anad_et1.getText().toString());
-					//params.put("Desc", dialog_anad_et2.getText().toString());
+					params.put("[Desc]", dialog_anad_et2.getText().toString());
 					params.put("UserId", String.valueOf(u.getId()));
 					params.put("TypeId", String.valueOf(ticketTypeID));
 					params.put("ProvinceId", String.valueOf(ProvinceId));

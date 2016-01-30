@@ -11,6 +11,8 @@ public class Post {
 	String Date;
 	int seenBefore;
 	String Photo;
+	int CountView;
+	int ObjectId;
 
 	public int getId() {
 		return Id;
@@ -84,9 +86,24 @@ public class Post {
 		this.Photo = Photo;
 	}
 
-	public Post(int id, int userId, String description, int seen,
-			String serverDate, int submit, String date, int seenBefore,
-			String photo) {
+	public int getCountView() {
+		return CountView;
+	}
+
+	public int getObjectId() {
+		return ObjectId;
+	}
+
+	public void setObjectId(int objectId) {
+		ObjectId = objectId;
+	}
+
+	public void setCountView(int countView) {
+		CountView = countView;
+	}
+
+	public Post(int id, int userId, String description, int seen, String serverDate, int submit, String date,
+			int seenBefore, String photo, int CountView, int ObjectId) {
 		super();
 		Id = id;
 		UserId = userId;
@@ -97,6 +114,8 @@ public class Post {
 		Date = date;
 		Photo = photo;
 		this.seenBefore = seenBefore;
+		this.CountView = CountView;
+		this.ObjectId = ObjectId;
 	}
 
 	public int compareTo(Post comparePost) {

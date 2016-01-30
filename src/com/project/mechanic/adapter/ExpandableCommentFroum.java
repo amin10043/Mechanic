@@ -34,6 +34,7 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Users;
@@ -124,8 +125,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.main_icon_reply);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
+		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
+		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 //		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 //		lp.setMargins(5, 5, 5, 5);
 		ReplyerPic.setLayoutParams(lp);
@@ -394,8 +395,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.icon_header_comment_froum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
+		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
+		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 //		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 //		lp.setMargins(5, 5, 10, 5);
 		profileImage.setLayoutParams(lp);

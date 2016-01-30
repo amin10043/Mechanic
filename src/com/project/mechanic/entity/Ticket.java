@@ -28,6 +28,15 @@ public class Ticket implements Comparable<Ticket> {
 	int Day;
 	String imagePath;
 	String ImageServerDate;
+	int CountView;
+
+	public int getCountView() {
+		return CountView;
+	}
+
+	public void setCountView(int countView) {
+		CountView = countView;
+	}
 
 	public int getSeenBefore() {
 		return seenBefore;
@@ -228,7 +237,7 @@ public class Ticket implements Comparable<Ticket> {
 			int phone, int fax, int provinceid, String uname, String uemail,
 			String uphone, String ufax, String uadress, byte[] uimage,
 			String umobile, int seen, int submit, int seenBefore, int day,
-			String imagePath, String ImageServerDate) {
+			String imagePath, String ImageServerDate , int CountView) {
 		super();
 		Id = id;
 		Title = title;
@@ -256,6 +265,7 @@ public class Ticket implements Comparable<Ticket> {
 		Day = day;
 		this.imagePath = imagePath;
 		this.ImageServerDate = ImageServerDate;
+		this.CountView = CountView;
 
 	}
 

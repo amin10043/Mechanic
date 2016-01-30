@@ -2,203 +2,169 @@ package com.project.mechanic.entity;
 
 public class PostTimeline {
 
-	int PostId;
-	int PostUserId;
-	String PostDescription;
-	int PostSeen;
-	String PostServerDate;
-	int PostSubmit;
-	String PostDate;
-	int PostseenBefore;
-	String PostPhoto;
+ int PostId;
+ int PostUserId;
+ String PostDescription;
+ int PostSeen;
+ String PostServerDate;
+ int PostSubmit;
+ String PostDate;
+ int PostseenBefore;
+ String PostPhoto;
 
-	int ObjectId;
-	String ObjectImagePath2;
-	String ObjectName;
+ int ObjectId;
+ String ObjectImagePath2;
+ String ObjectName;
 
-	public String getObjectName() {
-		return ObjectName;
-	}
+ int LikeInObjectId;
+ int LikeInObjectUserId;
+ int LikeInObjectpaperId;
 
-	public void setObjectName(String objectName) {
-		ObjectName = objectName;
-	}
+ public PostTimeline(int PostId, int PostUserId, String PostDescription,
+   int PostSeen, String PostServerDate, int PostSubmit,
+   String PostDate, int PostseenBefore, String PostPhoto,
 
-	int LikeInObjectId;
-	int LikeInObjectUserId;
-	int LikeInObjectpaperId;
+   int ObjectId, String ObjectImagePath2, String ObjectName,
 
-	int UserId;
-	String UserName;
-	String UserImagePath;
+   int LikeInObjectId, int LikeInObjectUserId, int LikeInObjectpaperId) {
 
-	public PostTimeline(int PostId, int PostUserId, String PostDescription,
-			int PostSeen, String PostServerDate, int PostSubmit,
-			String PostDate, int PostseenBefore, String PostPhoto,
-			int ObjectId, String ObjectImagePath2, String ObjectName,
+  this.PostId = PostId;
+  this.PostUserId = PostUserId;
+  this.PostDescription = PostDescription;
+  this.PostSeen = PostSeen;
+  this.PostServerDate = PostServerDate;
+  this.PostSubmit = PostSubmit;
+  this.PostDate = PostDate;
+  this.PostseenBefore = PostseenBefore;
+  this.PostPhoto = PostPhoto;
 
-			int LikeInObjectId, int LikeInObjectUserId,
-			int LikeInObjectpaperId,
+  this.ObjectId = ObjectId;
+  this.ObjectImagePath2 = ObjectImagePath2;
+  this.ObjectName = ObjectName;
 
-			int UserId, String UserName, String UserImagePath) {
+  this.LikeInObjectId = LikeInObjectId;
+  this.LikeInObjectUserId = LikeInObjectUserId;
+  this.LikeInObjectpaperId = LikeInObjectpaperId;
 
-		this.PostId = PostId;
-		this.PostUserId = PostUserId;
-		this.PostDescription = PostDescription;
-		this.PostSeen = PostSeen;
-		this.PostServerDate = PostServerDate;
-		this.PostSubmit = PostSubmit;
-		this.PostDate = PostDate;
-		this.PostseenBefore = PostseenBefore;
-		this.PostPhoto = PostPhoto;
+ }
 
-		this.ObjectId = ObjectId;
-		this.ObjectImagePath2 = ObjectImagePath2;
-		this.ObjectName = ObjectName;
+ public int getPostId() {
+  return PostId;
+ }
 
-		this.LikeInObjectId = LikeInObjectId;
-		this.LikeInObjectUserId = LikeInObjectUserId;
-		this.LikeInObjectpaperId = LikeInObjectpaperId;
+ public void setPostId(int postId) {
+  PostId = postId;
+ }
 
-		this.UserId = UserId;
-		this.UserName = UserName;
-		this.UserImagePath = UserImagePath;
-	}
+ public int getPostUserId() {
+  return PostUserId;
+ }
 
-	public int getPostId() {
-		return PostId;
-	}
+ public void setPostUserId(int postUserId) {
+  PostUserId = postUserId;
+ }
 
-	public void setPostId(int postId) {
-		PostId = postId;
-	}
+ public String getPostDescription() {
+  return PostDescription;
+ }
 
-	public int getPostUserId() {
-		return PostUserId;
-	}
+ public void setPostDescription(String postDescription) {
+  PostDescription = postDescription;
+ }
 
-	public void setPostUserId(int postUserId) {
-		PostUserId = postUserId;
-	}
+ public int getPostSeen() {
+  return PostSeen;
+ }
 
-	public String getPostDescription() {
-		return PostDescription;
-	}
+ public void setPostSeen(int postSeen) {
+  PostSeen = postSeen;
+ }
 
-	public void setPostDescription(String postDescription) {
-		PostDescription = postDescription;
-	}
+ public String getPostServerDate() {
+  return PostServerDate;
+ }
 
-	public int getPostSeen() {
-		return PostSeen;
-	}
+ public void setPostServerDate(String postServerDate) {
+  PostServerDate = postServerDate;
+ }
 
-	public void setPostSeen(int postSeen) {
-		PostSeen = postSeen;
-	}
+ public int getPostSubmit() {
+  return PostSubmit;
+ }
 
-	public String getPostServerDate() {
-		return PostServerDate;
-	}
+ public void setPostSubmit(int postSubmit) {
+  PostSubmit = postSubmit;
+ }
 
-	public void setPostServerDate(String postServerDate) {
-		PostServerDate = postServerDate;
-	}
+ public String getPostDate() {
+  return PostDate;
+ }
 
-	public int getPostSubmit() {
-		return PostSubmit;
-	}
+ public void setPostDate(String postDate) {
+  PostDate = postDate;
+ }
 
-	public void setPostSubmit(int postSubmit) {
-		PostSubmit = postSubmit;
-	}
+ public int getPostseenBefore() {
+  return PostseenBefore;
+ }
 
-	public String getPostDate() {
-		return PostDate;
-	}
+ public void setPostseenBefore(int postseenBefore) {
+  PostseenBefore = postseenBefore;
+ }
 
-	public void setPostDate(String postDate) {
-		PostDate = postDate;
-	}
+ public String getPostPhoto() {
+  return PostPhoto;
+ }
 
-	public int getPostseenBefore() {
-		return PostseenBefore;
-	}
+ public void setPostPhoto(String postPhoto) {
+  PostPhoto = postPhoto;
+ }
 
-	public void setPostseenBefore(int postseenBefore) {
-		PostseenBefore = postseenBefore;
-	}
+ public int getObjectId() {
+  return ObjectId;
+ }
 
-	public String getPostPhoto() {
-		return PostPhoto;
-	}
+ public void setObjectId(int objectId) {
+  ObjectId = objectId;
+ }
 
-	public void setPostPhoto(String postPhoto) {
-		PostPhoto = postPhoto;
-	}
+ public String getObjectImagePath2() {
+  return ObjectImagePath2;
+ }
 
-	public int getObjectId() {
-		return ObjectId;
-	}
+ public void setObjectImagePath2(String objectImagePath2) {
+  ObjectImagePath2 = objectImagePath2;
+ }
 
-	public void setObjectId(int objectId) {
-		ObjectId = objectId;
-	}
+ public int getLikeInObjectId() {
+  return LikeInObjectId;
+ }
 
-	public String getObjectImagePath2() {
-		return ObjectImagePath2;
-	}
+ public void setLikeInObjectId(int likeInObjectId) {
+  LikeInObjectId = likeInObjectId;
+ }
 
-	public void setObjectImagePath2(String objectImagePath2) {
-		ObjectImagePath2 = objectImagePath2;
-	}
+ public int getLikeInObjectUserId() {
+  return LikeInObjectUserId;
+ }
 
-	public int getLikeInObjectId() {
-		return LikeInObjectId;
-	}
+ public void setLikeInObjectUserId(int likeInObjectUserId) {
+  LikeInObjectUserId = likeInObjectUserId;
+ }
 
-	public void setLikeInObjectId(int likeInObjectId) {
-		LikeInObjectId = likeInObjectId;
-	}
+ public int getLikeInObjectpaperId() {
+  return LikeInObjectpaperId;
+ }
 
-	public int getLikeInObjectUserId() {
-		return LikeInObjectUserId;
-	}
+ public void setLikeInObjectpaperId(int likeInObjectpaperId) {
+  LikeInObjectpaperId = likeInObjectpaperId;
+ }
 
-	public void setLikeInObjectUserId(int likeInObjectUserId) {
-		LikeInObjectUserId = likeInObjectUserId;
-	}
+ public String getObjectName() {
+  return ObjectName;
+ }
 
-	public int getLikeInObjectpaperId() {
-		return LikeInObjectpaperId;
-	}
-
-	public void setLikeInObjectpaperId(int likeInObjectpaperId) {
-		LikeInObjectpaperId = likeInObjectpaperId;
-	}
-
-	public int getUserId() {
-		return UserId;
-	}
-
-	public void setUserId(int userId) {
-		UserId = userId;
-	}
-
-	public String getUserName() {
-		return UserName;
-	}
-
-	public void setUserName(String userName) {
-		UserName = userName;
-	}
-
-	public String getUserImagePath() {
-		return UserImagePath;
-	}
-
-	public void setUserImagePath(String userImagePath) {
-		UserImagePath = userImagePath;
-	}
-
+ public void setObjectName(String objectName) {
+  ObjectName = objectName;
+ }
 }

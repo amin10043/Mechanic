@@ -36,6 +36,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
+                            android:textSize="@dimen/size_item_list"
+                
                 android:text="معرفی امکانات نرم افزار"
                 android:textColor="@color/transparent" />
         </RelativeLayout>
@@ -68,6 +70,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                            android:textSize="@dimen/size_item_list"
+                
                 android:layout_marginRight="5dp"
                 android:text="برترین ها"
                 android:textColor="@color/transparent" />
@@ -101,6 +105,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                            android:textSize="@dimen/size_item_list"
+                
                 android:layout_marginRight="5dp"
                 android:text="اطلاع رسانی"
                 android:textColor="@color/transparent" />

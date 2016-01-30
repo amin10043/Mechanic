@@ -29,7 +29,7 @@ public class SlideMenuAdapter extends BaseAdapter {
 
 	Context context;
 
-	String[] slideitem = {/* "",*/ "صفحه اصلی", "صفحه شخصی", "علاقه مندی ها",
+	String[] slideitem = {/* "",*/ "صفحه اصلی", "مدیریت شخصی", "علاقه مندی ها",
 			"پشتیبانی آنلاین", "درباره ما"/*, "خروج"*/ };
 	int[] icon = {/* R.drawable.mechanical_logo,*/ R.drawable.ic_home,
 			R.drawable.ic_personal, R.drawable.ic_bookmark, R.drawable.phone2,

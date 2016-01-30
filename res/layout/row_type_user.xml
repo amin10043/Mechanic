@@ -20,6 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:text="کاربرانی که صفحه شما را دنبال می کنند"
+            android:textSize="@dimen/size_item_list"
             android:textColor="@color/transparent" />
 
         <ImageView

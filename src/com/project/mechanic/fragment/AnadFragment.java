@@ -47,25 +47,29 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.AnadListAdapter;
+import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.AsyncInterfaceVisit;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingImage;
+import com.project.mechanic.service.UpdatingVisit;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 @SuppressLint("HandlerLeak")
-public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncInterface, CommInterface {
+public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncInterface, CommInterface , AsyncInterfaceVisit {
 
 	DataBaseAdapter dbAdapter;
 	View rootView, LoadMoreFooter;
@@ -130,6 +134,8 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 	Anad anadItem;
 	// boolean startShowImageAfterDownload = false;
 	List<ImageView> imageList = new ArrayList<ImageView>();
+	int visitCounter = 0;
+	Ticket ticketItem;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -149,11 +155,12 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 		currentTime();
 
 		getTicketTypeIdAndProvinceId();
-
+		
 		// get date from server
 		RunServiceDate();
 
 		fillAnadListTicketList();
+		getCountVisitFromServer();
 
 		createTicket();
 
@@ -961,4 +968,47 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 		return result;
 
 	}
+
+	private void getCountVisitFromServer() {
+		
+		List<Ticket> items = ValidTicket(ticketList);
+
+		if (visitCounter < items.size()) {
+
+			dbAdapter.open();
+			ticketItem = dbAdapter.getTicketById(ticketList.get(visitCounter).getId());
+			dbAdapter.close();
+
+			UpdatingVisit updateVisit = new UpdatingVisit(getActivity());
+			updateVisit.delegate = AnadFragment.this;
+			Map<String, String> serv = new LinkedHashMap<String, String>();
+
+			serv.put("tableName", "Visit");
+			serv.put("objectId", String.valueOf(ticketItem.getId()));
+			serv.put("typeId", StaticValues.TypeTicketVisit + "");
+			updateVisit.execute(serv);
+
+		} else {
+			if (getActivity() != null) {
+
+				fillAnadListTicketList();
+			}
+		}
+
+	}
+
+	@Override
+	public void processFinishVisit(String output) {
+		
+		if (!output.contains("Exception")) {
+
+			dbAdapter.open();
+			dbAdapter.updateCountView("Ticket", ticketItem.getId(), Integer.valueOf(output));
+			dbAdapter.close();
+		}
+		visitCounter++;
+		getCountVisitFromServer();
+		
+	}
+
 }

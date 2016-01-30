@@ -34,6 +34,7 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Paper;
@@ -198,6 +199,19 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 				etebar.setVisibility(View.GONE);
 
+				TextView follwers = (TextView) convertView.findViewById(R.id.followers);
+
+				TextView views = (TextView) convertView.findViewById(R.id.views);
+				adapter.open();
+
+				com.project.mechanic.entity.Object obj = adapter.getObjectbyid(pd.getObjectId());
+
+				views.setText(obj.getCountView() + "");
+
+				int followersCount = adapter.LikeInObject_count(pd.getObjectId(), 0);
+
+				follwers.setText(followersCount + "");
+				adapter.close();
 				convertView.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -456,6 +470,13 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				txt1.setTypeface(util.SetFontCasablanca());
 				txt2.setTypeface(util.SetFontCasablanca());
 
+				TextView views = (TextView) convertView.findViewById(R.id.views);
+				adapter.open();
+				Paper pa = adapter.getPaperItembyid(pd.getPaperId());
+
+				views.setText(pa.getCountView() + "");
+				adapter.close();
+
 				convertView.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -572,6 +593,13 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				txt1.setTypeface(util.SetFontCasablanca());
 				txt2.setTypeface(util.SetFontCasablanca());
 
+				TextView views = (TextView) convertView.findViewById(R.id.views);
+				adapter.open();
+
+				Froum fr = adapter.getFroumItembyid(pd.getFroumId());
+
+				views.setText(fr.getCountView() + "");
+				adapter.close();
 				convertView.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -795,34 +823,35 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				TextView lable1 = (TextView) convertView.findViewById(R.id.lable_etebar);
 				TextView lable2 = (TextView) convertView.findViewById(R.id.lable2);
 
-//				String commitDate = a.getDate(); // tarikhe ijad safhe
-//
-//				if (commitDate != null && !"".equals(commitDate)) {
-//					final SharedPreferences currentTime = context.getSharedPreferences("time", 0);
-//
-//					String time = currentTime.getString("time", "-1");
-//
-//					int diff = util.differentTwoDate(commitDate, time);
-//
-//					baghiMandeh.setText(diff + "");
-//
-//					ImageView imgBi = (ImageView) convertView.findViewById(R.id.aks_bi_etebar);
-//
-//					if (diff <= 0) {
-//						imgBi.setVisibility(View.VISIBLE);
-//						imgBi.setLayoutParams(lp);
-//					}
-//
-//				} else {
-//					baghiMandeh.setText("نا معلوم");
-//				}
+				// String commitDate = a.getDate(); // tarikhe ijad safhe
+				//
+				// if (commitDate != null && !"".equals(commitDate)) {
+				// final SharedPreferences currentTime =
+				// context.getSharedPreferences("time", 0);
+				//
+				// String time = currentTime.getString("time", "-1");
+				//
+				// int diff = util.differentTwoDate(commitDate, time);
+				//
+				// baghiMandeh.setText(diff + "");
+				//
+				// ImageView imgBi = (ImageView)
+				// convertView.findViewById(R.id.aks_bi_etebar);
+				//
+				// if (diff <= 0) {
+				// imgBi.setVisibility(View.VISIBLE);
+				// imgBi.setLayoutParams(lp);
+				// }
+				//
+				// } else {
+				// baghiMandeh.setText("نا معلوم");
+				// }
 
-				 baghiMandeh.setVisibility(View.GONE);
-				 lable1.setVisibility(View.GONE);
-				 lable2.setVisibility(View.GONE);
-				 report.setVisibility(View.GONE);
+				baghiMandeh.setVisibility(View.GONE);
+				lable1.setVisibility(View.GONE);
+				lable2.setVisibility(View.GONE);
+				report.setVisibility(View.GONE);
 
-				 
 				report.setOnClickListener(new OnClickListener() {
 
 					@Override

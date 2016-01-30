@@ -2,7 +2,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white" >
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:gravity="center" >
+
+    <LinearLayout
+        android:id="@+id/settingsLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutabcd"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="invisible" >
+
+        <ImageView
+            android:id="@+id/reportImagereplye"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/down_arrow" />
+
+        <TextView
+            android:id="@+id/date_replyede"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:gravity="left|center_vertical"
+            android:text="Date"
+            android:textColor="@color/transparent" />
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/layoutabcd"
@@ -51,87 +82,11 @@
                 android:id="@+id/icon_reply_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/circle_drawable"
+                android:background="@drawable/circle_shape_froum"
                 android:scaleType="fitXY"
                 android:src="@drawable/no_img_profile" />
         </RelativeLayout>
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/likedislike"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layoutabcd"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/cmffff"
-        android:orientation="horizontal"
-        android:visibility="invisible" >
-
-        <ImageButton
-            android:id="@+id/positive_img"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/positive_off" />
-
-        <TextView
-            android:id="@+id/countCommentFroum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:text="0"
-            android:textColor="@color/transparent" />
-
-        <ImageButton
-            android:id="@+id/negative_img"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/negative_off" />
-
-        <TextView
-            android:id="@+id/countdislikecommentFroum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:text="0"
-            android:textColor="@color/transparent" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/cmffff"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layoutabcd"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/cmffff"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="invisible" >
-
-        <LinearLayout
-            android:id="@+id/addCommentToTopic"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/comment_fr"
-            android:gravity="center" >
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/numberOfCommentTopic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal"
-            android:text="n"
-            android:textColor="@color/transparent"
-            android:textSize="12dp" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/settingsLayout"
@@ -145,8 +100,8 @@
             android:id="@+id/reportImagereply"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
             android:layout_gravity="left"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/down_arrow" />
 
         <TextView

@@ -20,22 +20,26 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.FroumtitleListadapter;
+import com.project.mechanic.adapter.PapertitleListAdapter;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.AsyncInterfaceVisit;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingImage;
+import com.project.mechanic.service.UpdatingVisit;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class FroumtitleFragment extends Fragment implements GetAsyncInterface, CommInterface, AsyncInterface {
+public class FroumtitleFragment extends Fragment implements GetAsyncInterface, CommInterface, AsyncInterface , AsyncInterfaceVisit {
 	private ImageButton addtitle;
 	private DialogfroumTitle dialog;
 	DialogcmtInfroum dialog2;
@@ -65,6 +69,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface, C
 
 	SwipeRefreshLayout swipeLayout;
 	View LoadMoreFooter;
+	Froum f;
+	int visitCounter = 0;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -225,6 +231,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface, C
 			util.ShowFooterAgahi(getActivity(), true, 7);
 
 		}
+		
+		getCountVisitFromServer();
 		return view;
 	}
 
@@ -348,5 +356,43 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface, C
 			Toast.makeText(getActivity(), "خطا در بروز رسانی داده های سرور", Toast.LENGTH_SHORT).show();
 		}
 
+	}
+
+	private void getCountVisitFromServer() {
+
+		if (visitCounter < mylist.size()) {
+
+			mdb.open();
+			f = mylist.get(visitCounter);
+			mdb.close();
+
+			UpdatingVisit updateVisit = new UpdatingVisit(getActivity());
+			updateVisit.delegate = FroumtitleFragment.this;
+			Map<String, String> serv = new LinkedHashMap<String, String>();
+
+			serv.put("tableName", "Visit");
+			serv.put("objectId", String.valueOf(f.getId()));
+			serv.put("typeId", StaticValues.TypeFroumVist + "");
+			updateVisit.execute(serv);
+
+		} else {
+			if (getActivity() != null) {
+
+				updateView();
+			}
+		}
+
+	}
+
+	@Override
+	public void processFinishVisit(String output) {
+		if (!output.contains("Exception")) {
+
+			mdb.open();
+			mdb.updateCountView("Froum", f.getId(), Integer.valueOf(output));
+			mdb.close();
+		}
+		visitCounter++;
+		getCountVisitFromServer();
 	}
 }

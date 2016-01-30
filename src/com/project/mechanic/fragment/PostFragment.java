@@ -43,24 +43,30 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.adapter.ExpandableCommentPost;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.CommentInPost;
 import com.project.mechanic.entity.LikeInPost;
+import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Post;
+import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.entity.Visit;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
+import com.project.mechanic.inter.VisitSaveInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.SavingVisit;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class PostFragment extends Fragment implements AsyncInterface, GetAsyncInterface, CommInterface {
+public class PostFragment extends Fragment implements AsyncInterface, GetAsyncInterface, CommInterface , VisitSaveInterface {
 
 	/**/
 	Button dfragbutton;
@@ -71,7 +77,7 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 	int ObjectID;
 	/**/
 	int IDcurrentUser, itemId;
-
+	List<Visit> visitList ;
 	private File mFileTemp;
 	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
 	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201, CROPING_CODE = 301;
@@ -83,7 +89,7 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike, nametxt;
 	LinearLayout /* addComment, */ likeTopic;
 	ImageButton sharebtn;
-	ImageView profileImg;
+	ImageView profileImg, icLike;
 
 	ImageView postImage;
 
@@ -126,6 +132,11 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 	UpdatingImage updating;
 	Map<String, String> maps;
 	boolean LikeOrComment; // like == true & comment == false
+	boolean isFinish = false, saveVisitFalg;
+	int counterVisit = 0;
+	String currentTime = "";
+	int ItemId, typeId;
+	boolean IsPost = true;
 
 	@SuppressLint("InflateParams")
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceStdataate) {
@@ -141,6 +152,8 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 		missedIds = new ArrayList<Integer>();
 
 		header = getActivity().getLayoutInflater().inflate(R.layout.header_expandable, null);
+
+		icLike = (ImageView) header.findViewById(R.id.likeIcon);
 
 		/**/
 		if (getArguments().getString("Id") != null)
@@ -209,16 +222,18 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 
 		topics = adapter.getPostItembyid(postid);
 		Users u = adapter.getUserbyid(topics.getUserId());
+		Object obj = adapter.getObjectbyid(topics.getObjectId());
+
 		if (u != null) {
 			userId = u.getId();
 
-			nametxt.setText(u.getName());
+			nametxt.setText(obj.getName());
 			LinearLayout rl = (LinearLayout) header.findViewById(R.id.profileLinearcommenterinContinue);
 
 			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
 
-			lp.width = util.getScreenwidth() / 7;
-			lp.height = util.getScreenwidth() / 7;
+			lp.width = (int) (util.getScreenwidth() / StaticValues.RateImagePostFragmentPage);
+			lp.height = (int) (util.getScreenwidth() / StaticValues.RateImagePostFragmentPage);
 			profileImg.setLayoutParams(lp);
 
 			if (u.getImagePath() == null) {
@@ -369,16 +384,16 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 		exlistview.setAdapter(exadapter);
 
 		if (CurrentUser == null) {
-			likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+			icLike.setBackgroundResource(R.drawable.like_froum_off);
 			// count.setBackgroundResource(R.drawable.count_like_off);
 		} else {
 			if (adapter.isUserLikedPost(CurrentUser.getId(), postid)) {
-				likeTopic.setBackgroundResource(R.drawable.like_froum_on);
+				icLike.setBackgroundResource(R.drawable.like);
 				// count.setBackgroundResource(R.drawable.count_like);
 
 			} else {
 
-				likeTopic.setBackgroundResource(R.drawable.like_froum_off);
+				icLike.setBackgroundResource(R.drawable.like_froum_off);
 				// count.setBackgroundResource(R.drawable.count_like_off);
 
 			}
@@ -616,15 +631,36 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 
 			@Override
 			public void onClick(View arg0) {
-				adapter.open();
-				adapter.insertCommentInPosttoDb(id, util.inputComment(getActivity()), postid, CurrentUser.getId(),
-						serverDate, commentId);
 
-				adapter.close();
+				if (CurrentUser == null) {
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
+				} else {
 
-				util.ToEmptyComment(getActivity());
-				util.ReplyLayout(getActivity(), "", false);
-				updateList();
+					if ("".equals(util.inputComment(getActivity()))) {
+						Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0).show();
+					} else {
+
+						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+						ringProgressDialog.setCancelable(true);
+						date = new ServerDate(getActivity());
+						date.delegate = PostFragment.this;
+						date.execute("");
+						LikeOrComment = false;
+
+					}
+				}
+
+				// adapter.open();
+				// adapter.insertCommentInPosttoDb(id,
+				// util.inputComment(getActivity()), postid,
+				// CurrentUser.getId(),
+				// serverDate, commentId);
+				//
+				// adapter.close();
+
+				// util.ToEmptyComment(getActivity());
+				// util.ReplyLayout(getActivity(), "", false);
+				// updateList();
 			}
 		});
 		getPicture.setOnClickListener(new OnClickListener() {
@@ -634,6 +670,13 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 			}
 		});
 
+		TextView countVisit = (TextView) header.findViewById(R.id.countVisit);
+		checkInternet();
+		adapter.open();
+		Post pos = adapter.getPostItembyid(postid);
+
+		countVisit.setText(pos.getCountView() + "");
+		adapter.close();
 		return view;
 	}
 
@@ -855,149 +898,183 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 
 	@Override
 	public void processFinish(String output) {
+		Toast.makeText(getActivity(), output, 0).show();
+		if (ringProgressDialog != null)
+			ringProgressDialog.dismiss();
 
-		adapter.open();
-		int id = -1;
-		try {
-			id = Integer.valueOf(output);
+		if (!output.contains("java.io.EOFException")) {
+			if (IsPost == true) {
 
-			if (LikeOrComment == true) {
-				if (adapter.isUserLikedPost(CurrentUser.getId(), postid)) {
-					adapter.deleteLikeFromPost(CurrentUser.getId(), postid);
-					likeTopic.setBackgroundResource(R.drawable.like_off);
-					count.setBackgroundResource(R.drawable.count_like_off);
+				if (saveVisitFalg == true) {
 
-					countLike.setText(adapter.LikeInPost_count(postid).toString());
-				} else {
-					adapter.insertLikeInPostToDb(id, CurrentUser.getId(), postid, serverDate, 0);
-					likeTopic.setBackgroundResource(R.drawable.like_on);
-					count.setBackgroundResource(R.drawable.count_like);
+//					if (counterVisit == 0)
+						currentTime = output;
+					sendVisit();
 
-					countLike.setText(adapter.LikeInPost_count(postid).toString());
-				}
+				} 
+				/*else {
+//					if (isFinish == true) {
+//						isFinish = false;
+//					} else
+//						return;
+				}*/
+
 			} else {
+				if (ringProgressDialog != null)
+					ringProgressDialog.dismiss();
+
 				adapter.open();
+				int id = -1;
+				try {
+					id = Integer.valueOf(output);
 
-				// adapter.insertCommentInPosttoDb(id,
-				// util.inputComment(getActivity()), postid,
-				// CurrentUser.getId(), serverDate, commentId);
-				//
-				// adapter.close();
-				// util.ToEmptyComment(getActivity());
-				if (commentId == 0)
-					expanding(exadapter.getGroupCount());
-				else {
-					expanding(gp);
+					if (LikeOrComment == true) {
+						if (adapter.isUserLikedPost(CurrentUser.getId(), postid)) {
+							adapter.deleteLikeFromPost(CurrentUser.getId(), postid);
+							icLike.setBackgroundResource(R.drawable.like_froum_off);
+							// count.setBackgroundResource(R.drawable.count_like_off);
 
-				}
+							countLike.setText(adapter.LikeInPost_count(postid).toString());
+						} else {
+							adapter.insertLikeInPostToDb(id, CurrentUser.getId(), postid, serverDate, 0);
+							icLike.setBackgroundResource(R.drawable.like);
+							// count.setBackgroundResource(R.drawable.count_like);
 
-			}
-			if (ringProgressDialog != null) {
-				ringProgressDialog.dismiss();
-			}
-		} catch (NumberFormatException ex) {
-			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
-
-				serverDate = output;
-
-				if (LikeOrComment == false) {
-
-					if (getActivity() != null) {
-						params = new LinkedHashMap<String, String>();
-
-						saving = new Saving(getActivity());
-						saving.delegate = PostFragment.this;
-
-						params.put("TableName", "CommentInPost");
-
-						params.put("Desk", util.inputComment(getActivity()));
-						params.put("PostId", String.valueOf(postid));
-						params.put("UserId", String.valueOf(CurrentUser.getId()));
-						params.put("CommentId", String.valueOf(commentId));
-
-						params.put("Date", output);
-						params.put("ModifyDate", output);
-						params.put("IsUpdate", "0");
-						params.put("Id", "0");
-
-						saving.execute(params);
-					}
-					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-
-				} else {
-
-					if (check == true) {
-						getUserFromServer(missedIds, controller);
-						return;
-					}
-
-					if (adapter.isUserLikedPost(CurrentUser.getId(), postid)) {
-
-						params = new LinkedHashMap<String, String>();
-						if (getActivity() != null) {
-
-							deleting = new Deleting(getActivity());
-							deleting.delegate = PostFragment.this;
-
-							params.put("TableName", "LikeInPost");
-							params.put("UserId", String.valueOf(CurrentUser.getId()));
-							params.put("PostId", String.valueOf(postid));
-
-							deleting.execute(params);
+							countLike.setText(adapter.LikeInPost_count(postid).toString());
 						}
 					} else {
-						params = new LinkedHashMap<String, String>();
-						if (getActivity() != null) {
+						adapter.open();
 
-							saving = new Saving(getActivity());
-							saving.delegate = PostFragment.this;
+						adapter.insertCommentInPosttoDb(id, util.inputComment(getActivity()), postid,
+								CurrentUser.getId(), serverDate, commentId);
 
-							params.put("TableName", "LikeInPost");
+						adapter.close();
+						util.ToEmptyComment(getActivity());
+						if (commentId == 0)
+							expanding(exadapter.getGroupCount());
+						else {
+							expanding(gp);
 
-							params.put("UserId", String.valueOf(CurrentUser.getId()));
-							params.put("PostId", String.valueOf(postid));
-							params.put("CommentId", "0");
-							params.put("Date", output);
-							params.put("IsUpdate", "0");
-							params.put("Id", "0");
+						}
 
-							saving.execute(params);
+					}
+					if (ringProgressDialog != null) {
+						ringProgressDialog.dismiss();
+					}
+				} catch (NumberFormatException ex) {
+					if (output != null && !(output.contains("Exception") || output.contains("java"))) {
+
+						serverDate = output;
+
+						if (LikeOrComment == false) {
+
+							if (getActivity() != null) {
+								params = new LinkedHashMap<String, String>();
+
+								saving = new Saving(getActivity());
+								saving.delegate = PostFragment.this;
+
+								params.put("TableName", "CommentInPost");
+
+								params.put("Description", util.inputComment(getActivity()));
+								params.put("PostId", String.valueOf(postid));
+								params.put("UserId", String.valueOf(CurrentUser.getId()));
+								params.put("CommentId", String.valueOf(commentId));
+
+								params.put("Date", output);
+								params.put("ModifyDate", output);
+								params.put("IsUpdate", "0");
+								params.put("Id", "0");
+
+								saving.execute(params);
+								IsPost= false;
+							}
+							ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+
+							ringProgressDialog.setCancelable(true);
+							new Thread(new Runnable() {
+
+								@Override
+								public void run() {
+
+									try {
+
+										Thread.sleep(10000);
+
+									} catch (Exception e) {
+
+									}
+								}
+							}).start();
+
+						} else {
+
+							if (check == true) {
+								getUserFromServer(missedIds, controller);
+								return;
+							}
+
+							if (adapter.isUserLikedPost(CurrentUser.getId(), postid)) {
+
+								params = new LinkedHashMap<String, String>();
+								if (getActivity() != null) {
+
+									deleting = new Deleting(getActivity());
+									deleting.delegate = PostFragment.this;
+
+									params.put("TableName", "LikeInPost");
+									params.put("UserId", String.valueOf(CurrentUser.getId()));
+									params.put("PostId", String.valueOf(postid));
+
+									deleting.execute(params);
+									IsPost= false;
+
+								}
+							} else {
+								params = new LinkedHashMap<String, String>();
+								if (getActivity() != null) {
+
+									saving = new Saving(getActivity());
+									saving.delegate = PostFragment.this;
+
+									params.put("TableName", "LikeInPost");
+
+									params.put("UserId", String.valueOf(CurrentUser.getId()));
+									params.put("PostId", String.valueOf(postid));
+									params.put("CommentId", "0");
+									params.put("Date", output);
+									params.put("ModifyDate", output);
+
+									params.put("IsUpdate", "0");
+									params.put("Id", "0");
+
+									saving.execute(params);
+									IsPost= false;
+
+								}
+							}
+						}
+					} else {
+						Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
+						if (ringProgressDialog != null) {
+							ringProgressDialog.dismiss();
 						}
 					}
 				}
-			} else {
-				Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
+
+				catch (Exception e) {
+
+					Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
+					adapter.close();
+					if (ringProgressDialog != null) {
+						ringProgressDialog.dismiss();
+					}
 				}
+				adapter.close();
+
 			}
 		}
 
-		catch (Exception e) {
-
-			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
-			adapter.close();
-			if (ringProgressDialog != null) {
-				ringProgressDialog.dismiss();
-			}
-		}
-		adapter.close();
 	}
 
 	private void getUserFromServer(ArrayList<Integer> missedIds, int controller) {
@@ -1058,6 +1135,232 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 		if (ringProgressDialog != null) {
 			ringProgressDialog.dismiss();
 		}
+	}
+
+	private void checkInternet() {
+
+		if (CurrentUser != null) {
+
+			if (util.isNetworkConnected()) {
+				Toast.makeText(getActivity(), "Connected", 0).show();
+
+				ServerDate date = new ServerDate(getActivity());
+				date.delegate = PostFragment.this;
+				date.execute("");
+				saveVisitFalg = true;
+
+			} else {
+				Toast.makeText(getActivity(), "Disconnected", 0).show();
+
+				if (checkUsers() == true) {
+
+					adapter.open();
+					adapter.insertVisitToDb(util.getCurrentUser().getId(), StaticValues.TypePostVisit, topics.getId());
+					adapter.close();
+				}
+
+			}
+
+		}
+	}
+
+	private boolean checkUsers() {
+
+		// if isSave = true allow to save visit on server
+		// else don't allow to save
+		boolean isSave = true;
+
+		adapter.open();
+		List<SubAdmin> subAdminList = adapter.getAdmin(ObjectID);
+		adapter.close();
+
+		boolean fl1 = true;
+
+		List<Integer> Ids = new ArrayList<Integer>();
+		if (subAdminList.size() > 0)
+			for (int i = 0; i < subAdminList.size(); i++) {
+				Ids.add(subAdminList.get(i).getUserId());
+			}
+
+		for (int j = 0; j < Ids.size(); j++) {
+			if (CurrentUser.getId() == Ids.get(j))
+				fl1 = false;
+		}
+		if (fl1 == false || CurrentUser.getId() == topics.getUserId())
+			isSave = false;
+
+		return isSave;
+
+	}
+
+	private void sendVisit() {
+
+		if (getActivity() != null) {
+
+			adapter.open();
+			visitList = adapter.getAllVisitItems();
+			adapter.close();
+
+			Visit vis = null;
+
+			if (visitList.size() != 0) {
+
+				if (counterVisit < visitList.size()) {
+
+					vis = visitList.get(counterVisit);
+
+					userId = vis.getUserId();
+					typeId = vis.getTypeId();
+					ItemId = vis.getObjectId();
+
+					params = new LinkedHashMap<String, String>();
+					SavingVisit saving = new SavingVisit(getActivity());
+					saving.delegate = PostFragment.this;
+
+					params.put("TableName", "Visit");
+					params.put("UserId", String.valueOf(userId));
+					params.put("TypeId", String.valueOf(typeId));
+					params.put("ObjectId", String.valueOf(ItemId));
+					params.put("ModifyDate", String.valueOf(currentTime));
+					params.put("Date", String.valueOf(currentTime));
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+
+					saving.execute(params);
+
+					counterVisit++;
+
+					saveVisitFalg = true;
+					// sendVisit();
+				} else {
+
+					params = new LinkedHashMap<String, String>();
+					SavingVisit saving = new SavingVisit(getActivity());
+					saving.delegate = PostFragment.this;
+
+					params.put("TableName", "Visit");
+					params.put("UserId", String.valueOf(userId));
+					params.put("TypeId", String.valueOf(typeId));
+					params.put("ObjectId", String.valueOf(topics.getId()));
+					params.put("ModifyDate", String.valueOf(currentTime));
+					params.put("Date", String.valueOf(currentTime));
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+
+					saving.execute(params);
+
+					adapter.open();
+					adapter.deleteVisit();
+					adapter.close();
+
+					saveVisitFalg = false;
+					isFinish = true;
+
+				}
+
+			} else {
+
+				if (checkUsers() == true) {
+					userId = util.getCurrentUser().getId();
+					typeId = StaticValues.TypePostVisit;
+					// int idObj = object.getId();
+
+					params = new LinkedHashMap<String, String>();
+					SavingVisit saving = new SavingVisit(getActivity());
+					saving.delegate = PostFragment.this;
+
+					params.put("TableName", "Visit");
+					params.put("UserId", String.valueOf(userId));
+					params.put("TypeId", String.valueOf(typeId));
+					params.put("ObjectId", String.valueOf(topics.getId()));
+					params.put("ModifyDate", String.valueOf(currentTime));
+					params.put("Date", String.valueOf(currentTime));
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+
+					saving.execute(params);
+					saveVisitFalg = false;
+					isFinish = true;
+
+				}
+			}
+
+		}
+
+	}
+
+	@Override
+	public void saveVisit(String output) {
+		
+		if (!output.contains("Exception")){
+			if (isFinish==false){
+				Visit vis = null;
+
+				if (visitList.size() != 0) {
+
+					if (counterVisit < visitList.size()) {
+
+						vis = visitList.get(counterVisit);
+
+						userId = vis.getUserId();
+						typeId = vis.getTypeId();
+						ItemId = vis.getObjectId();
+
+						params = new LinkedHashMap<String, String>();
+						SavingVisit saving = new SavingVisit(getActivity());
+						saving.delegate = PostFragment.this;
+
+						params.put("TableName", "Visit");
+						params.put("UserId", String.valueOf(userId));
+						params.put("TypeId", String.valueOf(typeId));
+						params.put("ObjectId", String.valueOf(ItemId));
+						params.put("ModifyDate", String.valueOf(currentTime));
+						params.put("Date", String.valueOf(currentTime));
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						saving.execute(params);
+
+						counterVisit++;
+
+						saveVisitFalg = true;
+						// sendVisit();
+					} else {
+
+						params = new LinkedHashMap<String, String>();
+						SavingVisit saving = new SavingVisit(getActivity());
+						saving.delegate = PostFragment.this;
+
+						params.put("TableName", "Visit");
+						params.put("UserId", String.valueOf(userId));
+						params.put("TypeId", String.valueOf(typeId));
+						params.put("ObjectId", String.valueOf(topics.getId()));
+						params.put("ModifyDate", String.valueOf(currentTime));
+						params.put("Date", String.valueOf(currentTime));
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						saving.execute(params);
+
+						adapter.open();
+						adapter.deleteVisit();
+						adapter.close();
+
+						saveVisitFalg = false;
+						isFinish = true;
+
+					}
+
+				}
+				
+			}
+		}
+		
 	}
 
 }

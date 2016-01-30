@@ -116,8 +116,8 @@ public class ObjectListAdapter
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.propertiesObject);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = (util.getScreenwidth() / 4);
-		lp.height = (util.getScreenwidth() / 4);
+		lp.width = (int) (util.getScreenwidth() /StaticValues.RateImageObjectPage);
+		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageObjectPage);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.addRule(RelativeLayout.CENTER_VERTICAL);
 		lp.setMargins(10, 10, 10, 10);
@@ -144,6 +144,14 @@ public class ObjectListAdapter
 
 		String time = currentTime.getString("time", "-1");
 
+		TextView countFollow = (TextView) convertView.findViewById(R.id.countlikepage);
+		TextView countVisit = (TextView) convertView.findViewById(R.id.viewPageCount);
+
+		countVisit.setText(person.getCountView() + "");
+		adapter.open();
+		int followersCount = adapter.LikeInObject_count(person.getId(), 0);
+		adapter.close();
+		countFollow.setText(followersCount+"");
 		if (person.getActiveDate() == null) {
 
 			if (commitDate != null && !"".equals(commitDate)) {

@@ -90,14 +90,18 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 	String[] viewItemArray = new String[5];
 	String infoItem = "";
 
-	int ostanId, cityId, dayId, monthId, yearId;
+	int ostanId = 0, cityId = 0, dayId = 0, monthId = 0, yearId = 0;
 	ArrayList<City> cityList;
 	boolean flag;
 	private File mFileTemp;
 	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
 	final int PIC_CROP = 10;
+	String selectOstanLable = "انتخاب استان";
+	String selectCityLable = "انتخاب شهر";
 
 	EditText txtname;
+	boolean setProvinceFalg = true;
+	boolean setCityFalg = true;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_editpersonal, null);
@@ -290,6 +294,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 
 		ArrayList<String> NameOstan = new ArrayList<String>();
 		final ArrayList<String> NameCity = new ArrayList<String>();
+		NameOstan.add(selectOstanLable);
 
 		for (int i = 0; i < ostanList.size(); i++) {
 
@@ -310,29 +315,62 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
-				int w = (int) ostanSpinner.getSelectedItemId();
+				if (cityIduser == 0) {
 
-				ostanId = ostanList.get(w).getId();
+					ostanSpinner.setSelection(0);
+					citySpinner.setSelection(0);
 
-				dbAdapter.open();
-				cityList = dbAdapter.getCitysByProvinceIdNoSort(ostanId);
-				dbAdapter.close();
+				} else {
 
-				citySpinner.setEnabled(true);
+					int w = (int) ostanSpinner.getSelectedItemId() - 1;
 
-				NameCity.clear();
-				for (int i = 0; i < cityList.size(); i++) {
+					String item = (String) ostanSpinner.getSelectedItem();
 
-					NameCity.add(cityList.get(i).getName());
+					if (!item.equals(selectOstanLable)) {
+
+						setProvinceFalg = true;
+
+						ostanId = ostanList.get(w).getId();
+
+						dbAdapter.open();
+						cityList = dbAdapter.getCitysByProvinceIdNoSort(ostanId);
+						dbAdapter.close();
+
+						citySpinner.setEnabled(true);
+
+						NameCity.clear();
+						NameCity.add(selectCityLable);
+						for (int i = 0; i < cityList.size(); i++) {
+
+							NameCity.add(cityList.get(i).getName());
+
+						}
+						ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
+								android.R.layout.simple_spinner_item, NameCity);
+
+						dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+						citySpinner.setAdapter(dataAdapter);
+
+						if (cityIduser != 0) {
+							for (int i = 0; i < cityList.size(); i++) {
+
+								City c = cityList.get(i);
+
+								if (c.getId() == cityIduser) {
+									citySpinner.setSelection(i + 1);
+									break;
+
+								}
+							}
+
+						}
+					} else {
+						setProvinceFalg = false;
+						citySpinner.setEnabled(false);
+					}
 
 				}
-				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
-						android.R.layout.simple_spinner_item, NameCity);
-
-				dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-				citySpinner.setAdapter(dataAdapter);
-
 			}
 
 			@Override
@@ -347,23 +385,18 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
-				int m = (int) citySpinner.getSelectedItemId();
+				int m = (int) citySpinner.getSelectedItemId() - 1;
 
-				cityId = cityList.get(m).getId();
+				String item = (String) citySpinner.getSelectedItem();
 
-				if (cityIduser != 0) {
-					for (int i = 0; i < cityList.size(); i++) {
+				if (!item.equals(selectCityLable)) {
 
-						City c = cityList.get(i);
+					setCityFalg = true;
 
-						if (c.getId() == cityIduser) {
-							citySpinner.setSelection(i);
-							break;
+					cityId = cityList.get(m).getId();
 
-						}
-					}
-
-				}
+				} else
+					setCityFalg = false;
 			}
 
 			@Override
@@ -400,13 +433,13 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 
 			City cityUser = dbAdapter.getCityById(cityIduser);
 			Province provinceUser = dbAdapter.getProvinceById(cityUser.getProvinceId());
-			ostanSpinner.setSelection(provinceUser.getId() - 1);
+			ostanSpinner.setSelection(provinceUser.getId());
 			cityList = dbAdapter.getCitysByProvinceIdNoSort(provinceUser.getId());
 			for (int i = 0; i < cityList.size(); i++) {
 
 				City c = cityList.get(i);
 
-				if (c.getId() == cityUser.getId()) {
+				if (c.getId() == cityIduser) {
 					citySpinner.setSelection(i);
 					break;
 
@@ -468,72 +501,76 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 			@Override
 			public void onClick(View arg0) {
 
-				dialog = ProgressDialog.show(getActivity(), "در حال بروزرسانی", "لطفا منتظر بمانید...");
+				if (setProvinceFalg == true && setCityFalg == true) {
 
-				Address = txtaddress.getText().toString();
-				Cellphone = txtcellphone.getText().toString();
-				Phone = txtphone.getText().toString();
-				Email = txtemail.getText().toString();
-				Fax = txtfax.getText().toString();
+					dialog = ProgressDialog.show(getActivity(), "در حال بروزرسانی", "لطفا منتظر بمانید...");
 
-				if (checkPhone.isChecked())
-					viewItemArray[0] = "1";
-				else
-					viewItemArray[0] = "0";
+					Address = txtaddress.getText().toString();
+					Cellphone = txtcellphone.getText().toString();
+					Phone = txtphone.getText().toString();
+					Email = txtemail.getText().toString();
+					Fax = txtfax.getText().toString();
 
-				if (checkMobile.isChecked())
-					viewItemArray[1] = "1";
-				else
-					viewItemArray[1] = "0";
+					if (checkPhone.isChecked())
+						viewItemArray[0] = "1";
+					else
+						viewItemArray[0] = "0";
 
-				if (checkEmail.isChecked())
-					viewItemArray[2] = "1";
-				else
-					viewItemArray[2] = "0";
+					if (checkMobile.isChecked())
+						viewItemArray[1] = "1";
+					else
+						viewItemArray[1] = "0";
 
-				if (checkFax.isChecked())
-					viewItemArray[3] = "1";
-				else
-					viewItemArray[3] = "0";
+					if (checkEmail.isChecked())
+						viewItemArray[2] = "1";
+					else
+						viewItemArray[2] = "0";
 
-				if (checkAddress.isChecked())
-					viewItemArray[4] = "1";
-				else
-					viewItemArray[4] = "0";
+					if (checkFax.isChecked())
+						viewItemArray[3] = "1";
+					else
+						viewItemArray[3] = "0";
 
-				for (int i = 0; i < viewItemArray.length; i++) {
-					infoItem = infoItem + viewItemArray[i];
-				}
+					if (checkAddress.isChecked())
+						viewItemArray[4] = "1";
+					else
+						viewItemArray[4] = "0";
 
-				if (checkPhone.isChecked() || checkMobile.isChecked() || checkEmail.isChecked() || checkFax.isChecked()
-						|| checkAddress.isChecked())
-
-				{
-					if (getActivity() != null) {
-						saving = new Saving(getActivity());
-						saving.delegate = EditPersonalFragment.this;
-						params = new LinkedHashMap<String, String>();
-						params.put("tableName", "Users");
-						params.put("Name", txtname.getText().toString());
-
-						params.put("Email", Email);
-						params.put("Phonenumber", Cellphone);
-						params.put("Faxnumber", Fax);
-						params.put("Address", Address);
-						params.put("IsUpdate", "1");
-						params.put("Id", String.valueOf(id));
-						params.put("ShowInfoItem", infoItem);
-						if (flag == true) {
-							birthday = yearId + "/" + monthId + "/" + dayId;
-							params.put("BirthDay", birthday);
-						}
-
-						params.put("CityId", String.valueOf(cityId));
-
-						saving.execute(params);
+					for (int i = 0; i < viewItemArray.length; i++) {
+						infoItem = infoItem + viewItemArray[i];
 					}
+
+					if (checkPhone.isChecked() || checkMobile.isChecked() || checkEmail.isChecked()
+							|| checkFax.isChecked() || checkAddress.isChecked())
+
+					{
+						if (getActivity() != null) {
+							saving = new Saving(getActivity());
+							saving.delegate = EditPersonalFragment.this;
+							params = new LinkedHashMap<String, String>();
+							params.put("tableName", "Users");
+							params.put("Name", txtname.getText().toString());
+
+							params.put("Email", Email);
+							params.put("Phonenumber", Cellphone);
+							params.put("Faxnumber", Fax);
+							params.put("Address", Address);
+							params.put("IsUpdate", "1");
+							params.put("Id", String.valueOf(id));
+							params.put("ShowInfoItem", infoItem);
+							if (flag == true) {
+								birthday = yearId + "/" + monthId + "/" + dayId;
+								params.put("BirthDay", birthday);
+							}
+
+							params.put("CityId", String.valueOf(cityId));
+
+							saving.execute(params);
+						}
+					} else
+						Toast.makeText(getActivity(), "حداقل یکی از موارد تماس باید انتخاب شده باشد", 0).show();
 				} else
-					Toast.makeText(getActivity(), "حداقل یکی از موارد تماس باید انتخاب شده باشد", 0).show();
+					Toast.makeText(getActivity(), "انتخاب استان و شهر اجباری است", 0).show();
 			}
 
 		});

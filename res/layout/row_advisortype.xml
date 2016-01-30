@@ -3,7 +3,7 @@
     style="@style/List_Item_Style"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#d3dff9"
+    android:background="@color/white"
     android:orientation="horizontal" >
 
     <ImageView
@@ -23,6 +23,7 @@
         android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:textSize="@dimen/size_item_list" 
         android:text="Large Text" />
 
 </RelativeLayout>

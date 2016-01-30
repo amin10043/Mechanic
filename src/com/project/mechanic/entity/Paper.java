@@ -11,6 +11,15 @@ public class Paper implements Comparable<Paper> {
 	int UserId;
 	String Date;
 	int seenBefore;
+	int CountView;
+
+	public int getCountView() {
+		return CountView;
+	}
+
+	public void setCountView(int countView) {
+		CountView = countView;
+	}
 
 	public int getSeenBefore() {
 		return seenBefore;
@@ -86,7 +95,7 @@ public class Paper implements Comparable<Paper> {
 
 	public Paper(int id, String title, String context, int seen,
 			String serversate, int submit, int userId, String date,
-			int seenBefore) {
+			int seenBefore , int CountView) {
 		super();
 		Id = id;
 		Title = title;
@@ -97,6 +106,7 @@ public class Paper implements Comparable<Paper> {
 		UserId = userId;
 		Date = date;
 		this.seenBefore = seenBefore;
+		this.CountView = CountView;
 	}
 
 	public int compareTo(Paper comparePaper) {

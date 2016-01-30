@@ -22,6 +22,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:textColor="@color/transparent"
+        android:textSize="@dimen/size_item_list" 
         android:layout_margin="10dp"
         android:text="Large Text" />
 

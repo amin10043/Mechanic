@@ -36,12 +36,15 @@ import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.entity.Visit;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.AsyncInterfaceVisit;
+import com.project.mechanic.inter.VisitSaveInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.SavingVisit;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
-public class ShowAdFragment extends Fragment implements AsyncInterface {
+public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSaveInterface {
 
 	int id;
 	int a;
@@ -50,7 +53,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface {
 	int favorite = 0;
 	int userTicket;
 	DataBaseAdapter dbAdapter;
-	TextView desc, name, email, phone, mobile, fax, day, date;
+	TextView desc, name, email, phone, mobile, fax, day, date, countVisit;
 	ImageView img, showname, showfax, showemail, showphone, showmobile;
 	Button btnreport, btnCancel;
 	List mylist;
@@ -70,6 +73,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface {
 	int counterVisit = 0;
 	boolean isFinish = false, saveVisitFalg;
 	String currentTime = "";
+	List<Visit> visitList;
 
 	@SuppressWarnings("null")
 	@SuppressLint("InflateParams")
@@ -100,6 +104,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface {
 		btnCancel = (Button) view.findViewById(R.id.btn_cancel);
 		day = (TextView) view.findViewById(R.id.textDay);
 		date = (TextView) view.findViewById(R.id.textdate);
+		countVisit = (TextView) view.findViewById(R.id.numberOfView);
 
 		RelativeLayout lin1 = (RelativeLayout) view.findViewById(R.id.a1);
 		RelativeLayout lin2 = (RelativeLayout) view.findViewById(R.id.a2);
@@ -316,6 +321,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface {
 
 		desc.setText(t.getDesc());
 		day.setText("" + t.getDay());
+		countVisit.setText(t.getCountView() + "");
 		date.setText(util.getPersianDate(t.getDate()));
 
 		if ("".equals(t.getUName())) {
@@ -532,7 +538,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface {
 		if (getActivity() != null) {
 
 			dbAdapter.open();
-			List<Visit> visitList = dbAdapter.getAllVisitItems();
+			visitList = dbAdapter.getAllVisitItems();
 			dbAdapter.close();
 
 			Visit vis = null;
@@ -548,7 +554,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface {
 					idItem = vis.getObjectId();
 
 					params = new LinkedHashMap<String, String>();
-					Saving saving = new Saving(getActivity());
+					SavingVisit saving = new SavingVisit(getActivity());
 					saving.delegate = ShowAdFragment.this;
 
 					params.put("TableName", "Visit");
@@ -570,7 +576,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface {
 				} else {
 
 					params = new LinkedHashMap<String, String>();
-					Saving saving = new Saving(getActivity());
+					SavingVisit saving = new SavingVisit(getActivity());
 					saving.delegate = ShowAdFragment.this;
 
 					params.put("TableName", "Visit");
@@ -602,7 +608,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface {
 					// int idObj = object.getId();
 
 					params = new LinkedHashMap<String, String>();
-					Saving saving = new Saving(getActivity());
+					SavingVisit saving = new SavingVisit(getActivity());
 					saving.delegate = ShowAdFragment.this;
 
 					params.put("TableName", "Visit");
@@ -631,8 +637,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface {
 
 		Toast.makeText(getActivity(), output, 0).show();
 
-		if (!output.equals("java.io.EOFException") && !output.equals("java.net.SocketTimeoutException")) {
-
+		if (!output.contains("Exception")) {
 			if (saveVisitFalg == true) {
 
 				if (counterVisit == 0)
@@ -650,4 +655,75 @@ public class ShowAdFragment extends Fragment implements AsyncInterface {
 
 	}
 
+	@Override
+	public void saveVisit(String output) {
+
+		if (!output.contains("Exception")) {
+
+			if (isFinish == false) {
+				Visit vis = null;
+
+				if (visitList.size() != 0) {
+
+					if (counterVisit < visitList.size()) {
+
+						vis = visitList.get(counterVisit);
+
+						sender = vis.getUserId();
+						typeId = vis.getTypeId();
+						idItem = vis.getObjectId();
+
+						params = new LinkedHashMap<String, String>();
+						SavingVisit saving = new SavingVisit(getActivity());
+						saving.delegate = ShowAdFragment.this;
+
+						params.put("TableName", "Visit");
+						params.put("UserId", String.valueOf(sender));
+						params.put("TypeId", String.valueOf(typeId));
+						params.put("ObjectId", String.valueOf(idItem));
+						params.put("ModifyDate", String.valueOf(currentTime));
+						params.put("Date", String.valueOf(currentTime));
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						saving.execute(params);
+
+						counterVisit++;
+
+						saveVisitFalg = true;
+						// sendVisit();
+					} else {
+
+						params = new LinkedHashMap<String, String>();
+						SavingVisit saving = new SavingVisit(getActivity());
+						saving.delegate = ShowAdFragment.this;
+
+						params.put("TableName", "Visit");
+						params.put("UserId", String.valueOf(t.getUserId()));
+						params.put("TypeId", String.valueOf(StaticValues.TypeTicketVisit));
+						params.put("ObjectId", String.valueOf(t.getId()));
+						params.put("ModifyDate", String.valueOf(currentTime));
+						params.put("Date", String.valueOf(currentTime));
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						saving.execute(params);
+
+						dbAdapter.open();
+						dbAdapter.deleteVisit();
+						dbAdapter.close();
+
+						saveVisitFalg = false;
+						isFinish = true;
+
+					}
+
+				}
+			}
+
+		}
+
+	}
 }

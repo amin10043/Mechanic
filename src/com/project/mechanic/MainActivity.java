@@ -3,6 +3,8 @@ package com.project.mechanic;
 import java.util.List;
 
 import com.project.mechanic.adapter.SlideMenuAdapter;
+import com.project.mechanic.chat.ExpandableListChat;
+import com.project.mechanic.chat.TabHostChatType;
 import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.ListItem;
@@ -39,15 +41,15 @@ import com.project.mechanic.fragment.Province2Fragment;
 import com.project.mechanic.fragment.Province3Fragment;
 import com.project.mechanic.fragment.ProvinceFragment;
 import com.project.mechanic.fragment.TitlepaperFragment;
-import com.project.mechanic.fragment.TypeExpertFroum;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.PeriodicTask;
 import com.project.mechanic.utility.Utility;
+
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -60,7 +62,6 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -141,11 +142,14 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new TypeExpertFroum());
-
-				trans.addToBackStack(null);
-				trans.commit();
+//				FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+//				trans.replace(R.id.content_frame, new ExpandableListChat());
+//
+//				trans.addToBackStack(null);
+//				trans.commit();
+				
+				Intent firstpage= new Intent(MainActivity.this,TabHostChatType.class);
+				startActivity(firstpage);			
 			}
 		});
 		ImageView timeLine = (ImageView) findViewById(R.id.timeline_btn);

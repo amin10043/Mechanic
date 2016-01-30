@@ -83,6 +83,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/title_topic"
                     android:layout_marginLeft="20dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:layout_marginRight="20dp"
                     android:gravity="right"
                     android:lineSpacingExtra="15dp"
@@ -169,6 +171,7 @@
                             android:background="@drawable/numvvred" />
 
                         <TextView
+                            android:id="@+id/countvisit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"

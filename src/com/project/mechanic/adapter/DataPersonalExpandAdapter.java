@@ -6,14 +6,20 @@ import java.util.List;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.Anad;
+import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.PersonalData;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.TicketType;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.DialogAreYouSure;
+import com.project.mechanic.fragment.DialogEditAnad;
 import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.FroumFragment;
+import com.project.mechanic.fragment.IntroductionEditFragment;
 import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.ShowAdFragment;
@@ -25,14 +31,18 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
@@ -58,6 +68,19 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 	List<Integer> sizeTypeItem;
 	boolean isShowSettingBtn;
 	String name;
+
+	static String sendLable = "ارسال پیام";
+	static String editLable = "ویرایش";
+	static String deleteLable = "حذف";
+	static String copyLikkLable = "کپی لینک";
+	static String tamdidLAble = "تمدید اعتبار";
+	static String copyLable = "کپی";
+
+	static String pageLable = "صفحه";
+	static String PageFolloedLable = "دنبال شده ها";
+	static String ticketlable = "آگهی";
+	static String paperLable = "مقالات";
+	static String FroumLable = "گفتگو";
 
 	public DataPersonalExpandAdapter(Context context, ArrayList<String> parentItems,
 			HashMap<String, List<PersonalData>> listDataChild, String todayDate, Fragment fr, List<Integer> sizeType,
@@ -147,6 +170,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				ImageView profileIco = (ImageView) convertView.findViewById(R.id.icon_object);
 
 				ImageView report = (ImageView) convertView.findViewById(R.id.reportImage);
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
 				report.setOnClickListener(new OnClickListener() {
 
@@ -156,12 +180,49 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 						List<String> items = new ArrayList<String>();
 
 						items.clear();
-						items.add("تمدید اعتبار");
-						items.add("حذف");
-						items.add("کپی");
+						items.add(editLable);
+						items.add(tamdidLAble);
+						items.add(copyLikkLable);
+						items.add(deleteLable);
 
 						PopupMenu popupMenu = util.ShowPopupMenu(items, v);
 						popupMenu.show();
+
+						popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+							@Override
+							public boolean onMenuItemClick(MenuItem menuItem) {
+
+								String nameItem = (String) menuItem.getTitle();
+
+								if (nameItem.equals(editLable)) {
+
+									SharedPreferences sendDataID = context.getSharedPreferences("Id", 0);
+									sendDataID.edit().putInt("main_Id", pd.getObjectId()).commit();
+
+									IntroductionEditFragment fragment = new IntroductionEditFragment();
+									FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager()
+											.beginTransaction();
+									trans.replace(R.id.content_frame, fragment);
+
+									trans.addToBackStack(null);
+									trans.commit();
+
+								}
+								if (nameItem.equals(tamdidLAble)) {
+
+									Toast.makeText(context, tamdidLAble, 0).show();
+								}
+								if (nameItem.equals(deleteLable)) {
+									Toast.makeText(context, deleteLable, 0).show();
+								}
+								if (nameItem.equals(copyLikkLable)) {
+									Toast.makeText(context, copyLikkLable, 0).show();
+								}
+
+								return false;
+							}
+						});
 
 					}
 				});
@@ -169,15 +230,13 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				FrameLayout rl = (FrameLayout) convertView.findViewById(R.id.imageFrame);
 				FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(rl.getLayoutParams());
 
-				lp.width = (util.getScreenwidth() / 5);
-				lp.height = (util.getScreenwidth() / 5);
-				lp.setMargins(10, 10, 10, 10);
+				lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
+				lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
+				lp.setMargins(5, 10, 10, 10);
 
 				profileIco.setScaleType(ScaleType.FIT_XY);
 
 				profileIco.setLayoutParams(lp);
-
-				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
 				String ImagePath = pd.getImagePathObject();
 
@@ -189,8 +248,14 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 				namePage.setText(pd.getNameObject());
 
+				TextView lable1 = (TextView) convertView.findViewById(R.id.lable_etebar);
+				TextView lable2 = (TextView) convertView.findViewById(R.id.lable2);
+
 				TextView baghiMandeh = (TextView) convertView.findViewById(R.id.dayBaghiMandeh); // modate
-																									// baghimande
+
+				lable1.setTypeface(util.SetFontCasablanca());
+				lable2.setTypeface(util.SetFontCasablanca());
+				baghiMandeh.setTypeface(util.SetFontCasablanca());
 
 				String commitDate = pd.getDateObject(); // tarikhe ijad safhe
 
@@ -213,6 +278,19 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				} else {
 					baghiMandeh.setText("نا معلوم");
 				}
+				TextView follwers = (TextView) convertView.findViewById(R.id.followers);
+
+				TextView views = (TextView) convertView.findViewById(R.id.views);
+				adapter.open();
+
+				com.project.mechanic.entity.Object obj = adapter.getObjectbyid(pd.getObjectId());
+
+				views.setText(obj.getCountView() + "");
+
+				int followersCount = adapter.LikeInObject_count(pd.getObjectId(), 0);
+
+				follwers.setText(followersCount + "");
+				adapter.close();
 
 				convertView.setOnClickListener(new OnClickListener() {
 
@@ -285,12 +363,12 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(llkj.getLayoutParams());
 
-				params.width = util.getScreenwidth() / 5;
-				params.height = util.getScreenwidth() / 5;
+				params.width = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
+				params.height = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
 				// params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 				// params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 				// params.addRule(RelativeLayout.CENTER_VERTICAL);
-				params.setMargins(10, 10, 10, 10);
+				params.setMargins(5, 10, 10, 10);
 
 				adapter.open();
 				Ticket t = adapter.getTicketById(pd.getTicketId());
@@ -299,7 +377,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 				List<TicketType> tt = adapter.getAllTicketType();
 
-				TicketType titype = tt.get(t.getTypeId()-1);
+				TicketType titype = tt.get(t.getTypeId() - 1);
 				String typeNameTicket = titype.getDesc();
 
 				address.setText(typeNameTicket + " : " + provinceName);
@@ -359,6 +437,17 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				} else
 					reaport.setVisibility(View.GONE);
 
+				TextView views = (TextView) convertView.findViewById(R.id.views);
+				adapter.open();
+				Ticket tic = adapter.getTicketById(pd.getTicketId());
+
+				views.setText(tic.getCountView() + "");
+				adapter.close();
+
+				TextView lable1 = (TextView) convertView.findViewById(R.id.address);
+
+				lable1.setTypeface(util.SetFontCasablanca());
+
 				convertView.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -386,18 +475,44 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 					@Override
 					public void onClick(View v) {
 
-						// String[] nameItems = { "تمدید اعتبار", "حذف", "کپی"
-						// };
-
 						List<String> items = new ArrayList<String>();
 
 						items.clear();
-						items.add("تمدید اعتبار");
-						items.add("حذف");
-						items.add("کپی");
+						items.add(tamdidLAble);
+						items.add(copyLikkLable);
+						items.add(deleteLable);
 
 						PopupMenu popmenu = util.ShowPopupMenu(items, v);
 						popmenu.show();
+
+						popmenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+							@Override
+							public boolean onMenuItemClick(MenuItem menuItem) {
+
+								String nameItem = (String) menuItem.getTitle();
+
+								if (nameItem.equals(tamdidLAble)) {
+
+									Toast.makeText(context, tamdidLAble, 0).show();
+								}
+								if (nameItem.equals(deleteLable)) {
+
+									DialogAreYouSure dia = new DialogAreYouSure(context, ticketlable, pd.getTicketId(),
+											fr);
+
+									util.setSizeDialog(dia);
+
+									Toast.makeText(context, deleteLable, 0).show();
+								}
+								if (nameItem.equals(copyLikkLable)) {
+									Toast.makeText(context, copyLikkLable, 0).show();
+								}
+
+								return false;
+							}
+						});
+
 						// DialogLongClick dia = new DialogLongClick(context, 3,
 						// u,
 						// id, fr, t);
@@ -455,6 +570,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 					report.setVisibility(View.GONE);
 
 				// end find view
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
 				report.setOnClickListener(new OnClickListener() {
 
@@ -463,18 +579,41 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 						List<String> items = new ArrayList<String>();
 
 						items.clear();
-						items.add("ارسال پیام");
-						items.add("حذف");
-						items.add("کپی");
-
-						// String[] nameItems = { "ارسال پیام", "حذف", "کپی" };
+						items.add(sendLable);
+						items.add(copyLikkLable);
+						items.add(deleteLable);
 
 						PopupMenu popupmenu = util.ShowPopupMenu(items, v);
 						popupmenu.show();
+
+						popupmenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+							@Override
+							public boolean onMenuItemClick(MenuItem menuItem) {
+
+								String nameItem = (String) menuItem.getTitle();
+
+								if (nameItem.equals(sendLable)) {
+
+									util.sendMessage("Paper");
+								}
+								if (nameItem.equals(deleteLable)) {
+
+									DialogAreYouSure dia = new DialogAreYouSure(context, paperLable, pd.getPaperId(),
+											fr);
+
+									util.setSizeDialog(dia);
+
+								}
+								if (nameItem.equals(copyLikkLable)) {
+									Toast.makeText(context, copyLikkLable, 0).show();
+								}
+
+								return false;
+							}
+						});
 					}
 				});
-
-				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
 				if (pd.getSeenBeforePaper() > 0) {
 					txt1.setTextColor(Color.GRAY);
@@ -489,8 +628,8 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				LinearLayout rl = (LinearLayout) convertView.findViewById(R.id.topicTitleFroum);
 				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
 
-				lp.width = util.getScreenwidth() / 5;
-				lp.height = util.getScreenwidth() / 5;
+				lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
+				lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
 				// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 				lp.setMargins(10, 10, 10, 10);
 				iconProile.setLayoutParams(lp);
@@ -529,6 +668,13 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				txt1.setTypeface(util.SetFontCasablanca());
 				txt2.setTypeface(util.SetFontIranSans());
 
+				TextView views = (TextView) convertView.findViewById(R.id.views);
+				adapter.open();
+
+				Paper pa = adapter.getPaperItembyid(pd.getPaperId());
+
+				views.setText(pa.getCountView() + "");
+				adapter.close();
 				convertView.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -581,6 +727,8 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 					report.setVisibility(View.GONE);
 				// end find view
 
+				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
+
 				report.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -588,15 +736,42 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 						List<String> items = new ArrayList<String>();
 
 						items.clear();
-						items.add("ارسال پیام");
-						items.add("حذف");
-						items.add("کپی");
+						items.add(sendLable);
+						items.add(copyLikkLable);
+						items.add(deleteLable);
 
 						PopupMenu popupMenu = util.ShowPopupMenu(items, v);
 						popupMenu.show();
+
+						popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+							@Override
+							public boolean onMenuItemClick(MenuItem menuItem) {
+
+								String nameItem = (String) menuItem.getTitle();
+
+								if (nameItem.equals(sendLable)) {
+
+									util.sendMessage("Froum");
+								}
+								if (nameItem.equals(deleteLable)) {
+
+									DialogAreYouSure dia = new DialogAreYouSure(context, FroumLable, pd.getFroumId(),
+											fr);
+
+									util.setSizeDialog(dia);
+
+								}
+								if (nameItem.equals(copyLikkLable)) {
+									Toast.makeText(context, copyLikkLable, 0).show();
+								}
+
+								return false;
+							}
+						});
+
 					}
 				});
-				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
 				if (pd.getSeenBeforeFroum() > 0) {
 					txt1.setTextColor(Color.GRAY);
@@ -611,8 +786,8 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				LinearLayout rl = (LinearLayout) convertView.findViewById(R.id.topicTitleFroum);
 				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
 
-				lp.width = util.getScreenwidth() / 5;
-				lp.height = util.getScreenwidth() / 5;
+				lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
+				lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
 				// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 				lp.setMargins(10, 10, 10, 10);
 				iconProile.setLayoutParams(lp);
@@ -650,6 +825,13 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				txt1.setTypeface(util.SetFontCasablanca());
 				txt2.setTypeface(util.SetFontIranSans());
 
+				TextView views = (TextView) convertView.findViewById(R.id.views);
+				adapter.open();
+
+				Froum fr = adapter.getFroumItembyid(pd.getFroumId());
+
+				views.setText(fr.getCountView() + "");
+				adapter.close();
 				convertView.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -700,8 +882,8 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				FrameLayout rl = (FrameLayout) convertView.findViewById(R.id.imageFrame);
 				FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(rl.getLayoutParams());
 
-				lp.width = (util.getScreenwidth() / 5);
-				lp.height = (util.getScreenwidth() / 5);
+				lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
+				lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
 				lp.setMargins(10, 10, 10, 10);
 
 				profileIco.setScaleType(ScaleType.FIT_XY);
@@ -711,8 +893,8 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				FrameLayout ad = (FrameLayout) convertView.findViewById(R.id.imageFrame);
 				FrameLayout.LayoutParams ss = new FrameLayout.LayoutParams(ad.getLayoutParams());
 
-				ss.width = (util.getScreenwidth() / 5);
-				ss.height = (util.getScreenwidth() / 5);
+				ss.width = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
+				ss.height = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
 				ss.setMargins(10, 10, 10, 10);
 
 				profileIco.setScaleType(ScaleType.FIT_XY);
@@ -741,6 +923,18 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				lable1.setVisibility(View.GONE);
 				lable2.setVisibility(View.GONE);
 
+				TextView follwers = (TextView) convertView.findViewById(R.id.followers);
+
+				TextView views = (TextView) convertView.findViewById(R.id.views);
+				adapter.open();
+				com.project.mechanic.entity.Object obj = adapter.getObjectbyid(pd.getObjectFollowId());
+				views.setText(obj.getCountView() + "");
+
+				int followersCount = adapter.LikeInObject_count(pd.getObjectFollowId(), 0);
+
+				follwers.setText(followersCount + "");
+				adapter.close();
+
 				convertView.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -766,7 +960,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 						List<String> items = new ArrayList<String>();
 						items.clear();
-						items.add("حذف");
+						items.add(deleteLable);
 
 						PopupMenu popupMenu = util.ShowPopupMenu(items, v);
 						popupMenu.show();
@@ -838,8 +1032,8 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				FrameLayout rl = (FrameLayout) convertView.findViewById(R.id.imageFrame);
 				FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(rl.getLayoutParams());
 
-				lp.width = (util.getScreenwidth() / 5);
-				lp.height = (util.getScreenwidth() / 5);
+				lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
+				lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
 				lp.setMargins(10, 10, 10, 10);
 
 				profileIco.setScaleType(ScaleType.FIT_XY);
@@ -849,8 +1043,8 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				FrameLayout ad = (FrameLayout) convertView.findViewById(R.id.imageFrame);
 				FrameLayout.LayoutParams ss = new FrameLayout.LayoutParams(ad.getLayoutParams());
 
-				ss.width = (util.getScreenwidth() / 5);
-				ss.height = (util.getScreenwidth() / 5);
+				ss.width = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
+				ss.height = (int) (util.getScreenwidth() / StaticValues.RateImageDisplayPersonalAdapter);
 				ss.setMargins(10, 10, 10, 10);
 
 				profileIco.setScaleType(ScaleType.FIT_XY);
@@ -881,6 +1075,10 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 				TextView lable1 = (TextView) convertView.findViewById(R.id.lable_etebar);
 				TextView lable2 = (TextView) convertView.findViewById(R.id.lable2);
+
+				lable1.setTypeface(util.SetFontCasablanca());
+				lable2.setTypeface(util.SetFontCasablanca());
+				baghiMandeh.setTypeface(util.SetFontCasablanca());
 
 				String commitDate = a.getDate(); // tarikhe ijad safhe
 
@@ -915,14 +1113,28 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 						List<String> items = new ArrayList<String>();
 						items.clear();
-						items.add("تمدید");
+						items.add(editLable);
+						items.add(tamdidLAble);
 
 						PopupMenu popupMenu = util.ShowPopupMenu(items, v);
 						popupMenu.show();
 						OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
 
 							@Override
-							public boolean onMenuItemClick(MenuItem item) {
+							public boolean onMenuItemClick(MenuItem menuItem) {
+
+								String nameItem = (String) menuItem.getTitle();
+
+								if (nameItem.equals(editLable)) {
+
+									FragmentManager fm = ((FragmentActivity) context).getSupportFragmentManager();
+
+									DialogEditAnad dialog = new DialogEditAnad(context, fr, pd.getAnadId());
+									dialog.show(fm, nameItem);
+								}
+								if (nameItem.equals(tamdidLAble)) {
+									Toast.makeText(context, copyLikkLable, 0).show();
+								}
 
 								return false;
 							}

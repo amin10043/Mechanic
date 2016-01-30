@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="date"
-            android:textColor="@color/transparent" />
+            android:textColor="@color/orginal_hard_blue_color" />
     </LinearLayout>
 
     <LinearLayout
@@ -57,7 +57,8 @@
                     android:layout_marginTop="5dp"
                     android:gravity="right|center_vertical"
                     android:text="title"
-                    android:textColor="#760017" />
+                    android:singleLine="true"
+                    android:textColor="@color/orginal_red_color" />
 
                 <TextView
                     android:id="@+id/rowdescriptionpaper"
@@ -89,13 +90,14 @@
                     android:background="@drawable/numvv" />
 
                 <TextView
+                    android:id="@+id/views"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginTop="9dp"
                     android:layout_toRightOf="@+id/iconNumberVisit"
                     android:text="18"
-                    android:textColor="@color/transparent"
+                    android:textColor="@color/orginal_red_color"
                     android:textSize="10dp" />
             </LinearLayout>
         </LinearLayout>
@@ -121,7 +123,7 @@
         android:layout_marginTop="5dp"
         android:gravity="right"
         android:text="author"
-        android:visibility="gone"
-        android:textColor="@color/transparent" />
+        android:textColor="@color/transparent"
+        android:visibility="gone" />
 
 </RelativeLayout>

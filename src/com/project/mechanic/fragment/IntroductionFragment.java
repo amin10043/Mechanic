@@ -21,13 +21,20 @@ import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.entity.Visit;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.AsyncInterfaceVisit;
 import com.project.mechanic.inter.GetAllAsyncInterface;
+import com.project.mechanic.inter.VisitSaveInterface;
+import com.project.mechanic.inter.DataPersonalInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
+import com.project.mechanic.service.GetPostByObjectId;
 import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.SavingVisit;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingAllImage;
+import com.project.mechanic.service.UpdatingPersonalPage;
+import com.project.mechanic.service.UpdatingVisit;
 import com.project.mechanic.utility.Utility;
 
 import android.annotation.SuppressLint;
@@ -62,7 +69,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class IntroductionFragment extends Fragment implements AsyncInterface, GetAllAsyncInterface {
+public class IntroductionFragment extends Fragment implements AsyncInterface, GetAllAsyncInterface,
+		DataPersonalInterface, VisitSaveInterface, AsyncInterfaceVisit {
 
 	// Context context;
 	Utility ut;
@@ -70,7 +78,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 	View header, Posts;
 	// view,
 	ListView PostList;
-
+	List<Visit> visitList;
 	// ExpandableListView exListView;
 	ExpandIntroduction exadapter;
 	int ObjectID, gp;
@@ -122,7 +130,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 	int counterVisit = 0;
 	String currentTime = "";
 	private GifAnimationDrawable little, big;
-	boolean isFinish = false, saveVisitFalg;
+	boolean isFinish = false, saveVisitFalg, booleanPost = true;
+	int visitCounter = 0;
+	Post post;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -254,20 +264,22 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 		Toast.makeText(getActivity(), output, 0).show();
 
-		if (!output.equals("java.io.EOFException")) {
+		if (!output.contains("Exception")) {
 
 			if (saveVisitFalg == true) {
 
-				if (counterVisit == 0)
-					currentTime = output;
+				// if (counterVisit == 0)
+				currentTime = output;
+
 				sendVisit();
 
 			} else {
-				if (isFinish == true) {
-					// get image from server
-					getImageFromServer();
-					isFinish = false;
-				}
+				// if (isFinish == true) {
+				// // get image from server
+				// getImageFromServer();
+				// isFinish = false;
+				// }
+
 				if (LikeOrComment == true) {
 					if (output.contains("---")) {
 						if (ringProgressDialog != null)
@@ -318,6 +330,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 							loadingProgressFooter.setVisibility(View.GONE);
 							Toast.makeText(getActivity(), "به روز رسانی تصاویر با موفقیت انجام شد", Toast.LENGTH_SHORT)
 									.show();
+
+							getPost();
+
 						}
 
 					} else {
@@ -580,6 +595,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 				}
 			}
 		}
+
 	}
 
 	@Override
@@ -779,7 +795,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 	private void fillListView() {
 		adapter.open();
-		ArrayPosts = adapter.getAllPost(object.getUserId());
+		ArrayPosts = adapter.getAllPost(object.getId());
 		PosttitleListadapter ListAdapterPost = new PosttitleListadapter(getActivity(), R.layout.raw_posttitle,
 				ArrayPosts, IntroductionFragment.this);
 		PostList.setAdapter(ListAdapterPost);
@@ -1636,6 +1652,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		countPost.setText(adapter.CountPostUser(object.getId()) + "");
 		adapter.close();
 
+		TextView numVisit = (TextView) header.findViewById(R.id.numVisitPage);
+
+		numVisit.setText(object.getCountView() + "");
+
 	}
 
 	private void showPeopleLikedBtn() {
@@ -1758,6 +1778,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 				ServerDate date = new ServerDate(getActivity());
 				date.delegate = IntroductionFragment.this;
 				date.execute("");
+
 				saveVisitFalg = true;
 
 			} else {
@@ -1780,7 +1801,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		if (getActivity() != null) {
 
 			adapter.open();
-			List<Visit> visitList = adapter.getAllVisitItems();
+			visitList = adapter.getAllVisitItems();
 			adapter.close();
 
 			Visit vis = null;
@@ -1796,7 +1817,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 					ItemId = vis.getObjectId();
 
 					params = new LinkedHashMap<String, String>();
-					saving = new Saving(getActivity());
+					SavingVisit saving = new SavingVisit(getActivity());
 					saving.delegate = IntroductionFragment.this;
 
 					params.put("TableName", "Visit");
@@ -1818,7 +1839,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 				} else {
 
 					params = new LinkedHashMap<String, String>();
-					saving = new Saving(getActivity());
+					SavingVisit saving = new SavingVisit(getActivity());
 					saving.delegate = IntroductionFragment.this;
 
 					params.put("TableName", "Visit");
@@ -1850,7 +1871,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 					// int idObj = object.getId();
 
 					params = new LinkedHashMap<String, String>();
-					saving = new Saving(getActivity());
+					SavingVisit saving = new SavingVisit(getActivity());
 					saving.delegate = IntroductionFragment.this;
 
 					params.put("TableName", "Visit");
@@ -1868,10 +1889,13 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 					isFinish = true;
 
 				}
+				// getImageFromServer();
+
 			}
 
-		}
+			getCountVisitFromServer();
 
+		}
 	}
 
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
@@ -1980,5 +2004,152 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 	public void CommentId(int Id) {
 		commentId = Id;
+	}
+
+	public void getPost() {
+
+		GetPostByObjectId getVisit = new GetPostByObjectId(getActivity());
+		getVisit.delegate = IntroductionFragment.this;
+		String[] params = new String[5];
+		params[0] = "Post";
+		params[1] = "201510210957407981";
+		params[2] = currentTime;
+		params[3] = "1";
+		params[4] = String.valueOf(ObjectID);
+
+		getVisit.execute(params);
+
+		booleanPost = false;
+
+	}
+
+	@Override
+	public void ResultServer(String output) {
+
+		if (!output.contains("Exception")) {
+
+			if (booleanPost == true) {
+				getPost();
+			} else {
+				{
+					ut.parseQuery(output);
+					fillListView();
+
+				}
+			}
+		}
+	}
+
+	@Override
+	public void saveVisit(String output) {
+
+		if (!output.contains("Exception")) {
+
+			if (isFinish == false) {
+
+				Visit vis = null;
+
+				if (visitList.size() != 0) {
+
+					if (counterVisit < visitList.size()) {
+
+						vis = visitList.get(counterVisit);
+
+						userId = vis.getUserId();
+						typeId = vis.getTypeId();
+						ItemId = vis.getObjectId();
+
+						params = new LinkedHashMap<String, String>();
+						SavingVisit saving = new SavingVisit(getActivity());
+						saving.delegate = IntroductionFragment.this;
+
+						params.put("TableName", "Visit");
+						params.put("UserId", String.valueOf(userId));
+						params.put("TypeId", String.valueOf(typeId));
+						params.put("ObjectId", String.valueOf(ItemId));
+						params.put("ModifyDate", String.valueOf(currentTime));
+						params.put("Date", String.valueOf(currentTime));
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						saving.execute(params);
+
+						counterVisit++;
+
+						saveVisitFalg = true;
+						// sendVisit();
+					} else {
+
+						params = new LinkedHashMap<String, String>();
+						SavingVisit saving = new SavingVisit(getActivity());
+						saving.delegate = IntroductionFragment.this;
+
+						params.put("TableName", "Visit");
+						params.put("UserId", String.valueOf(userId));
+						params.put("TypeId", String.valueOf(typeId));
+						params.put("ObjectId", String.valueOf(ObjectID));
+						params.put("ModifyDate", String.valueOf(currentTime));
+						params.put("Date", String.valueOf(currentTime));
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						saving.execute(params);
+
+						adapter.open();
+						adapter.deleteVisit();
+						adapter.close();
+
+						saveVisitFalg = false;
+						isFinish = true;
+
+					}
+
+				}
+			}
+
+		}
+
+	}
+
+	private void getCountVisitFromServer() {
+
+		if (visitCounter < ArrayPosts.size()) {
+
+			adapter.open();
+			post = adapter.getPostItembyid(ArrayPosts.get(visitCounter).getId());
+			adapter.close();
+
+			UpdatingVisit updateVisit = new UpdatingVisit(getActivity());
+			updateVisit.delegate = IntroductionFragment.this;
+			Map<String, String> serv = new LinkedHashMap<String, String>();
+
+			serv.put("tableName", "Visit");
+			serv.put("objectId", String.valueOf(post.getId()));
+			serv.put("typeId", StaticValues.TypePostVisit + "");
+			updateVisit.execute(serv);
+
+		} else {
+			if (getActivity() != null) {
+
+				fillListView();
+			}
+		}
+
+	}
+
+	@Override
+	public void processFinishVisit(String output) {
+
+		if (!output.contains("Exception")) {
+
+			adapter.open();
+			adapter.updateCountView("Post", post.getId(), Integer.valueOf(output));
+			adapter.close();
+		}
+		visitCounter++;
+		getCountVisitFromServer();
+
 	}
 }

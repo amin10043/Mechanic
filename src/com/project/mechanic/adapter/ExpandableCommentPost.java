@@ -33,6 +33,7 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.CommentInPost;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
@@ -119,8 +120,8 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.main_icon_reply);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
+		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
+		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 		// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		// lp.setMargins(5, 5, 5, 5);
 		ReplyerPic.setLayoutParams(lp);
@@ -334,13 +335,13 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 			imglikeComment.setBackgroundResource((R.drawable.positive_off));
 			imgdislikeComment.setBackgroundResource((R.drawable.negative_off));
 		} else {
-			if (adapter.isUserLikedComment(Currentuser.getId(), comment.getId(), 1)) {
+			if (adapter.isUserLikedCommentPost(Currentuser.getId(), comment.getId(), 1)) {
 				imglikeComment.setBackgroundResource((R.drawable.positive));
 			} else {
 				imglikeComment.setBackgroundResource((R.drawable.positive_off));
 
 			}
-			if (adapter.isUserLikedComment(Currentuser.getId(), comment.getId(), 0)) {
+			if (adapter.isUserLikedCommentPost(Currentuser.getId(), comment.getId(), 0)) {
 				imgdislikeComment.setBackgroundResource((R.drawable.negative));
 			} else {
 				imgdislikeComment.setBackgroundResource((R.drawable.negative_off));
@@ -377,8 +378,8 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.icon_header_comment_froum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
+		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
+		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 		// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		// lp.setMargins(5, 5, 5, 5);
 		profileImage.setLayoutParams(lp);
@@ -433,7 +434,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 				} else {
 
 					flag = false;
-					RelativeLayout parentlayout = (RelativeLayout) t.getParent().getParent();
+					RelativeLayout parentlayout = (RelativeLayout) t.getParent().getParent().getParent().getParent();
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
 					TextView txtMaincmt = (TextView) viewMaincmt;
 
@@ -452,7 +453,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 					// send to database
 
-					if (adapter.isUserLikedComment(Currentuser.getId(), id, 0)) {
+					if (adapter.isUserLikedCommentPost(Currentuser.getId(), id, 0)) {
 
 						/*
 						 * start >>>>> delete dislike from server
@@ -464,7 +465,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 							deleting = new Deleting(context);
 							deleting.delegate = ExpandableCommentPost.this;
 
-							params.put("TableName", "LikeInComment");
+							params.put("TableName", "LikeInCommentPost");
 
 							params.put("UserId", String.valueOf(Currentuser.getId()));
 
@@ -497,7 +498,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 						 */
 
 					} else {
-						if (adapter.isUserLikedComment(Currentuser.getId(), id, 1)) {
+						if (adapter.isUserLikedCommentPost(Currentuser.getId(), id, 1)) {
 							Toast.makeText(context, "شما قبلا نظرتان را در این مورد این مطلب بیان کردید",
 									Toast.LENGTH_SHORT).show();
 						} else {
@@ -536,7 +537,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 					// // peyda kardan id comment sabt shode
 
-					RelativeLayout parentlayout = (RelativeLayout) v.getParent().getParent();
+					RelativeLayout parentlayout = (RelativeLayout) v.getParent().getParent().getParent().getParent();
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
 					TextView txtMaincmt = (TextView) viewMaincmt;
 
@@ -554,7 +555,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 					// send to database
 
-					if (adapter.isUserLikedComment(Currentuser.getId(), cmtId, 1)) {
+					if (adapter.isUserLikedCommentPost(Currentuser.getId(), cmtId, 1)) {
 						/*
 						 * start >>>>> delete like from server
 						 */
@@ -566,7 +567,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 							deleting = new Deleting(context);
 							deleting.delegate = ExpandableCommentPost.this;
 
-							params.put("TableName", "LikeInComment");
+							params.put("TableName", "LikeInCommentPost");
 
 							params.put("UserId", String.valueOf(Currentuser.getId()));
 
@@ -600,7 +601,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 					} else {
 
-						if (adapter.isUserLikedComment(Currentuser.getId(), cmtId, 0)) {
+						if (adapter.isUserLikedCommentPost(Currentuser.getId(), cmtId, 0)) {
 							Toast.makeText(context, "شما قبلا نظرتان را در این مورد این مطلب بیان کردید",
 									Toast.LENGTH_SHORT).show();
 						} else {
@@ -853,7 +854,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 					 * save like in database device
 					 */
 
-					if (adapter.isUserLikedComment(Currentuser.getId(), GlobalId, 1)) {
+					if (adapter.isUserLikedCommentPost(Currentuser.getId(), GlobalId, 1)) {
 						adapter.deleteLikeFromCommentInPost(GlobalId, Currentuser.getId(), 1);
 
 						notifyDataSetChanged();
@@ -877,7 +878,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 					 * save dislike in database device
 					 */
 
-					if (adapter.isUserLikedComment(Currentuser.getId(), GlobalId, 0)) {
+					if (adapter.isUserLikedCommentPost(Currentuser.getId(), GlobalId, 0)) {
 						adapter.deleteLikeFromCommentInPost(GlobalId, Currentuser.getId(), 0);
 						notifyDataSetChanged();
 						if (ringProgressDialog != null) {
@@ -909,7 +910,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 						saving = new Saving(context);
 						saving.delegate = ExpandableCommentPost.this;
 
-						params.put("TableName", "LikeInComment");
+						params.put("TableName", "LikeInCommentPost");
 
 						params.put("UserId", String.valueOf(Currentuser.getId()));
 						params.put("IsLike", String.valueOf(1));
@@ -952,7 +953,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 						saving = new Saving(context);
 						saving.delegate = ExpandableCommentPost.this;
 
-						params.put("TableName", "LikeInComment");
+						params.put("TableName", "LikeInCommentPost");
 
 						params.put("UserId", String.valueOf(Currentuser.getId()));
 

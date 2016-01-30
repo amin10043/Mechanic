@@ -176,8 +176,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.topicTitleFroum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = (int) (util.getScreenwidth() / 3.8);
-		lp.height = (int) (util.getScreenwidth() / 3.8);
+		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageTitleFroum);
+		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageTitleFroum);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.addRule(RelativeLayout.CENTER_VERTICAL);
 		lp.setMargins(10, 10, 10, 10);
@@ -442,46 +442,50 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 
 			}
 		});
-		commenttitle.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				LinearLayout parentlayout = (LinearLayout) v;
-
-				String item = txt2.getText().toString();
-				;
-				int sizeDescription = item.length();
-				String subItem;
-				subItem = item.subSequence(0, sizeDescription - 4).toString();
-				int ItemId = 0;
-				for (Froum listItem : mylist) {
-					if (subItem.equals(listItem.getDescription())) {
-						// check authentication and authorization
-						ItemId = listItem.getId();
-					}
-				}
-
-				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
-				FroumFragment fragment = new FroumFragment();
-				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
-				Bundle bundle = new Bundle();
-				bundle.putString("Id", String.valueOf(ItemId));
-				fragment.setArguments(bundle);
-
-				bundle.putString("Id", String.valueOf(ItemId));
-				fragment.setArguments(bundle);
-
-				trans.replace(R.id.content_frame, fragment);
-				trans.commit();
-				abc.edit().putInt("main_Id", 2).commit();
-
-			}
-
-		});
+//		commenttitle.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//
+//				LinearLayout parentlayout = (LinearLayout) v;
+//
+//				String item = txt2.getText().toString();
+//				;
+//				int sizeDescription = item.length();
+//				String subItem;
+//				subItem = item.subSequence(0, sizeDescription - 4).toString();
+//				int ItemId = 0;
+//				for (Froum listItem : mylist) {
+//					if (subItem.equals(listItem.getDescription())) {
+//						// check authentication and authorization
+//						ItemId = listItem.getId();
+//					}
+//				}
+//
+//				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
+//				FroumFragment fragment = new FroumFragment();
+//				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
+//				Bundle bundle = new Bundle();
+//				bundle.putString("Id", String.valueOf(ItemId));
+//				fragment.setArguments(bundle);
+//
+//				bundle.putString("Id", String.valueOf(ItemId));
+//				fragment.setArguments(bundle);
+//
+//				trans.replace(R.id.content_frame, fragment);
+//				trans.commit();
+//				abc.edit().putInt("main_Id", 2).commit();
+//
+//			}
+//
+//		});
 
 		convertView.setTag(person1.getId());
 		// Parent = convertView;
+		TextView visitCount = (TextView) convertView.findViewById(R.id.visitCount);
+
+		visitCount.setText(person1.getCountView()+"");
+		
 		return convertView;
 	}
 

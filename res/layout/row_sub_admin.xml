@@ -29,6 +29,7 @@
             android:layout_margin="10dp"
             android:layout_toLeftOf="@+id/pictureSubAdmin1"
             android:text="subAdmin1"
+            android:textSize="@dimen/size_item_list" 
             android:textColor="@color/orginal_hard_blue_color" />
 
         <ImageView

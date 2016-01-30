@@ -80,7 +80,8 @@
                         android:layout_gravity="right"
                         android:gravity="right"
                         android:text="Large Text"
-                        android:textColor="#9d0420" />
+                        android:singleLine="true"
+                        android:textColor="@color/orginal_red_color" />
 
                     <TextView
                         android:id="@+id/row_anad_txt2"
@@ -90,8 +91,9 @@
                         android:gravity="right"
                         android:maxLength="20"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:text="Large Text"
-                        android:textColor="#9d0420" />
+                        android:textColor="@color/orginal_red_color" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -108,13 +110,14 @@
                         android:background="@drawable/numvv" />
 
                     <TextView
+                        android:id="@+id/views"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/iconNumberLike"
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@+id/iconNumberLike"
                         android:text="20"
-                        android:textColor="@color/transparent"
+                        android:textColor="@color/orginal_red_color"
                         android:textSize="10dp" />
                 </RelativeLayout>
             </LinearLayout>
@@ -142,7 +145,7 @@
                     android:maxLines="2"
                     android:minLines="1"
                     android:text="TextView"
-                    android:textColor="@color/transparent" />
+                    android:textColor="@color/orginal_hard_blue_color" />
             </RelativeLayout>
         </RelativeLayout>
 

@@ -32,6 +32,7 @@
             android:layout_margin="10dp"
             android:layout_toLeftOf="@+id/icon_group_chat"
             android:text="تالار تبرید"
+            android:textSize="@dimen/size_item_list" 
             android:textColor="@color/transparent" />
 
         <ImageView
@@ -68,12 +69,12 @@
             android:visibility="gone" />
 
         <TextView
-                        android:id="@+id/garmayeshlable"
-            
+            android:id="@+id/garmayeshlable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:textSize="@dimen/size_item_list" 
             android:layout_margin="10dp"
             android:layout_toLeftOf="@+id/icon_group_chat"
             android:text="تالار گرمایش و سرمایش"
@@ -119,6 +120,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="10dp"
+            android:textSize="@dimen/size_item_list" 
             android:layout_toLeftOf="@+id/icon_group_chat"
             android:text="تالار گرمایش از کف"
             android:textColor="@color/transparent" />
@@ -166,6 +168,7 @@
             android:layout_margin="10dp"
             android:layout_toLeftOf="@+id/icon_group_chat"
             android:text="تالار هوشمند سازی"
+            android:textSize="@dimen/size_item_list" 
             android:textColor="@color/transparent" />
 
         <ImageView

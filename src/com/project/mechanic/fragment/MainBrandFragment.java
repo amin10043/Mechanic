@@ -21,22 +21,26 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.AsyncInterfaceVisit;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingImage;
+import com.project.mechanic.service.UpdatingVisit;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class MainBrandFragment extends Fragment implements AsyncInterface, GetAsyncInterface, CommInterface {
+public class MainBrandFragment extends Fragment
+		implements AsyncInterface, GetAsyncInterface, CommInterface, AsyncInterfaceVisit {
 	DataBaseAdapter adapter;
 	int parentId;
 	Users CurrentUser;
@@ -61,6 +65,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface, GetAs
 	ServerDate date;
 	String serverDate;
 	int code = 100;
+	int visitCounter = 0;
 
 	public MainBrandFragment() {
 		super();
@@ -72,7 +77,8 @@ public class MainBrandFragment extends Fragment implements AsyncInterface, GetAs
 
 		if (getArguments() != null && getArguments().getString("Id") != null) {
 			parentId = Integer.valueOf(getArguments().getString("Id"));
-//			Toast.makeText(getActivity(), "parent Id = " + parentId, 0).show();
+			// Toast.makeText(getActivity(), "parent Id = " + parentId,
+			// 0).show();
 		}
 
 		((MainActivity) getActivity()).setTitle(R.string.object);
@@ -237,16 +243,17 @@ public class MainBrandFragment extends Fragment implements AsyncInterface, GetAs
 		if (output.length() == 18 && code == 100) {
 			serverDate = output;
 
-			if (getActivity() != null)
+			if (getActivity() != null) {
 				ImageUpdating = new UpdatingImage(getActivity());
-			ImageUpdating.delegate = MainBrandFragment.this;
-			maps = new LinkedHashMap<String, String>();
-			maps.put("tableName", "Object2");
-			maps.put("Id", String.valueOf(obj.getId()));
-			maps.put("fromDate", obj.getImage2ServerDate());
-			ImageUpdating.execute(maps);
-		}
+				ImageUpdating.delegate = MainBrandFragment.this;
+				maps = new LinkedHashMap<String, String>();
+				maps.put("tableName", "Object2");
+				maps.put("Id", String.valueOf(obj.getId()));
+				maps.put("fromDate", obj.getImage2ServerDate());
+				ImageUpdating.execute(maps);
+			}
 
+		}
 		if (output.contains("anyType")) {
 
 			Toast.makeText(getActivity(), "صفحه جدیدی یافت نشد", 0).show();
@@ -336,7 +343,7 @@ public class MainBrandFragment extends Fragment implements AsyncInterface, GetAs
 			adapter.open();
 			mylist = adapter.getObjectbyParentId(parentId);
 			adapter.close();
-
+			getCountVisitFromServer();
 			if (getActivity() != null) {
 				ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, MainBrandFragment.this,
 						false, null, 1);
@@ -344,5 +351,50 @@ public class MainBrandFragment extends Fragment implements AsyncInterface, GetAs
 			}
 
 		}
+	}
+
+	private void getCountVisitFromServer() {
+
+		if (visitCounter < mylist.size()) {
+
+			adapter.open();
+			obj = adapter.getObjectbyid(mylist.get(visitCounter).getId());
+			adapter.close();
+
+			UpdatingVisit updateVisit = new UpdatingVisit(getActivity());
+			updateVisit.delegate = MainBrandFragment.this;
+			Map<String, String> serv = new LinkedHashMap<String, String>();
+
+			serv.put("tableName", "Visit");
+			serv.put("objectId", String.valueOf(obj.getId()));
+			serv.put("typeId", StaticValues.TypeObjectVisit + "");
+			updateVisit.execute(serv);
+
+		} else {
+			if (getActivity() != null) {
+
+				adapter.open();
+				mylist = adapter.getObjectbyParentId(parentId);
+				adapter.close();
+				ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, MainBrandFragment.this,
+						false, null, 1);
+				lstObject.setAdapter(ListAdapter);
+			}
+		}
+
+	}
+
+	@Override
+	public void processFinishVisit(String output) {
+
+		if (!output.contains("Exception")) {
+
+			adapter.open();
+			adapter.updateCountView("Object", obj.getId(), Integer.valueOf(output));
+			adapter.close();
+		}
+		visitCounter++;
+		getCountVisitFromServer();
+
 	}
 }

@@ -59,6 +59,7 @@
                             android:background="@drawable/numll" />
 
                         <TextView
+                            android:id="@+id/countlikepage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignBottom="@+id/iconNumberLike"
@@ -67,8 +68,8 @@
                             android:gravity="bottom"
                             android:paddingTop="1dp"
                             android:text="20"
-                            android:textColor="@color/orginal_red_color" />
-                            android:textSize="10dp" />
+                            android:textColor="@color/orginal_red_color" 
+                            android:textSize="10dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -86,14 +87,15 @@
                             android:background="@drawable/numvv" />
 
                         <TextView
+                            android:id="@+id/viewPageCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignBottom="@+id/iconNumberVisit"
                             android:layout_marginRight="5dp"
                             android:layout_toLeftOf="@+id/iconNumberVisit"
                             android:text="18"
-                            android:textColor="@color/orginal_red_color" />
-                            android:textSize="10dp" />
+                            android:textColor="@color/orginal_red_color"
+                            android:textSize="10dp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

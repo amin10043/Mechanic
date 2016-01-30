@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Post;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogShowImage;
@@ -47,8 +48,7 @@ import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
 @SuppressLint("SimpleDateFormat")
-public class PosttitleListadapter extends ArrayAdapter<Post> implements
-		AsyncInterface {
+public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInterface {
 
 	Context context;
 	List<Post> mylist;
@@ -78,11 +78,10 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 	int itemId, userIdsender;
 	List<String> menuItems = new ArrayList<String>();
-	
+
 	ImageView likeIcon;
-	
-	public PosttitleListadapter(Context context, int resource,
-			List<Post> objects, Fragment fragment) {
+
+	public PosttitleListadapter(Context context, int resource, List<Post> objects, Fragment fragment) {
 		super(context, resource, objects);
 		this.context = context;
 		this.mylist = objects;
@@ -93,44 +92,35 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 	@SuppressLint("ViewHolder")
 	@Override
-	public View getView(final int position, View convertView,
-			final ViewGroup parent) {
+	public View getView(final int position, View convertView, final ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.raw_posttitle, parent, false);
 
 		Parent = parent;
 		// final TextView txt1 = (TextView) convertView
 		// .findViewById(R.id.rowtitlepaper);
-		final TextView txt2 = (TextView) convertView
-				.findViewById(R.id.rowdescriptionpaper);
+		final TextView txt2 = (TextView) convertView.findViewById(R.id.rowdescriptionpaper);
 		TextView txt3 = (TextView) convertView.findViewById(R.id.authorname);
-		TextView countcommentpost = (TextView) convertView
-				.findViewById(R.id.countCommentInEveryTopic);
-		TextView dateTopic = (TextView) convertView
-				.findViewById(R.id.datetopicinFroum);
+		TextView countcommentpost = (TextView) convertView.findViewById(R.id.countCommentInEveryTopic);
+		TextView dateTopic = (TextView) convertView.findViewById(R.id.datetopicinFroum);
 		TextView PostID = (TextView) convertView.findViewById(R.id.PostID);
-		countLikePost = (TextView) convertView
-				.findViewById(R.id.txtNumofLike_CmtFroum);
-		ImageView profileImg = (ImageView) convertView
-				.findViewById(R.id.iconfroumtitle);
+		countLikePost = (TextView) convertView.findViewById(R.id.txtNumofLike_CmtFroum);
+		ImageView profileImg = (ImageView) convertView.findViewById(R.id.iconfroumtitle);
 
-		final ImageView postImage = (ImageView) convertView
-				.findViewById(R.id.postImage);
+		final ImageView postImage = (ImageView) convertView.findViewById(R.id.postImage);
 
-		LinearLayout commenttitle = (LinearLayout) convertView
-				.findViewById(R.id.l1cm);
-		LikeTitle = (LinearLayout) convertView
-				.findViewById(R.id.LikeTopicLinear);
+		LinearLayout commenttitle = (LinearLayout) convertView.findViewById(R.id.l1cm);
+		LikeTitle = (LinearLayout) convertView.findViewById(R.id.LikeTopicLinear);
 
-		LinearLayout LinearImageShow = (LinearLayout) convertView
-				.findViewById(R.id.LNImageShow);
+		LinearLayout LinearImageShow = (LinearLayout) convertView.findViewById(R.id.LNImageShow);
 
 		report = (ImageView) convertView.findViewById(R.id.reportImage);
-		
+
 		likeIcon = (ImageView) convertView.findViewById(R.id.likeIcon);
+
+		TextView countVisit = (TextView) convertView.findViewById(R.id.countVisit);
 
 		Post person1 = mylist.get(position);
 
@@ -140,6 +130,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		adapter.open();
 		Users x = adapter.getUserbyid(person1.getUserId());
 		adapter.close();
+		countVisit.setText(person1.getCountView() + "");
 
 		CurrentUser = util.getCurrentUser();
 
@@ -151,6 +142,21 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 		}
 
+		adapter.open();
+		if (adapter.isUserLikedPost(CurrentUser.getId(), person1.getId())) {
+			adapter.deleteLikeFromPost(CurrentUser.getId(), postNumber);
+
+			likeIcon.setBackgroundResource(R.drawable.like_froum_off);
+
+		} else {
+			// adapter.insertLikeInPostToDb(person1.getId(),
+			// CurrentUser.getId(),
+			// postNumber, serverDate, 0);
+
+			likeIcon.setBackgroundResource(R.drawable.like_froum_on);
+		}
+		adapter.close();
+
 		PostID.setText(person1.getId() + "");
 
 		// if (!person1.getTitle().isEmpty()) {
@@ -159,8 +165,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		// }
 		if (!person1.getDescription().isEmpty()) {
 			if (person1.getDescription().length() > 100)
-				txt2.setText(person1.getDescription().substring(0, 100)
-						+ "...");
+				txt2.setText(person1.getDescription().substring(0, 100) + "...");
 			else
 				txt2.setText(person1.getDescription());
 			txt2.setVisibility(View.VISIBLE);
@@ -172,8 +177,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 			if (imgFile.exists()) {
 
-				LNImageShowParams = new LinearLayout.LayoutParams(
-						LinearImageShow.getLayoutParams());
+				LNImageShowParams = new LinearLayout.LayoutParams(LinearImageShow.getLayoutParams());
 				LNImageShowParams.height = util.getScreenwidth();
 				LNImageShowParams.width = util.getScreenwidth();
 				// LNImageShowParams.setMargins(5, 5, 5, 5);
@@ -185,14 +189,19 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 			}
 		}
 
+		TextView idposttxt = (TextView) convertView.findViewById(R.id.PostID);
+		String pId = idposttxt.getText().toString();
+
+		int piid = Integer.parseInt(pId);
+
 		adapter.open();
+		Post po = adapter.getPostItembyid(piid);
+		Object obj = adapter.getObjectbyid(po.getObjectId());
 
 		if (x != null)
-			txt3.setText(x.getName());
-		countcommentpost.setText(adapter.CommentInPost_count(person1.getId())
-				.toString());
-		countLikePost.setText(adapter.LikeInPost_count(person1.getId())
-				.toString());
+			txt3.setText(obj.getName());
+		countcommentpost.setText(adapter.CommentInPost_count(person1.getId()).toString());
+		countLikePost.setText(adapter.LikeInPost_count(person1.getId()).toString());
 		adapter.close();
 
 		dateTopic.setText(util.getPersianDate(person1.getDate()));
@@ -223,10 +232,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		}
 		adapter.close();
 
-		RelativeLayout rl = (RelativeLayout) convertView
-				.findViewById(R.id.topicTitleFroum);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				rl.getLayoutParams());
+		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.topicTitleFroum);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
 		lp.width = util.getScreenwidth() / 7;
 		lp.height = util.getScreenwidth() / 7;
@@ -252,8 +259,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				Post person1 = mylist.get(position);
 				Users x = adapter.getUserbyid(person1.getUserId());
 				userId = x.getId();
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
@@ -270,21 +276,17 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 			public void onClick(View v) {
 
 				if (CurrentUser == null) {
-					Toast.makeText(context,
-							"برای درج لایک ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 				} else {
 
 					LinearLayout parentlayout = (LinearLayout) v;
-					LinearLayout parent = (LinearLayout) parentlayout
-							.getParent().getParent();
+					LinearLayout parent = (LinearLayout) parentlayout.getParent().getParent();
 					int id = ((Integer) parent.getTag());
 					postNumber = id;
 					date = new ServerDate(context);
 					date.delegate = PosttitleListadapter.this;
 					date.execute("");
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 				}
@@ -341,8 +343,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 				// final int ItemId ;
 				final String t;
-				ListView listView = (ListView) v.getParent().getParent()
-						.getParent().getParent().getParent();
+				ListView listView = (ListView) v.getParent().getParent().getParent().getParent().getParent();
 				int position = listView.getPositionForView(v);
 				Post f = getItem(position - 1);
 				if (f != null) {
@@ -374,8 +375,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 						menuItems.add("کپی");
 					}
 
-					final PopupMenu popupMenu = util
-							.ShowPopupMenu(menuItems, v);
+					final PopupMenu popupMenu = util.ShowPopupMenu(menuItems, v);
 					popupMenu.show();
 
 					OnMenuItemClickListener menuitem = new OnMenuItemClickListener() {
@@ -388,15 +388,12 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 								if (util.getCurrentUser() != null)
 									util.sendMessage("Froum");
 								else
-									Toast.makeText(context,
-											"ابتدا باید وارد شوید", 0).show();
+									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}
 
-							if (item.getTitle().equals(
-									"افزودن به علاقه مندی ها")) {
+							if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
 								adapter.open();
-								addToFavorite(util.getCurrentUser().getId(), 1,
-										itemId);
+								addToFavorite(util.getCurrentUser().getId(), 1, itemId);
 								adapter.close();
 							}
 							if (item.getTitle().equals("کپی")) {
@@ -407,15 +404,12 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 							if (item.getTitle().equals("گزارش تخلف")) {
 
 								if (util.getCurrentUser() != null)
-									util.reportAbuse(userIdsender, 1, itemId,
-											t, 0);
+									util.reportAbuse(userIdsender, 1, itemId, t, 0);
 								else
-									Toast.makeText(context,
-											"ابتدا باید وارد شوید", 0).show();
+									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}
 							if (item.getTitle().equals("حذف")) {
-								if (util.getCurrentUser() != null
-										&& util.getCurrentUser().getId() == userIdsender) {
+								if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender) {
 									// deleteItems(itemId);
 								} else {
 
@@ -524,11 +518,9 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				adapter.SetSeen("Post", ItemId, "1");
 				adapter.close();
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				PostFragment fragment = new PostFragment();
-				trans.setCustomAnimations(R.anim.pull_in_left,
-						R.anim.push_out_right);
+				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(ItemId));
 				fragment.setArguments(bundle);
@@ -601,11 +593,9 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				adapter.SetSeen("Post", ItemId, "1");
 				adapter.close();
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				PostFragment fragment = new PostFragment();
-				trans.setCustomAnimations(R.anim.pull_in_left,
-						R.anim.push_out_right);
+				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(ItemId));
 				fragment.setArguments(bundle);
@@ -625,15 +615,12 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 			public void onClick(View v) {
 
 				if (postImage.getDrawable() != null) {
-					Bitmap bitmapHeader = ((BitmapDrawable) postImage
-							.getDrawable()).getBitmap();
-					byte[] ImageConvertedToByte = Utility
-							.CompressBitmap(bitmapHeader);
+					Bitmap bitmapHeader = ((BitmapDrawable) postImage.getDrawable()).getBitmap();
+					byte[] ImageConvertedToByte = Utility.CompressBitmap(bitmapHeader);
 					// Bitmap image=((BitmapDrawable)
 					// postImage.getDrawable()).getBitmap();
 					// Drawable myDrawable = postImage.getDrawable();
-					DialogShowImage showImageDialog = new DialogShowImage(
-							context, ImageConvertedToByte, "");
+					DialogShowImage showImageDialog = new DialogShowImage(context, ImageConvertedToByte, "");
 					showImageDialog.show();
 				}
 			}
@@ -652,10 +639,9 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 		}
 		try {
 			int id = Integer.valueOf(output);
-			LinearLayout parentLayout = (LinearLayout) Parent
-					.findViewWithTag(postNumber);
-			LinearLayout likeTitle = (LinearLayout) parentLayout
-					.findViewById(R.id.liketitleTopic);
+			LinearLayout parentLayout = (LinearLayout) Parent.findViewWithTag(postNumber);
+			// LinearLayout likeTitle = (LinearLayout) parentLayout
+			// .findViewById(R.id.liketitleTopic);
 
 			adapter.open();
 			if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
@@ -664,16 +650,14 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				likeIcon.setBackgroundResource(R.drawable.like_froum_off);
 
 			} else {
-				adapter.insertLikeInPostToDb(id, CurrentUser.getId(),
-						postNumber, serverDate, 0);
+				adapter.insertLikeInPostToDb(id, CurrentUser.getId(), postNumber, serverDate, 0);
 
 				likeIcon.setBackgroundResource(R.drawable.like_froum_on);
 			}
 
-			TextView likeCountPost = (TextView) likeTitle
-					.findViewById(R.id.countLikeInFroumTitle);
-			likeCountPost.setText(adapter.LikeInPost_count(postNumber)
-					.toString());
+			// TextView likeCountPost = (TextView) LikeTitle
+			// .findViewById(R.id.countLikeInFroumTitle);
+			countLikePost.setText(adapter.LikeInPost_count(postNumber).toString());
 
 			adapter.close();
 			if (ringProgressDialog != null) {
@@ -681,9 +665,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 			}
 
 		} catch (NumberFormatException ex) {
-			if (output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 				adapter.open();
 				if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
 					params = new LinkedHashMap<String, String>();
@@ -696,8 +678,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 					deleting.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -733,8 +714,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 
 					saving.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -758,8 +738,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 				adapter.close();
 
 			} else {
-				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 			}
 		}
 
@@ -804,12 +783,10 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
 
 		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
-			Toast.makeText(context,
-					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+			Toast.makeText(context, " قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
 		} else {
 			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
-			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0)
-					.show();
+			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0).show();
 		}
 	}
 }
