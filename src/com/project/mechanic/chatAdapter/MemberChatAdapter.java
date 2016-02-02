@@ -1,4 +1,4 @@
-package com.project.mechanic.chat;
+package com.project.mechanic.chatAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

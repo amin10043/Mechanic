@@ -37,7 +37,7 @@ public class StaticValues {
 	public static final int TypeRequestionChat = 6;
 	public static final int TypeOffersChat = 7;
 	public static final int TypeContactChat = 8;
-	public static final int TypeAdminPageChat = 9;
+	public static final int TypeInformationGroupAdminChat = 9;
 
 	public static final int CountOfTabInChat = 9;
 

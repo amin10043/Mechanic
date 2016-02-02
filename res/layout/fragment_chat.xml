@@ -71,14 +71,59 @@
             </LinearLayout>
         </LinearLayout>
 
-        <ImageView
+        <LinearLayout
+            android:id="@+id/rezayatmandi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/infoItem"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="15dp"
+            android:layout_toLeftOf="@+id/settings"
+            android:layout_toRightOf="@+id/infoItem"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/razi" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="112"
+                android:textColor="@color/orginal_golden_color" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/narazi" />
+
+            <TextView
+                android:id="@+id/rezayat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="20"
+                android:textColor="@color/orginal_golden_color" />
+        </LinearLayout>
+
+        <RelativeLayout
             android:id="@+id/settings"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:background="@drawable/goldsettings" />
+            android:layout_centerVertical="true" >
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/goldsettings" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <ImageView
@@ -92,6 +137,7 @@
         android:id="@+id/chatList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/getCommentLayout"
         android:layout_below="@+id/seprate" >
     </ListView>
 
@@ -99,34 +145,35 @@
         android:id="@+id/getCommentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/chatList"
+        android:layout_alignParentBottom="true"
         android:visibility="visible" >
 
         <ImageView
             android:id="@+id/sep"
             android:layout_width="match_parent"
-            android:layout_height="3dp"
+            android:layout_height="2dp"
             android:layout_marginBottom="5dp"
             android:background="@color/orginal_golden_color" />
+
+        <ImageView
+            android:id="@+id/stickers"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/razi" />
 
         <EditText
             android:id="@+id/inputComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/sendComment"
-            android:layout_toRightOf="@+id/pickPicture"
-            android:hint="نظر خود را وارد کنید"
-            android:visibility="visible" />
-
-        <ImageView
-            android:id="@+id/pickPicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:background="@drawable/add"
+            android:layout_toLeftOf="@+id/pickGallery"
+            android:layout_toRightOf="@+id/stickers"
+            android:background="@android:color/transparent"
+            android:hint="پیام"
+            android:textColor="@color/orginal_hard_blue_color"
             android:visibility="visible" />
 
         <ImageView
@@ -137,6 +184,16 @@
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:background="@drawable/send" />
+
+        <ImageView
+            android:id="@+id/pickGallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:layout_toLeftOf="@+id/sendComment"
+            android:background="@drawable/add"
+            android:visibility="visible" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -5,6 +5,43 @@
     android:background="@color/orginal_light_gray_color"
     android:orientation="vertical" >
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/white" >
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back" />
+
+        <EditText
+            android:id="@+id/searchInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/searchicon"
+            android:layout_toRightOf="@+id/back"
+            android:hint="جستجوی مخاطب"
+            android:textColor="@color/orginal_hard_blue_color" />
+
+        <ImageView
+            android:id="@+id/searchicon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@android:drawable/ic_menu_add" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/orginal_golden_color" />
+
     <ListView
         android:id="@+id/lstComment"
         style="@style/second_item_style"

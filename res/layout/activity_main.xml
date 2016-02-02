@@ -252,11 +252,12 @@
 
             <EditText
                 android:id="@+id/inputComment"
-                android:layout_below="@+id/sep"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/sep"
                 android:layout_toLeftOf="@+id/sendComment"
                 android:layout_toRightOf="@+id/pickPicture"
+                android:background="@android:color/transparent"
                 android:hint="نظر خود را وارد کنید"
                 android:visibility="visible" />
 

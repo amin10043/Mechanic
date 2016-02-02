@@ -1,4 +1,4 @@
-package com.project.mechanic.chat;
+package com.project.mechanic.chatAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.chat.ChatFragment;
 import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.utility.Utility;
 

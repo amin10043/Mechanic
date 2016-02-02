@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.project.mechanic.R;
+import com.project.mechanic.chatAdapter.ChatMenuAdapter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ public class ChatMenuFragment extends Fragment {
 	static final String newGroupLable = "گروه جدید";
 	static final String newChanalLable = "تالار جدید";
 	static final String settingsLable = "تنظیمات";
+	static final String contactLable = "مخاطبین";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class ChatMenuFragment extends Fragment {
 		menuItems.add(newGroupLable);
 		menuItems.add(newChanalLable);
 		menuItems.add(settingsLable);
+		menuItems.add(contactLable);
 
 		ChatMenuAdapter listAdapter = new ChatMenuAdapter(getActivity(), R.layout.row_menu_chat, menuItems);
 		lv.setAdapter(listAdapter);

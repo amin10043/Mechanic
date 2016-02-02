@@ -1,4 +1,4 @@
-package com.project.mechanic.chat;
+package com.project.mechanic.chatAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.StaticValues;
+import com.project.mechanic.chat.ChatFragment;
+import com.project.mechanic.chat.TabHostChatType;
 import com.project.mechanic.utility.Utility;
 
 import android.app.Activity;
@@ -272,12 +274,16 @@ public class ChatItemAdapter extends ArrayAdapter<String> {
 			@Override
 			public void onClick(View arg0) {
 
-				FragmentTransaction trans = ((TabHostChatType) context).getSupportFragmentManager().beginTransaction();
-				trans.addToBackStack(null);
-				Fragment move = new ChatFragment((Activity) context, StaticValues.TypeAdminPageChat);
-				trans.replace(R.id.content_frame, move);
-				trans.commit();
+				if (type == StaticValues.TypeGroupChat) {
 
+					FragmentTransaction trans = ((TabHostChatType) context).getSupportFragmentManager()
+							.beginTransaction();
+					trans.addToBackStack(null);
+					Fragment move = new ChatFragment((Activity) context, StaticValues.TypeInformationGroupAdminChat);
+					trans.replace(R.id.content_frame, move);
+					trans.commit();
+
+				}
 			}
 		});
 
@@ -316,7 +322,7 @@ public class ChatItemAdapter extends ArrayAdapter<String> {
 			public void onClick(View arg0) {
 				FragmentTransaction trans = ((TabHostChatType) context).getSupportFragmentManager().beginTransaction();
 				trans.addToBackStack(null);
-				Fragment move = new ChatFragment((Activity) context , 1);
+				Fragment move = new ChatFragment((Activity) context, 1);
 				trans.replace(R.id.content_frame, move);
 				trans.commit();
 
@@ -380,7 +386,7 @@ public class ChatItemAdapter extends ArrayAdapter<String> {
 
 				FragmentTransaction trans = ((TabHostChatType) context).getSupportFragmentManager().beginTransaction();
 				trans.addToBackStack(null);
-				Fragment move = new ChatFragment((Activity) context , 2);
+				Fragment move = new ChatFragment((Activity) context, 2);
 				trans.replace(R.id.content_frame, move);
 				trans.commit();
 
@@ -419,7 +425,7 @@ public class ChatItemAdapter extends ArrayAdapter<String> {
 
 				FragmentTransaction trans = ((TabHostChatType) context).getSupportFragmentManager().beginTransaction();
 				trans.addToBackStack(null);
-				Fragment move = new ChatFragment((Activity) context , 3);
+				Fragment move = new ChatFragment((Activity) context, 3);
 				trans.replace(R.id.content_frame, move);
 				trans.commit();
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.project.mechanic.R;
 import com.project.mechanic.Action.FloatingActionButton;
+import com.project.mechanic.chatAdapter.ExpandTypeChatAdapter;
 import com.project.mechanic.utility.Utility;
 
 import android.content.Intent;

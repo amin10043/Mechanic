@@ -58,7 +58,7 @@
     <style name="second_item_style">
         <item name="android:background">@color/white</item>
         <item name="android:cacheColorHint">@android:color/transparent</item>
-        <item name="android:divider">@drawable/lili</item>
+        <item name="android:divider">@color/orginal_golden_color</item>
         <item name="android:dividerHeight">2dp</item>
         <!-- <item name="android:listSelector">@drawable/shape_list</item> -->
     </style>
@@ -120,6 +120,28 @@
         <item name="android:dividerHeight">10dp</item>
         <item name="android:padding">10dp</item>
         <!-- <item name="android:listSelector">@drawable/shape_list</item> -->
+    </style>
+
+    <style name="ChangeBackgroundTheme" parent="@android:style/Theme.Holo">
+        <item name="android:actionBarStyle">@style/ActionBarStyle1</item>
+        <item name="android:actionBarTabTextStyle">@style/ActionBarTabText</item>
+        <item name="android:actionBarTabStyle">@style/changeBackgrounTab</item>
+    </style>
+
+    <style name="ActionBarStyle1" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/orginal_hard_blue_color</item>
+        <item name="android:divider">@null</item>
+        <item name="android:dividerPadding">20dp</item>
+    </style>
+
+    <style name="ActionBarTabText" parent="@android:style/Widget.ActionBar.TabText">
+        <item name="android:textColor">@color/orginal_golden_color</item>
+    </style>
+
+    <style name="changeBackgrounTab" parent="@android:style/Widget.ActionBar.TabView">
+        <item name="android:background">@drawable/selector_tab_action</item>
+        <item name="android:divider">@color/white</item>
+        <item name="android:dividerPadding">20dp</item>
     </style>
 
 </resources>

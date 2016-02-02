@@ -1,17 +1,157 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/white" >
 
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent" >
 
-        <android.support.v4.view.ViewPager
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/pager"
+        <ListView
+            android:id="@+id/left_drawer"
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:background="@color/orginal_hard_blue_color"
+            android:choiceMode="singleChoice"
+            android:divider="#000000"
+            android:dividerHeight="1dp" />
+
+        <FrameLayout
+            android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
+            android:layout_height="wrap_content" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <android.support.v4.view.ViewPager
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/mainlayoutfooter" />
+
+                <RelativeLayout
+                    android:id="@+id/mainlayoutfooter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/white" >
+
+                    <RelativeLayout
+                        android:id="@+id/replyLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@drawable/stroke_xml"
+                        android:visibility="gone" >
+
+                        <ImageView
+                            android:id="@+id/deleteReply"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:background="@drawable/delete_reply" />
+
+                        <TextView
+                            android:id="@+id/reply"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/rep"
+                            android:layout_toRightOf="@+id/deleteReply"
+                            android:gravity="right"
+                            android:maxLength="50"
+                            android:text="reply"
+                            android:textColor="@color/gray" />
+
+                        <ImageView
+                            android:id="@+id/rep"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/ic_reply" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/getCommentLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/replyLayout"
+                        android:visibility="visible" >
+
+                        <ImageView
+                            android:id="@+id/sep"
+                            android:layout_width="match_parent"
+                            android:layout_height="3dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="@color/orginal_golden_color" />
+
+                        <EditText
+                            android:id="@+id/inputComment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/sep"
+                            android:layout_toLeftOf="@+id/sendComment"
+                            android:layout_toRightOf="@+id/pickPicture"
+                            android:hint="نظر خود را وارد کنید"
+                            android:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/pickPicture"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/add"
+                            android:visibility="gone" />
+
+                        <ImageView
+                            android:id="@+id/sendComment"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/send" />
+                    </RelativeLayout>
+
+                    <ViewFlipper
+                        android:id="@+id/footerAgahi"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_below="@+id/getCommentLayout"
+                        android:background="@color/white"
+                        android:visibility="gone" >
+
+                        <ImageView
+                            android:id="@+id/img1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/slide1" />
+
+                        <ImageView
+                            android:id="@+id/img2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/slide2" />
+
+                        <ImageView
+                            android:id="@+id/img3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/slide3" />
+                    </ViewFlipper>
+                </RelativeLayout>
+            </RelativeLayout>
+        </FrameLayout>
+    </android.support.v4.widget.DrawerLayout>
 
 </RelativeLayout>

@@ -1,6 +1,15 @@
-package com.project.mechanic.chat;
+package com.project.mechanic.chatAdapter;
 
 import com.project.mechanic.StaticValues;
+import com.project.mechanic.chat.ChanalChatFragment;
+import com.project.mechanic.chat.ChatMenuFragment;
+import com.project.mechanic.chat.ContactChatFragment;
+import com.project.mechanic.chat.FamilyChatFragment;
+import com.project.mechanic.chat.FavoriteChatFragment;
+import com.project.mechanic.chat.FriendChatFragment;
+import com.project.mechanic.chat.GroupChatFragment;
+import com.project.mechanic.chat.OffersChatFragment;
+import com.project.mechanic.chat.RequestionChatFragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

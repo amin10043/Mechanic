@@ -5,7 +5,7 @@
         <shape
             android:dither="true"
             android:shape="rectangle" >
-            <solid android:color="#d2b150" />
+            <solid android:color="@color/orginal_golden_color" />
 
             <padding
                 android:bottom="5dp"
@@ -18,7 +18,7 @@
         <shape
             android:dither="true"
             android:shape="rectangle" >
-            <solid android:color="#1c3062" />
+            <solid android:color="@color/orginal_hard_blue_color" />
 
             <padding
                 android:bottom="2dp"

@@ -1,9 +1,13 @@
-package com.project.mechanic.chat;
+package com.project.mechanic.chatAdapter;
 
 import java.util.List;
 
 import com.project.mechanic.R;
 import com.project.mechanic.StaticValues;
+import com.project.mechanic.chat.NewChannelFragment;
+import com.project.mechanic.chat.NewGroupFragment;
+import com.project.mechanic.chat.ContactChatFragment;
+import com.project.mechanic.chat.TabHostChatType;
 import com.project.mechanic.utility.Utility;
 
 import android.annotation.SuppressLint;
@@ -60,11 +64,33 @@ public class ChatMenuAdapter extends ArrayAdapter<String> {
 					FragmentTransaction trans = ((TabHostChatType) context).getSupportFragmentManager()
 							.beginTransaction();
 					trans.addToBackStack(null);
-					Fragment move = new AddGroupFragment();
+					Fragment move = new NewGroupFragment();
 					trans.replace(R.id.content_frame, move);
 					trans.commit();
 
 				}
+				if (position == 2) {
+
+					FragmentTransaction trans = ((TabHostChatType) context).getSupportFragmentManager()
+							.beginTransaction();
+					trans.addToBackStack(null);
+					Fragment move = new NewChannelFragment();
+					trans.replace(R.id.content_frame, move);
+					trans.commit();
+
+				}
+
+				if (position == 4) {
+
+					FragmentTransaction trans = ((TabHostChatType) context).getSupportFragmentManager()
+							.beginTransaction();
+					trans.addToBackStack(null);
+					Fragment move = new ContactChatFragment();
+					trans.replace(R.id.content_frame, move);
+					trans.commit();
+
+				}
+
 			}
 		});
 		return convertView;

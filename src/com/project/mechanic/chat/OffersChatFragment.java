@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.project.mechanic.R;
 import com.project.mechanic.StaticValues;
+import com.project.mechanic.chatAdapter.ChatItemAdapter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

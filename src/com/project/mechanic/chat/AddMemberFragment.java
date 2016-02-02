@@ -3,7 +3,7 @@ package com.project.mechanic.chat;
 import java.util.ArrayList;
 
 import com.project.mechanic.R;
-import com.project.mechanic.StaticValues;
+import com.project.mechanic.chatAdapter.AddMemberAdapter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,19 +12,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class AddGroupFragment extends Fragment {
-
-	ListView contactList;
+public class AddMemberFragment extends Fragment {
+	ListView listMember;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View convertView = inflater.inflate(R.layout.fragment_add_member, null);
+		listMember = (ListView) convertView.findViewById(R.id.lstComment);
 
-		View convertView = inflater.inflate(R.layout.fragment_create_group_chat, null);
-		View header = getActivity().getLayoutInflater().inflate(R.layout.header_add_group, null);
+		fillListView();
 
-		contactList = (ListView) convertView.findViewById(R.id.lstComment);
+		return convertView;
+	}
 
-		contactList.addHeaderView(header);
+	private void fillListView() {
 
 		ArrayList<String> childFavorite = new ArrayList<String>();
 
@@ -37,12 +38,8 @@ public class AddGroupFragment extends Fragment {
 		childFavorite.add("اسماعیل شعبانی");
 		childFavorite.add("آیدین غیبی");
 		childFavorite.add("داوود امینی");
-
-		SelectContactAdapter ListAdapter = new SelectContactAdapter(getActivity(), R.layout.row_select_contact,
+		AddMemberAdapter listAdapter = new AddMemberAdapter(getActivity(), R.layout.row_select_member_admin,
 				childFavorite);
-		contactList.setAdapter(ListAdapter);
-
-		return convertView;
+		listMember.setAdapter(listAdapter);
 	}
-
 }

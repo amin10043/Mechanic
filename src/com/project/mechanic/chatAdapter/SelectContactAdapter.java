@@ -1,4 +1,4 @@
-package com.project.mechanic.chat;
+package com.project.mechanic.chatAdapter;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class SelectContactAdapter extends ArrayAdapter<String> {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		convertView = inflater.inflate(R.layout.row_select_contact, null);
+		convertView = inflater.inflate(R.layout.row_select_member_admin, null);
 
 		TextView nameItem = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
 
