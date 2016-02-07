@@ -260,7 +260,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 
 						if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
 							adapter.open();
-							addToFavorite(util.getCurrentUser().getId(), 3, itemId);
+							addToFavorite(util.getCurrentUser().getId(), StaticValues.TypeFavoriteTicket, itemId);
 							adapter.close();
 						}
 						if (item.getTitle().equals("کپی")) {

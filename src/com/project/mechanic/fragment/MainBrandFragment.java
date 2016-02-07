@@ -48,7 +48,6 @@ public class MainBrandFragment extends Fragment
 	DialogCreatePage dialog;
 	ListView lstObject;
 	ObjectListAdapter ListAdapter;
-	ArrayList<Object> mylist;
 
 	SwipeRefreshLayout swipeLayout;
 	View LoadMoreFooter;
@@ -58,14 +57,26 @@ public class MainBrandFragment extends Fragment
 	int totalItemCountBeforeSwipe = 0;
 
 	int userItemId = 0;
-	Object obj;
+	// Object obj;
 	UpdatingImage ImageUpdating;
 
 	Map<String, String> maps;
 	ServerDate date;
 	String serverDate;
-	int code = 100;
+	// int code = 100;
 	int visitCounter = 0;
+
+	///////////////
+
+	Object objectItem;
+	View rootView;
+	FloatingActionButton createItem;
+	int MainObjectId;
+	ArrayList<Object> mylist = new ArrayList<Object>();
+
+	int typeRunServer;
+
+	//////
 
 	public MainBrandFragment() {
 		super();
@@ -77,59 +88,275 @@ public class MainBrandFragment extends Fragment
 
 		if (getArguments() != null && getArguments().getString("Id") != null) {
 			parentId = Integer.valueOf(getArguments().getString("Id"));
-			// Toast.makeText(getActivity(), "parent Id = " + parentId,
-			// 0).show();
 		}
 
-		((MainActivity) getActivity()).setTitle(R.string.object);
-
-		View view = inflater.inflate(R.layout.fragment_object, null);
+		rootView = inflater.inflate(R.layout.fragment_object, null);
 
 		SharedPreferences sendData = getActivity().getSharedPreferences("Id", 0);
-		final int MainObjectId = sendData.getInt("main_Id", -1);
-		// RelativeLayout createPage = (RelativeLayout) view
-		// .findViewById(R.id.relative);
+		MainObjectId = sendData.getInt("main_Id", -1);
 
-		adapter = new DataBaseAdapter(getActivity());
-		util = new Utility(getActivity());
-		CurrentUser = util.getCurrentUser();
+		init();
 
-		adapter.open();
-		// objectList = adapter.getObjectbyParentId(id);
-		mylist = adapter.getObjectbyParentId(parentId);
+		fillListView();
 
-		// start code get image profile from server
-
-		if (userItemId < mylist.size())
-
-			obj = adapter.getObjectbyid(mylist.get(userItemId).getId());
+		// request get image
 		if (mylist.size() > 0)
 			if (getActivity() != null) {
 				date = new ServerDate(getActivity());
 				date.delegate = MainBrandFragment.this;
 				date.execute("");
+				typeRunServer = StaticValues.TypeRunServerForGetDate;
 			}
 
-		// end code for get image from server
-		setting = adapter.getSettings();
+		refreshListView();
+
+		createNewObject();
+
+		onScrollListView();
+
+		util.ShowFooterAgahi(getActivity(), true, 2);
+		return rootView;
+	}
+
+	public void UpdateList() {
+		adapter.open();
+		ArrayList<Object> mylist = adapter.getObjectbyParentId(parentId);
+		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist,
+				MainBrandFragment.this, true, null, 1);
+		ListAdapter.notifyDataSetChanged();
+
+		lstObject.setAdapter(ListAdapter);
 
 		adapter.close();
+	}
 
-		lstObject = (ListView) view.findViewById(R.id.listvCmt_Introduction);
+	public int getParentId() {
+		return parentId;
+	}
+
+	@Override
+	public void processFinish(String output) {
+
+		LoadMoreFooter.setVisibility(View.INVISIBLE);
+
+		if (!output.contains("exception") && !output.contains("anyType")) {
+
+			if (output.length() == 18 && typeRunServer == StaticValues.TypeRunServerForGetDate) {
+				serverDate = output;
+				getImageProfile();
+
+			}
+
+		}
+
+		if (output != null && !(output.contains("Exception") || output.contains("java") || output.contains("SoapFault"))
+				&& typeRunServer == StaticValues.TypeRunServerForRefreshItems) {
+
+			if (output.contains("anyType")) {
+
+				Toast.makeText(getActivity(), "صفحه جدیدی یافت نشد", 0).show();
+				LoadMoreFooter.setVisibility(View.INVISIBLE);
+
+				if (swipeLayout != null) {
+					swipeLayout.setRefreshing(false);
+				}
+				return;
+
+			} else {
+
+				util.parseQuery(output);
+
+				adapter.open();
+				mylist = adapter.getObjectbyParentId(parentId);
+				adapter.close();
+
+				if (totalItemCountBeforeSwipe != mylist.size()) {
+					mylist.clear();
+					if (mylist.size() > 0) {
+						ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist,
+								MainBrandFragment.this, true, null, 1);
+						lstObject.setAdapter(ListAdapter);
+					}
+				}
+			}
+
+		} else {
+			if (swipeLayout != null) {
+				swipeLayout.setRefreshing(false);
+			}
+		}
+	}
+
+	@Override
+	public void processFinish(byte[] output) {
+
+		if (output != null) {
+
+			util.CreateFile(output, objectItem.getId(), "Mechanical", "Profile", "profile", "Object");
+
+		}
+
+		userItemId++;
+		getImageProfile();
+	}
+
+	@Override
+	public void CommProcessFinish(String output) {
+
+		if (output.contains("Exception") || output.contains(("anyType")))
+			output = "";
+
+		adapter.open();
+		adapter.updateObjectImage2ServerDate(objectItem.getId(), output);
+		adapter.close();
+
+		userItemId++;
+
+		getServerDateImage();
+
+	}
+
+	private void getCountVisitFromServer() {
+
+		if (visitCounter < mylist.size()) {
+
+			adapter.open();
+			objectItem = mylist.get(visitCounter);
+			adapter.close();
+
+			UpdatingVisit updateVisit = new UpdatingVisit(getActivity());
+			updateVisit.delegate = MainBrandFragment.this;
+			Map<String, String> serv = new LinkedHashMap<String, String>();
+
+			serv.put("tableName", "Visit");
+			serv.put("objectId", String.valueOf(objectItem.getId()));
+			serv.put("typeId", StaticValues.TypeObjectVisit + "");
+			updateVisit.execute(serv);
+
+		} else {
+
+			fillListView();
+		}
+
+	}
+
+	@Override
+	public void processFinishVisit(String output) {
+
+		if (!output.contains("Exception")) {
+
+			adapter.open();
+			adapter.updateCountView("Object", objectItem.getId(), Integer.valueOf(output));
+			adapter.close();
+		}
+		visitCounter++;
+		getCountVisitFromServer();
+
+	}
+
+	private void getImageProfile() {
+
+		if (userItemId < mylist.size()) {
+
+			objectItem = mylist.get(userItemId);
+			String imageProfileServerDate = objectItem.getImage2ServerDate();
+
+			if (imageProfileServerDate == null)
+				imageProfileServerDate = "";
+
+			if (getActivity() != null) {
+
+				ImageUpdating = new UpdatingImage(getActivity());
+				ImageUpdating.delegate = MainBrandFragment.this;
+				maps = new LinkedHashMap<String, String>();
+
+				maps.put("tableName", "Object2");
+				maps.put("Id", String.valueOf(objectItem.getId()));
+				maps.put("fromDate", imageProfileServerDate);
+
+				ImageUpdating.execute(maps);
+			}
+
+		} else {
+
+			userItemId = 0;
+			getServerDateImage();
+
+		}
+	}
+
+	private void getServerDateImage() {
+
+		if (userItemId < mylist.size()) {
+
+			objectItem = mylist.get(userItemId);
+
+			if (getActivity() != null) {
+
+				ServiceComm getDateService = new ServiceComm(getActivity());
+				getDateService.delegate = MainBrandFragment.this;
+				Map<String, String> items = new LinkedHashMap<String, String>();
+
+				items.put("tableName", "getObject2ImageDate");
+				items.put("Id", String.valueOf(objectItem.getId()));
+
+				getDateService.execute(items);
+
+			}
+
+		} else {
+
+			getCountVisitFromServer();
+		}
+
+	}
+
+	private void fillListView() {
+
+		mylist.clear();
+		adapter.open();
+		mylist = adapter.getObjectbyParentId(parentId);
+		adapter.close();
+
 		ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, MainBrandFragment.this, true,
 				null, 1);
+
+		lstObject.setAdapter(ListAdapter);
+
+	}
+
+	private void init() {
+
+		adapter = new DataBaseAdapter(getActivity());
+
+		util = new Utility(getActivity());
+
+		CurrentUser = util.getCurrentUser();
+
+		adapter.open();
+		setting = adapter.getSettings();
+		adapter.close();
+
+		lstObject = (ListView) rootView.findViewById(R.id.listvCmt_Introduction);
 
 		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
 		lstObject.addFooterView(LoadMoreFooter);
 		LoadMoreFooter.setVisibility(View.INVISIBLE);
 
-		swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+		swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+		createItem = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
+		((MainActivity) getActivity()).setTitle(R.string.object);
+
+	}
+
+	private void refreshListView() {
 		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override
 			public void onRefresh() {
 				if (getActivity() != null) {
+
 					updating = new Updating(getActivity());
 					updating.delegate = MainBrandFragment.this;
 					String[] params = new String[4];
@@ -140,14 +367,18 @@ public class MainBrandFragment extends Fragment
 
 					params[3] = "1";
 					updating.execute(params);
+
+					typeRunServer = StaticValues.TypeRunServerForRefreshItems;
 				}
 			}
 		});
 
 		swipeLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
 				android.R.color.holo_orange_light, android.R.color.holo_red_light);
+	}
 
-		final FloatingActionButton createItem = (FloatingActionButton) view.findViewById(R.id.fab);
+	private void createNewObject() {
+
 		final String message = "کاربر گرامی اگر مشخصات برند یا فعالیت شما در این نرم افزار ثبت نشده می توانید با ایجاد صفحه،  فعالیت خود را به سایر کاربران این نرم افزار معرفی نمایید ";
 		createItem.setOnClickListener(new OnClickListener() {
 
@@ -164,7 +395,10 @@ public class MainBrandFragment extends Fragment
 			}
 		});
 
-		lstObject.setAdapter(ListAdapter);
+	}
+
+	private void onScrollListView() {
+
 		lstObject.setOnScrollListener(new OnScrollListener() {
 
 			@Override
@@ -210,191 +444,11 @@ public class MainBrandFragment extends Fragment
 						params[3] = "0";
 						updating.execute(params);
 						totalItemCountBeforeSwipe = totalItemCount;
+						typeRunServer = StaticValues.TypeRunServerForRefreshItems;
+
 					}
 				}
 			}
 		});
-		util.ShowFooterAgahi(getActivity(), true, 2);
-
-		return view;
-	}
-
-	public void UpdateList() {
-		adapter.open();
-		ArrayList<Object> mylist = adapter.getObjectbyParentId(parentId);
-		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist,
-				MainBrandFragment.this, true, null, 1);
-		ListAdapter.notifyDataSetChanged();
-
-		lstObject.setAdapter(ListAdapter);
-
-		adapter.close();
-	}
-
-	public int getParentId() {
-		return parentId;
-	}
-
-	@Override
-	public void processFinish(String output) {
-
-		LoadMoreFooter.setVisibility(View.INVISIBLE);
-
-		if (output.length() == 18 && code == 100) {
-			serverDate = output;
-
-			if (getActivity() != null) {
-				ImageUpdating = new UpdatingImage(getActivity());
-				ImageUpdating.delegate = MainBrandFragment.this;
-				maps = new LinkedHashMap<String, String>();
-				maps.put("tableName", "Object2");
-				maps.put("Id", String.valueOf(obj.getId()));
-				maps.put("fromDate", obj.getImage2ServerDate());
-				ImageUpdating.execute(maps);
-			}
-
-		}
-		if (output.contains("anyType")) {
-
-			Toast.makeText(getActivity(), "صفحه جدیدی یافت نشد", 0).show();
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
-
-			if (swipeLayout != null) {
-
-				swipeLayout.setRefreshing(false);
-			}
-			return;
-
-		}
-		if (swipeLayout != null) {
-
-			swipeLayout.setRefreshing(false);
-		}
-
-		if (output != null && !(output.contains("Exception") || output.contains("java") || output.contains("SoapFault")
-				|| output.contains("anyType")) && code == -1) {
-
-			util.parseQuery(output);
-			adapter.open();
-			mylist = adapter.getObjectbyParentId(parentId);
-			adapter.close();
-
-			if (totalItemCountBeforeSwipe != mylist.size()) {
-				mylist.clear();
-				if (mylist.size() > 0) {
-					ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist,
-							MainBrandFragment.this, true, null, 1);
-					lstObject.setAdapter(ListAdapter);
-				}
-			}
-		}
-	}
-
-	@Override
-	public void processFinish(byte[] output) {
-
-		if (output != null) {
-
-			util.CreateFile(output, obj.getId(), "Mechanical", "Profile", "profile", "Object");
-			ServiceComm getDateService = null;
-			if (getActivity() != null)
-				getDateService = new ServiceComm(getActivity());
-
-			getDateService.delegate = MainBrandFragment.this;
-			Map<String, String> items = new LinkedHashMap<String, String>();
-			items.put("tableName", "getObject2ImageDate");
-			items.put("Id", String.valueOf(obj.getId()));
-			getDateService.execute(items);
-
-		}
-
-	}
-
-	@Override
-	public void CommProcessFinish(String output) {
-		if (output.equals("java.lang.NullPointerException") || output.equals("anyType"))
-			output = "";
-
-		adapter.open();
-		adapter.updateObjectImage2ServerDate(obj.getId(), output);
-		adapter.close();
-
-		userItemId++;
-
-		if (userItemId < mylist.size()) {
-			adapter.open();
-			mylist = adapter.getObjectbyParentId(parentId);
-
-			obj = adapter.getObjectbyid(mylist.get(userItemId).getId());
-
-			adapter.close();
-			if (getActivity() != null) {
-
-				ImageUpdating = new UpdatingImage(getActivity());
-				ImageUpdating.delegate = this;
-				maps = new LinkedHashMap<String, String>();
-				maps.put("tableName", "Object2");
-				maps.put("Id", String.valueOf(obj.getId()));
-				maps.put("fromDate", obj.getImage2ServerDate());
-				ImageUpdating.execute(maps);
-			}
-		} else {
-			mylist.clear();
-			adapter.open();
-			mylist = adapter.getObjectbyParentId(parentId);
-			adapter.close();
-			getCountVisitFromServer();
-			if (getActivity() != null) {
-				ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, MainBrandFragment.this,
-						false, null, 1);
-				lstObject.setAdapter(ListAdapter);
-			}
-
-		}
-	}
-
-	private void getCountVisitFromServer() {
-
-		if (visitCounter < mylist.size()) {
-
-			adapter.open();
-			obj = adapter.getObjectbyid(mylist.get(visitCounter).getId());
-			adapter.close();
-
-			UpdatingVisit updateVisit = new UpdatingVisit(getActivity());
-			updateVisit.delegate = MainBrandFragment.this;
-			Map<String, String> serv = new LinkedHashMap<String, String>();
-
-			serv.put("tableName", "Visit");
-			serv.put("objectId", String.valueOf(obj.getId()));
-			serv.put("typeId", StaticValues.TypeObjectVisit + "");
-			updateVisit.execute(serv);
-
-		} else {
-			if (getActivity() != null) {
-
-				adapter.open();
-				mylist = adapter.getObjectbyParentId(parentId);
-				adapter.close();
-				ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, MainBrandFragment.this,
-						false, null, 1);
-				lstObject.setAdapter(ListAdapter);
-			}
-		}
-
-	}
-
-	@Override
-	public void processFinishVisit(String output) {
-
-		if (!output.contains("Exception")) {
-
-			adapter.open();
-			adapter.updateCountView("Object", obj.getId(), Integer.valueOf(output));
-			adapter.close();
-		}
-		visitCounter++;
-		getCountVisitFromServer();
-
 	}
 }

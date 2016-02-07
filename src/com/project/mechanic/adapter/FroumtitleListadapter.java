@@ -303,7 +303,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 
 							if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
 								adapter.open();
-								addToFavorite(util.getCurrentUser().getId(), 1, itemId);
+								addToFavorite(util.getCurrentUser().getId(), StaticValues.TypeFavoriteFroum, itemId);
 								adapter.close();
 							}
 							if (item.getTitle().equals("کپی")) {
@@ -541,7 +541,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 			}
 			try {
 				int id = Integer.valueOf(output);
-				LinearLayout parentLayout = (LinearLayout) Parent.findViewWithTag(froumNumber);
+				RelativeLayout parentLayout = (RelativeLayout) Parent.findViewWithTag(froumNumber);
 				LinearLayout likeTitle = (LinearLayout) parentLayout.findViewById(R.id.liketitleTopic);
 
 				adapter.open();
@@ -556,7 +556,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 					likeTitle.setBackgroundResource(R.drawable.like_froum_on);
 				}
 
-				TextView likeCountFroum = (TextView) likeTitle.findViewById(R.id.countLikeInFroumTitle);
+				View conv = (View) likeTitle.getParent();
+				TextView likeCountFroum = (TextView) conv.findViewById(R.id.countLikeInFroumTitle);
 				likeCountFroum.setText(adapter.LikeInFroum_count(froumNumber).toString());
 
 				adapter.close();
@@ -644,7 +645,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 
 			catch (Exception e) {
 
-				Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "  خطا در ثبت  " + e.toString(), Toast.LENGTH_SHORT).show();
 			}
 		}
 	}

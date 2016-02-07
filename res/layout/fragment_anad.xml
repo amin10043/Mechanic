@@ -52,11 +52,10 @@
 
                     <ListView
                         android:id="@+id/listVanad"
+                        style="@style/second_item_style"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" 
-                                        style="@style/second_item_style"
-                        
-                        android:footerDividersEnabled = "false">
+                        android:layout_height="wrap_content"
+                        android:footerDividersEnabled="false" >
                     </ListView>
                 </android.support.v4.widget.SwipeRefreshLayout>
 

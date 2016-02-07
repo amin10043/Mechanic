@@ -1069,6 +1069,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 				namePage.setText(obj.getName());
 				ProvinceName.setText(province.getName());
+				ProvinceName.setTypeface(util.SetFontCasablanca());
 
 				TextView baghiMandeh = (TextView) convertView.findViewById(R.id.day); // modate
 																						// baghimande

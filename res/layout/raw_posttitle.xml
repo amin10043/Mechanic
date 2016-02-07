@@ -36,7 +36,7 @@
                 android:layout_marginRight="20dp"
                 android:gravity="left"
                 android:text="Date"
-                android:textColor="@color/transparent" />
+                    android:textColor="@color/orginal_hard_blue_color" />
         </LinearLayout>
 
         <LinearLayout
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:text="author"
-                    android:textColor="@color/orginal_red_color" />
+                    android:textColor="@color/orginal_hard_blue_color" />
 
                 <TextView
                     android:id="@+id/rowdescriptionpaper"
@@ -95,7 +95,7 @@
                     android:layout_marginTop="10dp"
                     android:singleLine="true"
                     android:text="des"
-                    android:textColor="@color/orginal_red_color" 
+                    android:textColor="@color/orginal_hard_blue_color"
                     android:visibility="visible" />
             </LinearLayout>
 
@@ -168,7 +168,7 @@
                 android:layout_marginLeft="5dp"
                 android:gravity="bottom"
                 android:text="123"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/orginal_hard_blue_color" />
         </LinearLayout>
 
         <LinearLayout
@@ -202,7 +202,7 @@
                 android:layout_marginLeft="5dp"
                 android:gravity="center"
                 android:text="456"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/orginal_hard_blue_color" />
         </LinearLayout>
 
         <LinearLayout
@@ -224,7 +224,7 @@
                 android:layout_marginLeft="5dp"
                 android:gravity="center"
                 android:text="789"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/orginal_hard_blue_color" />
         </LinearLayout>
 
         <ImageButton

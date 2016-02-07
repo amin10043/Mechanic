@@ -42,10 +42,11 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-@SuppressLint("ResourceAsColor")
 @SuppressWarnings("deprecation")
 public class TabHostChatType extends FragmentActivity implements ActionBar.TabListener {
 
@@ -121,7 +122,7 @@ public class TabHostChatType extends FragmentActivity implements ActionBar.TabLi
 			public void onPageScrollStateChanged(int arg0) {
 			}
 		});
-	
+
 		util.ShowFooterAgahi(this, false, 0);
 	}
 
@@ -141,9 +142,18 @@ public class TabHostChatType extends FragmentActivity implements ActionBar.TabLi
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
 	}
 
+	@SuppressLint("ResourceAsColor")
 	private List<TextView> titleText() {
 
 		List<TextView> titleList = new ArrayList<TextView>();
+
+		// View tabView = getLayoutInflater().inflate(R.layout.row_tab, null);
+		// TextView titleTab = (TextView) tabView.findViewById(R.id.tabtitle);
+
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
+
+		lp.addRule(RelativeLayout.CENTER_IN_PARENT);
 
 		for (int i = 0; i < StaticValues.nameTabsChat.length; i++) {
 
@@ -153,6 +163,7 @@ public class TabHostChatType extends FragmentActivity implements ActionBar.TabLi
 			title.setTypeface(util.SetFontCasablanca());
 			title.setTextColor(R.color.white);
 			title.setTextSize(18);
+//			title.setLayoutParams(lp);
 
 			titleList.add(title);
 
@@ -276,7 +287,7 @@ public class TabHostChatType extends FragmentActivity implements ActionBar.TabLi
 		mDrawerList.setDivider(getResources().getDrawable(R.drawable.lili));
 		mDrawerList.setAdapter(slideadapter);
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-	
+
 		iBtnMenu.setOnClickListener(new OnClickListener() {
 
 			@Override

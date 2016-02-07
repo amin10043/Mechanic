@@ -109,9 +109,12 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface, C
 
 		mdb.open();
 		mylist = mdb.getAllFroum();
+		setting = mdb.getSettings();
+		mdb.close();
 
 		String strIdes = "";
 		if (mylist != null) {
+			mdb.open();
 			Users uId;
 			for (int i = 0; i < mylist.size(); ++i) {
 				int uidd = mylist.get(i).getUserId();
@@ -121,10 +124,9 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface, C
 					strIdes += uidd + "-";
 				}
 			}
+			mdb.close();
 		}
-		setting = mdb.getSettings();
 
-		mdb.close();
 
 		if (!"".equals(strIdes)) {
 
@@ -175,7 +177,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface, C
 		lst.setAdapter(ListAdapter);
 
 		int countList = ListAdapter.getCount();
-		Toast.makeText(getActivity(), "تعداد فروم ها = " + countList, 0).show();
+//		Toast.makeText(getActivity(), "تعداد فروم ها = " + countList, 0).show();
 
 		if (getArguments() != null) {
 			mLastFirstVisibleItem = getArguments().getInt("Froum_List_Id");

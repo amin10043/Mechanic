@@ -262,7 +262,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 	@Override
 	public void processFinish(String output) {
 
-		Toast.makeText(getActivity(), output, 0).show();
+		// Toast.makeText(getActivity(), output, 0).show();
 
 		if (!output.contains("Exception")) {
 
@@ -328,8 +328,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 							loadingProgressHeader.setVisibility(View.GONE);
 							// loadingProgressProfile.setVisibility(View.GONE);
 							loadingProgressFooter.setVisibility(View.GONE);
-							Toast.makeText(getActivity(), "به روز رسانی تصاویر با موفقیت انجام شد", Toast.LENGTH_SHORT)
-									.show();
+							// Toast.makeText(getActivity(), "به روز رسانی
+							// تصاویر با موفقیت انجام شد", Toast.LENGTH_SHORT)
+							// .show();
 
 							getPost();
 
@@ -796,6 +797,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 	private void fillListView() {
 		adapter.open();
 		ArrayPosts = adapter.getAllPost(object.getId());
+		adapter.close();
 		PosttitleListadapter ListAdapterPost = new PosttitleListadapter(getActivity(), R.layout.raw_posttitle,
 				ArrayPosts, IntroductionFragment.this);
 		PostList.setAdapter(ListAdapterPost);
@@ -1771,20 +1773,19 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 	private void checkInternet() {
 
 		if (currentUser != null) {
+			if (checkUsers() == true) {
 
-			if (ut.isNetworkConnected()) {
-				Toast.makeText(getActivity(), "Connected", 0).show();
+				if (ut.isNetworkConnected()) {
+					// Toast.makeText(getActivity(), "Connected", 0).show();
 
-				ServerDate date = new ServerDate(getActivity());
-				date.delegate = IntroductionFragment.this;
-				date.execute("");
+					ServerDate date = new ServerDate(getActivity());
+					date.delegate = IntroductionFragment.this;
+					date.execute("");
 
-				saveVisitFalg = true;
+					saveVisitFalg = true;
 
-			} else {
-				Toast.makeText(getActivity(), "Disconnected", 0).show();
-
-				if (checkUsers() == true) {
+				} else {
+					// Toast.makeText(getActivity(), "Disconnected", 0).show();
 
 					adapter.open();
 					adapter.insertVisitToDb(ut.getCurrentUser().getId(), StaticValues.TypeObjectVisit, ObjectID);
@@ -1889,7 +1890,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 					isFinish = true;
 
 				}
-				// getImageFromServer();
+				getImageFromServer();
 
 			}
 

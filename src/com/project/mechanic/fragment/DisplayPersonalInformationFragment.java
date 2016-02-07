@@ -78,7 +78,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 	RelativeLayout.LayoutParams editBtnParams, paramsLayout;
 
 	UpdatingPersonalPage updating;
-	ProgressDialog ringProgressDialog;
+//	ProgressDialog ringProgressDialog;
 
 	boolean isFirstRun;
 	String tableName;
@@ -633,13 +633,13 @@ public class DisplayPersonalInformationFragment extends Fragment
 	public void processFinish(String output) {
 		if (selectTableId < 8) {
 
-			if (ringProgressDialog != null)
-				ringProgressDialog.dismiss();
+//			if (ringProgressDialog != null)
+//				ringProgressDialog.dismiss();
 
 			if (output != null || !"".equals(output) || !output.equals("anyType{}") || !output.contains("Exception")) {
 
-				if (ringProgressDialog != null)
-					ringProgressDialog.dismiss();
+//				if (ringProgressDialog != null)
+//					ringProgressDialog.dismiss();
 
 				if (isFirstRun == true) {
 
@@ -657,8 +657,8 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 		if (getActivity() != null) {
 
-			ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-			ringProgressDialog.setCancelable(true);
+//			ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+//			ringProgressDialog.setCancelable(true);
 
 			date = new ServerDate(getActivity());
 			date.delegate = DisplayPersonalInformationFragment.this;
@@ -676,6 +676,11 @@ public class DisplayPersonalInformationFragment extends Fragment
 			PersonalData pd = ObejctData.get(counterMyObject);
 			objectIdPage = pd.getObjectId();
 
+			String objectImageDate = pd.getImage2ServerDateObject();
+
+			if (objectImageDate == null)
+				objectImageDate = "";
+
 			if (getActivity() != null) {
 
 				UpdatingImage ImageUpdating = new UpdatingImage(getActivity());
@@ -683,7 +688,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 				maps = new LinkedHashMap<String, String>();
 				maps.put("tableName", "Object2");
 				maps.put("Id", String.valueOf(objectIdPage));
-				maps.put("fromDate", pd.getImage2ServerDateObject());
+				maps.put("fromDate", objectImageDate);
 				ImageUpdating.execute(maps);
 			}
 
@@ -703,6 +708,11 @@ public class DisplayPersonalInformationFragment extends Fragment
 			PersonalData pd = FollowedPageLsit.get(counterFollowObject);
 			objectIdFollowed = pd.getObjectFollowId();
 
+			String objectImageDate = pd.getImage2ServerDateObject();
+
+			if (objectImageDate == null)
+				objectImageDate = "";
+
 			if (getActivity() != null) {
 
 				UpdatingImage ImageUpdating = new UpdatingImage(getActivity());
@@ -710,7 +720,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 				maps = new LinkedHashMap<String, String>();
 				maps.put("tableName", "Object2");
 				maps.put("Id", String.valueOf(objectIdFollowed));
-				maps.put("fromDate", pd.getImage2ServerDateObject());
+				maps.put("fromDate", objectImageDate);
 				ImageUpdating.execute(maps);
 			}
 
@@ -731,13 +741,17 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 				PersonalData pd = TicketData.get(counterTicket);
 				ticketIdData = pd.getTicketId();
+				String objectImageDate = pd.getImageServerDateTicket();
+
+				if (objectImageDate == null)
+					objectImageDate = "";
 
 				UpdatingImage update = new UpdatingImage(getActivity());
 				update.delegate = DisplayPersonalInformationFragment.this;
 				maps = new LinkedHashMap<String, String>();
 				maps.put("tableName", "Ticket");
 				maps.put("Id", String.valueOf(ticketIdData));
-				maps.put("fromDate", pd.getImageServerDateTicket());
+				maps.put("fromDate", objectImageDate);
 				update.execute(maps);
 
 			} else {
@@ -758,17 +772,22 @@ public class DisplayPersonalInformationFragment extends Fragment
 				PersonalData pd = AnadData.get(counterAnad);
 				anadIdData = pd.getAnadId();
 
+				String objectImageDate = pd.getImageServerDateAnad();
+
+				if (objectImageDate == null)
+					objectImageDate = "";
+
 				UpdatingImage update = new UpdatingImage(getActivity());
 				update.delegate = DisplayPersonalInformationFragment.this;
 				maps = new LinkedHashMap<String, String>();
 				maps.put("tableName", "Anad");
 				maps.put("Id", String.valueOf(anadIdData));
-				maps.put("fromDate", pd.getImageServerDateAnad());
+				maps.put("fromDate", objectImageDate);
 				update.execute(maps);
 			} else {
 
-				if (ringProgressDialog != null)
-					ringProgressDialog.dismiss();
+//				if (ringProgressDialog != null)
+//					ringProgressDialog.dismiss();
 
 				Toast.makeText(getActivity(), " به روز رسانی اطلاعات با موفقیت انجام شد", 0).show();
 
@@ -942,7 +961,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 	public void CommProcessFinish(String output) {
 		if (f1 == true) {
 
-			if (output.equals("java.lang.NullPointerException") || output.equals("anyType"))
+			if (output.contains("Exception") || output.contains("anyType"))
 				output = "";
 
 			dbAdapter.open();
@@ -956,7 +975,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 			if (f2 == true) {
 
-				if (output.equals("java.lang.NullPointerException") || output.equals("anyType"))
+				if (output.contains("Exception") || output.contains("anyType"))
 					output = "";
 
 				dbAdapter.open();
@@ -971,7 +990,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 			else {
 				if (f3 == true) {
 
-					if (output.equals("java.lang.NullPointerException") || output.equals("anyType"))
+					if (output.contains("Exception") || output.contains("anyType"))
 						output = "";
 
 					dbAdapter.open();
@@ -983,7 +1002,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 				} else {
 					if (f4 == true) {
 
-						if (output.equals("java.lang.NullPointerException") || output.equals("anyType"))
+						if (output.contains("Exception") || output.contains("anyType"))
 							output = "";
 
 						dbAdapter.open();
@@ -1006,13 +1025,14 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 			util.parseQuery(output);
 			if (selectTableId > 7) {
-				if (ringProgressDialog != null)
-					ringProgressDialog.dismiss();
+//				if (ringProgressDialog != null)
+//					ringProgressDialog.dismiss();
 				f1 = true;
 				getImageObject();
 
-				ringProgressDialog = ProgressDialog.show(getActivity(), "", " به روز رسانی تصاویر ...", true);
-				ringProgressDialog.setCancelable(true);
+				// ringProgressDialog = ProgressDialog.show(getActivity(), "", "
+				// به روز رسانی تصاویر ...", true);
+				// ringProgressDialog.setCancelable(true);
 
 				FillExpandListView();
 

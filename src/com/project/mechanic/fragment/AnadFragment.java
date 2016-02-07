@@ -69,7 +69,8 @@ import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 @SuppressLint("HandlerLeak")
-public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncInterface, CommInterface , AsyncInterfaceVisit {
+public class AnadFragment extends Fragment
+		implements AsyncInterface, GetAsyncInterface, CommInterface, AsyncInterfaceVisit {
 
 	DataBaseAdapter dbAdapter;
 	View rootView, LoadMoreFooter;
@@ -81,11 +82,11 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 	private static int RESULT_LOAD_IMAGE = 1;
 	public static String picturePath;
 	int provinceId = 0;
-	int ticket;
+	// int ticket;
 	private LinearLayout verticalOuterLayout;
-	List<Anad> list;
+	// List<Anad> list;
 	// List<Ticket> subList;
-	List<Ticket> tempList;
+	// List<Ticket> tempList;
 	int position;
 	// int a;
 	// int I;
@@ -129,13 +130,15 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 
 	String typeItem, time;
 	int TicketId;
-	int counterTicketList;
+	int counterTicketList = 0;
 	FloatingActionButton createItem;
 	Anad anadItem;
 	// boolean startShowImageAfterDownload = false;
 	List<ImageView> imageList = new ArrayList<ImageView>();
-	int visitCounter = 0;
+	int visitCounter = 0, anadId;
 	Ticket ticketItem;
+
+	List<Ticket> correctTicket = new ArrayList<Ticket>();
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -155,11 +158,12 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 		currentTime();
 
 		getTicketTypeIdAndProvinceId();
-		
+
 		// get date from server
 		RunServiceDate();
 
 		fillAnadListTicketList();
+
 		getCountVisitFromServer();
 
 		createTicket();
@@ -281,8 +285,8 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 		ticketList = dbAdapter.getTicketByTypeIdProId(ticketTypeId, provinceId);
 
 		// ListView lstAnad = (ListView) view.findViewById(R.id.listVanad);
-		AnadListAdapter ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad, ValidTicket(ticketList),
-				provinceId, AnadFragment.this, false, time, 1, ticketTypeId);
+		AnadListAdapter ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad, correctTicket, provinceId,
+				AnadFragment.this, false, time, 1, ticketTypeId);
 		ListAdapter.notifyDataSetChanged();
 		listviewanad.setAdapter(ListAdapter);
 
@@ -290,7 +294,7 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 
 	}
 
-	private void getTicketImageFromServer(List<Ticket> ticketList, int counterTicketList) {
+	private void getTicketImageFromServer(List<Ticket> ticketList) {
 
 		Ticket ticketItem;
 
@@ -299,24 +303,28 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 			ticketItem = ticketList.get(counterTicketList);
 			TicketId = ticketItem.getId();
 
+			String imageTicketDate = ticketItem.getImageServerDate();
+			if (imageTicketDate == null)
+				imageTicketDate = "";
+
 			if (getActivity() != null) {
-				if (ticketItem.getImageServerDate() == null) {
 
-					update = new UpdatingImage(getActivity());
-					update.delegate = AnadFragment.this;
-					maps = new LinkedHashMap<String, String>();
-					maps.put("tableName", "Ticket");
-					maps.put("Id", String.valueOf(TicketId));
-					maps.put("fromDate", ticketItem.getImageServerDate());
-					update.execute(maps);
-					typeItem = "Ticket";
-				} else {
+				update = new UpdatingImage(getActivity());
+				update.delegate = AnadFragment.this;
+				maps = new LinkedHashMap<String, String>();
+				maps.put("tableName", "Ticket");
+				maps.put("Id", String.valueOf(TicketId));
+				maps.put("fromDate", imageTicketDate);
+				update.execute(maps);
+				typeItem = "Ticket";
 
-					counterTicketList++;
-					getTicketImageFromServer(ValidTicket(ticketList), counterTicketList);
-				}
+				// counterTicketList++;
+				// getTicketImageFromServer(ValidTicket(ticketList),
+				// counterTicketList);
+
 			}
 		} else {
+
 			ticketList.clear();
 			dbAdapter.open();
 			ticketList = dbAdapter.getTicketByTypeIdProId(ticketTypeId, provinceId);
@@ -340,6 +348,10 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 		if (counter < anadlist.size()) {
 
 			anadItem = anadlist.get(counter);
+			String anadImageDate = anadItem.getImageServerDate();
+
+			if (anadImageDate == null)
+				anadImageDate = "";
 
 			if (getActivity() != null) {
 
@@ -348,15 +360,20 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 				maps = new LinkedHashMap<String, String>();
 				maps.put("tableName", "Anad");
 				maps.put("Id", String.valueOf(anadItem.getId()));
-				maps.put("fromDate", anadItem.getDate());
+				maps.put("fromDate", anadImageDate);
 				update.execute(maps);
 				typeItem = "Anad";
 				LoadMoreFooter.setVisibility(View.INVISIBLE);
 			}
 
 		} else {
-			// if (startShowImageAfterDownload == true)
 			addImagesToView();
+
+			correctTicket = ValidTicket(ticketList);
+
+			counterTicketList = 0;
+			getTicketDate();
+
 		}
 
 	}
@@ -407,9 +424,11 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 		ticketList = dbAdapter.getTicketByTypeIdProId(ticketTypeId, provinceId);
 		anadlist = dbAdapter.getAnadtByTypeIdProId(provinceId);
 
+		correctTicket = ValidTicket(ticketList);
+
 		dbAdapter.close();
 
-		ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad, ValidTicket(ticketList), provinceId,
+		ListAdapter = new AnadListAdapter(getActivity(), R.layout.row_anad, correctTicket, provinceId,
 				AnadFragment.this, true, time, 1, ticketTypeId);
 		listviewanad.setAdapter(ListAdapter);
 
@@ -770,7 +789,7 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 			serverDate = output;
 			LoadMoreFooter.setVisibility(View.INVISIBLE);
 
-			getTicketImageFromServer(ticketList, 0);
+			getTicketImageFromServer(ticketList);
 		}
 
 		if (output != null && !(output.contains("Exception") || output.contains("java") || output.contains("SoapFault")
@@ -805,7 +824,6 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 
 	@Override
 	public void processFinish(byte[] output) {
-		dbAdapter.open();
 
 		if (typeItem.equals("Anad")) {
 
@@ -888,7 +906,7 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 				// }
 				/////////////////////////////////////////////////////////////
 
-				typeItem = "Anad";
+				//typeItem = "Anad";
 
 				// }
 			}
@@ -902,27 +920,65 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 				if (IsEmptyByte == false) {
 					util.CreateFile(output, TicketId, "Mechanical", "Ticket", "ticket", "Ticket");
 
-					ServiceComm getDateService = new ServiceComm(getActivity());
-
-					getDateService.delegate = AnadFragment.this;
-					Map<String, String> items = new LinkedHashMap<String, String>();
-					items.put("tableName", "getTicketImageDate");
-					items.put("Id", String.valueOf(TicketId));
-					getDateService.execute(items);
-
 				}
 			}
 			counterTicketList++;
-			getTicketImageFromServer(ValidTicket(ticketList), counterTicketList);
-			dbAdapter.close();
+			getTicketImageFromServer(correctTicket);
 		}
 
+	}
+
+	private void getTicketDate() {
+
+		if (counterTicketList < correctTicket.size()) {
+
+			ticketItem = correctTicket.get(counterTicketList);
+			TicketId = ticketItem.getId();
+
+			ServiceComm getDateService = new ServiceComm(getActivity());
+
+			getDateService.delegate = AnadFragment.this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+			items.put("tableName", "getTicketImageDate");
+			items.put("Id", String.valueOf(TicketId));
+			getDateService.execute(items);
+
+			typeItem = "Ticket";
+		} else {
+
+			counterAnad = 0;
+
+			getAnadDate();
+		}
+	}
+
+	private void getAnadDate() {
+
+		dbAdapter.open();
+		anadlist = dbAdapter.getAnadtByTypeIdProId(provinceId);
+		dbAdapter.close();
+
+		if (counterAnad < anadlist.size()) {
+
+			anadItem = anadlist.get(counterAnad);
+			anadId = anadItem.getId();
+
+			ServiceComm getDateService = new ServiceComm(getActivity());
+
+			getDateService.delegate = AnadFragment.this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+			items.put("tableName", "getAnadImageDate");
+			items.put("Id", String.valueOf(anadId));
+			getDateService.execute(items);
+			typeItem = "Anad";
+
+		}
 	}
 
 	@Override
 	public void CommProcessFinish(String output) {
 
-		if (output.equals("anyType{}"))
+		if (output.contains("exception") || output.contains("anyType"))
 			output = "";
 
 		if (typeItem.equals("Ticket")) {
@@ -932,12 +988,17 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 			dbAdapter.close();
 
 			counterTicketList++;
-			getTicketImageFromServer(ValidTicket(ticketList), counterTicketList);
+			getTicketDate();
 		}
 
 		if (typeItem.equals("Anad")) {
 
-			//
+			dbAdapter.open();
+			dbAdapter.UpdateImageServerDate(anadId, "Anad", output);
+			dbAdapter.close();
+
+			counterAnad++;
+			getAnadDate();
 
 		}
 
@@ -970,8 +1031,8 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 	}
 
 	private void getCountVisitFromServer() {
-		
-		List<Ticket> items = ValidTicket(ticketList);
+
+		List<Ticket> items = correctTicket;
 
 		if (visitCounter < items.size()) {
 
@@ -999,7 +1060,7 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 
 	@Override
 	public void processFinishVisit(String output) {
-		
+
 		if (!output.contains("Exception")) {
 
 			dbAdapter.open();
@@ -1008,7 +1069,7 @@ public class AnadFragment extends Fragment implements AsyncInterface, GetAsyncIn
 		}
 		visitCounter++;
 		getCountVisitFromServer();
-		
+
 	}
 
 }

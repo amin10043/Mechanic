@@ -434,7 +434,7 @@ public class DialogpostTitleFragment extends DialogFragment implements AsyncInte
 						params.put("Id", "0");
 
 						saving.execute(params);
-						
+
 						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 						ringProgressDialog.setCancelable(true);
@@ -452,8 +452,9 @@ public class DialogpostTitleFragment extends DialogFragment implements AsyncInte
 								imageParams.put("image", ImageConvertedToByte);
 
 								saveImage.execute(imageParams);
-								
-								ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+
+								ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...",
+										true);
 
 								ringProgressDialog.setCancelable(true);
 							}
@@ -516,6 +517,8 @@ public class DialogpostTitleFragment extends DialogFragment implements AsyncInte
 
 	@Override
 	public void processFinishSaveImage(String output) {
+		if (ringProgressDialog != null)
+			ringProgressDialog.dismiss();
 
 		if (output != null && !"".equals(output) && !(output.contains("Exception") || output.contains("java"))) {
 
@@ -525,6 +528,12 @@ public class DialogpostTitleFragment extends DialogFragment implements AsyncInte
 
 				ImageAddress = util.CreateFileString(ImageConvertedToByte, "_" + currentUser.getId() + "_" + serverDate,
 						"Mechanical", "Post", "post");
+			}
+			if (!ImageAddress.equals("")) {
+
+				dbadapter.open();
+				dbadapter.insertImageAddressToDb("Post", PostId, ImageAddress);
+				dbadapter.close();
 			}
 
 			IntroductionFragment fragment = new IntroductionFragment();

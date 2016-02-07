@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Post;
 import com.project.mechanic.entity.Users;
@@ -41,14 +42,16 @@ import com.project.mechanic.fragment.DialogShowImage;
 import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.fragment.PostFragment;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 @SuppressLint("SimpleDateFormat")
-public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInterface {
+public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInterface, CommInterface {
 
 	Context context;
 	List<Post> mylist;
@@ -143,18 +146,19 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 		}
 
 		adapter.open();
-		if (adapter.isUserLikedPost(CurrentUser.getId(), person1.getId())) {
-			adapter.deleteLikeFromPost(CurrentUser.getId(), postNumber);
+		if (CurrentUser != null)
+			if (adapter.isUserLikedPost(CurrentUser.getId(), person1.getId())) {
+				adapter.deleteLikeFromPost(CurrentUser.getId(), postNumber);
 
-			likeIcon.setBackgroundResource(R.drawable.like_froum_off);
+				likeIcon.setBackgroundResource(R.drawable.like_froum_off);
 
-		} else {
-			// adapter.insertLikeInPostToDb(person1.getId(),
-			// CurrentUser.getId(),
-			// postNumber, serverDate, 0);
+			} else {
+				// adapter.insertLikeInPostToDb(person1.getId(),
+				// CurrentUser.getId(),
+				// postNumber, serverDate, 0);
 
-			likeIcon.setBackgroundResource(R.drawable.like_froum_on);
-		}
+				likeIcon.setBackgroundResource(R.drawable.like_froum_on);
+			}
 		adapter.close();
 
 		PostID.setText(person1.getId() + "");
@@ -195,7 +199,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 		int piid = Integer.parseInt(pId);
 
 		adapter.open();
-		Post po = adapter.getPostItembyid(piid);
+		final Post po = adapter.getPostItembyid(piid);
 		Object obj = adapter.getObjectbyid(po.getObjectId());
 
 		if (x != null)
@@ -343,7 +347,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 
 				// final int ItemId ;
 				final String t;
-				ListView listView = (ListView) v.getParent().getParent().getParent().getParent().getParent();
+				ListView listView = (ListView) v.getParent().getParent().getParent().getParent();
 				int position = listView.getPositionForView(v);
 				Post f = getItem(position - 1);
 				if (f != null) {
@@ -386,14 +390,14 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 							if (item.getTitle().equals("ارسال پیام")) {
 
 								if (util.getCurrentUser() != null)
-									util.sendMessage("Froum");
+									util.sendMessage("Post");
 								else
 									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}
 
 							if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
 								adapter.open();
-								addToFavorite(util.getCurrentUser().getId(), 1, itemId);
+								addToFavorite(util.getCurrentUser().getId(), StaticValues.TypeFavoritePost, itemId);
 								adapter.close();
 							}
 							if (item.getTitle().equals("کپی")) {
@@ -410,7 +414,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 							}
 							if (item.getTitle().equals("حذف")) {
 								if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender) {
-									// deleteItems(itemId);
+									deleteItems(itemId);
 								} else {
 
 									Toast.makeText(context, "", 0).show();
@@ -523,6 +527,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(ItemId));
+				bundle.putString("ObjectId", String.valueOf(po.getObjectId()));
+
 				fragment.setArguments(bundle);
 
 				/*
@@ -742,43 +748,47 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 			}
 		}
 
-		catch (Exception e) {
+		catch (
+
+		Exception e)
+
+		{
 
 			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
 		}
+
 	}
 
-	// public void deleteItems(int itemId) {
-	//
-	// ServiceComm service = new ServiceComm(context);
-	// service.delegate = FroumtitleListadapter.this;
-	// Map<String, String> items = new LinkedHashMap<String, String>();
-	// items.put("DeletingRecord", "DeletingRecord");
-	//
-	// items.put("tableName", "Froum");
-	// items.put("Id", String.valueOf(itemId));
-	//
-	// service.execute(items);
-	//
-	// ringProgressDialog = ProgressDialog.show(context, "",
-	// "لطفا منتظر بمانید...", true);
-	//
-	// ringProgressDialog.setCancelable(true);
-	// new Thread(new Runnable() {
-	//
-	// @Override
-	// public void run() {
-	//
-	// try {
-	//
-	// Thread.sleep(10000);
-	//
-	// } catch (Exception e) {
-	//
-	// }
-	// }
-	// }).start();
-	// }
+	public void deleteItems(int itemId) {
+
+		ServiceComm service = new ServiceComm(context);
+		service.delegate = PosttitleListadapter.this;
+		Map<String, String> items = new LinkedHashMap<String, String>();
+		items.put("DeletingRecord", "DeletingRecord");
+
+		items.put("tableName", "Post");
+		items.put("Id", String.valueOf(itemId));
+
+		service.execute(items);
+
+		ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+
+		ringProgressDialog.setCancelable(true);
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+
+					Thread.sleep(10000);
+
+				} catch (Exception e) {
+
+				}
+			}
+		}).start();
+	}
 
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
 
@@ -788,5 +798,25 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
 			Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0).show();
 		}
+	}
+
+	@Override
+	public void CommProcessFinish(String output) {
+
+		if (!output.contains("exception")) {
+
+			if (ringProgressDialog != null) {
+				ringProgressDialog.dismiss();
+			}
+
+			adapter.open();
+
+			adapter.deletePostTitle(itemId);
+			adapter.deleteCommentPost(itemId);
+
+			adapter.close();
+
+		}
+
 	}
 }

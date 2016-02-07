@@ -395,6 +395,7 @@ public class FroumFragment extends Fragment
 					date.delegate = FroumFragment.this;
 					date.execute("");
 					LikeOrComment = true;
+					saveVisitFalg = false;
 
 				}
 				adapter.close();
@@ -640,7 +641,7 @@ public class FroumFragment extends Fragment
 	@Override
 	public void processFinish(String output) {
 
-		Toast.makeText(getActivity(), output, 0).show();
+		// Toast.makeText(getActivity(), output, 0).show();
 		if (!output.contains("Exception")) {
 
 			if (saveVisitFalg == true) {
@@ -929,25 +930,22 @@ public class FroumFragment extends Fragment
 	private void checkInternet() {
 
 		if (util.getCurrentUser() != null) {
+			if (checkUsers() == true) {
 
-			if (util.isNetworkConnected()) {
-				Toast.makeText(getActivity(), "Connected", 0).show();
+				if (util.isNetworkConnected()) {
 
-				ServerDate date = new ServerDate(getActivity());
-				date.delegate = FroumFragment.this;
-				date.execute("");
-				saveVisitFalg = true;
+					ServerDate date = new ServerDate(getActivity());
+					date.delegate = FroumFragment.this;
+					date.execute("");
+					saveVisitFalg = true;
 
-			} else {
-				Toast.makeText(getActivity(), "Disconnected", 0).show();
-
-				if (checkUsers() == true) {
+				} else {
 
 					adapter.open();
 					adapter.insertVisitToDb(util.getCurrentUser().getId(), StaticValues.TypeFroumVist, froumid);
 					adapter.close();
-				}
 
+				}
 			}
 
 		}

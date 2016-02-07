@@ -162,31 +162,27 @@ public class MainFragment extends Fragment {
 		// r7.setMargins(5, 0, 1, 0);
 		r7.addRule(RelativeLayout.CENTER_IN_PARENT);
 		img7.setLayoutParams(r7);
-		
-		
-		int right =util.getScreenwidth()/20; 
 
-	
-		
-		
+		int right = util.getScreenwidth() / 20;
+
 		lable1.setPadding(0, 0, right, 0);
 		lable2.setPadding(0, 0, right, 0);
 
 		lable3.setPadding(0, 0, right, 0);
 		lable4.setPadding(0, 0, right, 0);
-	
+
 		lable5.setPadding(0, 0, right, 0);
 		lable6.setPadding(0, 0, right, 0);
-	
+
 		lable7.setPadding(0, 0, right, 0);
 
-//		lable1.setLayoutParams(aaa);
-//		lable2.setLayoutParams(bbb);
-//		lable3.setLayoutParams(ccc);
-//		lable4.setLayoutParams(ddd);
-//		lable5.setLayoutParams(eee);
-//		lable6.setLayoutParams(fff);
-//		lable7.setLayoutParams(ggg);
+		// lable1.setLayoutParams(aaa);
+		// lable2.setLayoutParams(bbb);
+		// lable3.setLayoutParams(ccc);
+		// lable4.setLayoutParams(ddd);
+		// lable5.setLayoutParams(eee);
+		// lable6.setLayoutParams(fff);
+		// lable7.setLayoutParams(ggg);
 	}
 
 	private void setFont() {
@@ -459,7 +455,7 @@ public class MainFragment extends Fragment {
 				int id = 7;
 				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
 						.beginTransaction();
-				trans.replace(R.id.content_frame, new TypeFroum());
+				trans.replace(R.id.content_frame, new FroumtitleFragment());
 
 				sendData.edit().putInt("main_Id", id).commit();
 

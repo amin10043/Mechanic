@@ -66,7 +66,8 @@ import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class PostFragment extends Fragment implements AsyncInterface, GetAsyncInterface, CommInterface , VisitSaveInterface {
+public class PostFragment extends Fragment
+		implements AsyncInterface, GetAsyncInterface, CommInterface, VisitSaveInterface {
 
 	/**/
 	Button dfragbutton;
@@ -74,10 +75,10 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 	// FloatingActionButton action;
 	DialogPostFragment MyDialog;
 	DialogpostTitleFragment MyDialogShow;
-	int ObjectID;
+	int /* postId , */ objectId;
 	/**/
 	int IDcurrentUser, itemId;
-	List<Visit> visitList ;
+	List<Visit> visitList;
 	private File mFileTemp;
 	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
 	private static final int CAMERA_CODE = 101, GALLERY_CODE = 201, CROPING_CODE = 301;
@@ -157,7 +158,7 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 
 		/**/
 		if (getArguments().getString("Id") != null)
-			ObjectID = Integer.valueOf(getArguments().getString("Id"));
+			objectId = Integer.valueOf(getArguments().getString("ObjectId"));
 		// action = (FloatingActionButton) view.findViewById(R.id.fab);
 		// action.setOnClickListener(new OnClickListener() {
 		//
@@ -262,7 +263,7 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 		}
 
 		RelativeLayout layoutImg = (RelativeLayout) header.findViewById(R.id.imageLayout);
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(layoutImg.getLayoutParams());
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(layoutImg.getLayoutParams());
 		lp.width = util.getScreenwidth();
 		lp.height = util.getScreenwidth();
 
@@ -445,6 +446,7 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 					date.delegate = PostFragment.this;
 					date.execute("");
 					LikeOrComment = true;
+					IsPost = false;
 
 				}
 				adapter.close();
@@ -576,39 +578,39 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 		// public void onClick(View arg0) {
 		//
 		// if ("".equals(util.inputComment(getActivity()))) {
-		// Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
-		// .show();
+		// Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0).show();
 		// } else {
 		//
-		// // date = new ServerDate(getActivity());
-		// // date.delegate = PostFragment.this;
-		// // date.execute("");
-		// // LikeOrComment = false;
-		// adapter.open();
-		// adapter.insertCommentInPosttoDb(id,
-		// util.inputComment(getActivity()), postid,
-		// CurrentUser.getId(), serverDate, commentId);
-		//
-		// adapter.close();
-		//
+		// date = new ServerDate(getActivity());
+		// date.delegate = PostFragment.this;
+		// date.execute("");
+		// LikeOrComment = false;
+		// // adapter.open();
+		// // adapter.insertCommentInPosttoDb(id,
+		// // util.inputComment(getActivity()), postid,
+		// // CurrentUser.getId(),
+		// // serverDate, commentId);
+		// //
+		// // adapter.close();
+		// IsPost = false;
 		// util.ToEmptyComment(getActivity());
 		//
-		// util.ReplyLayout(getActivity(), "", false);
+		// // util.ReplyLayout(getActivity(), "", false);
 		//
 		// }
 		// }
 		// });
-		// ImageView delete = util.deleteReply(getActivity());
-		//
-		// delete.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		//
-		// util.ReplyLayout(getActivity(), "", false);
-		//
-		// }
-		// });
+		ImageView delete = util.deleteReply(getActivity());
+
+		delete.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				util.ReplyLayout(getActivity(), "", false);
+
+			}
+		});
 
 		String state = Environment.getExternalStorageState();
 
@@ -646,6 +648,7 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 						date.delegate = PostFragment.this;
 						date.execute("");
 						LikeOrComment = false;
+						IsPost = false;
 
 					}
 				}
@@ -898,30 +901,28 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 
 	@Override
 	public void processFinish(String output) {
-		Toast.makeText(getActivity(), output, 0).show();
+		// Toast.makeText(getActivity(), output, 0).show();
 		if (ringProgressDialog != null)
 			ringProgressDialog.dismiss();
 
-		if (!output.contains("java.io.EOFException")) {
+		if (!output.contains("Exception")) {
 			if (IsPost == true) {
-
+				//
 				if (saveVisitFalg == true) {
 
-//					if (counterVisit == 0)
+					if (counterVisit == 0)
 						currentTime = output;
 					sendVisit();
 
-				} 
-				/*else {
-//					if (isFinish == true) {
-//						isFinish = false;
-//					} else
-//						return;
-				}*/
+				}
+				/*
+				 * else { // if (isFinish == true) { // isFinish = false; // }
+				 * else // return; }
+				 */
 
 			} else {
-				if (ringProgressDialog != null)
-					ringProgressDialog.dismiss();
+				// if (ringProgressDialog != null)
+				// ringProgressDialog.dismiss();
 
 				adapter.open();
 				int id = -1;
@@ -950,6 +951,8 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 
 						adapter.close();
 						util.ToEmptyComment(getActivity());
+						util.ReplyLayout(getActivity(), "", false);
+
 						if (commentId == 0)
 							expanding(exadapter.getGroupCount());
 						else {
@@ -987,7 +990,7 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 								params.put("Id", "0");
 
 								saving.execute(params);
-								IsPost= false;
+								IsPost = false;
 							}
 							ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
@@ -1027,7 +1030,7 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 									params.put("PostId", String.valueOf(postid));
 
 									deleting.execute(params);
-									IsPost= false;
+									IsPost = false;
 
 								}
 							} else {
@@ -1049,7 +1052,7 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 									params.put("Id", "0");
 
 									saving.execute(params);
-									IsPost= false;
+									IsPost = false;
 
 								}
 							}
@@ -1140,19 +1143,16 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 	private void checkInternet() {
 
 		if (CurrentUser != null) {
+			if (checkUsers() == true) {
 
-			if (util.isNetworkConnected()) {
-				Toast.makeText(getActivity(), "Connected", 0).show();
+				if (util.isNetworkConnected()) {
 
-				ServerDate date = new ServerDate(getActivity());
-				date.delegate = PostFragment.this;
-				date.execute("");
-				saveVisitFalg = true;
+					ServerDate date = new ServerDate(getActivity());
+					date.delegate = PostFragment.this;
+					date.execute("");
+					saveVisitFalg = true;
 
-			} else {
-				Toast.makeText(getActivity(), "Disconnected", 0).show();
-
-				if (checkUsers() == true) {
+				} else {
 
 					adapter.open();
 					adapter.insertVisitToDb(util.getCurrentUser().getId(), StaticValues.TypePostVisit, topics.getId());
@@ -1171,7 +1171,7 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 		boolean isSave = true;
 
 		adapter.open();
-		List<SubAdmin> subAdminList = adapter.getAdmin(ObjectID);
+		List<SubAdmin> subAdminList = adapter.getAdmin(objectId);
 		adapter.close();
 
 		boolean fl1 = true;
@@ -1294,9 +1294,9 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 
 	@Override
 	public void saveVisit(String output) {
-		
-		if (!output.contains("Exception")){
-			if (isFinish==false){
+
+		if (!output.contains("Exception")) {
+			if (isFinish == false) {
 				Visit vis = null;
 
 				if (visitList.size() != 0) {
@@ -1357,10 +1357,10 @@ public class PostFragment extends Fragment implements AsyncInterface, GetAsyncIn
 					}
 
 				}
-				
+
 			}
 		}
-		
+
 	}
 
 }

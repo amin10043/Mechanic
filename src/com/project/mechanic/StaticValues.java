@@ -2,7 +2,8 @@ package com.project.mechanic;
 
 public class StaticValues {
 
-	public static final int FroumLable = 1;
+	public static final int TypeRunServerForGetDate = 1;
+	public static final int TypeRunServerForRefreshItems = 2;
 
 	/* s مشخص کردن نوع بازدید انجام شده */
 	public static final int TypeObjectVisit = 1;
@@ -46,5 +47,14 @@ public class StaticValues {
 
 	public static final String LinkSoftwateChat = "لینک نرم افزار اینجا قرار می گیرد";
 	/* e نوع چت */
+
+	/* s نوع افرودن به علاقه مندی ها */
+
+	public static final int TypeFavoriteFroum = 1;
+	public static final int TypeFavoritePaper = 2;
+	public static final int TypeFavoriteTicket = 3;
+	public static final int TypeFavoritePost = 4;
+
+	/* e نوع افرودن به علاقه مندی ها */
 
 }

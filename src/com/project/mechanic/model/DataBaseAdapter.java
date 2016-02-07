@@ -308,6 +308,18 @@ public class DataBaseAdapter {
 		mDb.update(TableUsers, uc, "ID=" + id, null);
 	}
 
+	public void insertImageAddressToDb(String tableName, int id, String imageAddress) {
+
+		ContentValues uc = new ContentValues();
+
+		if (tableName.equals(TablePost))
+			uc.put("Photo", imageAddress);
+		else
+			uc.put("ImagePath", imageAddress);
+
+		mDb.update(tableName, uc, "Id=" + id, null);
+	}
+
 	public void UpdateUserToDb(int id, String email, String phonenumber, String faxnumber, String address) {
 
 		ContentValues uc = new ContentValues();
@@ -3406,6 +3418,11 @@ public class DataBaseAdapter {
 
 	}
 
+	public void deleteLikeInCommentPost(int postId) {
+		mDb.execSQL("delete from [LikeInCommentPost] where CommentId = " + postId);
+
+	}
+
 	public void deleteTicketItem(int ticketId) {
 		mDb.execSQL("delete from [Ticket] where Id = " + ticketId);
 
@@ -3434,14 +3451,35 @@ public class DataBaseAdapter {
 
 	}
 
+	public void deleteOnlyCommentPost(int id) {
+		mDb.execSQL("delete from [CommentInPost] where Id = " + id);
+
+	}
+
+	public void deleteReplyPost(int id) {
+		mDb.execSQL("delete from [CommentInPost] where CommentId = " + id);
+
+	}
+
 	public void deletePaperTitle(int PaperId) {
 
 		mDb.execSQL("delete from [Paper] where Id = " + PaperId);
 
 	}
 
+	public void deletePostTitle(int postId) {
+
+		mDb.execSQL("delete from [Post] where Id = " + postId);
+
+	}
+
 	public void deleteCommentPaper(int paperId) {
 		mDb.execSQL("delete from [CmtInPaper] where PaperId = " + paperId);
+
+	}
+
+	public void deleteCommentPost(int postId) {
+		mDb.execSQL("delete from [CommentInPost] where PostId = " + postId);
 
 	}
 

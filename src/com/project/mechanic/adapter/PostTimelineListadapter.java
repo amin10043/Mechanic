@@ -383,7 +383,7 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline> implemen
 
 							if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
 								adapter.open();
-								addToFavorite(util.getCurrentUser().getId(), 1, itemId);
+								addToFavorite(util.getCurrentUser().getId(), StaticValues.TypeFavoritePost, itemId);
 								adapter.close();
 							}
 							if (item.getTitle().equals("کپی")) {

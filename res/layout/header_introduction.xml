@@ -801,8 +801,8 @@
 
                 <ImageView
                     android:id="@+id/reportImage"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="left"
                     android:background="@drawable/down_arrow" />
 
@@ -829,7 +829,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:text="توضیحات"
-                        android:textColor="@color/orginal_red_color" />
+                        android:textColor="@color/orginal_hard_blue_color" />
                 </LinearLayout>
 
                 <LinearLayout

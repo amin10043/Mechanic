@@ -66,6 +66,7 @@ public class PostTimelineFragment extends Fragment implements AsyncInterface, Ge
 		PostTimelineListadapter ListAdapterTimeLine = new PostTimelineListadapter(getActivity(), R.layout.raw_posttitle,
 				TimeLinePost, PostTimelineFragment.this);
 		ListTimeLine.setAdapter(ListAdapterTimeLine);
+		adapter.close();
 	}
 
 	public void CommProcessFinish(String output) {

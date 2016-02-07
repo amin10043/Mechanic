@@ -451,7 +451,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 				} else {
 
 					flag = false;
-					RelativeLayout parentlayout = (RelativeLayout) t.getParent().getParent();
+					RelativeLayout parentlayout = (RelativeLayout) t.getParent().getParent().getParent().getParent();
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
 					TextView txtMaincmt = (TextView) viewMaincmt;
 
@@ -554,7 +554,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 
 					// // peyda kardan id comment sabt shode
 
-					RelativeLayout parentlayout = (RelativeLayout) v.getParent().getParent();
+					RelativeLayout parentlayout = (RelativeLayout) v.getParent().getParent().getParent().getParent() ;
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
 					TextView txtMaincmt = (TextView) viewMaincmt;
 

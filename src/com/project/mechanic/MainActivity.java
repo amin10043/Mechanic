@@ -109,19 +109,19 @@ public class MainActivity extends FragmentActivity {
 			txtlike.setVisibility(View.VISIBLE);
 			util.setNoti(this, user.getId());
 		} else {
-			
+
 			EnterDialog dialogEnter = new EnterDialog(MainActivity.this);
-//			WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//			lp.copyFrom(dialogEnter.getWindow().getAttributes());
-//			lp.width = (int) (util.getScreenwidth()-50);
-//			lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-//			
-//
-//			dialogEnter.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.BLACK));
-			
+			// WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+			// lp.copyFrom(dialogEnter.getWindow().getAttributes());
+			// lp.width = (int) (util.getScreenwidth()-50);
+			// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+			//
+			//
+			// dialogEnter.getWindow().setBackgroundDrawable(new
+			// ColorDrawable(android.graphics.Color.BLACK));
 
 			util.setSizeDialog(dialogEnter);
-//			dialogEnter.show();
+			// dialogEnter.show();
 		}
 
 		Settings = (ImageView) findViewById(R.id.settings_icon);
@@ -142,14 +142,15 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
-//				FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-//				trans.replace(R.id.content_frame, new ExpandableListChat());
-//
-//				trans.addToBackStack(null);
-//				trans.commit();
-				
-				Intent firstpage= new Intent(MainActivity.this,TabHostChatType.class);
-				startActivity(firstpage);			
+				// FragmentTransaction trans =
+				// getSupportFragmentManager().beginTransaction();
+				// trans.replace(R.id.content_frame, new ExpandableListChat());
+				//
+				// trans.addToBackStack(null);
+				// trans.commit();
+
+				Intent firstpage = new Intent(MainActivity.this, TabHostChatType.class);
+				startActivity(firstpage);
 			}
 		});
 		ImageView timeLine = (ImageView) findViewById(R.id.timeline_btn);
@@ -159,11 +160,15 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onClick(View arg0) {
 
-				FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new PostTimelineFragment());
+				if (user != null) {
 
-				trans.addToBackStack(null);
-				trans.commit();
+					FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new PostTimelineFragment());
+
+					trans.addToBackStack(null);
+					trans.commit();
+				} else
+					Toast.makeText(MainActivity.this, "ابتدا باید وارد شوید", 0).show();
 
 			}
 		});
@@ -174,7 +179,7 @@ public class MainActivity extends FragmentActivity {
 			public void onClick(View v) {
 				user = util.getCurrentUser();
 				if (user == null) {
-					Toast.makeText(MainActivity.this,"ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
+					Toast.makeText(MainActivity.this, "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 					return;
 				}
 
@@ -640,10 +645,10 @@ public class MainActivity extends FragmentActivity {
 	private void ConfirmAlert() {
 
 		ExitDialog exDialog = new ExitDialog(MainActivity.this);
-		
+
 		util.setSizeDialog(exDialog);
 
-//		
+		//
 
 	}
 

@@ -57,6 +57,7 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 	String serverDate = "";
 	boolean dateFlag = false;
 	View view;
+	String typeItem;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -148,19 +149,16 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 		util.ShowFooterAgahi(getActivity(), false, 1);
 		layoutParams();
 
-		
-		TextView lableEnter = (TextView)view.findViewById(R.id.lableEnter);
-		TextView labletxt = (TextView)view.findViewById(R.id.lableee);
-		TextView txtRegister = (TextView)view.findViewById(R.id.txt_title_register);
-		TextView txttr = (TextView)view.findViewById(R.id.labler);
-		
+		TextView lableEnter = (TextView) view.findViewById(R.id.lableEnter);
+		TextView labletxt = (TextView) view.findViewById(R.id.lableee);
+		TextView txtRegister = (TextView) view.findViewById(R.id.txt_title_register);
+		TextView txttr = (TextView) view.findViewById(R.id.labler);
+
 		lableEnter.setTypeface(util.SetFontCasablanca());
 		labletxt.setTypeface(util.SetFontCasablanca());
 		txttr.setTypeface(util.SetFontCasablanca());
 		txtRegister.setTypeface(util.SetFontIranSans());
-		
 
-		
 		return view;
 
 	}
@@ -194,6 +192,8 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 				items.put("password", pass);
 
 				service.execute(items);
+
+				typeItem = "login";
 				ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 				dateFlag = true;
 			} else {
@@ -212,6 +212,11 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 				} else {
 					int id = u.getId();
 					int admin = 1;
+					String userImageServerDate = u.getImageServerDate();
+
+					if (userImageServerDate == null)
+						userImageServerDate = "";
+
 					dbAdapter.open();
 					dbAdapter.UpdateAdminUserToDb(id, admin);
 					dbAdapter.close();
@@ -221,13 +226,15 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 					TextView txtcm1 = (TextView) (getActivity()).findViewById(R.id.txtcm);
 					txtcm1.setVisibility(View.VISIBLE);
 					editor.putBoolean("isLogin", true);
+
 					UpdatingImage updating = new UpdatingImage(getActivity());
 					updating.delegate = this;
 					HashMap<String, String> maps = new LinkedHashMap<String, String>();
 					maps.put("tableName", "Users");
 					maps.put("Id", String.valueOf(u.getId()));
-					maps.put("fromDate", u.getImageServerDate());
+					maps.put("fromDate", userImageServerDate);
 					updating.execute(maps);
+
 					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 				}
 			}
@@ -244,13 +251,12 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 
 		if (output != null) {
 
-			dbAdapter.open();
+			// dbAdapter.open();
 
 			util.CreateFile(output, u.getId(), "Mechanical", "Users", "user", "Users");
-			dbAdapter.UpdateImageServerDate(u.getId(), "Users", serverDate);
 
 			// dbAdapter.UpdateUserImage(u.getId(), output, serverDate);
-			dbAdapter.close();
+			// dbAdapter.close();
 		}
 
 		FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
@@ -259,12 +265,41 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 
 		util.setNoti(getActivity(), util.getCurrentUser().getId());
 
+		if (getActivity() != null) {
+
+			ServiceComm getDateService = new ServiceComm(getActivity());
+			getDateService.delegate = LoginFragment.this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+
+			items.put("tableName", "getUserImageDate");
+			items.put("Id", String.valueOf(u.getId()));
+
+			getDateService.execute(items);
+			typeItem = "getDate";
+
+		}
+
 	}
 
 	@Override
 	public void CommProcessFinish(String output) {
-		processFinish(output);
 
+		if (!output.contains("exception")) {
+
+			if (typeItem.equals("login"))
+				processFinish(output);
+
+			if (typeItem.equals("getDate")) {
+				if (output.contains("exception") || output.contains("anyType"))
+					output = "";
+
+				dbAdapter.open();
+				dbAdapter.UpdateImageServerDate(u.getId(), "Users", output);
+				dbAdapter.close();
+
+			}
+
+		}
 	}
 
 	public void layoutParams() {
@@ -273,41 +308,39 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 		FrameLayout fr = (FrameLayout) view.findViewById(R.id.framelogin);
 
 		RelativeLayout.LayoutParams llp = new RelativeLayout.LayoutParams(lii.getLayoutParams());
-		llp.width =  LayoutParams.MATCH_PARENT;
+		llp.width = LayoutParams.MATCH_PARENT;
 		llp.height = LayoutParams.MATCH_PARENT;
-		llp.setMargins(10, (util.getScreenHeight()/10), 10, (util.getScreenHeight()/10));
-		
+		llp.setMargins(10, (util.getScreenHeight() / 10), 10, (util.getScreenHeight() / 10));
+
 		fr.setLayoutParams(llp);
-		
-		RelativeLayout rl = (RelativeLayout)view.findViewById(R.id.lin7_register);
-		
-		RelativeLayout.LayoutParams rrr= new RelativeLayout.LayoutParams(rl.getLayoutParams());
-		rrr.width = util.getScreenHeight()/10;
-		rrr.height = util.getScreenHeight()/10;
+
+		RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.lin7_register);
+
+		RelativeLayout.LayoutParams rrr = new RelativeLayout.LayoutParams(rl.getLayoutParams());
+		rrr.width = util.getScreenHeight() / 10;
+		rrr.height = util.getScreenHeight() / 10;
 		rrr.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		
+
 		ImageView blankImage2 = (ImageView) view.findViewById(R.id.blankImage2);
 		blankImage2.setLayoutParams(rrr);
-		
-		RelativeLayout ccc = (RelativeLayout)view.findViewById(R.id.layoutRelativelogin);
 
-		ccc.setPadding(0, (util.getScreenHeight()/10)-(util.getScreenHeight()/20), 0, (util.getScreenHeight()/10)-(util.getScreenHeight()/20));
-		
-		
-		
-		
+		RelativeLayout ccc = (RelativeLayout) view.findViewById(R.id.layoutRelativelogin);
+
+		ccc.setPadding(0, (util.getScreenHeight() / 10) - (util.getScreenHeight() / 20), 0,
+				(util.getScreenHeight() / 10) - (util.getScreenHeight() / 20));
+
 		//////////////
-		
-		RelativeLayout x = (RelativeLayout)view.findViewById(R.id.labelEnter);
 
-		RelativeLayout.LayoutParams aaa= new RelativeLayout.LayoutParams(x.getLayoutParams());
-		aaa.width = util.getScreenHeight()/10;
-		aaa.height = util.getScreenHeight()/10;
+		RelativeLayout x = (RelativeLayout) view.findViewById(R.id.labelEnter);
+
+		RelativeLayout.LayoutParams aaa = new RelativeLayout.LayoutParams(x.getLayoutParams());
+		aaa.width = util.getScreenHeight() / 10;
+		aaa.height = util.getScreenHeight() / 10;
 		aaa.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		
+
 		ImageView blankImage1 = (ImageView) view.findViewById(R.id.blankImage1);
 		blankImage1.setLayoutParams(aaa);
-		
+
 	}
 
 }

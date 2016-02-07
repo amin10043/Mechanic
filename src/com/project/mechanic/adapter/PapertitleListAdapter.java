@@ -315,7 +315,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 
 							if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
 								adapter.open();
-								addToFavorite(util.getCurrentUser().getId(), 2, itemId);
+								addToFavorite(util.getCurrentUser().getId(), StaticValues.TypeFavoritePaper, itemId);
 								adapter.close();
 							}
 							if (item.getTitle().equals("کپی")) {

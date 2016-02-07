@@ -62,13 +62,14 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
+                android:gravity="right|center_vertical"
                 android:layout_toLeftOf="@+id/imageFrame"
                 android:orientation="horizontal" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="right|center_vertical"
                     android:layout_marginRight="10dp"
                     android:gravity="right|center_vertical"
                     android:orientation="vertical" >
@@ -77,7 +78,7 @@
                         android:id="@+id/row_favorite_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:layout_gravity="right|center_vertical"
                         android:gravity="right"
                         android:text="Large Text"
                         android:singleLine="true"
@@ -93,6 +94,7 @@
                         android:maxLines="1"
                         android:singleLine="true"
                         android:text="Large Text"
+                        android:visibility="gone"
                         android:textColor="@color/orginal_red_color" />
                 </LinearLayout>
 

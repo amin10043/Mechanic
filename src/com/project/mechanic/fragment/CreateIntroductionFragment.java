@@ -355,7 +355,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 					}
 
-					if (bitmapHeader == null & bitmapProfil == null & bitmapFooter == null)
+//					if (bitmapHeader == null & bitmapProfil == null & bitmapFooter == null)
 
 						// Toast.makeText(getActivity(), "Empty ByteArray",
 						// Toast.LENGTH_SHORT).show();

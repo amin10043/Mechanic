@@ -30,21 +30,25 @@ import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.AsyncInterfaceVisit;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.service.UpdatingVisit;
+import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class ObjectFragment extends Fragment implements AsyncInterface, GetAsyncInterface, AsyncInterfaceVisit {
+public class ObjectFragment extends Fragment
+		implements AsyncInterface, GetAsyncInterface, AsyncInterfaceVisit, CommInterface {
 
 	DataBaseAdapter adapter;
 	Users currentUser;
 	Utility util;
 	DialogCreatePage dialog;
 	ListView lstObject;
-	int city_id, m;
+	int city_id /* , m */;
 	ObjectListAdapter ListAdapter;
 
 	SwipeRefreshLayout swipeLayout;
@@ -55,86 +59,296 @@ public class ObjectFragment extends Fragment implements AsyncInterface, GetAsync
 
 	int totalItemCountBeforeSwipe = 0;
 
-	ArrayList<Object> mylist;
+	ArrayList<Object> mylist = new ArrayList<Object>();
 	int typeList;
 
 	SharedPreferences pageId;
 	int AgencyService, brand;
 
 	int userItemId = 0;
-	Object obj;
+	// Object obj;
 	UpdatingImage ImageUpdating;
 
 	Map<String, String> maps;
 	int visitCounter = 0;
+
+	/////////////////
+
+	View rootView;
+	FloatingActionButton createItem;
+
+	int mainId;
+	Object objectItem;
+	ServerDate date;
+	String serverDate;
+	int typeRunServer;
+
+	///////////////////
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		((MainActivity) getActivity()).setTitle(R.string.object);
 
-		View view = inflater.inflate(R.layout.fragment_object, null);
+		rootView = inflater.inflate(R.layout.fragment_object, null);
+
+		sharedPrefrences();
+
+		init();
+
+		fillListView();
+
+		// request get image
+		if (mylist.size() > 0)
+			if (getActivity() != null) {
+				date = new ServerDate(getActivity());
+				date.delegate = ObjectFragment.this;
+				date.execute("");
+				typeRunServer = StaticValues.TypeRunServerForGetDate;
+			}
+
+		refreshListView();
+
+		createNewObject();
+
+		onScrollListView();
+
+		// ////
+		// if (mainId == 2 || mainId == 3 || mainId == 4) {
+		// if (mainId == 2)
+		// typeList = 0;
+		//
+		// mylist = adapter.getObjectBy_BTId_CityId(mainId, city_id, typeList);
+		//
+		// if (mylist != null && !mylist.isEmpty()) {
+		// ListAdapter = new ObjectListAdapter(getActivity(),
+		// R.layout.row_object, mylist, ObjectFragment.this,
+		// true, null, 1);
+		// lstObject.setAdapter(ListAdapter);
+		//
+		// // start code get image profile from server
+		//
+		// obj = adapter.getObjectbyid(mylist.get(userItemId).getId());
+		//
+		// ImageUpdating = new UpdatingImage(getActivity());
+		// ImageUpdating.delegate = ObjectFragment.this;
+		// maps = new LinkedHashMap<String, String>();
+		// maps.put("tableName", "Object2");
+		// maps.put("Id", String.valueOf(obj.getId()));
+		// maps.put("fromDate", obj.getImage2ServerDate());
+		// ImageUpdating.execute(maps);
+		//
+		// // end code for get image from server
+		// }
+		// } else {
+		//
+		// brand = pageId.getInt("brandID", -1);
+		//
+		// mylist = adapter.subBrandObject(brand, city_id, AgencyService);
+		//
+		// if (mylist != null && !mylist.isEmpty()) {
+		//
+		// ListAdapter = new ObjectListAdapter(getActivity(),
+		// R.layout.row_object, mylist, ObjectFragment.this,
+		// true, null, 1);
+		// lstObject.setAdapter(ListAdapter);
+		// }
+		// }
+		//
+		// adapter.close();
+		//
+
+		util.ShowFooterAgahi(getActivity(), true, 1);
+
+		return rootView;
+	}
+
+	public void UpdateList() {
+		adapter.open();
+		if (mylist != null || !mylist.isEmpty()) {
+
+			ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(mainId, city_id, typeList);
+			ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist,
+					ObjectFragment.this, false, null, 1);
+			lstObject.setAdapter(ListAdapter);
+
+			ListAdapter.notifyDataSetChanged();
+		}
+		adapter.close();
+	}
+
+	public int getCityId() {
+		return city_id;
+	}
+
+	@Override
+	public void processFinish(String output) {
+
+		LoadMoreFooter.setVisibility(View.INVISIBLE);
+
+		if (!output.contains("exception") && !output.contains("anyType")) {
+
+			if (output.length() == 18 && typeRunServer == StaticValues.TypeRunServerForGetDate) {
+				serverDate = output;
+				getImageProfile();
+
+			}
+
+		}
+
+		if (output != null && !(output.contains("Exception") || output.contains("java") || output.contains("SoapFault"))
+				&& typeRunServer == StaticValues.TypeRunServerForRefreshItems) {
+
+			if (output.contains("anyType")) {
+
+				Toast.makeText(getActivity(), "صفحه جدیدی یافت نشد", 0).show();
+				LoadMoreFooter.setVisibility(View.INVISIBLE);
+
+				if (swipeLayout != null) {
+					swipeLayout.setRefreshing(false);
+				}
+				return;
+			} else {
+
+				fillListView();
+			}
+
+		} else {
+			if (swipeLayout != null) {
+				swipeLayout.setRefreshing(false);
+			}
+		}
+
+	}
+
+	@Override
+	public void processFinish(byte[] output) {
+
+		if (output != null) {
+			util.CreateFile(output, objectItem.getId(), "Mechanical", "Profile", "profile", "Object");
+		}
+
+		userItemId++;
+
+		getImageProfile();
+
+	}
+
+	private void getCountVisitFromServer() {
+		adapter.open();
+
+		if (mainId == 2 || mainId == 3 || mainId == 4)
+			mylist = adapter.getObjectBy_BTId_CityId(mainId, city_id, typeList);
+		else
+			mylist = adapter.subBrandObject(brand, city_id, AgencyService);
+
+		if (visitCounter < mylist.size()) {
+
+			objectItem = adapter.getObjectbyid(mylist.get(visitCounter).getId());
+			adapter.close();
+
+			UpdatingVisit updateVisit = new UpdatingVisit(getActivity());
+			updateVisit.delegate = ObjectFragment.this;
+			Map<String, String> serv = new LinkedHashMap<String, String>();
+
+			serv.put("tableName", "Visit");
+			serv.put("objectId", String.valueOf(objectItem.getId()));
+			serv.put("typeId", StaticValues.TypeObjectVisit + "");
+			updateVisit.execute(serv);
+
+		} else {
+
+			fillListView();
+			// if (getActivity() != null) {
+			//
+			// if (mainId == 2 || mainId == 3 || mainId == 4)
+			// mylist = adapter.getObjectBy_BTId_CityId(mainId, city_id,
+			// typeList);
+			// else
+			// mylist = adapter.subBrandObject(brand, city_id, AgencyService);
+			//
+			// ListAdapter = new ObjectListAdapter(getActivity(),
+			// R.layout.row_object, mylist, ObjectFragment.this,
+			// false, null, 1);
+			// lstObject.setAdapter(ListAdapter);
+			// }
+		}
+		adapter.close();
+	}
+
+	@Override
+	public void processFinishVisit(String output) {
+
+		if (!output.contains("Exception")) {
+
+			adapter.open();
+			adapter.updateCountView("Object", objectItem.getId(), Integer.valueOf(output));
+			adapter.close();
+		}
+		visitCounter++;
+		getCountVisitFromServer();
+	}
+
+	private void sharedPrefrences() {
 
 		pageId = getActivity().getSharedPreferences("Id", 0);
-
 		AgencyService = pageId.getInt("IsAgency", -1);
 
 		SharedPreferences sendData = getActivity().getSharedPreferences("Id", 0);
-		final int id = sendData.getInt("main_Id", -1);
-		m = id;
+		mainId = sendData.getInt("main_Id", -1);
 		city_id = Integer.valueOf(getArguments().getString("cityId"));
 		if (getArguments().getString("advisorId") != null)
 			typeList = Integer.valueOf(getArguments().getString("advisorId"));
+	}
+
+	private void init() {
 
 		adapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
 		currentUser = util.getCurrentUser();
 
-		lstObject = (ListView) view.findViewById(R.id.listvCmt_Introduction);
+		lstObject = (ListView) rootView.findViewById(R.id.listvCmt_Introduction);
+		swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+		createItem = (FloatingActionButton) rootView.findViewById(R.id.fab);
+
 		adapter.open();
 		setting = adapter.getSettings();
+		adapter.close();
 
-		if (id == 2 || id == 3 || id == 4) {
-			if (id == 2)
+		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
+		lstObject.addFooterView(LoadMoreFooter);
+		LoadMoreFooter.setVisibility(View.INVISIBLE);
+
+	}
+
+	private void fillListView() {
+
+		mylist.clear();
+
+		if (mainId == 2 || mainId == 3 || mainId == 4) {
+			if (mainId == 2)
 				typeList = 0;
 
-			mylist = adapter.getObjectBy_BTId_CityId(id, city_id, typeList);
+			adapter.open();
+			mylist = adapter.getObjectBy_BTId_CityId(mainId, city_id, typeList);
+			adapter.close();
 
-			if (mylist != null && !mylist.isEmpty()) {
-				ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, ObjectFragment.this,
-						true, null, 1);
-				lstObject.setAdapter(ListAdapter);
-
-				// start code get image profile from server
-
-				obj = adapter.getObjectbyid(mylist.get(userItemId).getId());
-
-				ImageUpdating = new UpdatingImage(getActivity());
-				ImageUpdating.delegate = ObjectFragment.this;
-				maps = new LinkedHashMap<String, String>();
-				maps.put("tableName", "Object2");
-				maps.put("Id", String.valueOf(obj.getId()));
-				maps.put("fromDate", obj.getImage2ServerDate());
-				ImageUpdating.execute(maps);
-
-				// end code for get image from server
-			}
 		} else {
 
 			brand = pageId.getInt("brandID", -1);
-
+			adapter.open();
 			mylist = adapter.subBrandObject(brand, city_id, AgencyService);
-
-			if (mylist != null && !mylist.isEmpty()) {
-
-				ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, ObjectFragment.this,
-						true, null, 1);
-				lstObject.setAdapter(ListAdapter);
-			}
+			adapter.close();
 		}
 
-		adapter.close();
-		swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+		ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, ObjectFragment.this, true, null,
+				1);
+		lstObject.setAdapter(ListAdapter);
+
+	}
+
+	private void refreshListView() {
+
 		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
 
 			@Override
@@ -152,17 +366,112 @@ public class ObjectFragment extends Fragment implements AsyncInterface, GetAsync
 
 					params[3] = "1";
 					updating.execute(params);
+					typeRunServer = StaticValues.TypeRunServerForRefreshItems;
+
 				}
 			}
 		});
-		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
-		lstObject.addFooterView(LoadMoreFooter);
-		LoadMoreFooter.setVisibility(View.INVISIBLE);
+
 		swipeLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
 				android.R.color.holo_orange_light, android.R.color.holo_red_light);
+	}
 
-		final FloatingActionButton createItem = (FloatingActionButton) view.findViewById(R.id.fab);
-		final String message = "کاربر گرامی اگر مشخصات برند یا فعالیت شما در این نرم افزار ثبت نشده می توانید با ایجاد صفحه،  فعالیت خود را به سایر کاربران این نرم افزار معرفی نمایید ";
+	private void getServerDateImage() {
+
+		if (userItemId < mylist.size()) {
+
+			objectItem = mylist.get(userItemId);
+
+			if (getActivity() != null) {
+
+				ServiceComm getDateService = new ServiceComm(getActivity());
+				getDateService.delegate = ObjectFragment.this;
+				Map<String, String> items = new LinkedHashMap<String, String>();
+
+				items.put("tableName", "getObject2ImageDate");
+				items.put("Id", String.valueOf(objectItem.getId()));
+
+				getDateService.execute(items);
+
+			}
+
+		} else {
+			userItemId = 0;
+			getCountVisitFromServer();
+		}
+
+	}
+
+	private void createNewObject() {
+
+		createItem.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				final String message = "کاربر گرامی اگر مشخصات برند یا فعالیت شما در این نرم افزار ثبت نشده می توانید با ایجاد صفحه،  فعالیت خود را به سایر کاربران این نرم افزار معرفی نمایید ";
+
+				dialog = new DialogCreatePage(getActivity(), message);
+				dialog.show();
+				SharedPreferences sendToCreate = getActivity().getSharedPreferences("Id", 0);
+
+				if (mainId == 2 || mainId == 3 || mainId == 4) {
+
+					if (mainId == 2)
+						typeList = 0;
+
+					sendToCreate.edit().putInt("MainObjectId", mainId).commit();
+					sendToCreate.edit().putInt("CityId", city_id).commit();
+					sendToCreate.edit().putInt("objectId", 0).commit();
+					sendToCreate.edit().putInt("ObjectTypeId", typeList).commit();
+
+				} else {
+					SharedPreferences pageId = getActivity().getSharedPreferences("Id", 0);
+					int brandId = pageId.getInt("brandID", -1);
+					int MainObjID = pageId.getInt("main object id", -1);
+
+					sendToCreate.edit().putInt("MainObjectId", MainObjID).commit();
+					sendToCreate.edit().putInt("CityId", city_id).commit();
+					sendToCreate.edit().putInt("objectId", brandId).commit();
+					sendToCreate.edit().putInt("IsAgency", AgencyService).commit();
+
+				}
+
+			}
+		});
+
+	}
+
+	private void getImageProfile() {
+
+		if (userItemId < mylist.size()) {
+
+			objectItem = mylist.get(userItemId);
+			String imageProfileServerDate = objectItem.getImage2ServerDate();
+
+			if (imageProfileServerDate == null)
+				imageProfileServerDate = "";
+
+			if (getActivity() != null) {
+
+				ImageUpdating = new UpdatingImage(getActivity());
+				ImageUpdating.delegate = ObjectFragment.this;
+				maps = new LinkedHashMap<String, String>();
+
+				maps.put("tableName", "Object2");
+				maps.put("Id", String.valueOf(objectItem.getId()));
+				maps.put("fromDate", imageProfileServerDate);
+
+				ImageUpdating.execute(maps);
+			}
+
+		} else {
+			userItemId = 0;
+			getServerDateImage();
+		}
+
+	}
+
+	private void onScrollListView() {
 
 		lstObject.setOnScrollListener(new OnScrollListener() {
 
@@ -205,202 +514,27 @@ public class ObjectFragment extends Fragment implements AsyncInterface, GetAsync
 					params[3] = "0";
 					updating.execute(params);
 					totalItemCountBeforeSwipe = totalItemCount;
+					typeRunServer = StaticValues.TypeRunServerForRefreshItems;
+
 				}
 			}
 		});
 
-		createItem.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				dialog = new DialogCreatePage(getActivity(), message);
-				dialog.show();
-				SharedPreferences sendToCreate = getActivity().getSharedPreferences("Id", 0);
-
-				if (id == 2 || id == 3 || id == 4) {
-
-					if (id == 2)
-						typeList = 0;
-
-					sendToCreate.edit().putInt("MainObjectId", id).commit();
-					sendToCreate.edit().putInt("CityId", city_id).commit();
-					sendToCreate.edit().putInt("objectId", 0).commit();
-					sendToCreate.edit().putInt("ObjectTypeId", typeList).commit();
-
-				} else {
-					SharedPreferences pageId = getActivity().getSharedPreferences("Id", 0);
-					int brandId = pageId.getInt("brandID", -1);
-					int MainObjID = pageId.getInt("main object id", -1);
-
-					sendToCreate.edit().putInt("MainObjectId", MainObjID).commit();
-					sendToCreate.edit().putInt("CityId", city_id).commit();
-					sendToCreate.edit().putInt("objectId", brandId).commit();
-					sendToCreate.edit().putInt("IsAgency", AgencyService).commit();
-
-				}
-
-			}
-		});
-		util.ShowFooterAgahi(getActivity(), true, id);
-
-		return view;
 	}
 
-	public void UpdateList() {
+	@Override
+	public void CommProcessFinish(String output) {
+
+		if (output.contains("Exception") || output.contains(("anyType")))
+			output = "";
+
 		adapter.open();
-		if (mylist != null || !mylist.isEmpty()) {
-
-			ArrayList<Object> mylist = adapter.getObjectBy_BTId_CityId(m, city_id, typeList);
-			ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist,
-					ObjectFragment.this, false, null, 1);
-			lstObject.setAdapter(ListAdapter);
-
-			ListAdapter.notifyDataSetChanged();
-		}
+		adapter.updateObjectImage2ServerDate(objectItem.getId(), output);
 		adapter.close();
-	}
 
-	public int getCityId() {
-		return city_id;
-	}
-
-	@Override
-	public void processFinish(String output) {
-
-		if (output.contains("anyType")) {
-			Toast.makeText(getActivity(), "صفحه جدیدی یافت نشد", 0).show();
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
-
-			if (swipeLayout != null) {
-
-				swipeLayout.setRefreshing(false);
-			}
-			return;
-
-		}
-		if (swipeLayout != null) {
-			//
-			swipeLayout.setRefreshing(false);
-		}
-
-		if (output != null && !(output.contains("Exception") || output.contains("java") || output.contains("SoapFault")
-				|| output.contains("anyType"))) {
-
-			util.parseQuery(output);
-
-			adapter.open();
-			mylist = adapter.getObjectBy_BTId_CityId(m, city_id, typeList);
-			adapter.close();
-
-			if (totalItemCountBeforeSwipe != mylist.size()) {
-				mylist.clear();
-				if (mylist.size() > 0) {
-					ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, ObjectFragment.this,
-							true, null, 1);
-					lstObject.setAdapter(ListAdapter);
-				}
-			}
-		}
-	}
-
-	@Override
-	public void processFinish(byte[] output) {
-
-		if (output != null) {
-			util.CreateFile(output, obj.getId(), "Mechanical", "Profile", "profile", "Object");
-		}
-
-		adapter.open();
 		userItemId++;
-		if (m == 2 || m == 3 || m == 4)
-			mylist = adapter.getObjectBy_BTId_CityId(m, city_id, typeList);
-		else
-			mylist = adapter.subBrandObject(brand, city_id, AgencyService);
 
-		if (userItemId < mylist.size()) {
-
-			obj = adapter.getObjectbyid(mylist.get(userItemId).getId());
-
-			if (getActivity() != null) {
-
-				ImageUpdating = new UpdatingImage(getActivity());
-				ImageUpdating.delegate = this;
-				maps = new LinkedHashMap<String, String>();
-				maps.put("tableName", "Object2");
-				maps.put("Id", String.valueOf(obj.getId()));
-				maps.put("fromDate", obj.getImage2ServerDate());
-				ImageUpdating.execute(maps);
-			}
-		} else {
-
-			mylist.clear();
-
-			if (m == 2 || m == 3 || m == 4)
-				mylist = adapter.getObjectBy_BTId_CityId(m, city_id, typeList);
-			else
-				mylist = adapter.subBrandObject(brand, city_id, AgencyService);
-
-			ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, ObjectFragment.this, false,
-					null, 1);
-			lstObject.setAdapter(ListAdapter);
-			
-			getCountVisitFromServer();
-
-		}
-
-		adapter.close();
+		getServerDateImage();
 
 	}
-
-	private void getCountVisitFromServer() {
-		adapter.open();
-
-		if (m == 2 || m == 3 || m == 4)
-			mylist = adapter.getObjectBy_BTId_CityId(m, city_id, typeList);
-		else
-			mylist = adapter.subBrandObject(brand, city_id, AgencyService);
-
-		if (visitCounter < mylist.size()) {
-
-			obj = adapter.getObjectbyid(mylist.get(visitCounter).getId());
-			adapter.close();
-
-			UpdatingVisit updateVisit = new UpdatingVisit(getActivity());
-			updateVisit.delegate = ObjectFragment.this;
-			Map<String, String> serv = new LinkedHashMap<String, String>();
-
-			serv.put("tableName", "Visit");
-			serv.put("objectId", String.valueOf(obj.getId()));
-			serv.put("typeId", StaticValues.TypeObjectVisit + "");
-			updateVisit.execute(serv);
-
-		} else {
-			if (getActivity() != null) {
-
-				if (m == 2 || m == 3 || m == 4)
-					mylist = adapter.getObjectBy_BTId_CityId(m, city_id, typeList);
-				else
-					mylist = adapter.subBrandObject(brand, city_id, AgencyService);
-				
-				ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, ObjectFragment.this,
-						false, null, 1);
-				lstObject.setAdapter(ListAdapter);
-			}
-		}
-
-	}
-
-	@Override
-	public void processFinishVisit(String output) {
-
-		if (!output.contains("Exception")) {
-
-			adapter.open();
-			adapter.updateCountView("Object", obj.getId(), Integer.valueOf(output));
-			adapter.close();
-		}
-		visitCounter++;
-		getCountVisitFromServer();
-	}
-
 }

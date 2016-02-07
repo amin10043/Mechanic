@@ -150,9 +150,9 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 			@Override
 			public void onClick(View v) {
 
-//				int i = 0;
-//				int u = 0;
-//				String t = "";
+				// int i = 0;
+				// int u = 0;
+				// String t = "";
 				// برای پیدا کردن آی دی هر سطر از کد های این قسمت استفاده می
 				// شود
 
@@ -201,7 +201,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 							util.CopyToClipboard(description);
 
 						}
-						
+
 						if (item.getTitle().equals("گزارش تخلف")) {
 
 							if (util.getCurrentUser() != null)
@@ -209,19 +209,16 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 							else
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
-						
+
 						if (item.getTitle().equals("حذف")) {
-							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender){
-//								deleteItems(itemId);
-							}
-							else {
+							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender) {
+								// deleteItems(itemId);
+							} else {
 
 								Toast.makeText(context, "", 0).show();
 							}
 						}
-						
-						
-						
+
 						return false;
 					}
 				};
@@ -231,17 +228,20 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 				// 0).show();
 				// //////////////////////////
 
-//				DialogLongClick dia = new DialogLongClick(context, 5, u, i, f, t);
-//
-//				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//				lp.copyFrom(dia.getWindow().getAttributes());
-//				lp.width = (int) (util.getScreenwidth() / 1.5);
-//				lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-//				;
-//				dia.show();
-//
-//				dia.getWindow().setAttributes(lp);
-//				dia.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+				// DialogLongClick dia = new DialogLongClick(context, 5, u, i,
+				// f, t);
+				//
+				// WindowManager.LayoutParams lp = new
+				// WindowManager.LayoutParams();
+				// lp.copyFrom(dia.getWindow().getAttributes());
+				// lp.width = (int) (util.getScreenwidth() / 1.5);
+				// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+				// ;
+				// dia.show();
+				//
+				// dia.getWindow().setAttributes(lp);
+				// dia.getWindow().setBackgroundDrawable(new
+				// ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 			}
 		});
@@ -685,6 +685,8 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 				if (ww != null) {
 					userIdsender = ww.getUserId();
 					description = ww.getDesc();
+					itemId = ww.getId();
+
 				}
 
 				if (util.getCurrentUser() != null) {
@@ -695,18 +697,19 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 					if (util.getCurrentUser().getId() == userIdsender) {
 
-						if (countReply == 0) {
-							menuItems = new ArrayList<String>();
-							menuItems.clear();
-							menuItems.add("کپی");
-							menuItems.add("حذف");
-						} else {
-
-							menuItems = new ArrayList<String>();
-							menuItems.clear();
-							menuItems.add("کپی");
-
-						}
+						// if (countReply == 0) {
+						menuItems = new ArrayList<String>();
+						menuItems.clear();
+						menuItems.add("کپی");
+						menuItems.add("حذف");
+						// }
+						// else {
+						//
+						// menuItems = new ArrayList<String>();
+						// menuItems.clear();
+						// menuItems.add("کپی");
+						//
+						// }
 					} else {
 
 						menuItems = new ArrayList<String>();
@@ -740,7 +743,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 						if (item.getTitle().equals("حذف")) {
 							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender) {
-								// deleteItems(itemId);
+								deleteItems(itemId);
 							} else {
 
 								Toast.makeText(context, "", 0).show();
@@ -758,7 +761,6 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 					}
 				};
 				popupMenu.setOnMenuItemClickListener(menuitem);
-
 
 				//
 				//
@@ -823,6 +825,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 				notifyDataSetChanged();
 
 			}
+
 		});
 		mainComment.setTypeface(null, Typeface.BOLD);
 
@@ -840,160 +843,210 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 	@Override
 	public void processFinish(String output) {
 
-		if (!"".equals(output) && output != null && !(output.contains("Exception") || output.contains("java"))) {
+		if (IsDeleteing == true) {
 
-			int id = -1;
-			try {
-				id = Integer.valueOf(output);
+			if (ringProgressDialog != null) {
+				ringProgressDialog.dismiss();
+			}
 
-				adapter.open();
+			adapter.open();
+			adapter.deleteOnlyCommentPost(itemId);
+			adapter.deleteLikeInCommentPost(itemId);
+			adapter.deleteReplyPost(itemId);
+			adapter.close();
 
-				if (flag) {
+			f.updateList();
 
-					/*
-					 * save like in database device
-					 */
+		} else {
 
-					if (adapter.isUserLikedCommentPost(Currentuser.getId(), GlobalId, 1)) {
-						adapter.deleteLikeFromCommentInPost(GlobalId, Currentuser.getId(), 1);
+			if (!"".equals(output) && output != null && !(output.contains("Exception") || output.contains("java"))) {
 
-						notifyDataSetChanged();
-						if (ringProgressDialog != null) {
-							ringProgressDialog.dismiss();
+				int id = -1;
+				try {
+					id = Integer.valueOf(output);
+
+					adapter.open();
+
+					if (flag) {
+
+						/*
+						 * save like in database device
+						 */
+
+						if (adapter.isUserLikedCommentPost(Currentuser.getId(), GlobalId, 1)) {
+							adapter.deleteLikeFromCommentInPost(GlobalId, Currentuser.getId(), 1);
+
+							notifyDataSetChanged();
+							if (ringProgressDialog != null) {
+								ringProgressDialog.dismiss();
+
+							}
+
+						} else {
+							adapter.InsertLikeCommentPostToDatabase(id, Currentuser.getId(), 1, GlobalId, serverDate);
+
+							notifyDataSetChanged();
+							if (ringProgressDialog != null) {
+								ringProgressDialog.dismiss();
+
+							}
 
 						}
+					} else {
+						/*
+						 * save dislike in database device
+						 */
+
+						if (adapter.isUserLikedCommentPost(Currentuser.getId(), GlobalId, 0)) {
+							adapter.deleteLikeFromCommentInPost(GlobalId, Currentuser.getId(), 0);
+							notifyDataSetChanged();
+							if (ringProgressDialog != null) {
+								ringProgressDialog.dismiss();
+
+							}
+
+						} else {
+							adapter.InsertLikeCommentPostToDatabase(id, Currentuser.getId(), 0, GlobalId, serverDate);
+
+							notifyDataSetChanged();
+							if (ringProgressDialog != null) {
+								ringProgressDialog.dismiss();
+
+							}
+
+						}
+					}
+
+					adapter.close();
+
+				} catch (NumberFormatException e) {
+					serverDate = output;
+
+					if (flag == true) {
+						params = new LinkedHashMap<String, String>();
+						if (context != null) {
+
+							saving = new Saving(context);
+							saving.delegate = ExpandableCommentPost.this;
+
+							params.put("TableName", "LikeInCommentPost");
+
+							params.put("UserId", String.valueOf(Currentuser.getId()));
+							params.put("IsLike", String.valueOf(1));
+							params.put("CommentId", String.valueOf(GlobalId));
+							params.put("ModifyDate", serverDate);
+							params.put("IsUpdate", "0");
+							params.put("Date", serverDate);
+
+							params.put("Id", "0");
+
+							saving.execute(params);
+
+							ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+						}
+						ringProgressDialog.setCancelable(true);
+
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+
+									Thread.sleep(10000);
+
+								} catch (Exception e) {
+
+								}
+							}
+						}).start();
+
+						notifyDataSetChanged();
 
 					} else {
-						adapter.InsertLikeCommentPostToDatabase(id, Currentuser.getId(), 1, GlobalId, serverDate);
 
-						notifyDataSetChanged();
-						if (ringProgressDialog != null) {
-							ringProgressDialog.dismiss();
+						params = new LinkedHashMap<String, String>();
 
+						if (context != null) {
+
+							saving = new Saving(context);
+							saving.delegate = ExpandableCommentPost.this;
+
+							params.put("TableName", "LikeInCommentPost");
+
+							params.put("UserId", String.valueOf(Currentuser.getId()));
+
+							params.put("IsLike", String.valueOf(0));
+							params.put("CommentId", String.valueOf(GlobalId));
+							params.put("ModifyDate", serverDate);
+							params.put("Date", serverDate);
+
+							params.put("IsUpdate", "0");
+							params.put("Id", "0");
+
+							saving.execute(params);
 						}
-
-					}
-				} else {
-					/*
-					 * save dislike in database device
-					 */
-
-					if (adapter.isUserLikedCommentPost(Currentuser.getId(), GlobalId, 0)) {
-						adapter.deleteLikeFromCommentInPost(GlobalId, Currentuser.getId(), 0);
-						notifyDataSetChanged();
-						if (ringProgressDialog != null) {
-							ringProgressDialog.dismiss();
-
-						}
-
-					} else {
-						adapter.InsertLikeCommentPostToDatabase(id, Currentuser.getId(), 0, GlobalId, serverDate);
-
-						notifyDataSetChanged();
-						if (ringProgressDialog != null) {
-							ringProgressDialog.dismiss();
-
-						}
-
-					}
-				}
-
-				adapter.close();
-
-			} catch (NumberFormatException e) {
-				serverDate = output;
-
-				if (flag == true) {
-					params = new LinkedHashMap<String, String>();
-					if (context != null) {
-
-						saving = new Saving(context);
-						saving.delegate = ExpandableCommentPost.this;
-
-						params.put("TableName", "LikeInCommentPost");
-
-						params.put("UserId", String.valueOf(Currentuser.getId()));
-						params.put("IsLike", String.valueOf(1));
-						params.put("CommentId", String.valueOf(GlobalId));
-						params.put("ModifyDate", serverDate);
-						params.put("IsUpdate", "0");
-						params.put("Date", serverDate);
-
-						params.put("Id", "0");
-
-						saving.execute(params);
-
 						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-					}
-					ringProgressDialog.setCancelable(true);
 
-					new Thread(new Runnable() {
+						ringProgressDialog.setCancelable(true);
 
-						@Override
-						public void run() {
+						new Thread(new Runnable() {
 
-							try {
+							@Override
+							public void run() {
 
-								Thread.sleep(10000);
+								try {
 
-							} catch (Exception e) {
+									Thread.sleep(10000);
 
+								} catch (Exception e) {
+
+								}
 							}
-						}
-					}).start();
 
-					notifyDataSetChanged();
+						}).start();
 
-				} else {
+						notifyDataSetChanged();
 
-					params = new LinkedHashMap<String, String>();
-
-					if (context != null) {
-
-						saving = new Saving(context);
-						saving.delegate = ExpandableCommentPost.this;
-
-						params.put("TableName", "LikeInCommentPost");
-
-						params.put("UserId", String.valueOf(Currentuser.getId()));
-
-						params.put("IsLike", String.valueOf(0));
-						params.put("CommentId", String.valueOf(GlobalId));
-						params.put("ModifyDate", serverDate);
-						params.put("Date", serverDate);
-
-						params.put("IsUpdate", "0");
-						params.put("Id", "0");
-
-						saving.execute(params);
 					}
-					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
-					ringProgressDialog.setCancelable(true);
-
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-
-					notifyDataSetChanged();
-
+					// Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT)
+					// .show();
 				}
-
-				// Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT)
-				// .show();
 			}
 		}
 	}
 
+	public void deleteItems(int itemId) {
+
+		params = new LinkedHashMap<String, String>();
+
+		deleting = new Deleting(context);
+		deleting.delegate = ExpandableCommentPost.this;
+
+		params.put("TableName", "CommentInPost");
+		params.put("Id", String.valueOf(itemId));
+
+		deleting.execute(params);
+
+		ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+
+		ringProgressDialog.setCancelable(true);
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				try {
+
+					Thread.sleep(10000);
+
+				} catch (Exception e) {
+
+				}
+			}
+		}).start();
+		IsDeleteing = true;
+
+	}
 }
