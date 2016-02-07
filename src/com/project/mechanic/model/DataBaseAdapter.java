@@ -111,7 +111,7 @@ public class DataBaseAdapter {
 	private String[] CommentInFroum = { "ID", "Desk", "FroumId", "UserId", "Date", "CommentId", "NumOfDislike",
 			"NumOfLike", "Seen" };
 
-	private String[] CommentInPost = { "ID", "Desc", "PostId", "UserId", "Date", "CommentId", "Seen" };
+	private String[] CommentInPost = { "ID", "Description", "PostId", "UserId", "Date", "CommentId", "Seen" };
 
 	private String[] CommentInPaper = { "Id", "Desk", "PaperId", "UserId", "Date", "CommentId", "Seen" };
 

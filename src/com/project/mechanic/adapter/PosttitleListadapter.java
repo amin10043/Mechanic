@@ -239,8 +239,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.topicTitleFroum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 7;
-		lp.height = util.getScreenwidth() / 7;
+		lp.width = util.getScreenwidth() / 6;
+		lp.height = util.getScreenwidth() / 6;
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		if (x != null) {
 
