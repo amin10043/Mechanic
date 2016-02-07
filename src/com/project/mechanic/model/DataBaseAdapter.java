@@ -153,7 +153,8 @@ public class DataBaseAdapter {
 			"ServerDate_Start_LikeInObject", "ServerDate_End_LikeInObject", "ServerDate_Start_LikeInComment",
 			"ServerDate_End_LikeInComment", "ServerDate_Start_LikeInCommentObject",
 			"ServerDate_End_LikeInCommentObject", "ServerDate_Start_Users", "ServerDate_End_Users",
-			"ServerDate_Start_ObjectInCity ", "ServerDate_End_ObjectInCity" };
+			"ServerDate_Start_ObjectInCity ", "ServerDate_End_ObjectInCity", "ServerDate_Start_Post ",
+			"ServerDate_End_Post" , "ServerDate_Start_LikeInPost ", "ServerDate_End_LikeInPost", "ServerDate_Start_LikeInCommentPost ", "ServerDate_End_LikeInCommentPost" };
 
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image", "date", "TypeId", "Name", "Email", "Mobile",
 			"Phone", "Fax", "ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress", "UImage", "UMobile",

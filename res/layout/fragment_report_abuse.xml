@@ -17,17 +17,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="#b0c0d8"
-            android:gravity="right"
+            android:background="@drawable/rectangle_drawable"
+            android:gravity="center"
             android:orientation="horizontal" >
 
             <TextView
+                android:id="@+id/lab1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="گزارش تخلف"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/orginal_golden_color" />
 
             <ImageView
                 android:id="@+id/delete_icon"
@@ -48,8 +49,8 @@
                 android:id="@+id/rb1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
                 android:layout_marginTop="5dp"
+                android:gravity="left"
                 android:visibility="visible" >
 
                 <RadioButton
@@ -59,7 +60,7 @@
                     android:layout_gravity="right"
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
-                    android:gravity="right"
+                    android:gravity="right|center_vertical"
                     android:text="محتوای آگهی نا مناسب است"
                     android:textColor="@color/transparent" />
 
@@ -70,7 +71,7 @@
                     android:layout_gravity="right"
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
-                    android:gravity="right"
+                    android:gravity="right|center_vertical"
                     android:text="اطلاعات تماس آگهی نادرست است"
                     android:textColor="@color/transparent" />
 
@@ -81,7 +82,7 @@
                     android:layout_gravity="right"
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
-                    android:gravity="right"
+                    android:gravity="right|center_vertical"
                     android:text="اطلاعات آگهی گمراه کننده و یا دروغ است"
                     android:textColor="@color/transparent" />
 
@@ -92,7 +93,7 @@
                     android:layout_gravity="right"
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
-                    android:gravity="right"
+                    android:gravity="right|center_vertical"
                     android:text="آگهی اسپم است و چندین بار پست شده است"
                     android:textColor="@color/transparent" />
 
@@ -103,7 +104,7 @@
                     android:layout_gravity="right"
                     android:button="@null"
                     android:drawableRight="@android:drawable/btn_radio"
-                    android:gravity="right"
+                    android:gravity="right|center_vertical"
                     android:text="اگهی در دسته بندی نا مربوط قرار گرفته است"
                     android:textColor="@color/transparent" />
             </RadioGroup>
@@ -147,7 +148,9 @@
         android:layout_height="40dp"
         android:layout_gravity="left"
         android:layout_margin="10dp"
+        android:background="@drawable/rectangle_drawable"
         android:text="ارسال"
+        android:textColor="@color/orginal_golden_color"
         android:visibility="visible" />
 
 </LinearLayout>

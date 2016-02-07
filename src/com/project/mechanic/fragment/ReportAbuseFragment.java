@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
@@ -36,12 +37,12 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 	boolean flag = false;
 	int backId;
 	int ticketType, proviceId;
-
-//	public ReportAbuseFragment(int ticketType, int provinceId) {
-//		
-//		this.ticketType = ticketType;
-//		this.proviceId = provinceId;
-//	}
+	View rootView;
+	// public ReportAbuseFragment(int ticketType, int provinceId) {
+	//
+	// this.ticketType = ticketType;
+	// this.proviceId = provinceId;
+	// }
 
 	public ReportAbuseFragment(int backId) {
 		this.backId = backId;
@@ -51,8 +52,7 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		util = new Utility(getActivity());
 
@@ -60,10 +60,8 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 		source = getArguments().getInt("source");
 		itemId = getArguments().getInt("itemId");
 		content = getArguments().getString("content");
-		
-		
 
-		View rootView = inflater.inflate(R.layout.fragment_report_abuse, null);
+		rootView = inflater.inflate(R.layout.fragment_report_abuse, null);
 
 		final RadioGroup rdGroup = (RadioGroup) rootView.findViewById(R.id.rb1);
 
@@ -72,6 +70,13 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 		RadioButton r3 = (RadioButton) rootView.findViewById(R.id.r3);
 		RadioButton r4 = (RadioButton) rootView.findViewById(R.id.r4);
 		RadioButton r5 = (RadioButton) rootView.findViewById(R.id.r5);
+
+		r1.setTypeface(util.SetFontIranSans());
+		r2.setTypeface(util.SetFontIranSans());
+		r3.setTypeface(util.SetFontIranSans());
+		r4.setTypeface(util.SetFontIranSans());
+		r5.setTypeface(util.SetFontIranSans());
+
 		if (source != 3) {
 			r2.setVisibility(View.GONE);
 			r3.setVisibility(View.GONE);
@@ -80,7 +85,7 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 			r5.setText("مطلب در دسته بندی نامربوط قرار گرفته است");
 		}
 		Button sendBtn = (Button) rootView.findViewById(R.id.report_item);
-
+		sendBtn.setTypeface(util.SetFontCasablanca());
 		sendBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -90,8 +95,7 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 				date.delegate = ReportAbuseFragment.this;
 				date.execute("");
 
-				ringProgressDialog = ProgressDialog.show(getActivity(), "",
-						"لطفا منتظر بمانید...", true);
+				ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 				ringProgressDialog.setCancelable(true);
 				new Thread(new Runnable() {
@@ -111,9 +115,16 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 
 			}
 		});
-
+		setFont();
 		util.ShowFooterAgahi(getActivity(), false, 0);
 		return rootView;
+	}
+
+	private void setFont() {
+
+		TextView lable1 = (TextView) rootView.findViewById(R.id.lab1);
+
+		lable1.setTypeface(util.SetFontCasablanca());
 	}
 
 	@Override
@@ -128,11 +139,10 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 			switch (source) {
 			case 1: {
 
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				FroumtitleFragment fragment = new FroumtitleFragment();
-				trans.setCustomAnimations(R.anim.pull_in_left,
-						R.anim.push_out_right);
+				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
@@ -141,11 +151,10 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 			}
 			case 2: {
 
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				TitlepaperFragment fragment = new TitlepaperFragment();
-				trans.setCustomAnimations(R.anim.pull_in_left,
-						R.anim.push_out_right);
+				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
@@ -154,15 +163,14 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 			}
 			case 3: {
 
-				ticketType =  getArguments().getInt("ticketTypeId");
-				proviceId =  getArguments().getInt("provinceId");
+				ticketType = getArguments().getInt("ticketTypeId");
+				proviceId = getArguments().getInt("provinceId");
 
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				AnadFragment fragment = new AnadFragment();
-				trans.setCustomAnimations(R.anim.pull_in_left,
-						R.anim.push_out_right);
-				
+				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
+
 				Bundle bundle = new Bundle();
 
 				bundle.putString("Id", String.valueOf(ticketType));
@@ -176,11 +184,10 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 			}
 			case 5: {
 
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				FroumFragment fragment = new FroumFragment();
-				trans.setCustomAnimations(R.anim.pull_in_left,
-						R.anim.push_out_right);
+				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 
 				Bundle bundle = new Bundle();
 
@@ -194,16 +201,15 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 			}
 			case 6: {
 
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				PaperFragment fragment = new PaperFragment();
 
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(backId));
 				fragment.setArguments(bundle);
 
-				trans.setCustomAnimations(R.anim.pull_in_left,
-						R.anim.push_out_right);
+				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
@@ -220,9 +226,7 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 
 			serverDate = output;
 
-			if (output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 
 				params = new LinkedHashMap<String, String>();
 				saving = new Saving(getActivity());
@@ -232,8 +236,7 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 
 				params.put("[Desc]", content);
 				params.put("UserIdSender", String.valueOf(userIdSender));
-				params.put("UserIdReporter",
-						String.valueOf(util.getCurrentUser().getId()));
+				params.put("UserIdReporter", String.valueOf(util.getCurrentUser().getId()));
 				params.put("SourceId", String.valueOf(itemId));
 				params.put("TypeId", String.valueOf(source));
 				params.put("Date", serverDate);
@@ -243,8 +246,7 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 
 				saving.execute(params);
 
-				ringProgressDialog = ProgressDialog.show(getActivity(), "",
-						"لطفا منتظر بمانید...", true);
+				ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 				ringProgressDialog.setCancelable(true);
 				new Thread(new Runnable() {
@@ -265,9 +267,7 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 				flag = true;
 
 			} else {
-				Toast.makeText(getActivity(),
-						"خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 			}
 		}
 
