@@ -33,7 +33,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:text="Large Text"
-                    android:textColor="@color/orginal_red_color" />
+                    android:textColor="@color/orginal_hard_blue_color" />
 
                 <LinearLayout
                     android:id="@+id/numviewslay"

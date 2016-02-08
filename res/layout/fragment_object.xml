@@ -34,7 +34,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:src="@drawable/fab_add"
             app:fab_colorNormal="@color/orginal_hard_blue_color"
             app:fab_hideAnimation="@anim/fab_scale_down"
@@ -42,6 +41,7 @@
             app:fab_shadowRadius="4dp"
             app:fab_shadowXOffset="1dp"
             app:fab_shadowYOffset="3dp"
+            android:layout_margin="5dp"
             app:fab_showAnimation="@anim/fab_scale_up"
             app:fab_showShadow="false"
             app:fab_size="normal" />

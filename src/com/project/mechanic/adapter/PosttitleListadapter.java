@@ -40,6 +40,7 @@ import com.project.mechanic.entity.Post;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogShowImage;
 import com.project.mechanic.fragment.InformationUser;
+import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.fragment.PostFragment;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
@@ -83,6 +84,12 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 	List<String> menuItems = new ArrayList<String>();
 
 	ImageView likeIcon;
+
+	@Override
+	public int getCount() {
+		
+		return mylist.size();
+	}
 
 	public PosttitleListadapter(Context context, int resource, List<Post> objects, Fragment fragment) {
 		super(context, resource, objects);
@@ -175,7 +182,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 			txt2.setVisibility(View.VISIBLE);
 		}
 
-		if (!person1.getPhoto().isEmpty()) {
+		if (person1.getPhoto() != null) {
 
 			File imgFile = new File(person1.getPhoto());
 
@@ -184,7 +191,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 				LNImageShowParams = new LinearLayout.LayoutParams(LinearImageShow.getLayoutParams());
 				LNImageShowParams.height = util.getScreenwidth();
 				LNImageShowParams.width = util.getScreenwidth();
-				// LNImageShowParams.setMargins(5, 5, 5, 5);
+				LNImageShowParams.setMargins(0, 0, 0, 10);
 				postImage.setLayoutParams(LNImageShowParams);
 
 				Bitmap myBitmap = BitmapFactory.decodeFile(person1.getPhoto());
@@ -421,80 +428,12 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 								}
 							}
 
-							// switch (item.getItemId()) {
-							// case 0: {
-							// if (util.getCurrentUser() != null)
-							// util.sendMessage("Froum");
-							// else
-							// Toast.makeText(context,
-							// "ابتدا باید وارد شوید", 0)
-							// .show();
-							//
-							// break;
-							// }
-							// case 1: {
-							// if (util.getCurrentUser() != null)
-							// util.addToFavorite(1, itemId);
-							// else
-							// Toast.makeText(context,
-							// "ابتدا باید وارد شوید", 0)
-							// .show();
-							// break;
-							// }
-							// case 2: {
-							//
-							// util.CopyToClipboard(t);
-							// break;
-							// }
-							// case 3: {
-							// if (util.getCurrentUser() != null)
-							// util.reportAbuse(itemId, 1,
-							// userIdsender, t);
-							// else
-							// Toast.makeText(context,
-							// "ابتدا باید وارد شوید", 0)
-							// .show();
-							// break;
-							// }
-							// case 4: {
-							// if (util.getCurrentUser() != null
-							// && util.getCurrentUser().getId() == userIdsender)
-							// deleteItems(itemId);
-							// else {
-							//
-							// Toast.makeText(context, "", 0).show();
-							// break;
-							// }
-							// }
-							// default:
-							// break;
-							// }
-
 							return false;
 						}
 					};
 
 					popupMenu.setOnMenuItemClickListener(menuitem);
 
-					// }
-					//
-					// DialogLongClick dia = new DialogLongClick(context, 1,
-					// ItemId, f.getId(), fragment, t);
-					// Toast.makeText(context, ItemId + "", 0).show();
-					//
-					// WindowManager.LayoutParams lp = new
-					// WindowManager.LayoutParams();
-					// lp.copyFrom(dia.getWindow().getAttributes());
-					// lp.width = (int) (util.getScreenwidth() / 1.5);
-					// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-					// ;
-					// dia.show();
-					//
-					// dia.getWindow().setAttributes(lp);
-					// dia.getWindow().setBackgroundDrawable(
-					// new ColorDrawable(
-					// android.graphics.Color.TRANSPARENT));
-					// }
 				}
 			}
 		});
@@ -646,13 +585,11 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 		try {
 			int id = Integer.valueOf(output);
 			LinearLayout parentLayout = (LinearLayout) Parent.findViewWithTag(postNumber);
-			// LinearLayout likeTitle = (LinearLayout) parentLayout
-			// .findViewById(R.id.liketitleTopic);
+			ImageView likeIcon = (ImageView) parentLayout.findViewById(R.id.likeIcon);
 
 			adapter.open();
 			if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
 				adapter.deleteLikeFromPost(CurrentUser.getId(), postNumber);
-
 				likeIcon.setBackgroundResource(R.drawable.like_froum_off);
 
 			} else {
@@ -660,12 +597,14 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 
 				likeIcon.setBackgroundResource(R.drawable.like_froum_on);
 			}
-
-			// TextView likeCountPost = (TextView) LikeTitle
-			// .findViewById(R.id.countLikeInFroumTitle);
-			countLikePost.setText(adapter.LikeInPost_count(postNumber).toString());
-
 			adapter.close();
+
+			TextView likeCountPost = (TextView) parentLayout.findViewById(R.id.txtNumofLike_CmtFroum);
+
+			adapter.open();
+			likeCountPost.setText(adapter.LikeInPost_count(postNumber).toString());
+			adapter.close();
+
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
@@ -815,6 +754,9 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 			adapter.deleteCommentPost(itemId);
 
 			adapter.close();
+
+			((IntroductionFragment) fragment).fillListView();
+			((IntroductionFragment) fragment).setCountPost();
 
 		}
 

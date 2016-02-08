@@ -200,7 +200,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 									SharedPreferences sendDataID = context.getSharedPreferences("Id", 0);
 									sendDataID.edit().putInt("main_Id", pd.getObjectId()).commit();
 
-									IntroductionEditFragment fragment = new IntroductionEditFragment();
+									IntroductionEditFragment fragment = new IntroductionEditFragment(pd.getObjectId());
 									FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager()
 											.beginTransaction();
 									trans.replace(R.id.content_frame, fragment);

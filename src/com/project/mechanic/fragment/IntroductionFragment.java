@@ -1,6 +1,5 @@
 package com.project.mechanic.fragment;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,7 +10,6 @@ import com.project.mechanic.R;
 import com.project.mechanic.StaticValues;
 import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.ExpandIntroduction;
-import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.adapter.PosttitleListadapter;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.LikeInObject;
@@ -22,9 +20,11 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.entity.Visit;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.AsyncInterfaceVisit;
-import com.project.mechanic.inter.GetAllAsyncInterface;
-import com.project.mechanic.inter.VisitSaveInterface;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.DataPersonalInterface;
+import com.project.mechanic.inter.GetAllAsyncInterface;
+import com.project.mechanic.inter.GetAsyncInterface;
+import com.project.mechanic.inter.VisitSaveInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.GetPostByObjectId;
@@ -33,16 +33,15 @@ import com.project.mechanic.service.SavingVisit;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingAllImage;
-import com.project.mechanic.service.UpdatingPersonalPage;
+import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.service.UpdatingVisit;
+import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources.NotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -50,6 +49,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.format.Time;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -64,13 +64,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class IntroductionFragment extends Fragment implements AsyncInterface, GetAllAsyncInterface,
-		DataPersonalInterface, VisitSaveInterface, AsyncInterfaceVisit {
+		DataPersonalInterface, VisitSaveInterface, AsyncInterfaceVisit, GetAsyncInterface, CommInterface {
 
 	// Context context;
 	Utility ut;
@@ -86,7 +85,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 	UpdatingAllImage updating;
 	Map<String, String> maps;
 	ArrayList<CommentInObject> commentGroup, ReplyGroup;
-	ArrayList<Post> ArrayPosts;
+	ArrayList<Post> ArrayPosts = new ArrayList<Post>();
 	Map<CommentInObject, List<CommentInObject>> mapCollection;
 	public RelativeLayout agency, service, sendSMS, addressRelative, profileLinear, /* personPost, */ phone, cphone,
 			email, shareBtn, followPage, EditPage, WebsiteRelative;
@@ -112,11 +111,12 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 	Updating update;
 	boolean flag, f1, f2, f3, LikeOrComment, commentClick = false;
 	List<String> menuItems;
-
-	ProgressBar loadingProgressHeader/* , loadingProgressProfile */, loadingProgressFooter;
+	int postItemId = 0;
+	// ProgressBar loadingProgressHeader/* , loadingProgressProfile */,
+	// loadingProgressFooter;
 	Button ShowPostBtn, btnShowPost;
 	int userId, commentId = 0;
-
+	Post postItem;
 	FloatingActionButton action;
 
 	DialogpostTitleFragment MyDialog;
@@ -133,6 +133,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 	boolean isFinish = false, saveVisitFalg, booleanPost = true;
 	int visitCounter = 0;
 	Post post;
+	int positionListPost = 0;
+	PosttitleListadapter ListAdapterPost;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -141,6 +143,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.brand);
 		adapter = new DataBaseAdapter(getActivity());
 		ut = new Utility(getActivity());
+		ListAdapterPost = new PosttitleListadapter(getActivity(), R.layout.raw_posttitle, ArrayPosts,
+				IntroductionFragment.this);
 
 		// define rootView and header Layout
 		// view = inflater.inflate(R.layout.fragment_introduction, null);
@@ -268,26 +272,27 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 			if (saveVisitFalg == true) {
 
-				// if (counterVisit == 0)
-				currentTime = output;
+				if (counterVisit == 0)
+					currentTime = output;
 
 				sendVisit();
 
 			} else {
-				// if (isFinish == true) {
-				// // get image from server
-				// getImageFromServer();
-				// isFinish = false;
-				// }
+				if (isFinish == true) {
+					// get image from server
+					// getImageFromServer();
+					isFinish = false;
+					return;
+				}
 
 				if (LikeOrComment == true) {
 					if (output.contains("---")) {
 						if (ringProgressDialog != null)
 							ringProgressDialog.dismiss();
 
-						loadingProgressHeader.setVisibility(View.GONE);
-						// loadingProgressProfile.setVisibility(View.GONE);
-						loadingProgressFooter.setVisibility(View.GONE);
+						// loadingProgressHeader.setVisibility(View.GONE);
+						// // loadingProgressProfile.setVisibility(View.GONE);
+						// loadingProgressFooter.setVisibility(View.GONE);
 						return;
 					} else if (output.contains("-")) {
 						String[] strs = output.split(Pattern.quote("-")); // each
@@ -325,9 +330,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 							updating.execute(maps);
 
 						} else {
-							loadingProgressHeader.setVisibility(View.GONE);
+							// loadingProgressHeader.setVisibility(View.GONE);
 							// loadingProgressProfile.setVisibility(View.GONE);
-							loadingProgressFooter.setVisibility(View.GONE);
+							// loadingProgressFooter.setVisibility(View.GONE);
 							// Toast.makeText(getActivity(), "به روز رسانی
 							// تصاویر با موفقیت انجام شد", Toast.LENGTH_SHORT)
 							// .show();
@@ -496,9 +501,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 							} else {
 								Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT)
 										.show();
-								loadingProgressHeader.setVisibility(View.GONE);
+								// loadingProgressHeader.setVisibility(View.GONE);
+								// //
 								// loadingProgressProfile.setVisibility(View.GONE);
-								loadingProgressFooter.setVisibility(View.GONE);
+								// loadingProgressFooter.setVisibility(View.GONE);
 							}
 						}
 
@@ -509,9 +515,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 						{
 
 							Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
-							loadingProgressHeader.setVisibility(View.GONE);
+							// loadingProgressHeader.setVisibility(View.GONE);
+							// //
 							// loadingProgressProfile.setVisibility(View.GONE);
-							loadingProgressFooter.setVisibility(View.GONE);
+							// loadingProgressFooter.setVisibility(View.GONE);
 						}
 					}
 				} else {
@@ -662,9 +669,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 				}
 			Toast.makeText(getActivity(), "به روز رسانی تصاویر با موفقیت انجام شد", Toast.LENGTH_SHORT).show();
 
-			loadingProgressHeader.setVisibility(View.GONE);
-			// loadingProgressProfile.setVisibility(View.GONE);
-			loadingProgressFooter.setVisibility(View.GONE);
+			// loadingProgressHeader.setVisibility(View.GONE);
+			// // loadingProgressProfile.setVisibility(View.GONE);
+			// loadingProgressFooter.setVisibility(View.GONE);
 
 			adapter.close();
 
@@ -740,11 +747,13 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		personPage = (LinearLayout) header.findViewById(R.id.countLiketext);
 		// personPost = (RelativeLayout) header.findViewById(R.id.countLikeqqz);
 
-		loadingProgressHeader = (ProgressBar) header.findViewById(R.id.header_progress_header);
+		// loadingProgressHeader = (ProgressBar)
+		// header.findViewById(R.id.header_progress_header);
 
 		// loadingProgressProfile = (ProgressBar)
 		// header.findViewById(R.id.profile_progress_profile);
-		loadingProgressFooter = (ProgressBar) header.findViewById(R.id.footer_progress_footer);
+		// loadingProgressFooter = (ProgressBar)
+		// header.findViewById(R.id.footer_progress_footer);
 
 		followPage = (RelativeLayout) header.findViewById(R.id.follow_follow);
 		reaport = (ImageView) header.findViewById(R.id.reportImage);
@@ -794,13 +803,20 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 	//
 	// }
 
-	private void fillListView() {
+	public void fillListView() {
 		adapter.open();
+		ArrayPosts.clear();
 		ArrayPosts = adapter.getAllPost(object.getId());
 		adapter.close();
-		PosttitleListadapter ListAdapterPost = new PosttitleListadapter(getActivity(), R.layout.raw_posttitle,
-				ArrayPosts, IntroductionFragment.this);
+		ListAdapterPost = new PosttitleListadapter(getActivity(), R.layout.raw_posttitle, ArrayPosts,
+				IntroductionFragment.this);
+
 		PostList.setAdapter(ListAdapterPost);
+		PostList.setSelection(positionListPost);
+	}
+
+	public void setPostionListPost(int pos) {
+		positionListPost = pos;
 	}
 
 	private void setStateButtonFollowLike() {
@@ -1221,35 +1237,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 		action.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
-				// if (Currentuser == null)
-				// Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-				// Toast.LENGTH_SHORT).show();
-				// else {
-				// DialogPostFragment fragment = new DialogPostFragment();
-				//
-				// FragmentTransaction trans = getActivity()
-				// .getSupportFragmentManager().beginTransaction();
-				// trans.setCustomAnimations(R.anim.pull_in_left,
-				// R.anim.push_out_right);
-				// trans.replace(R.id.content_frame, fragment);
-				// trans.addToBackStack(null);
-				// trans.commit();
-				//
-				// Bundle bundle = new Bundle();
-				// bundle.putInt("Id", ObjectID);
-				// fragment.setArguments(bundle);
-				// }
 
-				// MyDialog = new DialogpostTitle(getActivity(),
-				// R.layout.dialog_addtitlepost, IntroductionFragment.this);
-				// MyDialog.getWindow().setSoftInputMode(
-				// WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 				FragmentManager fm = getActivity().getSupportFragmentManager();
 				MyDialog = new DialogpostTitleFragment(ObjectID);
-				// MyDialog = new DialogpostTitleFragment();
 				MyDialog.show(fm, "My_Dialog_Dialog");
-
-				// realize.edit().putInt("main_Id", 1).commit();
 
 			}
 		});
@@ -1397,26 +1388,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 	private void LikeCommentAction() {
 
-		// AddComment.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View arg0) {
-		//
-		// // if (currentUser == null) {
-		// // Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-		// // Toast.LENGTH_SHORT).show();
-		// // return;
-		// // } else {
-		// // dialog = new DialogcmtInobject(IntroductionFragment.this,
-		// // getActivity(), R.layout.dialog_addcomment,
-		// // ObjectID, 0);
-		// // dialog.show();
-		// // exadapter.notifyDataSetChanged();
-		// // }
-		//
-		// }
-		// });
-
 		likePost.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -1465,7 +1436,7 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 			public void onClick(View arg0) {
 
 				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new IntroductionEditFragment());
+				trans.replace(R.id.content_frame, new IntroductionEditFragment(ObjectID));
 				trans.addToBackStack(null);
 				trans.commit();
 
@@ -1601,22 +1572,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 
 				popupMenu.setOnMenuItemClickListener(menuitem);
 
-				// DialogLongClick dia = new DialogLongClick(getActivity(), 4,
-				// ObjectID, -1, IntroductionFragment.this, object
-				// .getDescription());
-				// Toast.makeText(getActivity(), ObjectID + "", 0).show();
-				//
-				// WindowManager.LayoutParams lp = new
-				// WindowManager.LayoutParams();
-				// lp.copyFrom(dia.getWindow().getAttributes());
-				// lp.width = (int) (ut.getScreenwidth() / 1.5);
-				// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-				// ;
-				// dia.show();
-				//
-				// dia.getWindow().setAttributes(lp);
-				// dia.getWindow().setBackgroundDrawable(
-				// new ColorDrawable(android.graphics.Color.TRANSPARENT));
 			}
 		});
 
@@ -1650,14 +1605,19 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		else
 			txtWebsite.setText("");
 
-		adapter.open();
-		countPost.setText(adapter.CountPostUser(object.getId()) + "");
-		adapter.close();
+		setCountPost();
 
 		TextView numVisit = (TextView) header.findViewById(R.id.numVisitPage);
 
 		numVisit.setText(object.getCountView() + "");
 
+	}
+
+	public void setCountPost() {
+
+		adapter.open();
+		countPost.setText(adapter.CountPostUser(object.getId()) + "");
+		adapter.close();
 	}
 
 	private void showPeopleLikedBtn() {
@@ -1716,58 +1676,59 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 			update.execute(para);
 			LikeOrComment = true;
 			saveVisitFalg = false;
+			isFinish = false;
 
 		}
 
-		loadingProgressHeader.setVisibility(View.VISIBLE);
-
-		new Thread(new Runnable() {
-			public void run() {
-				while (f1 == false) {
-
-					try {
-						Thread.sleep(1000);
-						loadingProgressHeader.post(new Runnable() {
-							public void run() {
-								counter = counter + 2;
-								loadingProgressHeader.setProgress(counter);
-							}
-						});
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-
-					// Update the progress bar
-
-				}
-
-			}
-		}).start();
-
-		// loadingProgressProfile.setVisibility(View.VISIBLE);
-		loadingProgressFooter.setVisibility(View.VISIBLE);
-		new Thread(new Runnable() {
-			public void run() {
-				while (f1 == false) {
-
-					try {
-						Thread.sleep(1000);
-						loadingProgressFooter.post(new Runnable() {
-							public void run() {
-								counter = counter + 2;
-								loadingProgressFooter.setProgress(counter);
-							}
-						});
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-
-					// Update the progress bar
-
-				}
-
-			}
-		}).start();
+		// loadingProgressHeader.setVisibility(View.VISIBLE);
+		//
+		// new Thread(new Runnable() {
+		// public void run() {
+		// while (f1 == false) {
+		//
+		// try {
+		// Thread.sleep(1000);
+		// loadingProgressHeader.post(new Runnable() {
+		// public void run() {
+		// counter = counter + 2;
+		// loadingProgressHeader.setProgress(counter);
+		// }
+		// });
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
+		//
+		// // Update the progress bar
+		//
+		// }
+		//
+		// }
+		// }).start();
+		//
+		// // loadingProgressProfile.setVisibility(View.VISIBLE);
+		// loadingProgressFooter.setVisibility(View.VISIBLE);
+		// new Thread(new Runnable() {
+		// public void run() {
+		// while (f1 == false) {
+		//
+		// try {
+		// Thread.sleep(1000);
+		// loadingProgressFooter.post(new Runnable() {
+		// public void run() {
+		// counter = counter + 2;
+		// loadingProgressFooter.setProgress(counter);
+		// }
+		// });
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
+		//
+		// // Update the progress bar
+		//
+		// }
+		//
+		// }
+		// }).start();
 	}
 
 	private void checkInternet() {
@@ -1792,8 +1753,20 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 					adapter.close();
 				}
 
+			} else {
+				getImageFromServer();
+
+				// ServerDate date = new ServerDate(getActivity());
+				// date.delegate = IntroductionFragment.this;
+				// date.execute("");
+				//
+				// saveVisitFalg = false;
+				// isFinish = true;
 			}
 
+		} else {
+
+			getImageFromServer();
 		}
 	}
 
@@ -1930,44 +1903,6 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		txtDesc.setTypeface(ut.SetFontIranSans());
 
 	}
-	// private void addComment() {
-	// ImageView send = ut.ShowFooterAgahi(getActivity(), false, 6);
-
-	//
-	// send.setOnClickListener(new OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View arg0) {
-	//
-	// if ("".equals(ut.inputComment(getActivity()))) {
-	// Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
-	// .show();
-	// } else {
-	//
-	// date = new ServerDate(getActivity());
-	// date.delegate = IntroductionFragment.this;
-	// date.execute("");
-	// LikeOrComment = false;
-	//
-	// ut.ReplyLayout(getActivity(), "", false);
-	// commentClick = true;
-	//
-	// }
-	// }
-	// });
-	// ImageView delete = ut.deleteReply(getActivity());
-	//
-	// delete.setOnClickListener(new OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View arg0) {
-	//
-	// ut.ReplyLayout(getActivity(), "", false);
-	//
-	// }
-	// });
-	//
-	// }
 
 	public int groupPosition(int groupPosition) {
 		gp = groupPosition;
@@ -1996,6 +1931,10 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 			if (currentUser.getId() == Ids.get(j))
 				fl1 = false;
 		}
+		if (currentUser == null)
+			isSave = true;
+		else
+
 		if (fl1 == false || currentUser.getId() == object.getUserId())
 			isSave = false;
 
@@ -2013,9 +1952,9 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		getVisit.delegate = IntroductionFragment.this;
 		String[] params = new String[5];
 		params[0] = "Post";
-		params[1] = "201510210957407981";
+		params[1] = "201501010000000000";
 		params[2] = currentTime;
-		params[3] = "1";
+		params[3] = "0";
 		params[4] = String.valueOf(ObjectID);
 
 		getVisit.execute(params);
@@ -2034,7 +1973,8 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 			} else {
 				{
 					ut.parseQuery(output);
-					fillListView();
+					getImagePost();
+					// fillListView();
 
 				}
 			}
@@ -2151,6 +2091,107 @@ public class IntroductionFragment extends Fragment implements AsyncInterface, Ge
 		}
 		visitCounter++;
 		getCountVisitFromServer();
+
+	}
+
+	private void getImagePost() {
+
+		if (ArrayPosts.size() > 0) {
+
+			if (postItemId < ArrayPosts.size()) {
+
+				postItem = ArrayPosts.get(postItemId);
+				String imagePostDate = postItem.getServerDate();
+
+				if (imagePostDate == null)
+					imagePostDate = "";
+
+				if (getActivity() != null) {
+
+					UpdatingImage ImageUpdating = new UpdatingImage(getActivity());
+					ImageUpdating.delegate = IntroductionFragment.this;
+					maps = new LinkedHashMap<String, String>();
+
+					maps.put("tableName", "Post");
+					maps.put("Id", String.valueOf(postItem.getId()));
+					maps.put("fromDate", imagePostDate);
+
+					ImageUpdating.execute(maps);
+				}
+
+			} else {
+				postItemId = 0;
+				getImageDate();
+				fillListView();
+			}
+		}
+	}
+
+	@Override
+	public void processFinish(byte[] output) {
+
+		if (!output.equals("Exception")) {
+
+			String ImageAddress = "";
+
+			Time time = new Time();
+			time.setToNow();
+			String Date = Long.toString(time.toMillis(false));
+
+			if (output != null) {
+
+				ImageAddress = ut.CreateFileString(output, "_" + ObjectID + "_" + Date + postItem.getId(), "Mechanical",
+						"Post", "post");
+			}
+			if (!ImageAddress.equals("")) {
+
+				adapter.open();
+				adapter.insertImageAddressToDb("Post", postItem.getId(), ImageAddress);
+				adapter.close();
+			}
+
+			postItemId++;
+			getImagePost();
+
+		}
+
+	}
+
+	private void getImageDate() {
+
+		if (postItemId < ArrayPosts.size()) {
+
+			postItem = ArrayPosts.get(postItemId);
+
+			if (getActivity() != null) {
+
+				ServiceComm getDateService = new ServiceComm(getActivity());
+				getDateService.delegate = IntroductionFragment.this;
+				Map<String, String> items = new LinkedHashMap<String, String>();
+
+				items.put("tableName", "getPostImageDate");
+				items.put("Id", String.valueOf(postItem.getId()));
+
+				getDateService.execute(items);
+
+			}
+		}
+
+	}
+
+	@Override
+	public void CommProcessFinish(String output) {
+
+		if (output.contains("Exception") || output.contains(("anyType")))
+			output = "";
+
+		adapter.open();
+		adapter.UpdateImageServerDatePost(postItem.getId(), output);
+		adapter.close();
+
+		postItemId++;
+
+		getImageDate();
 
 	}
 }

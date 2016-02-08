@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
         android:src="@drawable/fab_add"
         app:fab_colorNormal="@color/orginal_hard_blue_color"
         app:fab_hideAnimation="@anim/fab_scale_down"

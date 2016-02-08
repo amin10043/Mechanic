@@ -43,12 +43,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
 public class IntroductionEditFragment extends Fragment implements AsyncInterface, SaveAsyncInterface {
 	private static int headerLoadCode = 1;
 	private static int profileLoadCode = 2;
 	private static int footerLoadcode = 3;
+	int pageId;
+
+	public IntroductionEditFragment(int pageId) {
+		this.pageId = pageId;
+	}
 
 	DataBaseAdapter DBAdapter;
 	Utility util;
@@ -77,14 +80,14 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 	LinearLayout editnetLink, Linearheader, Linearfooter, editDNlink, AdminsPage;
 
 	public String Dcatalog, Dprice, Dpdf, Dvideo;
-	public String Dface, Dlink, Dtwt,  Dgoogle, Dinstagram;
+	public String Dface, Dlink, Dtwt, Dgoogle, Dinstagram;
 	RatingBar rating;
 	ImageView payBtn, copyBtn;
 
 	Bitmap bmpHeader, bmpProfil, bmpFooter;
 	Saving saving;
 	Map<String, String> params;
-	int PageId;
+//	int PageId;
 	ProgressDialog ringProgressDialog;
 	SavingImage3Picture savingImage;
 
@@ -192,10 +195,11 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 			mFileTemp = new File(getActivity().getFilesDir(), TEMP_PHOTO_FILE_NAME);
 		}
 
-		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id", 0);
-		PageId = sendDataID.getInt("main_Id", -1);
+//		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id", 0);
+//		PageId = sendDataID.getInt("main_Id", -1);
 
-//		Toast.makeText(getActivity(), "introduction id =" + PageId, Toast.LENGTH_SHORT).show();
+		// Toast.makeText(getActivity(), "introduction id =" + PageId,
+		// Toast.LENGTH_SHORT).show();
 
 		// /////////display information///////////////////////
 
@@ -203,7 +207,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 		// "Id", 0);
 		// final int cid = sendDataID1.getInt("main_Id", -1);
 		DBAdapter.open();
-		object = DBAdapter.getObjectbyid(PageId);
+		object = DBAdapter.getObjectbyid(pageId);
 
 		String pathHeader = object.getImagePath1();
 		String pathProfile = object.getImagePath2();
@@ -281,7 +285,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 				if (rat >= 0) {
 					DBAdapter.open();
 
-					DBAdapter.updateRatingObject(rat, PageId);
+					DBAdapter.updateRatingObject(rat, pageId);
 
 					Toast.makeText(getActivity(), "ثبت درگاه انجام شود ", 0).show();
 
@@ -300,7 +304,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 			@Override
 			public void onClick(View arg0) {
 				int AdminId = object.getUserId();
-				DialogAdminsPage adminDialog = new DialogAdminsPage(getActivity(), PageId, AdminId);
+				DialogAdminsPage adminDialog = new DialogAdminsPage(getActivity(), pageId, AdminId);
 				util.setSizeDialog(adminDialog);
 			}
 		});
@@ -365,7 +369,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 				addressValue = addressEnter.getText().toString();
 				descriptionValue = descriptionEnter.getText().toString();
 				websiteValue = websiteEnter.getText().toString();
-				
+
 				if (nameValue.equals("")) {
 					Toast.makeText(getActivity(), "پر کردن فیلد نام الزامی است", Toast.LENGTH_SHORT).show();
 				} else {
@@ -395,7 +399,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 					params.put("Twitter", Dtwt);
 
 					params.put("IsUpdate", "1");
-					params.put("Id", String.valueOf(PageId));
+					params.put("Id", String.valueOf(pageId));
 					saving.execute(params);
 
 					ringProgressDialog = ProgressDialog.show(getActivity(), "در حال بروزرسانی", "لطفا منتظر بمانید...");
@@ -569,7 +573,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 				it.put("fieldName2", "Image2");
 				it.put("fieldName3", "Image3");
 
-				it.put("id", String.valueOf(PageId));
+				it.put("id", String.valueOf(pageId));
 
 				it.put("Image1", byteHeader);
 				it.put("Image2", byteProfil);
@@ -581,9 +585,9 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 			}
 			// } else {
 			DBAdapter.open();
-			DBAdapter.UpdateObjectProperties(PageId, nameValue, phoneValue, emailValue, faxValue, descriptionValue,
-					Dcatalog, Dprice, Dpdf, Dvideo, addressValue, mobileValue, Dface, Dinstagram, Dlink, Dgoogle, websiteValue,
-					Dtwt);
+			DBAdapter.UpdateObjectProperties(pageId, nameValue, phoneValue, emailValue, faxValue, descriptionValue,
+					Dcatalog, Dprice, Dpdf, Dvideo, addressValue, mobileValue, Dface, Dinstagram, Dlink, Dgoogle,
+					websiteValue, Dtwt);
 
 			DBAdapter.close();
 			// if (ringProgressDialog != null) {
@@ -599,7 +603,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 
 	@Override
 	public void processFinishSaveImage(String output) {
-	//	Toast.makeText(getActivity(), "output = " + output, 0).show();
+		// Toast.makeText(getActivity(), "output = " + output, 0).show();
 
 		if (output != null) {
 			// try {
@@ -624,11 +628,11 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 			// byteProfil = Utility.CompressBitmap(bmpProfil);
 			// byteFooter = Utility.CompressBitmap(bmpFooter);
 
-			util.CreateFile(byteHeader, PageId, "Mechanical", "Profile", "header", "Object");
+			util.CreateFile(byteHeader, pageId, "Mechanical", "Profile", "header", "Object");
 
-			util.CreateFile(byteProfil, PageId, "Mechanical", "Profile", "profile", "Object");
+			util.CreateFile(byteProfil, pageId, "Mechanical", "Profile", "profile", "Object");
 
-			util.CreateFile(byteFooter, PageId, "Mechanical", "Profile", "footer", "Object");
+			util.CreateFile(byteFooter, pageId, "Mechanical", "Profile", "footer", "Object");
 
 			// DBAdapter.open();
 			// DBAdapter.updateAllImageIntroductionPage(PageId, byteHeader,
@@ -637,8 +641,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
-				getActivity().getSupportFragmentManager().popBackStack();
-
+			getActivity().getSupportFragmentManager().popBackStack();
 
 			// } catch (NumberFormatException e) {
 			// Toast.makeText(getActivity(), " خطا در بروز رسانی تصویر",

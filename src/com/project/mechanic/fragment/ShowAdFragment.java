@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
@@ -74,6 +75,9 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 	boolean isFinish = false, saveVisitFalg;
 	String currentTime = "";
 	List<Visit> visitList;
+	View view;
+
+	RadioButton r1, r2, r3, r4, r5;
 
 	@SuppressWarnings("null")
 	@SuppressLint("InflateParams")
@@ -82,7 +86,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.showad);
 		id = Integer.valueOf(getArguments().getString("Id"));
 		util = new Utility(getActivity());
-		View view = inflater.inflate(R.layout.fragment_showad, null);
+		view = inflater.inflate(R.layout.fragment_showad, null);
 
 		img = (ImageView) view.findViewById(R.id.fragment_anad_imgadd);
 
@@ -105,6 +109,12 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 		day = (TextView) view.findViewById(R.id.textDay);
 		date = (TextView) view.findViewById(R.id.textdate);
 		countVisit = (TextView) view.findViewById(R.id.numberOfView);
+
+		r1 = (RadioButton) view.findViewById(R.id.r1);
+		r2 = (RadioButton) view.findViewById(R.id.r2);
+		r3 = (RadioButton) view.findViewById(R.id.r3);
+		r4 = (RadioButton) view.findViewById(R.id.r4);
+		r5 = (RadioButton) view.findViewById(R.id.r5);
 
 		RelativeLayout lin1 = (RelativeLayout) view.findViewById(R.id.a1);
 		RelativeLayout lin2 = (RelativeLayout) view.findViewById(R.id.a2);
@@ -371,8 +381,8 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 		}
 		dbAdapter.close();
 
-		TextView lable1 = (TextView) view.findViewById(R.id.labelDayOfCommitAnad);
 		checkInternet();
+		setfont();
 		return view;
 
 	}
@@ -400,16 +410,43 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 		}
 	}
 
-	// private boolean isNetworkConnected() {
-	// ConnectivityManager cm = (ConnectivityManager)
-	// getSystemService(getActivity().CONNECTIVITY_SERVICE);
-	// NetworkInfo ni = cm.getActiveNetworkInfo();
-	// if (ni == null) {
-	// // There are no active networks.
-	// return false;
-	// } else
-	// return true;
-	// }
+	private void setfont() {
+		TextView lable1 = (TextView) view.findViewById(R.id.labelDayOfCommitAnad);
+		TextView lable2 = (TextView) view.findViewById(R.id.labelAtebar);
+		TextView lable3 = (TextView) view.findViewById(R.id.labelnumberofView);
+		TextView lable4 = (TextView) view.findViewById(R.id.labelInformationAnad);
+		TextView lable5 = (TextView) view.findViewById(R.id.fragment_showad_desc);
+		TextView lable6 = (TextView) view.findViewById(R.id.fragment_showad_txt2);
+		TextView lable7 = (TextView) view.findViewById(R.id.fragment_showad_txt4);
+		TextView lable8 = (TextView) view.findViewById(R.id.lableReport);
+		TextView lable9 = (TextView) view.findViewById(R.id.dangrousTxt);
+
+		TextView lable10 = (TextView) view.findViewById(R.id.as);
+
+		lable1.setTypeface(util.SetFontCasablanca());
+		lable2.setTypeface(util.SetFontCasablanca());
+		lable3.setTypeface(util.SetFontCasablanca());
+		lable4.setTypeface(util.SetFontCasablanca());
+		lable5.setTypeface(util.SetFontCasablanca());
+		lable6.setTypeface(util.SetFontCasablanca());
+		lable7.setTypeface(util.SetFontIranSans());
+		lable8.setTypeface(util.SetFontCasablanca());
+		lable9.setTypeface(util.SetFontCasablanca());
+		lable10.setTypeface(util.SetFontCasablanca());
+
+		btnreport.setTypeface(util.SetFontCasablanca());
+		btnCancel.setTypeface(util.SetFontCasablanca());
+
+		desc.setTypeface(util.SetFontCasablanca());
+
+		r1.setTypeface(util.SetFontIranSans());
+		r2.setTypeface(util.SetFontIranSans());
+		r3.setTypeface(util.SetFontIranSans());
+		r4.setTypeface(util.SetFontIranSans());
+		r5.setTypeface(util.SetFontIranSans());
+		name.setTypeface(util.SetFontCasablanca());
+	}
+
 	private ConnectivityManager getSystemService(String connectivityService) {
 		// TODO Auto-generated method stub
 		return null;
