@@ -39,7 +39,8 @@ import com.project.mechanic.service.UpdatingVisit;
 import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class FroumtitleFragment extends Fragment implements GetAsyncInterface, CommInterface, AsyncInterface , AsyncInterfaceVisit {
+public class FroumtitleFragment extends Fragment
+		implements GetAsyncInterface, CommInterface, AsyncInterface, AsyncInterfaceVisit {
 	private ImageButton addtitle;
 	private DialogfroumTitle dialog;
 	DialogcmtInfroum dialog2;
@@ -127,7 +128,6 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface, C
 			mdb.close();
 		}
 
-
 		if (!"".equals(strIdes)) {
 
 			if (getActivity() != null) {
@@ -177,7 +177,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface, C
 		lst.setAdapter(ListAdapter);
 
 		int countList = ListAdapter.getCount();
-//		Toast.makeText(getActivity(), "تعداد فروم ها = " + countList, 0).show();
+		// Toast.makeText(getActivity(), "تعداد فروم ها = " + countList,
+		// 0).show();
 
 		if (getArguments() != null) {
 			mLastFirstVisibleItem = getArguments().getInt("Froum_List_Id");
@@ -233,8 +234,8 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface, C
 			util.ShowFooterAgahi(getActivity(), true, 7);
 
 		}
-		
-		getCountVisitFromServer();
+
+		// getCountVisitFromServer();
 		return view;
 	}
 
@@ -303,6 +304,11 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface, C
 				mdb.open();
 				if (mylist.size() > userItemId) {
 					u = mdb.getUserById(mylist.get(userItemId).getUserId());
+
+					String imageDate = "";
+					if (u.getImageServerDate() == null)
+						imageDate = "";
+
 					if (u != null) {
 						ids.add(u.getId());
 						serverDate = output;
@@ -312,7 +318,7 @@ public class FroumtitleFragment extends Fragment implements GetAsyncInterface, C
 							maps = new LinkedHashMap<String, String>();
 							maps.put("tableName", "Users");
 							maps.put("Id", String.valueOf(u.getId()));
-							maps.put("fromDate", u.getImageServerDate());
+							maps.put("fromDate",imageDate);
 							updating.execute(maps);
 
 							if (swipeLayout != null)

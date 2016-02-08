@@ -24,7 +24,7 @@
             android:layout_gravity="center"
             android:max="100"
             android:progressDrawable="@drawable/custom_horizontal_progress"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/icon_pro"
@@ -206,7 +206,7 @@
                         android:id="@+id/countPost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="25"
+                        android:text="0"
                         android:textColor="@color/orginal_red_color" />
                 </LinearLayout>
 
@@ -233,7 +233,7 @@
                         android:id="@+id/numVisitPage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="25"
+                        android:text="0"
                         android:textColor="@color/orginal_red_color" />
                 </LinearLayout>
 
@@ -261,7 +261,7 @@
                         android:id="@+id/countLikeIntroduction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="25"
+                        android:text="0"
                         android:textColor="@color/orginal_red_color" />
                 </LinearLayout>
             </LinearLayout>
@@ -891,13 +891,13 @@
 
         <ProgressBar
             android:id="@+id/footer_progress_footer"
-              style="?android:attr/progressBarStyleHorizontal"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:max="100"
             android:progressDrawable="@drawable/custom_horizontal_progress"
-            android:visibility="visible"/>
+            android:visibility="gone" />
     </FrameLayout>
 
 </LinearLayout>

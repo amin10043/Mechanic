@@ -140,8 +140,8 @@
             android:id="@+id/reportImage"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginRight="10dp"
             android:layout_gravity="left"
+            android:layout_marginRight="10dp"
             android:background="@drawable/down_arrow" />
 
         <TextView
@@ -153,7 +153,7 @@
             android:layout_marginRight="20dp"
             android:gravity="left"
             android:text="Date"
-            android:textColor="@color/transparent" />
+            android:textColor="@color/orginal_hard_blue_color" />
     </LinearLayout>
 
 </RelativeLayout>

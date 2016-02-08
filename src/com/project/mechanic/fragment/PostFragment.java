@@ -233,8 +233,8 @@ public class PostFragment extends Fragment
 
 			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
 
-			lp.width = (int) (util.getScreenwidth() / StaticValues.RateImagePostFragmentPage);
-			lp.height = (int) (util.getScreenwidth() / StaticValues.RateImagePostFragmentPage);
+			lp.width = (int) (util.getScreenwidth() / StaticValues.RateImagePostFragmentPage)-50;
+			lp.height = (int) (util.getScreenwidth() / StaticValues.RateImagePostFragmentPage)-50;
 			profileImg.setLayoutParams(lp);
 
 			if (u.getImagePath() == null) {

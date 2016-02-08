@@ -389,6 +389,7 @@ public class DialogpostTitleFragment extends DialogFragment implements AsyncInte
 			} else {
 
 				IntroductionFragment fragment = new IntroductionFragment();
+				fragment.setPostionListPost(1);
 
 				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
@@ -399,6 +400,7 @@ public class DialogpostTitleFragment extends DialogFragment implements AsyncInte
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", ObjectId + "");
 				fragment.setArguments(bundle);
+				
 
 				Fragment prev = getActivity().getSupportFragmentManager().findFragmentByTag("My_Dialog_Dialog");
 				if (prev != null) {
@@ -537,7 +539,8 @@ public class DialogpostTitleFragment extends DialogFragment implements AsyncInte
 			}
 
 			IntroductionFragment fragment = new IntroductionFragment();
-
+			fragment.setPostionListPost(1);
+			
 			FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 			trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 			trans.replace(R.id.content_frame, fragment);

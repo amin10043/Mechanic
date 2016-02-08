@@ -197,7 +197,7 @@ public class UnavailableIntroduction extends Fragment {
 				FragmentTransaction trans = getActivity()
 						.getSupportFragmentManager().beginTransaction();
 				trans.replace(R.id.content_frame,
-						new IntroductionEditFragment());
+						new IntroductionEditFragment(ObjectId));
 				trans.addToBackStack(null);
 				trans.commit();
 			}

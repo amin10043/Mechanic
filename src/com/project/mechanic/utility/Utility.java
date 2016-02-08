@@ -720,7 +720,7 @@ public class Utility implements AsyncInterface {
 				adapter.close();
 
 			}
-//			Toast.makeText(context, nameFile + " " + ImageId + "ذخیره شد", 0).show();
+			Toast.makeText(context, nameFile + " " + ImageId + "ذخیره شد", 0).show();
 			return ImageId;
 
 		} else

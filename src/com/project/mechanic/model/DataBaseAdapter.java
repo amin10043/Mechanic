@@ -3585,6 +3585,15 @@ public class DataBaseAdapter {
 
 		mDb.update(TableName, cv, "Id=?", new String[] { String.valueOf(id) });
 	}
+	
+	public void UpdateImageServerDatePost(int id, String date) {
+
+		ContentValues cv = new ContentValues();
+
+		cv.put("ServerDate", date);
+
+		mDb.update(TablePost, cv, "Id=?", new String[] { String.valueOf(id) });
+	}
 
 	public ArrayList<Object> getAllObjectByUserId(int id) {
 

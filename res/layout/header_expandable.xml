@@ -51,8 +51,6 @@
                 android:id="@+id/postImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/no_image_header"
                 android:visibility="gone" />
@@ -186,14 +184,15 @@
             android:text="date"
             android:textColor="@color/transparent" />
     </LinearLayout>
-     <LinearLayout
+
+    <LinearLayout
         android:id="@+id/d"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:visibility="invisible"
         android:layout_below="@+id/profileLinearcommenterinContinue"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:visibility="invisible" >
 
         <ImageView
             android:id="@+id/dddfa"
