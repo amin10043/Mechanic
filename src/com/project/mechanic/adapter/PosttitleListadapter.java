@@ -216,7 +216,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 		final Post po = adapter.getPostItembyid(piid);
 		Object obj = adapter.getObjectbyid(po.getObjectId());
 
-		if (x != null)
+//		if (x != null)
 			txt3.setText(obj.getName());
 		countcommentpost.setText(adapter.CommentInPost_count(person1.getId()).toString());
 		countLikePost.setText(adapter.LikeInPost_count(person1.getId()).toString());
