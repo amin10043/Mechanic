@@ -579,7 +579,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 			params[1] = currentUser.getDate();
 			params[2] = serverDate;
 
-			params[3] = "1";
+			params[3] = "0";
 			params[4] = String.valueOf(currentUser.getId());
 
 			updating.execute(params);

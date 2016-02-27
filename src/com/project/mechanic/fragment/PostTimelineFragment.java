@@ -61,6 +61,7 @@ public class PostTimelineFragment extends Fragment
 	int postCounter = 0;
 	Integer idItem = 0;
 	List<Integer> IdArrayObject = new ArrayList<Integer>();
+//	Settings settings;
 
 	@SuppressLint("InflateParams")
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceStdataate) {
@@ -70,6 +71,10 @@ public class PostTimelineFragment extends Fragment
 
 		adapter = new DataBaseAdapter(getActivity());
 		utility = new Utility(getActivity());
+
+		adapter.open();
+		setting= adapter.getSettings();
+		adapter.close();
 
 		Currentuser = utility.getCurrentUser();
 
@@ -96,8 +101,8 @@ public class PostTimelineFragment extends Fragment
 			getPost.delegate = PostTimelineFragment.this;
 			String[] params = new String[5];
 			params[0] = "Post";
-			params[1] = "201501010000000000";
-			params[2] = serverDate;
+			params[1] = setting.getServerDate_Start_Post();
+			params[2] = setting.getServerDate_End_Post();
 			params[3] = "0";
 			params[4] = String.valueOf(idItem);
 
@@ -128,10 +133,10 @@ public class PostTimelineFragment extends Fragment
 		updating.delegate = PostTimelineFragment.this;
 		String[] params = new String[5];
 		params[0] = "LikeInObject";
-		params[1] = "201501010000000000";
-		params[2] = serverDate;
+		params[1] = setting.getServerDate_Start_LikeInObject();
+		params[2] = setting.getServerDate_End_LikeInObject();
 
-		params[3] = "1";
+		params[3] = "0";
 		params[4] = String.valueOf(utility.getCurrentUser().getId());
 
 		updating.execute(params);

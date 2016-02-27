@@ -159,6 +159,8 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
+				
+				user = util.getCurrentUser();
 
 				if (user != null) {
 
