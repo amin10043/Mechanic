@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,14 +56,16 @@ import com.project.mechanic.entity.City;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.SavingImage;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class RegisterFragment extends Fragment implements AsyncInterface, SaveAsyncInterface {
+public class RegisterFragment extends Fragment implements AsyncInterface, SaveAsyncInterface,CommInterface {
 
 	int resourceId;
 
@@ -688,126 +691,38 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 
 	@Override
 	public void processFinish(String output) {
-		ringProgressDialog.dismiss();
-		
-		if("".equals(output)){
-			Toast.makeText(getActivity(), "این شماره همراه قبلاً ثبت شده است.", Toast.LENGTH_SHORT).show();
-				}else{		
+		ringProgressDialog.dismiss();	
 			try {
 				serverId = Integer.valueOf(output);
-		
 				// saveImage
-				if (serverId > 0) {
-		
-					server.edit().putInt("srv_id", serverId).commit();
-		
-					dbAdapter.open();
-		
-					if ((btnaddpic1.getDrawable() != null) && firstTime) {
-		
-						Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable()).getBitmap();
-		
-						Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
-		
-						firstTime = false;
-						if (!bitmap.sameAs(emptyBitmap)) {
-							Map<String, Object> it = new LinkedHashMap<String, Object>();
-		
-							Image = Utility.CompressBitmap(bitmap);
-							if (getActivity() != null) {
-								savingImage = new SavingImage(getActivity());
-								it.put("tableName", "Users");
-								it.put("fieldName", "Image");
-								it.put("id", serverId);
-								it.put("Image", Image);
-							}
-							ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-							savingImage.delegate = this;
-							savingImage.execute(it);
-							// dbAdapter.inserUserToDb(serverId, Name, null, Pass,
-							// null, Mobile, null, null, Image, 0, txtdate);
-						}
-					} else {
-						dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass, null, Mobile, null, null, 0, txtdate,
-								birthday, cityId);
-						LayoutInflater inflater4 = getLayoutInflater(getArguments());
-						View view4 = inflater4.inflate(R.layout.toast_define, toastlayout);
-						utile.showtoast(view4, R.drawable.massage, "اطلاعات مورد نظر ثبت شد", "پیغام");
-		
-						toast = new Toast(getActivity());
-						toast.setGravity(Gravity.CENTER, 0, 0);
-						toast.setDuration(Toast.LENGTH_LONG);
-						toast.setView(view4);
-						toast.show();
-		
-						u = dbAdapter.getUserbymobailenumber(Mobile);
-						if (u != null) {
-							int id = u.getId();
-							int admin = 1;
-							dbAdapter.UpdateAdminUserToDb(id, admin);
-						}
-						SharedPreferences settings = getActivity().getSharedPreferences("user", 0);
-						SharedPreferences.Editor editor = settings.edit();
-						editor.putBoolean("isLogin", true);
-						editor.commit();
-		
-						FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
-						trans.replace(R.id.content_frame, new MainFragment());
-						trans.commit();
-		
-					}
-					dbAdapter.close();
-				} else {
-					LayoutInflater inflater5 = getLayoutInflater(getArguments());
-					View view5 = inflater5.inflate(R.layout.toast_define, toastlayout);
-					utile.showtoast(view5, R.drawable.errormassage, "شما به سرویس متصل نشده اید", "خطا");
-		
-					toast = new Toast(getActivity());
-					toast.setGravity(Gravity.CENTER, 0, 0);
-					toast.setDuration(Toast.LENGTH_LONG);
-					toast.setView(view5);
-					toast.show();
-				}
 			} catch (Exception ex) {
 		
 				if (getActivity() != null) {
 		
-					Saving saving = new Saving(getActivity());
-					Map<String, String> items = new LinkedHashMap<String, String>();
-					saving.delegate = this;
-		
-					items.put("Users", "Users");
-					items.put("Name", Name);
-					// items.put("email", "");
-					items.put("Password", Pass);
-					// items.put("phone", "");
-					items.put("Mobailenumber", Mobile);
-					// items.put("fax", "0");
-					// items.put("address", "");
-					items.put("Date", output);
-					items.put("ModifyDate", output);
-		
-					if (flag == true) {
-		
+					if (flag == true) {	
 						birthday = yearId + "/" + monthId + "/" + dayId;
-						items.put("BirthDay", birthday);
 					} else
 						birthday = "";
-		
-					items.put("CityId", String.valueOf(cityId));
-		
-					items.put("IsUpdate", "0");
-					items.put("Id", "0");
-		
+					ServiceComm comm = new ServiceComm(getActivity());
+					comm.delegate = this;
+					Map<String,String> params = new HashMap<String,String>();
+					params.put("tableName", "register");
+					params.put("username", Name);
+					params.put("email", "");
+					params.put("password", Pass);
+					params.put("phone", "");
+					params.put("mobile", Mobile);
+					params.put("fax", "");
+					params.put("address", "");
+					params.put("date", output);
+					params.put("modifyDate", output);
+					params.put("BirthDay", birthday);
+					params.put("cityId", String.valueOf(cityId));
 					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-					saving.delegate = RegisterFragment.this;
-					saving.execute(items);
+					comm.execute(params);			
 				}
 			}
-		}
-
 	}
-
 	private void setFont() {
 
 		TextView txtHeader = (TextView) view.findViewById(R.id.txt_title_register);
@@ -827,6 +742,80 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 		btnreg.setTypeface(utile.SetFontCasablanca());
 		btncan.setTypeface(utile.SetFontCasablanca());
 
+	}
+
+	@Override
+	public void CommProcessFinish(String output) {
+		ringProgressDialog.dismiss();
+		if("".equals(output)){
+			Toast.makeText(getActivity(), "این شماره همراه قبلاً ثبت شده است.", Toast.LENGTH_SHORT).show();
+		}else{
+			if (serverId > 0) {
+				server.edit().putInt("srv_id", serverId).commit();
+				dbAdapter.open();
+				if ((btnaddpic1.getDrawable() != null) && firstTime) {
+					Bitmap bitmap = ((BitmapDrawable) btnaddpic1.getDrawable()).getBitmap();
+					Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
+					firstTime = false;
+					if (!bitmap.sameAs(emptyBitmap)) {
+						Map<String, Object> it = new LinkedHashMap<String, Object>();
+	
+						Image = Utility.CompressBitmap(bitmap);
+						if (getActivity() != null) {
+							savingImage = new SavingImage(getActivity());
+							it.put("tableName", "Users");
+							it.put("fieldName", "Image");
+							it.put("id", serverId);
+							it.put("Image", Image);
+						}
+						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+						savingImage.delegate = this;
+						savingImage.execute(it);
+						// dbAdapter.inserUserToDb(serverId, Name, null, Pass,
+						// null, Mobile, null, null, Image, 0, txtdate);
+					}
+				} else {
+					dbAdapter.inserUsernonpicToDb(serverId, Name, null, Pass, null, Mobile, null, null, 0, txtdate,
+							birthday, cityId);
+					LayoutInflater inflater4 = getLayoutInflater(getArguments());
+					View view4 = inflater4.inflate(R.layout.toast_define, toastlayout);
+					utile.showtoast(view4, R.drawable.massage, "اطلاعات مورد نظر ثبت شد", "پیغام");
+	
+					toast = new Toast(getActivity());
+					toast.setGravity(Gravity.CENTER, 0, 0);
+					toast.setDuration(Toast.LENGTH_LONG);
+					toast.setView(view4);
+					toast.show();
+	
+					u = dbAdapter.getUserbymobailenumber(Mobile);
+					if (u != null) {
+						int id = u.getId();
+						int admin = 1;
+						dbAdapter.UpdateAdminUserToDb(id, admin);
+					}
+					SharedPreferences settings = getActivity().getSharedPreferences("user", 0);
+					SharedPreferences.Editor editor = settings.edit();
+					editor.putBoolean("isLogin", true);
+					editor.commit();
+	
+					FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+					trans.replace(R.id.content_frame, new MainFragment());
+					trans.commit();
+	
+				}
+				dbAdapter.close();
+			} else {
+				LayoutInflater inflater5 = getLayoutInflater(getArguments());
+				View view5 = inflater5.inflate(R.layout.toast_define, toastlayout);
+				utile.showtoast(view5, R.drawable.errormassage, "شما به سرویس متصل نشده اید", "خطا");
+	
+				toast = new Toast(getActivity());
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.setDuration(Toast.LENGTH_LONG);
+				toast.setView(view5);
+				toast.show();
+			}
+		}
 	}
 
 }
