@@ -456,6 +456,7 @@ public class Utility implements AsyncInterface {
 						+ (settings.getServerDate_Start_Ticket() != null ? settings.getServerDate_Start_Ticket() : "")
 						+ "-"
 						+ (settings.getServerDate_Start_Users() != null ? settings.getServerDate_Start_Users() : "")
+						+ "-" + (settings.getServerDate_Start_Post() != null ? settings.getServerDate_Start_Post() : "")
 						+ "-";
 
 				mEndDatesMaster = (settings.getServerDate_End_Anad() != null ? settings.getServerDate_End_Anad() : "")
@@ -465,6 +466,7 @@ public class Utility implements AsyncInterface {
 						+ "-" + (settings.getServerDate_End_Paper() != null ? settings.getServerDate_End_Paper() : "")
 						+ "-" + (settings.getServerDate_End_Ticket() != null ? settings.getServerDate_End_Ticket() : "")
 						+ "-" + (settings.getServerDate_End_Users() != null ? settings.getServerDate_End_Users() : "")
+						+ "-" + (settings.getServerDate_End_Post() != null ? settings.getServerDate_End_Post() : "")
 						+ "-";
 
 				serviceUpdate.execute(mStartDatesMaster, mEndDatesMaster, "0");
@@ -506,7 +508,17 @@ public class Utility implements AsyncInterface {
 						+ (settings.getServerDate_Start_LikeInCommentObject() != null
 								? settings.getServerDate_Start_LikeInCommentObject() : "")
 						+ "-" + (settings.getServerDate_Start_ObjectInCity() != null
-								? settings.getServerDate_Start_ObjectInCity() : "");
+								? settings.getServerDate_Start_ObjectInCity() : "")
+
+						+ "-" + (settings.getServerDate_Start_LikeInPost() != null
+								? settings.getServerDate_Start_LikeInPost() : "")
+
+						+ "-"
+						+ (settings.getServerDate_Start_LikeInCommentPost() != null
+								? settings.getServerDate_Start_LikeInCommentPost() : "")
+						
+						+ "-" + (settings.getServerDate_Start_CommentInPost() != null
+								? settings.getServerDate_Start_CommentInPost() : "");
 
 				mEndDatesDetail = settings.getServerDate_End_CmtInPaper() != null
 						? settings.getServerDate_End_CmtInPaper()
@@ -532,7 +544,16 @@ public class Utility implements AsyncInterface {
 								+ (settings.getServerDate_End_LikeInCommentObject() != null
 										? settings.getServerDate_End_LikeInCommentObject() : "")
 								+ "-" + (settings.getServerDate_End_ObjectInCity() != null
-										? settings.getServerDate_End_ObjectInCity() : "");
+										? settings.getServerDate_End_ObjectInCity() : "")
+
+								+ "-"
+								+ (settings.getServerDate_End_LikeInPost() != null
+										? settings.getServerDate_End_LikeInPost() : "")
+								+ "-"
+								+ (settings.getServerDate_End_LikeInCommentPost() != null
+										? settings.getServerDate_End_LikeInCommentPost() : "")
+								+ "-" + (settings.getServerDate_End_CommentInPost() != null
+										? settings.getServerDate_End_CommentInPost() : "");
 
 				serviceUpdateD = new UpdatingAllDetail(context);
 				serviceUpdateD.delegate = this;
@@ -1304,9 +1325,9 @@ public class Utility implements AsyncInterface {
 
 	public void setSizeDialog(Dialog dialog) {
 
-//		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//		lp.copyFrom(dialog.getWindow().getAttributes());
-//		lp.width = (int) 1000;
+		// WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+		// lp.copyFrom(dialog.getWindow().getAttributes());
+		// lp.width = (int) 1000;
 		// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.BLACK));
@@ -1367,9 +1388,8 @@ public class Utility implements AsyncInterface {
 		Toast.makeText(context, message, 0).show();
 	}
 
-	public void showRingProgressDialog(ProgressDialog ringProgressDialog  ,boolean isShow) {
+	public void showRingProgressDialog(ProgressDialog ringProgressDialog, boolean isShow) {
 
-		
 		if (isShow == true) {
 			ringProgressDialog.setCancelable(true);
 			new Thread(new Runnable() {

@@ -57,6 +57,59 @@ public class Settings {
 	String ServerDate_End_Post;
 
 	String ServerDate_Start_LikeInPost;
+	
+	public String getServerDate_Start_LikeInPost() {
+		return ServerDate_Start_LikeInPost;
+	}
+
+	public void setServerDate_Start_LikeInPost(String serverDate_Start_LikeInPost) {
+		ServerDate_Start_LikeInPost = serverDate_Start_LikeInPost;
+	}
+
+	public String getServerDate_End_LikeInPost() {
+		return ServerDate_End_LikeInPost;
+	}
+
+	public void setServerDate_End_LikeInPost(String serverDate_End_LikeInPost) {
+		ServerDate_End_LikeInPost = serverDate_End_LikeInPost;
+	}
+
+	public String getServerDate_Start_LikeInCommentPost() {
+		return ServerDate_Start_LikeInCommentPost;
+	}
+
+	public void setServerDate_Start_LikeInCommentPost(String serverDate_Start_LikeInCommentPost) {
+		ServerDate_Start_LikeInCommentPost = serverDate_Start_LikeInCommentPost;
+	}
+
+	public String getServerDate_End_LikeInCommentPost() {
+		return ServerDate_End_LikeInCommentPost;
+	}
+
+	public void setServerDate_End_LikeInCommentPost(String serverDate_End_LikeInCommentPost) {
+		ServerDate_End_LikeInCommentPost = serverDate_End_LikeInCommentPost;
+	}
+
+	public String getServerDate_Start_CommentInPost() {
+		return ServerDate_Start_CommentInPost;
+	}
+
+	public void setServerDate_Start_CommentInPost(String serverDate_Start_CommentInPost) {
+		ServerDate_Start_CommentInPost = serverDate_Start_CommentInPost;
+	}
+
+	public String getServerDate_End_CommentInPost() {
+		return ServerDate_End_CommentInPost;
+	}
+
+	public void setServerDate_End_CommentInPost(String serverDate_End_CommentInPost) {
+		ServerDate_End_CommentInPost = serverDate_End_CommentInPost;
+	}
+
+	public void setServerDate_End_Ticket(String serverDate_End_Ticket) {
+		ServerDate_End_Ticket = serverDate_End_Ticket;
+	}
+
 	String ServerDate_End_LikeInPost;
 
 	String ServerDate_Start_LikeInCommentPost;

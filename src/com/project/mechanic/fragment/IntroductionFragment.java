@@ -2141,8 +2141,11 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 
 		if (ut.checkError(output) == false) {
 
-			if (!output.contains("anyType"))
+			if (!output.contains("anyType")){
 				ut.parseQuery(output);
+				fillListView();
+				
+			}
 
 			
 			setCountPost();
