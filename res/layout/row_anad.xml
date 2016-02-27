@@ -2,39 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:background="@drawable/shadow_layer" 
+    android:paddingBottom="5dp">
 
-    <LinearLayout
-        android:id="@+id/settinglayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="visible" >
-
-        <ImageView
-            android:id="@+id/reportImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/down_arrow" />
-
-        <TextView
-            android:id="@+id/text_favorite_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="20dp"
-            android:gravity="left"
-            android:text="Date"
-            android:textColor="@color/transparent" />
-    </LinearLayout>
     <LinearLayout
         android:id="@+id/ss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/backgroundTicket"
         android:orientation="horizontal"
-        android:visibility="invisible" >
+        android:visibility="gone" >
 
         <ImageView
             android:layout_width="30dp"
@@ -55,8 +32,32 @@
     <RelativeLayout
         android:id="@+id/backgroundTicket"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/settinglayout" >
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/settinglayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible" >
+
+            <ImageView
+                android:id="@+id/reportImage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/down_arrow" />
+
+            <TextView
+                android:id="@+id/text_favorite_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:gravity="left"
+                android:text="Date"
+                android:textColor="@color/orginal_hard_blue_color" />
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/layoutmnb"
@@ -128,7 +129,7 @@
                         android:layout_gravity="right"
                         android:gravity="right"
                         android:text="Large Text"
-                        android:textColor="#9d0420" />
+                        android:textColor="@color/orginal_hard_blue_color" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -142,7 +143,7 @@
                             android:layout_gravity="right"
                             android:gravity="right"
                             android:text="Large Text"
-                            android:textColor="#9d0420" />
+                            android:textColor="@color/orginal_hard_blue_color" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -167,7 +168,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@+id/iconNumberLike"
                         android:text="20"
-                        android:textColor="@color/orginal_red_color"
+                        android:textColor="@color/orginal_hard_blue_color"
                         android:textSize="10dp" />
                 </RelativeLayout>
             </LinearLayout>

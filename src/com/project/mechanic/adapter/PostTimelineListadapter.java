@@ -236,7 +236,7 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline> implemen
 			} else {
 				// byte[] byteImg = x.getImage();
 				Bitmap bmp = BitmapFactory.decodeFile(person1.getObjectImagePath2());
-				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
+				profileImg.setImageBitmap(Utility.getclip(bmp));
 
 				profileImg.setLayoutParams(lp);
 			}

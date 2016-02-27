@@ -80,10 +80,12 @@ public class DialogpostTitleFragment extends DialogFragment implements AsyncInte
 	Map<String, Object> imageParams;
 	int PostId;
 	ProgressDialog ringProgressDialog;
+	int positionBrand;
 
-	public DialogpostTitleFragment(int object_id) {
+	public DialogpostTitleFragment(int object_id, int positionBrand) {
 		mContext = getActivity();
 		ObjectId = object_id;
+		this.positionBrand = positionBrand;
 	}
 
 	@Override
@@ -399,8 +401,9 @@ public class DialogpostTitleFragment extends DialogFragment implements AsyncInte
 
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", ObjectId + "");
+				bundle.putInt("positionBrand", positionBrand);
+
 				fragment.setArguments(bundle);
-				
 
 				Fragment prev = getActivity().getSupportFragmentManager().findFragmentByTag("My_Dialog_Dialog");
 				if (prev != null) {
@@ -540,7 +543,7 @@ public class DialogpostTitleFragment extends DialogFragment implements AsyncInte
 
 			IntroductionFragment fragment = new IntroductionFragment();
 			fragment.setPostionListPost(1);
-			
+
 			FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 			trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 			trans.replace(R.id.content_frame, fragment);
@@ -549,6 +552,8 @@ public class DialogpostTitleFragment extends DialogFragment implements AsyncInte
 
 			Bundle bundle = new Bundle();
 			bundle.putString("Id", ObjectId + "");
+			bundle.putInt("positionBrand", positionBrand);
+
 			fragment.setArguments(bundle);
 
 			Fragment prev = getActivity().getSupportFragmentManager().findFragmentByTag("My_Dialog_Dialog");

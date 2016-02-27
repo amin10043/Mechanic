@@ -43,6 +43,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
@@ -62,10 +63,10 @@ import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.service.UpdatingVisit;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 @SuppressLint("HandlerLeak")
@@ -110,6 +111,7 @@ public class AnadFragment extends Fragment
 	ImageView imageView;
 	AnadListAdapter ListAdapter;
 	private ScrollView verticalScrollview;
+	int count;
 
 	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
 	private File mFileTemp;
@@ -139,13 +141,14 @@ public class AnadFragment extends Fragment
 	Ticket ticketItem;
 
 	List<Ticket> correctTicket = new ArrayList<Ticket>();
+	TextView countAnad;
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		rootView = inflater.inflate(R.layout.fragment_anad, null);
-
+		countAnad = (TextView) rootView.findViewById(R.id.countA);
 		dbAdapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
 		currentUser = util.getCurrentUser();
@@ -616,7 +619,8 @@ public class AnadFragment extends Fragment
 	}
 
 	public void getScrollMaxAmount() {
-		int actualWidth = (verticalOuterLayout.getMeasuredHeight() - (256 * 3));
+		int actualWidth = (verticalOuterLayout.getMeasuredHeight() /*- (256 * 3)*/);
+
 		verticalScrollMax = actualWidth;
 	}
 
@@ -640,16 +644,23 @@ public class AnadFragment extends Fragment
 				}
 			};
 
-			scrollTimer.schedule(scrollerSchedule, 30, 20);
+			scrollTimer.schedule(scrollerSchedule, 1000, 20);
 		}
 	}
 
 	public void moveScrollView() {
 
 		scrollPos = (int) (verticalScrollview.getScrollY() + 1.0);
+
 		if (scrollPos >= verticalScrollMax) {
 			scrollPos = 0;
 		}
+		if (imageButton.getHeight()>0)
+		count = scrollPos / (imageButton.getHeight());
+
+		if (anadlist.size() > 0)
+			countAnad.setText(count + " / " + anadlist.size());
+
 		verticalScrollview.scrollTo(0, scrollPos);
 	}
 
@@ -707,8 +718,10 @@ public class AnadFragment extends Fragment
 	}
 
 	private Handler faceScaleHandler = new Handler() {
+
 		@Override
 		public void handleMessage(Message msg) {
+
 			if (clickedButton.isSelected() == true)
 				clickedButton.startAnimation(scaleFaceDownAnimation(500));
 		}
@@ -906,7 +919,7 @@ public class AnadFragment extends Fragment
 				// }
 				/////////////////////////////////////////////////////////////
 
-				//typeItem = "Anad";
+				// typeItem = "Anad";
 
 				// }
 			}
@@ -1059,7 +1072,7 @@ public class AnadFragment extends Fragment
 	}
 
 	@Override
-	public void processFinishVisit(String output) {
+	public void resultCountView(String output) {
 
 		if (!output.contains("Exception")) {
 

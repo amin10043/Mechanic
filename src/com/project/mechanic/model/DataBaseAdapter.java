@@ -154,7 +154,9 @@ public class DataBaseAdapter {
 			"ServerDate_End_LikeInComment", "ServerDate_Start_LikeInCommentObject",
 			"ServerDate_End_LikeInCommentObject", "ServerDate_Start_Users", "ServerDate_End_Users",
 			"ServerDate_Start_ObjectInCity ", "ServerDate_End_ObjectInCity", "ServerDate_Start_Post ",
-			"ServerDate_End_Post" , "ServerDate_Start_LikeInPost ", "ServerDate_End_LikeInPost", "ServerDate_Start_LikeInCommentPost ", "ServerDate_End_LikeInCommentPost" };
+			"ServerDate_End_Post", "ServerDate_Start_LikeInPost ", "ServerDate_End_LikeInPost",
+			"ServerDate_Start_LikeInCommentPost ", "ServerDate_End_LikeInCommentPost",
+			"ServerDate_Start_CommentInPost ", "ServerDate_End_CommentInPost" };
 
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image", "date", "TypeId", "Name", "Email", "Mobile",
 			"Phone", "Fax", "ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress", "UImage", "UMobile",
@@ -535,10 +537,10 @@ public class DataBaseAdapter {
 			int commentid) {
 
 		ContentValues cv = new ContentValues();
-		cv.put("Id", id);
-		cv.put("Desc", description);
+		cv.put("ID", id);
+		cv.put("Description", description);
 		cv.put("UserId", userid);
-		cv.put("PostID", Postid);
+		cv.put("PostId", Postid);
 		cv.put("Date", datetime);
 		cv.put("CommentId", commentid);
 		cv.put("Seen", 0);
@@ -1352,7 +1354,9 @@ public class DataBaseAdapter {
 				cursor.getString(20), cursor.getString(21), cursor.getString(22), cursor.getString(23),
 				cursor.getString(24), cursor.getString(25), cursor.getString(26), cursor.getString(27),
 				cursor.getString(28), cursor.getString(29), cursor.getString(30), cursor.getString(31),
-				cursor.getString(32), cursor.getString(33));
+				cursor.getString(32), cursor.getString(33), cursor.getString(34), cursor.getString(35),
+				cursor.getString(36), cursor.getString(37), cursor.getString(38), cursor.getString(39),
+				cursor.getString(40), cursor.getString(41));
 		return tempSettings;
 
 	}
@@ -3585,7 +3589,7 @@ public class DataBaseAdapter {
 
 		mDb.update(TableName, cv, "Id=?", new String[] { String.valueOf(id) });
 	}
-	
+
 	public void UpdateImageServerDatePost(int id, String date) {
 
 		ContentValues cv = new ContentValues();
@@ -3995,6 +3999,7 @@ public class DataBaseAdapter {
 			prd.setObjectIdAnad(a.getObjectId());
 			prd.setProvinceIdAnad(a.getProvinceId());
 			prd.setImageServerDateAnad(a.getImageServerDate());
+			prd.setImagePathAnad(a.getImagePath());
 			result.add(prd);
 
 		}

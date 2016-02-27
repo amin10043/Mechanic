@@ -142,7 +142,7 @@ public class DialogfroumTitle extends Dialog implements AsyncInterface {
 			dbadapter.insertFroumtitletoDb(id, titletxt.getText().toString(), titleDestxt.getText().toString(),
 					currentUser.getId(), severDate);
 			dbadapter.close();
-			((FroumtitleFragment) fragment).updateView();
+			((FroumtitleFragment) fragment).fillListView();
 			this.dismiss();
 
 		} catch (NumberFormatException ex) {

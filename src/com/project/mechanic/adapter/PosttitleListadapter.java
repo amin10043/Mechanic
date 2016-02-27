@@ -44,15 +44,22 @@ import com.project.mechanic.fragment.IntroductionFragment;
 import com.project.mechanic.fragment.PostFragment;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
+import com.project.mechanic.interfaceServer.DateFromServerForLike;
+import com.project.mechanic.interfaceServer.DeleteLikeFromServer;
+import com.project.mechanic.interfaceServer.LikeFromServer;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.server.DeletingLike;
+import com.project.mechanic.server.SavingLike;
+import com.project.mechanic.server.ServerDateForLike;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
-import com.project.mechanic.utility.ServiceComm;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 @SuppressLint("SimpleDateFormat")
-public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInterface, CommInterface {
+public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFromServerForLike, DeleteLikeFromServer,
+		LikeFromServer/* AsyncInterface, CommInterface */ {
 
 	Context context;
 	List<Post> mylist;
@@ -65,7 +72,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 	// int ItemId;
 	int postNumber;
 	TextView countLikePost;
-	ProgressDialog ringProgressDialog;
+	// ProgressDialog ringProgressDialog;
 
 	Saving saving;
 	Deleting deleting;
@@ -77,27 +84,30 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 	Fragment fragment;
 	ImageView report;
 	View Parent;
-
+	LinearLayout parentLike;
 	LinearLayout.LayoutParams LNImageShowParams;
 
 	int itemId, userIdsender;
 	List<String> menuItems = new ArrayList<String>();
 
 	ImageView likeIcon;
+	int positionBrand;
 
 	@Override
 	public int getCount() {
-		
+
 		return mylist.size();
 	}
 
-	public PosttitleListadapter(Context context, int resource, List<Post> objects, Fragment fragment) {
+	public PosttitleListadapter(Context context, int resource, List<Post> objects, Fragment fragment,
+			int positionBrand) {
 		super(context, resource, objects);
 		this.context = context;
 		this.mylist = objects;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
 		this.fragment = fragment;
+		this.positionBrand = positionBrand;
 	}
 
 	@SuppressLint("ViewHolder")
@@ -133,6 +143,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 		TextView countVisit = (TextView) convertView.findViewById(R.id.countVisit);
 
 		Post person1 = mylist.get(position);
+		convertView.setTag(person1.getId());
 
 		// txt1.setTypeface(util.SetFontCasablanca());
 		txt2.setTypeface(util.SetFontCasablanca());
@@ -155,14 +166,10 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 		adapter.open();
 		if (CurrentUser != null)
 			if (adapter.isUserLikedPost(CurrentUser.getId(), person1.getId())) {
-				adapter.deleteLikeFromPost(CurrentUser.getId(), postNumber);
 
 				likeIcon.setBackgroundResource(R.drawable.like_froum_off);
 
 			} else {
-				// adapter.insertLikeInPostToDb(person1.getId(),
-				// CurrentUser.getId(),
-				// postNumber, serverDate, 0);
 
 				likeIcon.setBackgroundResource(R.drawable.like_froum_on);
 			}
@@ -246,17 +253,17 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.topicTitleFroum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 6;
-		lp.height = util.getScreenwidth() / 6;
+		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImagePostTimelineFragmentPage);
+		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImagePostTimelineFragmentPage);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		if (x != null) {
+		if (obj != null) {
 
-			if (x.getImagePath() == null) {
+			if (obj.getImagePath2() == null) {
 				profileImg.setImageResource(R.drawable.no_img_profile);
 				profileImg.setLayoutParams(lp);
 			} else {
 				// byte[] byteImg = x.getImage();
-				Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
+				Bitmap bmp = BitmapFactory.decodeFile(obj.getImagePath2());
 				profileImg.setImageBitmap(Utility.getclip(bmp));
 
 				profileImg.setLayoutParams(lp);
@@ -291,15 +298,28 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 				} else {
 
 					LinearLayout parentlayout = (LinearLayout) v;
-					LinearLayout parent = (LinearLayout) parentlayout.getParent().getParent();
-					int id = ((Integer) parent.getTag());
+					parentLike = (LinearLayout) parentlayout.getParent().getParent();
+					int id = ((Integer) parentLike.getTag());
+
 					postNumber = id;
-					date = new ServerDate(context);
+					ServerDateForLike date = new ServerDateForLike(context);
 					date.delegate = PosttitleListadapter.this;
 					date.execute("");
-					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
-					ringProgressDialog.setCancelable(true);
+					adapter.open();
+
+					ImageView li = (ImageView) parentLike.findViewById(R.id.likeIcon);
+					TextView txt = (TextView) parentLike.findViewById(R.id.txtNumofLike_CmtFroum);
+					int count = adapter.LikeInPost_count(postNumber);
+					li.setBackgroundResource(R.drawable.like_froum_on);
+					txt.setText(String.valueOf(count + 1));
+
+					adapter.close();
+
+					// ringProgressDialog = ProgressDialog.show(context, "",
+					// "لطفا منتظر بمانید...", true);
+					//
+					// ringProgressDialog.setCancelable(true);
 				}
 			}
 
@@ -421,7 +441,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 							}
 							if (item.getTitle().equals("حذف")) {
 								if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender) {
-									deleteItems(itemId);
+									// deleteItems(itemId);
 								} else {
 
 									Toast.makeText(context, "", 0).show();
@@ -463,19 +483,20 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 
 				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				PostFragment fragment = new PostFragment();
-				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(ItemId));
+				bundle.putInt("positionPost", position);
+				bundle.putInt("positionBrand", positionBrand);
 				bundle.putString("ObjectId", String.valueOf(po.getObjectId()));
-
 				fragment.setArguments(bundle);
 
 				/*
 				 * bundle.putString("Id", String.valueOf(idPost));
 				 * fragment.setArguments(bundle);
 				 */
-
+				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack("IntroductionFragment");
 				trans.commit();
 				abc.edit().putInt("main_Id", 2).commit();
 
@@ -545,10 +566,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 				bundle.putString("Id", String.valueOf(ItemId));
 				fragment.setArguments(bundle);
 
-				bundle.putString("Id", String.valueOf(ItemId));
-				fragment.setArguments(bundle);
-
 				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
 				trans.commit();
 				abc.edit().putInt("main_Id", 2).commit();
 
@@ -571,163 +590,171 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 			}
 		});
 
-		convertView.setTag(person1.getId());
 		// Parent = convertView;
 		return convertView;
 	}
 
-	@Override
-	public void processFinish(String output) {
+	// @Override
+	// public void processFinish(String output) {
+	//
+	// if (ringProgressDialog != null) {
+	// ringProgressDialog.dismiss();
+	// }
+	// try {
+	// int id = Integer.valueOf(output);
+	// LinearLayout parentLayout = (LinearLayout)
+	// Parent.findViewWithTag(postNumber);
+	// ImageView likeIcon = (ImageView)
+	// parentLayout.findViewById(R.id.likeIcon);
+	//
+	// adapter.open();
+	// if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
+	// adapter.deleteLikeFromPost(CurrentUser.getId(), postNumber);
+	// likeIcon.setBackgroundResource(R.drawable.like_froum_off);
+	//
+	// } else {
+	// adapter.insertLikeInPostToDb(id, CurrentUser.getId(), postNumber,
+	// serverDate, 0);
+	//
+	// likeIcon.setBackgroundResource(R.drawable.like_froum_on);
+	// }
+	// adapter.close();
+	//
+	// TextView likeCountPost = (TextView)
+	// parentLayout.findViewById(R.id.txtNumofLike_CmtFroum);
+	//
+	// adapter.open();
+	// likeCountPost.setText(adapter.LikeInPost_count(postNumber).toString());
+	// adapter.close();
+	//
+	// if (ringProgressDialog != null) {
+	// ringProgressDialog.dismiss();
+	// }
+	//
+	// } catch (NumberFormatException ex) {
+	// if (output != null && !(output.contains("Exception") ||
+	// output.contains("java"))) {
+	// adapter.open();
+	// if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
+	// params = new LinkedHashMap<String, String>();
+	// deleting = new Deleting(context);
+	// deleting.delegate = PosttitleListadapter.this;
+	//
+	// params.put("TableName", "LikeInPost");
+	// params.put("UserId", String.valueOf(CurrentUser.getId()));
+	// params.put("PostId", String.valueOf(postNumber));
+	//
+	// deleting.execute(params);
+	//
+	// ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر
+	// بمانید...", true);
+	//
+	// ringProgressDialog.setCancelable(true);
+	// new Thread(new Runnable() {
+	//
+	// @Override
+	// public void run() {
+	//
+	// try {
+	//
+	// Thread.sleep(10000);
+	//
+	// } catch (Exception e) {
+	//
+	// }
+	// }
+	// }).start();
+	// } else {
+	// params = new LinkedHashMap<String, String>();
+	// saving = new Saving(context);
+	// saving.delegate = PosttitleListadapter.this;
+	//
+	// params.put("TableName", "LikeInPost");
+	//
+	// params.put("UserId", String.valueOf(CurrentUser.getId()));
+	// params.put("PostId", String.valueOf(postNumber));
+	// params.put("CommentId", "0");
+	// params.put("Date", output);
+	// params.put("ModifyDate", output);
+	// params.put("IsUpdate", "0");
+	// params.put("Id", "0");
+	//
+	// serverDate = output;
+	//
+	// saving.execute(params);
+	//
+	// ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر
+	// بمانید...", true);
+	//
+	// ringProgressDialog.setCancelable(true);
+	// new Thread(new Runnable() {
+	//
+	// @Override
+	// public void run() {
+	//
+	// try {
+	//
+	// Thread.sleep(10000);
+	//
+	// } catch (Exception e) {
+	//
+	// }
+	// }
+	// }).start();
+	//
+	// // countLikeFroum.setText(adapter
+	// // .LikeInFroum_count(ItemId).toString());
+	// }
+	// adapter.close();
+	//
+	// } else {
+	// Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
+	// Toast.LENGTH_SHORT).show();
+	// }
+	// }
+	//
+	// catch (
+	//
+	// Exception e)
+	//
+	// {
+	//
+	// Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
+	// }
+	//
+	// }
 
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
-		try {
-			int id = Integer.valueOf(output);
-			LinearLayout parentLayout = (LinearLayout) Parent.findViewWithTag(postNumber);
-			ImageView likeIcon = (ImageView) parentLayout.findViewById(R.id.likeIcon);
-
-			adapter.open();
-			if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
-				adapter.deleteLikeFromPost(CurrentUser.getId(), postNumber);
-				likeIcon.setBackgroundResource(R.drawable.like_froum_off);
-
-			} else {
-				adapter.insertLikeInPostToDb(id, CurrentUser.getId(), postNumber, serverDate, 0);
-
-				likeIcon.setBackgroundResource(R.drawable.like_froum_on);
-			}
-			adapter.close();
-
-			TextView likeCountPost = (TextView) parentLayout.findViewById(R.id.txtNumofLike_CmtFroum);
-
-			adapter.open();
-			likeCountPost.setText(adapter.LikeInPost_count(postNumber).toString());
-			adapter.close();
-
-			if (ringProgressDialog != null) {
-				ringProgressDialog.dismiss();
-			}
-
-		} catch (NumberFormatException ex) {
-			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
-				adapter.open();
-				if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
-					params = new LinkedHashMap<String, String>();
-					deleting = new Deleting(context);
-					deleting.delegate = PosttitleListadapter.this;
-
-					params.put("TableName", "LikeInPost");
-					params.put("UserId", String.valueOf(CurrentUser.getId()));
-					params.put("PostId", String.valueOf(postNumber));
-
-					deleting.execute(params);
-
-					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-				} else {
-					params = new LinkedHashMap<String, String>();
-					saving = new Saving(context);
-					saving.delegate = PosttitleListadapter.this;
-
-					params.put("TableName", "LikeInPost");
-
-					params.put("UserId", String.valueOf(CurrentUser.getId()));
-					params.put("PostId", String.valueOf(postNumber));
-					params.put("CommentId", "0");
-					params.put("Date", output);
-					params.put("ModifyDate", output);
-					params.put("IsUpdate", "0");
-					params.put("Id", "0");
-
-					serverDate = output;
-
-					saving.execute(params);
-
-					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-
-							try {
-
-								Thread.sleep(10000);
-
-							} catch (Exception e) {
-
-							}
-						}
-					}).start();
-
-					// countLikeFroum.setText(adapter
-					// .LikeInFroum_count(ItemId).toString());
-				}
-				adapter.close();
-
-			} else {
-				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
-			}
-		}
-
-		catch (
-
-		Exception e)
-
-		{
-
-			Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT).show();
-		}
-
-	}
-
-	public void deleteItems(int itemId) {
-
-		ServiceComm service = new ServiceComm(context);
-		service.delegate = PosttitleListadapter.this;
-		Map<String, String> items = new LinkedHashMap<String, String>();
-		items.put("DeletingRecord", "DeletingRecord");
-
-		items.put("tableName", "Post");
-		items.put("Id", String.valueOf(itemId));
-
-		service.execute(items);
-
-		ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-		ringProgressDialog.setCancelable(true);
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-
-				try {
-
-					Thread.sleep(10000);
-
-				} catch (Exception e) {
-
-				}
-			}
-		}).start();
-	}
+	// public void deleteItems(int itemId) {
+	//
+	// ServiceComm service = new ServiceComm(context);
+	// service.delegate = PosttitleListadapter.this;
+	// Map<String, String> items = new LinkedHashMap<String, String>();
+	// items.put("DeletingRecord", "DeletingRecord");
+	//
+	// items.put("tableName", "Post");
+	// items.put("Id", String.valueOf(itemId));
+	//
+	// service.execute(items);
+	//
+	// ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر
+	// بمانید...", true);
+	//
+	// ringProgressDialog.setCancelable(true);
+	// new Thread(new Runnable() {
+	//
+	// @Override
+	// public void run() {
+	//
+	// try {
+	//
+	// Thread.sleep(10000);
+	//
+	// } catch (Exception e) {
+	//
+	// }
+	// }
+	// }).start();
+	// }
 
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
 
@@ -739,24 +766,139 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements AsyncInt
 		}
 	}
 
+	// @Override
+	// public void CommProcessFinish(String output) {
+	//
+	// if (!output.contains("exception")) {
+	//
+	// if (ringProgressDialog != null) {
+	// ringProgressDialog.dismiss();
+	// }
+	//
+	// adapter.open();
+	//
+	// adapter.deletePostTitle(itemId);
+	// adapter.deleteCommentPost(itemId);
+	//
+	// adapter.close();
+	//
+	// ((IntroductionFragment) fragment).fillListView();
+	// ((IntroductionFragment) fragment).setCountPost();
+	//
+	// }
+	//
+	// }
+
 	@Override
-	public void CommProcessFinish(String output) {
+	public void resultDateLike(String output) {
 
-		if (!output.contains("exception")) {
+		if (util.checkError(output) == false) {
 
-			if (ringProgressDialog != null) {
-				ringProgressDialog.dismiss();
-			}
+			serverDate = output;
 
 			adapter.open();
 
-			adapter.deletePostTitle(itemId);
-			adapter.deleteCommentPost(itemId);
+			if (adapter.isUserLikedPost(CurrentUser.getId(), postNumber)) {
+
+				params = new LinkedHashMap<String, String>();
+				DeletingLike deleting = new DeletingLike(context);
+				deleting.delegate = PosttitleListadapter.this;
+
+				params.put("TableName", "LikeInPost");
+				params.put("UserId", String.valueOf(CurrentUser.getId()));
+				params.put("PostId", String.valueOf(postNumber));
+
+				deleting.execute(params);
+
+			} else {
+
+				params = new LinkedHashMap<String, String>();
+				SavingLike saving = new SavingLike(context);
+				saving.delegate = PosttitleListadapter.this;
+
+				params.put("TableName", "LikeInPost");
+
+				params.put("UserId", String.valueOf(CurrentUser.getId()));
+				params.put("PostId", String.valueOf(postNumber));
+				params.put("CommentId", "0");
+				params.put("Date", serverDate);
+				params.put("ModifyDate", serverDate);
+
+				params.put("IsUpdate", "0");
+				params.put("Id", "0");
+
+				saving.execute(params);
+
+			}
 
 			adapter.close();
 
-			((IntroductionFragment) fragment).fillListView();
-			((IntroductionFragment) fragment).setCountPost();
+		} else {
+			util.showErrorToast();
+
+		}
+	}
+
+	@Override
+	public void resultDeleteLike(String output) {
+
+		if (util.checkError(output) == false) {
+
+			int i = -1;
+
+			try {
+				i = Integer.valueOf(output);
+				LinearLayout parentLayout = (LinearLayout) Parent.findViewWithTag(postNumber);
+				ImageView likeIcon = (ImageView) parentLayout.findViewById(R.id.likeIcon);
+				TextView likeCountPost = (TextView) parentLayout.findViewById(R.id.txtNumofLike_CmtFroum);
+				adapter.open();
+
+				adapter.deleteLikeFromPost(CurrentUser.getId(), postNumber);
+				likeIcon.setBackgroundResource(R.drawable.like_froum_off);
+
+				likeCountPost.setText(adapter.LikeInPost_count(postNumber).toString());
+
+				adapter.close();
+
+			} catch (Exception e) {
+				util.showErrorToast();
+
+			}
+
+		} else {
+			util.showErrorToast();
+
+		}
+
+	}
+
+	@Override
+	public void resultLike(String output) {
+
+		if (util.checkError(output) == false) {
+
+			int likeId = -1;
+
+			try {
+				LinearLayout parentLayout = (LinearLayout) ((View) parentLike.getParent()).findViewWithTag(postNumber);
+				ImageView likeIcon = (ImageView) parentLayout.findViewById(R.id.likeIcon);
+				TextView likeCountPost = (TextView) parentLayout.findViewById(R.id.txtNumofLike_CmtFroum);
+
+				likeId = Integer.valueOf(output);
+				adapter.open();
+
+				adapter.insertLikeInPostToDb(likeId, CurrentUser.getId(), postNumber, serverDate, 0);
+				likeIcon.setBackgroundResource(R.drawable.like_froum_on);
+				likeCountPost.setText(adapter.LikeInPost_count(postNumber).toString());
+
+				adapter.close();
+
+			} catch (Exception e) {
+				util.showErrorToast();
+			}
+
+		} else {
+			util.showErrorToast();
 
 		}
 

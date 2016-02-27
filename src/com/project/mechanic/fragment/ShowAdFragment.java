@@ -159,7 +159,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 		t = dbAdapter.getTicketById(id);
 		a = t.getId();
 		userTicket = t.getUserId();
-		boolean check = dbAdapter.isUserFavorite(userTicket, a);
+		final boolean check = dbAdapter.isUserFavorite(userTicket, a);
 		if (check) {
 			like.setBackgroundResource(R.drawable.ic_star_on);
 		} else {
@@ -182,56 +182,20 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 		dbAdapter.close();
 		u = util.getCurrentUser();
 
-		if (u == null) {
-			like.setEnabled(false);
-		} else if (userTicket == u.getId()) {
+//		if (u == null) {
+//			like.setEnabled(false);
+//		} else if (userTicket == u.getId()) {
+//
+//		}
 
-			// edite.setVisibility(1);
-		}
-
-		// خطا در ثبت بازدید ها
-		// if (u.getId() != t.getUserId()) {
-		// if (!util.isNetworkConnected()) {
-		// Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT)
-		// .show();
-		// dbAdapter.open();
-		// dbAdapter.insertVisitToDb(u.getId(), 3, t.getId());
-		// dbAdapter.close();
-		// } else if ((util.isNetworkConnected())) {
-		// Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT)
-		// .show();
-		// dbAdapter.open();
-		// // ارسال اطلاعات به جدول ویزیت سرور
-		// // ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
-		// dbAdapter.deleteVisit();
-		// dbAdapter.close();
-		// }
-		// }
 		headerRelative = (RelativeLayout) view.findViewById(R.id.headerAnad);
 		headerParams = new RelativeLayout.LayoutParams(headerRelative.getLayoutParams());
 		headerParams.width = util.getScreenwidth();
 		headerParams.height = util.getScreenwidth();
 		headerParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-		// iconRelative = (RelativeLayout) view.findViewById(R.id.iconAnad);
-
-		// shareParams = new RelativeLayout.LayoutParams(
-		// iconRelative.getLayoutParams());
-		// shareParams.width = util.getScreenwidth() / 3;
-		// shareParams.height = util.getScreenHeight() / 10;
-		// shareParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-
 		img.setLayoutParams(headerParams);
-		// share.setLayoutParams(shareParams);
 
-		// likeParams = new RelativeLayout.LayoutParams(
-		// iconRelative.getLayoutParams());
-		// likeParams.width = util.getScreenwidth() / 3;
-		// likeParams.height = util.getScreenHeight() / 10;
-		// likeParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		// likeParams.addRule(RelativeLayout.BELOW, R.id.imgShare_showAd);
-
-		// like.setLayoutParams(likeParams);
 		final EditText DescriptionReport = (EditText) view.findViewById(R.id.descriptionEdit);
 		final RadioGroup rd = (RadioGroup) view.findViewById(R.id.rb1);
 
@@ -250,23 +214,28 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 
 			@Override
 			public void onClick(View arg0) {
-				if (u != null && isFavorite) {
-					dbAdapter.open();
-					dbAdapter.deletebyIdTicket(a);
-					dbAdapter.close();
-					like.setBackgroundResource(R.drawable.ic_star_off);
-					// like.setLayoutParams(likeParams);
+				if (u == null)
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", 0).show();
+				else {
 
-				} else {
-					dbAdapter.open();
-					dbAdapter.insertFavoritetoDb(0, u.getId(), a, 3);
-					dbAdapter.close();
-					like.setBackgroundResource(R.drawable.ic_star_on);
-					// like.setLayoutParams(likeParams);
+					if (check == true) {
+						dbAdapter.open();
+						dbAdapter.deletebyIdTicket(a);
+						dbAdapter.close();
+						like.setBackgroundResource(R.drawable.ic_star_off);
+						// like.setLayoutParams(likeParams);
+
+					} else {
+						dbAdapter.open();
+						dbAdapter.insertFavoritetoDb(0, u.getId(), a, 3);
+						dbAdapter.close();
+						like.setBackgroundResource(R.drawable.ic_star_on);
+						// like.setLayoutParams(likeParams);
+
+					}
+					isFavorite = !isFavorite;
 
 				}
-				isFavorite = !isFavorite;
-
 			}
 		});
 		edite.setOnClickListener(new View.OnClickListener() {
@@ -308,11 +277,6 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 
 			}
 		});
-
-		// fragment = new DisplayPersonalInformationFragment();
-		// fragmentManager = getSupportFragmentManager();
-		// fragmentManager.beginTransaction()
-		// .replace(R.id.content_frame, fragment).commit();
 
 		dbAdapter.open();
 		share.setOnClickListener(new View.OnClickListener() {
@@ -693,7 +657,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 	}
 
 	@Override
-	public void saveVisit(String output) {
+	public void resultSaveVisit(String output) {
 
 		if (!output.contains("Exception")) {
 

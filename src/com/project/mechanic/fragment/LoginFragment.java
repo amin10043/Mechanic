@@ -12,8 +12,8 @@ import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.UpdatingImage;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 import android.app.ProgressDialog;
@@ -284,13 +284,13 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 	@Override
 	public void CommProcessFinish(String output) {
 
-		if (!output.contains("exception")) {
+		if (!output.contains("Exception")) {
 
 			if (typeItem.equals("login"))
 				processFinish(output);
 
 			if (typeItem.equals("getDate")) {
-				if (output.contains("exception") || output.contains("anyType"))
+				if (output.contains("Exception") || output.contains("anyType"))
 					output = "";
 
 				dbAdapter.open();

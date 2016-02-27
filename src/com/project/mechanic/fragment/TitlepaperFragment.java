@@ -16,14 +16,20 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.WindowManager;
 import android.widget.AbsListView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
@@ -38,9 +44,11 @@ import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.AsyncInterfaceVisit;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingVisit;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class TitlepaperFragment extends Fragment implements CommInterface, AsyncInterface, AsyncInterfaceVisit {
@@ -48,10 +56,10 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 	private DialogPaperTitle dialog;
 	DataBaseAdapter mdb;
 	View view;
-	ArrayList<Paper> mylist;
-	List<Paper> subList;
-	List<Paper> tempList;
-	int i = 0, j = 9;
+	ArrayList<Paper> mylist = new ArrayList<Paper>();
+	// List<Paper> subList;
+	// List<Paper> tempList;
+	// int i = 0, j = 9;
 	ListView lst;
 	PapertitleListAdapter ListAdapter;
 	public static final int DIALOG_FRAGMENT = 1;
@@ -66,11 +74,21 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 	SwipeRefreshLayout swipeLayout;
 	View LoadMoreFooter;
 
-	boolean FindPosition;
+	boolean FindPosition, IsNewPaper = false;
 	int beforePosition;
 	Paper p;
 	ProgressBar progress;
 	int visitCounter = 0;
+	String titlePaper, descriptionPaper, severDate;
+	Map<String, String> params;
+
+	EditText titlePaperEditText, descriptionPaperEditText;
+	RelativeLayout bottomSheet, mainSheet;
+	ImageView send, close;
+
+	Animation enterFromDown, exitToDown;
+
+	int positionPaper = 0;
 
 	@SuppressWarnings("unchecked")
 	@SuppressLint("InflateParams")
@@ -79,126 +97,26 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 			Bundle savedInstanceState) {
 
 		view = inflater.inflate(R.layout.fragment_titlepaper, null);
-		action = (FloatingActionButton) view.findViewById(R.id.fab);
+		
+		if (getArguments() !=null)
+			positionPaper = getArguments().getInt("positionPaper");
 
-		mdb = new DataBaseAdapter(getActivity());
-		utility = new Utility(getActivity());
+		init();
 
-		CurrentUser = utility.getCurrentUser();
-		mdb.open();
-		mylist = mdb.getAllPaper();
-		setting = mdb.getSettings();
-		mdb.close();
+		fillListView();
 
-		// for Missed IDS
-		String strIdes = getMissedIds();
-		if (!"".equals(strIdes)) {
-			service = new ServiceComm(getActivity());
-			service.delegate = this;
-			Map<String, String> items = new LinkedHashMap<String, String>();
-			items.put("tableName", "getUserById");
-			items.put("Id", strIdes);
+		getMissedItemsFormServer();
 
-			service.execute(items);
-		}
-		// for Missed IDS
+		refreshListView();
 
-		lst = (ListView) view.findViewById(R.id.lstComment);
+		onScrollListView();
 
-		final FloatingActionButton action = (FloatingActionButton) view.findViewById(R.id.fab);
+		createNewItem();
 
-		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
-		lst.addFooterView(LoadMoreFooter);
-		LoadMoreFooter.setVisibility(View.INVISIBLE);
-		swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
-		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
+		utility.ShowFooterAgahi(getActivity(), false, 7);
 
-			@Override
-			public void onRefresh() {
-				updating = new Updating(getActivity());
-				updating.delegate = TitlepaperFragment.this;
-				String[] params = new String[4];
-				params[0] = "Paper";
-				params[1] = setting.getServerDate_Start_Paper() != null ? setting.getServerDate_Start_Paper() : "";
-				params[2] = setting.getServerDate_End_Paper() != null ? setting.getServerDate_End_Paper() : "";
-
-				params[3] = "1";
-				updating.execute(params);
-			}
-		});
-		swipeLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
-				android.R.color.holo_orange_light, android.R.color.holo_red_light);
-
-		action.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				if (CurrentUser == null)
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
-				else {
-
-					dialog = new DialogPaperTitle(getActivity(), R.layout.dialog_addtitle, TitlepaperFragment.this);
-					dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-					dialog.show();
-				}
-			}
-		});
-
-		ListAdapter = new PapertitleListAdapter(getActivity(), R.layout.raw_froumtitle, mylist,
-				TitlepaperFragment.this);
-
-		lst.setAdapter(ListAdapter);
-
-		int countList = ListAdapter.getCount();
-		Toast.makeText(getActivity(), "تعداد مقالات = " + countList, Toast.LENGTH_SHORT).show();
-
-		lst.setOnScrollListener(new OnScrollListener() {
-
-			@Override
-			public void onScrollStateChanged(AbsListView arg0, int scrollState) {
-				switch (scrollState) {
-				case SCROLL_STATE_TOUCH_SCROLL: {
-					action.setVisibility(View.GONE);
-				}
-					break;
-				case SCROLL_STATE_IDLE: {
-					action.setVisibility(View.VISIBLE);
-
-				}
-					break;
-				default:
-					break;
-				}
-			}
-
-			@Override
-			public void onScroll(AbsListView arg0, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-				int lastInScreen = firstVisibleItem + visibleItemCount;
-				//
-				if (lastInScreen == totalItemCount) {
-
-					LoadMoreFooter.setVisibility(View.VISIBLE);
-					//
-					updating = new Updating(getActivity());
-					updating.delegate = TitlepaperFragment.this;
-					String[] params = new String[4];
-					params[0] = "Paper";
-					params[1] = setting.getServerDate_Start_Paper() != null ? setting.getServerDate_Start_Paper() : "";
-					params[2] = setting.getServerDate_End_Paper() != null ? setting.getServerDate_End_Paper() : "";
-
-					params[3] = "0";
-					updating.execute(params);
-
-					int countList = ListAdapter.getCount();
-					beforePosition = countList;
-
-					// FindPosition = false;
-				}
-			}
-		});
-		utility.ShowFooterAgahi(getActivity(), true, 7);
 		getCountVisitFromServer();
+
 		return view;
 	}
 
@@ -222,6 +140,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 
 	public void updateView() {
 		mdb.open();
+		mylist.clear();
 		mylist = mdb.getAllPaper();
 		mdb.close();
 		ListAdapter = new PapertitleListAdapter(getActivity(), R.layout.raw_froumtitle, mylist,
@@ -229,7 +148,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 		lst.setAdapter(ListAdapter);
 
 		ListAdapter.notifyDataSetChanged();
-		LoadMoreFooter.setVisibility(View.INVISIBLE);
+		// LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 	}
 
@@ -264,54 +183,117 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 
 	@Override
 	public void processFinish(String output) {
-		if (output.contains("anyType")) {
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
-			// lst.removeFooterView(LoadMoreFooter);
 
-		}
-		if (swipeLayout != null) {
+		if (IsNewPaper == true) {
+			if (output.contains("anyType")) {
+				// LoadMoreFooter.setVisibility(View.INVISIBLE);
+				// lst.removeFooterView(LoadMoreFooter);
 
-			swipeLayout.setRefreshing(false);
-		}
-		// lst.removeHeaderView(LoadMoreFooter);
-
-		// LoadMoreFooter.setVisibility(View.GONE);
-
-		if (output != null && !(output.contains("Exception") || output.contains("java") || output.contains("SoapFault")
-				|| output.contains("anyType"))) {
-
-			utility.parseQuery(output);
-			mylist.clear();
-			mdb.open();
-			mylist.addAll(mdb.getAllPaper());
-			mdb.close();
-
-			ListAdapter = new PapertitleListAdapter(getActivity(), R.layout.raw_froumtitle, mylist,
-					TitlepaperFragment.this);
-
-			lst.setAdapter(ListAdapter);
-
-			// if (FindPosition == false) {
-			// lst.setSelection(beforePosition);
-			//
-			// }
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
-
-			// ListAdapter.notifyDataSetChanged();
-
-			if (ringProgressDialog != null) {
-				ringProgressDialog.dismiss();
 			}
+			if (swipeLayout != null) {
 
-			// Toast.makeText(getActivity(), "به روز رسانی با موفقیت انجام شد ",
-			// Toast.LENGTH_LONG).show();
+				swipeLayout.setRefreshing(false);
+			}
+			// lst.removeHeaderView(LoadMoreFooter);
+
+			// LoadMoreFooter.setVisibility(View.GONE);
+
+			if (output != null && !(output.contains("Exception") || output.contains("java")
+					|| output.contains("SoapFault") || output.contains("anyType"))) {
+
+				utility.parseQuery(output);
+				mylist.clear();
+				mdb.open();
+				mylist.addAll(mdb.getAllPaper());
+				mdb.close();
+
+				// ListAdapter = new PapertitleListAdapter(getActivity(),
+				// R.layout.raw_froumtitle, mylist,
+				// TitlepaperFragment.this);
+				//
+				// lst.setAdapter(ListAdapter);
+
+				// if (FindPosition == false) {
+				// lst.setSelection(beforePosition);
+				//
+				// }
+				// LoadMoreFooter.setVisibility(View.INVISIBLE);
+
+				// ListAdapter.notifyDataSetChanged();
+
+				if (ringProgressDialog != null) {
+					ringProgressDialog.dismiss();
+				}
+
+				// Toast.makeText(getActivity(), "به روز رسانی با موفقیت انجام
+				// شد ",
+				// Toast.LENGTH_LONG).show();
+
+			}
+		} else {
+
+			if (ringProgressDialog != null)
+				ringProgressDialog.dismiss();
+
+			int id = -1;
+			try {
+				id = Integer.valueOf(output);
+				mdb.open();
+				mdb.insertPapertitletoDb(id, titlePaper, descriptionPaper, CurrentUser.getId(), severDate);
+				mdb.close();
+
+				updateView();
+
+			} catch (NumberFormatException ex) {
+				if (output != null && !(output.contains("Exception") || output.contains("java"))) {
+
+					Saving saving = new Saving(getActivity());
+					params = new LinkedHashMap<String, String>();
+
+					saving.delegate = TitlepaperFragment.this;
+					params.put("TableName", "Paper");
+					params.put("Title", titlePaper);
+					params.put("Context", descriptionPaper);
+					params.put("UserId", String.valueOf(CurrentUser.getId()));
+					params.put("Date", output);
+					params.put("ModifyDate", output);
+
+					params.put("IsUpdate", "0");
+					params.put("Id", "0");
+					severDate = output;
+
+					saving.execute(params);
+
+					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+
+					ringProgressDialog.setCancelable(true);
+
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+
+							try {
+
+								Thread.sleep(10000);
+
+							} catch (Exception e) {
+
+							}
+						}
+					}).start();
+
+				} else {
+					Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
+				}
+			}
 
 		}
 
 	}
 
 	@Override
-	public void processFinishVisit(String output) {
+	public void resultCountView(String output) {
 		if (!output.contains("Exception")) {
 
 			mdb.open();
@@ -352,4 +334,215 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 		}
 
 	}
+
+	private void init() {
+
+		action = (FloatingActionButton) view.findViewById(R.id.fab);
+		lst = (ListView) view.findViewById(R.id.lstComment);
+
+		mdb = new DataBaseAdapter(getActivity());
+		utility = new Utility(getActivity());
+
+		CurrentUser = utility.getCurrentUser();
+
+		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
+		// lst.addFooterView(LoadMoreFooter);
+		// LoadMoreFooter.setVisibility(View.INVISIBLE);
+
+		mdb.open();
+		setting = mdb.getSettings();
+		mdb.close();
+
+		////////////////
+		titlePaperEditText = (EditText) view.findViewById(R.id.txtTitleP);
+		descriptionPaperEditText = (EditText) view.findViewById(R.id.txttitleDes);
+
+		bottomSheet = (RelativeLayout) view.findViewById(R.id.bottmSheet);
+		mainSheet = (RelativeLayout) view.findViewById(R.id.mainSheet);
+
+		enterFromDown = AnimationUtils.loadAnimation(getActivity(), R.anim.down_from_top);
+		exitToDown = AnimationUtils.loadAnimation(getActivity(), R.anim.up_from_bottom);
+
+		send = (ImageView) view.findViewById(R.id.createDialogPage);
+		close = (ImageView) view.findViewById(R.id.delete);
+
+	}
+
+	private void fillListView() {
+
+		mdb.open();
+		mylist = mdb.getAllPaper();
+		mdb.close();
+
+		ListAdapter = new PapertitleListAdapter(getActivity(), R.layout.raw_froumtitle, mylist,
+				TitlepaperFragment.this);
+
+		lst.setAdapter(ListAdapter);
+		lst.setSelection(positionPaper);
+
+	}
+
+	private void getMissedItemsFormServer() {
+		// for Missed IDS
+		String strIdes = getMissedIds();
+		if (!"".equals(strIdes)) {
+			service = new ServiceComm(getActivity());
+			service.delegate = this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+			items.put("tableName", "getUserById");
+			items.put("Id", strIdes);
+
+			service.execute(items);
+		}
+		// for Missed IDS
+	}
+
+	private void refreshListView() {
+		swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+		swipeLayout.setOnRefreshListener(new OnRefreshListener() {
+
+			@Override
+			public void onRefresh() {
+				updating = new Updating(getActivity());
+				updating.delegate = TitlepaperFragment.this;
+				String[] params = new String[4];
+				params[0] = "Paper";
+				params[1] = setting.getServerDate_Start_Paper() != null ? setting.getServerDate_Start_Paper() : "";
+				params[2] = setting.getServerDate_End_Paper() != null ? setting.getServerDate_End_Paper() : "";
+
+				params[3] = "1";
+				updating.execute(params);
+				IsNewPaper = true;
+			}
+		});
+		swipeLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+				android.R.color.holo_orange_light, android.R.color.holo_red_light);
+
+	}
+
+	private void onScrollListView() {
+		lst.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView arg0, int scrollState) {
+				switch (scrollState) {
+				case SCROLL_STATE_TOUCH_SCROLL: {
+					action.setVisibility(View.GONE);
+				}
+					break;
+				case SCROLL_STATE_IDLE: {
+					action.setVisibility(View.VISIBLE);
+
+				}
+					break;
+				default:
+					break;
+				}
+			}
+
+			@Override
+			public void onScroll(AbsListView arg0, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+				int lastInScreen = firstVisibleItem + visibleItemCount;
+				//
+				if (lastInScreen == totalItemCount) {
+
+					// LoadMoreFooter.setVisibility(View.VISIBLE);
+					//
+					updating = new Updating(getActivity());
+					updating.delegate = TitlepaperFragment.this;
+					String[] params = new String[4];
+					params[0] = "Paper";
+					params[1] = setting.getServerDate_Start_Paper() != null ? setting.getServerDate_Start_Paper() : "";
+					params[2] = setting.getServerDate_End_Paper() != null ? setting.getServerDate_End_Paper() : "";
+
+					params[3] = "0";
+					updating.execute(params);
+
+					int countList = ListAdapter.getCount();
+					beforePosition = countList;
+					IsNewPaper = true;
+
+					// FindPosition = false;
+				}
+			}
+		});
+	}
+
+	private void createNewItem() {
+
+		RelativeLayout.LayoutParams llp = new RelativeLayout.LayoutParams(mainSheet.getLayoutParams());
+		llp.width = utility.getScreenwidth();
+		llp.height = utility.getScreenwidth() / 2;
+		llp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+		RelativeLayout.LayoutParams ep = new RelativeLayout.LayoutParams(bottomSheet.getLayoutParams());
+		ep.width = utility.getScreenwidth();
+		ep.height = LayoutParams.MATCH_PARENT;
+		ep.addRule(RelativeLayout.BELOW, R.id.txtTitleP);
+		ep.setMargins(10, 10, 10, 10);
+
+		descriptionPaperEditText.setLayoutParams(ep);
+		bottomSheet.setLayoutParams(llp);
+
+		action.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				bottomSheet.startAnimation(enterFromDown);
+				bottomSheet.setVisibility(View.VISIBLE);
+				action.setVisibility(View.INVISIBLE);
+
+			}
+		});
+
+		send.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				if (CurrentUser == null) {
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", 0).show();
+
+					bottomSheet.startAnimation(exitToDown);
+
+					bottomSheet.setVisibility(View.GONE);
+					action.setVisibility(View.VISIBLE);
+				} else {
+
+					titlePaper = titlePaperEditText.getText().toString();
+					descriptionPaper = descriptionPaperEditText.getText().toString();
+
+					if (!"".equals(titlePaper) && !"".equals(descriptionPaper)) {
+
+						ServerDate sDate = new ServerDate(getActivity());
+						sDate.delegate = TitlepaperFragment.this;
+						sDate.execute("");
+					} else {
+						Toast.makeText(getActivity(), "پر کردن عنوان و متن الزامی است", 0).show();
+
+					}
+
+				}
+
+			}
+		});
+
+		close.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				bottomSheet.startAnimation(exitToDown);
+
+				bottomSheet.setVisibility(View.GONE);
+				action.setVisibility(View.VISIBLE);
+
+				titlePaperEditText.setText("");
+				descriptionPaperEditText.setText("");
+			}
+		});
+	}
+
 }

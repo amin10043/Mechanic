@@ -698,7 +698,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 			if (mFileTemp.getPath() != null)
 				bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
 			if (bitmap != null) {
-				ImageProfile.setImageBitmap(bitmap);
+				ImageProfile.setImageBitmap(Utility.getclip(bitmap));
 				ImageProfile.setLayoutParams(lp2);
 
 			}

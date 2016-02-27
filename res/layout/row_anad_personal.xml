@@ -82,7 +82,7 @@
                         android:gravity="right"
                         android:text="Large Text"
                         android:singleLine="true"
-                        android:textColor="@color/orginal_red_color" />
+                        android:textColor="@color/orginal_hard_blue_color" />
 
                     <TextView
                         android:id="@+id/row_anad_txt2"

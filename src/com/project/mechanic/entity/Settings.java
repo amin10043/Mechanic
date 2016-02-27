@@ -17,9 +17,6 @@ public class Settings {
 	String ServerDate_Start_Froum;
 	String ServerDate_End_Froum;
 
-	String ServerDate_Start_Post;
-	String ServerDate_End_Post;
-
 	String ServerDate_Start_Anad;
 	String ServerDate_End_Anad;
 
@@ -55,6 +52,18 @@ public class Settings {
 
 	String ServerDate_Start_ObjectInCity;
 	String ServerDate_End_ObjectInCity;
+
+	String ServerDate_Start_Post;
+	String ServerDate_End_Post;
+
+	String ServerDate_Start_LikeInPost;
+	String ServerDate_End_LikeInPost;
+
+	String ServerDate_Start_LikeInCommentPost;
+	String ServerDate_End_LikeInCommentPost;
+
+	String ServerDate_Start_CommentInPost;
+	String ServerDate_End_CommentInPost;
 
 	public int getId() {
 		return Id;
@@ -188,8 +197,7 @@ public class Settings {
 		return ServerDate_Start_CommentInObject;
 	}
 
-	public void setServerDate_Start_CommentInObject(
-			String serverDate_Start_CommentInObject) {
+	public void setServerDate_Start_CommentInObject(String serverDate_Start_CommentInObject) {
 		ServerDate_Start_CommentInObject = serverDate_Start_CommentInObject;
 	}
 
@@ -197,8 +205,7 @@ public class Settings {
 		return ServerDate_End_CommentInObject;
 	}
 
-	public void setServerDate_End_CommentInObject(
-			String serverDate_End_CommentInObject) {
+	public void setServerDate_End_CommentInObject(String serverDate_End_CommentInObject) {
 		ServerDate_End_CommentInObject = serverDate_End_CommentInObject;
 	}
 
@@ -206,8 +213,7 @@ public class Settings {
 		return ServerDate_Start_CommentInFroum;
 	}
 
-	public void setServerDate_Start_CommentInFroum(
-			String serverDate_Start_CommentInFroum) {
+	public void setServerDate_Start_CommentInFroum(String serverDate_Start_CommentInFroum) {
 		ServerDate_Start_CommentInFroum = serverDate_Start_CommentInFroum;
 	}
 
@@ -215,8 +221,7 @@ public class Settings {
 		return ServerDate_End_CommentInFroum;
 	}
 
-	public void setServerDate_End_CommentInFroum(
-			String serverDate_End_CommentInFroum) {
+	public void setServerDate_End_CommentInFroum(String serverDate_End_CommentInFroum) {
 		ServerDate_End_CommentInFroum = serverDate_End_CommentInFroum;
 	}
 
@@ -224,8 +229,7 @@ public class Settings {
 		return ServerDate_Start_CmtInPaper;
 	}
 
-	public void setServerDate_Start_CmtInPaper(
-			String serverDate_Start_CmtInPaper) {
+	public void setServerDate_Start_CmtInPaper(String serverDate_Start_CmtInPaper) {
 		ServerDate_Start_CmtInPaper = serverDate_Start_CmtInPaper;
 	}
 
@@ -241,8 +245,7 @@ public class Settings {
 		return ServerDate_Start_LikeInPaper;
 	}
 
-	public void setServerDate_Start_LikeInPaper(
-			String serverDate_Start_LikeInPaper) {
+	public void setServerDate_Start_LikeInPaper(String serverDate_Start_LikeInPaper) {
 		ServerDate_Start_LikeInPaper = serverDate_Start_LikeInPaper;
 	}
 
@@ -258,8 +261,7 @@ public class Settings {
 		return ServerDate_Start_LikeInFroum;
 	}
 
-	public void setServerDate_Start_LikeInFroum(
-			String serverDate_Start_LikeInFroum) {
+	public void setServerDate_Start_LikeInFroum(String serverDate_Start_LikeInFroum) {
 		ServerDate_Start_LikeInFroum = serverDate_Start_LikeInFroum;
 	}
 
@@ -275,8 +277,7 @@ public class Settings {
 		return ServerDate_Start_LikeInObject;
 	}
 
-	public void setServerDate_Start_LikeInObject(
-			String serverDate_Start_LikeInObject) {
+	public void setServerDate_Start_LikeInObject(String serverDate_Start_LikeInObject) {
 		ServerDate_Start_LikeInObject = serverDate_Start_LikeInObject;
 	}
 
@@ -284,8 +285,7 @@ public class Settings {
 		return ServerDate_End_LikeInObject;
 	}
 
-	public void setServerDate_End_LikeInObject(
-			String serverDate_End_LikeInObject) {
+	public void setServerDate_End_LikeInObject(String serverDate_End_LikeInObject) {
 		ServerDate_End_LikeInObject = serverDate_End_LikeInObject;
 	}
 
@@ -293,8 +293,7 @@ public class Settings {
 		return ServerDate_Start_LikeInComment;
 	}
 
-	public void setServerDate_Start_LikeInComment(
-			String serverDate_Start_LikeInComment) {
+	public void setServerDate_Start_LikeInComment(String serverDate_Start_LikeInComment) {
 		ServerDate_Start_LikeInComment = serverDate_Start_LikeInComment;
 	}
 
@@ -302,8 +301,7 @@ public class Settings {
 		return ServerDate_End_LikeInComment;
 	}
 
-	public void setServerDate_End_LikeInComment(
-			String serverDate_End_LikeInComment) {
+	public void setServerDate_End_LikeInComment(String serverDate_End_LikeInComment) {
 		ServerDate_End_LikeInComment = serverDate_End_LikeInComment;
 	}
 
@@ -311,8 +309,7 @@ public class Settings {
 		return ServerDate_Start_LikeInCommentObject;
 	}
 
-	public void setServerDate_Start_LikeInCommentObject(
-			String serverDate_Start_LikeInCommentObject) {
+	public void setServerDate_Start_LikeInCommentObject(String serverDate_Start_LikeInCommentObject) {
 		ServerDate_Start_LikeInCommentObject = serverDate_Start_LikeInCommentObject;
 	}
 
@@ -320,8 +317,7 @@ public class Settings {
 		return ServerDate_End_LikeInCommentObject;
 	}
 
-	public void setServerDate_End_LikeInCommentObject(
-			String serverDate_End_LikeInCommentObject) {
+	public void setServerDate_End_LikeInCommentObject(String serverDate_End_LikeInCommentObject) {
 		ServerDate_End_LikeInCommentObject = serverDate_End_LikeInCommentObject;
 	}
 
@@ -341,32 +337,22 @@ public class Settings {
 		ServerDate_End_Users = serverDate_End_Users;
 	}
 
-	public Settings(int id, String IMEI, String ServerDate_Start_Object,
-			String ServerDate_End_Object, String ServerDate_Start_News,
-			String ServerDate_End_News, String ServerDate_Start_Paper,
-			String ServerDate_End_Paper, String ServerDate_Start_Froum,
-			String ServerDate_End_Froum, String ServerDate_Start_Anad,
-			String ServerDate_End_Anad, String ServerDate_Start_Ticket,
-			String ServerDate_End_Ticket,
-			String ServerDate_Start_CommentInObject,
-			String ServerDate_End_CommentInObject,
-			String ServerDate_Start_CommentInFroum,
-			String ServerDate_End_CommentInFroum,
-			String ServerDate_Start_CmtInPaper,
-			String ServerDate_End_CmtInPaper,
-			String ServerDate_Start_LikeInPaper,
-			String ServerDate_End_LikeInPaper,
-			String ServerDate_Start_LikeInFroum,
-			String ServerDate_End_LikeInFroum,
-			String ServerDate_Start_LikeInObject,
-			String ServerDate_End_LikeInObject,
-			String ServerDate_Start_LikeInComment,
-			String ServerDate_End_LikeInComment,
-			String ServerDate_Start_LikeInCommentObject,
-			String ServerDate_End_LikeInCommentObject,
-			String ServerDate_Start_Users, String ServerDate_End_Users,
-			String ServerDate_Start_ObjectInCity,
-			String ServerDate_End_ObjectInCity) {
+	public Settings(int id, String IMEI, String ServerDate_Start_Object, String ServerDate_End_Object,
+			String ServerDate_Start_News, String ServerDate_End_News, String ServerDate_Start_Paper,
+			String ServerDate_End_Paper, String ServerDate_Start_Froum, String ServerDate_End_Froum,
+			String ServerDate_Start_Anad, String ServerDate_End_Anad, String ServerDate_Start_Ticket,
+			String ServerDate_End_Ticket, String ServerDate_Start_CommentInObject,
+			String ServerDate_End_CommentInObject, String ServerDate_Start_CommentInFroum,
+			String ServerDate_End_CommentInFroum, String ServerDate_Start_CmtInPaper, String ServerDate_End_CmtInPaper,
+			String ServerDate_Start_LikeInPaper, String ServerDate_End_LikeInPaper, String ServerDate_Start_LikeInFroum,
+			String ServerDate_End_LikeInFroum, String ServerDate_Start_LikeInObject, String ServerDate_End_LikeInObject,
+			String ServerDate_Start_LikeInComment, String ServerDate_End_LikeInComment,
+			String ServerDate_Start_LikeInCommentObject, String ServerDate_End_LikeInCommentObject,
+			String ServerDate_Start_Users, String ServerDate_End_Users, String ServerDate_Start_ObjectInCity,
+			String ServerDate_End_ObjectInCity, String ServerDate_Start_Post, String ServerDate_End_Post,
+			String ServerDate_Start_LikeInPost, String ServerDate_End_LikeInPost,
+			String ServerDate_Start_LikeInCommentPost, String ServerDate_End_LikeInCommentPost,
+			String ServerDate_Start_CommentInPost, String ServerDate_End_CommentInPost) {
 
 		super();
 		Id = id;
@@ -420,14 +406,24 @@ public class Settings {
 		this.ServerDate_Start_ObjectInCity = ServerDate_Start_ObjectInCity;
 		this.ServerDate_End_ObjectInCity = ServerDate_End_ObjectInCity;
 
+		this.ServerDate_Start_Post = ServerDate_Start_Post;
+		this.ServerDate_End_Post = ServerDate_End_Post;
+
+		this.ServerDate_Start_LikeInPost = ServerDate_Start_LikeInPost;
+		this.ServerDate_End_LikeInPost = ServerDate_End_LikeInPost;
+
+		this.ServerDate_Start_LikeInCommentPost = ServerDate_Start_LikeInCommentPost;
+		this.ServerDate_End_LikeInCommentPost = ServerDate_End_LikeInCommentPost;
+
+		this.ServerDate_Start_CommentInPost = ServerDate_Start_CommentInPost;
+		this.ServerDate_End_CommentInPost = ServerDate_End_CommentInPost;
 	}
 
 	public String getServerDate_Start_ObjectInCity() {
 		return ServerDate_Start_ObjectInCity;
 	}
 
-	public void setServerDate_Start_ObjectInCity(
-			String serverDate_Start_ObjectInCity) {
+	public void setServerDate_Start_ObjectInCity(String serverDate_Start_ObjectInCity) {
 		ServerDate_Start_ObjectInCity = serverDate_Start_ObjectInCity;
 	}
 
@@ -435,8 +431,7 @@ public class Settings {
 		return ServerDate_End_ObjectInCity;
 	}
 
-	public void setServerDate_End_ObjectInCity(
-			String serverDate_End_ObjectInCity) {
+	public void setServerDate_End_ObjectInCity(String serverDate_End_ObjectInCity) {
 		ServerDate_End_ObjectInCity = serverDate_End_ObjectInCity;
 	}
 

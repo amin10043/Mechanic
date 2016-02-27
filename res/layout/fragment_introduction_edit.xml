@@ -3,7 +3,7 @@
     android:id="@+id/btncancle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/orginal_light_gray_color"
     android:orientation="vertical" >
 
     <ScrollView
@@ -14,8 +14,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -35,17 +33,14 @@
                 android:id="@+id/linearEditProfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"
-                android:background="#fff"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/shadow_layer"
                 android:paddingBottom="10dp" >
 
                 <ImageView
                     android:id="@+id/pp1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/btnsave"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/no_img_profile"
                     android:scaleType="fitXY" />
@@ -56,16 +51,25 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/pp1"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginRight="20dp"
                     android:hint="Name" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/nameEdit"
+                android:background="@drawable/shadow_layer"
+                android:gravity="right"
+                android:orientation="vertical" >
 
                 <LinearLayout
                     android:id="@+id/editpageNetwork"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/nameEdit"
-                    android:layout_margin="5dp"
+                    android:layout_marginRight="5dp"
                     android:orientation="horizontal" >
 
                     <TextView
@@ -75,14 +79,22 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="5dp"
                         android:text="ویرایش لینک شبکه های اجتماعی"
-                        android:textColor="@color/orginal_red_color" />
+                        android:textColor="@color/orginal_hard_blue_color" />
 
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_margin="10dp"
                         android:background="@drawable/face_book_edit" />
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/orginal_golden_color" />
 
                 <LinearLayout
                     android:id="@+id/editpagedownload"
@@ -90,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/editpageNetwork"
-                    android:layout_margin="5dp"
+                    android:layout_marginRight="5dp"
                     android:orientation="horizontal" >
 
                     <TextView
@@ -100,14 +112,22 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="5dp"
                         android:text="ویرایش لینک های دانلود"
-                        android:textColor="@color/orginal_red_color" />
+                        android:textColor="@color/orginal_hard_blue_color" />
 
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/pdf_edit" />
+                        android:layout_margin="10dp"
+                        android:background="@drawable/ic_p" />
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/orginal_golden_color" />
 
                 <LinearLayout
                     android:id="@+id/listAdmin"
@@ -115,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/editpagedownload"
-                    android:layout_margin="5dp"
+                    android:layout_marginRight="5dp"
                     android:orientation="horizontal" >
 
                     <TextView
@@ -125,36 +145,37 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="5dp"
                         android:text="ویرایش مدیران "
-                        android:textColor="@color/orginal_red_color" />
+                        android:textColor="@color/orginal_hard_blue_color" />
 
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:background="@drawable/ed" />
+                        android:layout_margin="10dp"
+                        android:background="@drawable/ic_admin" />
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/sepratorimage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/listAdmin"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/lili" />
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/orginal_golden_color" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_below="@+id/sepratorimage"
-                    android:layout_margin="10dp"
-                    android:orientation="horizontal" >
+                    android:layout_marginRight="5dp"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp" >
 
                     <TextView
                         android:id="@+id/linkPage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="30dp"
+                        android:layout_margin="10dp"
                         android:layout_toLeftOf="@+id/copylable"
                         android:text="www.mechanical.ir/namePage"
                         android:textColor="@color/orginal_hard_blue_color"
@@ -165,6 +186,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_alignParentRight="true"
+                        android:layout_margin="10dp"
                         android:background="@drawable/copy_icon" />
 
                     <TextView
@@ -175,490 +197,292 @@
                         android:layout_margin="10dp"
                         android:layout_toLeftOf="@+id/copyToClipboard"
                         android:text="کپی لینک"
-                        android:textColor="@color/orginal_red_color" />
+                        android:textColor="@color/orginal_hard_blue_color" />
                 </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/starsEdition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shadow_layer"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/lableSt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:gravity="right"
+                    android:lineSpacingMultiplier="2"
+                    android:text="به منظور ارتقا وضعیت نمایش صفحه خود در بین سایر صفحات می توانید با افزایش اعتبار ، جایگاه خود را بهبود بخشید  "
+                    android:textColor="@color/orginal_hard_blue_color" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar1"
+                    style="@style/StarRatingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lableSt"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="10dp"
+                    android:numStars="5"
+                    android:stepSize="1"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/btnPay"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/ratingBar1"
+                    android:layout_centerHorizontal="true"
+                    android:paddingBottom="10dp"
+                    android:src="@drawable/ic_pay" />
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/shadow_layer"
                 android:orientation="vertical" >
 
                 <RelativeLayout
-                    android:id="@+id/RelativeLayout11"
-                    android:layout_width="match_parent"
+                    style="@style/brandStyle"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="25dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_marginTop="10dp"
-                    android:layout_weight="1" >
+                    android:background="#fff"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp" >
+
+                    <ImageView
+                        android:id="@+id/textView6"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/iic_phone" />
+
+                    <EditText
+                        android:id="@+id/editTextphone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/textView6"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:hint="تلفن"
+                        android:inputType="number"
+                        android:textColorHint="#000" >
+
+                        <requestFocus />
+                    </EditText>
                 </RelativeLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="5"
-                    android:orientation="vertical" >
+                <RelativeLayout
+                    style="@style/brandStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#fff"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp" >
 
-                    <LinearLayout
+                    <ImageView
+                        android:id="@+id/textView10"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignRight="@+id/i4"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/iic_fax" />
+
+                    <EditText
+                        android:id="@+id/editTextfax"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:weightSum="7" >
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/textView10"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:hint="نمابر"
+                        android:inputType="number"
+                        android:textColorHint="#000" />
+                </RelativeLayout>
 
-                        <LinearLayout
-                            android:id="@+id/editpageNetwork"
-                            style="@style/brandStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:orientation="vertical"
-                            android:visibility="gone" >
+                <RelativeLayout
+                    style="@style/brandStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#fff"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp" >
 
-                            <LinearLayout
-                                android:id="@+id/LinearLayout1"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="25dp"
-                                android:layout_marginRight="25dp"
-                                android:layout_marginTop="10dp" >
+                    <ImageView
+                        android:id="@+id/textView9"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignRight="@+id/i2"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/iic_mobile" />
 
-                                <ImageButton
-                                    android:id="@+id/imgbtnFacebook_Object"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:background="#0000"
-                                    android:src="@drawable/facebook" />
+                    <EditText
+                        android:id="@+id/editTextmob"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/textView9"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:hint="همراه"
+                        android:inputType="number"
+                        android:textColorHint="#000" />
+                </RelativeLayout>
 
-                                <ImageButton
-                                    android:id="@+id/imgbtnInsta_Object"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:background="#0000"
-                                    android:src="@drawable/lnkin" />
+                <RelativeLayout
+                    style="@style/brandStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#fff"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp" >
 
-                                <ImageButton
-                                    android:id="@+id/imgbtnLinkedin_Object"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:background="#0000"
-                                    android:src="@drawable/twtr" />
+                    <ImageView
+                        android:id="@+id/textView8"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignRight="@+id/i2"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/internet" />
 
-                                <ImageButton
-                                    android:id="@+id/imgbtnGoogle_Object"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:background="#0000"
-                                    android:src="@drawable/internet" />
+                    <EditText
+                        android:id="@+id/editwebsite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/textView8"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:hint="وب سایت"
+                        android:textColorHint="#000" />
+                </RelativeLayout>
 
-                                <ImageButton
-                                    android:id="@+id/imgbtnSite_Object"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:background="#0000"
-                                    android:src="@drawable/google" />
+                <RelativeLayout
+                    style="@style/brandStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#fff"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp" >
 
-                                <ImageButton
-                                    android:id="@+id/imgbtnTwitter_Object"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:background="#0000"
-                                    android:src="@drawable/insta" />
-                            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/textView4"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/iic_email" />
 
-                            <RelativeLayout
-                                android:id="@+id/editpageNetwork"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp" >
+                    <EditText
+                        android:id="@+id/editTextemail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/textView4"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:hint="پست الکترونیک"
+                        android:textColorHint="#000" />
+                </RelativeLayout>
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerInParent="true"
-                                    android:layout_margin="10dp"
-                                    android:text="ویرایش لینک شبکه های اجتماعی"
-                                    android:textColor="@color/transparent" />
-                            </RelativeLayout>
-                        </LinearLayout>
+                <RelativeLayout
+                    style="@style/brandStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/shadow_layer"
+                    android:paddingTop="5dp" >
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:orientation="horizontal" >
+                    <ImageView
+                        android:id="@+id/ImageView01"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/iic_address" />
 
-                            <RelativeLayout
-                                android:id="@+id/starsEdition"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
-                                android:background="#fff"
-                                android:gravity="right|center_horizontal" >
+                    <EditText
+                        android:id="@+id/editTextaddres"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/ImageView01"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:hint="آدرس"
+                        android:textColorHint="#000" />
+                </RelativeLayout>
+            </LinearLayout>
 
-                                <TextView
-                                    android:id="@+id/lableSt"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:gravity="right"
-                                    android:lineSpacingMultiplier="2"
-                                    android:text="به منظور ارتقا وضعیت نمایش صفحه خود در بین سایر صفحات می توانید با افزایش اعتبار ، جایگاه خود را بهبود بخشید  "
-                                    android:textColor="@color/orginal_hard_blue_color" />
-
-                                <RatingBar
-                                    android:id="@+id/ratingBar1"
-                                    style="@style/StarRatingBar"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/lableSt"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_margin="10dp"
-                                    android:numStars="5"
-                                    android:visibility="visible" />
-
-                                <ImageView
-                                    android:id="@+id/btnPay"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:layout_below="@+id/ratingBar1"
-                                    android:layout_centerHorizontal="true"
-                                    android:paddingBottom="10dp"
-                                    android:src="@drawable/ic_pay" />
-
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/btnPay"
-                                    android:paddingBottom="10dp"
-                                    android:src="@drawable/shadow_line_personal" />
-                            </RelativeLayout>
-                        </LinearLayout>
-
-                        <RelativeLayout
-                            style="@style/brandStyle"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:paddingBottom="5dp"
-                            android:paddingTop="5dp" >
-
-                            <ImageView
-                                android:id="@+id/textView6"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/iic_phone" />
-
-                            <EditText
-                                android:id="@+id/editTextphone"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_toLeftOf="@+id/textView6"
-                                android:ems="10"
-                                android:gravity="center"
-                                android:hint="تلفن"
-                                android:inputType="number"
-                                android:textColorHint="#000" >
-
-                                <requestFocus />
-                            </EditText>
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            style="@style/brandStyle"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:paddingBottom="5dp"
-                            android:paddingTop="5dp" >
-
-                            <ImageView
-                                android:id="@+id/textView10"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_alignRight="@+id/i4"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/iic_fax" />
-
-                            <EditText
-                                android:id="@+id/editTextfax"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_toLeftOf="@+id/textView10"
-                                android:ems="10"
-                                android:gravity="center"
-                                android:hint="نمابر"
-                                android:inputType="number"
-                                android:textColorHint="#000" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            style="@style/brandStyle"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:paddingBottom="5dp"
-                            android:paddingTop="5dp" >
-
-                            <ImageView
-                                android:id="@+id/textView8"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_alignRight="@+id/i2"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/iic_mobile" />
-
-                            <EditText
-                                android:id="@+id/editTextmob"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_toLeftOf="@+id/textView8"
-                                android:ems="10"
-                                android:gravity="center"
-                                android:hint="همراه"
-                                android:inputType="number"
-                                android:textColorHint="#000" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            style="@style/brandStyle"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:paddingBottom="5dp"
-                            android:paddingTop="5dp" >
-
-                            <ImageView
-                                android:id="@+id/textView8"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_alignRight="@+id/i2"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/internet" />
-
-                            <EditText
-                                android:id="@+id/editwebsite"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_toLeftOf="@+id/textView8"
-                                android:ems="10"
-                                android:gravity="center"
-                                android:hint="وب سایت"
-                                android:textColorHint="#000" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            style="@style/brandStyle"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:paddingBottom="5dp"
-                            android:paddingTop="5dp" >
-
-                            <ImageView
-                                android:id="@+id/textView4"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/iic_email" />
-
-                            <EditText
-                                android:id="@+id/editTextemail"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_toLeftOf="@+id/textView4"
-                                android:ems="10"
-                                android:gravity="center"
-                                android:hint="پست الکترونیک"
-                                android:textColorHint="#000" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            style="@style/brandStyle"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
-                            android:background="#fff"
-                            android:paddingBottom="5dp"
-                            android:paddingTop="5dp" >
-
-                            <ImageView
-                                android:id="@+id/ImageView01"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/iic_address" />
-
-                            <EditText
-                                android:id="@+id/editTextaddres"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_toLeftOf="@+id/ImageView01"
-                                android:ems="10"
-                                android:gravity="center"
-                                android:hint="آدرس"
-                                android:textColorHint="#000" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/editpagedownload"
-                            style="@style/brandStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="10dp"
-                            android:background="#fff"
-                            android:visibility="gone" >
-
-                            <RelativeLayout
-                                android:id="@+id/downloadLinear"
-                                style="@style/brandStyle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="5dp"
-                                android:background="#fff"
-                                android:gravity="center" >
-
-                                <Button
-                                    android:id="@+id/btnPdf1_Object"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginTop="5dp"
-                                    android:background="@drawable/ic_catalog" />
-
-                                <Button
-                                    android:id="@+id/btnPdf2_Object"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_toLeftOf="@+id/btnPdf1_Object"
-                                    android:background="@drawable/ic_price" />
-
-                                <Button
-                                    android:id="@+id/btnPdf3_Object"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_toLeftOf="@+id/btnPdf2_Object"
-                                    android:background="@drawable/ic_pdf" />
-
-                                <Button
-                                    android:id="@+id/btnPdf4_Object"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_toLeftOf="@+id/btnPdf3_Object"
-                                    android:background="@drawable/ic_video" />
-                            </RelativeLayout>
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/downloadLinear"
-                                android:layout_centerVertical="true"
-                                android:layout_margin="10dp"
-                                android:gravity="center_horizontal"
-                                android:paddingBottom="10dp"
-                                android:text="ویرایش لینک های دانلود"
-                                android:textColor="@color/transparent" />
-                        </RelativeLayout>
-                    </LinearLayout>
-                </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shadow_layer"
+                android:orientation="vertical" >
 
                 <LinearLayout
                     android:id="@+id/linearfooteredit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:orientation="vertical" >
 
                     <ImageView

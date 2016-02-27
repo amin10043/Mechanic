@@ -23,8 +23,8 @@ import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.SavingVisit;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.UpdatingImage;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 import android.annotation.SuppressLint;
@@ -1064,7 +1064,7 @@ public class FroumFragment extends Fragment
 	}
 
 	@Override
-	public void saveVisit(String output) {
+	public void resultSaveVisit(String output) {
 
 		if (!output.contains("Exception")) {
 			if (isFinish == false) {

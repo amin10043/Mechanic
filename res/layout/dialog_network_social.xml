@@ -8,162 +8,153 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center" >
+        android:layout_margin="5dp"
+        android:orientation="vertical" >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" >
 
             <TextView
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:text="ویرایش لینک شبکه های اجتماعی"
-                android:textColor="@color/transparent" />
+                android:layout_centerInParent="true"
+                android:text="لینک های مورد نظر را درج نمایید"
+                android:textColor="@color/orginal_hard_blue_color" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp" >
-
-                <ImageView
-                    android:id="@+id/ff1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/facebook" />
-
-                <EditText
-                    android:id="@+id/dialogm1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/ff1"
-                    android:layout_toRightOf="@+id/ff1"
-                    android:hint="FaceBook" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp" >
-
-                <ImageView
-                    android:id="@+id/ff2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/lnkin" />
-
-                <EditText
-                    android:id="@+id/dialogm2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/ff2"
-                    android:layout_toRightOf="@+id/ff2"
-                    android:hint="LinkedIn" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp" >
-
-                <ImageView
-                    android:id="@+id/ff3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/twtr" />
-
-                <EditText
-                    android:id="@+id/dialogm3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/ff3"
-                    android:layout_toRightOf="@+id/ff3"
-                    android:hint="Twitter" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/savenetlink"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
                 android:layout_margin="5dp"
-                android:visibility="gone" >
+                android:background="@drawable/send" />
 
-                <ImageView
-                    android:id="@+id/ff4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/internet" />
+            <ImageView
+                android:id="@+id/closeDialog"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/delete_reply" />
+        </RelativeLayout>
 
-                <EditText
-                    android:id="@+id/dialogm4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/ff4"
-                    android:layout_toRightOf="@+id/ff4"
-                    android:hint="Website" />
-            </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" >
 
-            <RelativeLayout
+            <ImageView
+                android:id="@+id/ff1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/facebook" />
+
+            <EditText
+                android:id="@+id/dialogm1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp" >
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:layout_toRightOf="@+id/ff1"
+                android:hint="FaceBook" />
+        </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/ff5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/google" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" >
 
-                <EditText
-                    android:id="@+id/dialogm5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/ff5"
-                    android:layout_toRightOf="@+id/ff5"
-                    android:hint="Google+" />
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/ff2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/lnkin" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/ff6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/insta" />
-
-                <EditText
-                    android:id="@+id/dialogm6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/ff6"
-                    android:layout_toRightOf="@+id/ff6"
-                    android:hint="Instagram" />
-            </RelativeLayout><RelativeLayout
-                android:id="@+id/layout"
+            <EditText
+                android:id="@+id/dialogm2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="10dp" >
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:layout_toRightOf="@+id/ff2"
+                android:hint="LinkedIn" />
+        </RelativeLayout>
 
-                <Button
-                    android:id="@+id/savenetlink"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/rectangle_drawable"
-                    android:text="ثبت"
-                    android:textColor="@color/orginal_golden_color" />
-            </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" >
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/ff3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/twtr" />
+
+            <EditText
+                android:id="@+id/dialogm3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:layout_toRightOf="@+id/ff3"
+                android:hint="Twitter" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" >
+
+            <ImageView
+                android:id="@+id/ff5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/google" />
+
+            <EditText
+                android:id="@+id/dialogm5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:layout_toRightOf="@+id/ff5"
+                android:hint="Google+" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" >
+
+            <ImageView
+                android:id="@+id/ff6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/insta" />
+
+            <EditText
+                android:id="@+id/dialogm6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:layout_toRightOf="@+id/ff6"
+                android:hint="Instagram" />
+        </RelativeLayout>
     </LinearLayout>
 
 </ScrollView>

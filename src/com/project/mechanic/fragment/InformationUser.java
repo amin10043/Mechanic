@@ -310,6 +310,13 @@ public class InformationUser extends Fragment {
 		/*
 		 * end check view information
 		 */
+		setFont();
+	}
+
+	private void setFont() {
+
+		txtname.setTypeface(util.SetFontCasablanca());
+		txtaddress.setTypeface(util.SetFontIranSans());
 	}
 
 	private void allpageUser() {
@@ -340,7 +347,7 @@ public class InformationUser extends Fragment {
 
 		ArrayList<String> parentItems = new ArrayList<String>();
 
-		Expandview.setDividerHeight(5);
+//		Expandview.setDividerHeight(5);
 		Expandview.setGroupIndicator(null);
 		Expandview.setClickable(true);
 
@@ -385,7 +392,7 @@ public class InformationUser extends Fragment {
 
 			listDataChild.put(parentItems.get(2), FroumData);
 		}
-		
+
 		if (AnadData.size() == 0) {
 			prd.setDateTicket("آیتمی اضافه نشده است");
 			emptyItem.clear();

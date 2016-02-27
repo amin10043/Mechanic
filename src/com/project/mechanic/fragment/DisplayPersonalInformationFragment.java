@@ -24,9 +24,9 @@ import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.inter.DataPersonalInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.service.UpdatingPersonalPage;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 import android.annotation.SuppressLint;
@@ -78,7 +78,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 	RelativeLayout.LayoutParams editBtnParams, paramsLayout;
 
 	UpdatingPersonalPage updating;
-//	ProgressDialog ringProgressDialog;
+	// ProgressDialog ringProgressDialog;
 
 	boolean isFirstRun;
 	String tableName;
@@ -92,6 +92,9 @@ public class DisplayPersonalInformationFragment extends Fragment
 	boolean f2 = false;
 	boolean f3 = false;
 	boolean f4 = false;
+	DataPersonalExpandAdapter listAdapter;
+
+	PersonalData pdObject, pdObjectFollowed, pdTicket , pdAnad;
 
 	@SuppressLint("NewApi")
 	@Override
@@ -131,45 +134,6 @@ public class DisplayPersonalInformationFragment extends Fragment
 		return rootView;
 	}
 
-	// @Override
-	// public void processFinish(byte[] output) {
-	// if (output != null) {
-	// Bitmap bmp = BitmapFactory
-	// .decodeByteArray(output, 0, output.length);
-	// img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
-	// dbAdapter.open();
-	// dbAdapter.UpdateUserImage(u.getId(), output, serverDate);
-	// dbAdapter.close();
-	// }
-	// else {
-	// if (u != null && u.getImage() != null) {
-	// Bitmap bmp = BitmapFactory.decodeByteArray(u.getImage(), 0,
-	// u.getImage().length);
-	// img.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 50));
-	// }
-	// }
-	// Toast.makeText(getActivity(), "", 0).show();
-	// }
-
-	// @Override
-	// public void processFinish(String output) {
-	// if (!"".equals(output) && output != null) {
-	// serverDate = output;
-	// HashMap<String, String> params = new LinkedHashMap<String, String>();
-	// params.put("tableName", "Users");
-	// params.put("Id", String.valueOf(currentUser.getId()));
-	// params.put("fromDate", currentUser.getImageServerDate());
-	// Context context = getActivity();
-	// if (context != null) {
-	//
-	// serviceImage = new UpdatingImage(context);
-	// serviceImage.delegate = this;
-	// serviceImage.execute(params);
-	//
-	// }
-	// }
-	//
-	// }
 
 	public void FillExpandListView() {
 
@@ -310,9 +274,8 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 			String time = currentTime.getString("time", "-1");
 
-			final DataPersonalExpandAdapter listAdapter = new DataPersonalExpandAdapter(getActivity(), parentItems,
-					listDataChild, time, DisplayPersonalInformationFragment.this, sizeTypeList, true,
-					util.getCurrentUser().getName());
+			listAdapter = new DataPersonalExpandAdapter(getActivity(), parentItems, listDataChild, time,
+					DisplayPersonalInformationFragment.this, sizeTypeList, true, util.getCurrentUser().getName());
 
 			// setting list adapter
 
@@ -373,31 +336,31 @@ public class DisplayPersonalInformationFragment extends Fragment
 		RelativeLayout.LayoutParams f5 = new RelativeLayout.LayoutParams(AddressLayout.getLayoutParams());
 
 		f1.width = util.getScreenwidth();
-		f1.height = LayoutParams.WRAP_CONTENT;
+		f1.height = 2;
 		f1.setMargins(50, 0, 50, 0);
 		f1.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		f1.addRule(RelativeLayout.BELOW, R.id.textView6);
 
 		f2.width = util.getScreenwidth();
-		f2.height = LayoutParams.WRAP_CONTENT;
+		f2.height = 2;
 		f2.setMargins(50, 0, 50, 0);
 		f2.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		f2.addRule(RelativeLayout.BELOW, R.id.textView8);
 
 		f3.width = util.getScreenwidth();
-		f3.height = LayoutParams.WRAP_CONTENT;
+		f3.height = 2;
 		f3.setMargins(50, 0, 50, 0);
 		f3.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		f3.addRule(RelativeLayout.BELOW, R.id.textView4);
 
 		f4.width = util.getScreenwidth();
-		f4.height = LayoutParams.WRAP_CONTENT;
+		f4.height = 2;
 		f4.setMargins(50, 0, 50, 0);
 		f4.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		f4.addRule(RelativeLayout.BELOW, R.id.textView10);
 
 		f5.width = util.getScreenwidth();
-		f5.height = LayoutParams.WRAP_CONTENT;
+		f5.height = 2;
 		f5.setMargins(50, 0, 50, 0);
 		f5.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		f5.addRule(RelativeLayout.BELOW, R.id.textView12);
@@ -567,12 +530,12 @@ public class DisplayPersonalInformationFragment extends Fragment
 		txtEdit.setTypeface(util.SetFontCasablanca());
 		txtBirthday.setTypeface(util.SetFontCasablanca());
 
-		txtaddress.setTypeface(util.SetFontCasablanca());
-		txtcellphone.setTypeface(util.SetFontCasablanca());
-		txtphone.setTypeface(util.SetFontCasablanca());
-		txtemail.setTypeface(util.SetFontCasablanca());
+		txtaddress.setTypeface(util.SetFontIranSans());
+		// txtcellphone.setTypeface(util.SetFontCasablanca());
+		// txtphone.setTypeface(util.SetFontCasablanca());
+		// txtemail.setTypeface(util.SetFontCasablanca());
 		txtname.setTypeface(util.SetFontCasablanca());
-		txtfax.setTypeface(util.SetFontCasablanca());
+		// txtfax.setTypeface(util.SetFontCasablanca());
 
 	}
 
@@ -613,7 +576,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 			updating.delegate = DisplayPersonalInformationFragment.this;
 			String[] params = new String[5];
 			params[0] = tableName;
-			params[1] = "201510210957407981";
+			params[1] = currentUser.getDate();
 			params[2] = serverDate;
 
 			params[3] = "1";
@@ -633,13 +596,13 @@ public class DisplayPersonalInformationFragment extends Fragment
 	public void processFinish(String output) {
 		if (selectTableId < 8) {
 
-//			if (ringProgressDialog != null)
-//				ringProgressDialog.dismiss();
+			// if (ringProgressDialog != null)
+			// ringProgressDialog.dismiss();
 
 			if (output != null || !"".equals(output) || !output.equals("anyType{}") || !output.contains("Exception")) {
 
-//				if (ringProgressDialog != null)
-//					ringProgressDialog.dismiss();
+				// if (ringProgressDialog != null)
+				// ringProgressDialog.dismiss();
 
 				if (isFirstRun == true) {
 
@@ -657,8 +620,9 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 		if (getActivity() != null) {
 
-//			ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-//			ringProgressDialog.setCancelable(true);
+			// ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا
+			// منتظر بمانید...", true);
+			// ringProgressDialog.setCancelable(true);
 
 			date = new ServerDate(getActivity());
 			date.delegate = DisplayPersonalInformationFragment.this;
@@ -673,10 +637,10 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 		if (counterMyObject < ObejctData.size()) {
 
-			PersonalData pd = ObejctData.get(counterMyObject);
-			objectIdPage = pd.getObjectId();
+			pdObject = ObejctData.get(counterMyObject);
+			objectIdPage = pdObject.getObjectId();
 
-			String objectImageDate = pd.getImage2ServerDateObject();
+			String objectImageDate = pdObject.getImage2ServerDateObject();
 
 			if (objectImageDate == null)
 				objectImageDate = "";
@@ -705,10 +669,10 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 		if (counterFollowObject < FollowedPageLsit.size()) {
 
-			PersonalData pd = FollowedPageLsit.get(counterFollowObject);
-			objectIdFollowed = pd.getObjectFollowId();
+			pdObjectFollowed = FollowedPageLsit.get(counterFollowObject);
+			objectIdFollowed = pdObjectFollowed.getObjectFollowId();
 
-			String objectImageDate = pd.getImage2ServerDateObject();
+			String objectImageDate = pdObjectFollowed.getImage2ServerDateObject();
 
 			if (objectImageDate == null)
 				objectImageDate = "";
@@ -739,9 +703,9 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 			if (counterTicket < TicketData.size()) {
 
-				PersonalData pd = TicketData.get(counterTicket);
-				ticketIdData = pd.getTicketId();
-				String objectImageDate = pd.getImageServerDateTicket();
+				pdTicket = TicketData.get(counterTicket);
+				ticketIdData = pdTicket.getTicketId();
+				String objectImageDate = pdTicket.getImageServerDateTicket();
 
 				if (objectImageDate == null)
 					objectImageDate = "";
@@ -769,10 +733,10 @@ public class DisplayPersonalInformationFragment extends Fragment
 		if (getActivity() != null) {
 			if (counterAnad < AnadData.size()) {
 
-				PersonalData pd = AnadData.get(counterAnad);
-				anadIdData = pd.getAnadId();
+				pdAnad = AnadData.get(counterAnad);
+				anadIdData = pdAnad.getAnadId();
 
-				String objectImageDate = pd.getImageServerDateAnad();
+				String objectImageDate = pdAnad.getImageServerDateAnad();
 
 				if (objectImageDate == null)
 					objectImageDate = "";
@@ -786,8 +750,8 @@ public class DisplayPersonalInformationFragment extends Fragment
 				update.execute(maps);
 			} else {
 
-//				if (ringProgressDialog != null)
-//					ringProgressDialog.dismiss();
+				// if (ringProgressDialog != null)
+				// ringProgressDialog.dismiss();
 
 				Toast.makeText(getActivity(), " به روز رسانی اطلاعات با موفقیت انجام شد", 0).show();
 
@@ -900,7 +864,6 @@ public class DisplayPersonalInformationFragment extends Fragment
 			}
 		} else {
 
-			FillExpandListView();
 		}
 
 	}
@@ -908,33 +871,49 @@ public class DisplayPersonalInformationFragment extends Fragment
 	@Override
 	public void processFinish(byte[] output) {
 		if (f1 == true) {
+			String ImagePathObject = "";
 
 			if (output != null) {
 
-				util.CreateFile(output, objectIdPage, "Mechanical", "Profile", "profile", "Object");
+				ImagePathObject = util.CreateFile(output, objectIdPage, "Mechanical", "Profile", "profile", "Object");
+				if (!ImagePathObject.equals(""))
+					pdObject.setImagePathObject(ImagePathObject);
+				listAdapter.notifyDataSetChanged();
+
 			}
 			counterMyObject++;
 			getImageObject();
 
 		} // end f1
 		else if (f2 == true) {
+			String ImagePathObjectFollowed = "";
 
 			if (output != null) {
 
-				util.CreateFile(output, objectIdFollowed, "Mechanical", "Profile", "profile", "Object");
+				ImagePathObjectFollowed = util.CreateFile(output, objectIdFollowed, "Mechanical", "Profile", "profile",
+						"Object");
 
+				if (!ImagePathObjectFollowed.equals(""))
+					pdObjectFollowed.setImagePathObjectFollow(ImagePathObjectFollowed);
+				listAdapter.notifyDataSetChanged();
 			}
 			counterFollowObject++;
 			getImageFollowed();
 		} // end f2
 		else {
 			if (f3 == true) {
+				String ImagePathTicket = "";
 
 				if (output != null) {
 
 					boolean IsEmptyByte = util.IsEmptyByteArrayImage(output);
 					if (IsEmptyByte == false) {
-						util.CreateFile(output, ticketIdData, "Mechanical", "Ticket", "ticket", "Ticket");
+						ImagePathTicket = util.CreateFile(output, ticketIdData, "Mechanical", "Ticket", "ticket",
+								"Ticket");
+
+						if (!ImagePathTicket.equals(""))
+							pdTicket.setImagePathTicket(ImagePathTicket);
+						listAdapter.notifyDataSetChanged();
 
 					}
 
@@ -944,10 +923,16 @@ public class DisplayPersonalInformationFragment extends Fragment
 			} // end f3
 			else if (f4 == true) {
 
+				String imagePathAnad = "";
+
 				if (output != null) {
 
-					util.CreateFile(output, anadIdData, "Mechanical", "Anad", "anad", "Anad");
+					imagePathAnad =util.CreateFile(output, anadIdData, "Mechanical", "Anad", "anad", "Anad");
 
+					if (!imagePathAnad.equals(""))
+						pdAnad.setImagePathAnad(imagePathAnad);
+					listAdapter.notifyDataSetChanged();
+						
 				}
 				counterAnad++;
 				getAnadImage();
@@ -955,6 +940,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 			}
 
 		}
+
 	}
 
 	@Override
@@ -1016,6 +1002,8 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 			}
 		}
+		listAdapter.notifyDataSetChanged();
+
 	}
 
 	@Override
@@ -1025,15 +1013,15 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 			util.parseQuery(output);
 			if (selectTableId > 7) {
-//				if (ringProgressDialog != null)
-//					ringProgressDialog.dismiss();
+				// if (ringProgressDialog != null)
+				// ringProgressDialog.dismiss();
 				f1 = true;
 				getImageObject();
 
 				// ringProgressDialog = ProgressDialog.show(getActivity(), "", "
 				// به روز رسانی تصاویر ...", true);
 				// ringProgressDialog.setCancelable(true);
-
+				// Toast.makeText(getActivity(), "start", 0).show();
 				FillExpandListView();
 
 			} else

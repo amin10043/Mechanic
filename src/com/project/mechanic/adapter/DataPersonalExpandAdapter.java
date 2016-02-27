@@ -1195,9 +1195,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 			@Override
 			public void onClick(View arg0) {
-				// if (sizeTypeItem.get(groupPosition) == 0) {
-				// Toast.makeText(context, "عنوانی ثبت نشده است", 0).show();
-				// } else {
+
 
 				if (isExpanded) {
 					mExpandableListView.collapseGroup(groupPosition);
@@ -1206,11 +1204,12 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 				} else {
 					indicatorImg.setBackgroundResource(R.drawable.dow_s);
-
 					mExpandableListView.expandGroup(groupPosition);
+					mExpandableListView.setSelectedChild(groupPosition, 0, true);
+
 				}
-				notifyDataSetChanged();
-				// }
+
+
 			}
 		});
 

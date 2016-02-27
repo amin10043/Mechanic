@@ -19,22 +19,23 @@ import android.widget.ListView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.adapter.PersonLikedObjectAdapter;
 import com.project.mechanic.adapter.PersonLikedPaperAdapter;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.LikeInPaper;
+import com.project.mechanic.entity.PersonalData;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.UpdatingImage;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class DialogPersonLikedObject extends Dialog implements AsyncInterface,
-		CommInterface , GetAsyncInterface {
+public class DialogPersonLikedObject extends Dialog implements AsyncInterface, CommInterface, GetAsyncInterface {
 
 	Context context;
 	DataBaseAdapter dbAdapter;
@@ -43,25 +44,30 @@ public class DialogPersonLikedObject extends Dialog implements AsyncInterface,
 	ArrayList<LikeInObject> likedist;
 	ProgressBar progress;
 	ArrayList<Integer> ids;
-	ArrayList<Integer> missedIds;
+	ArrayList<Integer> missedIds = new ArrayList<Integer>();;
 	ServerDate date;
 	int controller = 0;
 	String serverDate = "";
-	int iid;
+	int userIdMissed;
 	ServiceComm service;
 	Utility util;
-	Users uu;
+	Users user;
 	UpdatingImage updating;
 	Map<String, String> maps;
+	ArrayList<Users> userList = new ArrayList<Users>();
+	ArrayList<String> dateLike = new ArrayList<String>();
+	PersonLikedObjectAdapter listadapter;
 
-	public DialogPersonLikedObject(Context context, int ObjectId,
-			ArrayList<LikeInObject> list) {
+	boolean isMissedUser = false, getUser = true;
+
+	public DialogPersonLikedObject(Context context, int ObjectId, ArrayList<LikeInObject> list) {
 		super(context);
 
 		this.context = context;
 		this.ObjectId = ObjectId;
 		this.likedist = list;
 		dbAdapter = new DataBaseAdapter(context);
+		util = new Utility(context);
 	}
 
 	@Override
@@ -69,92 +75,103 @@ public class DialogPersonLikedObject extends Dialog implements AsyncInterface,
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setBackgroundDrawable(
-				new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-		lv = (ListView) findViewById(R.id.listPeronLiked);
-		progress = (ProgressBar) findViewById(R.id.progressBar1);
-		missedIds = new ArrayList<Integer>();
+		// getWindow().setBackgroundDrawable(new
+		// ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 		setContentView(R.layout.dialog_person_liked);
 
-		dbAdapter.open();
-		
+		lv = (ListView) findViewById(R.id.listPeronLiked);
+		progress = (ProgressBar) findViewById(R.id.progressBar1);
+
 		if (likedist != null) {
-			Users uId;
+			Users userItem;
+			dbAdapter.open();
 			for (int i = 0; i < likedist.size(); ++i) {
-				int uidd = likedist.get(i).getUserId();
-				uId = dbAdapter.getUserById(uidd);
-				if (uId == null) {
-					missedIds.add(uidd);
+
+				int userId = likedist.get(i).getUserId();
+				dateLike.add(likedist.get(i).getDatetime());
+				userItem = dbAdapter.getUserById(userId);
+
+				if (userItem == null) {
+					missedIds.add(userId);
+				} else {
+					userList.add(userItem);
 				}
 			}
+			dbAdapter.close();
 		}
 		if (missedIds.size() == 0) {
 
-			progress = (ProgressBar) findViewById(R.id.progressBar1);
-			lv = (ListView) findViewById(R.id.listPeronLiked);
+			fillListView();
 
-			progress.setVisibility(View.GONE);
-			lv.setVisibility(View.VISIBLE);
-
-			PersonLikedObjectAdapter listadapter = new PersonLikedObjectAdapter(
-					context, R.layout.row_person_liked, likedist);
-			lv.setAdapter(listadapter);
-
-			lv.setOnItemClickListener(new OnItemClickListener() {
-
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1,
-						int position, long arg3) {
-
-					LikeInObject likes = likedist.get(position);
-					Users user = dbAdapter.getUserById(likes.getUserId());
-					int userId = user.getId();
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					InformationUser fragment = new InformationUser();
-					Bundle bundle = new Bundle();
-					bundle.putInt("userId", userId);
-					fragment.setArguments(bundle);
-					trans.replace(R.id.content_frame, fragment);
-					trans.commit();
-					dismiss();
-				}
-			});
+			controller = 0;
+			getImage();
 
 		} else {
 			if (context != null) {
 				date = new ServerDate(context);
 				date.delegate = DialogPersonLikedObject.this;
 				date.execute("");
+				isMissedUser = true;
 
 			}
 		}
+
+		lv.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+				LikeInObject likes = likedist.get(position);
+				dbAdapter.open();
+				Users user = dbAdapter.getUserById(likes.getUserId());
+				dbAdapter.close();
+				int userId = user.getId();
+
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
+				InformationUser fragment = new InformationUser();
+				Bundle bundle = new Bundle();
+				bundle.putInt("userId", userId);
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+				dismiss();
+			}
+		});
 
 	}
 
 	@Override
 	public void processFinish(String output) {
 
-		serverDate = output;
-		getUserFromServer(missedIds, controller);
+		if (util.checkError(output) == false) {
+
+			serverDate = output;
+			getUserFromServer();
+		}
 	}
 
-	private void getUserFromServer(ArrayList<Integer> missedIds, int controller) {
+	private void getUserFromServer() {
 
 		if (controller < missedIds.size()) {
 
-			iid = missedIds.get(controller);
+			userIdMissed = missedIds.get(controller);
 			if (context != null) {
 				service = new ServiceComm(context);
 				service.delegate = DialogPersonLikedObject.this;
 				Map<String, String> items = new LinkedHashMap<String, String>();
 				items.put("tableName", "getUserById");
-				items.put("Id", String.valueOf(iid));
+				items.put("Id", String.valueOf(userIdMissed));
 				service.execute(items);
 
 			}
+		} else {
+
+			fillListView();
+
+			controller = 0;
+			getImage();
+
 		}
 
 	}
@@ -162,54 +179,162 @@ public class DialogPersonLikedObject extends Dialog implements AsyncInterface,
 	@Override
 	public void CommProcessFinish(String output) {
 
-		if (!"".equals(output)
-				&& output != null
-				&& !(output.contains("Exception") || output.contains("java") || output
-						.contains("soap"))) {
-			util.parseQuery(output);
+		if (util.checkError(output) == false) {
 
-			dbAdapter.open();
+			if (getUser == true) {
 
-			uu = dbAdapter.getUserById(iid);
+				util.parseQuery(output);
 
-			dbAdapter.close();
-			if (context != null) {
-				updating = new UpdatingImage(context);
-				updating.delegate = DialogPersonLikedObject.this;
-				maps = new LinkedHashMap<String, String>();
-				maps.put("tableName", "Users");
-				maps.put("Id", String.valueOf(uu.getId()));
-				maps.put("fromDate", uu.getImageServerDate());
-				updating.execute(maps);
+				controller++;
+				getUserFromServer();
 
+			} else {
+				if (output.contains("Exception") || output.contains("anyType"))
+					output = "";
+
+				dbAdapter.open();
+				dbAdapter.UpdateImageServerDate(userIdMissed, "Users", output);
+				dbAdapter.close();
+
+				controller++;
+				getDateImages();
 			}
 		} else
-			Toast.makeText(context, "خطا در دریافت کاربران", 0).show();
+			Toast.makeText(context, StaticValues.MessageError, 0).show();
 	}
 
 	@Override
 	public void processFinish(byte[] output) {
-		lv = (ListView) findViewById(R.id.listPeronLiked);
-		progress = (ProgressBar) findViewById(R.id.progressBar1);
-		
+
+		String imagePath = "";
+
 		if (output != null) {
 
-			
+			imagePath = util.CreateFile(output, userIdMissed, "Mechanical", "Users", "user", "Users");
 
-			util.CreateFile(output, iid, "Mechanical", "Users", "user", "Users");
-			dbAdapter.open();
-			dbAdapter.UpdateImageServerDate(iid, "Users", serverDate);
-			dbAdapter.close();
+			if (isMissedUser == false) {
+				if (!imagePath.equals(""))
+					userList.get(controller).setImagePath(imagePath);
+
+				listadapter.notifyDataSetChanged();
+
+			}
+		}
+		controller++;
+
+		getImage();
+
+	}
+
+	private void getImage() {
+
+		if (isMissedUser == true) {
+
+			if (controller < missedIds.size()) {
+
+				userIdMissed = missedIds.get(controller);
+
+				dbAdapter.open();
+				user = dbAdapter.getUserById(userIdMissed);
+				dbAdapter.close();
+
+				if (context != null) {
+					updating = new UpdatingImage(context);
+					updating.delegate = DialogPersonLikedObject.this;
+					maps = new LinkedHashMap<String, String>();
+					maps.put("tableName", "Users");
+					maps.put("Id", String.valueOf(userIdMissed));
+					maps.put("fromDate", "");
+					updating.execute(maps);
+
+				}
+			} else {
+				updateView();
+
+				controller = 0;
+				getDateImages();
+			}
 		} else {
+			if (controller < userList.size()) {
 
-			PersonLikedObjectAdapter listadapter = new PersonLikedObjectAdapter(
-					context, R.layout.row_person_liked, likedist);
-			lv.setAdapter(listadapter);
+				userIdMissed = userList.get(controller).getId();
 
-			listadapter.notifyDataSetChanged();
+				dbAdapter.open();
+				user = dbAdapter.getUserById(userIdMissed);
+				dbAdapter.close();
 
-			progress.setVisibility(View.GONE);
-			lv.setVisibility(View.VISIBLE);
+				String imageDateUser = user.getImageServerDate();
+
+				if (imageDateUser == null)
+					imageDateUser = "";
+
+				if (context != null) {
+					updating = new UpdatingImage(context);
+					updating.delegate = DialogPersonLikedObject.this;
+					maps = new LinkedHashMap<String, String>();
+					maps.put("tableName", "Users");
+					maps.put("Id", String.valueOf(userIdMissed));
+					maps.put("fromDate", imageDateUser);
+					updating.execute(maps);
+
+				}
+			} else {
+				controller = 0;
+				getDateImages();
+			}
+		}
+	}
+
+	private void fillListView() {
+
+		progress.setVisibility(View.GONE);
+		lv.setVisibility(View.VISIBLE);
+
+		listadapter = new PersonLikedObjectAdapter(context, R.layout.row_person_liked, userList, dateLike);
+		lv.setAdapter(listadapter);
+
+	}
+
+	private void updateView() {
+
+		userList.clear();
+		if (likedist != null) {
+			Users userItem;
+			dbAdapter.open();
+			for (int i = 0; i < likedist.size(); ++i) {
+
+				int userId = likedist.get(i).getUserId();
+				dateLike.add(likedist.get(i).getDatetime());
+				userItem = dbAdapter.getUserById(userId);
+
+				if (userItem != null)
+					userList.add(userItem);
+			}
+		}
+		dbAdapter.close();
+
+		fillListView();
+
+	}
+
+	private void getDateImages() {
+
+		if (controller < userList.size()) {
+
+			userIdMissed = userList.get(controller).getId();
+
+			if (context != null) {
+
+				ServiceComm getDateService = new ServiceComm(context);
+
+				getDateService.delegate = DialogPersonLikedObject.this;
+				Map<String, String> items = new LinkedHashMap<String, String>();
+				items.put("tableName", "getUserImageDate");
+				items.put("Id", String.valueOf(userIdMissed));
+				getDateService.execute(items);
+
+				getUser = false;
+			}
 		}
 	}
 }

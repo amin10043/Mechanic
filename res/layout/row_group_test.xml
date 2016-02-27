@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
-    android:background="@drawable/rectangle_drawable" >
+    android:background="@color/orginal_hard_blue_color" >
 
     <ImageView
         android:id="@+id/icon_item"
@@ -29,6 +29,6 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
         android:text="Large Text"
-        android:textColor="#c7b255" />
+        android:textColor="@color/white" />
 
 </RelativeLayout>

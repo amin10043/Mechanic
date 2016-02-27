@@ -4,21 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.ListView;
-import android.widget.Toast;
-
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.StaticValues;
@@ -33,11 +18,33 @@ import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.service.UpdatingVisit;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
+
+import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainBrandFragment extends Fragment
 		implements AsyncInterface, GetAsyncInterface, CommInterface, AsyncInterfaceVisit {
@@ -76,6 +83,8 @@ public class MainBrandFragment extends Fragment
 
 	int typeRunServer;
 
+	int pos = 0;
+
 	//////
 
 	public MainBrandFragment() {
@@ -88,6 +97,10 @@ public class MainBrandFragment extends Fragment
 
 		if (getArguments() != null && getArguments().getString("Id") != null) {
 			parentId = Integer.valueOf(getArguments().getString("Id"));
+		}
+
+		if (getArguments() != null) {
+			pos = Integer.valueOf(getArguments().getInt("position"));
 		}
 
 		rootView = inflater.inflate(R.layout.fragment_object, null);
@@ -108,13 +121,15 @@ public class MainBrandFragment extends Fragment
 				typeRunServer = StaticValues.TypeRunServerForGetDate;
 			}
 
+		lstObject.setSelection(pos);
+
 		refreshListView();
 
 		createNewObject();
 
 		onScrollListView();
 
-		util.ShowFooterAgahi(getActivity(), true, 2);
+		util.ShowFooterAgahi(getActivity(), false, 2);
 		return rootView;
 	}
 
@@ -137,7 +152,7 @@ public class MainBrandFragment extends Fragment
 	@Override
 	public void processFinish(String output) {
 
-		LoadMoreFooter.setVisibility(View.INVISIBLE);
+//		LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 		if (!output.contains("exception") && !output.contains("anyType")) {
 
@@ -155,7 +170,7 @@ public class MainBrandFragment extends Fragment
 			if (output.contains("anyType")) {
 
 				Toast.makeText(getActivity(), "صفحه جدیدی یافت نشد", 0).show();
-				LoadMoreFooter.setVisibility(View.INVISIBLE);
+//				LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 				if (swipeLayout != null) {
 					swipeLayout.setRefreshing(false);
@@ -192,8 +207,13 @@ public class MainBrandFragment extends Fragment
 
 		if (output != null) {
 
-			util.CreateFile(output, objectItem.getId(), "Mechanical", "Profile", "profile", "Object");
+			String imagePath = util.CreateFile(output, objectItem.getId(), "Mechanical", "Profile", "profile",
+					"Object");
 
+			if (!"".equals(imagePath))
+				mylist.get(userItemId).setImagePath2(imagePath);
+			
+			ListAdapter.notifyDataSetChanged();
 		}
 
 		userItemId++;
@@ -235,19 +255,23 @@ public class MainBrandFragment extends Fragment
 
 		} else {
 
-			fillListView();
+			// fillListView();
 		}
 
 	}
 
 	@Override
-	public void processFinishVisit(String output) {
+	public void resultCountView(String output) {
 
 		if (!output.contains("Exception")) {
 
 			adapter.open();
 			adapter.updateCountView("Object", objectItem.getId(), Integer.valueOf(output));
 			adapter.close();
+			
+			mylist.get(visitCounter).setCountView(Integer.valueOf(output));
+			ListAdapter.notifyDataSetChanged();
+
 		}
 		visitCounter++;
 		getCountVisitFromServer();
@@ -340,8 +364,8 @@ public class MainBrandFragment extends Fragment
 		lstObject = (ListView) rootView.findViewById(R.id.listvCmt_Introduction);
 
 		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
-		lstObject.addFooterView(LoadMoreFooter);
-		LoadMoreFooter.setVisibility(View.INVISIBLE);
+//		lstObject.addFooterView(LoadMoreFooter);
+//		LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 		swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
 		createItem = (FloatingActionButton) rootView.findViewById(R.id.fab);
@@ -384,14 +408,80 @@ public class MainBrandFragment extends Fragment
 
 			@Override
 			public void onClick(View arg0) {
-				dialog = new DialogCreatePage(getActivity(), message);
-				dialog.show();
+				// dialog = new DialogCreatePage(getActivity(), message);
+				// dialog.show();
+				//
+				// SharedPreferences sendParentID =
+				// getActivity().getSharedPreferences("Id", 0);
+				// sendParentID.edit().putInt("ParentId", parentId).commit();
+				// sendParentID.edit().putInt("mainObject",
+				// MainObjectId).commit();
+				// sendParentID.edit().putInt("objectId", 0).commit();
 
-				SharedPreferences sendParentID = getActivity().getSharedPreferences("Id", 0);
-				sendParentID.edit().putInt("ParentId", parentId).commit();
-				sendParentID.edit().putInt("mainObject", MainObjectId).commit();
-				sendParentID.edit().putInt("objectId", 0).commit();
+				final RelativeLayout bottomSheet = (RelativeLayout) rootView.findViewById(R.id.bottmSheet);
+				TextView titleSheet = (TextView) rootView.findViewById(R.id.titleSheet);
+				TextView SeenBetter = (TextView) rootView.findViewById(R.id.better);
+				ImageView createPage = (ImageView) rootView.findViewById(R.id.createDialogPage);
+				ImageView close = (ImageView) rootView.findViewById(R.id.delete);
 
+				titleSheet.setText(message);
+				titleSheet.setTextSize(20);
+				titleSheet.setLineSpacing(10, 1);
+				titleSheet.setTypeface(util.SetFontIranSans());
+				SeenBetter.setTypeface(util.SetFontIranSans());
+				SeenBetter.setTextSize(20);
+
+				bottomSheet.setVisibility(View.VISIBLE);
+				createItem.setVisibility(View.INVISIBLE);
+
+				Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.down_from_top);
+				bottomSheet.startAnimation(anim);
+
+				createPage.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+
+						if (util.getCurrentUser() == null) {
+
+							Toast.makeText(getActivity(), "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
+
+							Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.up_from_bottom);
+							bottomSheet.startAnimation(anim);
+
+							bottomSheet.setVisibility(View.GONE);
+							util.ShowFooterAgahi(getActivity(), false, 2);
+							createItem.setVisibility(View.VISIBLE);
+
+						} else {
+							FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+									.beginTransaction();
+							trans.replace(R.id.content_frame, new CreateIntroductionFragment());
+							trans.commit();
+
+							SharedPreferences sendParentID = getActivity().getSharedPreferences("Id", 0);
+							sendParentID.edit().putInt("ParentId", parentId).commit();
+							sendParentID.edit().putInt("mainObject", MainObjectId).commit();
+							sendParentID.edit().putInt("objectId", 0).commit();
+						}
+
+					}
+				});
+
+				close.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+
+						Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.up_from_bottom);
+						bottomSheet.startAnimation(anim);
+
+						bottomSheet.setVisibility(View.GONE);
+						util.ShowFooterAgahi(getActivity(), false, 2);
+						createItem.setVisibility(View.VISIBLE);
+
+					}
+				});
 			}
 		});
 
@@ -429,7 +519,7 @@ public class MainBrandFragment extends Fragment
 
 				if (lastInScreen == totalItemCount && OnScrollListener.SCROLL_STATE_TOUCH_SCROLL == 1) {
 
-					LoadMoreFooter.setVisibility(View.VISIBLE);
+//					LoadMoreFooter.setVisibility(View.VISIBLE);
 					if (getActivity() != null) {
 
 						updating = new Updating(getActivity());

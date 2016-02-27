@@ -29,25 +29,21 @@ public class SlideMenuAdapter extends BaseAdapter {
 
 	Context context;
 
-	String[] slideitem = {/* "",*/ "صفحه اصلی", "مدیریت شخصی", "علاقه مندی ها",
-			"پشتیبانی آنلاین", "درباره ما"/*, "خروج"*/ };
-	int[] icon = {/* R.drawable.mechanical_logo,*/ R.drawable.ic_home,
-			R.drawable.ic_personal, R.drawable.ic_bookmark, R.drawable.phone2,
-			R.drawable.ic_about_us/*, R.drawable.exit*/ };
+	String[] slideitem = { "صفحه اصلی", "مدیریت شخصی", "علاقه مندی ها", "انجمن برنامه", "پشتیبانی", "قوانین",
+			"درباره ما", "تنظیمات" };
+	int[] icon = { R.drawable.ic_h, R.drawable.numvv, R.drawable.ic_bookmark, R.drawable.ic_bookmark,
+			R.drawable.phone2, R.drawable.phone2, R.drawable.phone2, R.drawable.ic_about_us };
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
 
-			LayoutInflater myInflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-			convertView = myInflater.inflate(R.layout.drawer_item, parent,
-					false);
+			convertView = myInflater.inflate(R.layout.drawer_item, parent, false);
 		}
 
-		ImageView iconImg = (ImageView) convertView
-				.findViewById(R.id.icon_slidemenu);
+		ImageView iconImg = (ImageView) convertView.findViewById(R.id.icon_slidemenu);
 		TextView nametxt = (TextView) convertView.findViewById(R.id.namemenu);
 
 		Users u = util.getCurrentUser();
@@ -60,32 +56,29 @@ public class SlideMenuAdapter extends BaseAdapter {
 		iconImg.setImageResource(icon[position]);
 		//
 		// }
-		
-		RelativeLayout layout = (RelativeLayout) convertView
-				.findViewById(R.id.item_list_slide_menu);
-		
-		
-		
-//		if (position == 0) {
-//	
-//			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-//					layout.getLayoutParams());
-//			lp.width = 140;
-//			lp.height = 140;
-//			lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-//
-//			iconImg.setLayoutParams(lp);
-//			Bitmap ttb;
-//			if (u != null && u.getImage() != null) {
-//
-//				ttb = BitmapFactory.decodeByteArray(u.getImage(), 0,
-//						u.getImage().length);
-//				iconImg.setImageBitmap(ttb);
-//			}
-//			// iconImg.setImageResource(R.drawable.mechanical_logo);
-//
-//			nametxt.setVisibility(View.GONE);
-//		}
+
+		RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.item_list_slide_menu);
+
+		// if (position == 0) {
+		//
+		// RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+		// layout.getLayoutParams());
+		// lp.width = 140;
+		// lp.height = 140;
+		// lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+		//
+		// iconImg.setLayoutParams(lp);
+		// Bitmap ttb;
+		// if (u != null && u.getImage() != null) {
+		//
+		// ttb = BitmapFactory.decodeByteArray(u.getImage(), 0,
+		// u.getImage().length);
+		// iconImg.setImageBitmap(ttb);
+		// }
+		// // iconImg.setImageResource(R.drawable.mechanical_logo);
+		//
+		// nametxt.setVisibility(View.GONE);
+		// }
 
 		nametxt.setText(slideitem[position]);
 

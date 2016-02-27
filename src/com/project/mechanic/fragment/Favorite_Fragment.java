@@ -75,7 +75,7 @@ public class Favorite_Fragment extends Fragment {
 
 		ArrayList<String> parentItems = new ArrayList<String>();
 
-		Expandview.setDividerHeight(5);
+//		Expandview.setDividerHeight(2);
 		Expandview.setGroupIndicator(null);
 		Expandview.setClickable(true);
 

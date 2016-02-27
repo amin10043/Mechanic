@@ -9,12 +9,12 @@
 
     <ListView
         android:id="@+id/lstComment"
-        style="@style/second_item_style"
+        style="@style/seprateListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/re"
-        android:layout_margin="5dp"
-        android:dividerHeight="2dp"
+        android:background="@color/orginal_light_gray_color"
+        android:dividerHeight="10dp"
         android:fillViewport="true" >
     </ListView>
 

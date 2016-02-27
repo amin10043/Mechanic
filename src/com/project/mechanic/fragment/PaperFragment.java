@@ -22,7 +22,7 @@ import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.SavingVisit;
 import com.project.mechanic.service.ServerDate;
-import com.project.mechanic.utility.ServiceComm;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 import android.app.ProgressDialog;
@@ -35,10 +35,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout.LayoutParams;
@@ -96,6 +98,8 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 	String currentTime = "";
 	List<Visit> visitList;
 
+	int positionPaper;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_paper, null);
@@ -128,7 +132,10 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 		adapter = new DataBaseAdapter(getActivity());
 		adapter.open();
 
-		paperID = Integer.valueOf(getArguments().getString("Id"));
+		if (getArguments() != null) {
+			paperID = Integer.valueOf(getArguments().getString("Id"));
+			positionPaper = getArguments().getInt("positionPaper");
+		}
 
 		if (CurrentUser == null || !adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
 			likeIcon.setBackgroundResource(R.drawable.like_froum_off);
@@ -484,6 +491,40 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 
 	}
 
+	@Override
+	public void onResume() {
+		getView().setFocusableInTouchMode(true);
+		getView().requestFocus();
+		getView().setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+				if (event.getAction() == KeyEvent.ACTION_DOWN)
+
+					if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+						FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+								.beginTransaction();
+						TitlepaperFragment fragment = new TitlepaperFragment();
+						Bundle bundle = new Bundle();
+						bundle.putInt("positionPaper", positionPaper);
+						fragment.setArguments(bundle);
+						trans.replace(R.id.content_frame, fragment);
+
+						trans.commit();
+
+						return true;
+					}
+
+				return false;
+			}
+		});
+		
+		
+		super.onResume();
+	}
+
 	public void updateView() {
 		adapter.open();
 		subList = adapter.getCommentInPaperbyPaperid(paperID);
@@ -502,7 +543,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 	@Override
 	public void processFinish(String output) {
 
-		Toast.makeText(getActivity(), output, 0).show();
+		// Toast.makeText(getActivity(), output, 0).show();
 
 		if (!output.contains("Exception")) {
 
@@ -911,7 +952,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 	}
 
 	@Override
-	public void saveVisit(String output) {
+	public void resultSaveVisit(String output) {
 
 		if (!output.contains("Exception")) {
 

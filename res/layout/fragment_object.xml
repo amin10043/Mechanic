@@ -4,47 +4,115 @@
     xmlns:app1="http://schemas.android.com/apk/res/com.project.mechanic"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#e9eaed"
+    android:background="@color/white"
     android:orientation="vertical"
     android:weightSum="6"
     tools:context="com.arabian.constitution_mechanic.City$PlaceholderFragment" >
 
-    <RelativeLayout
-        android:id="@+id/relativeList"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="5" >
+        android:layout_height="wrap_content" >
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_container"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <ListView
-                android:id="@+id/listvCmt_Introduction"
-                style="@style/second_item_style"
+            <RelativeLayout
+                android:id="@+id/relativeList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:footerDividersEnabled="false" >
-            </ListView>
-        </android.support.v4.widget.SwipeRefreshLayout>
+                android:layout_above="@+id/bottmSheet"
+                android:layout_weight="5" >
 
-        <com.project.mechanic.Action.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:src="@drawable/fab_add"
-            app:fab_colorNormal="@color/orginal_hard_blue_color"
-            app:fab_hideAnimation="@anim/fab_scale_down"
-            app:fab_shadowColor="#3366FF"
-            app:fab_shadowRadius="4dp"
-            app:fab_shadowXOffset="1dp"
-            app:fab_shadowYOffset="3dp"
-            android:layout_margin="5dp"
-            app:fab_showAnimation="@anim/fab_scale_up"
-            app:fab_showShadow="false"
-            app:fab_size="normal" />
-    </RelativeLayout>
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipe_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <ListView
+                        android:id="@+id/listvCmt_Introduction"
+                        style="@style/seprateListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:footerDividersEnabled="false" >
+                    </ListView>
+                </android.support.v4.widget.SwipeRefreshLayout>
+
+                <com.project.mechanic.Action.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/fab_add"
+                    app:fab_colorNormal="@color/orginal_hard_blue_color"
+                    app:fab_hideAnimation="@anim/fab_scale_down"
+                    app:fab_shadowColor="#3366FF"
+                    app:fab_shadowRadius="4dp"
+                    app:fab_shadowXOffset="1dp"
+                    app:fab_shadowYOffset="3dp"
+                    app:fab_showAnimation="@anim/fab_scale_up"
+                    app:fab_showShadow="false"
+                    app:fab_size="normal" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bottmSheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@color/orginal_light_gray_color"
+                android:visibility="gone" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rl"
+                    android:background="@color/white" >
+
+                    <TextView
+                        android:id="@+id/titleSheet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="text"
+                        android:textColor="@color/orginal_hard_blue_color" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/white" >
+
+                    <ImageView
+                        android:id="@+id/createDialogPage"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/send" />
+
+                    <TextView
+                        android:id="@+id/better"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="بهتر دیده شوید"
+                        android:textColor="@color/orginal_hard_blue_color" />
+
+                    <ImageView
+                        android:id="@+id/delete"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/delete_reply" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </FrameLayout>
 
 </LinearLayout>

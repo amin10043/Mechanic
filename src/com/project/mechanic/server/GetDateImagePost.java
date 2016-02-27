@@ -1,4 +1,4 @@
-package com.project.mechanic.utility;
+package com.project.mechanic.server;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -14,8 +14,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.project.mechanic.inter.CommInterface;
+import com.project.mechanic.interfaceServer.DateImagePostInterface;
 
-public class ServiceComm extends
+public class GetDateImagePost extends
 		AsyncTask<Map<String, String>, Integer, String> {
 
 	public String SOAP_ACTION = "http://tempuri.org/";
@@ -28,9 +29,9 @@ public class ServiceComm extends
 
 	public String response = "";
 
-	public CommInterface delegate = null;
+	public DateImagePostInterface delegate = null;
 
-	public ServiceComm(Context context) {
+	public GetDateImagePost(Context context) {
 	}
 
 	protected String doInBackground(Map<String, String>... action) {
@@ -77,7 +78,7 @@ public class ServiceComm extends
 	protected void onPostExecute(String res) {
 
 		if (delegate != null)
-			delegate.CommProcessFinish(res);
+			delegate.resultDateImagePost(res);
 	}
 
 	@Override

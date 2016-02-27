@@ -118,7 +118,6 @@
         <item name="android:cacheColorHint">@android:color/transparent</item>
         <item name="android:divider">@color/orginal_light_gray_color</item>
         <item name="android:dividerHeight">10dp</item>
-        <item name="android:padding">10dp</item>
         <!-- <item name="android:listSelector">@drawable/shape_list</item> -->
     </style>
 

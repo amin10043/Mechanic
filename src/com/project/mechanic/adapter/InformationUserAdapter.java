@@ -816,7 +816,7 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 
 				namePage.setText(obj.getName());
 				ProvinceName.setText(province.getName());
-
+				ProvinceName.setTypeface(util.SetFontCasablanca());
 				TextView baghiMandeh = (TextView) convertView.findViewById(R.id.day); // modate
 																						// baghimande
 
@@ -916,11 +916,12 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 		}
 
 		final ExpandableListView mExpandableListView = (ExpandableListView) parent;
+		final ImageView indicatorImg = (ImageView) convertView.findViewById(R.id.icon_item);
 
 		TextView titleGroup = (TextView) convertView.findViewById(R.id.row_berand_txt);
 		// if (util.getCurrentUser() != null)
 		titleGroup.setText(parentItems.get(groupPosition));
-
+		titleGroup.setTypeface(util.SetFontCasablanca());
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -930,13 +931,16 @@ public class InformationUserAdapter extends BaseExpandableListAdapter {
 				// } else {
 
 				if (isExpanded) {
+					indicatorImg.setBackgroundResource(R.drawable.dow);
 					mExpandableListView.collapseGroup(groupPosition);
 					notifyDataSetChanged();
 
-				} else
+				} else {
+					indicatorImg.setBackgroundResource(R.drawable.dow_s);
 					mExpandableListView.expandGroup(groupPosition);
+					mExpandableListView.setSelectedChild(groupPosition, 0, true);
 
-				notifyDataSetChanged();
+				}
 				// }
 			}
 		});

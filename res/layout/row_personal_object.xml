@@ -44,7 +44,7 @@
                     android:layout_marginRight="10dp"
                     android:singleLine="true"
                     android:text="Large Text"
-                    android:textColor="#9d0420" />
+                    android:textColor="@color/orginal_hard_blue_color" />
 
                 <LinearLayout
                     android:id="@+id/numviewslay"
@@ -131,6 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
             android:layout_below="@+id/textlayout"
             android:paddingBottom="10dp"
             android:visibility="visible" >
@@ -140,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="روز"
-                android:textColor="@color/orginal_red_color" />
+                android:textColor="@color/orginal_hard_blue_color" />
 
             <TextView
                 android:id="@+id/dayBaghiMandeh"
@@ -149,7 +150,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text="250"
-                android:textColor="@color/orginal_red_color" />
+                android:textColor="@color/orginal_hard_blue_color" />
 
             <TextView
                 android:id="@+id/lable_etebar"
@@ -157,7 +158,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:text="اعتبار :"
-                android:textColor="@color/orginal_red_color" />
+                android:textColor="@color/orginal_hard_blue_color" />
         </LinearLayout>
 
         <FrameLayout

@@ -1,22 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/white" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
         android:orientation="vertical" >
 
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:text="لینک های مورد نظر را درج نمایید"
-            android:textColor="@color/transparent" />
+            android:layout_margin="5dp" >
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="لینک های مورد نظر را درج نمایید"
+                android:textColor="@color/orginal_hard_blue_color" />
+
+            <ImageView
+                android:id="@+id/saveDownload"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/send" />
+
+            <ImageView
+                android:id="@+id/closeDialog"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/delete_reply" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -27,15 +48,18 @@
                 android:id="@+id/ff1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
                 android:background="@drawable/ic_catalog" />
 
             <EditText
                 android:id="@+id/d1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ff1"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
                 android:layout_toRightOf="@+id/ff1"
-                android:hint="Catalog" />
+                android:hint="کاتالوگ محصولات" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -47,15 +71,17 @@
                 android:id="@+id/ff2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:background="@drawable/ic_price" />
 
             <EditText
                 android:id="@+id/d2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ff2"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
                 android:layout_toRightOf="@+id/ff2"
-                android:hint="Price" />
+                android:hint="لیست قیمت" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -67,13 +93,16 @@
                 android:id="@+id/ff3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
                 android:background="@drawable/ic_pdf" />
 
             <EditText
                 android:id="@+id/d3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ff3"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
                 android:layout_toRightOf="@+id/ff3"
                 android:hint="PDF" />
         </RelativeLayout>
@@ -81,19 +110,23 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp" >
+            android:layout_margin="5dp"
+            android:visibility="gone" >
 
             <ImageView
                 android:id="@+id/ff4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
                 android:background="@drawable/ic_video" />
 
             <EditText
                 android:id="@+id/d4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/ff4"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
                 android:layout_toRightOf="@+id/ff4"
                 android:hint="Video" />
         </RelativeLayout>
@@ -103,17 +136,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp" >
-
-            <Button
-                android:id="@+id/saveDownload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="5dp"
-                android:background="@drawable/rectangle_drawable"
-                android:text="ثبت"
-                android:textColor="@color/orginal_golden_color" />
-
         </RelativeLayout>
     </LinearLayout>
 

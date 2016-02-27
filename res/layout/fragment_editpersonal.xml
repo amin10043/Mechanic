@@ -190,7 +190,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/etxtphone"
                     android:checked="true" />
             </RelativeLayout>
 
@@ -226,7 +225,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/etxtphone"
                     android:checked="true" />
             </RelativeLayout>
 
@@ -262,7 +260,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/etxtphone"
+                    
                     android:checked="true" />
             </RelativeLayout>
         </LinearLayout>
@@ -279,7 +277,7 @@
                 android:layout_height="wrap_content" >
 
                 <ImageView
-                    android:id="@+id/lablefax"
+                    android:id="@+id/lableaddress"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
@@ -292,7 +290,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@+id/lablefax"
+                    android:layout_toLeftOf="@+id/lableaddress"
                     android:layout_toRightOf="@+id/showAddressValue"
                     android:filterTouchesWhenObscured="true"
                     android:gravity="top|right"

@@ -11,9 +11,12 @@ import com.project.mechanic.R;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.SaveAsyncInterface;
+import com.project.mechanic.interfaceServer.DateFromServerForLike;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.server.ServerDateForLike;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.SavingImage3Picture;
+import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
 import android.app.Activity;
@@ -22,7 +25,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -43,11 +45,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class IntroductionEditFragment extends Fragment implements AsyncInterface, SaveAsyncInterface {
+public class IntroductionEditFragment extends Fragment
+		implements DateFromServerForLike, AsyncInterface, SaveAsyncInterface {
 	private static int headerLoadCode = 1;
 	private static int profileLoadCode = 2;
 	private static int footerLoadcode = 3;
 	int pageId;
+	String serverDate = "";
 
 	public IntroductionEditFragment(int pageId) {
 		this.pageId = pageId;
@@ -87,7 +91,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 	Bitmap bmpHeader, bmpProfil, bmpFooter;
 	Saving saving;
 	Map<String, String> params;
-//	int PageId;
+	// int PageId;
 	ProgressDialog ringProgressDialog;
 	SavingImage3Picture savingImage;
 
@@ -102,6 +106,7 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 	boolean t3 = false;
 
 	TextView linkPage;
+	int upgradRatingCount;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -195,8 +200,9 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 			mFileTemp = new File(getActivity().getFilesDir(), TEMP_PHOTO_FILE_NAME);
 		}
 
-//		SharedPreferences sendDataID = getActivity().getSharedPreferences("Id", 0);
-//		PageId = sendDataID.getInt("main_Id", -1);
+		// SharedPreferences sendDataID =
+		// getActivity().getSharedPreferences("Id", 0);
+		// PageId = sendDataID.getInt("main_Id", -1);
 
 		// Toast.makeText(getActivity(), "introduction id =" + PageId,
 		// Toast.LENGTH_SHORT).show();
@@ -277,19 +283,24 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 			}
 		});
 
+		upgradRatingCount = (int) object.getRate();
+		rating.setProgress(upgradRatingCount);
+
 		payBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				int rat = (int) rating.getRating();
-				if (rat >= 0) {
+
+				upgradRatingCount = (int) rating.getRating();
+
+				if (upgradRatingCount >= 0) {
 					DBAdapter.open();
 
-					DBAdapter.updateRatingObject(rat, pageId);
+					DBAdapter.updateRatingObject(upgradRatingCount, pageId);
 
 					Toast.makeText(getActivity(), "ثبت درگاه انجام شود ", 0).show();
 
-					Toast.makeText(getActivity(), rat + "", 0).show();
+					Toast.makeText(getActivity(), upgradRatingCount + "", 0).show();
 
 					DBAdapter.close();
 
@@ -374,35 +385,9 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 					Toast.makeText(getActivity(), "پر کردن فیلد نام الزامی است", Toast.LENGTH_SHORT).show();
 				} else {
 
-					saving = new Saving(getActivity());
-					saving.delegate = IntroductionEditFragment.this;
-					params = new LinkedHashMap<String, String>();
-
-					params.put("tableName", "Object");
-
-					params.put("Name", nameValue);
-					params.put("Phone", phoneValue);
-					params.put("Email", emailValue);
-					params.put("Fax", faxValue);
-					params.put("Description", descriptionValue);
-					params.put("Pdf1", Dcatalog);
-					params.put("Pdf2", Dprice);
-					params.put("Pdf3", Dpdf);
-					params.put("Pdf4", Dvideo);
-					params.put("Address", addressValue);
-					params.put("Cellphone", mobileValue);
-					params.put("Facebook", Dface);
-					params.put("Instagram", Dinstagram);
-					params.put("LinkedIn", Dlink);
-					params.put("Google", Dgoogle);
-					params.put("Site", websiteValue);
-					params.put("Twitter", Dtwt);
-
-					params.put("IsUpdate", "1");
-					params.put("Id", String.valueOf(pageId));
-					saving.execute(params);
-
-					ringProgressDialog = ProgressDialog.show(getActivity(), "در حال بروزرسانی", "لطفا منتظر بمانید...");
+					ServerDateForLike dates = new ServerDateForLike(getActivity());
+					dates.delegate = IntroductionEditFragment.this;
+					dates.execute("");
 
 				}
 			}
@@ -650,6 +635,48 @@ public class IntroductionEditFragment extends Fragment implements AsyncInterface
 		}
 		if (ringProgressDialog != null) {
 			ringProgressDialog.dismiss();
+		}
+	}
+
+	@Override
+	public void resultDateLike(String output) {
+
+		if (util.checkError(output) == false) {
+
+			serverDate = output;
+
+			saving = new Saving(getActivity());
+			saving.delegate = IntroductionEditFragment.this;
+			params = new LinkedHashMap<String, String>();
+
+			params.put("tableName", "Object");
+
+			params.put("Name", nameValue);
+			params.put("Phone", phoneValue);
+			params.put("Email", emailValue);
+			params.put("Fax", faxValue);
+			params.put("Description", descriptionValue);
+			params.put("Pdf1", Dcatalog);
+			params.put("Pdf2", Dprice);
+			params.put("Pdf3", Dpdf);
+			params.put("Pdf4", Dvideo);
+			params.put("Address", addressValue);
+			params.put("Cellphone", mobileValue);
+			params.put("Facebook", Dface);
+			params.put("Instagram", Dinstagram);
+			params.put("LinkedIn", Dlink);
+			params.put("Google", Dgoogle);
+			params.put("Site", websiteValue);
+			params.put("Twitter", Dtwt);
+
+			params.put("ModifyDate", serverDate);
+
+			params.put("IsUpdate", "1");
+			params.put("Id", String.valueOf(pageId));
+			saving.execute(params);
+
+			ringProgressDialog = ProgressDialog.show(getActivity(), "در حال بروزرسانی", "لطفا منتظر بمانید...");
+
 		}
 	}
 

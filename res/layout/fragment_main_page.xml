@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/orginal_light_gray_color"
+    android:background="@color/white"
     android:orientation="vertical"
     android:weightSum="7" >
 
@@ -96,7 +96,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical" >
 
@@ -105,13 +105,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
-                android:layout_weight="1" >
+                android:layout_weight="1"
+                android:background="@color/white" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/background_item_main"
                     android:gravity="right" >
 
                     <TextView
@@ -125,6 +126,12 @@
                         android:text="تولیدکنندگان داخلی - برندهای وارداتی - نمایندگی ها "
                         android:textColor="@color/orginal_hard_blue_color" />
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/orginal_golden_color" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -132,13 +139,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
-                android:layout_weight="1" >
+                android:layout_weight="1"
+                android:background="@color/white" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/background_item_main"
                     android:gravity="right" >
 
                     <TextView
@@ -152,6 +160,12 @@
                         android:text="فروشگاهها - شرکت های عرضه کننده محصولات"
                         android:textColor="@color/orginal_hard_blue_color" />
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/orginal_golden_color" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -159,13 +173,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
-                android:layout_weight="1" >
+                android:layout_weight="1"
+                android:background="@color/white" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/background_item_main"
                     android:gravity="right" >
 
                     <TextView
@@ -179,6 +194,12 @@
                         android:text="مشاوران - ناظران - شرکت های مجری "
                         android:textColor="@color/orginal_hard_blue_color" />
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/orginal_golden_color" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -186,18 +207,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
-                android:layout_weight="1" >
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="right" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/background_item_main"
                     android:gravity="right" >
 
                     <TextView
                         android:id="@+id/lable4"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
                         android:layout_marginLeft="10dp"
@@ -206,6 +229,12 @@
                         android:text="اشخاص حقیقی (استادکاران)"
                         android:textColor="@color/orginal_hard_blue_color" />
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/orginal_golden_color" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -213,13 +242,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
-                android:layout_weight="1" >
+                android:layout_weight="1"
+                android:background="@color/white" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/background_item_main"
                     android:gravity="right" >
 
                     <TextView
@@ -233,6 +263,12 @@
                         android:text="نشریات - مقالات"
                         android:textColor="@color/orginal_hard_blue_color" />
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/orginal_golden_color" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -240,13 +276,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
-                android:layout_weight="1" >
+                android:layout_weight="1"
+                android:background="@color/white" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/background_item_main"
                     android:gravity="right" >
 
                     <TextView
@@ -260,6 +297,12 @@
                         android:text="آگهی - تبلیغات"
                         android:textColor="@color/orginal_hard_blue_color" />
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/orginal_golden_color" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -267,13 +310,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
-                android:layout_weight="1" >
+                android:layout_weight="1"
+                android:background="@color/white" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/background_item_main"
                     android:gravity="right" >
 
                     <TextView
@@ -293,8 +337,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="5"
             android:layout_marginRight="5dp"
+            android:layout_weight="5"
             android:orientation="vertical"
             android:weightSum="7" >
 
@@ -302,8 +346,7 @@
                 android:id="@+id/relative_item1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/blank_background_item_main" >
+                android:layout_weight="1" >
 
                 <ImageView
                     android:id="@+id/icon_item1"
@@ -317,8 +360,7 @@
                 android:id="@+id/relative_item2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/blank_background_item_main" >
+                android:layout_weight="1" >
 
                 <ImageView
                     android:id="@+id/icon_item2"
@@ -332,8 +374,7 @@
                 android:id="@+id/relative_item3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/blank_background_item_main" >
+                android:layout_weight="1" >
 
                 <ImageView
                     android:id="@+id/icon_item3"
@@ -347,8 +388,7 @@
                 android:id="@+id/relative_item4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/blank_background_item_main" >
+                android:layout_weight="1" >
 
                 <ImageView
                     android:id="@+id/icon_item4"
@@ -362,8 +402,7 @@
                 android:id="@+id/relative_item5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/blank_background_item_main" >
+                android:layout_weight="1" >
 
                 <ImageView
                     android:id="@+id/icon_item5"
@@ -377,8 +416,7 @@
                 android:id="@+id/relative_item6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/blank_background_item_main" >
+                android:layout_weight="1" >
 
                 <ImageView
                     android:id="@+id/icon_item6"
@@ -392,8 +430,7 @@
                 android:id="@+id/relative_item7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/blank_background_item_main" >
+                android:layout_weight="1" >
 
                 <ImageView
                     android:id="@+id/icon_item7"

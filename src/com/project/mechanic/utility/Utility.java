@@ -11,10 +11,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import com.project.mechanic.MainActivity;
@@ -43,6 +45,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -78,6 +81,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -595,7 +599,7 @@ public class Utility implements AsyncInterface {
 	}
 
 	@SuppressWarnings("null")
-	public int CreateFile(byte[] byteImage, int ImageId, String nameMainDirectory, String SubFolder, String nameFile,
+	public String CreateFile(byte[] byteImage, int ImageId, String nameMainDirectory, String SubFolder, String nameFile,
 			String TableName) {
 
 		// تایپ برای مشخص کردن جدول ذخیره سازی آدرس تصاویر می باشد
@@ -721,10 +725,10 @@ public class Utility implements AsyncInterface {
 
 			}
 			Toast.makeText(context, nameFile + " " + ImageId + "ذخیره شد", 0).show();
-			return ImageId;
+			return f.getPath();
 
 		} else
-			return 0;
+			return "";
 
 	}
 
@@ -1300,13 +1304,12 @@ public class Utility implements AsyncInterface {
 
 	public void setSizeDialog(Dialog dialog) {
 
-		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-		lp.copyFrom(dialog.getWindow().getAttributes());
-		lp.width = (int) getScreenwidth() - 50;
+//		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//		lp.copyFrom(dialog.getWindow().getAttributes());
+//		lp.width = (int) 1000;
 		// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.BLACK));
-		dialog.getWindow().setAttributes(lp);
 
 		dialog.getWindow().getAttributes().windowAnimations = R.style.animationDialog;
 		dialog.show();
@@ -1329,6 +1332,64 @@ public class Utility implements AsyncInterface {
 
 		return list;
 
+	}
+
+	public List<Integer> createUnicId(List<Integer> ids) {
+
+		Set<Integer> different = new HashSet<Integer>();
+		List<Integer> unicIds = new ArrayList<Integer>();
+
+		for (int i = 0; i < ids.size(); i++)
+			different.add(ids.get(i));
+
+		for (Integer val : different)
+			unicIds.add(val);
+
+		return unicIds;
+
+	}
+
+	public boolean checkError(String error) {
+
+		boolean isError = true;
+
+		if (!"".equals(error) && error != null
+				&& !(error.contains("Exception") || error.contains("java") || error.contains("soap")))
+			isError = false;
+
+		return isError;
+
+	}
+
+	public void showErrorToast() {
+
+		String message = " با عرض پوزش ، خطایی رخ داد";
+		Toast.makeText(context, message, 0).show();
+	}
+
+	public void showRingProgressDialog(ProgressDialog ringProgressDialog  ,boolean isShow) {
+
+		
+		if (isShow == true) {
+			ringProgressDialog.setCancelable(true);
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+
+					try {
+
+						Thread.sleep(10000);
+
+					} catch (Exception e) {
+
+					}
+				}
+			}).start();
+
+		} else {
+			ringProgressDialog.dismiss();
+		}
 	}
 
 }

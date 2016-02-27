@@ -107,6 +107,57 @@ public class ObjectListAdapter
 		txt1.setTypeface(util.SetFontCasablanca());
 		rating = (RatingBar) convertView.findViewById(R.id.ratingBar1);
 
+		int rate = person.getRate();
+
+		if (rate > 0) {
+
+			ImageView star1 = (ImageView) convertView.findViewById(R.id.star1);
+			ImageView star2 = (ImageView) convertView.findViewById(R.id.star2);
+			ImageView star3 = (ImageView) convertView.findViewById(R.id.star3);
+			ImageView star4 = (ImageView) convertView.findViewById(R.id.star4);
+			ImageView star5 = (ImageView) convertView.findViewById(R.id.star5);
+
+			switch (rate) {
+			case 1:
+				star1.setBackgroundResource(R.drawable.ic_star_on);
+
+				break;
+			case 2:
+				star1.setBackgroundResource(R.drawable.ic_star_on);
+				star2.setBackgroundResource(R.drawable.ic_star_on);
+
+				break;
+
+			case 3:
+				star1.setBackgroundResource(R.drawable.ic_star_on);
+				star2.setBackgroundResource(R.drawable.ic_star_on);
+				star3.setBackgroundResource(R.drawable.ic_star_on);
+
+				break;
+
+			case 4:
+				star1.setBackgroundResource(R.drawable.ic_star_on);
+				star2.setBackgroundResource(R.drawable.ic_star_on);
+				star3.setBackgroundResource(R.drawable.ic_star_on);
+				star4.setBackgroundResource(R.drawable.ic_star_on);
+
+				break;
+
+			case 5:
+				star1.setBackgroundResource(R.drawable.ic_star_on);
+				star2.setBackgroundResource(R.drawable.ic_star_on);
+				star3.setBackgroundResource(R.drawable.ic_star_on);
+				star4.setBackgroundResource(R.drawable.ic_star_on);
+				star5.setBackgroundResource(R.drawable.ic_star_on);
+
+				break;
+
+			default:
+				break;
+			}
+
+		}
+
 		rating.setRating(person.getRate());
 
 		rating.setEnabled(false);
@@ -116,7 +167,7 @@ public class ObjectListAdapter
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.propertiesObject);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = (int) (util.getScreenwidth() /StaticValues.RateImageObjectPage);
+		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageObjectPage);
 		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageObjectPage);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.addRule(RelativeLayout.CENTER_VERTICAL);
@@ -151,7 +202,7 @@ public class ObjectListAdapter
 		adapter.open();
 		int followersCount = adapter.LikeInObject_count(person.getId(), 0);
 		adapter.close();
-		countFollow.setText(followersCount+"");
+		countFollow.setText(followersCount + "");
 		if (person.getActiveDate() == null) {
 
 			if (commitDate != null && !"".equals(commitDate)) {
@@ -234,6 +285,7 @@ public class ObjectListAdapter
 					UnavailableIntroduction fragment = new UnavailableIntroduction();
 					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, fragment);
+					trans.addToBackStack("MainBrandFragment");
 
 					String item = txt1.getText().toString();
 
@@ -251,7 +303,6 @@ public class ObjectListAdapter
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
 					fragment.setArguments(bundle);
-					trans.addToBackStack(null);
 					trans.commit();
 
 				} else {
@@ -260,6 +311,8 @@ public class ObjectListAdapter
 					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, fragment);
 
+					trans.addToBackStack("MainBrandFragment");
+
 					String item = txt1.getText().toString();
 
 					int id = 0;
@@ -275,8 +328,9 @@ public class ObjectListAdapter
 
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(id));
+					bundle.putInt("positionBrand", position);
+
 					fragment.setArguments(bundle);
-					trans.addToBackStack(null);
 					trans.commit();
 				}
 				ItemId = person.getId();
@@ -289,14 +343,6 @@ public class ObjectListAdapter
 		// convertView.setAnimation(animSideDown);
 
 		return convertView;
-	}
-
-	public void onBackPressed() {
-
-		FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
-		trans.replace(R.id.content_frame, new MainFragment());
-		trans.commit();
-
 	}
 
 	// @Override

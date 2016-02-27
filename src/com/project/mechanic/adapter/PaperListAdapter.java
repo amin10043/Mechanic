@@ -44,7 +44,7 @@ import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
-import com.project.mechanic.utility.ServiceComm;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements

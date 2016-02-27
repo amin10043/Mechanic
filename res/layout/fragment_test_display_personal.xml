@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="10dp"
     android:background="@color/white"
     android:orientation="vertical" >
 
@@ -9,13 +10,14 @@
         android:id="@+id/lin__register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-     android:background="@color/white"
+        android:background="@color/orginal_light_gray_color"
         android:orientation="vertical" >
 
         <FrameLayout
             android:id="@+id/frameLayoutHeader"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@color/white" >
 
             <ImageView
                 android:id="@+id/imgvadvertise_Object"
@@ -37,11 +39,12 @@
             android:id="@+id/mm"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-          >
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shadow_layer" >
 
             <LinearLayout
                 android:id="@+id/imageLinear"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:gravity="center_horizontal"
@@ -53,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="name"
-                    android:textColor="#780117" />
+                    android:textColor="@color/orginal_hard_blue_color" />
 
                 <TextView
                     android:id="@+id/txtdate"
@@ -61,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="date"
-                    android:textColor="#780117" />
+                    android:textColor="@color/orginal_hard_blue_color" />
 
                 <ImageView
                     android:id="@+id/logout"
@@ -70,84 +73,92 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="10dp"
                     android:src="@drawable/logout" />
-            </LinearLayout>
 
-            <RelativeLayout
-                android:id="@+id/btnedit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="100dp" >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
 
-                <ImageView
-                    android:id="@+id/lab1"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/ed" />
-
-                <TextView
-                    android:id="@+id/labb1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/lab1"
-                    android:text="ویرایش"
-                    android:textColor="#780117"
-                    android:textSize="20dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/b"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="100dp" >
-
-                <ImageView
-                    android:id="@+id/lab2"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/ddd"
-                    android:background="@drawable/birth" />
-
-                <LinearLayout
-                    android:id="@+id/ddd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/tst"
+                    <RelativeLayout
+                        android:id="@+id/btnedit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="زاد روز"
-                        android:textColor="#780117"
-                        android:textSize="20dp" />
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/b"
+                        android:layout_marginRight="50dp" >
+
+                        <ImageView
+                            android:id="@+id/lab1"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/ed" />
+
+                        <TextView
+                            android:id="@+id/labb1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:layout_toLeftOf="@+id/lab1"
+                            android:text="ویرایش"
+                            android:textColor="@color/orginal_hard_blue_color"
+                            android:textSize="15dp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/b"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="50dp" >
+
+                        <ImageView
+                            android:id="@+id/lab2"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/birth" />
+
+                        <LinearLayout
+                            android:id="@+id/ddd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/lab2"
+                            android:orientation="vertical" >
+
+                            <TextView
+                                android:id="@+id/tst"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:gravity="center_vertical"
+                                android:text="زاد روز"
+                                android:textColor="@color/orginal_hard_blue_color"
+                                android:textSize="15dp" />
+                        </LinearLayout>
+                    </RelativeLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/b"
+                        android:layout_below="@+id/b"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="5dp"
                         android:text="25"
-                        android:textColor="#780117" />
-                </LinearLayout>
-            </RelativeLayout>
+                        android:textColor="@color/orginal_hard_blue_color" />
+                </RelativeLayout>
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/shadowLine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/b"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/shadow_line_personal" />
+                android:background="@drawable/shadow_line_personal"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -165,14 +176,14 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_toLeftOf="@+id/textView6"
-                android:gravity="right"
+                android:gravity="left"
                 android:text="TextView"
-                android:textColor="#1f3163" />
+                android:textColor="@color/orginal_hard_blue_color" />
 
             <ImageView
                 android:id="@+id/textView6"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignRight="@+id/i1"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="20dp"
@@ -181,11 +192,11 @@
             <ImageView
                 android:id="@+id/i1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="2dp"
                 android:layout_below="@+id/textView6"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/lili" />
+                android:background="@color/orginal_golden_color" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -203,7 +214,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_toLeftOf="@+id/textView8"
-                android:gravity="right"
+                android:gravity="left"
                 android:text="TextView"
                 android:textColor="#1f3163" />
 
@@ -219,10 +230,10 @@
             <ImageView
                 android:id="@+id/i2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="2dp"
                 android:layout_below="@+id/textView8"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/lili" />
+                android:background="@color/orginal_golden_color" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -256,10 +267,10 @@
             <ImageView
                 android:id="@+id/i3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="2dp"
                 android:layout_below="@+id/textView4"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/lili" />
+                android:background="@color/orginal_golden_color" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -278,7 +289,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_toLeftOf="@+id/textView10"
-                android:gravity="right"
+                android:gravity="left"
                 android:text="TextView"
                 android:textColor="#1f3163" />
 
@@ -294,17 +305,18 @@
             <ImageView
                 android:id="@+id/i4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="2dp"
                 android:layout_below="@+id/textView10"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/lili" />
+                android:background="@color/orginal_golden_color" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/layaddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white" >
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shadow_layer" >
 
             <TextView
                 android:id="@+id/address"
@@ -315,7 +327,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_toLeftOf="@+id/textView12"
-                android:gravity="right"
+                android:gravity="left"
                 android:text="TextView"
                 android:textColor="#1f3163" />
 
@@ -331,10 +343,10 @@
             <ImageView
                 android:id="@+id/i5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="2dp"
                 android:layout_below="@+id/textView12"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/lili"
+                android:background="@color/orginal_golden_color"
                 android:visibility="invisible" />
         </RelativeLayout>
     </LinearLayout>

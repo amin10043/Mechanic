@@ -114,7 +114,7 @@ public class SavingVisit extends AsyncTask<Map<String, String>, Integer, String>
 	protected void onPostExecute(String res) {
 
 		if (delegate != null)
-			delegate.saveVisit(res);
+			delegate.resultSaveVisit(res);
 	}
 
 }

@@ -73,6 +73,6 @@ public class UpdatingVisit extends AsyncTask<Map<String, String>, Integer, Strin
 	protected void onPostExecute(String res) {
 
 		if (delegate != null)
-			delegate.processFinishVisit(res);
+			delegate.resultCountView(res);
 	}
 }

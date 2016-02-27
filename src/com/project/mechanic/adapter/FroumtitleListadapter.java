@@ -45,7 +45,7 @@ import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
-import com.project.mechanic.utility.ServiceComm;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 @SuppressLint("SimpleDateFormat")
@@ -696,7 +696,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 			ringProgressDialog.dismiss();
 		}
 
-		((FroumtitleFragment) fragment).updateView();
+		((FroumtitleFragment) fragment).fillListView();
 
 	}
 

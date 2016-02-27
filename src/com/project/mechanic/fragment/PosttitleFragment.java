@@ -30,9 +30,9 @@ import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingImage;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class PosttitleFragment extends Fragment implements GetAsyncInterface,
@@ -186,7 +186,7 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 		lst.addFooterView(LoadMoreFooter);
 		LoadMoreFooter.setVisibility(View.INVISIBLE);
 		ListAdapter = new PosttitleListadapter(getActivity(),
-				R.layout.raw_posttitle, mylist, PosttitleFragment.this);
+				R.layout.raw_posttitle, mylist, PosttitleFragment.this,0);
 		lst.setAdapter(ListAdapter);
 
 		int countList = ListAdapter.getCount();
@@ -253,7 +253,7 @@ public class PosttitleFragment extends Fragment implements GetAsyncInterface,
 		mylist = mdb.getAllPost(1);
 		mdb.close();
 		ListAdapter = new PosttitleListadapter(getActivity(),
-				R.layout.raw_posttitle, mylist, PosttitleFragment.this);
+				R.layout.raw_posttitle, mylist, PosttitleFragment.this,0);
 		ListAdapter.notifyDataSetChanged();
 		lst.setAdapter(ListAdapter);
 		LoadMoreFooter.setVisibility(View.INVISIBLE);

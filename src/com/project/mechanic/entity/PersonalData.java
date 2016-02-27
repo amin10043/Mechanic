@@ -40,6 +40,7 @@ public class PersonalData {
 	int AnadId;
 	int ObjectIdAnad;
 	int ProvinceIdAnad;
+	String ImagePathAnad;
 
 	String Image2ServerDateObject;
 	String ImageServerDateTicket;
@@ -60,7 +61,8 @@ public class PersonalData {
 			String ImagePathTicket, String DateTicket, int SeenBefore, int DayTicket, int seenBeforePaper,
 			int UserIdPaper, String DataPaper, String ImagePathFroum, String ImagePathPaper, int ObjectFollowId,
 			String NameFollowObject, String ImagePathObjectFollow, int AnadId, int ObjectIdAnad, int ProvinceIdAnad,
-			String Image2ServerDateObject, String ImageServerDateTicket, String ImageServerDateAnad) {
+			String Image2ServerDateObject, String ImageServerDateTicket, String ImageServerDateAnad,
+			String ImagePathAnad) {
 
 		this.Id = Id;
 
@@ -100,11 +102,20 @@ public class PersonalData {
 		this.AnadId = AnadId;
 		this.ObjectIdAnad = ObjectIdAnad;
 		this.ProvinceIdAnad = ProvinceIdAnad;
+		this.ImagePathAnad = ImagePathAnad;
 
 		this.Image2ServerDateObject = Image2ServerDateObject;
 		this.ImageServerDateTicket = ImageServerDateTicket;
 		this.ImageServerDateAnad = ImageServerDateAnad;
 
+	}
+
+	public String getImagePathAnad() {
+		return ImagePathAnad;
+	}
+
+	public void setImagePathAnad(String imagePathAnad) {
+		ImagePathAnad = imagePathAnad;
 	}
 
 	public String getImageServerDateAnad() {

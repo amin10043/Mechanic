@@ -112,7 +112,7 @@ public class MainFragment extends Fragment {
 	}
 
 	private void setLayoutParams() {
-		int size = 14;
+		int size = 8;
 
 		r1.width = (util.getScreenwidth()) / size;
 		r1.height = (util.getScreenwidth()) / size;

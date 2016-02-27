@@ -62,7 +62,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 	Fragment fragment;
 	Utility util;
 	LinearLayout headerLinear, footerLinear, NetworkSocial, DownloadLink;
-	RelativeLayout nameEditRelative, namayendegi, khadamat, linearCreateProfil;
+	RelativeLayout nameEditRelative, linearCreateProfil;
 	LinearLayout.LayoutParams headerParams, footerParams;
 	RelativeLayout.LayoutParams profilParams, nameParams;
 	DialogNetworkSocial dialognetwork;
@@ -73,7 +73,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 	Bitmap bitmapHeader, bitmapProfil, bitmapFooter, emptyHeader, emptyProfile, emptyFooter;
 
-	public String Lfacebook, Llinkedin, Ltwitter,  Lgoogle, Linstagram;
+	public String Lfacebook, Llinkedin, Ltwitter, Lgoogle, Linstagram;
 	public String Lcatalog, Lprice, Lpdf, Lvideo;
 	Users currentUser;
 
@@ -109,7 +109,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 	boolean t1 = false;
 	boolean t2 = false;
 	boolean t3 = false;
-	TextView lableEditNetwork , lableEditDownloadLink;
+	TextView lableEditNetwork, lableEditDownloadLink;
 
 	// EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle,
 	// inInstagram;
@@ -127,6 +127,12 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 		NetworkSocial = (LinearLayout) view.findViewById(R.id.editNetwork);
 		DownloadLink = (LinearLayout) view.findViewById(R.id.editdownload);
 
+		TextView lableAgency = (TextView) view.findViewById(R.id.lableagency);
+		TextView lableService = (TextView) view.findViewById(R.id.lableservice);
+
+		lableAgency.setTypeface(util.SetFontCasablanca());
+		lableService.setTypeface(util.SetFontCasablanca());
+
 		btnSave = (Button) view.findViewById(R.id.btnsave);
 		btnProfile = (ImageView) view.findViewById(R.id.profile_img);
 		btnHeader = (ImageView) view.findViewById(R.id.imgvadvertise_Object);
@@ -141,18 +147,11 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 		DescriptionEnter = (EditText) view.findViewById(R.id.descriptionEdittext);
 		websiteEnter = (EditText) view.findViewById(R.id.editwebsite);
 
-		namayendegi = (RelativeLayout) view.findViewById(R.id.Layoutlink1);
-		khadamat = (RelativeLayout) view.findViewById(R.id.Layoutlink2);
-
 		checkAgency = (CheckBox) view.findViewById(R.id.checkAgency);
 		checkService = (CheckBox) view.findViewById(R.id.checkService);
-		
-		lableEditNetwork = (TextView)view.findViewById(R.id.lableeditnetwork);
-		lableEditDownloadLink = (TextView)view.findViewById(R.id.labledownload);
-		
 
-		namayendegi.setVisibility(View.GONE);
-		khadamat.setVisibility(View.GONE);
+		lableEditNetwork = (TextView) view.findViewById(R.id.lableeditnetwork);
+		lableEditDownloadLink = (TextView) view.findViewById(R.id.labledownload);
 
 		/* ********** start: come from create object fragment ********** */
 
@@ -226,7 +225,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 		btnProfile.setLayoutParams(profilParams);
 		btnFooter.setLayoutParams(headerParams);
 		NameEnter.setLayoutParams(nameParams);
-		
+
 		setFont();
 
 		if (mainID != 1) {
@@ -355,19 +354,20 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 					}
 
-//					if (bitmapHeader == null & bitmapProfil == null & bitmapFooter == null)
+					// if (bitmapHeader == null & bitmapProfil == null &
+					// bitmapFooter == null)
 
-						// Toast.makeText(getActivity(), "Empty ByteArray",
-						// Toast.LENGTH_SHORT).show();
+					// Toast.makeText(getActivity(), "Empty ByteArray",
+					// Toast.LENGTH_SHORT).show();
 
-						// final byte[] byteHeader =
-						// getBitmapAsByteArray(bitmapHeader);
-						// final byte[] byteProfil =
-						// getBitmapAsByteArray(bitmapProfil);
-						// final byte[] byteFooter =
-						// getBitmapAsByteArray(bitmapFooter);
+					// final byte[] byteHeader =
+					// getBitmapAsByteArray(bitmapHeader);
+					// final byte[] byteProfil =
+					// getBitmapAsByteArray(bitmapProfil);
+					// final byte[] byteFooter =
+					// getBitmapAsByteArray(bitmapFooter);
 
-						nameValue = NameEnter.getText().toString();
+					nameValue = NameEnter.getText().toString();
 					phoneValue = phoneEnter.getText().toString();
 					faxValue = faxEnter.getText().toString();
 					mobileValue = mobileEnter.getText().toString();
@@ -401,16 +401,17 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 		return view;
 	}
-	
-	private void setFont(){
-		
+
+	private void setFont() {
+
 		checkAgency.setTypeface(util.SetFontCasablanca());
 		checkService.setTypeface(util.SetFontCasablanca());
-		
+
 		lableEditNetwork.setTypeface(util.SetFontCasablanca());
 		lableEditDownloadLink.setTypeface(util.SetFontCasablanca());
 		btnSave.setTypeface(util.SetFontCasablanca());
 	}
+
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		// bitmap.compress(CompressFormat.PNG, 50, outputStream);
@@ -642,8 +643,8 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 				if (flag) {
 					DBAdapter.InsertInformationNewObject(serverId, nameValue, phoneValue, emailValue, faxValue,
 							descriptionValue, Lcatalog, Lprice, Lpdf, Lvideo, addressValue, mobileValue, Lfacebook,
-							Linstagram, Llinkedin, Lgoogle, websiteValue, Ltwitter, currentUser.getId(), 0, MainObjectId,
-							objectId, ObjectBrandTypeId, AgencyService, serverDate);
+							Linstagram, Llinkedin, Lgoogle, websiteValue, Ltwitter, currentUser.getId(), 0,
+							MainObjectId, objectId, ObjectBrandTypeId, AgencyService, serverDate);
 
 					flag = false;
 

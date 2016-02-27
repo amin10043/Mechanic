@@ -15,17 +15,18 @@ public class StaticValues {
 	/* e مشخص کردن نوع بازدید انجام شده */
 
 	/* s نسبت تصاویر نسبت به عرض دستگاه */
-	public static final float RateImageRegisterPage = 4;
-	public static final float RateImageObjectPage = 4;
-	public static final float RateImagePaperFragmentPage = 4;
-	public static final float RateImageTitlePaper = 4;
-	public static final float RateImageTitleFroum = 4;
-	public static final float RateImageFroumFragmentPage = 4;
-	public static final float RateImagePostTimelineFragmentPage = 6;
-	public static final float RateImagePostFragmentPage = 4;
-	public static final float RateImageDisplayPersonalAdapter = 4;
-	public static final float RateImageEditAnad = 4;
-	public static final float RateImageCommentAndReply = 6;
+	public static final float RateImageRegisterPage = (float) 5.5;
+	public static final float RateImageObjectPage = (float) 5.5;
+	public static final float RateImagePaperFragmentPage = (float) 5.5;
+	public static final float RateImageTitlePaper = (float) 5.5;
+	public static final float RateImageTitleFroum = (float) 5.5;
+	public static final float RateImageFroumFragmentPage = (float) 5.5;
+	public static final float RateImagePostTimelineFragmentPage = (float) 5.5;
+	public static final float RateImagePostFragmentPage = (float) 5.5;
+	public static final float RateImageDisplayPersonalAdapter = (float) 5.5;
+	public static final float RateImageEditAnad = (float) 5.5;
+	public static final float RateImageCommentAndReply = (float) 5.5;
+	public static final float RateImageUserLikedObject = (float) 5.5;
 
 	/* e نسبت تصاویر نسبت به عرض گوشی */
 
@@ -56,5 +57,12 @@ public class StaticValues {
 	public static final int TypeFavoritePost = 4;
 
 	/* e نوع افرودن به علاقه مندی ها */
+
+	public static final int TypeLikePage = 0;
+	public static final int TypeLikeFixedPost = 1;
+
+	public static final String MessagePleaseWait = "لطفا منتظر بمانید ..." + "\n " + "\n "
+			+ " از شکیبایی شما سپاس گزاریم";
+	public static final String MessageError = "با عرض پوزش ، خطایی رخ داد";
 
 }

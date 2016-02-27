@@ -8,16 +8,22 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
@@ -34,10 +40,10 @@ import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.service.UpdatingVisit;
-import com.project.mechanic.utility.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 public class ObjectFragment extends Fragment
@@ -158,7 +164,7 @@ public class ObjectFragment extends Fragment
 		// adapter.close();
 		//
 
-		util.ShowFooterAgahi(getActivity(), true, 1);
+		util.ShowFooterAgahi(getActivity(), false, 1);
 
 		return rootView;
 	}
@@ -277,7 +283,7 @@ public class ObjectFragment extends Fragment
 	}
 
 	@Override
-	public void processFinishVisit(String output) {
+	public void resultCountView(String output) {
 
 		if (!output.contains("Exception")) {
 
@@ -410,32 +416,121 @@ public class ObjectFragment extends Fragment
 			public void onClick(View arg0) {
 				final String message = "کاربر گرامی اگر مشخصات برند یا فعالیت شما در این نرم افزار ثبت نشده می توانید با ایجاد صفحه،  فعالیت خود را به سایر کاربران این نرم افزار معرفی نمایید ";
 
-				dialog = new DialogCreatePage(getActivity(), message);
-				dialog.show();
-				SharedPreferences sendToCreate = getActivity().getSharedPreferences("Id", 0);
+				// dialog = new DialogCreatePage(getActivity(), message);
+				// dialog.show();
+				// SharedPreferences sendToCreate =
+				// getActivity().getSharedPreferences("Id", 0);
+				//
+				// if (mainId == 2 || mainId == 3 || mainId == 4) {
+				//
+				// if (mainId == 2)
+				// typeList = 0;
+				//
+				// sendToCreate.edit().putInt("MainObjectId", mainId).commit();
+				// sendToCreate.edit().putInt("CityId", city_id).commit();
+				// sendToCreate.edit().putInt("objectId", 0).commit();
+				// sendToCreate.edit().putInt("ObjectTypeId",
+				// typeList).commit();
+				//
+				// } else {
+				// SharedPreferences pageId =
+				// getActivity().getSharedPreferences("Id", 0);
+				// int brandId = pageId.getInt("brandID", -1);
+				// int MainObjID = pageId.getInt("main object id", -1);
+				//
+				// sendToCreate.edit().putInt("MainObjectId",
+				// MainObjID).commit();
+				// sendToCreate.edit().putInt("CityId", city_id).commit();
+				// sendToCreate.edit().putInt("objectId", brandId).commit();
+				// sendToCreate.edit().putInt("IsAgency",
+				// AgencyService).commit();
+				//
+				// }
 
-				if (mainId == 2 || mainId == 3 || mainId == 4) {
+				final RelativeLayout bottomSheet = (RelativeLayout) rootView.findViewById(R.id.bottmSheet);
+				TextView titleSheet = (TextView) rootView.findViewById(R.id.titleSheet);
+				Button create = (Button) rootView.findViewById(R.id.createDialogPage);
+				ImageView close = (ImageView) rootView.findViewById(R.id.delete);
 
-					if (mainId == 2)
-						typeList = 0;
+				titleSheet.setText(message);
+				titleSheet.setTextSize(20);
+				titleSheet.setLineSpacing(10, 1);
+				titleSheet.setTypeface(util.SetFontIranSans());
 
-					sendToCreate.edit().putInt("MainObjectId", mainId).commit();
-					sendToCreate.edit().putInt("CityId", city_id).commit();
-					sendToCreate.edit().putInt("objectId", 0).commit();
-					sendToCreate.edit().putInt("ObjectTypeId", typeList).commit();
+				create.setTypeface(util.SetFontCasablanca());
 
-				} else {
-					SharedPreferences pageId = getActivity().getSharedPreferences("Id", 0);
-					int brandId = pageId.getInt("brandID", -1);
-					int MainObjID = pageId.getInt("main object id", -1);
+				bottomSheet.setVisibility(View.VISIBLE);
+				util.ShowFooterAgahi(getActivity(), false, 1);
+				createItem.setVisibility(View.INVISIBLE);
 
-					sendToCreate.edit().putInt("MainObjectId", MainObjID).commit();
-					sendToCreate.edit().putInt("CityId", city_id).commit();
-					sendToCreate.edit().putInt("objectId", brandId).commit();
-					sendToCreate.edit().putInt("IsAgency", AgencyService).commit();
+				Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.down_from_top);
+				bottomSheet.startAnimation(anim);
 
-				}
+				create.setOnClickListener(new OnClickListener() {
 
+					@Override
+					public void onClick(View arg0) {
+
+						if (util.getCurrentUser() == null) {
+
+							Toast.makeText(getActivity(), "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
+
+							Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.up_from_bottom);
+							bottomSheet.startAnimation(anim);
+
+							bottomSheet.setVisibility(View.GONE);
+							util.ShowFooterAgahi(getActivity(), true, 1);
+							createItem.setVisibility(View.VISIBLE);
+
+						} else {
+							FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+									.beginTransaction();
+							trans.replace(R.id.content_frame, new CreateIntroductionFragment());
+							trans.commit();
+
+							SharedPreferences sendToCreate = getActivity().getSharedPreferences("Id", 0);
+							//
+							if (mainId == 2 || mainId == 3 || mainId == 4) {
+
+								if (mainId == 2)
+									typeList = 0;
+
+								sendToCreate.edit().putInt("MainObjectId", mainId).commit();
+								sendToCreate.edit().putInt("CityId", city_id).commit();
+								sendToCreate.edit().putInt("objectId", 0).commit();
+								sendToCreate.edit().putInt("ObjectTypeId", typeList).commit();
+
+							} else {
+								SharedPreferences pageId = getActivity().getSharedPreferences("Id", 0);
+								int brandId = pageId.getInt("brandID", -1);
+								int MainObjID = pageId.getInt("main object id", -1);
+
+								sendToCreate.edit().putInt("MainObjectId", MainObjID).commit();
+								sendToCreate.edit().putInt("CityId", city_id).commit();
+								sendToCreate.edit().putInt("objectId", brandId).commit();
+								sendToCreate.edit().putInt("IsAgency", AgencyService).commit();
+
+							}
+						}
+
+					}
+				});
+
+				close.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+
+						Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.up_from_bottom);
+						bottomSheet.startAnimation(anim);
+
+						bottomSheet.setVisibility(View.GONE);
+						util.ShowFooterAgahi(getActivity(), true, 1);
+						createItem.setVisibility(View.VISIBLE);
+
+
+					}
+				});
 			}
 		});
 

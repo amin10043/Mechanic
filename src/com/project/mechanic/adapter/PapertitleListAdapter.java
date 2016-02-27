@@ -20,7 +20,7 @@ import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
-import com.project.mechanic.utility.ServiceComm;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 import android.annotation.SuppressLint;
@@ -72,7 +72,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 	String serverDate = "";
 	ServerDate date;
 	int paperNumber;
-	ProgressDialog ringProgressDialog;
+	// ProgressDialog ringProgressDialog;
 	LinearLayout commentBtn;
 	Fragment fr;
 	ImageView report;
@@ -80,6 +80,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 	int itemId, userIdsender;
 	boolean flag;
 	int idPaper;
+	View Parent;
 
 	public PapertitleListAdapter(Context context, int resource, List<Paper> objects, Fragment fr) {
 		super(context, resource, objects);
@@ -101,6 +102,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 		convertView = myInflater.inflate(R.layout.raw_froumtitle, parent, false);
 
 		// start find view
+		Parent = parent;
 
 		final TextView txt1 = (TextView) convertView.findViewById(R.id.rowtitlepaper);
 		final TextView txt2 = (TextView) convertView.findViewById(R.id.rowdescriptionpaper);
@@ -120,6 +122,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 		currentUser = util.getCurrentUser();
 
 		final Paper person1 = mylist.get(position);
+		convertView.setTag(person1.getId());
 
 		if (person1.getSeenBefore() > 0) {
 			txt1.setTextColor(Color.GRAY);
@@ -238,11 +241,17 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 		likePaper.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 
 				if (currentUser == null) {
 					Toast.makeText(context, "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 				} else {
+
+					LinearLayout parentlayout = (LinearLayout) v;
+					RelativeLayout parent = (RelativeLayout) parentlayout.getParent().getParent();
+
+					LinearLayout lik = (LinearLayout) parent.findViewById(R.id.liketitleTopic);
+					TextView tx = (TextView) parent.findViewById(R.id.countLikeInFroumTitle);
 
 					String item = txt1.getText().toString();
 					for (Paper listItem : mylist) {
@@ -251,6 +260,13 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 							paperNumber = listItem.getId();
 						}
 					}
+
+					lik.setBackgroundResource(R.drawable.like_froum_on);
+					adapter.open();
+					int count = adapter.LikeInPaper_count(paperNumber);
+					adapter.close();
+					tx.setText(String.valueOf(count + 1));
+
 					date = new ServerDate(context);
 					date.delegate = PapertitleListAdapter.this;
 					date.execute("");
@@ -400,6 +416,8 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 				PaperFragment fragment = new PaperFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(id));
+				bundle.putInt("positionPaper", position);
+
 				fragment.setArguments(bundle);
 
 				abc.edit().putInt("Froum_List_Id", ((ListView) parent).getFirstVisiblePosition()).commit();
@@ -446,7 +464,8 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 
 		TextView visitCount = (TextView) convertView.findViewById(R.id.visitCount);
 
-		visitCount.setText(person1.getCountView()+"");
+		visitCount.setText(person1.getCountView() + "");
+
 		return convertView;
 	}
 
@@ -478,9 +497,10 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 				flag = false;
 
 			}
-			ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-			ringProgressDialog.setCancelable(true);
+			// ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر
+			// بمانید...", true);
+			//
+			// ringProgressDialog.setCancelable(true);
 			new Thread(new Runnable() {
 
 				@Override
@@ -498,23 +518,28 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 		} else {
 
 			try {
+
+				RelativeLayout parentLayout = (RelativeLayout) Parent.findViewWithTag(paperNumber);
+				LinearLayout li = (LinearLayout) parentLayout.findViewById(R.id.liketitleTopic);
+				TextView txt = (TextView) parentLayout.findViewById(R.id.countLikeInFroumTitle);
+
 				Integer.valueOf(output);
 				adapter.open();
 				if (adapter.isUserLikedPaper(currentUser.getId(), paperNumber)) {
 					adapter.deleteLikeFromPaper(currentUser.getId(), paperNumber);
-					likePaper.setBackgroundResource(R.drawable.like_froum_off);
+					li.setBackgroundResource(R.drawable.like_froum_off);
 
-					NumofLike.setText(adapter.LikeInPaper_count(paperNumber).toString());
-					if (ringProgressDialog != null) {
-						ringProgressDialog.dismiss();
-					}
+					txt.setText(adapter.LikeInPaper_count(paperNumber).toString());
+					// if (ringProgressDialog != null) {
+					// ringProgressDialog.dismiss();
+					// }
 				} else {
 					adapter.insertLikeInPaperToDb(currentUser.getId(), paperNumber, serverDate);
-					likePaper.setBackgroundResource(R.drawable.like_froum_on);
-					NumofLike.setText(adapter.LikeInPaper_count(paperNumber).toString());
-					if (ringProgressDialog != null) {
-						ringProgressDialog.dismiss();
-					}
+					li.setBackgroundResource(R.drawable.like_froum_on);
+					txt.setText(adapter.LikeInPaper_count(paperNumber).toString());
+					// if (ringProgressDialog != null) {
+					// ringProgressDialog.dismiss();
+					// }
 				}
 				adapter.close();
 
@@ -536,9 +561,10 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 
 						deleting.execute(params);
 
-						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-						ringProgressDialog.setCancelable(true);
+						// ringProgressDialog = ProgressDialog.show(context, "",
+						// "لطفا منتظر بمانید...", true);
+						//
+						// ringProgressDialog.setCancelable(true);
 						new Thread(new Runnable() {
 
 							@Override
@@ -575,9 +601,10 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 
 						saving.execute(params);
 
-						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-						ringProgressDialog.setCancelable(true);
+						// ringProgressDialog = ProgressDialog.show(context, "",
+						// "لطفا منتظر بمانید...", true);
+						//
+						// ringProgressDialog.setCancelable(true);
 						new Thread(new Runnable() {
 
 							@Override
@@ -631,9 +658,10 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 
 		service.execute(items);
 
-		ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-		ringProgressDialog.setCancelable(true);
+		// ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر
+		// بمانید...", true);
+		//
+		// ringProgressDialog.setCancelable(true);
 		new Thread(new Runnable() {
 
 			@Override
@@ -653,9 +681,9 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 	@Override
 	public void CommProcessFinish(String output) {
 
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
+		// if (ringProgressDialog != null) {
+		// ringProgressDialog.dismiss();
+		// }
 		adapter.open();
 
 		adapter.deletePaperTitle(itemId);
