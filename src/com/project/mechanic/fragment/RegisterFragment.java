@@ -705,14 +705,14 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 						birthday = "";
 					ServiceComm comm = new ServiceComm(getActivity());
 					comm.delegate = this;
-					Map<String,String> params = new HashMap<String,String>();
+					Map<String,String> params = new LinkedHashMap<String,String>();
 					params.put("tableName", "register");
 					params.put("username", Name);
 					params.put("email", "");
 					params.put("password", Pass);
 					params.put("phone", "");
 					params.put("mobile", Mobile);
-					params.put("fax", "");
+					params.put("fax", "1");
 					params.put("address", "");
 					params.put("date", output);
 					params.put("modifyDate", output);
@@ -747,10 +747,19 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 	@Override
 	public void CommProcessFinish(String output) {
 		ringProgressDialog.dismiss();
-		if("".equals(output)){
-			Toast.makeText(getActivity(), "این شماره همراه قبلاً ثبت شده است.", Toast.LENGTH_SHORT).show();
+		if("".equals(output) || "anyType{}".equals(output)){
+			LayoutInflater inflater5 = getLayoutInflater(getArguments());
+			View view5 = inflater5.inflate(R.layout.toast_define, toastlayout);
+			utile.showtoast(view5, R.drawable.errormassage, "این شماره همراه قبلاً ثبت شده است.", "خطا");
+
+			toast = new Toast(getActivity());
+			toast.setGravity(Gravity.CENTER, 0, 0);
+			toast.setDuration(Toast.LENGTH_LONG);
+			toast.setView(view5);
+			toast.show();
 		}else{
-			if (serverId > 0) {
+			try{
+				serverId = Integer.valueOf(output);
 				server.edit().putInt("srv_id", serverId).commit();
 				dbAdapter.open();
 				if ((btnaddpic1.getDrawable() != null) && firstTime) {
@@ -804,10 +813,10 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 	
 				}
 				dbAdapter.close();
-			} else {
+			} catch(Exception ex) {
 				LayoutInflater inflater5 = getLayoutInflater(getArguments());
 				View view5 = inflater5.inflate(R.layout.toast_define, toastlayout);
-				utile.showtoast(view5, R.drawable.errormassage, "شما به سرویس متصل نشده اید", "خطا");
+				utile.showtoast(view5, R.drawable.errormassage, "اطلاعات کاربر در سرور ثبت نشد.", "خطا");
 	
 				toast = new Toast(getActivity());
 				toast.setGravity(Gravity.CENTER, 0, 0);
