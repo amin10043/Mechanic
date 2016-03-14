@@ -97,6 +97,7 @@ public class FroumtitleFragment extends Fragment
 	ImageView send, close;
 
 	Animation enterFromDown, exitToDown;
+	int positionFroum = 0;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -104,7 +105,9 @@ public class FroumtitleFragment extends Fragment
 			Bundle savedInstanceState) {
 
 		view = inflater.inflate(R.layout.fragment_titlefrm, null);
-
+		if (getArguments() !=null)
+			positionFroum = getArguments().getInt("positionFroum");
+		
 		init();
 
 		fillListView();
@@ -150,6 +153,8 @@ public class FroumtitleFragment extends Fragment
 				FroumtitleFragment.this);
 		ListAdapter.notifyDataSetChanged();
 		lst.setAdapter(ListAdapter);
+		lst.setSelection(positionFroum);
+
 		LoadMoreFooter.setVisibility(View.GONE);
 
 	}

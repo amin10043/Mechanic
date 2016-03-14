@@ -2,6 +2,7 @@ package com.project.mechanic.utility;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,26 +13,20 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.StaticValues;
 import com.project.mechanic.PushNotification.DomainSend;
-import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.entity.Visit;
 import com.project.mechanic.fragment.PersianDate;
 import com.project.mechanic.fragment.ReportAbuseFragment;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.UpdatingAllDetail;
 import com.project.mechanic.service.UpdatingAllMaster;
@@ -54,7 +49,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff.Mode;
@@ -63,13 +60,14 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -81,14 +79,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 public class Utility implements AsyncInterface {
 
-	private Context context;
+	private static Context context;
 	private DataBaseAdapter adapter;
 	int notificationID;
 	LayoutInflater inflater;
@@ -111,6 +108,8 @@ public class Utility implements AsyncInterface {
 	int counterVisit;
 	int ItemId, userId, typeId;
 	String currentTime = "";
+
+	static Bitmap scaledBitmap;
 
 	public Utility(Context context) {
 		this.context = context;
@@ -513,10 +512,9 @@ public class Utility implements AsyncInterface {
 						+ "-" + (settings.getServerDate_Start_LikeInPost() != null
 								? settings.getServerDate_Start_LikeInPost() : "")
 
-						+ "-"
-						+ (settings.getServerDate_Start_LikeInCommentPost() != null
+						+ "-" + (settings.getServerDate_Start_LikeInCommentPost() != null
 								? settings.getServerDate_Start_LikeInCommentPost() : "")
-						
+
 						+ "-" + (settings.getServerDate_Start_CommentInPost() != null
 								? settings.getServerDate_Start_CommentInPost() : "");
 
@@ -1208,39 +1206,42 @@ public class Utility implements AsyncInterface {
 
 	}
 
-	public void reportAbuse(int userIdSender, int source, int itemId, String content, int backId) {
+	public void reportAbuse(int userIdSender, int source, int itemId, String content, int backId, int position) {
 
-		if (source > 4) {
-			FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
-			ReportAbuseFragment fragment = new ReportAbuseFragment(backId);
-			trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
+		// if (source > 4) {
+		// FragmentTransaction trans = ((MainActivity)
+		// context).getSupportFragmentManager().beginTransaction();
+		// ReportAbuseFragment fragment = new ReportAbuseFragment(backId);
+		// trans.setCustomAnimations(R.anim.pull_in_left,
+		// R.anim.push_out_right);
+		//
+		// Bundle bundle = new Bundle();
+		//
+		// bundle.putInt("userIdSender", userIdSender);
+		// bundle.putInt("source", source);
+		// bundle.putInt("itemId", itemId);
+		// bundle.putString("content", content);
+		// fragment.setArguments(bundle);
+		//
+		// trans.replace(R.id.content_frame, fragment);
+		// trans.commit();
+		// } else {
+		FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
+		ReportAbuseFragment fragment = new ReportAbuseFragment(userIdSender, source, itemId, content, backId, position);
+		trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 
-			Bundle bundle = new Bundle();
+		Bundle bundle = new Bundle();
+		//
+		// bundle.putInt("userIdSender", userIdSender);
+		// bundle.putInt("source", source);
+		// bundle.putInt("itemId", itemId);
+		// bundle.putString("content", content);
+		// bundle.putInt("position", position);
+		// fragment.setArguments(bundle);
 
-			bundle.putInt("userIdSender", userIdSender);
-			bundle.putInt("source", source);
-			bundle.putInt("itemId", itemId);
-			bundle.putString("content", content);
-			fragment.setArguments(bundle);
-
-			trans.replace(R.id.content_frame, fragment);
-			trans.commit();
-		} else {
-			FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
-			ReportAbuseFragment fragment = new ReportAbuseFragment();
-			trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
-
-			Bundle bundle = new Bundle();
-
-			bundle.putInt("userIdSender", userIdSender);
-			bundle.putInt("source", source);
-			bundle.putInt("itemId", itemId);
-			bundle.putString("content", content);
-			fragment.setArguments(bundle);
-
-			trans.replace(R.id.content_frame, fragment);
-			trans.commit();
-		}
+		trans.replace(R.id.content_frame, fragment);
+		trans.commit();
+		// }
 
 	}
 
@@ -1267,17 +1268,30 @@ public class Utility implements AsyncInterface {
 	}
 
 	public static Bitmap getclip(Bitmap bitmap) {
-		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
-		Canvas canvas = new Canvas(output);
 
-		final Paint paint = new Paint();
-		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+		Bitmap output = null;
+		Canvas canvas = null;
+		try {
+			output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
 
-		paint.setAntiAlias(true);
-		canvas.drawARGB(0, 0, 0, 0);
-		canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
-		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-		canvas.drawBitmap(bitmap, rect, rect, paint);
+		} catch (OutOfMemoryError e) {
+			e.printStackTrace();
+		}
+		if (output != null)
+			canvas = new Canvas(output);
+
+		if (canvas != null) {
+
+			final Paint paint = new Paint();
+			final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+			paint.setAntiAlias(true);
+			canvas.drawARGB(0, 0, 0, 0);
+			canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
+			paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+			canvas.drawBitmap(bitmap, rect, rect, paint);
+		}
+
 		return output;
 	}
 
@@ -1412,4 +1426,193 @@ public class Utility implements AsyncInterface {
 		}
 	}
 
+	public static byte[] compressImage(File file) {
+
+		String filePath = file.getPath();
+
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
+
+		int actualHeight = options.outHeight;
+		int actualWidth = options.outWidth;
+
+		float maxHeight = 800.0f;
+		float maxWidth = 612.0f;
+		float imgRatio = actualWidth / actualHeight;
+		float maxRatio = maxWidth / maxHeight;
+
+		if (actualHeight > maxHeight || actualWidth > maxWidth) {
+			if (imgRatio < maxRatio) {
+				imgRatio = maxHeight / actualHeight;
+				actualWidth = (int) (imgRatio * actualWidth);
+				actualHeight = (int) maxHeight;
+			} else if (imgRatio > maxRatio) {
+				imgRatio = maxWidth / actualWidth;
+				actualHeight = (int) (imgRatio * actualHeight);
+				actualWidth = (int) maxWidth;
+			} else {
+				actualHeight = (int) maxHeight;
+				actualWidth = (int) maxWidth;
+
+			}
+		}
+
+		options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
+		options.inJustDecodeBounds = false;
+		options.inDither = false;
+		options.inPurgeable = true;
+		options.inInputShareable = true;
+		options.inTempStorage = new byte[16 * 1024];
+
+		try {
+			bmp = BitmapFactory.decodeFile(filePath, options);
+		} catch (OutOfMemoryError exception) {
+			exception.printStackTrace();
+
+		}
+		try {
+			scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
+		} catch (OutOfMemoryError exception) {
+			exception.printStackTrace();
+		}
+
+		float ratioX = actualWidth / (float) options.outWidth;
+		float ratioY = actualHeight / (float) options.outHeight;
+		float middleX = actualWidth / 2.0f;
+		float middleY = actualHeight / 2.0f;
+
+		Matrix scaleMatrix = new Matrix();
+		scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+		Canvas canvas = new Canvas(scaledBitmap);
+		canvas.setMatrix(scaleMatrix);
+		canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2,
+				new Paint(Paint.FILTER_BITMAP_FLAG));
+
+		ExifInterface exif;
+		try {
+			exif = new ExifInterface(filePath);
+
+			int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
+			Log.d("EXIF", "Exif: " + orientation);
+			Matrix matrix = new Matrix();
+			if (orientation == 6) {
+				matrix.postRotate(90);
+				Log.d("EXIF", "Exif: " + orientation);
+			} else if (orientation == 3) {
+				matrix.postRotate(180);
+				Log.d("EXIF", "Exif: " + orientation);
+			} else if (orientation == 8) {
+				matrix.postRotate(270);
+				Log.d("EXIF", "Exif: " + orientation);
+			}
+			scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(),
+					matrix, true);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		FileOutputStream out = null;
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+		String filename = getFilename();
+		try {
+			out = new FileOutputStream(filename);
+			scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+			scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		byte[] byteArray = stream.toByteArray();
+
+		return byteArray;
+
+	}
+
+	public static String getFilename() {
+
+		// پیدا کردن نام پکیج پروژه
+		String namePackage = context.getApplicationContext().getPackageName();
+
+		// پیدا کردن آدرس SD
+		File root = android.os.Environment.getExternalStorageDirectory();
+
+		// پیدا کردن و ایجاد آدرس پوشه پکیج
+		File FolderPackage = new File(root.getPath() + "/Android/data/" + namePackage + "/");
+
+		if (!FolderPackage.exists()) {
+			FolderPackage.mkdirs(); // build directory
+		}
+
+		// پیدا کردن و ایجادآدرس پوشه اصلی
+		File mainDirectory = new File(FolderPackage.getPath() + "/" + "Mechanical" + "/");
+		if (!mainDirectory.exists()) {
+			mainDirectory.mkdirs(); // build directory
+		}
+
+		// پیدا کردن و ایجاد آدرس پوشه فرعی
+		File subfolder = new File(mainDirectory.getPath() + "/" + "Temp" + "/");
+
+		if (!subfolder.exists()) {
+			subfolder.mkdirs(); // build directory
+		}
+
+		String uriSting = (subfolder.getAbsolutePath() + "/" + System.currentTimeMillis() + ".jpg");
+		return uriSting;
+
+	}
+
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+			final int heightRatio = Math.round((float) height / (float) reqHeight);
+			final int widthRatio = Math.round((float) width / (float) reqWidth);
+			inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+		}
+		final float totalPixels = width * height;
+		final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+
+		while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
+			inSampleSize++;
+		}
+
+		return inSampleSize;
+	}
+
+	public static Bitmap decodeFile(String path) {
+		try {
+			// Decode image size
+			BitmapFactory.Options o = new BitmapFactory.Options();
+			o.inJustDecodeBounds = true;
+			BitmapFactory.decodeFile(path, o);
+
+			// The new size we want to scale to
+//			long maxMemory = Runtime.getRuntime().maxMemory()/1024;
+//			int maxMemoryForImage = (int) (maxMemory / 8);
+
+			final int REQUIRED_SIZE = 100;
+
+			// Find the correct scale value. It should be the power of 2.
+			int scale = 1;
+			if (o.outHeight > REQUIRED_SIZE || o.outWidth > REQUIRED_SIZE) {
+		        scale = (int)Math.pow(2, (int) Math.ceil(Math.log(REQUIRED_SIZE / 
+		           (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+		    }
+
+			// Decode with inSampleSize
+			BitmapFactory.Options o2 = new BitmapFactory.Options();
+			o2.inSampleSize = scale;
+			return BitmapFactory.decodeFile(path, o2);
+
+		} catch (Exception e) {
+		}
+		return null;
+
+	}
 }

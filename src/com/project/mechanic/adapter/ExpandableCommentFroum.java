@@ -127,12 +127,12 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 
 		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
-//		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-//		lp.setMargins(5, 5, 5, 5);
+		// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// lp.setMargins(5, 5, 5, 5);
 		ReplyerPic.setLayoutParams(lp);
 
 		if (y.getImagePath() == null) {
-			
+
 			ReplyerPic.setBackgroundResource(R.drawable.circle_drawable);
 
 			ReplyerPic.setImageResource(R.drawable.no_img_profile);
@@ -206,7 +206,9 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 						if (item.getTitle().equals("گزارش تخلف")) {
 
 							if (util.getCurrentUser() != null)
-								util.reportAbuse(userIdsender, 5, itemId, description, w.getFroumid());
+
+								util.reportAbuse(userIdsender, StaticValues.TypeReportReplyFroum, itemId, description,
+										w.getFroumid(), childPosition);
 							else
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
@@ -381,7 +383,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 			nameCommenter.setText(x.getName());
 			if (x.getImagePath() == null) {
 
-//				profileImage.setBackgroundResource(R.drawable.circle_drawable);
+				// profileImage.setBackgroundResource(R.drawable.circle_drawable);
 				profileImage.setImageResource(R.drawable.no_img_profile);
 			} else {
 
@@ -397,8 +399,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 
 		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
-//		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-//		lp.setMargins(5, 5, 10, 5);
+		// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// lp.setMargins(5, 5, 10, 5);
 		profileImage.setLayoutParams(lp);
 		profileImage.setOnClickListener(new View.OnClickListener() {
 
@@ -554,7 +556,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 
 					// // peyda kardan id comment sabt shode
 
-					RelativeLayout parentlayout = (RelativeLayout) v.getParent().getParent().getParent().getParent() ;
+					RelativeLayout parentlayout = (RelativeLayout) v.getParent().getParent().getParent().getParent();
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
 					TextView txtMaincmt = (TextView) viewMaincmt;
 
@@ -754,7 +756,9 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 						if (item.getTitle().equals("گزارش تخلف")) {
 
 							if (util.getCurrentUser() != null)
-								util.reportAbuse(userIdsender, 5, itemId, description, w.getFroumid());
+
+								util.reportAbuse(userIdsender, StaticValues.TypeReportCommentFroum, itemId, description,
+										w.getFroumid(), groupPosition);
 							else
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}

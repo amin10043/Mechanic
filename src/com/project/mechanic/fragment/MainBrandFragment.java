@@ -84,6 +84,9 @@ public class MainBrandFragment extends Fragment
 	int typeRunServer;
 
 	int pos = 0;
+	int controllerFollower = 0;
+	int IdObject;
+	String typeGetValue = "";
 
 	//////
 
@@ -135,8 +138,8 @@ public class MainBrandFragment extends Fragment
 
 	public void UpdateList() {
 		adapter.open();
-		ArrayList<Object> mylist = adapter.getObjectbyParentId(parentId);
-		ObjectListAdapter ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist,
+		mylist = adapter.getObjectbyParentId(parentId);
+		ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist,
 				MainBrandFragment.this, true, null, 1);
 		ListAdapter.notifyDataSetChanged();
 
@@ -152,7 +155,7 @@ public class MainBrandFragment extends Fragment
 	@Override
 	public void processFinish(String output) {
 
-//		LoadMoreFooter.setVisibility(View.INVISIBLE);
+		// LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 		if (!output.contains("exception") && !output.contains("anyType")) {
 
@@ -170,7 +173,7 @@ public class MainBrandFragment extends Fragment
 			if (output.contains("anyType")) {
 
 				Toast.makeText(getActivity(), "صفحه جدیدی یافت نشد", 0).show();
-//				LoadMoreFooter.setVisibility(View.INVISIBLE);
+				// LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 				if (swipeLayout != null) {
 					swipeLayout.setRefreshing(false);
@@ -212,7 +215,7 @@ public class MainBrandFragment extends Fragment
 
 			if (!"".equals(imagePath))
 				mylist.get(userItemId).setImagePath2(imagePath);
-			
+
 			ListAdapter.notifyDataSetChanged();
 		}
 
@@ -226,13 +229,28 @@ public class MainBrandFragment extends Fragment
 		if (output.contains("Exception") || output.contains(("anyType")))
 			output = "";
 
-		adapter.open();
-		adapter.updateObjectImage2ServerDate(objectItem.getId(), output);
-		adapter.close();
+		if (typeGetValue.equals("getFollower")) {
 
-		userItemId++;
+			adapter.open();
+			adapter.updateCountFollower(IdObject, Integer.valueOf(output));
+			adapter.close();
+			
+			ListAdapter.notifyDataSetChanged();
 
-		getServerDateImage();
+
+			controllerFollower++;
+			getCountFollwers();
+
+		} else {
+
+			adapter.open();
+			adapter.updateObjectImage2ServerDate(objectItem.getId(), output);
+			adapter.close();
+
+			userItemId++;
+
+			getServerDateImage();
+		}
 
 	}
 
@@ -255,7 +273,7 @@ public class MainBrandFragment extends Fragment
 
 		} else {
 
-			// fillListView();
+			getCountFollwers();
 		}
 
 	}
@@ -268,7 +286,7 @@ public class MainBrandFragment extends Fragment
 			adapter.open();
 			adapter.updateCountView("Object", objectItem.getId(), Integer.valueOf(output));
 			adapter.close();
-			
+
 			mylist.get(visitCounter).setCountView(Integer.valueOf(output));
 			ListAdapter.notifyDataSetChanged();
 
@@ -325,6 +343,7 @@ public class MainBrandFragment extends Fragment
 				items.put("Id", String.valueOf(objectItem.getId()));
 
 				getDateService.execute(items);
+				typeGetValue = "";
 
 			}
 
@@ -364,8 +383,8 @@ public class MainBrandFragment extends Fragment
 		lstObject = (ListView) rootView.findViewById(R.id.listvCmt_Introduction);
 
 		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
-//		lstObject.addFooterView(LoadMoreFooter);
-//		LoadMoreFooter.setVisibility(View.INVISIBLE);
+		// lstObject.addFooterView(LoadMoreFooter);
+		// LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 		swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
 		createItem = (FloatingActionButton) rootView.findViewById(R.id.fab);
@@ -519,7 +538,7 @@ public class MainBrandFragment extends Fragment
 
 				if (lastInScreen == totalItemCount && OnScrollListener.SCROLL_STATE_TOUCH_SCROLL == 1) {
 
-//					LoadMoreFooter.setVisibility(View.VISIBLE);
+					// LoadMoreFooter.setVisibility(View.VISIBLE);
 					if (getActivity() != null) {
 
 						updating = new Updating(getActivity());
@@ -541,4 +560,27 @@ public class MainBrandFragment extends Fragment
 			}
 		});
 	}
+
+	private void getCountFollwers() {
+
+		if (mylist.size() > 0) {
+
+			if (controllerFollower < mylist.size()) {
+
+				IdObject = mylist.get(controllerFollower).getId();
+
+				ServiceComm comm = new ServiceComm(getActivity());
+				comm.delegate = this;
+				Map<String, String> params = new LinkedHashMap<String, String>();
+				params.put("tableName", "getFollowerCountByObjectId");
+				params.put("objectId", String.valueOf(IdObject));
+				comm.execute(params);
+
+				typeGetValue = "getFollower";
+			}
+
+		}
+
+	}
+
 }

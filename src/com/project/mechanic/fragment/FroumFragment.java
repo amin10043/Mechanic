@@ -92,7 +92,7 @@ public class FroumFragment extends Fragment
 	Deleting deleting;
 	Map<String, String> params;
 
-	ProgressDialog ringProgressDialog;
+//	ProgressDialog ringProgressDialog;
 
 	String serverDate = "";
 	ServerDate date;
@@ -294,8 +294,8 @@ public class FroumFragment extends Fragment
 		if (missedIds.size() > 0) {
 			if (getActivity() != null) {
 
-				ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-				ringProgressDialog.setCancelable(true);
+//				ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+//				ringProgressDialog.setCancelable(true);
 				date = new ServerDate(getActivity());
 				date.delegate = FroumFragment.this;
 				date.execute("");
@@ -389,8 +389,8 @@ public class FroumFragment extends Fragment
 					Toast.makeText(getActivity(), "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 				} else {
 
-					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-					ringProgressDialog.setCancelable(true);
+//					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+//					ringProgressDialog.setCancelable(true);
 					date = new ServerDate(getActivity());
 					date.delegate = FroumFragment.this;
 					date.execute("");
@@ -479,7 +479,7 @@ public class FroumFragment extends Fragment
 						}
 						if (item.getTitle().equals("گزارش تخلف")) {
 
-							util.reportAbuse(userIdsender, 1, itemId, t, 0);
+							util.reportAbuse(userIdsender, StaticValues.TypeReportFroumFragment, itemId, t, froumid , 0);
 
 						}
 						if (item.getTitle().equals("حذف")) {
@@ -691,9 +691,9 @@ public class FroumFragment extends Fragment
 						}
 
 					}
-					if (ringProgressDialog != null) {
-						ringProgressDialog.dismiss();
-					}
+//					if (ringProgressDialog != null) {
+//						ringProgressDialog.dismiss();
+//					}
 				} catch (NumberFormatException ex) {
 					if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 
@@ -721,23 +721,23 @@ public class FroumFragment extends Fragment
 
 								saving.execute(params);
 							}
-							ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-
-							ringProgressDialog.setCancelable(true);
-							new Thread(new Runnable() {
-
-								@Override
-								public void run() {
-
-									try {
-
-										Thread.sleep(10000);
-
-									} catch (Exception e) {
-
-									}
-								}
-							}).start();
+//							ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+//
+//							ringProgressDialog.setCancelable(true);
+//							new Thread(new Runnable() {
+//
+//								@Override
+//								public void run() {
+//
+//									try {
+//
+//										Thread.sleep(10000);
+//
+//									} catch (Exception e) {
+//
+//									}
+//								}
+//							}).start();
 
 						} else {
 
@@ -782,9 +782,9 @@ public class FroumFragment extends Fragment
 						}
 					} else {
 						Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
-						if (ringProgressDialog != null) {
-							ringProgressDialog.dismiss();
-						}
+//						if (ringProgressDialog != null) {
+//							ringProgressDialog.dismiss();
+//						}
 					}
 				}
 
@@ -792,9 +792,9 @@ public class FroumFragment extends Fragment
 
 					Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
 					adapter.close();
-					if (ringProgressDialog != null) {
-						ringProgressDialog.dismiss();
-					}
+//					if (ringProgressDialog != null) {
+//						ringProgressDialog.dismiss();
+//					}
 				}
 				adapter.close();
 			}
@@ -857,9 +857,9 @@ public class FroumFragment extends Fragment
 
 			adapter.close();
 
-			if (ringProgressDialog != null) {
-				ringProgressDialog.dismiss();
-			}
+//			if (ringProgressDialog != null) {
+//				ringProgressDialog.dismiss();
+//			}
 
 			FroumtitleFragment fr = new FroumtitleFragment();
 
@@ -881,9 +881,9 @@ public class FroumFragment extends Fragment
 		adapter.close();
 
 		updateList();
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
+//		if (ringProgressDialog != null) {
+//			ringProgressDialog.dismiss();
+//		}
 	}
 
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
@@ -908,23 +908,23 @@ public class FroumFragment extends Fragment
 
 		service.execute(items);
 
-		ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-
-		ringProgressDialog.setCancelable(true);
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-
-				try {
-
-					Thread.sleep(10000);
-
-				} catch (Exception e) {
-
-				}
-			}
-		}).start();
+//		ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+//
+//		ringProgressDialog.setCancelable(true);
+//		new Thread(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//
+//				try {
+//
+//					Thread.sleep(10000);
+//
+//				} catch (Exception e) {
+//
+//				}
+//			}
+//		}).start();
 	}
 
 	private void checkInternet() {

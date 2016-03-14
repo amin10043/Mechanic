@@ -74,7 +74,7 @@ public class AnadFragment extends Fragment
 		implements AsyncInterface, GetAsyncInterface, CommInterface, AsyncInterfaceVisit {
 
 	DataBaseAdapter dbAdapter;
-	View rootView, LoadMoreFooter;
+	View rootView/*, LoadMoreFooter*/;
 	List<Ticket> ticketList;
 	List<Anad> anadlist;
 	private DialogAnad dialog;
@@ -337,7 +337,7 @@ public class AnadFragment extends Fragment
 			// if (mylist != null && !mylist.isEmpty())
 			listviewanad.setAdapter(ListAdapter);
 			getAnadImageFromServer(counterAnad);
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
+//			LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 		}
 	}
@@ -366,7 +366,7 @@ public class AnadFragment extends Fragment
 				maps.put("fromDate", anadImageDate);
 				update.execute(maps);
 				typeItem = "Anad";
-				LoadMoreFooter.setVisibility(View.INVISIBLE);
+//				LoadMoreFooter.setVisibility(View.INVISIBLE);
 			}
 
 		} else {
@@ -435,9 +435,9 @@ public class AnadFragment extends Fragment
 				AnadFragment.this, true, time, 1, ticketTypeId);
 		listviewanad.setAdapter(ListAdapter);
 
-		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
-		listviewanad.addFooterView(LoadMoreFooter);
-		LoadMoreFooter.setVisibility(View.INVISIBLE);
+//		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
+//		listviewanad.addFooterView(LoadMoreFooter);
+//		LoadMoreFooter.setVisibility(View.INVISIBLE);
 	}
 
 	private void createTicket() {
@@ -450,13 +450,31 @@ public class AnadFragment extends Fragment
 					Toast.makeText(getActivity(), " شما وارد نشده اید.", Toast.LENGTH_LONG).show();
 					return;
 				}
-				dialog = new DialogAnad(getActivity(), R.layout.dialog_addanad, AnadFragment.this, ticketTypeId,
-						provinceId);
-				// dialog.setTitle(R.string.txtanad);
-				dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-				dialog.show();
-				imageView = (ImageView) dialog.findViewById(R.id.dialog_img1);
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
+				NewTicketFragment fragment = new NewTicketFragment();
+				Bundle bundle = new Bundle();
+				
+				bundle.putInt("TypeId", ticketTypeId);
+				bundle.putInt("ProvinceId", provinceId);
+				trans.setCustomAnimations(R.anim.enter_animation, R.anim.exit_animation);
+				
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				
+				trans.commit();
+
+				 dialog = new DialogAnad(getActivity(),
+				 R.layout.dialog_addanad, AnadFragment.this, ticketTypeId,
+				 provinceId);
+				// // dialog.setTitle(R.string.txtanad);
+				// dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+				//
+				// dialog.show();
+				// imageView = (ImageView)
+				// dialog.findViewById(R.id.dialog_img1);
 			}
 		});
 
@@ -528,7 +546,7 @@ public class AnadFragment extends Fragment
 
 					if (lastInScreen == totalItemCount) {
 
-						LoadMoreFooter.setVisibility(View.VISIBLE);
+//						LoadMoreFooter.setVisibility(View.VISIBLE);
 
 						if (getActivity() != null) {
 
@@ -655,8 +673,8 @@ public class AnadFragment extends Fragment
 		if (scrollPos >= verticalScrollMax) {
 			scrollPos = 0;
 		}
-		if (imageButton.getHeight()>0)
-		count = scrollPos / (imageButton.getHeight());
+		if (imageButton.getHeight() > 0)
+			count = scrollPos / (imageButton.getHeight());
 
 		if (anadlist.size() > 0)
 			countAnad.setText(count + " / " + anadlist.size());
@@ -788,26 +806,26 @@ public class AnadFragment extends Fragment
 
 	@Override
 	public void processFinish(String output) {
-		LoadMoreFooter.setVisibility(View.INVISIBLE);
+//		LoadMoreFooter.setVisibility(View.INVISIBLE);
 		if (output.contains("anyType")) {
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
+//			LoadMoreFooter.setVisibility(View.INVISIBLE);
 		}
 		if (swipeLayout != null) {
 			swipeLayout.setRefreshing(false);
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
+//			LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 		}
 
 		if (output.length() == 18 && code == 100) {
 			serverDate = output;
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
+//			LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 			getTicketImageFromServer(ticketList);
 		}
 
 		if (output != null && !(output.contains("Exception") || output.contains("java") || output.contains("SoapFault")
 				|| output.contains("anyType")) && code == -1) {
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
+//			LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 			util.parseQuery(output);
 			ticketList.clear();
@@ -820,17 +838,17 @@ public class AnadFragment extends Fragment
 					AnadFragment.this, false, time, 1, ticketTypeId);
 
 			listviewanad.setAdapter(ListAdapter);
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
+//			LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 			if (FindPosition == false) {
 				listviewanad.setSelection(beforePosition);
-				LoadMoreFooter.setVisibility(View.INVISIBLE);
+//				LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 			}
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
+//			LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 			ListAdapter.notifyDataSetChanged();
-			LoadMoreFooter.setVisibility(View.INVISIBLE);
+//			LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 		}
 	}

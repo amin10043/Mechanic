@@ -35,6 +35,8 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.CommentInPost;
+import com.project.mechanic.entity.Post;
+import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogLongClick;
 import com.project.mechanic.fragment.InformationUser;
@@ -62,7 +64,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 	Deleting deleting;
 	Map<String, String> params;
 	TextView countLike, countdisLike;
-	ProgressDialog ringProgressDialog;
+	// ProgressDialog ringProgressDialog;
 	ImageView reportComment, reportReply;
 	String serverDate = "";
 	ServerDate date;
@@ -71,7 +73,10 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 	List<String> menuItems;
 	int itemId, userIdsender;;
 	String description;
-	boolean IsDeleteing;
+	boolean IsDeleteing, typeReport; // if(typeReport==true) comment else report
+	Post po;
+	com.project.mechanic.entity.Object object;
+	int lastExpandedPosition = 0;
 
 	public ExpandableCommentPost(Context context, ArrayList<CommentInPost> laptops,
 			Map<CommentInPost, List<CommentInPost>> mapCollection, PostFragment f, int postID) {
@@ -84,6 +89,8 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 		this.postID = postID;
 		adapter.open();
 		Currentuser = util.getCurrentUser();
+		po = adapter.getPostItembyid(postID);
+		object = adapter.getObjectbyid(po.getObjectId());
 		adapter.close();
 
 	}
@@ -112,10 +119,12 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 		ImageButton ReplyerPic = (ImageButton) convertView.findViewById(R.id.icon_reply_comment);
 
 		reportReply = (ImageView) convertView.findViewById(R.id.reportImagereply);
-		adapter.open();
 
 		// final CommentInFroum comment = cmt.get(groupPosition);
+		adapter.open();
 		Users y = adapter.getUserbyid(reply.getUserId());
+		adapter.close();
+
 		userId = y.getId();
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.main_icon_reply);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
@@ -126,23 +135,57 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 		// lp.setMargins(5, 5, 5, 5);
 		ReplyerPic.setLayoutParams(lp);
 
-		if (y.getImagePath() == null) {
-			ReplyerPic.setImageResource(R.drawable.no_img_profile);
-			ReplyerPic.setLayoutParams(lp);
+		if (isAdmin(reply.getUserId()) == true) {
+
+			adapter.open();
+			object = adapter.getObjectbyid(po.getObjectId());
+			adapter.close();
+
+			nameReplyer.setText(object.getName());
+
+			if (object.getImagePath2() != null) {
+
+				try {
+					Bitmap bmp = BitmapFactory.decodeFile(object.getImagePath2());
+
+					ReplyerPic.setImageBitmap(Utility.getclip(bmp));
+
+					ReplyerPic.setLayoutParams(lp);
+				} catch (OutOfMemoryError e) {
+					e.printStackTrace();
+				}
+
+			} else {
+				ReplyerPic.setBackgroundResource(R.drawable.circle_drawable);
+
+				ReplyerPic.setImageResource(R.drawable.no_img_profile);
+			}
 
 		} else {
 
-			// byte[] byteImageProfile = y.getImage();
+			nameReplyer.setText(y.getName());
 
-			Bitmap bmp = BitmapFactory.decodeFile(y.getImagePath());
+			if (y.getImagePath() == null) {
+				ReplyerPic.setImageResource(R.drawable.no_img_profile);
+				ReplyerPic.setLayoutParams(lp);
 
-			// Bitmap bmp = BitmapFactory.decodeByteArray(byteImageProfile, 0,
-			// byteImageProfile.length);
+			} else {
 
-			ReplyerPic.setImageBitmap(Utility.getclip(bmp));
+				// byte[] byteImageProfile = y.getImage();
 
-			ReplyerPic.setLayoutParams(lp);
+				try {
 
+					Bitmap bmp = BitmapFactory.decodeFile(y.getImagePath());
+
+					ReplyerPic.setImageBitmap(Utility.getclip(bmp));
+
+					ReplyerPic.setLayoutParams(lp);
+
+				} catch (OutOfMemoryError e) {
+					e.printStackTrace();
+				}
+
+			}
 		}
 
 		reportReply.setOnClickListener(new OnClickListener() {
@@ -166,7 +209,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 				if (util.getCurrentUser() != null) {
 
-					if (util.getCurrentUser().getId() == userIdsender) {
+					if (util.getCurrentUser().getId() == userIdsender || isAdmin(util.getCurrentUser().getId())) {
 
 						menuItems = new ArrayList<String>();
 						menuItems.clear();
@@ -205,14 +248,17 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 						if (item.getTitle().equals("گزارش تخلف")) {
 
 							if (util.getCurrentUser() != null)
-								util.reportAbuse(userIdsender, 8, itemId, description, w.getPostId());
+
+								util.reportAbuse(userIdsender, StaticValues.TypeReportReplayPost, itemId, description,
+										w.getPostId(), 0);
 							else
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
 
 						if (item.getTitle().equals("حذف")) {
 							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender) {
-								// deleteItems(itemId);
+								deleteItems(itemId);
+								typeReport = false;
 							} else {
 
 								Toast.makeText(context, "", 0).show();
@@ -261,9 +307,8 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 			}
 		});
 		mainReply.setText(reply.getDesc());
+		mainReply.setTypeface(util.SetFontIranSans());
 		dateReply.setText(util.getPersianDate(reply.getDate()));
-		nameReplyer.setText(y.getName());
-		adapter.close();
 
 		notifyDataSetChanged();
 		return convertView;
@@ -313,7 +358,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 		TextView countOfReply = (TextView) convertView.findViewById(R.id.numberOfCommentTopic);
 
-		LinearLayout addreply = (LinearLayout) convertView.findViewById(R.id.addCommentToTopic);
+		LinearLayout addreply = (LinearLayout) convertView.findViewById(R.id.cmffff);
 
 		ImageButton profileImage = (ImageButton) convertView.findViewById(R.id.icon_froum_profile);
 
@@ -350,6 +395,8 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 		}
 
+		adapter.close();
+
 		mainComment.setText(comment.getDesc());
 		dateCommenter.setText(util.getPersianDate(comment.getDate()));
 		// if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) == 0) {
@@ -358,22 +405,55 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 		// lrr.setVisibility(View.GONE);
 		//
 		// } else
-		countOfReply.setText(adapter.getCountOfReplyInPost(postID, comment.getId()).toString());
 
 		if (x != null) {
-			nameCommenter.setText(x.getName());
-			if (x.getImagePath() == null) {
-				profileImage.setBackgroundResource(R.drawable.circle_drawable);
 
-				profileImage.setImageResource(R.drawable.no_img_profile);
+			if (isAdmin(comment.getUserId()) == true) {
+				adapter.open();
+				object = adapter.getObjectbyid(po.getObjectId());
+				adapter.close();
+
+				nameCommenter.setText(object.getName());
+
+				if (object.getImagePath2() != null) {
+
+					try {
+						Bitmap bmp = BitmapFactory.decodeFile(object.getImagePath2());
+
+						profileImage.setImageBitmap(Utility.getclip(bmp));
+
+					} catch (OutOfMemoryError e) {
+						e.printStackTrace();
+					}
+
+				} else {
+					profileImage.setBackgroundResource(R.drawable.circle_drawable);
+
+					profileImage.setImageResource(R.drawable.no_img_profile);
+				}
+
 			} else {
+				nameCommenter.setText(x.getName());
 
-				// byte[] byteImageProfile = x.getImage();
+				if (x.getImagePath() == null) {
+					profileImage.setBackgroundResource(R.drawable.circle_drawable);
 
-				Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
+					profileImage.setImageResource(R.drawable.no_img_profile);
+				} else {
 
-				profileImage.setImageBitmap(Utility.getclip(bmp));
+					// byte[] byteImageProfile = x.getImage();
+
+					try {
+						Bitmap bmp = BitmapFactory.decodeFile(x.getImagePath());
+
+						profileImage.setImageBitmap(Utility.getclip(bmp));
+					} catch (OutOfMemoryError e) {
+						e.printStackTrace();
+					}
+
+				}
 			}
+
 		}
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.icon_header_comment_froum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
@@ -413,9 +493,10 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 			}
 		}
+		adapter.open();
+		countOfReply.setText(adapter.getCountOfReplyInPost(postID, comment.getId()).toString());
 		countLike.setText(String.valueOf(adapter.NumberOfLikeOrDisLikePost(c, 1)));
 		countdisLike.setText(String.valueOf(adapter.NumberOfLikeOrDisLikePost(c, 0)));
-
 		adapter.close();
 
 		// end set variable
@@ -434,7 +515,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 				} else {
 
 					flag = false;
-					RelativeLayout parentlayout = (RelativeLayout) t.getParent().getParent().getParent().getParent();
+					LinearLayout parentlayout = (LinearLayout) t.getParent().getParent().getParent().getParent();
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
 					TextView txtMaincmt = (TextView) viewMaincmt;
 
@@ -442,6 +523,11 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 					TextView txtdislike = (TextView) viewnumDislike;
 
 					int id = 0;
+
+					ImageView dis = (ImageView) parentlayout.findViewById(R.id.negative_img);
+					TextView txtDis = (TextView) parentlayout.findViewById(R.id.countdislikecommentFroum);
+
+					dis.setBackgroundResource((R.drawable.negative));
 
 					for (CommentInPost listItem : cmt) {
 						if (txtMaincmt.getText().toString().equals(listItem.getDesc())) {
@@ -474,24 +560,25 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 							deleting.execute(params);
 
-							ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+							// ringProgressDialog = ProgressDialog.show(context,
+							// "", "لطفا منتظر بمانید...", true);
 						}
-						ringProgressDialog.setCancelable(true);
-
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
-							}
-						}).start();
+						// ringProgressDialog.setCancelable(true);
+						//
+						// new Thread(new Runnable() {
+						//
+						// @Override
+						// public void run() {
+						//
+						// try {
+						//
+						// Thread.sleep(10000);
+						//
+						// } catch (Exception e) {
+						//
+						// }
+						// }
+						// }).start();
 
 						/*
 						 * end >>>>> delete dislike from server
@@ -537,7 +624,11 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 					// // peyda kardan id comment sabt shode
 
-					RelativeLayout parentlayout = (RelativeLayout) v.getParent().getParent().getParent().getParent();
+					LinearLayout parentlayout = (LinearLayout) v.getParent().getParent().getParent().getParent();
+
+					ImageView li = (ImageView) parentlayout.findViewById(R.id.positive_img);
+					li.setBackgroundResource((R.drawable.positive));
+
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
 					TextView txtMaincmt = (TextView) viewMaincmt;
 
@@ -576,24 +667,25 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 							deleting.execute(params);
 
-							ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+							// ringProgressDialog = ProgressDialog.show(context,
+							// "", "لطفا منتظر بمانید...", true);
 						}
-						ringProgressDialog.setCancelable(true);
-
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
-							}
-						}).start();
+						// ringProgressDialog.setCancelable(true);
+						//
+						// new Thread(new Runnable() {
+						//
+						// @Override
+						// public void run() {
+						//
+						// try {
+						//
+						// Thread.sleep(10000);
+						//
+						// } catch (Exception e) {
+						//
+						// }
+						// }
+						// }).start();
 
 						/*
 						 * end >>> delete like from server
@@ -640,7 +732,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 					return;
 				} else {
 					adapter.open();
-					RelativeLayout parentlayout = (RelativeLayout) m.getParent().getParent().getParent();
+					LinearLayout parentlayout = (LinearLayout) m.getParent().getParent();
 					View view = parentlayout.findViewById(R.id.peygham);
 					TextView x = (TextView) view;
 					String item = x.getText().toString();
@@ -691,11 +783,11 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 				if (util.getCurrentUser() != null) {
 
-					adapter.open();
-					int countReply = adapter.getCountOfReplyInPost(postID, comment.getId());
-					adapter.close();
+//					adapter.open();
+//					int countReply = adapter.getCountOfReplyInPost(postID, comment.getId());
+//					adapter.close();
 
-					if (util.getCurrentUser().getId() == userIdsender) {
+					if (util.getCurrentUser().getId() == userIdsender || isAdmin(util.getCurrentUser().getId())) {
 
 						// if (countReply == 0) {
 						menuItems = new ArrayList<String>();
@@ -744,6 +836,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 						if (item.getTitle().equals("حذف")) {
 							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender) {
 								deleteItems(itemId);
+								typeReport = true;
 							} else {
 
 								Toast.makeText(context, "", 0).show();
@@ -752,7 +845,9 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 						if (item.getTitle().equals("گزارش تخلف")) {
 
 							if (util.getCurrentUser() != null)
-								util.reportAbuse(userIdsender, 7, itemId, description, ww.getPostId());
+
+								util.reportAbuse(userIdsender, StaticValues.TypeReportCommentPost, itemId, description,
+										ww.getPostId(), 0);
 							else
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
@@ -817,17 +912,22 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 				if (isExpanded) {
 					mExpandableListView.collapseGroup(groupPosition);
-					notifyDataSetChanged();
 
-				} else
+				} else {
 					mExpandableListView.expandGroup(groupPosition);
+					mExpandableListView.setSelectedChild(groupPosition, 0, true);
 
-				notifyDataSetChanged();
+					if (lastExpandedPosition != -1 && groupPosition != lastExpandedPosition) {
+						mExpandableListView.collapseGroup(lastExpandedPosition);
+					}
+					lastExpandedPosition = groupPosition;
+
+				}
 
 			}
 
 		});
-		mainComment.setTypeface(null, Typeface.BOLD);
+		mainComment.setTypeface(util.SetFontIranSans());
 
 		return convertView;
 	}
@@ -843,175 +943,194 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 	@Override
 	public void processFinish(String output) {
 
-		if (IsDeleteing == true) {
+		if (util.checkError(output) == false) {
 
-			if (ringProgressDialog != null) {
-				ringProgressDialog.dismiss();
-			}
+			if (IsDeleteing == true) {
 
-			adapter.open();
-			adapter.deleteOnlyCommentPost(itemId);
-			adapter.deleteLikeInCommentPost(itemId);
-			adapter.deleteReplyPost(itemId);
-			adapter.close();
+				// if (ringProgressDialog != null) {
+				// ringProgressDialog.dismiss();
+				// }
+				adapter.open();
 
-			f.updateList();
+				if (typeReport == true) {
 
-		} else {
+					adapter.deleteOnlyCommentPost(itemId);
+					adapter.deleteLikeInCommentPost(itemId);
+					adapter.deleteReplyPost(itemId);
 
-			if (!"".equals(output) && output != null && !(output.contains("Exception") || output.contains("java"))) {
+				} else {
+					adapter.deleteOnlyReplyPost(itemId);
 
-				int id = -1;
-				try {
-					id = Integer.valueOf(output);
+				}
 
-					adapter.open();
+				adapter.close();
 
-					if (flag) {
+				f.updateList();
 
-						/*
-						 * save like in database device
-						 */
+			} else {
 
-						if (adapter.isUserLikedCommentPost(Currentuser.getId(), GlobalId, 1)) {
-							adapter.deleteLikeFromCommentInPost(GlobalId, Currentuser.getId(), 1);
+				if (!"".equals(output) && output != null
+						&& !(output.contains("Exception") || output.contains("java"))) {
 
-							notifyDataSetChanged();
-							if (ringProgressDialog != null) {
-								ringProgressDialog.dismiss();
+					int id = -1;
+					try {
+						id = Integer.valueOf(output);
+
+						adapter.open();
+
+						if (flag) {
+
+							/*
+							 * save like in database device
+							 */
+
+							if (adapter.isUserLikedCommentPost(Currentuser.getId(), GlobalId, 1)) {
+								adapter.deleteLikeFromCommentInPost(GlobalId, Currentuser.getId(), 1);
+
+								notifyDataSetChanged();
+								// if (ringProgressDialog != null) {
+								// ringProgressDialog.dismiss();
+								//
+								// }
+
+							} else {
+								adapter.InsertLikeCommentPostToDatabase(id, Currentuser.getId(), 1, GlobalId,
+										serverDate);
+
+								notifyDataSetChanged();
+								// if (ringProgressDialog != null) {
+								// ringProgressDialog.dismiss();
+								//
+								// }
 
 							}
+						} else {
+							/*
+							 * save dislike in database device
+							 */
+
+							if (adapter.isUserLikedCommentPost(Currentuser.getId(), GlobalId, 0)) {
+								adapter.deleteLikeFromCommentInPost(GlobalId, Currentuser.getId(), 0);
+								notifyDataSetChanged();
+								// if (ringProgressDialog != null) {
+								// ringProgressDialog.dismiss();
+								//
+								// }
+
+							} else {
+								adapter.InsertLikeCommentPostToDatabase(id, Currentuser.getId(), 0, GlobalId,
+										serverDate);
+
+								notifyDataSetChanged();
+								// if (ringProgressDialog != null) {
+								// ringProgressDialog.dismiss();
+								//
+								// }
+
+							}
+						}
+
+						adapter.close();
+
+					} catch (NumberFormatException e) {
+						serverDate = output;
+
+						if (flag == true) {
+							params = new LinkedHashMap<String, String>();
+							if (context != null) {
+
+								saving = new Saving(context);
+								saving.delegate = ExpandableCommentPost.this;
+
+								params.put("TableName", "LikeInCommentPost");
+
+								params.put("UserId", String.valueOf(Currentuser.getId()));
+								params.put("IsLike", String.valueOf(1));
+								params.put("CommentId", String.valueOf(GlobalId));
+								params.put("ModifyDate", serverDate);
+								params.put("IsUpdate", "0");
+								params.put("Date", serverDate);
+
+								params.put("Id", "0");
+
+								saving.execute(params);
+
+								// ringProgressDialog =
+								// ProgressDialog.show(context,
+								// "", "لطفا منتظر بمانید...", true);
+							}
+							// ringProgressDialog.setCancelable(true);
+							//
+							// new Thread(new Runnable() {
+							//
+							// @Override
+							// public void run() {
+							//
+							// try {
+							//
+							// Thread.sleep(10000);
+							//
+							// } catch (Exception e) {
+							//
+							// }
+							// }
+							// }).start();
+
+							notifyDataSetChanged();
 
 						} else {
-							adapter.InsertLikeCommentPostToDatabase(id, Currentuser.getId(), 1, GlobalId, serverDate);
+
+							params = new LinkedHashMap<String, String>();
+
+							if (context != null) {
+
+								saving = new Saving(context);
+								saving.delegate = ExpandableCommentPost.this;
+
+								params.put("TableName", "LikeInCommentPost");
+
+								params.put("UserId", String.valueOf(Currentuser.getId()));
+
+								params.put("IsLike", String.valueOf(0));
+								params.put("CommentId", String.valueOf(GlobalId));
+								params.put("ModifyDate", serverDate);
+								params.put("Date", serverDate);
+
+								params.put("IsUpdate", "0");
+								params.put("Id", "0");
+
+								saving.execute(params);
+							}
+							// ringProgressDialog = ProgressDialog.show(context,
+							// "",
+							// "لطفا منتظر بمانید...", true);
+
+							// ringProgressDialog.setCancelable(true);
+							//
+							// new Thread(new Runnable() {
+							//
+							// @Override
+							// public void run() {
+							//
+							// try {
+							//
+							// Thread.sleep(10000);
+							//
+							// } catch (Exception e) {
+							//
+							// }
+							// }
+							//
+							// }).start();
 
 							notifyDataSetChanged();
-							if (ringProgressDialog != null) {
-								ringProgressDialog.dismiss();
-
-							}
 
 						}
-					} else {
-						/*
-						 * save dislike in database device
-						 */
 
-						if (adapter.isUserLikedCommentPost(Currentuser.getId(), GlobalId, 0)) {
-							adapter.deleteLikeFromCommentInPost(GlobalId, Currentuser.getId(), 0);
-							notifyDataSetChanged();
-							if (ringProgressDialog != null) {
-								ringProgressDialog.dismiss();
-
-							}
-
-						} else {
-							adapter.InsertLikeCommentPostToDatabase(id, Currentuser.getId(), 0, GlobalId, serverDate);
-
-							notifyDataSetChanged();
-							if (ringProgressDialog != null) {
-								ringProgressDialog.dismiss();
-
-							}
-
-						}
+						// Toast.makeText(context, "خطا در ثبت",
+						// Toast.LENGTH_SHORT)
+						// .show();
 					}
-
-					adapter.close();
-
-				} catch (NumberFormatException e) {
-					serverDate = output;
-
-					if (flag == true) {
-						params = new LinkedHashMap<String, String>();
-						if (context != null) {
-
-							saving = new Saving(context);
-							saving.delegate = ExpandableCommentPost.this;
-
-							params.put("TableName", "LikeInCommentPost");
-
-							params.put("UserId", String.valueOf(Currentuser.getId()));
-							params.put("IsLike", String.valueOf(1));
-							params.put("CommentId", String.valueOf(GlobalId));
-							params.put("ModifyDate", serverDate);
-							params.put("IsUpdate", "0");
-							params.put("Date", serverDate);
-
-							params.put("Id", "0");
-
-							saving.execute(params);
-
-							ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-						}
-						ringProgressDialog.setCancelable(true);
-
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
-							}
-						}).start();
-
-						notifyDataSetChanged();
-
-					} else {
-
-						params = new LinkedHashMap<String, String>();
-
-						if (context != null) {
-
-							saving = new Saving(context);
-							saving.delegate = ExpandableCommentPost.this;
-
-							params.put("TableName", "LikeInCommentPost");
-
-							params.put("UserId", String.valueOf(Currentuser.getId()));
-
-							params.put("IsLike", String.valueOf(0));
-							params.put("CommentId", String.valueOf(GlobalId));
-							params.put("ModifyDate", serverDate);
-							params.put("Date", serverDate);
-
-							params.put("IsUpdate", "0");
-							params.put("Id", "0");
-
-							saving.execute(params);
-						}
-						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-						ringProgressDialog.setCancelable(true);
-
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
-							}
-
-						}).start();
-
-						notifyDataSetChanged();
-
-					}
-
-					// Toast.makeText(context, "خطا در ثبت", Toast.LENGTH_SHORT)
-					// .show();
 				}
 			}
 		}
@@ -1029,24 +1148,59 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 		deleting.execute(params);
 
-		ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-		ringProgressDialog.setCancelable(true);
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-
-				try {
-
-					Thread.sleep(10000);
-
-				} catch (Exception e) {
-
-				}
-			}
-		}).start();
+		// ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر
+		// بمانید...", true);
+		//
+		// ringProgressDialog.setCancelable(true);
+		// new Thread(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		//
+		// try {
+		//
+		// Thread.sleep(10000);
+		//
+		// } catch (Exception e) {
+		//
+		// }
+		// }
+		// }).start();
 		IsDeleteing = true;
 
 	}
+
+	private boolean isAdmin(int userId) {
+
+		// if isSave = true allow to save visit on server
+		// else don't allow to save
+		boolean isSave = false;
+
+		adapter.open();
+		List<SubAdmin> subAdminList = adapter.getAdmin(po.getObjectId());
+		adapter.close();
+
+		boolean fl1 = false;
+
+		List<Integer> Ids = new ArrayList<Integer>();
+		if (subAdminList.size() > 0)
+			for (int i = 0; i < subAdminList.size(); i++) {
+				Ids.add(subAdminList.get(i).getUserId());
+			}
+
+		for (int j = 0; j < Ids.size(); j++) {
+			if (userId == Ids.get(j))
+				fl1 = true;
+		}
+		// if (Currentuser == null)
+		// isSave = false;
+		// else
+
+		if (fl1 == true || userId == object.getUserId())
+			isSave = true;
+
+		return isSave;
+
+	}
+
 }

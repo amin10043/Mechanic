@@ -151,9 +151,13 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 
 		if (profileImage != null) {
 
-			img2.setImageBitmap(Utility.getclip(profileImage));
-			img2.setLayoutParams(layoutParams);
-			LoadingProgress.setVisibility(View.GONE);
+			try {
+				img2.setImageBitmap(Utility.getclip(profileImage));
+				img2.setLayoutParams(layoutParams);
+				LoadingProgress.setVisibility(View.GONE);
+			} catch (OutOfMemoryError e) {
+				e.printStackTrace();
+			}
 
 		} else {
 			img2.setImageResource(R.drawable.no_img_profile);
@@ -328,7 +332,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 				adapter.SetSeen("Ticket", id, "1");
 				adapter.close();
 
-							}
+			}
 		});
 
 		// reaport.setOnClickListener(new OnClickListener() {
@@ -373,10 +377,10 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 		// });
 
 		// dia.dismiss();
-		
-		TextView countVisit = (TextView)convertView.findViewById(R.id.getTicketCountVisit);
-		
-		countVisit.setText(tempItem.getCountView()+"");
+
+		TextView countVisit = (TextView) convertView.findViewById(R.id.getTicketCountVisit);
+
+		countVisit.setText(tempItem.getCountView() + "");
 
 		return convertView;
 
@@ -428,17 +432,16 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 	@Override
 	public void processFinish(String output) {
 		serverDate = output;
-	
 
-			if (ringProgressDialog != null) {
-				ringProgressDialog.dismiss();
-			}
-
-			adapter.open();
-			adapter.deleteTicketItem(itemId);
-			adapter.close();
-
-			((AnadFragment) fragment).updateView();
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
 		}
-	
+
+		adapter.open();
+		adapter.deleteTicketItem(itemId);
+		adapter.close();
+
+		((AnadFragment) fragment).updateView();
+	}
+
 }

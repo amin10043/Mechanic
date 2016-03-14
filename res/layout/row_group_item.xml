@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/orginal_light_gray_color" >
+    android:background="@color/orginal_light_gray_color"
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:id="@+id/layoutabcd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/settingsLayout"
         android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/settingsLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible" >
+
+            <ImageView
+                android:id="@+id/reportImage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/down_arrow" />
+
+            <TextView
+                android:id="@+id/date_commented_in_froum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:gravity="left"
+                android:text="Date"
+                android:textColor="@color/transparent" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,15 +54,6 @@
                 android:gravity="right"
                 android:text="Name"
                 android:textColor="@color/transparent" />
-
-            <TextView
-                android:id="@+id/peygham"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:lineSpacingExtra="5dp"
-                android:text="Message"
-                android:textColor="@color/transparent" />
         </LinearLayout>
 
         <RelativeLayout
@@ -43,8 +61,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="20dp" >
+            android:layout_margin="10dp"
+            android:gravity="center" >
 
             <ImageButton
                 android:id="@+id/icon_froum_profile"
@@ -55,6 +73,20 @@
                 android:src="@drawable/no_img_profile" />
         </RelativeLayout>
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/peygham"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/icon_header_comment_froum"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:gravity="right"
+        android:lineSpacingExtra="5dp"
+        android:text="Message"
+        android:textColor="@color/transparent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -80,7 +112,8 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:background="@drawable/comment_fr"
-                android:gravity="center" >
+                android:gravity="center"
+                android:orientation="horizontal" >
             </LinearLayout>
 
             <TextView
@@ -160,31 +193,4 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/settingsLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="visible" >
-
-        <ImageView
-            android:id="@+id/reportImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/down_arrow" />
-
-        <TextView
-            android:id="@+id/date_commented_in_froum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="20dp"
-            android:gravity="left"
-            android:text="Date"
-            android:textColor="@color/transparent" />
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

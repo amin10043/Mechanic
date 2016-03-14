@@ -54,7 +54,7 @@ public class ObjectListAdapter
 	Fragment fr;
 	RelativeLayout followLayout;
 	RelativeLayout.LayoutParams paramsfollow, paramsVisit;
-	ProgressBar LoadingProgress;
+	// ProgressBar LoadingProgress;
 	boolean IsShow;
 	String DateTime;
 	int Type;
@@ -72,6 +72,7 @@ public class ObjectListAdapter
 	int ItemId, userId, typeId;
 	int counterVisit = 0;
 	String serverDate = "";
+	Bitmap profileImage;
 
 	public ObjectListAdapter(Context context, int resource, List<Object> objact, Fragment fr, boolean IsShow,
 			String DateTime, int Type) {
@@ -99,8 +100,6 @@ public class ObjectListAdapter
 		final TextView txt1 = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
 
 		person = list.get(position);
-
-		LoadingProgress = (ProgressBar) convertView.findViewById(R.id.progressBar1);
 
 		txt1.setText(person.getName());
 
@@ -175,20 +174,24 @@ public class ObjectListAdapter
 
 		String pathProfile = person.getImagePath2();
 
-		Bitmap profileImage = BitmapFactory.decodeFile(pathProfile);
+		if (!"".equals(pathProfile))
+
+			try {
+				profileImage = BitmapFactory.decodeFile(pathProfile);
+
+			} catch (OutOfMemoryError exception) {
+				exception.printStackTrace();
+			}
 
 		if (profileImage != null) {
 
 			profileIco.setImageBitmap(Utility.getclip(profileImage));
 			profileIco.setLayoutParams(lp);
-			LoadingProgress.setVisibility(View.GONE);
 
 		} else {
 			profileIco.setImageResource(R.drawable.no_img_profile);
 			profileIco.setLayoutParams(lp);
 		}
-		if (IsShow == false)
-			LoadingProgress.setVisibility(View.GONE);
 
 		String commitDate = person.getDate(); // tarikhe ijad safhe
 		final SharedPreferences currentTime = context.getSharedPreferences("time", 0);

@@ -53,6 +53,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 	DataBaseAdapter adapter;
 	Fragment fr;
 	List<Integer> sizeTypeItem;
+	private int lastExpandedPosition = -1;
 
 	public FavoriteListAdapter(Context context, ArrayList<String> parentItems,
 			HashMap<String, List<PersonalData>> listDataChild, String todayDate, Fragment fr, List<Integer> sizeType) {
@@ -707,22 +708,25 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
-				// if (sizeTypeItem.get(groupPosition) == 0) {
-				// Toast.makeText(context, "عنوانی ثبت نشده است", 0).show();
-				// } else {
-
+			public void onClick(View v) {
+				
+				RelativeLayout layout = (RelativeLayout) v;
+				ImageView indicator = (ImageView) layout.getChildAt(0);
+			
 				if (isExpanded) {
 					mExpandableListView.collapseGroup(groupPosition);
-					indicatorImg.setBackgroundResource(R.drawable.dow);
-					notifyDataSetChanged();
+					indicator.setBackgroundResource(R.drawable.dow);
 
 				} else {
-					indicatorImg.setBackgroundResource(R.drawable.dow_s);
+					indicator.setBackgroundResource(R.drawable.dow_s);
 
 					mExpandableListView.expandGroup(groupPosition);
+					
+					if (lastExpandedPosition != -1 && groupPosition != lastExpandedPosition) {
+						mExpandableListView.collapseGroup(lastExpandedPosition);
+					}
+					lastExpandedPosition = groupPosition;
 				}
-				notifyDataSetChanged();
 				// }
 			}
 		});

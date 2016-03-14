@@ -22,8 +22,7 @@
 
             <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
+                android:layout_height="match_parent" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -57,8 +56,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1" >
+                android:layout_marginRight="15dp" >
 
                 <ImageButton
                     android:id="@+id/timeline_btn"
@@ -101,7 +99,6 @@
             android:orientation="vertical" >
 
             <RelativeLayout
-                android:id="@+id/main1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
@@ -109,22 +106,30 @@
                 android:background="@color/white" >
 
                 <LinearLayout
+                    android:id="@+id/main1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:gravity="right" >
+                    android:gravity="right|center_vertical"
+                    android:orientation="horizontal" >
 
                     <TextView
                         android:id="@+id/lable1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|right"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="20dp"
-                        android:gravity="right"
+                        android:gravity="right|center_vertical"
                         android:text="تولیدکنندگان داخلی - برندهای وارداتی - نمایندگی ها "
                         android:textColor="@color/orginal_hard_blue_color" />
+
+                    <ImageView
+                        android:id="@+id/icon_item1"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_main_item2"
+                        android:visibility="visible" />
                 </LinearLayout>
 
                 <ImageView
@@ -135,7 +140,6 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/main2"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
@@ -143,7 +147,8 @@
                 android:background="@color/white" >
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/main2"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
@@ -159,6 +164,13 @@
                         android:gravity="right"
                         android:text="فروشگاهها - شرکت های عرضه کننده محصولات"
                         android:textColor="@color/orginal_hard_blue_color" />
+
+                    <ImageView
+                        android:id="@+id/icon_item2"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_home"
+                        android:visibility="visible" />
                 </LinearLayout>
 
                 <ImageView
@@ -169,7 +181,6 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/main3"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
@@ -177,7 +188,8 @@
                 android:background="@color/white" >
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/main3"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
@@ -193,6 +205,13 @@
                         android:gravity="right"
                         android:text="مشاوران - ناظران - شرکت های مجری "
                         android:textColor="@color/orginal_hard_blue_color" />
+
+                    <ImageView
+                        android:id="@+id/icon_item3"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_main_item3"
+                        android:visibility="visible" />
                 </LinearLayout>
 
                 <ImageView
@@ -203,7 +222,6 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/main4"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
@@ -212,11 +230,13 @@
                 android:gravity="right" >
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/main4"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:gravity="right" >
+                    android:gravity="right"
+                    android:orientation="horizontal" >
 
                     <TextView
                         android:id="@+id/lable4"
@@ -228,6 +248,13 @@
                         android:gravity="right"
                         android:text="اشخاص حقیقی (استادکاران)"
                         android:textColor="@color/orginal_hard_blue_color" />
+
+                    <ImageView
+                        android:id="@+id/icon_item4"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_main_item4"
+                        android:visibility="visible" />
                 </LinearLayout>
 
                 <ImageView
@@ -238,7 +265,6 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/main5"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
@@ -246,7 +272,8 @@
                 android:background="@color/white" >
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/main5"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
@@ -262,6 +289,13 @@
                         android:gravity="right"
                         android:text="نشریات - مقالات"
                         android:textColor="@color/orginal_hard_blue_color" />
+
+                    <ImageView
+                        android:id="@+id/icon_item5"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_main_item5"
+                        android:visibility="visible" />
                 </LinearLayout>
 
                 <ImageView
@@ -272,7 +306,6 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/main6"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
@@ -280,7 +313,8 @@
                 android:background="@color/white" >
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/main6"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
@@ -296,6 +330,13 @@
                         android:gravity="right"
                         android:text="آگهی - تبلیغات"
                         android:textColor="@color/orginal_hard_blue_color" />
+
+                    <ImageView
+                        android:id="@+id/icon_item6"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_main_item6"
+                        android:visibility="visible" />
                 </LinearLayout>
 
                 <ImageView
@@ -306,7 +347,6 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/main7"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="1dp"
@@ -314,7 +354,8 @@
                 android:background="@color/white" >
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/main7"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
@@ -330,6 +371,13 @@
                         android:gravity="right"
                         android:text="تالار گفتگو"
                         android:textColor="@color/orginal_hard_blue_color" />
+
+                    <ImageView
+                        android:id="@+id/icon_item7"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_main_item7"
+                        android:visibility="visible" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
@@ -338,106 +386,51 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="5dp"
-            android:layout_weight="5"
             android:orientation="vertical"
-            android:weightSum="7" >
+            android:visibility="gone" >
 
             <RelativeLayout
                 android:id="@+id/relative_item1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" >
-
-                <ImageView
-                    android:id="@+id/icon_item1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_main_item2"
-                    android:visibility="visible" />
+                android:visibility="gone" >
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/relative_item2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" >
-
-                <ImageView
-                    android:id="@+id/icon_item2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_home"
-                    android:visibility="visible" />
+                android:visibility="gone" >
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/relative_item3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" >
-
-                <ImageView
-                    android:id="@+id/icon_item3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_main_item3"
-                    android:visibility="visible" />
+                android:layout_height="wrap_content" >
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/relative_item4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" >
-
-                <ImageView
-                    android:id="@+id/icon_item4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_main_item4"
-                    android:visibility="visible" />
+                android:layout_height="wrap_content" >
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/relative_item5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" >
-
-                <ImageView
-                    android:id="@+id/icon_item5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_main_item5"
-                    android:visibility="visible" />
+                android:layout_height="wrap_content" >
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/relative_item6"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" >
-
-                <ImageView
-                    android:id="@+id/icon_item6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_main_item6"
-                    android:visibility="visible" />
+                android:layout_height="wrap_content" >
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/relative_item7"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" >
-
-                <ImageView
-                    android:id="@+id/icon_item7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_main_item7"
-                    android:visibility="visible" />
+                android:layout_height="wrap_content" >
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

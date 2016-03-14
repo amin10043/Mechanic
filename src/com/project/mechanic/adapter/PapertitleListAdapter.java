@@ -281,7 +281,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 
 				final String t;
 				ListView listView = (ListView) v.getParent().getParent().getParent();
-				int position = listView.getPositionForView(v);
+				final int position = listView.getPositionForView(v);
 				Paper p = getItem(position);
 				if (p != null) {
 					userIdsender = p.getUserId();
@@ -342,7 +342,9 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 							if (item.getTitle().equals("گزارش تخلف")) {
 
 								if (util.getCurrentUser() != null)
-									util.reportAbuse(userIdsender, 2, itemId, t, 0);
+
+									util.reportAbuse(userIdsender, StaticValues.TypeReportPaperTitle, itemId, t, 0,
+											position);
 								else
 									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}

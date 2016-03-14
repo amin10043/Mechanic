@@ -379,7 +379,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 						}
 						if (item.getTitle().equals("گزارش تخلف")) {
 
-							util.reportAbuse(userIdsender, 1, itemId, t,0);
+//							util.reportAbuse(userIdsender, 1, itemId, t,0);
 
 						}
 						if (item.getTitle().equals("حذف")) {

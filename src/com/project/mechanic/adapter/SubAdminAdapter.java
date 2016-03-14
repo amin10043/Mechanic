@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
@@ -26,8 +27,7 @@ import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.utility.Utility;
 
-public class SubAdminAdapter extends ArrayAdapter<SubAdmin> implements
-		AsyncInterface {
+public class SubAdminAdapter extends ArrayAdapter<SubAdmin> implements AsyncInterface {
 	Context context;
 	ArrayList<SubAdmin> myList;
 	DataBaseAdapter adapter;
@@ -40,8 +40,7 @@ public class SubAdminAdapter extends ArrayAdapter<SubAdmin> implements
 	ProgressDialog ringProgressDialog;
 	int ItemId, b;
 
-	public SubAdminAdapter(Context context, int resource,
-			ArrayList<SubAdmin> list, int ObjectId) {
+	public SubAdminAdapter(Context context, int resource, ArrayList<SubAdmin> list, int ObjectId) {
 		super(context, resource, list);
 		this.context = context;
 		myList = list;
@@ -53,17 +52,13 @@ public class SubAdminAdapter extends ArrayAdapter<SubAdmin> implements
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			LayoutInflater myInflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-			convertView = myInflater.inflate(R.layout.row_sub_admin, parent,
-					false);
+			convertView = myInflater.inflate(R.layout.row_sub_admin, parent, false);
 		}
-		ImageView picture = (ImageView) convertView
-				.findViewById(R.id.pictureSubAdmin1);
+		ImageView picture = (ImageView) convertView.findViewById(R.id.pictureSubAdmin1);
 		TextView name = (TextView) convertView.findViewById(R.id.nameSubAdmin1);
-		ImageView delete = (ImageView) convertView
-				.findViewById(R.id.deletAdminPage);
+		ImageView delete = (ImageView) convertView.findViewById(R.id.deletAdminPage);
 
 		adapter.open();
 		// Object o = adapter.getObjectbyid(ObjectId);
@@ -73,24 +68,23 @@ public class SubAdminAdapter extends ArrayAdapter<SubAdmin> implements
 		Users u = adapter.getUserById(su.getUserId());
 
 		name.setText(u.getName());
+		name.setTypeface(util.SetFontIranSans());
 
-		RelativeLayout rl = (RelativeLayout) convertView
-				.findViewById(R.id.subAdmin1);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				rl.getLayoutParams());
+		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.subAdmin1);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
-		lp.width = util.getScreenwidth() / 6;
-		lp.height = util.getScreenwidth() / 6;
+		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImagePostFragmentPage);
+		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImagePostFragmentPage);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		lp.addRule(RelativeLayout.CENTER_VERTICAL);
 
-		lp.setMargins(5, 5, 5, 5);
+		lp.setMargins(10, 10, 10, 10);
 
-		byte[] bitmapbyte = u.getImage();
-		if (bitmapbyte != null) {
-			Bitmap bmp = BitmapFactory.decodeByteArray(bitmapbyte, 0,
-					bitmapbyte.length);
-			picture.setImageBitmap(Utility.getclip(bmp));
+		String imagePath = u.getImagePath();
+		if (imagePath != null) {
+			Bitmap bmp = BitmapFactory.decodeFile(imagePath);
+			if (bmp != null)
+				picture.setImageBitmap(Utility.getclip(bmp));
 			picture.setLayoutParams(lp);
 		} else {
 			picture.setImageResource(R.drawable.no_img_profile);
@@ -107,8 +101,7 @@ public class SubAdminAdapter extends ArrayAdapter<SubAdmin> implements
 				adapter.open();
 
 				ItemId = 0;
-				ListView listView = (ListView) t.getParent().getParent()
-						.getParent();
+				ListView listView = (ListView) t.getParent().getParent().getParent();
 				b = listView.getPositionForView(t);
 				SubAdmin f = getItem(b);
 				if (f != null) {
@@ -127,8 +120,7 @@ public class SubAdminAdapter extends ArrayAdapter<SubAdmin> implements
 
 				deleting.execute(params);
 
-				ringProgressDialog = ProgressDialog.show(context, "",
-						"لطفا منتظر بمانید...", true);
+				ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 				ringProgressDialog.setCancelable(true);
 

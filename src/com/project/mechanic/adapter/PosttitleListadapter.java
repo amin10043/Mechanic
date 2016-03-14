@@ -9,6 +9,7 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +39,7 @@ import com.project.mechanic.R;
 import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Post;
+import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.fragment.DialogShowImage;
 import com.project.mechanic.fragment.InformationUser;
@@ -58,8 +61,9 @@ import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
 @SuppressLint("SimpleDateFormat")
-public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFromServerForLike, DeleteLikeFromServer,
-		LikeFromServer/* AsyncInterface, CommInterface */ {
+public class PosttitleListadapter extends ArrayAdapter<Post>
+		implements DateFromServerForLike, DeleteLikeFromServer, LikeFromServer/* AsyncInterface, */
+		, CommInterface {
 
 	Context context;
 	List<Post> mylist;
@@ -92,6 +96,9 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 
 	ImageView likeIcon;
 	int positionBrand;
+	Post po;
+	Bitmap myBitmap;
+	View rootView;
 
 	@Override
 	public int getCount() {
@@ -116,7 +123,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 
 		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater.inflate(R.layout.raw_posttitle, parent, false);
+		rootView = convertView = myInflater.inflate(R.layout.raw_posttitle, parent, false);
 
 		Parent = parent;
 		// final TextView txt1 = (TextView) convertView
@@ -128,6 +135,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 		TextView PostID = (TextView) convertView.findViewById(R.id.PostID);
 		countLikePost = (TextView) convertView.findViewById(R.id.txtNumofLike_CmtFroum);
 		ImageView profileImg = (ImageView) convertView.findViewById(R.id.iconfroumtitle);
+		ImageView shareItem = (ImageView) convertView.findViewById(R.id.sharefroumicon);
 
 		final ImageView postImage = (ImageView) convertView.findViewById(R.id.postImage);
 
@@ -143,7 +151,9 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 		TextView countVisit = (TextView) convertView.findViewById(R.id.countVisit);
 
 		Post person1 = mylist.get(position);
-		convertView.setTag(person1.getId());
+
+		// convertView.setTag(position+"");
+		// rootView.setTag(position+"");
 
 		// txt1.setTypeface(util.SetFontCasablanca());
 		txt2.setTypeface(util.SetFontCasablanca());
@@ -181,7 +191,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 		// txt1.setText(person1.getTitle());
 		// txt1.setVisibility(View.VISIBLE);
 		// }
-		if (!person1.getDescription().isEmpty()) {
+		if (person1.getDescription() != null) {
 			if (person1.getDescription().length() > 100)
 				txt2.setText(person1.getDescription().substring(0, 100) + "...");
 			else
@@ -201,9 +211,20 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 				LNImageShowParams.setMargins(0, 0, 0, 10);
 				postImage.setLayoutParams(LNImageShowParams);
 
-				Bitmap myBitmap = BitmapFactory.decodeFile(person1.getPhoto());
-				postImage.setImageBitmap(myBitmap);
-				postImage.setVisibility(View.VISIBLE);
+				if (person1.getPhoto() != null) {
+
+					try {
+
+						myBitmap = Utility.decodeFile(person1.getPhoto());
+						postImage.setImageBitmap(myBitmap);
+						postImage.setVisibility(View.VISIBLE);
+
+					} catch (OutOfMemoryError e) {
+						// e.printStackTrace();
+						Log.d("outof Memory", "post " + person1.getId());
+					}
+				}
+
 			}
 		}
 
@@ -213,11 +234,11 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 		int piid = Integer.parseInt(pId);
 
 		adapter.open();
-		final Post po = adapter.getPostItembyid(piid);
-		Object obj = adapter.getObjectbyid(po.getObjectId());
+		po = adapter.getPostItembyid(piid);
+		final Object obj = adapter.getObjectbyid(po.getObjectId());
 
-//		if (x != null)
-			txt3.setText(obj.getName());
+		// if (x != null)
+		txt3.setText(obj.getName());
 		countcommentpost.setText(adapter.CommentInPost_count(person1.getId()).toString());
 		countLikePost.setText(adapter.LikeInPost_count(person1.getId()).toString());
 		adapter.close();
@@ -263,13 +284,29 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 				profileImg.setLayoutParams(lp);
 			} else {
 				// byte[] byteImg = x.getImage();
-				Bitmap bmp = BitmapFactory.decodeFile(obj.getImagePath2());
-				profileImg.setImageBitmap(Utility.getclip(bmp));
 
-				profileImg.setLayoutParams(lp);
+				try {
+					Bitmap bmp = Utility.decodeFile(obj.getImagePath2());
+					profileImg.setImageBitmap(Utility.getclip(bmp));
+
+					profileImg.setLayoutParams(lp);
+				} catch (OutOfMemoryError e) {
+					// e.printStackTrace();
+					Log.d("outof Memory", "user " + person1.getUserId());
+
+				}
+
 			}
 		}
 		// ////////////////////////////////////
+		shareItem.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Toast.makeText(context, "سمت سرور", 0).show();
+			}
+		});
+
 		profileImg.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View arg0) {
@@ -305,6 +342,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 					ServerDateForLike date = new ServerDateForLike(context);
 					date.delegate = PosttitleListadapter.this;
 					date.execute("");
+
+					parentLike.setEnabled(false);
 
 					adapter.open();
 
@@ -374,8 +413,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 
 				// final int ItemId ;
 				final String t;
-				ListView listView = (ListView) v.getParent().getParent().getParent().getParent();
-				int position = listView.getPositionForView(v);
+				ListView listView = (ListView) v.getParent().getParent().getParent().getParent().getParent();
+				final int position = listView.getPositionForView(v);
 				Post f = getItem(position - 1);
 				if (f != null) {
 					userIdsender = f.getUserId();
@@ -383,7 +422,15 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 					itemId = f.getId();
 
 					if (util.getCurrentUser() != null) {
-						if (util.getCurrentUser().getId() == userIdsender) {
+
+						if (CurrentUser.getId() == userIdsender) {
+
+							menuItems.clear();
+							menuItems.add("ارسال پیام");
+							menuItems.add("کپی");
+							menuItems.add("حذف");
+
+						} else if (CurrentUser.getId() == obj.getUserId()) {
 
 							menuItems.clear();
 							menuItems.add("ارسال پیام");
@@ -391,6 +438,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 							menuItems.add("حذف");
 
 						} else {
+
 							// menuItems = new ArrayList<String>();
 
 							menuItems.clear();
@@ -435,13 +483,14 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 							if (item.getTitle().equals("گزارش تخلف")) {
 
 								if (util.getCurrentUser() != null)
-									util.reportAbuse(userIdsender, 1, itemId, t, 0);
+									util.reportAbuse(userIdsender, StaticValues.TypeReportPost, itemId, t, obj.getId(),
+											position);
 								else
 									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}
 							if (item.getTitle().equals("حذف")) {
-								if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender) {
-									// deleteItems(itemId);
+								if (isAdmin() == true) {
+									deleteItems(itemId);
 								} else {
 
 									Toast.makeText(context, "", 0).show();
@@ -477,6 +526,10 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 				String TextPostID = PostID.getText().toString();
 				int ItemId = Integer.parseInt(TextPostID);
 
+				ListView llv = (ListView) parent;
+
+				int pos = llv.getPositionForView(v);
+
 				adapter.open();
 				adapter.SetSeen("Post", ItemId, "1");
 				adapter.close();
@@ -485,7 +538,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 				PostFragment fragment = new PostFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(ItemId));
-				bundle.putInt("positionPost", position);
+				bundle.putInt("positionPost", pos);
 				bundle.putInt("positionBrand", positionBrand);
 				bundle.putString("ObjectId", String.valueOf(po.getObjectId()));
 				fragment.setArguments(bundle);
@@ -521,59 +574,61 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 
 			}
 		});
-		commenttitle.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				// LinearLayout parentlayout = (LinearLayout) v;
-				//
-				// String item = txt2.getText().toString();
-				// ;
-				// int sizeDescription = item.length();
-				// String subItem;
-				// subItem = item.subSequence(0, sizeDescription -
-				// 4).toString();
-				// int ItemId = 0;
-				// for (Post listItem : mylist) {
-				// if (subItem.equals(listItem.getDescription())) {
-				// // check authentication and authorization
-				// ItemId = listItem.getId();
-				// }
-				// }
-
-				TextView PostID = (TextView) v.findViewById(R.id.PostID);
-				String TextPostID = PostID.getText().toString();
-				int ItemId = Integer.parseInt(TextPostID);
-
-				// int ItemId = 0;
-				// ListView listView = (ListView) v.getParent().getParent()
-				// .getParent();
-				// int position = listView.getPositionForView(v);
-				// Post f = getItem(position);
-				// if (f != null) {
-				// ItemId = f.getId();
-				// }
-
-				adapter.open();
-				adapter.SetSeen("Post", ItemId, "1");
-				adapter.close();
-
-				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
-				PostFragment fragment = new PostFragment();
-				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
-				Bundle bundle = new Bundle();
-				bundle.putString("Id", String.valueOf(ItemId));
-				fragment.setArguments(bundle);
-
-				trans.replace(R.id.content_frame, fragment);
-				trans.addToBackStack(null);
-				trans.commit();
-				abc.edit().putInt("main_Id", 2).commit();
-
-			}
-
-		});
+		// commenttitle.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		//
+		// // LinearLayout parentlayout = (LinearLayout) v;
+		// //
+		// // String item = txt2.getText().toString();
+		// // ;
+		// // int sizeDescription = item.length();
+		// // String subItem;
+		// // subItem = item.subSequence(0, sizeDescription -
+		// // 4).toString();
+		// // int ItemId = 0;
+		// // for (Post listItem : mylist) {
+		// // if (subItem.equals(listItem.getDescription())) {
+		// // // check authentication and authorization
+		// // ItemId = listItem.getId();
+		// // }
+		// // }
+		//
+		// TextView PostID = (TextView) v.findViewById(R.id.PostID);
+		// String TextPostID = PostID.getText().toString();
+		// int ItemId = Integer.parseInt(TextPostID);
+		//
+		// // int ItemId = 0;
+		// // ListView listView = (ListView) v.getParent().getParent()
+		// // .getParent();
+		// // int position = listView.getPositionForView(v);
+		// // Post f = getItem(position);
+		// // if (f != null) {
+		// // ItemId = f.getId();
+		// // }
+		//
+		// adapter.open();
+		// adapter.SetSeen("Post", ItemId, "1");
+		// adapter.close();
+		//
+		// FragmentTransaction trans = ((MainActivity)
+		// context).getSupportFragmentManager().beginTransaction();
+		// PostFragment fragment = new PostFragment();
+		// trans.setCustomAnimations(R.anim.pull_in_left,
+		// R.anim.push_out_right);
+		// Bundle bundle = new Bundle();
+		// bundle.putString("Id", String.valueOf(ItemId));
+		// fragment.setArguments(bundle);
+		//
+		// trans.replace(R.id.content_frame, fragment);
+		// trans.addToBackStack(null);
+		// trans.commit();
+		// abc.edit().putInt("main_Id", 2).commit();
+		//
+		// }
+		//
+		// });
 
 		postImage.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -724,37 +779,19 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 	//
 	// }
 
-	// public void deleteItems(int itemId) {
-	//
-	// ServiceComm service = new ServiceComm(context);
-	// service.delegate = PosttitleListadapter.this;
-	// Map<String, String> items = new LinkedHashMap<String, String>();
-	// items.put("DeletingRecord", "DeletingRecord");
-	//
-	// items.put("tableName", "Post");
-	// items.put("Id", String.valueOf(itemId));
-	//
-	// service.execute(items);
-	//
-	// ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر
-	// بمانید...", true);
-	//
-	// ringProgressDialog.setCancelable(true);
-	// new Thread(new Runnable() {
-	//
-	// @Override
-	// public void run() {
-	//
-	// try {
-	//
-	// Thread.sleep(10000);
-	//
-	// } catch (Exception e) {
-	//
-	// }
-	// }
-	// }).start();
-	// }
+	public void deleteItems(int itemId) {
+
+		ServiceComm service = new ServiceComm(context);
+		service.delegate = PosttitleListadapter.this;
+		Map<String, String> items = new LinkedHashMap<String, String>();
+		items.put("DeletingRecord", "DeletingRecord");
+
+		items.put("tableName", "Post");
+		items.put("Id", String.valueOf(itemId));
+
+		service.execute(items);
+
+	}
 
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
 
@@ -893,6 +930,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 
 				adapter.close();
 
+				parentLike.setEnabled(true);
+
 			} catch (Exception e) {
 				util.showErrorToast();
 			}
@@ -902,5 +941,54 @@ public class PosttitleListadapter extends ArrayAdapter<Post> implements DateFrom
 
 		}
 
+	}
+
+	private boolean isAdmin() {
+
+		// if isSave = true allow to save visit on server
+		// else don't allow to save
+		boolean isSave = false;
+
+		adapter.open();
+		List<SubAdmin> subAdminList = adapter.getAdmin(po.getObjectId());
+		adapter.close();
+
+		boolean fl1 = false;
+
+		List<Integer> Ids = new ArrayList<Integer>();
+		if (subAdminList.size() > 0)
+			for (int i = 0; i < subAdminList.size(); i++) {
+				Ids.add(subAdminList.get(i).getUserId());
+			}
+
+		for (int j = 0; j < Ids.size(); j++) {
+			if (CurrentUser.getId() == Ids.get(j))
+				fl1 = true;
+		}
+		if (CurrentUser == null)
+			isSave = false;
+		else
+
+		if (fl1 == true || CurrentUser.getId() == po.getUserId())
+			isSave = true;
+
+		return isSave;
+
+	}
+
+	@Override
+	public void CommProcessFinish(String output) {
+
+		if (util.checkError(output) == false) {
+			adapter.open();
+
+			adapter.deletePostTitle(itemId);
+			adapter.deleteCommentPost(itemId);
+
+			adapter.close();
+
+			((IntroductionFragment) fragment).fillListView();
+			((IntroductionFragment) fragment).setCountPost();
+		}
 	}
 }

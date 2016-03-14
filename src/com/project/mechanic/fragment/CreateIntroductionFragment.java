@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
@@ -29,6 +30,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -94,7 +96,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 	SavingImage3Picture savingImage;
 	int ObjectTypeId;
 
-	byte[] byteHeader, byteProfil, byteFooter;
+	byte[] byteHeader = null, byteProfil = null, byteFooter = null;
 	boolean flag = true;
 	int lastItem = 0;
 
@@ -110,6 +112,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 	boolean t2 = false;
 	boolean t3 = false;
 	TextView lableEditNetwork, lableEditDownloadLink;
+	int MaxSizeImageSelected = 5;
 
 	// EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle,
 	// inInstagram;
@@ -228,8 +231,13 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 		setFont();
 
+		TextView lableagency = (TextView) view.findViewById(R.id.lableagency);
+		TextView lableservice = (TextView) view.findViewById(R.id.lableservice);
+
 		if (mainID != 1) {
 			checkAgency.setVisibility(View.GONE);
+			lableagency.setVisibility(View.GONE);
+			lableservice.setVisibility(View.GONE);
 			checkService.setVisibility(View.GONE);
 		}
 
@@ -297,19 +305,23 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 			}
 		});
 
-		if (btnHeader.getDrawable() == null & btnProfile.getDrawable() == null & btnFooter.getDrawable() == null)
+		// Toast.makeText(getActivity(), "Empty Bitmap",
+		// Toast.LENGTH_SHORT).show();
 
-			// Toast.makeText(getActivity(), "Empty Bitmap",
-			// Toast.LENGTH_SHORT).show();
+		btnSave.setOnClickListener(new OnClickListener() {
 
-			btnSave.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				// if (checkAgency.isChecked())
+				// globalMainObjectId = 3;
+				// if (checkService.isChecked())
+				// globalMainObjectId = 4;
 
-				@Override
-				public void onClick(View arg0) {
-					// if (checkAgency.isChecked())
-					// globalMainObjectId = 3;
-					// if (checkService.isChecked())
-					// globalMainObjectId = 4;
+				if (btnHeader.getDrawable() == null || btnProfile.getDrawable() == null
+						|| btnFooter.getDrawable() == null)
+					Toast.makeText(getActivity(), StaticValues.selectImagesBrandMessage, 0).show();
+
+				else {
 
 					if (checkAgency.isChecked() && checkService.isChecked())
 						ObjectBrandTypeId = 1;
@@ -320,39 +332,48 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 					else
 						ObjectBrandTypeId = 2;
 
-					if (btnHeader.getDrawable() != null) {
-						bitmapHeader = ((BitmapDrawable) btnHeader.getDrawable()).getBitmap();
-
-						emptyHeader = Bitmap.createBitmap(bitmapHeader.getWidth(), bitmapHeader.getHeight(),
-								bitmapHeader.getConfig());
-
-						byteHeader = Utility.CompressBitmap(bitmapHeader);
-
-						f1 = true;
-
-					}
-
-					if (btnProfile.getDrawable() != null) {
-						bitmapProfil = ((BitmapDrawable) btnProfile.getDrawable()).getBitmap();
-
-						emptyProfile = Bitmap.createBitmap(bitmapProfil.getWidth(), bitmapProfil.getHeight(),
-								bitmapProfil.getConfig());
-						byteProfil = Utility.CompressBitmap(bitmapProfil);
-						f2 = true;
-
-					}
-
-					if (btnFooter.getDrawable() != null) {
-						bitmapFooter = ((BitmapDrawable) btnFooter.getDrawable()).getBitmap();
-
-						emptyFooter = Bitmap.createBitmap(bitmapFooter.getWidth(), bitmapFooter.getHeight(),
-								bitmapFooter.getConfig());
-
-						byteFooter = Utility.CompressBitmap(bitmapFooter);
-
-						f3 = true;
-
-					}
+					// if (btnHeader.getDrawable() != null) {
+					// bitmapHeader = ((BitmapDrawable)
+					// btnHeader.getDrawable()).getBitmap();
+					//
+					// emptyHeader =
+					// Bitmap.createBitmap(bitmapHeader.getWidth(),
+					// bitmapHeader.getHeight(),
+					// bitmapHeader.getConfig());
+					//
+					//// byteHeader = Utility.CompressBitmap(bitmapHeader);
+					//
+					// f1 = true;
+					//
+					// }
+					//
+					// if (btnProfile.getDrawable() != null) {
+					// bitmapProfil = ((BitmapDrawable)
+					// btnProfile.getDrawable()).getBitmap();
+					//
+					// emptyProfile =
+					// Bitmap.createBitmap(bitmapProfil.getWidth(),
+					// bitmapProfil.getHeight(),
+					// bitmapProfil.getConfig());
+					// byteProfil = Utility.CompressBitmap(bitmapProfil);
+					// f2 = true;
+					//
+					// }
+					//
+					// if (btnFooter.getDrawable() != null) {
+					// bitmapFooter = ((BitmapDrawable)
+					// btnFooter.getDrawable()).getBitmap();
+					//
+					// emptyFooter =
+					// Bitmap.createBitmap(bitmapFooter.getWidth(),
+					// bitmapFooter.getHeight(),
+					// bitmapFooter.getConfig());
+					//
+					// byteFooter = Utility.CompressBitmap(bitmapFooter);
+					//
+					// f3 = true;
+					//
+					// }
 
 					// if (bitmapHeader == null & bitmapProfil == null &
 					// bitmapFooter == null)
@@ -395,7 +416,9 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 					}
 
 				}
-			});
+			}
+
+		});
 
 		util.ShowFooterAgahi(getActivity(), false, 1);
 
@@ -423,15 +446,25 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 		if (requestCode == RESULT_LOAD_IMAGE) {
 			try {
+				long sizePicture = 0; // MB
 
 				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
 				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
 				Utility.copyStream(inputStream, fileOutputStream);
 				fileOutputStream.close();
 				inputStream.close();
-				t1 = true;
 
-				startCropImage();
+				if (mFileTemp != null)
+					sizePicture = mFileTemp.length() / 1024 / 1024;
+
+				if (sizePicture > MaxSizeImageSelected)
+					Toast.makeText(getActivity(),
+							"حجم عکس انتخاب شده باید کمتر از " + MaxSizeImageSelected + "مگابایت باشد ",
+							Toast.LENGTH_LONG).show();
+				else {
+					t1 = true;
+					startCropImage();
+				}
 
 			} catch (Exception e) {
 
@@ -446,12 +479,16 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 				return;
 			}
 			Bitmap bitmap = null;
-			if (mFileTemp.getPath() != null)
+			if (mFileTemp.getPath() != null) {
 				bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
+
+			}
 			if (bitmap != null && t1) {
 				btnProfile.setImageBitmap(bitmap);
 				btnProfile.setLayoutParams(profilParams);
 				t1 = false;
+
+				byteProfil = Utility.compressImage(mFileTemp);
 
 			}
 			if (bitmap != null && t2) {
@@ -459,11 +496,15 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 				btnHeader.setLayoutParams(headerParams);
 				t2 = false;
 
+				byteHeader = Utility.compressImage(mFileTemp);
+
 			}
 			if (bitmap != null && t3) {
 				btnFooter.setImageBitmap(bitmap);
 				btnFooter.setLayoutParams(footerParams);
 				t3 = false;
+
+				byteFooter = Utility.compressImage(mFileTemp);
 
 			}
 
@@ -477,9 +518,20 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 				Utility.copyStream(inputStream, fileOutputStream);
 				fileOutputStream.close();
 				inputStream.close();
-				t2 = true;
 
-				startCropImage();
+				long sizePicture = 0; // MB
+
+				if (mFileTemp != null)
+					sizePicture = mFileTemp.length() / 1024 / 1024;
+
+				if (sizePicture > MaxSizeImageSelected)
+					Toast.makeText(getActivity(),
+							"حجم عکس انتخاب شده باید کمتر از " + MaxSizeImageSelected + "مگابایت باشد ",
+							Toast.LENGTH_LONG).show();
+				else {
+					t2 = true;
+					startCropImage();
+				}
 
 			} catch (Exception e) {
 
@@ -491,14 +543,25 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 		if (requestCode == FooterCode && resultCode == Activity.RESULT_OK && null != data) {
 			try {
 
+				long sizePicture = 0; // MB
+
 				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
 				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
 				Utility.copyStream(inputStream, fileOutputStream);
 				fileOutputStream.close();
 				inputStream.close();
-				t3 = true;
 
-				startCropImage();
+				if (mFileTemp != null)
+					sizePicture = mFileTemp.length() / 1024 / 1024;
+
+				if (sizePicture > MaxSizeImageSelected)
+					Toast.makeText(getActivity(),
+							"حجم عکس انتخاب شده باید کمتر از " + MaxSizeImageSelected + "مگابایت باشد ",
+							Toast.LENGTH_LONG).show();
+				else {
+					t3 = true;
+					startCropImage();
+				}
 
 			} catch (Exception e) {
 
@@ -577,8 +640,10 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 						ringProgressDialog.dismiss();
 					}
 
-					if (btnHeader.getDrawable() != null || btnProfile.getDrawable() != null
-							|| btnFooter.getDrawable() != null) {
+					if (byteHeader == null && byteProfil == null || byteFooter == null) {
+						Toast.makeText(getActivity(), StaticValues.selectImagesBrandMessage, 0).show();
+
+					} else {
 						savingImage = new SavingImage3Picture(getActivity());
 						savingImage.delegate = this;
 						Map<String, Object> it = new LinkedHashMap<String, Object>();
@@ -599,7 +664,6 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 						savingImage.execute(it);
 						ringProgressDialog = ProgressDialog.show(getActivity(), null,
 								"به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
-
 					}
 				}
 
@@ -614,8 +678,12 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 				lastItem = serverId;
 
-				if (btnHeader.getDrawable() != null || btnProfile.getDrawable() != null
-						|| btnFooter.getDrawable() != null) {
+				if (byteHeader == null && byteProfil == null && byteFooter == null) {
+
+					Toast.makeText(getActivity(), StaticValues.selectImagesBrandMessage, 0).show();
+
+				} else {
+
 					savingImage = new SavingImage3Picture(getActivity());
 					savingImage.delegate = this;
 					Map<String, Object> it = new LinkedHashMap<String, Object>();
@@ -638,6 +706,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 							"به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
 
 				}
+
 			}
 			if (mainID > 4) {
 				if (flag) {
@@ -671,8 +740,10 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 				} else {
 					DBAdapter.insertObjectInCity(serverId, lastItem, CityId, serverDate);
 
-					if (btnHeader.getDrawable() != null || btnProfile.getDrawable() != null
-							|| btnFooter.getDrawable() != null) {
+					if (byteHeader == null && byteProfil == null && byteFooter == null) {
+						Toast.makeText(getActivity(), StaticValues.selectImagesBrandMessage, 0).show();
+
+					} else {
 						savingImage = new SavingImage3Picture(getActivity());
 						savingImage.delegate = this;
 						Map<String, Object> it = new LinkedHashMap<String, Object>();
@@ -693,7 +764,6 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 						savingImage.execute(it);
 						ringProgressDialog = ProgressDialog.show(getActivity(), null,
 								"به منظور ذخیره سازی تصاویر لطفا چند لحظه منتظر بمانید.");
-
 					}
 
 				}
@@ -911,10 +981,12 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 			ringProgressDialog.dismiss();
 		}
 		try {
-
-			util.CreateFile(byteHeader, lastItem, "Mechanical", "Profile", "header", "Object");
-			util.CreateFile(byteProfil, lastItem, "Mechanical", "Profile", "profile", "Object");
-			util.CreateFile(byteFooter, lastItem, "Mechanical", "Profile", "footer", "Object");
+			if (byteHeader != null)
+				util.CreateFile(byteHeader, lastItem, "Mechanical", "Profile", "header", "Object");
+			if (byteProfil != null)
+				util.CreateFile(byteProfil, lastItem, "Mechanical", "Profile", "profile", "Object");
+			if (byteFooter != null)
+				util.CreateFile(byteFooter, lastItem, "Mechanical", "Profile", "footer", "Object");
 
 			// DBAdapter.open();
 			// DBAdapter.UpdateImageObjectToDatabase(lastItem, byteHeader,
@@ -935,7 +1007,22 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 				ringProgressDialog.dismiss();
 			}
 
+			IntroductionFragment fragment = new IntroductionFragment();
+			FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+			trans.replace(R.id.content_frame, fragment);
+
+			Bundle bundle = new Bundle();
+			bundle.putString("Id", String.valueOf(lastItem));
+			bundle.putInt("positionBrand", 0);
+
+			fragment.setArguments(bundle);
+			trans.commit();
+
 		} catch (Exception e) {
+
+			if (ringProgressDialog != null) {
+				ringProgressDialog.dismiss();
+			}
 			Toast.makeText(getActivity(), "خطا در ذخیره سازی تصاویر" + e, Toast.LENGTH_SHORT).show();
 		}
 	}

@@ -76,7 +76,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 	List<Users> list;
 	Utility utile;
 	LinearLayout.LayoutParams lp;
-	ProgressDialog ringProgressDialog;
+//	ProgressDialog ringProgressDialog;
 	String Name;
 	String Mobile;
 	String Pass;
@@ -95,6 +95,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 	SavingImage savingImage;
 	private boolean firstTime = true;
 	private File mFileTemp;
+	int MaxSizeImageSelected = 5;
 
 	View view2, view;
 	Uri selectedImage;
@@ -140,7 +141,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 
 		LayoutInflater inflater1 = getLayoutInflater(getArguments());
 		final View view2 = inflater1.inflate(R.layout.toast_define, toastlayout);
-		btnaddpic1.setBackgroundResource(R.drawable.i13);
+//		btnaddpic1.setBackgroundResource(R.drawable.i13);
 		;
 
 		lp = new LinearLayout.LayoutParams(lin1.getLayoutParams());
@@ -224,18 +225,18 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 						}
 
 						else {
-							ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-
-							ringProgressDialog.setCancelable(true);
-							new Thread(new Runnable() {
-								@Override
-								public void run() {
-									try {
-										Thread.sleep(10000);
-									} catch (Exception e) {
-									}
-								}
-							}).start();
+//							ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+//
+//							ringProgressDialog.setCancelable(true);
+//							new Thread(new Runnable() {
+//								@Override
+//								public void run() {
+//									try {
+//										Thread.sleep(10000);
+//									} catch (Exception e) {
+//									}
+//								}
+//							}).start();
 
 							comregtxt.setVisibility(View.VISIBLE);
 							// btnreg.setEnabled(false);
@@ -580,6 +581,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 
 		else if (requestCode == RESULT_LOAD_IMAGE) {
 			try {
+				long sizePicture = 0; // MB
 
 				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
 				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
@@ -587,7 +589,18 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 				fileOutputStream.close();
 				inputStream.close();
 
-				startCropImage();
+				if (mFileTemp != null)
+					sizePicture = mFileTemp.length() / 1024 / 1024;
+
+				if (sizePicture > MaxSizeImageSelected)
+					Toast.makeText(getActivity(), "حجم عکس انتخاب شده باید کمتر از " + MaxSizeImageSelected + "مگابایت باشد ",
+							Toast.LENGTH_LONG).show();
+				else
+					startCropImage();				
+				
+				
+				
+				
 
 			} catch (Exception e) {
 
@@ -602,6 +615,9 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 
 			Bitmap bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
 			btnaddpic1.setImageBitmap(bitmap);
+			
+			Image = Utility.compressImage(mFileTemp);
+
 		} else {
 			Toast.makeText(getActivity(), "Picture NOt taken", Toast.LENGTH_LONG).show();
 		}
@@ -684,14 +700,14 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 		} catch (Exception ex) {
 			Toast.makeText(getActivity(), "خطا در ثبت عکس", Toast.LENGTH_SHORT).show();
 		}
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
+//		if (ringProgressDialog != null) {
+//			ringProgressDialog.dismiss();
+//		}
 	}
 
 	@Override
 	public void processFinish(String output) {
-		ringProgressDialog.dismiss();	
+//		ringProgressDialog.dismiss();	
 			try {
 				serverId = Integer.valueOf(output);
 				// saveImage
@@ -718,7 +734,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 					params.put("modifyDate", output);
 					params.put("BirthDay", birthday);
 					params.put("cityId", String.valueOf(cityId));
-					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+//					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 					comm.execute(params);			
 				}
 			}
@@ -746,7 +762,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 
 	@Override
 	public void CommProcessFinish(String output) {
-		ringProgressDialog.dismiss();
+//		ringProgressDialog.dismiss();
 		if("".equals(output) || "anyType{}".equals(output)){
 			LayoutInflater inflater5 = getLayoutInflater(getArguments());
 			View view5 = inflater5.inflate(R.layout.toast_define, toastlayout);
@@ -769,7 +785,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 					if (!bitmap.sameAs(emptyBitmap)) {
 						Map<String, Object> it = new LinkedHashMap<String, Object>();
 	
-						Image = Utility.CompressBitmap(bitmap);
+//						Image = Utility.CompressBitmap(bitmap);
 						if (getActivity() != null) {
 							savingImage = new SavingImage(getActivity());
 							it.put("tableName", "Users");
@@ -777,7 +793,7 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 							it.put("id", serverId);
 							it.put("Image", Image);
 						}
-						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
+//						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 						savingImage.delegate = this;
 						savingImage.execute(it);
 						// dbAdapter.inserUserToDb(serverId, Name, null, Pass,

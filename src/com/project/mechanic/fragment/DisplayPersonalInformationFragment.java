@@ -74,7 +74,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 	TextView txtaddress, txtcellphone, txtphone, txtemail, txtname, txtfax, txtdate;
 	TextView txtEdit, txtBirthday;
-	LinearLayout.LayoutParams lp1;
+	// LinearLayout.LayoutParams lp1;
 	RelativeLayout.LayoutParams editBtnParams, paramsLayout;
 
 	UpdatingPersonalPage updating;
@@ -94,7 +94,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 	boolean f4 = false;
 	DataPersonalExpandAdapter listAdapter;
 
-	PersonalData pdObject, pdObjectFollowed, pdTicket , pdAnad;
+	PersonalData pdObject, pdObjectFollowed, pdTicket, pdAnad;
 
 	@SuppressLint("NewApi")
 	@Override
@@ -133,7 +133,6 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 		return rootView;
 	}
-
 
 	public void FillExpandListView() {
 
@@ -305,7 +304,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 		btnedit = (RelativeLayout) header.findViewById(R.id.btnedit);
 
-		birthDayUsers = (RelativeLayout) header.findViewById(R.id.b);
+		birthDayUsers = (RelativeLayout) header.findViewById(R.id.birth);
 
 		txtdate = (TextView) header.findViewById(R.id.txtdate);
 		txtdate.setVisibility(View.GONE);
@@ -379,9 +378,6 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 		int marginTop = (util.getScreenHeight() / 3) - (util.getScreenwidth() / 8);
 
-		// LinearLayout imageLinear = (LinearLayout)
-		// header.findViewById(R.id.imageLinear);
-
 		FrameLayout profileFrame = (FrameLayout) header.findViewById(R.id.frameLayoutHeader);
 		FrameLayout.LayoutParams profileParams = new FrameLayout.LayoutParams(profileFrame.getLayoutParams());
 
@@ -410,6 +406,25 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 		headerImageView.setLayoutParams(headerparams);
 
+		// RelativeLayout imageLinear = (RelativeLayout)
+		// header.findViewById(R.id.sd);
+		RelativeLayout l = (RelativeLayout) header.findViewById(R.id.reee);
+
+		RelativeLayout.LayoutParams lkj = new RelativeLayout.LayoutParams(l.getLayoutParams());
+		lkj.width = android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
+		lkj.height = android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
+
+		lkj.setMargins(0, 0, 50, 0);
+
+		RelativeLayout.LayoutParams cd = new RelativeLayout.LayoutParams(l.getLayoutParams());
+		cd.width = android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
+		cd.height = android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
+
+		cd.setMargins(50, 0, 0, 0);
+
+		birthDayUsers.setLayoutParams(cd);
+		btnedit.setLayoutParams(lkj);
+
 	}
 
 	private void setValue() {
@@ -419,7 +434,9 @@ public class DisplayPersonalInformationFragment extends Fragment
 			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
 			img.setBackgroundResource(R.drawable.circle_drawable);
 
-			img.setImageBitmap(Utility.getclip(bmp));
+			if (bmp != null)
+
+				img.setImageBitmap(Utility.getclip(bmp));
 		} else {
 			img.setBackgroundResource(R.drawable.circle_drawable);
 			img.setImageResource(R.drawable.no_img_profile);
@@ -440,7 +457,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 		txtphone.setText(phone);
 		txtcellphone.setText(cellphone);
 		txtfax.setText(fax);
-		txtdate.setText(util.getPersianDate(date));
+		// txtdate.setText(util.getPersianDate(date));
 
 	}
 
@@ -927,12 +944,12 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 				if (output != null) {
 
-					imagePathAnad =util.CreateFile(output, anadIdData, "Mechanical", "Anad", "anad", "Anad");
+					imagePathAnad = util.CreateFile(output, anadIdData, "Mechanical", "Anad", "anad", "Anad");
 
 					if (!imagePathAnad.equals(""))
 						pdAnad.setImagePathAnad(imagePathAnad);
 					listAdapter.notifyDataSetChanged();
-						
+
 				}
 				counterAnad++;
 				getAnadImage();

@@ -47,13 +47,12 @@ import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements
-		AsyncInterface {
+public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements AsyncInterface {
 
 	Context context;
 	List<CommentInPaper> list;
 	DataBaseAdapter adapter;
-//	PaperFragment f;
+	// PaperFragment f;
 	Utility util;
 	private PaperFragment paperfragment;
 	int userId;
@@ -64,8 +63,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements
 	Map<String, String> params;
 	Deleting deleting;
 
-	public PaperListAdapter(Context context, int resource,
-			List<CommentInPaper> objects, PaperFragment f) {
+	public PaperListAdapter(Context context, int resource, List<CommentInPaper> objects, PaperFragment f) {
 		super(context, resource, objects);
 
 		this.context = context;
@@ -82,35 +80,28 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_paper, parent, false);
 		adapter = new DataBaseAdapter(context);
 
-		TextView txtcmt = (TextView) convertView
-				.findViewById(R.id.reply_txt_child);
-		TextView txtuser = (TextView) convertView
-				.findViewById(R.id.name_replyed);
-		TextView txtdate = (TextView) convertView
-				.findViewById(R.id.date_replyed);
-		ImageButton profilepic = (ImageButton) convertView
-				.findViewById(R.id.icon_reply_comment);
+		TextView txtcmt = (TextView) convertView.findViewById(R.id.reply_txt_child);
+		TextView txtuser = (TextView) convertView.findViewById(R.id.name_replyed);
+		TextView txtdate = (TextView) convertView.findViewById(R.id.date_replyed);
+		ImageButton profilepic = (ImageButton) convertView.findViewById(R.id.icon_reply_comment);
 
 		CommentInPaper comment = list.get(position);
 
 		report = (ImageView) convertView.findViewById(R.id.reportImagereply);
 
 		adapter.open();
-		RelativeLayout rl = (RelativeLayout) convertView
-				.findViewById(R.id.main_icon_reply);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				rl.getLayoutParams());
+		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.main_icon_reply);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
 		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
-//		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-//		lp.setMargins(5, 5, 5, 5);
+		// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		// lp.setMargins(5, 5, 5, 5);
 		Users user = adapter.getUserbyid(comment.getUserid());
 		// userId=user.getId();
 
@@ -179,15 +170,13 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements
 						if (item.getTitle().equals("گزارش تخلف")) {
 
 							if (util.getCurrentUser() != null)
-								util.reportAbuse(userIdsender, 6, itemId,
-										content , cn.getPaperid());
+
+								util.reportAbuse(userIdsender, StaticValues.TypeReportCommentPaper, itemId, content, cn.getPaperid(), position);
 							else
-								Toast.makeText(context, "ابتدا باید وارد شوید",
-										0).show();
+								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
 						if (item.getTitle().equals("حذف")) {
-							if (util.getCurrentUser() != null
-									&& util.getCurrentUser().getId() == userIdsender)
+							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender)
 								deleteItems(itemId);
 							else {
 
@@ -230,8 +219,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements
 				CommentInPaper comment = list.get(position);
 				Users user = adapter.getUserbyid(comment.getUserid());
 				userId = user.getId();
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
@@ -259,8 +247,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements
 
 		deleting.execute(params);
 
-		ringProgressDialog = ProgressDialog.show(context, "",
-				"لطفا منتظر بمانید...", true);
+		ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 		ringProgressDialog.setCancelable(true);
 		new Thread(new Runnable() {
@@ -282,7 +269,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements
 
 	@Override
 	public void processFinish(String output) {
-		
+
 		adapter.open();
 		adapter.deleteOnlyCommentPaper(itemId);
 		adapter.close();

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white" >
+    android:background="@color/orginal_light_gray_color" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -11,8 +11,10 @@
         <RelativeLayout
             android:id="@+id/mainAdminLinear"
             android:layout_width="match_parent"
-            android:layout_margin="10dp"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@drawable/shadow_layer"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" >
 
             <ImageView
                 android:id="@+id/mainAdminPagepic"
@@ -35,24 +37,19 @@
                 android:textColor="@color/orginal_hard_blue_color" />
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/shadow"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_below="@+id/mainAdminLinear"
-            android:background="@drawable/shadow_line_personal" />
-
         <RelativeLayout
             android:id="@+id/adminssubs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/shadow"
-            android:layout_marginTop="20dp" >
+            android:layout_below="@+id/mainAdminLinear"
+            android:layout_marginTop="10dp"
+            android:background="@color/white" >
 
             <RelativeLayout
                 android:id="@+id/phonesubAdminRelative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:gravity="center" >
 
                 <EditText
@@ -70,8 +67,8 @@
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
                     android:layout_margin="10dp"
-                    android:background="@drawable/circle_drawable"
                     android:layout_toLeftOf="@+id/inputPhoneSubAdmin"
+                    android:background="@drawable/circle_drawable"
                     android:src="@drawable/fab_add" />
             </RelativeLayout>
 
@@ -79,8 +76,14 @@
                 android:id="@+id/listRelativeSubAdmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/phonesubAdminRelative"
-                android:layout_margin="10dp" >
+                android:layout_below="@+id/phonesubAdminRelative" >
+
+                <ImageView
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/orginal_golden_color"
+                    android:visibility="gone" />
 
                 <ListView
                     android:id="@+id/listSubAdmin"
@@ -90,14 +93,6 @@
                     android:dividerHeight="2dp" >
                 </ListView>
             </RelativeLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/adminssubs"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="10dp" >
         </RelativeLayout>
     </RelativeLayout>
 

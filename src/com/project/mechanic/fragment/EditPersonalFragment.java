@@ -1,5 +1,6 @@
 package com.project.mechanic.fragment;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,6 +23,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -102,6 +104,8 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 	EditText txtname;
 	boolean setProvinceFalg = true;
 	boolean setCityFalg = true;
+	int MaxSizeImageSelected = 5;
+	byte[] image = null;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_editpersonal, null);
@@ -459,8 +463,10 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 
 		if (ImagePath != null) {
 			Bitmap bmp = BitmapFactory.decodeFile(ImagePath);
-			if (bmp != null)
+			if (bmp != null) {
 				ImageProfile.setImageBitmap(Utility.getclip(bmp));
+				image = getBitmapAsByteArray(bmp);
+			}
 		} else {
 			ImageProfile.setImageResource(R.drawable.no_img_profile);
 			ImageProfile.setBackgroundResource(R.drawable.circle_drawable);
@@ -586,19 +592,6 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 
 			}
 		});
-		RelativeLayout btnedit = (RelativeLayout) view.findViewById(R.id.btnedit);
-		RelativeLayout.LayoutParams lp3 = new RelativeLayout.LayoutParams(lin3.getLayoutParams());
-		lp3.width = ut.getScreenwidth() / 4;
-		lp3.setMargins(5, 5, 5, 5);
-
-		btnedit.setLayoutParams(lp3);
-		btnedit.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				selectImageOption();
-			}
-		});
 
 		TextView lable1 = (TextView) view.findViewById(R.id.tt1t);
 		TextView lable2 = (TextView) view.findViewById(R.id.tt2t);
@@ -673,6 +666,7 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 
 		if (requestCode == GALLERY_CODE) {
 			try {
+				long sizePicture = 0; // MB
 
 				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
 				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
@@ -680,7 +674,16 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 				fileOutputStream.close();
 				inputStream.close();
 
-				startCropImage();
+				if (mFileTemp != null)
+					sizePicture = mFileTemp.length() / 1024 / 1024;
+
+				if (sizePicture > MaxSizeImageSelected)
+					Toast.makeText(getActivity(),
+							"حجم عکس انتخاب شده باید کمتر از " + MaxSizeImageSelected + "مگابایت باشد ",
+							Toast.LENGTH_LONG).show();
+				else {
+					startCropImage();
+				}
 
 			} catch (Exception e) {
 
@@ -700,6 +703,8 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 			if (bitmap != null) {
 				ImageProfile.setImageBitmap(Utility.getclip(bitmap));
 				ImageProfile.setLayoutParams(lp2);
+
+				image = Utility.compressImage(mFileTemp);
 
 			}
 
@@ -760,6 +765,13 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 	// }
 	// }
 	// }
+
+	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.JPEG, 80, outputStream);
+
+		return outputStream.toByteArray();
+	}
 
 	private void CropingIMG() {
 
@@ -901,8 +913,8 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 			// new DisplayPersonalInformationFragment());
 			// trans.commit();
 
-		} catch (NumberFormatException ex) {
-			Toast.makeText(context, "خطا در بروز رسانی", Toast.LENGTH_SHORT).show();
+		} catch (Exception ex) {
+			Toast.makeText(context, "خطا در بروز رسانی" + ex.toString(), Toast.LENGTH_SHORT).show();
 			if (dialog != null)
 				dialog.dismiss();
 		}
@@ -917,16 +929,19 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 			try {
 				id = Integer.valueOf(output);
 
-				Bitmap bitmap = ((BitmapDrawable) ImageProfile.getDrawable()).getBitmap();
+				// Bitmap bitmap = ((BitmapDrawable)
+				// ImageProfile.getDrawable()).getBitmap();
+				//
+				// Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+				// bitmap.getHeight(), bitmap.getConfig());
+				//
+				// if (!emptyBitmap.equals(bitmap)) {
+				// Image = Utility.CompressBitmap(bitmap);
+				// }
 
-				Bitmap emptyBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
-				byte[] Image = null;
+				if (image != null)
 
-				if (!emptyBitmap.equals(bitmap)) {
-					Image = Utility.CompressBitmap(bitmap);
-				}
-
-				ut.CreateFile(Image, gId, "Mechanical", "Users", "user", "Users");
+					ut.CreateFile(image, gId, "Mechanical", "Users", "user", "Users");
 
 				// dbAdapter.open();
 				// dbAdapter.UpdateAllUserToDb(gId, Email, null, Phone,
@@ -939,8 +954,8 @@ public class EditPersonalFragment extends Fragment implements AsyncInterface, Sa
 				trans.replace(R.id.content_frame, new DisplayPersonalInformationFragment());
 				trans.commit();
 
-			} catch (NumberFormatException ex) {
-				Toast.makeText(context, "  خطا در بروز رسانی تصویر", Toast.LENGTH_SHORT).show();
+			} catch (Exception ex) {
+				Toast.makeText(context, "  خطا در بروز رسانی تصویر" + ex.toString(), Toast.LENGTH_LONG).show();
 
 				if (dialog != null)
 					dialog.dismiss();

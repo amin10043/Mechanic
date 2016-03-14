@@ -62,7 +62,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 	// int ItemId;
 	int froumNumber;
 	TextView countLikeFroum;
-	ProgressDialog ringProgressDialog;
+//	ProgressDialog ringProgressDialog;
 
 	Saving saving;
 	Deleting deleting;
@@ -229,6 +229,18 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 
 					LinearLayout parentlayout = (LinearLayout) v;
 					RelativeLayout parent = (RelativeLayout) parentlayout.getParent().getParent();
+					
+					LinearLayout li = (LinearLayout) parent.findViewById(R.id.liketitleTopic);
+					TextView liCount = (TextView) parent.findViewById(R.id.countLikeInFroumTitle);
+
+					li.setBackgroundResource(R.drawable.like_froum_on);
+					
+					adapter.open();
+					int count = adapter.LikeInFroum_count(froumNumber);
+					adapter.close();
+					liCount.setText(String.valueOf(count+1));
+
+					
 					int id = ((Integer) parent.getTag());
 					froumNumber = id;
 					date = new ServerDate(context);
@@ -236,9 +248,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 					date.execute("");
 					flag = false;
 
-					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-					ringProgressDialog.setCancelable(true);
+//					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+//
+//					ringProgressDialog.setCancelable(true);
 				}
 			}
 
@@ -254,7 +266,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 				// final int ItemId ;
 				final String t;
 				ListView listView = (ListView) v.getParent().getParent().getParent();
-				int position = listView.getPositionForView(v);
+				final int position = listView.getPositionForView(v);
 				Froum f = getItem(position);
 				if (f != null) {
 					userIdsender = f.getUserId();
@@ -314,7 +326,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 							if (item.getTitle().equals("گزارش تخلف")) {
 
 								if (util.getCurrentUser() != null)
-									util.reportAbuse(userIdsender, 1, itemId, t, 0);
+									
+								
+									util.reportAbuse(userIdsender, StaticValues.TypeReportFroumTitle, itemId, t, 0 , position);
 								else
 									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}
@@ -516,9 +530,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 				flag = false;
 
 			}
-			ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-			ringProgressDialog.setCancelable(true);
+//			ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+//
+//			ringProgressDialog.setCancelable(true);
 			new Thread(new Runnable() {
 
 				@Override
@@ -536,9 +550,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 
 		} else {
 
-			if (ringProgressDialog != null) {
-				ringProgressDialog.dismiss();
-			}
+//			if (ringProgressDialog != null) {
+//				ringProgressDialog.dismiss();
+//			}
 			try {
 				int id = Integer.valueOf(output);
 				RelativeLayout parentLayout = (RelativeLayout) Parent.findViewWithTag(froumNumber);
@@ -561,9 +575,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 				likeCountFroum.setText(adapter.LikeInFroum_count(froumNumber).toString());
 
 				adapter.close();
-				if (ringProgressDialog != null) {
-					ringProgressDialog.dismiss();
-				}
+//				if (ringProgressDialog != null) {
+//					ringProgressDialog.dismiss();
+//				}
 
 			} catch (NumberFormatException ex) {
 				if (output != null && !(output.contains("Exception") || output.contains("java"))) {
@@ -579,23 +593,23 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 
 						deleting.execute(params);
 
-						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-						ringProgressDialog.setCancelable(true);
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
-							}
-						}).start();
+//						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+//
+//						ringProgressDialog.setCancelable(true);
+//						new Thread(new Runnable() {
+//
+//							@Override
+//							public void run() {
+//
+//								try {
+//
+//									Thread.sleep(10000);
+//
+//								} catch (Exception e) {
+//
+//								}
+//							}
+//						}).start();
 					} else {
 						params = new LinkedHashMap<String, String>();
 						saving = new Saving(context);
@@ -615,23 +629,23 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 
 						saving.execute(params);
 
-						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-						ringProgressDialog.setCancelable(true);
-						new Thread(new Runnable() {
-
-							@Override
-							public void run() {
-
-								try {
-
-									Thread.sleep(10000);
-
-								} catch (Exception e) {
-
-								}
-							}
-						}).start();
+//						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+//
+//						ringProgressDialog.setCancelable(true);
+//						new Thread(new Runnable() {
+//
+//							@Override
+//							public void run() {
+//
+//								try {
+//
+//									Thread.sleep(10000);
+//
+//								} catch (Exception e) {
+//
+//								}
+//							}
+//						}).start();
 
 						// countLikeFroum.setText(adapter
 						// .LikeInFroum_count(ItemId).toString());
@@ -662,23 +676,23 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 
 		service.execute(items);
 
-		ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
-
-		ringProgressDialog.setCancelable(true);
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-
-				try {
-
-					Thread.sleep(10000);
-
-				} catch (Exception e) {
-
-				}
-			}
-		}).start();
+//		ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+//
+//		ringProgressDialog.setCancelable(true);
+//		new Thread(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//
+//				try {
+//
+//					Thread.sleep(10000);
+//
+//				} catch (Exception e) {
+//
+//				}
+//			}
+//		}).start();
 	}
 
 	@Override
@@ -692,9 +706,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 
 		adapter.close();
 
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
+//		if (ringProgressDialog != null) {
+//			ringProgressDialog.dismiss();
+//		}
 
 		((FroumtitleFragment) fragment).fillListView();
 

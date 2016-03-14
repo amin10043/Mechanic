@@ -76,7 +76,7 @@ public class PostFragment extends Fragment
 	Button alertdfragbutton;
 	// FloatingActionButton action;
 	DialogPostFragment MyDialog;
-	DialogpostTitleFragment MyDialogShow;
+	// DialogpostTitleFragment MyDialogShow;
 	int /* postId , */ objectId;
 	/**/
 	int IDcurrentUser, itemId;
@@ -100,7 +100,7 @@ public class PostFragment extends Fragment
 	RelativeLayout count, commentcounter;
 
 	Post topics;
-	List<String> menuItems;
+	List<String> menuItems = new ArrayList<String>();
 
 	DialogcmtInpost dialog;
 	ArrayList<CommentInPost> commentGroup, ReplyGroup;
@@ -121,7 +121,7 @@ public class PostFragment extends Fragment
 	Deleting deleting;
 	Map<String, String> params;
 
-//	ProgressDialog ringProgressDialog;
+	// ProgressDialog ringProgressDialog;
 
 	String serverDate = "";
 	ServerDate date;
@@ -161,7 +161,7 @@ public class PostFragment extends Fragment
 		icLike = (ImageView) header.findViewById(R.id.likeIcon);
 
 		/**/
-		if (getArguments().getString("Id") != null)
+		if (getArguments().getString("ObjectId") != null)
 			objectId = Integer.valueOf(getArguments().getString("ObjectId"));
 
 		if (getArguments() != null) {
@@ -233,18 +233,19 @@ public class PostFragment extends Fragment
 
 		topics = adapter.getPostItembyid(postid);
 		Users u = adapter.getUserbyid(topics.getUserId());
-		Object obj = adapter.getObjectbyid(topics.getObjectId());
+		final Object obj = adapter.getObjectbyid(topics.getObjectId());
 
 		if (u != null) {
 			userId = u.getId();
 
 			nametxt.setText(obj.getName());
-			LinearLayout rl = (LinearLayout) header.findViewById(R.id.profileLinearcommenterinContinue);
+			RelativeLayout rl = (RelativeLayout) header.findViewById(R.id.profileLinearcommenterinContinue);
 
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
+			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
 			lp.width = (int) (util.getScreenwidth() / StaticValues.RateImagePostFragmentPage);
 			lp.height = (int) (util.getScreenwidth() / StaticValues.RateImagePostFragmentPage);
+			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			profileImg.setLayoutParams(lp);
 
 			if (obj.getImagePath2() == null) {
@@ -256,10 +257,15 @@ public class PostFragment extends Fragment
 			} else {
 				// byte[] bytepic = u.getImage();
 
-				Bitmap bmp = BitmapFactory.decodeFile(obj.getImagePath2());
-				profileImg.setImageBitmap(Utility.getclip(bmp));
+				try {
+					Bitmap bmp = BitmapFactory.decodeFile(obj.getImagePath2());
+					profileImg.setImageBitmap(Utility.getclip(bmp));
 
-				profileImg.setLayoutParams(lp);
+					profileImg.setLayoutParams(lp);
+				} catch (OutOfMemoryError e) {
+					e.printStackTrace();
+				}
+
 			}
 		}
 
@@ -281,10 +287,15 @@ public class PostFragment extends Fragment
 			File imgFile = new File(topics.getPhoto());
 
 			if (imgFile.exists()) {
-				Bitmap myBitmap = BitmapFactory.decodeFile(topics.getPhoto());
-				postImage.setImageBitmap(myBitmap);
-				postImage.setVisibility(View.VISIBLE);
-				postImage.setLayoutParams(lp);
+				try {
+					Bitmap myBitmap = BitmapFactory.decodeFile(topics.getPhoto());
+					postImage.setImageBitmap(myBitmap);
+					postImage.setVisibility(View.VISIBLE);
+					postImage.setLayoutParams(lp);
+				} catch (OutOfMemoryError e) {
+					e.printStackTrace();
+				}
+
 			}
 		}
 		countComment.setText(adapter.CommentInPost_count(postid).toString());
@@ -292,7 +303,7 @@ public class PostFragment extends Fragment
 		dateTopic.setText(util.getPersianDate(topics.getDate()));
 
 		// titletxt.setTypeface(util.SetFontCasablanca());
-		// descriptiontxt.setTypeface(util.SetFontCasablanca());
+		descriptiontxt.setTypeface(util.SetFontIranSans());
 
 		postImage.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -375,8 +386,9 @@ public class PostFragment extends Fragment
 		if (missedIds.size() > 0) {
 			if (getActivity() != null) {
 
-//				ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-//				ringProgressDialog.setCancelable(true);
+				// ringProgressDialog = ProgressDialog.show(getActivity(), "",
+				// "لطفا منتظر بمانید...", true);
+				// ringProgressDialog.setCancelable(true);
 				date = new ServerDate(getActivity());
 				date.delegate = PostFragment.this;
 				date.execute("");
@@ -450,8 +462,9 @@ public class PostFragment extends Fragment
 					Toast.makeText(getActivity(), "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 				} else {
 
-//					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-//					ringProgressDialog.setCancelable(true);
+					// ringProgressDialog = ProgressDialog.show(getActivity(),
+					// "", "لطفا منتظر بمانید...", true);
+					// ringProgressDialog.setCancelable(true);
 					date = new ServerDate(getActivity());
 					date.delegate = PostFragment.this;
 					date.execute("");
@@ -495,16 +508,24 @@ public class PostFragment extends Fragment
 				itemId = topics.getId();
 
 				if (util.getCurrentUser() != null) {
-					if (util.getCurrentUser().getId() == userIdsender) {
 
-						menuItems = new ArrayList<String>();
+					if (CurrentUser.getId() == userIdsender) {
+
+						menuItems.clear();
+						menuItems.add("ارسال پیام");
+						menuItems.add("کپی");
+						menuItems.add("حذف");
+
+					} else if (CurrentUser.getId() == obj.getUserId()) {
+
 						menuItems.clear();
 						menuItems.add("ارسال پیام");
 						menuItems.add("کپی");
 						menuItems.add("حذف");
 
 					} else {
-						menuItems = new ArrayList<String>();
+
+						// menuItems = new ArrayList<String>();
 
 						menuItems.clear();
 						menuItems.add("ارسال پیام");
@@ -513,7 +534,7 @@ public class PostFragment extends Fragment
 						menuItems.add("گزارش تخلف");
 					}
 				} else {
-					menuItems = new ArrayList<String>();
+					// menuItems = new ArrayList<String>();
 
 					menuItems.clear();
 					menuItems.add("کپی");
@@ -547,7 +568,7 @@ public class PostFragment extends Fragment
 
 						if (item.getTitle().equals("گزارش تخلف")) {
 
-							util.reportAbuse(userIdsender, 9, itemId, t, 0);
+							util.reportAbuse(userIdsender, StaticValues.TypeReportPostFragment, itemId, t, objectId, 0);
 
 						}
 						if (item.getTitle().equals("حذف")) {
@@ -656,8 +677,10 @@ public class PostFragment extends Fragment
 						Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0).show();
 					} else {
 
-//						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-//						ringProgressDialog.setCancelable(true);
+						// ringProgressDialog =
+						// ProgressDialog.show(getActivity(), "", "لطفا منتظر
+						// بمانید...", true);
+						// ringProgressDialog.setCancelable(true);
 						date = new ServerDate(getActivity());
 						date.delegate = PostFragment.this;
 						date.execute("");
@@ -714,6 +737,9 @@ public class PostFragment extends Fragment
 						FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
 								.beginTransaction();
 						IntroductionFragment fragment = new IntroductionFragment();
+						fragment.setPostionListPost(positionPost);
+						
+						
 						Bundle bundle = new Bundle();
 						bundle.putString("Id", String.valueOf(objectId));
 						bundle.putInt("positionBrand", positionBrand);
@@ -721,7 +747,7 @@ public class PostFragment extends Fragment
 						// trans.addToBackStack("PostFramgnet");
 
 						trans.replace(R.id.content_frame, fragment);
-						fragment.setPostionListPost(positionPost);
+//						fragment.setPostionListPost(positionPost);
 
 						trans.commit();
 
@@ -953,8 +979,8 @@ public class PostFragment extends Fragment
 	@Override
 	public void processFinish(String output) {
 		// Toast.makeText(getActivity(), output, 0).show();
-//		if (ringProgressDialog != null)
-//			ringProgressDialog.dismiss();
+		// if (ringProgressDialog != null)
+		// ringProgressDialog.dismiss();
 
 		if (!output.contains("Exception")) {
 			if (IsPost == true) {
@@ -1012,9 +1038,9 @@ public class PostFragment extends Fragment
 						}
 
 					}
-//					if (ringProgressDialog != null) {
-//						ringProgressDialog.dismiss();
-//					}
+					// if (ringProgressDialog != null) {
+					// ringProgressDialog.dismiss();
+					// }
 				} catch (NumberFormatException ex) {
 					if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 
@@ -1043,9 +1069,11 @@ public class PostFragment extends Fragment
 								saving.execute(params);
 								IsPost = false;
 							}
-//							ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-//
-//							ringProgressDialog.setCancelable(true);
+							// ringProgressDialog =
+							// ProgressDialog.show(getActivity(), "", "لطفا
+							// منتظر بمانید...", true);
+							//
+							// ringProgressDialog.setCancelable(true);
 							new Thread(new Runnable() {
 
 								@Override
@@ -1110,19 +1138,19 @@ public class PostFragment extends Fragment
 						}
 					} else {
 						Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
-//						if (ringProgressDialog != null) {
-//							ringProgressDialog.dismiss();
-//						}
+						// if (ringProgressDialog != null) {
+						// ringProgressDialog.dismiss();
+						// }
 					}
 				}
 
 				catch (Exception e) {
 
-					Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "خطا در ثبت" + e.toString(), Toast.LENGTH_SHORT).show();
 					adapter.close();
-//					if (ringProgressDialog != null) {
-//						ringProgressDialog.dismiss();
-//					}
+					// if (ringProgressDialog != null) {
+					// ringProgressDialog.dismiss();
+					// }
 				}
 				adapter.close();
 
@@ -1186,9 +1214,9 @@ public class PostFragment extends Fragment
 		adapter.close();
 
 		updateList();
-//		if (ringProgressDialog != null) {
-//			ringProgressDialog.dismiss();
-//		}
+		// if (ringProgressDialog != null) {
+		// ringProgressDialog.dismiss();
+		// }
 	}
 
 	private void checkInternet() {

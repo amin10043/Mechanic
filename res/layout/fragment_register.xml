@@ -34,24 +34,42 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center" >
+            android:layout_height="wrap_content" >
 
             <LinearLayout
-                android:id="@+id/lin1"
+                android:id="@+id/lkjh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/txtsize10" >
+                android:layout_centerVertical="true" >
 
-                <ImageView
-                    android:id="@+id/btnaddpic"
+                <FrameLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/i13"
-                    android:scaleType="centerInside" />
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
+                        android:id="@+id/lin1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/txtsize10" >
+
+                        <ImageView
+                            android:id="@+id/btnaddpic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/no_img_profile"
+                            android:scaleType="centerInside" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="top|right"
+                        android:background="@drawable/pick_camera_non_border" />
+                </FrameLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -59,10 +77,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/txtsize10"
                 android:layout_marginTop="10dp"
-                android:layout_toLeftOf="@+id/lin1"
+                android:layout_toLeftOf="@+id/lkjh"
                 android:gravity="center"
                 android:orientation="vertical" >
 
@@ -199,13 +216,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="50dp"
-                    android:layout_toLeftOf="@+id/lables" />
+                    android:layout_toLeftOf="@+id/lables"
+                    android:button="@drawable/checkbox_drawable" />
 
                 <TextView
                     android:id="@+id/cdas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
                     android:layout_toLeftOf="@+id/checkBox1"
                     android:text="فعال شدن"
                     android:textColor="@color/transparent"
@@ -277,18 +296,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="قوانین را مطالعه کردم و پذیرفته ام(کلیک کنید) "
-                android:textColor="@color/blue"
-                android:textSize="@dimen/txtsize10" />
+                android:textColor="@color/orginal_hard_blue_color" />
 
             <CheckBox
                 android:id="@+id/rulescheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="@dimen/txtsize5" />
+                android:layout_marginRight="@dimen/txtsize5"
+                android:button="@drawable/checkbox_drawable" />
         </LinearLayout>
 
         <LinearLayout

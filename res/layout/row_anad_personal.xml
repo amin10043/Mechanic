@@ -14,7 +14,7 @@
 
         <RelativeLayout
             android:id="@+id/layoutmnb"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:orientation="vertical" >
@@ -47,68 +47,44 @@
                     android:visibility="invisible" />
             </FrameLayout>
 
-            <ProgressBar
-                android:id="@+id/progressBar1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_margin="10dp"
-                android:visibility="gone" />
-
             <LinearLayout
                 android:id="@+id/dda"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
-                android:gravity="right|center_vertical"
                 android:layout_toLeftOf="@+id/imageFrame"
-                android:orientation="horizontal" >
+                android:gravity="right"
+                android:orientation="vertical" >
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/row_favorite_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_marginRight="10dp"
-                    android:gravity="right|center_vertical"
-                    android:orientation="vertical" >
+                    android:singleLine="true"
+                    android:text="Large Text"
+                    android:textColor="@color/orginal_hard_blue_color" />
 
-                    <TextView
-                        android:id="@+id/row_favorite_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|center_vertical"
-                        android:gravity="right"
-                        android:text="Large Text"
-                        android:singleLine="true"
-                        android:textColor="@color/orginal_hard_blue_color" />
-
-                    <TextView
-                        android:id="@+id/row_anad_txt2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:gravity="right"
-                        android:maxLength="20"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:text="Large Text"
-                        android:visibility="gone"
-                        android:textColor="@color/orginal_red_color" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:singleLine="true"
+                    android:text="address"
+                    android:textColor="@color/orginal_hard_blue_color" />
 
                 <RelativeLayout
                     android:id="@+id/relativeLayout1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="right"
                     android:gravity="bottom" >
 
                     <ImageView
                         android:id="@+id/iconNumberLike"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:background="@drawable/numvv" />
 
                     <TextView
@@ -119,7 +95,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@+id/iconNumberLike"
                         android:text="20"
-                        android:textColor="@color/orginal_red_color"
+                        android:textColor="@color/orginal_hard_blue_color"
                         android:textSize="10dp" />
                 </RelativeLayout>
             </LinearLayout>
@@ -150,17 +126,6 @@
                     android:textColor="@color/orginal_hard_blue_color" />
             </RelativeLayout>
         </RelativeLayout>
-
-        <TextView
-            android:id="@+id/address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_margin="10dp"
-            android:paddingBottom="10dp"
-            android:text="address"
-            android:textColor="@color/orginal_hard_blue_color" />
     </RelativeLayout>
 
 </RelativeLayout>

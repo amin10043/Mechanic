@@ -118,7 +118,6 @@
             android:layout_margin="10dp"
             android:layout_marginTop="10dp"
             android:singleLine="true"
-            android:text="des"
             android:textColor="@color/orginal_hard_blue_color"
             android:visibility="visible" />
 
@@ -227,7 +226,7 @@
                 android:textColor="@color/orginal_hard_blue_color" />
         </LinearLayout>
 
-        <ImageButton
+        <ImageView
             android:id="@+id/sharefroumicon"
             android:layout_width="25dp"
             android:layout_height="25dp"

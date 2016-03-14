@@ -19,43 +19,41 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <RelativeLayout
-                android:id="@+id/lin5"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/la"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="10dp"
+                android:gravity="center_horizontal"
                 android:orientation="vertical" >
 
-                <ImageView
-                    android:id="@+id/imgp"
+                <FrameLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="false"
-                    android:background="@drawable/circle_drawable"
-                    android:src="@drawable/no_img_profile" />
+                    android:layout_height="wrap_content" >
 
-                <RelativeLayout
-                    android:id="@+id/btnedit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/lin2"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_below="@+id/imgp"
-                    android:visibility="gone"
-                    android:background="#64bc2c" >
-
-                    <TextView
+                    <RelativeLayout
+                        android:id="@+id/lin5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginBottom="20dp"
-                        android:layout_marginTop="20dp"
-                        android:background="#64bc2c"
-                        android:text="تغییر عکس"
-                        android:textColor="@color/white" />
-                </RelativeLayout>
-            </RelativeLayout>
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/imgp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="false"
+                            android:background="@drawable/circle_drawable"
+                            android:src="@drawable/no_img_profile" />
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="top|right"
+                        android:background="@drawable/pick_camera_non_border" />
+                </FrameLayout>
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -81,7 +79,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_toLeftOf="@+id/tt1t"
-                    android:background="@drawable/check_icon" />
+                    android:background="@drawable/ic_checked" />
 
                 <TextView
                     android:id="@+id/tt1t"
@@ -97,7 +95,7 @@
                 android:id="@+id/namelayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/lin5"
+                android:layout_below="@+id/la"
                 android:layout_centerHorizontal="true"
                 android:orientation="vertical" >
 
@@ -106,8 +104,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:hint="نام"
                     android:layout_marginRight="@dimen/txtsize10"
+                    android:hint="نام"
                     android:textColor="@color/transparent"
                     android:textSize="15dp" />
             </LinearLayout>
@@ -155,6 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
+                    android:button="@drawable/checkbox_drawable"
                     android:checked="true" />
             </RelativeLayout>
 
@@ -190,6 +189,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
+                    android:button="@drawable/checkbox_drawable"
                     android:checked="true" />
             </RelativeLayout>
 
@@ -225,6 +225,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
+                    android:button="@drawable/checkbox_drawable"
                     android:checked="true" />
             </RelativeLayout>
 
@@ -260,7 +261,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    
+                    android:button="@drawable/checkbox_drawable"
                     android:checked="true" />
             </RelativeLayout>
         </LinearLayout>
@@ -305,6 +306,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
+                    android:button="@drawable/checkbox_drawable"
                     android:checked="true" />
             </RelativeLayout>
         </LinearLayout>
@@ -314,8 +316,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/txtsize10"
             android:layout_marginRight="@dimen/txtsize10"
-            android:layout_marginTop="5dp"
- >
+            android:layout_marginTop="5dp" >
 
             <Spinner
                 android:id="@+id/yearSpinner"
@@ -361,6 +362,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="50dp"
+                                        android:button="@drawable/checkbox_drawable"
+                    
                     android:layout_toLeftOf="@+id/lables" />
 
                 <TextView
@@ -379,8 +382,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/txtsize10"
-            android:layout_marginRight="@dimen/txtsize10"
-    >
+            android:layout_marginRight="@dimen/txtsize10" >
 
             <TextView
                 android:id="@+id/lablesostan"
@@ -431,12 +433,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="@dimen/txtsize10"
             android:layout_marginRight="@dimen/txtsize10"
-            android:layout_marginBottom="5dp"
             android:gravity="center"
-            android:weightSum="2"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:weightSum="2" >
 
             <Button
                 android:id="@+id/btnbackdisplay"

@@ -324,6 +324,12 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 
 				} else {
 
+					likeIcon.setBackgroundResource(R.drawable.like_froum_on);
+					adapter.open();
+					int count = adapter.LikeInPaper_count(paperID);
+					adapter.close();
+					NumofLike.setText(String.valueOf(count + 1));
+
 					date = new ServerDate(getActivity());
 					date.delegate = PaperFragment.this;
 					date.execute("");
@@ -411,7 +417,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 						}
 						if (item.getTitle().equals("گزارش تخلف")) {
 
-							util.reportAbuse(p.getUserId(), 2, p.getId(), p.getContext(), 0);
+							util.reportAbuse(p.getUserId(), StaticValues.TypeReportPaperFragment, p.getId(), p.getContext(), p.getId() , 0);
 
 						}
 						if (item.getTitle().equals("حذف")) {
@@ -520,8 +526,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 				return false;
 			}
 		});
-		
-		
+
 		super.onResume();
 	}
 

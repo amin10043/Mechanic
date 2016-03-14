@@ -82,6 +82,8 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 	static String paperLable = "مقالات";
 	static String FroumLable = "گفتگو";
 
+	private int lastExpandedPosition = -1;
+
 	public DataPersonalExpandAdapter(Context context, ArrayList<String> parentItems,
 			HashMap<String, List<PersonalData>> listDataChild, String todayDate, Fragment fr, List<Integer> sizeType,
 			boolean isShowSettingBtn, String name) {
@@ -292,6 +294,57 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				follwers.setText(followersCount + "");
 				adapter.close();
 
+				int rate = obj.getRate();
+
+				if (rate > 0) {
+
+					ImageView star1 = (ImageView) convertView.findViewById(R.id.star1);
+					ImageView star2 = (ImageView) convertView.findViewById(R.id.star2);
+					ImageView star3 = (ImageView) convertView.findViewById(R.id.star3);
+					ImageView star4 = (ImageView) convertView.findViewById(R.id.star4);
+					ImageView star5 = (ImageView) convertView.findViewById(R.id.star5);
+
+					switch (rate) {
+					case 1:
+						star1.setBackgroundResource(R.drawable.ic_star_on);
+
+						break;
+					case 2:
+						star1.setBackgroundResource(R.drawable.ic_star_on);
+						star2.setBackgroundResource(R.drawable.ic_star_on);
+
+						break;
+
+					case 3:
+						star1.setBackgroundResource(R.drawable.ic_star_on);
+						star2.setBackgroundResource(R.drawable.ic_star_on);
+						star3.setBackgroundResource(R.drawable.ic_star_on);
+
+						break;
+
+					case 4:
+						star1.setBackgroundResource(R.drawable.ic_star_on);
+						star2.setBackgroundResource(R.drawable.ic_star_on);
+						star3.setBackgroundResource(R.drawable.ic_star_on);
+						star4.setBackgroundResource(R.drawable.ic_star_on);
+
+						break;
+
+					case 5:
+						star1.setBackgroundResource(R.drawable.ic_star_on);
+						star2.setBackgroundResource(R.drawable.ic_star_on);
+						star3.setBackgroundResource(R.drawable.ic_star_on);
+						star4.setBackgroundResource(R.drawable.ic_star_on);
+						star5.setBackgroundResource(R.drawable.ic_star_on);
+
+						break;
+
+					default:
+						break;
+					}
+
+				}
+
 				convertView.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -331,22 +384,22 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 				TextView txtdate = (TextView) convertView.findViewById(R.id.text_favorite_desc);
 				TextView txtName = (TextView) convertView.findViewById(R.id.row_favorite_title);
-				TextView txtDesc = (TextView) convertView.findViewById(R.id.row_anad_txt2);
+//				TextView txtDesc = (TextView) convertView.findViewById(R.id.row_anad_txt2);
 				ImageView img2 = (ImageView) convertView.findViewById(R.id.row_favorite_img);
 				TextView address = (TextView) convertView.findViewById(R.id.address);
 
-				ProgressBar LoadingProgress = (ProgressBar) convertView.findViewById(R.id.progressBar1);
-				LoadingProgress.setVisibility(View.GONE);
+//				ProgressBar LoadingProgress = (ProgressBar) convertView.findViewById(R.id.progressBar1);
+//				LoadingProgress.setVisibility(View.GONE);
 
 				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
 				txtdate.setText(util.getPersianDate(pd.getDateTicket()));
 				txtName.setText(pd.getNameTicket());
-				txtDesc.setText(pd.getDescriptonTicket());
+//				txtDesc.setText(pd.getDescriptonTicket());
 
 				if (pd.getSeenBefore() > 0) {
 					txtName.setTextColor(Color.GRAY);
-					txtDesc.setTextColor(Color.GRAY);
+//					txtDesc.setTextColor(Color.GRAY);
 					txtdate.setTextColor(Color.GRAY);
 
 				}
@@ -355,7 +408,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 				}
 				if ("".equals(pd.getDescriptonTicket()) || pd.getDescriptonTicket() == null) {
-					txtDesc.setVisibility(View.GONE);
+//					txtDesc.setVisibility(View.GONE);
 				}
 				ImageView imgBi = (ImageView) convertView.findViewById(R.id.aks_bi_etebar);
 
@@ -409,7 +462,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 					TicketBackground.setBackgroundColor(Color.WHITE);
 					if (pd.getSeenBefore() > 0) {
 						txtName.setTextColor(Color.GRAY);
-						txtDesc.setTextColor(Color.GRAY);
+//						txtDesc.setTextColor(Color.GRAY);
 						txtdate.setTextColor(Color.GRAY);
 					}
 
@@ -422,14 +475,14 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 					if (pd.getSeenBefore() > 0) {
 						txtName.setTextColor(Color.WHITE);
-						txtDesc.setTextColor(Color.WHITE);
+//						txtDesc.setTextColor(Color.WHITE);
 						txtdate.setTextColor(Color.WHITE);
 
 					}
 				}
 
 				txtName.setTypeface(util.SetFontCasablanca());
-				txtDesc.setTypeface(util.SetFontCasablanca());
+//				txtDesc.setTypeface(util.SetFontCasablanca());
 
 				ImageView reaport = (ImageView) convertView.findViewById(R.id.reportImage);
 				if (isShowSettingBtn == true) {
@@ -999,6 +1052,57 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 				// /////////////////////////////////
 
+				int rate = obj.getRate();
+
+				if (rate > 0) {
+
+					ImageView star1 = (ImageView) convertView.findViewById(R.id.star1);
+					ImageView star2 = (ImageView) convertView.findViewById(R.id.star2);
+					ImageView star3 = (ImageView) convertView.findViewById(R.id.star3);
+					ImageView star4 = (ImageView) convertView.findViewById(R.id.star4);
+					ImageView star5 = (ImageView) convertView.findViewById(R.id.star5);
+
+					switch (rate) {
+					case 1:
+						star1.setBackgroundResource(R.drawable.ic_star_on);
+
+						break;
+					case 2:
+						star1.setBackgroundResource(R.drawable.ic_star_on);
+						star2.setBackgroundResource(R.drawable.ic_star_on);
+
+						break;
+
+					case 3:
+						star1.setBackgroundResource(R.drawable.ic_star_on);
+						star2.setBackgroundResource(R.drawable.ic_star_on);
+						star3.setBackgroundResource(R.drawable.ic_star_on);
+
+						break;
+
+					case 4:
+						star1.setBackgroundResource(R.drawable.ic_star_on);
+						star2.setBackgroundResource(R.drawable.ic_star_on);
+						star3.setBackgroundResource(R.drawable.ic_star_on);
+						star4.setBackgroundResource(R.drawable.ic_star_on);
+
+						break;
+
+					case 5:
+						star1.setBackgroundResource(R.drawable.ic_star_on);
+						star2.setBackgroundResource(R.drawable.ic_star_on);
+						star3.setBackgroundResource(R.drawable.ic_star_on);
+						star4.setBackgroundResource(R.drawable.ic_star_on);
+						star5.setBackgroundResource(R.drawable.ic_star_on);
+
+						break;
+
+					default:
+						break;
+					}
+
+				}
+
 			}
 		} else if (("مدیریت تبلیغات").equals(parentItems.get(groupPosition))) {
 
@@ -1177,7 +1281,8 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public View getGroupView(final int groupPosition, final boolean isExpanded, View convertView, ViewGroup parent) {
+	public View getGroupView(final int groupPosition, final boolean isExpanded, View convertView,
+			final ViewGroup parent) {
 		if (convertView == null) {
 			LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = infalInflater.inflate(R.layout.row_group_test, null);
@@ -1190,25 +1295,31 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 		if (util.getCurrentUser() != null)
 			titleGroup.setText(parentItems.get(groupPosition));
 		titleGroup.setTypeface(util.SetFontCasablanca());
-		final ImageView indicatorImg = (ImageView) convertView.findViewById(R.id.icon_item);
+		
+		
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 
+				RelativeLayout layout = (RelativeLayout) v;
+				ImageView indicator = (ImageView) layout.getChildAt(0);
 
 				if (isExpanded) {
 					mExpandableListView.collapseGroup(groupPosition);
-					indicatorImg.setBackgroundResource(R.drawable.dow);
-					notifyDataSetChanged();
+					indicator.setBackgroundResource(R.drawable.dow);
 
 				} else {
-					indicatorImg.setBackgroundResource(R.drawable.dow_s);
+					indicator.setBackgroundResource(R.drawable.dow_s);
 					mExpandableListView.expandGroup(groupPosition);
 					mExpandableListView.setSelectedChild(groupPosition, 0, true);
 
-				}
+					if (lastExpandedPosition != -1 && groupPosition != lastExpandedPosition) {
+						mExpandableListView.collapseGroup(lastExpandedPosition);
+					}
+					lastExpandedPosition = groupPosition;
 
+				}
 
 			}
 		});

@@ -37,6 +37,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -52,6 +53,7 @@ public class IntroductionEditFragment extends Fragment
 	private static int footerLoadcode = 3;
 	int pageId;
 	String serverDate = "";
+	int MaxSizeImageSelected = 5;
 
 	public IntroductionEditFragment(int pageId) {
 		this.pageId = pageId;
@@ -65,6 +67,8 @@ public class IntroductionEditFragment extends Fragment
 	DialogEditDownloadIntroduction diadown;
 
 	DialogEditNet dianet;
+
+	// Bitmap bmpHeader, bmpPrifile, bmpfooter;
 
 	Button btnSave;
 	TextView lableStar, lableNetwork, lableAdmins, lableDownload, lablecopy;
@@ -95,7 +99,7 @@ public class IntroductionEditFragment extends Fragment
 	ProgressDialog ringProgressDialog;
 	SavingImage3Picture savingImage;
 
-	byte[] byteHeader, byteProfil, byteFooter;
+	byte[] byteHeader = null, byteProfil = null, byteFooter = null;
 	private File mFileTemp;
 
 	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
@@ -107,6 +111,10 @@ public class IntroductionEditFragment extends Fragment
 
 	TextView linkPage;
 	int upgradRatingCount;
+	CheckBox checkAgency, checkService;
+
+	TextView lableAgency, lableService;
+	int ObjectBrandTypeId;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -140,6 +148,9 @@ public class IntroductionEditFragment extends Fragment
 
 		copyBtn = (ImageView) view.findViewById(R.id.copyToClipboard);
 		linkPage = (TextView) view.findViewById(R.id.linkPage);
+
+		checkAgency = (CheckBox) view.findViewById(R.id.checkAgency);
+		checkService = (CheckBox) view.findViewById(R.id.checkService);
 
 		// namayendegi.setVisibility(View.GONE);
 		// khadamat.setVisibility(View.GONE);
@@ -192,6 +203,12 @@ public class IntroductionEditFragment extends Fragment
 		profileImageEdit.setLayoutParams(profileEditParams);
 		footerImageEdit.setLayoutParams(footerEditParams);
 
+		lableAgency = (TextView) view.findViewById(R.id.lableagency);
+		lableService = (TextView) view.findViewById(R.id.lableservice);
+
+		lableAgency.setTypeface(util.SetFontCasablanca());
+		lableService.setTypeface(util.SetFontCasablanca());
+
 		String state = Environment.getExternalStorageState();
 
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -219,9 +236,40 @@ public class IntroductionEditFragment extends Fragment
 		String pathProfile = object.getImagePath2();
 		String pathFooter = object.getImagePath3();
 
-		Bitmap bmpHeader = BitmapFactory.decodeFile(pathHeader);
-		Bitmap bmpPrifile = BitmapFactory.decodeFile(pathProfile);
-		Bitmap bmpfooter = BitmapFactory.decodeFile(pathFooter);
+		if (!"".equals(pathHeader)) {
+
+			try {
+				bmpHeader = BitmapFactory.decodeFile(pathHeader);
+				if (bmpHeader != null)
+					byteHeader = getBitmapAsByteArray(bmpHeader);
+
+			} catch (OutOfMemoryError e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		if (!"".equals(pathProfile)) {
+			try {
+				bmpProfil = BitmapFactory.decodeFile(pathProfile);
+				if (bmpProfil != null)
+					byteProfil = getBitmapAsByteArray(bmpProfil);
+			} catch (OutOfMemoryError e) {
+				e.printStackTrace();
+			}
+		}
+
+		if (!"".equals(pathFooter)) {
+
+			try {
+				bmpFooter = BitmapFactory.decodeFile(pathFooter);
+				if (bmpFooter != null)
+					byteFooter = getBitmapAsByteArray(bmpFooter);
+
+			} catch (OutOfMemoryError e) {
+				e.printStackTrace();
+			}
+		}
 
 		// byte[] bitmapbyte = OBJECT.getImage2();
 
@@ -233,17 +281,17 @@ public class IntroductionEditFragment extends Fragment
 			headerImageEdit.setImageResource(R.drawable.no_image_header);
 
 		// byte[] bitmap = object.getImage1();
-		if (bmpPrifile != null) {
+		if (bmpProfil != null) {
 			// Bitmap bmp = BitmapFactory
 			// .decodeByteArray(bitmap, 0, bitmap.length);
-			profileImageEdit.setImageBitmap(bmpPrifile);
+			profileImageEdit.setImageBitmap(bmpProfil);
 		} else
 			profileImageEdit.setImageResource(R.drawable.no_img_profile);
 
 		// byte[] bitm = object.getImage3();
-		if (bmpfooter != null) {
+		if (bmpFooter != null) {
 			// Bitmap bmp = BitmapFactory.decodeByteArray(bitm, 0, bitm.length);
-			footerImageEdit.setImageBitmap(bmpfooter);
+			footerImageEdit.setImageBitmap(bmpFooter);
 		} else
 			footerImageEdit.setImageResource(R.drawable.no_image_header);
 
@@ -257,6 +305,40 @@ public class IntroductionEditFragment extends Fragment
 		DBAdapter.close();
 
 		// //////////////////////////////////////////////////
+
+		int mainObjectId = object.getMainObjectId();
+		ObjectBrandTypeId = object.getObjectBrandTypeId();
+		if (mainObjectId != 1) {
+			checkAgency.setVisibility(View.GONE);
+			lableAgency.setVisibility(View.GONE);
+			lableService.setVisibility(View.GONE);
+			checkService.setVisibility(View.GONE);
+		}
+
+		switch (object.getObjectBrandTypeId()) {
+		case 1:
+			checkAgency.setChecked(true);
+			checkService.setChecked(true);
+
+			break;
+		case 2:
+
+			checkAgency.setChecked(false);
+			checkService.setChecked(false);
+
+			break;
+		case 3:
+			checkAgency.setChecked(true);
+
+			break;
+		case 4:
+			checkService.setChecked(false);
+
+			break;
+
+		default:
+			break;
+		}
 
 		copyBtn.setOnClickListener(new OnClickListener() {
 
@@ -381,6 +463,15 @@ public class IntroductionEditFragment extends Fragment
 				descriptionValue = descriptionEnter.getText().toString();
 				websiteValue = websiteEnter.getText().toString();
 
+				if (checkAgency.isChecked() && checkService.isChecked())
+					ObjectBrandTypeId = 1;
+				else if (checkAgency.isChecked())
+					ObjectBrandTypeId = 3;
+				else if (checkService.isChecked())
+					ObjectBrandTypeId = 4;
+				else
+					ObjectBrandTypeId = 2;
+
 				if (nameValue.equals("")) {
 					Toast.makeText(getActivity(), "پر کردن فیلد نام الزامی است", Toast.LENGTH_SHORT).show();
 				} else {
@@ -398,7 +489,7 @@ public class IntroductionEditFragment extends Fragment
 
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		bitmap.compress(CompressFormat.PNG, 50, outputStream);
+		bitmap.compress(CompressFormat.JPEG, 80, outputStream);
 		byte[] array = outputStream.toByteArray();
 		BitmapFactory.decodeByteArray(array, 0, array.length);
 		return outputStream.toByteArray();
@@ -409,15 +500,25 @@ public class IntroductionEditFragment extends Fragment
 
 		if (requestCode == profileLoadCode) {
 			try {
+				long sizePicture = 0; // MB
 
 				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
 				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
 				Utility.copyStream(inputStream, fileOutputStream);
 				fileOutputStream.close();
 				inputStream.close();
-				t1 = true;
 
-				startCropImage();
+				if (mFileTemp != null)
+					sizePicture = mFileTemp.length() / 1024 / 1024;
+
+				if (sizePicture > MaxSizeImageSelected)
+					Toast.makeText(getActivity(),
+							"حجم عکس انتخاب شده باید کمتر از " + MaxSizeImageSelected + "مگابایت باشد ",
+							Toast.LENGTH_LONG).show();
+				else {
+					t1 = true;
+					startCropImage();
+				}
 
 			} catch (Exception e) {
 
@@ -439,17 +540,23 @@ public class IntroductionEditFragment extends Fragment
 				profileImageEdit.setLayoutParams(profileEditParams);
 				t1 = false;
 
+				byteProfil = Utility.compressImage(mFileTemp);
+
 			}
 			if (bitmap != null && t2) {
 				headerImageEdit.setImageBitmap(bitmap);
 				headerImageEdit.setLayoutParams(headerEditParams);
 				t2 = false;
 
+				byteHeader = Utility.compressImage(mFileTemp);
+
 			}
 			if (bitmap != null && t3) {
 				footerImageEdit.setImageBitmap(bitmap);
 				footerImageEdit.setLayoutParams(footerEditParams);
 				t3 = false;
+
+				byteFooter = Utility.compressImage(mFileTemp);
 
 			}
 
@@ -463,9 +570,20 @@ public class IntroductionEditFragment extends Fragment
 				Utility.copyStream(inputStream, fileOutputStream);
 				fileOutputStream.close();
 				inputStream.close();
-				t2 = true;
 
-				startCropImage();
+				long sizePicture = 0; // MB
+
+				if (mFileTemp != null)
+					sizePicture = mFileTemp.length() / 1024 / 1024;
+
+				if (sizePicture > MaxSizeImageSelected)
+					Toast.makeText(getActivity(),
+							"حجم عکس انتخاب شده باید کمتر از " + MaxSizeImageSelected + "مگابایت باشد ",
+							Toast.LENGTH_LONG).show();
+				else {
+					t2 = true;
+					startCropImage();
+				}
 
 			} catch (Exception e) {
 
@@ -476,15 +594,25 @@ public class IntroductionEditFragment extends Fragment
 		}
 		if (requestCode == footerLoadcode && resultCode == Activity.RESULT_OK && null != data) {
 			try {
+				long sizePicture = 0; // MB
 
 				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
 				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
 				Utility.copyStream(inputStream, fileOutputStream);
 				fileOutputStream.close();
 				inputStream.close();
-				t3 = true;
 
-				startCropImage();
+				if (mFileTemp != null)
+					sizePicture = mFileTemp.length() / 1024 / 1024;
+
+				if (sizePicture > MaxSizeImageSelected)
+					Toast.makeText(getActivity(),
+							"حجم عکس انتخاب شده باید کمتر از " + MaxSizeImageSelected + "مگابایت باشد ",
+							Toast.LENGTH_LONG).show();
+				else {
+					t3 = true;
+					startCropImage();
+				}
 
 			} catch (Exception e) {
 
@@ -525,28 +653,33 @@ public class IntroductionEditFragment extends Fragment
 			// byte[] byteProfil = util.CompressBitmap(bmpProfil);
 			// byte[] byteFooter = util.CompressBitmap(bmpFooter);
 
-			if (headerImageEdit.getDrawable() == null && profileImageEdit.getDrawable() == null
-					&& footerImageEdit.getDrawable() == null) {
-
-				Toast.makeText(getActivity(), "Empty ByteArray", Toast.LENGTH_SHORT).show();
-			}
-
-			if (headerImageEdit.getDrawable() != null) {
-				bmpHeader = ((BitmapDrawable) headerImageEdit.getDrawable()).getBitmap();
-				if (bmpHeader != null)
-					byteHeader = Utility.CompressBitmap(bmpHeader);
-
-			}
-			if (profileImageEdit.getDrawable() != null) {
-				bmpProfil = ((BitmapDrawable) profileImageEdit.getDrawable()).getBitmap();
-				if (bmpProfil != null)
-					byteProfil = Utility.CompressBitmap(bmpProfil);
-			}
-			if (footerImageEdit.getDrawable() != null) {
-				bmpFooter = ((BitmapDrawable) footerImageEdit.getDrawable()).getBitmap();
-				if (bmpFooter != null)
-					byteFooter = Utility.CompressBitmap(bmpFooter);
-			}
+			// if (headerImageEdit.getDrawable() == null &&
+			// profileImageEdit.getDrawable() == null
+			// && footerImageEdit.getDrawable() == null) {
+			//
+			// Toast.makeText(getActivity(), "Empty ByteArray",
+			// Toast.LENGTH_SHORT).show();
+			// }
+			//
+			// if (headerImageEdit.getDrawable() != null) {
+			// bmpHeader = ((BitmapDrawable)
+			// headerImageEdit.getDrawable()).getBitmap();
+			// if (bmpHeader != null)
+			// byteHeader = Utility.CompressBitmap(bmpHeader);
+			//
+			// }
+			// if (profileImageEdit.getDrawable() != null) {
+			// bmpProfil = ((BitmapDrawable)
+			// profileImageEdit.getDrawable()).getBitmap();
+			// if (bmpProfil != null)
+			// byteProfil = Utility.CompressBitmap(bmpProfil);
+			// }
+			// if (footerImageEdit.getDrawable() != null) {
+			// bmpFooter = ((BitmapDrawable)
+			// footerImageEdit.getDrawable()).getBitmap();
+			// if (bmpFooter != null)
+			// byteFooter = Utility.CompressBitmap(bmpFooter);
+			// }
 
 			if (getActivity() != null) {
 				savingImage = new SavingImage3Picture(getActivity());
@@ -572,7 +705,7 @@ public class IntroductionEditFragment extends Fragment
 			DBAdapter.open();
 			DBAdapter.UpdateObjectProperties(pageId, nameValue, phoneValue, emailValue, faxValue, descriptionValue,
 					Dcatalog, Dprice, Dpdf, Dvideo, addressValue, mobileValue, Dface, Dinstagram, Dlink, Dgoogle,
-					websiteValue, Dtwt);
+					websiteValue, Dtwt, ObjectBrandTypeId);
 
 			DBAdapter.close();
 			// if (ringProgressDialog != null) {
@@ -613,11 +746,14 @@ public class IntroductionEditFragment extends Fragment
 			// byteProfil = Utility.CompressBitmap(bmpProfil);
 			// byteFooter = Utility.CompressBitmap(bmpFooter);
 
-			util.CreateFile(byteHeader, pageId, "Mechanical", "Profile", "header", "Object");
+			if (byteHeader != null)
+				util.CreateFile(byteHeader, pageId, "Mechanical", "Profile", "header", "Object");
 
-			util.CreateFile(byteProfil, pageId, "Mechanical", "Profile", "profile", "Object");
+			if (byteProfil != null)
+				util.CreateFile(byteProfil, pageId, "Mechanical", "Profile", "profile", "Object");
 
-			util.CreateFile(byteFooter, pageId, "Mechanical", "Profile", "footer", "Object");
+			if (byteFooter != null)
+				util.CreateFile(byteFooter, pageId, "Mechanical", "Profile", "footer", "Object");
 
 			// DBAdapter.open();
 			// DBAdapter.updateAllImageIntroductionPage(PageId, byteHeader,
@@ -668,6 +804,7 @@ public class IntroductionEditFragment extends Fragment
 			params.put("Google", Dgoogle);
 			params.put("Site", websiteValue);
 			params.put("Twitter", Dtwt);
+			params.put("ObjectBrandTypeId", String.valueOf(ObjectBrandTypeId));
 
 			params.put("ModifyDate", serverDate);
 

@@ -51,7 +51,7 @@
     </style>
 
     <style name="row_dialog">
-        <item name="android:textColor">#000</item>
+        <item name="android:textColor">@color/orginal_hard_blue_color</item>
         <item name="android:textStyle">bold</item>
     </style>
 

@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
@@ -220,7 +221,7 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 					dbAdapter.open();
 					dbAdapter.UpdateAdminUserToDb(id, admin);
 					dbAdapter.close();
-					Toast.makeText(getActivity(), "شما وارد شده اید.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), StaticValues.welcomeMessage, Toast.LENGTH_LONG).show();
 					TextView txtlike = (TextView) (getActivity()).findViewById(R.id.txtlike);
 					txtlike.setVisibility(View.VISIBLE);
 					TextView txtcm1 = (TextView) (getActivity()).findViewById(R.id.txtcm);
@@ -299,6 +300,11 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 
 			}
 
+		} else {
+			if (ringProgressDialog != null) {
+				ringProgressDialog.dismiss();
+				Toast.makeText(getActivity(), "خطا", 0).show();
+			}
 		}
 	}
 

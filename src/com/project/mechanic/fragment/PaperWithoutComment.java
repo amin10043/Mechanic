@@ -375,8 +375,8 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 						}
 						if (item.getTitle().equals("گزارش تخلف")) {
 
-							util.reportAbuse(p.getUserId(), 2, p.getId(),
-									p.getContext(), 0);
+//							util.reportAbuse(p.getUserId(), 2, p.getId(),
+//									p.getContext(), 0);
 
 						}
 						if (item.getTitle().equals("حذف")) {

@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.adapter.DataPersonalExpandAdapter;
 import com.project.mechanic.adapter.FavoriteListAdapter;
 import com.project.mechanic.entity.PersonalData;
@@ -54,11 +55,13 @@ public class Favorite_Fragment extends Fragment {
 	public void updateView() {
 		dbAdapter.open();
 
-		List<PersonalData> FroumData = dbAdapter.CustomFieldFavorite(util.getCurrentUser().getId(), 1);
-		List<PersonalData> PaperData = dbAdapter.CustomFieldFavorite(util.getCurrentUser().getId(), 2);
-		List<PersonalData> TicketData = dbAdapter.CustomFieldFavorite(util.getCurrentUser().getId(), 3);
-		// List<PersonalData> ObejctData = dbAdapter.CustomFieldFavorite(util
-		// .getCurrentUser().getId(), 4);
+		List<PersonalData> FroumData = dbAdapter.CustomFieldFavorite(util.getCurrentUser().getId(),
+				StaticValues.TypeFavoriteFroum);
+		List<PersonalData> PaperData = dbAdapter.CustomFieldFavorite(util.getCurrentUser().getId(),
+				StaticValues.TypeFavoritePaper);
+		List<PersonalData> TicketData = dbAdapter.CustomFieldFavorite(util.getCurrentUser().getId(),
+				StaticValues.TypeFavoriteTicket);
+//		List<PersonalData> PostData = dbAdapter.CustomFieldFavorite(util.getCurrentUser().getId(), 4);
 
 		dbAdapter.close();
 
@@ -75,7 +78,7 @@ public class Favorite_Fragment extends Fragment {
 
 		ArrayList<String> parentItems = new ArrayList<String>();
 
-//		Expandview.setDividerHeight(2);
+		// Expandview.setDividerHeight(2);
 		Expandview.setGroupIndicator(null);
 		Expandview.setClickable(true);
 
@@ -119,7 +122,6 @@ public class Favorite_Fragment extends Fragment {
 
 		else {
 
-		
 			listDataChild.put(parentItems.get(2), FroumData);
 		}
 

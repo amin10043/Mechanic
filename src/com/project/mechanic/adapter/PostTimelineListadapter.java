@@ -393,8 +393,10 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline> implemen
 							}
 							if (item.getTitle().equals("گزارش تخلف")) {
 
-								if (util.getCurrentUser() != null)
-									util.reportAbuse(userIdsender, 1, itemId, t, 0);
+								if (util.getCurrentUser() != null){
+									
+								}
+//									util.reportAbuse(userIdsender, 1, itemId, t, 0);
 								else
 									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}

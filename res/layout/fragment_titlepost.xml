@@ -7,33 +7,141 @@
     android:layout_height="match_parent"
     android:background="#e9eaed" >
 
-    <ListView
-        android:id="@+id/lstComment"
-        style="@style/seprateListView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/re"
-        android:background="@color/orginal_light_gray_color"
-        android:dividerHeight="10dp"
-        android:fillViewport="true" >
-    </ListView>
+        android:layout_height="match_parent" >
 
-    <com.project.mechanic.Action.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="5dp"
-        android:src="@drawable/fab_add"
-        app:fab_colorNormal="@color/orginal_hard_blue_color"
-        app:fab_hideAnimation="@anim/fab_scale_down"
-        app:fab_shadowColor="#3366FF"
-        app:fab_shadowRadius="4dp"
-        app:fab_shadowXOffset="1dp"
-        app:fab_shadowYOffset="3dp"
-        app:fab_showAnimation="@anim/fab_scale_up"
-        app:fab_showShadow="false"
-        app:fab_size="normal" />
+        <RelativeLayout
+            android:id="@+id/mainSheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <ListView
+                    android:id="@+id/lstComment"
+                    style="@style/seprateListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/re"
+                    android:background="@color/orginal_light_gray_color"
+                    android:dividerHeight="10dp"
+                    android:fillViewport="true" >
+                </ListView>
+
+                <com.project.mechanic.Action.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/fab_add"
+                    app:fab_colorNormal="@color/orginal_hard_blue_color"
+                    app:fab_hideAnimation="@anim/fab_scale_down"
+                    app:fab_shadowColor="#3366FF"
+                    app:fab_shadowRadius="4dp"
+                    app:fab_shadowXOffset="1dp"
+                    app:fab_shadowYOffset="3dp"
+                    app:fab_showAnimation="@anim/fab_scale_up"
+                    app:fab_showShadow="false"
+                    app:fab_size="normal" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bottmSheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@color/orginal_light_gray_color"
+                android:visibility="gone" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/orginal_light_gray_color" >
+
+                    <RelativeLayout
+                        android:layout_above="@+id/input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shadow_layer"
+                        android:paddingBottom="5dp" >
+
+                        <EditText
+                            android:id="@+id/txtTitleP"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="5dp"
+                            android:layout_toLeftOf="@+id/createDialogPage"
+                            android:layout_toRightOf="@+id/delete"
+                            android:ems="10"
+                            android:gravity="center"
+                            android:hint="متن مطلب" />
+
+                        <ImageView
+                            android:id="@+id/delete"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/delete_reply" />
+
+                        <ImageView
+                            android:id="@+id/createDialogPage"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/send"
+                            android:textColor="@color/orginal_golden_color" />
+
+                        <requestFocus />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/white" >
+
+                        <ImageView
+                            android:id="@+id/selectImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/circle_drawable"
+                            android:src="@drawable/no_img_profile" />
+
+                        <ImageView
+                            android:id="@+id/deleteImage"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/delete_reply" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </FrameLayout>
 
 </RelativeLayout>

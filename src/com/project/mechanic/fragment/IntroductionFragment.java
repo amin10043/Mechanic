@@ -1,5 +1,9 @@
 package com.project.mechanic.fragment;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,6 +16,7 @@ import com.project.mechanic.StaticValues;
 import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.ExpandIntroduction;
 import com.project.mechanic.adapter.PosttitleListadapter;
+import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.LikeInObject;
 import com.project.mechanic.entity.Object;
@@ -26,6 +31,7 @@ import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.DataPersonalInterface;
 import com.project.mechanic.inter.GetAllAsyncInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
+import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.inter.VisitSaveInterface;
 import com.project.mechanic.interfaceServer.DateFromServerForLike;
 import com.project.mechanic.interfaceServer.DateFromServerForVisit;
@@ -47,21 +53,27 @@ import com.project.mechanic.server.ServerDateForVisit;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.GetPostByObjectId;
 import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.SavingImage;
 import com.project.mechanic.service.SavingVisit;
 import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingAllImage;
 import com.project.mechanic.service.UpdatingVisit;
+import com.project.mechanic.utility.Cache;
 import com.project.mechanic.utility.Utility;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -73,8 +85,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -90,7 +105,7 @@ import android.widget.Toast;
 public class IntroductionFragment extends Fragment implements LikeFromServer, DateFromServerForLike,
 		DeleteLikeFromServer, DateImagesInformationObject, HeaderProfileFooterImagesObject, DateFromServerForVisit,
 		ImagePostInterface, DateImagePostInterface, AsyncInterface, GetAllAsyncInterface, DataPersonalInterface,
-		VisitSaveInterface, AsyncInterfaceVisit, GetAsyncInterface, CommInterface {
+		VisitSaveInterface, AsyncInterfaceVisit, GetAsyncInterface, CommInterface, SaveAsyncInterface {
 
 	// Context context;
 	Utility ut;
@@ -140,12 +155,12 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 	Post postItem;
 	FloatingActionButton action;
 
-	DialogpostTitleFragment MyDialog;
-	ImageView iconFollow;
+	// DialogpostTitleFragment MyDialog;
+	ImageView iconFollow, iconOk, iconsad;
 
 	Settings setting;
 
-	TextView points;
+	TextView points, countRazi, countShaki;
 	TextView lableShare, lableEdit, lableFollow, lableNumFollow, lableNumView, lableNumPost, lableAgency, lableservice,
 			lableSendBusinessCard;
 	int counter;
@@ -162,6 +177,25 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 	int typeLike;
 	int positionBrand = 0;
 	// int positionPost = 0;
+	RelativeLayout bottomSheet, mainSheet;
+	EditText descriptionPost;
+	boolean isPostCount = true;
+	Animation enterFromDown, exitToDown;
+	ImageView send, close;
+	String descriptionPostTxt = "";
+	byte[] ImageConvertedToByte = null;
+	int PostId;
+	Map<String, java.lang.Object> imageParams;
+	ImageView selectImage, deleteImage;
+	static final int GalleryCode = 100;
+	private File mFileTemp;
+	public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
+	final int PIC_CROP = 10;
+	RelativeLayout.LayoutParams paramsPic;
+
+	int MaxSizeImageSelected = 5;
+	Bitmap bmpHeader, bmpProfile, bmpfooter;
+	LinearLayout footerLayout;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -253,6 +287,8 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 
 		setFont();
 
+		getCountInformation();
+
 		getPost();
 
 		getImageFromServer();
@@ -263,7 +299,7 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 		ut.ShowFooterAgahi(getActivity(), false, 6);
 
 		if (currentUser != null)
-			if (currentUser.getId() == object.getUserId())
+			if (currentUser.getId() == object.getUserId() || isAdmin(currentUser.getId()))
 				action.setVisibility(View.VISIBLE);
 			else
 				action.setVisibility(View.GONE);
@@ -342,6 +378,95 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 
 	@Override
 	public void processFinish(String output) {
+
+		if (ut.checkError(output) == false) {
+
+			int id = -1;
+			try {
+
+				PostId = id = Integer.valueOf(output);
+
+				adapter.open();
+				adapter.insertPosttitletoDb(PostId, descriptionPostTxt, currentUser.getId(), serverDate, "", ObjectID);
+				adapter.close();
+
+				if (ImageConvertedToByte != null) {
+
+					if (getActivity() != null) {
+						SavingImage saveImage = new SavingImage((getActivity()));
+						saveImage.delegate = IntroductionFragment.this;
+						imageParams = new LinkedHashMap<String, java.lang.Object>();
+						imageParams.put("tableName", "Post");
+						imageParams.put("fieldName", "Photo");
+						imageParams.put("id", PostId);
+						imageParams.put("image", ImageConvertedToByte);
+
+						saveImage.execute(imageParams);
+						// ringProgressDialog =
+						// ProgressDialog.show(getActivity(), "", "لطفا منتظر
+						// بمانید...", true);
+						//
+						// ringProgressDialog.setCancelable(true);
+					}
+
+				} else {
+					setPostionListPost(1);
+					fillListView();
+
+				}
+
+			} catch (NumberFormatException ex) {
+
+				if (output != null && !(output.contains("Exception") || output.contains("java"))) {
+
+					if (getActivity() != null) {
+
+						serverDate = output;
+
+						saving = new Saving(getActivity());
+						saving.delegate = IntroductionFragment.this;
+						params = new LinkedHashMap<String, String>();
+
+						params.put("TableName", "Post");
+
+						params.put("UserId", String.valueOf(currentUser.getId()));
+						params.put("Description", descriptionPostTxt);
+						params.put("ObjectId", ObjectID + "");
+
+						params.put("Date", serverDate);
+						params.put("ModifyDate", serverDate);
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						saving.execute(params);
+
+						// if (ImageConvertedToByte != null) {
+						//
+						// if (getActivity() != null) {
+						//
+						// SavingImage saveImage = new
+						// SavingImage((getActivity()));
+						// saveImage.delegate = IntroductionFragment.this;
+						// imageParams = new LinkedHashMap<String,
+						// java.lang.Object>();
+						// imageParams.put("tableName", "Post");
+						// imageParams.put("fieldName", "Photo");
+						// imageParams.put("id", PostId);
+						// imageParams.put("image", ImageConvertedToByte);
+						//
+						// saveImage.execute(imageParams);
+						//
+						// }
+						//
+						// }
+
+					}
+				}
+
+			}
+
+		}
 
 		// // Toast.makeText(getActivity(), output, 0).show();
 		//
@@ -878,34 +1003,30 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 		lableservice = (TextView) header.findViewById(R.id.textView13);
 		lableSendBusinessCard = (TextView) header.findViewById(R.id.dialog_phone);
 
-	}
+		bottomSheet = (RelativeLayout) Posts.findViewById(R.id.bottmSheet);
+		mainSheet = (RelativeLayout) Posts.findViewById(R.id.mainSheet);
 
-	// private void fillExpandListViewCommnet() {
-	//
-	// adapter.open();
-	// commentGroup = adapter.getAllCommentInObjectById(ObjectID, 0);
-	// mapCollection = new LinkedHashMap<CommentInObject,
-	// List<CommentInObject>>();
-	//
-	// List<CommentInObject> reply = null;
-	// for (CommentInObject comment : commentGroup) {
-	// reply = adapter.getReplyCommentIntroduction(ObjectID,
-	// comment.getId());
-	// mapCollection.put(comment, reply);
-	// }
-	//
-	// adapter.close();
-	//
-	// exadapter = new ExpandIntroduction(getActivity(),
-	// (ArrayList<CommentInObject>) commentGroup, mapCollection, this,
-	// ObjectID);
-	// exListView.addHeaderView(header);
-	//
-	// exListView.setAdapter(exadapter);
-	// if (commentClick == true)
-	// exListView.setSelectedGroup(mapCollection.size() - 1);
-	//
-	// }
+		descriptionPost = (EditText) Posts.findViewById(R.id.txtTitleP);
+
+		enterFromDown = AnimationUtils.loadAnimation(getActivity(), R.anim.down_from_top);
+		exitToDown = AnimationUtils.loadAnimation(getActivity(), R.anim.up_from_bottom);
+
+		send = (ImageView) Posts.findViewById(R.id.createDialogPage);
+		close = (ImageView) Posts.findViewById(R.id.delete);
+		selectImage = (ImageView) Posts.findViewById(R.id.selectImage);
+		deleteImage = (ImageView) Posts.findViewById(R.id.deleteImage);
+
+		String state = Environment.getExternalStorageState();
+
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			mFileTemp = new File(Environment.getExternalStorageDirectory(), TEMP_PHOTO_FILE_NAME);
+		} else {
+			mFileTemp = new File(getActivity().getFilesDir(), TEMP_PHOTO_FILE_NAME);
+		}
+
+		footerLayout = (LinearLayout) header.findViewById(R.id.footerint);
+
+	}
 
 	public void fillListView() {
 		adapter.open();
@@ -1028,27 +1149,50 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 		addressParams = new RelativeLayout.LayoutParams(addressRelative.getLayoutParams());
 
 		addressParams.width = LayoutParams.WRAP_CONTENT;
-		addressParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		// addressParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		addressParams.addRule(RelativeLayout.CENTER_VERTICAL);
-		addressParams.setMargins(50, 0, 0, 0);
+		addressParams.addRule(RelativeLayout.ALIGN_LEFT, R.id.i5);
+
+		addressParams.setMargins(0, 0, 0, 0);
 		txtAddress.setGravity(Gravity.LEFT);
 		txtAddress.setLayoutParams(addressParams);
 
 		emailParams = new RelativeLayout.LayoutParams(email.getLayoutParams());
 
 		emailParams.width = LayoutParams.WRAP_CONTENT;
-		emailParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		// emailParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		emailParams.addRule(RelativeLayout.ALIGN_LEFT, R.id.i3);
+
 		emailParams.addRule(RelativeLayout.CENTER_VERTICAL);
-		emailParams.setMargins(50, 0, 0, 0);
+		emailParams.setMargins(0, 0, 0, 0);
 
 		txtEmail.setLayoutParams(emailParams);
 
 		headerImage.setLayoutParams(headerParams);
 		footerImage.setLayoutParams(footerParams);
-		
-	
-		
-		
+
+		RelativeLayout.LayoutParams llp = new RelativeLayout.LayoutParams(mainSheet.getLayoutParams());
+		llp.width = ut.getScreenwidth();
+		llp.height = ut.getScreenwidth() / 2;
+		llp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+		RelativeLayout.LayoutParams ep = new RelativeLayout.LayoutParams(bottomSheet.getLayoutParams());
+		ep.width = LayoutParams.MATCH_PARENT;
+		ep.height = LayoutParams.MATCH_PARENT;
+		ep.addRule(RelativeLayout.RIGHT_OF, R.id.delete);
+		ep.addRule(RelativeLayout.LEFT_OF, R.id.createDialogPage);
+
+		ep.setMargins(10, 10, 10, 10);
+
+		descriptionPost.setLayoutParams(ep);
+		bottomSheet.setLayoutParams(llp);
+
+		RelativeLayout in = (RelativeLayout) Posts.findViewById(R.id.input);
+		paramsPic = new RelativeLayout.LayoutParams(in.getLayoutParams());
+		paramsPic.width = (int) (ut.getScreenwidth() / StaticValues.RateImagePostFragmentPage);
+		paramsPic.height = (int) (ut.getScreenwidth() / StaticValues.RateImagePostFragmentPage);
+		paramsPic.addRule(RelativeLayout.CENTER_IN_PARENT);
+
 	}
 
 	private void setImage() {
@@ -1057,9 +1201,31 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 		String PathProfile = object.getImagePath2();
 		String PathFooter = object.getImagePath3();
 
-		Bitmap bmpHeader = BitmapFactory.decodeFile(PathHeader);
-		Bitmap bmpProfile = BitmapFactory.decodeFile(PathProfile);
-		Bitmap bmpfooter = BitmapFactory.decodeFile(PathFooter);
+		if (!"".equals(PathHeader)) {
+			try {
+				bmpHeader = BitmapFactory.decodeFile(PathHeader);
+			} catch (OutOfMemoryError e) {
+				e.printStackTrace();
+			}
+		}
+
+		if (!"".equals(PathProfile)) {
+			try {
+				bmpProfile = BitmapFactory.decodeFile(PathProfile);
+			} catch (OutOfMemoryError e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		if (!"".equals(PathFooter)) {
+			try {
+				bmpfooter = BitmapFactory.decodeFile(PathFooter);
+
+			} catch (OutOfMemoryError e) {
+				e.printStackTrace();
+			}
+		}
 
 		if (bmpHeader != null) {
 
@@ -1144,25 +1310,38 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 		// if ObjectBrandTypeId =3 >>>>>> namayandegi : faal
 		// if ObjectBrandTypeId =4 >>>>>> khadamat : faal
 
+		ImageView divder = (ImageView) header.findViewById(R.id.i231);
+		LinearLayout agencyServ = (LinearLayout) header.findViewById(R.id.agencyServ);
+
 		if (object.getObjectBrandTypeId() == 1) {
 			agency.setVisibility(View.VISIBLE);
 			service.setVisibility(View.VISIBLE);
+
+			service.setBackgroundResource(R.drawable.shadow_layer);
 
 		}
 		if (object.getObjectBrandTypeId() == 2) {
 			agency.setVisibility(View.GONE);
 			service.setVisibility(View.GONE);
+			agencyServ.setVisibility(View.GONE);
+			divder.setVisibility(View.GONE);
 		}
 		if (object.getObjectBrandTypeId() == 3) {
 			agency.setVisibility(View.VISIBLE);
+			agency.setBackgroundResource(R.drawable.shadow_layer);
 			service.setVisibility(View.GONE);
+			divder.setVisibility(View.GONE);
 		}
 		if (object.getObjectBrandTypeId() == 4) {
 			agency.setVisibility(View.GONE);
 			service.setVisibility(View.VISIBLE);
+			service.setBackgroundResource(R.drawable.shadow_layer);
+
+			divder.setVisibility(View.GONE);
 		}
-		if (currentUser != null && object.getUserId() == currentUser.getId())
-			followPage.setVisibility(View.GONE);
+		if (currentUser != null)
+			if (object.getUserId() == currentUser.getId() || isAdmin(currentUser.getId()))
+				followPage.setVisibility(View.GONE);
 
 		if (object.getDescription() == null)
 			txtDesc.setVisibility(View.GONE);
@@ -1352,19 +1531,35 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 		LinearLayout okPage = (LinearLayout) Posts.findViewById(R.id.Ok);
 		LinearLayout hatePage = (LinearLayout) Posts.findViewById(R.id.no);
 
-		final TextView countRazi = (TextView) Posts.findViewById(R.id.countRezayat);
-		final TextView countShaki = (TextView) Posts.findViewById(R.id.countShaki);
+		countRazi = (TextView) Posts.findViewById(R.id.countRezayat);
+		countShaki = (TextView) Posts.findViewById(R.id.countShaki);
 
-		final ImageView iconOk = (ImageView) Posts.findViewById(R.id.iconrazi);
-		final ImageView iconsad = (ImageView) Posts.findViewById(R.id.iconnarazi);
+		iconOk = (ImageView) Posts.findViewById(R.id.iconrazi);
+		iconsad = (ImageView) Posts.findViewById(R.id.iconnarazi);
 
 		okPage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 
-				countRazi.setText(1 + "");
-				iconOk.setBackgroundResource(R.drawable.ok);
+				if (currentUser == null) {
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
+				} else {
+
+					adapter.open();
+					if (adapter.isUserHappyFromPage(currentUser.getId(), ObjectID, StaticValues.TypeSadFromPage)) {
+						Toast.makeText(getActivity(), StaticValues.IsRepeatLikeMessage, 0).show();
+					} else {
+						ServerDateForLike date = new ServerDateForLike(getActivity());
+						date.delegate = IntroductionFragment.this;
+						date.execute("");
+
+						typeLike = StaticValues.TypeHappyFromPage;
+
+						adapter.close();
+					}
+
+				}
 
 			}
 		});
@@ -1373,8 +1568,102 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 
 			@Override
 			public void onClick(View arg0) {
-				countShaki.setText(1 + "");
-				iconsad.setBackgroundResource(R.drawable.hate);
+
+				if (currentUser == null) {
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
+				} else {
+					adapter.open();
+
+					if (adapter.isUserHappyFromPage(currentUser.getId(), ObjectID, StaticValues.TypeHappyFromPage)) {
+						Toast.makeText(getActivity(), StaticValues.IsRepeatLikeMessage, 0).show();
+					} else {
+						ServerDateForLike date = new ServerDateForLike(getActivity());
+						date.delegate = IntroductionFragment.this;
+						date.execute("");
+
+						typeLike = StaticValues.TypeSadFromPage;
+
+						adapter.close();
+
+					}
+				}
+
+			}
+		});
+
+		close.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				bottomSheet.startAnimation(exitToDown);
+
+				bottomSheet.setVisibility(View.GONE);
+				action.setVisibility(View.VISIBLE);
+
+				descriptionPost.setText("");
+			}
+		});
+		send.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				if (ut.getCurrentUser() == null) {
+
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", 0).show();
+
+					bottomSheet.startAnimation(enterFromDown);
+					bottomSheet.setVisibility(View.GONE);
+					action.setVisibility(View.VISIBLE);
+
+				} else {
+
+					descriptionPostTxt = descriptionPost.getText().toString();
+
+					if (!"".equals(descriptionPostTxt) || ImageConvertedToByte != null) {
+
+						ServerDate sDate = new ServerDate(getActivity());
+						sDate.delegate = IntroductionFragment.this;
+						sDate.execute("");
+
+						descriptionPost.setText("");
+
+						bottomSheet.startAnimation(exitToDown);
+
+						bottomSheet.setVisibility(View.GONE);
+						action.setVisibility(View.VISIBLE);
+
+					} else {
+						Toast.makeText(getActivity(), "وارد کردن متن یا عکس الزامی است", 0).show();
+
+					}
+
+				}
+
+			}
+		});
+
+		selectImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				Intent i = new Intent(Intent.ACTION_PICK,
+						android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+				getActivity().startActivityFromFragment(IntroductionFragment.this, i, GalleryCode);
+			}
+		});
+		deleteImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				ImageConvertedToByte = null;
+				selectImage.setBackgroundResource(R.drawable.circle_drawable);
+				selectImage.setLayoutParams(paramsPic);
+				selectImage.setImageResource(R.drawable.no_img_profile);
 
 			}
 		});
@@ -1382,9 +1671,20 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 		action.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 
-				FragmentManager fm = getActivity().getSupportFragmentManager();
-				MyDialog = new DialogpostTitleFragment(ObjectID, positionBrand);
-				MyDialog.show(fm, "My_Dialog_Dialog");
+				// FragmentManager fm =
+				// getActivity().getSupportFragmentManager();
+				// MyDialog = new DialogpostTitleFragment(ObjectID,
+				// positionBrand);
+				// MyDialog.show(fm, "My_Dialog_Dialog");
+
+				bottomSheet.startAnimation(enterFromDown);
+				bottomSheet.setVisibility(View.VISIBLE);
+				action.setVisibility(View.INVISIBLE);
+
+				ImageConvertedToByte = null;
+				descriptionPost.setText("");
+
+				// createNewPost();
 
 			}
 		});
@@ -1490,6 +1790,71 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 		});
 	}
 
+	private void startCropImage() {
+
+		Intent intent = new Intent(getActivity(), CropImage.class);
+		intent.putExtra(CropImage.IMAGE_PATH, mFileTemp.getPath());
+		intent.putExtra(CropImage.SCALE, true);
+
+		intent.putExtra(CropImage.ASPECT_X, 3);
+		intent.putExtra(CropImage.ASPECT_Y, 3);
+
+		startActivityForResult(intent, PIC_CROP);
+	}
+
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (requestCode == GalleryCode) {
+			try {
+
+				long sizePicture = 0; // MB
+
+				InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
+				FileOutputStream fileOutputStream = new FileOutputStream(mFileTemp);
+				Utility.copyStream(inputStream, fileOutputStream);
+				fileOutputStream.close();
+				inputStream.close();
+
+				if (mFileTemp != null)
+					sizePicture = mFileTemp.length() / 1024 / 1024;
+
+				if (sizePicture > MaxSizeImageSelected)
+					Toast.makeText(getActivity(),
+							"حجم عکس انتخاب شده باید کمتر از " + MaxSizeImageSelected + "مگابایت باشد ",
+							Toast.LENGTH_LONG).show();
+				else
+					startCropImage();
+
+			} catch (Exception e) {
+
+				Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
+			}
+
+		}
+		if (requestCode == PIC_CROP && data != null) {
+			String path = data.getStringExtra(CropImage.IMAGE_PATH);
+			if (path == null) {
+				return;
+			}
+			Bitmap bitmap = null;
+			if (mFileTemp.getPath() != null) {
+
+				ImageConvertedToByte = Utility.compressImage(mFileTemp);
+				bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
+
+			}
+			if (bitmap != null) {
+
+				selectImage.setImageBitmap(Utility.getclip(bitmap));
+				selectImage.setLayoutParams(paramsPic);
+			}
+
+		}
+
+		super.onActivityResult(requestCode, resultCode, data);
+
+	}
+
 	private void setonClickImage() {
 		headerImage.setOnClickListener(new OnClickListener() {
 
@@ -1528,6 +1893,25 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 				showImageDialog.show();
 			}
 		});
+
+		footerLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
+				FixedPostFragment fragment = new FixedPostFragment();
+
+				Bundle bundle = new Bundle();
+				bundle.putString("Id", String.valueOf(ObjectID));
+				fragment.setArguments(bundle);
+				trans.addToBackStack("PostFramgnet");
+				trans.replace(R.id.content_frame, fragment);
+				trans.commit();
+			}
+		});
+
 	}
 
 	private void LikeCommentAction() {
@@ -1584,7 +1968,8 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 					adapter.close();
 
 					iconFollow.setBackgroundResource(R.drawable.ic_followed);
-					CountLikeIntroduction.setText(String.valueOf(countlike + 1));
+					// CountLikeIntroduction.setText(String.valueOf(countlike +
+					// 1));
 
 					enableButton(false);
 
@@ -1730,7 +2115,8 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 						if (item.getTitle().equals("گزارش تخلف")) {
 
 							if (ut.getCurrentUser() != null)
-								ut.reportAbuse(object.getId(), 4, object.getId(), object.getDescription(), 0);
+								ut.reportAbuse(object.getUserId(), StaticValues.TypeReportFixedPostIntroduction,
+										object.getId(), object.getDescription(), ObjectID, 0);
 							else
 								Toast.makeText(getActivity(), "ابتدا باید وارد شوید", 0).show();
 						}
@@ -1753,7 +2139,7 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 		CountCommentIntroduction.setText(String.valueOf(countcmt));
 
 		int countlike = adapter.LikeInObject_count(ObjectID, 0);
-		CountLikeIntroduction.setText(String.valueOf(countlike));
+		// CountLikeIntroduction.setText(String.valueOf(countlike));
 
 		int countlikePo = adapter.LikeInObject_count(ObjectID, 1);
 		countLikePost.setText(String.valueOf(countlikePo));
@@ -1774,19 +2160,20 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 		else
 			txtWebsite.setText("");
 
-		setCountPost();
+		// setCountPost();
 
 		TextView numVisit = (TextView) header.findViewById(R.id.numVisitPage);
 
 		numVisit.setText(object.getCountView() + "");
-
+		CountLikeIntroduction.setText(object.getCountFollower() + "");
+		countPost.setText(object.getCountPost() + "");
 	}
 
 	public void setCountPost() {
 
-		adapter.open();
-		countPost.setText(adapter.CountPostUser(object.getId()) + "");
-		adapter.close();
+		// adapter.open();
+		// countPost.setText(adapter.CountPostUser(object.getId()) + "");
+		// adapter.close();
 	}
 
 	private void showPeopleLikedBtn() {
@@ -2133,7 +2520,6 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 
 		getVisit.execute(params);
 
-
 	}
 
 	@Override
@@ -2141,13 +2527,12 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 
 		if (ut.checkError(output) == false) {
 
-			if (!output.contains("anyType")){
+			if (!output.contains("anyType")) {
 				ut.parseQuery(output);
 				fillListView();
-				
+
 			}
 
-			
 			setCountPost();
 
 			getImagePost();
@@ -2318,7 +2703,7 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 			if (!ImageAddress.equals("")) {
 
 				adapter.open();
-				adapter.insertImageAddressToDb("Post", postItem.getId(), ImageAddress);
+				adapter.insertImageAddressToDb("Post", postItem.getId(), ImageAddress, serverDate);
 				adapter.close();
 			}
 
@@ -2357,6 +2742,28 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 	@Override
 	public void CommProcessFinish(String output) {
 
+		if (ut.checkError(output) == false) {
+
+			if (isPostCount == true) {
+
+				adapter.open();
+				adapter.updateCountPost(ObjectID, Integer.valueOf(output));
+				adapter.close();
+
+				countPost.setText(output);
+
+				isPostCount = false;
+				getCountInformation();
+
+			} else {
+				CountLikeIntroduction.setText(output);
+				adapter.open();
+				adapter.updateCountFollower(ObjectID, Integer.valueOf(output));
+				adapter.close();
+			}
+
+		}
+
 		// if (output.contains("Exception") || output.contains(("anyType")))
 		// output = "";
 		//
@@ -2381,21 +2788,52 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 
 				likeId = Integer.valueOf(output);
 
-				adapter.open();
-				adapter.insertLikeInObjectToDb(likeId, currentUser.getId(), ObjectID, serverDate, typeLike);
-				int countlike = adapter.LikeInObject_count(ObjectID, typeLike);
-				adapter.close();
+				if (typeLike == StaticValues.TypeHappyFromPage) {
 
-				if (typeLike == StaticValues.TypeLikePage) {
+					adapter.open();
+					adapter.insertHappyOrSadFromPageToDb(likeId, currentUser.getId(), ObjectID, serverDate,
+							StaticValues.TypeHappyFromPage);
 
-					iconFollow.setBackgroundResource(R.drawable.ic_followed);
-					CountLikeIntroduction.setText(String.valueOf(countlike));
+					int countHappy = adapter.getCountHappyOrSadFromPage(ObjectID, StaticValues.TypeHappyFromPage);
+					adapter.close();
 
-				} else {
+					iconOk.setBackgroundResource(R.drawable.ok);
 
-					likePost.setBackgroundResource(R.drawable.like_froum_on);
-					countLikePost.setText(String.valueOf(countlike));
+					countRazi.setText(countHappy + "");
 
+				} //
+				if (typeLike == StaticValues.TypeSadFromPage) {
+
+					adapter.open();
+					adapter.insertHappyOrSadFromPageToDb(likeId, currentUser.getId(), ObjectID, serverDate,
+							StaticValues.TypeSadFromPage);
+
+					int countSad = adapter.getCountHappyOrSadFromPage(ObjectID, StaticValues.TypeSadFromPage);
+					adapter.close();
+
+					iconsad.setBackgroundResource(R.drawable.hate);
+
+					countShaki.setText(countSad + "");
+
+				}
+
+				if (typeLike == StaticValues.TypeLikePage || typeLike == StaticValues.TypeLikeFixedPost) {
+
+					adapter.open();
+					adapter.insertLikeInObjectToDb(likeId, currentUser.getId(), ObjectID, serverDate, typeLike);
+					int countlike = adapter.LikeInObject_count(ObjectID, typeLike);
+					adapter.close();
+
+					if (typeLike == StaticValues.TypeLikePage) {
+
+						iconFollow.setBackgroundResource(R.drawable.ic_followed);
+						CountLikeIntroduction.setText(countlike + "");
+
+					} else {
+						likePost.setBackgroundResource(R.drawable.like_froum_on);
+						countLikePost.setText(countlike + "");
+
+					}
 				}
 
 				enableButton(true);
@@ -2427,50 +2865,155 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 
 			serverDate = output;
 
-			adapter.open();
-			if (adapter.isUserLikeIntroductionPage(currentUser.getId(), ObjectID, typeLike)) {
+			if (typeLike == StaticValues.TypeHappyFromPage) {
+				adapter.open();
+				if (adapter.isUserHappyFromPage(currentUser.getId(), ObjectID, StaticValues.TypeHappyFromPage)) {
 
-				params = new LinkedHashMap<String, String>();
-				if (getActivity() != null) {
+					params = new LinkedHashMap<String, String>();
+					if (getActivity() != null) {
 
-					DeletingLike deleting = new DeletingLike(getActivity());
-					deleting.delegate = IntroductionFragment.this;
+						DeletingLike deleting = new DeletingLike(getActivity());
+						deleting.delegate = IntroductionFragment.this;
 
-					params.put("TableName", "LikeInObject");
-					params.put("UserId", String.valueOf(currentUser.getId()));
-					params.put("ObjectId", String.valueOf(ObjectID));
-					params.put("CommentId", String.valueOf(typeLike));
+						params.put("TableName", "LikeInObject");
+						params.put("UserId", String.valueOf(currentUser.getId()));
+						params.put("ObjectId", String.valueOf(ObjectID));
+						params.put("IsLike", String.valueOf(typeLike));
 
-					deleting.execute(params);
+						deleting.execute(params);
+					}
+				} else {
 
-					// ut.showRingProgressDialog(ringProgressDialog, true);
+					params = new LinkedHashMap<String, String>();
+
+					if (getActivity() != null) {
+						SavingLike saving = new SavingLike(getActivity());
+						saving.delegate = IntroductionFragment.this;
+
+						params.put("TableName", "LikeInObject");
+
+						params.put("UserId", String.valueOf(currentUser.getId()));
+						params.put("ObjectId", String.valueOf(ObjectID));
+						params.put("Date", output);
+						params.put("ModifyDate", output);
+
+						params.put("IsLike", String.valueOf(typeLike));
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						serverDate = output;
+
+						saving.execute(params);
+
+					}
 				}
 
-			} else {
+				adapter.close();
 
-				params = new LinkedHashMap<String, String>();
+			} // end type happy
 
-				if (getActivity() != null) {
-					SavingLike saving = new SavingLike(getActivity());
-					saving.delegate = IntroductionFragment.this;
+			if (typeLike == StaticValues.TypeSadFromPage) {
 
-					params.put("TableName", "LikeInObject");
+				adapter.open();
+				if (adapter.isUserHappyFromPage(currentUser.getId(), ObjectID, StaticValues.TypeSadFromPage)) {
 
-					params.put("UserId", String.valueOf(currentUser.getId()));
-					params.put("ObjectId", String.valueOf(ObjectID));
-					params.put("Date", output);
-					params.put("ModifyDate", output);
+					params = new LinkedHashMap<String, String>();
+					if (getActivity() != null) {
 
-					params.put("CommentId", String.valueOf(typeLike));
+						DeletingLike deleting = new DeletingLike(getActivity());
+						deleting.delegate = IntroductionFragment.this;
 
-					params.put("IsUpdate", "0");
-					params.put("Id", "0");
+						params.put("TableName", "LikeInObject");
+						params.put("UserId", String.valueOf(currentUser.getId()));
+						params.put("ObjectId", String.valueOf(ObjectID));
+						params.put("IsLike", String.valueOf(typeLike));
 
-					serverDate = output;
+						deleting.execute(params);
+					}
+				} else {
 
-					saving.execute(params);
+					params = new LinkedHashMap<String, String>();
 
-					// ut.showRingProgressDialog(ringProgressDialog, true);
+					if (getActivity() != null) {
+						SavingLike saving = new SavingLike(getActivity());
+						saving.delegate = IntroductionFragment.this;
+
+						params.put("TableName", "LikeInObject");
+
+						params.put("UserId", String.valueOf(currentUser.getId()));
+						params.put("ObjectId", String.valueOf(ObjectID));
+						params.put("Date", output);
+						params.put("ModifyDate", output);
+
+						params.put("IsLike", String.valueOf(typeLike));
+
+						params.put("IsUpdate", "0");
+						params.put("Id", "0");
+
+						serverDate = output;
+
+						saving.execute(params);
+
+					}
+				}
+
+				adapter.close();
+
+			}
+
+			else {
+
+				if (typeLike == StaticValues.TypeLikePage || typeLike == StaticValues.TypeLikeFixedPost) {
+					adapter.open();
+					if (adapter.isUserLikeIntroductionPage(currentUser.getId(), ObjectID, typeLike)) {
+
+						params = new LinkedHashMap<String, String>();
+						if (getActivity() != null) {
+
+							DeletingLike deleting = new DeletingLike(getActivity());
+							deleting.delegate = IntroductionFragment.this;
+
+							params.put("TableName", "LikeInObject");
+							params.put("UserId", String.valueOf(currentUser.getId()));
+							params.put("ObjectId", String.valueOf(ObjectID));
+							params.put("CommentId", String.valueOf(typeLike));
+
+							deleting.execute(params);
+
+							// ut.showRingProgressDialog(ringProgressDialog,
+							// true);
+						}
+
+					} else {
+
+						params = new LinkedHashMap<String, String>();
+
+						if (getActivity() != null) {
+							SavingLike saving = new SavingLike(getActivity());
+							saving.delegate = IntroductionFragment.this;
+
+							params.put("TableName", "LikeInObject");
+
+							params.put("UserId", String.valueOf(currentUser.getId()));
+							params.put("ObjectId", String.valueOf(ObjectID));
+							params.put("Date", output);
+							params.put("ModifyDate", output);
+
+							params.put("CommentId", String.valueOf(typeLike));
+
+							params.put("IsUpdate", "0");
+							params.put("Id", "0");
+
+							serverDate = output;
+
+							saving.execute(params);
+
+							// ut.showRingProgressDialog(ringProgressDialog,
+							// true);
+						}
+
+					}
 				}
 
 			}
@@ -2492,21 +3035,52 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 			try {
 				likeId = Integer.valueOf(output);
 
-				adapter.open();
-				adapter.deleteLikeIntroduction(currentUser.getId(), ObjectID, typeLike);
-				int countlike = adapter.LikeInObject_count(ObjectID, typeLike);
-				adapter.close();
+				if (typeLike == StaticValues.TypeHappyFromPage) {
 
-				if (typeLike == StaticValues.TypeLikePage) {
+					adapter.open();
 
-					iconFollow.setBackgroundResource(R.drawable.ic_following);
-					CountLikeIntroduction.setText(String.valueOf(countlike));
+					adapter.deleteHappyOrSadFromPage(currentUser.getId(), ObjectID, StaticValues.TypeHappyFromPage);
+					int countHappy = adapter.getCountHappyOrSadFromPage(ObjectID, StaticValues.TypeHappyFromPage);
 
-				} else {
+					adapter.close();
 
-					likePost.setBackgroundResource(R.drawable.like_froum_off);
-					countLikePost.setText(String.valueOf(countlike));
+					iconOk.setBackgroundResource(R.drawable.razi);
+					countRazi.setText(countHappy + "");
 
+				}
+
+				if (typeLike == StaticValues.TypeSadFromPage) {
+
+					adapter.open();
+
+					adapter.deleteHappyOrSadFromPage(currentUser.getId(), ObjectID, StaticValues.TypeSadFromPage);
+					int countSad = adapter.getCountHappyOrSadFromPage(ObjectID, StaticValues.TypeSadFromPage);
+
+					adapter.close();
+
+					iconsad.setBackgroundResource(R.drawable.narazi);
+					countShaki.setText(countSad + "");
+
+				}
+
+				if (typeLike == StaticValues.TypeHappyFromPage || typeLike == StaticValues.TypeSadFromPage) {
+
+					adapter.open();
+					adapter.deleteLikeIntroduction(currentUser.getId(), ObjectID, typeLike);
+					int countlike = adapter.LikeInObject_count(ObjectID, typeLike);
+					adapter.close();
+
+					if (typeLike == StaticValues.TypeLikePage) {
+
+						iconFollow.setBackgroundResource(R.drawable.ic_following);
+						// CountLikeIntroduction.setText(String.valueOf(countlike));
+
+					} else {
+
+						likePost.setBackgroundResource(R.drawable.like_froum_off);
+						countLikePost.setText(String.valueOf(countlike));
+
+					}
 				}
 
 				enableButton(true);
@@ -2520,12 +3094,15 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 				// ut.showRingProgressDialog(ringProgressDialog, false);
 			}
 
-		} else {
+		} else
+
+		{
 			ut.showErrorToast();
 			enableButton(true);
 
 			// ut.showRingProgressDialog(ringProgressDialog, false);
 		}
+
 	}
 
 	@Override
@@ -2685,7 +3262,7 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 			if (!ImageAddress.equals("")) {
 
 				adapter.open();
-				adapter.insertImageAddressToDb("Post", postItem.getId(), ImageAddress);
+				adapter.insertImageAddressToDb("Post", postItem.getId(), ImageAddress, "");
 				adapter.close();
 
 				ArrayPosts.get(postItemId).setPhoto(ImageAddress);
@@ -2695,6 +3272,9 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 			postItemId++;
 			getImagePost();
 
+		} else {
+			postItemId++;
+			getImagePost();
 		}
 
 	}
@@ -2726,4 +3306,87 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 
 	}
 
+	public void getCountInformation() {
+
+		if (isPostCount == true) {
+
+			ServiceComm comm = new ServiceComm(getActivity());
+			comm.delegate = this;
+			Map<String, String> params = new LinkedHashMap<String, String>();
+			params.put("tableName", "getPostCountByObjectId");
+
+			params.put("objectId", String.valueOf(ObjectID));
+			comm.execute(params);
+
+		} else {
+			ServiceComm comm = new ServiceComm(getActivity());
+			comm.delegate = this;
+			Map<String, String> params = new LinkedHashMap<String, String>();
+			params.put("tableName", "getFollowerCountByObjectId");
+
+			params.put("objectId", String.valueOf(ObjectID));
+			comm.execute(params);
+
+			isPostCount = false;
+		}
+
+	}
+
+	private boolean isAdmin(int userId) {
+
+		// if isSave = true allow to save visit on server
+		// else don't allow to save
+		boolean isSave = false;
+
+		adapter.open();
+		List<SubAdmin> subAdminList = adapter.getAdmin(ObjectID);
+		adapter.close();
+
+		boolean fl1 = false;
+
+		List<Integer> Ids = new ArrayList<Integer>();
+		if (subAdminList.size() > 0)
+			for (int i = 0; i < subAdminList.size(); i++) {
+				Ids.add(subAdminList.get(i).getUserId());
+			}
+
+		for (int j = 0; j < Ids.size(); j++) {
+			if (userId == Ids.get(j))
+				fl1 = true;
+		}
+		// if (Currentuser == null)
+		// isSave = false;
+		// else
+
+		if (fl1 == true || userId == object.getUserId())
+			isSave = true;
+
+		return isSave;
+
+	}
+
+	@Override
+	public void processFinishSaveImage(String output) {
+
+		if (ut.checkError(output) == false) {
+
+			String ImageAddress = "";
+
+			if (ImageConvertedToByte != null) {
+
+				ImageAddress = ut.CreateFileString(ImageConvertedToByte, "_" + currentUser.getId() + "_" + serverDate,
+						"Mechanical", "Post", "post");
+			}
+			if (!ImageAddress.equals("")) {
+
+				adapter.open();
+				adapter.insertImageAddressToDb("Post", PostId, ImageAddress, serverDate);
+				adapter.close();
+				setPostionListPost(1);
+				fillListView();
+
+			}
+
+		}
+	}
 }

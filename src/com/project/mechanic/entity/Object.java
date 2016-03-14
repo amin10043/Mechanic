@@ -45,6 +45,8 @@ public class Object implements Comparable<Object> {
 	String ImagePath3;
 	String ActiveDate;
 	int CountView;
+	int CountPost;
+	int CountFollower;
 
 	public int getCountView() {
 		return CountView;
@@ -359,17 +361,14 @@ public class Object implements Comparable<Object> {
 
 	}
 
-	public Object(int id, String name, String phone, String email, String fax,
-			String description, byte[] image1, byte[] image2, byte[] image3,
-			byte[] image4, String pdf1, String pdf2, String pdf3, String pdf4,
-			String address, String cellphone, int objectTypeId,
-			int objectBrandTypeId, String facebook, String instagram,
-			String linkedIn, String google, String site, String twitter,
-			int parentid, int rate, int seen, String serverdate, int submit,
-			int mainObjectid, int IsActive, int UserId, int ObjectId,
-			String Date, String img1ServerDate, String img2ServerDate,
-			String img3ServerDate, int AgencyService, String ImagePath1,
-			String ImagePath2, String ImagePath3, String activeDate , int CounView) {
+	public Object(int id, String name, String phone, String email, String fax, String description, byte[] image1,
+			byte[] image2, byte[] image3, byte[] image4, String pdf1, String pdf2, String pdf3, String pdf4,
+			String address, String cellphone, int objectTypeId, int objectBrandTypeId, String facebook,
+			String instagram, String linkedIn, String google, String site, String twitter, int parentid, int rate,
+			int seen, String serverdate, int submit, int mainObjectid, int IsActive, int UserId, int ObjectId,
+			String Date, String img1ServerDate, String img2ServerDate, String img3ServerDate, int AgencyService,
+			String ImagePath1, String ImagePath2, String ImagePath3, String activeDate, int CounView, int CountPost,
+			int CountFollower) {
 
 		super();
 		Id = id;
@@ -415,6 +414,24 @@ public class Object implements Comparable<Object> {
 		this.ImagePath3 = ImagePath3;
 		ActiveDate = activeDate;
 		this.CountView = CounView;
+		this.CountPost = CountPost;
+		this.CountFollower = CountFollower;
+	}
+
+	public int getCountPost() {
+		return CountPost;
+	}
+
+	public void setCountPost(int countPost) {
+		CountPost = countPost;
+	}
+
+	public int getCountFollower() {
+		return CountFollower;
+	}
+
+	public void setCountFollower(int countFollower) {
+		CountFollower = countFollower;
 	}
 
 	public int getAgencyService() {

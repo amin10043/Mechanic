@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -88,7 +89,12 @@ public class ObjectFragment extends Fragment
 	ServerDate date;
 	String serverDate;
 	int typeRunServer;
+	String fromDate = "";
 
+	boolean isAgency = false;
+	int controllerFollower = 0;
+	int IdObject;
+	String typeGetValue = "";
 	///////////////////
 
 	@SuppressLint("InflateParams")
@@ -104,14 +110,29 @@ public class ObjectFragment extends Fragment
 
 		fillListView();
 
-		// request get image
-		if (mylist.size() > 0)
-			if (getActivity() != null) {
-				date = new ServerDate(getActivity());
-				date.delegate = ObjectFragment.this;
-				date.execute("");
+		if (getActivity() != null) {
+			date = new ServerDate(getActivity());
+			date.delegate = ObjectFragment.this;
+			date.execute("");
+
+			if (mainId != 2 && mainId != 3 && mainId != 4)
+				typeRunServer = StaticValues.TypeRunServerForAgencyServiceItem;
+			else
 				typeRunServer = StaticValues.TypeRunServerForGetDate;
-			}
+
+		}
+		// else {
+		// if (mainId != 2 || mainId != 3 || mainId != 4) {
+		//
+		// if (getActivity() != null) {
+		// date = new ServerDate(getActivity());
+		// date.delegate = ObjectFragment.this;
+		// date.execute("");
+		// typeRunServer = StaticValues.TypeRunServerForAgencyServiceItem;
+		// }
+		//
+		// }
+		// }
 
 		refreshListView();
 
@@ -199,6 +220,11 @@ public class ObjectFragment extends Fragment
 				getImageProfile();
 
 			}
+			if (output.length() == 18 && typeRunServer == StaticValues.TypeRunServerForAgencyServiceItem) {
+				serverDate = output;
+				getAgencyServiceFromServer();
+
+			}
 
 		}
 
@@ -264,7 +290,9 @@ public class ObjectFragment extends Fragment
 
 		} else {
 
-			fillListView();
+//			fillListView();
+			
+			getCountFollwers();
 			// if (getActivity() != null) {
 			//
 			// if (mainId == 2 || mainId == 3 || mainId == 4)
@@ -343,6 +371,8 @@ public class ObjectFragment extends Fragment
 
 			brand = pageId.getInt("brandID", -1);
 			adapter.open();
+			Object obj = adapter.getObjectbyid(brand);
+			fromDate = obj.getDate();
 			mylist = adapter.subBrandObject(brand, city_id, AgencyService);
 			adapter.close();
 		}
@@ -398,6 +428,8 @@ public class ObjectFragment extends Fragment
 				items.put("Id", String.valueOf(objectItem.getId()));
 
 				getDateService.execute(items);
+				typeGetValue = "";
+				isAgency = false;
 
 			}
 
@@ -449,15 +481,13 @@ public class ObjectFragment extends Fragment
 
 				final RelativeLayout bottomSheet = (RelativeLayout) rootView.findViewById(R.id.bottmSheet);
 				TextView titleSheet = (TextView) rootView.findViewById(R.id.titleSheet);
-				Button create = (Button) rootView.findViewById(R.id.createDialogPage);
+				ImageView create = (ImageView) rootView.findViewById(R.id.createDialogPage);
 				ImageView close = (ImageView) rootView.findViewById(R.id.delete);
 
 				titleSheet.setText(message);
 				titleSheet.setTextSize(20);
 				titleSheet.setLineSpacing(10, 1);
 				titleSheet.setTypeface(util.SetFontIranSans());
-
-				create.setTypeface(util.SetFontCasablanca());
 
 				bottomSheet.setVisibility(View.VISIBLE);
 				util.ShowFooterAgahi(getActivity(), false, 1);
@@ -528,7 +558,6 @@ public class ObjectFragment extends Fragment
 						util.ShowFooterAgahi(getActivity(), true, 1);
 						createItem.setVisibility(View.VISIBLE);
 
-
 					}
 				});
 			}
@@ -538,31 +567,33 @@ public class ObjectFragment extends Fragment
 
 	private void getImageProfile() {
 
-		if (userItemId < mylist.size()) {
+		if (mylist.size() > 0)
 
-			objectItem = mylist.get(userItemId);
-			String imageProfileServerDate = objectItem.getImage2ServerDate();
+			if (userItemId < mylist.size()) {
 
-			if (imageProfileServerDate == null)
-				imageProfileServerDate = "";
+				objectItem = mylist.get(userItemId);
+				String imageProfileServerDate = objectItem.getImage2ServerDate();
 
-			if (getActivity() != null) {
+				if (imageProfileServerDate == null)
+					imageProfileServerDate = "";
 
-				ImageUpdating = new UpdatingImage(getActivity());
-				ImageUpdating.delegate = ObjectFragment.this;
-				maps = new LinkedHashMap<String, String>();
+				if (getActivity() != null) {
 
-				maps.put("tableName", "Object2");
-				maps.put("Id", String.valueOf(objectItem.getId()));
-				maps.put("fromDate", imageProfileServerDate);
+					ImageUpdating = new UpdatingImage(getActivity());
+					ImageUpdating.delegate = ObjectFragment.this;
+					maps = new LinkedHashMap<String, String>();
 
-				ImageUpdating.execute(maps);
+					maps.put("tableName", "Object2");
+					maps.put("Id", String.valueOf(objectItem.getId()));
+					maps.put("fromDate", imageProfileServerDate);
+
+					ImageUpdating.execute(maps);
+				}
+
+			} else {
+				userItemId = 0;
+				getServerDateImage();
 			}
-
-		} else {
-			userItemId = 0;
-			getServerDateImage();
-		}
 
 	}
 
@@ -620,16 +651,88 @@ public class ObjectFragment extends Fragment
 	@Override
 	public void CommProcessFinish(String output) {
 
-		if (output.contains("Exception") || output.contains(("anyType")))
-			output = "";
+		if (isAgency == true) {
 
-		adapter.open();
-		adapter.updateObjectImage2ServerDate(objectItem.getId(), output);
-		adapter.close();
+			if (!output.contains("Exception") || !output.contains(("anyType"))) {
 
-		userItemId++;
+				util.parseQuery(output);
 
-		getServerDateImage();
+				fillListView();
+
+			}
+
+		} else {
+
+			if (typeGetValue.equals("")) {
+
+				if (output.contains("Exception") || output.contains(("anyType")))
+					output = "";
+
+				adapter.open();
+				adapter.updateObjectImage2ServerDate(objectItem.getId(), output);
+				adapter.close();
+
+				userItemId++;
+
+				getServerDateImage();
+			} else {
+
+				if (output.contains("Exception") || output.contains(("anyType")))
+					output = "";
+
+				adapter.open();
+				adapter.updateCountFollower(IdObject, Integer.valueOf(output));
+				adapter.close();
+
+				ListAdapter.notifyDataSetChanged();
+
+				controllerFollower++;
+				getCountFollwers();
+
+			}
+		}
+	}
+
+	private void getAgencyServiceFromServer() {
+
+		ServiceComm comm = new ServiceComm(getActivity());
+		comm.delegate = this;
+		Map<String, String> params = new LinkedHashMap<String, String>();
+		params.put("tableName", "getObjectByObjectId");
+		params.put("objectId", String.valueOf(brand));
+		params.put("fromDate", fromDate);
+		params.put("toDate", serverDate);
+		params.put("provinceId", "0");
+		params.put("cityId", String.valueOf(city_id));
+		params.put("agencyService", String.valueOf(AgencyService));
+
+		comm.execute(params);
+
+		isAgency = true;
 
 	}
+
+	private void getCountFollwers() {
+
+		if (mylist.size() > 0) {
+
+			if (controllerFollower < mylist.size()) {
+
+				IdObject = mylist.get(controllerFollower).getId();
+
+				ServiceComm comm = new ServiceComm(getActivity());
+				comm.delegate = this;
+				Map<String, String> params = new LinkedHashMap<String, String>();
+				params.put("tableName", "getFollowerCountByObjectId");
+				params.put("objectId", String.valueOf(IdObject));
+				comm.execute(params);
+
+				typeGetValue = "getFollower";
+				isAgency = false;
+			}
+
+		}
+
+	}
+
 }

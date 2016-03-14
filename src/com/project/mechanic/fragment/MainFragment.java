@@ -27,9 +27,12 @@ public class MainFragment extends Fragment {
 	MainListAdapter ListAdapter;
 	LinearLayout footer_layLayout;
 	Utility util;
-	RelativeLayout mainRow1, mainRow2, mainRow3, mainRow4, mainRow5, mainRow6, mainRow7, main1, main2, main3, main4,
-			main5, main6, main7;
-	RelativeLayout.LayoutParams r1, r2, r3, r4, r5, r6, r7, r8;
+	LinearLayout /*
+					 * mainRow1, mainRow2, mainRow3, mainRow4, mainRow5,
+					 * mainRow6, mainRow7
+					 */
+	main1, main2, main3, main4, main5, main6, main7;
+	LinearLayout.LayoutParams r1, r2, r3, r4, r5, r6, r7, r8;
 	ImageView img1, img2, img3, img4, img5, img6, img7;
 
 	TextView tite1, lable1, lable2, lable3, lable4, lable5, lable6, lable7;
@@ -51,7 +54,7 @@ public class MainFragment extends Fragment {
 		DefineLayoutParams();
 
 		// setLayout Params
-		setLayoutParams();
+		 setLayoutParams();
 
 		// set Font title
 		setFont();
@@ -66,21 +69,21 @@ public class MainFragment extends Fragment {
 
 	private void findView() {
 
-		mainRow1 = (RelativeLayout) view.findViewById(R.id.relative_item1);
-		mainRow2 = (RelativeLayout) view.findViewById(R.id.relative_item2);
-		mainRow3 = (RelativeLayout) view.findViewById(R.id.relative_item3);
-		mainRow4 = (RelativeLayout) view.findViewById(R.id.relative_item4);
-		mainRow5 = (RelativeLayout) view.findViewById(R.id.relative_item5);
-		mainRow6 = (RelativeLayout) view.findViewById(R.id.relative_item6);
-		mainRow7 = (RelativeLayout) view.findViewById(R.id.relative_item7);
+		// mainRow1 = (LinearLayout) view.findViewById(R.id.relative_item1);
+		// mainRow2 = (LinearLayout) view.findViewById(R.id.relative_item2);
+		// mainRow3 = (LinearLayout) view.findViewById(R.id.relative_item3);
+		// mainRow4 = (LinearLayout) view.findViewById(R.id.relative_item4);
+		// mainRow5 = (LinearLayout) view.findViewById(R.id.relative_item5);
+		// mainRow6 = (LinearLayout) view.findViewById(R.id.relative_item6);
+		// mainRow7 = (LinearLayout) view.findViewById(R.id.relative_item7);
 
-		main1 = (RelativeLayout) view.findViewById(R.id.main1);
-		main2 = (RelativeLayout) view.findViewById(R.id.main2);
-		main3 = (RelativeLayout) view.findViewById(R.id.main3);
-		main4 = (RelativeLayout) view.findViewById(R.id.main4);
-		main5 = (RelativeLayout) view.findViewById(R.id.main5);
-		main6 = (RelativeLayout) view.findViewById(R.id.main6);
-		main7 = (RelativeLayout) view.findViewById(R.id.main7);
+		main1 = (LinearLayout) view.findViewById(R.id.main1);
+		main2 = (LinearLayout) view.findViewById(R.id.main2);
+		main3 = (LinearLayout) view.findViewById(R.id.main3);
+		main4 = (LinearLayout) view.findViewById(R.id.main4);
+		main5 = (LinearLayout) view.findViewById(R.id.main5);
+		main6 = (LinearLayout) view.findViewById(R.id.main6);
+		main7 = (LinearLayout) view.findViewById(R.id.main7);
 
 		img1 = (ImageView) view.findViewById(R.id.icon_item1);
 		img2 = (ImageView) view.findViewById(R.id.icon_item2);
@@ -101,13 +104,13 @@ public class MainFragment extends Fragment {
 
 	private void DefineLayoutParams() {
 
-		r1 = new RelativeLayout.LayoutParams(mainRow1.getLayoutParams());
-		r2 = new RelativeLayout.LayoutParams(mainRow2.getLayoutParams());
-		r3 = new RelativeLayout.LayoutParams(mainRow3.getLayoutParams());
-		r4 = new RelativeLayout.LayoutParams(mainRow4.getLayoutParams());
-		r5 = new RelativeLayout.LayoutParams(mainRow5.getLayoutParams());
-		r6 = new RelativeLayout.LayoutParams(mainRow6.getLayoutParams());
-		r7 = new RelativeLayout.LayoutParams(mainRow7.getLayoutParams());
+		r1 = new LinearLayout.LayoutParams(main1.getLayoutParams());
+		r2 = new LinearLayout.LayoutParams(main2.getLayoutParams());
+		r3 = new LinearLayout.LayoutParams(main3.getLayoutParams());
+		r4 = new LinearLayout.LayoutParams(main4.getLayoutParams());
+		r5 = new LinearLayout.LayoutParams(main5.getLayoutParams());
+		r6 = new LinearLayout.LayoutParams(main6.getLayoutParams());
+		r7 = new LinearLayout.LayoutParams(main7.getLayoutParams());
 
 	}
 
@@ -116,65 +119,65 @@ public class MainFragment extends Fragment {
 
 		r1.width = (util.getScreenwidth()) / size;
 		r1.height = (util.getScreenwidth()) / size;
-		r1.addRule(RelativeLayout.CENTER_IN_PARENT);
-		// r1.setMargins(5, 0, 1, 0);
+		// r1.addRule(RelativeLayout.CENTER_IN_PARENT);
+		 r1.setMargins(5, 0, 5, 0);
 		// r1.addRule(RelativeLayout.CENTER_VERTICAL);
 		img1.setLayoutParams(r1);
 
 		r2.width = util.getScreenwidth() / size;
 		r2.height = util.getScreenwidth() / size;
 		// r2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		// r2.setMargins(5, 0, 1, 0);
-		r2.addRule(RelativeLayout.CENTER_IN_PARENT);
+		 r2.setMargins(5, 0, 5, 0);
+		// r2.addRule(RelativeLayout.CENTER_IN_PARENT);
 		img2.setLayoutParams(r2);
 
 		r3.width = util.getScreenwidth() / size;
 		r3.height = util.getScreenwidth() / size;
 		// r3.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		// r3.setMargins(5, 0, 1, 0);
-		r3.addRule(RelativeLayout.CENTER_IN_PARENT);
+		 r3.setMargins(5, 0, 5, 0);
+		// r3.addRule(RelativeLayout.CENTER_IN_PARENT);
 		img3.setLayoutParams(r3);
 
 		r4.width = util.getScreenwidth() / size;
 		r4.height = util.getScreenwidth() / size;
 		// r4.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		// r4.setMargins(5, 0, 1, 0);
-		r4.addRule(RelativeLayout.CENTER_IN_PARENT);
+		 r4.setMargins(5, 0, 5, 0);
+		// r4.addRule(RelativeLayout.CENTER_IN_PARENT);
 		img4.setLayoutParams(r4);
 
 		r5.width = util.getScreenwidth() / size;
 		r5.height = util.getScreenwidth() / size;
 		// r5.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		// r5.setMargins(5, 0, 1, 0);
-		r5.addRule(RelativeLayout.CENTER_IN_PARENT);
+		 r5.setMargins(5, 0,5, 0);
+		// r5.addRule(RelativeLayout.CENTER_IN_PARENT);
 		img5.setLayoutParams(r5);
 
 		r6.width = util.getScreenwidth() / size;
 		r6.height = util.getScreenwidth() / size;
 		// r6.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		// r6.setMargins(5, 0, 1, 0);
-		r6.addRule(RelativeLayout.CENTER_IN_PARENT);
+		 r6.setMargins(5, 0, 5, 0);
+		// r6.addRule(RelativeLayout.CENTER_IN_PARENT);
 		img6.setLayoutParams(r6);
 
 		r7.width = util.getScreenwidth() / size;
 		r7.height = util.getScreenwidth() / size;
 		// r7.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		// r7.setMargins(5, 0, 1, 0);
-		r7.addRule(RelativeLayout.CENTER_IN_PARENT);
+		 r7.setMargins(5, 0, 5, 0);
+		// r7.addRule(RelativeLayout.CENTER_IN_PARENT);
 		img7.setLayoutParams(r7);
 
-		int right = util.getScreenwidth() / 20;
-
-		lable1.setPadding(0, 0, right, 0);
-		lable2.setPadding(0, 0, right, 0);
-
-		lable3.setPadding(0, 0, right, 0);
-		lable4.setPadding(0, 0, right, 0);
-
-		lable5.setPadding(0, 0, right, 0);
-		lable6.setPadding(0, 0, right, 0);
-
-		lable7.setPadding(0, 0, right, 0);
+//		int right = util.getScreenwidth() / 20;
+//
+//		lable1.setPadding(0, 0, right, 0);
+//		lable2.setPadding(0, 0, right, 0);
+//
+//		lable3.setPadding(0, 0, right, 0);
+//		lable4.setPadding(0, 0, right, 0);
+//
+//		lable5.setPadding(0, 0, right, 0);
+//		lable6.setPadding(0, 0, right, 0);
+//
+//		lable7.setPadding(0, 0, right, 0);
 
 		// lable1.setLayoutParams(aaa);
 		// lable2.setLayoutParams(bbb);
@@ -198,271 +201,278 @@ public class MainFragment extends Fragment {
 
 	private void onClick() {
 
-		mainRow1.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				int id = 1;
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				BerandFragment fragment = new BerandFragment();
-				Bundle bundle = new Bundle();
-				bundle.putString("Id", String.valueOf(id));
-				fragment.setArguments(bundle);
-
-				sendData.edit().putInt("main_Id", id).commit();
-
-				trans.replace(R.id.content_frame, fragment);
-				trans.addToBackStack(null);
-				trans.commit();
-			}
-		});
-
-		mainRow2.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				int id = 2;
-
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				Fragment ostan = new ProvinceFragment();
-
-				sendData.edit().putInt("main_Id", id).commit();
-
-				trans.addToBackStack(null);
-				trans.replace(R.id.content_frame, ostan);
-
-				trans.commit();
-			}
-		});
-
-		mainRow3.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				int id = 3;
-
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				trans.replace(R.id.content_frame, new Province2Fragment());
-
-				sendData.edit().putInt("main_Id", id).commit();
-
-				trans.addToBackStack(null);
-				trans.commit();
-
-			}
-		});
-
-		mainRow4.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				int id = 4;
-
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				trans.replace(R.id.content_frame, new Province3Fragment());
-
-				sendData.edit().putInt("main_Id", id).commit();
-
-				trans.addToBackStack(null);
-				trans.commit();
-
-			}
-		});
-
-		mainRow5.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				int id = 5;
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				NewsFragment fragment = new NewsFragment();
-				Bundle bundle = new Bundle();
-				bundle.putString("Id", String.valueOf(id));
-				fragment.setArguments(bundle);
-
-				sendData.edit().putInt("main_Id", id).commit();
-
-				trans.replace(R.id.content_frame, fragment);
-				trans.addToBackStack(null);
-				trans.commit();
-
-			}
-		});
-
-		mainRow6.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				int id = 6;
-
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				CountryFragment fragment = new CountryFragment();
-				// Bundle bundle = new Bundle();
-				// bundle.putString("Id", String.valueOf(id));
-				// fragment.setArguments(bundle);
-
-				sendData.edit().putInt("main_Id", id).commit();
-
-				trans.replace(R.id.content_frame, fragment);
-				trans.addToBackStack(null);
-				trans.commit();
-			}
-		});
-
-		mainRow7.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				int id = 7;
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				trans.replace(R.id.content_frame, new TypeFroum());
-
-				sendData.edit().putInt("main_Id", id).commit();
-
-				trans.addToBackStack(null);
-				trans.commit();
-			}
-		});
-
-		main1.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				int id = 1;
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				BerandFragment fragment = new BerandFragment();
-				Bundle bundle = new Bundle();
-				bundle.putString("Id", String.valueOf(id));
-				fragment.setArguments(bundle);
-
-				sendData.edit().putInt("main_Id", id).commit();
-
-				trans.replace(R.id.content_frame, fragment);
-				trans.addToBackStack(null);
-				trans.commit();
-			}
-		});
-
-		main2.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				int id = 2;
-
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				Fragment ostan = new ProvinceFragment();
-
-				sendData.edit().putInt("main_Id", id).commit();
-
-				trans.addToBackStack(null);
-				trans.replace(R.id.content_frame, ostan);
-
-				trans.commit();
-			}
-		});
-
-		main3.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				int id = 3;
-
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				trans.replace(R.id.content_frame, new Province2Fragment());
-
-				sendData.edit().putInt("main_Id", id).commit();
-
-				trans.addToBackStack(null);
-				trans.commit();
-
-			}
-		});
-
-		main4.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				int id = 4;
-
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				trans.replace(R.id.content_frame, new Province3Fragment());
-
-				sendData.edit().putInt("main_Id", id).commit();
-
-				trans.addToBackStack(null);
-				trans.commit();
-
-			}
-		});
-
-		main5.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				int id = 5;
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				NewsFragment fragment = new NewsFragment();
-				Bundle bundle = new Bundle();
-				bundle.putString("Id", String.valueOf(id));
-				fragment.setArguments(bundle);
-
-				sendData.edit().putInt("main_Id", id).commit();
-
-				trans.replace(R.id.content_frame, fragment);
-				trans.addToBackStack(null);
-				trans.commit();
-
-			}
-		});
-
-		main6.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				int id = 6;
-
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				CountryFragment fragment = new CountryFragment();
-				// Bundle bundle = new Bundle();
-				// bundle.putString("Id", String.valueOf(id));
-				// fragment.setArguments(bundle);
-
-				sendData.edit().putInt("main_Id", id).commit();
-
-				trans.replace(R.id.content_frame, fragment);
-				trans.addToBackStack(null);
-				trans.commit();
-			}
-		});
-
-		main7.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				int id = 7;
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				trans.replace(R.id.content_frame, new FroumtitleFragment());
-
-				sendData.edit().putInt("main_Id", id).commit();
-
-				trans.addToBackStack(null);
-				trans.commit();
-			}
-		});
+//		mainRow1.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				int id = 1;
+//				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+//						.beginTransaction();
+//				BerandFragment fragment = new BerandFragment();
+//				Bundle bundle = new Bundle();
+//				bundle.putString("Id", String.valueOf(id));
+//				fragment.setArguments(bundle);
+//
+//				sendData.edit().putInt("main_Id", id).commit();
+//
+//				trans.replace(R.id.content_frame, fragment);
+//				trans.addToBackStack(null);
+//				trans.commit();
+//			}
+//		});
+//
+//		mainRow2.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				int id = 2;
+//
+//				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+//						.beginTransaction();
+//				Fragment ostan = new ProvinceFragment();
+//
+//				sendData.edit().putInt("main_Id", id).commit();
+//
+//				trans.addToBackStack(null);
+//				trans.replace(R.id.content_frame, ostan);
+//
+//				trans.commit();
+//			}
+//		});
+//
+//		mainRow3.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				int id = 3;
+//
+//				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+//						.beginTransaction();
+//				trans.replace(R.id.content_frame, new Province2Fragment());
+//
+//				sendData.edit().putInt("main_Id", id).commit();
+//
+//				trans.addToBackStack(null);
+//				trans.commit();
+//
+//			}
+//		});
+//
+//		mainRow4.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				int id = 4;
+//
+//				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+//						.beginTransaction();
+//				trans.replace(R.id.content_frame, new Province3Fragment());
+//
+//				sendData.edit().putInt("main_Id", id).commit();
+//
+//				trans.addToBackStack(null);
+//				trans.commit();
+//
+//			}
+//		});
+//
+//		mainRow5.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				int id = 5;
+//				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+//						.beginTransaction();
+//				NewsFragment fragment = new NewsFragment();
+//				Bundle bundle = new Bundle();
+//				bundle.putString("Id", String.valueOf(id));
+//				fragment.setArguments(bundle);
+//
+//				sendData.edit().putInt("main_Id", id).commit();
+//
+//				trans.replace(R.id.content_frame, fragment);
+//				trans.addToBackStack(null);
+//				trans.commit();
+//
+//			}
+//		});
+//
+//		mainRow6.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				int id = 6;
+//
+//				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+//						.beginTransaction();
+//				CountryFragment fragment = new CountryFragment();
+//				// Bundle bundle = new Bundle();
+//				// bundle.putString("Id", String.valueOf(id));
+//				// fragment.setArguments(bundle);
+//
+//				sendData.edit().putInt("main_Id", id).commit();
+//
+//				trans.replace(R.id.content_frame, fragment);
+//				trans.addToBackStack(null);
+//				trans.commit();
+//			}
+//		});
+//
+//		mainRow7.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//				int id = 7;
+//				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+//						.beginTransaction();
+//				trans.replace(R.id.content_frame, new TypeFroum());
+//
+//				sendData.edit().putInt("main_Id", id).commit();
+//
+//				trans.addToBackStack(null);
+//				trans.commit();
+//			}
+//		});
+
+		 main1.setOnClickListener(new OnClickListener() {
+		
+		 @Override
+		 public void onClick(View arg0) {
+		 int id = 1;
+		 FragmentTransaction trans = ((MainActivity)
+		 getActivity()).getSupportFragmentManager()
+		 .beginTransaction();
+		 BerandFragment fragment = new BerandFragment();
+		 Bundle bundle = new Bundle();
+		 bundle.putString("Id", String.valueOf(id));
+		 fragment.setArguments(bundle);
+		
+		 sendData.edit().putInt("main_Id", id).commit();
+		
+		 trans.replace(R.id.content_frame, fragment);
+		 trans.addToBackStack(null);
+		 trans.commit();
+		 }
+		 });
+		
+		 main2.setOnClickListener(new OnClickListener() {
+		
+		 @Override
+		 public void onClick(View arg0) {
+		 int id = 2;
+		
+		 FragmentTransaction trans = ((MainActivity)
+		 getActivity()).getSupportFragmentManager()
+		 .beginTransaction();
+		 Fragment ostan = new ProvinceFragment();
+		
+		 sendData.edit().putInt("main_Id", id).commit();
+		
+		 trans.addToBackStack(null);
+		 trans.replace(R.id.content_frame, ostan);
+		
+		 trans.commit();
+		 }
+		 });
+		
+		 main3.setOnClickListener(new OnClickListener() {
+		
+		 @Override
+		 public void onClick(View arg0) {
+		 int id = 3;
+		
+		 FragmentTransaction trans = ((MainActivity)
+		 getActivity()).getSupportFragmentManager()
+		 .beginTransaction();
+		 trans.replace(R.id.content_frame, new Province2Fragment());
+		
+		 sendData.edit().putInt("main_Id", id).commit();
+		
+		 trans.addToBackStack(null);
+		 trans.commit();
+		
+		 }
+		 });
+		
+		 main4.setOnClickListener(new OnClickListener() {
+		
+		 @Override
+		 public void onClick(View arg0) {
+		 int id = 4;
+		
+		 FragmentTransaction trans = ((MainActivity)
+		 getActivity()).getSupportFragmentManager()
+		 .beginTransaction();
+		 trans.replace(R.id.content_frame, new Province3Fragment());
+		
+		 sendData.edit().putInt("main_Id", id).commit();
+		
+		 trans.addToBackStack(null);
+		 trans.commit();
+		
+		 }
+		 });
+		
+		 main5.setOnClickListener(new OnClickListener() {
+		
+		 @Override
+		 public void onClick(View arg0) {
+		 int id = 5;
+		 FragmentTransaction trans = ((MainActivity)
+		 getActivity()).getSupportFragmentManager()
+		 .beginTransaction();
+		 NewsFragment fragment = new NewsFragment();
+		 Bundle bundle = new Bundle();
+		 bundle.putString("Id", String.valueOf(id));
+		 fragment.setArguments(bundle);
+		
+		 sendData.edit().putInt("main_Id", id).commit();
+		
+		 trans.replace(R.id.content_frame, fragment);
+		 trans.addToBackStack(null);
+		 trans.commit();
+		
+		 }
+		 });
+		
+		 main6.setOnClickListener(new OnClickListener() {
+		
+		 @Override
+		 public void onClick(View arg0) {
+		 int id = 6;
+		
+		 FragmentTransaction trans = ((MainActivity)
+		 getActivity()).getSupportFragmentManager()
+		 .beginTransaction();
+		 CountryFragment fragment = new CountryFragment();
+		  Bundle bundle = new Bundle();
+		  bundle.putString("Id", String.valueOf(id));
+		  fragment.setArguments(bundle);
+		
+		 sendData.edit().putInt("main_Id", id).commit();
+		
+		 trans.replace(R.id.content_frame, fragment);
+		 trans.addToBackStack(null);
+		 trans.commit();
+		 }
+		 });
+		
+		 main7.setOnClickListener(new OnClickListener() {
+		
+		 @Override
+		 public void onClick(View arg0) {
+		 int id = 7;
+		 FragmentTransaction trans = ((MainActivity)
+		 getActivity()).getSupportFragmentManager()
+		 .beginTransaction();
+		 trans.replace(R.id.content_frame, new FroumtitleFragment());
+		
+		 sendData.edit().putInt("main_Id", id).commit();
+		
+		 trans.addToBackStack(null);
+		 trans.commit();
+		 }
+		 });
 
 	}
 

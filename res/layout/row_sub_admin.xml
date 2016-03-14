@@ -8,8 +8,9 @@
         android:id="@+id/subAdmin1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_below="@+id/phonesubAdminRelative" >
+        android:layout_below="@+id/phonesubAdminRelative"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" >
 
         <ImageView
             android:id="@+id/pictureSubAdmin1"
@@ -29,7 +30,6 @@
             android:layout_margin="10dp"
             android:layout_toLeftOf="@+id/pictureSubAdmin1"
             android:text="subAdmin1"
-            android:textSize="@dimen/size_item_list" 
             android:textColor="@color/orginal_hard_blue_color" />
 
         <ImageView

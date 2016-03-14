@@ -27,44 +27,35 @@ public class AdvertisementFragment extends Fragment {
 
 	@SuppressLint("InflateParams")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		dbAdapter = new DataBaseAdapter(getActivity());
-		if (getArguments() != null
-				&& getArguments().getString("provinceId") != null) {
-			provinceId = Integer
-					.valueOf(getArguments().getString("provinceId"));
+		if (getArguments() != null && getArguments().getString("provinceId") != null) {
+			provinceId = Integer.valueOf(getArguments().getString("provinceId"));
 
 		}
-		SharedPreferences sendIDpro = getActivity().getSharedPreferences("Id",
-				0);
+		SharedPreferences sendIDpro = getActivity().getSharedPreferences("Id", 0);
 		sendIDpro.edit().putInt("main_Id", provinceId).commit();
-		Toast.makeText(getActivity(), "advers fragment " + provinceId,
-				Toast.LENGTH_SHORT).show();
 
 		dbAdapter.open();
 		List<TicketType> mylist = dbAdapter.getAllTicketType();
 
 		dbAdapter.close();
 
-		//((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.Propaganda);
 		View view = inflater.inflate(R.layout.fragment_shop, null);
-		
+
 		Utility util = new Utility(getActivity());
-			
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 
-		ListView lstAdvertisement = (ListView) view
-				.findViewById(R.id.listVshop);
-		AdvertisementListAdapter ListAdapter = new AdvertisementListAdapter(
-				getActivity(), R.layout.row_shop, mylist, provinceId);
+		ListView lstAdvertisement = (ListView) view.findViewById(R.id.listVshop);
+		AdvertisementListAdapter ListAdapter = new AdvertisementListAdapter(getActivity(), R.layout.row_shop, mylist,
+				provinceId);
 
 		lstAdvertisement.setAdapter(ListAdapter);
-		
-		util.ShowFooterAgahi(getActivity() , false , 1);
 
+		util.ShowFooterAgahi(getActivity(), false, 1);
 
 		return view;
 	}
