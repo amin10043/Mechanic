@@ -28,7 +28,10 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,7 +75,11 @@ public class WelcomeScreen extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_welcome_screen);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+		// setContentView(R.layout.activity_welcome_screen);
+		setContentView(R.layout.splash_page);
+
 		adapter = new DataBaseAdapter(this);
 		util = new Utility(this);
 
@@ -83,33 +90,104 @@ public class WelcomeScreen extends Activity {
 		task = new ServerDate(this);
 		util.Updating(task);
 
-		initialize();
-		clickItem();
+		typogeraphy();
 
-		columnWidth = (int) (getScreenWidth() / column);
+		Handler handler = new Handler();
 
-		initialize();
-		setBackground();
-		setMinMax();
-		Adding();
-		setParams();
-		clickItem();
-		setFont();
+		Runnable runnable = new Runnable() {
 
-		verticalOuterLayout = (LinearLayout) findViewById(R.id.vertical_outer_layout_id);
-		verticalScrollview = (ScrollView) findViewById(R.id.vertical_scrollview_id);
-		ViewTreeObserver vto = verticalOuterLayout.getViewTreeObserver();
-		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-			@SuppressWarnings("deprecation")
 			@Override
-			public void onGlobalLayout() {
-				verticalOuterLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-				getScrollMaxAmount();
-				startAutoScrolling();
+			public void run() {
+
+				finish();
+
+				Intent i = new Intent(WelcomeScreen.this, MainActivity.class);
+				startActivity(i);
 			}
-		});
+		};
+
+		handler.postDelayed(runnable, 5000);
+
+		// initialize();
+		// clickItem();
+
+		// columnWidth = (int) (getScreenWidth() / column);
+		//
+		// initialize();
+		// setBackground();
+		// setMinMax();
+		// Adding();
+		// setParams();
+		// clickItem();
+		// setFont();
+
+		// verticalOuterLayout = (LinearLayout)
+		// findViewById(R.id.vertical_outer_layout_id);
+		// verticalScrollview = (ScrollView)
+		// findViewById(R.id.vertical_scrollview_id);
+		// ViewTreeObserver vto = verticalOuterLayout.getViewTreeObserver();
+		// vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+		// @SuppressWarnings("deprecation")
+		// @Override
+		// public void onGlobalLayout() {
+		// verticalOuterLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+		// getScrollMaxAmount();
+		// startAutoScrolling();
+		// }
+		// });
 
 		storeSharedPrefs("1"); // Is First Time ?????
+	}
+
+	public void typogeraphy() {
+
+		RelativeLayout l1 = (RelativeLayout) findViewById(R.id.layout_text);
+		RelativeLayout footerLayout = (RelativeLayout) findViewById(R.id.footer);
+		ImageView miniator = (ImageView) findViewById(R.id.text_miniator);
+		ImageView logo = (ImageView) findViewById(R.id.logo);
+		ImageView mechanical_app = (ImageView) findViewById(R.id.site_app);
+
+		//////////////////////////////
+		RelativeLayout.LayoutParams rl1 = new RelativeLayout.LayoutParams(l1.getLayoutParams());
+
+		float rate = 1.33f;
+		int w = util.getScreenwidth() - 100;
+		int h = (int) (w / rate);
+
+		rl1.width = w;
+		rl1.height = h;
+		rl1.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+		miniator.setLayoutParams(rl1);
+
+		//////////////////////////
+		LayoutParams l = new LayoutParams(LayoutParams.MATCH_PARENT,
+				(int) (util.getScreenwidth() / StaticValues.RateImageTitlePaper));
+		l.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		l.setMargins(10, 10, 10, 10);
+		footerLayout.setLayoutParams(l);
+
+		RelativeLayout.LayoutParams footer = new RelativeLayout.LayoutParams(footerLayout.getLayoutParams());
+
+		int ww = (int) (util.getScreenwidth() / StaticValues.RateImageTitlePaper);
+		footer.width = ww;
+		footer.height = ww;
+		footer.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		footer.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+		logo.setLayoutParams(footer);
+
+		////////////////////
+		RelativeLayout.LayoutParams app = new RelativeLayout.LayoutParams(footerLayout.getLayoutParams());
+		int wapp = util.getScreenwidth()-(3*ww);
+		int happ = (int) (wapp/4.78); 
+		app.width = wapp;
+		app.height = happ;
+
+		app.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+		mechanical_app.setLayoutParams(app);
+
 	}
 
 	@SuppressWarnings("deprecation")

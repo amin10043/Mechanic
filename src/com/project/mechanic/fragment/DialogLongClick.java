@@ -28,8 +28,7 @@ import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class DialogLongClick extends Dialog implements AsyncInterface,
-		CommInterface {
+public class DialogLongClick extends Dialog implements AsyncInterface, CommInterface {
 	Context context;
 	int source;
 	int UserIdObject;
@@ -52,8 +51,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 	RelativeLayout SendMessage, CopyItem;
 	String tableName;
 
-	public DialogLongClick(Context context, int source, int UserIdObject,
-			int item, Fragment fragment, String desc) {
+	public DialogLongClick(Context context, int source, int UserIdObject, int item, Fragment fragment, String desc) {
 		super(context);
 		this.context = context;
 		this.source = source;
@@ -71,8 +69,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setBackgroundDrawable(
-				new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 		setContentView(R.layout.dialog_long_click);
 		delete = (RelativeLayout) findViewById(R.id.delete_item);
@@ -173,18 +170,11 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 					case 1: {
 						adapter.open();
 
-						if (adapter.IsUserFavoriteItem(util.getCurrentUser()
-								.getId(), Item, source)) {
-							Toast.makeText(
-									context,
-									" قبلا در لیست علاقه مندی ها ذخیره شده است ",
-									0).show();
+						if (adapter.IsUserFavoriteItem(util.getCurrentUser().getId(), Item, source)) {
+							Toast.makeText(context, " قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
 						} else {
-							adapter.insertFavoritetoDb(0, util.getCurrentUser()
-									.getId(), Item, source);
-							Toast.makeText(context,
-									"به لیست علاقه مندی ها اضافه شد ", 0)
-									.show();
+							adapter.insertFavoritetoDb(0, util.getCurrentUser().getId(), Item, source);
+							Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0).show();
 						}
 
 						adapter.close();
@@ -196,18 +186,11 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 					case 2: {
 						adapter.open();
 
-						if (adapter.IsUserFavoriteItem(util.getCurrentUser()
-								.getId(), Item, source)) {
-							Toast.makeText(
-									context,
-									" قبلا در لیست علاقه مندی ها ذخیره شده است ",
-									0).show();
+						if (adapter.IsUserFavoriteItem(util.getCurrentUser().getId(), Item, source)) {
+							Toast.makeText(context, " قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
 						} else {
-							adapter.insertFavoritetoDb(0, util.getCurrentUser()
-									.getId(), Item, source);
-							Toast.makeText(context,
-									"به لیست علاقه مندی ها اضافه شد ", 0)
-									.show();
+							adapter.insertFavoritetoDb(0, util.getCurrentUser().getId(), Item, source);
+							Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0).show();
 						}
 
 						adapter.close();
@@ -219,21 +202,14 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 					case 3: {
 						adapter.open();
 
-						if (adapter.isUserFavoriteTicket(util.getCurrentUser()
-								.getId(), Item)) {
-							Toast.makeText(
-									context,
-									"قبلا در لیست علاقه مندی ها ذخیره شده است ",
-									0).show();
+						if (adapter.isUserFavoriteTicket(util.getCurrentUser().getId(), Item)) {
+							Toast.makeText(context, "قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
 
 							// adapter.deletebyIdTicket(Item);
 						} else {
 
-							adapter.insertFavoritetoDb(0, util.getCurrentUser()
-									.getId(), Item, source);
-							Toast.makeText(context,
-									"به لیست علاقه مندی ها اضافه شد ", 0)
-									.show();
+							adapter.insertFavoritetoDb(0, util.getCurrentUser().getId(), Item, source);
+							Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0).show();
 
 						}
 						adapter.close();
@@ -245,21 +221,14 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 					case 4: {
 						adapter.open();
 
-						if (adapter.isUserFavoriteTicket(util.getCurrentUser()
-								.getId(), Item)) {
-							Toast.makeText(
-									context,
-									"قبلا در لیست علاقه مندی ها ذخیره شده است ",
-									0).show();
+						if (adapter.isUserFavoriteTicket(util.getCurrentUser().getId(), Item)) {
+							Toast.makeText(context, "قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
 
 							// adapter.deletebyIdTicket(Item);
 						} else {
 
-							adapter.insertFavoritetoDb(0, util.getCurrentUser()
-									.getId(), Item, source);
-							Toast.makeText(context,
-									"به لیست علاقه مندی ها اضافه شد ", 0)
-									.show();
+							adapter.insertFavoritetoDb(0, util.getCurrentUser().getId(), Item, source);
+							Toast.makeText(context, "به لیست علاقه مندی ها اضافه شد ", 0).show();
 
 						}
 						adapter.close();
@@ -295,8 +264,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 						service.execute(items);
 
-						ringProgressDialog = ProgressDialog.show(context, "",
-								"لطفا منتظر بمانید...", true);
+						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 						ringProgressDialog.setCancelable(true);
 						new Thread(new Runnable() {
@@ -327,8 +295,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 						service.execute(items);
 
-						ringProgressDialog = ProgressDialog.show(context, "",
-								"لطفا منتظر بمانید...", true);
+						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 						ringProgressDialog.setCancelable(true);
 						new Thread(new Runnable() {
@@ -358,8 +325,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 						deleting.execute(params);
 
-						ringProgressDialog = ProgressDialog.show(context, "",
-								"لطفا منتظر بمانید...", true);
+						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 						ringProgressDialog.setCancelable(true);
 						new Thread(new Runnable() {
@@ -385,10 +351,9 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 						adapter.close();
 
 						if (sumAgency > 0) {
-							Toast.makeText(
-									context,
-									"این صفحه دارای زیر مجموعه ای از نماینگی ها می باشد لذا امکان حذف میسر نمی باشد",
-									0).show();
+							Toast.makeText(context,
+									"این صفحه دارای زیر مجموعه ای از نماینگی ها می باشد لذا امکان حذف میسر نمی باشد", 0)
+									.show();
 						}
 
 						else {
@@ -403,8 +368,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 							service.execute(items);
 
-							ringProgressDialog = ProgressDialog.show(context,
-									"", "لطفا منتظر بمانید...", true);
+							ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 							ringProgressDialog.setCancelable(true);
 							new Thread(new Runnable() {
@@ -426,10 +390,8 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 					if (source == 5) {
 						if (Item == -1) {
-							Toast.makeText(
-									context,
-									"نظر ثبت شده دارای پاسخ می باشد لذا امکان حذف میسر نمی باشد",
-									0).show();
+							Toast.makeText(context, "نظر ثبت شده دارای پاسخ می باشد لذا امکان حذف میسر نمی باشد", 0)
+									.show();
 
 						} else {
 							params = new LinkedHashMap<String, String>();
@@ -442,8 +404,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 							deleting.execute(params);
 
-							ringProgressDialog = ProgressDialog.show(context,
-									"", "لطفا منتظر بمانید...", true);
+							ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 							ringProgressDialog.setCancelable(true);
 							new Thread(new Runnable() {
@@ -475,8 +436,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 						deleting.execute(params);
 
-						ringProgressDialog = ProgressDialog.show(context, "",
-								"لطفا منتظر بمانید...", true);
+						ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 						ringProgressDialog.setCancelable(true);
 						new Thread(new Runnable() {
@@ -498,10 +458,8 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 					if (source == 7) {
 						if (Item == -1) {
-							Toast.makeText(
-									context,
-									"نظر ثبت شده دارای پاسخ می باشد لذا امکان حذف میسر نمی باشد",
-									0).show();
+							Toast.makeText(context, "نظر ثبت شده دارای پاسخ می باشد لذا امکان حذف میسر نمی باشد", 0)
+									.show();
 
 						} else {
 							params = new LinkedHashMap<String, String>();
@@ -514,8 +472,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 							deleting.execute(params);
 
-							ringProgressDialog = ProgressDialog.show(context,
-									"", "لطفا منتظر بمانید...", true);
+							ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 							ringProgressDialog.setCancelable(true);
 							new Thread(new Runnable() {
@@ -575,8 +532,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 					date.delegate = DialogLongClick.this;
 					date.execute("");
 
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -643,7 +599,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 				if (ringProgressDialog != null) {
 					ringProgressDialog.dismiss();
 				}
-				((PaperFragment) fragment).updateView();
+				((PaperFragment) fragment).FillListView();
 
 			}
 
@@ -702,7 +658,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 					ringProgressDialog.dismiss();
 				}
 				dismiss();
-				((PaperFragment) fragment).updateView();
+				((PaperFragment) fragment).FillListView();
 
 			}
 			if (source == 7) {
@@ -719,9 +675,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 			}
 
 		} catch (NumberFormatException e) {
-			if (output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 
 				params = new LinkedHashMap<String, String>();
 				saving = new Saving(context);
@@ -731,8 +685,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 				params.put("[Desc]", desc);
 				params.put("UserIdSender", String.valueOf(UserIdObject));
-				params.put("UserIdReporter",
-						String.valueOf(util.getCurrentUser().getId()));
+				params.put("UserIdReporter", String.valueOf(util.getCurrentUser().getId()));
 				params.put("SourceId", String.valueOf(Item));
 				params.put("TypeId", String.valueOf(source));
 				params.put("Date", output);
@@ -742,8 +695,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 
 				saving.execute(params);
 
-				ringProgressDialog = ProgressDialog.show(context, "",
-						"لطفا منتظر بمانید...", true);
+				ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 				ringProgressDialog.setCancelable(true);
 				new Thread(new Runnable() {
@@ -762,9 +714,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface,
 				}).start();
 
 			} else {
-				Toast.makeText(context,
-						"خطا در ثبت. پاسخ نا مشخص از سرور" + e + " ",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور" + e + " ", Toast.LENGTH_SHORT).show();
 			}
 		} catch (Exception ex) {
 

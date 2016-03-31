@@ -47,6 +47,8 @@ public class Object implements Comparable<Object> {
 	int CountView;
 	int CountPost;
 	int CountFollower;
+	int CountHappy;
+	int CountSad;
 
 	public int getCountView() {
 		return CountView;
@@ -368,7 +370,7 @@ public class Object implements Comparable<Object> {
 			int seen, String serverdate, int submit, int mainObjectid, int IsActive, int UserId, int ObjectId,
 			String Date, String img1ServerDate, String img2ServerDate, String img3ServerDate, int AgencyService,
 			String ImagePath1, String ImagePath2, String ImagePath3, String activeDate, int CounView, int CountPost,
-			int CountFollower) {
+			int CountFollower, int CountHappy, int CountSad) {
 
 		super();
 		Id = id;
@@ -416,6 +418,24 @@ public class Object implements Comparable<Object> {
 		this.CountView = CounView;
 		this.CountPost = CountPost;
 		this.CountFollower = CountFollower;
+		this.CountHappy = CountHappy;
+		this.CountSad = CountSad;
+	}
+
+	public int getCountHappy() {
+		return CountHappy;
+	}
+
+	public void setCountHappy(int countHappy) {
+		CountHappy = countHappy;
+	}
+
+	public int getCountSad() {
+		return CountSad;
+	}
+
+	public void setCountSad(int countSad) {
+		CountSad = countSad;
 	}
 
 	public int getCountPost() {

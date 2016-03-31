@@ -426,13 +426,21 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 	}
 
 	private void setFont() {
+		NameEnter.setTypeface(util.SetFontIranSans());
+		phoneEnter.setTypeface(util.SetFontIranSans());
+		faxEnter.setTypeface(util.SetFontIranSans());
+		mobileEnter.setTypeface(util.SetFontIranSans());
+		websiteEnter.setTypeface(util.SetFontIranSans());
+		emailEnter.setTypeface(util.SetFontIranSans());
+		addressEnter.setTypeface(util.SetFontIranSans());
+		DescriptionEnter.setTypeface(util.SetFontIranSans());
 
 		checkAgency.setTypeface(util.SetFontCasablanca());
 		checkService.setTypeface(util.SetFontCasablanca());
 
 		lableEditNetwork.setTypeface(util.SetFontCasablanca());
 		lableEditDownloadLink.setTypeface(util.SetFontCasablanca());
-		btnSave.setTypeface(util.SetFontCasablanca());
+		btnSave.setTypeface(util.SetFontIranSans());
 	}
 
 	public static byte[] getBitmapAsByteArray(Bitmap bitmap) {

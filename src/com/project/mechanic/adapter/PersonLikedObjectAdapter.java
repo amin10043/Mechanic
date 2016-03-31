@@ -63,7 +63,7 @@ public class PersonLikedObjectAdapter extends ArrayAdapter<Users> {
 		Users user = users.get(position);
 
 		namePerson.setText(user.getName());
-		namePerson.setTypeface(util.SetFontCasablanca());
+		namePerson.setTypeface(util.SetFontIranSans());
 
 		DateLiked.setText(util.getPersianDate(dateLikeList.get(position)));
 
@@ -78,14 +78,18 @@ public class PersonLikedObjectAdapter extends ArrayAdapter<Users> {
 
 		if (user.getImagePath() == null) {
 			peronImage.setImageResource(R.drawable.no_img_profile);
+			peronImage.setBackgroundResource(R.drawable.circle_drawable);
 			peronImage.setLayoutParams(lp);
 
 		} else {
 
 			Bitmap bmp = BitmapFactory.decodeFile(user.getImagePath());
 
-			if (bmp != null)
+			if (bmp != null) {
 				peronImage.setImageBitmap(Utility.getclip(bmp));
+				peronImage.setBackgroundResource(R.drawable.circle_drawable);
+			}
+
 			peronImage.setLayoutParams(lp);
 		}
 

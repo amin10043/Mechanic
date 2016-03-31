@@ -179,7 +179,8 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 			Toast.makeText(getActivity(), "خطا در ارتباط با سرور. مهات زمانی تمام شده است", Toast.LENGTH_SHORT).show();
 
 		} else if (output.contains("Exception") || output.contains("java")) {
-			Toast.makeText(getActivity(), "خطایی در دریافت اطلاعات از سرور رخ داده است.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "خطایی در دریافت اطلاعات از سرور رخ داده است." + output, Toast.LENGTH_SHORT)
+					.show();
 
 		} else {
 

@@ -38,6 +38,7 @@
                         android:layout_height="20dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="10dp"
+                        android:visibility="gone"
                         android:background="@drawable/ic_notification" />
                 </LinearLayout>
 
@@ -59,6 +60,7 @@
                         android:background="@drawable/circle_notification"
                         android:gravity="left|bottom"
                         android:text=""
+                        android:visibility="gone"
                         android:textColor="@color/white"
                         android:textSize="@dimen/txtsize10" />
                 </LinearLayout>
@@ -78,17 +80,17 @@
 
                     <ImageButton
                         android:id="@+id/iBtnmessage"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="10dp"
-                        android:background="@drawable/ic_message" />
+                        android:background="@drawable/notif" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
+                    android:layout_gravity="bottom|right"
                     android:layout_marginRight="10dp"
                     android:orientation="horizontal" >
 
@@ -100,7 +102,7 @@
                         android:layout_marginLeft="1dp"
                         android:layout_marginRight="1dp"
                         android:background="@drawable/circle_notification"
-                        android:text=""
+                        android:text="no"
                         android:textColor="@color/white"
                         android:textSize="@dimen/txtsize10" />
                 </LinearLayout>
@@ -144,6 +146,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center_vertical"
+                android:visibility="gone"
                 android:background="@drawable/settings_icon" />
 
             <ImageButton
@@ -160,7 +163,7 @@
                 android:layout_height="25dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="15dp"
-                android:background="@drawable/private_chat_icon" />
+                android:background="@drawable/ic_message" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -191,6 +194,7 @@
             android:background="@color/orginal_hard_blue_color"
             android:choiceMode="singleChoice"
             android:divider="#000000"
+            android:scrollbars="none"
             android:dividerHeight="1dp" />
     </android.support.v4.widget.DrawerLayout>
 

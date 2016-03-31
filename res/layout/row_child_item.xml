@@ -36,7 +36,7 @@
                 android:layout_marginRight="20dp"
                 android:gravity="left|center_vertical"
                 android:text="Date"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/orginal_hard_blue_color" />
         </LinearLayout>
 
         <LinearLayout
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:text="Name"
-                android:textColor="@color/transparent" />
+                android:textColor="@color/orginal_hard_blue_color" />
         </LinearLayout>
 
         <RelativeLayout
@@ -63,8 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp" >
+            android:layout_centerVertical="true" >
 
             <ImageButton
                 android:id="@+id/icon_reply_comment"
@@ -76,15 +75,19 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <TextView
+    <com.project.mechanic.view.TextViewEx
         android:id="@+id/reply_txt_child"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
         android:gravity="right"
-        android:lineSpacingExtra="5dp"
-        android:text="Message"
-        android:textColor="@color/transparent" />
+        android:lineSpacingExtra="15dp"
+        android:text="description"
+        android:textColor="@color/orginal_hard_blue_color"
+        android:textIsSelectable="false"
+        android:textSize="13dp" />
 
 </LinearLayout>

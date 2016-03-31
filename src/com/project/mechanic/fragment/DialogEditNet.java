@@ -2,6 +2,7 @@ package com.project.mechanic.fragment;
 
 import com.project.mechanic.R;
 import com.project.mechanic.utility.Utility;
+import com.project.mechanic.view.TextViewEx;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class DialogEditNet extends Dialog {
@@ -45,6 +47,10 @@ public class DialogEditNet extends Dialog {
 		inTwiiter = (EditText) findViewById(R.id.dialogm3);
 		inGoogle = (EditText) findViewById(R.id.dialogm5);
 		inInstagram = (EditText) findViewById(R.id.dialogm6);
+		
+		TextView title = (TextView) findViewById(R.id.title);
+		
+		title.setTypeface(util.SetFontIranSans());
 
 		saveBtn = (ImageView) findViewById(R.id.savenetlink);
 

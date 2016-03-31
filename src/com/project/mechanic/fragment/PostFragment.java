@@ -67,6 +67,7 @@ import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.Utility;
+import com.project.mechanic.view.TextViewEx;
 
 public class PostFragment extends Fragment
 		implements AsyncInterface, GetAsyncInterface, CommInterface, VisitSaveInterface {
@@ -89,7 +90,8 @@ public class PostFragment extends Fragment
 	ExpandableCommentPost exadapter;
 	private Uri mImageCaptureUri;
 
-	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike, nametxt;
+	TextView titletxt, dateTopic, countComment, countLike, nametxt;
+	TextViewEx descriptiontxt;
 	LinearLayout /* addComment, */ likeTopic;
 	ImageButton sharebtn;
 	ImageView profileImg, icLike;
@@ -199,7 +201,7 @@ public class PostFragment extends Fragment
 		postImage = (ImageView) header.findViewById(R.id.postImage);
 
 		// titletxt = (TextView) header.findViewById(R.id.title_topic);
-		descriptiontxt = (TextView) header.findViewById(R.id.description_topic);
+		descriptiontxt = (TextViewEx) header.findViewById(R.id.description_topic);
 		dateTopic = (TextView) header.findViewById(R.id.date_cc);
 		countComment = (TextView) header.findViewById(R.id.numberOfCommentTopic);
 		countLike = (TextView) header.findViewById(R.id.txtNumofLike_CmtFroum);
@@ -239,6 +241,7 @@ public class PostFragment extends Fragment
 			userId = u.getId();
 
 			nametxt.setText(obj.getName());
+			nametxt.setTypeface(util.SetFontIranSans());
 			RelativeLayout rl = (RelativeLayout) header.findViewById(R.id.profileLinearcommenterinContinue);
 
 			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
@@ -259,7 +262,8 @@ public class PostFragment extends Fragment
 
 				try {
 					Bitmap bmp = BitmapFactory.decodeFile(obj.getImagePath2());
-					profileImg.setImageBitmap(Utility.getclip(bmp));
+					if (bmp != null)
+						profileImg.setImageBitmap(Utility.getclip(bmp));
 
 					profileImg.setLayoutParams(lp);
 				} catch (OutOfMemoryError e) {
@@ -274,7 +278,7 @@ public class PostFragment extends Fragment
 		// titletxt.setVisibility(View.VISIBLE);
 		// }
 		if (!topics.getDescription().isEmpty()) {
-			descriptiontxt.setText(topics.getDescription());
+			descriptiontxt.setText(topics.getDescription(), true);
 			descriptiontxt.setVisibility(View.VISIBLE);
 		}
 
@@ -738,8 +742,7 @@ public class PostFragment extends Fragment
 								.beginTransaction();
 						IntroductionFragment fragment = new IntroductionFragment();
 						fragment.setPostionListPost(positionPost);
-						
-						
+
 						Bundle bundle = new Bundle();
 						bundle.putString("Id", String.valueOf(objectId));
 						bundle.putInt("positionBrand", positionBrand);
@@ -747,7 +750,7 @@ public class PostFragment extends Fragment
 						// trans.addToBackStack("PostFramgnet");
 
 						trans.replace(R.id.content_frame, fragment);
-//						fragment.setPostionListPost(positionPost);
+						// fragment.setPostionListPost(positionPost);
 
 						trans.commit();
 
@@ -946,7 +949,7 @@ public class PostFragment extends Fragment
 		commentId = Id;
 	}
 
-	public void expanding(int groupPosition) {
+	public void expanding(int groupPosition, int childPosition, boolean TypeAction) {
 		adapter.open();
 
 		commentGroup = adapter.getCommentInPostbyPostid(postid, 0);
@@ -966,9 +969,31 @@ public class PostFragment extends Fragment
 		exadapter.notifyDataSetChanged();
 		exlistview.setAdapter(exadapter);
 		if (groupPosition <= mapCollection.size()) {
-			exlistview.expandGroup(groupPosition);
-			exlistview.setSelectedGroup(groupPosition);
 
+			if (TypeAction) {
+
+				exlistview.expandGroup(groupPosition);
+
+				if (childPosition != -1 && childPosition > 0)
+					exlistview.setSelectedChild(groupPosition, childPosition, true);
+				else
+					exlistview.setSelectedGroup(groupPosition);
+
+			} else {
+
+				if (childPosition != -1 && childPosition > 0) {
+
+					exlistview.expandGroup(groupPosition);
+					exlistview.setSelectedChild(groupPosition, childPosition - 1, true);
+
+				} else {
+					if (groupPosition > 0) {
+
+						exlistview.setSelectedGroup(groupPosition - 1);
+					}
+				}
+
+			}
 		}
 		adapter.close();
 
@@ -1031,9 +1056,11 @@ public class PostFragment extends Fragment
 						util.ReplyLayout(getActivity(), "", false);
 
 						if (commentId == 0)
-							expanding(exadapter.getGroupCount());
+							expanding(exadapter.getGroupCount(), -1, true);
 						else {
-							expanding(gp);
+							;
+
+							expanding(gp, exadapter.getChildrenCount(gp), true);
 
 						}
 

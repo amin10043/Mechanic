@@ -44,6 +44,7 @@ import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.SavingVisit;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
+import com.project.mechanic.view.TextViewEx;
 
 public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSaveInterface {
 
@@ -54,7 +55,8 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 	int favorite = 0;
 	int userTicket;
 	DataBaseAdapter dbAdapter;
-	TextView desc, name, email, phone, mobile, fax, day, date, countVisit;
+	TextView name, email, phone, mobile, fax, day, date, countVisit;
+	TextViewEx desc;
 	ImageView img, showname, showfax, showemail, showphone, showmobile;
 	Button btnreport, btnCancel;
 	List mylist;
@@ -93,7 +95,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 		share = (ImageButton) view.findViewById(R.id.imgShare_showAd);
 		like = (ImageButton) view.findViewById(R.id.imgLike_showAd);
 		edite = (ImageButton) view.findViewById(R.id.imgedite_showAd);
-		desc = (TextView) view.findViewById(R.id.fragment_showad_txt);
+		desc = (TextViewEx) view.findViewById(R.id.fragment_showad_txt);
 		name = (TextView) view.findViewById(R.id.fragment_showad_tx1);
 		email = (TextView) view.findViewById(R.id.fragment_showad_tx2);
 		phone = (TextView) view.findViewById(R.id.fragment_showad_tx3);
@@ -182,11 +184,11 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 		dbAdapter.close();
 		u = util.getCurrentUser();
 
-//		if (u == null) {
-//			like.setEnabled(false);
-//		} else if (userTicket == u.getId()) {
-//
-//		}
+		// if (u == null) {
+		// like.setEnabled(false);
+		// } else if (userTicket == u.getId()) {
+		//
+		// }
 
 		headerRelative = (RelativeLayout) view.findViewById(R.id.headerAnad);
 		headerParams = new RelativeLayout.LayoutParams(headerRelative.getLayoutParams());
@@ -197,6 +199,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 		img.setLayoutParams(headerParams);
 
 		final EditText DescriptionReport = (EditText) view.findViewById(R.id.descriptionEdit);
+		DescriptionReport.setTypeface(util.SetFontIranSans());
 		final RadioGroup rd = (RadioGroup) view.findViewById(R.id.rb1);
 
 		rd.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -293,7 +296,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 			}
 		});
 
-		desc.setText(t.getDesc());
+		desc.setText(t.getDesc() , true);
 		day.setText("" + t.getDay());
 		countVisit.setText(t.getCountView() + "");
 		date.setText(util.getPersianDate(t.getDate()));
@@ -441,7 +444,7 @@ public class ShowAdFragment extends Fragment implements AsyncInterface, VisitSav
 
 		dbAdapter.open();
 
-		desc.setText(t.getDesc());
+		desc.setText(t.getDesc() , true);
 		day.setText("" + t.getDay());
 		date.setText(util.getPersianDate(t.getDate()));
 

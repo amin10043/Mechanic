@@ -249,7 +249,8 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				}
 
 				namePage.setText(pd.getNameObject());
-
+				namePage.setTypeface(util.SetFontIranSans());
+				
 				TextView lable1 = (TextView) convertView.findViewById(R.id.lable_etebar);
 				TextView lable2 = (TextView) convertView.findViewById(R.id.lable2);
 
@@ -264,7 +265,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				if (commitDate != null && !"".equals(commitDate)) {
 					final SharedPreferences currentTime = context.getSharedPreferences("time", 0);
 
-					String time = currentTime.getString("time", "-1");
+					String time = currentTime.getString("time", "111111111111111111");
 
 					int diff = util.differentTwoDate(commitDate, time);
 
@@ -384,22 +385,24 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 				TextView txtdate = (TextView) convertView.findViewById(R.id.text_favorite_desc);
 				TextView txtName = (TextView) convertView.findViewById(R.id.row_favorite_title);
-//				TextView txtDesc = (TextView) convertView.findViewById(R.id.row_anad_txt2);
+				// TextView txtDesc = (TextView)
+				// convertView.findViewById(R.id.row_anad_txt2);
 				ImageView img2 = (ImageView) convertView.findViewById(R.id.row_favorite_img);
 				TextView address = (TextView) convertView.findViewById(R.id.address);
 
-//				ProgressBar LoadingProgress = (ProgressBar) convertView.findViewById(R.id.progressBar1);
-//				LoadingProgress.setVisibility(View.GONE);
+				// ProgressBar LoadingProgress = (ProgressBar)
+				// convertView.findViewById(R.id.progressBar1);
+				// LoadingProgress.setVisibility(View.GONE);
 
 				final PersonalData pd = (PersonalData) getChild(groupPosition, childPosition);
 
 				txtdate.setText(util.getPersianDate(pd.getDateTicket()));
 				txtName.setText(pd.getNameTicket());
-//				txtDesc.setText(pd.getDescriptonTicket());
+				// txtDesc.setText(pd.getDescriptonTicket());
 
 				if (pd.getSeenBefore() > 0) {
 					txtName.setTextColor(Color.GRAY);
-//					txtDesc.setTextColor(Color.GRAY);
+					// txtDesc.setTextColor(Color.GRAY);
 					txtdate.setTextColor(Color.GRAY);
 
 				}
@@ -408,7 +411,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 				}
 				if ("".equals(pd.getDescriptonTicket()) || pd.getDescriptonTicket() == null) {
-//					txtDesc.setVisibility(View.GONE);
+					// txtDesc.setVisibility(View.GONE);
 				}
 				ImageView imgBi = (ImageView) convertView.findViewById(R.id.aks_bi_etebar);
 
@@ -462,7 +465,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 					TicketBackground.setBackgroundColor(Color.WHITE);
 					if (pd.getSeenBefore() > 0) {
 						txtName.setTextColor(Color.GRAY);
-//						txtDesc.setTextColor(Color.GRAY);
+						// txtDesc.setTextColor(Color.GRAY);
 						txtdate.setTextColor(Color.GRAY);
 					}
 
@@ -475,14 +478,14 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 					if (pd.getSeenBefore() > 0) {
 						txtName.setTextColor(Color.WHITE);
-//						txtDesc.setTextColor(Color.WHITE);
+						// txtDesc.setTextColor(Color.WHITE);
 						txtdate.setTextColor(Color.WHITE);
 
 					}
 				}
 
 				txtName.setTypeface(util.SetFontCasablanca());
-//				txtDesc.setTypeface(util.SetFontCasablanca());
+				// txtDesc.setTypeface(util.SetFontCasablanca());
 
 				ImageView reaport = (ImageView) convertView.findViewById(R.id.reportImage);
 				if (isShowSettingBtn == true) {
@@ -964,6 +967,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 				}
 
 				namePage.setText(pd.getNameFollowObject());
+				namePage.setTypeface(util.SetFontIranSans());
 
 				TextView baghiMandeh = (TextView) convertView.findViewById(R.id.dayBaghiMandeh); // modate
 																									// baghimande
@@ -1295,8 +1299,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 		if (util.getCurrentUser() != null)
 			titleGroup.setText(parentItems.get(groupPosition));
 		titleGroup.setTypeface(util.SetFontCasablanca());
-		
-		
+
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override

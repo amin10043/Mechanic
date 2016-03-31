@@ -24,6 +24,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
@@ -47,6 +48,7 @@ import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
+import com.project.mechanic.view.TextViewEx;
 
 public class ExpandableCommentPost extends BaseExpandableListAdapter implements AsyncInterface {
 
@@ -77,6 +79,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 	Post po;
 	com.project.mechanic.entity.Object object;
 	int lastExpandedPosition = 0;
+	int posGroup, posChild = -1;
 
 	public ExpandableCommentPost(Context context, ArrayList<CommentInPost> laptops,
 			Map<CommentInPost, List<CommentInPost>> mapCollection, PostFragment f, int postID) {
@@ -111,7 +114,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 			convertView = inflater.inflate(R.layout.row_child_item, null);
 		}
 
-		TextView mainReply = (TextView) convertView.findViewById(R.id.reply_txt_child);
+		TextViewEx mainReply = (TextViewEx) convertView.findViewById(R.id.reply_txt_child);
 
 		TextView dateReply = (TextView) convertView.findViewById(R.id.date_replyed);
 		TextView nameReplyer = (TextView) convertView.findViewById(R.id.name_replyed);
@@ -128,11 +131,12 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 		userId = y.getId();
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.main_icon_reply);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
-
+		rl.setPadding(10, 10, 10, 10);
 		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 		// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		// lp.setMargins(5, 5, 5, 5);
+		// lp.setMargins(10, 10, 10, 10);
+		// ReplyerPic.setScaleType(ScaleType.FIT_XY);
 		ReplyerPic.setLayoutParams(lp);
 
 		if (isAdmin(reply.getUserId()) == true) {
@@ -186,6 +190,8 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 				}
 
 			}
+
+			nameReplyer.setTypeface(util.SetFontIranSans());
 		}
 
 		reportReply.setOnClickListener(new OnClickListener() {
@@ -257,6 +263,8 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 						if (item.getTitle().equals("حذف")) {
 							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender) {
+								posGroup = groupPosition;
+								posChild = childPosition;
 								deleteItems(itemId);
 								typeReport = false;
 							} else {
@@ -306,7 +314,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 			}
 		});
-		mainReply.setText(reply.getDesc());
+		mainReply.setText(reply.getDesc(), true);
 		mainReply.setTypeface(util.SetFontIranSans());
 		dateReply.setText(util.getPersianDate(reply.getDate()));
 
@@ -347,7 +355,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 		}
 
 		// start find view
-		final TextView mainComment = (TextView) convertView.findViewById(R.id.peygham);
+		final TextViewEx mainComment = (TextViewEx) convertView.findViewById(R.id.peygham);
 
 		TextView nameCommenter = (TextView) convertView.findViewById(R.id.name_froum_profile);
 
@@ -397,7 +405,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 		adapter.close();
 
-		mainComment.setText(comment.getDesc());
+		mainComment.setText(comment.getDesc(), true);
 		dateCommenter.setText(util.getPersianDate(comment.getDate()));
 		// if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) == 0) {
 		// LinearLayout lrr = (LinearLayout) convertView
@@ -453,15 +461,17 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 				}
 			}
+			
+			nameCommenter.setTypeface(util.SetFontIranSans());
 
 		}
 		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.icon_header_comment_froum);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
-
+		rl.setPadding(10, 10, 10, 10);
 		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
-		// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		// lp.setMargins(5, 5, 5, 5);
+//		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//		lp.setMargins(10, 10, 10, 10);
 		profileImage.setLayoutParams(lp);
 		profileImage.setOnClickListener(new View.OnClickListener() {
 
@@ -783,9 +793,10 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 				if (util.getCurrentUser() != null) {
 
-//					adapter.open();
-//					int countReply = adapter.getCountOfReplyInPost(postID, comment.getId());
-//					adapter.close();
+					// adapter.open();
+					// int countReply = adapter.getCountOfReplyInPost(postID,
+					// comment.getId());
+					// adapter.close();
 
 					if (util.getCurrentUser().getId() == userIdsender || isAdmin(util.getCurrentUser().getId())) {
 
@@ -835,6 +846,8 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 
 						if (item.getTitle().equals("حذف")) {
 							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender) {
+								posGroup = groupPosition;
+
 								deleteItems(itemId);
 								typeReport = true;
 							} else {
@@ -961,11 +974,13 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 				} else {
 					adapter.deleteOnlyReplyPost(itemId);
 
+					// f.expanding(groupPosition);
+
 				}
 
 				adapter.close();
 
-				f.updateList();
+				f.expanding(posGroup, posChild, false);
 
 			} else {
 

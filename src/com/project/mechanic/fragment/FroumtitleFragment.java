@@ -97,7 +97,8 @@ public class FroumtitleFragment extends Fragment
 	ImageView send, close;
 
 	Animation enterFromDown, exitToDown;
-	int positionFroum = 0;
+	// int positionFroum = 0;
+	int positionListFroum = 0;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -105,17 +106,17 @@ public class FroumtitleFragment extends Fragment
 			Bundle savedInstanceState) {
 
 		view = inflater.inflate(R.layout.fragment_titlefrm, null);
-		if (getArguments() !=null)
-			positionFroum = getArguments().getInt("positionFroum");
-		
+		// if (getArguments() != null)
+		// positionFroum = getArguments().getInt("positionFroum");
+
 		init();
 
 		fillListView();
 
 		collectUsersDontExist();
-
+		//
 		collectUnicUserIds();
-
+		//
 		getMissedItemsFormServer();
 
 		// serverDate();
@@ -143,6 +144,11 @@ public class FroumtitleFragment extends Fragment
 		return view;
 	}
 
+	public void setPostionListFroum(int pos) {
+		positionListFroum = pos;
+
+	}
+
 	public void fillListView() {
 
 		mdb.open();
@@ -153,7 +159,7 @@ public class FroumtitleFragment extends Fragment
 				FroumtitleFragment.this);
 		ListAdapter.notifyDataSetChanged();
 		lst.setAdapter(ListAdapter);
-		lst.setSelection(positionFroum);
+		lst.setSelection(positionListFroum);
 
 		LoadMoreFooter.setVisibility(View.GONE);
 
@@ -270,7 +276,8 @@ public class FroumtitleFragment extends Fragment
 				mdb.open();
 				mdb.insertFroumtitletoDb(id, titleFroum, descriptionFroum, util.getCurrentUser().getId(), severDate);
 				mdb.close();
-
+				
+				setPostionListFroum(0);
 				fillListView();
 
 			} catch (NumberFormatException ex) {
@@ -392,7 +399,7 @@ public class FroumtitleFragment extends Fragment
 		mdb.close();
 
 		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
-//		lst.addFooterView(LoadMoreFooter);
+		// lst.addFooterView(LoadMoreFooter);
 		LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 		titleFroumEditText = (EditText) view.findViewById(R.id.txtTitleP);
@@ -406,6 +413,9 @@ public class FroumtitleFragment extends Fragment
 
 		send = (ImageView) view.findViewById(R.id.createDialogPage);
 		close = (ImageView) view.findViewById(R.id.delete);
+		
+		titleFroumEditText.setTypeface(util.SetFontIranSans());
+		descriptionFroumEditText.setTypeface(util.SetFontIranSans());
 
 	}
 
@@ -479,20 +489,25 @@ public class FroumtitleFragment extends Fragment
 
 			@Override
 			public void onRefresh() {
-				if (getActivity() != null) {
-
-					update = new Updating(getActivity());
-					update.delegate = FroumtitleFragment.this;
-					String[] params = new String[4];
-					params[0] = "Froum";
-					params[1] = setting.getServerDate_Start_Froum() != null ? setting.getServerDate_Start_Froum() : "";
-					params[2] = setting.getServerDate_End_Froum() != null ? setting.getServerDate_End_Froum() : "";
-					params[3] = "1";
-					update.execute(params);
-
-					IsNewFroum = true;
-
-				}
+				// if (mylist.size() > 0) {
+				// if (getActivity() != null) {
+				//
+				// update = new Updating(getActivity());
+				// update.delegate = FroumtitleFragment.this;
+				// String[] params = new String[4];
+				// params[0] = "Froum";
+				// params[1] = setting.getServerDate_Start_Froum() != null ?
+				// setting.getServerDate_Start_Froum()
+				// : "";
+				// params[2] = setting.getServerDate_End_Froum() != null ?
+				// setting.getServerDate_End_Froum() : "";
+				// params[3] = "1";
+				// update.execute(params);
+				//
+				// IsNewFroum = true;
+				// }
+				//
+				// }
 			}
 		});
 		swipeLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
@@ -525,22 +540,26 @@ public class FroumtitleFragment extends Fragment
 
 				if (lastInScreen == totalItemCount) {
 
-//					LoadMoreFooter.setVisibility(View.VISIBLE);
+					// LoadMoreFooter.setVisibility(View.VISIBLE);
 
-					if (getActivity() != null) {
-
-						update = new Updating(getActivity());
-						update.delegate = FroumtitleFragment.this;
-						String[] params = new String[4];
-						params[0] = "Froum";
-						params[1] = setting.getServerDate_Start_Froum() != null ? setting.getServerDate_Start_Froum()
-								: "";
-						params[2] = setting.getServerDate_End_Froum() != null ? setting.getServerDate_End_Froum() : "";
-						params[3] = "0";
-						update.execute(params);
-						IsNewFroum = true;
-
-					}
+					// if (mylist.size() > 0) {
+					// if (getActivity() != null) {
+					//
+					// update = new Updating(getActivity());
+					// update.delegate = FroumtitleFragment.this;
+					// String[] params = new String[4];
+					// params[0] = "Froum";
+					// params[1] = setting.getServerDate_Start_Froum() != null
+					// ? setting.getServerDate_Start_Froum() : "";
+					// params[2] = setting.getServerDate_End_Froum() != null ?
+					// setting.getServerDate_End_Froum()
+					// : "";
+					// params[3] = "0";
+					// update.execute(params);
+					// IsNewFroum = true;
+					//
+					// }
+					// }
 				}
 
 			}
@@ -583,7 +602,7 @@ public class FroumtitleFragment extends Fragment
 
 				bottomSheet.setVisibility(View.GONE);
 				action.setVisibility(View.VISIBLE);
-				
+
 				titleFroumEditText.setText("");
 				descriptionFroumEditText.setText("");
 			}

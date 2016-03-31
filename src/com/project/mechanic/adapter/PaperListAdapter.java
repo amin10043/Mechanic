@@ -33,19 +33,14 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.CommentInPaper;
-import com.project.mechanic.entity.Froum;
-import com.project.mechanic.entity.Paper;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.DialogLongClick;
-import com.project.mechanic.fragment.DisplayPersonalInformationFragment;
 import com.project.mechanic.fragment.InformationUser;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.inter.AsyncInterface;
-import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
-import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.utility.Utility;
+import com.project.mechanic.view.TextViewEx;
 
 public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements AsyncInterface {
 
@@ -70,7 +65,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements As
 		this.list = objects;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
-		this.paperfragment = f;
+		paperfragment= f;
 
 	}
 
@@ -85,7 +80,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements As
 		convertView = myInflater.inflate(R.layout.row_paper, parent, false);
 		adapter = new DataBaseAdapter(context);
 
-		TextView txtcmt = (TextView) convertView.findViewById(R.id.reply_txt_child);
+		TextViewEx txtcmt = (TextViewEx) convertView.findViewById(R.id.reply_txt_child);
 		TextView txtuser = (TextView) convertView.findViewById(R.id.name_replyed);
 		TextView txtdate = (TextView) convertView.findViewById(R.id.date_replyed);
 		ImageButton profilepic = (ImageButton) convertView.findViewById(R.id.icon_reply_comment);
@@ -171,7 +166,8 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements As
 
 							if (util.getCurrentUser() != null)
 
-								util.reportAbuse(userIdsender, StaticValues.TypeReportCommentPaper, itemId, content, cn.getPaperid(), position);
+								util.reportAbuse(userIdsender, StaticValues.TypeReportCommentPaper, itemId, content,
+										cn.getPaperid(), position);
 							else
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
@@ -229,8 +225,10 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements As
 
 			}
 		});
-		txtcmt.setText(comment.getDescription());
+		txtcmt.setText(comment.getDescription(), true);
+		txtcmt.setTypeface(util.SetFontIranSans());
 		txtuser.setText(user.getName());
+		txtuser.setTypeface(util.SetFontIranSans());
 		txtdate.setText(util.getPersianDate(comment.getDatetime()));
 		return convertView;
 	}
@@ -277,7 +275,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements As
 		if (ringProgressDialog != null) {
 			ringProgressDialog.dismiss();
 		}
-		paperfragment.updateView();
+		paperfragment.FillListView();
 
 	}
 }

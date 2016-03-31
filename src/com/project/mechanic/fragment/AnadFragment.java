@@ -21,20 +21,24 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.ListViewAutoScrollHelper;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -42,6 +46,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +59,7 @@ import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Anad;
+import com.project.mechanic.entity.ExtraSettings;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.entity.Users;
@@ -69,12 +75,12 @@ import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.service.UpdatingVisit;
 import com.project.mechanic.utility.Utility;
 
-@SuppressLint("HandlerLeak")
+@SuppressLint({ "HandlerLeak", "NewApi" })
 public class AnadFragment extends Fragment
 		implements AsyncInterface, GetAsyncInterface, CommInterface, AsyncInterfaceVisit {
 
 	DataBaseAdapter dbAdapter;
-	View rootView/*, LoadMoreFooter*/;
+	View rootView/* , LoadMoreFooter */;
 	List<Ticket> ticketList;
 	List<Anad> anadlist;
 	private DialogAnad dialog;
@@ -98,7 +104,9 @@ public class AnadFragment extends Fragment
 	private TimerTask clickSchedule;
 	private TimerTask scrollerSchedule;
 	private TimerTask faceAnimationSchedule;
-	private int scrollPos = 0;
+	public int scrollPos = 0;
+	public int scrollViewHeight = 0;
+
 	private Boolean isFaceDown = true;
 	private Timer clickTimer = null;
 	private Timer faceTimer = null;
@@ -143,6 +151,10 @@ public class AnadFragment extends Fragment
 	List<Ticket> correctTicket = new ArrayList<Ticket>();
 	TextView countAnad;
 
+	int numberImageShow;
+
+	RelativeLayout bottomSheet;
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -179,7 +191,81 @@ public class AnadFragment extends Fragment
 
 		totalMethodeScroll();
 
+		saveVisitAnad();
+		
+		bottomSheetView();
+
 		return rootView;
+	}
+
+	private void bottomSheetView() {
+
+		TextView txt1 = (TextView) rootView.findViewById(R.id.txt1);
+		TextView txt2 = (TextView) rootView.findViewById(R.id.txt2);
+		TextView txt3 = (TextView) rootView.findViewById(R.id.txt3);
+		TextView txt4 = (TextView) rootView.findViewById(R.id.txt4);
+
+		TextView lable = (TextView) rootView.findViewById(R.id.better);
+
+		ImageView accept = (ImageView) rootView.findViewById(R.id.createDialogPage);
+		ImageView close = (ImageView) rootView.findViewById(R.id.delete);
+
+		txt1.setTypeface(util.SetFontIranSans());
+		txt2.setTypeface(util.SetFontIranSans());
+		txt3.setTypeface(util.SetFontIranSans());
+		txt4.setTypeface(util.SetFontIranSans());
+		lable.setTypeface(util.SetFontIranSans());
+
+		txt1.setText("1-انتخاب عکس جهت آگهی باید مناسب و هماهنگ با فعالیت شما باشد");
+		txt2.setText("2-سایر کاربران با لمس کردن آگهی مربوط به شما مستقیما به صفحه شما در این نرم افزار هدایت می شوند");
+
+		if (provinceId > 0) {
+			txt3.setText("3-این آگهی در 6 تالار مربوط به  این استان همزمان اجرا می شود");
+			txt4.setText("4-هزینه این آگهی به مبلغ 5.000.000 ریال و از تاریخ ثبت به مدت  یک سال می باشد");
+
+		} else {
+			txt3.setText("3-این آگهی در 6 تالار کشوری همزمان اجرا می شود");
+			txt4.setText("4-هزینه این آگهی به مبلغ 20.000.000 ریال و از تاریخ ثبت به مدت  یک سال می باشد");
+
+		}
+
+		accept.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
+				show_pay_fragment fragment = new show_pay_fragment();
+
+				Bundle bundle = new Bundle();
+				bundle.putString("AnadId", String.valueOf(anadId));
+				bundle.putString("TypeId", String.valueOf(ticketTypeId));
+
+				fragment.setArguments(bundle);
+
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+				
+				bottomSheet.setVisibility(View.GONE);
+
+
+			}
+		});
+
+		close.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				
+				Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.up_from_bottom);
+				bottomSheet.startAnimation(anim);
+
+				bottomSheet.setVisibility(View.GONE);
+
+			}
+		});
+
 	}
 
 	public List<ImageView> addImagesToView() {
@@ -213,6 +299,7 @@ public class AnadFragment extends Fragment
 			imageButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
+
 					int position = (Integer) arg0.getTag();
 					if (isFaceDown) {
 						if (clickTimer != null) {
@@ -247,9 +334,19 @@ public class AnadFragment extends Fragment
 								return;
 							} else {
 
-								dialog1 = new DialogAnadimg(getActivity(), R.layout.dialog_imganad, AnadFragment.this,
-										ticketTypeId, provinceId, t.getId());
-								util.setSizeDialog(dialog1);
+								// dialog1 = new DialogAnadimg(getActivity(),
+								// R.layout.dialog_imganad, AnadFragment.this,
+								// ticketTypeId, provinceId, t.getId());
+								// util.setSizeDialog(dialog1);
+
+								bottomSheet.setVisibility(View.VISIBLE);
+//								createItem.setVisibility(View.INVISIBLE);
+
+								Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.down_from_top);
+								bottomSheet.startAnimation(anim);
+
+								savePosition(provinceId, false);
+
 							}
 						} else {
 							Toast.makeText(getActivity(), " عکس قبلا انتخاب شده", Toast.LENGTH_LONG).show();
@@ -264,6 +361,9 @@ public class AnadFragment extends Fragment
 							trans.replace(R.id.content_frame, fragment);
 							trans.addToBackStack(null);
 							trans.commit();
+
+							savePosition(provinceId, false);
+
 						}
 
 					}
@@ -337,7 +437,7 @@ public class AnadFragment extends Fragment
 			// if (mylist != null && !mylist.isEmpty())
 			listviewanad.setAdapter(ListAdapter);
 			getAnadImageFromServer(counterAnad);
-//			LoadMoreFooter.setVisibility(View.INVISIBLE);
+			// LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 		}
 	}
@@ -366,7 +466,7 @@ public class AnadFragment extends Fragment
 				maps.put("fromDate", anadImageDate);
 				update.execute(maps);
 				typeItem = "Anad";
-//				LoadMoreFooter.setVisibility(View.INVISIBLE);
+				// LoadMoreFooter.setVisibility(View.INVISIBLE);
 			}
 
 		} else {
@@ -392,7 +492,11 @@ public class AnadFragment extends Fragment
 
 		verticalScrollview = (ScrollView) rootView.findViewById(R.id.vertical_scrollview_id);
 
+		// verticalScrollview.setVerticalScrollbarPosition(500);
+
 		verticalOuterLayout = (LinearLayout) rootView.findViewById(R.id.vertical_outer_layout_id);
+
+		bottomSheet = (RelativeLayout)rootView.findViewById(R.id.bottmSheet);
 	}
 
 	private void currentTime() {
@@ -435,9 +539,11 @@ public class AnadFragment extends Fragment
 				AnadFragment.this, true, time, 1, ticketTypeId);
 		listviewanad.setAdapter(ListAdapter);
 
-//		LoadMoreFooter = getActivity().getLayoutInflater().inflate(R.layout.load_more_footer, null);
-//		listviewanad.addFooterView(LoadMoreFooter);
-//		LoadMoreFooter.setVisibility(View.INVISIBLE);
+		// LoadMoreFooter =
+		// getActivity().getLayoutInflater().inflate(R.layout.load_more_footer,
+		// null);
+		// listviewanad.addFooterView(LoadMoreFooter);
+		// LoadMoreFooter.setVisibility(View.INVISIBLE);
 	}
 
 	private void createTicket() {
@@ -455,26 +561,23 @@ public class AnadFragment extends Fragment
 						.beginTransaction();
 				NewTicketFragment fragment = new NewTicketFragment();
 				Bundle bundle = new Bundle();
-				
+
 				bundle.putInt("TypeId", ticketTypeId);
 				bundle.putInt("ProvinceId", provinceId);
 				trans.setCustomAnimations(R.anim.enter_animation, R.anim.exit_animation);
-				
+
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.addToBackStack(null);
-				
+
 				trans.commit();
 
-				 dialog = new DialogAnad(getActivity(),
-				 R.layout.dialog_addanad, AnadFragment.this, ticketTypeId,
-				 provinceId);
-				// // dialog.setTitle(R.string.txtanad);
-				// dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-				//
-				// dialog.show();
-				// imageView = (ImageView)
-				// dialog.findViewById(R.id.dialog_img1);
+				// dialog = new DialogAnad(getActivity(),
+				// R.layout.dialog_addanad, AnadFragment.this, ticketTypeId,
+				// provinceId);
+
+				savePosition(provinceId, false);
+
 			}
 		});
 
@@ -546,7 +649,7 @@ public class AnadFragment extends Fragment
 
 					if (lastInScreen == totalItemCount) {
 
-//						LoadMoreFooter.setVisibility(View.VISIBLE);
+						// LoadMoreFooter.setVisibility(View.VISIBLE);
 
 						if (getActivity() != null) {
 
@@ -571,6 +674,7 @@ public class AnadFragment extends Fragment
 		}
 		ViewTreeObserver vto = verticalOuterLayout.getViewTreeObserver();
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
 			@SuppressWarnings("deprecation")
 			@Override
 			public void onGlobalLayout() {
@@ -578,6 +682,7 @@ public class AnadFragment extends Fragment
 				getScrollMaxAmount();
 				startAutoScrolling();
 			}
+
 		});
 	}
 
@@ -640,6 +745,11 @@ public class AnadFragment extends Fragment
 		int actualWidth = (verticalOuterLayout.getMeasuredHeight() /*- (256 * 3)*/);
 
 		verticalScrollMax = actualWidth;
+
+		scrollPos = returnSavedPosition();
+
+		verticalScrollview.scrollTo(0, scrollPos);
+
 	}
 
 	public void startAutoScrolling() {
@@ -669,17 +779,31 @@ public class AnadFragment extends Fragment
 	public void moveScrollView() {
 
 		scrollPos = (int) (verticalScrollview.getScrollY() + 1.0);
+		scrollViewHeight = verticalScrollview.getHeight();
 
-		if (scrollPos >= verticalScrollMax) {
-			scrollPos = 0;
+		if (imageButton.getHeight() > 0) {
+
+			int space = scrollViewHeight % imageButton.getHeight();
+
+			if (space > 0)
+				count = ((scrollPos + scrollViewHeight - space) / imageButton.getHeight()) + 1;
+			else
+				count = ((scrollPos + scrollViewHeight) / imageButton.getHeight());
+
+			if ((scrollPos + scrollViewHeight) == verticalScrollMax) {
+
+				scrollPos = 0;
+				savePosition(provinceId, true);
+				;
+			}
+
 		}
-		if (imageButton.getHeight() > 0)
-			count = scrollPos / (imageButton.getHeight());
 
 		if (anadlist.size() > 0)
 			countAnad.setText(count + " / " + anadlist.size());
 
 		verticalScrollview.scrollTo(0, scrollPos);
+
 	}
 
 	public void stopAutoScrolling() {
@@ -806,26 +930,26 @@ public class AnadFragment extends Fragment
 
 	@Override
 	public void processFinish(String output) {
-//		LoadMoreFooter.setVisibility(View.INVISIBLE);
+		// LoadMoreFooter.setVisibility(View.INVISIBLE);
 		if (output.contains("anyType")) {
-//			LoadMoreFooter.setVisibility(View.INVISIBLE);
+			// LoadMoreFooter.setVisibility(View.INVISIBLE);
 		}
 		if (swipeLayout != null) {
 			swipeLayout.setRefreshing(false);
-//			LoadMoreFooter.setVisibility(View.INVISIBLE);
+			// LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 		}
 
 		if (output.length() == 18 && code == 100) {
 			serverDate = output;
-//			LoadMoreFooter.setVisibility(View.INVISIBLE);
+			// LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 			getTicketImageFromServer(ticketList);
 		}
 
 		if (output != null && !(output.contains("Exception") || output.contains("java") || output.contains("SoapFault")
 				|| output.contains("anyType")) && code == -1) {
-//			LoadMoreFooter.setVisibility(View.INVISIBLE);
+			// LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 			util.parseQuery(output);
 			ticketList.clear();
@@ -838,19 +962,112 @@ public class AnadFragment extends Fragment
 					AnadFragment.this, false, time, 1, ticketTypeId);
 
 			listviewanad.setAdapter(ListAdapter);
-//			LoadMoreFooter.setVisibility(View.INVISIBLE);
+			// LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 			if (FindPosition == false) {
 				listviewanad.setSelection(beforePosition);
-//				LoadMoreFooter.setVisibility(View.INVISIBLE);
+				// LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 			}
-//			LoadMoreFooter.setVisibility(View.INVISIBLE);
+			// LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 			ListAdapter.notifyDataSetChanged();
-//			LoadMoreFooter.setVisibility(View.INVISIBLE);
+			// LoadMoreFooter.setVisibility(View.INVISIBLE);
 
 		}
+	}
+
+	private void saveVisitAnad() {
+
+		String savedValue = "";
+
+		if (currentUser != null) {
+
+			savedValue = currentUser.getId() + "*";
+
+			if (anadlist.size() > 0) {
+
+				for (int z = 0; z < anadlist.size(); z++) {
+
+					Anad a = anadlist.get(z);
+
+					if (a != null) {
+
+						int id = a.getObjectId();
+
+						if (id != 0)
+							savedValue += id + "-";
+
+					}
+
+				}
+
+			}
+		}
+
+	}
+
+	@Override
+	public void onStop() {
+
+		savePosition(provinceId, false);
+
+		super.onStop();
+	}
+
+	@Override
+	public void onResume() {
+
+		getView().setFocusableInTouchMode(true);
+		getView().requestFocus();
+		getView().setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+				if (event.getAction() == KeyEvent.ACTION_DOWN) {
+
+					if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+						savePosition(provinceId, false);
+
+						FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+								.beginTransaction();
+
+						if (provinceId == 0) {
+
+							AdvertisementFragment fragment = new AdvertisementFragment();
+							// Bundle bundle = new Bundle();
+							// bundle.putString("Id",
+							// String.valueOf(object.getParentId()));
+							// bundle.putInt("position", positionBrand);
+							// fragment.setArguments(bundle);
+							trans.replace(R.id.content_frame, fragment);
+
+							trans.commit();
+
+						} else {
+
+							AdvertisementFragment fragment = new AdvertisementFragment();
+							Bundle bundle = new Bundle();
+							bundle.putString("provinceId", String.valueOf(provinceId));
+							// bundle.putInt("position", positionBrand);
+							// fragment.setArguments(bundle);
+							trans.replace(R.id.content_frame, fragment);
+
+							trans.commit();
+
+						}
+
+						return true;
+					}
+
+				}
+
+				return false;
+			}
+		});
+		super.onResume();
 	}
 
 	@Override
@@ -859,88 +1076,10 @@ public class AnadFragment extends Fragment
 		if (typeItem.equals("Anad")) {
 
 			if (output != null) {
-
-				// boolean IsEmptyByte = util.IsEmptyByteArrayImage(output);
-				// if (IsEmptyByte == false) {
-
 				util.CreateFile(output, anadItem.getId(), "Mechanical", "Anad", "anad", "Anad");
-				// dbAdapter.updateImageAnad(anad, output);
-
-				// ServiceComm serv = new ServiceComm(getActivity());
-				//
-				// serv.delegate = AnadFragment.this;
-				// Map<String, String> items = new LinkedHashMap<String,
-				// String>();
-				// items.put("tableName", "getAnadImageDate");
-				// items.put("Id", String.valueOf(anadItem.getId()));
-				// serv.execute(items);
-
-				////////////////////////////////////////////////////////////////
-
-				// dbAdapter.open();
-				//
-				// anadlist = dbAdapter.getAnadtByTypeIdProId(provinceId);
-				// dbAdapter.close();
-				//
-				// anadItem = anadlist.get(counterAnad);
-
-				// boolean allowShow = true;
-				//
-				// if (anadItem.getDate() == null)
-				// anadItem.setDate("20150000000000");
-				//
-				// int AnadYear =
-				// Integer.valueOf(anadItem.getDate().substring(0, 4));
-				// int thisYear = Integer.valueOf(serverDate.substring(0, 4));
-				//
-				// if (thisYear < AnadYear + 1)
-				// allowShow = true;
-				// else
-				// allowShow = false;
-				//
-				// if (allowShow == false) {
-				// Toast.makeText(getActivity(), " آگهی شماره " +
-				// anadItem.getDate() + "منقضی شده است", 0).show();
-				// dbAdapter.open();
-				// dbAdapter.UpdateAnadToDb(anadItem.getId(), -1, "", -1,
-				// provinceId);
-				// dbAdapter.close();
-				//
-				// } else {
-
-				// if (anadItem.getImagePath() != null) {
-				//
-				// if (getActivity() != null) {
-				// imageButton = new ImageView(getActivity());
-				// imageButton.setImageBitmap(BitmapFactory.decodeFile(anadItem.getImagePath()));
-				// }
-				// } else {
-				//
-				// if (getActivity() != null) {
-
-				// imageButton = new ImageView(getActivity());
-				// Drawable image =
-				// this.getResources().getDrawable(R.drawable.propagand);
-				// imageButton.setImageDrawable(image);
-				// }
-				// }
-
-				// imageButton.setLayoutParams(layoutParams);
-				// imageButton.setScaleType(ScaleType.FIT_XY);
-				// verticalOuterLayout.addView(imageButton);
-
-				// ImageCode++;
-				// icode++;
-				counterAnad++;
-				getAnadImageFromServer(counterAnad);
-
-				// }
-				/////////////////////////////////////////////////////////////
-
-				// typeItem = "Anad";
-
-				// }
 			}
+			counterAnad++;
+			getAnadImageFromServer(counterAnad);
 
 		}
 
@@ -1103,4 +1242,74 @@ public class AnadFragment extends Fragment
 
 	}
 
+	public void savePosition(int provinceId, boolean flag) {
+
+		String[] positionArray = ArrayPosition();
+
+		String p = "";
+
+		if (flag == false) {
+
+			for (int x = 0; x < positionArray.length; x++)
+				if (x == provinceId) {
+					positionArray[x] = String.valueOf(scrollPos);
+					break;
+				}
+
+		} else {
+			for (int x = 0; x < positionArray.length; x++)
+				if (x == provinceId) {
+					positionArray[x] = String.valueOf(0);
+					break;
+				}
+		}
+
+		for (int a = 0; a < positionArray.length; a++)
+			p += positionArray[a] + "-";
+
+		dbAdapter.open();
+		dbAdapter.updatePositionScrollAnad(p);
+		dbAdapter.close();
+
+	}
+
+	public int returnSavedPosition() {
+
+		ExtraSettings extraSettings = null;
+		String[] positionArray = new String[32];
+
+		dbAdapter.open();
+		extraSettings = dbAdapter.getPositionScroll();
+		dbAdapter.close();
+
+		String tempPosition = extraSettings.getValue();
+
+		positionArray = tempPosition.split("-");
+
+		if (positionArray[provinceId] != null && !positionArray[provinceId].equals("-")) {
+
+			scrollPos = Integer.valueOf(positionArray[provinceId]);
+		} else
+			scrollPos = 0;
+
+		return scrollPos;
+
+	}
+
+	public String[] ArrayPosition() {
+
+		ExtraSettings extraSettings = null;
+		String[] positionArray = new String[32];
+
+		dbAdapter.open();
+		extraSettings = dbAdapter.getPositionScroll();
+		dbAdapter.close();
+
+		String tempPosition = extraSettings.getValue();
+
+		positionArray = tempPosition.split("-");
+
+		return positionArray;
+
+	}
 }

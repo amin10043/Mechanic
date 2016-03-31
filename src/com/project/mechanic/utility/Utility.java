@@ -69,11 +69,13 @@ import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -358,31 +360,24 @@ public class Utility implements AsyncInterface {
 	}
 
 	public void setNoti(Activity a, int userId) {
+
+		TextView txtcm = (TextView) a.findViewById(R.id.txtcm);
+
 		adapter.open();
 		final int r = adapter.NumOfNewCmtInFroum(userId);
 		int r1 = adapter.NumOfNewCmtInObject(userId);
 		int r2 = adapter.NumOfNewCmtInPaper(userId);
 		int r3 = r + r1 + r2;
-		if (r3 == 0) {
-
-			TextView txtcm = (TextView) a.findViewById(R.id.txtcm);
-			txtcm.setVisibility(View.GONE);
-		} else {
-			TextView txtcm = (TextView) a.findViewById(R.id.txtcm);
-			txtcm.setText(String.valueOf(r3));
-
-		}
 
 		int t = adapter.NumOfNewLikeInObject(userId);
 		int t1 = adapter.NumOfNewLikeInFroum(userId);
 		int t2 = adapter.NumOfNewLikeInPaper(userId);
 		int t3 = t + t1 + t2;
-		if (t3 == 0) {
-			TextView txtlike = (TextView) a.findViewById(R.id.txtlike);
-			txtlike.setVisibility(View.GONE);
+
+		if (r3 + t3 == 0) {
+			txtcm.setVisibility(View.GONE);
 		} else {
-			TextView txtlike = (TextView) a.findViewById(R.id.txtlike);
-			txtlike.setText(String.valueOf(t3));
+			txtcm.setText(r3 + t3 + "");
 		}
 
 		adapter.close();
@@ -1196,7 +1191,7 @@ public class Utility implements AsyncInterface {
 	public void CopyToClipboard(String value) {
 
 		ClipboardManager clipMan = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-		value = "http://www.google.com\n" + value;
+		// value = "http://www.google.com\n" + value;
 
 		Toast.makeText(context, value, Toast.LENGTH_SHORT).show();
 
@@ -1350,6 +1345,29 @@ public class Utility implements AsyncInterface {
 		dialog.show();
 
 	}
+	
+	public void notificationDialogAnimation(Dialog dialog , int margingTop) {
+
+		// WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+		// lp.copyFrom(dialog.getWindow().getAttributes());
+		// lp.width = (int) 1000;
+		// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+		
+		Window window = dialog.getWindow();
+		WindowManager.LayoutParams wlp = window.getAttributes();
+
+		wlp.gravity = Gravity.TOP;
+		wlp.y=margingTop;
+		wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+		window.setAttributes(wlp);
+
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.BLACK));
+
+		dialog.getWindow().getAttributes().windowAnimations = R.style.notificationAnimation;
+
+		dialog.show();
+
+	}
 
 	public List<String> spilitDateTime(String date) {
 
@@ -1384,12 +1402,12 @@ public class Utility implements AsyncInterface {
 
 	}
 
-	public boolean checkError(String error) {
+	public boolean checkError(String output) {
 
 		boolean isError = true;
 
-		if (!"".equals(error) && error != null
-				&& !(error.contains("Exception") || error.contains("java") || error.contains("soap")))
+		if (!"".equals(output) && output != null
+				&& !(output.contains("Exception") || output.contains("java") || output.contains("soap")))
 			isError = false;
 
 		return isError;
@@ -1593,17 +1611,17 @@ public class Utility implements AsyncInterface {
 			BitmapFactory.decodeFile(path, o);
 
 			// The new size we want to scale to
-//			long maxMemory = Runtime.getRuntime().maxMemory()/1024;
-//			int maxMemoryForImage = (int) (maxMemory / 8);
+			// long maxMemory = Runtime.getRuntime().maxMemory()/1024;
+			// int maxMemoryForImage = (int) (maxMemory / 8);
 
 			final int REQUIRED_SIZE = 100;
 
 			// Find the correct scale value. It should be the power of 2.
 			int scale = 1;
 			if (o.outHeight > REQUIRED_SIZE || o.outWidth > REQUIRED_SIZE) {
-		        scale = (int)Math.pow(2, (int) Math.ceil(Math.log(REQUIRED_SIZE / 
-		           (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
-		    }
+				scale = (int) Math.pow(2, (int) Math
+						.ceil(Math.log(REQUIRED_SIZE / (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+			}
 
 			// Decode with inSampleSize
 			BitmapFactory.Options o2 = new BitmapFactory.Options();

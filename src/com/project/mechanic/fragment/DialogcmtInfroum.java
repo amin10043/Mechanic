@@ -169,7 +169,7 @@ public class DialogcmtInfroum extends Dialog implements AsyncInterface {
 				if (code == 3) {
 					// az expandableCommentFroum vared shode
 
-					((FroumFragment) f).expanding(IdGroup);
+//					((FroumFragment) f).expanding(IdGroup);
 					if (ringProgressDialog != null) {
 						ringProgressDialog.dismiss();
 					}

@@ -1092,6 +1092,7 @@ import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
+import com.project.mechanic.view.TextViewEx;
 
 public class ExpandIntroduction extends BaseExpandableListAdapter
 		implements AsyncInterface/* , CommInterface */ {
@@ -1117,11 +1118,12 @@ public class ExpandIntroduction extends BaseExpandableListAdapter
 	CommentInObject reply;
 	CommentInObject comment;
 	List<String> menuItems;
-	int itemId, userIdsender;;
+	int itemId, userIdsender;
 	String description;
 	boolean IsDeleteing;
 	com.project.mechanic.entity.Object object;
 	String tagClicked = "";
+	int posGroup, posChild = -1;
 
 	boolean commentOrReply; // true >> comment false >> reply
 
@@ -1154,7 +1156,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter
 			convertView = inflater.inflate(R.layout.row_child_item, null);
 		}
 
-		TextView mainReply = (TextView) convertView.findViewById(R.id.reply_txt_child);
+		TextViewEx mainReply = (TextViewEx) convertView.findViewById(R.id.reply_txt_child);
 
 		TextView dateReply = (TextView) convertView.findViewById(R.id.date_replyed);
 		TextView nameReplyer = (TextView) convertView.findViewById(R.id.name_replyed);
@@ -1258,13 +1260,11 @@ public class ExpandIntroduction extends BaseExpandableListAdapter
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
 						if (item.getTitle().equals("حذف")) {
-							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender) {
-								deleteItems(itemId);
-								commentOrReply = false;
-							} else {
+							posGroup = groupPosition;
+							posChild = childPosition;
+							deleteItems(itemId);
+							commentOrReply = false;
 
-								Toast.makeText(context, "", 0).show();
-							}
 						}
 
 						return false;
@@ -1290,9 +1290,9 @@ public class ExpandIntroduction extends BaseExpandableListAdapter
 
 			}
 		});
-		mainReply.setText(reply.getDescription());
+		mainReply.setText(reply.getDescription(), true);
 		dateReply.setText(util.getPersianDate(reply.getDatetime()));
-
+		mainReply.setTypeface(util.SetFontIranSans());
 		adapter.open();
 		object = adapter.getObjectbyid(objectId);
 		adapter.close();
@@ -1386,7 +1386,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter
 		}
 
 		// start find view
-		final TextView mainComment = (TextView) convertView.findViewById(R.id.peygham);
+		final TextViewEx mainComment = (TextViewEx) convertView.findViewById(R.id.peygham);
 
 		TextView nameCommenter = (TextView) convertView.findViewById(R.id.name_froum_profile);
 
@@ -1497,7 +1497,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter
 
 		///////////////////
 
-		mainComment.setText(comment.getDescription());
+		mainComment.setText(comment.getDescription() , true);
 		dateCommenter.setText(util.getPersianDate(comment.getDatetime()));
 		// if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) == 0) {
 		// LinearLayout lrr = (LinearLayout) convertView
@@ -1862,13 +1862,11 @@ public class ExpandIntroduction extends BaseExpandableListAdapter
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
 						if (item.getTitle().equals("حذف")) {
-							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender) {
-								deleteItems(itemId);
-								commentOrReply = true;
-							} else {
+							posGroup = groupPosition;
 
-								Toast.makeText(context, "", 0).show();
-							}
+							deleteItems(itemId);
+							commentOrReply = true;
+
 						}
 
 						return false;
@@ -1904,7 +1902,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter
 			}
 
 		});
-		mainComment.setTypeface(null, Typeface.BOLD);
+		mainComment.setTypeface(util.SetFontIranSans());
 
 		return convertView;
 	}
@@ -1934,7 +1932,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter
 			}
 			adapter.close();
 
-			((FixedPostFragment) f).fillComment();
+			((FixedPostFragment) f).expanding(posGroup, posChild, false);
 
 		} else {
 			if (!"".equals(output) && output != null && !(output.contains("Exception") || output.contains("java"))) {

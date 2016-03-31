@@ -87,6 +87,12 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 	// return outputStream.toByteArray();
 	// }
 
+	int MaxSizeImageSelected = 5;
+	ImageView deleteImage;
+	byte[] byteImage = null;
+
+	int userId;
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,17 +104,19 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 		LinearImage = (LinearLayout) view.findViewById(R.id.linImg);
 		Image = (ImageView) view.findViewById(R.id.img_pay);
 		objectSpinner = (Spinner) view.findViewById(R.id.sp_pay);
-		LinearLayout btn_pay = (LinearLayout) view.findViewById(R.id.btn_pay);
+		ImageView btn_pay = (ImageView) view.findViewById(R.id.btn_pay);
 
 		dbAdapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
 		headerEditParams = new LinearLayout.LayoutParams(LinearImage.getLayoutParams());
 		headerEditParams.height = util.getScreenwidth() / 4;
 		headerEditParams.width = util.getScreenwidth() / 4;
-		headerEditParams.setMargins(5, 5, 5, 5);
-
-		headerEditParams.gravity = Gravity.LEFT;
+		headerEditParams.setMargins(10, 10, 10, 10);
+		headerEditParams.gravity = Gravity.CENTER;
 		Image.setLayoutParams(headerEditParams);
+		
+		SharedPreferences sendIdpro = getActivity().getSharedPreferences("Id", 0);
+		provinceId = sendIdpro.getInt("main_Id", 0);
 
 		dbAdapter.open();
 		// List<String> mylist = dbAdapter.getAllObjectname();
@@ -124,6 +132,7 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 			objectSpinner.setVisibility(View.GONE);
 			TextView txr = (TextView) view.findViewById(R.id.lrt);
 			txr.setVisibility(View.VISIBLE);
+			txr.setTypeface(util.SetFontIranSans());
 
 		} else {
 
@@ -141,16 +150,50 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 		}
 		dbAdapter.close();
 
-		RelativeLayout EditPic = (RelativeLayout) view.findViewById(R.id.btnedit);
+		// RelativeLayout EditPic = (RelativeLayout)
+		// view.findViewById(R.id.btnedit);
+		final ImageView pickImage = (ImageView) view.findViewById(R.id.pickImage);
+		deleteImage = (ImageView) view.findViewById(R.id.deleteImage);
+		final ImageView close = (ImageView) view.findViewById(R.id.closePage);
+		
+		close.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
+				AnadFragment fragment = new AnadFragment();
+				Bundle bundle = new Bundle();
+				
+				bundle.putString("Id", String.valueOf(typeId));
+				bundle.putString("ProID", String.valueOf(provinceId));
+				
+				fragment.setArguments(bundle);
+				trans.replace(R.id.content_frame, fragment);
+				trans.addToBackStack(null);
+				trans.commit();
+				
+				
+				
+				
+			}
+		});
 
-		LinearLayout.LayoutParams followParams = new LinearLayout.LayoutParams(LinearImage.getLayoutParams());
+		
+		deleteImage.setOnClickListener(new OnClickListener() {
 
-		followParams.width = util.getScreenwidth() / 4;
-		followParams.setMargins(5, 5, 5, 5);
-		followParams.gravity = Gravity.LEFT;
-		EditPic.setLayoutParams(followParams);
+			@Override
+			public void onClick(View arg0) {
 
-		LinearImage.setOnClickListener(new OnClickListener() {
+				byteImage = null;
+				Image.setImageResource(R.drawable.no_img_profile);
+				Image.setVisibility(View.GONE);
+				deleteImage.setVisibility(View.GONE);
+
+			}
+		});
+		pickImage.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -188,27 +231,41 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 			public void onClick(View arg0) {
 				// String date = new SimpleDateFormat("yyyy-MM-dd")
 				// .format(new Date());
-				SharedPreferences sendIdpro = getActivity().getSharedPreferences("Id", 0);
-				provinceId = sendIdpro.getInt("main_Id", 0);
-				Toast.makeText(getActivity(), anadId + " do", Toast.LENGTH_SHORT).show();
 
-				// ************شرط پرداخت اینترنتی باید ذکر شود*************
-				// ************شرط پرداخت اینترنتی باید ذکر شود*************
-				// ************شرط پرداخت اینترنتی باید ذکر شود*************
-				// ************شرط پرداخت اینترنتی باید ذکر شود*************
-				// ************شرط پرداخت اینترنتی باید ذکر شود*************
-				// ************شرط پرداخت اینترنتی باید ذکر شود*************
-				// ************شرط پرداخت اینترنتی باید ذکر شود*************
-				// ************شرط پرداخت اینترنتی باید ذکر شود*************
+				if (util.getCurrentUser() != null) {
 
-				// start syncing
+					
+//					Toast.makeText(getActivity(), anadId + " do", Toast.LENGTH_SHORT).show();
 
-				server = new ServerDate(getActivity());
-				server.delegate = show_pay_fragment.this;
-				server.execute("");
+					// ************شرط پرداخت اینترنتی باید ذکر شود*************
+					// ************شرط پرداخت اینترنتی باید ذکر شود*************
+					// ************شرط پرداخت اینترنتی باید ذکر شود*************
+					// ************شرط پرداخت اینترنتی باید ذکر شود*************
+					// ************شرط پرداخت اینترنتی باید ذکر شود*************
+					// ************شرط پرداخت اینترنتی باید ذکر شود*************
+					// ************شرط پرداخت اینترنتی باید ذکر شود*************
+					// ************شرط پرداخت اینترنتی باید ذکر شود*************
+
+					// start syncing
+
+					server = new ServerDate(getActivity());
+					server.delegate = show_pay_fragment.this;
+					server.execute("");
+
+					userId = util.getCurrentUser().getId();
+
+				}
 
 			}
 		});
+
+		TextView lableHeader = (TextView) view.findViewById(R.id.row_anad_txt2);
+		TextView lableselect = (TextView) view.findViewById(R.id.d);
+		TextView payLable = (TextView) view.findViewById(R.id.payLable);
+
+		lableHeader.setTypeface(util.SetFontIranSans());
+		lableselect.setTypeface(util.SetFontIranSans());
+		payLable.setTypeface(util.SetFontIranSans());
 
 		return view;
 	}
@@ -284,7 +341,18 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 				fileOutputStream.close();
 				inputStream.close();
 
-				startCropImage();
+				long sizePicture = 0; // MB
+
+				if (mFileTemp != null)
+					sizePicture = mFileTemp.length() / 1024 / 1024;
+
+				if (sizePicture > MaxSizeImageSelected)
+					Toast.makeText(getActivity(),
+							"حجم عکس انتخاب شده باید کمتر از " + MaxSizeImageSelected + "مگابایت باشد ",
+							Toast.LENGTH_LONG).show();
+				else {
+					startCropImage();
+				}
 
 			} catch (Exception e) {
 
@@ -297,8 +365,21 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 				return;
 			}
 
-			Bitmap bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
-			Image.setImageBitmap(bitmap);
+			Bitmap bitmap = null;
+			if (mFileTemp.getPath() != null) {
+				bitmap = BitmapFactory.decodeFile(mFileTemp.getPath());
+
+			}
+
+			if (bitmap != null) {
+				Image.setImageBitmap(bitmap);
+				Image.setVisibility(View.VISIBLE);
+
+				byteImage = Utility.compressImage(mFileTemp);
+				deleteImage.setVisibility(View.VISIBLE);
+
+			}
+
 		} else {
 			Toast.makeText(getActivity(), "Picture NOt taken", Toast.LENGTH_LONG).show();
 		}
@@ -316,16 +397,22 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 
 		if (output != null && !"".equals(output)) {
 			try {
-				Bitmap bitmap = ((BitmapDrawable) Image.getDrawable()).getBitmap();
-				byte[] bytes = Utility.CompressBitmap(bitmap);
+				// Bitmap bitmap = ((BitmapDrawable)
+				// Image.getDrawable()).getBitmap();
+				// byte[] bytes = Utility.CompressBitmap(bitmap);
 
-				dbAdapter.open();
-				dbAdapter.updateImageAnad(anadId, bytes);
-
-				dbAdapter.close();
+				// dbAdapter.open();
+				// dbAdapter.updateImageAnad(anadId, bytes);
+				// dbAdapter.close();
 
 				if (ringProgressDialog != null)
 					ringProgressDialog.dismiss();
+
+				if (byteImage != null) {
+
+					util.CreateFile(byteImage, anadId, "Mechanical", "Anad", "anad", "Anad");
+
+				}
 
 				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
 						.beginTransaction();
@@ -356,7 +443,7 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 
 			dbAdapter.open();
 
-			dbAdapter.UpdateAnadToDb(anadId, objectSelected.getId(), serverDate, typeId, provinceId);
+			dbAdapter.UpdateAnadToDb(anadId, objectSelected.getId(), serverDate, typeId, provinceId, userId);
 
 			dbAdapter.close();
 
@@ -370,8 +457,9 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 			if (ringProgressDialog != null)
 				ringProgressDialog.dismiss();
 
-			Bitmap bitmap = ((BitmapDrawable) Image.getDrawable()).getBitmap();
-			byte[] bytes = Utility.CompressBitmap(bitmap);
+			// Bitmap bitmap = ((BitmapDrawable)
+			// Image.getDrawable()).getBitmap();
+			// byte[] bytes = Utility.CompressBitmap(bitmap);
 
 			saveImage = new SavingImage(getActivity());
 			saveImage.delegate = this;
@@ -379,7 +467,7 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 			imageParams.put("tableName", "Anad");
 			imageParams.put("fieldName", "Image");
 			imageParams.put("Id", anadId);
-			imageParams.put("Image", bytes);
+			imageParams.put("Image", byteImage);
 
 			saveImage.execute(imageParams);
 
@@ -391,11 +479,11 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 			if (!"".equals(output) && output != null && !(output.contains("Exception") || output.contains("java"))) {
 
 				int itemSelectId = (int) objectSpinner.getSelectedItemId();
-				
+
 				dbAdapter.open();
 				objectSelected = dbAdapter.getObjectbyid(ListId.get(itemSelectId));
 				dbAdapter.close();
-				
+
 				saving = new Saving(getActivity());
 				saving.delegate = show_pay_fragment.this;
 				params = new LinkedHashMap<String, String>();

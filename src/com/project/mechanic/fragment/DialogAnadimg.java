@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.utility.Utility;
 
 public class DialogAnadimg extends Dialog {
 
@@ -36,7 +37,7 @@ public class DialogAnadimg extends Dialog {
 	private ImageView imgdialoganad;
 	private ImageButton sabt, enseraf;
 	private Spinner sp;
-	OnMyDialogResult mDialogResult;
+//	OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
 	int resourceId;
 	Context context;
@@ -52,13 +53,13 @@ public class DialogAnadimg extends Dialog {
 	String titel;
 	String Bytimage;
 	int ProvinceId;
-//	int id;
+	// int id;
 	int anadId;
 	protected byte[] img;
 	String TABLE_NAME = "Ticket";
+	Utility util;
 
-	public DialogAnadimg(Context context, int resourceId, Fragment fragment,
-			int ticketTypeID, int ProvinceId, int i) {
+	public DialogAnadimg(Context context, int resourceId, Fragment fragment, int ticketTypeID, int ProvinceId, int i) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		this.resourceId = resourceId;
@@ -67,6 +68,8 @@ public class DialogAnadimg extends Dialog {
 		this.ticketTypeID = ticketTypeID;
 		this.ProvinceId = ProvinceId;
 		this.anadId = i;
+
+		util = new Utility(context);
 
 	}
 
@@ -81,26 +84,55 @@ public class DialogAnadimg extends Dialog {
 
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-//		getWindow().setBackgroundDrawable(
-//				new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		// getWindow().setBackgroundDrawable(
+		// new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-		setContentView(resourceId);
+		setContentView(R.layout.dialog_imganad);
 
-		TextView txtdesc = (TextView) findViewById(R.id.txtdescdialog);
-		CheckBox checkshart = (CheckBox) findViewById(R.id.checkBoxshart);
+		TextView txt1 = (TextView) findViewById(R.id.txt1);
+		TextView txt2 = (TextView) findViewById(R.id.txt2);
+		TextView txt3 = (TextView) findViewById(R.id.txt3);
+		TextView txt4 = (TextView) findViewById(R.id.txt4);
+		TextView lable = (TextView) findViewById(R.id.lable);
+
+		txt1.setTypeface(util.SetFontIranSans());
+		txt2.setTypeface(util.SetFontIranSans());
+		txt3.setTypeface(util.SetFontIranSans());
+		txt4.setTypeface(util.SetFontIranSans());
+
+		txt1.setText("1-انتخاب عکس جهت آگهی باید مناسب و هماهنگ با فعالیت شما باشد");
+		txt2.setText("2-سایر کاربران با لمس کردن آگهی مربوط به شما مستقیما به صفحه شما در این نرم افزار هدایت می شوند");
+
+		if (ProvinceId > 0) {
+			txt3.setText("3-این آگهی در 6 تالار مربوط به  این استان همزمان اجرا می شود");
+			txt4.setText("4-هزینه این آگهی به مبلغ 5.000.000 ریال و از تاریخ ثبت به مدت  یک سال می باشد");
+
+		} else {
+			txt3.setText("3-این آگهی در 6 تالار کشوری همزمان اجرا می شود");
+			txt4.setText("4-هزینه این آگهی به مبلغ 20.000.000 ریال و از تاریخ ثبت به مدت  یک سال می باشد");
+
+		}
+
+		lable.setTypeface(util.SetFontIranSans());
+
+		// CheckBox checkshart = (CheckBox) findViewById(R.id.checkBoxshart);
 		final LinearLayout btndarj = (LinearLayout) findViewById(R.id.darjtabligh);
 
-		txtdesc.setText(Html
-				.fromHtml("<html>1-انتخاب عکس جهت آگهی باید مناسب و هماهنگ با فعالیت شما باشد <br><br>2-سایر کاربران با لمس کردن آگهی مربوطه شما مستقیما به لینک صفحه شما در این نرم افزار هدایت می شوند <br><br>3-این آگهی در 6 تالار مربوطه این لینک همزمان اجرا می شود <br><br>4-هزینه این آگهی به مبلغ 5.000.000 ریال و از تاریخ ثبت به مدت  یک سال می باشد <br><br></html>"));
+		// txtdesc.setText(Html.fromHtml(
+		// "<html>1-انتخاب عکس جهت آگهی باید مناسب و هماهنگ با فعالیت شما باشد
+		// <br><br>2-سایر کاربران با لمس کردن آگهی مربوطه شما مستقیما به لینک
+		// صفحه شما در این نرم افزار هدایت می شوند <br><br>3-این آگهی در 6 تالار
+		// مربوطه این لینک همزمان اجرا می شود <br><br>4-هزینه این آگهی به مبلغ
+		// 5.000.000 ریال و از تاریخ ثبت به مدت یک سال می باشد
+		// <br><br></html>"));
 
 		btndarj.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				show_pay_fragment fragment = new show_pay_fragment();
-				
+
 				Bundle bundle = new Bundle();
 				bundle.putString("AnadId", String.valueOf(anadId));
 				bundle.putString("TypeId", String.valueOf(ticketTypeID));
@@ -111,16 +143,13 @@ public class DialogAnadimg extends Dialog {
 				trans.addToBackStack(null);
 				trans.commit();
 				DialogAnadimg.this.dismiss();
-				
-//				Bundle bundlei = new Bundle();
-//				 bundle.putString("Id", String.valueOf(id));
-//				if (ProvinceId >= 0)
-					// bundle.putString("ProID", String.valueOf(ProvinceId));
-//					bundlei.putString("I", String.valueOf(anadId));
-//				fragment.setArguments(bundlei);
-				
-				
-				
+
+				// Bundle bundlei = new Bundle();
+				// bundle.putString("Id", String.valueOf(id));
+				// if (ProvinceId >= 0)
+				// bundle.putString("ProID", String.valueOf(ProvinceId));
+				// bundlei.putString("I", String.valueOf(anadId));
+				// fragment.setArguments(bundlei);
 
 			}
 		});
@@ -137,13 +166,13 @@ public class DialogAnadimg extends Dialog {
 		return null;
 	}
 
-	public interface OnMyDialogResult {
-		void finish(String result);
-	}
-
-	public void setDialogResult(OnMyDialogResult dialogResult) {
-		mDialogResult = dialogResult;
-	}
+//	public interface OnMyDialogResult {
+//		void finish(String result);
+//	}
+//
+//	public void setDialogResult(OnMyDialogResult dialogResult) {
+//		mDialogResult = dialogResult;
+//	}
 
 	public View getView() {
 		return this.getLayoutInflater().inflate(resourceId, null);

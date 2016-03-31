@@ -209,6 +209,11 @@ public class IntroductionEditFragment extends Fragment
 		lableAgency.setTypeface(util.SetFontCasablanca());
 		lableService.setTypeface(util.SetFontCasablanca());
 
+		addressEnter.setTypeface(util.SetFontIranSans());
+		descriptionEnter.setTypeface(util.SetFontIranSans());
+		
+		btnSave.setTypeface(util.SetFontIranSans());
+
 		String state = Environment.getExternalStorageState();
 
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -304,6 +309,7 @@ public class IntroductionEditFragment extends Fragment
 
 		DBAdapter.close();
 
+		nameEnter.setTypeface(util.SetFontIranSans());
 		// //////////////////////////////////////////////////
 
 		int mainObjectId = object.getMainObjectId();

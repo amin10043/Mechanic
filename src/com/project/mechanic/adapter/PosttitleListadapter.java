@@ -87,7 +87,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 	int userId;
 	Fragment fragment;
 	ImageView report;
-	View Parent;
+	ViewGroup Parent;
 	LinearLayout parentLike;
 	LinearLayout.LayoutParams LNImageShowParams;
 
@@ -99,6 +99,11 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 	Post po;
 	Bitmap myBitmap;
 	View rootView;
+	String clickValue = "";
+	int scrollPoition;
+
+	Object obj;
+	int pos;
 
 	@Override
 	public int getCount() {
@@ -119,13 +124,15 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 
 	@SuppressLint("ViewHolder")
 	@Override
-	public View getView(final int position, View convertView, final ViewGroup parent) {
+	public View getView(final int p, View convertView, final ViewGroup parent) {
 
 		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		rootView = convertView = myInflater.inflate(R.layout.raw_posttitle, parent, false);
 
 		Parent = parent;
+
+		scrollPoition = parent.getScrollY();
 		// final TextView txt1 = (TextView) convertView
 		// .findViewById(R.id.rowtitlepaper);
 		final TextView txt2 = (TextView) convertView.findViewById(R.id.rowdescriptionpaper);
@@ -150,13 +157,13 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 
 		TextView countVisit = (TextView) convertView.findViewById(R.id.countVisit);
 
-		Post person1 = mylist.get(position);
+		Post person1 = mylist.get(p);
 
-		// convertView.setTag(position+"");
+		convertView.setTag(person1.getId() + "");
 		// rootView.setTag(position+"");
 
 		// txt1.setTypeface(util.SetFontCasablanca());
-		txt2.setTypeface(util.SetFontCasablanca());
+		txt2.setTypeface(util.SetFontIranSans());
 
 		adapter.open();
 		Users x = adapter.getUserbyid(person1.getUserId());
@@ -235,10 +242,11 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 
 		adapter.open();
 		po = adapter.getPostItembyid(piid);
-		final Object obj = adapter.getObjectbyid(po.getObjectId());
+		obj = adapter.getObjectbyid(po.getObjectId());
 
 		// if (x != null)
 		txt3.setText(obj.getName());
+		txt3.setTypeface(util.SetFontIranSans());
 		countcommentpost.setText(adapter.CommentInPost_count(person1.getId()).toString());
 		countLikePost.setText(adapter.LikeInPost_count(person1.getId()).toString());
 		adapter.close();
@@ -287,7 +295,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 
 				try {
 					Bitmap bmp = Utility.decodeFile(obj.getImagePath2());
-					profileImg.setImageBitmap(Utility.getclip(bmp));
+					if (bmp != null)
+						profileImg.setImageBitmap(Utility.getclip(bmp));
 
 					profileImg.setLayoutParams(lp);
 				} catch (OutOfMemoryError e) {
@@ -311,7 +320,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 
 			public void onClick(View arg0) {
 				adapter.open();
-				Post person1 = mylist.get(position);
+				Post person1 = mylist.get(p);
 				Users x = adapter.getUserbyid(person1.getUserId());
 				userId = x.getId();
 				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
@@ -334,26 +343,50 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 					Toast.makeText(context, "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 				} else {
 
-					LinearLayout parentlayout = (LinearLayout) v;
-					parentLike = (LinearLayout) parentlayout.getParent().getParent();
-					int id = ((Integer) parentLike.getTag());
+					if (clickValue.equals("")) {
 
-					postNumber = id;
-					ServerDateForLike date = new ServerDateForLike(context);
-					date.delegate = PosttitleListadapter.this;
-					date.execute("");
+						LinearLayout parentlayout = (LinearLayout) v;
+						parentLike = (LinearLayout) parentlayout.getParent().getParent();
+						int id = Integer.valueOf((String) parentLike.getTag());
 
-					parentLike.setEnabled(false);
+						postNumber = id;
 
-					adapter.open();
+						// parentLike.setEnabled(false);
 
-					ImageView li = (ImageView) parentLike.findViewById(R.id.likeIcon);
-					TextView txt = (TextView) parentLike.findViewById(R.id.txtNumofLike_CmtFroum);
-					int count = adapter.LikeInPost_count(postNumber);
-					li.setBackgroundResource(R.drawable.like_froum_on);
-					txt.setText(String.valueOf(count + 1));
+						showFakeLik(parentLike, postNumber);
 
-					adapter.close();
+						// adapter.open();
+						//
+						// ImageView li = (ImageView)
+						// parentLike.findViewById(R.id.likeIcon);
+						// TextView txt = (TextView)
+						// parentLike.findViewById(R.id.txtNumofLike_CmtFroum);
+						// int count = adapter.LikeInPost_count(postNumber);
+						// li.setBackgroundResource(R.drawable.like_froum_on);
+						// txt.setText(String.valueOf(count + 1));
+						//
+						// adapter.close();
+
+						ServerDateForLike date = new ServerDateForLike(context);
+						date.delegate = PosttitleListadapter.this;
+						date.execute("");
+						clickValue = postNumber + "";
+
+					} else {
+						showFakeLik(parentLike, postNumber);
+
+						// adapter.open();
+						// ImageView li = (ImageView)
+						// parentLike.findViewById(R.id.likeIcon);
+						// TextView txt = (TextView)
+						// parentLike.findViewById(R.id.txtNumofLike_CmtFroum);
+						// int count = adapter.LikeInPost_count(postNumber);
+						// li.setBackgroundResource(R.drawable.like_froum_on);
+						// txt.setText(String.valueOf(count - 1));
+						//
+						// adapter.close();
+
+					}
 
 					// ringProgressDialog = ProgressDialog.show(context, "",
 					// "لطفا منتظر بمانید...", true);
@@ -489,12 +522,14 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}
 							if (item.getTitle().equals("حذف")) {
-								if (isAdmin() == true) {
-									deleteItems(itemId);
-								} else {
+								// if (isAdmin(CurrentUser.getId()) == true) {
 
-									Toast.makeText(context, "", 0).show();
-								}
+								pos = p;
+								deleteItems(itemId);
+								// } else {
+								//
+								// Toast.makeText(context, "", 0).show();
+								// }
 							}
 
 							return false;
@@ -803,28 +838,31 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 		}
 	}
 
-	// @Override
-	// public void CommProcessFinish(String output) {
-	//
-	// if (!output.contains("exception")) {
-	//
-	// if (ringProgressDialog != null) {
-	// ringProgressDialog.dismiss();
-	// }
-	//
-	// adapter.open();
-	//
-	// adapter.deletePostTitle(itemId);
-	// adapter.deleteCommentPost(itemId);
-	//
-	// adapter.close();
-	//
-	// ((IntroductionFragment) fragment).fillListView();
-	// ((IntroductionFragment) fragment).setCountPost();
-	//
-	// }
-	//
-	// }
+	@Override
+	public void CommProcessFinish(String output) {
+
+		if (!output.contains("exception")) {
+
+			// if (ringProgressDialog != null) {
+			// ringProgressDialog.dismiss();
+			// }
+
+			adapter.open();
+
+			adapter.deletePostTitle(itemId);
+			adapter.deleteCommentPost(itemId);
+
+			adapter.close();
+
+			if (pos > 0) {
+				((IntroductionFragment) fragment).setPostionListPost(pos);
+				((IntroductionFragment) fragment).fillListView();
+				((IntroductionFragment) fragment).setCountPost();
+
+			}
+		}
+
+	}
 
 	@Override
 	public void resultDateLike(String output) {
@@ -885,7 +923,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 
 			try {
 				i = Integer.valueOf(output);
-				LinearLayout parentLayout = (LinearLayout) Parent.findViewWithTag(postNumber);
+				LinearLayout parentLayout = (LinearLayout) Parent
+						./* getChildAt(0). */findViewWithTag(postNumber);
 				ImageView likeIcon = (ImageView) parentLayout.findViewById(R.id.likeIcon);
 				TextView likeCountPost = (TextView) parentLayout.findViewById(R.id.txtNumofLike_CmtFroum);
 				adapter.open();
@@ -896,6 +935,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 				likeCountPost.setText(adapter.LikeInPost_count(postNumber).toString());
 
 				adapter.close();
+
+				clickValue = "";
 
 			} catch (Exception e) {
 				util.showErrorToast();
@@ -917,11 +958,13 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 			int likeId = -1;
 
 			try {
-				LinearLayout parentLayout = (LinearLayout) ((View) parentLike.getParent()).findViewWithTag(postNumber);
+				likeId = Integer.valueOf(output);
+
+				LinearLayout parentLayout = (LinearLayout) Parent
+						./* getChildAt(0). */findViewWithTag(postNumber);
 				ImageView likeIcon = (ImageView) parentLayout.findViewById(R.id.likeIcon);
 				TextView likeCountPost = (TextView) parentLayout.findViewById(R.id.txtNumofLike_CmtFroum);
 
-				likeId = Integer.valueOf(output);
 				adapter.open();
 
 				adapter.insertLikeInPostToDb(likeId, CurrentUser.getId(), postNumber, serverDate, 0);
@@ -932,25 +975,30 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 
 				parentLike.setEnabled(true);
 
+				clickValue = "";
+
 			} catch (Exception e) {
 				util.showErrorToast();
+				clickValue = "";
+
 			}
 
 		} else {
 			util.showErrorToast();
+			clickValue = "";
 
 		}
 
 	}
 
-	private boolean isAdmin() {
+	private boolean isAdmin(int userId) {
 
 		// if isSave = true allow to save visit on server
 		// else don't allow to save
 		boolean isSave = false;
 
 		adapter.open();
-		List<SubAdmin> subAdminList = adapter.getAdmin(po.getObjectId());
+		List<SubAdmin> subAdminList = adapter.getAdmin(obj.getId());
 		adapter.close();
 
 		boolean fl1 = false;
@@ -962,33 +1010,60 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 			}
 
 		for (int j = 0; j < Ids.size(); j++) {
-			if (CurrentUser.getId() == Ids.get(j))
+			if (userId == Ids.get(j))
 				fl1 = true;
 		}
-		if (CurrentUser == null)
-			isSave = false;
-		else
+		// if (Currentuser == null)
+		// isSave = false;
+		// else
 
-		if (fl1 == true || CurrentUser.getId() == po.getUserId())
+		if (fl1 == true || userId == obj.getUserId())
 			isSave = true;
 
 		return isSave;
 
 	}
 
-	@Override
-	public void CommProcessFinish(String output) {
+	// @Override
+	// public void CommProcessFinish(String output) {
+	//
+	// if (util.checkError(output) == false) {
+	// adapter.open();
+	//
+	// adapter.deletePostTitle(itemId);
+	// adapter.deleteCommentPost(itemId);
+	//
+	// adapter.close();
+	//
+	// ((IntroductionFragment) fragment).fillListView();
+	// ((IntroductionFragment) fragment).setCountPost();
+	// }
+	// }
 
-		if (util.checkError(output) == false) {
-			adapter.open();
+	private void showFakeLik(LinearLayout layout, int id) {
 
-			adapter.deletePostTitle(itemId);
-			adapter.deleteCommentPost(itemId);
+		ImageView li = (ImageView) layout.findViewById(R.id.likeIcon);
+		TextView txt = (TextView) layout.findViewById(R.id.txtNumofLike_CmtFroum);
 
-			adapter.close();
+		adapter.open();
+		int count = adapter.LikeInPost_count(id);
 
-			((IntroductionFragment) fragment).fillListView();
-			((IntroductionFragment) fragment).setCountPost();
+		if (adapter.isUserLikedPost(CurrentUser.getId(), id)) {
+
+			li.setBackgroundResource(R.drawable.like_froum_off);
+
+			if (count > 0)
+				txt.setText(String.valueOf(count - 1));
+
+			// likeIcon.setBackgroundResource(R.drawable.like_froum_off);
+
+		} else {
+
+			li.setBackgroundResource(R.drawable.like_froum_on);
+			txt.setText(String.valueOf(count + 1));
+			// likeIcon.setBackgroundResource(R.drawable.like_froum_on);
 		}
+		adapter.close();
+
 	}
 }

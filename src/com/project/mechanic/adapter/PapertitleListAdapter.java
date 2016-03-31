@@ -160,6 +160,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 			}
 			DateView.setText(util.getPersianDate(person1.getDate()));
 			txt3.setText(x.getName());
+			txt3.setTypeface(util.SetFontIranSans());
 		}
 		adapter.close();
 		iconProile.setOnClickListener(new OnClickListener() {
@@ -237,7 +238,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 		NumofLike.setText(adapter.LikeInPaper_count(person1.getId()).toString());
 		adapter.close();
 
-		final SharedPreferences abc = context.getSharedPreferences("Id", 0);
+//		final SharedPreferences abc = context.getSharedPreferences("Id", 0);
 		likePaper.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -422,7 +423,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 
 				fragment.setArguments(bundle);
 
-				abc.edit().putInt("Froum_List_Id", ((ListView) parent).getFirstVisiblePosition()).commit();
+//				abc.edit().putInt("Froum_List_Id", ((ListView) parent).getFirstVisiblePosition()).commit();
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
@@ -525,7 +526,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 				LinearLayout li = (LinearLayout) parentLayout.findViewById(R.id.liketitleTopic);
 				TextView txt = (TextView) parentLayout.findViewById(R.id.countLikeInFroumTitle);
 
-				Integer.valueOf(output);
+				int id = Integer.valueOf(output);
 				adapter.open();
 				if (adapter.isUserLikedPaper(currentUser.getId(), paperNumber)) {
 					adapter.deleteLikeFromPaper(currentUser.getId(), paperNumber);
@@ -536,7 +537,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 					// ringProgressDialog.dismiss();
 					// }
 				} else {
-					adapter.insertLikeInPaperToDb(currentUser.getId(), paperNumber, serverDate);
+					adapter.insertLikeInPaperToDb(id, currentUser.getId(), paperNumber, serverDate);
 					li.setBackgroundResource(R.drawable.like_froum_on);
 					txt.setText(adapter.LikeInPaper_count(paperNumber).toString());
 					// if (ringProgressDialog != null) {

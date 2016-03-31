@@ -49,8 +49,12 @@ public class DialogLinkDownload extends Dialog {
 		inVideo = (EditText) findViewById(R.id.d4);
 
 		TextView title = (TextView) findViewById(R.id.title);
-
 		title.setTypeface(util.SetFontIranSans());
+		inCatalog.setTypeface(util.SetFontIranSans());
+		inPrice.setTypeface(util.SetFontIranSans());
+		inPDF.setTypeface(util.SetFontIranSans());
+		inVideo.setTypeface(util.SetFontIranSans());
+
 
 		closeBtn.setOnClickListener(new View.OnClickListener() {
 

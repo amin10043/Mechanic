@@ -39,6 +39,7 @@ import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.Anad;
+import com.project.mechanic.entity.ExtraSettings;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.Ticket;
 import com.project.mechanic.fragment.AnadFragment;
@@ -62,7 +63,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 	DataBaseAdapter adapter;
 	int ProvinceId;
 	Utility util;
-	Fragment fragment;
+	AnadFragment fragment;
 	RelativeLayout.LayoutParams layoutParams;
 	boolean IsShow;
 	ProgressBar LoadingProgress;
@@ -80,6 +81,7 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 	boolean flag;
 	int idTicket;
 	String serverDate = "";
+	int positionScroll;
 
 	public AnadListAdapter(Context context, int resource, List<Ticket> objact, int ProvinceId, Fragment fragment,
 			boolean IsShow, String DateTime, int Type, int ticketTypeId) {
@@ -90,11 +92,12 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 		this.ProvinceId = ProvinceId;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
-		this.fragment = fragment;
+		this.fragment = (AnadFragment) fragment;
 		this.IsShow = IsShow;
 		this.DateTime = DateTime;
 		this.Type = Type;
 		this.ticketTypeId = ticketTypeId;
+		// this.positionScroll = fragment.scrollPos;
 
 		// if type==1 >>>> anadFragment
 
@@ -107,7 +110,6 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_anad, parent, false);
-
 		TextView txtdate = (TextView) convertView.findViewById(R.id.text_favorite_desc);
 		final TextView txtName = (TextView) convertView.findViewById(R.id.row_favorite_title);
 		TextView txtDesc = (TextView) convertView.findViewById(R.id.row_anad_txt2);
@@ -332,6 +334,8 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 				adapter.SetSeen("Ticket", id, "1");
 				adapter.close();
 
+				savePosition(ProvinceId, false);
+
 			}
 		});
 
@@ -444,4 +448,55 @@ public class AnadListAdapter extends ArrayAdapter<Ticket> implements AsyncInterf
 		((AnadFragment) fragment).updateView();
 	}
 
+	public void savePosition(int provinceId, boolean flag) {
+
+		positionScroll = fragment.scrollPos /*+ fragment.scrollViewHeight*/;
+
+		String[] positionArray = ArrayPosition();
+
+		String p = "";
+
+		if (flag == false) {
+
+			for (int x = 0; x < positionArray.length; x++)
+				if (x == provinceId) {
+					positionArray[x] = String.valueOf(positionScroll);
+					break;
+				}
+
+		} else {
+			for (int x = 0; x < positionArray.length; x++)
+				if (x == provinceId) {
+					positionArray[x] = String.valueOf(0);
+					break;
+				}
+		}
+
+		for (int a = 0; a < positionArray.length; a++)
+			p += positionArray[a] + "-";
+
+		// p = positionArray.toString();
+
+		adapter.open();
+		adapter.updatePositionScrollAnad(p);
+		adapter.close();
+
+	}
+
+	public String[] ArrayPosition() {
+
+		ExtraSettings extraSettings = null;
+		String[] positionArray = new String[32];
+
+		adapter.open();
+		extraSettings = adapter.getPositionScroll();
+		adapter.close();
+
+		String tempPosition = extraSettings.getValue();
+
+		positionArray = tempPosition.split("-");
+
+		return positionArray;
+
+	}
 }

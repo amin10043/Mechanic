@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class DialogEditDownloadIntroduction extends Dialog {
@@ -56,6 +57,15 @@ public class DialogEditDownloadIntroduction extends Dialog {
 		inPrice = (EditText) findViewById(R.id.d2);
 		inPDF = (EditText) findViewById(R.id.d3);
 		inVideo = (EditText) findViewById(R.id.d4);
+
+		TextView title = (TextView) findViewById(R.id.title);
+		title.setTypeface(util.SetFontIranSans());
+		
+		inCatalog.setTypeface(util.SetFontIranSans());
+		inPrice.setTypeface(util.SetFontIranSans());
+		inPDF.setTypeface(util.SetFontIranSans());
+		inVideo.setTypeface(util.SetFontIranSans());
+
 
 		saveBtn.setOnClickListener(new android.view.View.OnClickListener() {
 

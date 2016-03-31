@@ -69,6 +69,7 @@ import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.Utility;
+import com.project.mechanic.view.TextViewEx;
 
 public class FixedPostFragment extends Fragment implements AsyncInterface {
 
@@ -83,7 +84,8 @@ public class FixedPostFragment extends Fragment implements AsyncInterface {
 	DataBaseAdapter adapter;
 	ExpandIntroduction exadapter;
 
-	TextView titletxt, descriptiontxt, date, countComment, countLike, nametxt, countVisit;
+	TextView titletxt, date, countComment, countLike, nametxt, countVisit;
+	TextViewEx descriptiontxt;
 	LinearLayout /* addComment, */ likeTopic;
 	ImageButton sharebtn;
 
@@ -131,6 +133,7 @@ public class FixedPostFragment extends Fragment implements AsyncInterface {
 	ImageView profileImg, icLike, report, postImage;
 	Users currentUser;
 	LinearLayout layoutView;
+	int positionScroll;
 
 	@SuppressLint("InflateParams")
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceStdataate) {
@@ -138,6 +141,9 @@ public class FixedPostFragment extends Fragment implements AsyncInterface {
 		view = inflater.inflate(R.layout.fragment_post, null);
 		if (getArguments() != null)
 			objectId = Integer.valueOf(getArguments().getString("Id"));
+
+		if (getArguments() != null)
+			positionScroll = Integer.valueOf(getArguments().getInt("positionScroll"));
 
 		findView();
 
@@ -220,6 +226,8 @@ public class FixedPostFragment extends Fragment implements AsyncInterface {
 						Bundle bundle = new Bundle();
 						bundle.putString("Id", String.valueOf(objectId));
 						bundle.putInt("positionBrand", positionBrand);
+						bundle.putInt("positionScroll", positionScroll);
+
 						fragment.setArguments(bundle);
 						// trans.addToBackStack("PostFramgnet");
 
@@ -319,9 +327,9 @@ public class FixedPostFragment extends Fragment implements AsyncInterface {
 					countComment.setText(commentCountNumber + "");
 
 					if (commentId == 0)
-						expanding(exadapter.getGroupCount(), 0, false);
+						expanding(exadapter.getGroupCount(), -1, true);
 					else {
-						expanding(gp, cp, true);
+						expanding(gp, exadapter.getChildrenCount(gp), true);
 
 					}
 
@@ -452,7 +460,7 @@ public class FixedPostFragment extends Fragment implements AsyncInterface {
 		postImage = (ImageView) header.findViewById(R.id.postImage);
 		report = (ImageView) header.findViewById(R.id.reportImage);
 
-		descriptiontxt = (TextView) header.findViewById(R.id.description_topic);
+		descriptiontxt = (TextViewEx) header.findViewById(R.id.description_topic);
 		date = (TextView) header.findViewById(R.id.date_cc);
 		countComment = (TextView) header.findViewById(R.id.numberOfCommentTopic);
 		countLike = (TextView) header.findViewById(R.id.txtNumofLike_CmtFroum);
@@ -483,7 +491,7 @@ public class FixedPostFragment extends Fragment implements AsyncInterface {
 		setcount();
 
 		nametxt.setText(obj.getName());
-		descriptiontxt.setText(obj.getDescription());
+		descriptiontxt.setText(obj.getDescription(), true);
 		countLike.setText(likeCountNumber + "");
 
 	}
@@ -736,19 +744,48 @@ public class FixedPostFragment extends Fragment implements AsyncInterface {
 
 	}
 
-	public void expanding(int groupPosition, int childPosition, boolean isChild) {
-
+	public void expanding(int groupPosition, int childPosition, boolean TypeAction) {
+		//
 		fillComment();
 
-		if (isChild == false)
-			exlistview.setSelectedGroup(groupPosition);
-		else {
-			exlistview.expandGroup(groupPosition);
-			exlistview.setSelectedGroup(groupPosition);
-			exlistview.setSelectedChild(groupPosition, childPosition, true);
+		if (groupPosition <= mapCollection.size()) {
 
+			if (TypeAction) {
+
+				exlistview.expandGroup(groupPosition);
+
+				if (childPosition != -1 && childPosition > 0)
+					exlistview.setSelectedChild(groupPosition, childPosition, true);
+				else
+					exlistview.setSelectedGroup(groupPosition);
+
+			} else {
+
+				if (childPosition != -1 && childPosition > 0) {
+
+					exlistview.expandGroup(groupPosition);
+					exlistview.setSelectedChild(groupPosition, childPosition - 1, true);
+
+				} else {
+					if (groupPosition > 0) {
+
+						exlistview.setSelectedGroup(groupPosition - 1);
+					}
+				}
+
+			}
 		}
 
+		//
+		// if (isChild == false)
+		// exlistview.setSelectedGroup(groupPosition);
+		// else {
+		// exlistview.expandGroup(groupPosition);
+		// exlistview.setSelectedGroup(groupPosition);
+		// exlistview.setSelectedChild(groupPosition, childPosition, true);
+		//
+		// }
+		//
 	}
 
 }

@@ -168,7 +168,7 @@ public class DialogcmtInpost extends Dialog implements AsyncInterface {
 				if (code == 3) {
 					// az expandableCommentFroum vared shode
 
-					((PostFragment) f).expanding(IdGroup);
+//					((PostFragment) f).expanding(IdGroup);
 					if (ringProgressDialog != null) {
 						ringProgressDialog.dismiss();
 					}

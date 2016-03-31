@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:textColor="@color/transparent"
+        android:textColor="@color/orginal_hard_blue_color"
         android:textSize="@dimen/size_item_list" 
         android:layout_margin="10dp"
         android:text="Large Text" />

@@ -26,6 +26,7 @@ import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.utility.Utility;
+import com.project.mechanic.view.TextViewEx;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -39,10 +40,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
@@ -70,7 +73,7 @@ public class FroumFragment extends Fragment
 	// RelativeLayout count /* ,commentcounter */;
 
 	Froum topics;
-	JustifiedTextView descriptiontxt;
+	TextViewEx descriptiontxt;
 	DialogcmtInfroum dialog;
 	ArrayList<CommentInFroum> commentGroup, ReplyGroup;
 	// String currentDate;
@@ -92,7 +95,7 @@ public class FroumFragment extends Fragment
 	Deleting deleting;
 	Map<String, String> params;
 
-//	ProgressDialog ringProgressDialog;
+	// ProgressDialog ringProgressDialog;
 
 	String serverDate = "";
 	ServerDate date;
@@ -113,6 +116,7 @@ public class FroumFragment extends Fragment
 	String currentTime = "";
 	int idItem, typeId, sender;
 	List<Visit> visitList;
+	int positionFroum;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -124,6 +128,9 @@ public class FroumFragment extends Fragment
 		adapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
 
+		if (getArguments() != null)
+			positionFroum = getArguments().getInt("PositionFroum");
+
 		user = new Users();
 
 		missedIds = new ArrayList<Integer>();
@@ -133,14 +140,16 @@ public class FroumFragment extends Fragment
 		// start find view
 
 		titletxt = (TextView) header.findViewById(R.id.title_topic);
-		descriptiontxt = (JustifiedTextView) header.findViewById(R.id.description_topic);
+		descriptiontxt = (TextViewEx) header.findViewById(R.id.description_topic);
 
 		dateTopic = (TextView) header.findViewById(R.id.date_cc);
-		TextView time = (TextView) header.findViewById(R.id.timetxt);
+		// TextView time = (TextView) header.findViewById(R.id.timetxt);
 
 		countComment = (TextView) header.findViewById(R.id.numberOfCommentTopic);
 		countLike = (TextView) header.findViewById(R.id.txtNumofLike_CmtFroum);
 		nametxt = (TextView) header.findViewById(R.id.name_cc);
+
+		nametxt.setTypeface(util.SetFontIranSans());
 
 		// addComment = (LinearLayout)
 		// header.findViewById(R.id.addCommentToTopic);
@@ -178,14 +187,15 @@ public class FroumFragment extends Fragment
 			userId = u.getId();
 
 			nametxt.setText(u.getName());
-			LinearLayout rl = (LinearLayout) header.findViewById(R.id.imageLinear);
+			RelativeLayout rl = (RelativeLayout) header.findViewById(R.id.imageLinear);
 
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
+			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
 
 			lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageFroumFragmentPage);
 			lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageFroumFragmentPage);
-			lp.gravity = Gravity.CENTER_HORIZONTAL;
-			lp.setMargins(0, 10, 0, 0);
+			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			// lp.gravity = Gravity.CENTER_HORIZONTAL;
+			lp.setMargins(10, 10, 10, 10);
 			profileImg.setLayoutParams(lp);
 
 			if (u.getImagePath() == null) {
@@ -202,7 +212,7 @@ public class FroumFragment extends Fragment
 		}
 		titletxt.setText(topics.getTitle());
 		if (topics.getDescription() != null)
-			descriptiontxt.setText(topics.getDescription());
+			descriptiontxt.setText(topics.getDescription(), true);
 		adapter.open();
 
 		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
@@ -211,17 +221,17 @@ public class FroumFragment extends Fragment
 		adapter.close();
 
 		String ddd = util.getPersianDate(topics.getDate());
-		List<String> dateTime = util.spilitDateTime(ddd);
-		dateTopic.setText(dateTime.get(0));
-		time.setText(dateTime.get(1));
-		titletxt.setTypeface(util.SetFontCasablanca());
-		descriptiontxt.setTypeFace(util.SetFontIranSans());
+		// List<String> dateTime = util.spilitDateTime(ddd);
+		dateTopic.setText(ddd);
+		// time.setText(dateTime.get(1));
+		titletxt.setTypeface(util.SetFontIranSans());
+		descriptiontxt.setTypeface(util.SetFontIranSans());
 
-		descriptiontxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-		descriptiontxt.setLineSpacing(15);
+		// descriptiontxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+		// descriptiontxt.setLineSpacing(15);
 
 		countvisit.setText(topics.getCountView() + "");
-		titletxt.setPadding(0, 20, 0, 0);
+		// titletxt.setPadding(0, 20, 0, 0);
 		checkInternet();
 		profileImg.setOnClickListener(new View.OnClickListener() {
 
@@ -240,8 +250,9 @@ public class FroumFragment extends Fragment
 			}
 		});
 
-		RelativeLayout re = (RelativeLayout) header.findViewById(R.id.layoutlayout);
-		re.setPadding(0, (util.getScreenwidth() / 8) + 10, 0, 0);
+		// RelativeLayout re = (RelativeLayout)
+		// header.findViewById(R.id.layoutlayout);
+		// re.setPadding(0, (util.getScreenwidth() / 8) + 10, 0, 0);
 
 		// addComment.setOnClickListener(new View.OnClickListener() {
 		//
@@ -294,8 +305,9 @@ public class FroumFragment extends Fragment
 		if (missedIds.size() > 0) {
 			if (getActivity() != null) {
 
-//				ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-//				ringProgressDialog.setCancelable(true);
+				// ringProgressDialog = ProgressDialog.show(getActivity(), "",
+				// "لطفا منتظر بمانید...", true);
+				// ringProgressDialog.setCancelable(true);
 				date = new ServerDate(getActivity());
 				date.delegate = FroumFragment.this;
 				date.execute("");
@@ -389,8 +401,9 @@ public class FroumFragment extends Fragment
 					Toast.makeText(getActivity(), "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 				} else {
 
-//					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-//					ringProgressDialog.setCancelable(true);
+					// ringProgressDialog = ProgressDialog.show(getActivity(),
+					// "", "لطفا منتظر بمانید...", true);
+					// ringProgressDialog.setCancelable(true);
 					date = new ServerDate(getActivity());
 					date.delegate = FroumFragment.this;
 					date.execute("");
@@ -479,7 +492,7 @@ public class FroumFragment extends Fragment
 						}
 						if (item.getTitle().equals("گزارش تخلف")) {
 
-							util.reportAbuse(userIdsender, StaticValues.TypeReportFroumFragment, itemId, t, froumid , 0);
+							util.reportAbuse(userIdsender, StaticValues.TypeReportFroumFragment, itemId, t, froumid, 0);
 
 						}
 						if (item.getTitle().equals("حذف")) {
@@ -532,7 +545,7 @@ public class FroumFragment extends Fragment
 							date.delegate = FroumFragment.this;
 							date.execute("");
 							LikeOrComment = false;
-
+							isFinish = false;
 							util.ReplyLayout(getActivity(), "", false);
 
 						}
@@ -554,6 +567,39 @@ public class FroumFragment extends Fragment
 		}
 
 		return view;
+	}
+
+	@Override
+	public void onResume() {
+
+		getView().setFocusableInTouchMode(true);
+		getView().requestFocus();
+		getView().setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+				if (event.getAction() == KeyEvent.ACTION_DOWN)
+
+					if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+						FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+								.beginTransaction();
+						FroumtitleFragment fragment = new FroumtitleFragment();
+
+						fragment.setPostionListFroum(positionFroum);
+
+						trans.replace(R.id.content_frame, fragment);
+
+						trans.commit();
+
+						return true;
+					}
+
+				return false;
+			}
+		});
+		super.onResume();
 	}
 
 	public int getFroumId() {
@@ -608,11 +654,10 @@ public class FroumFragment extends Fragment
 		commentId = Id;
 	}
 
-	public void expanding(int groupPosition) {
+	public void expanding(int groupPosition, int childPosition, boolean TypeAction) {
+
 		adapter.open();
-
 		commentGroup = adapter.getCommentInFroumbyPaperid(froumid, 0);
-
 		mapCollection = new LinkedHashMap<CommentInFroum, List<CommentInFroum>>();
 
 		List<CommentInFroum> reply = null;
@@ -628,8 +673,31 @@ public class FroumFragment extends Fragment
 		exadapter.notifyDataSetChanged();
 		exlistview.setAdapter(exadapter);
 		if (groupPosition <= mapCollection.size()) {
-			exlistview.expandGroup(groupPosition);
-			exlistview.setSelectedGroup(groupPosition);
+
+			if (TypeAction) {
+
+				exlistview.expandGroup(groupPosition);
+
+				if (childPosition != -1 && childPosition > 0)
+					exlistview.setSelectedChild(groupPosition, childPosition, true);
+				else
+					exlistview.setSelectedGroup(groupPosition);
+
+			} else {
+
+				if (childPosition != -1 && childPosition > 0) {
+
+					exlistview.expandGroup(groupPosition);
+					exlistview.setSelectedChild(groupPosition, childPosition - 1, true);
+
+				} else {
+					if (groupPosition > 0) {
+
+						exlistview.setSelectedGroup(groupPosition - 1);
+					}
+				}
+
+			}
 
 		}
 		adapter.close();
@@ -684,16 +752,16 @@ public class FroumFragment extends Fragment
 						adapter.close();
 						util.ToEmptyComment(getActivity());
 						if (commentId == 0)
-							expanding(exadapter.getGroupCount());
+							expanding(exadapter.getGroupCount(), -1, true);
 						else {
-							expanding(gp);
+							expanding(gp, exadapter.getChildrenCount(gp), true);
 
 						}
 
 					}
-//					if (ringProgressDialog != null) {
-//						ringProgressDialog.dismiss();
-//					}
+					// if (ringProgressDialog != null) {
+					// ringProgressDialog.dismiss();
+					// }
 				} catch (NumberFormatException ex) {
 					if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 
@@ -721,23 +789,25 @@ public class FroumFragment extends Fragment
 
 								saving.execute(params);
 							}
-//							ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-//
-//							ringProgressDialog.setCancelable(true);
-//							new Thread(new Runnable() {
-//
-//								@Override
-//								public void run() {
-//
-//									try {
-//
-//										Thread.sleep(10000);
-//
-//									} catch (Exception e) {
-//
-//									}
-//								}
-//							}).start();
+							// ringProgressDialog =
+							// ProgressDialog.show(getActivity(), "", "لطفا
+							// منتظر بمانید...", true);
+							//
+							// ringProgressDialog.setCancelable(true);
+							// new Thread(new Runnable() {
+							//
+							// @Override
+							// public void run() {
+							//
+							// try {
+							//
+							// Thread.sleep(10000);
+							//
+							// } catch (Exception e) {
+							//
+							// }
+							// }
+							// }).start();
 
 						} else {
 
@@ -782,9 +852,9 @@ public class FroumFragment extends Fragment
 						}
 					} else {
 						Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
-//						if (ringProgressDialog != null) {
-//							ringProgressDialog.dismiss();
-//						}
+						// if (ringProgressDialog != null) {
+						// ringProgressDialog.dismiss();
+						// }
 					}
 				}
 
@@ -792,9 +862,9 @@ public class FroumFragment extends Fragment
 
 					Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
 					adapter.close();
-//					if (ringProgressDialog != null) {
-//						ringProgressDialog.dismiss();
-//					}
+					// if (ringProgressDialog != null) {
+					// ringProgressDialog.dismiss();
+					// }
 				}
 				adapter.close();
 			}
@@ -857,9 +927,9 @@ public class FroumFragment extends Fragment
 
 			adapter.close();
 
-//			if (ringProgressDialog != null) {
-//				ringProgressDialog.dismiss();
-//			}
+			// if (ringProgressDialog != null) {
+			// ringProgressDialog.dismiss();
+			// }
 
 			FroumtitleFragment fr = new FroumtitleFragment();
 
@@ -881,9 +951,9 @@ public class FroumFragment extends Fragment
 		adapter.close();
 
 		updateList();
-//		if (ringProgressDialog != null) {
-//			ringProgressDialog.dismiss();
-//		}
+		// if (ringProgressDialog != null) {
+		// ringProgressDialog.dismiss();
+		// }
 	}
 
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
@@ -908,23 +978,24 @@ public class FroumFragment extends Fragment
 
 		service.execute(items);
 
-//		ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
-//
-//		ringProgressDialog.setCancelable(true);
-//		new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//
-//				try {
-//
-//					Thread.sleep(10000);
-//
-//				} catch (Exception e) {
-//
-//				}
-//			}
-//		}).start();
+		// ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا
+		// منتظر بمانید...", true);
+		//
+		// ringProgressDialog.setCancelable(true);
+		// new Thread(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		//
+		// try {
+		//
+		// Thread.sleep(10000);
+		//
+		// } catch (Exception e) {
+		//
+		// }
+		// }
+		// }).start();
 	}
 
 	private void checkInternet() {
@@ -1132,4 +1203,5 @@ public class FroumFragment extends Fragment
 		}
 
 	}
+
 }

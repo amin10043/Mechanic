@@ -49,8 +49,7 @@ public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 	// متغیر کد برای پیدا کردن مبدا ارسالی برای آپدیت کردن لیست می باشد
 	int code;
 
-	public DialogcmtInPaper(Fragment f, Context context, int resourceId,
-			int paperId, int code) {
+	public DialogcmtInPaper(Fragment f, Context context, int resourceId, int paperId, int code) {
 		super(context);
 		this.context = context;
 		this.f = f;
@@ -68,8 +67,7 @@ public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setBackgroundDrawable(
-				new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
 		setContentView(R.layout.dialog_addcomment);
 		btncmt = (ImageButton) findViewById(R.id.btnComment);
@@ -80,14 +78,11 @@ public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 			@Override
 			public void onClick(View arg0) {
 				if ("".equals(Cmttxt.getText().toString()))
-					(Toast.makeText(context, "لطفا نظر خود را وارد نمایید",
-							Toast.LENGTH_LONG)).show();
+					(Toast.makeText(context, "لطفا نظر خود را وارد نمایید", Toast.LENGTH_LONG)).show();
 				else {
 
 					if (currentuser == null) {
-						(Toast.makeText(context,
-								"برای ثبت نظر ابتدا باید وارد شوید.",
-								Toast.LENGTH_LONG)).show();
+						(Toast.makeText(context, "برای ثبت نظر ابتدا باید وارد شوید.", Toast.LENGTH_LONG)).show();
 					} else {
 
 						date = new ServerDate(context);
@@ -113,19 +108,17 @@ public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 	@Override
 	public void processFinish(String output) {
 
-		if (!"".equals(output) && output != null
-				&& !(output.contains("Exception") || output.contains("java"))) {
+		if (!"".equals(output) && output != null && !(output.contains("Exception") || output.contains("java"))) {
 			int id = -1;
 
 			try {
 				id = Integer.valueOf(output);
 				dbadapter.open();
-				dbadapter.insertCommentInPapertoDb(Cmttxt.getText().toString(),
-						paperId, currentuser.getId(), serverDate);
+				// dbadapter.insertCommentInPapertoDb(Cmttxt.getText().toString(),
+				// paperId, currentuser.getId(), serverDate);
 				dbadapter.close();
 
-				final SharedPreferences realizeIdPaper = context
-						.getSharedPreferences("Id", 0);
+				final SharedPreferences realizeIdPaper = context.getSharedPreferences("Id", 0);
 
 				if (code == 1) {
 					// az PaperWithoutComment vared shod
@@ -133,11 +126,9 @@ public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 
 					realizeIdPaper.edit().putInt("main_Id", 1378).commit();
 
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					PaperFragment fragment = new PaperFragment();
-					trans.setCustomAnimations(R.anim.pull_in_left,
-							R.anim.push_out_right);
+					trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 					Bundle b = new Bundle();
 					b.putString("Id", String.valueOf(paperId));
 					fragment.setArguments(b);
@@ -150,7 +141,7 @@ public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 				}
 				if (code == 2) {
 					// az paper fragment vard shode
-					((PaperFragment) f).updateView();
+					((PaperFragment) f).FillListView();
 					if (ringProgressDialog != null) {
 						ringProgressDialog.dismiss();
 					}
@@ -159,10 +150,8 @@ public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 
 			} catch (NumberFormatException e) {
 
-				if (!"".equals(output)
-						&& output != null
-						&& !(output.contains("Exception") || output
-								.contains("java"))) {
+				if (!"".equals(output) && output != null
+						&& !(output.contains("Exception") || output.contains("java"))) {
 
 					params = new LinkedHashMap<String, String>();
 					saving = new Saving(context);
@@ -182,8 +171,7 @@ public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 
 					saving.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(context, "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -202,8 +190,7 @@ public class DialogcmtInPaper extends Dialog implements AsyncInterface {
 					}).start();
 
 				} else
-					Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 			}
 
 		} else

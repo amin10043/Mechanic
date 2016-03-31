@@ -488,7 +488,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 						ringProgressDialog.dismiss();
 					}
 				} else {
-					adapter.insertLikeInPaperToDb(CurrentUser.getId(), paperID,
+					adapter.insertLikeInPaperToDb(id,CurrentUser.getId(), paperID,
 							serverDate);
 					likeTopic.setBackgroundResource(R.drawable.like_on);
 					countLikeRelative
@@ -505,9 +505,9 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 			} else {
 
 				adapter.open();
-				adapter.insertCommentInPapertoDb(
-						util.inputComment(getActivity()), paperID,
-						CurrentUser.getId(), serverDate);
+//				adapter.insertCommentInPapertoDb(
+//						util.inputComment(getActivity()), paperID,
+//						CurrentUser.getId(), serverDate);
 				adapter.close();
 
 				util.ToEmptyComment(getActivity());

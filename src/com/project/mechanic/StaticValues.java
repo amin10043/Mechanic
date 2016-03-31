@@ -12,6 +12,8 @@ public class StaticValues {
 	public static final int TypeTicketVisit = 3;
 	public static final int TypeFroumVist = 4;
 	public static final int TypePostVisit = 5;
+	public static final int TypeAnadVisit = 6;
+
 	/* e مشخص کردن نوع بازدید انجام شده */
 
 	/* s نسبت تصاویر نسبت به عرض دستگاه */
@@ -71,7 +73,6 @@ public class StaticValues {
 	public static final String IsRepeatLikeMessage = "شما قبلا نظرتان را در مورد این صفحه بیان کرده اید";
 	public static final String selectImagesBrandMessage = "انتخاب عکس های صفحه اجباری است";
 
-
 	/* e پیغام */
 
 	/* s نوع ارسال تخلف */
@@ -91,6 +92,5 @@ public class StaticValues {
 	public static final int TypeReportReplyFroum = 14;
 	public static final int TypeReportPage = 15;
 	public static final int TypeReportFixedPost = 16;
-
 
 }

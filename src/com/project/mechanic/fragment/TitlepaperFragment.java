@@ -97,8 +97,8 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 			Bundle savedInstanceState) {
 
 		view = inflater.inflate(R.layout.fragment_titlepaper, null);
-		
-		if (getArguments() !=null)
+
+		if (getArguments() != null)
 			positionPaper = getArguments().getInt("positionPaper");
 
 		init();
@@ -365,6 +365,9 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 
 		send = (ImageView) view.findViewById(R.id.createDialogPage);
 		close = (ImageView) view.findViewById(R.id.delete);
+		
+		titlePaperEditText.setTypeface(utility.SetFontIranSans());
+		descriptionPaperEditText.setTypeface(utility.SetFontIranSans());
 
 	}
 
@@ -403,16 +406,22 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 
 			@Override
 			public void onRefresh() {
-				updating = new Updating(getActivity());
-				updating.delegate = TitlepaperFragment.this;
-				String[] params = new String[4];
-				params[0] = "Paper";
-				params[1] = setting.getServerDate_Start_Paper() != null ? setting.getServerDate_Start_Paper() : "";
-				params[2] = setting.getServerDate_End_Paper() != null ? setting.getServerDate_End_Paper() : "";
 
-				params[3] = "1";
-				updating.execute(params);
-				IsNewPaper = true;
+//				if (mylist.size() > 0) {
+//					if (getActivity() != null) {
+//						updating = new Updating(getActivity());
+//						updating.delegate = TitlepaperFragment.this;
+//						String[] params = new String[4];
+//						params[0] = "Paper";
+//						params[1] = setting.getServerDate_Start_Paper() != null ? setting.getServerDate_Start_Paper()
+//								: "";
+//						params[2] = setting.getServerDate_End_Paper() != null ? setting.getServerDate_End_Paper() : "";
+//
+//						params[3] = "1";
+//						updating.execute(params);
+//						IsNewPaper = true;
+//					}
+//				}
 			}
 		});
 		swipeLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
@@ -448,25 +457,33 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 				if (lastInScreen == totalItemCount) {
 
 					// LoadMoreFooter.setVisibility(View.VISIBLE);
-					//
-					updating = new Updating(getActivity());
-					updating.delegate = TitlepaperFragment.this;
-					String[] params = new String[4];
-					params[0] = "Paper";
-					params[1] = setting.getServerDate_Start_Paper() != null ? setting.getServerDate_Start_Paper() : "";
-					params[2] = setting.getServerDate_End_Paper() != null ? setting.getServerDate_End_Paper() : "";
-
-					params[3] = "0";
-					updating.execute(params);
-
-					int countList = ListAdapter.getCount();
-					beforePosition = countList;
-					IsNewPaper = true;
+//					if (mylist.size() > 0) {
+//						if (getActivity() != null) {
+//
+//							//
+//							updating = new Updating(getActivity());
+//							updating.delegate = TitlepaperFragment.this;
+//							String[] params = new String[4];
+//							params[0] = "Paper";
+//							params[1] = setting.getServerDate_Start_Paper() != null
+//									? setting.getServerDate_Start_Paper() : "";
+//							params[2] = setting.getServerDate_End_Paper() != null ? setting.getServerDate_End_Paper()
+//									: "";
+//
+//							params[3] = "0";
+//							updating.execute(params);
+//
+//							int countList = ListAdapter.getCount();
+//							beforePosition = countList;
+//							IsNewPaper = true;
+//						}
+//					}
 
 					// FindPosition = false;
 				}
 			}
 		});
+
 	}
 
 	private void createNewItem() {
@@ -519,6 +536,15 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 						ServerDate sDate = new ServerDate(getActivity());
 						sDate.delegate = TitlepaperFragment.this;
 						sDate.execute("");
+
+						titlePaperEditText.setText("");
+						descriptionPaperEditText.setText("");
+
+						bottomSheet.startAnimation(enterFromDown);
+
+						bottomSheet.setVisibility(View.GONE);
+						action.setVisibility(View.VISIBLE);
+
 					} else {
 						Toast.makeText(getActivity(), "پر کردن عنوان و متن الزامی است", 0).show();
 

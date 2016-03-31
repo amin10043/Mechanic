@@ -1,6 +1,30 @@
 package com.project.mechanic.entity;
 
 public class CommentInPaper {
+	public int getPaperId() {
+		return PaperId;
+	}
+
+	public void setPaperId(int paperId) {
+		PaperId = paperId;
+	}
+
+	public int getUserId() {
+		return UserId;
+	}
+
+	public void setUserId(int userId) {
+		UserId = userId;
+	}
+
+	public int getCommentId() {
+		return CommentId;
+	}
+
+	public void setCommentId(int commentId) {
+		CommentId = commentId;
+	}
+
 	int Id;
 	String Description;
 	int PaperId;

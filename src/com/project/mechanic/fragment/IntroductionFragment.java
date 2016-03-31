@@ -33,18 +33,22 @@ import com.project.mechanic.inter.GetAllAsyncInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.inter.SaveAsyncInterface;
 import com.project.mechanic.inter.VisitSaveInterface;
+import com.project.mechanic.interfaceServer.AllFollowersInterface;
 import com.project.mechanic.interfaceServer.DateFromServerForLike;
 import com.project.mechanic.interfaceServer.DateFromServerForVisit;
 import com.project.mechanic.interfaceServer.DateImagePostInterface;
 import com.project.mechanic.interfaceServer.DateImagesInformationObject;
 import com.project.mechanic.interfaceServer.DeleteLikeFromServer;
+import com.project.mechanic.interfaceServer.HappySadInterface;
 import com.project.mechanic.interfaceServer.HeaderProfileFooterImagesObject;
 import com.project.mechanic.interfaceServer.ImagePostInterface;
 import com.project.mechanic.interfaceServer.LikeFromServer;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.server.AllFollowerObjectServer;
 import com.project.mechanic.server.DeletingLike;
 import com.project.mechanic.server.GetDateImagePost;
 import com.project.mechanic.server.GetDatesImagesObject;
+import com.project.mechanic.server.GetHappySadServer;
 import com.project.mechanic.server.GetImagePost;
 import com.project.mechanic.server.GetImagesHeaderProfileFooter;
 import com.project.mechanic.server.SavingLike;
@@ -99,12 +103,14 @@ import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class IntroductionFragment extends Fragment implements LikeFromServer, DateFromServerForLike,
-		DeleteLikeFromServer, DateImagesInformationObject, HeaderProfileFooterImagesObject, DateFromServerForVisit,
-		ImagePostInterface, DateImagePostInterface, AsyncInterface, GetAllAsyncInterface, DataPersonalInterface,
+public class IntroductionFragment extends Fragment
+		implements LikeFromServer, DateFromServerForLike, DeleteLikeFromServer, DateImagesInformationObject,
+		HeaderProfileFooterImagesObject, DateFromServerForVisit, ImagePostInterface, DateImagePostInterface,
+		HappySadInterface, AsyncInterface, GetAllAsyncInterface, DataPersonalInterface, AllFollowersInterface,
 		VisitSaveInterface, AsyncInterfaceVisit, GetAsyncInterface, CommInterface, SaveAsyncInterface {
 
 	// Context context;
@@ -175,7 +181,7 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 	PosttitleListadapter ListAdapterPost;
 
 	int typeLike;
-	int positionBrand = 0;
+	int positionBrand = 0, positionScroll = 0;
 	// int positionPost = 0;
 	RelativeLayout bottomSheet, mainSheet;
 	EditText descriptionPost;
@@ -195,7 +201,10 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 
 	int MaxSizeImageSelected = 5;
 	Bitmap bmpHeader, bmpProfile, bmpfooter;
-	LinearLayout footerLayout;
+	// LinearLayout footerLayout;
+	boolean happyOrSad = true; // true >> happy false>>sad
+	int whatTypeLikePage = StaticValues.TypeLikePage; // 0 >> follower --- 2 >>
+														// happy --- 3 >> sad
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -242,6 +251,11 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 		PostList.addHeaderView(header);
 		fillListView();
 
+		if (getArguments() != null) {
+			positionScroll = Integer.valueOf(getArguments().getInt("positionScroll"));
+			// setPositionPage();
+		}
+
 		// if (getArguments() != null) {
 		//
 		// positionPost = getArguments().getInt("positionPost");
@@ -287,12 +301,17 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 
 		setFont();
 
+		stateHappyOrSad();
+
 		getCountInformation();
 
 		getPost();
 
 		getImageFromServer();
 
+		GetHappySad();
+
+		getLikeInObjectPage();
 		// for manage footer slide image agahi
 		// addComment();
 
@@ -319,6 +338,7 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 
 		getView().setFocusableInTouchMode(true);
 		getView().requestFocus();
+		setPositionPage();
 		getView().setOnKeyListener(new OnKeyListener() {
 
 			@Override
@@ -1024,8 +1044,21 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 			mFileTemp = new File(getActivity().getFilesDir(), TEMP_PHOTO_FILE_NAME);
 		}
 
-		footerLayout = (LinearLayout) header.findViewById(R.id.footerint);
+		// footerLayout = (LinearLayout) header.findViewById(R.id.footerint);
 
+	}
+
+	public void setPositionPage() {
+//		fillListView();
+//		PostList.setScrollY(positionScroll);
+
+	}
+
+	@Override
+	public void onStart() {
+
+		// setPositionPage();
+		super.onStart();
 	}
 
 	public void fillListView() {
@@ -1042,6 +1075,7 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 
 	public void setPostionListPost(int pos) {
 		positionListPost = pos;
+
 	}
 
 	private void setStateButtonFollowLike() {
@@ -1228,15 +1262,11 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 		}
 
 		if (bmpHeader != null) {
-
 			headerImage.setImageBitmap(bmpHeader);
 		} else
-
 			headerImage.setBackgroundResource(R.drawable.no_image_header);
 		if (bmpProfile != null) {
-
 			profileImage.setImageBitmap(Utility.getclip(bmpProfile));
-
 		} else {
 			profileImage.setBackgroundResource(R.drawable.circle_drawable);
 			profileImage.setImageResource(R.drawable.no_img_profile);
@@ -1894,10 +1924,15 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 			}
 		});
 
-		footerLayout.setOnClickListener(new OnClickListener() {
+		footerLinear.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
+
+				ListView lv = (ListView) v.getParent().getParent().getParent();
+
+				View c = lv.getChildAt(0);
+				int scrollY = -c.getTop() + lv.getFirstVisiblePosition() * c.getHeight();
 
 				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
 						.beginTransaction();
@@ -1905,10 +1940,13 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(ObjectID));
+				bundle.putInt("positionScroll", scrollY);
+
 				fragment.setArguments(bundle);
-				trans.addToBackStack("PostFramgnet");
+				// trans.addToBackStack("PostFramgnet");
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
+
 			}
 		});
 
@@ -2182,15 +2220,23 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 			@Override
 			public void onClick(View arg0) {
 
+				List<Integer> idsUsers = new ArrayList<Integer>();
+				List<String> dateLike = new ArrayList<String>();
+
 				adapter.open();
-
 				ArrayList<LikeInObject> likedist = adapter.getAllLikeFromObject(ObjectID, 0);
-
 				adapter.close();
+
+				for (int i = 0; i < likedist.size(); i++) {
+					idsUsers.add(likedist.get(i).getUserId());
+					dateLike.add(likedist.get(i).getDatetime());
+				}
+
 				if (likedist.size() == 0) {
 					Toast.makeText(getActivity(), "دنبال کننده ای ثبت نشده است", 0).show();
 				} else {
-					DialogPersonLikedObject dia = new DialogPersonLikedObject(getActivity(), ObjectID, likedist);
+					DialogPersonLikedObject dia = new DialogPersonLikedObject(getActivity(), ObjectID, idsUsers,
+							dateLike);
 					ut.setSizeDialog(dia);
 
 				}
@@ -2455,9 +2501,10 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 		lableAgency.setTypeface(ut.SetFontCasablanca());
 		lableservice.setTypeface(ut.SetFontCasablanca());
 
-		lableSendBusinessCard.setTypeface(ut.SetFontCasablanca());
+		lableSendBusinessCard.setTypeface(ut.SetFontIranSans());
 
 		txtDesc.setTypeface(ut.SetFontIranSans());
+		txtAddress.setTypeface(ut.SetFontIranSans());
 
 	}
 
@@ -2878,7 +2925,7 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 						params.put("TableName", "LikeInObject");
 						params.put("UserId", String.valueOf(currentUser.getId()));
 						params.put("ObjectId", String.valueOf(ObjectID));
-						params.put("IsLike", String.valueOf(typeLike));
+						params.put("CommentId", String.valueOf(typeLike));
 
 						deleting.execute(params);
 					}
@@ -2897,7 +2944,7 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 						params.put("Date", output);
 						params.put("ModifyDate", output);
 
-						params.put("IsLike", String.valueOf(typeLike));
+						params.put("CommentId", String.valueOf(typeLike));
 
 						params.put("IsUpdate", "0");
 						params.put("Id", "0");
@@ -2927,7 +2974,7 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 						params.put("TableName", "LikeInObject");
 						params.put("UserId", String.valueOf(currentUser.getId()));
 						params.put("ObjectId", String.valueOf(ObjectID));
-						params.put("IsLike", String.valueOf(typeLike));
+						params.put("CommentId", String.valueOf(typeLike));
 
 						deleting.execute(params);
 					}
@@ -2946,7 +2993,7 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 						params.put("Date", output);
 						params.put("ModifyDate", output);
 
-						params.put("IsLike", String.valueOf(typeLike));
+						params.put("CommentId", String.valueOf(typeLike));
 
 						params.put("IsUpdate", "0");
 						params.put("Id", "0");
@@ -3388,5 +3435,139 @@ public class IntroductionFragment extends Fragment implements LikeFromServer, Da
 			}
 
 		}
+	}
+
+	private void GetHappySad() {
+
+		int type = -1;
+
+		if (happyOrSad == true)
+			type = StaticValues.TypeHappyFromPage;
+		else
+			type = StaticValues.TypeSadFromPage;
+
+		GetHappySadServer getCount = new GetHappySadServer(getActivity());
+		getCount.delegate = IntroductionFragment.this;
+		Map<String, String> items = new LinkedHashMap<String, String>();
+
+		items.put("tableName", "getHappySadByObjectId");
+		items.put("objectId", String.valueOf(ObjectID));
+		items.put("type", String.valueOf(type));
+
+		getCount.execute(items);
+
+	}
+
+	@Override
+	public void ResultHappySad(String output) {
+
+		if (ut.checkError(output) == false) {
+			adapter.open();
+
+			if (happyOrSad == true) {
+
+				adapter.updateCountHappyOrSad(ObjectID, Integer.valueOf(output), true);
+				countRazi.setText(output);
+				happyOrSad = false;
+				object.setCountHappy(Integer.valueOf(output));
+				GetHappySad();
+
+			} else {
+				adapter.updateCountHappyOrSad(ObjectID, Integer.valueOf(output), false);
+				countShaki.setText(output);
+				object.setCountSad(Integer.valueOf(output));
+
+			}
+			adapter.close();
+
+			stateHappyOrSad();
+
+		}
+
+	}
+
+	private void stateHappyOrSad() {
+
+		countRazi.setText(object.getCountHappy() + "");
+		countShaki.setText(object.getCountSad() + "");
+
+		adapter.open();
+
+		if (currentUser != null) {
+
+			if (adapter.isUserHappyFromPage(currentUser.getId(), ObjectID, StaticValues.TypeHappyFromPage))
+				iconOk.setBackgroundResource(R.drawable.ok);
+			else
+				iconOk.setBackgroundResource(R.drawable.razi);
+
+			if (adapter.isUserHappyFromPage(currentUser.getId(), ObjectID, StaticValues.TypeSadFromPage))
+				iconsad.setBackgroundResource(R.drawable.hate);
+			else
+				iconsad.setBackgroundResource(R.drawable.narazi);
+
+		}
+
+		adapter.close();
+
+	}
+
+	private void getLikeInObjectPage() {
+
+		if (getActivity() != null) {
+
+			AllFollowerObjectServer getDateService = new AllFollowerObjectServer(getActivity());
+			getDateService.delegate = IntroductionFragment.this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+
+			items.put("tableName", "getLikeInObjectByObjectId");
+			items.put("objectId", String.valueOf(ObjectID));
+			items.put("type", String.valueOf(whatTypeLikePage));
+
+			getDateService.execute(items);
+
+		}
+
+	}
+
+	@Override
+	public void ResultFollowers(String output) {
+
+		switch (whatTypeLikePage) {
+		case 0: // followers
+
+			if (ut.checkError(output) == false && !output.contains("anyType")) {
+				ut.parseQuery(output);
+			}
+
+			whatTypeLikePage = StaticValues.TypeHappyFromPage;
+
+			getLikeInObjectPage();
+
+			break;
+
+		case 2: // happy
+
+			if (ut.checkError(output) == false && !output.contains("anyType")) {
+				ut.parseQuery(output);
+			}
+
+			whatTypeLikePage = StaticValues.TypeSadFromPage;
+
+			getLikeInObjectPage();
+
+			break;
+
+		case 3: // sad
+
+			if (ut.checkError(output) == false && !output.contains("anyType")) {
+				ut.parseQuery(output);
+			}
+
+			break;
+
+		default:
+			break;
+		}
+
 	}
 }

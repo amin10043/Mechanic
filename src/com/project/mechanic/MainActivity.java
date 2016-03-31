@@ -58,14 +58,18 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.DrawerLayout.LayoutParams;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -106,7 +110,7 @@ public class MainActivity extends FragmentActivity {
 
 		if (user != null) {
 			txtcm1.setVisibility(View.VISIBLE);
-			txtlike.setVisibility(View.VISIBLE);
+//			txtlike.setVisibility(View.GONE);
 			util.setNoti(this, user.getId());
 		} else {
 
@@ -159,7 +163,7 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				
+
 				user = util.getCurrentUser();
 
 				if (user != null) {
@@ -174,6 +178,7 @@ public class MainActivity extends FragmentActivity {
 
 			}
 		});
+		final RelativeLayout lay = (RelativeLayout) findViewById(R.id.searchV);
 
 		iBtnmessage.setOnClickListener(new OnClickListener() {
 
@@ -187,8 +192,11 @@ public class MainActivity extends FragmentActivity {
 
 				adapter.open();
 				dialog = new Dialog_notification(MainActivity.this, r, r1, r2);
+				
+				
+				
 
-				util.setSizeDialog(dialog);
+				util.notificationDialogAnimation(dialog , lay.getHeight());
 
 				// int seen = 1;
 				// adapter.updatecmseentodb(seen, user.getId());
@@ -248,6 +256,8 @@ public class MainActivity extends FragmentActivity {
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		mDrawerList.setDivider(getResources().getDrawable(R.drawable.lili));
 		mDrawerList.setAdapter(slideadapter);
+
+		// setListViewHeightBasedOnItems(mDrawerList, slideadapter);
 
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -660,4 +670,47 @@ public class MainActivity extends FragmentActivity {
 
 		Toast.makeText(this, "LOW MEMORY2", Toast.LENGTH_SHORT).show();
 	}
+
+	public boolean setListViewHeightBasedOnItems(ListView listView, SlideMenuAdapter adapter, RelativeLayout lay) {
+
+		if (adapter != null) {
+			listView.setFooterDividersEnabled(false);
+			int numberOfItems = adapter.getCount();
+
+			// Get total height of all items.
+			int totalItemsHeight = 0;
+			for (int itemPos = 0; itemPos < numberOfItems; itemPos++) {
+				View item = adapter.getView(itemPos, null, listView);
+				item.measure(0, 0);
+				totalItemsHeight += item.getMeasuredHeight();
+			}
+
+			// Get total height of all item dividers.
+			int totalDividersHeight = listView.getDividerHeight() * (numberOfItems - 1);
+
+			// Set list height.
+			ViewGroup.LayoutParams params = listView.getLayoutParams();
+			// params.height = totalItemsHeight + totalDividersHeight;
+
+			params.height = util.getScreenHeight() - 100;
+
+			listView.setLayoutParams(params);
+			listView.requestLayout();
+
+			return true;
+
+		} else {
+			return false;
+		}
+
+	}
+
+	@Override
+	protected void onResume() {
+		RelativeLayout lay = (RelativeLayout) findViewById(R.id.searchV);
+
+		setListViewHeightBasedOnItems(mDrawerList, slideadapter, lay);
+		super.onResume();
+	}
+
 }

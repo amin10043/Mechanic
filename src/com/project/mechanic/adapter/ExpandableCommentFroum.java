@@ -5,13 +5,27 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.project.mechanic.MainActivity;
+import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
+import com.project.mechanic.entity.CommentInFroum;
+import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.FroumFragment;
+import com.project.mechanic.fragment.InformationUser;
+import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.service.Deleting;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.utility.Utility;
+import com.project.mechanic.view.TextViewEx;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -19,36 +33,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.PopupMenu.OnMenuItemClickListener;
-
-import com.project.mechanic.MainActivity;
-import com.project.mechanic.R;
-import com.project.mechanic.StaticValues;
-import com.project.mechanic.entity.CommentInFroum;
-import com.project.mechanic.entity.Froum;
-import com.project.mechanic.entity.Users;
-import com.project.mechanic.fragment.DialogLongClick;
-import com.project.mechanic.fragment.FroumFragment;
-import com.project.mechanic.fragment.InformationUser;
-import com.project.mechanic.inter.AsyncInterface;
-import com.project.mechanic.inter.CommInterface;
-import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.service.Deleting;
-import com.project.mechanic.service.Saving;
-import com.project.mechanic.service.ServerDate;
-import com.project.mechanic.service.ServiceComm;
-import com.project.mechanic.utility.Utility;
 
 public class ExpandableCommentFroum extends BaseExpandableListAdapter
 		implements AsyncInterface/* , CommInterface */ {
@@ -76,7 +70,8 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 	List<String> menuItems;
 	int itemId, userIdsender;;
 	String description;
-	boolean IsDeleteing;
+	boolean IsDeleteing, typeReport; // if(typeReport==true) comment else report
+	int posGroup, posChild = -1;
 
 	public ExpandableCommentFroum(Context context, ArrayList<CommentInFroum> laptops,
 			Map<CommentInFroum, List<CommentInFroum>> mapCollection, FroumFragment f, int froumID) {
@@ -109,7 +104,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 			convertView = inflater.inflate(R.layout.row_child_item, null);
 		}
 
-		TextView mainReply = (TextView) convertView.findViewById(R.id.reply_txt_child);
+		final TextViewEx mainReply = (TextViewEx) convertView.findViewById(R.id.reply_txt_child);
 
 		TextView dateReply = (TextView) convertView.findViewById(R.id.date_replyed);
 		TextView nameReplyer = (TextView) convertView.findViewById(R.id.name_replyed);
@@ -128,7 +123,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 		// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		// lp.setMargins(5, 5, 5, 5);
+		lp.setMargins(10, 10, 10, 10);
 		ReplyerPic.setLayoutParams(lp);
 
 		if (y.getImagePath() == null) {
@@ -158,12 +153,19 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 			@Override
 			public void onClick(View v) {
 
+				Froum fr = null;
+
 				int d = (int) getGroupId(groupPosition);
 				final CommentInFroum w = (CommentInFroum) getChild(d, childPosition);
 				if (w != null) {
 					itemId = w.getId();
 					userIdsender = w.getUserid();
 					description = w.getDesk();
+
+					adapter.open();
+
+					fr = adapter.getFroumItembyid(w.getFroumid());
+					adapter.close();
 
 				}
 
@@ -176,11 +178,21 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 						menuItems.add("کپی");
 						menuItems.add("حذف");
 
-					} else {
+					} else if (util.getCurrentUser().getId() == fr.getUserId()) {
 						menuItems = new ArrayList<String>();
 
 						menuItems.clear();
 						menuItems.add("کپی");
+						menuItems.add("حذف");
+
+						menuItems.add("گزارش تخلف");
+					} else {
+
+						menuItems = new ArrayList<String>();
+
+						menuItems.clear();
+						menuItems.add("کپی");
+
 						menuItems.add("گزارش تخلف");
 					}
 
@@ -213,12 +225,13 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
 						if (item.getTitle().equals("حذف")) {
-							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender)
-								deleteItems(itemId);
-							else {
 
-								Toast.makeText(context, "", 0).show();
-							}
+							posGroup = groupPosition;
+							posChild = childPosition;
+							deleteItems(itemId);
+
+							typeReport = false;
+
 						}
 
 						return false;
@@ -278,12 +291,18 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 
 			}
 		});
-		mainReply.setText(reply.getDesk());
+		mainReply.setText(reply.getDesk(), true);
 		dateReply.setText(util.getPersianDate(reply.getDatetime()));
 		nameReplyer.setText(y.getName());
+		nameReplyer.setTypeface(util.SetFontIranSans());
 		adapter.close();
 
-		notifyDataSetChanged();
+		mainReply.setTypeface(util.SetFontIranSans());
+		// mainReply.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+		// mainReply.setLineSpacing(15, 1);
+		// mainReply.setLineSpacing(15);
+
+		// notifyDataSetChanged();
 		return convertView;
 	}
 
@@ -320,7 +339,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 		}
 
 		// start find view
-		final TextView mainComment = (TextView) convertView.findViewById(R.id.peygham);
+		final TextViewEx mainComment = (TextViewEx) convertView.findViewById(R.id.peygham);
 
 		TextView nameCommenter = (TextView) convertView.findViewById(R.id.name_froum_profile);
 
@@ -368,7 +387,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 
 		}
 
-		mainComment.setText(comment.getDesk());
+		mainComment.setText(comment.getDesk(), true);
 		dateCommenter.setText(util.getPersianDate(comment.getDatetime()));
 		// if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) == 0) {
 		// LinearLayout lrr = (LinearLayout) convertView
@@ -381,6 +400,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 		if (x != null) {
 			Bitmap bmp = null;
 			nameCommenter.setText(x.getName());
+			nameCommenter.setTypeface(util.SetFontIranSans());
 			if (x.getImagePath() == null) {
 
 				// profileImage.setBackgroundResource(R.drawable.circle_drawable);
@@ -400,7 +420,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageCommentAndReply);
 		// lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		// lp.setMargins(5, 5, 10, 5);
+		lp.setMargins(10, 10, 10, 10);
 		profileImage.setLayoutParams(lp);
 		profileImage.setOnClickListener(new View.OnClickListener() {
 
@@ -659,9 +679,9 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 					return;
 				} else {
 					adapter.open();
-					RelativeLayout parentlayout = (RelativeLayout) m.getParent().getParent().getParent();
+					LinearLayout parentlayout = (LinearLayout) m.getParent().getParent().getParent();
 					View view = parentlayout.findViewById(R.id.peygham);
-					TextView x = (TextView) view;
+					TextViewEx x = (TextViewEx) view;
 					String item = x.getText().toString();
 					int commentid = 0;
 					for (CommentInFroum listItem : cmt) {
@@ -697,6 +717,9 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 
 				int d = (int) getGroupId(groupPosition);
 				final CommentInFroum w = (CommentInFroum) getGroup(d);
+				adapter.open();
+				Froum fr = adapter.getFroumItembyid(w.getFroumid());
+				adapter.close();
 				if (w != null) {
 					itemId = w.getId();
 					userIdsender = w.getUserid();
@@ -706,24 +729,32 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 
 				if (util.getCurrentUser() != null) {
 
-					adapter.open();
-					int countReply = adapter.getCountOfReplyInFroum(froumID, comment.getId());
-					adapter.close();
+					// adapter.open();
+					// int countReply = adapter.getCountOfReplyInFroum(froumID,
+					// comment.getId());
+					// adapter.close();
 
 					if (util.getCurrentUser().getId() == userIdsender) {
 
-						if (countReply == 0) {
-							menuItems = new ArrayList<String>();
-							menuItems.clear();
-							menuItems.add("کپی");
-							menuItems.add("حذف");
-						} else {
+						// if (countReply == 0) {
+						menuItems = new ArrayList<String>();
+						menuItems.clear();
+						menuItems.add("کپی");
+						menuItems.add("حذف");
+						// } else {
+						//
+						// menuItems = new ArrayList<String>();
+						// menuItems.clear();
+						// menuItems.add("کپی");
+						//
+						// }
 
-							menuItems = new ArrayList<String>();
-							menuItems.clear();
-							menuItems.add("کپی");
+					} else if (util.getCurrentUser().getId() == fr.getUserId()) {
+						menuItems = new ArrayList<String>();
 
-						}
+						menuItems.clear();
+						menuItems.add("کپی");
+						menuItems.add("حذف");
 
 					} else {
 						menuItems = new ArrayList<String>();
@@ -763,12 +794,12 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
 						if (item.getTitle().equals("حذف")) {
-							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender)
-								deleteItems(itemId);
-							else {
 
-								Toast.makeText(context, "", 0).show();
-							}
+							posGroup = groupPosition;
+
+							deleteItems(itemId);
+							typeReport = true;
+
 						}
 
 						return false;
@@ -854,7 +885,10 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 
 			}
 		});
-		mainComment.setTypeface(null, Typeface.BOLD);
+		mainComment.setTypeface(util.SetFontIranSans());
+
+		// mainComment.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+		// mainComment.setLineSpacing(15);
 
 		return convertView;
 	}
@@ -874,12 +908,31 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
-
+//
+//			adapter.open();
+//			adapter.deleteOnlyCommentFroum(itemId);
+//			adapter.close();
+//
+////			f.updateList();
+			
 			adapter.open();
-			adapter.deleteOnlyCommentFroum(itemId);
+
+			if (typeReport == true) {
+
+				adapter.deleteOnlyCommentFroum(itemId);
+				adapter.deleteLikeInCommentFroum(itemId);
+				adapter.deleteReplyFroum(itemId);
+
+			} else {
+				adapter.deleteOnlyReplyFroum(itemId);
+
+				// f.expanding(groupPosition);
+
+			}
+
 			adapter.close();
 
-			f.updateList();
+			f.expanding(posGroup, posChild, false);
 
 		} else {
 			if (!"".equals(output) && output != null && !(output.contains("Exception") || output.contains("java"))) {

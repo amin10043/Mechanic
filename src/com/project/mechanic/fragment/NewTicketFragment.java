@@ -80,6 +80,8 @@ public class NewTicketFragment extends Fragment implements AsyncInterface, SaveA
 		setonClick();
 
 		setValues();
+		
+		setFont();
 
 		return convertView;
 	}
@@ -454,4 +456,20 @@ public class NewTicketFragment extends Fragment implements AsyncInterface, SaveA
 
 		}
 	}
+
+	public void setFont() {
+
+		titleTicketEditText.setTypeface(util.SetFontIranSans());
+		descriptionTicketEditText.setTypeface(util.SetFontIranSans());
+		lableInsert.setTypeface(util.SetFontIranSans());
+		name.setTypeface(util.SetFontIranSans());
+		emailEditText.setTypeface(util.SetFontIranSans());
+		phoneEditText.setTypeface(util.SetFontIranSans());
+		mobileEditText.setTypeface(util.SetFontIranSans());
+		faxEditText.setTypeface(util.SetFontIranSans());
+		lableEtebar.setTypeface(util.SetFontIranSans());
+		dayTicketEditText.setTypeface(util.SetFontIranSans());
+		lableDay.setTypeface(util.SetFontIranSans());
+	}
+
 }

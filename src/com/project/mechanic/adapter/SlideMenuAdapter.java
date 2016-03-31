@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.utility.Utility;
@@ -31,8 +32,8 @@ public class SlideMenuAdapter extends BaseAdapter {
 
 	String[] slideitem = { "صفحه اصلی", "مدیریت شخصی", "علاقه مندی ها", "انجمن برنامه", "پشتیبانی", "قوانین",
 			"درباره ما", "تنظیمات" };
-	int[] icon = { R.drawable.ic_h, R.drawable.numvv, R.drawable.ic_bookmark, R.drawable.ic_bookmark,
-			R.drawable.phone2, R.drawable.phone2, R.drawable.phone2, R.drawable.ic_about_us };
+	int[] icon = { R.drawable.ic_h, R.drawable.numvv, R.drawable.ic_bookmark, R.drawable.ic_bookmark, R.drawable.phone2,
+			R.drawable.phone2, R.drawable.phone2, R.drawable.ic_about_us };
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -47,7 +48,7 @@ public class SlideMenuAdapter extends BaseAdapter {
 		TextView nametxt = (TextView) convertView.findViewById(R.id.namemenu);
 
 		Users u = util.getCurrentUser();
-		nametxt.setTypeface(util.SetFontCasablanca());
+		nametxt.setTypeface(util.SetFontIranSans());
 		// if (/* position == 2 && */u != null && u.getImage() != null) {
 		// iconImg.setImageBitmap(Utility.getRoundedCornerBitmap(BitmapFactory
 		// .decodeByteArray(u.getImage(), 0, u.getImage().length), 100));
@@ -81,6 +82,11 @@ public class SlideMenuAdapter extends BaseAdapter {
 		// }
 
 		nametxt.setText(slideitem[position]);
+
+		// int a =convertView.getHeight();
+
+		convertView.setMinimumHeight(((parent.getHeight()-20) / 8));
+//		Toast.makeText(context, parent.getHeight() + "", 0).show();
 
 		return convertView;
 	}

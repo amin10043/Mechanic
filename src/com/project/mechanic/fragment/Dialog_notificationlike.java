@@ -139,7 +139,7 @@ public class Dialog_notificationlike extends Dialog {
 
 		int t = dbadapter.NumOfNewLikeInFroum(user.getId());
 		int t2 = dbadapter.NumOfNewLikeInPaper(user.getId());
-		int t3 = t + t1 + t2;
+//		int t3 = t + t1 + t2;
 
 		dbadapter.close();
 

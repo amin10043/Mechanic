@@ -149,7 +149,7 @@ public class UrlNewsPaperFragment extends Fragment {
 
 		} // /
 
-		util.ShowFooterAgahi(getActivity(), true, 5);
+		util.ShowFooterAgahi(getActivity(), false, 5);
 		return view;
 
 	}
