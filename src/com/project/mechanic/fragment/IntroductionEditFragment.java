@@ -8,15 +8,17 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.SaveAsyncInterface;
+import com.project.mechanic.interfaceServer.CountAgencySerViceInterface;
 import com.project.mechanic.interfaceServer.DateFromServerForLike;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.server.CountAgencyServiceServer;
 import com.project.mechanic.server.ServerDateForLike;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.SavingImage3Picture;
-import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
 import android.app.Activity;
@@ -28,7 +30,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -38,6 +39,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,7 +50,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class IntroductionEditFragment extends Fragment
-		implements DateFromServerForLike, AsyncInterface, SaveAsyncInterface {
+		implements DateFromServerForLike, AsyncInterface, SaveAsyncInterface, CountAgencySerViceInterface {
 	private static int headerLoadCode = 1;
 	private static int profileLoadCode = 2;
 	private static int footerLoadcode = 3;
@@ -115,6 +118,16 @@ public class IntroductionEditFragment extends Fragment
 
 	TextView lableAgency, lableService;
 	int ObjectBrandTypeId;
+	String message = "";
+	int scrollY = 0;
+	LinearLayout li;
+
+	boolean typeAgency = true;
+
+	int countAgency = 0;
+	int countService = 0;
+
+	TextView haveAgency, haveService;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -211,8 +224,14 @@ public class IntroductionEditFragment extends Fragment
 
 		addressEnter.setTypeface(util.SetFontIranSans());
 		descriptionEnter.setTypeface(util.SetFontIranSans());
-		
+
 		btnSave.setTypeface(util.SetFontIranSans());
+
+		haveAgency = (TextView) view.findViewById(R.id.haveAgency);
+		haveService = (TextView) view.findViewById(R.id.haveService);
+
+		haveAgency.setTypeface(util.SetFontIranSans());
+		haveService.setTypeface(util.SetFontIranSans());
 
 		String state = Environment.getExternalStorageState();
 
@@ -234,8 +253,13 @@ public class IntroductionEditFragment extends Fragment
 		// SharedPreferences sendDataID1 = getActivity().getSharedPreferences(
 		// "Id", 0);
 		// final int cid = sendDataID1.getInt("main_Id", -1);
+		
+		
+		
+		
 		DBAdapter.open();
 		object = DBAdapter.getObjectbyid(pageId);
+		descriptionEnter.setText(object.getDescription());
 
 		String pathHeader = object.getImagePath1();
 		String pathProfile = object.getImagePath2();
@@ -344,6 +368,17 @@ public class IntroductionEditFragment extends Fragment
 
 		default:
 			break;
+		}
+
+		if (object.getCountAgency() > 0) {
+			checkAgency.setEnabled(false);
+			haveAgency.setVisibility(View.VISIBLE);
+
+		}
+
+		if (object.getCountService() > 0) {
+			checkService.setEnabled(false);
+			haveService.setVisibility(View.VISIBLE);
 		}
 
 		copyBtn.setOnClickListener(new OnClickListener() {
@@ -468,23 +503,22 @@ public class IntroductionEditFragment extends Fragment
 				addressValue = addressEnter.getText().toString();
 				descriptionValue = descriptionEnter.getText().toString();
 				websiteValue = websiteEnter.getText().toString();
+				
+				upgradRatingCount = (int) rating.getRating();
 
-				if (checkAgency.isChecked() && checkService.isChecked())
-					ObjectBrandTypeId = 1;
-				else if (checkAgency.isChecked())
-					ObjectBrandTypeId = 3;
-				else if (checkService.isChecked())
-					ObjectBrandTypeId = 4;
-				else
-					ObjectBrandTypeId = 2;
 
 				if (nameValue.equals("")) {
 					Toast.makeText(getActivity(), "پر کردن فیلد نام الزامی است", Toast.LENGTH_SHORT).show();
 				} else {
 
-					ServerDateForLike dates = new ServerDateForLike(getActivity());
-					dates.delegate = IntroductionEditFragment.this;
-					dates.execute("");
+					li = (LinearLayout) checkAgency.getParent().getParent().getParent().getParent().getParent();
+
+					View v = (View) checkAgency.getParent();
+
+					scrollY = v.getTop();
+
+					getCountAgencyService();
+
 
 				}
 			}
@@ -652,40 +686,7 @@ public class IntroductionEditFragment extends Fragment
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
-			// if (getActivity() != null) {
-
-			//
-			// byte[] byteHeader = util.CompressBitmap(bmpHeader);
-			// byte[] byteProfil = util.CompressBitmap(bmpProfil);
-			// byte[] byteFooter = util.CompressBitmap(bmpFooter);
-
-			// if (headerImageEdit.getDrawable() == null &&
-			// profileImageEdit.getDrawable() == null
-			// && footerImageEdit.getDrawable() == null) {
-			//
-			// Toast.makeText(getActivity(), "Empty ByteArray",
-			// Toast.LENGTH_SHORT).show();
-			// }
-			//
-			// if (headerImageEdit.getDrawable() != null) {
-			// bmpHeader = ((BitmapDrawable)
-			// headerImageEdit.getDrawable()).getBitmap();
-			// if (bmpHeader != null)
-			// byteHeader = Utility.CompressBitmap(bmpHeader);
-			//
-			// }
-			// if (profileImageEdit.getDrawable() != null) {
-			// bmpProfil = ((BitmapDrawable)
-			// profileImageEdit.getDrawable()).getBitmap();
-			// if (bmpProfil != null)
-			// byteProfil = Utility.CompressBitmap(bmpProfil);
-			// }
-			// if (footerImageEdit.getDrawable() != null) {
-			// bmpFooter = ((BitmapDrawable)
-			// footerImageEdit.getDrawable()).getBitmap();
-			// if (bmpFooter != null)
-			// byteFooter = Utility.CompressBitmap(bmpFooter);
-			// }
+		
 
 			if (getActivity() != null) {
 				savingImage = new SavingImage3Picture(getActivity());
@@ -704,21 +705,18 @@ public class IntroductionEditFragment extends Fragment
 				it.put("Image3", byteFooter);
 
 				savingImage.execute(it);
-				ringProgressDialog = ProgressDialog.show(getActivity(), null,
-						"به منظور به روز رسانی تصاویر لطفا چند لحظه منتظر بمانید.");
+				
+				ringProgressDialog = ProgressDialog.show(getActivity(), null, StaticValues.MessagePleaseWait);
+
+
 			}
-			// } else {
 			DBAdapter.open();
 			DBAdapter.UpdateObjectProperties(pageId, nameValue, phoneValue, emailValue, faxValue, descriptionValue,
 					Dcatalog, Dprice, Dpdf, Dvideo, addressValue, mobileValue, Dface, Dinstagram, Dlink, Dgoogle,
 					websiteValue, Dtwt, ObjectBrandTypeId);
 
 			DBAdapter.close();
-			// if (ringProgressDialog != null) {
-			// ringProgressDialog.dismiss();
-			// }
-
-			// }
+		
 
 		} catch (NumberFormatException ex) {
 			Toast.makeText(getActivity(), "خطا در بروز رسانی", Toast.LENGTH_SHORT).show();
@@ -727,20 +725,13 @@ public class IntroductionEditFragment extends Fragment
 
 	@Override
 	public void processFinishSaveImage(String output) {
-		// Toast.makeText(getActivity(), "output = " + output, 0).show();
+		
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
 
 		if (output != null) {
-			// try {
-			// bmpHeader = ((BitmapDrawable) headerImageEdit.getDrawable())
-			// .getBitmap();
-			// bmpProfil = ((BitmapDrawable) profileImageEdit.getDrawable())
-			// .getBitmap();
-			// bmpFooter = ((BitmapDrawable) footerImageEdit.getDrawable())
-			// .getBitmap();
-
-			// byte[] byteHeader = getBitmapAsByteArray(bmpHeader);
-			// byte[] byteProfil = getBitmapAsByteArray(bmpProfil);
-			// byte[] byteFooter = getBitmapAsByteArray(bmpFooter);
+		
 
 			if (headerImageEdit.getDrawable() == null && profileImageEdit.getDrawable() == null
 					&& footerImageEdit.getDrawable() == null) {
@@ -748,9 +739,7 @@ public class IntroductionEditFragment extends Fragment
 				Toast.makeText(getActivity(), "Empty ByteArray", Toast.LENGTH_SHORT).show();
 			}
 
-			// byteHeader = Utility.CompressBitmap(bmpHeader);
-			// byteProfil = Utility.CompressBitmap(bmpProfil);
-			// byteFooter = Utility.CompressBitmap(bmpFooter);
+		
 
 			if (byteHeader != null)
 				util.CreateFile(byteHeader, pageId, "Mechanical", "Profile", "header", "Object");
@@ -761,27 +750,21 @@ public class IntroductionEditFragment extends Fragment
 			if (byteFooter != null)
 				util.CreateFile(byteFooter, pageId, "Mechanical", "Profile", "footer", "Object");
 
-			// DBAdapter.open();
-			// DBAdapter.updateAllImageIntroductionPage(PageId, byteHeader,
-			// byteProfil, byteFooter);
-			// DBAdapter.close();
-			if (ringProgressDialog != null) {
-				ringProgressDialog.dismiss();
-			}
+		
+			
 			getActivity().getSupportFragmentManager().popBackStack();
 
-			// } catch (NumberFormatException e) {
-			// Toast.makeText(getActivity(), " خطا در بروز رسانی تصویر",
-			// Toast.LENGTH_SHORT).show();
-			// }
+		
 		}
-		if (ringProgressDialog != null) {
-			ringProgressDialog.dismiss();
-		}
+		
 	}
 
 	@Override
 	public void resultDateLike(String output) {
+		
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
 
 		if (util.checkError(output) == false) {
 
@@ -810,6 +793,7 @@ public class IntroductionEditFragment extends Fragment
 			params.put("Google", Dgoogle);
 			params.put("Site", websiteValue);
 			params.put("Twitter", Dtwt);
+			params.put("rate", String.valueOf(upgradRatingCount));
 			params.put("ObjectBrandTypeId", String.valueOf(ObjectBrandTypeId));
 
 			params.put("ModifyDate", serverDate);
@@ -818,9 +802,91 @@ public class IntroductionEditFragment extends Fragment
 			params.put("Id", String.valueOf(pageId));
 			saving.execute(params);
 
-			ringProgressDialog = ProgressDialog.show(getActivity(), "در حال بروزرسانی", "لطفا منتظر بمانید...");
+			ringProgressDialog = ProgressDialog.show(getActivity(), null, StaticValues.MessagePleaseWait);
 
 		}
+	}
+
+	private void getCountAgencyService() {
+
+		CountAgencyServiceServer getCount = new CountAgencyServiceServer(getActivity());
+		getCount.delegate = IntroductionEditFragment.this;
+		Map<String, String> items = new LinkedHashMap<String, String>();
+
+		items.put("tableName", "isObjectHasSubObject");
+		items.put("objectId", String.valueOf(object.getId()));
+		if (typeAgency == true)
+			items.put("agencyService", String.valueOf(StaticValues.TypeObjectIsAgency));
+		else
+			items.put("agencyService", String.valueOf(StaticValues.TypeObjectIsService));
+
+		getCount.execute(items);
+		
+		ringProgressDialog = ProgressDialog.show(getActivity(), null, StaticValues.MessagePleaseWait);
+
+
+	}
+
+	@Override
+	public void ResultCountAgency(String output) {
+		
+		if (ringProgressDialog != null) {
+			ringProgressDialog.dismiss();
+		}
+
+		if (util.checkError(output) == false) {
+			int value = Integer.valueOf(output);
+
+			if (typeAgency) {
+
+				DBAdapter.open();
+				DBAdapter.updateCountAgencyService(object.getId(), value, StaticValues.TypeObjectIsAgency);
+				typeAgency = false;
+				DBAdapter.close();
+
+				countAgency = value;
+
+				getCountAgencyService();
+
+			} else {
+				DBAdapter.open();
+				DBAdapter.updateCountAgencyService(object.getId(), value, StaticValues.TypeObjectIsService);
+
+				DBAdapter.close();
+
+				countService = value;
+
+				if (countAgency > 0) {
+					checkAgency.setChecked(true);
+					checkAgency.setEnabled(false);
+				}
+
+				if (countService > 0) {
+					checkService.setChecked(true);
+					checkService.setEnabled(false);
+				}
+
+				if (checkAgency.isChecked() && checkService.isChecked())
+					ObjectBrandTypeId = StaticValues.HaveAgencyHaveService;
+				else if (checkAgency.isChecked())
+					ObjectBrandTypeId = StaticValues.OnlyAgency;
+				else if (checkService.isChecked())
+					ObjectBrandTypeId = StaticValues.OnlyService;
+				else
+					ObjectBrandTypeId = StaticValues.NoAgencyNoService;
+
+				ServerDateForLike dates = new ServerDateForLike(getActivity());
+				dates.delegate = IntroductionEditFragment.this;
+				dates.execute("");
+				
+				ringProgressDialog = ProgressDialog.show(getActivity(), null, StaticValues.MessagePleaseWait);
+
+
+			}
+
+			;
+		}
+
 	}
 
 }

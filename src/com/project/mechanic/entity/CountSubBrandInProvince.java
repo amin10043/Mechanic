@@ -1,23 +1,20 @@
 package com.project.mechanic.entity;
 
-public class CountSubBrand {
+public class CountSubBrandInProvince {
 
 	int Id;
-	int CityId;
-	int ProvinceId;
 	int ObjectId;
-	int CountInCity;
 	int AgencyService;
+	int ProvinceId;
+	int CountInProvince;
 
-	public CountSubBrand(int Id, int CityId, int ProvinceId, int ObjectId, int CountInCity, int AgencyService) {
+	public CountSubBrandInProvince(int Id, int ObjectId, int AgencyService, int ProvinceId, int CountInProvince) {
 
 		this.Id = Id;
-		this.CityId = CityId;
 		this.ProvinceId = ProvinceId;
 		this.ObjectId = ObjectId;
-		this.CountInCity = CountInCity;
 		this.AgencyService = AgencyService;
-
+		this.CountInProvince = CountInProvince;
 	}
 
 	public int getId() {
@@ -26,14 +23,6 @@ public class CountSubBrand {
 
 	public void setId(int id) {
 		Id = id;
-	}
-
-	public int getCityId() {
-		return CityId;
-	}
-
-	public void setCityId(int cityId) {
-		CityId = cityId;
 	}
 
 	public int getProvinceId() {
@@ -52,20 +41,20 @@ public class CountSubBrand {
 		ObjectId = objectId;
 	}
 
-	public int getCountInCity() {
-		return CountInCity;
-	}
-
-	public void setCountInCity(int countInCity) {
-		CountInCity = countInCity;
-	}
-
 	public int getAgencyService() {
 		return AgencyService;
 	}
 
 	public void setAgencyService(int agencyService) {
 		AgencyService = agencyService;
+	}
+
+	public int getCountInProvince() {
+		return CountInProvince;
+	}
+
+	public void setCountInProvince(int countInProvince) {
+		CountInProvince = countInProvince;
 	}
 
 }

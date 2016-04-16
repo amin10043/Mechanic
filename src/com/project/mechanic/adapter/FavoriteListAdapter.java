@@ -150,7 +150,7 @@ public class FavoriteListAdapter extends BaseExpandableListAdapter {
 				@Override
 				public void onClick(View arg0) {
 
-					IntroductionFragment fragment = new IntroductionFragment();
+					IntroductionFragment fragment = new IntroductionFragment(-1);
 					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, fragment);
 					Bundle bundle = new Bundle();

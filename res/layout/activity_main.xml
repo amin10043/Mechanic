@@ -38,8 +38,8 @@
                         android:layout_height="20dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="10dp"
-                        android:visibility="gone"
-                        android:background="@drawable/ic_notification" />
+                        android:background="@drawable/ic_notification"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -60,9 +60,9 @@
                         android:background="@drawable/circle_notification"
                         android:gravity="left|bottom"
                         android:text=""
-                        android:visibility="gone"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/txtsize10" />
+                        android:textSize="@dimen/txtsize10"
+                        android:visibility="gone" />
                 </LinearLayout>
             </FrameLayout>
 
@@ -76,7 +76,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:orientation="vertical" >
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/txtcm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|left"
+                        android:layout_marginRight="1dp"
+                        android:background="@drawable/circle_notification"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/txtsize10" />
 
                     <ImageButton
                         android:id="@+id/iBtnmessage"
@@ -90,21 +101,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|right"
-                    android:layout_marginRight="10dp"
+                    android:layout_gravity="bottom|left"
                     android:orientation="horizontal" >
-
-                    <TextView
-                        android:id="@+id/txtcm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|left"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginRight="1dp"
-                        android:background="@drawable/circle_notification"
-                        android:text="no"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/txtsize10" />
                 </LinearLayout>
             </FrameLayout>
 
@@ -146,8 +144,8 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center_vertical"
-                android:visibility="gone"
-                android:background="@drawable/settings_icon" />
+                android:background="@drawable/settings_icon"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/timeline_btn"
@@ -194,8 +192,8 @@
             android:background="@color/orginal_hard_blue_color"
             android:choiceMode="singleChoice"
             android:divider="#000000"
-            android:scrollbars="none"
-            android:dividerHeight="1dp" />
+            android:dividerHeight="1dp"
+            android:scrollbars="none" />
     </android.support.v4.widget.DrawerLayout>
 
     <RelativeLayout
@@ -245,7 +243,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/replyLayout"
-            android:visibility="visible" >
+            android:visibility="gone" >
 
             <ImageView
                 android:id="@+id/sep"
@@ -258,9 +256,9 @@
                 android:id="@+id/inputComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/sendComment"
                 android:layout_toRightOf="@+id/pickPicture"
-                android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
                 android:hint="نظر خود را وارد کنید"
                 android:visibility="visible" />
@@ -284,36 +282,6 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/send" />
         </RelativeLayout>
-
-        <ViewFlipper
-            android:id="@+id/footerAgahi"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_below="@+id/getCommentLayout"
-            android:background="@color/white"
-            android:visibility="gone" >
-
-            <ImageView
-                android:id="@+id/img1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/slide1" />
-
-            <ImageView
-                android:id="@+id/img2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/slide2" />
-
-            <ImageView
-                android:id="@+id/img3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/slide3" />
-        </ViewFlipper>
     </RelativeLayout>
 
 </RelativeLayout>

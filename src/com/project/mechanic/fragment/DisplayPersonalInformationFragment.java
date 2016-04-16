@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.PushNotification.DomainSend;
 import com.project.mechanic.adapter.AnadListAdapter;
 import com.project.mechanic.adapter.DataPersonalExpandAdapter;
@@ -21,8 +22,10 @@ import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
+import com.project.mechanic.interfaceServer.AllObjectLiked;
 import com.project.mechanic.inter.DataPersonalInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.server.GetAllObjectLiked;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.UpdatingImage;
@@ -53,7 +56,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class DisplayPersonalInformationFragment extends Fragment
-		implements AsyncInterface, GetAsyncInterface, CommInterface, DataPersonalInterface {
+		implements AsyncInterface, GetAsyncInterface, CommInterface, DataPersonalInterface, AllObjectLiked {
 
 	DataBaseAdapter dbAdapter;
 	Utility util;
@@ -83,7 +86,13 @@ public class DisplayPersonalInformationFragment extends Fragment
 	boolean isFirstRun;
 	String tableName;
 	int selectTableId = 1;
-	List<PersonalData> ObejctData, FroumData, PaperData, TicketData, AnadData, FollowedPageLsit;
+	List<PersonalData> ObejctData = new ArrayList<PersonalData>();
+	List<PersonalData> FroumData = new ArrayList<PersonalData>();
+	List<PersonalData> PaperData = new ArrayList<PersonalData>();
+	List<PersonalData> TicketData = new ArrayList<PersonalData>();
+	List<PersonalData> AnadData = new ArrayList<PersonalData>();
+	List<PersonalData> FollowedPageLsit = new ArrayList<PersonalData>();
+
 	Map<String, String> maps;
 
 	int objectIdPage, objectIdFollowed, ticketIdData, anadIdData;
@@ -95,6 +104,10 @@ public class DisplayPersonalInformationFragment extends Fragment
 	DataPersonalExpandAdapter listAdapter;
 
 	PersonalData pdObject, pdObjectFollowed, pdTicket, pdAnad;
+	ArrayList<String> parentItems = new ArrayList<String>();
+	HashMap<String, List<PersonalData>> listDataChild = new HashMap<String, List<PersonalData>>();
+	List<Integer> sizeTypeList = new ArrayList<Integer>();
+	List<Object> myFollowingPages = new ArrayList<Object>();
 
 	@SuppressLint("NewApi")
 	@Override
@@ -106,6 +119,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 		// define rootView and header Layout
 		rootView = inflater.inflate(R.layout.test_expandable, null);
 		header = inflater.inflate(R.layout.fragment_test_display_personal, null);
+		util.inputCommentAndPickFile(getActivity(), false);
 
 		// define Views : find View By Id
 		findView();
@@ -129,8 +143,6 @@ public class DisplayPersonalInformationFragment extends Fragment
 		// on click action
 		onClick();
 
-		util.ShowFooterAgahi(getActivity(), false, 1);
-
 		return rootView;
 	}
 
@@ -138,136 +150,7 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 		if (util.getCurrentUser() != null) {
 
-			dbAdapter.open();
-
-			ObejctData = dbAdapter.CustomFieldObjectByUser(currentUser.getId());
-			FroumData = dbAdapter.CustomFieldFroumByUser(currentUser.getId());
-			PaperData = dbAdapter.CustomFieldPaperByUser(currentUser.getId());
-			TicketData = dbAdapter.CustomFieldTicketByUser(currentUser.getId());
-			AnadData = dbAdapter.CustomFieldAnadByUser(currentUser.getId());
-
-			List<Object> myFollowingPages = new ArrayList<Object>();
-
-			List<LikeInObject> likePages = dbAdapter.getAllPageFollowingMe(util.getCurrentUser().getId(), 0);
-
-			if (likePages.size() > 0)
-				for (int i = 0; i < likePages.size(); i++) {
-
-					Object o = dbAdapter.getObjectbyid(likePages.get(i).getPaperId());
-					if (o != null)
-						myFollowingPages.add(o);
-				}
-
-			FollowedPageLsit = dbAdapter.CustomFieldObjectFollowByUser(myFollowingPages);
-
-			dbAdapter.close();
-
-			List<Integer> sizeTypeList = new ArrayList<Integer>();
-
-			sizeTypeList.add(ObejctData.size());
-			sizeTypeList.add(FollowedPageLsit.size());
-			sizeTypeList.add(TicketData.size());
-			sizeTypeList.add(PaperData.size());
-			sizeTypeList.add(FroumData.size());
-			sizeTypeList.add(AnadData.size());
-
-			// Expandview = (ExpandableListView)
-			// rootView.findViewById(R.id.items);
-
-			HashMap<String, List<PersonalData>> listDataChild = new HashMap<String, List<PersonalData>>();
-
-			ArrayList<String> parentItems = new ArrayList<String>();
-
-			// Expandview.setDividerHeight(20);
-
-			// Drawable d =
-			// getResources().getDrawable(R.drawable.indicator_expandable);
-			// Expandview.setIndicatorBounds(345,375);
-
-			// Expandview.setGroupIndicator(d);
-
-			Expandview.setGroupIndicator(null);
-			Expandview.setClickable(true);
-
-			parentItems.add("مدیریت صفحات");
-			parentItems.add("مدیریت صفحات دنبال شده");
-			parentItems.add("مدیریت آگهی ها");
-			parentItems.add("مدیریت مقالات");
-			parentItems.add("مدیریت تالار گفتگو");
-			parentItems.add("مدیریت تبلیغات");
-
-			List<PersonalData> emptyItem = new ArrayList<PersonalData>();
-
-			PersonalData prd = new PersonalData();
-
-			if (ObejctData.size() == 0) {
-
-				prd.setDateTicket("آیتمی اضافه نشده است");
-				emptyItem.clear();
-				emptyItem.add(prd);
-
-				listDataChild.put(parentItems.get(0), emptyItem);
-
-			} else {
-				listDataChild.put(parentItems.get(0), ObejctData);
-
-			}
-
-			if (FollowedPageLsit.size() == 0) {
-
-				prd.setDateTicket("آیتمی اضافه نشده است");
-				emptyItem.clear();
-				emptyItem.add(prd);
-
-				listDataChild.put(parentItems.get(1), emptyItem);
-			} else {
-
-				listDataChild.put(parentItems.get(1), FollowedPageLsit);
-
-			}
-
-			if (TicketData.size() == 0) {
-				prd.setDateTicket("آیتمی اضافه نشده است");
-				emptyItem.clear();
-				emptyItem.add(prd);
-
-				listDataChild.put(parentItems.get(2), emptyItem);
-			} else {
-				listDataChild.put(parentItems.get(2), TicketData);
-
-			}
-
-			if (PaperData.size() == 0) {
-				prd.setDateTicket("آیتمی اضافه نشده است");
-				emptyItem.clear();
-				emptyItem.add(prd);
-
-				listDataChild.put(parentItems.get(3), emptyItem);
-			} else {
-				listDataChild.put(parentItems.get(3), PaperData);
-			}
-			if (FroumData.size() == 0) {
-				prd.setDateTicket("آیتمی اضافه نشده است");
-				emptyItem.clear();
-				emptyItem.add(prd);
-
-				listDataChild.put(parentItems.get(4), emptyItem);
-
-			} else {
-
-				listDataChild.put(parentItems.get(4), FroumData);
-			}
-			if (AnadData.size() == 0) {
-				prd.setDateTicket("آیتمی اضافه نشده است");
-				emptyItem.clear();
-				emptyItem.add(prd);
-
-				listDataChild.put(parentItems.get(5), emptyItem);
-
-			} else {
-
-				listDataChild.put(parentItems.get(5), AnadData);
-			}
+			fillListDataChild();
 
 			final SharedPreferences currentTime = getActivity().getSharedPreferences("time", 0);
 
@@ -564,46 +447,109 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 			case 1: {
 				tableName = "Object";
+
+				updating = new UpdatingPersonalPage(getActivity());
+				updating.delegate = DisplayPersonalInformationFragment.this;
+				String[] params = new String[5];
+				params[0] = tableName;
+				params[1] = currentUser.getDate();
+				params[2] = serverDate;
+
+				params[3] = "0";
+				params[4] = String.valueOf(currentUser.getId());
+
+				updating.execute(params);
+
 				break;
 			}
 			case 2: {
 				tableName = "Anad";
+
+				updating = new UpdatingPersonalPage(getActivity());
+				updating.delegate = DisplayPersonalInformationFragment.this;
+				String[] params = new String[5];
+				params[0] = tableName;
+				params[1] = currentUser.getDate();
+				params[2] = serverDate;
+
+				params[3] = "0";
+				params[4] = String.valueOf(currentUser.getId());
+
+				updating.execute(params);
 				break;
 			}
 			case 3: {
 				tableName = "Paper";
+
+				updating = new UpdatingPersonalPage(getActivity());
+				updating.delegate = DisplayPersonalInformationFragment.this;
+				String[] params = new String[5];
+				params[0] = tableName;
+				params[1] = currentUser.getDate();
+				params[2] = serverDate;
+
+				params[3] = "0";
+				params[4] = String.valueOf(currentUser.getId());
+
+				updating.execute(params);
 				break;
 			}
 			case 4: {
 				tableName = "Froum";
+
+				updating = new UpdatingPersonalPage(getActivity());
+				updating.delegate = DisplayPersonalInformationFragment.this;
+				String[] params = new String[5];
+				params[0] = tableName;
+				params[1] = currentUser.getDate();
+				params[2] = serverDate;
+
+				params[3] = "0";
+				params[4] = String.valueOf(currentUser.getId());
+
+				updating.execute(params);
 				break;
 			}
 			case 5: {
 				tableName = "Ticket";
+
+				updating = new UpdatingPersonalPage(getActivity());
+				updating.delegate = DisplayPersonalInformationFragment.this;
+				String[] params = new String[5];
+				params[0] = tableName;
+				params[1] = currentUser.getDate();
+				params[2] = serverDate;
+
+				params[3] = "0";
+				params[4] = String.valueOf(currentUser.getId());
+
+				updating.execute(params);
 				break;
 			}
 			case 6: {
 				tableName = "LikeInObject";
+
+				updating = new UpdatingPersonalPage(getActivity());
+				updating.delegate = DisplayPersonalInformationFragment.this;
+				String[] params = new String[5];
+				params[0] = tableName;
+				params[1] = currentUser.getDate();
+				params[2] = serverDate;
+
+				params[3] = "0";
+				params[4] = String.valueOf(currentUser.getId());
+
+				updating.execute(params);
 				break;
 			}
+
+			case 7: {
+				getObjectFollow();
+				break;
 			}
-			selectTableId++;
 
-			updating = new UpdatingPersonalPage(getActivity());
-			updating.delegate = DisplayPersonalInformationFragment.this;
-			String[] params = new String[5];
-			params[0] = tableName;
-			params[1] = currentUser.getDate();
-			params[2] = serverDate;
+			}
 
-			params[3] = "0";
-			params[4] = String.valueOf(currentUser.getId());
-
-			updating.execute(params);
-
-			// ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا
-			// منتظر بمانید...", true);
-			// ringProgressDialog.setCancelable(true);
 			isFirstRun = false;
 		}
 
@@ -611,26 +557,27 @@ public class DisplayPersonalInformationFragment extends Fragment
 
 	@Override
 	public void processFinish(String output) {
-		if (selectTableId < 8) {
+		// if (selectTableId < 8) {
+
+		// if (ringProgressDialog != null)
+		// ringProgressDialog.dismiss();
+
+		if (util.checkError(output) == false) {
 
 			// if (ringProgressDialog != null)
 			// ringProgressDialog.dismiss();
 
-			if (output != null || !"".equals(output) || !output.equals("anyType{}") || !output.contains("Exception")) {
+			if (isFirstRun == true) {
 
-				// if (ringProgressDialog != null)
-				// ringProgressDialog.dismiss();
+				serverDate = output;
 
-				if (isFirstRun == true) {
+				getAllDataFromServer();
 
-					serverDate = output;
-
-					getAllDataFromServer();
-
-				}
 			}
-
 		}
+
+		// }
+
 	}
 
 	private void RunServiceDate() {
@@ -1026,24 +973,195 @@ public class DisplayPersonalInformationFragment extends Fragment
 	@Override
 	public void ResultServer(String output) {
 
-		if (!output.contains("exception")) {
+		if (util.checkError(output) == false) {
 
 			util.parseQuery(output);
-			if (selectTableId > 7) {
-				// if (ringProgressDialog != null)
-				// ringProgressDialog.dismiss();
-				f1 = true;
-				getImageObject();
 
-				// ringProgressDialog = ProgressDialog.show(getActivity(), "", "
-				// به روز رسانی تصاویر ...", true);
-				// ringProgressDialog.setCancelable(true);
-				// Toast.makeText(getActivity(), "start", 0).show();
-				FillExpandListView();
+			// ringProgressDialog = ProgressDialog.show(getActivity(), "", "
+			// به روز رسانی تصاویر ...", true);
+			// ringProgressDialog.setCancelable(true);
+			// Toast.makeText(getActivity(), "start", 0).show();
 
-			} else
-				getAllDataFromServer();
+			listAdapter.notifyDataSetChanged();
+			// FillExpandListView();
 
+			selectTableId++;
+			getAllDataFromServer();
+
+		}
+
+	}
+
+	private void getObjectFollow() {
+
+		if (getActivity() != null) {
+
+			GetAllObjectLiked getDateService = new GetAllObjectLiked(getActivity());
+			getDateService.delegate = DisplayPersonalInformationFragment.this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+
+			items.put("tableName", "getAllObjectForUserId");
+			items.put("userId", String.valueOf(currentUser.getId()));
+			items.put("fromDate", currentUser.getDate());
+			items.put("endDate", serverDate);
+			items.put("isRefresh", "0");
+
+			getDateService.execute(items);
+
+		}
+
+	}
+
+	public void fillListDataChild() {
+
+		dbAdapter.open();
+
+		ObejctData.clear();
+		FroumData.clear();
+		PaperData.clear();
+		TicketData.clear();
+		AnadData.clear();
+		FollowedPageLsit.clear();
+
+		ObejctData = dbAdapter.CustomFieldObjectByUser(currentUser.getId());
+		FroumData = dbAdapter.CustomFieldFroumByUser(currentUser.getId());
+		PaperData = dbAdapter.CustomFieldPaperByUser(currentUser.getId());
+		TicketData = dbAdapter.CustomFieldTicketByUser(currentUser.getId());
+		AnadData = dbAdapter.CustomFieldAnadByUser(currentUser.getId());
+
+		List<LikeInObject> likePages = dbAdapter.getAllPageFollowingMe(util.getCurrentUser().getId(),
+				StaticValues.TypeLikePage);
+
+		myFollowingPages.clear();
+
+		if (likePages.size() > 0)
+			for (int i = 0; i < likePages.size(); i++) {
+
+				Object o = dbAdapter.getObjectbyid(likePages.get(i).getPaperId());
+				if (o != null)
+					myFollowingPages.add(o);
+			}
+		FollowedPageLsit = dbAdapter.CustomFieldObjectFollowByUser(myFollowingPages);
+
+		dbAdapter.close();
+
+		sizeTypeList.add(ObejctData.size());
+		sizeTypeList.add(FollowedPageLsit.size());
+		sizeTypeList.add(TicketData.size());
+		sizeTypeList.add(PaperData.size());
+		sizeTypeList.add(FroumData.size());
+		sizeTypeList.add(AnadData.size());
+
+		// Expandview = (ExpandableListView)
+		// rootView.findViewById(R.id.items);
+
+		// Expandview.setDividerHeight(20);
+
+		// Drawable d =
+		// getResources().getDrawable(R.drawable.indicator_expandable);
+		// Expandview.setIndicatorBounds(345,375);
+
+		// Expandview.setGroupIndicator(d);
+
+		Expandview.setGroupIndicator(null);
+		Expandview.setClickable(true);
+
+		parentItems.clear();
+
+		parentItems.add("مدیریت صفحات");
+		parentItems.add("مدیریت صفحات دنبال شده");
+		parentItems.add("مدیریت آگهی ها");
+		parentItems.add("مدیریت مقالات");
+		parentItems.add("مدیریت تالار گفتگو");
+		parentItems.add("مدیریت تبلیغات");
+
+		List<PersonalData> emptyItem = new ArrayList<PersonalData>();
+
+		PersonalData prd = new PersonalData();
+		listDataChild.clear();
+
+		if (ObejctData.size() == 0) {
+
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(0), emptyItem);
+
+		} else {
+			listDataChild.put(parentItems.get(0), ObejctData);
+
+		}
+
+		if (FollowedPageLsit.size() == 0) {
+
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(1), emptyItem);
+		} else {
+
+			listDataChild.put(parentItems.get(1), FollowedPageLsit);
+
+		}
+
+		if (TicketData.size() == 0) {
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(2), emptyItem);
+		} else {
+			listDataChild.put(parentItems.get(2), TicketData);
+
+		}
+
+		if (PaperData.size() == 0) {
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(3), emptyItem);
+		} else {
+			listDataChild.put(parentItems.get(3), PaperData);
+		}
+		if (FroumData.size() == 0) {
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(4), emptyItem);
+
+		} else {
+
+			listDataChild.put(parentItems.get(4), FroumData);
+		}
+		if (AnadData.size() == 0) {
+			prd.setDateTicket("آیتمی اضافه نشده است");
+			emptyItem.clear();
+			emptyItem.add(prd);
+
+			listDataChild.put(parentItems.get(5), emptyItem);
+
+		} else {
+
+			listDataChild.put(parentItems.get(5), AnadData);
+		}
+
+	}
+
+	@Override
+	public void ResultObjectLiked(String output) {
+
+		if (util.checkError(output) == false) {
+
+			util.parseQuery(output);
+
+			listAdapter.notifyDataSetChanged();
+
+			f1 = true;
+			getImageObject();
 		}
 
 	}

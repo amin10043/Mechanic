@@ -22,15 +22,22 @@ public class Province2Fragment extends Fragment {
 
 	DataBaseAdapter adapter;
 
+	int mainObjectId;
+
+	public Province2Fragment(int mainObjectId) {
+		
+		this.mainObjectId = mainObjectId;
+
+	}
+
 	@SuppressLint("InflateParams")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		//((MainActivity) getActivity()).setActivityTitle(R.string.ostan);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		// ((MainActivity) getActivity()).setActivityTitle(R.string.ostan);
 
 		View view = inflater.inflate(R.layout.fragment_ostan, null);
 		util = new Utility(getActivity());
-		
+
 		adapter = new DataBaseAdapter(getActivity());
 
 		adapter.open();
@@ -39,11 +46,9 @@ public class Province2Fragment extends Fragment {
 		adapter.close();
 
 		ListView lstProvince2 = (ListView) view.findViewById(R.id.listvOstan);
-		Province2ListAdapter ListAdapter = new Province2ListAdapter(
-				getActivity(), R.layout.row_ostan, mylist);
+		Province2ListAdapter ListAdapter = new Province2ListAdapter(getActivity(), R.layout.row_ostan, mylist,mainObjectId);
 
 		lstProvince2.setAdapter(ListAdapter);
-		util.ShowFooterAgahi(getActivity() , false , 1);
 
 		return view;
 	}

@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.crop.CropImage;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
@@ -56,11 +57,11 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 	ImageView Image;
 	Spinner objectSpinner;
 	DataBaseAdapter dbAdapter;
-	int proID;
+	// int proID;
 	int provinceId;
 	int anadId;
-	int T;
-	int a = 0;
+	// int T;
+	// int a = 0;
 	Utility util;
 	LinearLayout.LayoutParams headerEditParams;
 	LinearLayout LinearImage;
@@ -93,12 +94,26 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 
 	int userId;
 
+	String type = "";
+
+	public show_pay_fragment(int anadId, int provinceId, int typeId, String type) {
+
+		this.anadId = anadId;
+		this.provinceId = provinceId;
+		this.typeId = typeId;
+		this.type = type;
+
+	}
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		((MainActivity) getActivity()).setActivityTitle(R.string.showad);
-		anadId = Integer.valueOf(getArguments().getString("AnadId"));
-		typeId = Integer.valueOf(getArguments().getString("TypeId"));
+		// anadId = Integer.valueOf(getArguments().getString("AnadId"));
+		// typeId = Integer.valueOf(getArguments().getString("TypeId"));
+
+		// Toast.makeText(getActivity(), " anadId = " + anadId + " ProvincId = "
+		// + provinceId + "TypeId = " +typeId, 0).show();
 
 		View view = inflater.inflate(R.layout.fragment_pay, null);
 		LinearImage = (LinearLayout) view.findViewById(R.id.linImg);
@@ -114,7 +129,7 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 		headerEditParams.setMargins(10, 10, 10, 10);
 		headerEditParams.gravity = Gravity.CENTER;
 		Image.setLayoutParams(headerEditParams);
-		
+
 		SharedPreferences sendIdpro = getActivity().getSharedPreferences("Id", 0);
 		provinceId = sendIdpro.getInt("main_Id", 0);
 
@@ -155,32 +170,28 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 		final ImageView pickImage = (ImageView) view.findViewById(R.id.pickImage);
 		deleteImage = (ImageView) view.findViewById(R.id.deleteImage);
 		final ImageView close = (ImageView) view.findViewById(R.id.closePage);
-		
+
 		close.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
-				
+
 				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
 						.beginTransaction();
 				AnadFragment fragment = new AnadFragment();
 				Bundle bundle = new Bundle();
-				
+
 				bundle.putString("Id", String.valueOf(typeId));
 				bundle.putString("ProID", String.valueOf(provinceId));
-				
+
 				fragment.setArguments(bundle);
 				trans.replace(R.id.content_frame, fragment);
 				trans.addToBackStack(null);
 				trans.commit();
-				
-				
-				
-				
+
 			}
 		});
 
-		
 		deleteImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -234,8 +245,8 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 
 				if (util.getCurrentUser() != null) {
 
-					
-//					Toast.makeText(getActivity(), anadId + " do", Toast.LENGTH_SHORT).show();
+					// Toast.makeText(getActivity(), anadId + " do",
+					// Toast.LENGTH_SHORT).show();
 
 					// ************شرط پرداخت اینترنتی باید ذکر شود*************
 					// ************شرط پرداخت اینترنتی باید ذکر شود*************
@@ -248,11 +259,20 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 
 					// start syncing
 
-					server = new ServerDate(getActivity());
-					server.delegate = show_pay_fragment.this;
-					server.execute("");
+					if (byteImage == null) {
 
-					userId = util.getCurrentUser().getId();
+						Toast.makeText(getActivity(), "انتخاب عکس اجباری است", 0).show();
+
+					} else {
+
+						server = new ServerDate(getActivity());
+						server.delegate = show_pay_fragment.this;
+						server.execute("");
+
+						ringProgressDialog = ProgressDialog.show(getActivity(), null, StaticValues.MessagePleaseWait);
+
+						userId = util.getCurrentUser().getId();
+					}
 
 				}
 
@@ -413,18 +433,42 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 					util.CreateFile(byteImage, anadId, "Mechanical", "Anad", "anad", "Anad");
 
 				}
+				
+				
+				if (type.equals(StaticValues.CreateAnadFromAnad)){
+					
+					
+					FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+							.beginTransaction();
+					AnadFragment fragment = new AnadFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("Id", String.valueOf(typeId));
+					if (provinceId >= 0)
+						bundle.putString("ProID", String.valueOf(provinceId));
+					fragment.setArguments(bundle);
+					trans.replace(R.id.content_frame, fragment);
+					trans.addToBackStack(null);
+					trans.commit();
+				}
+				
+				if (type.equals(StaticValues.CreateAnadFromFroum)){
+					
+					FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+							.beginTransaction();
+					FroumtitleFragment fragment = new FroumtitleFragment();
+//					Bundle bundle = new Bundle();
+//					bundle.putString("Id", String.valueOf(typeId));
+//					if (provinceId >= 0)
+//						bundle.putString("ProID", String.valueOf(provinceId));
+//					fragment.setArguments(bundle);
+					trans.replace(R.id.content_frame, fragment);
+					trans.addToBackStack(null);
+					trans.commit();
+					
+				}
 
-				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
-						.beginTransaction();
-				AnadFragment fragment = new AnadFragment();
-				Bundle bundle = new Bundle();
-				bundle.putString("Id", String.valueOf(provinceId));
-				if (provinceId >= 0)
-					bundle.putString("ProID", String.valueOf(provinceId));
-				fragment.setArguments(bundle);
-				trans.replace(R.id.content_frame, fragment);
-				trans.addToBackStack(null);
-				trans.commit();
+				
+				
 
 			} catch (NumberFormatException e) {
 				Toast.makeText(getActivity(), "  خطا در بروز رسانی تصویر", Toast.LENGTH_SHORT).show();
@@ -454,9 +498,6 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 			// com.project.mechanic.entity.Object o =
 			// dbAdapter.getObjectbyid(ListId.get(itemSelectId));
 
-			if (ringProgressDialog != null)
-				ringProgressDialog.dismiss();
-
 			// Bitmap bitmap = ((BitmapDrawable)
 			// Image.getDrawable()).getBitmap();
 			// byte[] bytes = Utility.CompressBitmap(bitmap);
@@ -471,9 +512,10 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 
 			saveImage.execute(imageParams);
 
-			ringProgressDialog = ProgressDialog.show(getActivity(), null, "لطفا منتظر بمانید.");
+			ringProgressDialog = ProgressDialog.show(getActivity(), null, StaticValues.MessagePleaseWait);
 
-			Toast.makeText(getActivity(), "anadId = " + anadId + "\n ostan = " + provinceId, 0).show();
+			// Toast.makeText(getActivity(), "anadId = " + anadId + "\n ostan =
+			// " + provinceId, 0).show();
 		} catch (NumberFormatException e) {
 
 			if (!"".equals(output) && output != null && !(output.contains("Exception") || output.contains("java"))) {
@@ -502,7 +544,7 @@ public class show_pay_fragment extends Fragment implements AsyncInterface, SaveA
 				saving.execute(params);
 
 				serverDate = output;
-				ringProgressDialog = ProgressDialog.show(getActivity(), null, "لطفا منتظر بمانید.");
+				ringProgressDialog = ProgressDialog.show(getActivity(), null, StaticValues.MessagePleaseWait);
 
 			} else
 				Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();

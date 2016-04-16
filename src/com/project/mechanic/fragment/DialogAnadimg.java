@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
@@ -37,7 +39,7 @@ public class DialogAnadimg extends Dialog {
 	private ImageView imgdialoganad;
 	private ImageButton sabt, enseraf;
 	private Spinner sp;
-//	OnMyDialogResult mDialogResult;
+	// OnMyDialogResult mDialogResult;
 	private DataBaseAdapter dbadapter;
 	int resourceId;
 	Context context;
@@ -59,7 +61,10 @@ public class DialogAnadimg extends Dialog {
 	String TABLE_NAME = "Ticket";
 	Utility util;
 
-	public DialogAnadimg(Context context, int resourceId, Fragment fragment, int ticketTypeID, int ProvinceId, int i) {
+	String type = "";
+
+	public DialogAnadimg(Context context, int resourceId, Fragment fragment, int ticketTypeID, int ProvinceId, int i,
+			String type) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		this.resourceId = resourceId;
@@ -68,7 +73,7 @@ public class DialogAnadimg extends Dialog {
 		this.ticketTypeID = ticketTypeID;
 		this.ProvinceId = ProvinceId;
 		this.anadId = i;
-
+		this.type = type;
 		util = new Utility(context);
 
 	}
@@ -130,26 +135,21 @@ public class DialogAnadimg extends Dialog {
 
 			@Override
 			public void onClick(View arg0) {
-				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
-				show_pay_fragment fragment = new show_pay_fragment();
 
-				Bundle bundle = new Bundle();
-				bundle.putString("AnadId", String.valueOf(anadId));
-				bundle.putString("TypeId", String.valueOf(ticketTypeID));
+				FragmentTransaction trans = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
+				show_pay_fragment fragment = new show_pay_fragment(anadId, ProvinceId, ticketTypeID, type);
 
-				fragment.setArguments(bundle);
+				// Bundle bundle = new Bundle();
+				// bundle.putString("AnadId", String.valueOf(anadId));
+				// bundle.putString("TypeId", String.valueOf(ticketTypeID));
+				//
+				// fragment.setArguments(bundle);
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.addToBackStack(null);
 				trans.commit();
-				DialogAnadimg.this.dismiss();
 
-				// Bundle bundlei = new Bundle();
-				// bundle.putString("Id", String.valueOf(id));
-				// if (ProvinceId >= 0)
-				// bundle.putString("ProID", String.valueOf(ProvinceId));
-				// bundlei.putString("I", String.valueOf(anadId));
-				// fragment.setArguments(bundlei);
+				dismiss();
 
 			}
 		});
@@ -166,13 +166,13 @@ public class DialogAnadimg extends Dialog {
 		return null;
 	}
 
-//	public interface OnMyDialogResult {
-//		void finish(String result);
-//	}
-//
-//	public void setDialogResult(OnMyDialogResult dialogResult) {
-//		mDialogResult = dialogResult;
-//	}
+	// public interface OnMyDialogResult {
+	// void finish(String result);
+	// }
+	//
+	// public void setDialogResult(OnMyDialogResult dialogResult) {
+	// mDialogResult = dialogResult;
+	// }
 
 	public View getView() {
 		return this.getLayoutInflater().inflate(resourceId, null);

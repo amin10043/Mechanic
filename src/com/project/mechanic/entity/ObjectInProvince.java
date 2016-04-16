@@ -5,6 +5,7 @@ public class ObjectInProvince {
 	int Id;
 	int ObjectId;
 	int ProvinceId;
+	String Date;
 
 	public int getId() {
 		return Id;
@@ -30,11 +31,12 @@ public class ObjectInProvince {
 		ProvinceId = provinceId;
 	}
 
-	public ObjectInProvince(int id, int objectId, int provinceId) {
+	public ObjectInProvince(int id, int objectId, int provinceId, String Date) {
 		super();
 		Id = id;
 		ObjectId = objectId;
 		ProvinceId = provinceId;
+		this.Date = Date;
 	}
 
 }

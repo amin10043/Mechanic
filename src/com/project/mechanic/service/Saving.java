@@ -57,7 +57,7 @@ public class Saving extends AsyncTask<Map<String, String>, Integer, String> {
 		Entry<String, String> item2;
 		while (it.hasNext()) {
 			item2 = it.next();
-			param += item2.getKey() + ":" + item2.getValue() + "-";
+			param += item2.getKey() + "***:***" + item2.getValue() + "***-***";
 		}
 
 		try {

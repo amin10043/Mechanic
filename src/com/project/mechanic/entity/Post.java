@@ -2,6 +2,22 @@ package com.project.mechanic.entity;
 
 public class Post {
 
+	public int getCountLike() {
+		return CountLike;
+	}
+
+	public void setCountLike(int countLike) {
+		CountLike = countLike;
+	}
+
+	public int getCountComment() {
+		return CountComment;
+	}
+
+	public void setCountComment(int countComment) {
+		CountComment = countComment;
+	}
+
 	int Id;
 	int UserId;
 	String Description;
@@ -13,6 +29,8 @@ public class Post {
 	String Photo;
 	int CountView;
 	int ObjectId;
+	int CountLike;
+	int CountComment;
 
 	public int getId() {
 		return Id;
@@ -103,7 +121,7 @@ public class Post {
 	}
 
 	public Post(int id, int userId, String description, int seen, String serverDate, int submit, String date,
-			int seenBefore, String photo, int CountView, int ObjectId) {
+			int seenBefore, String photo, int CountView, int ObjectId, int CountLike, int CountComment) {
 		super();
 		Id = id;
 		UserId = userId;
@@ -116,6 +134,8 @@ public class Post {
 		this.seenBefore = seenBefore;
 		this.CountView = CountView;
 		this.ObjectId = ObjectId;
+		this.CountLike = CountLike;
+		this.CountComment = CountComment;
 	}
 
 	public int compareTo(Post comparePost) {

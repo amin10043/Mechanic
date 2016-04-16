@@ -8,8 +8,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="left"
         android:layout_margin="10dp"
+        android:gravity="left"
         android:orientation="horizontal" >
 
         <ImageView
@@ -17,7 +17,6 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="left"
-            android:layout_marginRight="10dp"
             android:background="@drawable/down_arrow" />
 
         <TextView
@@ -29,7 +28,8 @@
             android:layout_marginRight="20dp"
             android:gravity="left"
             android:text="Date"
-            android:textColor="@color/orginal_hard_blue_color" />
+            android:textColor="@color/orginal_hard_blue_color"
+            android:textSize="10dp" />
     </LinearLayout>
 
     <RelativeLayout

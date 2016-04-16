@@ -31,32 +31,32 @@ public class Province3ListAdapter extends ArrayAdapter<Province> {
 	int lastPosition = 0;
 	Utility util;
 
-	public Province3ListAdapter(Context context, int resource,
-			List<Province> objact) {
+	int mainObjectId;
+
+	public Province3ListAdapter(Context context, int resource, List<Province> objact, int mainObjectId) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
+		this.mainObjectId = mainObjectId;
 	}
 
 	@SuppressLint("ViewHolder")
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater
-				.inflate(R.layout.main_item_list, parent, false);
+		convertView = myInflater.inflate(R.layout.main_item_list, parent, false);
 
 		convertView = myInflater.inflate(R.layout.row_ostan, parent, false);
 
-//		Animation animation = AnimationUtils.loadAnimation(getContext(),
-//				(position > lastPosition) ? R.anim.up_from_bottom
-//						: R.anim.down_from_top);
-//		convertView.startAnimation(animation);
+		// Animation animation = AnimationUtils.loadAnimation(getContext(),
+		// (position > lastPosition) ? R.anim.up_from_bottom
+		// : R.anim.down_from_top);
+		// convertView.startAnimation(animation);
 		lastPosition = position;
 
 		TextView tx1 = (TextView) convertView.findViewById(R.id.RowOstantxt);
@@ -64,7 +64,7 @@ public class Province3ListAdapter extends ArrayAdapter<Province> {
 		Province province = list.get(position);
 
 		tx1.setText(province.getName());
-		
+
 		tx1.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
@@ -74,8 +74,7 @@ public class Province3ListAdapter extends ArrayAdapter<Province> {
 
 				Province province = list.get(position);
 				adapter.open();
-				List<City> allItems = adapter.getCitysByProvinceId(province
-						.getId());
+				List<City> allItems = adapter.getCitysByProvinceId(province.getId());
 				int count = province.getCount();
 				int id = province.getId();
 				count = count + 1;
@@ -83,9 +82,8 @@ public class Province3ListAdapter extends ArrayAdapter<Province> {
 
 				adapter.close();
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new City3Fragment(allItems));
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new City3Fragment(allItems , mainObjectId));
 				trans.addToBackStack(null);
 				trans.commit();
 			}

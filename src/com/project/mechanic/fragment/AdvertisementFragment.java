@@ -55,7 +55,6 @@ public class AdvertisementFragment extends Fragment {
 
 		lstAdvertisement.setAdapter(ListAdapter);
 
-		util.ShowFooterAgahi(getActivity(), false, 1);
 
 		return view;
 	}

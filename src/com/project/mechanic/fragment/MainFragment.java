@@ -1,9 +1,11 @@
 package com.project.mechanic.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +19,15 @@ import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
-import com.project.mechanic.adapter.MainListAdapter;
+import com.project.mechanic.StaticValues;
+//import com.project.mechanic.adapter.MainListAdapter;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.utility.Utility;
 
 public class MainFragment extends Fragment {
 
 	DataBaseAdapter dbAdapter;
-	MainListAdapter ListAdapter;
+//	MainListAdapter ListAdapter;
 	LinearLayout footer_layLayout;
 	Utility util;
 	LinearLayout /*
@@ -37,14 +40,14 @@ public class MainFragment extends Fragment {
 
 	TextView tite1, lable1, lable2, lable3, lable4, lable5, lable6, lable7;
 	View view;
-	SharedPreferences sendData;
+//	SharedPreferences sendData;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		util = new Utility(getActivity());
 
-		sendData = getActivity().getSharedPreferences("Id", 0);
+//		sendData = getActivity().getSharedPreferences("Id", 0);
 		view = inflater.inflate(R.layout.fragment_main_page, null);
 
 		// define Views : find view by Id Items
@@ -62,8 +65,7 @@ public class MainFragment extends Fragment {
 		// on click
 		onClick();
 
-		util.ShowFooterAgahi(getActivity(), false, 1);
-
+		setFooterComment();
 		return view;
 	}
 
@@ -188,6 +190,7 @@ public class MainFragment extends Fragment {
 		// lable7.setLayoutParams(ggg);
 	}
 
+	@SuppressLint("NewApi")
 	private void setFont() {
 
 		lable1.setTypeface(util.SetFontCasablanca());
@@ -197,6 +200,12 @@ public class MainFragment extends Fragment {
 		lable5.setTypeface(util.SetFontCasablanca());
 		lable6.setTypeface(util.SetFontCasablanca());
 		lable7.setTypeface(util.SetFontCasablanca());
+		
+		
+//		float fontscale = getResources().getConfiguration().densityDpi;
+//		float textSize = (util.getScreenwidth()-100/ fontscale)/10;
+//		
+//		lable1.setTextSize(textSize);
 	}
 
 	private void onClick() {
@@ -338,16 +347,16 @@ public class MainFragment extends Fragment {
 		
 		 @Override
 		 public void onClick(View arg0) {
-		 int id = 1;
 		 FragmentTransaction trans = ((MainActivity)
 		 getActivity()).getSupportFragmentManager()
 		 .beginTransaction();
-		 BerandFragment fragment = new BerandFragment();
-		 Bundle bundle = new Bundle();
-		 bundle.putString("Id", String.valueOf(id));
-		 fragment.setArguments(bundle);
+		 
+		 BerandFragment fragment = new BerandFragment(StaticValues.MainItem1);
+//		 Bundle bundle = new Bundle();
+//		 bundle.putString("Id", String.valueOf(id));
+//		 fragment.setArguments(bundle);
 		
-		 sendData.edit().putInt("main_Id", id).commit();
+//		 sendData.edit().putInt("main_Id", id).commit();
 		
 		 trans.replace(R.id.content_frame, fragment);
 		 trans.addToBackStack(null);
@@ -359,14 +368,14 @@ public class MainFragment extends Fragment {
 		
 		 @Override
 		 public void onClick(View arg0) {
-		 int id = 2;
+//		 int id = 2;
 		
 		 FragmentTransaction trans = ((MainActivity)
 		 getActivity()).getSupportFragmentManager()
 		 .beginTransaction();
-		 Fragment ostan = new ProvinceFragment();
+		 Fragment ostan = new ProvinceFragment(StaticValues.MainItem2, -1, -1);
 		
-		 sendData.edit().putInt("main_Id", id).commit();
+//		 sendData.edit().putInt("main_Id", id).commit();
 		
 		 trans.addToBackStack(null);
 		 trans.replace(R.id.content_frame, ostan);
@@ -379,14 +388,14 @@ public class MainFragment extends Fragment {
 		
 		 @Override
 		 public void onClick(View arg0) {
-		 int id = 3;
+//		 int id = 3;
 		
 		 FragmentTransaction trans = ((MainActivity)
 		 getActivity()).getSupportFragmentManager()
 		 .beginTransaction();
-		 trans.replace(R.id.content_frame, new Province2Fragment());
+		 trans.replace(R.id.content_frame, new Province2Fragment(StaticValues.MainItem3));
 		
-		 sendData.edit().putInt("main_Id", id).commit();
+//		 sendData.edit().putInt("main_Id", id).commit();
 		
 		 trans.addToBackStack(null);
 		 trans.commit();
@@ -398,14 +407,14 @@ public class MainFragment extends Fragment {
 		
 		 @Override
 		 public void onClick(View arg0) {
-		 int id = 4;
+//		 int id = 4;
 		
 		 FragmentTransaction trans = ((MainActivity)
 		 getActivity()).getSupportFragmentManager()
 		 .beginTransaction();
-		 trans.replace(R.id.content_frame, new Province3Fragment());
+		 trans.replace(R.id.content_frame, new Province3Fragment(StaticValues.MainItem4));
 		
-		 sendData.edit().putInt("main_Id", id).commit();
+//		 sendData.edit().putInt("main_Id", id).commit();
 		
 		 trans.addToBackStack(null);
 		 trans.commit();
@@ -421,12 +430,12 @@ public class MainFragment extends Fragment {
 		 FragmentTransaction trans = ((MainActivity)
 		 getActivity()).getSupportFragmentManager()
 		 .beginTransaction();
-		 NewsFragment fragment = new NewsFragment();
+		 TitlepaperFragment fragment = new TitlepaperFragment();
 		 Bundle bundle = new Bundle();
 		 bundle.putString("Id", String.valueOf(id));
 		 fragment.setArguments(bundle);
 		
-		 sendData.edit().putInt("main_Id", id).commit();
+//		 sendData.edit().putInt("main_Id", id).commit();
 		
 		 trans.replace(R.id.content_frame, fragment);
 		 trans.addToBackStack(null);
@@ -449,7 +458,7 @@ public class MainFragment extends Fragment {
 		  bundle.putString("Id", String.valueOf(id));
 		  fragment.setArguments(bundle);
 		
-		 sendData.edit().putInt("main_Id", id).commit();
+//		 sendData.edit().putInt("main_Id", id).commit();
 		
 		 trans.replace(R.id.content_frame, fragment);
 		 trans.addToBackStack(null);
@@ -467,7 +476,7 @@ public class MainFragment extends Fragment {
 		 .beginTransaction();
 		 trans.replace(R.id.content_frame, new FroumtitleFragment());
 		
-		 sendData.edit().putInt("main_Id", id).commit();
+//		 sendData.edit().putInt("main_Id", id).commit();
 		
 		 trans.addToBackStack(null);
 		 trans.commit();
@@ -476,4 +485,18 @@ public class MainFragment extends Fragment {
 
 	}
 
+	private void setFooterComment(){
+		
+		FragmentManager fm = getActivity().getSupportFragmentManager();
+		FragmentTransaction trans = fm.beginTransaction();
+		Fragment f = fm.findFragmentById(R.id.content_frame);
+
+		if (f instanceof PaperFragment || f instanceof FroumFragment || f instanceof PostFragment
+				|| f instanceof FixedPostFragment)
+			util.inputCommentAndPickFile(getActivity(), true);
+		else
+			util.inputCommentAndPickFile(getActivity(), false);
+		
+	}
+	
 }

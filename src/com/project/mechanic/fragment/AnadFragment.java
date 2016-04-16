@@ -192,13 +192,11 @@ public class AnadFragment extends Fragment
 		totalMethodeScroll();
 
 		saveVisitAnad();
-		
-		bottomSheetView();
 
 		return rootView;
 	}
 
-	private void bottomSheetView() {
+	private void bottomSheetView(final int anadId, int objectId) {
 
 		TextView txt1 = (TextView) rootView.findViewById(R.id.txt1);
 		TextView txt2 = (TextView) rootView.findViewById(R.id.txt2);
@@ -235,20 +233,19 @@ public class AnadFragment extends Fragment
 			public void onClick(View arg0) {
 
 				FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
-				show_pay_fragment fragment = new show_pay_fragment();
+				show_pay_fragment fragment = new show_pay_fragment(anadId, provinceId, ticketTypeId , StaticValues.CreateAnadFromAnad);
 
-				Bundle bundle = new Bundle();
-				bundle.putString("AnadId", String.valueOf(anadId));
-				bundle.putString("TypeId", String.valueOf(ticketTypeId));
-
-				fragment.setArguments(bundle);
+				// Bundle bundle = new Bundle();
+				// bundle.putString("AnadId", String.valueOf(anadId));
+				// bundle.putString("TypeId", String.valueOf(ticketTypeId));
+				//
+				// fragment.setArguments(bundle);
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.addToBackStack(null);
 				trans.commit();
-				
-				bottomSheet.setVisibility(View.GONE);
 
+				bottomSheet.setVisibility(View.GONE);
 
 			}
 		});
@@ -257,7 +254,7 @@ public class AnadFragment extends Fragment
 
 			@Override
 			public void onClick(View arg0) {
-				
+
 				Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.up_from_bottom);
 				bottomSheet.startAnimation(anim);
 
@@ -337,10 +334,11 @@ public class AnadFragment extends Fragment
 								// dialog1 = new DialogAnadimg(getActivity(),
 								// R.layout.dialog_imganad, AnadFragment.this,
 								// ticketTypeId, provinceId, t.getId());
-								// util.setSizeDialog(dialog1);
+								// util.setSizeDialog(dialog1);'
+								bottomSheetView(t.getId() , objectId);
 
 								bottomSheet.setVisibility(View.VISIBLE);
-//								createItem.setVisibility(View.INVISIBLE);
+								// createItem.setVisibility(View.INVISIBLE);
 
 								Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.down_from_top);
 								bottomSheet.startAnimation(anim);
@@ -349,10 +347,10 @@ public class AnadFragment extends Fragment
 
 							}
 						} else {
-							Toast.makeText(getActivity(), " عکس قبلا انتخاب شده", Toast.LENGTH_LONG).show();
+//							Toast.makeText(getActivity(), " عکس قبلا انتخاب شده", Toast.LENGTH_LONG).show();
 							FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
 									.beginTransaction();
-							IntroductionFragment fragment = new IntroductionFragment();
+							IntroductionFragment fragment = new IntroductionFragment(-1);
 							Bundle bundle = new Bundle();
 							bundle.putString("Id", String.valueOf(t.getObjectId()));
 							// bundlei.putString("I",
@@ -492,11 +490,12 @@ public class AnadFragment extends Fragment
 
 		verticalScrollview = (ScrollView) rootView.findViewById(R.id.vertical_scrollview_id);
 
-		// verticalScrollview.setVerticalScrollbarPosition(500);
 
 		verticalOuterLayout = (LinearLayout) rootView.findViewById(R.id.vertical_outer_layout_id);
 
-		bottomSheet = (RelativeLayout)rootView.findViewById(R.id.bottmSheet);
+		bottomSheet = (RelativeLayout) rootView.findViewById(R.id.bottmSheet);
+		
+
 	}
 
 	private void currentTime() {
@@ -790,9 +789,10 @@ public class AnadFragment extends Fragment
 			else
 				count = ((scrollPos + scrollViewHeight) / imageButton.getHeight());
 
-			if ((scrollPos + scrollViewHeight) == verticalScrollMax) {
+			if ((scrollPos + scrollViewHeight) >= verticalScrollMax) {
 
 				scrollPos = 0;
+				verticalScrollview.scrollTo(0, scrollPos);
 				savePosition(provinceId, true);
 				;
 			}

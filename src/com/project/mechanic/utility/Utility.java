@@ -23,7 +23,11 @@ import com.project.mechanic.R;
 import com.project.mechanic.PushNotification.DomainSend;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
+import com.project.mechanic.fragment.FixedPostFragment;
+import com.project.mechanic.fragment.FroumFragment;
+import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.PersianDate;
+import com.project.mechanic.fragment.PostFragment;
 import com.project.mechanic.fragment.ReportAbuseFragment;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
@@ -64,6 +68,9 @@ import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
@@ -451,6 +458,14 @@ public class Utility implements AsyncInterface {
 						+ "-"
 						+ (settings.getServerDate_Start_Users() != null ? settings.getServerDate_Start_Users() : "")
 						+ "-" + (settings.getServerDate_Start_Post() != null ? settings.getServerDate_Start_Post() : "")
+						+ "-" + (settings.getServerDate_Start_SubAdmin() != null
+								? settings.getServerDate_Start_SubAdmin() : "")
+								/*
+								 * + "-" +
+								 * (settings.getServerDate_Start_ListItem() !=
+								 * null ?
+								 * settings.getServerDate_Start_ListItem() : "")
+								 */
 						+ "-";
 
 				mEndDatesMaster = (settings.getServerDate_End_Anad() != null ? settings.getServerDate_End_Anad() : "")
@@ -461,6 +476,13 @@ public class Utility implements AsyncInterface {
 						+ "-" + (settings.getServerDate_End_Ticket() != null ? settings.getServerDate_End_Ticket() : "")
 						+ "-" + (settings.getServerDate_End_Users() != null ? settings.getServerDate_End_Users() : "")
 						+ "-" + (settings.getServerDate_End_Post() != null ? settings.getServerDate_End_Post() : "")
+						+ "-"
+						+ (settings.getServerDate_End_SubAdmin() != null ? settings.getServerDate_End_SubAdmin() : "")
+						+ "-"
+						/*
+						 * + (settings.getServerDate_End_ListItem() != null ?
+						 * settings.getServerDate_End_ListItem() : "")
+						 */
 						+ "-";
 
 				serviceUpdate.execute(mStartDatesMaster, mEndDatesMaster, "0");
@@ -900,170 +922,12 @@ public class Utility implements AsyncInterface {
 		return ret;
 	}
 
-	public ImageView ShowFooterAgahi(Activity activity, boolean IsShow, final int Type) {
-
-		// type = 0 >>>>> mainFragment
-		// type = 1 >>>>> main brand fragment
-		// type = 2 >>>>> object fragment >> foroshgah
-		// type = 3 >>>>> object fragment >> moshaveran
-		// type = 4 >>>>> object fragment >> ashkhas haghighi
-		// type = 5 >>>>> UrlNewsPaperFragment
-		// type = 6 >>>>> introduction fragment
-		// type = 7 >>>>> froumtitle && titlePaper fragment
-		// type = 8 >>>>> paper and Froum fragment
-		// type = 9 >>>>> top items
-		// type = 10 >>>>> chat fragment
-
-		ViewFlipper vf = (ViewFlipper) activity.findViewById(R.id.footerAgahi);
-
-		RelativeLayout la = (RelativeLayout) activity.findViewById(R.id.getCommentLayout);
-
-		ImageView send = (ImageView) activity.findViewById(R.id.sendComment);
-		// EditText comment = (EditText)
-		// activity.findViewById(R.id.inputComment);
-
-		ImageView img1 = (ImageView) activity.findViewById(R.id.img1);
-		ImageView img2 = (ImageView) activity.findViewById(R.id.img2);
-
-		ImageView img3 = (ImageView) activity.findViewById(R.id.img3);
-
-		if (IsShow == true) {
-			vf.setVisibility(View.VISIBLE);
-
-			switch (Type) {
-
-			case 0: {
-				la.setVisibility(View.GONE);
-
-				img1.setBackgroundResource(R.drawable.slide1);
-
-				img2.setBackgroundResource(R.drawable.slide2);
-
-				img3.setBackgroundResource(R.drawable.slide3);
-				break;
-			}
-			case 1: {
-				la.setVisibility(View.GONE);
-
-				img1.setBackgroundResource(R.drawable.slide1);
-
-				img2.setBackgroundResource(R.drawable.slide2);
-
-				img3.setBackgroundResource(R.drawable.slide3);
-				break;
-			}
-			case 2: {
-				la.setVisibility(View.GONE);
-
-				img1.setBackgroundResource(R.drawable.slide4);
-
-				img2.setBackgroundResource(R.drawable.slide5);
-
-				img3.setBackgroundResource(R.drawable.slide6);
-				break;
-
-			}
-			case 3: {
-				la.setVisibility(View.GONE);
-
-				img1.setBackgroundResource(R.drawable.i1);
-
-				img2.setBackgroundResource(R.drawable.i2);
-
-				img3.setBackgroundResource(R.drawable.i3);
-				break;
-			}
-			case 4: {
-				la.setVisibility(View.GONE);
-
-				img1.setBackgroundResource(R.drawable.i4);
-
-				img2.setBackgroundResource(R.drawable.i5);
-
-				img3.setBackgroundResource(R.drawable.i6);
-				break;
-
-			}
-
-			case 5: {
-				la.setVisibility(View.GONE);
-
-				img1.setBackgroundResource(R.drawable.i4);
-
-				img2.setBackgroundResource(R.drawable.i5);
-
-				img3.setBackgroundResource(R.drawable.i6);
-				break;
-
-			}
-
-			case 6: {
-				if (getCurrentUser() != null) {
-					la.setVisibility(View.VISIBLE);
-
-					vf.setVisibility(View.GONE);
-				} else
-					vf.setVisibility(View.GONE);
-				break;
-
-			}
-			case 7: {
-				la.setVisibility(View.GONE);
-
-				img1.setBackgroundResource(R.drawable.birthday_icon);
-
-				img2.setBackgroundResource(R.drawable.admin_icon);
-
-				img3.setBackgroundResource(R.drawable.ic_create_post);
-				break;
-
-			}
-			case 8: {
-				if (getCurrentUser() != null) {
-					la.setVisibility(View.VISIBLE);
-
-					vf.setVisibility(View.GONE);
-				} else
-					vf.setVisibility(View.GONE);
-
-				break;
-
-			}
-			case 9: {
-				la.setVisibility(View.GONE);
-
-				img1.setBackgroundResource(R.drawable.birthday_icon);
-
-				img2.setBackgroundResource(R.drawable.admin_icon);
-
-				img3.setBackgroundResource(R.drawable.ic_create_post);
-				break;
-
-			}
-			case 10: {
-				inputCommentAndPickFile(activity);
-				break;
-
-			}
-
-			default:
-				break;
-			}
-
-			vf.setAutoStart(true);
-			vf.setFlipInterval(4000);
-			vf.startFlipping();
-		} else {
-			vf.setVisibility(View.GONE);
-			la.setVisibility(View.GONE);
-
-		}
-		return send;
-	}
-
+	//
 	public Typeface SetFontCasablanca() {
 
-		Typeface typeFace = Typeface.createFromAsset(context.getAssets(), "fonts/Casablanca.TTF");
+		// Typeface typeFace = Typeface.createFromAsset(context.getAssets(),
+		// "fonts/Casablanca.TTF");
+		Typeface typeFace = Typeface.createFromAsset(context.getAssets(), "fonts/IranSans.TTF");
 
 		return typeFace;
 
@@ -1116,22 +980,25 @@ public class Utility implements AsyncInterface {
 		return delete;
 	}
 
-	public ImageView[] inputCommentAndPickFile(Activity activity) {
+	public ImageView[] inputCommentAndPickFile(Activity activity, boolean isShow) {
 
 		ImageView[] arrayImage = new ImageView[3];
 
-		ViewFlipper vf = (ViewFlipper) activity.findViewById(R.id.footerAgahi);
 		RelativeLayout la = (RelativeLayout) activity.findViewById(R.id.getCommentLayout);
-
-		la.setVisibility(View.VISIBLE);
-		vf.setVisibility(View.GONE);
 
 		arrayImage[0] = (ImageView) activity.findViewById(R.id.sendComment);
 		arrayImage[1] = (ImageView) activity.findViewById(R.id.pickPicture);
 		// arrayImage[2] = (ImageView) activity.findViewById(R.id.showPicture);
 
-		arrayImage[1].setVisibility(View.VISIBLE);
 		// arrayImage[2].setVisibility(View.VISIBLE);
+
+		if (isShow == true) {
+			la.setVisibility(View.VISIBLE);
+
+		} else {
+			la.setVisibility(View.GONE);
+
+		}
 
 		return arrayImage;
 
@@ -1201,7 +1068,8 @@ public class Utility implements AsyncInterface {
 
 	}
 
-	public void reportAbuse(int userIdSender, int source, int itemId, String content, int backId, int position) {
+	public void reportAbuse(int userIdSender, int source, int itemId, String content, int backId, int position,
+			int cityId) {
 
 		// if (source > 4) {
 		// FragmentTransaction trans = ((MainActivity)
@@ -1222,7 +1090,8 @@ public class Utility implements AsyncInterface {
 		// trans.commit();
 		// } else {
 		FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
-		ReportAbuseFragment fragment = new ReportAbuseFragment(userIdSender, source, itemId, content, backId, position);
+		ReportAbuseFragment fragment = new ReportAbuseFragment(userIdSender, source, itemId, content, backId, position,
+				cityId);
 		trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 
 		Bundle bundle = new Bundle();
@@ -1345,25 +1214,47 @@ public class Utility implements AsyncInterface {
 		dialog.show();
 
 	}
-	
-	public void notificationDialogAnimation(Dialog dialog , int margingTop) {
+
+	public void notificationDialogAnimation(Dialog dialog, int margingTop) {
 
 		// WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 		// lp.copyFrom(dialog.getWindow().getAttributes());
 		// lp.width = (int) 1000;
 		// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-		
+
 		Window window = dialog.getWindow();
 		WindowManager.LayoutParams wlp = window.getAttributes();
 
 		wlp.gravity = Gravity.TOP;
-		wlp.y=margingTop;
+		wlp.y = margingTop;
 		wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
 		window.setAttributes(wlp);
 
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.BLACK));
 
 		dialog.getWindow().getAttributes().windowAnimations = R.style.notificationAnimation;
+
+		dialog.show();
+
+	}
+
+	public void dialogCreateAnadInFroum(Dialog dialog) {
+
+		// WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+		// lp.copyFrom(dialog.getWindow().getAttributes());
+		// lp.width = (int) 1000;
+		// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+		Window window = dialog.getWindow();
+		WindowManager.LayoutParams wlp = window.getAttributes();
+
+		wlp.gravity = Gravity.BOTTOM;
+		wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+		window.setAttributes(wlp);
+
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.BLACK));
+
+		dialog.getWindow().getAttributes().windowAnimations = R.style.anadShowInFroum;
 
 		dialog.show();
 
@@ -1614,23 +1505,131 @@ public class Utility implements AsyncInterface {
 			// long maxMemory = Runtime.getRuntime().maxMemory()/1024;
 			// int maxMemoryForImage = (int) (maxMemory / 8);
 
-			final int REQUIRED_SIZE = 100;
-
-			// Find the correct scale value. It should be the power of 2.
-			int scale = 1;
-			if (o.outHeight > REQUIRED_SIZE || o.outWidth > REQUIRED_SIZE) {
-				scale = (int) Math.pow(2, (int) Math
-						.ceil(Math.log(REQUIRED_SIZE / (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
-			}
-
-			// Decode with inSampleSize
-			BitmapFactory.Options o2 = new BitmapFactory.Options();
-			o2.inSampleSize = scale;
-			return BitmapFactory.decodeFile(path, o2);
+			// final int REQUIRED_SIZE = 100;
+			//
+			// // Find the correct scale value. It should be the power of 2.
+			// int scale = 1;
+			// if (o.outHeight > REQUIRED_SIZE || o.outWidth > REQUIRED_SIZE) {
+			// scale = (int) Math.pow(2, (int) Math
+			// .ceil(Math.log(REQUIRED_SIZE / (double) Math.max(o.outHeight,
+			// o.outWidth)) / Math.log(0.5)));
+			// }
+			//
+			// // Decode with inSampleSize
+			// BitmapFactory.Options o2 = new BitmapFactory.Options();
+			// o2.inSampleSize = scale;
+			return BitmapFactory.decodeFile(path, o);
 
 		} catch (Exception e) {
 		}
 		return null;
 
 	}
+
+	public static Bitmap compress(String filePath) {
+
+		// String filePath = file.getPath();
+
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
+
+		int actualHeight = options.outHeight;
+		int actualWidth = options.outWidth;
+
+		float maxHeight = 800.0f;
+		float maxWidth = 612.0f;
+		float imgRatio = actualWidth / actualHeight;
+		float maxRatio = maxWidth / maxHeight;
+
+		if (actualHeight > maxHeight || actualWidth > maxWidth) {
+			if (imgRatio < maxRatio) {
+				imgRatio = maxHeight / actualHeight;
+				actualWidth = (int) (imgRatio * actualWidth);
+				actualHeight = (int) maxHeight;
+			} else if (imgRatio > maxRatio) {
+				imgRatio = maxWidth / actualWidth;
+				actualHeight = (int) (imgRatio * actualHeight);
+				actualWidth = (int) maxWidth;
+			} else {
+				actualHeight = (int) maxHeight;
+				actualWidth = (int) maxWidth;
+
+			}
+		}
+
+		options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
+		options.inJustDecodeBounds = false;
+		options.inDither = false;
+		options.inPurgeable = true;
+		options.inInputShareable = true;
+		options.inTempStorage = new byte[16 * 1024];
+
+		try {
+			bmp = BitmapFactory.decodeFile(filePath, options);
+		} catch (OutOfMemoryError exception) {
+			exception.printStackTrace();
+
+		}
+		try {
+			scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
+		} catch (OutOfMemoryError exception) {
+			exception.printStackTrace();
+		}
+
+		float ratioX = actualWidth / (float) options.outWidth;
+		float ratioY = actualHeight / (float) options.outHeight;
+		float middleX = actualWidth / 2.0f;
+		float middleY = actualHeight / 2.0f;
+
+		Matrix scaleMatrix = new Matrix();
+		scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+		Canvas canvas = new Canvas(scaledBitmap);
+		canvas.setMatrix(scaleMatrix);
+		canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2,
+				new Paint(Paint.FILTER_BITMAP_FLAG));
+
+		ExifInterface exif;
+		try {
+			exif = new ExifInterface(filePath);
+
+			int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
+			Log.d("EXIF", "Exif: " + orientation);
+			Matrix matrix = new Matrix();
+			if (orientation == 6) {
+				matrix.postRotate(90);
+				Log.d("EXIF", "Exif: " + orientation);
+			} else if (orientation == 3) {
+				matrix.postRotate(180);
+				Log.d("EXIF", "Exif: " + orientation);
+			} else if (orientation == 8) {
+				matrix.postRotate(270);
+				Log.d("EXIF", "Exif: " + orientation);
+			}
+			scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(),
+					matrix, true);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		FileOutputStream out = null;
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+		String filename = getFilename();
+		try {
+			out = new FileOutputStream(filename);
+			scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+			scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		// byte[] byteArray = stream.toByteArray();
+
+		return scaledBitmap;
+
+	}
+
 }

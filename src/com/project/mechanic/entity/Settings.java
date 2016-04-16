@@ -57,7 +57,13 @@ public class Settings {
 	String ServerDate_End_Post;
 
 	String ServerDate_Start_LikeInPost;
-	
+
+	String ServerDate_Start_SubAdmin;
+	String ServerDate_End_SubAdmin;
+
+	String ServerDate_Start_ListItem;
+	String ServerDate_End_ListItem;
+
 	public String getServerDate_Start_LikeInPost() {
 		return ServerDate_Start_LikeInPost;
 	}
@@ -405,7 +411,9 @@ public class Settings {
 			String ServerDate_End_ObjectInCity, String ServerDate_Start_Post, String ServerDate_End_Post,
 			String ServerDate_Start_LikeInPost, String ServerDate_End_LikeInPost,
 			String ServerDate_Start_LikeInCommentPost, String ServerDate_End_LikeInCommentPost,
-			String ServerDate_Start_CommentInPost, String ServerDate_End_CommentInPost) {
+			String ServerDate_Start_CommentInPost, String ServerDate_End_CommentInPost,
+			String ServerDate_Start_SubAdmin, String ServerDate_End_SubAdmin, String ServerDate_Start_ListItem,
+			String ServerDate_End_ListItem) {
 
 		super();
 		Id = id;
@@ -470,6 +478,44 @@ public class Settings {
 
 		this.ServerDate_Start_CommentInPost = ServerDate_Start_CommentInPost;
 		this.ServerDate_End_CommentInPost = ServerDate_End_CommentInPost;
+
+		this.ServerDate_Start_SubAdmin = ServerDate_Start_SubAdmin;
+		this.ServerDate_End_SubAdmin = ServerDate_End_SubAdmin;
+
+		this.ServerDate_Start_ListItem = ServerDate_Start_ListItem;
+		this.ServerDate_End_ListItem = ServerDate_End_ListItem;
+	}
+
+	public String getServerDate_Start_ListItem() {
+		return ServerDate_Start_ListItem;
+	}
+
+	public void setServerDate_Start_ListItem(String serverDate_Start_ListItem) {
+		ServerDate_Start_ListItem = serverDate_Start_ListItem;
+	}
+
+	public String getServerDate_End_ListItem() {
+		return ServerDate_End_ListItem;
+	}
+
+	public void setServerDate_End_ListItem(String serverDate_End_ListItem) {
+		ServerDate_End_ListItem = serverDate_End_ListItem;
+	}
+
+	public String getServerDate_Start_SubAdmin() {
+		return ServerDate_Start_SubAdmin;
+	}
+
+	public void setServerDate_Start_SubAdmin(String serverDate_Start_SubAdmin) {
+		ServerDate_Start_SubAdmin = serverDate_Start_SubAdmin;
+	}
+
+	public String getServerDate_End_SubAdmin() {
+		return ServerDate_End_SubAdmin;
+	}
+
+	public void setServerDate_End_SubAdmin(String serverDate_End_SubAdmin) {
+		ServerDate_End_SubAdmin = serverDate_End_SubAdmin;
 	}
 
 	public String getServerDate_Start_ObjectInCity() {

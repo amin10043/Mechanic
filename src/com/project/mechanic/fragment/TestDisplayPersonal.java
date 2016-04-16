@@ -105,7 +105,6 @@ public class TestDisplayPersonal extends Fragment implements GetAsyncInterface,
 		// on click action
 		onClick();
 
-		util.ShowFooterAgahi(getActivity(), false, 1);
 
 		return rootView;
 	}

@@ -123,7 +123,6 @@ public class TabHostChatType extends FragmentActivity implements ActionBar.TabLi
 			}
 		});
 
-		util.ShowFooterAgahi(this, false, 0);
 	}
 
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {

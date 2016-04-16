@@ -48,7 +48,10 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 	// this.proviceId = provinceId;
 	// }
 
-	public ReportAbuseFragment(int userIdSender, int source, int itemId, String content, int backId, int position) {
+	int cityId = -1;
+
+	public ReportAbuseFragment(int userIdSender, int source, int itemId, String content, int backId, int position,
+			int cityId) {
 
 		this.userIdSender = userIdSender;
 		this.source = source;
@@ -56,6 +59,7 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 		this.content = content;
 		this.backId = backId;
 		this.position = position;
+		this.cityId = cityId;
 	}
 
 	public ReportAbuseFragment() {
@@ -93,8 +97,8 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 			r4.setVisibility(View.GONE);
 			r1.setText("   محتوا نامناسب است   ");
 			r5.setText("   مطلب در دسته بندی نامربوط قرار گرفته است   ");
-		}else{
-			
+		} else {
+
 		}
 
 		r1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -196,7 +200,6 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 			}
 		});
 		setFont();
-		util.ShowFooterAgahi(getActivity(), false, 0);
 		return rootView;
 	}
 
@@ -223,7 +226,7 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 
 				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
 						.beginTransaction();
-				IntroductionFragment fragment = new IntroductionFragment();
+				IntroductionFragment fragment = new IntroductionFragment(cityId);
 
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(backId));
@@ -356,7 +359,7 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 
 				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
 						.beginTransaction();
-				IntroductionFragment fragment = new IntroductionFragment();
+				IntroductionFragment fragment = new IntroductionFragment(cityId);
 
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(backId));
@@ -375,7 +378,7 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 
 				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
 						.beginTransaction();
-				PostFragment fragment = new PostFragment();
+				PostFragment fragment = new PostFragment(cityId);
 				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 
 				Bundle bundle = new Bundle();
@@ -394,7 +397,7 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 
 				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
 						.beginTransaction();
-				PostFragment fragment = new PostFragment();
+				PostFragment fragment = new PostFragment(cityId);
 				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 
 				Bundle bundle = new Bundle();
@@ -412,7 +415,7 @@ public class ReportAbuseFragment extends Fragment implements AsyncInterface {
 
 				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
 						.beginTransaction();
-				PostFragment fragment = new PostFragment();
+				PostFragment fragment = new PostFragment(cityId);
 				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 
 				Bundle bundle = new Bundle();

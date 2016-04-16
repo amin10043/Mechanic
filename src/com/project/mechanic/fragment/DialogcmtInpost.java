@@ -144,7 +144,7 @@ public class DialogcmtInpost extends Dialog implements AsyncInterface {
 
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					PostFragment fragment = new PostFragment();
+					PostFragment fragment = new PostFragment(-1);
 					trans.setCustomAnimations(R.anim.pull_in_left,
 							R.anim.push_out_right);
 					Bundle b = new Bundle();

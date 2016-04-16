@@ -724,12 +724,12 @@ public class RegisterFragment extends Fragment implements AsyncInterface, SaveAs
 					Map<String,String> params = new LinkedHashMap<String,String>();
 					params.put("tableName", "register");
 					params.put("username", Name);
-					params.put("email", "");
+//					params.put("email", "");
 					params.put("password", Pass);
-					params.put("phone", "");
+//					params.put("phone", "");
 					params.put("mobile", Mobile);
-					params.put("fax", "1");
-					params.put("address", "");
+//					params.put("fax", "1");
+//					params.put("address", "");
 					params.put("date", output);
 					params.put("modifyDate", output);
 					params.put("BirthDay", birthday);

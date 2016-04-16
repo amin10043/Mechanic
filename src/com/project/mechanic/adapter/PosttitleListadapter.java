@@ -1,5 +1,6 @@
 package com.project.mechanic.adapter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -12,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -37,6 +39,7 @@ import android.widget.Toast;
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.StaticValues;
+import com.project.mechanic.Cache.CacheableImageView;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Post;
 import com.project.mechanic.entity.SubAdmin;
@@ -88,7 +91,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 	Fragment fragment;
 	ImageView report;
 	ViewGroup Parent;
-	LinearLayout parentLike;
+	// LinearLayout parentLike;
 	LinearLayout.LayoutParams LNImageShowParams;
 
 	int itemId, userIdsender;
@@ -104,6 +107,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 
 	Object obj;
 	int pos;
+
+	LinearLayout parentlayout;
 
 	@Override
 	public int getCount() {
@@ -141,10 +146,10 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 		TextView dateTopic = (TextView) convertView.findViewById(R.id.datetopicinFroum);
 		TextView PostID = (TextView) convertView.findViewById(R.id.PostID);
 		countLikePost = (TextView) convertView.findViewById(R.id.txtNumofLike_CmtFroum);
-		ImageView profileImg = (ImageView) convertView.findViewById(R.id.iconfroumtitle);
+		CacheableImageView profileImg = (CacheableImageView) convertView.findViewById(R.id.iconfroumtitle);
 		ImageView shareItem = (ImageView) convertView.findViewById(R.id.sharefroumicon);
 
-		final ImageView postImage = (ImageView) convertView.findViewById(R.id.postImage);
+		final CacheableImageView postImage = (CacheableImageView) convertView.findViewById(R.id.postImage);
 
 		LinearLayout commenttitle = (LinearLayout) convertView.findViewById(R.id.l1cm);
 		LikeTitle = (LinearLayout) convertView.findViewById(R.id.LikeTopicLinear);
@@ -222,7 +227,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 
 					try {
 
-						myBitmap = Utility.decodeFile(person1.getPhoto());
+						myBitmap = getBitmapAsByteArray(person1.getPhoto());
 						postImage.setImageBitmap(myBitmap);
 						postImage.setVisibility(View.VISIBLE);
 
@@ -247,8 +252,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 		// if (x != null)
 		txt3.setText(obj.getName());
 		txt3.setTypeface(util.SetFontIranSans());
-		countcommentpost.setText(adapter.CommentInPost_count(person1.getId()).toString());
-		countLikePost.setText(adapter.LikeInPost_count(person1.getId()).toString());
+		countcommentpost.setText(po.getCountComment() + "");
+		countLikePost.setText(po.getCountLike() + "");
 		adapter.close();
 
 		dateTopic.setText(util.getPersianDate(person1.getDate()));
@@ -294,7 +299,8 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 				// byte[] byteImg = x.getImage();
 
 				try {
-					Bitmap bmp = Utility.decodeFile(obj.getImagePath2());
+					Bitmap bmp = getBitmapAsByteArray(obj.getImagePath2());
+					// Utility.decodeFile(obj.getImagePath2());
 					if (bmp != null)
 						profileImg.setImageBitmap(Utility.getclip(bmp));
 
@@ -345,16 +351,16 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 
 					if (clickValue.equals("")) {
 
-						LinearLayout parentlayout = (LinearLayout) v;
-						parentLike = (LinearLayout) parentlayout.getParent().getParent();
+						parentlayout = (LinearLayout) v;
+						LinearLayout parentLike = (LinearLayout) parentlayout.getParent().getParent();
 						int id = Integer.valueOf((String) parentLike.getTag());
 
 						postNumber = id;
 
 						// parentLike.setEnabled(false);
 
-						showFakeLik(parentLike, postNumber);
-
+//						showFakeLik(parentLike, postNumber);
+//
 						// adapter.open();
 						//
 						// ImageView li = (ImageView)
@@ -373,7 +379,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 						clickValue = postNumber + "";
 
 					} else {
-						showFakeLik(parentLike, postNumber);
+						// showFakeLik(parentLike, postNumber);
 
 						// adapter.open();
 						// ImageView li = (ImageView)
@@ -517,7 +523,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 
 								if (util.getCurrentUser() != null)
 									util.reportAbuse(userIdsender, StaticValues.TypeReportPost, itemId, t, obj.getId(),
-											position);
+											position , -1);
 								else
 									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}
@@ -570,7 +576,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 				adapter.close();
 
 				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
-				PostFragment fragment = new PostFragment();
+				PostFragment fragment = new PostFragment(-1);
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(ItemId));
 				bundle.putInt("positionPost", pos);
@@ -859,6 +865,9 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 				((IntroductionFragment) fragment).fillListView();
 				((IntroductionFragment) fragment).setCountPost();
 
+			}else{
+				((IntroductionFragment) fragment).fillListView();
+
 			}
 		}
 
@@ -960,10 +969,12 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 			try {
 				likeId = Integer.valueOf(output);
 
-				LinearLayout parentLayout = (LinearLayout) Parent
-						./* getChildAt(0). */findViewWithTag(postNumber);
-				ImageView likeIcon = (ImageView) parentLayout.findViewById(R.id.likeIcon);
-				TextView likeCountPost = (TextView) parentLayout.findViewById(R.id.txtNumofLike_CmtFroum);
+				LinearLayout p = (LinearLayout) parentlayout.getParent().getParent();
+
+				// LinearLayout parentLayout = (LinearLayout) Parent
+				// ./* getChildAt(0). */findViewWithTag(postNumber);
+				ImageView likeIcon = (ImageView) p.findViewById(R.id.likeIcon);
+				TextView likeCountPost = (TextView) p.findViewById(R.id.txtNumofLike_CmtFroum);
 
 				adapter.open();
 
@@ -973,7 +984,7 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 
 				adapter.close();
 
-				parentLike.setEnabled(true);
+				// parentLike.setEnabled(true);
 
 				clickValue = "";
 
@@ -1039,6 +1050,16 @@ public class PosttitleListadapter extends ArrayAdapter<Post>
 	// ((IntroductionFragment) fragment).setCountPost();
 	// }
 	// }
+
+	public Bitmap getBitmapAsByteArray(String path) {
+
+		Bitmap bitmap = BitmapFactory.decodeFile(path);
+
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.JPEG, 100, outputStream);
+
+		return bitmap;
+	}
 
 	private void showFakeLik(LinearLayout layout, int id) {
 

@@ -264,8 +264,8 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 			@Override
 			public void onClick(View arg0) {
-				dialognetwork = new DialogNetworkSocial(CreateIntroductionFragment.this, getActivity(),
-						R.layout.dialog_network_social);
+				dialognetwork = new DialogNetworkSocial(
+						/* CreateIntroductionFragment.this, */ getActivity(), R.layout.dialog_network_social);
 				dialognetwork.setTitle("ویرایش  لینک های شبکه های اجتماعی");
 				util.setSizeDialog(dialognetwork);
 
@@ -276,8 +276,8 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 			@Override
 			public void onClick(View arg0) {
-				dialogDownload = new DialogLinkDownload(CreateIntroductionFragment.this, getActivity(),
-						R.layout.dialog_download_link);
+				dialogDownload = new DialogLinkDownload(
+						/* CreateIntroductionFragment.this, */ getActivity(), R.layout.dialog_download_link);
 				dialogDownload.setTitle("ویرایش لینک های دانلود");
 				util.setSizeDialog(dialogDownload);
 			}
@@ -420,7 +420,6 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 
 		});
 
-		util.ShowFooterAgahi(getActivity(), false, 1);
 
 		return view;
 	}
@@ -1015,7 +1014,7 @@ public class CreateIntroductionFragment extends Fragment implements AsyncInterfa
 				ringProgressDialog.dismiss();
 			}
 
-			IntroductionFragment fragment = new IntroductionFragment();
+			IntroductionFragment fragment = new IntroductionFragment(-1);
 			FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
 			trans.replace(R.id.content_frame, fragment);
 

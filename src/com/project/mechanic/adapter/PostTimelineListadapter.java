@@ -511,7 +511,7 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline> implemen
 				adapter.close();
 
 				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
-				PostFragment fragment = new PostFragment();
+				PostFragment fragment = new PostFragment(-1);
 				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(ItemId));
@@ -586,7 +586,7 @@ public class PostTimelineListadapter extends ArrayAdapter<PostTimeline> implemen
 				adapter.close();
 
 				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
-				PostFragment fragment = new PostFragment();
+				PostFragment fragment = new PostFragment(-1);
 				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(ItemId));

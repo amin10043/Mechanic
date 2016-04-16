@@ -205,7 +205,7 @@ public class PostWithoutComment extends Fragment implements AsyncInterface {
 			public void onClick(View arg0) {
 				FragmentTransaction trans = ((MainActivity) getActivity())
 						.getSupportFragmentManager().beginTransaction();
-				PostFragment fragment = new PostFragment();
+				PostFragment fragment = new PostFragment(-1);
 				trans.setCustomAnimations(R.anim.pull_in_left,
 						R.anim.push_out_right);
 				Bundle bundle = new Bundle();
@@ -350,37 +350,37 @@ public class PostWithoutComment extends Fragment implements AsyncInterface {
 			}
 		});
 
-		ImageView send = util.ShowFooterAgahi(getActivity(), true, 3);
-		send.setOnClickListener(new OnClickListener() {
+//		ImageView send = util.ShowFooterAgahi(getActivity(), true, 3);
+//		send.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//
+//				if ("".equals(util.inputComment(getActivity()))) {
+//					Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
+//							.show();
+//				} else {
+//					date = new ServerDate(getActivity());
+//					date.delegate = PostWithoutComment.this;
+//					date.execute("");
+//					LikeOrComment = false;
+//
+//					util.ReplyLayout(getActivity(), "", false);
+//
+//				}
+//			}
+//		});
+//		ImageView delete = util.deleteReply(getActivity());
+//
+//		delete.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View arg0) {
-
-				if ("".equals(util.inputComment(getActivity()))) {
-					Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
-							.show();
-				} else {
-					date = new ServerDate(getActivity());
-					date.delegate = PostWithoutComment.this;
-					date.execute("");
-					LikeOrComment = false;
-
-					util.ReplyLayout(getActivity(), "", false);
-
-				}
-			}
-		});
-		ImageView delete = util.deleteReply(getActivity());
-
-		delete.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				util.ReplyLayout(getActivity(), "", false);
-
-			}
-		});
+//			@Override
+//			public void onClick(View arg0) {
+//
+//				util.ReplyLayout(getActivity(), "", false);
+//
+//			}
+//		});
 		return view;
 	}
 
@@ -430,7 +430,7 @@ public class PostWithoutComment extends Fragment implements AsyncInterface {
 
 					FragmentTransaction trans = ((MainActivity) getActivity())
 							.getSupportFragmentManager().beginTransaction();
-					PostFragment fragment = new PostFragment();
+					PostFragment fragment = new PostFragment(-1);
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(IdGglobal));
 					fragment.setArguments(bundle);

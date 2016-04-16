@@ -30,18 +30,15 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 	List<ListItem> list;
 	ListItem tempItem;
 	DataBaseAdapter adapter;
-	int itemId;
 	int lastPosition = 0;
 	Utility util;
 
-	public BerandListAdapter(Context context, int resource,
-			List<ListItem> objact, int id) {
+	public BerandListAdapter(Context context, int resource, List<ListItem> objact) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
-		this.itemId = id;
 		util = new Utility(context);
 
 	}
@@ -50,8 +47,7 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_berand, parent, false);
 
@@ -59,21 +55,18 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 		// (position > lastPosition) ? R.anim.up_from_bottom
 		// : R.anim.down_from_top);
 		// convertView.startAnimation(animation);
-		TextView txtName = (TextView) convertView
-				.findViewById(R.id.row_berand_txt);
+		TextView txtName = (TextView) convertView.findViewById(R.id.row_berand_txt);
 
 		// img.setBackgroundResource(R.drawable.google);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());
 
-		
 		txtName.setTypeface(util.SetFontCasablanca());
 
 		String item = txtName.getText().toString();
 
-		final ImageView img = (ImageView) convertView
-				.findViewById(R.id.icon_item);
+		final ImageView img = (ImageView) convertView.findViewById(R.id.icon_item);
 
 		convertView.setOnClickListener(new OnClickListener() {
 
@@ -81,41 +74,38 @@ public class BerandListAdapter extends ArrayAdapter<ListItem> {
 			public void onClick(View v) {
 
 				RelativeLayout parentlayout = (RelativeLayout) v;
-				TextView txtName = (TextView) parentlayout
-						.findViewById(R.id.row_berand_txt);
+				TextView txtName = (TextView) parentlayout.findViewById(R.id.row_berand_txt);
 				String item = txtName.getText().toString();
 
-				int id = 0;
+				int parentId = 0;
 				for (ListItem listItem : list) {
 					if (item.equals(listItem.getName())) {
 						// check authentication and authorization
-						id = listItem.getId();
+						parentId = listItem.getId();
 					}
 				}
 
 				adapter.open();
-				int res = adapter.getNumberOfListItemChilds(id);
+				int res = adapter.getNumberOfListItemChilds(parentId);
 
 				adapter.close();
 
 				if (res > 0) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					BerandFragment fragment = new BerandFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
+					BerandFragment fragment = new BerandFragment(parentId);
+//					Bundle bundle = new Bundle();
+//					bundle.putString("Id", String.valueOf(parentId));
+//					fragment.setArguments(bundle);
 					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack(null);
 					trans.commit();
 
 				} else {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
-					MainBrandFragment fragment = new MainBrandFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
+					MainBrandFragment fragment = new MainBrandFragment(parentId);
+//					Bundle bundle = new Bundle();
+//					bundle.putString("Id", String.valueOf(parentId));
+//					fragment.setArguments(bundle);
 					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack(null);
 

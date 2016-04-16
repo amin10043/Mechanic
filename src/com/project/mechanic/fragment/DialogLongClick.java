@@ -633,7 +633,7 @@ public class DialogLongClick extends Dialog implements AsyncInterface, CommInter
 				}
 
 				((MainBrandFragment) fragment).UpdateList();
-				((ObjectFragment) fragment).UpdateList();
+//				((ObjectFragment) fragment).UpdateList();
 
 			}
 

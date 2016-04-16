@@ -32,14 +32,16 @@ public class City3ListAdapter extends ArrayAdapter<City> {
 	int lastPosition = 0;
 	DataBaseAdapter adapter;
 	Utility util;
+	int mainObjectId;
 
-	public City3ListAdapter(Context context, int resource, List<City> objact) {
+	public City3ListAdapter(Context context, int resource, List<City> objact, int mainObjectId) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
+		this.mainObjectId = mainObjectId;
 
 	}
 
@@ -47,15 +49,14 @@ public class City3ListAdapter extends ArrayAdapter<City> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		convertView = myInflater.inflate(R.layout.row_city, parent, false);
 
-//		Animation animation = AnimationUtils.loadAnimation(getContext(),
-//				(position > lastPosition) ? R.anim.up_from_bottom
-//						: R.anim.down_from_top);
-//		convertView.startAnimation(animation);
+		// Animation animation = AnimationUtils.loadAnimation(getContext(),
+		// (position > lastPosition) ? R.anim.up_from_bottom
+		// : R.anim.down_from_top);
+		// convertView.startAnimation(animation);
 		lastPosition = position;
 
 		TextView txt1 = (TextView) convertView.findViewById(R.id.RowCitytxt);
@@ -63,7 +64,7 @@ public class City3ListAdapter extends ArrayAdapter<City> {
 		final City city = list.get(position);
 
 		txt1.setText(city.getName());
-		
+
 		txt1.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
@@ -71,19 +72,18 @@ public class City3ListAdapter extends ArrayAdapter<City> {
 			@Override
 			public void onClick(View arg0) {
 				int count = city.getCount();
-				int id = city.getId();
+				int cityId = city.getId();
 				count = count + 1;
 				adapter.open();
-				adapter.UpdateCityToDb(id, count);
+				adapter.UpdateCityToDb(cityId, count);
 				adapter.close();
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 				trans.addToBackStack(null);
-				Fragment move = new ExecutertypeFragment();
-				Bundle bundle = new Bundle();
-				bundle.putString("cityId", String.valueOf(city.getId()));
-				move.setArguments(bundle);
+				Fragment move = new ExecutertypeFragment(mainObjectId ,cityId , 3);
+//				Bundle bundle = new Bundle();
+//				bundle.putString("cityId", String.valueOf(city.getId()));
+//				move.setArguments(bundle);
 				trans.replace(R.id.content_frame, move);
 				trans.commit();
 				Toast.makeText(context, "city Id = " + city.getId(), 0).show();

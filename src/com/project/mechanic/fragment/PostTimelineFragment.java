@@ -61,7 +61,7 @@ public class PostTimelineFragment extends Fragment
 	int postCounter = 0;
 	Integer idItem = 0;
 	List<Integer> IdArrayObject = new ArrayList<Integer>();
-//	Settings settings;
+	// Settings settings;
 
 	@SuppressLint("InflateParams")
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceStdataate) {
@@ -73,7 +73,7 @@ public class PostTimelineFragment extends Fragment
 		utility = new Utility(getActivity());
 
 		adapter.open();
-		setting= adapter.getSettings();
+		setting = adapter.getSettings();
 		adapter.close();
 
 		Currentuser = utility.getCurrentUser();
@@ -86,7 +86,6 @@ public class PostTimelineFragment extends Fragment
 
 		// getCountVisitFromServer();
 
-		utility.ShowFooterAgahi(getActivity(), false, 0);
 		return view;
 	}
 

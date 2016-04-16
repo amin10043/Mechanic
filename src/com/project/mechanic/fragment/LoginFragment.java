@@ -76,6 +76,10 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 		editmobile = (EditText) view.findViewById(R.id.editTextmobile);
 		final EditText editpass = (EditText) view.findViewById(R.id.editTextpass);
 		// TextView test = (TextView) view.findViewById(R.id.texttest);
+		
+		editmobile.setTypeface(util.SetFontIranSans());
+		editpass.setTypeface(util.SetFontIranSans());
+		
 		btnlog.setOnClickListener(new View.OnClickListener() {
 
 			@SuppressWarnings("unchecked")
@@ -147,7 +151,6 @@ public class LoginFragment extends Fragment implements CommInterface, AsyncInter
 			}
 		});
 
-		util.ShowFooterAgahi(getActivity(), false, 1);
 		layoutParams();
 
 		TextView lableEnter = (TextView) view.findViewById(R.id.lableEnter);

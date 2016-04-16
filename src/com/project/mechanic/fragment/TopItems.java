@@ -34,7 +34,6 @@ public class TopItems extends Fragment {
 			headerTile.setText("20 مقاله که بیشترین بازدید را داشته اند");
 		}
 
-		util.ShowFooterAgahi(getActivity(), true, 9);
 		return rootView;
 	}
 

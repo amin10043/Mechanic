@@ -220,7 +220,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 							if (util.getCurrentUser() != null)
 
 								util.reportAbuse(userIdsender, StaticValues.TypeReportReplyFroum, itemId, description,
-										w.getFroumid(), childPosition);
+										w.getFroumid(), childPosition  , -1);
 							else
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
@@ -473,7 +473,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 				} else {
 
 					flag = false;
-					RelativeLayout parentlayout = (RelativeLayout) t.getParent().getParent().getParent().getParent();
+					LinearLayout parentlayout = (LinearLayout) t.getParent().getParent().getParent().getParent();
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
 					TextView txtMaincmt = (TextView) viewMaincmt;
 
@@ -576,7 +576,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 
 					// // peyda kardan id comment sabt shode
 
-					RelativeLayout parentlayout = (RelativeLayout) v.getParent().getParent().getParent().getParent();
+					LinearLayout parentlayout = (LinearLayout) v.getParent().getParent().getParent().getParent();
 					View viewMaincmt = parentlayout.findViewById(R.id.peygham);
 					TextView txtMaincmt = (TextView) viewMaincmt;
 
@@ -789,7 +789,7 @@ public class ExpandableCommentFroum extends BaseExpandableListAdapter
 							if (util.getCurrentUser() != null)
 
 								util.reportAbuse(userIdsender, StaticValues.TypeReportCommentFroum, itemId, description,
-										w.getFroumid(), groupPosition);
+										w.getFroumid(), groupPosition , -1);
 							else
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}

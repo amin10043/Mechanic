@@ -2,6 +2,22 @@ package com.project.mechanic.entity;
 
 public class Object implements Comparable<Object> {
 
+	public int getCountVeryHappy() {
+		return CountVeryHappy;
+	}
+
+	public void setCountVeryHappy(int countVeryHappy) {
+		CountVeryHappy = countVeryHappy;
+	}
+
+	public int getCountVerySad() {
+		return CountVerySad;
+	}
+
+	public void setCountVerySad(int countVerySad) {
+		CountVerySad = countVerySad;
+	}
+
 	int Id;
 	int ObjectTypeId;
 	int ObjectBrandTypeId;
@@ -49,6 +65,10 @@ public class Object implements Comparable<Object> {
 	int CountFollower;
 	int CountHappy;
 	int CountSad;
+	int CountAgency;
+	int CountService;
+	int CountVeryHappy;
+	int CountVerySad;
 
 	public int getCountView() {
 		return CountView;
@@ -370,7 +390,8 @@ public class Object implements Comparable<Object> {
 			int seen, String serverdate, int submit, int mainObjectid, int IsActive, int UserId, int ObjectId,
 			String Date, String img1ServerDate, String img2ServerDate, String img3ServerDate, int AgencyService,
 			String ImagePath1, String ImagePath2, String ImagePath3, String activeDate, int CounView, int CountPost,
-			int CountFollower, int CountHappy, int CountSad) {
+			int CountFollower, int CountHappy, int CountSad, int CountAgency, int Countservice, int CountVeryHappy,
+			int CountVerySad) {
 
 		super();
 		Id = id;
@@ -420,6 +441,26 @@ public class Object implements Comparable<Object> {
 		this.CountFollower = CountFollower;
 		this.CountHappy = CountHappy;
 		this.CountSad = CountSad;
+		this.CountAgency = CountAgency;
+		this.CountService = Countservice;
+		this.CountVeryHappy = CountVeryHappy;
+		this.CountVerySad = CountVerySad;
+	}
+
+	public int getCountAgency() {
+		return CountAgency;
+	}
+
+	public void setCountAgency(int countAgency) {
+		CountAgency = countAgency;
+	}
+
+	public int getCountService() {
+		return CountService;
+	}
+
+	public void setCountService(int countService) {
+		CountService = countService;
 	}
 
 	public int getCountHappy() {

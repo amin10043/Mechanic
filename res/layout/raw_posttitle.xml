@@ -68,6 +68,7 @@
                     android:layout_marginRight="20dp"
                     android:gravity="left"
                     android:text="Date"
+                    android:textSize="10dp"
                     android:textColor="@color/orginal_hard_blue_color" />
             </LinearLayout>
 
@@ -88,7 +89,7 @@
                     android:textColor="@color/orginal_hard_blue_color" />
             </LinearLayout>
 
-            <ImageView
+            <com.project.mechanic.Cache.CacheableImageView
                 android:id="@+id/iconfroumtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -100,7 +101,7 @@
                 android:src="@drawable/no_img_profile" />
         </RelativeLayout>
 
-        <ImageView
+        <com.project.mechanic.Cache.CacheableImageView
             android:id="@+id/postImage"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

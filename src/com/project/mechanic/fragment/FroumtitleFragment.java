@@ -1,47 +1,33 @@
 package com.project.mechanic.fragment;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.WindowManager;
-import android.widget.AbsListView;
-import android.widget.EditText;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.RelativeLayout.LayoutParams;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
-
+import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.StaticValues;
 import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.FroumtitleListadapter;
-import com.project.mechanic.adapter.PapertitleListAdapter;
+import com.project.mechanic.entity.Anad;
+import com.project.mechanic.entity.City;
+import com.project.mechanic.entity.ExtraSettings;
 import com.project.mechanic.entity.Froum;
+import com.project.mechanic.entity.Province;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.AsyncInterfaceVisit;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
+import com.project.mechanic.interfaceServer.CountCommentInterface;
+import com.project.mechanic.interfaceServer.CountLikeInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.server.GetCountComment;
+import com.project.mechanic.server.GetCountLike;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.ServiceComm;
@@ -50,9 +36,44 @@ import com.project.mechanic.service.UpdatingImage;
 import com.project.mechanic.service.UpdatingVisit;
 import com.project.mechanic.utility.Utility;
 
-public class FroumtitleFragment extends Fragment
-		implements GetAsyncInterface, CommInterface, AsyncInterface, AsyncInterfaceVisit {
-	private ImageButton addtitle;
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class FroumtitleFragment extends Fragment implements GetAsyncInterface, CommInterface, AsyncInterface,
+		AsyncInterfaceVisit, CountLikeInterface, CountCommentInterface {
+	// private ImageButton addtitle;
 	private DialogfroumTitle dialog;
 	DialogcmtInfroum dialog2;
 	DataBaseAdapter mdb;
@@ -100,12 +121,40 @@ public class FroumtitleFragment extends Fragment
 	// int positionFroum = 0;
 	int positionListFroum = 0;
 
+	int counterComment = 0;
+	int counterLike = 0;
+	int pId = 0;
+
+	private ScrollView verticalScrollview;
+	private LinearLayout verticalOuterLayout;
+
+	List<Anad> anadlist;
+	int provinceId = -1;
+	List<ImageView> imageList = new ArrayList<ImageView>();
+	ImageView imageButton;
+	private Boolean isFaceDown = true;
+	private Timer clickTimer = null;
+	private Timer faceTimer = null;
+	private ImageView clickedButton = null;
+	private TimerTask faceAnimationSchedule;
+	private Timer scrollTimer = null;
+	private TimerTask clickSchedule;
+	private TimerTask scrollerSchedule;
+
+	public int scrollPos = 0;
+	public int scrollViewHeight = 0;
+
+	TextView countAnad;
+	int count;
+	private int verticalScrollMax;
+
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container,
 			Bundle savedInstanceState) {
 
 		view = inflater.inflate(R.layout.fragment_titlefrm, null);
+
 		// if (getArguments() != null)
 		// positionFroum = getArguments().getInt("positionFroum");
 
@@ -135,12 +184,18 @@ public class FroumtitleFragment extends Fragment
 		// lst.setSelection(mLastFirstVisibleItem);
 		// }
 
-		if (getActivity() != null) {
-			util.ShowFooterAgahi(getActivity(), false, 7);
+		getLikeNumberOfFroum();
 
-		}
+		addImagesToView();
+
+		totalMethodeScroll();
 
 		getCountVisitFromServer();
+		
+		if (getActivity() !=null){
+			util.inputCommentAndPickFile(getActivity(), false);
+		}
+		
 		return view;
 	}
 
@@ -276,7 +331,7 @@ public class FroumtitleFragment extends Fragment
 				mdb.open();
 				mdb.insertFroumtitletoDb(id, titleFroum, descriptionFroum, util.getCurrentUser().getId(), severDate);
 				mdb.close();
-				
+
 				setPostionListFroum(0);
 				fillListView();
 
@@ -383,10 +438,11 @@ public class FroumtitleFragment extends Fragment
 
 	private void init() {
 
-		addtitle = (ImageButton) view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
+		// addtitle = (ImageButton)
+		// view.findViewById(R.id.imgBtnAddcmt_CmtFroum);
 		action = (FloatingActionButton) view.findViewById(R.id.fab);
 
-		lst = (ListView) view.findViewById(R.id.lstComment);
+		lst = (ListView) view.findViewById(R.id.listVanad);
 		swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
 
 		mdb = new DataBaseAdapter(getActivity());
@@ -413,9 +469,26 @@ public class FroumtitleFragment extends Fragment
 
 		send = (ImageView) view.findViewById(R.id.createDialogPage);
 		close = (ImageView) view.findViewById(R.id.delete);
-		
+
 		titleFroumEditText.setTypeface(util.SetFontIranSans());
 		descriptionFroumEditText.setTypeface(util.SetFontIranSans());
+
+		verticalScrollview = (ScrollView) view.findViewById(R.id.vertical_scrollview_id);
+
+		verticalOuterLayout = (LinearLayout) view.findViewById(R.id.vertical_outer_layout_id);
+		countAnad = (TextView) view.findViewById(R.id.countA);
+
+		if (Currentuser != null) {
+			mdb.open();
+
+			City city = mdb.getCityById(Currentuser.getCityId());
+			Province pr = mdb.getProvinceById(city.getProvinceId());
+			provinceId = pr.getId();
+
+			mdb.close();
+		} else {
+			provinceId = 0;
+		}
 
 	}
 
@@ -462,6 +535,32 @@ public class FroumtitleFragment extends Fragment
 		// }
 	}
 
+	private void totalMethodeScroll() {
+
+		ViewTreeObserver vto = verticalOuterLayout.getViewTreeObserver();
+		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onGlobalLayout() {
+				verticalOuterLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				getScrollMaxAmount();
+				startAutoScrolling();
+			}
+
+		});
+	}
+
+	public void getScrollMaxAmount() {
+		int actualWidth = (verticalOuterLayout.getMeasuredHeight() /*- (256 * 3)*/);
+
+		verticalScrollMax = actualWidth;
+
+		scrollPos = returnSavedPosition();
+
+		verticalScrollview.scrollTo(0, scrollPos);
+
+	}
 	// public List<Integer> getMissedIds() {
 	//
 	// String strIdes = "";
@@ -482,6 +581,40 @@ public class FroumtitleFragment extends Fragment
 	// return strIdes;
 	//
 	// }
+
+	@Override
+	public void onResume() {
+
+		getView().setFocusableInTouchMode(true);
+		getView().requestFocus();
+		getView().setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+				if (event.getAction() == KeyEvent.ACTION_DOWN) {
+
+					if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+						savePosition(provinceId, false);
+
+						FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+								.beginTransaction();
+
+						trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
+						trans.replace(R.id.content_frame, new MainFragment());
+						trans.commit();
+
+						return true;
+					}
+
+				}
+
+				return false;
+			}
+		});
+		super.onResume();
+	}
 
 	private void refreshListView() {
 
@@ -756,5 +889,428 @@ public class FroumtitleFragment extends Fragment
 
 		}
 
+	}
+
+	private void getLikeNumberOfFroum() {
+
+		if (counterLike < mylist.size()) {
+
+			Froum p = mylist.get(counterLike);
+
+			pId = p.getId();
+
+			GetCountLike getCountLike = new GetCountLike(getActivity());
+			getCountLike.delegate = FroumtitleFragment.this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+
+			items.put("tableName", "getLikeInFroumCount");
+			items.put("id", String.valueOf(pId));
+
+			getCountLike.execute(items);
+
+		} else {
+			getCountComment();
+		}
+
+	}
+
+	@Override
+	public void ResultCountLike(String output) {
+
+		if (util.checkError(output) == false) {
+
+			mdb.open();
+
+			mdb.updateCountLike("Froum", pId, Integer.valueOf(output));
+
+			mdb.close();
+
+			mylist.get(counterLike).setCountLike(Integer.valueOf(output));
+			ListAdapter.notifyDataSetChanged();
+
+			counterLike++;
+			getLikeNumberOfFroum();
+
+		}
+
+	}
+
+	private void getCountComment() {
+
+		if (counterComment < mylist.size()) {
+
+			Froum p = mylist.get(counterComment);
+
+			pId = p.getId();
+
+			GetCountComment get = new GetCountComment(getActivity());
+			get.delegate = FroumtitleFragment.this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+
+			items.put("tableName", "getCommentInFroumCount");
+			items.put("id", String.valueOf(pId));
+
+			get.execute(items);
+
+		}
+	}
+
+	@Override
+	public void ReultCountComment(String output) {
+
+		if (util.checkError(output) == false) {
+
+			mdb.open();
+
+			mdb.updateCountComment("Froum", pId, Integer.valueOf(output));
+
+			mdb.close();
+
+			mylist.get(counterComment).setCountComment(Integer.valueOf(output));
+			ListAdapter.notifyDataSetChanged();
+
+			counterComment++;
+			getCountComment();
+
+		}
+
+	}
+
+	public List<ImageView> addImagesToView() {
+
+		mdb.open();
+		anadlist = mdb.getAnadtByTypeIdProId(provinceId);
+		mdb.close();
+
+		imageList.clear();
+		verticalOuterLayout.removeAllViewsInLayout();
+
+		for (int t = 0; t < anadlist.size(); t++) {
+			// byte[] tmpImage = lst.get(t).getImage();
+			String imagePath = anadlist.get(t).getImagePath();
+
+			// final ImageView
+			imageButton = new ImageView(getActivity());
+			if (imagePath == null) {
+				Drawable image = this.getResources().getDrawable(R.drawable.propagand);
+
+				imageButton.setImageDrawable(image);
+				imageButton.setScaleType(ScaleType.FIT_XY);
+
+			} else {
+				imageButton.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+
+			}
+			imageButton.setTag(t);
+
+			imageButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+
+					int position = (Integer) arg0.getTag();
+					if (isFaceDown) {
+						if (clickTimer != null) {
+							clickTimer.cancel();
+							clickTimer = null;
+						}
+						clickedButton = (ImageView) arg0;
+
+						stopAutoScrolling();
+						clickedButton.startAnimation(scaleFaceUpAnimation());
+						clickedButton.setSelected(true);
+						clickTimer = new Timer();
+
+						if (clickSchedule != null) {
+							clickSchedule.cancel();
+							clickSchedule = null;
+						}
+
+						clickSchedule = new TimerTask() {
+							public void run() {
+								startAutoScrolling();
+							}
+						};
+						Anad t = anadlist.get(position);
+
+						int objectId = t.getObjectId();
+						clickTimer.schedule(clickSchedule, 1500);
+
+						if (objectId == 0) {
+							if (Currentuser == null) {
+								Toast.makeText(getActivity(), " برای ثبت تبلیغات وارد شوید", Toast.LENGTH_LONG).show();
+								return;
+							} else {
+
+								DialogAnadimg dialog1 = new DialogAnadimg(getActivity(), R.layout.dialog_imganad,
+										FroumtitleFragment.this, 1, provinceId, t.getId(),
+										StaticValues.CreateAnadFromFroum);
+
+								util.dialogCreateAnadInFroum(dialog1);
+
+								// util.setSizeDialog(dialog1);'
+								// bottomSheetView(t.getId(), objectId);
+								//
+								// bottomSheet.setVisibility(View.VISIBLE);
+								// // createItem.setVisibility(View.INVISIBLE);
+								//
+								// Animation anim =
+								// AnimationUtils.loadAnimation(getActivity(),
+								// R.anim.down_from_top);
+								// bottomSheet.startAnimation(anim);
+
+								savePosition(provinceId, false);
+
+							}
+						} else {
+							// Toast.makeText(getActivity(), " عکس قبلا انتخاب
+							// شده",
+							// Toast.LENGTH_LONG).show();
+							FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+									.beginTransaction();
+							IntroductionFragment fragment = new IntroductionFragment(-1);
+							Bundle bundle = new Bundle();
+							bundle.putString("Id", String.valueOf(t.getObjectId()));
+							// bundlei.putString("I",
+							// String.valueOf(t.getObjectId()));
+							fragment.setArguments(bundle);
+							trans.replace(R.id.content_frame, fragment);
+							trans.addToBackStack(null);
+							trans.commit();
+
+							savePosition(provinceId, false);
+
+						}
+
+					}
+				}
+
+			});
+
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(util.getScreenwidth() / 3,
+					util.getScreenwidth() / 3);
+			imageButton.setLayoutParams(params);
+			imageButton.setScaleType(ScaleType.FIT_XY);
+			verticalOuterLayout.addView(imageButton);
+			imageList.add(imageButton);
+		}
+		// startShowImageAfterDownload = true;
+		return imageList;
+
+	}
+
+	public Animation scaleFaceUpAnimation() {
+		Animation scaleFace = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
+		scaleFace.setDuration(500);
+		scaleFace.setFillAfter(true);
+		scaleFace.setInterpolator(new AccelerateInterpolator());
+		Animation.AnimationListener scaleFaceAnimationListener = new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation arg0) {
+				isFaceDown = false;
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation arg0) {
+				if (faceTimer != null) {
+					faceTimer.cancel();
+					faceTimer = null;
+				}
+			}
+
+			@Override
+			public void onAnimationEnd(Animation arg0) {
+				if (faceTimer != null) {
+					faceTimer.cancel();
+					faceTimer = null;
+				}
+
+				faceTimer = new Timer();
+				if (faceAnimationSchedule != null) {
+					faceAnimationSchedule.cancel();
+					faceAnimationSchedule = null;
+				}
+				faceAnimationSchedule = new TimerTask() {
+					@Override
+					public void run() {
+						faceScaleHandler.sendEmptyMessage(0);
+					}
+				};
+
+				faceTimer.schedule(faceAnimationSchedule, 750);
+			}
+		};
+		scaleFace.setAnimationListener(scaleFaceAnimationListener);
+		return scaleFace;
+	}
+
+	public void stopAutoScrolling() {
+		if (scrollTimer != null) {
+			scrollTimer.cancel();
+			scrollTimer = null;
+		}
+	}
+
+	private Handler faceScaleHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+
+			if (clickedButton.isSelected() == true)
+				clickedButton.startAnimation(scaleFaceDownAnimation(500));
+		}
+	};
+
+	public void moveScrollView() {
+
+		scrollPos = (int) (verticalScrollview.getScrollY() + 1.0);
+		scrollViewHeight = verticalScrollview.getHeight();
+
+		if (imageButton.getHeight() > 0) {
+
+			int space = scrollViewHeight % imageButton.getHeight();
+
+			if (space > 0)
+				count = ((scrollPos + scrollViewHeight - space) / imageButton.getHeight()) + 1;
+			else
+				count = ((scrollPos + scrollViewHeight) / imageButton.getHeight());
+
+			if ((scrollPos + scrollViewHeight) >= verticalScrollMax) {
+
+				scrollPos = 0;
+				verticalScrollview.scrollTo(0, scrollPos);
+				savePosition(provinceId, true);
+				;
+			}
+
+		}
+
+		if (anadlist.size() > 0)
+			countAnad.setText(count + " / " + anadlist.size());
+
+		verticalScrollview.scrollTo(0, scrollPos);
+
+	}
+
+	public void startAutoScrolling() {
+		if (scrollTimer == null) {
+			scrollTimer = new Timer();
+			final Runnable Timer_Tick = new Runnable() {
+				public void run() {
+					moveScrollView();
+				}
+			};
+
+			if (scrollerSchedule != null) {
+				scrollerSchedule.cancel();
+				scrollerSchedule = null;
+			}
+			scrollerSchedule = new TimerTask() {
+				@Override
+				public void run() {
+					getActivity().runOnUiThread(Timer_Tick);
+				}
+			};
+
+			scrollTimer.schedule(scrollerSchedule, 1000, 20);
+		}
+	}
+
+	public void savePosition(int provinceId, boolean flag) {
+
+		String[] positionArray = ArrayPosition();
+
+		String p = "";
+
+		if (flag == false) {
+
+			for (int x = 0; x < positionArray.length; x++)
+				if (x == provinceId) {
+					positionArray[x] = String.valueOf(scrollPos);
+					break;
+				}
+
+		} else {
+			for (int x = 0; x < positionArray.length; x++)
+				if (x == provinceId) {
+					positionArray[x] = String.valueOf(0);
+					break;
+				}
+		}
+
+		for (int a = 0; a < positionArray.length; a++)
+			p += positionArray[a] + "-";
+
+		mdb.open();
+		mdb.updatePositionScrollAnad(p);
+		mdb.close();
+
+	}
+
+	public String[] ArrayPosition() {
+
+		ExtraSettings extraSettings = null;
+		String[] positionArray = new String[32];
+
+		mdb.open();
+		extraSettings = mdb.getPositionScroll();
+		mdb.close();
+
+		String tempPosition = extraSettings.getValue();
+
+		positionArray = tempPosition.split("-");
+
+		return positionArray;
+
+	}
+
+	public int returnSavedPosition() {
+
+		ExtraSettings extraSettings = null;
+		String[] positionArray = new String[32];
+
+		mdb.open();
+		extraSettings = mdb.getPositionScroll();
+		mdb.close();
+
+		String tempPosition = extraSettings.getValue();
+
+		positionArray = tempPosition.split("-");
+
+		if (positionArray[provinceId] != null && !positionArray[provinceId].equals("-")) {
+
+			scrollPos = Integer.valueOf(positionArray[provinceId]);
+		} else
+			scrollPos = 0;
+
+		return scrollPos;
+
+	}
+
+	public Animation scaleFaceDownAnimation(int duration) {
+		Animation scaleFace = new ScaleAnimation(1.2f, 1.0f, 1.2f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
+		scaleFace.setDuration(duration);
+		scaleFace.setFillAfter(true);
+		scaleFace.setInterpolator(new AccelerateInterpolator());
+		Animation.AnimationListener scaleFaceAnimationListener = new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation arg0) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation arg0) {
+				// verticalTextView.setText("");
+				isFaceDown = true;
+			}
+
+			@Override
+			public void onAnimationEnd(Animation arg0) {
+				// verticalTextView.setText("");
+				isFaceDown = true;
+			}
+		};
+		scaleFace.setAnimationListener(scaleFaceAnimationListener);
+		return scaleFace;
 	}
 }

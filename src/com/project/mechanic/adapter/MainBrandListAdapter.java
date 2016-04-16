@@ -94,10 +94,10 @@ public class MainBrandListAdapter extends ArrayAdapter<Object> {
 				if (res > 0) {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
-					MainBrandFragment fragment = new MainBrandFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("Id", String.valueOf(id));
-					fragment.setArguments(bundle);
+					MainBrandFragment fragment = new MainBrandFragment(id);
+//					Bundle bundle = new Bundle();
+//					bundle.putString("Id", String.valueOf(id));
+//					fragment.setArguments(bundle);
 					trans.replace(R.id.content_frame, fragment);
 					// trans.addToBackStack(null);
 					trans.commit();
@@ -106,7 +106,7 @@ public class MainBrandListAdapter extends ArrayAdapter<Object> {
 					FragmentTransaction trans = ((MainActivity) context)
 							.getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame,
-							new IntroductionFragment());
+							new IntroductionFragment(-1));
 					trans.addToBackStack(null);
 					trans.commit();
 

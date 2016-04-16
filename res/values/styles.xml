@@ -117,6 +117,11 @@
         <item name="android:windowEnterAnimation">@anim/slide_down</item>
         <item name="android:windowExitAnimation">@anim/slide_up</item>
     </style>
+    
+    <style name="anadShowInFroum">
+        <item name="android:windowEnterAnimation">@anim/down_from_top</item>
+        <item name="android:windowExitAnimation">@anim/up_from_bottom</item>
+    </style>
 
     <style name="seprateListView">
         <item name="android:background">@color/white</item>

@@ -12,13 +12,13 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import com.project.mechanic.interfaceServer.CommentInterface;
+import com.project.mechanic.interfaceServer.ProvinceCityInterface;
 import com.project.mechanic.utility.Utility;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
-public class SavingComment extends AsyncTask<Map<String, String>, Integer, String> {
+public class SavingProvinceCity extends AsyncTask<Map<String, String>, Integer, String> {
 
 	public String SOAP_ACTION = "http://tempuri.org/";
 
@@ -32,9 +32,9 @@ public class SavingComment extends AsyncTask<Map<String, String>, Integer, Strin
 	private Context context;
 	private Utility util;
 
-	public CommentInterface delegate = null;
+	public ProvinceCityInterface delegate = null;
 
-	public SavingComment(Context context) {
+	public SavingProvinceCity(Context context) {
 		this.context = context;
 		util = new Utility(context);
 	}
@@ -61,7 +61,8 @@ public class SavingComment extends AsyncTask<Map<String, String>, Integer, Strin
 		}
 
 		try {
-			SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE, OPERATION_NAME);
+			SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,
+					OPERATION_NAME);
 			PropertyInfo pi = null;
 
 			pi = new PropertyInfo();
@@ -88,16 +89,19 @@ public class SavingComment extends AsyncTask<Map<String, String>, Integer, Strin
 			pi.setType(String.class);
 			request.addProperty(pi);
 
-			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+			SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+					SoapEnvelope.VER11);
 			envelope.dotNet = true;
 			envelope.setAddAdornments(false);
 			envelope.implicitTypes = true;
 			envelope.setOutputSoapObject(request);
 			HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS);
-			httpTransport.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+			httpTransport
+					.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 			// Object response = null;
 			ArrayList<HeaderProperty> headerPropertyArrayList = new ArrayList<HeaderProperty>();
-			headerPropertyArrayList.add(new HeaderProperty("Connection", "close"));
+			headerPropertyArrayList.add(new HeaderProperty("Connection",
+					"close"));
 			httpTransport.call(SOAP_ACTION, envelope, headerPropertyArrayList);
 			Object response = envelope.getResponse();
 			return response.toString();
@@ -110,7 +114,7 @@ public class SavingComment extends AsyncTask<Map<String, String>, Integer, Strin
 	protected void onPostExecute(String res) {
 
 		if (delegate != null)
-			delegate.ResultComment(res);
+			delegate.ResultProvinceCity(res);
 	}
 
 }

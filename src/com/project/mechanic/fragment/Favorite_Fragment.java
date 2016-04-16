@@ -39,6 +39,7 @@ public class Favorite_Fragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		util = new Utility(getActivity());
+		util.inputCommentAndPickFile(getActivity(), false);
 
 		// ((MainActivity) getActivity()).setActivityTitle(R.string.favorite);
 		view = inflater.inflate(R.layout.favorite_fragment, null);
@@ -47,7 +48,6 @@ public class Favorite_Fragment extends Fragment {
 
 		updateView();
 
-		util.ShowFooterAgahi(getActivity(), false, 1);
 		return view;
 
 	}

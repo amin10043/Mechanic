@@ -1255,7 +1255,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter
 							if (util.getCurrentUser() != null)
 
 								util.reportAbuse(userIdsender, StaticValues.TypeReportReplyFroum, itemId, description,
-										w.getObjectid(), childPosition);
+										w.getObjectid(), childPosition , -1);
 							else
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
@@ -1857,7 +1857,7 @@ public class ExpandIntroduction extends BaseExpandableListAdapter
 							if (util.getCurrentUser() != null)
 
 								util.reportAbuse(userIdsender, StaticValues.TypeReportFixedPost, itemId, description,
-										w.getObjectid(), groupPosition);
+										w.getObjectid(), groupPosition , -1);
 							else
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}

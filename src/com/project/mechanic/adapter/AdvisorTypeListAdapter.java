@@ -36,9 +36,10 @@ public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 	protected Object item;
 	int cityId;
 	Utility util;
+	int mainObjectId;
 
-	public AdvisorTypeListAdapter(Context context, int resource,
-			List<AdvisorType> objact, int CityId) {
+	public AdvisorTypeListAdapter(Context context, int resource, List<AdvisorType> objact, int CityId,
+			int mainObjectId) {
 		super(context, resource, objact);
 
 		this.context = context;
@@ -46,29 +47,25 @@ public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 		this.cityId = CityId;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
+		this.mainObjectId = mainObjectId;
 	}
 
 	@SuppressLint("ViewHolder")
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater
-				.inflate(R.layout.main_item_list, parent, false);
+		convertView = myInflater.inflate(R.layout.main_item_list, parent, false);
 
-		convertView = myInflater.inflate(R.layout.row_advisortype, parent,
-				false);
+		convertView = myInflater.inflate(R.layout.row_advisortype, parent, false);
 
-		TextView tx1 = (TextView) convertView
-				.findViewById(R.id.RowAdvisortypetxt);
+		TextView tx1 = (TextView) convertView.findViewById(R.id.RowAdvisortypetxt);
 
 		final AdvisorType AdvisorType = list.get(position);
 
 		tx1.setText(AdvisorType.getName());
 
-		
 		tx1.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
@@ -77,15 +74,13 @@ public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 			public void onClick(View v) {
 
 				RelativeLayout parentlayout = (RelativeLayout) v;
-				TextView txtName = (TextView) parentlayout
-						.findViewById(R.id.RowAdvisortypetxt);
+				TextView txtName = (TextView) parentlayout.findViewById(R.id.RowAdvisortypetxt);
 				String item = txtName.getText().toString();
 
 				// Toast.makeText(context, item , Toast.LENGTH_LONG).show();
 
 				adapter.open();
-				ArrayList<AdvisorType> allAdvisorType = adapter
-						.getAdvisorTypes();
+				ArrayList<AdvisorType> allAdvisorType = adapter.getAdvisorTypes();
 				int id = 0;
 				for (AdvisorType AdvisorType1 : allAdvisorType) {
 					if (item.equals(AdvisorType1.getName())) {
@@ -96,38 +91,35 @@ public class AdvisorTypeListAdapter extends ArrayAdapter<AdvisorType> {
 				adapter.close();
 
 				if (id == 1 || id == 2) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+
+					// Toast.makeText(context, "AdvisorTypeListAdapter",
+					// 0).show();
+
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					trans.addToBackStack(null);
-					Fragment move = new ObjectFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("cityId", String.valueOf(cityId));
-					bundle.putString("advisorId",
-							String.valueOf(AdvisorType.getId()));
-					move.setArguments(bundle);
+					Fragment move = new ObjectFragment(mainObjectId, -1, AdvisorType.getId(), cityId);
+//					Bundle bundle = new Bundle();
+//					bundle.putString("cityId", String.valueOf(cityId));
+//					bundle.putString("advisorId", String.valueOf(AdvisorType.getId()));
+//					move.setArguments(bundle);
 					trans.replace(R.id.content_frame, move);
 					trans.commit();
 
-					Toast.makeText(getContext(),
-							"advosiorType Id = " + AdvisorType.getId(), 0)
-							.show();
+					// Toast.makeText(getContext(), "advosiorType Id = " +
+					// AdvisorType.getId(), 0).show();
 
 				} else if (id == 3) {
-					FragmentTransaction trans = ((MainActivity) context)
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 
-					Fragment move = new ExecutertypeFragment();
-					Bundle bundle = new Bundle();
-					bundle.putString("cityId", String.valueOf(cityId));
-					bundle.putString("advisorId",
-							String.valueOf(AdvisorType.getId()));
-					move.setArguments(bundle);
+					Fragment move = new ExecutertypeFragment(mainObjectId , cityId , AdvisorType.getId());
+//					Bundle bundle = new Bundle();
+//					bundle.putString("cityId", String.valueOf(cityId));
+//					bundle.putString("advisorId", String.valueOf(AdvisorType.getId()));
+//					move.setArguments(bundle);
 					trans.replace(R.id.content_frame, move);
 					trans.addToBackStack(null);
 					trans.commit();
-					Toast.makeText(getContext(),
-							"advosiorType Id = " + AdvisorType.getId(), 0)
-							.show();
+					Toast.makeText(getContext(), "advosiorType Id = " + AdvisorType.getId(), 0).show();
 
 				}
 

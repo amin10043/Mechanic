@@ -44,7 +44,6 @@ public class ShopFragment extends Fragment {
 				R.layout.row_ostan, mylist);
 
 		lstProvince.setAdapter(ListAdapter);
-		util.ShowFooterAgahi(getActivity() , false , 1);
 
 
 		return view;

@@ -52,6 +52,7 @@ import com.project.mechanic.entity.CommentInPost;
 import com.project.mechanic.entity.LikeInPost;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Post;
+import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.SubAdmin;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.entity.Visit;
@@ -59,7 +60,9 @@ import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.inter.VisitSaveInterface;
+import com.project.mechanic.interfaceServer.GetAllCommentInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.server.GetAllCommentById;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.SavingVisit;
@@ -70,7 +73,7 @@ import com.project.mechanic.utility.Utility;
 import com.project.mechanic.view.TextViewEx;
 
 public class PostFragment extends Fragment
-		implements AsyncInterface, GetAsyncInterface, CommInterface, VisitSaveInterface {
+		implements AsyncInterface, GetAsyncInterface, CommInterface, VisitSaveInterface, GetAllCommentInterface {
 
 	/**/
 	Button dfragbutton;
@@ -144,6 +147,12 @@ public class PostFragment extends Fragment
 	boolean IsPost = true;
 
 	int positionPost = 0, positionBrand = 0;
+	int cityId = -1;
+	Settings settings;
+
+	public PostFragment(int cityId) {
+		this.cityId = cityId;
+	}
 
 	@SuppressLint("InflateParams")
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceStdataate) {
@@ -302,13 +311,13 @@ public class PostFragment extends Fragment
 
 			}
 		}
-		countComment.setText(adapter.CommentInPost_count(postid).toString());
-		countLike.setText(adapter.LikeInPost_count(postid).toString());
+		countComment.setText(topics.getCountComment() + "");
+		countLike.setText(topics.getCountLike() + "");
 		dateTopic.setText(util.getPersianDate(topics.getDate()));
 
 		// titletxt.setTypeface(util.SetFontCasablanca());
 		descriptiontxt.setTypeface(util.SetFontIranSans());
-
+		descriptiontxt.setPadding(5, 5, 5, 5);
 		postImage.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 
@@ -572,7 +581,8 @@ public class PostFragment extends Fragment
 
 						if (item.getTitle().equals("گزارش تخلف")) {
 
-							util.reportAbuse(userIdsender, StaticValues.TypeReportPostFragment, itemId, t, objectId, 0);
+							util.reportAbuse(userIdsender, StaticValues.TypeReportPostFragment, itemId, t, objectId, 0,
+									cityId);
 
 						}
 						if (item.getTitle().equals("حذف")) {
@@ -659,9 +669,7 @@ public class PostFragment extends Fragment
 			mFileTemp = new File(getActivity().getFilesDir(), TEMP_PHOTO_FILE_NAME);
 		}
 
-		util.ShowFooterAgahi(getActivity(), false, 10);
-
-		ImageView[] TempImage = util.inputCommentAndPickFile(getActivity());
+		ImageView[] TempImage = util.inputCommentAndPickFile(getActivity(), true);
 
 		ImageView sendMessage = TempImage[0];
 		ImageView getPicture = TempImage[1];
@@ -722,6 +730,8 @@ public class PostFragment extends Fragment
 		countVisit.setText(pos.getCountView() + "");
 		adapter.close();
 
+		getAllComment();
+
 		return view;
 	}
 
@@ -740,7 +750,7 @@ public class PostFragment extends Fragment
 
 						FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
 								.beginTransaction();
-						IntroductionFragment fragment = new IntroductionFragment();
+						IntroductionFragment fragment = new IntroductionFragment(cityId);
 						fragment.setPostionListPost(positionPost);
 
 						Bundle bundle = new Bundle();
@@ -1469,4 +1479,37 @@ public class PostFragment extends Fragment
 
 	}
 
+	private void getAllComment() {
+
+		adapter.open();
+		settings = adapter.getSettings();
+		adapter.close();
+
+		final SharedPreferences currentTime = getActivity().getSharedPreferences("time", 0);
+
+		String time = currentTime.getString("time", "-1");
+
+		GetAllCommentById service = new GetAllCommentById(getActivity());
+		service.delegate = PostFragment.this;
+		Map<String, String> items = new LinkedHashMap<String, String>();
+		items.put("tableName", "getAllCommentInPostById");
+		items.put("id", String.valueOf(postid));
+		items.put("fromDate", topics.getDate());
+		items.put("endDate", time);
+		items.put("isRefresh", "0");
+
+		service.execute(items);
+
+	}
+
+	@Override
+	public void ResultComment(String output) {
+
+		if (util.checkError(output) == false) {
+
+			util.parseQuery(output);
+			exadapter.notifyDataSetChanged();
+		}
+
+	}
 }

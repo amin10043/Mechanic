@@ -60,6 +60,10 @@ public class CountryListAdapter extends ArrayAdapter<ListItem> {
 //						: R.anim.down_from_top);
 //		convertView.startAnimation(animation);
 		TextView txtName = (TextView) convertView.findViewById(R.id.RowCitytxt);
+		RelativeLayout layoutCount = (RelativeLayout)convertView.findViewById(R.id.layoutCount);
+		
+		
+		layoutCount.setVisibility(View.GONE);
 
 		tempItem = list.get(position);
 		txtName.setText(tempItem.getName());

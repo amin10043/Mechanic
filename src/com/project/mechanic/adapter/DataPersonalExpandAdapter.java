@@ -63,7 +63,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 	Utility util;
 	String todayDate;
 	DataBaseAdapter adapter;
-	Fragment fr;
+	DisplayPersonalInformationFragment fr;
 	// int countPage, countTicket, countPaper, countFroum;
 	List<Integer> sizeTypeItem;
 	boolean isShowSettingBtn;
@@ -85,8 +85,8 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 	private int lastExpandedPosition = -1;
 
 	public DataPersonalExpandAdapter(Context context, ArrayList<String> parentItems,
-			HashMap<String, List<PersonalData>> listDataChild, String todayDate, Fragment fr, List<Integer> sizeType,
-			boolean isShowSettingBtn, String name) {
+			HashMap<String, List<PersonalData>> listDataChild, String todayDate, DisplayPersonalInformationFragment fr,
+			List<Integer> sizeType, boolean isShowSettingBtn, String name) {
 
 		this.context = context;
 		this.parentItems = parentItems;
@@ -250,7 +250,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 
 				namePage.setText(pd.getNameObject());
 				namePage.setTypeface(util.SetFontIranSans());
-				
+
 				TextView lable1 = (TextView) convertView.findViewById(R.id.lable_etebar);
 				TextView lable2 = (TextView) convertView.findViewById(R.id.lable2);
 
@@ -351,7 +351,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 					@Override
 					public void onClick(View arg0) {
 
-						IntroductionFragment fragment = new IntroductionFragment();
+						IntroductionFragment fragment = new IntroductionFragment(-1);
 						FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager()
 								.beginTransaction();
 						trans.replace(R.id.content_frame, fragment);
@@ -997,7 +997,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 					@Override
 					public void onClick(View arg0) {
 
-						IntroductionFragment fragment = new IntroductionFragment();
+						IntroductionFragment fragment = new IntroductionFragment(-1);
 						FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager()
 								.beginTransaction();
 						trans.replace(R.id.content_frame, fragment);
@@ -1305,6 +1305,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 			@Override
 			public void onClick(View v) {
 
+
 				RelativeLayout layout = (RelativeLayout) v;
 				ImageView indicator = (ImageView) layout.getChildAt(0);
 
@@ -1313,6 +1314,7 @@ public class DataPersonalExpandAdapter extends BaseExpandableListAdapter {
 					indicator.setBackgroundResource(R.drawable.dow);
 
 				} else {
+
 					indicator.setBackgroundResource(R.drawable.dow_s);
 					mExpandableListView.expandGroup(groupPosition);
 					mExpandableListView.setSelectedChild(groupPosition, 0, true);

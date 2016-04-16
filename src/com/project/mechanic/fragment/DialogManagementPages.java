@@ -79,7 +79,7 @@ public class DialogManagementPages extends Dialog implements GetAsyncInterface {
 		} else {
 
 			listAdapter = new ObjectListAdapter(context, R.layout.row_object,
-					listPage, fragment, false, time, 0);
+					listPage, fragment, false, time, 0 , -1);
 			lv.setAdapter(listAdapter);
 		}
 
@@ -121,7 +121,7 @@ public class DialogManagementPages extends Dialog implements GetAsyncInterface {
 		} else {
 
 			listAdapter = new ObjectListAdapter(context, R.layout.row_object,
-					listPage, fragment, false, time, 0);
+					listPage, fragment, false, time, 0 , -1);
 			lv.setAdapter(listAdapter);
 
 			listAdapter.notifyDataSetChanged();

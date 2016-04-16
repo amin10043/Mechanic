@@ -12,6 +12,8 @@ public class Froum implements Comparable<Froum> {
 	String Date;
 	int seenBefore;
 	int CountView;
+	int CountLike;
+	int CountComment;
 
 	public int getId() {
 		return Id;
@@ -86,7 +88,7 @@ public class Froum implements Comparable<Froum> {
 	}
 
 	public Froum(int id, int userId, String title, String description, int seen, String serverdate, int submit,
-			String date, int seenBefore, int CountView) {
+			String date, int seenBefore, int CountView, int CountLike, int CountComment) {
 		super();
 		Id = id;
 		UserId = userId;
@@ -98,6 +100,24 @@ public class Froum implements Comparable<Froum> {
 		Date = date;
 		this.seenBefore = seenBefore;
 		this.CountView = CountView;
+		this.CountLike = CountLike;
+		this.CountComment = CountComment;
+	}
+
+	public int getCountLike() {
+		return CountLike;
+	}
+
+	public void setCountLike(int countLike) {
+		CountLike = countLike;
+	}
+
+	public int getCountComment() {
+		return CountComment;
+	}
+
+	public void setCountComment(int countComment) {
+		CountComment = countComment;
 	}
 
 	public int getSeenBefore() {

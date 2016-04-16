@@ -1,26 +1,38 @@
 package com.project.mechanic.fragment;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.project.mechanic.MainActivity;
+import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
+import com.project.mechanic.adapter.ExpandIntroduction;
+import com.project.mechanic.entity.CommentInObject;
+import com.project.mechanic.entity.Object;
+import com.project.mechanic.entity.Settings;
+import com.project.mechanic.entity.Users;
+import com.project.mechanic.inter.AsyncInterface;
+import com.project.mechanic.interfaceServer.GetAllCommentInterface;
+import com.project.mechanic.interfaceServer.GetLikeInCommetInterface;
+import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.server.GetAllCommentById;
+import com.project.mechanic.server.GetLikeInCommentServer;
+import com.project.mechanic.service.Deleting;
+import com.project.mechanic.service.Saving;
+import com.project.mechanic.service.ServerDate;
+import com.project.mechanic.service.ServiceComm;
+import com.project.mechanic.service.UpdatingImage;
+import com.project.mechanic.utility.Utility;
+import com.project.mechanic.view.TextViewEx;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
@@ -31,47 +43,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.PopupMenu.OnMenuItemClickListener;
 
-import com.project.mechanic.MainActivity;
-import com.project.mechanic.R;
-import com.project.mechanic.StaticValues;
-import com.project.mechanic.adapter.ExpandIntroduction;
-import com.project.mechanic.adapter.ExpandableCommentPost;
-import com.project.mechanic.crop.CropImage;
-import com.project.mechanic.entity.CommentInObject;
-import com.project.mechanic.entity.CommentInPost;
-import com.project.mechanic.entity.LikeInPost;
-import com.project.mechanic.entity.Object;
-import com.project.mechanic.entity.Post;
-import com.project.mechanic.entity.SubAdmin;
-import com.project.mechanic.entity.Users;
-import com.project.mechanic.entity.Visit;
-import com.project.mechanic.inter.AsyncInterface;
-import com.project.mechanic.inter.CommInterface;
-import com.project.mechanic.inter.GetAsyncInterface;
-import com.project.mechanic.inter.VisitSaveInterface;
-import com.project.mechanic.model.DataBaseAdapter;
-import com.project.mechanic.service.Deleting;
-import com.project.mechanic.service.Saving;
-import com.project.mechanic.service.SavingVisit;
-import com.project.mechanic.service.ServerDate;
-import com.project.mechanic.service.ServiceComm;
-import com.project.mechanic.service.UpdatingImage;
-import com.project.mechanic.utility.Utility;
-import com.project.mechanic.view.TextViewEx;
-
-public class FixedPostFragment extends Fragment implements AsyncInterface {
+public class FixedPostFragment extends Fragment
+		implements AsyncInterface, GetAllCommentInterface, GetLikeInCommetInterface {
 
 	/**/
 	// FloatingActionButton action;
@@ -135,6 +118,14 @@ public class FixedPostFragment extends Fragment implements AsyncInterface {
 	LinearLayout layoutView;
 	int positionScroll;
 
+	int CityId = -1;
+	int counterFromLike = 0;
+	int comId;
+
+	public FixedPostFragment(int cityId) {
+		this.CityId = cityId;
+	}
+
 	@SuppressLint("InflateParams")
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceStdataate) {
 
@@ -159,13 +150,13 @@ public class FixedPostFragment extends Fragment implements AsyncInterface {
 
 		fillComment();
 
-		util.ShowFooterAgahi(getActivity(), false, 10);
+		getAllComment();
 
-		ImageView[] TempImage = util.inputCommentAndPickFile(getActivity());
+		ImageView[] TempImage = util.inputCommentAndPickFile(getActivity(), true);
 
 		ImageView sendMessage = TempImage[0];
-		ImageView getPicture = TempImage[1];
-		getPicture.setVisibility(View.GONE);
+		// ImageView getPicture = TempImage[1];
+		// getPicture.setVisibility(View.GONE);
 
 		sendMessage.setOnClickListener(new OnClickListener() {
 
@@ -220,7 +211,7 @@ public class FixedPostFragment extends Fragment implements AsyncInterface {
 
 						FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
 								.beginTransaction();
-						IntroductionFragment fragment = new IntroductionFragment();
+						IntroductionFragment fragment = new IntroductionFragment(CityId);
 						fragment.setPostionListPost(positionPost);
 
 						Bundle bundle = new Bundle();
@@ -681,7 +672,7 @@ public class FixedPostFragment extends Fragment implements AsyncInterface {
 
 						if (item.getTitle().equals("گزارش تخلف")) {
 
-							util.reportAbuse(userIdsender, StaticValues.TypeReportPage, itemId, t, objectId, 0);
+							util.reportAbuse(userIdsender, StaticValues.TypeReportPage, itemId, t, objectId, 0, CityId);
 
 						}
 
@@ -695,12 +686,12 @@ public class FixedPostFragment extends Fragment implements AsyncInterface {
 
 		});
 
-		ImageView[] TempImage = util.inputCommentAndPickFile(getActivity());
+		ImageView[] TempImage = util.inputCommentAndPickFile(getActivity(), true);
 
 		ImageView sendMessage = TempImage[0];
-		ImageView getPicture = TempImage[1];
-		getPicture.setVisibility(View.GONE);
-		ImageView showPicture = TempImage[2];
+		// ImageView getPicture = TempImage[1];
+		// getPicture.setVisibility(View.GONE);
+		// ImageView showPicture = TempImage[2];
 
 		sendMessage.setOnClickListener(new OnClickListener() {
 
@@ -786,6 +777,88 @@ public class FixedPostFragment extends Fragment implements AsyncInterface {
 		//
 		// }
 		//
+	}
+
+	private void getAllComment() {
+
+		adapter.open();
+		Settings settings = adapter.getSettings();
+		adapter.close();
+
+		final SharedPreferences currentTime = getActivity().getSharedPreferences("time", 0);
+
+		String time = currentTime.getString("time", "-1");
+
+		GetAllCommentById service = new GetAllCommentById(getActivity());
+		service.delegate = FixedPostFragment.this;
+		Map<String, String> items = new LinkedHashMap<String, String>();
+		items.put("tableName", "getAllCommentInObjectById");
+		items.put("id", String.valueOf(objectId));
+		items.put("fromDate", obj.getDate());
+		items.put("endDate", time);
+		items.put("isRefresh", "0");
+
+		service.execute(items);
+
+	}
+
+	@Override
+	public void ResultComment(String output) {
+
+		if (util.checkError(output) == false) {
+
+			util.parseQuery(output);
+			exadapter.notifyDataSetChanged();
+		}
+		
+		getLikeInCommentFromServer();
+
+	}
+
+	private void getLikeInCommentFromServer() {
+
+		if (counterFromLike < commentGroup.size()) {
+
+			CommentInObject cio = commentGroup.get(counterFromLike);
+
+			comId = cio.getId();
+			
+			final SharedPreferences currentTime = getActivity().getSharedPreferences("time", 0);
+
+			String time = currentTime.getString("time", "-1");
+			
+			
+
+			GetLikeInCommentServer getDateService = new GetLikeInCommentServer(getActivity());
+			getDateService.delegate = FixedPostFragment.this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+
+			items.put("tableName", "getAllLikeInCommentObjectById");
+			items.put("id", String.valueOf(comId));
+			items.put("fromDate", cio.getDatetime());
+			items.put("endDate", time);
+			items.put("isRefresh", "0");
+
+
+			getDateService.execute(items);
+
+		}
+
+	}
+
+	@Override
+	public void ResultLikeInCommentFromServer(String output) {
+
+		if (util.checkError(output) == false) {
+			
+			util.parseQuery(output);
+			exadapter.notifyDataSetChanged();
+
+		}
+		
+		counterFromLike++;
+		getLikeInCommentFromServer();
+
 	}
 
 }

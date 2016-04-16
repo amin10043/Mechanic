@@ -116,13 +116,14 @@
 
                     <TextView
                         android:id="@+id/lable1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="20dp"
-                        android:gravity="right|center_vertical"
+                        android:layout_marginRight="10dp"
+                        android:gravity="right"
                         android:text="تولیدکنندگان داخلی - برندهای وارداتی - نمایندگی ها "
-                        android:textColor="@color/orginal_hard_blue_color" />
+                        android:textColor="@color/orginal_hard_blue_color"
+                        android:textSize="12sp" />
 
                     <ImageView
                         android:id="@+id/icon_item1"
@@ -160,10 +161,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="10dp"
                         android:gravity="right"
                         android:text="فروشگاهها - شرکت های عرضه کننده محصولات"
-                        android:textColor="@color/orginal_hard_blue_color" />
+                        android:textColor="@color/orginal_hard_blue_color"
+                        android:textSize="12sp" />
 
                     <ImageView
                         android:id="@+id/icon_item2"
@@ -201,10 +203,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="10dp"
                         android:gravity="right"
                         android:text="مشاوران - ناظران - شرکت های مجری "
-                        android:textColor="@color/orginal_hard_blue_color" />
+                        android:textColor="@color/orginal_hard_blue_color"
+                        android:textSize="12sp" />
 
                     <ImageView
                         android:id="@+id/icon_item3"
@@ -244,10 +247,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="10dp"
                         android:gravity="right"
                         android:text="اشخاص حقیقی (استادکاران)"
-                        android:textColor="@color/orginal_hard_blue_color" />
+                        android:textColor="@color/orginal_hard_blue_color"
+                        android:textSize="12sp" />
 
                     <ImageView
                         android:id="@+id/icon_item4"
@@ -285,10 +289,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="10dp"
                         android:gravity="right"
-                        android:text="نشریات - مقالات"
-                        android:textColor="@color/orginal_hard_blue_color" />
+                        android:text="مقالات"
+                        android:textColor="@color/orginal_hard_blue_color"
+                        android:textSize="12sp" />
 
                     <ImageView
                         android:id="@+id/icon_item5"
@@ -326,10 +331,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="10dp"
                         android:gravity="right"
                         android:text="آگهی - تبلیغات"
-                        android:textColor="@color/orginal_hard_blue_color" />
+                        android:textColor="@color/orginal_hard_blue_color"
+                        android:textSize="12sp" />
 
                     <ImageView
                         android:id="@+id/icon_item6"
@@ -367,10 +373,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="10dp"
                         android:gravity="right"
                         android:text="تالار گفتگو"
-                        android:textColor="@color/orginal_hard_blue_color" />
+                        android:textColor="@color/orginal_hard_blue_color"
+                        android:textSize="12sp" />
 
                     <ImageView
                         android:id="@+id/icon_item7"

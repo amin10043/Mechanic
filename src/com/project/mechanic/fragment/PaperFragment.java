@@ -12,6 +12,7 @@ import com.project.mechanic.adapter.PaperListAdapter;
 import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.LikeInPaper;
 import com.project.mechanic.entity.Paper;
+import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.entity.Visit;
 import com.project.mechanic.inter.AsyncInterface;
@@ -21,10 +22,12 @@ import com.project.mechanic.interfaceServer.CommentInterface;
 import com.project.mechanic.interfaceServer.DateForCommentInterface;
 import com.project.mechanic.interfaceServer.DateFromServerForLike;
 import com.project.mechanic.interfaceServer.DeleteLikeFromServer;
+import com.project.mechanic.interfaceServer.GetAllCommentInterface;
 import com.project.mechanic.interfaceServer.LikeFromServer;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.server.DeletingLike;
-import com.project.mechanic.server.SavingComment;
+import com.project.mechanic.server.GetAllCommentById;
+import com.project.mechanic.server.GetLikeInCommentServer;
 import com.project.mechanic.server.SavingLike;
 import com.project.mechanic.server.ServerDateForComment;
 import com.project.mechanic.server.ServerDateForLike;
@@ -62,8 +65,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PaperFragment extends Fragment implements AsyncInterface, CommInterface, VisitSaveInterface,
-		DateFromServerForLike, DeleteLikeFromServer, LikeFromServer, DateForCommentInterface, CommentInterface {
+public class PaperFragment extends Fragment
+		implements AsyncInterface, CommInterface, VisitSaveInterface, DateFromServerForLike, DeleteLikeFromServer,
+		LikeFromServer, DateForCommentInterface, CommentInterface, GetAllCommentInterface {
 
 	DataBaseAdapter adapter;
 	int paperID;
@@ -73,17 +77,17 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 	DialogcmtInPaper dialog;
 	TextViewEx txttitleDes;
 	ArrayList<CommentInPaper> mylist = new ArrayList<CommentInPaper>();
-//	PaperListAdapter PaperListadapter;
+	PaperListAdapter PaperListadapter;
 	int like = 0;
 	Utility util;
 	View header;
 	Users CurrentUser;
-	ImageView icon, sharebtn , likeIcon ,  report, send;
+	ImageView icon, sharebtn, likeIcon, report, send;
 	// String currentDate;
 	// PersianDate date;
 	// int i = 0, j = 9;
-//	List<CommentInPaper> subList = new ArrayList<CommentInPaper>();
-//	List<CommentInPaper> tempList;
+	// List<CommentInPaper> subList = new ArrayList<CommentInPaper>();
+	// List<CommentInPaper> tempList;
 	View rootview;
 	ListView lstNews;
 	// RelativeLayout countLike;
@@ -131,10 +135,11 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 
 		setValue();
 
-//		checkInternet();
+		// checkInternet();
 
 		onClick();
 
+		getAllComment();
 		// lstNews.addHeaderView(header);
 		// lstNews.addHeaderView(header);
 		// if (mylist != null && !mylist.isEmpty()) {
@@ -275,21 +280,22 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 		super.onResume();
 	}
 
-//	public void updateView() {
-//		adapter.open();
-//		// mylist.clear();
-////		subList = adapter.getCommentInPaperbyPaperid(paperID);
-//		NumofComment.setText(adapter.CommentInPaper_count(paperID).toString());
-//
-//		// lstNews = (ListView) rootview.findViewById(R.id.listViewnewspaper);
-//
-//		PaperListadapter = new PaperListAdapter(getActivity(), R.layout.raw_papercmt, subList, PaperFragment.this);
-//
-//		lstNews.setAdapter(PaperListadapter);
-//		lstNews.setSelection(PaperListadapter.getCount());
-//
-//		adapter.close();
-//	}
+	// public void updateView() {
+	// adapter.open();
+	// // mylist.clear();
+	//// subList = adapter.getCommentInPaperbyPaperid(paperID);
+	// NumofComment.setText(adapter.CommentInPaper_count(paperID).toString());
+	//
+	// // lstNews = (ListView) rootview.findViewById(R.id.listViewnewspaper);
+	//
+	// PaperListadapter = new PaperListAdapter(getActivity(),
+	// R.layout.raw_papercmt, subList, PaperFragment.this);
+	//
+	// lstNews.setAdapter(PaperListadapter);
+	// lstNews.setSelection(PaperListadapter.getCount());
+	//
+	// adapter.close();
+	// }
 
 	// @Override
 	// public void processFinish(String output) {
@@ -935,7 +941,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 			serverDate = output;
 
 			params = new LinkedHashMap<String, String>();
-			SavingComment saving = new SavingComment(getActivity());
+			Saving saving = new Saving(getActivity());
 			saving.delegate = PaperFragment.this;
 
 			params.put("TableName", "CommentInPaper");
@@ -974,7 +980,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 	}
 
 	@Override
-	public void ResultComment(String output) {
+	public void ResultCommentSaving(String output) {
 
 		// if (ringProgressDialog != null) {
 		// ringProgressDialog.dismiss();
@@ -1036,7 +1042,6 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 		icon = (ImageView) header.findViewById(R.id.iconfroumtitle);
 		sharebtn = (ImageView) header.findViewById(R.id.sharefroumicon);
 		report = (ImageView) header.findViewById(R.id.reportImage);
-		send = util.ShowFooterAgahi(getActivity(), true, 8);
 
 		rl = (RelativeLayout) header.findViewById(R.id.imageLinear);
 
@@ -1062,9 +1067,11 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 
 		adapter.open();
 
-		NumofComment.setText(adapter.CommentInPaper_count(paperID).toString());
-		NumofLike.setText(adapter.LikeInPaper_count(paperID).toString());
 		p = adapter.getPaperItembyid(paperID);
+
+		NumofComment.setText(p.getCountComment() + "");
+		NumofLike.setText(p.getCountLike() + "");
+
 		Users u = adapter.getUserbyid(p.getUserId());
 
 		adapter.close();
@@ -1108,13 +1115,13 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 
 	public void FillListView() {
 
-//		mylist.clear();
-//		
-//		adapter.open();
-//		mylist = adapter.getCommentInPaperbyPaperid(paperID);
-//		adapter.close();
-		
-		PaperListAdapter PaperListadapter = new PaperListAdapter(getActivity(), R.layout.row_paper, mylist, PaperFragment.this);
+		mylist.clear();
+
+		adapter.open();
+		mylist = adapter.getCommentInPaperbyPaperid(paperID);
+		adapter.close();
+
+		PaperListadapter = new PaperListAdapter(getActivity(), R.layout.row_paper, mylist, PaperFragment.this);
 		PaperListadapter.notifyDataSetChanged();
 		lstNews.setAdapter(PaperListadapter);
 
@@ -1202,6 +1209,10 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 			}
 		});
 
+		if (getActivity() != null) {
+			ImageView[] arrayImage = util.inputCommentAndPickFile(getActivity(), true);
+			send = arrayImage[0];
+		}
 		send.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -1285,7 +1296,7 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 						if (item.getTitle().equals("گزارش تخلف")) {
 
 							util.reportAbuse(p.getUserId(), StaticValues.TypeReportPaperFragment, p.getId(),
-									p.getContext(), p.getId(), 0);
+									p.getContext(), p.getId(), 0, -1);
 
 						}
 						if (item.getTitle().equals("حذف")) {
@@ -1327,6 +1338,40 @@ public class PaperFragment extends Fragment implements AsyncInterface, CommInter
 			}
 
 		});
+
+	}
+
+	private void getAllComment() {
+
+		adapter.open();
+		Settings settings = adapter.getSettings();
+		adapter.close();
+
+		final SharedPreferences currentTime = getActivity().getSharedPreferences("time", 0);
+
+		String time = currentTime.getString("time", "-1");
+
+		GetAllCommentById service = new GetAllCommentById(getActivity());
+		service.delegate = PaperFragment.this;
+		Map<String, String> items = new LinkedHashMap<String, String>();
+		items.put("tableName", "getAllCmtInPaperById");
+		items.put("id", String.valueOf(paperID));
+		items.put("fromDate", p.getDate());
+		items.put("endDate", time);
+		items.put("isRefresh", "0");
+
+		service.execute(items);
+
+	}
+
+	@Override
+	public void ResultComment(String output) {
+
+		if (util.checkError(output) == false) {
+
+			util.parseQuery(output);
+			PaperListadapter.notifyDataSetChanged();
+		}
 
 	}
 

@@ -127,7 +127,7 @@ public class DialogPostFragment extends Fragment {
 //							ImageAddress);
 					dbadapter.close();
 
-					IntroductionFragment fragment = new IntroductionFragment();
+					IntroductionFragment fragment = new IntroductionFragment(-1);
 
 					FragmentTransaction trans = getActivity()
 							.getSupportFragmentManager().beginTransaction();

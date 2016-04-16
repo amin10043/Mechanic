@@ -2,12 +2,14 @@ package com.project.mechanic.fragment;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
 import com.project.mechanic.StaticValues;
 import com.project.mechanic.Action.FloatingActionButton;
+import com.project.mechanic.adapter.CreateMainBrand;
 import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Settings;
@@ -16,7 +18,9 @@ import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.AsyncInterfaceVisit;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
+import com.project.mechanic.interfaceServer.InterfaceGetListItem;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.server.GetListItem;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.service.Updating;
@@ -38,16 +42,15 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainBrandFragment extends Fragment
-		implements AsyncInterface, GetAsyncInterface, CommInterface, AsyncInterfaceVisit {
+		implements AsyncInterface, GetAsyncInterface, CommInterface, AsyncInterfaceVisit, InterfaceGetListItem {
 	DataBaseAdapter adapter;
 	int parentId;
 	Users CurrentUser;
@@ -72,7 +75,7 @@ public class MainBrandFragment extends Fragment
 	String serverDate;
 	// int code = 100;
 	int visitCounter = 0;
-
+	List<Object> recievedValue = new ArrayList<Object>();
 	///////////////
 
 	Object objectItem;
@@ -90,17 +93,24 @@ public class MainBrandFragment extends Fragment
 
 	//////
 
-	public MainBrandFragment() {
-		super();
+	// public MainBrandFragment() {
+	// super();
+	// }
+
+	public MainBrandFragment(int parentId) {
+
+		this.parentId = parentId;
+
 	}
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		if (getArguments() != null && getArguments().getString("Id") != null) {
-			parentId = Integer.valueOf(getArguments().getString("Id"));
-		}
+		// if (getArguments() != null && getArguments().getString("Id") != null)
+		// {
+		// parentId = Integer.valueOf(getArguments().getString("Id"));
+		// }
 
 		if (getArguments() != null) {
 			pos = Integer.valueOf(getArguments().getInt("position"));
@@ -115,14 +125,16 @@ public class MainBrandFragment extends Fragment
 
 		fillListView();
 
+		getBrandsFromServer();
+
 		// request get image
-		if (mylist.size() > 0)
-			if (getActivity() != null) {
-				date = new ServerDate(getActivity());
-				date.delegate = MainBrandFragment.this;
-				date.execute("");
-				typeRunServer = StaticValues.TypeRunServerForGetDate;
-			}
+		// if (mylist.size() > 0)
+		// if (getActivity() != null) {
+		// date = new ServerDate(getActivity());
+		// date.delegate = MainBrandFragment.this;
+		// date.execute("");
+		// typeRunServer = StaticValues.TypeRunServerForGetDate;
+		// }
 
 		lstObject.setSelection(pos);
 
@@ -132,15 +144,14 @@ public class MainBrandFragment extends Fragment
 
 		onScrollListView();
 
-		util.ShowFooterAgahi(getActivity(), false, 2);
 		return rootView;
 	}
 
 	public void UpdateList() {
 		adapter.open();
 		mylist = adapter.getObjectbyParentId(parentId);
-		ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist,
-				MainBrandFragment.this, true, null, 1);
+		ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, MainBrandFragment.this, true,
+				null, 1, -1);
 		ListAdapter.notifyDataSetChanged();
 
 		lstObject.setAdapter(ListAdapter);
@@ -180,23 +191,26 @@ public class MainBrandFragment extends Fragment
 				}
 				return;
 
-			} else {
-
-				util.parseQuery(output);
-
-				adapter.open();
-				mylist = adapter.getObjectbyParentId(parentId);
-				adapter.close();
-
-				if (totalItemCountBeforeSwipe != mylist.size()) {
-					mylist.clear();
-					if (mylist.size() > 0) {
-						ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist,
-								MainBrandFragment.this, true, null, 1);
-						lstObject.setAdapter(ListAdapter);
-					}
-				}
 			}
+
+			// else {
+			//
+			// util.parseQuery(output);
+			//
+			// adapter.open();
+			// mylist = adapter.getObjectbyParentId(parentId);
+			// adapter.close();
+			//
+			// if (totalItemCountBeforeSwipe != mylist.size()) {
+			// mylist.clear();
+			// if (mylist.size() > 0) {
+			// ListAdapter = new ObjectListAdapter(getActivity(),
+			// R.layout.row_object, mylist,
+			// MainBrandFragment.this, true, null, 1, -1);
+			// lstObject.setAdapter(ListAdapter);
+			// }
+			// }
+			// }
 
 		} else {
 			if (swipeLayout != null) {
@@ -234,9 +248,8 @@ public class MainBrandFragment extends Fragment
 			adapter.open();
 			adapter.updateCountFollower(IdObject, Integer.valueOf(output));
 			adapter.close();
-			
-			ListAdapter.notifyDataSetChanged();
 
+			ListAdapter.notifyDataSetChanged();
 
 			controllerFollower++;
 			getCountFollwers();
@@ -361,8 +374,10 @@ public class MainBrandFragment extends Fragment
 		mylist = adapter.getObjectbyParentId(parentId);
 		adapter.close();
 
+		totalItemCountBeforeSwipe = mylist.size();
+
 		ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, mylist, MainBrandFragment.this, true,
-				null, 1);
+				null, 1, -1);
 
 		lstObject.setAdapter(ListAdapter);
 
@@ -400,18 +415,21 @@ public class MainBrandFragment extends Fragment
 			public void onRefresh() {
 				if (getActivity() != null) {
 
-					updating = new Updating(getActivity());
-					updating.delegate = MainBrandFragment.this;
-					String[] params = new String[4];
-					params[0] = "Object";
-					params[1] = setting.getServerDate_Start_Object() != null ? setting.getServerDate_Start_Object()
-							: "";
-					params[2] = setting.getServerDate_End_Object() != null ? setting.getServerDate_End_Object() : "";
-
-					params[3] = "1";
-					updating.execute(params);
-
-					typeRunServer = StaticValues.TypeRunServerForRefreshItems;
+					// updating = new Updating(getActivity());
+					// updating.delegate = MainBrandFragment.this;
+					// String[] params = new String[4];
+					// params[0] = "Object";
+					// params[1] = setting.getServerDate_Start_Object() != null
+					// ? setting.getServerDate_Start_Object()
+					// : "";
+					// params[2] = setting.getServerDate_End_Object() != null ?
+					// setting.getServerDate_End_Object() : "";
+					//
+					// params[3] = "1";
+					// updating.execute(params);
+					//
+					// typeRunServer =
+					// StaticValues.TypeRunServerForRefreshItems;
 				}
 			}
 		});
@@ -469,19 +487,22 @@ public class MainBrandFragment extends Fragment
 							bottomSheet.startAnimation(anim);
 
 							bottomSheet.setVisibility(View.GONE);
-							util.ShowFooterAgahi(getActivity(), false, 2);
 							createItem.setVisibility(View.VISIBLE);
 
 						} else {
 							FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
 									.beginTransaction();
-							trans.replace(R.id.content_frame, new CreateIntroductionFragment());
+							trans.replace(R.id.content_frame, new CreateMainBrand(parentId));
 							trans.commit();
 
-							SharedPreferences sendParentID = getActivity().getSharedPreferences("Id", 0);
-							sendParentID.edit().putInt("ParentId", parentId).commit();
-							sendParentID.edit().putInt("mainObject", MainObjectId).commit();
-							sendParentID.edit().putInt("objectId", 0).commit();
+							// SharedPreferences sendParentID =
+							// getActivity().getSharedPreferences("Id", 0);
+							// sendParentID.edit().putInt("ParentId",
+							// parentId).commit();
+							// sendParentID.edit().putInt("mainObject",
+							// MainObjectId).commit();
+							// sendParentID.edit().putInt("objectId",
+							// 0).commit();
 						}
 
 					}
@@ -496,7 +517,6 @@ public class MainBrandFragment extends Fragment
 						bottomSheet.startAnimation(anim);
 
 						bottomSheet.setVisibility(View.GONE);
-						util.ShowFooterAgahi(getActivity(), false, 2);
 						createItem.setVisibility(View.VISIBLE);
 
 					}
@@ -541,19 +561,22 @@ public class MainBrandFragment extends Fragment
 					// LoadMoreFooter.setVisibility(View.VISIBLE);
 					if (getActivity() != null) {
 
-						updating = new Updating(getActivity());
-						updating.delegate = MainBrandFragment.this;
-						String[] params = new String[4];
-						params[0] = "Object";
-						params[1] = setting.getServerDate_Start_Object() != null ? setting.getServerDate_Start_Object()
-								: "";
-						params[2] = setting.getServerDate_End_Object() != null ? setting.getServerDate_End_Object()
-								: "";
-
-						params[3] = "0";
-						updating.execute(params);
-						totalItemCountBeforeSwipe = totalItemCount;
-						typeRunServer = StaticValues.TypeRunServerForRefreshItems;
+						// updating = new Updating(getActivity());
+						// updating.delegate = MainBrandFragment.this;
+						// String[] params = new String[4];
+						// params[0] = "Object";
+						// params[1] = setting.getServerDate_Start_Object() !=
+						// null ? setting.getServerDate_Start_Object()
+						// : "";
+						// params[2] = setting.getServerDate_End_Object() !=
+						// null ? setting.getServerDate_End_Object()
+						// : "";
+						//
+						// params[3] = "0";
+						// updating.execute(params);
+						// totalItemCountBeforeSwipe = totalItemCount;
+						// typeRunServer =
+						// StaticValues.TypeRunServerForRefreshItems;
 
 					}
 				}
@@ -583,4 +606,52 @@ public class MainBrandFragment extends Fragment
 
 	}
 
+	private void getBrandsFromServer() {
+		
+		adapter.open();
+		setting = adapter.getSettings();
+		adapter.close();
+
+		GetListItem getDateService = new GetListItem(getActivity());
+		getDateService.delegate = MainBrandFragment.this;
+		Map<String, String> items = new LinkedHashMap<String, String>();
+
+		items.put("tableName", "getObjectByParentIdId");
+		items.put("parentId", String.valueOf(parentId));
+		items.put("fromDate", setting.getServerDate_Start_Object());
+		items.put("endDate", setting.getServerDate_End_Object());
+		items.put("isRefresh", String.valueOf(1));
+
+		getDateService.execute(items);
+
+	}
+
+	@Override
+	public void ResultLisItem(String output) {
+
+		if (util.checkError(output) == false) {
+
+			util.parseQuery(output);
+
+			recievedValue.clear();
+
+			adapter.open();
+			recievedValue = adapter.getObjectbyParentId(parentId);
+			adapter.close();
+
+			if (totalItemCountBeforeSwipe != recievedValue.size()) {
+				mylist.clear();
+				mylist.addAll(recievedValue);
+
+				if (mylist.size() > 0) {
+					ListAdapter = new ObjectListAdapter(getActivity(), R.layout.row_object, recievedValue,
+							MainBrandFragment.this, true, null, 1, -1);
+					lstObject.setAdapter(ListAdapter);
+				}
+			}else{
+				
+			}
+
+		}
+	}
 }

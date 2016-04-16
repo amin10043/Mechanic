@@ -159,45 +159,47 @@ public class DialogAdminsPage extends Dialog
 				if (adapter.countSubAdminPage(ObjectId) < 4) {
 
 					util.parseQuery(output);
+					
 					userSelected = adapter.getUserbymobailenumber(phoneInput);
 
-					if (adapter.IsUserAdmin(userSelected.getId(), (ObjectId))
-							|| phoneInput.equals(mainAdmin.getMobailenumber())) {
-						Toast.makeText(context, "این شماره قبلا استفاده شده است", 0).show();
-					} else
+					if (userSelected != null)
+						if (adapter.IsUserAdmin(userSelected.getId(), (ObjectId))
+								|| phoneInput.equals(mainAdmin.getMobailenumber())) {
+							Toast.makeText(context, "این شماره قبلا استفاده شده است", 0).show();
+						} else
 
-					{
+						{
 
-						if (context != null) {
+							if (context != null) {
 
-							//////
+								//////
 
-							ServerDateForLike date = new ServerDateForLike(context);
-							date.delegate = DialogAdminsPage.this;
-							date.execute("");
+								ServerDateForLike date = new ServerDateForLike(context);
+								date.delegate = DialogAdminsPage.this;
+								date.execute("");
 
-							////////
+								////////
 
-							ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
+								ringProgressDialog = ProgressDialog.show(context, "", "لطفا منتظر بمانید...", true);
 
-							ringProgressDialog.setCancelable(true);
-							new Thread(new Runnable() {
+								ringProgressDialog.setCancelable(true);
+								new Thread(new Runnable() {
 
-								@Override
-								public void run() {
+									@Override
+									public void run() {
 
-									try {
+										try {
 
-										Thread.sleep(10000);
+											Thread.sleep(10000);
 
-									} catch (Exception e) {
+										} catch (Exception e) {
 
+										}
 									}
-								}
-							}).start();
-						}
+								}).start();
+							}
 
-					}
+						}
 				} else
 					Toast.makeText(context, "حداکثر تعداد مدیران یک صفحه 4 کاربر می باشد", 0).show();
 				adapter.close();

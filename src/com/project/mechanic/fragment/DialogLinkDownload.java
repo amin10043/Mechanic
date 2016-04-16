@@ -19,12 +19,16 @@ public class DialogLinkDownload extends Dialog {
 	Context context;
 	CreateIntroductionFragment fragment;
 
-	String l1, l2, l3, l4, l5, l6;
+	public static String catalog;
+	public static String price;
+	public static String pdf;
+
+//	String c, l2, l3, l4, l5, l6;
 	EditText inCatalog, inPrice, inPDF, inVideo;
 	ImageView saveBtn, closeBtn;
 	Utility util;
 
-	public DialogLinkDownload(CreateIntroductionFragment fragment, Context context, int xmlDesign) {
+	public DialogLinkDownload(/* CreateIntroductionFragment fragment, */ Context context, int xmlDesign) {
 		super(context);
 		this.context = context;
 		this.fragment = fragment;
@@ -55,7 +59,6 @@ public class DialogLinkDownload extends Dialog {
 		inPDF.setTypeface(util.SetFontIranSans());
 		inVideo.setTypeface(util.SetFontIranSans());
 
-
 		closeBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -68,22 +71,24 @@ public class DialogLinkDownload extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 
-				l1 = inCatalog.getText().toString();
-				l2 = inPrice.getText().toString();
-				l3 = inPDF.getText().toString();
-				l4 = inVideo.getText().toString();
+				catalog = inCatalog.getText().toString();
+				price = inPrice.getText().toString();
+				pdf = inPDF.getText().toString();
+//				l4 = inVideo.getText().toString();
 
-				if (!l1.equals("") || !l2.equals("") || !l3.equals("") || !l4.equals("")) {
+				// if (!l1.equals("") || !l2.equals("") || !l3.equals("") ||
+				// !l4.equals("")) {
 
-					fragment.Lcatalog = l1;
-					fragment.Lprice = l2;
-					fragment.Lpdf = l3;
-					fragment.Lvideo = l4;
-					dismiss();
+				// fragment.Lcatalog = l1;
+				// fragment.Lprice = l2;
+				// fragment.Lpdf = l3;
+				// fragment.Lvideo = l4;
+				dismiss();
 
-				} else {
-					Toast.makeText(context, "پر کردن یک مقدار اجباری است", 0).show();
-				}
+				// } else {
+				// Toast.makeText(context, "پر کردن یک مقدار اجباری است",
+				// 0).show();
+				// }
 
 				// Toast.makeText(context, "لینک ها با موفقیت اضافه شدند",
 				// Toast.LENGTH_SHORT).show();

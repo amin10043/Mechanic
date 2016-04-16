@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
@@ -48,8 +49,8 @@ public class ShopListAdapter extends ArrayAdapter<Province> {
 		LayoutInflater myInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater
-				.inflate(R.layout.main_item_list, parent, false);
+//		convertView = myInflater
+//				.inflate(R.layout.main_item_list, parent, false);
 
 		convertView = myInflater.inflate(R.layout.row_ostan, parent, false);
 
@@ -60,7 +61,10 @@ public class ShopListAdapter extends ArrayAdapter<Province> {
 		lastPosition = position;
 
 		TextView tx1 = (TextView) convertView.findViewById(R.id.RowOstantxt);
-
+		RelativeLayout relativeCount = (RelativeLayout)convertView.findViewById(R.id.relativeCount);
+		
+		
+		relativeCount.setVisibility(View.GONE);
 		Province province = list.get(position);
 
 		tx1.setText(province.getName());

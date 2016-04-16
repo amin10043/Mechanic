@@ -17,7 +17,10 @@ import android.widget.TextView;
 
 import com.project.mechanic.MainActivity;
 import com.project.mechanic.R;
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.City;
+import com.project.mechanic.entity.CountSubBrandInProvince;
+import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Province;
 import com.project.mechanic.fragment.CityFragment;
 import com.project.mechanic.fragment.MainFragment;
@@ -32,41 +35,54 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 	int lastPosition = 0;
 	int i = 10;
 	Utility util;
+	int objectId;
+	int AgencyService;
+	int mainObjectId;
 
-	public ProvinceListAdapter(Context context, int resource,
-			List<Province> objact) {
+	public ProvinceListAdapter(Context context, int resource, List<Province> objact, int objectId, int AgencyService,
+			int mainObjectId) {
 		super(context, resource, objact);
 
 		this.context = context;
 		this.list = objact;
 		adapter = new DataBaseAdapter(context);
 		util = new Utility(context);
+		this.objectId = objectId;
+		this.AgencyService = AgencyService;
+		this.mainObjectId = mainObjectId;
 	}
 
 	@SuppressLint("ViewHolder")
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		convertView = myInflater
-				.inflate(R.layout.main_item_list, parent, false);
+		// convertView = myInflater.inflate(R.layout.main_item_list, parent,
+		// false);
 		// search = (ImageView)findViewById(R.id.sedarch_v);
 		convertView = myInflater.inflate(R.layout.row_ostan, parent, false);
 
-//		Animation animation = AnimationUtils.loadAnimation(getContext(),
-//				(position > lastPosition) ? R.anim.up_from_bottom
-//						: R.anim.down_from_top);
-//		convertView.startAnimation(animation);
+		// Animation animation = AnimationUtils.loadAnimation(getContext(),
+		// (position > lastPosition) ? R.anim.up_from_bottom
+		// : R.anim.down_from_top);
+		// convertView.startAnimation(animation);
 		lastPosition = position;
 
 		TextView tx1 = (TextView) convertView.findViewById(R.id.RowOstantxt);
+		TextView countOstan = (TextView) convertView.findViewById(R.id.countOstan);
 
 		Province province = list.get(position);
 
+		adapter.open();
+		CountSubBrandInProvince CountSubBrand = adapter.GetCountSubBrandProvince(objectId, province.getId(),
+				AgencyService);
+		adapter.close();
+
 		tx1.setText(province.getName());
-		
+
+		if (CountSubBrand != null)
+			countOstan.setText(CountSubBrand.getCountInProvince() + "");
 		tx1.setTypeface(util.SetFontCasablanca());
 
 		convertView.setOnClickListener(new OnClickListener() {
@@ -85,9 +101,8 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 				adapter.UpdateProvinceToDb(id, count);
 				adapter.close();
 
-				FragmentTransaction trans = ((MainActivity) context)
-						.getSupportFragmentManager().beginTransaction();
-				trans.replace(R.id.content_frame, new CityFragment(allItems));
+				FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
+				trans.replace(R.id.content_frame, new CityFragment(allItems, objectId, AgencyService, mainObjectId));
 				trans.addToBackStack(null);
 				trans.commit();
 			}
@@ -96,13 +111,12 @@ public class ProvinceListAdapter extends ArrayAdapter<Province> {
 
 	}
 
-	public void onBackPressed() {
-
-		FragmentTransaction trans = ((MainActivity) context)
-				.getSupportFragmentManager().beginTransaction();
-		trans.replace(R.id.content_frame, new MainFragment());
-		trans.commit();
-
-	}
+//	public void onBackPressed() {
+//
+//		FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
+//		trans.replace(R.id.content_frame, new MainFragment());
+//		trans.commit();
+//
+//	}
 
 }

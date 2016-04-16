@@ -38,12 +38,17 @@ import com.project.mechanic.Action.FloatingActionButton;
 import com.project.mechanic.adapter.ObjectListAdapter;
 import com.project.mechanic.adapter.PapertitleListAdapter;
 import com.project.mechanic.entity.Paper;
+import com.project.mechanic.entity.Post;
 import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.AsyncInterfaceVisit;
 import com.project.mechanic.inter.CommInterface;
+import com.project.mechanic.interfaceServer.CountCommentInterface;
+import com.project.mechanic.interfaceServer.CountLikeInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.server.GetCountComment;
+import com.project.mechanic.server.GetCountLike;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.ServiceComm;
@@ -51,7 +56,8 @@ import com.project.mechanic.service.Updating;
 import com.project.mechanic.service.UpdatingVisit;
 import com.project.mechanic.utility.Utility;
 
-public class TitlepaperFragment extends Fragment implements CommInterface, AsyncInterface, AsyncInterfaceVisit {
+public class TitlepaperFragment extends Fragment
+		implements CommInterface, AsyncInterface, AsyncInterfaceVisit, CountLikeInterface, CountCommentInterface {
 	private ImageButton addtitle;
 	private DialogPaperTitle dialog;
 	DataBaseAdapter mdb;
@@ -90,6 +96,10 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 
 	int positionPaper = 0;
 
+	int counterLike = 0;
+	int counterComment = 0;
+	int pId = 0;
+
 	@SuppressWarnings("unchecked")
 	@SuppressLint("InflateParams")
 	@Override
@@ -113,9 +123,13 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 
 		createNewItem();
 
-		utility.ShowFooterAgahi(getActivity(), false, 7);
-
 		getCountVisitFromServer();
+
+		getLikeNumberOfPaper();
+
+		if (getActivity() != null) {
+			utility.inputCommentAndPickFile(getActivity(), false);
+		}
 
 		return view;
 	}
@@ -365,7 +379,7 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 
 		send = (ImageView) view.findViewById(R.id.createDialogPage);
 		close = (ImageView) view.findViewById(R.id.delete);
-		
+
 		titlePaperEditText.setTypeface(utility.SetFontIranSans());
 		descriptionPaperEditText.setTypeface(utility.SetFontIranSans());
 
@@ -407,21 +421,23 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 			@Override
 			public void onRefresh() {
 
-//				if (mylist.size() > 0) {
-//					if (getActivity() != null) {
-//						updating = new Updating(getActivity());
-//						updating.delegate = TitlepaperFragment.this;
-//						String[] params = new String[4];
-//						params[0] = "Paper";
-//						params[1] = setting.getServerDate_Start_Paper() != null ? setting.getServerDate_Start_Paper()
-//								: "";
-//						params[2] = setting.getServerDate_End_Paper() != null ? setting.getServerDate_End_Paper() : "";
-//
-//						params[3] = "1";
-//						updating.execute(params);
-//						IsNewPaper = true;
-//					}
-//				}
+				// if (mylist.size() > 0) {
+				// if (getActivity() != null) {
+				// updating = new Updating(getActivity());
+				// updating.delegate = TitlepaperFragment.this;
+				// String[] params = new String[4];
+				// params[0] = "Paper";
+				// params[1] = setting.getServerDate_Start_Paper() != null ?
+				// setting.getServerDate_Start_Paper()
+				// : "";
+				// params[2] = setting.getServerDate_End_Paper() != null ?
+				// setting.getServerDate_End_Paper() : "";
+				//
+				// params[3] = "1";
+				// updating.execute(params);
+				// IsNewPaper = true;
+				// }
+				// }
 			}
 		});
 		swipeLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
@@ -457,27 +473,28 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 				if (lastInScreen == totalItemCount) {
 
 					// LoadMoreFooter.setVisibility(View.VISIBLE);
-//					if (mylist.size() > 0) {
-//						if (getActivity() != null) {
-//
-//							//
-//							updating = new Updating(getActivity());
-//							updating.delegate = TitlepaperFragment.this;
-//							String[] params = new String[4];
-//							params[0] = "Paper";
-//							params[1] = setting.getServerDate_Start_Paper() != null
-//									? setting.getServerDate_Start_Paper() : "";
-//							params[2] = setting.getServerDate_End_Paper() != null ? setting.getServerDate_End_Paper()
-//									: "";
-//
-//							params[3] = "0";
-//							updating.execute(params);
-//
-//							int countList = ListAdapter.getCount();
-//							beforePosition = countList;
-//							IsNewPaper = true;
-//						}
-//					}
+					// if (mylist.size() > 0) {
+					// if (getActivity() != null) {
+					//
+					// //
+					// updating = new Updating(getActivity());
+					// updating.delegate = TitlepaperFragment.this;
+					// String[] params = new String[4];
+					// params[0] = "Paper";
+					// params[1] = setting.getServerDate_Start_Paper() != null
+					// ? setting.getServerDate_Start_Paper() : "";
+					// params[2] = setting.getServerDate_End_Paper() != null ?
+					// setting.getServerDate_End_Paper()
+					// : "";
+					//
+					// params[3] = "0";
+					// updating.execute(params);
+					//
+					// int countList = ListAdapter.getCount();
+					// beforePosition = countList;
+					// IsNewPaper = true;
+					// }
+					// }
 
 					// FindPosition = false;
 				}
@@ -569,6 +586,91 @@ public class TitlepaperFragment extends Fragment implements CommInterface, Async
 				descriptionPaperEditText.setText("");
 			}
 		});
+	}
+
+	private void getLikeNumberOfPaper() {
+
+		if (counterLike < mylist.size()) {
+
+			Paper p = mylist.get(counterLike);
+
+			pId = p.getId();
+
+			GetCountLike getCountLike = new GetCountLike(getActivity());
+			getCountLike.delegate = TitlepaperFragment.this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+
+			items.put("tableName", "getLikeInPaperCount");
+			items.put("id", String.valueOf(pId));
+
+			getCountLike.execute(items);
+
+		} else {
+			getCountComment();
+		}
+
+	}
+
+	@Override
+	public void ResultCountLike(String output) {
+
+		if (utility.checkError(output) == false) {
+
+			mdb.open();
+
+			mdb.updateCountLike("Paper", pId, Integer.valueOf(output));
+
+			mdb.close();
+
+			mylist.get(counterLike).setCountLike(Integer.valueOf(output));
+			ListAdapter.notifyDataSetChanged();
+
+			counterLike++;
+			getLikeNumberOfPaper();
+
+		}
+
+	}
+
+	private void getCountComment() {
+
+		if (counterComment < mylist.size()) {
+
+			Paper p = mylist.get(counterComment);
+
+			pId = p.getId();
+
+			GetCountComment get = new GetCountComment(getActivity());
+			get.delegate = TitlepaperFragment.this;
+			Map<String, String> items = new LinkedHashMap<String, String>();
+
+			items.put("tableName", "getCommentInPaperCount");
+			items.put("id", String.valueOf(pId));
+
+			get.execute(items);
+
+		}
+	}
+
+	@Override
+	public void ReultCountComment(String output) {
+
+		if (utility.checkError(output) == false) {
+
+			mdb.open();
+
+			mdb.updateCountComment("Paper", pId, Integer.valueOf(output));
+
+			mdb.close();
+
+			mylist.get(counterComment).setCountComment(Integer.valueOf(output));
+			ListAdapter.notifyDataSetChanged();
+
+			counterComment++;
+			getCountComment();
+
+		}
+
 	}
 
 }

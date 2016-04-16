@@ -23,6 +23,7 @@ import com.project.mechanic.fragment.EnterDialog;
 import com.project.mechanic.fragment.ExecutertypeFragment;
 import com.project.mechanic.fragment.ExitDialog;
 import com.project.mechanic.fragment.Favorite_Fragment;
+import com.project.mechanic.fragment.FixedPostFragment;
 import com.project.mechanic.fragment.FragmentAboutUs;
 import com.project.mechanic.fragment.FragmentContactUs;
 import com.project.mechanic.fragment.FroumFragment;
@@ -36,6 +37,7 @@ import com.project.mechanic.fragment.NewsFragment;
 import com.project.mechanic.fragment.ObjectFragment;
 import com.project.mechanic.fragment.PaperFragment;
 import com.project.mechanic.fragment.PaperWithoutComment;
+import com.project.mechanic.fragment.PostFragment;
 import com.project.mechanic.fragment.PostTimelineFragment;
 import com.project.mechanic.fragment.Province2Fragment;
 import com.project.mechanic.fragment.Province3Fragment;
@@ -110,7 +112,7 @@ public class MainActivity extends FragmentActivity {
 
 		if (user != null) {
 			txtcm1.setVisibility(View.VISIBLE);
-//			txtlike.setVisibility(View.GONE);
+			// txtlike.setVisibility(View.GONE);
 			util.setNoti(this, user.getId());
 		} else {
 
@@ -192,11 +194,8 @@ public class MainActivity extends FragmentActivity {
 
 				adapter.open();
 				dialog = new Dialog_notification(MainActivity.this, r, r1, r2);
-				
-				
-				
 
-				util.notificationDialogAnimation(dialog , lay.getHeight());
+				util.notificationDialogAnimation(dialog, lay.getHeight());
 
 				// int seen = 1;
 				// adapter.updatecmseentodb(seen, user.getId());
@@ -330,6 +329,7 @@ public class MainActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View v) {
+
 				if (!mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
 					mDrawerLayout.openDrawer(Gravity.RIGHT);
 					// v.startAnimation(animation1);
@@ -402,13 +402,14 @@ public class MainActivity extends FragmentActivity {
 
 		Fragment fragment;
 		FragmentManager fragmentManager;
+
 		switch (position) {
 		// case 0:
 		//
 		// break;
-
 		case 0:
 			// main page 0
+
 			fragment = new MainFragment();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -418,6 +419,7 @@ public class MainActivity extends FragmentActivity {
 		case 1:
 
 			// personal page 1
+
 			if (util.getCurrentUser() != null) {
 
 				fragment = new DisplayPersonalInformationFragment();
@@ -434,6 +436,7 @@ public class MainActivity extends FragmentActivity {
 				fragmentManager = getSupportFragmentManager();
 				fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 			}
+
 			break;
 
 		case 2:
@@ -445,6 +448,7 @@ public class MainActivity extends FragmentActivity {
 				fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 			} else
 				Toast.makeText(MainActivity.this, "ابتدا باید وارد شوید", 0).show();
+
 			break;
 
 		case 3:
@@ -457,6 +461,7 @@ public class MainActivity extends FragmentActivity {
 			// contact us 4
 
 			// about us 3
+
 			fragment = new FragmentAboutUs();
 			fragmentManager = getSupportFragmentManager();
 			fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -465,7 +470,10 @@ public class MainActivity extends FragmentActivity {
 
 		case 6:
 			// contact us 5
+
 			ConfirmAlert();
+
+			break;
 		}
 
 		mDrawerList.setItemChecked(position, true);
@@ -521,10 +529,10 @@ public class MainActivity extends FragmentActivity {
 				if (parentId <= 0) {
 					trans.replace(R.id.content_frame, new MainFragment());
 				} else {
-					BerandFragment bf = new BerandFragment();
-					Bundle b = new Bundle();
-					b.putInt("Id", parentId);
-					bf.setArguments(b);
+					BerandFragment bf = new BerandFragment(parentId);
+					// Bundle b = new Bundle();
+					// b.putInt("Id", parentId);
+					// bf.setArguments(b);
 					trans.replace(R.id.content_frame, bf);
 				}
 				adapter.close();
@@ -537,10 +545,10 @@ public class MainActivity extends FragmentActivity {
 				int jadID = adapter.getListItemById(parentID).getListId();
 				adapter.close();
 
-				BerandFragment fragment = new BerandFragment();
-				Bundle b = new Bundle();
-				b.putString("Id", String.valueOf(jadID));
-				fragment.setArguments(b);
+				BerandFragment fragment = new BerandFragment(jadID);
+				// Bundle b = new Bundle();
+				// b.putString("Id", String.valueOf(jadID));
+				// fragment.setArguments(b);
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();
 			} else if (f instanceof IntroductionFragment) {
@@ -552,14 +560,14 @@ public class MainActivity extends FragmentActivity {
 				adapter.close();
 				if (o.getObjectBrandTypeId() == 0) {
 
-					MainBrandFragment mf = new MainBrandFragment();
-					Bundle b = new Bundle();
-					b.putString("Id", String.valueOf(o.getParentId()));
-					mf.setArguments(b);
+					MainBrandFragment mf = new MainBrandFragment(o.getParentId());
+					// Bundle b = new Bundle();
+					// b.putString("Id", String.valueOf(o.getParentId()));
+					// mf.setArguments(b);
 					trans.replace(R.id.content_frame, mf);
 
 				} else {
-					BerandFragment bf = new BerandFragment();
+					BerandFragment bf = new BerandFragment(o.getParentId());
 					Bundle b = new Bundle();
 					b.putString("Id", String.valueOf(o.getParentId()));
 					bf.setArguments(b);
@@ -577,7 +585,7 @@ public class MainActivity extends FragmentActivity {
 					trans.replace(R.id.content_frame, new MainFragment());
 					break;
 				case 1:
-					trans.replace(R.id.content_frame, new IntroductionFragment());
+					trans.replace(R.id.content_frame, new IntroductionFragment(-1));
 					break;
 				case -1:
 					trans.replace(R.id.content_frame, new MainFragment());
@@ -593,37 +601,51 @@ public class MainActivity extends FragmentActivity {
 				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
-			} else if (f instanceof City3Fragment) {
-				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
-				trans.replace(R.id.content_frame, new MainFragment());
-				trans.commit();
-			} else if (f instanceof City2Fragment) {
-				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
-				trans.replace(R.id.content_frame, new Province2Fragment());
-				trans.commit();
-			} else if (f instanceof CityFragment) {
+			}
+			// else if (f instanceof City3Fragment) {
+			// trans.setCustomAnimations(R.anim.push_out_right,
+			// R.anim.pull_in_left);
+			// trans.replace(R.id.content_frame, new MainFragment());
+			// trans.commit();
+			// }
+			// else if (f instanceof City2Fragment) {
+			// trans.setCustomAnimations(R.anim.push_out_right,
+			// R.anim.pull_in_left);
+			// trans.replace(R.id.content_frame, new
+			// Province2Fragment(StaticValues.MainItem2));
+			// trans.commit();
+			// }
+			else if (f instanceof CityFragment) {
 				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new ProvinceFragment());
 				trans.commit();
-			} else if (f instanceof ObjectFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
-				int cityId = ((ObjectFragment) f).getCityId();
-				adapter.open();
-				City c = adapter.getCityById(cityId);
-				List<City> allCity = adapter.getCitysByProvinceId(c.getProvinceId());
-				CityFragment cf = new CityFragment(allCity);
-				adapter.close();
-				trans.replace(R.id.content_frame, cf);
-				trans.commit();
-			} else if (f instanceof AdvisorTypeFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
-				trans.replace(R.id.content_frame, new City2Fragment());
-				trans.commit();
-			} else if (f instanceof ExecutertypeFragment) {
-				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
-				trans.replace(R.id.content_frame, new City3Fragment());
-				trans.commit();
-			} else if (f instanceof NewsFragment) {
+			}
+			// else if (f instanceof ObjectFragment) {
+			// trans.setCustomAnimations(R.anim.push_out_right,
+			// R.anim.pull_in_left);
+			// int cityId = ((ObjectFragment) f).getCityId();
+			// adapter.open();
+			// City c = adapter.getCityById(cityId);
+			// List<City> allCity =
+			// adapter.getCitysByProvinceId(c.getProvinceId());
+			// CityFragment cf = new CityFragment(allCity);
+			// adapter.close();
+			// trans.replace(R.id.content_frame, cf);
+			// trans.commit();
+			// }
+			// else if (f instanceof AdvisorTypeFragment) {
+			// trans.setCustomAnimations(R.anim.push_out_right,
+			// R.anim.pull_in_left);
+			// trans.replace(R.id.content_frame, new City2Fragment());
+			// trans.commit();
+			// }
+			// else if (f instanceof ExecutertypeFragment) {
+			// trans.setCustomAnimations(R.anim.push_out_right,
+			// R.anim.pull_in_left);
+			// trans.replace(R.id.content_frame, new City3Fragment());
+			// trans.commit();
+			// }
+			else if (f instanceof NewsFragment) {
 				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
 				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
@@ -637,7 +659,7 @@ public class MainActivity extends FragmentActivity {
 				trans.commit();
 			} else if (f instanceof TitlepaperFragment) {
 				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);
-				trans.replace(R.id.content_frame, new NewsFragment());
+				trans.replace(R.id.content_frame, new MainFragment());
 				trans.commit();
 			} else if (f instanceof PaperWithoutComment) {
 				trans.setCustomAnimations(R.anim.push_out_right, R.anim.pull_in_left);

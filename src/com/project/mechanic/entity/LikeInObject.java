@@ -5,17 +5,17 @@ public class LikeInObject {
 	int UserId;
 	int paperId;
 	String Datetime;
-	int Commentid;
+	int LikeType;
 	int seen;
 	int IsLike;
 
-	public LikeInObject(int id, int userId, int paperId, String datetime, int commentid, int seen, int Islike) {
+	public LikeInObject(int id, int userId, int paperId, String datetime, int LikeType, int seen, int Islike) {
 		super();
 		Id = id;
 		UserId = userId;
 		this.paperId = paperId;
 		Datetime = datetime;
-		Commentid = commentid;
+		this.LikeType = LikeType;
 		this.seen = seen;
 		this.IsLike = Islike;
 	}
@@ -60,12 +60,12 @@ public class LikeInObject {
 		Datetime = datetime;
 	}
 
-	public int getCommentid() {
-		return Commentid;
+	public int getLikeType() {
+		return LikeType;
 	}
 
-	public void setCommentid(int commentid) {
-		Commentid = commentid;
+	public void setLikeType(int commentid) {
+		LikeType = commentid;
 
 	}
 

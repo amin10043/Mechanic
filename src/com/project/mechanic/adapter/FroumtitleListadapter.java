@@ -144,8 +144,8 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 
 		if (x != null)
 			txt3.setText(x.getName());
-		countcommentfroum.setText(adapter.CommentInFroum_count(person1.getId()).toString());
-		countLikeFroum.setText(adapter.LikeInFroum_count(person1.getId()).toString());
+		countcommentfroum.setText(person1.getCountComment() + "");
+		countLikeFroum.setText(person1.getCountLike() + "");
 		adapter.close();
 
 		dateTopic.setText(util.getPersianDate(person1.getDate()));
@@ -332,7 +332,7 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 								if (util.getCurrentUser() != null)
 
 									util.reportAbuse(userIdsender, StaticValues.TypeReportFroumTitle, itemId, t, 0,
-											position);
+											position, -1);
 								else
 									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}
@@ -725,6 +725,9 @@ public class FroumtitleListadapter extends ArrayAdapter<Froum> implements AsyncI
 		if (pos > 0) {
 			((FroumtitleFragment) fragment).setPostionListFroum(pos);
 			((FroumtitleFragment) fragment).fillListView();
+		} else {
+			((FroumtitleFragment) fragment).fillListView();
+
 		}
 
 	}

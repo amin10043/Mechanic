@@ -1,6 +1,5 @@
 package com.project.mechanic.adapter;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,16 +8,11 @@ import com.project.mechanic.R;
 import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.Object;
 import com.project.mechanic.entity.Users;
-import com.project.mechanic.entity.Visit;
 import com.project.mechanic.fragment.IntroductionFragment;
-import com.project.mechanic.fragment.LoginFragment;
-import com.project.mechanic.fragment.MainFragment;
 import com.project.mechanic.fragment.UnavailableIntroduction;
-import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.model.DataBaseAdapter;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
-import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.utility.Utility;
 
 import android.annotation.SuppressLint;
@@ -36,20 +30,18 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ObjectListAdapter
 		extends ArrayAdapter<Object> /* implements AsyncInterface */ {
 
 	Context context;
 	List<Object> list;
-	int lastPosition = 0;
+	// int lastPosition = 0;
 	DataBaseAdapter adapter;
-	RatingBar rating;
+	// RatingBar rating;
 	Utility util;
 	Fragment fr;
 	RelativeLayout followLayout;
@@ -72,10 +64,17 @@ public class ObjectListAdapter
 	int ItemId, userId, typeId;
 	int counterVisit = 0;
 	String serverDate = "";
-	Bitmap profileImage;
+	Bitmap imageBitmap;
+	int cityId;
+	// TextView txt1, countFollow, countVisit;
+	//
+	// ImageView star1, star2, star3, star4, star5, profileIco;
+	//
+	// RelativeLayout rl;
+	LayoutInflater myInflater;
 
 	public ObjectListAdapter(Context context, int resource, List<Object> objact, Fragment fr, boolean IsShow,
-			String DateTime, int Type) {
+			String DateTime, int Type, int cityId) {
 		super(context, resource, objact);
 		this.context = context;
 		this.list = objact;
@@ -85,36 +84,43 @@ public class ObjectListAdapter
 		this.IsShow = IsShow;
 		this.DateTime = DateTime;
 		this.Type = Type;
+		this.cityId = cityId;
+		myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
 	}
 
-	@SuppressLint("ViewHolder")
+	@SuppressLint("holder")
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater myInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		convertView = myInflater.inflate(R.layout.row_object, null);
 
-		convertView = myInflater.inflate(R.layout.row_object, parent, false);
+		final TextView titlePage = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
+		TextView countFollow = (TextView) convertView.findViewById(R.id.countlikepage);
+		TextView countVisit = (TextView) convertView.findViewById(R.id.viewPageCount);
 
-		lastPosition = position;
+		// holder.ratingBar = (RatingBar)
+		// convertView.findViewById(R.id.ratingBar1);
 
-		final TextView txt1 = (TextView) convertView.findViewById(R.id.Rowobjecttxt);
+		ImageView star1 = (ImageView) convertView.findViewById(R.id.star1);
+		ImageView star2 = (ImageView) convertView.findViewById(R.id.star2);
+		ImageView star3 = (ImageView) convertView.findViewById(R.id.star3);
+		ImageView star4 = (ImageView) convertView.findViewById(R.id.star4);
+		ImageView star5 = (ImageView) convertView.findViewById(R.id.star5);
+
+		ImageView profileImage = (ImageView) convertView.findViewById(R.id.icon_object);
+
+		RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.propertiesObject);
 
 		person = list.get(position);
 
-		txt1.setText(person.getName());
+		titlePage.setText(person.getName());
 
-		txt1.setTypeface(util.SetFontCasablanca());
-		rating = (RatingBar) convertView.findViewById(R.id.ratingBar1);
+		titlePage.setTypeface(util.SetFontCasablanca());
 
 		int rate = person.getRate();
 
 		if (rate > 0) {
-
-			ImageView star1 = (ImageView) convertView.findViewById(R.id.star1);
-			ImageView star2 = (ImageView) convertView.findViewById(R.id.star2);
-			ImageView star3 = (ImageView) convertView.findViewById(R.id.star3);
-			ImageView star4 = (ImageView) convertView.findViewById(R.id.star4);
-			ImageView star5 = (ImageView) convertView.findViewById(R.id.star5);
 
 			switch (rate) {
 			case 1:
@@ -157,14 +163,11 @@ public class ObjectListAdapter
 
 		}
 
-		rating.setRating(person.getRate());
+		// holder.ratingBar.setRating(person.getRate());
 
-		rating.setEnabled(false);
+		// holder.ratingBar.setEnabled(false);
 
-		ImageView profileIco = (ImageView) convertView.findViewById(R.id.icon_object);
-
-		RelativeLayout rl = (RelativeLayout) convertView.findViewById(R.id.propertiesObject);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(rl.getLayoutParams());
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(layout.getLayoutParams());
 
 		lp.width = (int) (util.getScreenwidth() / StaticValues.RateImageObjectPage);
 		lp.height = (int) (util.getScreenwidth() / StaticValues.RateImageObjectPage);
@@ -177,20 +180,20 @@ public class ObjectListAdapter
 		if (!"".equals(pathProfile))
 
 			try {
-				profileImage = BitmapFactory.decodeFile(pathProfile);
+				imageBitmap = BitmapFactory.decodeFile(pathProfile);
 
 			} catch (OutOfMemoryError exception) {
 				exception.printStackTrace();
 			}
 
-		if (profileImage != null) {
+		if (imageBitmap != null) {
 
-			profileIco.setImageBitmap(Utility.getclip(profileImage));
-			profileIco.setLayoutParams(lp);
+			profileImage.setImageBitmap(Utility.getclip(imageBitmap));
+			profileImage.setLayoutParams(lp);
 
 		} else {
-			profileIco.setImageResource(R.drawable.no_img_profile);
-			profileIco.setLayoutParams(lp);
+			profileImage.setImageResource(R.drawable.no_img_profile);
+			profileImage.setLayoutParams(lp);
 		}
 
 		String commitDate = person.getDate(); // tarikhe ijad safhe
@@ -198,14 +201,12 @@ public class ObjectListAdapter
 
 		String time = currentTime.getString("time", "-1");
 
-		TextView countFollow = (TextView) convertView.findViewById(R.id.countlikepage);
-		TextView countVisit = (TextView) convertView.findViewById(R.id.viewPageCount);
-
 		countVisit.setText(person.getCountView() + "");
-		adapter.open();
-		int followersCount = adapter.LikeInObject_count(person.getId(), 0);
-		adapter.close();
-		countFollow.setText(followersCount + "");
+		// adapter.open();
+		// int followersCount = adapter.LikeInObject_count(person.getId(),
+		// 0);
+		// adapter.close();
+		countFollow.setText(person.getCountFollower() + "");
 		if (person.getActiveDate() == null) {
 
 			if (commitDate != null && !"".equals(commitDate)) {
@@ -238,44 +239,6 @@ public class ObjectListAdapter
 
 		currentUser = util.getCurrentUser();
 
-		// else {
-		// baghiMandeh.setText("نا معلوم");
-		// }
-		// convertView.setOnLongClickListener(new OnLongClickListener() {
-		//
-		// @Override
-		// public boolean onLongClick(View v) {
-		//
-		// int i = 0;
-		// int u = 0;
-		// String t = "";
-		// ListView listView = (ListView) v.getParent();
-		// int position = listView.getPositionForView(v);
-		// Object f = getItem(position);
-		// if (f != null) {
-		// u = f.getUserId();
-		// i = f.getId();
-		// t = f.getName();
-		// }
-		//
-		// DialogLongClick dia = new DialogLongClick(context, 4, u, i, fr,
-		// t);
-		// Toast.makeText(context, "object id = " + i + " userId = " + u,
-		// 0).show();
-		// WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-		// lp.copyFrom(dia.getWindow().getAttributes());
-		// lp.width = (int) (util.getScreenwidth() / 1.5);
-		// lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-		// ;
-		// dia.show();
-		//
-		// dia.getWindow().setAttributes(lp);
-		// dia.getWindow().setBackgroundDrawable(
-		// new ColorDrawable(android.graphics.Color.TRANSPARENT));
-		// return true;
-		// }
-		//
-		// });
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -290,7 +253,7 @@ public class ObjectListAdapter
 					trans.replace(R.id.content_frame, fragment);
 					trans.addToBackStack("MainBrandFragment");
 
-					String item = txt1.getText().toString();
+					String item = titlePage.getText().toString();
 
 					int id = 0;
 					for (Object object : list) {
@@ -310,13 +273,13 @@ public class ObjectListAdapter
 
 				} else {
 
-					IntroductionFragment fragment = new IntroductionFragment();
+					IntroductionFragment fragment = new IntroductionFragment(cityId);
 					FragmentTransaction trans = ((MainActivity) context).getSupportFragmentManager().beginTransaction();
 					trans.replace(R.id.content_frame, fragment);
 
 					trans.addToBackStack("MainBrandFragment");
 
-					String item = txt1.getText().toString();
+					String item = titlePage.getText().toString();
 
 					int id = 0;
 					for (Object object : list) {
@@ -348,19 +311,24 @@ public class ObjectListAdapter
 		return convertView;
 	}
 
-	// @Override
-	// public void processFinish(String output) {
-	//
-	// serverDate = output;
-	//
-	// if (flag == true) {
-	//
-	// sendVisit();
-	//
-	// } else {
-	//
-	// if (ringProgressDialog != null)
-	// ringProgressDialog.dismiss();
-	// }
-	// }
 }
+
+// class ViewHolder {
+//
+// public TextView titlePage;
+// public TextView countVisit;
+// public TextView countFollow;
+//
+//// public RatingBar ratingBar;
+//
+// public ImageView star1;
+// public ImageView star2;
+// public ImageView star3;
+// public ImageView star4;
+// public ImageView star5;
+// public ImageView profileImage;
+//
+// public RelativeLayout layout;
+//
+// public int position;
+// }

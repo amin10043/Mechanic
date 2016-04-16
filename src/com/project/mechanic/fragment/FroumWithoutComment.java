@@ -46,11 +46,9 @@ import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class FroumWithoutComment extends Fragment implements AsyncInterface,
-		CommInterface {
-	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike,
-			nametxt;
-	LinearLayout /* addComment, */likeTopic;
+public class FroumWithoutComment extends Fragment implements AsyncInterface, CommInterface {
+	TextView titletxt, descriptiontxt, dateTopic, countComment, countLike, nametxt;
+	LinearLayout /* addComment, */ likeTopic;
 	ImageButton sharebtn;
 	ImageView profileImg;
 	Froum topics;
@@ -71,15 +69,14 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 	ServerDate date;
 	RelativeLayout count;
 	FroumFragment ff;
-	int userId , itemId;
+	int userId, itemId;
 	int diss = 0;
 	LinearLayout commentcounter;
 	boolean LikeOrComment; // like == true & comment == false
 	List<String> menuItems;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.froum_without_comment, null);
 		adapter = new DataBaseAdapter(getActivity());
 		util = new Utility(getActivity());
@@ -103,8 +100,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 		count = (RelativeLayout) view.findViewById(R.id.countLiketext);
 		commentcounter = (LinearLayout) view.findViewById(R.id.cmffff);
 
-		final SharedPreferences froumId = getActivity().getSharedPreferences(
-				"Id", 0);
+		final SharedPreferences froumId = getActivity().getSharedPreferences("Id", 0);
 		final int idFroum = froumId.getInt("main_Id", -1);
 		IdGglobal = idFroum;
 
@@ -138,11 +134,9 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 		if (u != null) {
 
 			nametxt.setText(u.getName());
-			LinearLayout rl = (LinearLayout) view
-					.findViewById(R.id.profileLinearcommenterinContinue);
+			LinearLayout rl = (LinearLayout) view.findViewById(R.id.profileLinearcommenterinContinue);
 
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-					rl.getLayoutParams());
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
 
 			lp.width = util.getScreenwidth() / 7;
 			lp.height = util.getScreenwidth() / 7;
@@ -157,8 +151,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 
 				Bitmap bmp = BitmapFactory.decodeFile(u.getImagePath());
 
-				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp,
-						20));
+				profileImg.setImageBitmap(Utility.getRoundedCornerBitmap(bmp, 20));
 
 				profileImg.setLayoutParams(lp);
 			}
@@ -170,8 +163,8 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 
 			@Override
 			public void onClick(View arg0) {
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
@@ -188,18 +181,16 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 		dateTopic.setText(util.getPersianDate(topics.getDate()));
 
 		adapter.close();
-		final SharedPreferences abc = getActivity().getSharedPreferences("Id",
-				0);
+		final SharedPreferences abc = getActivity().getSharedPreferences("Id", 0);
 
 		commentcounter.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				FroumFragment fragment = new FroumFragment();
-				trans.setCustomAnimations(R.anim.pull_in_left,
-						R.anim.push_out_right);
+				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(idFroum));
 				fragment.setArguments(bundle);
@@ -218,17 +209,14 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 				adapter.open();
-				ArrayList<LikeInFroum> likedist = adapter
-						.getLikefroumLikeInFroumByFroumId(idFroum);
+				ArrayList<LikeInFroum> likedist = adapter.getLikefroumLikeInFroumByFroumId(idFroum);
 
 				adapter.close();
 				if (likedist.size() == 0) {
-					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
-							.show();
+					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0).show();
 				} else {
 
-					DialogPersonLikedFroum dia = new DialogPersonLikedFroum(
-							getActivity(), idFroum, likedist);
+					DialogPersonLikedFroum dia = new DialogPersonLikedFroum(getActivity(), idFroum, likedist);
 					dia.show();
 
 				}
@@ -272,16 +260,12 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 
 			@Override
 			public void onClick(View arg0) {
-				Intent sharingIntent = new Intent(
-						android.content.Intent.ACTION_SEND);
+				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
 				// String shareBody = x.getDescription();
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-						topics.getTitle());
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-						topics.getDescription());
-				startActivity(Intent.createChooser(sharingIntent,
-						"اشتراک از طریق"));
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, topics.getTitle());
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, topics.getDescription());
+				startActivity(Intent.createChooser(sharingIntent, "اشتراک از طریق"));
 			}
 		});
 
@@ -292,13 +276,10 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 				adapter.open();
 
 				if (CurrentUser == null) {
-					Toast.makeText(getActivity(),
-							"برای درج لایک ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "برای درج لایک ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 				} else {
 					if (getActivity() != null) {
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								"", "لطفا منتظر بمانید...", true);
+						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 						ringProgressDialog.setCancelable(false);
 						date = new ServerDate(getActivity());
 						date.delegate = FroumWithoutComment.this;
@@ -368,8 +349,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 
 						if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
 							adapter.open();
-							addToFavorite(util.getCurrentUser().getId(), 1,
-									itemId);
+							addToFavorite(util.getCurrentUser().getId(), 1, itemId);
 							adapter.close();
 						}
 						if (item.getTitle().equals("کپی")) {
@@ -379,12 +359,11 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 						}
 						if (item.getTitle().equals("گزارش تخلف")) {
 
-//							util.reportAbuse(userIdsender, 1, itemId, t,0);
+							// util.reportAbuse(userIdsender, 1, itemId, t,0);
 
 						}
 						if (item.getTitle().equals("حذف")) {
-							if (util.getCurrentUser() != null
-									&& util.getCurrentUser().getId() == userIdsender)
+							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == userIdsender)
 								deleteItems(itemId);
 							else {
 
@@ -417,26 +396,30 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 			}
 		});
 
-		ImageView send = util.ShowFooterAgahi(getActivity(), true, 8);
-		send.setOnClickListener(new OnClickListener() {
+//		ImageView[] ArrayImage = util.inputCommentAndPickFile(getActivity());
 
-			@Override
-			public void onClick(View arg0) {
+//		ImageView send = ArrayImage[0];
+//		ImageView s = ArrayImage[1];
+//		s.setVisibility(View.GONE);
+		
+//		send.setOnClickListener(new OnClickListener() {
 
-				if ("".equals(util.inputComment(getActivity()))) {
-					Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
-							.show();
-				} else {
-					date = new ServerDate(getActivity());
-					date.delegate = FroumWithoutComment.this;
-					date.execute("");
-					LikeOrComment = false;
-
-					util.ReplyLayout(getActivity(), "", false);
-
-				}
-			}
-		});
+//			@Override
+////			public void onClick(View arg0) {
+//
+//				if ("".equals(util.inputComment(getActivity()))) {
+//					Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0).show();
+//				} else {
+//					date = new ServerDate(getActivity());
+//					date.delegate = FroumWithoutComment.this;
+//					date.execute("");
+//					LikeOrComment = false;
+//
+//					util.ReplyLayout(getActivity(), "", false);
+//
+//				}
+//			}
+//		});
 		ImageView delete = util.deleteReply(getActivity());
 
 		delete.setOnClickListener(new OnClickListener() {
@@ -454,8 +437,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 
 	public void setcount() {
 		adapter.open();
-		countComment
-				.setText(adapter.CommentInFroum_count(IdGglobal).toString());
+		countComment.setText(adapter.CommentInFroum_count(IdGglobal).toString());
 		adapter.close();
 	}
 
@@ -469,37 +451,31 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 				adapter.open();
 				if (LikeOrComment == true) {
 
-					if (adapter
-							.isUserLikedFroum(CurrentUser.getId(), IdGglobal)) {
-						adapter.deleteLikeFromFroum(CurrentUser.getId(),
-								IdGglobal);
+					if (adapter.isUserLikedFroum(CurrentUser.getId(), IdGglobal)) {
+						adapter.deleteLikeFromFroum(CurrentUser.getId(), IdGglobal);
 						likeTopic.setBackgroundResource(R.drawable.like_off);
 						count.setBackgroundResource(R.drawable.count_like_off);
 
-						countLike.setText(adapter.LikeInFroum_count(IdGglobal)
-								.toString());
+						countLike.setText(adapter.LikeInFroum_count(IdGglobal).toString());
 					} else {
-						adapter.insertLikeInFroumToDb(id, CurrentUser.getId(),
-								IdGglobal, serverDate, 0);
+						adapter.insertLikeInFroumToDb(id, CurrentUser.getId(), IdGglobal, serverDate, 0);
 						likeTopic.setBackgroundResource(R.drawable.like_on);
 						count.setBackgroundResource(R.drawable.count_like);
 
-						countLike.setText(adapter.LikeInFroum_count(IdGglobal)
-								.toString());
+						countLike.setText(adapter.LikeInFroum_count(IdGglobal).toString());
 					}
 				} else {
 
 					adapter.open();
 
-					adapter.insertCommentInFroumtoDb(id,
-							util.inputComment(getActivity()), IdGglobal,
+					adapter.insertCommentInFroumtoDb(id, util.inputComment(getActivity()), IdGglobal,
 							CurrentUser.getId(), serverDate, 0);
 
 					adapter.close();
 					util.ToEmptyComment(getActivity());
 
-					FragmentTransaction trans = ((MainActivity) getActivity())
-							.getSupportFragmentManager().beginTransaction();
+					FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+							.beginTransaction();
 					FroumFragment fragment = new FroumFragment();
 					Bundle bundle = new Bundle();
 					bundle.putString("Id", String.valueOf(IdGglobal));
@@ -508,8 +484,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 
 					trans.commit();
 
-					final SharedPreferences realizeIdComment = getActivity()
-							.getSharedPreferences("Id", 0);
+					final SharedPreferences realizeIdComment = getActivity().getSharedPreferences("Id", 0);
 					realizeIdComment.edit().putInt("main_Id", 1371).commit();
 
 				}
@@ -520,9 +495,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 				}
 
 			} catch (NumberFormatException ex) {
-				if (output != null
-						&& !(output.contains("Exception") || output
-								.contains("java"))) {
+				if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 
 					if (LikeOrComment == false) {
 
@@ -536,8 +509,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 
 							params.put("Desk", util.inputComment(getActivity()));
 							params.put("FroumId", String.valueOf(IdGglobal));
-							params.put("UserId",
-									String.valueOf(CurrentUser.getId()));
+							params.put("UserId", String.valueOf(CurrentUser.getId()));
 							params.put("CommentId", String.valueOf(0));
 
 							params.put("Date", output);
@@ -549,8 +521,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 
 							saving.execute(params);
 						}
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								"", "لطفا منتظر بمانید...", true);
+						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 						ringProgressDialog.setCancelable(true);
 						new Thread(new Runnable() {
@@ -572,8 +543,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 
 						adapter.open();
 
-						if (adapter.isUserLikedFroum(CurrentUser.getId(),
-								IdGglobal)) {
+						if (adapter.isUserLikedFroum(CurrentUser.getId(), IdGglobal)) {
 							adapter.open();
 							params = new LinkedHashMap<String, String>();
 
@@ -583,8 +553,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 								deleting.delegate = FroumWithoutComment.this;
 
 								params.put("TableName", "LikeInFroum");
-								params.put("UserId",
-										String.valueOf(CurrentUser.getId()));
+								params.put("UserId", String.valueOf(CurrentUser.getId()));
 								params.put("FroumId", String.valueOf(IdGglobal));
 
 								deleting.execute(params);
@@ -600,8 +569,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 
 								params.put("TableName", "LikeInFroum");
 
-								params.put("UserId",
-										String.valueOf(CurrentUser.getId()));
+								params.put("UserId", String.valueOf(CurrentUser.getId()));
 								params.put("FroumId", String.valueOf(IdGglobal));
 								params.put("CommentId", "0");
 								params.put("Date", output);
@@ -620,9 +588,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 					adapter.close();
 
 				} else {
-					Toast.makeText(getActivity(),
-							"خطا در ثبت. پاسخ نا مشخص از سرور",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 					if (ringProgressDialog != null) {
 						ringProgressDialog.dismiss();
 					}
@@ -631,8 +597,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 
 		} catch (Exception e) {
 
-			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
 			if (ringProgressDialog != null) {
 				ringProgressDialog.dismiss();
 			}
@@ -642,12 +607,10 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
 
 		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
-			Toast.makeText(getActivity(),
-					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+			Toast.makeText(getActivity(), " قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
 		} else {
 			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
-			Toast.makeText(getActivity(), "به لیست علاقه مندی ها اضافه شد ", 0)
-					.show();
+			Toast.makeText(getActivity(), "به لیست علاقه مندی ها اضافه شد ", 0).show();
 		}
 	}
 
@@ -663,8 +626,7 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 
 		service.execute(items);
 
-		ringProgressDialog = ProgressDialog.show(getActivity(), "",
-				"لطفا منتظر بمانید...", true);
+		ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 		ringProgressDialog.setCancelable(true);
 		new Thread(new Runnable() {
@@ -696,16 +658,14 @@ public class FroumWithoutComment extends Fragment implements AsyncInterface,
 		if (ringProgressDialog != null) {
 			ringProgressDialog.dismiss();
 		}
-		
+
 		FroumtitleFragment fr = new FroumtitleFragment();
 
-		FragmentTransaction trans = ((MainActivity) getActivity())
-				.getSupportFragmentManager().beginTransaction();
+		FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager().beginTransaction();
 
 		trans.replace(R.id.content_frame, fr);
 		trans.addToBackStack(null);
 		trans.commit();
-		
 
 	}
 }

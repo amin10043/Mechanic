@@ -1,9 +1,11 @@
 package com.project.mechanic.fragment;
 
 import com.project.mechanic.R;
+import com.project.mechanic.adapter.CreateMainBrand;
 import com.project.mechanic.utility.Utility;
 
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -16,18 +18,23 @@ import android.widget.Toast;
 
 public class DialogNetworkSocial extends Dialog {
 	Context context;
-	CreateIntroductionFragment fragment;
+	Fragment fragment;
 
-	String l1, l2, l3, /* l4, */ l5, l6;
+	public static String facebook;
+	 public static String linkedin ;
+	 public  static String twiiter ;
+	 public static String google ;
+	public  static String instagram ;
+
 	EditText inFacebook, inLinkedin, inTwiiter, inWebsite, inGoogle, inInstagram;
 
 	ImageView saveBtn, closeBtn;
 	Utility util;
 
-	public DialogNetworkSocial(CreateIntroductionFragment fragment, Context context, int xmlDesign) {
+	public DialogNetworkSocial(/* Fragment fragment, */Context context, int xmlDesign) {
 		super(context);
 		this.context = context;
-		this.fragment = fragment;
+		// this.fragment = fragment;
 		util = new Utility(context);
 	}
 
@@ -65,31 +72,38 @@ public class DialogNetworkSocial extends Dialog {
 			@Override
 			public void onClick(View arg0) {
 
-				l1 = inFacebook.getText().toString();
-				l2 = inLinkedin.getText().toString();
-				l3 = inTwiiter.getText().toString();
+				facebook = inFacebook.getText().toString();
+				linkedin = inLinkedin.getText().toString();
+				twiiter = inTwiiter.getText().toString();
 				// l4 = inWebsite.getText().toString();
-				l5 = inGoogle.getText().toString();
-				l6 = inInstagram.getText().toString();
+				google = inGoogle.getText().toString();
+				instagram = inInstagram.getText().toString();
 
-				if (!l1.equals("") || !l2.equals("") || !l3.equals("") || !l5.equals("") || !l6.equals("")) {
+				// if (!l1.equals("") || !l2.equals("") || !l3.equals("") ||
+				// !l5.equals("") || !l6.equals("")) {
 
-					fragment.Lfacebook = l1;
-					fragment.Llinkedin = l2;
-					fragment.Ltwitter = l3;
-					// fragment.Lwebsite = l4;
-					fragment.Lgoogle = l5;
-					fragment.Linstagram = l6;
+				// fragment.Lfacebook = l1;
+				// fragment.Llinkedin = l2;
+				// fragment.Ltwitter = l3;
+				// // fragment.Lwebsite = l4;
+				// fragment.Lgoogle = l5;
+				// fragment.Linstagram = l6;
 
-					dismiss();
+				//
+				dismiss();
 
-				} else {
-
-					Toast.makeText(context, "پر کردن یک مقدار اجباری است", 0).show();
-
-				}
+				// } else {
+				//
+				// Toast.makeText(context, "پر کردن یک مقدار اجباری است",
+				// 0).show();
+				//
+				// }
 			}
 		});
+
+	}
+
+	public void s() {
 
 	}
 }

@@ -75,8 +75,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:background="@color/white" >
 
             <RelativeLayout
@@ -85,8 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1" >
+                android:layout_marginBottom="10dp" >
 
                 <ImageView
                     android:id="@+id/lab2"
@@ -108,8 +107,10 @@
 
                     <TextView
                         android:id="@+id/tst"
-                        android:layout_width="wrap_content"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="left"
                         android:text="اشتراک  گذاری"
                         android:textColor="@color/orginal_hard_blue_color" />
                 </LinearLayout>
@@ -163,7 +164,7 @@
 
                 <TextView
                     android:id="@+id/labbbb1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
@@ -195,6 +196,17 @@
                 android:background="@drawable/shadow_line_personal"
                 android:visibility="gone" />
 
+            <TextView
+                android:id="@+id/lablessss"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="نظر شما در مورد کیفیت ، قیمت ، تعهد"
+                android:textColor="@color/orginal_hard_blue_color"
+                android:visibility="gone" />
+
             <LinearLayout
                 android:id="@+id/nm"
                 android:layout_width="match_parent"
@@ -202,7 +214,18 @@
                 android:layout_below="@+id/d"
                 android:background="@drawable/shadow_layer"
                 android:orientation="vertical"
-                android:weightSum="3" >
+                android:weightSum="10" >
+
+                <TextView
+                    android:id="@+id/lablesqw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="نظر شما در مورد کیفیت ، قیمت ، تعهد"
+                    android:textColor="@color/orginal_hard_blue_color" />
 
                 <LinearLayout
                     android:id="@+id/settingsLayout"
@@ -211,10 +234,39 @@
                     android:layout_alignBottom="@+id/imageFrame"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:orientation="horizontal"
-                    android:weightSum="1.5" >
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:id="@+id/very_Ok"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal" >
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical" >
+
+                            <ImageView
+                                android:id="@+id/iconveryrazi"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/very_razi" />
+
+                            <TextView
+                                android:id="@+id/countveryRezayat"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="0"
+                                android:textColor="@color/orginal_hard_blue_color" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/Ok"
@@ -276,95 +328,129 @@
                                 android:textColor="@color/orginal_hard_blue_color" />
                         </LinearLayout>
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/very_no"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal" >
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical" >
+
+                            <ImageView
+                                android:id="@+id/iconvery_narazi"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/very_narazi" />
+
+                            <TextView
+                                android:id="@+id/countveryShaki"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="0"
+                                android:textColor="@color/orginal_hard_blue_color" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shadow_layer"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/numpp" />
+
+                    <TextView
+                        android:id="@+id/lablematlab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="مطلب"
+                        android:textColor="@color/orginal_hard_blue_color" />
+
+                    <TextView
+                        android:id="@+id/countPost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/orginal_hard_blue_color" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:orientation="horizontal" >
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" >
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/numvv" />
+
+                    <TextView
+                        android:id="@+id/lableviewlable"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical" >
+                        android:text="بازدید"
+                        android:textColor="@color/orginal_hard_blue_color" />
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:background="@drawable/numpp" />
-
-                        <TextView
-                            android:id="@+id/lablematlab"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="مطلب"
-                            android:textColor="@color/orginal_hard_blue_color" />
-
-                        <TextView
-                            android:id="@+id/countPost"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textColor="@color/orginal_hard_blue_color" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/numVisitPage"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical" >
+                        android:text="0"
+                        android:textColor="@color/orginal_hard_blue_color" />
+                </LinearLayout>
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:background="@drawable/numvv" />
+                <LinearLayout
+                    android:id="@+id/countLiketext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" >
 
-                        <TextView
-                            android:id="@+id/lableviewlable"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="بازدید"
-                            android:textColor="@color/orginal_hard_blue_color" />
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/numll" />
 
-                        <TextView
-                            android:id="@+id/numVisitPage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textColor="@color/orginal_hard_blue_color" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/countLiketext"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/lablelablefollow"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical" >
+                        android:text="دنبال کنندگان"
+                        android:textColor="@color/orginal_hard_blue_color" />
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:background="@drawable/numll" />
-
-                        <TextView
-                            android:id="@+id/lablelablefollow"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="دنبال کنندگان"
-                            android:textColor="@color/orginal_hard_blue_color" />
-
-                        <TextView
-                            android:id="@+id/countLikeIntroduction"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textColor="@color/orginal_hard_blue_color" />
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/countLikeIntroduction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/orginal_hard_blue_color" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -692,7 +778,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/i3"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_toLeftOf="@+id/textView4"
                     android:gravity="left"
@@ -990,7 +1075,7 @@
                         android:textColor="#9d0420"
                         android:visibility="gone" />
 
-                    <TextView
+                    <com.project.mechanic.view.TextViewEx
                         android:id="@+id/txtDesc_Object"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -998,6 +1083,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:gravity="right"
+                        android:singleLine="true"
                         android:text="توضیحات"
                         android:textColor="@color/orginal_hard_blue_color" />
                 </LinearLayout>

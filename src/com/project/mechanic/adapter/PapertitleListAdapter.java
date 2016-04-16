@@ -233,12 +233,12 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 				likePaper.setBackgroundResource(R.drawable.like_froum_off);
 		}
 
-		NumofComment.setText(adapter.CommentInPaper_count(person1.getId()).toString());
+		NumofComment.setText(person1.getCountComment() + "");
 
-		NumofLike.setText(adapter.LikeInPaper_count(person1.getId()).toString());
+		NumofLike.setText(person1.getCountLike() + "");
 		adapter.close();
 
-//		final SharedPreferences abc = context.getSharedPreferences("Id", 0);
+		// final SharedPreferences abc = context.getSharedPreferences("Id", 0);
 		likePaper.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -345,7 +345,7 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 								if (util.getCurrentUser() != null)
 
 									util.reportAbuse(userIdsender, StaticValues.TypeReportPaperTitle, itemId, t, 0,
-											position);
+											position , -1);
 								else
 									Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 							}
@@ -423,7 +423,8 @@ public class PapertitleListAdapter extends ArrayAdapter<Paper> implements AsyncI
 
 				fragment.setArguments(bundle);
 
-//				abc.edit().putInt("Froum_List_Id", ((ListView) parent).getFirstVisiblePosition()).commit();
+				// abc.edit().putInt("Froum_List_Id", ((ListView)
+				// parent).getFirstVisiblePosition()).commit();
 
 				trans.replace(R.id.content_frame, fragment);
 				trans.commit();

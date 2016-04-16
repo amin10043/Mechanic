@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import com.project.mechanic.StaticValues;
 import com.project.mechanic.entity.AdvisorType;
 import com.project.mechanic.entity.Anad;
 import com.project.mechanic.entity.City;
@@ -13,6 +14,8 @@ import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.CommentInObject;
 import com.project.mechanic.entity.CommentInPaper;
 import com.project.mechanic.entity.CommentInPost;
+import com.project.mechanic.entity.CountSubBrandInCity;
+import com.project.mechanic.entity.CountSubBrandInProvince;
 import com.project.mechanic.entity.Executertype;
 import com.project.mechanic.entity.ExtraSettings;
 import com.project.mechanic.entity.Favorite;
@@ -71,7 +74,7 @@ public class DataBaseAdapter {
 	private String TableNewsPaper = "NewsPaper";
 	private String TableObject = "Object";
 	private String TableObjectInCity = "ObjectInCity";
-	// private String TableObjectInProvince = "ObjectInProvince";
+	private String TableObjectInProvince = "ObjectInProvince";
 	// private String TableObjectType = "ObjectType";
 	private String TablePaper = "Paper";
 	// private String TablePaperType = "PaperType";
@@ -99,12 +102,16 @@ public class DataBaseAdapter {
 	private String TableAnadFooter = "AnadFooter";
 	private String TableLikeInCommentPost = "LikeInCommentPost";
 
-	private String TableCountSubBrand = "CountSubBrand";
+	private String TableCountSubBrandInProvince = "CountSubBrandInProvince";
+	private String TableCountSubBrandInCity = "CountSubBrandInCity";
+
 	private String TableCountSubShop = "CountSubShop";
 
 	private String TableExtraSettings = "ExtraSettings";
 
-	private String[] CountSubBrand = { "Id", "CityId", "ProvinceId", "ObjectId", "CountInCity", "AgencyService" };
+	private String[] CountSubBrandInProvince = { "Id", "ObjectId", "AgencyService", "ProvinceId", "CountInProvince" };
+	private String[] CountSubBrandInCity = { "Id", "ObjectId", "AgencyService", "CityId", "CountInCity" };
+
 	private String[] CountSubShop = { "Id", "MainObjectId", "CityId", "ProvinceId", "ObjectTypeId", "CountInCity" };
 
 	// private String[] ACL = { "ID", "UserId", "ListItemId" };
@@ -127,13 +134,13 @@ public class DataBaseAdapter {
 	private String[] Executertype = { "ID", "Name" };
 	private String[] Favorite = { "ID", "ObjectId", "UserId", "IdTicket", "Type" };
 	private String[] Froum = { "ID", "UserId", "Title", "Description", "Seen", "ServerDate", "Submit", "Date",
-			"SeenBefore", "CountView" };
+			"SeenBefore", "CountView", "CountLike", "CountComment" };
 
 	private String[] Post = { "ID", "UserId", "Description", "Seen", "ServerDate", "Submit", "Date", "SeenBefore",
-			"Photo", "CountView", "ObjectId" };
+			"Photo", "CountView", "ObjectId", "CountLike", "CountComment" };
 
 	// private String[] Like = { "ID", "UserId", "PaperId" };
-	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date", "CommentId", "Seen", "IsLike" };
+	private String[] LikeInObject = { "Id", "UserId", "PaperId", "Date", "LikeType", "Seen", "IsLike" };
 	private String[] LikeInFroum = { "Id", "UserId", "FroumId", "Date", "CommentId", "Seen" };
 	private String[] LikeInComment = { "ID", "CommentId", "UserId", "IsLike", "Date", "ModifyDate" };
 	private String[] LikeInPaper = { "Id", "UserId", "PaperId", "Date", "CommentId", "Seen" };
@@ -145,12 +152,13 @@ public class DataBaseAdapter {
 			"Facebook", "Instagram", "LinkedIn", "Google", "Site", "Twitter", "ParentId", "rate", "Seen", "ServerDate",
 			"Submit", "MainObjectId", "IsActive", "UserId", "ObjectId", "Date", "Image1ServerDate", "Image2ServerDate",
 			"Image3ServerDate", "AgencyService", "ImagePath1", "ImagePath2", "ImagePath3", "ActiveDate", "CountView",
-			"CountPost", "CountFollower", "CountHappy", "CountSad" };
+			"CountPost", "CountFollower", "CountHappy", "CountSad", "CountAgency", "CountService", "CountVeryHappy",
+			"CountVerySad" };
 	private String[] ObjectInCity = { "Id", "ObjectId", "CityId", "Date" };
-	// private String[] ObjectInProvince = { "ID", "ObjectId", "ProvinceId" };
+	private String[] ObjectInProvince = { "Id", "ObjectId", "ProvinceId", "Date" };
 	// private String[] ObjectType = { "ID", "Name" };
 	private String[] Paper = { "ID", "Title", "Context", "Seen", "ServerDate", "Submit", "UserId", "Date", "SeenBefore",
-			"CountView" };
+			"CountView", "CountLike", "CountComment" };
 	// private String[] PaperType = { "ID", "Name" };
 	private String[] Province = { "ID", "Name", "Count" };
 	private String[] Settings = { "Id", "IMEI", "ServerDate_Start_Object", "ServerDate_End_Object",
@@ -166,7 +174,9 @@ public class DataBaseAdapter {
 			"ServerDate_Start_ObjectInCity ", "ServerDate_End_ObjectInCity", "ServerDate_Start_Post ",
 			"ServerDate_End_Post", "ServerDate_Start_LikeInPost ", "ServerDate_End_LikeInPost",
 			"ServerDate_Start_LikeInCommentPost ", "ServerDate_End_LikeInCommentPost",
-			"ServerDate_Start_CommentInPost ", "ServerDate_End_CommentInPost" };
+			"ServerDate_Start_CommentInPost ", "ServerDate_End_CommentInPost", "ServerDate_Start_SubAdmin ",
+			"ServerDate_End_SubAdmin" ,"ServerDate_Start_ListItem ",
+			"ServerDate_End_ListItem" };
 
 	private String[] Ticket = { "Id", "Title", "Desc", "UserId", "Image", "date", "TypeId", "Name", "Email", "Mobile",
 			"Phone", "Fax", "ProvinceId", "UName", "UEmail", "UPhonnumber", "UFax", "UAdress", "UImage", "UMobile",
@@ -185,7 +195,7 @@ public class DataBaseAdapter {
 	private String[] LikeInCommentObject = { "Id", "CommentId", "UserId", "IsLike", "Date", "ModifyDate" };
 
 	private String[] Visit = { "Id", "UserId", "ObjectId", "TypeId" };
-	private String[] SubAdmin = { "Id", "ObjectId", "UserId", "AdminID", "Date", "ModifyDate" };
+	private String[] SubAdmin = { "Id", "ObjectId", "UserId", "AdminId", "Date", "ModifyDate" };
 
 	// private String[] post = { "SeenBefore", "Id", "Desc", "ImagePath",
 	// "Date",
@@ -365,7 +375,7 @@ public class DataBaseAdapter {
 		mDb.update(TableTicket, uc, "Id=" + id, null);
 	}
 
-	public void UpdateAnadToDb(int id, int objectId, String date, int typeId, int provinceId , int userId) {
+	public void UpdateAnadToDb(int id, int objectId, String date, int typeId, int provinceId, int userId) {
 
 		ContentValues uc = new ContentValues();
 		uc.put("Id", id);
@@ -434,7 +444,7 @@ public class DataBaseAdapter {
 
 		uc.put("UserId", UserId);
 		uc.put("PaperId", PaperId);
-		uc.put("CommentId", CommentId);
+		uc.put("LikeType", CommentId);
 		uc.put("Date", Date);
 		uc.put("Seen", 0);
 		uc.put("Id", id);
@@ -449,7 +459,7 @@ public class DataBaseAdapter {
 
 		uc.put("UserId", UserId);
 		uc.put("PaperId", ObjectId);
-		uc.put("CommentId", IsLike);
+		uc.put("LikeType", IsLike);
 		uc.put("Date", Date);
 		uc.put("Seen", 0);
 		uc.put("Id", id);
@@ -745,7 +755,8 @@ public class DataBaseAdapter {
 					cursor.getInt(32), cursor.getString(33), cursor.getString(34), cursor.getString(35),
 					cursor.getString(36), cursor.getInt(37), cursor.getString(38), cursor.getString(39),
 					cursor.getString(40), cursor.getString(41), cursor.getInt(42), cursor.getInt(43), cursor.getInt(44),
-					cursor.getInt(45), cursor.getInt(46));
+					cursor.getInt(45), cursor.getInt(46), cursor.getInt(47), cursor.getInt(48), cursor.getInt(49),
+					cursor.getInt(50));
 
 			result.add(tempObject);
 		}
@@ -1317,7 +1328,7 @@ public class DataBaseAdapter {
 				cursor.getString(33), cursor.getString(34), cursor.getString(35), cursor.getString(36),
 				cursor.getInt(37), cursor.getString(38), cursor.getString(39), cursor.getString(40),
 				cursor.getString(41), cursor.getInt(42), cursor.getInt(43), cursor.getInt(44), cursor.getInt(45),
-				cursor.getInt(46));
+				cursor.getInt(46), cursor.getInt(47), cursor.getInt(48), cursor.getInt(49), cursor.getInt(50));
 		return tempObject;
 	}
 
@@ -1336,7 +1347,7 @@ public class DataBaseAdapter {
 	private Froum CursorToFroum(Cursor cursor) {
 		Froum tempForum = new Froum(cursor.getInt(0), cursor.getInt(1), cursor.getString(2), cursor.getString(3),
 				cursor.getInt(4), cursor.getString(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8),
-				cursor.getInt(9));
+				cursor.getInt(9), cursor.getInt(10), cursor.getInt(11));
 		return tempForum;
 
 	}
@@ -1350,7 +1361,7 @@ public class DataBaseAdapter {
 	private Post CursorToPost(Cursor cursor) {
 		Post tempPost = new Post(cursor.getInt(0), cursor.getInt(1), cursor.getString(2), cursor.getInt(3),
 				cursor.getString(4), cursor.getInt(5), cursor.getString(6), cursor.getInt(7), cursor.getString(8),
-				cursor.getInt(9), cursor.getInt(10));
+				cursor.getInt(9), cursor.getInt(10), cursor.getInt(11), cursor.getInt(12));
 		return tempPost;
 	}
 
@@ -1369,7 +1380,7 @@ public class DataBaseAdapter {
 	private Paper CursorToPaper(Cursor cursor) {
 		Paper tempPaper = new Paper(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3),
 				cursor.getString(4), cursor.getInt(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8),
-				cursor.getInt(9));
+				cursor.getInt(9), cursor.getInt(10), cursor.getInt(11));
 		return tempPaper;
 
 	}
@@ -1389,6 +1400,24 @@ public class DataBaseAdapter {
 
 	}
 
+	private CountSubBrandInProvince CursorToCountSubBrandProvince(Cursor cursor) {
+
+		CountSubBrandInProvince temp = new CountSubBrandInProvince(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2),
+				cursor.getInt(3), cursor.getInt(4));
+
+		return temp;
+
+	}
+
+	private CountSubBrandInCity CursorToCountSubBrandCity(Cursor cursor) {
+
+		CountSubBrandInCity temp = new CountSubBrandInCity(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2),
+				cursor.getInt(3), cursor.getInt(4));
+
+		return temp;
+
+	}
+
 	private Settings CursorToSettings(Cursor cursor) {
 		Settings tempSettings = new Settings(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
 				cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7),
@@ -1400,7 +1429,8 @@ public class DataBaseAdapter {
 				cursor.getString(28), cursor.getString(29), cursor.getString(30), cursor.getString(31),
 				cursor.getString(32), cursor.getString(33), cursor.getString(34), cursor.getString(35),
 				cursor.getString(36), cursor.getString(37), cursor.getString(38), cursor.getString(39),
-				cursor.getString(40), cursor.getString(41));
+				cursor.getString(40), cursor.getString(41), cursor.getString(42), cursor.getString(43),
+				cursor.getString(44), cursor.getString(45));
 		return tempSettings;
 
 	}
@@ -1513,15 +1543,15 @@ public class DataBaseAdapter {
 
 	public ArrayList<Paper> getAllPaper() {
 		ArrayList<Paper> result = new ArrayList<Paper>();
-		Cursor cursor = mDb.query(TablePaper, Paper, null, null, null, null, null);
+		Cursor cursor = mDb.query(TablePaper, Paper, null, null, null, null, "Date DESC");
 		Paper tempObject;
 		while (cursor.moveToNext()) {
 			tempObject = new Paper(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3),
 					cursor.getString(4), cursor.getInt(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8),
-					cursor.getInt(9));
+					cursor.getInt(9), cursor.getInt(10), cursor.getInt(11));
 			result.add(tempObject);
 		}
-		Collections.sort(result);
+		// Collections.sort(result);
 		return result;
 
 	}
@@ -1546,7 +1576,7 @@ public class DataBaseAdapter {
 	public Integer LikeInObject_count(int ObjectId, int CommentId) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TableLikeInObject + " WHERE PaperId= " + ObjectId
-				+ " And CommentId = " + CommentId, null);
+				+ " And LikeType = " + CommentId, null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -1714,7 +1744,7 @@ public class DataBaseAdapter {
 	public ArrayList<CommentInObject> getAllCommentInObjectById(int ObjectID, int CommentID) {
 		ArrayList<CommentInObject> result = new ArrayList<CommentInObject>();
 		Cursor cursor = mDb.query(TableCommentInObject, CommentInObject, " ObjectId=? AND CommentId=?",
-				new String[] { String.valueOf(ObjectID), String.valueOf(CommentID) }, null, null, null);
+				new String[] { String.valueOf(ObjectID), String.valueOf(CommentID) }, null, null, "Date DESC");
 		while (cursor.moveToNext()) {
 			result.add(CursorToCommentInObject(cursor));
 		}
@@ -1749,7 +1779,7 @@ public class DataBaseAdapter {
 		CommentInFroum item = null;
 
 		Cursor mCur = mDb.query(TableCommentInFroum, CommentInFroum, "FroumId=? AND CommentID=?",
-				new String[] { String.valueOf(Froumid), String.valueOf(commentID) }, null, null, null);
+				new String[] { String.valueOf(Froumid), String.valueOf(commentID) }, null, null, "Date DESC");
 
 		while (mCur.moveToNext()) {
 			item = CursorToCommentInFroum(mCur);
@@ -1766,7 +1796,7 @@ public class DataBaseAdapter {
 		CommentInPost item = null;
 
 		Cursor mCur = mDb.query(TableCommentInPost, CommentInPost, "PostId=? AND CommentID=?",
-				new String[] { String.valueOf(Postid), String.valueOf(commentID) }, null, null, null);
+				new String[] { String.valueOf(Postid), String.valueOf(commentID) }, null, null, "Date DESC");
 
 		while (mCur.moveToNext()) {
 			item = CursorToCommentInPost(mCur);
@@ -1783,7 +1813,7 @@ public class DataBaseAdapter {
 		CommentInFroum item = null;
 
 		Cursor mCur = mDb.query(TableCommentInFroum, CommentInFroum, "FroumId=? AND CommentId=?",
-				new String[] { String.valueOf(Froumid), String.valueOf(Commentid) }, null, null, null);
+				new String[] { String.valueOf(Froumid), String.valueOf(Commentid) }, null, null, "Date DESC");
 
 		while (mCur.moveToNext()) {
 			item = CursorToCommentInFroum(mCur);
@@ -1800,7 +1830,7 @@ public class DataBaseAdapter {
 		CommentInPost item = null;
 
 		Cursor mCur = mDb.query(TableCommentInPost, CommentInPost, "PostId=? AND CommentId=?",
-				new String[] { String.valueOf(Postid), String.valueOf(Commentid) }, null, null, null);
+				new String[] { String.valueOf(Postid), String.valueOf(Commentid) }, null, null, "Date DESC");
 
 		while (mCur.moveToNext()) {
 			item = CursorToCommentInPost(mCur);
@@ -1817,7 +1847,7 @@ public class DataBaseAdapter {
 		CommentInPaper item = null;
 
 		Cursor mCur = mDb.query(TableCommentInPaper, CommentInPaper, "PaperId=?",
-				new String[] { String.valueOf(Paperid) }, null, null, null);
+				new String[] { String.valueOf(Paperid) }, null, null, "Date DESC");
 
 		while (mCur.moveToNext()) {
 			item = CursorToCommentInPaper(mCur);
@@ -2061,12 +2091,12 @@ public class DataBaseAdapter {
 
 	public ArrayList<Froum> getAllFroum() {
 		ArrayList<Froum> result = new ArrayList<Froum>();
-		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null, null);
+		Cursor cursor = mDb.query(TableFroum, Froum, null, null, null, null, "Date DESC");
 		while (cursor.moveToNext()) {
 			result.add(CursorToFroum(cursor));
 		}
 
-		Collections.sort(result);
+		// Collections.sort(result);
 		return result;
 	}
 
@@ -2333,14 +2363,14 @@ public class DataBaseAdapter {
 		Object item = null;
 
 		Cursor mCur = mDb.query(TableObject, Object, "ParentId=?", new String[] { String.valueOf(parentid) }, null,
-				null, null);
+				null, "Rate DESC , Date DESC");
 
 		while (mCur.moveToNext()) {
 			item = CursorToObject(mCur);
 			result.add(item);
 		}
 
-		Collections.sort(result);
+		// Collections.sort(result);
 
 		return result;
 
@@ -2350,10 +2380,10 @@ public class DataBaseAdapter {
 		ArrayList<Object> result = new ArrayList<Object>();
 		Cursor cursor = mDb.rawQuery(
 
-				"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate , O.AgencyService , O.ImagePath1 , O.ImagePath2 , O.ImagePath3 ,O.ActiveDate , O.CountView , O.CountPost , O.CountFollower , O.CountHappy , O.CountSad  From "
+				"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate , O.AgencyService , O.ImagePath1 , O.ImagePath2 , O.ImagePath3 ,O.ActiveDate , O.CountView , O.CountPost , O.CountFollower , O.CountHappy , O.CountSad , O.CountAgency , O.CountService , O.CountVeryHappy , O.CountVerySad  From "
 						+ TableObject + " as O inner join " + TableObjectInCity
 						+ " as C On O.Id = C.ObjectId Where O.MainObjectId = " + MainId + " and C.CityId = " + CityId
-						+ " and O.ObjectTypeId = " + TypeList,
+						+ " and O.ObjectTypeId = " + TypeList + " ORDER BY O.rate DESC , O.Date DESC ",
 				null);
 		Object tempObject;
 
@@ -2368,7 +2398,8 @@ public class DataBaseAdapter {
 					cursor.getInt(32), cursor.getString(33), cursor.getString(34), cursor.getString(35),
 					cursor.getString(36), cursor.getInt(37), cursor.getString(38), cursor.getString(39),
 					cursor.getString(40), cursor.getString(41), cursor.getInt(42), cursor.getInt(43), cursor.getInt(44),
-					cursor.getInt(45), cursor.getInt(46));
+					cursor.getInt(45), cursor.getInt(46), cursor.getInt(47), cursor.getInt(48), cursor.getInt(49),
+					cursor.getInt(50));
 
 			result.add(tempObject);
 		}
@@ -2805,7 +2836,7 @@ public class DataBaseAdapter {
 
 		Cursor curs = mDb.rawQuery(
 				"SELECT COUNT(*) AS NUM FROM " + TableLikeInObject + " WHERE UserId= " + String.valueOf(userId)
-						+ " AND PaperId= " + String.valueOf(ObjectId) + " AND CommentId= " + String.valueOf(CommentId),
+						+ " AND PaperId= " + String.valueOf(ObjectId) + " AND LikeType= " + String.valueOf(CommentId),
 				null);
 		if (curs.moveToNext()) {
 			int number = curs.getInt(0);
@@ -2819,7 +2850,7 @@ public class DataBaseAdapter {
 
 		Cursor curs = mDb.rawQuery(
 				"SELECT COUNT(*) AS NUM FROM " + TableLikeInObject + " WHERE UserId= " + String.valueOf(userId)
-						+ " AND PaperId= " + String.valueOf(ObjectId) + " AND CommentId= " + String.valueOf(isLike),
+						+ " AND PaperId= " + String.valueOf(ObjectId) + " AND LikeType= " + String.valueOf(isLike),
 				null);
 		if (curs.moveToNext()) {
 			int number = curs.getInt(0);
@@ -2831,12 +2862,12 @@ public class DataBaseAdapter {
 
 	public void deleteLikeIntroduction(int userID, int ObjectId, int CommentId) {
 		String[] t = { String.valueOf(userID), String.valueOf(ObjectId), String.valueOf(CommentId) };
-		mDb.delete(TableLikeInObject, "UserId =? AND PaperId=? AND CommentId=?", t);
+		mDb.delete(TableLikeInObject, "UserId =? AND PaperId=? AND LikeType=?", t);
 	}
 
 	public void deleteHappyOrSadFromPage(int userID, int ObjectId, int IsLike) {
 		String[] t = { String.valueOf(userID), String.valueOf(ObjectId), String.valueOf(IsLike) };
-		mDb.delete(TableLikeInObject, "UserId =? AND PaperId=? AND IsLike=?", t);
+		mDb.delete(TableLikeInObject, "UserId =? AND PaperId=? AND LikeType=?", t);
 	}
 
 	public ArrayList<CommentInObject> getReplyCommentIntroduction(int ObjectId, int Commentid) {
@@ -2845,7 +2876,7 @@ public class DataBaseAdapter {
 		CommentInObject item = null;
 
 		Cursor mCur = mDb.query(TableCommentInObject, CommentInObject, "ObjectId=? AND CommentId=?",
-				new String[] { String.valueOf(ObjectId), String.valueOf(Commentid) }, null, null, null);
+				new String[] { String.valueOf(ObjectId), String.valueOf(Commentid) }, null, null, "Date DESC");
 
 		while (mCur.moveToNext()) {
 			item = CursorToCommentInObject(mCur);
@@ -2889,7 +2920,7 @@ public class DataBaseAdapter {
 	public Integer getCountHappyOrSadFromPage(int ObjectId, int isLike) {
 
 		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TableLikeInObject + " WHERE PaperId=" + ObjectId
-				+ " AND CommentId=" + isLike, null);
+				+ " AND LikeType=" + isLike, null);
 		int res = 0;
 		if (cu.moveToNext()) {
 			res = cu.getInt(0);
@@ -3034,6 +3065,18 @@ public class DataBaseAdapter {
 		cv.put("Date", Date);
 
 		mDb.insert(TableObjectInCity, null, cv);
+
+	}
+
+	public void insertObjectInProvince(int id, int objectId, int provinceId, String Date) {
+		ContentValues cv = new ContentValues();
+
+		cv.put("Id", id);
+		cv.put("ObjectId", objectId);
+		cv.put("ProvinceId", provinceId);
+		cv.put("Date", Date);
+
+		mDb.insert(TableObjectInProvince, null, cv);
 
 	}
 
@@ -3193,10 +3236,10 @@ public class DataBaseAdapter {
 		ArrayList<Object> result = new ArrayList<Object>();
 		Cursor cursor = mDb.rawQuery(
 
-				"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate , O.AgencyService , O.ImagePath1 , O.ImagePath2 , O.ImagePath3 , O.ActiveDate , O.CountView , O.CountPost , O.CountFollower , O.CountHAppy , CountSad From "
+				"Select O.Id, O.Name, O.Phone, O.Email, O.Fax, O.Description, O.Image1, O.Image2, O.Image3, O.Image4, O.Pdf1, O.Pdf2, O.Pdf3, O.Pdf4, O.Address, O.CellPhone , O.ObjectTypeId , O.ObjectBrandTypeId, O.Facebook, O.Instagram, O.LinkedIn, O.Google, O.Site, O.Twitter, O.rate , O.ParentId, O.Seen , O.serverDate , O.Submit, O.MainObjectId, O.IsActive, O.UserId , O.ObjectId , O.Date , O.Image1ServerDate , O.Image2ServerDate ,  O.Image3ServerDate , O.AgencyService , O.ImagePath1 , O.ImagePath2 , O.ImagePath3 , O.ActiveDate , O.CountView , O.CountPost , O.CountFollower , O.CountHAppy , CountSad , O.CountAgency , O.CountService , O.CountVeryHappy , O.CountVerySad From "
 						+ TableObject + " as O inner join " + TableObjectInCity
 						+ " as C On O.Id = C.ObjectId Where O.ObjectId = " + ObjectId + " and C.CityId = " + CityId
-						+ " and O.AgencyService = " + AgencyService,
+						+ " and O.AgencyService = " + AgencyService + " ORDER BY O.rate DESC , O.Date DESC",
 				null);
 		Object tempObject;
 
@@ -3211,7 +3254,8 @@ public class DataBaseAdapter {
 					cursor.getInt(32), cursor.getString(33), cursor.getString(34), cursor.getString(35),
 					cursor.getString(36), cursor.getInt(37), cursor.getString(38), cursor.getString(39),
 					cursor.getString(40), cursor.getString(41), cursor.getInt(42), cursor.getInt(43), cursor.getInt(44),
-					cursor.getInt(45), cursor.getInt(46));
+					cursor.getInt(45), cursor.getInt(46), cursor.getInt(47), cursor.getInt(48), cursor.getInt(49),
+					cursor.getInt(50));
 
 			result.add(tempObject);
 		}
@@ -3338,8 +3382,8 @@ public class DataBaseAdapter {
 
 	public ArrayList<LikeInObject> getAllLikeFromObject(int ObjectId, int CommentId) {
 		ArrayList<LikeInObject> result = new ArrayList<LikeInObject>();
-		Cursor cursor = mDb.rawQuery(
-				"select * from LikeInObject where PaperId =  " + ObjectId + " And CommentId = " + CommentId, null);
+		Cursor cursor = mDb.rawQuery("select * from LikeInObject where PaperId =  " + ObjectId + " And LikeType = "
+				+ CommentId + " ORDER BY Date DESC", null);
 
 		LikeInObject like;
 		while (cursor.moveToNext()) {
@@ -3717,7 +3761,8 @@ public class DataBaseAdapter {
 					cursor.getInt(32), cursor.getString(33), cursor.getString(34), cursor.getString(35),
 					cursor.getString(36), cursor.getInt(37), cursor.getString(38), cursor.getString(39),
 					cursor.getString(40), cursor.getString(41), cursor.getInt(42), cursor.getInt(43), cursor.getInt(44),
-					cursor.getInt(45), cursor.getInt(46));
+					cursor.getInt(45), cursor.getInt(46), cursor.getInt(47), cursor.getInt(48), cursor.getInt(49),
+					cursor.getInt(50));
 
 			result.add(tempObject);
 		}
@@ -3771,7 +3816,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			tempTicket = new Paper(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3),
 					cursor.getString(4), cursor.getInt(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8),
-					cursor.getInt(9));
+					cursor.getInt(9), cursor.getInt(10), cursor.getInt(11));
 
 			result.add(tempTicket);
 		}
@@ -3788,7 +3833,7 @@ public class DataBaseAdapter {
 		while (cursor.moveToNext()) {
 			temp = new Froum(cursor.getInt(0), cursor.getInt(1), cursor.getString(2), cursor.getString(3),
 					cursor.getInt(4), cursor.getString(5), cursor.getInt(6), cursor.getString(7), cursor.getInt(8),
-					cursor.getInt(9));
+					cursor.getInt(9), cursor.getInt(10), cursor.getInt(11));
 			result.add(temp);
 		}
 
@@ -4216,7 +4261,7 @@ public class DataBaseAdapter {
 	public ArrayList<LikeInObject> getAllPageFollowingMe(int userId, int commentId) {
 		ArrayList<LikeInObject> result = new ArrayList<LikeInObject>();
 		Cursor cursor = mDb.rawQuery(
-				"select * from LikeInObject where UserId =  " + userId + " And CommentId = " + commentId, null);
+				"select * from LikeInObject where UserId =  " + userId + " And LikeType = " + commentId, null);
 
 		LikeInObject like;
 		while (cursor.moveToNext()) {
@@ -4329,14 +4374,34 @@ public class DataBaseAdapter {
 
 	}
 
-	public void updateCountHappyOrSad(int objectId, int value, boolean Ishappy) {
+	public void updateCountHappyOrSad(int objectId, int value, int type) {
 
 		ContentValues uc = new ContentValues();
 
-		if (Ishappy == true)
+		if (type == StaticValues.TypeVeryHappyFromPage)
+			uc.put("CountVeryHappy", value);
+
+		if (type == StaticValues.TypeHappyFromPage)
 			uc.put("CountHappy", value);
-		else
+
+		if (type == StaticValues.TypeSadFromPage)
 			uc.put("CountSad", value);
+
+		if (type == StaticValues.TypeVerySadFromPage)
+			uc.put("CountVerySad", value);
+
+		mDb.update(TableObject, uc, "Id=" + objectId, null);
+
+	}
+
+	public void updateCountAgencyService(int objectId, int value, int isAgency) {
+
+		ContentValues uc = new ContentValues();
+
+		if (isAgency == StaticValues.TypeObjectIsAgency)
+			uc.put("CountAgency", value);
+		else
+			uc.put("CountService", value);
 
 		mDb.update(TableObject, uc, "Id=" + objectId, null);
 
@@ -4362,4 +4427,334 @@ public class DataBaseAdapter {
 
 	}
 
+	public void CreateNewBrand(int id, String name, String Phone, String Email, String fax, String description,
+			String LinkCatalog, String LinkPrice, String LinkPDF, String Address, String Mobile, String LinkFaceBook,
+			String LinkInstagram, String LinkLinkedin, String LinkGoogle, String LinkSite, String LinkTweitter,
+			int userId, int parentId, int ObjectBrandTypeId, String Date) {
+
+		// برای ثبت یک برند اصلی از آیتم اصلی برنامه
+
+		ContentValues cv = new ContentValues();
+		cv.put("Id", id);
+
+		if (!"".equals(name))
+			cv.put("Name", name);
+
+		if (!"".equals(Phone))
+			cv.put("Phone", Phone);
+
+		if (!"".equals(Email))
+			cv.put("Email", Email);
+
+		if (!"".equals(fax))
+			cv.put("Fax", fax);
+
+		if (!"".equals(Address))
+			cv.put("Address", Address);
+
+		if (!"".equals(Mobile))
+			cv.put("Cellphone", Mobile);
+
+		if (!"".equals(description))
+			cv.put("Description", description);
+
+		if (!"".equals(LinkCatalog))
+			cv.put("Pdf1", LinkCatalog);
+
+		if (!"".equals(LinkPrice))
+			cv.put("Pdf2", LinkPrice);
+
+		if (!"".equals(LinkPDF))
+			cv.put("Pdf3", LinkPDF);
+
+		if (!"".equals(LinkFaceBook))
+			cv.put("Facebook", LinkFaceBook);
+
+		if (!"".equals(LinkInstagram))
+			cv.put("Instagram", LinkInstagram);
+
+		if (!"".equals(LinkLinkedin))
+			cv.put("LinkedIn", LinkLinkedin);
+
+		if (!"".equals(LinkGoogle))
+			cv.put("Google", LinkGoogle);
+
+		if (!"".equals(LinkSite))
+			cv.put("Site", LinkSite);
+
+		if (!"".equals(LinkTweitter))
+			cv.put("Twitter", LinkTweitter);
+
+		cv.put("userId", userId);
+		cv.put("ObjectBrandTypeId", ObjectBrandTypeId);
+		cv.put("ParentId", parentId);
+		cv.put("MainObjectId", StaticValues.MainItem1);
+
+		cv.put("IsActive", StaticValues.actived);
+		cv.put("rate", 0);
+		cv.put("Seen", StaticValues.seen);
+
+		cv.put("Date", Date);
+
+		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+		mDb.insert(TableObject, null, cv);
+
+	}
+
+	public void createNewAgencyService(int id, String name, String Phone, String Email, String fax, String description,
+			String LinkCatalog, String LinkPrice, String LinkPDF, String Address, String Mobile, String LinkFaceBook,
+			String LinkInstagram, String LinkLinkedin, String LinkGoogle, String LinkSite, String LinkTweitter,
+			int userId, int mainBrandId, int agencyService, String Date) {
+
+		// برای ثبت یک نمایندگی یا خدمات از آیتم اصلی برنامه
+
+		ContentValues cv = new ContentValues();
+		cv.put("Id", id);
+
+		if (!"".equals(name))
+			cv.put("Name", name);
+
+		if (!"".equals(Phone))
+			cv.put("Phone", Phone);
+
+		if (!"".equals(Email))
+			cv.put("Email", Email);
+
+		if (!"".equals(fax))
+			cv.put("Fax", fax);
+
+		if (!"".equals(Address))
+			cv.put("Address", Address);
+
+		if (!"".equals(Mobile))
+			cv.put("Cellphone", Mobile);
+
+		if (!"".equals(description))
+			cv.put("Description", description);
+
+		if (!"".equals(LinkCatalog))
+			cv.put("Pdf1", LinkCatalog);
+
+		if (!"".equals(LinkPrice))
+			cv.put("Pdf2", LinkPrice);
+
+		if (!"".equals(LinkPDF))
+			cv.put("Pdf3", LinkPDF);
+
+		if (!"".equals(LinkFaceBook))
+			cv.put("Facebook", LinkFaceBook);
+
+		if (!"".equals(LinkInstagram))
+			cv.put("Instagram", LinkInstagram);
+
+		if (!"".equals(LinkLinkedin))
+			cv.put("LinkedIn", LinkLinkedin);
+
+		if (!"".equals(LinkGoogle))
+			cv.put("Google", LinkGoogle);
+
+		if (!"".equals(LinkSite))
+			cv.put("Site", LinkSite);
+
+		if (!"".equals(LinkTweitter))
+			cv.put("Twitter", LinkTweitter);
+
+		cv.put("userId", userId);
+		cv.put("ObjectId", mainBrandId);
+		cv.put("AgencyService", agencyService);
+		cv.put("MainObjectId", StaticValues.MainItem1);
+		cv.put("ObjectBrandTypeId", StaticValues.NoAgencyNoService);
+
+		cv.put("IsActive", StaticValues.actived);
+		cv.put("rate", 0);
+		cv.put("Seen", StaticValues.seen);
+
+		cv.put("Date", Date);
+
+		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+		mDb.insert(TableObject, null, cv);
+
+	}
+
+	public void createNewShopAdvisorExecuter(int id, String name, String Phone, String Email, String fax,
+			String description, String LinkCatalog, String LinkPrice, String LinkPDF, String Address, String Mobile,
+			String LinkFaceBook, String LinkInstagram, String LinkLinkedin, String LinkGoogle, String LinkSite,
+			String LinkTweitter, int userId, int mainObjectId, int objectTypeId, String Date) {
+
+		// برای ثبت یک فروشگاه یا مشاوران یا استادکاران از آیتم اصلی برنامه
+
+		ContentValues cv = new ContentValues();
+		cv.put("Id", id);
+
+		if (!"".equals(name))
+			cv.put("Name", name);
+
+		if (!"".equals(Phone))
+			cv.put("Phone", Phone);
+
+		if (!"".equals(Email))
+			cv.put("Email", Email);
+
+		if (!"".equals(fax))
+			cv.put("Fax", fax);
+
+		if (!"".equals(Address))
+			cv.put("Address", Address);
+
+		if (!"".equals(Mobile))
+			cv.put("Cellphone", Mobile);
+
+		if (!"".equals(description))
+			cv.put("Description", description);
+
+		if (!"".equals(LinkCatalog))
+			cv.put("Pdf1", LinkCatalog);
+
+		if (!"".equals(LinkPrice))
+			cv.put("Pdf2", LinkPrice);
+
+		if (!"".equals(LinkPDF))
+			cv.put("Pdf3", LinkPDF);
+
+		if (!"".equals(LinkFaceBook))
+			cv.put("Facebook", LinkFaceBook);
+
+		if (!"".equals(LinkInstagram))
+			cv.put("Instagram", LinkInstagram);
+
+		if (!"".equals(LinkLinkedin))
+			cv.put("LinkedIn", LinkLinkedin);
+
+		if (!"".equals(LinkGoogle))
+			cv.put("Google", LinkGoogle);
+
+		if (!"".equals(LinkSite))
+			cv.put("Site", LinkSite);
+
+		if (!"".equals(LinkTweitter))
+			cv.put("Twitter", LinkTweitter);
+
+		cv.put("userId", userId);
+		cv.put("MainObjectId", String.valueOf(mainObjectId));
+		cv.put("ObjectBrandTypeId", StaticValues.NoAgencyNoService);
+		cv.put("ObjectTypeId", String.valueOf(objectTypeId));
+
+		cv.put("IsActive", StaticValues.actived);
+		cv.put("rate", 0);
+		cv.put("Seen", StaticValues.seen);
+
+		cv.put("Date", Date);
+
+		Toast.makeText(mContext, "اطلاعات با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+		mDb.insert(TableObject, null, cv);
+
+	}
+
+	public Integer getCountOfAgencyInProvince(int objectId, int provinceId, int agencyService) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TableCountSubBrandInProvince + " WHERE ObjectId="
+				+ objectId + " AND ProvinceId=" + provinceId + " AND AgencyService=" + agencyService, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public Integer getCountOfAgencyInCity(int objectId, int cityId, int agencyService) {
+
+		Cursor cu = mDb.rawQuery("Select count(*) as co from " + TableCountSubBrandInCity + " WHERE ObjectId="
+				+ objectId + " AND CityId=" + cityId + " AND AgencyService=" + agencyService, null);
+		int res = 0;
+		if (cu.moveToNext()) {
+			res = cu.getInt(0);
+		}
+		return res;
+	}
+
+	public void insertCountOfAgencyInProvince(int ObjectId, int provinceId, int agencyService, int value) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("ObjectId", ObjectId);
+		uc.put("ProvinceId", provinceId);
+		uc.put("AgencyService", agencyService);
+		uc.put("CountInProvince", value);
+
+		mDb.insert(TableCountSubBrandInProvince, null, uc);
+
+	}
+
+	public void insertCountOfAgencyInCity(int ObjectId, int cityId, int agencyService, int countCity) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("ObjectId", ObjectId);
+		uc.put("CityId", cityId);
+		uc.put("AgencyService", agencyService);
+		uc.put("CountInCity", countCity);
+
+		mDb.insert(TableCountSubBrandInCity, null, uc);
+
+	}
+
+	public void updateCountBrandInProvince(int objectId, int provinceId, int value) {
+
+		ContentValues uc = new ContentValues();
+
+		uc.put("CountInProvince", value);
+
+		mDb.update(TableCountSubBrandInProvince, uc, "ObjectId=" + objectId + " And ProvinceId=" + provinceId, null);
+	}
+
+	public void updateCountBrandInCity(int objectId, int cityId, int value) {
+
+		ContentValues uc = new ContentValues();
+		uc.put("CountInCity", value);
+		mDb.update(TableCountSubBrandInCity, uc, "ObjectId=" + objectId + " And CityId=" + cityId, null);
+	}
+
+	public CountSubBrandInProvince GetCountSubBrandProvince(int objectId, int provinceId, int AgencyService) {
+		CountSubBrandInProvince set = null;
+		Cursor cur = mDb
+				.query(TableCountSubBrandInProvince,
+						CountSubBrandInProvince, " ObjectId=? And ProvinceId=? And AgencyService=?", new String[] {
+								String.valueOf(objectId), String.valueOf(provinceId), String.valueOf(AgencyService) },
+						null, null, null);
+		if (cur.moveToNext())
+			set = CursorToCountSubBrandProvince(cur);
+		return set;
+
+	}
+
+	public CountSubBrandInCity GetCountSubBrandCity(int objectId, int cityId, int AgencyService) {
+		CountSubBrandInCity set = null;
+		Cursor cur = mDb
+				.query(TableCountSubBrandInCity,
+						CountSubBrandInCity, " ObjectId=? And CityId=? And AgencyService=?", new String[] {
+								String.valueOf(objectId), String.valueOf(cityId), String.valueOf(AgencyService) },
+						null, null, null);
+		if (cur.moveToNext())
+			set = CursorToCountSubBrandCity(cur);
+		return set;
+
+	}
+
+	public void updateCountLike(String tableName, int id, int value) {
+
+		ContentValues cu = new ContentValues();
+
+		cu.put("CountLike", value);
+
+		mDb.update(tableName, cu, "Id=" + id, null);
+	}
+
+	public void updateCountComment(String tableName, int id, int value) {
+
+		ContentValues cu = new ContentValues();
+
+		cu.put("CountComment", value);
+
+		mDb.update(tableName, cu, "Id=" + id, null);
+	}
 }

@@ -69,7 +69,6 @@ public class DialogSettings extends Fragment {
 
 			}
 		});
-		util.ShowFooterAgahi(getActivity(), false, 0);
 		return rootView;
 	}
 

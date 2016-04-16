@@ -199,7 +199,7 @@ public class Dialog_notificationlike extends Dialog {
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int position, long arg3) {
 
-						IntroductionFragment fragment = new IntroductionFragment();
+						IntroductionFragment fragment = new IntroductionFragment(-1);
 
 						android.support.v4.app.FragmentTransaction trans = ((MainActivity) context)
 								.getSupportFragmentManager().beginTransaction();

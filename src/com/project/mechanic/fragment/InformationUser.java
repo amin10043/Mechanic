@@ -93,8 +93,6 @@ public class InformationUser extends Fragment {
 			}
 		});
 
-		util.ShowFooterAgahi(getActivity(), false, -1);
-
 		return rootView;
 	}
 
@@ -347,7 +345,7 @@ public class InformationUser extends Fragment {
 
 		ArrayList<String> parentItems = new ArrayList<String>();
 
-//		Expandview.setDividerHeight(5);
+		// Expandview.setDividerHeight(5);
 		Expandview.setGroupIndicator(null);
 		Expandview.setClickable(true);
 

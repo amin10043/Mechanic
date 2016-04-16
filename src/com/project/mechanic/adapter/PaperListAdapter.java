@@ -167,7 +167,7 @@ public class PaperListAdapter extends ArrayAdapter<CommentInPaper> implements As
 							if (util.getCurrentUser() != null)
 
 								util.reportAbuse(userIdsender, StaticValues.TypeReportCommentPaper, itemId, content,
-										cn.getPaperid(), position);
+										cn.getPaperid(), position , -1);
 							else
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}

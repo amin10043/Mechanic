@@ -12,6 +12,8 @@ public class Paper implements Comparable<Paper> {
 	String Date;
 	int seenBefore;
 	int CountView;
+	int CountLike;
+	int CountComment;
 
 	public int getCountView() {
 		return CountView;
@@ -93,9 +95,24 @@ public class Paper implements Comparable<Paper> {
 		Date = date;
 	}
 
-	public Paper(int id, String title, String context, int seen,
-			String serversate, int submit, int userId, String date,
-			int seenBefore , int CountView) {
+	public int getCountLike() {
+		return CountLike;
+	}
+
+	public void setCountLike(int countLike) {
+		CountLike = countLike;
+	}
+
+	public int getCountComment() {
+		return CountComment;
+	}
+
+	public void setCountComment(int countComment) {
+		CountComment = countComment;
+	}
+
+	public Paper(int id, String title, String context, int seen, String serversate, int submit, int userId, String date,
+			int seenBefore, int CountView, int CountLike, int CountComment) {
 		super();
 		Id = id;
 		Title = title;
@@ -107,6 +124,8 @@ public class Paper implements Comparable<Paper> {
 		Date = date;
 		this.seenBefore = seenBefore;
 		this.CountView = CountView;
+		this.CountLike = CountLike;
+		this.CountComment = CountComment;
 	}
 
 	public int compareTo(Paper comparePaper) {

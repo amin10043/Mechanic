@@ -150,8 +150,8 @@ public class WelcomeScreen extends Activity {
 		//////////////////////////////
 		RelativeLayout.LayoutParams rl1 = new RelativeLayout.LayoutParams(l1.getLayoutParams());
 
-		float rate = 1.33f;
-		int w = util.getScreenwidth() - 100;
+		float rate = 1;
+		int w = 2*util.getScreenwidth()/3;
 		int h = (int) (w / rate);
 
 		rl1.width = w;

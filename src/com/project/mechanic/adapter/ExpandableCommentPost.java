@@ -256,7 +256,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 							if (util.getCurrentUser() != null)
 
 								util.reportAbuse(userIdsender, StaticValues.TypeReportReplayPost, itemId, description,
-										w.getPostId(), 0);
+										w.getPostId(), 0 , -1);
 							else
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}
@@ -406,6 +406,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 		adapter.close();
 
 		mainComment.setText(comment.getDesc(), true);
+		mainComment.setPadding(5, 5, 5, 5);
 		dateCommenter.setText(util.getPersianDate(comment.getDate()));
 		// if (adapter.getCountOfReplyInFroum(froumID, comment.getId()) == 0) {
 		// LinearLayout lrr = (LinearLayout) convertView
@@ -860,7 +861,7 @@ public class ExpandableCommentPost extends BaseExpandableListAdapter implements 
 							if (util.getCurrentUser() != null)
 
 								util.reportAbuse(userIdsender, StaticValues.TypeReportCommentPost, itemId, description,
-										ww.getPostId(), 0);
+										ww.getPostId(), 0 , -1);
 							else
 								Toast.makeText(context, "ابتدا باید وارد شوید", 0).show();
 						}

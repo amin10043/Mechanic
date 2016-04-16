@@ -45,14 +45,12 @@ import com.project.mechanic.service.ServerDate;
 import com.project.mechanic.service.ServiceComm;
 import com.project.mechanic.utility.Utility;
 
-public class PaperWithoutComment extends Fragment implements AsyncInterface,
-		CommInterface {
+public class PaperWithoutComment extends Fragment implements AsyncInterface, CommInterface {
 
 	DataBaseAdapter adapter;
 	int paperID;
 	LinearLayout addComment, likeTopic;
-	TextView titletxt, descriptiontxt, dateTopic, countComment, nametxt,
-			countLike, txtname;
+	TextView titletxt, descriptiontxt, dateTopic, countComment, nametxt, countLike, txtname;
 	DialogcmtInPaper dialog;
 
 	ListView lst;
@@ -83,8 +81,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 	Paper p;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.froum_without_comment, null);
 
 		adapter = new DataBaseAdapter(getActivity());
@@ -106,8 +103,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 		countLike = (TextView) view.findViewById(R.id.txtNumofLike_CmtFroum);
 		nametxt = (TextView) view.findViewById(R.id.name_cc);
 
-		countLikeRelative = (RelativeLayout) view
-				.findViewById(R.id.countLiketext);
+		countLikeRelative = (RelativeLayout) view.findViewById(R.id.countLiketext);
 		commentcounter = (RelativeLayout) view.findViewById(R.id.countComment);
 		txtname = (TextView) view.findViewById(R.id.name_cc);
 
@@ -115,8 +111,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 		CurrentUser = util.getCurrentUser();
 
 		adapter.open();
-		if (CurrentUser == null
-				|| !adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
+		if (CurrentUser == null || !adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
 			likeTopic.setBackgroundResource(R.drawable.like_off);
 			countLikeRelative.setBackgroundResource(R.drawable.count_like_off);
 		} else {
@@ -136,11 +131,9 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 		if (u != null) {
 			userId = u.getId();
 			txtname.setText(u.getName());
-			LinearLayout rl = (LinearLayout) view
-					.findViewById(R.id.profileLinearcommenterinContinue);
+			LinearLayout rl = (LinearLayout) view.findViewById(R.id.profileLinearcommenterinContinue);
 
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-					rl.getLayoutParams());
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(rl.getLayoutParams());
 
 			lp.width = util.getScreenwidth() / 7;
 			lp.height = util.getScreenwidth() / 7;
@@ -167,15 +160,12 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 		if (util.getCurrentUser() != null) {
 			if (util.getCurrentUser().getId() != paperID) {
 				if (!util.isNetworkConnected()) {
-					Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(getActivity(), "Flse", Toast.LENGTH_SHORT).show();
 					adapter.open();
-					adapter.insertVisitToDb(util.getCurrentUser().getId(), 2,
-							paperID);
+					adapter.insertVisitToDb(util.getCurrentUser().getId(), 2, paperID);
 					adapter.close();
 				} else if ((util.isNetworkConnected())) {
-					Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(getActivity(), "True", Toast.LENGTH_SHORT).show();
 					adapter.open();
 					// ارسال اطلاعات به جدول ویزیت سرور
 					// ارسال اطلاعات از جدول ویزیت گوشی به جدول ویزیت سرور
@@ -188,8 +178,8 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 
 			@Override
 			public void onClick(View arg0) {
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				InformationUser fragment = new InformationUser();
 				Bundle bundle = new Bundle();
 				bundle.putInt("userId", userId);
@@ -205,11 +195,10 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 			public void onClick(View v) {
 				// realizeIdPaper.edit().putInt("main_Id", 1378).commit();
 
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				PaperFragment fragment = new PaperFragment();
-				trans.setCustomAnimations(R.anim.pull_in_left,
-						R.anim.push_out_right);
+				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 				Bundle b = new Bundle();
 				b.putString("Id", String.valueOf(paperID));
 				fragment.setArguments(b);
@@ -237,18 +226,17 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View v) {
 
-				Toast.makeText(getActivity(), "send = " + paperID,
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "send = " + paperID, Toast.LENGTH_SHORT).show();
 
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				PaperFragment fragment = new PaperFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString("Id", String.valueOf(paperID));
 				fragment.setArguments(bundle);
 
-				DialogcmtInPaper dialog = new DialogcmtInPaper(null,
-						getActivity(), R.layout.dialog_addcomment, paperID, 3);
+				DialogcmtInPaper dialog = new DialogcmtInPaper(null, getActivity(), R.layout.dialog_addcomment, paperID,
+						3);
 				Bundle bundle2 = new Bundle();
 				bundle.putString("Id", String.valueOf(paperID));
 				fragment.setArguments(bundle);
@@ -263,16 +251,13 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 				adapter.open();
-				ArrayList<LikeInPaper> likedist = adapter
-						.getLikePaperByPaperId(paperID);
+				ArrayList<LikeInPaper> likedist = adapter.getLikePaperByPaperId(paperID);
 
 				adapter.close();
 				if (likedist.size() == 0) {
-					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0)
-							.show();
+					Toast.makeText(getActivity(), "لایکی ثبت نشده است", 0).show();
 				} else {
-					DialogPersonLikedPaper dia = new DialogPersonLikedPaper(
-							getActivity(), paperID, likedist);
+					DialogPersonLikedPaper dia = new DialogPersonLikedPaper(getActivity(), paperID, likedist);
 					dia.show();
 				}
 			}
@@ -281,16 +266,12 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 
 			@Override
 			public void onClick(View arg0) {
-				Intent sharingIntent = new Intent(
-						android.content.Intent.ACTION_SEND);
+				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				sharingIntent.setType("text/plain");
 				// String shareBody = x.getDescription();
-				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-						p.getTitle());
-				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-						p.getContext());
-				startActivity(Intent.createChooser(sharingIntent,
-						"اشتراک از طریق"));
+				sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, p.getTitle());
+				sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, p.getContext());
+				startActivity(Intent.createChooser(sharingIntent, "اشتراک از طریق"));
 			}
 		});
 
@@ -299,8 +280,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 			@Override
 			public void onClick(View arg0) {
 				if (CurrentUser == null) {
-					Toast.makeText(getActivity(), "ابتدا باید وارد شوید",
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "ابتدا باید وارد شوید", Toast.LENGTH_SHORT).show();
 					return;
 
 				} else {
@@ -364,8 +344,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 
 						if (item.getTitle().equals("افزودن به علاقه مندی ها")) {
 							adapter.open();
-							addToFavorite(util.getCurrentUser().getId(), 2,
-									p.getId());
+							addToFavorite(util.getCurrentUser().getId(), 2, p.getId());
 							adapter.close();
 						}
 						if (item.getTitle().equals("کپی")) {
@@ -375,14 +354,12 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 						}
 						if (item.getTitle().equals("گزارش تخلف")) {
 
-//							util.reportAbuse(p.getUserId(), 2, p.getId(),
-//									p.getContext(), 0);
+							// util.reportAbuse(p.getUserId(), 2, p.getId(),
+							// p.getContext(), 0);
 
 						}
 						if (item.getTitle().equals("حذف")) {
-							if (util.getCurrentUser() != null
-									&& util.getCurrentUser().getId() == p
-											.getUserId())
+							if (util.getCurrentUser() != null && util.getCurrentUser().getId() == p.getUserId())
 								deleteItems(p.getId());
 							else {
 
@@ -421,28 +398,30 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 
 		});
 
-		ImageView send = util.ShowFooterAgahi(getActivity(), true, 8);
-
-		send.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-
-				if ("".equals(util.inputComment(getActivity()))) {
-					Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0)
-							.show();
-				} else {
-
-					date = new ServerDate(getActivity());
-					date.delegate = PaperWithoutComment.this;
-					date.execute("");
-					LikeOrComment = false;
-
-					util.ReplyLayout(getActivity(), "", false);
-
-				}
-			}
-		});
+//		ImageView[] ImageArray = util.inputCommentAndPickFile(getActivity());
+//		ImageView send = ImageArray[0];
+//		ImageView s = ImageArray[1];
+//		s.setVisibility(View.GONE);
+//
+//		send.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View arg0) {
+//
+//				if ("".equals(util.inputComment(getActivity()))) {
+//					Toast.makeText(getActivity(), " نظر نمی تواند خالی باشد", 0).show();
+//				} else {
+//
+//					date = new ServerDate(getActivity());
+//					date.delegate = PaperWithoutComment.this;
+//					date.execute("");
+//					LikeOrComment = false;
+//
+//					util.ReplyLayout(getActivity(), "", false);
+//
+//				}
+//			}
+//		});
 		ImageView delete = util.deleteReply(getActivity());
 
 		delete.setOnClickListener(new OnClickListener() {
@@ -479,23 +458,18 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 				if (adapter.isUserLikedPaper(CurrentUser.getId(), paperID)) {
 					adapter.deleteLikeFromPaper(CurrentUser.getId(), paperID);
 					likeTopic.setBackgroundResource(R.drawable.like_off);
-					countLikeRelative
-							.setBackgroundResource(R.drawable.count_like_off);
+					countLikeRelative.setBackgroundResource(R.drawable.count_like_off);
 
-					countLike.setText(adapter.LikeInPaper_count(paperID)
-							.toString());
+					countLike.setText(adapter.LikeInPaper_count(paperID).toString());
 					if (ringProgressDialog != null) {
 						ringProgressDialog.dismiss();
 					}
 				} else {
-					adapter.insertLikeInPaperToDb(id,CurrentUser.getId(), paperID,
-							serverDate);
+					adapter.insertLikeInPaperToDb(id, CurrentUser.getId(), paperID, serverDate);
 					likeTopic.setBackgroundResource(R.drawable.like_on);
-					countLikeRelative
-							.setBackgroundResource(R.drawable.count_like);
+					countLikeRelative.setBackgroundResource(R.drawable.count_like);
 
-					countLike.setText(adapter.LikeInPaper_count(paperID)
-							.toString());
+					countLike.setText(adapter.LikeInPaper_count(paperID).toString());
 					if (ringProgressDialog != null) {
 						ringProgressDialog.dismiss();
 					}
@@ -505,23 +479,21 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 			} else {
 
 				adapter.open();
-//				adapter.insertCommentInPapertoDb(
-//						util.inputComment(getActivity()), paperID,
-//						CurrentUser.getId(), serverDate);
+				// adapter.insertCommentInPapertoDb(
+				// util.inputComment(getActivity()), paperID,
+				// CurrentUser.getId(), serverDate);
 				adapter.close();
 
 				util.ToEmptyComment(getActivity());
 
-				final SharedPreferences realizeIdPaper = getActivity()
-						.getSharedPreferences("Id", 0);
+				final SharedPreferences realizeIdPaper = getActivity().getSharedPreferences("Id", 0);
 
 				realizeIdPaper.edit().putInt("main_Id", 1378).commit();
 
-				FragmentTransaction trans = ((MainActivity) getActivity())
-						.getSupportFragmentManager().beginTransaction();
+				FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager()
+						.beginTransaction();
 				PaperFragment fragment = new PaperFragment();
-				trans.setCustomAnimations(R.anim.pull_in_left,
-						R.anim.push_out_right);
+				trans.setCustomAnimations(R.anim.pull_in_left, R.anim.push_out_right);
 				Bundle b = new Bundle();
 				b.putString("Id", String.valueOf(paperID));
 				fragment.setArguments(b);
@@ -535,9 +507,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 			}
 
 		} catch (NumberFormatException e) {
-			if (output != null
-					&& !(output.contains("Exception") || output
-							.contains("java"))) {
+			if (output != null && !(output.contains("Exception") || output.contains("java"))) {
 
 				if (LikeOrComment == true) {
 
@@ -552,14 +522,12 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 						deleting.delegate = PaperWithoutComment.this;
 
 						params.put("TableName", "LikeInPaper");
-						params.put("UserId",
-								String.valueOf(CurrentUser.getId()));
+						params.put("UserId", String.valueOf(CurrentUser.getId()));
 						params.put("PaperId", String.valueOf(paperID));
 
 						deleting.execute(params);
 
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								"", "لطفا منتظر بمانید...", true);
+						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 						ringProgressDialog.setCancelable(true);
 						new Thread(new Runnable() {
@@ -587,8 +555,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 
 						params.put("TableName", "LikeInPaper");
 
-						params.put("UserId",
-								String.valueOf(CurrentUser.getId()));
+						params.put("UserId", String.valueOf(CurrentUser.getId()));
 						params.put("PaperId", String.valueOf(paperID));
 						params.put("Date", output);
 						params.put("IsUpdate", "0");
@@ -598,8 +565,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 
 						saving.execute(params);
 
-						ringProgressDialog = ProgressDialog.show(getActivity(),
-								"", "لطفا منتظر بمانید...", true);
+						ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 						ringProgressDialog.setCancelable(true);
 						new Thread(new Runnable() {
@@ -643,8 +609,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 
 					saving.execute(params);
 
-					ringProgressDialog = ProgressDialog.show(getActivity(), "",
-							"لطفا منتظر بمانید...", true);
+					ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 					ringProgressDialog.setCancelable(true);
 					new Thread(new Runnable() {
@@ -665,26 +630,21 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 				}
 
 			} else {
-				Toast.makeText(getActivity(),
-						"خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(getActivity(), "خطا در ثبت. پاسخ نا مشخص از سرور", Toast.LENGTH_SHORT).show();
 			}
 		} catch (Exception e) {
 
-			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(getActivity(), "خطا در ثبت", Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	public void addToFavorite(int currentUserId, int source, int ItemId) {
 
 		if (adapter.IsUserFavoriteItem(currentUserId, ItemId, source) == true) {
-			Toast.makeText(getActivity(),
-					" قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
+			Toast.makeText(getActivity(), " قبلا در لیست علاقه مندی ها ذخیره شده است ", 0).show();
 		} else {
 			adapter.insertFavoritetoDb(0, currentUserId, ItemId, source);
-			Toast.makeText(getActivity(), "به لیست علاقه مندی ها اضافه شد ", 0)
-					.show();
+			Toast.makeText(getActivity(), "به لیست علاقه مندی ها اضافه شد ", 0).show();
 		}
 	}
 
@@ -700,8 +660,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 
 		service.execute(items);
 
-		ringProgressDialog = ProgressDialog.show(getActivity(), "",
-				"لطفا منتظر بمانید...", true);
+		ringProgressDialog = ProgressDialog.show(getActivity(), "", "لطفا منتظر بمانید...", true);
 
 		ringProgressDialog.setCancelable(true);
 		new Thread(new Runnable() {
@@ -736,8 +695,7 @@ public class PaperWithoutComment extends Fragment implements AsyncInterface,
 
 		TitlepaperFragment fr = new TitlepaperFragment();
 
-		FragmentTransaction trans = ((MainActivity) getActivity())
-				.getSupportFragmentManager().beginTransaction();
+		FragmentTransaction trans = ((MainActivity) getActivity()).getSupportFragmentManager().beginTransaction();
 
 		trans.replace(R.id.content_frame, fr);
 		trans.addToBackStack(null);

@@ -6,6 +6,25 @@ public class StaticValues {
 	public static final int TypeRunServerForRefreshItems = 2;
 	public static final int TypeRunServerForAgencyServiceItem = 3;
 
+	public static final int TypeObjectIsAgency = 1;
+	public static final int TypeObjectIsService = 0;
+
+	public static final int MainItem1 = 1;
+	public static final int MainItem2 = 2;
+	public static final int MainItem3 = 3;
+	public static final int MainItem4 = 4;
+
+	public static final int actived = 1;
+	public static final int diactived = 0;
+
+	public static final int seen = 1;
+	public static final int unseen = 0;
+
+	public static final int HaveAgencyHaveService = 1;
+	public static final int NoAgencyNoService = 2;
+	public static final int OnlyAgency = 3;
+	public static final int OnlyService = 4;
+
 	/* s مشخص کردن نوع بازدید انجام شده */
 	public static final int TypeObjectVisit = 1;
 	public static final int TypePaperVisit = 2;
@@ -60,8 +79,11 @@ public class StaticValues {
 	/* s نوع لایک در صفحه برند */
 	public static final int TypeLikePage = 0;
 	public static final int TypeLikeFixedPost = 1;
-	public static final int TypeHappyFromPage = 2;
-	public static final int TypeSadFromPage = 3;
+	public static final int TypeVeryHappyFromPage = 2;
+	public static final int TypeHappyFromPage = 3;
+	public static final int TypeSadFromPage = 4;
+	public static final int TypeVerySadFromPage = 5;
+
 	/* e نوع لایک در صفحه برند */
 
 	/* s پیغام */
@@ -72,6 +94,8 @@ public class StaticValues {
 	public static final String welcomeMessage = "با ما بهتر دیده شوید";
 	public static final String IsRepeatLikeMessage = "شما قبلا نظرتان را در مورد این صفحه بیان کرده اید";
 	public static final String selectImagesBrandMessage = "انتخاب عکس های صفحه اجباری است";
+	public static final String pageDontAllowAgency = "شما دارای نمایندگی هستید و قادر به تغییر وضعیت نمایندگی  نمی باشید";
+	public static final String pageDontAllowService = "شما دارای خدمات هستید و قادر به تغییر وضعیت خدمات  نمی باشید";
 
 	/* e پیغام */
 
@@ -92,5 +116,8 @@ public class StaticValues {
 	public static final int TypeReportReplyFroum = 14;
 	public static final int TypeReportPage = 15;
 	public static final int TypeReportFixedPost = 16;
+
+	public static final String CreateAnadFromFroum = "ّFroumFragment";
+	public static final String CreateAnadFromAnad = "ّAnadFragment";
 
 }

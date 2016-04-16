@@ -29,7 +29,6 @@ public class FragmentAboutUs extends Fragment {
 		mJTv.setLineSpacing(15);
         mJTv.setTypeFace(util.SetFontIranSans());
         
-        util.ShowFooterAgahi(getActivity(), false, 0);
         return V;
     }
 }

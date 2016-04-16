@@ -12,13 +12,16 @@ import com.project.mechanic.adapter.ExpandableCommentFroum;
 import com.project.mechanic.entity.CommentInFroum;
 import com.project.mechanic.entity.Froum;
 import com.project.mechanic.entity.LikeInFroum;
+import com.project.mechanic.entity.Settings;
 import com.project.mechanic.entity.Users;
 import com.project.mechanic.entity.Visit;
 import com.project.mechanic.inter.AsyncInterface;
 import com.project.mechanic.inter.CommInterface;
 import com.project.mechanic.inter.GetAsyncInterface;
 import com.project.mechanic.inter.VisitSaveInterface;
+import com.project.mechanic.interfaceServer.GetAllCommentInterface;
 import com.project.mechanic.model.DataBaseAdapter;
+import com.project.mechanic.server.GetAllCommentById;
 import com.project.mechanic.service.Deleting;
 import com.project.mechanic.service.Saving;
 import com.project.mechanic.service.SavingVisit;
@@ -60,7 +63,7 @@ import android.widget.Toast;
 import ir.noghteh.JustifiedTextView;
 
 public class FroumFragment extends Fragment
-		implements AsyncInterface, GetAsyncInterface, CommInterface, VisitSaveInterface {
+		implements AsyncInterface, GetAsyncInterface, CommInterface, VisitSaveInterface, GetAllCommentInterface {
 
 	DataBaseAdapter adapter;
 	ExpandableCommentFroum exadapter;
@@ -215,8 +218,8 @@ public class FroumFragment extends Fragment
 			descriptiontxt.setText(topics.getDescription(), true);
 		adapter.open();
 
-		countComment.setText(adapter.CommentInFroum_count(froumid).toString());
-		countLike.setText(adapter.LikeInFroum_count(froumid).toString());
+		countComment.setText(topics.getCountComment() + "");
+		countLike.setText(topics.getCountLike() + "");
 
 		adapter.close();
 
@@ -226,7 +229,7 @@ public class FroumFragment extends Fragment
 		// time.setText(dateTime.get(1));
 		titletxt.setTypeface(util.SetFontIranSans());
 		descriptiontxt.setTypeface(util.SetFontIranSans());
-
+		// descriptiontxt.setPadding(5, 5, 5, 5);
 		// descriptiontxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
 		// descriptiontxt.setLineSpacing(15);
 
@@ -492,7 +495,8 @@ public class FroumFragment extends Fragment
 						}
 						if (item.getTitle().equals("گزارش تخلف")) {
 
-							util.reportAbuse(userIdsender, StaticValues.TypeReportFroumFragment, itemId, t, froumid, 0);
+							util.reportAbuse(userIdsender, StaticValues.TypeReportFroumFragment, itemId, t, froumid, 0,
+									-1);
 
 						}
 						if (item.getTitle().equals("حذف")) {
@@ -530,7 +534,8 @@ public class FroumFragment extends Fragment
 		});
 
 		if (getActivity() != null) {
-			ImageView send = util.ShowFooterAgahi(getActivity(), true, 8);
+			ImageView[] arrayImage = util.inputCommentAndPickFile(getActivity(), true);
+			ImageView send = arrayImage[0];
 
 			send.setOnClickListener(new OnClickListener() {
 
@@ -565,6 +570,8 @@ public class FroumFragment extends Fragment
 			});
 
 		}
+
+		getAllComment();
 
 		return view;
 	}
@@ -1204,4 +1211,37 @@ public class FroumFragment extends Fragment
 
 	}
 
+	private void getAllComment() {
+
+		adapter.open();
+		Settings settings = adapter.getSettings();
+		adapter.close();
+
+		final SharedPreferences currentTime = getActivity().getSharedPreferences("time", 0);
+
+		String time = currentTime.getString("time", "-1");
+
+		GetAllCommentById service = new GetAllCommentById(getActivity());
+		service.delegate = FroumFragment.this;
+		Map<String, String> items = new LinkedHashMap<String, String>();
+		items.put("tableName", "getAllCommentInFroumById");
+		items.put("id", String.valueOf(froumid));
+		items.put("fromDate", topics.getDate());
+		items.put("endDate", time);
+		items.put("isRefresh", "0");
+
+		service.execute(items);
+
+	}
+
+	@Override
+	public void ResultComment(String output) {
+
+		if (util.checkError(output) == false) {
+
+			util.parseQuery(output);
+			exadapter.notifyDataSetChanged();
+		}
+
+	}
 }
