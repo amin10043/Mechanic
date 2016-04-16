@@ -627,7 +627,7 @@ public class MainBrandFragment extends Fragment
 	}
 
 	@Override
-	public void ResultLisItem(String output) {
+	public void ResultLisItem(String output) { 
 
 		if (util.checkError(output) == false) {
 

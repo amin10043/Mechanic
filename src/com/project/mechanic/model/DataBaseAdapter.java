@@ -2971,8 +2971,7 @@ public class DataBaseAdapter {
 
 			ContentValues cv2 = new ContentValues();
 			cv2.put("ServerDate_Start_" + tableName, startModifyDate);
-			mDb.update(TableSettings, cv2,
-					"ServerDate_Start_" + tableName + " IS NULL OR " + "ServerDate_Start_" + tableName + " =''", null);
+			mDb.update(TableSettings, cv2,null, null);
 		}
 
 		if (endModifyDate != null && !"".equals(endModifyDate)) {
